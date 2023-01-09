@@ -3,8 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "author": "",
-  "scripts": {
-  },
+  "scripts": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/bodinsamuel/rfc-editor.git"
@@ -12,5 +11,8 @@
   "bugs": {
     "url": "https://github.com/bodinsamuel/rfc-editor/issues"
   },
+  "workspaces": [
+    "pkgs/app"
+  ],
   "homepage": "https://github.com/bodinsamuel/rfc-editor#readme"
 }
