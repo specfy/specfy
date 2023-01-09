@@ -1,0 +1,107 @@
+// COMPONENTS
+{
+  "data": [{
+    "id": "1",
+    "type": "group",
+    "name": "env",
+    "createdAt": "2023-01-01T00:00:00Z",
+    "updatedAt": "2023-01-01T00:00:00Z"
+  },
+  {
+    "id": "2",
+    "type": "component",
+    "name": "Frontend",
+    "in": "1",
+    "linkedTo": ["3"],
+    "createdAt": "2023-01-01T00:00:00Z",
+    "updatedAt": "2023-01-01T00:00:00Z"
+  },
+  {
+    "id": "3",
+    "type": "component",
+    "name": "Backend",
+    "in": "1",
+    "linkedTo": ["2"],
+    "display": {
+      "multi": true,
+      "pos": { "x": -1.34, "y": 22.89 },
+      "shape": "rectangle",
+      "width": 100,
+      "height": 50
+    },
+    "updatedAt": "2023-01-01T00:00:00Z"
+  },
+  {
+    "id": "4",
+    "type": "tech",
+    "name": "NodeJS",
+    "createdAt": "2023-01-01T00:00:00Z",
+    "updatedAt": "2023-01-01T00:00:00Z"
+  },
+  {
+    "id": "5",
+    "type": "spec",
+    "name": "Backend",
+    "define": "3",
+    "uses": ["4", "6"],
+    "tldr": "",
+    "motivation": "",
+    "content": "...",
+    "authors": [""],
+    "reviewers": [""],
+    "approvedBy": [],
+    "createdAt": "2023-01-01T00:00:00Z",
+    "updatedAt": "2023-01-01T00:00:00Z"
+  },
+  {
+    "id": "6",
+    "type": "tech",
+    "name": "Postgres",
+    "createdAt": "2023-01-01T00:00:00Z",
+    "updatedAt": "2023-01-01T00:00:00Z"
+  }]
+}
+
+// UPDATES
+{
+  "data": [{
+    "id": "a",
+    "event": "create",
+    "typeId": "1",
+    "data": { ... },
+    "user": "1",
+    "publishedAt": "2023-01-01T00:00:00Z"
+  }, {
+    "id": "b",
+    "event": "update",
+    "typeId": "1",
+    "data": { "name": "yoyo" }, 
+    "user": "1",
+    "publishedAt": "2023-01-01T00:00:00Z"
+  }, {
+    "id": "c",
+    "event": "delete",
+    "typeId": "1",
+    "user": "1",
+    "publishedAt": "2023-01-01T00:00:00Z"
+  }, {
+    "id": "d",
+    "event": "approve",
+    "typeId": "5",
+    "user": "1",
+    "publishedAt": "2023-01-01T00:00:00Z"
+  }, {
+    "id": "d",
+    "event": "unapprove",
+    "typeId": "5",
+    "user": "1",
+    "publishedAt": "2023-01-01T00:00:00Z"
+  }, {
+    "id": "d",
+    "event": "comment",
+    "typeId": "5",
+    "text": "Hello world",
+    "user": "1",
+    "publishedAt": "2023-01-01T00:00:00Z"
+  }]
+}
