@@ -1,0 +1,16 @@
+{
+  "name": "rfc-editor",
+  "version": "1.0.0",
+  "description": "",
+  "author": "",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bodinsamuel/rfc-editor.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bodinsamuel/rfc-editor/issues"
+  },
+  "homepage": "https://github.com/bodinsamuel/rfc-editor#readme"
+}
