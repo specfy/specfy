@@ -1,10 +1,10 @@
-import { HomeOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Col, Layout, Menu, MenuProps, Select } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
+import { Avatar, Layout, Menu, MenuProps, Select } from 'antd';
 import React from 'react';
 
 import cls from './index.module.scss';
 import { Home } from '../Home';
-import { Route, Routes } from 'react-router-dom';
+import { Link, Route, Routes } from 'react-router-dom';
 import { NotFound } from '../../components/NotFound';
 
 const { Header, Content } = Layout;
@@ -12,7 +12,7 @@ const { Header, Content } = Layout;
 const menuItems: MenuProps['items'] = [
   {
     key: 'home',
-    label: <a href="/">Home</a>,
+    label: <Link to="/">Home</Link>,
   },
 ];
 

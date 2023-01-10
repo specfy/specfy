@@ -1,17 +1,23 @@
+@import "../../theme.scss";
+
 .app {
   min-height: 100vh;
   width: 100vw;
+
+  .header {
+    padding: 0 8px !important;
+    background: transparent !important;
+    display: grid !important;
+    grid-template-columns: 150px 1fr 200px;
+
+    border-bottom: 1px solid $gray-5;
+    line-height: 61px;
+  }
 }
 
 .logo {
 }
 
-.header {
-  padding: 0 8px !important; 
-  background: transparent !important;
-  display: grid !important;
-  grid-template-columns: 150px 1fr 200px;
-}
 
 .headerRight {
   display: grid;
@@ -22,4 +28,5 @@
 
 .menu {
   background: transparent!important;
+  border-bottom: none;
 }

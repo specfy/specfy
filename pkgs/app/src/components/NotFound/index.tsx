@@ -1,4 +1,5 @@
 import { Button, Result } from 'antd';
+import { Link } from 'react-router-dom';
 
 export const NotFound: React.FC = () => {
   return (
@@ -6,7 +7,11 @@ export const NotFound: React.FC = () => {
       status="404"
       title="404"
       subTitle="Sorry, the page you visited does not exist."
-      extra={<Button type="primary">Back Home</Button>}
+      extra={
+        <Link to="/">
+          <Button type="primary">Back Home</Button>
+        </Link>
+      }
     />
   );
 };

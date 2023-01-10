@@ -1,6 +1,7 @@
 import { Avatar, List, Skeleton } from 'antd';
 import Title from 'antd/es/typography/Title';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { useMount } from 'react-use';
 
 import cls from './index.module.scss';
@@ -49,7 +50,11 @@ export const ListProjects: React.FC = () => {
             <Skeleton title={false} loading={false} active>
               <List.Item.Meta
                 avatar={<Avatar className={cls.avatar}>U</Avatar>}
-                title={<a href={`/p/${item.id}`}>{item.name}</a>}
+                title={
+                  <Link to={`/p/${item.id}`} relative="path">
+                    {item.name}
+                  </Link>
+                }
                 description={item.description}
               />
             </Skeleton>
