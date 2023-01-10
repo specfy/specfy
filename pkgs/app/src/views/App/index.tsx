@@ -1,16 +1,17 @@
 import { HomeOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Col, Layout, Menu, MenuProps, Row, Select } from 'antd';
+import { Avatar, Col, Layout, Menu, MenuProps, Select } from 'antd';
 import React from 'react';
 
 import cls from './index.module.scss';
 import { Home } from '../Home';
+import { Route, Routes } from 'react-router-dom';
+import { NotFound } from '../../components/NotFound';
 
-const { Header, Sider, Content } = Layout;
+const { Header, Content } = Layout;
 
 const menuItems: MenuProps['items'] = [
   {
     key: 'home',
-    icon: React.createElement(HomeOutlined),
     label: <a href="/">Home</a>,
   },
 ];
@@ -18,31 +19,44 @@ const menuItems: MenuProps['items'] = [
 const App: React.FC = () => {
   return (
     <Layout className={cls.app}>
-      <Sider theme="light">
-        <div className={cls.logo}></div>
-        <Menu items={menuItems}></Menu>
-      </Sider>
       <Layout>
         <Header className={cls.header}>
-          <div>
-            <Select
-              defaultValue="Default Org"
-              style={{ width: 120 }}
-              size="middle"
-              options={[
-                {
-                  value: 'default',
-                  label: 'Default Org',
-                },
-              ]}
-            />
-          </div>
-          <div>
-            <Avatar size="default" icon={<UserOutlined />} />
+          <div className={cls.logo}></div>
+
+          <Menu
+            className={cls.menu}
+            items={menuItems}
+            selectedKeys={['home']}
+            mode="horizontal"
+          ></Menu>
+
+          <div className={cls.headerRight}>
+            <div>
+              <Select
+                defaultValue="Default Org"
+                style={{ width: 120 }}
+                size="middle"
+                options={[
+                  {
+                    value: 'default',
+                    label: 'Default Org',
+                  },
+                ]}
+              />
+            </div>
+            <div>
+              <Avatar size="default" icon={<UserOutlined />} />
+            </div>
           </div>
         </Header>
         <Content>
-          <Home></Home>
+          <Routes>
+            <Route path="/">
+              <Route index element={<Home />} />
+
+              <Route path="*" element={<NotFound />} />
+            </Route>
+          </Routes>
         </Content>
       </Layout>
     </Layout>

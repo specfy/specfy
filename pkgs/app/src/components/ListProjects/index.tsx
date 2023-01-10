@@ -1,6 +1,9 @@
-import { List, Skeleton } from 'antd';
+import { Avatar, List, Skeleton } from 'antd';
+import Title from 'antd/es/typography/Title';
 import { useState } from 'react';
 import { useMount } from 'react-use';
+
+import cls from './index.module.scss';
 
 interface Project {
   id: string;
@@ -34,16 +37,18 @@ export const ListProjects: React.FC = () => {
 
   return (
     <div>
+      <Title level={5}>Projects</Title>
       <List
-        className="demo-loadmore-list"
+        className={cls.list}
         loading={initLoading}
         dataSource={list}
-        itemLayout="vertical"
+        itemLayout="horizontal"
         size="small"
         renderItem={(item) => (
-          <List.Item key={item.name}>
+          <List.Item key={item.name} className={cls.item}>
             <Skeleton title={false} loading={false} active>
               <List.Item.Meta
+                avatar={<Avatar className={cls.avatar}>U</Avatar>}
                 title={<a href={`/p/${item.id}`}>{item.name}</a>}
                 description={item.description}
               />
