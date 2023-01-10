@@ -1,6 +1,7 @@
 import { Card, Col, Row } from 'antd';
-import { ListProjects } from '../../components/ListProjects';
 import Title from 'antd/es/typography/Title';
+
+import { ListProjects } from '../../components/ListProjects';
 
 import cls from './index.module.scss';
 

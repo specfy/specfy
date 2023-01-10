@@ -1,0 +1,3 @@
+{
+  "references": [{ "path": "./pkgs/app/tsconfig.json" }]
+}

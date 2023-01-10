@@ -1,11 +1,13 @@
 import { UserOutlined } from '@ant-design/icons';
-import { Avatar, Layout, Menu, MenuProps, Select } from 'antd';
-import React from 'react';
+import { Avatar, Layout, Menu, Select } from 'antd';
+import type { MenuProps } from 'antd';
+import type React from 'react';
+import { Link, Route, Routes } from 'react-router-dom';
+
+import { NotFound } from '../../components/NotFound';
+import { Home } from '../Home';
 
 import cls from './index.module.scss';
-import { Home } from '../Home';
-import { Link, Route, Routes } from 'react-router-dom';
-import { NotFound } from '../../components/NotFound';
 
 const { Header, Content } = Layout;
 
