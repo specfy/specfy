@@ -3,6 +3,7 @@
   "data": [{
     "id": "1",
     "type": "group",
+    "slug": "env",
     "name": "env",
     "createdAt": "2023-01-01T00:00:00Z",
     "updatedAt": "2023-01-01T00:00:00Z"
@@ -11,6 +12,7 @@
     "id": "2",
     "type": "component",
     "name": "Frontend",
+    "slug": "frontend",
     "in": "1",
     "linkedTo": ["3"],
     "createdAt": "2023-01-01T00:00:00Z",
@@ -20,6 +22,7 @@
     "id": "3",
     "type": "component",
     "name": "Backend",
+    "slug": "backend",
     "in": "1",
     "linkedTo": ["2"],
     "display": {
@@ -41,7 +44,9 @@
   {
     "id": "5",
     "type": "spec",
-    "name": "Backend",
+    "typeId": "1",
+    "name": "API definition",
+    "slug": "api-definition",
     "define": "3",
     "uses": ["4", "6"],
     "tldr": "",
@@ -75,7 +80,7 @@
     "id": "b",
     "event": "update",
     "typeId": "1",
-    "data": { "name": "yoyo" }, 
+    "data": { "name": "yoyo" },
     "user": "1",
     "publishedAt": "2023-01-01T00:00:00Z"
   }, {
@@ -104,4 +109,18 @@
     "user": "1",
     "publishedAt": "2023-01-01T00:00:00Z"
   }]
+}
+
+// Project
+{
+  "id": "3hjfe8SUHer",
+  "slug": "my-first-infra",
+  "name": "My first infrastructure",
+  "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+  "user": "1",
+  "owners": ["1"],
+  "approvers": ["1"],
+  "contributors": ["2"],
+  "createdAt": "2023-01-01T00:00:00Z",
+  "updatedAt": "2023-01-01T00:00:00Z"
 }

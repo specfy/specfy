@@ -8,17 +8,20 @@ import cls from './index.module.scss';
 
 interface Project {
   id: string;
+  slug: string;
   name: string;
   description: string;
 }
 const tmpList: Project[] = [
   {
-    id: 'my-first-infra',
+    id: '3hjfe8SUHer',
+    slug: 'my-first-infra',
     name: 'My first infrastructure',
     description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
   },
   {
-    id: 'hello-world',
+    id: '45jfe8SUFkjd',
+    slug: 'hello-world',
     name: 'Hello World',
     description:
       'Donec mollis pretium nisl at dignissim. Duis dui magna, tempus a scelerisque id, semper eu metus.',
@@ -51,7 +54,7 @@ export const ListProjects: React.FC = () => {
               <List.Item.Meta
                 avatar={<Avatar className={cls.avatar}>U</Avatar>}
                 title={
-                  <Link to={`/p/${item.id}`} relative="path">
+                  <Link to={`/p/${item.id}-${item.slug}`} relative="path">
                     {item.name}
                   </Link>
                 }

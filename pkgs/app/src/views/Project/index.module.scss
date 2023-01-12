@@ -1,0 +1,14 @@
+.container {
+  padding: 32px;
+}
+
+.skeletonTitle {
+  margin: 12px 0px;
+  width: 250px;
+}
+
+.contributors {
+  display: inline-flex;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+}

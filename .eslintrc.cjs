@@ -316,6 +316,9 @@ module.exports = {
         },
       },
     ],
+
+    // TMP
+    'react/prop-types': ['off'],
   },
   settings: {
     'import/extensions': ['.js', '.jsx', '.ts', '.tsx'],

@@ -8,7 +8,7 @@
     padding: 0 8px !important;
     background: transparent !important;
     display: grid !important;
-    grid-template-columns: 150px 1fr 200px;
+    grid-template-columns: 150px 150px 1fr 200px;
 
     border-bottom: 1px solid $gray-5;
     line-height: 61px;
@@ -16,14 +16,18 @@
 }
 
 .logo {
+  padding: 0 0 0 8px;
+  img {
+    height: 35px;
+  }
 }
 
 
 .headerRight {
-  display: grid;
-  grid-template-columns: 130px 40px;
-  justify-items: center;
-  justify-content: end;
+  display: flex;
+  gap: 18px;
+  justify-content: flex-end;
+  padding-right: 8px;
 }
 
 .menu {
