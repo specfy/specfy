@@ -1,0 +1,31 @@
+@import "../../theme.scss";
+
+.container {
+  padding: 32px;
+
+  .title {
+    margin-bottom: 4px;
+  }
+}
+
+.lastUpdate {
+  color: $gray-6;
+  font-size: $font-s;
+}
+
+
+.infoHeader {
+  margin-bottom: 8px;
+}
+
+.infoBlock {
+  margin-bottom: 18px;
+}
+
+.userList {
+  list-style: none;
+  padding: 0;
+  li {
+    margin-bottom: 4px;
+  }
+}

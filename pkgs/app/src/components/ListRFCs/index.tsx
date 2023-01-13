@@ -1,9 +1,10 @@
-import { Table, Tag } from 'antd';
-import type { ColumnsType } from 'antd/es/table';
+import { Table } from 'antd';
 import Title from 'antd/es/typography/Title';
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useMount } from 'react-use';
+
+import { RFCStatusTag } from '../RFCStatusTag';
 
 const tmpList = [
   {
@@ -67,31 +68,6 @@ const tmpList = [
 
 type RFC = (typeof tmpList)[0];
 
-const columns: ColumnsType<(typeof tmpList)[0]> = [
-  {
-    title: '',
-    dataIndex: 'name',
-    render: (_, item) => {
-      return (
-        <Link to={`/p//rfc/${item.id}-${item.slug}`} relative="path">
-          RFC-{item.typeId} - {item.name}
-        </Link>
-      );
-    },
-  },
-  {
-    title: 'status',
-    dataIndex: 'status',
-    render: (_, item) => {
-      if (item.status === 'approved')
-        return <Tag color="success">approved</Tag>;
-      else if (item.status === 'draft') return <Tag color="default">draft</Tag>;
-      else if (item.status === 'rejected')
-        return <Tag color="red">rejected</Tag>;
-    },
-  },
-];
-
 export const ListRFCs: React.FC = () => {
   const [initLoading, setInitLoading] = useState(true);
   const [list, setList] = useState<typeof tmpList>([]);
@@ -127,12 +103,7 @@ export const ListRFCs: React.FC = () => {
           title="Status"
           dataIndex="status"
           render={(_, item: RFC) => {
-            if (item.status === 'approved')
-              return <Tag color="success">approved</Tag>;
-            else if (item.status === 'draft')
-              return <Tag color="default">draft</Tag>;
-            else if (item.status === 'rejected')
-              return <Tag color="red">rejected</Tag>;
+            return <RFCStatusTag status={item.status} locked={item.locked} />;
           }}
         />
       </Table>
