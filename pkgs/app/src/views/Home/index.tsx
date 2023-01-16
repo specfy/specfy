@@ -13,13 +13,13 @@ export const Home: React.FC = () => {
         <Col span={24}>
           <Title level={4}>Welcome, Samuel B.</Title>
         </Col>
-        <Col span={18}>
-          <Card size="small">
+        <Col span={16}>
+          <Card>
             <ListProjects></ListProjects>
           </Card>
         </Col>
-        <Col span={6}>
-          <Card size="small">
+        <Col span={8}>
+          <Card>
             <ListUpdates></ListUpdates>
           </Card>
         </Col>

@@ -1,5 +1,20 @@
-import { EditOutlined } from '@ant-design/icons';
-import { Avatar, Button, Card, Col, Divider, Row, Skeleton, Space } from 'antd';
+import {
+  EditOutlined,
+  GithubOutlined,
+  SlackOutlined,
+  LinkOutlined,
+} from '@ant-design/icons';
+import {
+  Avatar,
+  Breadcrumb,
+  Button,
+  Card,
+  Col,
+  Divider,
+  Row,
+  Skeleton,
+  Space,
+} from 'antd';
 import Title from 'antd/es/typography/Title';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -19,8 +34,18 @@ const tmp = {
   Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; In interdum egestas massa, sit amet auctor ipsum maximus in. Phasellus diam nulla, condimentum et ultrices sit amet, venenatis eget arcu. In hac habitasse platea dictumst. Donec a viverra mi.`,
   author: '1',
   owners: ['1'],
-  approvers: ['1'],
+  reviewers: ['1'],
   contributors: ['2', '3', '4'],
+  links: [
+    {
+      title: 'Github',
+      link: 'https://github.com/bodinsamuel/rfc-editor',
+    },
+    {
+      title: 'Slack',
+      link: 'https://github.com/bodinsamuel/rfc-editor',
+    },
+  ],
   createdAt: '2023-01-01T00:00:00Z',
   updatedAt: '2023-01-01T00:00:00Z',
 };
@@ -74,6 +99,12 @@ export const Project: React.FC = () => {
     <div className={cls.container}>
       <Row gutter={[16, 16]}>
         <Col span={18}>
+          <Breadcrumb style={{ margin: '0 0 0 4px' }}>
+            <Breadcrumb.Item>
+              <Link to="/">Home</Link>
+            </Breadcrumb.Item>
+            <Breadcrumb.Item>Project</Breadcrumb.Item>
+          </Breadcrumb>
           <Space>
             <AvatarAuto
               name={item.name}
@@ -130,26 +161,35 @@ export const Project: React.FC = () => {
             </Row>
 
             <Divider plain />
-            <Title level={5}>Contributors</Title>
-            <div className={cls.contributors}>
-              <Avatar.Group>
-                {item.owners.map((user) => {
-                  return <AvatarAuto key={user} name="samuel bodin" />;
-                })}
-              </Avatar.Group>
-              {item.approvers.length > 0 && (
+            <Title level={5}>Team</Title>
+            <div className={cls.team}>
+              <div>
+                <div className={cls.teamLabel}>Admin</div>
                 <Avatar.Group>
-                  {item.approvers.map((user) => {
-                    return <AvatarAuto key={user} name="raphael daguenet" />;
+                  {item.owners.map((user) => {
+                    return <AvatarAuto key={user} name="samuel bodin" />;
                   })}
                 </Avatar.Group>
+              </div>
+              {item.reviewers.length > 0 && (
+                <div>
+                  <div className={cls.teamLabel}>Reviewers</div>
+                  <Avatar.Group>
+                    {item.reviewers.map((user) => {
+                      return <AvatarAuto key={user} name="raphael daguenet" />;
+                    })}
+                  </Avatar.Group>
+                </div>
               )}
               {item.contributors.length > 0 && (
-                <Avatar.Group>
-                  {item.contributors.map((user) => {
-                    return <AvatarAuto key={user} name="nicolas torres" />;
-                  })}
-                </Avatar.Group>
+                <div>
+                  <div className={cls.teamLabel}>Contributors</div>
+                  <Avatar.Group>
+                    {item.contributors.map((user) => {
+                      return <AvatarAuto key={user} name="nicolas torres" />;
+                    })}
+                  </Avatar.Group>
+                </div>
               )}
             </div>
           </Card>
@@ -160,13 +200,34 @@ export const Project: React.FC = () => {
               <img src={imgUrl} alt="" />
             </div>
           </Card>
+          {item.links && (
+            <div>
+              <Divider />
+              {item.links.map((link) => {
+                let icon = <LinkOutlined />;
+                if (link.title === 'Gihub') icon = <GithubOutlined />;
+                else if (link.title === 'Slack') icon = <SlackOutlined />;
+                return (
+                  <Link
+                    key={link.link}
+                    className={cls.link}
+                    to={link.link}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {icon} {link.title}
+                  </Link>
+                );
+              })}
+            </div>
+          )}
         </Col>
-        <Col span={12}>
+        <Col span={10}>
           <Card>
             <ListRFCs></ListRFCs>
           </Card>
         </Col>
-        <Col span={6}>
+        <Col span={8}>
           <Card>
             <ListUpdates></ListUpdates>
           </Card>

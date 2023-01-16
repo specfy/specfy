@@ -17,8 +17,8 @@ const { Header, Content } = Layout;
 
 const menuItems: MenuProps['items'] = [
   {
-    key: 'home',
-    label: <Link to="/">Home</Link>,
+    key: 'settings',
+    label: <Link to="/settings">Settings</Link>,
   },
 ];
 

@@ -5,5 +5,5 @@ export function stringToColor(str: string): string {
     hash = str.charCodeAt(i) + ((hash << 5) - hash);
     hash = hash & hash;
   }
-  return `hsl(${hash % 360}, 85%, 70%)`;
+  return `hsl(${hash % 250}, 85%, 80%)`;
 }

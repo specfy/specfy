@@ -1,4 +1,8 @@
-import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
+import {
+  PlusOutlined,
+  MinusOutlined,
+  CheckCircleOutlined,
+} from '@ant-design/icons';
 import {
   Row,
   Col,
@@ -19,52 +23,170 @@ import { RFCStatusTag } from '../../components/RFCStatusTag';
 
 import cls from './index.module.scss';
 
-interface Block {
-  type: 'content' | 'title';
+interface BlockListItem {
+  type: 'item';
+  content: BlockContent[];
+}
+
+interface BlockBulletList {
+  type: 'bulletList';
+  content: BlockListItem[];
+}
+
+interface BlockText {
+  type: 'text';
+  content: string;
+  style?: { bold?: boolean; italic?: boolean };
+}
+
+interface BlockContent {
+  type: 'content';
+  content: BlockText[];
+}
+
+interface BlockTitle {
+  type: 'title';
   content: string;
 }
 
-const tmp = {
+type BlockLevelOne = BlockBulletList | BlockContent | BlockTitle;
+type Blocks =
+  | BlockBulletList
+  | BlockContent
+  | BlockListItem
+  | BlockText
+  | BlockTitle;
+
+interface RFCInterface {
+  id: string;
+  type: 'rfc';
+  typeId: string;
+  name: string;
+  slug: string;
+  create: string;
+  update: string[];
+  use: string[];
+  remove: string[];
+  tldr: string;
+  blocks: BlockLevelOne[];
+  authors: string[];
+  reviewers: string[];
+  approvedBy: string[];
+  status: 'approved' | 'draft' | 'rejected';
+  locked: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+const tmp: RFCInterface = {
   id: '5',
-  type: 'spec',
+  type: 'rfc',
   typeId: '1',
   name: 'API definition',
   slug: 'api-definition',
   create: '3',
   update: ['2'],
-  uses: ['4', '6'],
-  removes: ['1'],
+  use: ['4', '6'],
+  remove: ['1'],
   tldr: 'Donec eget porttitor nisi. Proin ac augue bibendum, posuere dui vel, volutpat ligula.',
-  motivation: '',
   blocks: [
     { type: 'title', content: 'Overview' },
     {
       type: 'content',
-      content:
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquam eget nibh eu sodales. Donec bibendum eros at tincidunt aliquam. Praesent non ipsum in enim elementum posuere. Aenean pellentesque et velit quis pretium. Duis et ligula imperdiet, fermentum nulla et, viverra magna. Donec eget porttitor nisi. Proin ac augue bibendum, posuere dui vel, volutpat ligula. Nunc eget blandit metus. Etiam interdum laoreet libero eu pharetra. Phasellus lobortis mauris posuere velit finibus, a ultrices neque faucibus. Maecenas laoreet varius quam.',
+      content: [
+        {
+          type: 'text',
+          content:
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquam eget nibh eu sodales. Donec bibendum eros at tincidunt aliquam. Praesent non ipsum in enim elementum posuere. Aenean pellentesque et velit quis pretium. Duis et ligula imperdiet, fermentum nulla et, viverra magna. Donec eget porttitor nisi. Proin ac augue bibendum, posuere dui vel, volutpat ligula. Nunc eget blandit metus. Etiam interdum laoreet libero eu pharetra. Phasellus lobortis mauris posuere velit finibus, a ultrices neque faucibus. Maecenas laoreet varius quam.',
+        },
+      ],
     },
     { type: 'title', content: 'Goals and Non-Goals' },
     {
       type: 'content',
-      content:
-        'Donec scelerisque ante vel felis gravida bibendum. Vestibulum quam purus, porta ac ornare sit amet, imperdiet at augue. Duis ac libero nec magna malesuada rhoncus at sit amet purus. Donec sed vulputate est. Donec accumsan ullamcorper auctor. Ut orci lectus, ornare id interdum sit amet, hendrerit et elit. Proin venenatis semper ipsum eget cursus. Aliquam nunc ante, sodales eget egestas id, elementum et dui.',
+      content: [
+        {
+          type: 'text',
+          content:
+            'Donec scelerisque ante vel felis gravida bibendum. Vestibulum quam purus, porta ac ornare sit amet, imperdiet at augue. Duis ac libero nec magna malesuada rhoncus at sit amet purus. Donec sed vulputate est. Donec accumsan ullamcorper auctor. Ut orci lectus, ornare id interdum sit amet, hendrerit et elit. Proin venenatis semper ipsum eget cursus. Aliquam nunc ante, sodales eget egestas id, elementum et dui.',
+        },
+      ],
+    },
+    {
+      type: 'bulletList',
+      content: [
+        {
+          type: 'item',
+          content: [
+            {
+              type: 'content',
+              content: [
+                {
+                  type: 'text',
+                  content: 'lorem ipsum',
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: 'item',
+          content: [
+            {
+              type: 'content',
+              content: [
+                {
+                  type: 'text',
+                  content: 'dolor',
+                  style: { bold: true },
+                },
+                {
+                  type: 'text',
+                  content: ' sit ',
+                  style: { bold: true, italic: true },
+                },
+                {
+                  type: 'text',
+                  content: 'amet',
+                  style: { italic: true },
+                },
+              ],
+            },
+          ],
+        },
+      ],
     },
     { type: 'title', content: 'Background & Motivation' },
     {
       type: 'content',
-      content:
-        'Pellentesque suscipit venenatis tellus vitae posuere. Donec at tellus ut ligula efficitur fermentum. Nam pharetra arcu et mattis porta. Aliquam vehicula quam non nisl tincidunt dignissim. Nunc egestas mi in ligula dignissim tristique. Vestibulum quis lacinia arcu. Fusce vehicula enim vitae erat feugiat, at laoreet tortor blandit.',
+      content: [
+        {
+          type: 'text',
+          content:
+            'Pellentesque suscipit venenatis tellus vitae posuere. Donec at tellus ut ligula efficitur fermentum. Nam pharetra arcu et mattis porta. Aliquam vehicula quam non nisl tincidunt dignissim. Nunc egestas mi in ligula dignissim tristique. Vestibulum quis lacinia arcu. Fusce vehicula enim vitae erat feugiat, at laoreet tortor blandit.',
+        },
+      ],
     },
     { type: 'title', content: 'Implementations' },
     {
       type: 'content',
-      content:
-        'Phasellus orci ante, lobortis vel ullamcorper at, placerat eget leo. Pellentesque in nisi aliquam, rutrum nunc quis, bibendum velit. Etiam efficitur lacinia cursus. Duis neque nunc, consequat sit amet dignissim vel, semper a eros. Duis vel augue ut mauris molestie sodales nec id diam. Aenean blandit ornare nisl vitae venenatis. Ut accumsan ultricies lacinia. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Suspendisse potenti. Vestibulum ipsum dolor, rhoncus vel arcu non, sollicitudin eleifend quam. Fusce et nisi mi. Maecenas nisi quam, interdum at eros vitae, aliquam rutrum nunc. Praesent et pharetra dolor. Nam hendrerit nulla ex, vel lacinia ligula interdum a.',
+      content: [
+        {
+          type: 'text',
+          content:
+            'Phasellus orci ante, lobortis vel ullamcorper at, placerat eget leo. Pellentesque in nisi aliquam, rutrum nunc quis, bibendum velit. Etiam efficitur lacinia cursus. Duis neque nunc, consequat sit amet dignissim vel, semper a eros. Duis vel augue ut mauris molestie sodales nec id diam. Aenean blandit ornare nisl vitae venenatis. Ut accumsan ultricies lacinia. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Suspendisse potenti. Vestibulum ipsum dolor, rhoncus vel arcu non, sollicitudin eleifend quam. Fusce et nisi mi. Maecenas nisi quam, interdum at eros vitae, aliquam rutrum nunc. Praesent et pharetra dolor. Nam hendrerit nulla ex, vel lacinia ligula interdum a.',
+        },
+      ],
     },
     {
       type: 'content',
-      content:
-        'Praesent sodales lorem id diam pellentesque, quis tincidunt risus porttitor. Vivamus dapibus aliquet ipsum. Nullam non leo neque. Aliquam in enim id nulla elementum pretium. Nullam scelerisque quam ut mattis egestas. Ut semper eros ipsum, eget rutrum nisi consequat vitae. Morbi sit amet porttitor justo, quis sagittis nulla. Donec et ullamcorper dolor. Maecenas pharetra imperdiet nulla nec commodo. Nunc id tellus felis. Suspendisse dui massa, volutpat ac tincidunt eu, cursus eget metus. Proin vel viverra mi. Maecenas a finibus felis, et dapibus orci. Sed molestie sed ex vitae sodales. Vestibulum ut leo posuere nulla commodo iaculis.',
+      content: [
+        {
+          type: 'text',
+          content:
+            'Praesent sodales lorem id diam pellentesque, quis tincidunt risus porttitor. Vivamus dapibus aliquet ipsum. Nullam non leo neque. Aliquam in enim id nulla elementum pretium. Nullam scelerisque quam ut mattis egestas. Ut semper eros ipsum, eget rutrum nisi consequat vitae. Morbi sit amet porttitor justo, quis sagittis nulla. Donec et ullamcorper dolor. Maecenas pharetra imperdiet nulla nec commodo. Nunc id tellus felis. Suspendisse dui massa, volutpat ac tincidunt eu, cursus eget metus. Proin vel viverra mi. Maecenas a finibus felis, et dapibus orci. Sed molestie sed ex vitae sodales. Vestibulum ut leo posuere nulla commodo iaculis.',
+        },
+      ],
     },
   ],
   authors: ['1'],
@@ -76,9 +198,48 @@ const tmp = {
   updatedAt: '2023-01-01T00:00:00Z',
 };
 
+export const Content: React.FC<{ block: Blocks }> = ({ block }) => {
+  if (block.type === 'title') {
+    return <h4>{block.content}</h4>;
+  } else if (block.type === 'content') {
+    return (
+      <div>
+        {block.content.map((blk, i) => {
+          return <Content block={blk} key={i} />;
+        })}
+      </div>
+    );
+  } else if (block.type === 'bulletList') {
+    return (
+      <ul>
+        {block.content.map((blk, i) => {
+          return <Content block={blk} key={i} />;
+        })}
+      </ul>
+    );
+  } else if (block.type === 'item') {
+    return (
+      <li>
+        {block.content.map((blk, i) => {
+          return <Content block={blk} key={i} />;
+        })}
+      </li>
+    );
+  } else if (block.type === 'text') {
+    let text = <>{block.content}</>;
+    if (block.style) {
+      if (block.style.bold) text = <strong>{text}</strong>;
+      if (block.style.italic) text = <i>{text}</i>;
+    }
+    return text;
+  }
+
+  return <></>;
+};
+
 export const RFC: React.FC = () => {
   const [loading, setLoading] = useState(true);
-  const [item, setItem] = useState<typeof tmp>();
+  const [item, setItem] = useState<RFCInterface>();
 
   useMount(() => {
     setTimeout(() => {
@@ -107,7 +268,10 @@ export const RFC: React.FC = () => {
 
   return (
     <div className={cls.container}>
-      <Breadcrumb>
+      <Breadcrumb style={{ margin: '0 0 0 4px' }}>
+        <Breadcrumb.Item>
+          <Link to="/">Home</Link>
+        </Breadcrumb.Item>
         <Breadcrumb.Item>
           <Link to="/p/3hjfe8SUHer-crawler/">Crawler</Link>
         </Breadcrumb.Item>
@@ -152,9 +316,8 @@ export const RFC: React.FC = () => {
 
               <Divider />
 
-              {item.blocks.map((blk) => {
-                if (blk.type === 'title') return <h4>{blk.content}</h4>;
-                else if (blk.type === 'content') return <p>{blk.content}</p>;
+              {item.blocks.map((blk, i) => {
+                return <Content block={blk} key={i} />;
               })}
             </Typography>
           </Card>
@@ -183,7 +346,7 @@ export const RFC: React.FC = () => {
                   <li key={id}>
                     <Space>
                       <AvatarAuto name="Nicola Torres" />
-                      Nicolas Torres
+                      Nicolas Torres <CheckCircleOutlined />
                     </Space>
                   </li>
                 );

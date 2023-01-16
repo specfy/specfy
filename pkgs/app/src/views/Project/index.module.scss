@@ -26,11 +26,6 @@
   width: 250px;
 }
 
-.contributors {
-  display: inline-flex;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 24px;
-}
 
 .infraPng {
   width: 100%;
@@ -41,5 +36,23 @@
 }
 
 .technical {
+}
+
+
+.team {
+  display: inline-flex;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 24px;
+  > div {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+  }
+}
+
+.link {
+  color: $gray-7;
   display: block;
+  font-size: $font-m;
+  line-height: $line-height-m;
 }
