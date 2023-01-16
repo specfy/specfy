@@ -13,49 +13,19 @@ import {
   Breadcrumb,
   Divider,
 } from 'antd';
+import type { DataNode } from 'antd/es/tree';
 import Title from 'antd/es/typography/Title';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useMount } from 'react-use';
 
+import { generateTreeFromHeadings } from '../../common/generateTreeFromHeadings';
 import { AvatarAuto } from '../../components/AvatarAuto';
+import { HeadingTree } from '../../components/HeadingTree';
 import { RFCStatusTag } from '../../components/RFCStatusTag';
+import type { BlockLevelOne, Blocks } from '../../types/content';
 
 import cls from './index.module.scss';
-
-interface BlockListItem {
-  type: 'item';
-  content: BlockContent[];
-}
-
-interface BlockBulletList {
-  type: 'bulletList';
-  content: BlockListItem[];
-}
-
-interface BlockText {
-  type: 'text';
-  content: string;
-  style?: { bold?: boolean; italic?: boolean };
-}
-
-interface BlockContent {
-  type: 'content';
-  content: BlockText[];
-}
-
-interface BlockTitle {
-  type: 'title';
-  content: string;
-}
-
-type BlockLevelOne = BlockBulletList | BlockContent | BlockTitle;
-type Blocks =
-  | BlockBulletList
-  | BlockContent
-  | BlockListItem
-  | BlockText
-  | BlockTitle;
 
 interface RFCInterface {
   id: string;
@@ -90,7 +60,7 @@ const tmp: RFCInterface = {
   remove: ['1'],
   tldr: 'Donec eget porttitor nisi. Proin ac augue bibendum, posuere dui vel, volutpat ligula.',
   blocks: [
-    { type: 'title', content: 'Overview' },
+    { type: 'heading', content: 'Overview', level: 1 },
     {
       type: 'content',
       content: [
@@ -99,16 +69,27 @@ const tmp: RFCInterface = {
           content:
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquam eget nibh eu sodales. Donec bibendum eros at tincidunt aliquam. Praesent non ipsum in enim elementum posuere. Aenean pellentesque et velit quis pretium. Duis et ligula imperdiet, fermentum nulla et, viverra magna. Donec eget porttitor nisi. Proin ac augue bibendum, posuere dui vel, volutpat ligula. Nunc eget blandit metus. Etiam interdum laoreet libero eu pharetra. Phasellus lobortis mauris posuere velit finibus, a ultrices neque faucibus. Maecenas laoreet varius quam.',
         },
+        {
+          type: 'text',
+          content: 'A link to a documentation',
+          link: 'https://google.com',
+        },
       ],
     },
-    { type: 'title', content: 'Goals and Non-Goals' },
+    { type: 'heading', content: 'Goals and Non-Goals', level: 1 },
     {
       type: 'content',
       content: [
         {
           type: 'text',
           content:
-            'Donec scelerisque ante vel felis gravida bibendum. Vestibulum quam purus, porta ac ornare sit amet, imperdiet at augue. Duis ac libero nec magna malesuada rhoncus at sit amet purus. Donec sed vulputate est. Donec accumsan ullamcorper auctor. Ut orci lectus, ornare id interdum sit amet, hendrerit et elit. Proin venenatis semper ipsum eget cursus. Aliquam nunc ante, sodales eget egestas id, elementum et dui.',
+            'Donec scelerisque ante vel felis gravida bibendum. Vestibulum quam purus, porta ac ornare sit amet, imperdiet at augue. Duis ac libero nec magna malesuada rhoncus at sit amet purus. Donec sed vulputate est. Donec accumsan ullamcorper auctor. Ut orci lectus, ornare id interdum sit amet, hendrerit et elit. Proin venenatis semper ipsum eget cursus. ',
+        },
+        {
+          type: 'text',
+          content:
+            'Aliquam nunc ante, sodales eget egestas id, elementum et dui.',
+          style: { code: true },
         },
       ],
     },
@@ -142,7 +123,7 @@ const tmp: RFCInterface = {
                 },
                 {
                   type: 'text',
-                  content: ' sit ',
+                  content: 'sit',
                   style: { bold: true, italic: true },
                 },
                 {
@@ -156,7 +137,7 @@ const tmp: RFCInterface = {
         },
       ],
     },
-    { type: 'title', content: 'Background & Motivation' },
+    { type: 'heading', content: 'Background & Motivation', level: 1 },
     {
       type: 'content',
       content: [
@@ -167,7 +148,7 @@ const tmp: RFCInterface = {
         },
       ],
     },
-    { type: 'title', content: 'Implementations' },
+    { type: 'heading', content: 'Implementations', level: 1 },
     {
       type: 'content',
       content: [
@@ -178,6 +159,8 @@ const tmp: RFCInterface = {
         },
       ],
     },
+    { type: 'heading', content: 'Solutions', level: 2 },
+    { type: 'heading', content: '#1 Naive one', level: 3 },
     {
       type: 'content',
       content: [
@@ -188,6 +171,19 @@ const tmp: RFCInterface = {
         },
       ],
     },
+    { type: 'heading', content: 'FAQ', level: 1 },
+    { type: 'heading', content: 'What is this awesome website?', level: 2 },
+    {
+      type: 'content',
+      content: [
+        {
+          type: 'text',
+          content:
+            ' Morbi sit amet porttitor justo, quis sagittis nulla. Donec et ullamcorper dolor. Maecenas pharetra imperdiet nulla nec commodo. ',
+        },
+      ],
+    },
+    { type: 'heading', content: 'Thanks', level: 4 },
   ],
   authors: ['1'],
   reviewers: ['2'],
@@ -199,15 +195,20 @@ const tmp: RFCInterface = {
 };
 
 export const Content: React.FC<{ block: Blocks }> = ({ block }) => {
-  if (block.type === 'title') {
-    return <h4>{block.content}</h4>;
+  if (block.type === 'heading') {
+    if (block.level === 1) return <h1>{block.content}</h1>;
+    else if (block.level === 2) return <h2>{block.content}</h2>;
+    else if (block.level === 3) return <h3>{block.content}</h3>;
+    else if (block.level === 4) return <h4>{block.content}</h4>;
+    else if (block.level === 5) return <h5>{block.content}</h5>;
+    else return <h6>{block.content}</h6>;
   } else if (block.type === 'content') {
     return (
-      <div>
+      <p>
         {block.content.map((blk, i) => {
           return <Content block={blk} key={i} />;
         })}
-      </div>
+      </p>
     );
   } else if (block.type === 'bulletList') {
     return (
@@ -226,11 +227,13 @@ export const Content: React.FC<{ block: Blocks }> = ({ block }) => {
       </li>
     );
   } else if (block.type === 'text') {
-    let text = <>{block.content}</>;
+    let text = <>{block.content} </>;
     if (block.style) {
       if (block.style.bold) text = <strong>{text}</strong>;
-      if (block.style.italic) text = <i>{text}</i>;
+      if (block.style.italic) text = <em>{text}</em>;
+      if (block.style.code) text = <code>{text}</code>;
     }
+    if (block.link) text = <Link to={block.link}>{text}</Link>;
     return text;
   }
 
@@ -353,6 +356,7 @@ export const RFC: React.FC = () => {
               })}
             </ul>
           </div>
+          <HeadingTree blocks={item.blocks}></HeadingTree>
         </Col>
       </Row>
     </div>

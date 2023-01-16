@@ -1,4 +1,4 @@
-@import "../../theme.scss";
+@import '../../theme.scss';
 
 .container {
   padding: 32px;
@@ -13,7 +13,6 @@
   font-size: $font-s;
 }
 
-
 .infoHeader {
   margin-bottom: 8px;
 }
@@ -27,8 +26,23 @@
     list-style: none;
     padding: 0;
     li {
-      margin:0;
+      margin: 0;
     }
+  }
+
+  h1 {
+    font-size: $font-xxl;
+  }
+  h2 {
+    font-size: $font-l;
+  }
+  h3 {
+    font-size: $font-m;
+    color: $gray-9;
+  }
+  h4 {
+    font-size: $font-m;
+    color: $gray-8;
   }
 }
 
