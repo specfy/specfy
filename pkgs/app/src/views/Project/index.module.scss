@@ -1,5 +1,24 @@
+@import "../../theme.scss";
+
 .container {
   padding: 32px;
+
+  .title {
+    margin-bottom: 0;
+    line-height: 32px;
+  }
+}
+
+.mainAvatar {
+  width: 50px;
+  height: 50px;
+  line-height: 48px;
+  font-size: $font-m;
+}
+
+.lastUpdate {
+  color: $gray-6;
+  font-size: $font-s;
 }
 
 .skeletonTitle {
@@ -11,4 +30,16 @@
   display: inline-flex;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 24px;
+}
+
+.infraPng {
+  width: 100%;
+
+  img {
+    width: 100%;
+  }
+}
+
+.technical {
+  display: block;
 }

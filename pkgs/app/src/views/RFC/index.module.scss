@@ -22,6 +22,16 @@
   margin-bottom: 18px;
 }
 
+.content {
+  .tldrList {
+    list-style: none;
+    padding: 0;
+    li {
+      margin:0;
+    }
+  }
+}
+
 .userList {
   list-style: none;
   padding: 0;

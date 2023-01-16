@@ -6,12 +6,21 @@
 
   .header {
     padding: 0 8px !important;
-    background: transparent !important;
+    background: white !important;
     display: grid !important;
-    grid-template-columns: 150px 150px 1fr 200px;
+    grid-template-columns: 160px 50px 1fr 200px;
 
-    border-bottom: 1px solid $gray-5;
-    line-height: 61px;
+    border-bottom: 1px solid $gray-4;
+    line-height: 63px;
+  }
+
+  .orgSelect {
+    background-color: $gray-3 !important;
+    color: $gray-6;
+  }
+  .avatar {
+    background-color: $gray-3 !important;
+    color: $gray-6;
   }
 }
 

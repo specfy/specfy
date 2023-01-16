@@ -1,11 +1,12 @@
-import { UserOutlined, BellOutlined } from '@ant-design/icons';
-import { Avatar, Badge, Layout, Menu, Select } from 'antd';
+import { UserOutlined, BellOutlined, DownOutlined } from '@ant-design/icons';
+import { Avatar, Badge, Button, Layout, Menu } from 'antd';
 import type { MenuProps } from 'antd';
 import type React from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 
 import { NotFound } from '../../components/NotFound';
 import Logo from '../../static/logo.svg';
+import Logo1 from '../../static/specfy1.svg';
 import { Home } from '../Home';
 import { Project } from '../Project';
 import { RFC } from '../RFC';
@@ -28,19 +29,14 @@ const App: React.FC = () => {
         <Header className={cls.header}>
           <div className={cls.logo}>
             <img src={Logo} />
+            <img src={Logo1} />
           </div>
 
           <div>
-            <Select
-              defaultValue="Default Org"
-              style={{ width: 120 }}
-              size="middle"
-              options={[
-                {
-                  value: 'default',
-                  label: 'Default Org',
-                },
-              ]}
+            <Button
+              type="primary"
+              icon={<DownOutlined />}
+              className={cls.orgSelect}
             />
           </div>
 
@@ -56,11 +52,19 @@ const App: React.FC = () => {
           <div className={cls.headerRight}>
             <div>
               <Badge count={1}>
-                <Avatar shape="square" icon={<BellOutlined />} />
+                <Avatar
+                  shape="square"
+                  icon={<BellOutlined />}
+                  className={cls.avatar}
+                />
               </Badge>
             </div>
             <div>
-              <Avatar shape="square" icon={<UserOutlined />} />
+              <Avatar
+                shape="square"
+                icon={<UserOutlined />}
+                className={cls.avatar}
+              />
             </div>
           </div>
         </Header>
