@@ -28,10 +28,10 @@ const App: React.FC = () => {
     <Layout className={cls.app}>
       <Layout>
         <Header className={cls.header}>
-          <div className={cls.logo}>
+          <Link className={cls.logo} to="/">
             <img src={Logo} />
             <img src={Logo1} />
-          </div>
+          </Link>
 
           <div>
             <Button
