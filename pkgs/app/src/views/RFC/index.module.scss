@@ -2,6 +2,12 @@
 
 .container {
   padding: 32px;
+  max-width: calc(760px + 500px);
+  transition: margin-left 0.3s ease-in-out;
+
+  &.withMenu {
+    margin-left: 200px;
+  }
 
   .title {
     margin-bottom: 4px;
@@ -19,6 +25,13 @@
 
 .infoBlock {
   margin-bottom: 18px;
+}
+
+.headings {
+  position: absolute;
+  left: -200px;
+  top: 20px;
+  z-index: 1;
 }
 
 .content {

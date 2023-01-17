@@ -2,6 +2,7 @@ import {
   PlusOutlined,
   MinusOutlined,
   CheckCircleOutlined,
+  MenuUnfoldOutlined,
 } from '@ant-design/icons';
 import {
   Row,
@@ -12,14 +13,15 @@ import {
   Space,
   Breadcrumb,
   Divider,
+  Button,
 } from 'antd';
-import type { DataNode } from 'antd/es/tree';
 import Title from 'antd/es/typography/Title';
+import clsn from 'classnames';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useMount } from 'react-use';
 
-import { generateTreeFromHeadings } from '../../common/generateTreeFromHeadings';
+import { getHeadingID } from '../../common/headings';
 import { AvatarAuto } from '../../components/AvatarAuto';
 import { HeadingTree } from '../../components/HeadingTree';
 import { RFCStatusTag } from '../../components/RFCStatusTag';
@@ -196,12 +198,13 @@ const tmp: RFCInterface = {
 
 export const Content: React.FC<{ block: Blocks }> = ({ block }) => {
   if (block.type === 'heading') {
-    if (block.level === 1) return <h1>{block.content}</h1>;
-    else if (block.level === 2) return <h2>{block.content}</h2>;
-    else if (block.level === 3) return <h3>{block.content}</h3>;
-    else if (block.level === 4) return <h4>{block.content}</h4>;
-    else if (block.level === 5) return <h5>{block.content}</h5>;
-    else return <h6>{block.content}</h6>;
+    const id = `h-${getHeadingID(block.content)}`;
+    if (block.level === 1) return <h1 id={id}>{block.content}</h1>;
+    else if (block.level === 2) return <h2 id={id}>{block.content}</h2>;
+    else if (block.level === 3) return <h3 id={id}>{block.content}</h3>;
+    else if (block.level === 4) return <h4 id={id}>{block.content}</h4>;
+    else if (block.level === 5) return <h5 id={id}>{block.content}</h5>;
+    else return <h6 id={id}>{block.content}</h6>;
   } else if (block.type === 'content') {
     return (
       <p>
@@ -242,6 +245,7 @@ export const Content: React.FC<{ block: Blocks }> = ({ block }) => {
 
 export const RFC: React.FC = () => {
   const [loading, setLoading] = useState(true);
+  const [menu, setMenu] = useState(false);
   const [item, setItem] = useState<RFCInterface>();
 
   useMount(() => {
@@ -250,6 +254,10 @@ export const RFC: React.FC = () => {
       setItem(tmp);
     }, 1000);
   });
+
+  function onClickMenu() {
+    setMenu(menu ? false : true);
+  }
 
   if (loading || !item) {
     return (
@@ -270,13 +278,19 @@ export const RFC: React.FC = () => {
   }
 
   return (
-    <div className={cls.container}>
+    <div className={clsn(cls.container, menu ? cls.withMenu : null)}>
       <Breadcrumb style={{ margin: '0 0 0 4px' }}>
         <Breadcrumb.Item>
           <Link to="/">Home</Link>
         </Breadcrumb.Item>
         <Breadcrumb.Item>
           <Link to="/p/3hjfe8SUHer-crawler/">Crawler</Link>
+          <Button
+            size="small"
+            icon={<MenuUnfoldOutlined />}
+            type="ghost"
+            onClick={onClickMenu}
+          ></Button>
         </Breadcrumb.Item>
       </Breadcrumb>
       <Row gutter={[16, 16]}>
@@ -292,7 +306,6 @@ export const RFC: React.FC = () => {
             <div className={cls.lastUpdate}>Last update 5 hours ago</div>
           </Space>
         </Col>
-        <Col span={6}></Col>
         <Col span={18}>
           <Card>
             <Typography className={cls.content}>
@@ -323,6 +336,11 @@ export const RFC: React.FC = () => {
                 return <Content block={blk} key={i} />;
               })}
             </Typography>
+            {menu && (
+              <div className={cls.headings}>
+                <HeadingTree blocks={item.blocks}></HeadingTree>
+              </div>
+            )}
           </Card>
         </Col>
         <Col span={6}>
@@ -356,7 +374,6 @@ export const RFC: React.FC = () => {
               })}
             </ul>
           </div>
-          <HeadingTree blocks={item.blocks}></HeadingTree>
         </Col>
       </Row>
     </div>

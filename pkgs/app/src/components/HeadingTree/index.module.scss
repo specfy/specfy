@@ -1,5 +1,14 @@
 @import '../../theme.scss';
 
+.tree {
+  width: 200px;
+  :global {
+    .ant-anchor {
+      padding-top: 20px;
+    }
+  }
+}
+
 .lvl-1 {
   font-size: $font;
 }
