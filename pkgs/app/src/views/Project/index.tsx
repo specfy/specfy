@@ -21,6 +21,7 @@ import { useMount } from 'react-use';
 
 import { AvatarAuto } from '../../components/AvatarAuto';
 import { BigHeading } from '../../components/BigHeading';
+import { Container } from '../../components/Container';
 import { ListRFCs } from '../../components/ListRFCs';
 import { ListUpdates } from '../../components/ListUpdates';
 import imgUrl from '../../static/infra.png';
@@ -64,7 +65,7 @@ export const Project: React.FC = () => {
 
   if (loading || !item) {
     return (
-      <div className={cls.container}>
+      <Container>
         <Row gutter={[16, 16]}>
           <Col span={18}>
             <Skeleton active paragraph={false} className={cls.skeletonTitle} />
@@ -92,12 +93,12 @@ export const Project: React.FC = () => {
             </Card>
           </Col>
         </Row>
-      </div>
+      </Container>
     );
   }
 
   return (
-    <div className={cls.container}>
+    <Container>
       <Row gutter={[16, 16]}>
         <Col span={18}>
           <Breadcrumb style={{ margin: '0 0 0 4px' }}>
@@ -118,7 +119,7 @@ export const Project: React.FC = () => {
             <div dangerouslySetInnerHTML={{ __html: item.description }}></div>
             <Divider plain />
             <Title level={5}>Technical Aspect</Title>
-            <Row className={cls.technical}>
+            <Row>
               <Col span={3}>Stack</Col>
               <Col>
                 <Link to="/t/nodejs">GCP</Link>,{' '}
@@ -129,7 +130,7 @@ export const Project: React.FC = () => {
                 <Link to="/t/nodejs">Redis</Link>
               </Col>
             </Row>
-            <Row className={cls.technical}>
+            <Row>
               <Col span={3}>Components</Col>
               <Col>
                 <Link to={`/p/${projectId}/c/`}>Public API</Link>,{' '}
@@ -142,7 +143,7 @@ export const Project: React.FC = () => {
                 <Link to={`/p/${projectId}/c/`}>Indexer</Link>
               </Col>
             </Row>
-            <Row className={cls.technical}>
+            <Row>
               <Col span={3}>Link to Project</Col>
               <Col>
                 <Link to="/p/">Dashboard</Link>,{' '}
@@ -223,6 +224,6 @@ export const Project: React.FC = () => {
           </Card>
         </Col>
       </Row>
-    </div>
+    </Container>
   );
 };

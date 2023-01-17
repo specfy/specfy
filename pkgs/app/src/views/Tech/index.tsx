@@ -5,8 +5,7 @@ import { Link } from 'react-router-dom';
 import { useMount } from 'react-use';
 
 import { BigHeading } from '../../components/BigHeading';
-
-import cls from './index.module.scss';
+import { Container } from '../../components/Container';
 
 const tmp = {
   id: 'nodejs',
@@ -31,10 +30,10 @@ export const Tech: React.FC = () => {
 
   if (loading || !item) {
     return (
-      <div className={cls.container}>
+      <Container>
         <Row gutter={[16, 16]}>
           <Col span={18}>
-            <Skeleton active paragraph={false} className={cls.skeletonTitle} />
+            <Skeleton active paragraph={false} />
           </Col>
           <Col span={18}>
             <Card>
@@ -42,12 +41,12 @@ export const Tech: React.FC = () => {
             </Card>
           </Col>
         </Row>
-      </div>
+      </Container>
     );
   }
 
   return (
-    <div className={cls.container}>
+    <Container>
       <Row gutter={[16, 16]}>
         <Col span={18}>
           <Breadcrumb>
@@ -65,7 +64,7 @@ export const Tech: React.FC = () => {
         <Col span={18}>
           <Card>
             <Title level={5}>Used in</Title>
-            <Row className={cls.technical}>
+            <Row>
               <Col span={3}>Projects</Col>
               <Col>
                 <Link to="/p/">Dashboard</Link>,{' '}
@@ -73,7 +72,7 @@ export const Tech: React.FC = () => {
               </Col>
             </Row>
 
-            <Row className={cls.technical}>
+            <Row>
               <Col span={3}>Components</Col>
               <Col>
                 <Link to={`/p/${projectId}/c/`}>Public API</Link>,{' '}
@@ -89,6 +88,6 @@ export const Tech: React.FC = () => {
           </Card>
         </Col>
       </Row>
-    </div>
+    </Container>
   );
 };

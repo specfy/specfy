@@ -23,6 +23,7 @@ import { useMount } from 'react-use';
 
 import { getHeadingID } from '../../common/headings';
 import { AvatarAuto } from '../../components/AvatarAuto';
+import { Container } from '../../components/Container';
 import { HeadingTree } from '../../components/HeadingTree';
 import { RFCStatusTag } from '../../components/RFCStatusTag';
 import type { BlockLevelOne, Blocks } from '../../types/content';
@@ -261,7 +262,7 @@ export const RFC: React.FC = () => {
 
   if (loading || !item) {
     return (
-      <div className={cls.container}>
+      <Container className={cls.container}>
         <Row gutter={[16, 16]}>
           <Col span={18}>
             <Skeleton active paragraph={false} className={cls.skeletonTitle} />
@@ -273,12 +274,12 @@ export const RFC: React.FC = () => {
             </Card>
           </Col>
         </Row>
-      </div>
+      </Container>
     );
   }
 
   return (
-    <div className={clsn(cls.container, menu ? cls.withMenu : null)}>
+    <Container className={clsn(cls.container, menu ? cls.withMenu : null)}>
       <Breadcrumb style={{ margin: '0 0 0 4px' }}>
         <Breadcrumb.Item>
           <Link to="/">Home</Link>
@@ -376,6 +377,6 @@ export const RFC: React.FC = () => {
           </div>
         </Col>
       </Row>
-    </div>
+    </Container>
   );
 };
