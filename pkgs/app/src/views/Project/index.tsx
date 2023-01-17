@@ -13,14 +13,14 @@ import {
   Divider,
   Row,
   Skeleton,
-  Space,
 } from 'antd';
 import Title from 'antd/es/typography/Title';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useMount } from 'react-use';
 
 import { AvatarAuto } from '../../components/AvatarAuto';
+import { BigHeading } from '../../components/BigHeading';
 import { ListRFCs } from '../../components/ListRFCs';
 import { ListUpdates } from '../../components/ListUpdates';
 import imgUrl from '../../static/infra.png';
@@ -53,6 +53,7 @@ const tmp = {
 export const Project: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [item, setItem] = useState<typeof tmp>();
+  const { projectId } = useParams();
 
   useMount(() => {
     setTimeout(() => {
@@ -105,21 +106,7 @@ export const Project: React.FC = () => {
             </Breadcrumb.Item>
             <Breadcrumb.Item>Project</Breadcrumb.Item>
           </Breadcrumb>
-          <Space>
-            <AvatarAuto
-              name={item.name}
-              size="large"
-              className={cls.mainAvatar}
-            />
-            <div>
-              <Title level={2} className={cls.title}>
-                {item.name}
-              </Title>
-              <Space>
-                <div className={cls.lastUpdate}>Last update 5 hours ago</div>
-              </Space>
-            </div>
-          </Space>
+          <BigHeading title={item.name}>Last update 5 hours ago</BigHeading>
         </Col>
         <Col span={6}>
           <Button type="primary" icon={<EditOutlined></EditOutlined>}>
@@ -134,22 +121,25 @@ export const Project: React.FC = () => {
             <Row className={cls.technical}>
               <Col span={3}>Stack</Col>
               <Col>
-                <Link to="/t/">GCP</Link>, <Link to="/t/">NodeJS</Link>,{' '}
-                <Link to="/t/">Postgres</Link>, <Link to="/t/">RabbitMQ</Link>,{' '}
-                <Link to="/t/">Algolia</Link>, <Link to="/t/">Redis</Link>
+                <Link to="/t/nodejs">GCP</Link>,{' '}
+                <Link to="/t/nodejs">NodeJS</Link>,{' '}
+                <Link to="/t/nodejs">Postgres</Link>,{' '}
+                <Link to="/t/nodejs">RabbitMQ</Link>,{' '}
+                <Link to="/t/nodejs">Algolia</Link>,{' '}
+                <Link to="/t/nodejs">Redis</Link>
               </Col>
             </Row>
             <Row className={cls.technical}>
               <Col span={3}>Components</Col>
               <Col>
-                <Link to="/p//c/">Public API</Link>,{' '}
-                <Link to="/p//c/">Private API</Link>,{' '}
-                <Link to="/p//c/">Frontend</Link>,{' '}
-                <Link to="/p//c/">Email Cron</Link>,{' '}
-                <Link to="/p//c/">Message Consumer</Link>,{' '}
-                <Link to="/p//c/">Fetcher</Link>,{' '}
-                <Link to="/p//c/">Job Processor</Link>,{' '}
-                <Link to="/p//c/">Indexer</Link>
+                <Link to={`/p/${projectId}/c/`}>Public API</Link>,{' '}
+                <Link to={`/p/${projectId}/c/`}>Private API</Link>,{' '}
+                <Link to={`/p/${projectId}/c/`}>Frontend</Link>,{' '}
+                <Link to={`/p/${projectId}/c/`}>Email Cron</Link>,{' '}
+                <Link to={`/p/${projectId}/c/`}>Message Consumer</Link>,{' '}
+                <Link to={`/p/${projectId}/c/`}>Fetcher</Link>,{' '}
+                <Link to={`/p/${projectId}/c/`}>Job Processor</Link>,{' '}
+                <Link to={`/p/${projectId}/c/`}>Indexer</Link>
               </Col>
             </Row>
             <Row className={cls.technical}>

@@ -10,6 +10,7 @@ import Logo1 from '../../static/specfy1.svg';
 import { Home } from '../Home';
 import { Project } from '../Project';
 import { RFC } from '../RFC';
+import { Tech } from '../Tech';
 
 import cls from './index.module.scss';
 
@@ -74,6 +75,7 @@ const App: React.FC = () => {
               <Route index element={<Home />} />
               <Route path="/p/:projectId" element={<Project />} />
               <Route path="/p/:projectId/rfc/:rfcId" element={<RFC />} />
+              <Route path="/t/:techId" element={<Tech />} />
 
               <Route path="*" element={<NotFound />} />
             </Route>
