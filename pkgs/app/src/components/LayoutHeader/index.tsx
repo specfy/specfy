@@ -1,8 +1,8 @@
 import {
-  DownOutlined,
   PlusCircleOutlined,
   BellOutlined,
   UserOutlined,
+  CaretDownFilled,
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Divider, Button, Menu, Dropdown, Badge, Avatar, Layout } from 'antd';
@@ -15,6 +15,10 @@ import cls from './index.module.scss';
 
 const menuItems: MenuProps['items'] = [
   {
+    key: 'review',
+    label: <Link to="/review">Review</Link>,
+  },
+  {
     key: 'settings',
     label: <Link to="/settings">Settings</Link>,
   },
@@ -23,7 +27,7 @@ const menuItems: MenuProps['items'] = [
 const orgItems: MenuProps['items'] = [
   {
     key: '1',
-    label: <Link to="/">Samuel Bodin's org</Link>,
+    label: <Link to="/">Samuel Bodin&apos;s org</Link>,
   },
   {
     key: '2',
@@ -57,7 +61,7 @@ export const LayoutHeader: React.FC = () => {
         <Dropdown menu={{ items: orgItems }} placement="bottomRight">
           <Button
             type="text"
-            icon={<DownOutlined />}
+            icon={<CaretDownFilled />}
             className={cls.orgSelect}
           />
         </Dropdown>
