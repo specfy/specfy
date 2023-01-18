@@ -3,11 +3,15 @@ import {
   BellOutlined,
   UserOutlined,
   CaretDownFilled,
+  SettingOutlined,
+  LogoutOutlined,
+  QuestionCircleOutlined,
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Divider, Button, Menu, Dropdown, Badge, Avatar, Layout } from 'antd';
 import { Link } from 'react-router-dom';
 
+import { useAuth } from '../../hooks/useAuth';
 import Logo from '../../static/logo.svg';
 import Logo1 from '../../static/specfy1.svg';
 
@@ -34,6 +38,7 @@ const orgItems: MenuProps['items'] = [
     label: <Link to="/">Algolia</Link>,
   },
 ];
+
 const createItems: MenuProps['items'] = [
   {
     key: '1',
@@ -49,7 +54,11 @@ const createItems: MenuProps['items'] = [
   },
 ];
 
+const userItems: MenuProps['items'] = [];
+
 export const LayoutHeader: React.FC = () => {
+  const { user } = useAuth();
+
   return (
     <Layout.Header className={cls.header}>
       <Link className={cls.logo} to="/">
@@ -89,11 +98,39 @@ export const LayoutHeader: React.FC = () => {
         </div>
         <div>
           <Divider type="vertical" />
-          <Avatar
-            shape="circle"
-            icon={<UserOutlined />}
-            className={cls.avatar}
-          />
+          <Dropdown
+            menu={{ items: userItems }}
+            trigger={['click']}
+            dropdownRender={() => (
+              <div className={cls.userDropdown}>
+                <div className={cls.userDropdownProfil}>
+                  <div>{user!.name}</div>
+                  <strong>{user!.email}</strong>
+                </div>
+                <Divider />
+                <Link to="/account/" className={cls.userDropdownItem}>
+                  <SettingOutlined />
+                  Settings
+                </Link>
+                <Link to="/account/" className={cls.userDropdownItem}>
+                  <QuestionCircleOutlined />
+                  Support
+                </Link>
+                <Divider />
+                <Link to="/logout/" className={cls.userDropdownItem}>
+                  <LogoutOutlined />
+                  Logout
+                </Link>
+              </div>
+            )}
+            placement="bottomRight"
+          >
+            <Avatar
+              shape="circle"
+              icon={<UserOutlined />}
+              className={cls.avatar}
+            />
+          </Dropdown>
         </div>
       </div>
     </Layout.Header>
