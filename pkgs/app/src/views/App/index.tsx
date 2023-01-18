@@ -1,12 +1,9 @@
-import { UserOutlined, BellOutlined, DownOutlined } from '@ant-design/icons';
-import { Avatar, Badge, Button, Layout, Menu } from 'antd';
-import type { MenuProps } from 'antd';
+import { Layout } from 'antd';
 import type React from 'react';
-import { Link, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
+import { LayoutHeader } from '../../components/LayoutHeader';
 import { NotFound } from '../../components/NotFound';
-import Logo from '../../static/logo.svg';
-import Logo1 from '../../static/specfy1.svg';
 import { ComponentView } from '../Component';
 import { Home } from '../Home';
 import { Project } from '../Project';
@@ -15,62 +12,12 @@ import { Tech } from '../Tech';
 
 import cls from './index.module.scss';
 
-const { Header, Content } = Layout;
-
-const menuItems: MenuProps['items'] = [
-  {
-    key: 'settings',
-    label: <Link to="/settings">Settings</Link>,
-  },
-];
-
 const App: React.FC = () => {
   return (
     <Layout className={cls.app}>
       <Layout>
-        <Header className={cls.header}>
-          <Link className={cls.logo} to="/">
-            <img src={Logo} />
-            <img src={Logo1} />
-          </Link>
-
-          <div>
-            <Button
-              type="primary"
-              icon={<DownOutlined />}
-              className={cls.orgSelect}
-            />
-          </div>
-
-          <div>
-            <Menu
-              className={cls.menu}
-              items={menuItems}
-              selectedKeys={['home']}
-              mode="horizontal"
-            ></Menu>
-          </div>
-
-          <div className={cls.headerRight}>
-            <div>
-              <Badge count={1}>
-                <Avatar
-                  shape="square"
-                  icon={<BellOutlined />}
-                  className={cls.avatar}
-                />
-              </Badge>
-            </div>
-            <div>
-              <Avatar
-                shape="square"
-                icon={<UserOutlined />}
-                className={cls.avatar}
-              />
-            </div>
-          </div>
-        </Header>
-        <Content>
+        <LayoutHeader></LayoutHeader>
+        <Layout.Content>
           <Routes>
             <Route path="/">
               <Route index element={<Home />} />
@@ -85,7 +32,7 @@ const App: React.FC = () => {
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>
-        </Content>
+        </Layout.Content>
       </Layout>
     </Layout>
   );

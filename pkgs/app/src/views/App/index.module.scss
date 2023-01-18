@@ -1,45 +1,6 @@
-@import "../../theme.scss";
+@import '../../theme.scss';
 
 .app {
   min-height: 100vh;
   width: 100vw;
-
-  .header {
-    padding: 0 8px !important;
-    background: white !important;
-    display: grid !important;
-    grid-template-columns: 160px 50px 1fr 200px;
-
-    border-bottom: 1px solid $gray-4;
-    line-height: 63px;
-  }
-
-  .orgSelect {
-    background-color: $gray-3 !important;
-    color: $gray-6;
-  }
-  .avatar {
-    background-color: $gray-3 !important;
-    color: $gray-6;
-  }
-}
-
-.logo {
-  padding: 0 0 0 8px;
-  img {
-    height: 35px;
-  }
-}
-
-
-.headerRight {
-  display: flex;
-  gap: 18px;
-  justify-content: flex-end;
-  padding-right: 8px;
-}
-
-.menu {
-  background: transparent!important;
-  border-bottom: none;
 }
