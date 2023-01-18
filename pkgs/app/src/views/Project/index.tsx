@@ -133,14 +133,16 @@ export const Project: React.FC = () => {
             <Row>
               <Col span={3}>Components</Col>
               <Col>
-                <Link to={`/p/${projectId}/c/`}>Public API</Link>,{' '}
-                <Link to={`/p/${projectId}/c/`}>Private API</Link>,{' '}
-                <Link to={`/p/${projectId}/c/`}>Frontend</Link>,{' '}
-                <Link to={`/p/${projectId}/c/`}>Email Cron</Link>,{' '}
-                <Link to={`/p/${projectId}/c/`}>Message Consumer</Link>,{' '}
-                <Link to={`/p/${projectId}/c/`}>Fetcher</Link>,{' '}
-                <Link to={`/p/${projectId}/c/`}>Job Processor</Link>,{' '}
-                <Link to={`/p/${projectId}/c/`}>Indexer</Link>
+                <Link to={`/p/${projectId}/c/public-api`}>Public API</Link>,{' '}
+                <Link to={`/p/${projectId}/c/public-api`}>Private API</Link>,{' '}
+                <Link to={`/p/${projectId}/c/public-api`}>Frontend</Link>,{' '}
+                <Link to={`/p/${projectId}/c/public-api`}>Email Cron</Link>,{' '}
+                <Link to={`/p/${projectId}/c/public-api`}>
+                  Message Consumer
+                </Link>
+                , <Link to={`/p/${projectId}/c/public-api`}>Fetcher</Link>,{' '}
+                <Link to={`/p/${projectId}/c/public-api`}>Job Processor</Link>,{' '}
+                <Link to={`/p/${projectId}/c/public-api`}>Indexer</Link>
               </Col>
             </Row>
             <Row>

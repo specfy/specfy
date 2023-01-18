@@ -1,0 +1,30 @@
+@import '../../theme.scss';
+
+.grid {
+  display: grid;
+  grid-template-columns: max(700px) 1fr;
+}
+
+.left {
+  display: flex;
+  gap: 16px;
+  flex-direction: column;
+}
+.right {
+  padding-top: 85px;
+  img {
+    width: 100%;
+  }
+}
+
+.language {
+  color: $gray-8;
+  padding: 0 22px 0 0;
+  font-size: $font-m;
+}
+
+.line {
+  display: grid;
+  grid-template-columns: 150px auto;
+  margin-bottom: 12px;
+}

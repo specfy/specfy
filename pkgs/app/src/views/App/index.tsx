@@ -7,6 +7,7 @@ import { Link, Route, Routes } from 'react-router-dom';
 import { NotFound } from '../../components/NotFound';
 import Logo from '../../static/logo.svg';
 import Logo1 from '../../static/specfy1.svg';
+import { ComponentView } from '../Component';
 import { Home } from '../Home';
 import { Project } from '../Project';
 import { RFC } from '../RFC';
@@ -76,6 +77,10 @@ const App: React.FC = () => {
               <Route path="/p/:projectId" element={<Project />} />
               <Route path="/p/:projectId/rfc/:rfcId" element={<RFC />} />
               <Route path="/t/:techId" element={<Tech />} />
+              <Route
+                path="/p/:projectId/c/:componentId"
+                element={<ComponentView />}
+              />
 
               <Route path="*" element={<NotFound />} />
             </Route>
