@@ -5,7 +5,7 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Button, Menu, Dropdown, Badge, Avatar, Layout } from 'antd';
+import { Divider, Button, Menu, Dropdown, Badge, Avatar, Layout } from 'antd';
 import { Link } from 'react-router-dom';
 
 import Logo from '../../static/logo.svg';
@@ -20,18 +20,28 @@ const menuItems: MenuProps['items'] = [
   },
 ];
 
-const createItems: MenuProps['items'] = [
+const orgItems: MenuProps['items'] = [
   {
     key: '1',
-    label: <Link to="">New RFC</Link>,
+    label: <Link to="/">Samuel Bodin's org</Link>,
   },
   {
     key: '2',
-    label: <Link to="">New Project</Link>,
+    label: <Link to="/">Algolia</Link>,
+  },
+];
+const createItems: MenuProps['items'] = [
+  {
+    key: '1',
+    label: <Link to="/new/rfc">New RFC</Link>,
+  },
+  {
+    key: '2',
+    label: <Link to="/new/project">New Project</Link>,
   },
   {
     key: '3',
-    label: <Link to="">New Organisation</Link>,
+    label: <Link to="/new/org">New Organisation</Link>,
   },
 ];
 
@@ -44,11 +54,13 @@ export const LayoutHeader: React.FC = () => {
       </Link>
 
       <div>
-        <Button
-          type="primary"
-          icon={<DownOutlined />}
-          className={cls.orgSelect}
-        />
+        <Dropdown menu={{ items: orgItems }} placement="bottomRight">
+          <Button
+            type="text"
+            icon={<DownOutlined />}
+            className={cls.orgSelect}
+          />
+        </Dropdown>
       </div>
 
       <div>
@@ -72,6 +84,7 @@ export const LayoutHeader: React.FC = () => {
           </Badge>
         </div>
         <div>
+          <Divider type="vertical" />
           <Avatar
             shape="circle"
             icon={<UserOutlined />}

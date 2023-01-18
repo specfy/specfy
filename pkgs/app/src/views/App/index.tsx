@@ -7,6 +7,7 @@ import { NotFound } from '../../components/NotFound';
 import { ComponentView } from '../Component';
 import { Home } from '../Home';
 import { Project } from '../Project';
+import { ProjectCreate } from '../ProjectCreate';
 import { RFC } from '../RFC';
 import { Tech } from '../Tech';
 
@@ -21,6 +22,7 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/">
               <Route index element={<Home />} />
+              <Route path="/new/project" element={<ProjectCreate />} />
               <Route path="/p/:projectId" element={<Project />} />
               <Route path="/p/:projectId/rfc/:rfcId" element={<RFC />} />
               <Route path="/t/:techId" element={<Tech />} />
