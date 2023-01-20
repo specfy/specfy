@@ -1,3 +1,11 @@
+export function slugify(title: string): string {
+  return title.replace(/[^a-zA-Z]/g, '').toLocaleLowerCase();
+}
+
+export function getRandomID(): string {
+  return (Math.random() + 1).toString(36).substring(2);
+}
+
 export function acronymize(name: string): string {
   const clean = name
     // remove all tag-like sequences: [Shared][Prod]
@@ -17,4 +25,14 @@ export function acronymize(name: string): string {
     .replace(/[^a-zA-Z]/g, '')
     .slice(0, 2)
     .toUpperCase();
+}
+
+// https://stackoverflow.com/questions/3426404/create-a-hexadecimal-colour-based-on-a-string-with-javascript
+export function stringToColor(str: string): string {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+    hash = hash & hash;
+  }
+  return `hsl(${hash % 250}, 85%, 80%)`;
 }

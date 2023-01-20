@@ -1,8 +1,7 @@
 import type { AvatarProps } from 'antd';
 import { Avatar } from 'antd';
 
-import { acronymize } from '../../common/acronymize';
-import { stringToColor } from '../../common/stringToColor';
+import { acronymize, stringToColor } from '../../common/string';
 
 export const AvatarAuto: React.FC<
   AvatarProps & { className?: string; name: string }

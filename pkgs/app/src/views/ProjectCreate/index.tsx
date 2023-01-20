@@ -1,4 +1,5 @@
 import {
+  App,
   Button,
   Card,
   Col,
@@ -10,14 +11,24 @@ import {
   Typography,
 } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
+import { useNavigate } from 'react-router-dom';
 
+import { createProject } from '../../api/projects';
 import { Container } from '../../components/Container';
+import { useAuth } from '../../hooks/useAuth';
 
 import cls from './index.module.scss';
 
 export const ProjectCreate: React.FC = () => {
-  const onFinish = (values: any) => {
-    console.log('Success:', values);
+  const { user } = useAuth();
+  const { message } = App.useApp();
+  const navigate = useNavigate();
+
+  const onFinish = async (values: any) => {
+    const { id, slug } = await createProject(values, { author: user! });
+    message.success('Project created');
+
+    navigate(`/p/${id}-${slug}`);
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -26,71 +37,66 @@ export const ProjectCreate: React.FC = () => {
 
   return (
     <Container>
-      <Row>
-        <Col span={5}></Col>
-        <Col span={12}>
-          <Typography.Title level={3}>Create a new project</Typography.Title>
-          <div className={cls.subtitle}>
-            A project defines a new infrastructure inside your organisation.
-          </div>
-          <Card>
-            <Form
-              name="basic"
-              layout="vertical"
-              onFinish={onFinish}
-              onFinishFailed={onFinishFailed}
-            >
-              <Row gutter={[16, 16]}>
-                <Col span={8}>
-                  <Form.Item label="Organisation" name="org">
-                    <Select
-                      defaultValue="default"
-                      size="large"
-                      options={[
-                        {
-                          value: 'default',
-                          label: "Samuel Bodin's org",
-                        },
-                        {
-                          value: 'algolia',
-                          label: 'Algolia',
-                        },
-                      ]}
-                    />
-                  </Form.Item>
-                </Col>
-                <Col span={1}>
-                  <div className={cls.slash}>/</div>
-                </Col>
-                <Col span={15}>
-                  <Form.Item
-                    label="Project Name"
-                    name="name"
-                    rules={[
-                      {
-                        required: true,
-                        message: 'Please input a project name',
-                      },
-                    ]}
-                  >
-                    <Input size="large" />
-                  </Form.Item>
-                </Col>
-              </Row>
-
-              <Form.Item label="Description" name="description">
-                <TextArea rows={4} showCount maxLength={500} />
+      <Typography.Title level={3}>Create a new project</Typography.Title>
+      <div className={cls.subtitle}>
+        A project defines a new infrastructure inside your organisation.
+      </div>
+      <Card>
+        <Form
+          name="basic"
+          layout="vertical"
+          onFinish={onFinish}
+          onFinishFailed={onFinishFailed}
+        >
+          <Row gutter={[16, 16]}>
+            <Col span={8}>
+              <Form.Item label="Organisation" name="org">
+                <Select
+                  defaultValue="default"
+                  size="large"
+                  options={[
+                    {
+                      value: 'default',
+                      label: "Samuel Bodin's org",
+                    },
+                    {
+                      value: 'algolia',
+                      label: 'Algolia',
+                    },
+                  ]}
+                />
               </Form.Item>
+            </Col>
+            <Col span={1}>
+              <div className={cls.slash}>/</div>
+            </Col>
+            <Col span={15}>
+              <Form.Item
+                label="Project Name"
+                name="name"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please input a project name',
+                  },
+                ]}
+              >
+                <Input size="large" />
+              </Form.Item>
+            </Col>
+          </Row>
 
-              <Divider />
+          <Form.Item label="Description" name="description">
+            <TextArea rows={4} showCount maxLength={500} />
+          </Form.Item>
 
-              <Button type="primary" htmlType="submit" size="large">
-                Submit
-              </Button>
-            </Form>
-          </Card>
-        </Col>
-      </Row>
+          <Divider />
+
+          <Button type="primary" htmlType="submit" size="large">
+            Submit
+          </Button>
+        </Form>
+      </Card>
     </Container>
   );
 };

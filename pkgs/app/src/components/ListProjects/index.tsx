@@ -4,46 +4,21 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useMount } from 'react-use';
 
+import { listProjects } from '../../api/projects';
+import type { DBProject } from '../../types/db/projects';
 import { AvatarAuto } from '../AvatarAuto';
 
 import cls from './index.module.scss';
 
-interface Project {
-  id: string;
-  slug: string;
-  name: string;
-  description: string;
-}
-const tmpList: Project[] = [
-  {
-    id: '3hjfe8SUHer',
-    slug: 'crawler',
-    name: 'Crawler',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-  },
-  {
-    id: '45jfe8SUFkjd',
-    slug: 'dashboard',
-    name: 'Dashboard',
-    description:
-      'Donec mollis pretium nisl at dignissim. Duis dui magna, tempus a scelerisque id, semper eu metus.',
-  },
-  {
-    id: '45jfe8SUFkjd',
-    slug: 'analytics-api',
-    name: 'Analytics API',
-    description: 'Duis dui magna, tempus a scelerisque id, semper eu metus.',
-  },
-];
-
 export const ListProjects: React.FC = () => {
   const [initLoading, setInitLoading] = useState(true);
-  const [list, setList] = useState<Project[]>([]);
+  const [list, setList] = useState<DBProject[]>([]);
 
   useMount(() => {
-    setTimeout(() => {
+    setTimeout(async () => {
       setInitLoading(false);
-      setList(tmpList);
+      const projects = await listProjects();
+      setList(projects);
     }, 1000);
   });
 
@@ -66,7 +41,7 @@ export const ListProjects: React.FC = () => {
                     {item.name}
                   </Link>
                 }
-                description={item.description}
+                description={<div>Last updated 5 hours ago</div>}
               />
             </Skeleton>
           </List.Item>

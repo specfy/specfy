@@ -19,49 +19,64 @@ import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useMount } from 'react-use';
 
+import { getProject } from '../../api/projects';
 import { AvatarAuto } from '../../components/AvatarAuto';
 import { BigHeading } from '../../components/BigHeading';
 import { Container } from '../../components/Container';
 import { ListRFCs } from '../../components/ListRFCs';
 import { ListUpdates } from '../../components/ListUpdates';
 import imgUrl from '../../static/infra.png';
+import type { ApiProject } from '../../types/api/projects';
 
 import cls from './index.module.scss';
 
-const tmp = {
-  id: 'crawler',
-  name: 'Crawler',
-  description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pharetra eros vel felis scelerisque pretium. Maecenas ac feugiat orci, a sodales lacus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent urna libero, convallis eu commodo id, iaculis aliquam arcu.<br>
-  Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; In interdum egestas massa, sit amet auctor ipsum maximus in. Phasellus diam nulla, condimentum et ultrices sit amet, venenatis eget arcu. In hac habitasse platea dictumst. Donec a viverra mi.`,
-  author: '1',
-  owners: ['1'],
-  reviewers: ['1'],
-  contributors: ['2', '3', '4'],
-  links: [
-    {
-      title: 'Github',
-      link: 'https://github.com/bodinsamuel/rfc-editor',
-    },
-    {
-      title: 'Slack',
-      link: 'https://github.com/bodinsamuel/rfc-editor',
-    },
-  ],
-  createdAt: '2023-01-01T00:00:00Z',
-  updatedAt: '2023-01-01T00:00:00Z',
-};
+// const tmp = {
+//   id: 'crawler',
+//   name: 'Crawler',
+//   description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pharetra eros vel felis scelerisque pretium. Maecenas ac feugiat orci, a sodales lacus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent urna libero, convallis eu commodo id, iaculis aliquam arcu.<br>
+//   Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; In interdum egestas massa, sit amet auctor ipsum maximus in. Phasellus diam nulla, condimentum et ultrices sit amet, venenatis eget arcu. In hac habitasse platea dictumst. Donec a viverra mi.`,
+//   author: '1',
+
+//   links: [
+//     {
+//       title: 'Github',
+//       link: 'https://github.com/bodinsamuel/rfc-editor',
+//     },
+//     {
+//       title: 'Slack',
+//       link: 'https://github.com/bodinsamuel/rfc-editor',
+//     },
+//   ],
+//   createdAt: '2023-01-01T00:00:00Z',
+//   updatedAt: '2023-01-01T00:00:00Z',
+// };
 
 export const Project: React.FC = () => {
   const [loading, setLoading] = useState(true);
-  const [item, setItem] = useState<typeof tmp>();
+  const [item, setItem] = useState<ApiProject>();
   const { projectId } = useParams();
 
   useMount(() => {
-    setTimeout(() => {
+    setTimeout(async () => {
       setLoading(false);
-      setItem(tmp);
+      const id = projectId!.split('-')[0];
+      const tmp = await getProject(id);
+      if (!tmp) {
+        return;
+      }
+
+      setItem({
+        ...tmp,
+        owners: ['1'],
+        reviewers: ['1'],
+        contributors: ['2', '3', '4'],
+      });
     }, 1000);
   });
+
+  if (!loading && !item) {
+    return <div>not found</div>;
+  }
 
   if (loading || !item) {
     return (

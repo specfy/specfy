@@ -8,7 +8,8 @@ import {
   QuestionCircleOutlined,
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Divider, Button, Menu, Dropdown, Badge, Avatar, Layout } from 'antd';
+import { Divider, Button, Menu, Dropdown, Badge, Layout } from 'antd';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { useAuth } from '../../hooks/useAuth';
@@ -25,17 +26,6 @@ const menuItems: MenuProps['items'] = [
   {
     key: 'settings',
     label: <Link to="/settings">Settings</Link>,
-  },
-];
-
-const orgItems: MenuProps['items'] = [
-  {
-    key: '1',
-    label: <Link to="/">Samuel Bodin&apos;s org</Link>,
-  },
-  {
-    key: '2',
-    label: <Link to="/">Algolia</Link>,
   },
 ];
 
@@ -58,6 +48,18 @@ const userItems: MenuProps['items'] = [];
 
 export const LayoutHeader: React.FC = () => {
   const { user } = useAuth();
+  const [orgs, setOrgs] = useState<MenuProps['items']>();
+
+  useEffect(() => {
+    setOrgs(
+      user!.orgs.map((org) => {
+        return {
+          key: org.id,
+          label: <Link to="/">{org.name}</Link>,
+        };
+      })
+    );
+  }, [user]);
 
   return (
     <Layout.Header className={cls.header}>
@@ -67,7 +69,7 @@ export const LayoutHeader: React.FC = () => {
       </Link>
 
       <div>
-        <Dropdown menu={{ items: orgItems }} placement="bottomRight">
+        <Dropdown menu={{ items: orgs }} placement="bottomRight">
           <Button
             type="text"
             icon={<CaretDownFilled />}
@@ -125,11 +127,12 @@ export const LayoutHeader: React.FC = () => {
             )}
             placement="bottomRight"
           >
-            <Avatar
-              shape="circle"
-              icon={<UserOutlined />}
+            <Button
+              type="text"
+              shape="default"
               className={cls.avatar}
-            />
+              icon={<UserOutlined />}
+            ></Button>
           </Dropdown>
         </div>
       </div>

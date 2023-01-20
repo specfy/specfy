@@ -3,8 +3,8 @@ import type { AnchorLinkItemProps } from 'antd/es/anchor/Anchor';
 import { useState } from 'react';
 import { useMount } from 'react-use';
 
-import { getHeadingID } from '../../common/headings';
-import type { BlockLevelOne } from '../../types/content';
+import { slugify } from '../../common/string';
+import type { BlockLevelOne } from '../../types/api/content';
 
 import cls from './index.module.scss';
 
@@ -19,7 +19,7 @@ export const HeadingTree: React.FC<{ blocks: BlockLevelOne[] }> = ({
       if (blk.type !== 'heading' || blk.level > 1) continue;
       tmp.push({
         key: index,
-        href: `#h-${getHeadingID(blk.content)}`,
+        href: `#h-${slugify(blk.content)}`,
         title: blk.content,
       });
     }

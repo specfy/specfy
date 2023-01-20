@@ -21,12 +21,12 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useMount } from 'react-use';
 
-import { getHeadingID } from '../../common/headings';
+import { slugify } from '../../common/string';
 import { AvatarAuto } from '../../components/AvatarAuto';
 import { Container } from '../../components/Container';
 import { HeadingTree } from '../../components/HeadingTree';
 import { RFCStatusTag } from '../../components/RFCStatusTag';
-import type { BlockLevelOne, Blocks } from '../../types/content';
+import type { BlockLevelOne, Blocks } from '../../types/api/content';
 
 import cls from './index.module.scss';
 
@@ -199,7 +199,7 @@ const tmp: RFCInterface = {
 
 export const Content: React.FC<{ block: Blocks }> = ({ block }) => {
   if (block.type === 'heading') {
-    const id = `h-${getHeadingID(block.content)}`;
+    const id = `h-${slugify(block.content)}`;
     if (block.level === 1) return <h1 id={id}>{block.content}</h1>;
     else if (block.level === 2) return <h2 id={id}>{block.content}</h2>;
     else if (block.level === 3) return <h3 id={id}>{block.content}</h3>;

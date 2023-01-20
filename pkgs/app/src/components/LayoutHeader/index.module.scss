@@ -16,8 +16,11 @@
 
 .avatar {
   background-color: $gray-3 !important;
-  color: $gray-6;
-  margin-left: 18px;
+  color: $gray-8;
+  margin-left: 16px;
+  > span {
+    background-color: transparent;
+  }
 }
 
 .logo {

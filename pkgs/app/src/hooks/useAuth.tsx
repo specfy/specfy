@@ -3,10 +3,10 @@ import { useMemo, useState, createContext, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import { getMe } from '../api/user';
-import type { Me } from '../types/me';
+import type { ApiMe } from '../types/api/me';
 
 interface AuthContextInterface {
-  user: Me | null;
+  user: ApiMe | null;
   login: () => void;
   logout: () => void;
 }
@@ -23,7 +23,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [user, setUser] = useState<Me | null>(null);
+  const [user, setUser] = useState<ApiMe | null>(null);
 
   const handleLogin = async () => {
     const data = await getMe();

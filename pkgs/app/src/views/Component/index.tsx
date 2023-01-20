@@ -1,4 +1,4 @@
-import { Breadcrumb, Card, Col, Divider, Row, Skeleton, Tag } from 'antd';
+import { Breadcrumb, Card, Divider, Skeleton, Tag } from 'antd';
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useMount } from 'react-use';

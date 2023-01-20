@@ -1,39 +1,29 @@
 import { useQuery } from 'react-query';
 
-import type { Me } from '../types/me';
+import { db } from '../common/db';
+import type { ApiMe } from '../types/api/me';
 
-export async function getMe(): Promise<Me> {
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      resolve({
+export async function getMe(): Promise<ApiMe> {
+  const me = (await db.users.get('1234'))!;
+  return {
+    ...me,
+    orgs: [
+      {
         id: '1234',
-        name: 'Samuel Bodin',
-        email: 'bodin.samuel@gmail.com',
-        orgs: [
-          {
-            id: '1234',
-            name: "Samuel Bodin's org",
-            createdAt: '2023-01-01T00:00:00Z',
-            updatedAt: '2023-01-01T00:00:00Z',
-          },
-          {
-            id: '1234',
-            name: 'Algolia',
-            createdAt: '2023-01-01T00:00:00Z',
-            updatedAt: '2023-01-01T00:00:00Z',
-          },
-        ],
-        createdAt: '2023-01-01T00:00:00Z',
-        updatedAt: '2023-01-01T00:00:00Z',
-      });
-    }, 250);
-  });
+        name: "Samuel Bodin's org",
+      },
+      {
+        id: '6789',
+        name: 'Algolia',
+      },
+    ],
+  };
 }
 
 export function useGetMe() {
   return useQuery({
     queryKey: ['getMe'],
-    queryFn: async (): Promise<Me> => {
+    queryFn: async (): Promise<ApiMe> => {
       return await getMe();
     },
   });
