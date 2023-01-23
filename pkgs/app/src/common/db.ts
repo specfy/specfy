@@ -14,12 +14,13 @@ export class MySubClassedDexie extends Dexie {
 
   constructor() {
     super('specfy');
-    this.version(2).stores({
+    this.version(6).stores({
       users: 'id, name, email, createdAt, updatedAt',
       orgs: 'id, name, createdAt, updatedAt',
-      projects: 'id, slug, name, description, author, createdAt, updatedAt',
+      projects:
+        'id, [orgId+slug], name, description, author, createdAt, updatedAt',
       contents:
-        'id, projectId, type, typeId, name, slug, create, update, use, remove, tldr, blocks, authors, reviewers, approvedBy, status, locked, createdAt, updatedAt',
+        '[orgId+id], projectId, type, typeId, name, slug, create, update, use, remove, tldr, blocks, authors, reviewers, approvedBy, status, locked, createdAt, updatedAt',
     });
   }
 }

@@ -16,6 +16,7 @@ import { useNavigate } from 'react-router-dom';
 import { createProject } from '../../api/projects';
 import { Container } from '../../components/Container';
 import { useAuth } from '../../hooks/useAuth';
+import type { ApiProject } from '../../types/api/projects';
 
 import cls from './index.module.scss';
 
@@ -24,11 +25,13 @@ export const ProjectCreate: React.FC = () => {
   const { message } = App.useApp();
   const navigate = useNavigate();
 
-  const onFinish = async (values: any) => {
-    const { id, slug } = await createProject(values, { author: user! });
+  const onFinish = async (
+    values: Pick<ApiProject, 'description' | 'name' | 'orgId'>
+  ) => {
+    const { slug } = await createProject(values, { author: user! });
     message.success('Project created');
 
-    navigate(`/p/${id}-${slug}`);
+    navigate(`/org/${values.orgId}/${slug}`);
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -50,7 +53,7 @@ export const ProjectCreate: React.FC = () => {
         >
           <Row gutter={[16, 16]}>
             <Col span={8}>
-              <Form.Item label="Organisation" name="org">
+              <Form.Item label="Organisation" name="orgId">
                 <Select
                   defaultValue="default"
                   size="large"

@@ -92,6 +92,7 @@ export async function seed() {
       // Contents
       await db.contents.add({
         id: '5',
+        orgId: 'algolia',
         projectId: '3hjfe8SUHer',
         type: 'rfc',
         typeId: '1',
@@ -242,6 +243,7 @@ export async function seed() {
       });
       await db.contents.add({
         id: '6',
+        orgId: 'algolia',
         projectId: '3hjfe8SUHer',
         type: 'rfc',
         typeId: '2',
@@ -263,6 +265,7 @@ export async function seed() {
       });
       await db.contents.add({
         id: '7',
+        orgId: 'algolia',
         projectId: '3hjfe8SUHer',
         type: 'rfc',
         typeId: '3',

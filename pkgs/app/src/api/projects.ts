@@ -5,7 +5,7 @@ import type { ApiProject } from '../types/api/projects';
 import type { DBProject } from '../types/db/projects';
 
 export async function createProject(
-  data: Pick<ApiProject, 'description' | 'name'>,
+  data: Pick<ApiProject, 'description' | 'name' | 'orgId'>,
   { author }: { author: ApiMe }
 ) {
   const id = getRandomID();
@@ -13,7 +13,7 @@ export async function createProject(
   await db.projects.add(
     {
       id,
-      orgId: 'algolia',
+      orgId: data.orgId,
       name: data.name,
       slug,
       description: data.description,
@@ -28,10 +28,13 @@ export async function createProject(
   return { id, slug };
 }
 
-export async function listProjects(): Promise<DBProject[]> {
-  return await db.projects.limit(5).toArray();
+export async function listProjects(orgId: string): Promise<DBProject[]> {
+  return await db.projects.where({ orgId }).limit(5).toArray();
 }
 
-export async function getProject(id: string): Promise<DBProject | undefined> {
-  return await db.projects.get(id);
+export async function getProject(where: {
+  orgId: string;
+  slug: string;
+}): Promise<DBProject | undefined> {
+  return await db.projects.where(where).first();
 }

@@ -82,15 +82,12 @@ export const Content: React.FC<{ block: Blocks }> = ({ block }) => {
 export const RFC: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [menu, setMenu] = useState(false);
-  const [projectId, setProjectId] = useState<string>();
-  const [contentId, setContentId] = useState<string>();
+  const [, setContentId] = useState<string>();
   const [item, setItem] = useState<ApiContent>();
-  const params = useParams();
+  const { orgId, projectId, cId } = useParams();
 
   useMount(() => {
-    const pID = params.projectId!.split('-')[0];
-    setProjectId(pID);
-    const cID = params.contentId!.split('-')[0];
+    const cID = cId!.split('-')[0];
     setContentId(cID);
 
     setTimeout(async () => {
@@ -136,7 +133,7 @@ export const RFC: React.FC = () => {
           <Link to="/">Home</Link>
         </Breadcrumb.Item>
         <Breadcrumb.Item>
-          <Link to="/p/3hjfe8SUHer-crawler/">Crawler</Link>
+          <Link to={`/org/${orgId}/${projectId}`}>Crawler</Link>
           <Button
             size="small"
             icon={<MenuUnfoldOutlined />}

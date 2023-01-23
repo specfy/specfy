@@ -133,7 +133,10 @@ const tmpList: DBEvent[] = [
   },
 ];
 
-export const Update: React.FC<{ evt: DBEvent }> = ({ evt }) => {
+export const Update: React.FC<{ evt: DBEvent; orgId: string }> = ({
+  evt,
+  orgId,
+}) => {
   const pl = evt.payload;
   let color = 'gray';
   let icon: ReactNode | undefined;
@@ -160,7 +163,7 @@ export const Update: React.FC<{ evt: DBEvent }> = ({ evt }) => {
     target = (
       <Link
         className={cls.linkTarget}
-        to={`/p/${pl.project.id}-${pl.project.slug}/c/${pl.id}-${pl.slug}`}
+        to={`/org/${orgId}/${pl.project.slug}/c/${pl.id}-${pl.slug}`}
       >
         {pl.name}
       </Link>
@@ -185,8 +188,9 @@ export const Update: React.FC<{ evt: DBEvent }> = ({ evt }) => {
   );
 };
 
-export const ListUpdates: React.FC<{ projectId?: string }> = ({
-  projectId,
+export const ListUpdates: React.FC<{ orgId: string; projectSlug?: string }> = ({
+  projectSlug,
+  orgId,
 }) => {
   const [initLoading, setInitLoading] = useState(true);
   const [list, setList] = useState<DBEvent[]>([]);
@@ -210,7 +214,7 @@ export const ListUpdates: React.FC<{ projectId?: string }> = ({
       )}
       <Timeline className={cls.list}>
         {list.map((evt) => {
-          return <Update key={evt.id} evt={evt} />;
+          return <Update key={evt.id} evt={evt} orgId={orgId} />;
         })}
       </Timeline>
     </div>

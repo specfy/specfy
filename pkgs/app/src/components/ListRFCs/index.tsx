@@ -9,14 +9,17 @@ import type { ApiContent } from '../../types/api/contents';
 import type { DBContent } from '../../types/db/contents';
 import { RFCStatusTag } from '../RFCStatusTag';
 
-export const ListRFCs: React.FC<{ projectId?: string }> = ({ projectId }) => {
+export const ListRFCs: React.FC<{ orgId: string; projectSlug?: string }> = ({
+  orgId,
+  projectSlug,
+}) => {
   const [initLoading, setInitLoading] = useState(true);
   const [list, setList] = useState<ApiContent[]>([]);
 
   useMount(() => {
     setTimeout(async () => {
       setInitLoading(false);
-      setList(await listContents(projectId!));
+      setList(await listContents({ orgId, slug: projectSlug }));
     }, 250);
   });
 
@@ -39,7 +42,7 @@ export const ListRFCs: React.FC<{ projectId?: string }> = ({ projectId }) => {
           render={(_, item: DBContent) => {
             return (
               <Link
-                to={`/p/${projectId}/c/${item.id}-${item.slug}`}
+                to={`/org/${orgId}/${projectId}/c/${item.id}-${item.slug}`}
                 relative="path"
               >
                 RFC-{item.typeId} - {item.name}

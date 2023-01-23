@@ -1,7 +1,7 @@
 import { Breadcrumb, Card, Col, Row, Skeleton, Tag } from 'antd';
 import Title from 'antd/es/typography/Title';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useMount } from 'react-use';
 
 import { BigHeading } from '../../components/BigHeading';
@@ -19,7 +19,7 @@ const tmp = {
 export const Tech: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [item, setItem] = useState<typeof tmp>();
-  const projectId = '3hjfe8SUHer-crawler';
+  const { orgId } = useParams();
 
   useMount(() => {
     setTimeout(() => {
@@ -67,22 +67,24 @@ export const Tech: React.FC = () => {
             <Row>
               <Col span={3}>Projects</Col>
               <Col>
-                <Link to="/p/">Dashboard</Link>,{' '}
-                <Link to="/p/">Analytics API</Link>
+                <Link to={`/org/${orgId}/dashboard`}>Dashboard</Link>,{' '}
+                <Link to={`/org/${orgId}/dashboard`}>Analytics API</Link>
               </Col>
             </Row>
 
             <Row>
               <Col span={3}>Components</Col>
               <Col>
-                <Link to={`/p/${projectId}/c/`}>Public API</Link>,{' '}
-                <Link to={`/p/${projectId}/c/`}>Private API</Link>,{' '}
-                <Link to={`/p/${projectId}/c/`}>Frontend</Link>,{' '}
-                <Link to={`/p/${projectId}/c/`}>Email Cron</Link>,{' '}
-                <Link to={`/p/${projectId}/c/`}>Message Consumer</Link>,{' '}
-                <Link to={`/p/${projectId}/c/`}>Fetcher</Link>,{' '}
-                <Link to={`/p/${projectId}/c/`}>Job Processor</Link>,{' '}
-                <Link to={`/p/${projectId}/c/`}>Indexer</Link>
+                <Link to={`/org/${orgId}/${projectId}/c/`}>Public API</Link>,{' '}
+                <Link to={`/org/${orgId}/${projectId}/c/`}>Private API</Link>,{' '}
+                <Link to={`/org/${orgId}/${projectId}/c/`}>Frontend</Link>,{' '}
+                <Link to={`/org/${orgId}/${projectId}/c/`}>Email Cron</Link>,{' '}
+                <Link to={`/org/${orgId}/${projectId}/c/`}>
+                  Message Consumer
+                </Link>
+                , <Link to={`/org/${orgId}/${projectId}/c/`}>Fetcher</Link>,{' '}
+                <Link to={`/org/${orgId}/${projectId}/c/`}>Job Processor</Link>,{' '}
+                <Link to={`/org/${orgId}/${projectId}/c/`}>Indexer</Link>
               </Col>
             </Row>
           </Card>

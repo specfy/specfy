@@ -1,5 +1,6 @@
 export interface ApiProject {
   id: string;
+  orgId: string;
   slug: string;
   name: string;
   description: string;

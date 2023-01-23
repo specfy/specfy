@@ -23,7 +23,7 @@ const tmp = {
 export const ComponentView: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [item, setItem] = useState<typeof tmp>();
-  const { projectId } = useParams();
+  const { orgId, projectSlug } = useParams();
 
   useMount(() => {
     setTimeout(() => {
@@ -54,7 +54,7 @@ export const ComponentView: React.FC = () => {
               <Link to="/">Home</Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>
-              <Link to="/p/3hjfe8SUHer-crawler/">Crawler</Link>
+              <Link to={`/org/${orgId}/${projectSlug}`}>Crawler</Link>
             </Breadcrumb.Item>
           </Breadcrumb>
           <BigHeading title={item.name}>
@@ -148,7 +148,7 @@ export const ComponentView: React.FC = () => {
         </div>
         <div>
           <Card>
-            <ListRFCs></ListRFCs>
+            <ListRFCs orgId={orgId!}></ListRFCs>
           </Card>
         </div>
       </div>

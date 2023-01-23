@@ -2,6 +2,7 @@ import type { BlockLevelOne } from '../api/content';
 
 export interface DBContent {
   id: string;
+  orgId: string;
   projectId: string;
   type: 'rfc';
   typeId: string;

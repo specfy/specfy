@@ -1,7 +1,7 @@
 import { App as AntdApp } from 'antd';
 import type React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import { useMount } from 'react-use';
 
 import { seed } from '../../common/db.seed';
@@ -18,6 +18,10 @@ import { Tech } from '../Tech';
 
 const queryClient = new QueryClient();
 
+const HomeRedirect: React.FC = () => {
+  return <Navigate to={'/org/algolia'}></Navigate>;
+};
+
 const App: React.FC = () => {
   useMount(async () => {
     console.log('seeding');
@@ -31,14 +35,18 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/login" element={<Login />} />
             <Route element={<AuthLayout></AuthLayout>}>
-              <Route path="/" element={<Home />} />
+              <Route path="/" element={<HomeRedirect />} />
+              <Route path="/org/:orgId" element={<Home />} />
               <Route path="/new/project" element={<ProjectCreate />} />
-              <Route path="/t/:techId" element={<Tech />} />
+              <Route path="/org/:orgId/t/:techId" element={<Tech />} />
 
-              <Route path="/p/:projectId" element={<Project />} />
-              <Route path="/p/:projectId/c/:contentId" element={<RFC />} />
+              <Route path="/org/:orgId/:projectSlug" element={<Project />} />
               <Route
-                path="/p/:projectId-:slug/i/:componentId"
+                path="/org/:orgId/:projectSlug/c/:contentId"
+                element={<RFC />}
+              />
+              <Route
+                path="/org/:orgId/:projectSlug/i/:componentId"
                 element={<ComponentView />}
               />
             </Route>

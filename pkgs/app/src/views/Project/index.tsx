@@ -33,16 +33,13 @@ import cls from './index.module.scss';
 export const Project: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [item, setItem] = useState<ApiProject>();
-  const [projectId, setProjectId] = useState<string>();
-  const params = useParams();
+  const { orgId, projectSlug } = useParams();
 
   useMount(() => {
-    const pID = params.projectId!.split('-')[0];
-    setProjectId(pID);
-
     setTimeout(async () => {
       setLoading(false);
-      const tmp = await getProject(pID);
+      const tmp = await getProject({ orgId: orgId!, slug: projectSlug! });
+
       if (!tmp) {
         return;
       }
@@ -130,23 +127,44 @@ export const Project: React.FC = () => {
             <Row>
               <Col span={3}>Components</Col>
               <Col>
-                <Link to={`/p/${projectId}/c/public-api`}>Public API</Link>,{' '}
-                <Link to={`/p/${projectId}/c/public-api`}>Private API</Link>,{' '}
-                <Link to={`/p/${projectId}/c/public-api`}>Frontend</Link>,{' '}
-                <Link to={`/p/${projectId}/c/public-api`}>Email Cron</Link>,{' '}
-                <Link to={`/p/${projectId}/c/public-api`}>
+                <Link to={`/org/${orgId}/${projectSlug}/c/public-api`}>
+                  Public API
+                </Link>
+                ,{' '}
+                <Link to={`/org/${orgId}/${projectSlug}/c/public-api`}>
+                  Private API
+                </Link>
+                ,{' '}
+                <Link to={`/org/${orgId}/${projectSlug}/c/public-api`}>
+                  Frontend
+                </Link>
+                ,{' '}
+                <Link to={`/org/${orgId}/${projectSlug}/c/public-api`}>
+                  Email Cron
+                </Link>
+                ,{' '}
+                <Link to={`/org/${orgId}/${projectSlug}/c/public-api`}>
                   Message Consumer
                 </Link>
-                , <Link to={`/p/${projectId}/c/public-api`}>Fetcher</Link>,{' '}
-                <Link to={`/p/${projectId}/c/public-api`}>Job Processor</Link>,{' '}
-                <Link to={`/p/${projectId}/c/public-api`}>Indexer</Link>
+                ,{' '}
+                <Link to={`/org/${orgId}/${projectSlug}/c/public-api`}>
+                  Fetcher
+                </Link>
+                ,{' '}
+                <Link to={`/org/${orgId}/${projectSlug}/c/public-api`}>
+                  Job Processor
+                </Link>
+                ,{' '}
+                <Link to={`/org/${orgId}/${projectSlug}/c/public-api`}>
+                  Indexer
+                </Link>
               </Col>
             </Row>
             <Row>
               <Col span={3}>Link to Project</Col>
               <Col>
-                <Link to="/p/">Dashboard</Link>,{' '}
-                <Link to="/p/">Analytics API</Link>
+                <Link to="/org/algolia/dashboard">Dashboard</Link>,{' '}
+                <Link to="/org/algolia/analytics">Analytics API</Link>
               </Col>
             </Row>
 
@@ -214,12 +232,12 @@ export const Project: React.FC = () => {
         </Col>
         <Col span={10}>
           <Card>
-            <ListRFCs projectId={projectId}></ListRFCs>
+            <ListRFCs orgId={orgId!} projectSlug={projectSlug!}></ListRFCs>
           </Card>
         </Col>
         <Col span={8}>
           <Card>
-            <ListUpdates projectId={projectId}></ListUpdates>
+            <ListUpdates orgId={orgId!} projectSlug={projectSlug}></ListUpdates>
           </Card>
         </Col>
       </Row>

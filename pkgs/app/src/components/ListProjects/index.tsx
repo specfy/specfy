@@ -1,7 +1,7 @@
 import { List, Skeleton } from 'antd';
 import Title from 'antd/es/typography/Title';
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useMount } from 'react-use';
 
 import { listProjects } from '../../api/projects';
@@ -13,11 +13,12 @@ import cls from './index.module.scss';
 export const ListProjects: React.FC = () => {
   const [initLoading, setInitLoading] = useState(true);
   const [list, setList] = useState<DBProject[]>([]);
+  const { orgId } = useParams();
 
   useMount(() => {
     setTimeout(async () => {
       setInitLoading(false);
-      const projects = await listProjects();
+      const projects = await listProjects(orgId!);
       setList(projects);
     }, 250);
   });
@@ -37,7 +38,7 @@ export const ListProjects: React.FC = () => {
               <List.Item.Meta
                 avatar={<AvatarAuto className={cls.avatar} name={item.name} />}
                 title={
-                  <Link to={`/p/${item.id}-${item.slug}`} relative="path">
+                  <Link to={`/org/${orgId}/${item.slug}`} relative="path">
                     {item.name}
                   </Link>
                 }
