@@ -30,37 +30,19 @@ import type { ApiProject } from '../../types/api/projects';
 
 import cls from './index.module.scss';
 
-// const tmp = {
-//   id: 'crawler',
-//   name: 'Crawler',
-//   description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pharetra eros vel felis scelerisque pretium. Maecenas ac feugiat orci, a sodales lacus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent urna libero, convallis eu commodo id, iaculis aliquam arcu.<br>
-//   Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; In interdum egestas massa, sit amet auctor ipsum maximus in. Phasellus diam nulla, condimentum et ultrices sit amet, venenatis eget arcu. In hac habitasse platea dictumst. Donec a viverra mi.`,
-//   author: '1',
-
-//   links: [
-//     {
-//       title: 'Github',
-//       link: 'https://github.com/bodinsamuel/rfc-editor',
-//     },
-//     {
-//       title: 'Slack',
-//       link: 'https://github.com/bodinsamuel/rfc-editor',
-//     },
-//   ],
-//   createdAt: '2023-01-01T00:00:00Z',
-//   updatedAt: '2023-01-01T00:00:00Z',
-// };
-
 export const Project: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [item, setItem] = useState<ApiProject>();
-  const { projectId } = useParams();
+  const [projectId, setProjectId] = useState<string>();
+  const params = useParams();
 
   useMount(() => {
+    const pID = params.projectId!.split('-')[0];
+    setProjectId(pID);
+
     setTimeout(async () => {
       setLoading(false);
-      const id = projectId!.split('-')[0];
-      const tmp = await getProject(id);
+      const tmp = await getProject(pID);
       if (!tmp) {
         return;
       }
@@ -71,7 +53,7 @@ export const Project: React.FC = () => {
         reviewers: ['1'],
         contributors: ['2', '3', '4'],
       });
-    }, 1000);
+    }, 250);
   });
 
   if (!loading && !item) {
@@ -232,12 +214,12 @@ export const Project: React.FC = () => {
         </Col>
         <Col span={10}>
           <Card>
-            <ListRFCs></ListRFCs>
+            <ListRFCs projectId={projectId}></ListRFCs>
           </Card>
         </Col>
         <Col span={8}>
           <Card>
-            <ListUpdates></ListUpdates>
+            <ListUpdates projectId={projectId}></ListUpdates>
           </Card>
         </Col>
       </Row>

@@ -2,7 +2,7 @@
 import { useMemo, useState, createContext, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-import { getMe } from '../api/user';
+import { getMe } from '../api/users';
 import type { ApiMe } from '../types/api/me';
 
 interface AuthContextInterface {

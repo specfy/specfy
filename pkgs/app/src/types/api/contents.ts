@@ -1,7 +1,8 @@
 import type { BlockLevelOne } from './content';
 
-export interface ApiRFC {
+export interface ApiContent {
   id: string;
+  projectId: string;
   type: 'rfc';
   typeId: string;
   name: string;

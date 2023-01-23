@@ -22,6 +22,19 @@ module.exports = {
     },
     project: './tsconfig.lint.json',
   },
+  settings: {
+    'import/extensions': ['.js', '.jsx', '.ts', '.tsx'],
+
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
+    },
+    'import/parsers': {
+      '@typescript-eslint/parser': ['.ts', '.tsx'],
+    },
+  },
+
   rules: {
     'prettier/prettier': [
       'error',
@@ -319,17 +332,5 @@ module.exports = {
 
     // TMP
     'react/prop-types': ['off'],
-  },
-  settings: {
-    'import/extensions': ['.js', '.jsx', '.ts', '.tsx'],
-
-    'import/resolver': {
-      node: {
-        extensions: ['.js', '.jsx', '.ts', '.tsx'],
-      },
-    },
-    'import/parsers': {
-      '@typescript-eslint/parser': ['.ts', '.tsx'],
-    },
   },
 };

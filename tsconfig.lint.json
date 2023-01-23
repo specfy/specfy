@@ -1,4 +1,4 @@
 {
   "references": [{ "path": "./pkgs/app/tsconfig.json" }],
-  "include": ["pkgs/app/src/"]
+  "include": ["pkgs/app/src"]
 }

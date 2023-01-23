@@ -1,7 +1,8 @@
 import type { BlockLevelOne } from '../api/content';
 
-export interface DBRFC {
+export interface DBContent {
   id: string;
+  projectId: string;
   type: 'rfc';
   typeId: string;
   name: string;

@@ -12,35 +12,15 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useMount } from 'react-use';
 
+import type { DBEvent } from '../../types/db/events';
+
 import cls from './index.module.scss';
 
-interface Event {
-  id: string;
-  event:
-    | 'approved'
-    | 'commented'
-    | 'created'
-    | 'deleted'
-    | 'rejected'
-    | 'updated';
-  typeId: string;
-  userId: string;
-  publishedAt: string;
-  payload: {
-    id: string;
-    type: 'rfc';
-    name: string;
-    slug: string;
-
-    project: {
-      id: string;
-      slug: string;
-    };
-  };
-}
-const tmpList: Event[] = [
+const tmpList: DBEvent[] = [
   {
     id: 'b',
+    orgId: 'algolia',
+    projectId: '3hjfe8SUHer',
     event: 'updated',
     typeId: '1',
     userId: '1',
@@ -58,6 +38,8 @@ const tmpList: Event[] = [
   },
   {
     id: 'a',
+    orgId: 'algolia',
+    projectId: '3hjfe8SUHer',
     event: 'created',
     typeId: '1',
     userId: '1',
@@ -75,6 +57,8 @@ const tmpList: Event[] = [
   },
   {
     id: 'c',
+    orgId: 'algolia',
+    projectId: '3hjfe8SUHer',
     event: 'deleted',
     typeId: '1',
     userId: '1',
@@ -92,6 +76,8 @@ const tmpList: Event[] = [
   },
   {
     id: 'd',
+    orgId: 'algolia',
+    projectId: '3hjfe8SUHer',
     event: 'approved',
     typeId: '5',
     userId: '1',
@@ -109,6 +95,8 @@ const tmpList: Event[] = [
   },
   {
     id: 'e',
+    orgId: 'algolia',
+    projectId: '3hjfe8SUHer',
     event: 'rejected',
     typeId: '5',
     userId: '1',
@@ -126,6 +114,8 @@ const tmpList: Event[] = [
   },
   {
     id: 'f',
+    orgId: 'algolia',
+    projectId: '3hjfe8SUHer',
     event: 'commented',
     typeId: '5',
     userId: '1',
@@ -143,7 +133,7 @@ const tmpList: Event[] = [
   },
 ];
 
-export const Update: React.FC<{ evt: Event }> = ({ evt }) => {
+export const Update: React.FC<{ evt: DBEvent }> = ({ evt }) => {
   const pl = evt.payload;
   let color = 'gray';
   let icon: ReactNode | undefined;
@@ -170,7 +160,7 @@ export const Update: React.FC<{ evt: Event }> = ({ evt }) => {
     target = (
       <Link
         className={cls.linkTarget}
-        to={`/p/${pl.project.id}-${pl.project.slug}/rfc/${pl.id}-${pl.slug}`}
+        to={`/p/${pl.project.id}-${pl.project.slug}/c/${pl.id}-${pl.slug}`}
       >
         {pl.name}
       </Link>
@@ -195,15 +185,17 @@ export const Update: React.FC<{ evt: Event }> = ({ evt }) => {
   );
 };
 
-export const ListUpdates: React.FC = () => {
+export const ListUpdates: React.FC<{ projectId?: string }> = ({
+  projectId,
+}) => {
   const [initLoading, setInitLoading] = useState(true);
-  const [list, setList] = useState<typeof tmpList>([]);
+  const [list, setList] = useState<DBEvent[]>([]);
 
   useMount(() => {
     setTimeout(() => {
       setInitLoading(false);
       setList(tmpList);
-    }, 1000);
+    }, 250);
   });
 
   return (

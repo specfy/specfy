@@ -1,3 +1,5 @@
+@import '../../theme.scss';
+
 .list {
   .item {
     padding: 8px 8px 8px 4px;
@@ -7,7 +9,11 @@
     margin-top: 4px;
   }
 
-  h4 { margin-bottom: 0 !important;}
+  .info {
+    font-size: $font-s;
+  }
+
+  h4 {
+    margin-bottom: 0 !important;
+  }
 }
-
-

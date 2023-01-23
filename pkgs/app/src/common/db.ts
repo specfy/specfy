@@ -4,18 +4,22 @@ import Dexie from 'dexie';
 import type { DBUser } from '../types/db/users';
 import type { DBOrg } from '../types/db/orgs';
 import type { DBProject } from '../types/db/projects';
+import { DBContent } from '../types/db/contents';
 
 export class MySubClassedDexie extends Dexie {
   users!: Table<DBUser>;
   orgs!: Table<DBOrg>;
   projects!: Table<DBProject>;
+  contents!: Table<DBContent>;
 
   constructor() {
     super('specfy');
-    this.version(1).stores({
+    this.version(2).stores({
       users: 'id, name, email, createdAt, updatedAt',
       orgs: 'id, name, createdAt, updatedAt',
       projects: 'id, slug, name, description, author, createdAt, updatedAt',
+      contents:
+        'id, projectId, type, typeId, name, slug, create, update, use, remove, tldr, blocks, authors, reviewers, approvedBy, status, locked, createdAt, updatedAt',
     });
   }
 }

@@ -36,9 +36,9 @@ const App: React.FC = () => {
               <Route path="/t/:techId" element={<Tech />} />
 
               <Route path="/p/:projectId" element={<Project />} />
-              <Route path="/p/:projectId/rfc/:rfcId" element={<RFC />} />
+              <Route path="/p/:projectId/c/:contentId" element={<RFC />} />
               <Route
-                path="/p/:projectId/c/:componentId"
+                path="/p/:projectId-:slug/i/:componentId"
                 element={<ComponentView />}
               />
             </Route>

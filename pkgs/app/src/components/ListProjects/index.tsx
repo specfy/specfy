@@ -19,7 +19,7 @@ export const ListProjects: React.FC = () => {
       setInitLoading(false);
       const projects = await listProjects();
       setList(projects);
-    }, 1000);
+    }, 250);
   });
 
   return (
@@ -41,7 +41,9 @@ export const ListProjects: React.FC = () => {
                     {item.name}
                   </Link>
                 }
-                description={<div>Last updated 5 hours ago</div>}
+                description={
+                  <div className={cls.info}>Last updated 5 hours ago</div>
+                }
               />
             </Skeleton>
           </List.Item>

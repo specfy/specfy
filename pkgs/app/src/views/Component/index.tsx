@@ -29,7 +29,7 @@ export const ComponentView: React.FC = () => {
     setTimeout(() => {
       setLoading(false);
       setItem(tmp);
-    }, 1000);
+    }, 250);
   });
 
   if (loading || !item) {
