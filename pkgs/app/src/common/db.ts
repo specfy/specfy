@@ -1,10 +1,10 @@
 import type { Table } from 'dexie';
 import Dexie from 'dexie';
 
-import type { DBUser } from '../types/db/users';
+import type { DBContent } from '../types/db/contents';
 import type { DBOrg } from '../types/db/orgs';
 import type { DBProject } from '../types/db/projects';
-import { DBContent } from '../types/db/contents';
+import type { DBUser } from '../types/db/users';
 
 export class MySubClassedDexie extends Dexie {
   users!: Table<DBUser>;
