@@ -12,6 +12,7 @@ import { Divider, Button, Menu, Dropdown, Badge, Layout } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { useListOrgs } from '../../api/orgs';
 import { useAuth } from '../../hooks/useAuth';
 import Logo from '../../static/logo.svg';
 import Logo1 from '../../static/specfy1.svg';
@@ -48,18 +49,21 @@ const userItems: MenuProps['items'] = [];
 
 export const LayoutHeader: React.FC = () => {
   const { user } = useAuth();
+  const orgsQuery = useListOrgs();
   const [orgs, setOrgs] = useState<MenuProps['items']>();
 
   useEffect(() => {
+    if (orgsQuery.isLoading) return;
+
     setOrgs(
-      user!.orgs.map((org) => {
+      orgsQuery.data!.map((org) => {
         return {
           key: org.id,
           label: <Link to="/">{org.name}</Link>,
         };
       })
     );
-  }, [user]);
+  }, [orgsQuery.isLoading]);
 
   return (
     <Layout.Header className={cls.header}>

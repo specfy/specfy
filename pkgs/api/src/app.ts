@@ -1,13 +1,15 @@
 import path from 'path';
 
 import { fastifyAutoload } from '@fastify/autoload';
+import cors from '@fastify/cors';
 import type { FastifyInstance, FastifyPluginOptions } from 'fastify';
 
 import { routes } from './routes/routes';
+import './db';
 
 export default async (f: FastifyInstance, opts: FastifyPluginOptions) => {
   // Place here your custom code!
-
+  await f.register(cors, {});
   // Do not touch the following lines
 
   // This loads all plugins defined in plugins

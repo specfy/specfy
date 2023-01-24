@@ -16,7 +16,8 @@
     "url": "https://github.com/bodinsamuel/rfc-editor/issues"
   },
   "workspaces": [
-    "pkgs/app"
+    "pkgs/app",
+    "pkgs/api"
   ],
   "homepage": "https://github.com/bodinsamuel/rfc-editor#readme",
   "devDependencies": {

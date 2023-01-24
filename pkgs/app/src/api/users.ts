@@ -1,28 +1,18 @@
+import type { ApiMe, ResGetMe } from 'api/src/types/api/me';
 import { useQuery } from 'react-query';
 
-import { db } from '../common/db';
-import type { ApiMe } from '../types/api/me';
-
 export async function getMe(): Promise<ApiMe> {
-  const me = (await db.users.get('1234'))!;
-  return {
-    ...me,
-    orgs: [
-      {
-        id: '1234',
-        name: "Samuel Bodin's org",
-      },
-      {
-        id: '6789',
-        name: 'Algolia',
-      },
-    ],
-  };
+  const res = await fetch('http://localhost:3000/0/me');
+  const json = (await res.json()) as ResGetMe;
+
+  return json.data;
 }
 
 export function useGetMe() {
   return useQuery({
     queryKey: ['getMe'],
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
     queryFn: async (): Promise<ApiMe> => {
       return await getMe();
     },

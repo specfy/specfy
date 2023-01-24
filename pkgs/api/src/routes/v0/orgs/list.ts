@@ -1,23 +1,21 @@
 import type { FastifyPluginCallback } from 'fastify';
 
+import type { ResListOrgs } from '../../../types/api/orgs';
+
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
-  fastify.get('/', async function () {
-    return {
+  fastify.get<{ Reply: ResListOrgs }>('/', async function (_req, res) {
+    res.status(200).send({
       data: [
         {
           id: 'samuelbodin',
           name: "Samuel Bodin's org",
-          createdAt: '2023-01-01T00:00:00Z',
-          updatedAt: '2023-01-01T00:00:00Z',
         },
         {
           id: 'algolia',
           name: 'Algolia',
-          createdAt: '2023-01-01T00:00:00Z',
-          updatedAt: '2023-01-01T00:00:00Z',
         },
       ],
-    };
+    });
   });
 
   done();

@@ -1,5 +1,5 @@
 {
-  "name": "myproject",
+  "name": "api",
   "version": "0.0.1",
   "description": "",
   "main": "src/app.js",
@@ -15,6 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "@fastify/autoload": "5.0.0",
+    "@fastify/cors": "8.2.0",
     "@fastify/sensible": "5.0.0",
     "fastify": "4.0.0",
     "fastify-cli": "5.7.1",
