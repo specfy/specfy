@@ -9,8 +9,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "pg": "8.8.0",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "sequelize": "6.28.0",
+    "sequelize-typescript": "2.1.5"
   },
   "devDependencies": {
     "@types/react": "18.0.26",

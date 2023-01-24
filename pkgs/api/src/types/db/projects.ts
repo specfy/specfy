@@ -4,8 +4,12 @@ export interface DBProject {
   slug: string;
   name: string;
   description: string;
-  author: string;
-  links: Array<{ title: string; link: string }>;
+  links: DBProjectLink[];
   createdAt: string;
   updatedAt: string;
+}
+
+export interface DBProjectLink {
+  title: string;
+  link: string;
 }

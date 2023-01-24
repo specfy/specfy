@@ -1,5 +1,3 @@
-import type { BlockLevelOne } from '../api/content';
-
 export interface DBContent {
   id: string;
   orgId: string;
@@ -13,7 +11,7 @@ export interface DBContent {
   use: string[];
   remove: string[];
   tldr: string;
-  blocks: BlockLevelOne[];
+  blocks: Record<string, any>;
   authors: string[];
   reviewers: string[];
   approvedBy: string[];
