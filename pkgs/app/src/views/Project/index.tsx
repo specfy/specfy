@@ -26,7 +26,7 @@ import { Container } from '../../components/Container';
 import { ListRFCs } from '../../components/ListRFCs';
 import { ListUpdates } from '../../components/ListUpdates';
 import imgUrl from '../../static/infra.png';
-import type { ApiProject } from '../../types/api/projects';
+import type { ApiProject } from 'api/src/types/api/projects';
 
 import cls from './index.module.scss';
 

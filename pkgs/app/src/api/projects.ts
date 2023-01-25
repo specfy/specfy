@@ -1,8 +1,12 @@
+import type { ApiMe } from 'api/src/types/api/me';
+import type { ApiProject, ResListProjects } from 'api/src/types/api/projects';
+import type { DBProject } from 'api/src/types/db/projects';
+import { useQuery } from 'react-query';
+
 import { db } from '../common/db';
 import { getRandomID, slugify } from '../common/string';
-import type { ApiMe } from '../types/api/me';
-import type { ApiProject } from '../types/api/projects';
-import type { DBProject } from '../types/db/projects';
+
+import { fetchApi } from './fetch';
 
 export async function createProject(
   data: Pick<ApiProject, 'description' | 'name' | 'orgId'>,
@@ -28,8 +32,19 @@ export async function createProject(
   return { id, slug };
 }
 
-export async function listProjects(orgId: string): Promise<DBProject[]> {
-  return await db.projects.where({ orgId }).limit(5).toArray();
+export function useListProjects(orgId: string) {
+  return useQuery({
+    queryKey: ['listProjects', orgId],
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    queryFn: async (): Promise<ResListProjects> => {
+      const { json } = await fetchApi<ResListProjects>('/projects', {
+        qp: { org_id: orgId },
+      });
+
+      return json;
+    },
+  });
 }
 
 export async function getProject(where: {

@@ -16,6 +16,7 @@ import {
   Button,
 } from 'antd';
 import Title from 'antd/es/typography/Title';
+import type { ApiContent } from 'api/src/types/api/contents';
 import clsn from 'classnames';
 import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
@@ -27,8 +28,7 @@ import { AvatarAuto } from '../../components/AvatarAuto';
 import { Container } from '../../components/Container';
 import { HeadingTree } from '../../components/HeadingTree';
 import { RFCStatusTag } from '../../components/RFCStatusTag';
-import type { Blocks } from '../../types/api/content';
-import type { ApiContent } from '../../types/api/contents';
+import type { Blocks } from 'api/src/types/api/content';
 
 import cls from './index.module.scss';
 

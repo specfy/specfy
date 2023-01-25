@@ -1,12 +1,12 @@
 import { Skeleton, Table } from 'antd';
 import Title from 'antd/es/typography/Title';
+import type { ApiContent } from 'api/src/types/api/contents';
+import type { DBContent } from 'api/src/types/db/contents';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useMount } from 'react-use';
 
 import { listContents } from '../../api/contents';
-import type { ApiContent } from '../../types/api/contents';
-import type { DBContent } from '../../types/db/contents';
 import { RFCStatusTag } from '../RFCStatusTag';
 
 export const ListRFCs: React.FC<{ orgId: string; projectSlug?: string }> = ({

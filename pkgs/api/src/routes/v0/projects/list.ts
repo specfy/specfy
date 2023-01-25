@@ -1,53 +1,49 @@
 import type { FastifyPluginCallback } from 'fastify';
 
+import { Project } from '../../../models';
+import type { Pagination } from '../../../types/api/api';
+import type {
+  ReqListProjects,
+  ResListProjects,
+} from '../../../types/api/projects';
+
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
-  fastify.get('/', async function () {
-    return {
-      data: [
-        {
-          id: '3hjfe8SUHer',
-          orgId: 'algolia',
-          slug: 'crawler',
-          name: 'Crawler',
-          description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pharetra eros vel felis scelerisque pretium. Maecenas ac feugiat orci, a sodales lacus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent urna libero, convallis eu commodo id, iaculis aliquam arcu.<br>
-        Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; In interdum egestas massa, sit amet auctor ipsum maximus in. Phasellus diam nulla, condimentum et ultrices sit amet, venenatis eget arcu. In hac habitasse platea dictumst. Donec a viverra mi.`,
-          author: '1',
-          links: [],
-          createdAt: '2023-01-01T00:00:00Z',
-          updatedAt: '2023-01-01T00:00:00Z',
+  fastify.get<{ Querystring: ReqListProjects; Reply: ResListProjects }>(
+    '/',
+    async function (req, res) {
+      const pagination: Pagination = {
+        current: 0,
+        page: 0,
+        total: 0,
+      };
+      console.log(req.query.org_id);
+
+      const projects = await Project.findAll({
+        where: {
+          // TODO: validation
+          orgId: req.query.org_id,
         },
-        {
-          id: '45jfe8SUFkjd',
-          orgId: 'algolia',
-          slug: 'dashboard',
-          name: 'Dashboard',
-          description:
-            'Donec mollis pretium nisl at dignissim. Duis dui magna, tempus a scelerisque id, semper eu metus.',
-          author: '1',
-          links: [],
-          createdAt: '2023-01-01T00:00:00Z',
-          updatedAt: '2023-01-01T00:00:00Z',
-        },
-        {
-          id: '65jfe8SUFkj8',
-          orgId: 'algolia',
-          slug: 'analytics-api',
-          name: 'Analytics API',
-          description:
-            'Duis dui magna, tempus a scelerisque id, semper eu metus.',
-          author: '1',
-          links: [],
-          createdAt: '2023-01-01T00:00:00Z',
-          updatedAt: '2023-01-01T00:00:00Z',
-        },
-      ],
-      pagination: {
-        total: 3,
-        current: 3,
-        page: 1,
-      },
-    };
-  });
+        limit: 10,
+        offset: 0,
+      });
+
+      res.status(200).send({
+        data: projects.map((p) => {
+          return {
+            id: p.id,
+            description: p.description,
+            links: p.links,
+            name: p.name,
+            orgId: p.orgId,
+            slug: p.slug,
+            createdAt: p.createdAt.toISOString(),
+            updatedAt: p.updatedAt.toISOString(),
+          };
+        }),
+        pagination,
+      });
+    }
+  );
 
   done();
 };

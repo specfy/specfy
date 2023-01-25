@@ -7,12 +7,11 @@ import {
 } from '@ant-design/icons';
 import { Skeleton, Timeline } from 'antd';
 import Title from 'antd/es/typography/Title';
+import type { DBEvent } from 'api/src/types/db/events';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useMount } from 'react-use';
-
-import type { DBEvent } from '../../types/db/events';
 
 import cls from './index.module.scss';
 

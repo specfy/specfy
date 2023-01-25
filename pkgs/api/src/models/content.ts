@@ -74,7 +74,7 @@ export class Content extends Model<
 
   @BeforeCreate
   static async before(model: Content): Promise<void> {
-    model.slug = slugify(model.name);
+    model.slug = slugify(model.name, { lower: true, trim: true });
     model.typeId =
       (await this.count({
         where: {

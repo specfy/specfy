@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useMount } from 'react-use';
 
 import { slugify } from '../../common/string';
-import type { BlockLevelOne } from '../../types/api/content';
+import type { BlockLevelOne } from 'api/src/types/api/content';
 
 import cls from './index.module.scss';
 

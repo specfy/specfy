@@ -1,9 +1,10 @@
 import type { ApiMe, ResGetMe } from 'api/src/types/api/me';
 import { useQuery } from 'react-query';
 
+import { fetchApi } from './fetch';
+
 export async function getMe(): Promise<ApiMe> {
-  const res = await fetch('http://localhost:3000/0/me');
-  const json = (await res.json()) as ResGetMe;
+  const { json } = await fetchApi<ResGetMe>('/me');
 
   return json.data;
 }
