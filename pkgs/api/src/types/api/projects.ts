@@ -24,6 +24,10 @@ export interface ResListProjects {
   pagination: Pagination;
 }
 
+// POST /
+export type ReqPostProject = Pick<ApiProject, 'description' | 'name' | 'orgId'>;
+export type ResPostProject = Pick<ApiProject, 'id' | 'slug'>;
+
 // GET /:slug
 export interface ReqProjectParams {
   slug: string;

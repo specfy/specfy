@@ -1,40 +1,25 @@
-import type { ApiMe } from 'api/src/types/api/me';
 import type {
-  ApiProject,
   ReqGetProject,
+  ReqPostProject,
   ReqProjectParams,
   ResGetProject,
   ResListProjects,
+  ResPostProject,
 } from 'api/src/types/api/projects';
 import { useQuery } from 'react-query';
-
-import { db } from '../common/db';
-import { getRandomID, slugify } from '../common/string';
 
 import { fetchApi } from './fetch';
 
 export async function createProject(
-  data: Pick<ApiProject, 'description' | 'name' | 'orgId'>,
-  { author }: { author: ApiMe }
-) {
-  const id = getRandomID();
-  const slug = slugify(data.name);
-  await db.projects.add(
-    {
-      id,
-      orgId: data.orgId,
-      name: data.name,
-      slug,
-      description: data.description,
-      author: author.id,
-      links: [],
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    },
-    id
+  data: ReqPostProject
+): Promise<ResPostProject> {
+  const { json } = await fetchApi<ResPostProject>(
+    '/projects',
+    { body: data },
+    'POST'
   );
 
-  return { id, slug };
+  return json;
 }
 
 export function useListProjects(orgId: string) {

@@ -11,24 +11,20 @@ import {
   Typography,
 } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-import type { ApiProject } from 'api/src/types/api/projects';
+import type { ReqPostProject } from 'api/src/types/api/projects';
 import { useNavigate } from 'react-router-dom';
 
 import { createProject } from '../../api/projects';
 import { Container } from '../../components/Container';
-import { useAuth } from '../../hooks/useAuth';
 
 import cls from './index.module.scss';
 
 export const ProjectCreate: React.FC = () => {
-  const { user } = useAuth();
   const { message } = App.useApp();
   const navigate = useNavigate();
 
-  const onFinish = async (
-    values: Pick<ApiProject, 'description' | 'name' | 'orgId'>
-  ) => {
-    const { slug } = await createProject(values, { author: user! });
+  const onFinish = async (values: ReqPostProject) => {
+    const { slug } = await createProject(values);
     message.success('Project created');
 
     navigate(`/org/${values.orgId}/${slug}`);
@@ -55,7 +51,6 @@ export const ProjectCreate: React.FC = () => {
             <Col span={8}>
               <Form.Item label="Organisation" name="orgId">
                 <Select
-                  defaultValue="default"
                   size="large"
                   options={[
                     {
