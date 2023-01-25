@@ -29,6 +29,7 @@ import { AvatarAuto } from '../../components/AvatarAuto';
 import { Container } from '../../components/Container';
 import { HeadingTree } from '../../components/HeadingTree';
 import { RFCStatusTag } from '../../components/RFCStatusTag';
+import { Time } from '../../components/Time';
 
 import cls from './index.module.scss';
 
@@ -88,7 +89,7 @@ export const RFC: React.FC = () => {
     documentTypeId: string;
     documentSlug: string;
   }>();
-  const proj = useGetProject({ org_id: p.orgId!, slug: p.projectSlug! });
+  const proj = useGetProject({ orgId: p.orgId!, slug: p.projectSlug! });
   const doc = useGetDocument({
     type: 'rfc',
     typeId: p.documentTypeId!,
@@ -151,7 +152,9 @@ export const RFC: React.FC = () => {
           </Title>
           <Space>
             <RFCStatusTag status={item.status} locked={item.locked} />
-            <div className={cls.lastUpdate}>Last update 5 hours ago</div>
+            <div className={cls.lastUpdate}>
+              <Time time={item.updatedAt} />
+            </div>
           </Space>
         </Col>
         <Col span={18}>

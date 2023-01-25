@@ -30,6 +30,7 @@ import { BigHeading } from '../../components/BigHeading';
 import { Container } from '../../components/Container';
 import { ListRFCs } from '../../components/ListRFCs';
 import { ListUpdates } from '../../components/ListUpdates';
+import { Time } from '../../components/Time';
 import imgUrl from '../../static/infra.png';
 
 import cls from './index.module.scss';
@@ -48,6 +49,7 @@ export const Project: React.FC = () => {
 
   const l = useGetProject(p);
 
+  // Delete modal
   const showModal = () => {
     setIsModalOpen(true);
     setTimeout(() => setWaitToRead(false), 2000);
@@ -57,7 +59,7 @@ export const Project: React.FC = () => {
     setWaitToRead(true);
   };
   const confirmDelete = async () => {
-    const res = await deleteProject(p);
+    await deleteProject(p);
     message.success('Project deleted');
 
     navigate(`/org/${p.orgId}`);
@@ -128,7 +130,9 @@ export const Project: React.FC = () => {
                   <Link to="/">Home</Link>
                 </Breadcrumb.Item>
               </Breadcrumb>
-              <BigHeading title={item.name}>Last update 5 hours ago</BigHeading>
+              <BigHeading title={item.name}>
+                <Time time={item.updatedAt} />
+              </BigHeading>
             </div>
             <div>
               <Dropdown.Button
