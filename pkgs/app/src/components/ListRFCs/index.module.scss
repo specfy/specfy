@@ -1,0 +1,15 @@
+@import '../../theme.scss';
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  h5 {
+    margin-bottom: 0;
+  }
+}
+
+.empty {
+  color: $gray-7;
+}

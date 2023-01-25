@@ -127,7 +127,7 @@ export const RFC: React.FC = () => {
 
   return (
     <Container className={clsn(cls.container, menu ? cls.withMenu : null)}>
-      <Breadcrumb style={{ margin: '0 0 0 4px' }}>
+      <Breadcrumb style={{ margin: '0 0 4px 4px' }}>
         <Breadcrumb.Item>
           <Link to="/">Home</Link>
         </Breadcrumb.Item>

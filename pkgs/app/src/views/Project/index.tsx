@@ -1,5 +1,5 @@
 import {
-  EditOutlined,
+  MoreOutlined,
   GithubOutlined,
   SlackOutlined,
   LinkOutlined,
@@ -7,16 +7,16 @@ import {
 import {
   Avatar,
   Breadcrumb,
-  Button,
   Card,
   Col,
   Divider,
+  Dropdown,
   Row,
   Skeleton,
 } from 'antd';
 import Title from 'antd/es/typography/Title';
 import type { ApiProject } from 'api/src/types/api/projects';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import { useGetProject } from '../../api/projects';
@@ -31,6 +31,14 @@ import cls from './index.module.scss';
 
 export const Project: React.FC = () => {
   const [item, setItem] = useState<ApiProject>();
+  const actions = useMemo(() => {
+    return [
+      {
+        key: 'remove',
+        label: 'Remove',
+      },
+    ];
+  }, []);
   const { orgId, projectSlug } = useParams<{
     orgId: string;
     projectSlug: string;
@@ -83,18 +91,25 @@ export const Project: React.FC = () => {
     <Container>
       <Row gutter={[16, 16]}>
         <Col span={18}>
-          <Breadcrumb style={{ margin: '0 0 0 4px' }}>
-            <Breadcrumb.Item>
-              <Link to="/">Home</Link>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>Project</Breadcrumb.Item>
-          </Breadcrumb>
-          <BigHeading title={item.name}>Last update 5 hours ago</BigHeading>
-        </Col>
-        <Col span={6}>
-          <Button type="primary" icon={<EditOutlined></EditOutlined>}>
-            Edit
-          </Button>
+          <div className={cls.header}>
+            <div>
+              <Breadcrumb style={{ margin: '0 0 4px 4px' }}>
+                <Breadcrumb.Item>
+                  <Link to="/">Home</Link>
+                </Breadcrumb.Item>
+              </Breadcrumb>
+              <BigHeading title={item.name}>Last update 5 hours ago</BigHeading>
+            </div>
+            <div>
+              <Dropdown.Button
+                type="default"
+                menu={{ items: actions }}
+                icon={<MoreOutlined />}
+              >
+                Edit
+              </Dropdown.Button>
+            </div>
+          </div>
         </Col>
         <Col span={18}>
           <Card>
