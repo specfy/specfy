@@ -6,12 +6,12 @@ export async function seed() {
     db.users,
     db.orgs,
     db.projects,
-    db.contents,
+    db.documents,
     async () => {
       await db.users.clear();
       await db.orgs.clear();
       await db.projects.clear();
-      await db.contents.clear();
+      await db.documents.clear();
 
       // Users
       await db.users.add({
@@ -89,8 +89,8 @@ export async function seed() {
         updatedAt: '2023-01-01T00:00:00Z',
       });
 
-      // Contents
-      await db.contents.add({
+      // documents
+      await db.documents.add({
         id: '5',
         orgId: 'algolia',
         projectId: '3hjfe8SUHer',
@@ -241,7 +241,7 @@ export async function seed() {
         createdAt: '2023-01-01T00:00:00Z',
         updatedAt: '2023-01-01T00:00:00Z',
       });
-      await db.contents.add({
+      await db.documents.add({
         id: '6',
         orgId: 'algolia',
         projectId: '3hjfe8SUHer',
@@ -263,7 +263,7 @@ export async function seed() {
         createdAt: '2023-01-01T00:00:00Z',
         updatedAt: '2023-01-01T00:00:00Z',
       });
-      await db.contents.add({
+      await db.documents.add({
         id: '7',
         orgId: 'algolia',
         projectId: '3hjfe8SUHer',

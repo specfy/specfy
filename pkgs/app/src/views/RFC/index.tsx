@@ -16,19 +16,19 @@ import {
   Button,
 } from 'antd';
 import Title from 'antd/es/typography/Title';
-import type { ApiContent } from 'api/src/types/api/contents';
+import type { Blocks } from 'api/src/types/api/document';
+import type { ApiDocument } from 'api/src/types/api/documents';
 import clsn from 'classnames';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { useMount } from 'react-use';
 
-import { getContent } from '../../api/contents';
+import { useGetDocument } from '../../api/documents';
+import { useGetProject } from '../../api/projects';
 import { slugify } from '../../common/string';
 import { AvatarAuto } from '../../components/AvatarAuto';
 import { Container } from '../../components/Container';
 import { HeadingTree } from '../../components/HeadingTree';
 import { RFCStatusTag } from '../../components/RFCStatusTag';
-import type { Blocks } from 'api/src/types/api/content';
 
 import cls from './index.module.scss';
 
@@ -80,35 +80,30 @@ export const Content: React.FC<{ block: Blocks }> = ({ block }) => {
 };
 
 export const RFC: React.FC = () => {
-  const [loading, setLoading] = useState(true);
   const [menu, setMenu] = useState(false);
-  const [, setContentId] = useState<string>();
-  const [item, setItem] = useState<ApiContent>();
-  const { orgId, projectId, cId } = useParams();
-
-  useMount(() => {
-    const cID = cId!.split('-')[0];
-    setContentId(cID);
-
-    setTimeout(async () => {
-      setLoading(false);
-      const content = await getContent(cID);
-      if (!content) {
-        return;
-      }
-      setItem(content);
-    }, 250);
+  const [item, setItem] = useState<ApiDocument>();
+  const p = useParams<{
+    orgId: string;
+    projectSlug: string;
+    documentTypeId: string;
+    documentSlug: string;
+  }>();
+  const proj = useGetProject({ org_id: p.orgId!, slug: p.projectSlug! });
+  const doc = useGetDocument({
+    type: 'rfc',
+    typeId: p.documentTypeId!,
+    org_id: p.orgId!,
   });
+
+  useEffect(() => {
+    setItem(doc.data?.data);
+  }, [doc.isLoading]);
 
   function onClickMenu() {
     setMenu(menu ? false : true);
   }
 
-  if (!loading && !item) {
-    return <div>not found</div>;
-  }
-
-  if (loading || !item) {
+  if (doc.isLoading) {
     return (
       <Container className={cls.container}>
         <Row gutter={[16, 16]}>
@@ -126,6 +121,10 @@ export const RFC: React.FC = () => {
     );
   }
 
+  if (!item) {
+    return <div>not found</div>;
+  }
+
   return (
     <Container className={clsn(cls.container, menu ? cls.withMenu : null)}>
       <Breadcrumb style={{ margin: '0 0 0 4px' }}>
@@ -133,7 +132,7 @@ export const RFC: React.FC = () => {
           <Link to="/">Home</Link>
         </Breadcrumb.Item>
         <Breadcrumb.Item>
-          <Link to={`/org/${orgId}/${projectId}`}>Crawler</Link>
+          <Link to={`/org/${p.orgId}/${proj.data!.data.slug}`}>Crawler</Link>
           <Button
             size="small"
             icon={<MenuUnfoldOutlined />}

@@ -1,7 +1,7 @@
 import type { Table } from 'dexie';
 import Dexie from 'dexie';
 
-import type { DBContent } from '../types/db/contents';
+import type { DBDocument } from '../types/db/documents';
 import type { DBOrg } from '../types/db/orgs';
 import type { DBProject } from '../types/db/projects';
 import type { DBUser } from '../types/db/users';
@@ -10,7 +10,7 @@ export class MySubClassedDexie extends Dexie {
   users!: Table<DBUser>;
   orgs!: Table<DBOrg>;
   projects!: Table<DBProject>;
-  contents!: Table<DBContent>;
+  documents!: Table<DBDocument>;
 
   constructor() {
     super('specfy');

@@ -16,7 +16,6 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         page: 0,
         total: 0,
       };
-      console.log(req.query.org_id);
 
       const projects = await Project.findAll({
         where: {
@@ -32,10 +31,14 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           return {
             id: p.id,
             description: p.description,
-            links: p.links,
             name: p.name,
             orgId: p.orgId,
             slug: p.slug,
+            // TODO: remove this from list
+            links: p.links,
+            contributors: [],
+            owners: [],
+            reviewers: [],
             createdAt: p.createdAt.toISOString(),
             updatedAt: p.updatedAt.toISOString(),
           };

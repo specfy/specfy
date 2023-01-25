@@ -15,49 +15,33 @@ import {
   Skeleton,
 } from 'antd';
 import Title from 'antd/es/typography/Title';
-import { useState } from 'react';
+import type { ApiProject } from 'api/src/types/api/projects';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { useMount } from 'react-use';
 
-import { getProject } from '../../api/projects';
+import { useGetProject } from '../../api/projects';
 import { AvatarAuto } from '../../components/AvatarAuto';
 import { BigHeading } from '../../components/BigHeading';
 import { Container } from '../../components/Container';
 import { ListRFCs } from '../../components/ListRFCs';
 import { ListUpdates } from '../../components/ListUpdates';
 import imgUrl from '../../static/infra.png';
-import type { ApiProject } from 'api/src/types/api/projects';
 
 import cls from './index.module.scss';
 
 export const Project: React.FC = () => {
-  const [loading, setLoading] = useState(true);
   const [item, setItem] = useState<ApiProject>();
-  const { orgId, projectSlug } = useParams();
+  const { orgId, projectSlug } = useParams<{
+    orgId: string;
+    projectSlug: string;
+  }>();
+  const l = useGetProject({ org_id: orgId!, slug: projectSlug! });
 
-  useMount(() => {
-    setTimeout(async () => {
-      setLoading(false);
-      const tmp = await getProject({ orgId: orgId!, slug: projectSlug! });
+  useEffect(() => {
+    setItem(l.data?.data);
+  }, [l.isLoading]);
 
-      if (!tmp) {
-        return;
-      }
-
-      setItem({
-        ...tmp,
-        owners: ['1'],
-        reviewers: ['1'],
-        contributors: ['2', '3', '4'],
-      });
-    }, 250);
-  });
-
-  if (!loading && !item) {
-    return <div>not found</div>;
-  }
-
-  if (loading || !item) {
+  if (l.isLoading) {
     return (
       <Container>
         <Row gutter={[16, 16]}>
@@ -89,6 +73,10 @@ export const Project: React.FC = () => {
         </Row>
       </Container>
     );
+  }
+
+  if (!item) {
+    return <div>not found</div>;
   }
 
   return (
@@ -170,7 +158,7 @@ export const Project: React.FC = () => {
 
             <Divider plain />
             <Title level={5}>Team</Title>
-            <div className={cls.team}>
+            {/* <div className={cls.team}>
               <div>
                 <div className={cls.teamLabel}>Admin</div>
                 <Avatar.Group>
@@ -198,8 +186,8 @@ export const Project: React.FC = () => {
                     })}
                   </Avatar.Group>
                 </div>
-              )}
-            </div>
+              )} */}
+            {/* </div> */}
           </Card>
         </Col>
         <Col span={6}>
@@ -232,7 +220,7 @@ export const Project: React.FC = () => {
         </Col>
         <Col span={10}>
           <Card>
-            <ListRFCs orgId={orgId!} projectSlug={projectSlug!}></ListRFCs>
+            <ListRFCs project={l.data!.data}></ListRFCs>
           </Card>
         </Col>
         <Col span={8}>

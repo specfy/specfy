@@ -11,12 +11,12 @@ import {
   Typography,
 } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
+import type { ApiProject } from 'api/src/types/api/projects';
 import { useNavigate } from 'react-router-dom';
 
 import { createProject } from '../../api/projects';
 import { Container } from '../../components/Container';
 import { useAuth } from '../../hooks/useAuth';
-import type { ApiProject } from 'api/src/types/api/projects';
 
 import cls from './index.module.scss';
 

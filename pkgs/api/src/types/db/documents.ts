@@ -1,4 +1,4 @@
-export interface DBContent {
+export interface DBDocument {
   id: string;
   orgId: string;
   projectId: string;

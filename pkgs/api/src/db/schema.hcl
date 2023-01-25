@@ -117,8 +117,8 @@ table "projects" {
 }
 
 
-// ------------------------ Contents
-table "contents" {
+// ------------------------ Documents
+table "documents" {
   schema = schema.public
   column "id" {
     type = uuid

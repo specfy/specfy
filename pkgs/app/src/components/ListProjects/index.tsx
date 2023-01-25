@@ -1,9 +1,6 @@
 import { List, Skeleton } from 'antd';
 import Title from 'antd/es/typography/Title';
-import type { DBProject } from 'api/src/types/db/projects';
-import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { useMount } from 'react-use';
 
 import { useListProjects } from '../../api/projects';
 import { AvatarAuto } from '../AvatarAuto';

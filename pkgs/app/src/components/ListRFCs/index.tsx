@@ -1,29 +1,16 @@
-import { Skeleton, Table } from 'antd';
+import { Empty, Skeleton, Table } from 'antd';
 import Title from 'antd/es/typography/Title';
-import type { ApiContent } from 'api/src/types/api/contents';
-import type { DBContent } from 'api/src/types/db/contents';
-import { useState } from 'react';
+import type { ApiDocument } from 'api/src/types/api/documents';
+import type { ApiProject } from 'api/src/types/api/projects';
 import { Link } from 'react-router-dom';
-import { useMount } from 'react-use';
 
-import { listContents } from '../../api/contents';
+import { useListDocuments } from '../../api/documents';
 import { RFCStatusTag } from '../RFCStatusTag';
 
-export const ListRFCs: React.FC<{ orgId: string; projectSlug?: string }> = ({
-  orgId,
-  projectSlug,
-}) => {
-  const [initLoading, setInitLoading] = useState(true);
-  const [list, setList] = useState<ApiContent[]>([]);
+export const ListRFCs: React.FC<{ project: ApiProject }> = ({ project }) => {
+  const l = useListDocuments({ org_id: project.orgId, project_id: project.id });
 
-  useMount(() => {
-    setTimeout(async () => {
-      setInitLoading(false);
-      setList(await listContents({ orgId, slug: projectSlug }));
-    }, 250);
-  });
-
-  if (initLoading) {
+  if (l.isLoading) {
     return (
       <div>
         <Skeleton active title={false} paragraph={{ rows: 3 }}></Skeleton>
@@ -31,18 +18,25 @@ export const ListRFCs: React.FC<{ orgId: string; projectSlug?: string }> = ({
     );
   }
 
+  if (!l.data) {
+    <div>
+      <Title level={5}>Technical Specs</Title>
+      <Empty></Empty>
+    </div>;
+  }
+
   return (
     <div>
       <Title level={5}>Technical Specs</Title>
-      <Table rowKey="id" dataSource={list} size="small">
+      <Table rowKey="id" dataSource={l.data!.data} size="small">
         <Table.Column
           title=""
           dataIndex="name"
           key="name"
-          render={(_, item: DBContent) => {
+          render={(_, item: ApiDocument) => {
             return (
               <Link
-                to={`/org/${orgId}/${projectId}/c/${item.id}-${item.slug}`}
+                to={`/org/${project.orgId}/${project.slug}/${item.type}/${item.typeId}/${item.slug}`}
                 relative="path"
               >
                 RFC-{item.typeId} - {item.name}
@@ -53,7 +47,7 @@ export const ListRFCs: React.FC<{ orgId: string; projectSlug?: string }> = ({
         <Table.Column
           title="Status"
           dataIndex="status"
-          render={(_, item: DBContent) => {
+          render={(_, item: ApiDocument) => {
             return <RFCStatusTag status={item.status} locked={item.locked} />;
           }}
         />

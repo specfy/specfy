@@ -1,6 +1,11 @@
 import type { ApiMe } from 'api/src/types/api/me';
-import type { ApiProject, ResListProjects } from 'api/src/types/api/projects';
-import type { DBProject } from 'api/src/types/db/projects';
+import type {
+  ApiProject,
+  ReqGetProject,
+  ReqProjectParams,
+  ResGetProject,
+  ResListProjects,
+} from 'api/src/types/api/projects';
 import { useQuery } from 'react-query';
 
 import { db } from '../common/db';
@@ -47,9 +52,17 @@ export function useListProjects(orgId: string) {
   });
 }
 
-export async function getProject(where: {
-  orgId: string;
-  slug: string;
-}): Promise<DBProject | undefined> {
-  return await db.projects.where(where).first();
+export function useGetProject(opts: ReqGetProject & ReqProjectParams) {
+  return useQuery({
+    queryKey: ['getProject', opts.org_id, opts.slug],
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    queryFn: async (): Promise<ResGetProject> => {
+      const { json } = await fetchApi<ResGetProject>(`/projects/${opts.slug}`, {
+        qp: { org_id: opts.org_id },
+      });
+
+      return json;
+    },
+  });
 }

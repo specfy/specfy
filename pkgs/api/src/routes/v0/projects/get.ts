@@ -34,6 +34,10 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         links: p.links,
         orgId: p.orgId,
         slug: p.slug,
+        // TODO: fill this
+        contributors: [],
+        owners: [],
+        reviewers: [],
         createdAt: p.createdAt.toISOString(),
         updatedAt: p.updatedAt.toISOString(),
       },

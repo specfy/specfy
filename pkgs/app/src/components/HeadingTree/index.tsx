@@ -1,10 +1,10 @@
 import { Anchor } from 'antd';
 import type { AnchorLinkItemProps } from 'antd/es/anchor/Anchor';
+import type { BlockLevelOne } from 'api/src/types/api/document';
 import { useState } from 'react';
 import { useMount } from 'react-use';
 
 import { slugify } from '../../common/string';
-import type { BlockLevelOne } from 'api/src/types/api/content';
 
 import cls from './index.module.scss';
 

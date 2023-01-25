@@ -1,5 +1,5 @@
 import { User } from '../models';
-import { Content } from '../models/content';
+import { Document } from '../models/document';
 import { Org } from '../models/org';
 import { Project } from '../models/project';
 
@@ -10,7 +10,7 @@ export async function clean() {
     User.truncate(),
     Org.truncate(),
     Project.truncate(),
-    Content.truncate(),
+    Document.truncate(),
   ]);
 }
 
@@ -48,19 +48,19 @@ export async function seed() {
     description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pharetra eros vel felis scelerisque pretium. Maecenas ac feugiat orci, a sodales lacus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent urna libero, convallis eu commodo id, iaculis aliquam arcu.<br>
     Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; In interdum egestas massa, sit amet auctor ipsum maximus in. `,
   });
-  const p2 = await Project.create({
+  await Project.create({
     orgId: 'algolia',
     name: 'Dashboard',
     description: `Donec mollis pretium nisl at dignissim. Duis dui magna, tempus a scelerisque id, semper eu metus.`,
   });
-  const p3 = await Project.create({
+  await Project.create({
     orgId: 'algolia',
     name: 'Analytics API',
     description: `Duis dui magna, tempus a scelerisque id, semper eu metus.`,
   });
 
   // Contents
-  await Content.create({
+  await Document.create({
     orgId: 'algolia',
     projectId: p1.id,
     type: 'rfc',
@@ -200,9 +200,39 @@ export async function seed() {
       },
       { type: 'heading', content: 'Thanks', level: 4 },
     ],
+    locked: true,
+    status: 'approved',
     // authors: ['1'],
     // reviewers: ['2'],
     // approvedBy: ['3'],
+  });
+  await Document.create({
+    orgId: 'algolia',
+    projectId: p1.id,
+    type: 'rfc',
+    name: 'Frontend definition',
+    // create: '3',
+    // update: ['2'],
+    // use: ['4', '6'],
+    // remove: ['1'],
+    tldr: 'Donec eget porttitor nisi. Proin ac augue bibendum, posuere dui vel, volutpat ligula.',
+    blocks: [],
+    locked: false,
+    status: 'draft',
+  });
+  await Document.create({
+    orgId: 'algolia',
+    projectId: p1.id,
+    type: 'rfc',
+    name: 'Use of Oauth2 in authentication system',
+    // create: '3',
+    // update: ['2'],
+    // use: ['4', '6'],
+    // remove: ['1'],
+    tldr: 'Donec eget porttitor nisi. Proin ac augue bibendum, posuere dui vel, volutpat ligula.',
+    blocks: [],
+    locked: false,
+    status: 'rejected',
   });
 }
 

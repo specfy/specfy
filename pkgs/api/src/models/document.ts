@@ -12,15 +12,25 @@ import {
 } from 'sequelize-typescript';
 import slugify from 'slugify';
 
-import type { DBContent } from '../types/db/contents';
+import type { DBDocument } from '../types/db/documents';
 
 import type { Org } from './org';
 import type { Project } from './project';
 
-@Table({ tableName: 'contents', modelName: 'content' })
-export class Content extends Model<
-  DBContent,
-  Pick<DBContent, 'blocks' | 'name' | 'orgId' | 'projectId' | 'tldr' | 'type'>
+@Table({ tableName: 'documents', modelName: 'document' })
+export class Document extends Model<
+  DBDocument,
+  Pick<
+    DBDocument,
+    | 'blocks'
+    | 'locked'
+    | 'name'
+    | 'orgId'
+    | 'projectId'
+    | 'status'
+    | 'tldr'
+    | 'type'
+  >
 > {
   @PrimaryKey
   @Default(DataType.UUIDV4)
@@ -73,7 +83,7 @@ export class Content extends Model<
   declare updatedAt: Date;
 
   @BeforeCreate
-  static async before(model: Content): Promise<void> {
+  static async before(model: Document): Promise<void> {
     model.slug = slugify(model.name, { lower: true, trim: true });
     model.typeId =
       (await this.count({

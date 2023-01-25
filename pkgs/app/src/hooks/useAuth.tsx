@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
+import type { ApiMe } from 'api/src/types/api/me';
 import { useMemo, useState, createContext, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import { getMe } from '../api/users';
-import type { ApiMe } from 'api/src/types/api/me';
 
 interface AuthContextInterface {
   user: ApiMe | null;

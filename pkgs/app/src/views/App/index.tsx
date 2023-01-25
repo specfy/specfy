@@ -2,9 +2,7 @@ import { App as AntdApp } from 'antd';
 import type React from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { useMount } from 'react-use';
 
-import { seed } from '../../common/db.seed';
 import { AuthLayout } from '../../components/AuthLayout';
 import { NotFound } from '../../components/NotFound';
 import { AuthProvider } from '../../hooks/useAuth';
@@ -23,11 +21,6 @@ const HomeRedirect: React.FC = () => {
 };
 
 const App: React.FC = () => {
-  useMount(async () => {
-    console.log('seeding');
-    await seed();
-  });
-
   return (
     <AntdApp>
       <QueryClientProvider client={queryClient}>
@@ -42,7 +35,7 @@ const App: React.FC = () => {
 
               <Route path="/org/:orgId/:projectSlug" element={<Project />} />
               <Route
-                path="/org/:orgId/:projectSlug/c/:contentId"
+                path="/org/:orgId/:projectSlug/rfc/:documentTypeId/:documentSlug"
                 element={<RFC />}
               />
               <Route
