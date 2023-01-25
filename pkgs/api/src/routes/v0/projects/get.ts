@@ -3,7 +3,6 @@ import type { FastifyPluginCallback } from 'fastify';
 import { notFound } from '../../../common/errors';
 import { Project } from '../../../models';
 import type {
-  ReqGetProject,
   ReqProjectParams,
   ResGetProject,
 } from '../../../types/api/projects';
@@ -11,13 +10,12 @@ import type {
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{
     Params: ReqProjectParams;
-    Querystring: ReqGetProject;
     Reply: ResGetProject;
   }>('/', async function (req, res) {
     const p = await Project.findOne({
       where: {
         // TODO validation
-        orgId: req.query.org_id,
+        orgId: req.params.orgId,
         slug: req.params.slug,
       },
     });

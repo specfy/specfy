@@ -1,8 +1,9 @@
 import { App as AntdApp } from 'antd';
 import type React from 'react';
-import { QueryClient, QueryClientProvider } from 'react-query';
+import { QueryClientProvider } from 'react-query';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
+import { queryClient } from '../../common/query';
 import { AuthLayout } from '../../components/AuthLayout';
 import { NotFound } from '../../components/NotFound';
 import { AuthProvider } from '../../hooks/useAuth';
@@ -13,8 +14,6 @@ import { Project } from '../Project';
 import { ProjectCreate } from '../ProjectCreate';
 import { RFC } from '../RFC';
 import { Tech } from '../Tech';
-
-const queryClient = new QueryClient();
 
 const HomeRedirect: React.FC = () => {
   return <Navigate to={'/org/algolia'}></Navigate>;

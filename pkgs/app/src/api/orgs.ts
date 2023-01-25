@@ -11,9 +11,6 @@ export async function listOrgs(): Promise<ApiOrg[]> {
 export function useListOrgs() {
   return useQuery({
     queryKey: ['listOrgs'],
-    refetchInterval: 0,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
     queryFn: async (): Promise<ApiOrg[]> => {
       return await listOrgs();
     },

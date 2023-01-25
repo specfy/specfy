@@ -12,8 +12,6 @@ export async function getMe(): Promise<ApiMe> {
 export function useGetMe() {
   return useQuery({
     queryKey: ['getMe'],
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
     queryFn: async (): Promise<ApiMe> => {
       return await getMe();
     },

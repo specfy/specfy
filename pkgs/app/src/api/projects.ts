@@ -1,5 +1,4 @@
 import type {
-  ReqGetProject,
   ReqPostProject,
   ReqProjectParams,
   ResGetProject,
@@ -7,6 +6,8 @@ import type {
   ResPostProject,
 } from 'api/src/types/api/projects';
 import { useQuery } from 'react-query';
+
+import { queryClient } from '../common/query';
 
 import { fetchApi } from './fetch';
 
@@ -19,14 +20,27 @@ export async function createProject(
     'POST'
   );
 
+  queryClient.removeQueries(['listProjects', data.orgId]);
+
+  return json;
+}
+
+export async function deleteProject(opts: ReqProjectParams) {
+  const { json } = await fetchApi<ResPostProject>(
+    `/projects/${opts.orgId}/${opts.slug}`,
+    undefined,
+    'DELETE'
+  );
+
+  queryClient.removeQueries(['listProjects', opts.orgId]);
+  queryClient.removeQueries(['getProject', opts.orgId, opts.slug]);
+
   return json;
 }
 
 export function useListProjects(orgId: string) {
   return useQuery({
     queryKey: ['listProjects', orgId],
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
     queryFn: async (): Promise<ResListProjects> => {
       const { json } = await fetchApi<ResListProjects>('/projects', {
         qp: { org_id: orgId },
@@ -37,15 +51,13 @@ export function useListProjects(orgId: string) {
   });
 }
 
-export function useGetProject(opts: ReqGetProject & ReqProjectParams) {
+export function useGetProject(opts: ReqProjectParams) {
   return useQuery({
-    queryKey: ['getProject', opts.org_id, opts.slug],
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
+    queryKey: ['getProject', opts.orgId, opts.slug],
     queryFn: async (): Promise<ResGetProject> => {
-      const { json } = await fetchApi<ResGetProject>(`/projects/${opts.slug}`, {
-        qp: { org_id: opts.org_id },
-      });
+      const { json } = await fetchApi<ResGetProject>(
+        `/projects/${opts.orgId}/${opts.slug}`
+      );
 
       return json;
     },

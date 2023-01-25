@@ -49,7 +49,16 @@ export const ProjectCreate: React.FC = () => {
         >
           <Row gutter={[16, 16]}>
             <Col span={8}>
-              <Form.Item label="Organisation" name="orgId">
+              <Form.Item
+                label="Organisation"
+                name="orgId"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please select an organization',
+                  },
+                ]}
+              >
                 <Select
                   size="large"
                   options={[

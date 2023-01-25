@@ -1,8 +1,8 @@
-export async function fetchApi<T>(
+export async function fetchApi<T extends Record<string, any>>(
   path: string,
   opts?: { qp?: Record<string, any>; body?: any },
   method?: RequestInit['method']
-) {
+): Promise<{ res: Response; json: T }> {
   const url = new URL('http://localhost:3000/');
   url.pathname = `/0${path}`;
 
@@ -17,7 +17,10 @@ export async function fetchApi<T>(
       'content-type': 'application/json',
     },
   });
-  const json = (await res.json()) as T;
+  let json: T;
+  if (res.status !== 204) {
+    json = (await res.json()) as T;
+  }
 
-  return { res, json };
+  return { res, json: json! || {} };
 }

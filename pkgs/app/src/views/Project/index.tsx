@@ -3,23 +3,28 @@ import {
   GithubOutlined,
   SlackOutlined,
   LinkOutlined,
+  DeleteOutlined,
 } from '@ant-design/icons';
 import {
+  App,
   Avatar,
   Breadcrumb,
+  Button,
   Card,
   Col,
   Divider,
   Dropdown,
+  Modal,
   Row,
   Skeleton,
 } from 'antd';
+import type { ItemType } from 'antd/es/menu/hooks/useItems';
 import Title from 'antd/es/typography/Title';
 import type { ApiProject } from 'api/src/types/api/projects';
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
-import { useGetProject } from '../../api/projects';
+import { deleteProject, useGetProject } from '../../api/projects';
 import { AvatarAuto } from '../../components/AvatarAuto';
 import { BigHeading } from '../../components/BigHeading';
 import { Container } from '../../components/Container';
@@ -30,20 +35,45 @@ import imgUrl from '../../static/infra.png';
 import cls from './index.module.scss';
 
 export const Project: React.FC = () => {
+  const { message } = App.useApp();
+  const navigate = useNavigate();
+
   const [item, setItem] = useState<ApiProject>();
-  const actions = useMemo(() => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [waitToRead, setWaitToRead] = useState(true);
+  const pathParams = useParams<{ orgId: string; projectSlug: string }>();
+  const p = useMemo(() => {
+    return { orgId: pathParams.orgId!, slug: pathParams.projectSlug! };
+  }, [pathParams]);
+
+  const l = useGetProject(p);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+    setTimeout(() => setWaitToRead(false), 2000);
+  };
+  const cancelDelete = () => {
+    setIsModalOpen(false);
+    setWaitToRead(true);
+  };
+  const confirmDelete = async () => {
+    const res = await deleteProject(p);
+    message.success('Project deleted');
+
+    navigate(`/org/${p.orgId}`);
+  };
+
+  const actions = useMemo<ItemType[]>(() => {
     return [
       {
         key: 'remove',
-        label: 'Remove',
+        label: 'Delete',
+        icon: <DeleteOutlined />,
+        onClick: showModal,
+        danger: true,
       },
     ];
   }, []);
-  const { orgId, projectSlug } = useParams<{
-    orgId: string;
-    projectSlug: string;
-  }>();
-  const l = useGetProject({ org_id: orgId!, slug: projectSlug! });
 
   useEffect(() => {
     setItem(l.data?.data);
@@ -130,35 +160,35 @@ export const Project: React.FC = () => {
             <Row>
               <Col span={3}>Components</Col>
               <Col>
-                <Link to={`/org/${orgId}/${projectSlug}/c/public-api`}>
+                <Link to={`/org/${p.orgId}/${p.slug}/c/public-api`}>
                   Public API
                 </Link>
                 ,{' '}
-                <Link to={`/org/${orgId}/${projectSlug}/c/public-api`}>
+                <Link to={`/org/${p.orgId}/${p.slug}/c/public-api`}>
                   Private API
                 </Link>
                 ,{' '}
-                <Link to={`/org/${orgId}/${projectSlug}/c/public-api`}>
+                <Link to={`/org/${p.orgId}/${p.slug}/c/public-api`}>
                   Frontend
                 </Link>
                 ,{' '}
-                <Link to={`/org/${orgId}/${projectSlug}/c/public-api`}>
+                <Link to={`/org/${p.orgId}/${p.slug}/c/public-api`}>
                   Email Cron
                 </Link>
                 ,{' '}
-                <Link to={`/org/${orgId}/${projectSlug}/c/public-api`}>
+                <Link to={`/org/${p.orgId}/${p.slug}/c/public-api`}>
                   Message Consumer
                 </Link>
                 ,{' '}
-                <Link to={`/org/${orgId}/${projectSlug}/c/public-api`}>
+                <Link to={`/org/${p.orgId}/${p.slug}/c/public-api`}>
                   Fetcher
                 </Link>
                 ,{' '}
-                <Link to={`/org/${orgId}/${projectSlug}/c/public-api`}>
+                <Link to={`/org/${p.orgId}/${p.slug}/c/public-api`}>
                   Job Processor
                 </Link>
                 ,{' '}
-                <Link to={`/org/${orgId}/${projectSlug}/c/public-api`}>
+                <Link to={`/org/${p.orgId}/${p.slug}/c/public-api`}>
                   Indexer
                 </Link>
               </Col>
@@ -240,10 +270,36 @@ export const Project: React.FC = () => {
         </Col>
         <Col span={8}>
           <Card>
-            <ListUpdates orgId={orgId!} projectSlug={projectSlug}></ListUpdates>
+            <ListUpdates orgId={p.orgId} projectSlug={p.slug}></ListUpdates>
           </Card>
         </Col>
       </Row>
+
+      <Modal
+        title="Delete this project?"
+        open={isModalOpen}
+        onOk={confirmDelete}
+        onCancel={cancelDelete}
+        footer={[
+          <Button key="back" type="text" onClick={cancelDelete}>
+            Return
+          </Button>,
+          <Button
+            danger
+            key="submit"
+            type="primary"
+            disabled={waitToRead}
+            onClick={confirmDelete}
+          >
+            Delete
+          </Button>,
+        ]}
+      >
+        <p>
+          Are you sure to delete this project? <br></br>This action is not
+          reversible
+        </p>
+      </Modal>
     </Container>
   );
 };
