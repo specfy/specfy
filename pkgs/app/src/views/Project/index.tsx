@@ -155,8 +155,10 @@ export const Project: React.FC = () => {
         <Col span={18}>
           <Card>
             <div dangerouslySetInnerHTML={{ __html: proj.description }}></div>
-            <Divider plain />
-            <Title level={5}>Technical Aspect</Title>
+            <Divider plain orientation="left">
+              Technical Aspect
+            </Divider>
+            <Title level={5}></Title>
             {comps.data?.data ? (
               <TechnicalAspects
                 components={comps.data.data}

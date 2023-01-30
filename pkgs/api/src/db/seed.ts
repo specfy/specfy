@@ -270,7 +270,7 @@ export async function seed() {
     orgId: 'algolia',
     projectId: p1.id,
     display: {},
-    inComponent: c1.id,
+    inComponent: null,
     fromComponents: [],
     toComponents: [],
   });

@@ -16,6 +16,7 @@ import { Line } from './Line';
 import cls from './index.module.scss';
 
 export const ComponentView: React.FC = () => {
+  // TODO: filter RFC
   const [proj, setProj] = useState<ApiProject>();
   const [comp, setComp] = useState<ApiComponent>();
   const tmpParams = useParams<Partial<RouteComponent>>();
@@ -31,6 +32,7 @@ export const ComponentView: React.FC = () => {
   // Components
   const [inComp, setInComp] = useState<ApiComponent>();
   const [hosts, setHosts] = useState<ApiComponent[]>([]);
+  const [contains, setContains] = useState<ApiComponent[]>([]);
   const [read, setRead] = useState<ApiComponent[]>([]);
   const [write, setWrite] = useState<ApiComponent[]>([]);
   const [readwrite, setReadWrite] = useState<ApiComponent[]>([]);
@@ -50,7 +52,9 @@ export const ComponentView: React.FC = () => {
   }, [comps.isLoading, tmpParams]);
 
   useEffect(() => {
-    if (!comp) return;
+    if (!comp) {
+      return;
+    }
 
     const list = new Map<string, ApiComponent>();
     for (const c of comps.data!.data) {
@@ -64,11 +68,11 @@ export const ComponentView: React.FC = () => {
     const _write = new Map<string, ApiComponent>();
     const _readwrite = new Map<string, ApiComponent>();
 
+    // Recursive find hosts
     if (_in) {
       let l = _in;
       // eslint-disable-next-line no-constant-condition
       while (true) {
-        console.log('in', l);
         if (l.type === 'hosting') _hosts.push(l);
         if (!l.inComponent) {
           break;
@@ -81,6 +85,21 @@ export const ComponentView: React.FC = () => {
       }
     }
 
+    // Find contains
+    // First find direct ascendant then register all childs
+    function getAllChilds(id: string): ApiComponent[] {
+      const tmp = [];
+      for (const c of comps.data!.data) {
+        if (c.inComponent === id) {
+          tmp.push(c);
+          tmp.push(...getAllChilds(c.id));
+        }
+      }
+      return tmp;
+    }
+    setContains(getAllChilds(comp.id));
+
+    // Find data exchange
     for (const c of comps.data!.data) {
       if (c.id !== comp.id) {
         const to = c.fromComponents.includes(comp.id);
@@ -92,7 +111,6 @@ export const ComponentView: React.FC = () => {
     }
 
     // TODO: fix receive data from instead of write
-    // TODO: add host host what
 
     // Dedup read / write
     for (const id of comp.toComponents) {
@@ -160,8 +178,13 @@ export const ComponentView: React.FC = () => {
                 No description.
               </Typography.Text>
             )}
-            {(comp.tech || hosts.length > 0 || inComp) && (
-              <Divider orientation="left">Stack</Divider>
+            {(comp.tech ||
+              hosts.length > 0 ||
+              inComp ||
+              contains.length > 0) && (
+              <Divider plain orientation="left">
+                Stack
+              </Divider>
             )}
             {comp.tech && (
               <div className={cls.line}>
@@ -187,10 +210,19 @@ export const ComponentView: React.FC = () => {
               <Line title="Hosted on" list={hosts} params={params} />
             )}
 
+            {contains.length > 0 && (
+              <Line title="Contains" list={contains} params={params} />
+            )}
+
             {inComp && (
               <Line title="Run inside" list={[inComp]} params={params} />
             )}
-            <Divider orientation="left">Data</Divider>
+
+            {(readwrite.length > 0 || read.length > 0 || write.length > 0) && (
+              <Divider plain orientation="left">
+                Data
+              </Divider>
+            )}
 
             {readwrite.length > 0 && (
               <Line title="Read and Write" list={readwrite} params={params} />

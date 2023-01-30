@@ -14,14 +14,25 @@ export const TechnicalAspects: React.FC<{
         <div>Stack</div>
         <div>
           {components.map((comp) => {
-            if (comp.type !== 'hosting') return null;
+            if (comp.type !== 'hosting') {
+              return null;
+            }
             return (
               <span key={comp.id} className={cls.comp}>
-                <Link key={comp.id} to={`/org/${orgId}/${slug}/c/${comp.slug}`}>
+                <Link to={`/org/${orgId}/${slug}/c/${comp.slug}`}>
                   {comp.name}
                 </Link>
               </span>
             );
+          })}
+          {components.map((comp) => {
+            return comp.tech?.map((tech) => {
+              return (
+                <span key={comp.id} className={cls.comp}>
+                  <Link to={`/org/${orgId}/t/${tech}`}>{tech}</Link>
+                </span>
+              );
+            });
           })}
         </div>
       </div>
