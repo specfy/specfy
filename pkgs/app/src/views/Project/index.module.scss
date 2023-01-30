@@ -36,3 +36,21 @@
   font-size: $font-m;
   line-height: $line-height-m;
 }
+
+// Comp
+.line {
+  display: grid;
+  grid-template-columns: 150px auto;
+  margin-bottom: 12px;
+}
+.comp {
+  a {
+    color: $gray-8;
+  }
+  font-size: $font;
+  display: inline-block;
+
+  & + .comp:before {
+    content: ', ';
+  }
+}

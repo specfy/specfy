@@ -1,3 +1,4 @@
+export { Component } from './component';
 export { Document } from './document';
 export { Org } from './org';
 export { Project } from './project';

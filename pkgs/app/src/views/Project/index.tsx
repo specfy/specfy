@@ -17,6 +17,7 @@ import {
   Modal,
   Row,
   Skeleton,
+  Typography,
 } from 'antd';
 import type { ItemType } from 'antd/es/menu/hooks/useItems';
 import Title from 'antd/es/typography/Title';
@@ -24,6 +25,7 @@ import type { ApiProject } from 'api/src/types/api/projects';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
+import { useListComponents } from '../../api/components';
 import { deleteProject, useGetProject } from '../../api/projects';
 import { AvatarAuto } from '../../components/AvatarAuto';
 import { BigHeading } from '../../components/BigHeading';
@@ -32,22 +34,27 @@ import { ListRFCs } from '../../components/ListRFCs';
 import { ListUpdates } from '../../components/ListUpdates';
 import { Time } from '../../components/Time';
 import imgUrl from '../../static/infra.png';
+import type { RouteProject } from '../../types/routes';
 
+import { TechnicalAspects } from './TechnicalAspect';
 import cls from './index.module.scss';
 
 export const Project: React.FC = () => {
   const { message } = App.useApp();
   const navigate = useNavigate();
+  const tmpParams = useParams<Partial<RouteProject>>();
+  const params = tmpParams as RouteProject;
 
-  const [item, setItem] = useState<ApiProject>();
+  const [proj, setProj] = useState<ApiProject>();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [waitToRead, setWaitToRead] = useState(true);
-  const pathParams = useParams<{ orgId: string; projectSlug: string }>();
-  const p = useMemo(() => {
-    return { orgId: pathParams.orgId!, slug: pathParams.projectSlug! };
-  }, [pathParams]);
 
-  const l = useGetProject(p);
+  // Data fetch
+  const res = useGetProject(params);
+  const comps = useListComponents(params.projectSlug, {
+    org_id: params.orgId,
+    project_id: proj?.id,
+  });
 
   // Delete modal
   const showModal = () => {
@@ -59,10 +66,10 @@ export const Project: React.FC = () => {
     setWaitToRead(true);
   };
   const confirmDelete = async () => {
-    await deleteProject(p);
+    await deleteProject(params);
     message.success('Project deleted');
 
-    navigate(`/org/${p.orgId}`);
+    navigate(`/org/${params.orgId}`);
   };
 
   const actions = useMemo<ItemType[]>(() => {
@@ -78,10 +85,10 @@ export const Project: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    setItem(l.data?.data);
-  }, [l.isLoading]);
+    setProj(res.data?.data);
+  }, [res.isLoading]);
 
-  if (l.isLoading) {
+  if (res.isLoading || comps.isLoading) {
     return (
       <Container>
         <Row gutter={[16, 16]}>
@@ -115,7 +122,7 @@ export const Project: React.FC = () => {
     );
   }
 
-  if (!item) {
+  if (!proj) {
     return <div>not found</div>;
   }
 
@@ -130,8 +137,8 @@ export const Project: React.FC = () => {
                   <Link to="/">Home</Link>
                 </Breadcrumb.Item>
               </Breadcrumb>
-              <BigHeading title={item.name}>
-                <Time time={item.updatedAt} />
+              <BigHeading title={proj.name}>
+                <Time time={proj.updatedAt} />
               </BigHeading>
             </div>
             <div>
@@ -147,63 +154,20 @@ export const Project: React.FC = () => {
         </Col>
         <Col span={18}>
           <Card>
-            <div dangerouslySetInnerHTML={{ __html: item.description }}></div>
+            <div dangerouslySetInnerHTML={{ __html: proj.description }}></div>
             <Divider plain />
             <Title level={5}>Technical Aspect</Title>
-            <Row>
-              <Col span={3}>Stack</Col>
-              <Col>
-                <Link to="/t/nodejs">GCP</Link>,{' '}
-                <Link to="/t/nodejs">NodeJS</Link>,{' '}
-                <Link to="/t/nodejs">Postgres</Link>,{' '}
-                <Link to="/t/nodejs">RabbitMQ</Link>,{' '}
-                <Link to="/t/nodejs">Algolia</Link>,{' '}
-                <Link to="/t/nodejs">Redis</Link>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={3}>Components</Col>
-              <Col>
-                <Link to={`/org/${p.orgId}/${p.slug}/c/public-api`}>
-                  Public API
-                </Link>
-                ,{' '}
-                <Link to={`/org/${p.orgId}/${p.slug}/c/public-api`}>
-                  Private API
-                </Link>
-                ,{' '}
-                <Link to={`/org/${p.orgId}/${p.slug}/c/public-api`}>
-                  Frontend
-                </Link>
-                ,{' '}
-                <Link to={`/org/${p.orgId}/${p.slug}/c/public-api`}>
-                  Email Cron
-                </Link>
-                ,{' '}
-                <Link to={`/org/${p.orgId}/${p.slug}/c/public-api`}>
-                  Message Consumer
-                </Link>
-                ,{' '}
-                <Link to={`/org/${p.orgId}/${p.slug}/c/public-api`}>
-                  Fetcher
-                </Link>
-                ,{' '}
-                <Link to={`/org/${p.orgId}/${p.slug}/c/public-api`}>
-                  Job Processor
-                </Link>
-                ,{' '}
-                <Link to={`/org/${p.orgId}/${p.slug}/c/public-api`}>
-                  Indexer
-                </Link>
-              </Col>
-            </Row>
-            <Row>
-              <Col span={3}>Link to Project</Col>
-              <Col>
-                <Link to="/org/algolia/dashboard">Dashboard</Link>,{' '}
-                <Link to="/org/algolia/analytics">Analytics API</Link>
-              </Col>
-            </Row>
+            {comps.data?.data ? (
+              <TechnicalAspects
+                components={comps.data.data}
+                orgId={params.orgId}
+                slug={params.projectSlug}
+              />
+            ) : (
+              <Typography.Text type="secondary">
+                Nothing to show.
+              </Typography.Text>
+            )}
 
             <Divider plain />
             <Title level={5}>Team</Title>
@@ -211,32 +175,33 @@ export const Project: React.FC = () => {
               <div>
                 <div className={cls.teamLabel}>Admin</div>
                 <Avatar.Group>
-                  {item.owners.map((user) => {
+                  {proj.owners.map((user) => {
                     return <AvatarAuto key={user} name="samuel bodin" />;
                   })}
                 </Avatar.Group>
               </div>
-              {item.reviewers.length > 0 && (
+              {proj.reviewers.length > 0 && (
                 <div>
                   <div className={cls.teamLabel}>Reviewers</div>
                   <Avatar.Group>
-                    {item.reviewers.map((user) => {
+                    {proj.reviewers.map((user) => {
                       return <AvatarAuto key={user} name="raphael daguenet" />;
                     })}
                   </Avatar.Group>
                 </div>
               )}
-              {item.contributors.length > 0 && (
+              {proj.contributors.length > 0 && (
                 <div>
                   <div className={cls.teamLabel}>Contributors</div>
                   <Avatar.Group>
-                    {item.contributors.map((user) => {
+                    {proj.contributors.map((user) => {
                       return <AvatarAuto key={user} name="nicolas torres" />;
                     })}
                   </Avatar.Group>
                 </div>
               )} */}
             {/* </div> */}
+            <Typography.Text type="secondary">Nothing to show.</Typography.Text>
           </Card>
         </Col>
         <Col span={6}>
@@ -245,10 +210,10 @@ export const Project: React.FC = () => {
               <img src={imgUrl} alt="" />
             </div>
           </Card>
-          {item.links && (
+          {proj.links && (
             <div>
               <Divider />
-              {item.links.map((link) => {
+              {proj.links.map((link) => {
                 let icon = <LinkOutlined />;
                 if (link.title === 'Gihub') icon = <GithubOutlined />;
                 else if (link.title === 'Slack') icon = <SlackOutlined />;
@@ -269,12 +234,15 @@ export const Project: React.FC = () => {
         </Col>
         <Col span={10}>
           <Card>
-            <ListRFCs project={l.data!.data}></ListRFCs>
+            <ListRFCs project={proj}></ListRFCs>
           </Card>
         </Col>
         <Col span={8}>
           <Card>
-            <ListUpdates orgId={p.orgId} projectSlug={p.slug}></ListUpdates>
+            <ListUpdates
+              orgId={params.orgId}
+              projectSlug={params.projectSlug}
+            ></ListUpdates>
           </Card>
         </Col>
       </Row>

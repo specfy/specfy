@@ -38,7 +38,7 @@ const App: React.FC = () => {
                 element={<RFC />}
               />
               <Route
-                path="/org/:orgId/:projectSlug/i/:componentId"
+                path="/org/:orgId/:projectSlug/c/:componentSlug"
                 element={<ComponentView />}
               />
             </Route>

@@ -8,7 +8,10 @@ export const Time: React.FC<{ time: string }> = ({ time }) => {
   }, [time]);
 
   return (
-    <Popover content={dt.toLocaleString(DateTime.DATETIME_SHORT)}>
+    <Popover
+      content={dt.toLocaleString(DateTime.DATETIME_SHORT)}
+      placement="right"
+    >
       Updated {dt.toRelative()}
     </Popover>
   );

@@ -1,7 +1,4 @@
-import { User } from '../models';
-import { Document } from '../models/document';
-import { Org } from '../models/org';
-import { Project } from '../models/project';
+import { Component, User, Document, Org, Project } from '../models';
 
 import './';
 
@@ -11,6 +8,7 @@ export async function clean() {
     Org.truncate(),
     Project.truncate(),
     Document.truncate(),
+    Component.truncate(),
   ]);
 }
 
@@ -53,7 +51,7 @@ export async function seed() {
     name: 'Dashboard',
     description: `Donec mollis pretium nisl at dignissim. Duis dui magna, tempus a scelerisque id, semper eu metus.`,
   });
-  await Project.create({
+  const p3 = await Project.create({
     orgId: 'algolia',
     name: 'Analytics API',
     description: `Duis dui magna, tempus a scelerisque id, semper eu metus.`,
@@ -233,6 +231,83 @@ export async function seed() {
     blocks: [],
     locked: false,
     status: 'rejected',
+  });
+
+  // Components
+  const c1 = await Component.create({
+    name: 'GCP',
+    type: 'hosting',
+    orgId: 'algolia',
+    projectId: p1.id,
+    display: {},
+    inComponent: null,
+    fromComponents: [],
+    toComponents: [],
+  });
+  const c2 = await Component.create({
+    name: 'Kubernetes',
+    type: 'hosting',
+    orgId: 'algolia',
+    projectId: p1.id,
+    display: {},
+    inComponent: c1.id,
+    fromComponents: [],
+    toComponents: [],
+  });
+  const c4 = await Component.create({
+    name: 'Postgresql',
+    type: 'component',
+    orgId: 'algolia',
+    projectId: p1.id,
+    display: {},
+    inComponent: c1.id,
+    fromComponents: [],
+    toComponents: [],
+  });
+  const c5 = await Component.create({
+    name: 'Datadog',
+    type: 'thirdparty',
+    orgId: 'algolia',
+    projectId: p1.id,
+    display: {},
+    inComponent: c1.id,
+    fromComponents: [],
+    toComponents: [],
+  });
+  const c3 = await Component.create({
+    name: 'Private API',
+    type: 'component',
+    orgId: 'algolia',
+    projectId: p1.id,
+    description:
+      'Morbi sit amet porttitor justo, quis sagittis nulla. Donec et ullamcorper dolor. Maecenas pharetra imperdiet nulla nec commodo.',
+    display: {},
+    inComponent: c2.id,
+    fromComponents: [c4.id],
+    toComponents: [c4.id, c5.id],
+    tech: ['NodeJS', 'Typescript', 'Bash', 'AtlasDB'],
+  });
+  await Component.create({
+    name: 'Frontend',
+    type: 'component',
+    orgId: 'algolia',
+    projectId: p1.id,
+    display: {},
+    inComponent: c2.id,
+    fromComponents: [c3.id],
+    toComponents: [c3.id],
+    tech: ['React', 'Typescript', 'Webpack'],
+  });
+  await Component.create({
+    name: 'Analytics API',
+    type: 'project',
+    typeId: p3.id,
+    orgId: 'algolia',
+    projectId: p1.id,
+    display: {},
+    inComponent: c2.id,
+    fromComponents: [],
+    toComponents: [c3.id],
   });
 }
 

@@ -16,7 +16,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       where: {
         // TODO validation
         orgId: req.params.orgId,
-        slug: req.params.slug,
+        slug: req.params.projectSlug,
       },
     });
 

@@ -1,38 +1,122 @@
-import { Breadcrumb, Card, Divider, Skeleton, Tag } from 'antd';
-import { useState } from 'react';
+import { Breadcrumb, Card, Divider, Skeleton, Tag, Typography } from 'antd';
+import type { ApiComponent } from 'api/src/types/api/components';
+import type { ApiProject } from 'api/src/types/api/projects';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { useMount } from 'react-use';
 
+import { useListComponents } from '../../api/components';
+import { useGetProject } from '../../api/projects';
 import { BigHeading } from '../../components/BigHeading';
 import { Container } from '../../components/Container';
 import { ListRFCs } from '../../components/ListRFCs';
 import imgUrl from '../../static/component.png';
+import type { RouteComponent } from '../../types/routes';
 
+import { Line } from './Line';
 import cls from './index.module.scss';
 
-const tmp = {
-  id: 'public-api',
-  name: 'Public API',
-  type: 'service',
-  description:
-    'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pharetra eros vel felis scelerisque pretium. Maecenas ac feugiat orci, a sodales lacus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent urna libero, convallis eu commodo id, iaculis aliquam arcu.',
-  createdAt: '2023-01-01T00:00:00Z',
-  updatedAt: '2023-01-01T00:00:00Z',
-};
-
 export const ComponentView: React.FC = () => {
-  const [loading, setLoading] = useState(true);
-  const [item, setItem] = useState<typeof tmp>();
-  const { orgId, projectSlug } = useParams();
+  const [proj, setProj] = useState<ApiProject>();
+  const [comp, setComp] = useState<ApiComponent>();
+  const tmpParams = useParams<Partial<RouteComponent>>();
+  const params = tmpParams as RouteComponent;
 
-  useMount(() => {
-    setTimeout(() => {
-      setLoading(false);
-      setItem(tmp);
-    }, 250);
+  // Data fetch
+  const res = useGetProject(params);
+  const comps = useListComponents(params.projectSlug, {
+    org_id: params.orgId,
+    project_id: proj?.id,
   });
 
-  if (loading || !item) {
+  // Components
+  const [inComp, setInComp] = useState<ApiComponent>();
+  const [hosts, setHosts] = useState<ApiComponent[]>([]);
+  const [read, setRead] = useState<ApiComponent[]>([]);
+  const [write, setWrite] = useState<ApiComponent[]>([]);
+  const [readwrite, setReadWrite] = useState<ApiComponent[]>([]);
+
+  useEffect(() => {
+    setProj(res.data?.data);
+  }, [res.isLoading]);
+
+  useEffect(() => {
+    if (!comps.data?.data) return;
+
+    setComp(
+      comps.data.data.find((c) => {
+        return c.slug === params.componentSlug!;
+      })
+    );
+  }, [comps.isLoading, tmpParams]);
+
+  useEffect(() => {
+    if (!comp) return;
+
+    const list = new Map<string, ApiComponent>();
+    for (const c of comps.data!.data) {
+      list.set(c.id, c);
+    }
+
+    const _in = comp.inComponent && list.get(comp.inComponent);
+
+    const _hosts: ApiComponent[] = [];
+    const _read = new Map<string, ApiComponent>();
+    const _write = new Map<string, ApiComponent>();
+    const _readwrite = new Map<string, ApiComponent>();
+
+    if (_in) {
+      let l = _in;
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        console.log('in', l);
+        if (l.type === 'hosting') _hosts.push(l);
+        if (!l.inComponent) {
+          break;
+        }
+        l = list.get(l.inComponent)!;
+      }
+
+      if (_in.type !== 'hosting') {
+        setInComp(_in);
+      }
+    }
+
+    for (const c of comps.data!.data) {
+      if (c.id !== comp.id) {
+        const to = c.fromComponents.includes(comp.id);
+        const from = c.toComponents.includes(comp.id);
+        if (to && !from) _write.set(c.id, c);
+        else if (!to && from) _read.set(c.id, c);
+        else if (to && from) _readwrite.set(c.id, c);
+      }
+    }
+
+    // TODO: fix receive data from instead of write
+    // TODO: add host host what
+
+    // Dedup read / write
+    for (const id of comp.toComponents) {
+      _write.set(id, list.get(id)!);
+    }
+    for (const id of comp.fromComponents) {
+      _read.set(id, list.get(id)!);
+    }
+    for (const [id] of _read) {
+      if (!_write.has(id)) {
+        continue;
+      }
+      _read.delete(id);
+      _write.delete(id);
+      _readwrite.set(id, list.get(id)!);
+    }
+
+    setHosts(_hosts);
+    setRead(Array.from(_read.values()));
+    setWrite(Array.from(_write.values()));
+    setReadWrite(Array.from(_readwrite.values()));
+  }, [comp]);
+
+  if (res.isLoading || comps.isLoading) {
     return (
       <Container className={cls.grid}>
         <div className={cls.left}>
@@ -45,110 +129,85 @@ export const ComponentView: React.FC = () => {
     );
   }
 
+  if (!comp || !proj) {
+    return <div>not found</div>;
+  }
+
   return (
     <Container className={cls.grid}>
       <div className={cls.left}>
         <div>
-          <Breadcrumb>
+          <Breadcrumb style={{ margin: '0 0 4px 4px' }}>
             <Breadcrumb.Item>
               <Link to="/">Home</Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>
-              <Link to={`/org/${orgId}/${projectSlug}`}>Crawler</Link>
+              <Link to={`/org/${params.orgId}/${params.projectSlug}`}>
+                Crawler
+              </Link>
             </Breadcrumb.Item>
           </Breadcrumb>
-          <BigHeading title={item.name}>
-            <Tag>{item.type}</Tag>
+          <BigHeading title={comp.name}>
+            <Tag>{comp.type}</Tag>
           </BigHeading>
         </div>
         <div>
           <Card>
-            <div dangerouslySetInnerHTML={{ __html: item.description }}></div>
-            <Divider />
-            <div className={cls.line}>
-              <div>Written with</div>
-              <div>
-                <Link to="/t/nodejs" className={cls.language}>
-                  <i className={`devicon-nodejs-plain`}></i> NodeJS
-                </Link>
-                <Link to="/t/nodejs" className={cls.language}>
-                  <i className={`devicon-typescript-plain`}></i> Typescript
-                </Link>
-                <Link to="/t/nodejs" className={cls.language}>
-                  <i className={`devicon-python-plain`}></i> Python
-                </Link>
+            {comp.description ? (
+              <div dangerouslySetInnerHTML={{ __html: comp.description }}></div>
+            ) : (
+              <Typography.Text type="secondary">
+                No description.
+              </Typography.Text>
+            )}
+            {(comp.tech || hosts.length > 0 || inComp) && (
+              <Divider orientation="left">Stack</Divider>
+            )}
+            {comp.tech && (
+              <div className={cls.line}>
+                <div>Build with</div>
+                <div>
+                  {comp.tech.map((tech) => {
+                    const name = tech.toLocaleLowerCase();
+                    return (
+                      <Link
+                        key={tech}
+                        to={`/org/${params.orgId}/t/${name}`}
+                        className={cls.language}
+                      >
+                        <i className={`devicon-${name}-plain`}></i> {tech}
+                      </Link>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-            <div className={cls.line}>
-              <div>Build with</div>
-              <div>
-                <Link to="/t/nodejs" className={cls.language}>
-                  <i className={`devicon-docker-plain`}></i> Docker
-                </Link>
-                <Link to="/t/nodejs" className={cls.language}>
-                  <i className={`devicon-webpack-plain`}></i> Webpack
-                </Link>
-              </div>
-            </div>
-            <div className={cls.line}>
-              <div>Hosted on</div>
-              <div>
-                <Link to="/t/nodejs" className={cls.language}>
-                  <i className={`devicon-gcp-plain`}></i> GCP
-                </Link>
-                <Link to="/t/nodejs" className={cls.language}>
-                  <i className={`devicon-kubernetes-plain`}></i> Kubernetes
-                </Link>
-              </div>
-            </div>
-            <div className={cls.line}>
-              <div>Read and Write to</div>
-              <div>
-                <Link to="/t/nodejs" className={cls.language}>
-                  <i className={`devicon-postgresql-plain`}></i> Postgresql
-                </Link>
-                <Link to="/t/nodejs" className={cls.language}>
-                  <i className={`devicon-redis-plain`}></i> Redis
-                </Link>
-              </div>
-            </div>
-            <div className={cls.line}>
-              <div>Read from</div>
-              <div>
-                <Link to="/t/nodejs" className={cls.language}>
-                  <i className={`devicon-elasticsearch-plain`}></i>{' '}
-                  Elasticsearch
-                </Link>
-              </div>
-            </div>
-            <div className={cls.line}>
-              <div>Write to</div>
-              <div>
-                <Link to="/t/nodejs" className={cls.language}>
-                  <i className={`devicon-datadog-plain`}></i> Datadog
-                </Link>
-                <Link to="/t/nodejs" className={cls.language}>
-                  <i className={`devicon-sentry-plain`}></i> Sentry
-                </Link>
-              </div>
-            </div>
-            <Divider />
-            <div className={cls.line}>
-              <div>Read from</div>
-              <div>
-                <Link to="/t/nodejs" className={cls.language}>
-                  Dashboard API
-                </Link>
-                <Link to="/t/nodejs" className={cls.language}>
-                  Analytics API
-                </Link>
-              </div>
-            </div>
+            )}
+
+            {hosts.length > 0 && (
+              <Line title="Hosted on" list={hosts} params={params} />
+            )}
+
+            {inComp && (
+              <Line title="Run inside" list={[inComp]} params={params} />
+            )}
+            <Divider orientation="left">Data</Divider>
+
+            {readwrite.length > 0 && (
+              <Line title="Read and Write" list={readwrite} params={params} />
+            )}
+
+            {read.length > 0 && (
+              <Line title="Read" list={read} params={params} />
+            )}
+
+            {write.length > 0 && (
+              <Line title="Write" list={write} params={params} />
+            )}
           </Card>
         </div>
         <div>
           <Card>
-            <ListRFCs orgId={orgId!}></ListRFCs>
+            <ListRFCs project={proj}></ListRFCs>
           </Card>
         </div>
       </div>

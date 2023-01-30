@@ -85,7 +85,7 @@ table "projects" {
     null = false
   }
   column "description" {
-    type = varchar(500)
+    type = text
     null = true
   }
   column "links" {
@@ -195,5 +195,81 @@ table "documents" {
       column.type_id
     ]
     unique = true
+  }
+}
+
+// ------------------------ Components
+table "components" {
+  schema = schema.public
+  column "id" {
+    type = uuid
+    null = false
+  }
+  column "org_id" {
+    type = varchar(35)
+    null = false
+  }
+  column "project_id" {
+    type = uuid
+    null = false
+  }
+
+  column "type" {
+    type = varchar(25)
+    null = false
+  }
+  column "type_id" {
+    type = uuid
+    null = true
+  }
+
+  column "name" {
+    type = varchar(100)
+    null = false
+  }
+  column "slug" {
+    type = varchar(100)
+    null = false
+  }
+  column "description" {
+    type = text
+    null = true
+  }
+  column "tech" {
+    type = json
+    null = true
+  }
+
+  column "display" {
+    type = json
+    null = false
+  }
+
+  column "in_component" {
+    type = uuid
+    null = true
+  }
+  column "to_components" {
+    type = json
+    null = true
+  }
+  column "from_components" {
+    type = json
+    null = true
+  }
+
+  column "created_at" {
+    type    = timestamp(6)
+    default = sql("now()")
+    null    = false
+  }
+  column "updated_at" {
+    type    = timestamp(6)
+    default = sql("now()")
+    null    = false
+  }
+
+  primary_key {
+    columns = [column.id]
   }
 }

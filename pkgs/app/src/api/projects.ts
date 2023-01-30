@@ -27,13 +27,13 @@ export async function createProject(
 
 export async function deleteProject(opts: ReqProjectParams) {
   const { json } = await fetchApi<ResPostProject>(
-    `/projects/${opts.orgId}/${opts.slug}`,
+    `/projects/${opts.orgId}/${opts.projectSlug}`,
     undefined,
     'DELETE'
   );
 
   queryClient.removeQueries(['listProjects', opts.orgId]);
-  queryClient.removeQueries(['getProject', opts.orgId, opts.slug]);
+  queryClient.removeQueries(['getProject', opts.orgId, opts.projectSlug]);
 
   return json;
 }
@@ -53,10 +53,10 @@ export function useListProjects(orgId: string) {
 
 export function useGetProject(opts: ReqProjectParams) {
   return useQuery({
-    queryKey: ['getProject', opts.orgId, opts.slug],
+    queryKey: ['getProject', opts.orgId, opts.projectSlug],
     queryFn: async (): Promise<ResGetProject> => {
       const { json } = await fetchApi<ResGetProject>(
-        `/projects/${opts.orgId}/${opts.slug}`
+        `/projects/${opts.orgId}/${opts.projectSlug}`
       );
 
       return json;

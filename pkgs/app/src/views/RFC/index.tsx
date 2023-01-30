@@ -30,6 +30,7 @@ import { Container } from '../../components/Container';
 import { HeadingTree } from '../../components/HeadingTree';
 import { RFCStatusTag } from '../../components/RFCStatusTag';
 import { Time } from '../../components/Time';
+import type { RouteDocument } from '../../types/routes';
 
 import cls from './index.module.scss';
 
@@ -83,12 +84,7 @@ export const Content: React.FC<{ block: Blocks }> = ({ block }) => {
 export const RFC: React.FC = () => {
   const [menu, setMenu] = useState(false);
   const [item, setItem] = useState<ApiDocument>();
-  const p = useParams<{
-    orgId: string;
-    projectSlug: string;
-    documentTypeId: string;
-    documentSlug: string;
-  }>();
+  const p = useParams<Partial<RouteDocument>>();
   const proj = useGetProject({ orgId: p.orgId!, slug: p.projectSlug! });
   const doc = useGetDocument({
     type: 'rfc',
