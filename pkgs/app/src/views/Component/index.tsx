@@ -1,11 +1,22 @@
-import { Breadcrumb, Card, Divider, Skeleton, Tag, Typography } from 'antd';
+import {
+  Avatar,
+  Breadcrumb,
+  Card,
+  Divider,
+  Skeleton,
+  Tag,
+  Typography,
+} from 'antd';
 import type { ApiComponent } from 'api/src/types/api/components';
 import type { ApiProject } from 'api/src/types/api/projects';
+import type React from 'react';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import { useListComponents } from '../../api/components';
 import { useGetProject } from '../../api/projects';
+import { supported } from '../../common/component';
+import { AvatarAuto } from '../../components/AvatarAuto';
 import { BigHeading } from '../../components/BigHeading';
 import { Container } from '../../components/Container';
 import { ListRFCs } from '../../components/ListRFCs';
@@ -19,6 +30,7 @@ export const ComponentView: React.FC = () => {
   // TODO: filter RFC
   const [proj, setProj] = useState<ApiProject>();
   const [comp, setComp] = useState<ApiComponent>();
+  const [icon, setIcon] = useState<React.ReactNode>();
   const tmpParams = useParams<Partial<RouteComponent>>();
   const params = tmpParams as RouteComponent;
 
@@ -55,6 +67,13 @@ export const ComponentView: React.FC = () => {
     if (!comp) {
       return;
     }
+
+    const name = comp.name.toLocaleLowerCase();
+    setIcon(
+      name in supported ? (
+        <Avatar icon={<i className={`devicon-${name}-plain colored`}></i>} />
+      ) : undefined
+    );
 
     const list = new Map<string, ApiComponent>();
     for (const c of comps.data!.data) {
@@ -165,7 +184,7 @@ export const ComponentView: React.FC = () => {
               </Link>
             </Breadcrumb.Item>
           </Breadcrumb>
-          <BigHeading title={comp.name}>
+          <BigHeading title={comp.name} avatar={icon}>
             <Tag>{comp.type}</Tag>
           </BigHeading>
         </div>
