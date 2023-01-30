@@ -1,34 +1,68 @@
-import { Breadcrumb, Card, Col, Row, Skeleton, Tag } from 'antd';
+import { Avatar, Breadcrumb, Card, Col, Row, Skeleton, Tag } from 'antd';
 import Title from 'antd/es/typography/Title';
-import { useState } from 'react';
+import type { ApiComponent } from 'api/src/types/api/components';
+import type { ApiProject } from 'api/src/types/api/projects';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { useMount } from 'react-use';
 
+import { useListComponents } from '../../api/components';
+import { useGetProject } from '../../api/projects';
+import { supported } from '../../common/component';
 import { BigHeading } from '../../components/BigHeading';
 import { Container } from '../../components/Container';
-
-const tmp = {
-  id: 'nodejs',
-  name: 'NodeJS',
-  type: 'language',
-  icon: 'nodejs',
-  createdAt: '2023-01-01T00:00:00Z',
-  updatedAt: '2023-01-01T00:00:00Z',
-};
+import type { RouteTech } from '../../types/routes';
+import { Line } from '../Component/Line';
 
 export const Tech: React.FC = () => {
-  const [loading, setLoading] = useState(true);
-  const [item, setItem] = useState<typeof tmp>();
-  const { orgId } = useParams();
+  const tmpParams = useParams<Partial<RouteTech>>();
+  const params = tmpParams as RouteTech;
 
-  useMount(() => {
-    setTimeout(() => {
-      setLoading(false);
-      setItem(tmp);
-    }, 250);
+  const [proj, setProj] = useState<ApiProject>();
+  const [techName, setTechName] = useState<string>();
+  const [usedBy, setUsedBy] = useState<ApiComponent[]>([]);
+  const [icon, setIcon] = useState<React.ReactNode>();
+
+  // Data fetch
+  const res = useGetProject(params);
+  const comps = useListComponents(params.projectSlug, {
+    org_id: params.orgId,
+    project_id: proj?.id,
   });
 
-  if (loading || !item) {
+  useEffect(() => {
+    setProj(res.data?.data);
+  }, [res.isLoading]);
+  useEffect(() => {
+    if (!comps.data?.data) {
+      return;
+    }
+
+    setIcon(
+      params.techSlug in supported ? (
+        <Avatar
+          icon={<i className={`devicon-${params.techSlug}-plain colored`}></i>}
+        />
+      ) : undefined
+    );
+
+    let name;
+    const tmp = [];
+    for (const comp of comps.data!.data) {
+      if (!comp.tech) continue;
+
+      for (const _tech of comp.tech) {
+        if (_tech.toLocaleLowerCase() === params.techSlug) {
+          tmp.push(comp);
+          if (!name) name = _tech;
+        }
+      }
+    }
+
+    if (name) setTechName(name);
+    setUsedBy(tmp);
+  }, [comps.isLoading]);
+
+  if (res.isLoading || comps.isLoading) {
     return (
       <Container>
         <Row gutter={[16, 16]}>
@@ -53,40 +87,21 @@ export const Tech: React.FC = () => {
             <Breadcrumb.Item>
               <Link to="/">Home</Link>
             </Breadcrumb.Item>
+            <Breadcrumb.Item>
+              <Link to={`/org/${params.orgId}/${params.projectSlug}`}>
+                Crawler
+              </Link>
+            </Breadcrumb.Item>
           </Breadcrumb>
-          <BigHeading
-            title={item.name}
-            avatar={<i className={`devicon-${item.icon}-plain`}></i>}
-          >
-            <Tag>{item.type}</Tag>
+          <BigHeading title={params.techSlug} avatar={icon}>
+            <Tag>{techName}</Tag>
           </BigHeading>
         </Col>
         <Col span={18}>
           <Card>
             <Title level={5}>Used in</Title>
-            <Row>
-              <Col span={3}>Projects</Col>
-              <Col>
-                <Link to={`/org/${orgId}/dashboard`}>Dashboard</Link>,{' '}
-                <Link to={`/org/${orgId}/dashboard`}>Analytics API</Link>
-              </Col>
-            </Row>
 
-            <Row>
-              <Col span={3}>Components</Col>
-              <Col>
-                <Link to={`/org/${orgId}/${projectId}/c/`}>Public API</Link>,{' '}
-                <Link to={`/org/${orgId}/${projectId}/c/`}>Private API</Link>,{' '}
-                <Link to={`/org/${orgId}/${projectId}/c/`}>Frontend</Link>,{' '}
-                <Link to={`/org/${orgId}/${projectId}/c/`}>Email Cron</Link>,{' '}
-                <Link to={`/org/${orgId}/${projectId}/c/`}>
-                  Message Consumer
-                </Link>
-                , <Link to={`/org/${orgId}/${projectId}/c/`}>Fetcher</Link>,{' '}
-                <Link to={`/org/${orgId}/${projectId}/c/`}>Job Processor</Link>,{' '}
-                <Link to={`/org/${orgId}/${projectId}/c/`}>Indexer</Link>
-              </Col>
-            </Row>
+            <Line title="Components" list={usedBy} params={params} />
           </Card>
         </Col>
       </Row>

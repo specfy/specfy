@@ -30,9 +30,12 @@ const App: React.FC = () => {
               <Route path="/" element={<HomeRedirect />} />
               <Route path="/org/:orgId" element={<Home />} />
               <Route path="/new/project" element={<ProjectCreate />} />
-              <Route path="/org/:orgId/t/:techId" element={<Tech />} />
 
               <Route path="/org/:orgId/:projectSlug" element={<Project />} />
+              <Route
+                path="/org/:orgId/:projectSlug/t/:techSlug"
+                element={<Tech />}
+              />
               <Route
                 path="/org/:orgId/:projectSlug/rfc/:documentTypeId/:documentSlug"
                 element={<RFC />}

@@ -6,6 +6,10 @@ export type RouteProject = RouteOrg & {
   projectSlug: string;
 };
 
+export type RouteTech = RouteProject & {
+  techSlug: string;
+};
+
 export type RouteComponent = RouteProject & {
   componentSlug: string;
 };

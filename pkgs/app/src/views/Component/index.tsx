@@ -226,7 +226,7 @@ export const ComponentView: React.FC = () => {
                     return (
                       <Link
                         key={tech}
-                        to={`/org/${params.orgId}/t/${name}`}
+                        to={`/org/${params.orgId}/${params.projectSlug}/t/${name}`}
                         className={cls.language}
                       >
                         <i className={`devicon-${name}-plain`}></i> {tech}
@@ -253,6 +253,7 @@ export const ComponentView: React.FC = () => {
               read.length > 0 ||
               write.length > 0 ||
               receive.length > 0 ||
+              send.length > 0 ||
               receiveSend.length > 0) && (
               <Divider plain orientation="left">
                 Data
