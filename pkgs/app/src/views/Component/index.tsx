@@ -26,6 +26,17 @@ import type { RouteComponent } from '../../types/routes';
 import { Line } from './Line';
 import cls from './index.module.scss';
 
+function getAllChilds(list: ApiComponent[], id: string): ApiComponent[] {
+  const tmp = [];
+  for (const c of list) {
+    if (c.inComponent === id) {
+      tmp.push(c);
+      tmp.push(...getAllChilds(list, c.id));
+    }
+  }
+  return tmp;
+}
+
 export const ComponentView: React.FC = () => {
   // TODO: filter RFC
   const [proj, setProj] = useState<ApiProject>();
@@ -48,6 +59,9 @@ export const ComponentView: React.FC = () => {
   const [read, setRead] = useState<ApiComponent[]>([]);
   const [write, setWrite] = useState<ApiComponent[]>([]);
   const [readwrite, setReadWrite] = useState<ApiComponent[]>([]);
+  const [receive, setReceive] = useState<ApiComponent[]>([]);
+  const [send, setSend] = useState<ApiComponent[]>([]);
+  const [receiveSend, setReceiveSend] = useState<ApiComponent[]>([]);
 
   useEffect(() => {
     setProj(res.data?.data);
@@ -86,6 +100,9 @@ export const ComponentView: React.FC = () => {
     const _read = new Map<string, ApiComponent>();
     const _write = new Map<string, ApiComponent>();
     const _readwrite = new Map<string, ApiComponent>();
+    const _receive = new Map<string, ApiComponent>();
+    const _send = new Map<string, ApiComponent>();
+    const _receivesend = new Map<string, ApiComponent>();
 
     // Recursive find hosts
     if (_in) {
@@ -106,38 +123,30 @@ export const ComponentView: React.FC = () => {
 
     // Find contains
     // First find direct ascendant then register all childs
-    function getAllChilds(id: string): ApiComponent[] {
-      const tmp = [];
-      for (const c of comps.data!.data) {
-        if (c.inComponent === id) {
-          tmp.push(c);
-          tmp.push(...getAllChilds(c.id));
-        }
-      }
-      return tmp;
-    }
-    setContains(getAllChilds(comp.id));
+    setContains(getAllChilds(comps.data!.data, comp.id));
 
     // Find data exchange
     for (const c of comps.data!.data) {
-      if (c.id !== comp.id) {
-        const to = c.fromComponents.includes(comp.id);
-        const from = c.toComponents.includes(comp.id);
-        if (to && !from) _write.set(c.id, c);
-        else if (!to && from) _read.set(c.id, c);
-        else if (to && from) _readwrite.set(c.id, c);
+      if (c.id === comp.id) {
+        continue;
       }
+
+      const to = c.fromComponents.includes(comp.id);
+      const from = c.toComponents.includes(comp.id);
+      if (to && !from) _send.set(c.id, c);
+      else if (!to && from) _receive.set(c.id, c);
+      else if (to && from) _receivesend.set(c.id, c);
     }
 
-    // TODO: fix receive data from instead of write
-
-    // Dedup read / write
+    // Push this component read/write
     for (const id of comp.toComponents) {
       _write.set(id, list.get(id)!);
     }
     for (const id of comp.fromComponents) {
       _read.set(id, list.get(id)!);
     }
+
+    // Dedup read/write after everything is computed
     for (const [id] of _read) {
       if (!_write.has(id)) {
         continue;
@@ -151,6 +160,9 @@ export const ComponentView: React.FC = () => {
     setRead(Array.from(_read.values()));
     setWrite(Array.from(_write.values()));
     setReadWrite(Array.from(_readwrite.values()));
+    setReceive(Array.from(_receive.values()));
+    setSend(Array.from(_send.values()));
+    setReceiveSend(Array.from(_receivesend.values()));
   }, [comp]);
 
   if (res.isLoading || comps.isLoading) {
@@ -237,22 +249,44 @@ export const ComponentView: React.FC = () => {
               <Line title="Run inside" list={[inComp]} params={params} />
             )}
 
-            {(readwrite.length > 0 || read.length > 0 || write.length > 0) && (
+            {(readwrite.length > 0 ||
+              read.length > 0 ||
+              write.length > 0 ||
+              receive.length > 0 ||
+              receiveSend.length > 0) && (
               <Divider plain orientation="left">
                 Data
               </Divider>
             )}
 
             {readwrite.length > 0 && (
-              <Line title="Read and Write" list={readwrite} params={params} />
+              <Line
+                title="Read and Write to"
+                list={readwrite}
+                params={params}
+              />
             )}
 
             {read.length > 0 && (
-              <Line title="Read" list={read} params={params} />
+              <Line title="Read from" list={read} params={params} />
+            )}
+
+            {receiveSend.length > 0 && (
+              <Line
+                title="Receive and Send to"
+                list={receiveSend}
+                params={params}
+              />
+            )}
+            {receive.length > 0 && (
+              <Line title="Receive from" list={receive} params={params} />
+            )}
+            {send.length > 0 && (
+              <Line title="Send to" list={send} params={params} />
             )}
 
             {write.length > 0 && (
-              <Line title="Write" list={write} params={params} />
+              <Line title="Write to" list={write} params={params} />
             )}
           </Card>
         </div>

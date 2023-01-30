@@ -234,7 +234,7 @@ export async function seed() {
   });
 
   // Components
-  const c1 = await Component.create({
+  const gcp = await Component.create({
     name: 'GCP',
     type: 'hosting',
     orgId: 'algolia',
@@ -244,27 +244,37 @@ export async function seed() {
     fromComponents: [],
     toComponents: [],
   });
-  const c2 = await Component.create({
+  const compute = await Component.create({
+    name: 'Compute Engine',
+    type: 'hosting',
+    orgId: 'algolia',
+    projectId: p1.id,
+    display: {},
+    inComponent: gcp.id,
+    fromComponents: [],
+    toComponents: [],
+  });
+  const kube = await Component.create({
     name: 'Kubernetes',
     type: 'hosting',
     orgId: 'algolia',
     projectId: p1.id,
     display: {},
-    inComponent: c1.id,
+    inComponent: gcp.id,
     fromComponents: [],
     toComponents: [],
   });
-  const c4 = await Component.create({
+  const pg = await Component.create({
     name: 'Postgresql',
     type: 'component',
     orgId: 'algolia',
     projectId: p1.id,
     display: {},
-    inComponent: c1.id,
+    inComponent: gcp.id,
     fromComponents: [],
     toComponents: [],
   });
-  const c5 = await Component.create({
+  const dd = await Component.create({
     name: 'Datadog',
     type: 'thirdparty',
     orgId: 'algolia',
@@ -274,7 +284,68 @@ export async function seed() {
     fromComponents: [],
     toComponents: [],
   });
-  const c3 = await Component.create({
+  const sentry = await Component.create({
+    name: 'Sentry',
+    type: 'thirdparty',
+    orgId: 'algolia',
+    projectId: p1.id,
+    display: {},
+    inComponent: null,
+    fromComponents: [],
+    toComponents: [],
+  });
+  const algolia = await Component.create({
+    name: 'Algolia',
+    type: 'thirdparty',
+    orgId: 'algolia',
+    projectId: p1.id,
+    display: {},
+    inComponent: null,
+    fromComponents: [],
+    toComponents: [],
+  });
+  const redis = await Component.create({
+    name: 'Redis',
+    type: 'component',
+    orgId: 'algolia',
+    projectId: p1.id,
+    display: {},
+    inComponent: gcp.id,
+    fromComponents: [],
+    toComponents: [],
+  });
+  const es = await Component.create({
+    name: 'Elatiscsearch',
+    type: 'component',
+    orgId: 'algolia',
+    projectId: p1.id,
+    display: {},
+    inComponent: compute.id,
+    fromComponents: [],
+    toComponents: [],
+  });
+  const rabbit = await Component.create({
+    name: 'RabbitMQ',
+    type: 'component',
+    orgId: 'algolia',
+    projectId: p1.id,
+    display: {},
+    inComponent: kube.id,
+    fromComponents: [],
+    toComponents: [],
+  });
+  const analytics = await Component.create({
+    name: 'Analytics API',
+    type: 'project',
+    typeId: p3.id,
+    orgId: 'algolia',
+    projectId: p1.id,
+    display: {},
+    inComponent: null,
+    fromComponents: [],
+    toComponents: [],
+  });
+  const api = await Component.create({
     name: 'Private API',
     type: 'component',
     orgId: 'algolia',
@@ -282,9 +353,9 @@ export async function seed() {
     description:
       'Morbi sit amet porttitor justo, quis sagittis nulla. Donec et ullamcorper dolor. Maecenas pharetra imperdiet nulla nec commodo.',
     display: {},
-    inComponent: c2.id,
-    fromComponents: [c4.id],
-    toComponents: [c4.id, c5.id],
+    inComponent: kube.id,
+    fromComponents: [pg.id, analytics.id, redis.id, es.id],
+    toComponents: [pg.id, dd.id, sentry.id, redis.id],
     tech: ['NodeJS', 'Typescript', 'Bash', 'AtlasDB'],
   });
   await Component.create({
@@ -293,21 +364,35 @@ export async function seed() {
     orgId: 'algolia',
     projectId: p1.id,
     display: {},
-    inComponent: c2.id,
-    fromComponents: [c3.id],
-    toComponents: [c3.id],
+    inComponent: kube.id,
+    fromComponents: [api.id],
+    toComponents: [api.id, sentry.id],
     tech: ['React', 'Typescript', 'Webpack'],
   });
-  await Component.create({
-    name: 'Analytics API',
-    type: 'project',
-    typeId: p3.id,
+  const manager = await Component.create({
+    name: 'Manager',
+    type: 'component',
     orgId: 'algolia',
     projectId: p1.id,
+    description:
+      'Donec et ullamcorper dolor. Maecenas pharetra imperdiet nulla nec commodo.',
     display: {},
-    inComponent: c2.id,
-    fromComponents: [],
-    toComponents: [c3.id],
+    inComponent: kube.id,
+    fromComponents: [pg.id, es.id, rabbit.id],
+    toComponents: [pg.id, dd.id, sentry.id, rabbit.id, algolia.id],
+    tech: ['NodeJS', 'Typescript'],
+  });
+  const worker = await Component.create({
+    name: 'Worker',
+    type: 'component',
+    orgId: 'algolia',
+    projectId: p1.id,
+    description: 'Maecenas pharetra imperdiet nulla nec commodo.',
+    display: {},
+    inComponent: kube.id,
+    fromComponents: [pg.id, es.id, rabbit.id, algolia.id],
+    toComponents: [pg.id, dd.id, sentry.id, es.id, rabbit.id],
+    tech: ['NodeJS', 'Typescript'],
   });
 }
 
