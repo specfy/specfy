@@ -7,6 +7,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{ Reply: ResGetMe }>('/me', async function (_req, res) {
     const user = (await User.findOne({
       where: {
+        // TODO: actual user
         email: 'bodin.samuel@gmail.com',
       },
     }))!;

@@ -4,6 +4,8 @@ import type { ResListOrgs } from '../../../types/api/orgs';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{ Reply: ResListOrgs }>('/', async function (_req, res) {
+    // TODO: pagination
+    // TODO: actual query
     res.status(200).send({
       data: [
         {

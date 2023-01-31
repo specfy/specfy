@@ -11,6 +11,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{ Querystring: ReqListProjects; Reply: ResListProjects }>(
     '/',
     async function (req, res) {
+      // TODO: pagination
       const pagination: Pagination = {
         current: 0,
         page: 0,

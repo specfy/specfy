@@ -28,10 +28,10 @@ export interface ResListProjects {
 export type ReqPostProject = Pick<ApiProject, 'description' | 'name' | 'orgId'>;
 export type ResPostProject = Pick<ApiProject, 'id' | 'slug'>;
 
-// GET /:orgId/:projectSlug
+// GET /:org_id/:project_slug
 export interface ReqProjectParams {
-  orgId: string;
-  projectSlug: string;
+  org_id: string;
+  project_slug: string;
 }
 
 export interface ResGetProject {

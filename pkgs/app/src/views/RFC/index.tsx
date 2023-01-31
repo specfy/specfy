@@ -85,11 +85,14 @@ export const RFC: React.FC = () => {
   const [menu, setMenu] = useState(false);
   const [item, setItem] = useState<ApiDocument>();
   const p = useParams<Partial<RouteDocument>>();
-  const proj = useGetProject({ orgId: p.orgId!, slug: p.projectSlug! });
+  const proj = useGetProject({
+    org_id: p.org_id!,
+    project_slug: p.project_slug!,
+  });
   const doc = useGetDocument({
     type: 'rfc',
-    typeId: p.documentTypeId!,
-    org_id: p.orgId!,
+    type_id: p.document_type_id!,
+    org_id: p.org_id!,
   });
 
   useEffect(() => {
@@ -129,7 +132,7 @@ export const RFC: React.FC = () => {
           <Link to="/">Home</Link>
         </Breadcrumb.Item>
         <Breadcrumb.Item>
-          <Link to={`/org/${p.orgId}/${proj.data!.data.slug}`}>Crawler</Link>
+          <Link to={`/org/${p.org_id}/${proj.data!.data.slug}`}>Crawler</Link>
           <Button
             size="small"
             icon={<MenuUnfoldOutlined />}

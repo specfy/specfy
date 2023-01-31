@@ -21,11 +21,15 @@ import {
 } from 'antd';
 import type { ItemType } from 'antd/es/menu/hooks/useItems';
 import Title from 'antd/es/typography/Title';
+import type { ResListPerms, ReqListPerms } from 'api/src/types/api/perms';
 import type { ApiProject } from 'api/src/types/api/projects';
 import { useEffect, useMemo, useState } from 'react';
+import { useQuery } from 'react-query';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { useListComponents } from '../../api/components';
+import { fetchApi } from '../../api/fetch';
+import { useListPermsProject } from '../../api/perms';
 import { deleteProject, useGetProject } from '../../api/projects';
 import { AvatarAuto } from '../../components/AvatarAuto';
 import { BigHeading } from '../../components/BigHeading';
@@ -51,9 +55,20 @@ export const Project: React.FC = () => {
 
   // Data fetch
   const res = useGetProject(params);
-  const comps = useListComponents(params.projectSlug, {
-    org_id: params.orgId,
-    project_id: proj?.id,
+  const comps = useListComponents(params.project_slug, params);
+  const team = useQuery({
+    // enabled: typeof proj !== 'undefined',
+    queryKey:
+      typeof proj !== 'undefined'
+        ? ['listPermsProject', params.org_id, proj.id]
+        : undefined,
+    queryFn: async (): Promise<ResListPerms> => {
+      const { json } = await fetchApi<ResListPerms, ReqListPerms>(`/perms`, {
+        qp: { org_id: params.org_id, project_id: proj!.id },
+      });
+
+      return json;
+    },
   });
 
   // Delete modal
@@ -69,7 +84,7 @@ export const Project: React.FC = () => {
     await deleteProject(params);
     message.success('Project deleted');
 
-    navigate(`/org/${params.orgId}`);
+    navigate(`/org/${params.org_id}`);
   };
 
   const actions = useMemo<ItemType[]>(() => {
@@ -162,8 +177,8 @@ export const Project: React.FC = () => {
             {comps.data?.data ? (
               <TechnicalAspects
                 components={comps.data.data}
-                orgId={params.orgId}
-                slug={params.projectSlug}
+                orgId={params.org_id}
+                slug={params.project_slug}
               />
             ) : (
               <Typography.Text type="secondary">
@@ -242,8 +257,8 @@ export const Project: React.FC = () => {
         <Col span={8}>
           <Card>
             <ListUpdates
-              orgId={params.orgId}
-              projectSlug={params.projectSlug}
+              orgId={params.org_id}
+              projectSlug={params.project_slug}
             ></ListUpdates>
           </Card>
         </Col>

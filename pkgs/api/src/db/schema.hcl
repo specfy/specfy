@@ -273,3 +273,54 @@ table "components" {
     columns = [column.id]
   }
 }
+
+
+// ------------------------ Team
+table "perms" {
+  schema = schema.public
+  column "id" {
+    type = uuid
+    null = false
+  }
+  column "org_id" {
+    type = varchar(35)
+    null = false
+  }
+  column "project_id" {
+    type = uuid
+    null = true
+  }
+
+  column "user_id" {
+    type = uuid
+    null = false
+  }
+
+  column "role" {
+    type = varchar(25)
+    null = false
+  }
+
+  column "created_at" {
+    type    = timestamp(6)
+    default = sql("now()")
+    null    = false
+  }
+  column "updated_at" {
+    type    = timestamp(6)
+    default = sql("now()")
+    null    = false
+  }
+
+  primary_key {
+    columns = [column.id]
+  }
+  index "idx_org_user_id_project_id" {
+    columns = [
+      column.org_id,
+      column.user_id,
+      column.project_id
+    ]
+    unique = true
+  }
+}

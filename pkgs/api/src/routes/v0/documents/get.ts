@@ -19,7 +19,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         // TODO validation
         orgId: req.query.org_id,
         type: req.params.type,
-        typeId: req.params.typeId,
+        typeId: req.params.type_id,
       },
     });
 

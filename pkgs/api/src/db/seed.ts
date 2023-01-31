@@ -1,4 +1,4 @@
-import { Component, User, Document, Org, Project } from '../models';
+import { Component, User, Document, Org, Project, Perm } from '../models';
 
 import './';
 
@@ -9,12 +9,13 @@ export async function clean() {
     Project.truncate(),
     Document.truncate(),
     Component.truncate(),
+    Perm.truncate(),
   ]);
 }
 
 export async function seed() {
   // Users
-  await Promise.all([
+  const [u1, u2, u3, u4, u5] = await Promise.all([
     await User.create({
       name: 'Samuel Bodin',
       email: 'bodin.samuel@gmail.com',
@@ -30,6 +31,10 @@ export async function seed() {
     await User.create({
       name: 'John Doe',
       email: 'john.doe@gmail.com',
+    }),
+    await User.create({
+      name: 'Alice Wong',
+      email: 'alice.wong@gmail.com',
     }),
   ]);
 
@@ -56,6 +61,54 @@ export async function seed() {
     name: 'Analytics API',
     description: `Duis dui magna, tempus a scelerisque id, semper eu metus.`,
   });
+
+  // Permissions
+  await Promise.all([
+    ...[u2, u3, u4, u5].map((u) => {
+      return Perm.create({
+        orgId: 'algolia',
+        projectId: null,
+        userId: u.id,
+        role: 'viewer',
+      });
+    }),
+    Perm.create({
+      orgId: 'algolia',
+      projectId: null,
+      userId: u1.id,
+      role: 'owner',
+    }),
+    Perm.create({
+      orgId: 'algolia',
+      projectId: null,
+      userId: u1.id,
+      role: 'owner',
+    }),
+    Perm.create({
+      orgId: 'algolia',
+      projectId: p1.id,
+      userId: u2.id,
+      role: 'reviewer',
+    }),
+    Perm.create({
+      orgId: 'algolia',
+      projectId: p1.id,
+      userId: u3.id,
+      role: 'viewer',
+    }),
+    Perm.create({
+      orgId: 'algolia',
+      projectId: p1.id,
+      userId: u4.id,
+      role: 'collaborator',
+    }),
+    Perm.create({
+      orgId: 'algolia',
+      projectId: p1.id,
+      userId: u5.id,
+      role: 'collaborator',
+    }),
+  ]);
 
   // Contents
   await Document.create({

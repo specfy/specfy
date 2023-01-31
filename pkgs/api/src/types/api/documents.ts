@@ -38,7 +38,7 @@ export interface ResListDocuments {
 // GET /:id
 export interface ReqDocumentParams {
   type: string;
-  typeId: string;
+  type_id: string;
 }
 export interface ReqGetDocument {
   org_id: string;

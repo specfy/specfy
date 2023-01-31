@@ -13,6 +13,7 @@ const url = env(
 );
 
 export const db = new Sequelize(url, {
+  logging: true,
   dialectOptions: {
     ssl:
       isProduction && !isSSLDisabled

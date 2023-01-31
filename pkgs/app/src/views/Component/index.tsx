@@ -47,8 +47,8 @@ export const ComponentView: React.FC = () => {
 
   // Data fetch
   const res = useGetProject(params);
-  const comps = useListComponents(params.projectSlug, {
-    org_id: params.orgId,
+  const comps = useListComponents(params.project_slug, {
+    org_id: params.org_id,
     project_id: proj?.id,
   });
 
@@ -72,7 +72,7 @@ export const ComponentView: React.FC = () => {
 
     setComp(
       comps.data.data.find((c) => {
-        return c.slug === params.componentSlug!;
+        return c.slug === params.component_slug!;
       })
     );
   }, [comps.isLoading, tmpParams]);
@@ -191,7 +191,7 @@ export const ComponentView: React.FC = () => {
               <Link to="/">Home</Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>
-              <Link to={`/org/${params.orgId}/${params.projectSlug}`}>
+              <Link to={`/org/${params.org_id}/${params.project_slug}`}>
                 Crawler
               </Link>
             </Breadcrumb.Item>
@@ -226,7 +226,7 @@ export const ComponentView: React.FC = () => {
                     return (
                       <Link
                         key={tech}
-                        to={`/org/${params.orgId}/${params.projectSlug}/t/${name}`}
+                        to={`/org/${params.org_id}/${params.project_slug}/t/${name}`}
                         className={cls.language}
                       >
                         <i className={`devicon-${name}-plain`}></i> {tech}

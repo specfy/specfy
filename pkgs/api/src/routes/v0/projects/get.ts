@@ -15,8 +15,8 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     const p = await Project.findOne({
       where: {
         // TODO validation
-        orgId: req.params.orgId,
-        slug: req.params.projectSlug,
+        orgId: req.params.org_id,
+        slug: req.params.project_slug,
       },
     });
 

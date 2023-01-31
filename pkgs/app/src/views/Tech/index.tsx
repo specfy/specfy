@@ -24,8 +24,8 @@ export const Tech: React.FC = () => {
 
   // Data fetch
   const res = useGetProject(params);
-  const comps = useListComponents(params.projectSlug, {
-    org_id: params.orgId,
+  const comps = useListComponents(params.project_slug, {
+    org_id: params.org_id,
     project_id: proj?.id,
   });
 
@@ -38,9 +38,9 @@ export const Tech: React.FC = () => {
     }
 
     setIcon(
-      params.techSlug in supported ? (
+      params.tech_slug in supported ? (
         <Avatar
-          icon={<i className={`devicon-${params.techSlug}-plain colored`}></i>}
+          icon={<i className={`devicon-${params.tech_slug}-plain colored`}></i>}
         />
       ) : undefined
     );
@@ -51,7 +51,7 @@ export const Tech: React.FC = () => {
       if (!comp.tech) continue;
 
       for (const _tech of comp.tech) {
-        if (_tech.toLocaleLowerCase() === params.techSlug) {
+        if (_tech.toLocaleLowerCase() === params.tech_slug) {
           tmp.push(comp);
           if (!name) name = _tech;
         }
@@ -88,12 +88,12 @@ export const Tech: React.FC = () => {
               <Link to="/">Home</Link>
             </Breadcrumb.Item>
             <Breadcrumb.Item>
-              <Link to={`/org/${params.orgId}/${params.projectSlug}`}>
+              <Link to={`/org/${params.org_id}/${params.project_slug}`}>
                 Crawler
               </Link>
             </Breadcrumb.Item>
           </Breadcrumb>
-          <BigHeading title={params.techSlug} avatar={icon}>
+          <BigHeading title={params.tech_slug} avatar={icon}>
             <Tag>{techName}</Tag>
           </BigHeading>
         </Col>

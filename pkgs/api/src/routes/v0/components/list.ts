@@ -11,6 +11,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{ Querystring: ReqListComponents; Reply: ResListComponents }>(
     '/',
     async function (req, res) {
+      // TODO: pagination or remove it
       const pagination: Pagination = {
         current: 0,
         page: 0,

@@ -14,7 +14,10 @@ export function useListComponents(
     enabled: !!(opts.org_id && opts.project_id),
     queryKey: ['listComponents', opts.org_id, slug],
     queryFn: async (): Promise<ResListComponents> => {
-      const { json } = await fetchApi<ResListComponents>('/components', {
+      const { json } = await fetchApi<
+        ResListComponents,
+        Partial<ReqListComponents>
+      >('/components', {
         qp: opts,
       });
 

@@ -3,14 +3,15 @@ import Title from 'antd/es/typography/Title';
 import { Link, useParams } from 'react-router-dom';
 
 import { useListProjects } from '../../api/projects';
+import type { RouteOrg } from '../../types/routes';
 import { AvatarAuto } from '../AvatarAuto';
 import { Time } from '../Time';
 
 import cls from './index.module.scss';
 
 export const ListProjects: React.FC = () => {
-  const { orgId } = useParams();
-  const q = useListProjects(orgId!);
+  const p = useParams<Partial<RouteOrg>>();
+  const q = useListProjects({ org_id: p.org_id! });
 
   if (q.isLoading) {
     return <Skeleton active></Skeleton>;
@@ -30,7 +31,7 @@ export const ListProjects: React.FC = () => {
               <Skeleton title={false} loading={false} active>
                 <List.Item.Meta
                   avatar={
-                    <Link to={`/org/${orgId}/${item.slug}`} relative="path">
+                    <Link to={`/org/${p.org_id}/${item.slug}`} relative="path">
                       <AvatarAuto
                         className={cls.avatar}
                         name={item.name}
@@ -39,7 +40,7 @@ export const ListProjects: React.FC = () => {
                     </Link>
                   }
                   title={
-                    <Link to={`/org/${orgId}/${item.slug}`} relative="path">
+                    <Link to={`/org/${p.org_id}/${item.slug}`} relative="path">
                       {item.name}
                     </Link>
                   }

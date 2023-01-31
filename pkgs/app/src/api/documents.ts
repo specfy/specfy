@@ -13,9 +13,12 @@ export function useListDocuments(opts: ReqListDocuments) {
   return useQuery({
     queryKey: ['listDocuments', opts.org_id, opts.project_id],
     queryFn: async (): Promise<ResListDocuments> => {
-      const { json } = await fetchApi<ResListDocuments>('/documents', {
-        qp: opts,
-      });
+      const { json } = await fetchApi<ResListDocuments, ReqListDocuments>(
+        '/documents',
+        {
+          qp: opts,
+        }
+      );
 
       return json;
     },
@@ -24,11 +27,11 @@ export function useListDocuments(opts: ReqListDocuments) {
 
 export function useGetDocument(opts: ReqDocumentParams & ReqGetDocument) {
   return useQuery({
-    enabled: !!opts.typeId,
-    queryKey: ['getDocument', opts.type, opts.typeId],
+    enabled: !!opts.type_id,
+    queryKey: ['getDocument', opts.type, opts.type_id],
     queryFn: async (): Promise<ResGetDocument> => {
-      const { json } = await fetchApi<ResGetDocument>(
-        `/documents/${opts.type}/${opts.typeId}`,
+      const { json } = await fetchApi<ResGetDocument, ReqGetDocument>(
+        `/documents/${opts.type}/${opts.type_id}`,
         {
           qp: { org_id: opts.org_id },
         }

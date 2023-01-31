@@ -28,20 +28,20 @@ const App: React.FC = () => {
             <Route path="/login" element={<Login />} />
             <Route element={<AuthLayout></AuthLayout>}>
               <Route path="/" element={<HomeRedirect />} />
-              <Route path="/org/:orgId" element={<Home />} />
+              <Route path="/org/:org_id" element={<Home />} />
               <Route path="/new/project" element={<ProjectCreate />} />
 
-              <Route path="/org/:orgId/:projectSlug" element={<Project />} />
+              <Route path="/org/:org_id/:project_slug" element={<Project />} />
               <Route
-                path="/org/:orgId/:projectSlug/t/:techSlug"
+                path="/org/:org_id/:project_slug/t/:tech_slug"
                 element={<Tech />}
               />
               <Route
-                path="/org/:orgId/:projectSlug/rfc/:documentTypeId/:documentSlug"
+                path="/org/:org_id/:project_slug/rfc/:document_type_id/:document_slug"
                 element={<RFC />}
               />
               <Route
-                path="/org/:orgId/:projectSlug/c/:componentSlug"
+                path="/org/:org_id/:project_slug/c/:component_slug"
                 element={<ComponentView />}
               />
             </Route>

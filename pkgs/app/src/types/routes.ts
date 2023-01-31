@@ -1,20 +1,20 @@
 export interface RouteOrg {
-  orgId: string;
+  org_id: string;
 }
 
 export type RouteProject = RouteOrg & {
-  projectSlug: string;
+  project_slug: string;
 };
 
 export type RouteTech = RouteProject & {
-  techSlug: string;
+  tech_slug: string;
 };
 
 export type RouteComponent = RouteProject & {
-  componentSlug: string;
+  component_slug: string;
 };
 
 export type RouteDocument = RouteProject & {
-  documentTypeId: string;
-  documentSlug: string;
+  document_type_id: string;
+  document_slug: string;
 };
