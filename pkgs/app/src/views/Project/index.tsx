@@ -19,7 +19,6 @@ import {
   Typography,
 } from 'antd';
 import type { ItemType } from 'antd/es/menu/hooks/useItems';
-import Title from 'antd/es/typography/Title';
 import type { ApiProject } from 'api/src/types/api/projects';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
@@ -150,25 +149,26 @@ export const Project: React.FC = () => {
         <Col span={18}>
           <Card>
             <div dangerouslySetInnerHTML={{ __html: proj.description }}></div>
-            <Divider plain orientation="left">
-              Technical Aspect
-            </Divider>
-            <Title level={5}></Title>
-            {comps.data?.data ? (
-              <TechnicalAspects
-                components={comps.data.data}
-                orgId={params.org_id}
-                slug={params.project_slug}
-              />
-            ) : (
-              <Typography.Text type="secondary">
-                Nothing to show.
-              </Typography.Text>
-            )}
 
-            <Divider plain />
-            <Title level={5}>Team</Title>
-            <Team org_id={params.org_id} project_id={proj.id} />
+            <div className={cls.block}>
+              <Typography.Title level={5}>Technical Aspect</Typography.Title>
+              {comps.data?.data ? (
+                <TechnicalAspects
+                  components={comps.data.data}
+                  orgId={params.org_id}
+                  slug={params.project_slug}
+                />
+              ) : (
+                <Typography.Text type="secondary">
+                  Nothing to show.
+                </Typography.Text>
+              )}
+            </div>
+
+            <div className={cls.block}>
+              <Typography.Title level={5}>Team</Typography.Title>
+              <Team org_id={params.org_id} project_id={proj.id} />
+            </div>
           </Card>
         </Col>
         <Col span={6}>

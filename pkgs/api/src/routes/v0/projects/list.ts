@@ -23,6 +23,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           // TODO: validation
           orgId: req.query.org_id,
         },
+        order: [['name', 'ASC']],
         limit: 10,
         offset: 0,
       });

@@ -1,3 +1,4 @@
+import { Typography } from 'antd';
 import type { ApiComponent } from 'api/src/types/api/components';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -43,72 +44,95 @@ export const TechnicalAspects: React.FC<{
 
   return (
     <>
-      <div className={cls.line}>
-        <div>Stack</div>
-        <div>
-          {hosts.map((comp) => {
-            return (
-              <span key={comp.id} className={cls.comp}>
-                <Link to={`/org/${orgId}/${slug}/c/${comp.slug}`}>
-                  {comp.name}
-                </Link>
-              </span>
-            );
-          })}
-          {techs.map((tech) => {
-            return (
-              <span key={tech[1]} className={cls.comp}>
-                <Link to={`/org/${orgId}/${slug}/t/${tech[1]}`}>{tech[0]}</Link>
-              </span>
-            );
-          })}
+      {techs.length <= 0 &&
+        components.length <= 0 &&
+        tp.length <= 0 &&
+        projects.length <= 0 && (
+          <Typography.Text type="secondary">Nothing to show.</Typography.Text>
+        )}
+
+      {techs.length > 0 && (
+        <div className={cls.line}>
+          <div>Stack</div>
+          <div>
+            {hosts.map((comp) => {
+              return (
+                <span key={comp.id} className={cls.comp}>
+                  <Link to={`/org/${orgId}/${slug}/c/${comp.slug}`}>
+                    {comp.name}
+                  </Link>
+                </span>
+              );
+            })}
+            {techs.map((tech) => {
+              return (
+                <span key={tech[1]} className={cls.comp}>
+                  <Link to={`/org/${orgId}/${slug}/t/${tech[1]}`}>
+                    {tech[0]}
+                  </Link>
+                </span>
+              );
+            })}
+          </div>
         </div>
-      </div>
-      <div className={cls.line}>
-        <div>Components</div>
-        <div>
-          {components.map((comp) => {
-            if (comp.type !== 'component') {
-              return null;
-            }
-            return (
-              <span key={comp.id} className={cls.comp}>
-                <Link key={comp.id} to={`/org/${orgId}/${slug}/c/${comp.slug}`}>
-                  {comp.name}
-                </Link>
-              </span>
-            );
-          })}
+      )}
+      {components.length > 0 && (
+        <div className={cls.line}>
+          <div>Components</div>
+          <div>
+            {components.map((comp) => {
+              if (comp.type !== 'component') {
+                return null;
+              }
+              return (
+                <span key={comp.id} className={cls.comp}>
+                  <Link
+                    key={comp.id}
+                    to={`/org/${orgId}/${slug}/c/${comp.slug}`}
+                  >
+                    {comp.name}
+                  </Link>
+                </span>
+              );
+            })}
+          </div>
         </div>
-      </div>
-      <div className={cls.line}>
-        <div>Third Parties</div>
-        <div>
-          {tp.map((comp) => {
-            return (
-              <span key={comp.id} className={cls.comp}>
-                <Link key={comp.id} to={`/org/${orgId}/${slug}/c/${comp.slug}`}>
-                  {comp.name}
-                </Link>
-              </span>
-            );
-          })}
+      )}
+      {tp.length > 0 && (
+        <div className={cls.line}>
+          <div>Third Parties</div>
+          <div>
+            {tp.map((comp) => {
+              return (
+                <span key={comp.id} className={cls.comp}>
+                  <Link
+                    key={comp.id}
+                    to={`/org/${orgId}/${slug}/c/${comp.slug}`}
+                  >
+                    {comp.name}
+                  </Link>
+                </span>
+              );
+            })}
+          </div>
         </div>
-      </div>
-      <div className={cls.line}>
-        <div>Link to Project</div>
-        <div>
-          {projects.map((comp) => {
-            return (
-              <span key={comp.id} className={cls.comp}>
-                <Link to={`/org/${orgId}/${slug}/c/${comp.slug}`}>
-                  {comp.name}
-                </Link>
-              </span>
-            );
-          })}
+      )}
+      {projects.length > 0 && (
+        <div className={cls.line}>
+          <div>Depends on projects</div>
+          <div>
+            {projects.map((comp) => {
+              return (
+                <span key={comp.id} className={cls.comp}>
+                  <Link to={`/org/${orgId}/${slug}/c/${comp.slug}`}>
+                    {comp.name}
+                  </Link>
+                </span>
+              );
+            })}
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 };

@@ -1,12 +1,4 @@
-import {
-  Avatar,
-  Breadcrumb,
-  Card,
-  Divider,
-  Skeleton,
-  Tag,
-  Typography,
-} from 'antd';
+import { Avatar, Breadcrumb, Card, Skeleton, Tag, Typography } from 'antd';
 import type { ApiComponent } from 'api/src/types/api/components';
 import type { ApiProject } from 'api/src/types/api/projects';
 import type React from 'react';
@@ -207,44 +199,45 @@ export const ComponentView: React.FC = () => {
                 No description.
               </Typography.Text>
             )}
+
             {(comp.tech ||
               hosts.length > 0 ||
               inComp ||
               contains.length > 0) && (
-              <Divider plain orientation="left">
-                Stack
-              </Divider>
-            )}
-            {comp.tech && (
-              <div className={cls.line}>
-                <div>Build with</div>
-                <div>
-                  {comp.tech.map((tech) => {
-                    const name = tech.toLocaleLowerCase();
-                    return (
-                      <Link
-                        key={tech}
-                        to={`/org/${params.org_id}/${params.project_slug}/t/${name}`}
-                        className={cls.language}
-                      >
-                        <i className={`devicon-${name}-plain`}></i> {tech}
-                      </Link>
-                    );
-                  })}
-                </div>
+              <div className={cls.block}>
+                <Typography.Title level={5}>Stack</Typography.Title>
+                {comp.tech && (
+                  <div className={cls.line}>
+                    <div>Build with</div>
+                    <div>
+                      {comp.tech.map((tech) => {
+                        const name = tech.toLocaleLowerCase();
+                        return (
+                          <Link
+                            key={tech}
+                            to={`/org/${params.org_id}/${params.project_slug}/t/${name}`}
+                            className={cls.language}
+                          >
+                            <i className={`devicon-${name}-plain`}></i> {tech}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
+
+                {hosts.length > 0 && (
+                  <Line title="Hosted on" list={hosts} params={params} />
+                )}
+
+                {contains.length > 0 && (
+                  <Line title="Contains" list={contains} params={params} />
+                )}
+
+                {inComp && (
+                  <Line title="Run inside" list={[inComp]} params={params} />
+                )}
               </div>
-            )}
-
-            {hosts.length > 0 && (
-              <Line title="Hosted on" list={hosts} params={params} />
-            )}
-
-            {contains.length > 0 && (
-              <Line title="Contains" list={contains} params={params} />
-            )}
-
-            {inComp && (
-              <Line title="Run inside" list={[inComp]} params={params} />
             )}
 
             {(readwrite.length > 0 ||
@@ -253,39 +246,39 @@ export const ComponentView: React.FC = () => {
               receive.length > 0 ||
               send.length > 0 ||
               receiveSend.length > 0) && (
-              <Divider plain orientation="left">
-                Data
-              </Divider>
-            )}
+              <div className={cls.block}>
+                <Typography.Title level={5}>Data</Typography.Title>
 
-            {readwrite.length > 0 && (
-              <Line
-                title="Read and Write to"
-                list={readwrite}
-                params={params}
-              />
-            )}
+                {readwrite.length > 0 && (
+                  <Line
+                    title="Read and Write to"
+                    list={readwrite}
+                    params={params}
+                  />
+                )}
 
-            {read.length > 0 && (
-              <Line title="Read from" list={read} params={params} />
-            )}
+                {read.length > 0 && (
+                  <Line title="Read from" list={read} params={params} />
+                )}
 
-            {receiveSend.length > 0 && (
-              <Line
-                title="Receive and Send to"
-                list={receiveSend}
-                params={params}
-              />
-            )}
-            {receive.length > 0 && (
-              <Line title="Receive from" list={receive} params={params} />
-            )}
-            {send.length > 0 && (
-              <Line title="Send to" list={send} params={params} />
-            )}
+                {receiveSend.length > 0 && (
+                  <Line
+                    title="Receive and Send to"
+                    list={receiveSend}
+                    params={params}
+                  />
+                )}
+                {receive.length > 0 && (
+                  <Line title="Receive from" list={receive} params={params} />
+                )}
+                {send.length > 0 && (
+                  <Line title="Send to" list={send} params={params} />
+                )}
 
-            {write.length > 0 && (
-              <Line title="Write to" list={write} params={params} />
+                {write.length > 0 && (
+                  <Line title="Write to" list={write} params={params} />
+                )}
+              </div>
             )}
           </Card>
         </div>
