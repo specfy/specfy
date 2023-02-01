@@ -18,7 +18,7 @@ export const Tech: React.FC = () => {
   const params = tmpParams as RouteTech;
 
   const [proj, setProj] = useState<ApiProject>();
-  const [, setTechName] = useState<string>();
+  const [techname, setTechName] = useState<string>();
   const [usedBy, setUsedBy] = useState<ApiComponent[]>([]);
   const [icon, setIcon] = useState<React.ReactNode>();
 
@@ -79,12 +79,16 @@ export const Tech: React.FC = () => {
     );
   }
 
+  if (!techname) {
+    return <div>not found</div>;
+  }
+
   return (
     <Container>
       <Row gutter={[16, 16]}>
         <Col span={18}>
           <BigHeading
-            title={params.tech_slug}
+            title={techname}
             avatar={icon}
             subtitle={<Tag>tech</Tag>}
             breadcrumb={
