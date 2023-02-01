@@ -15,7 +15,7 @@ export async function clean() {
 
 export async function seed() {
   // Users
-  const [u1, u2, u3, u4, u5] = await Promise.all([
+  const [u1, u2, u3, u4, u5, u6, u7] = await Promise.all([
     await User.create({
       name: 'Samuel Bodin',
       email: 'bodin.samuel@gmail.com',
@@ -35,6 +35,14 @@ export async function seed() {
     await User.create({
       name: 'Alice Wong',
       email: 'alice.wong@gmail.com',
+    }),
+    await User.create({
+      name: 'Walther Phillips',
+      email: 'WalterLPhillips@gmail.com',
+    }),
+    await User.create({
+      name: 'Clementine Dandonneau',
+      email: 'ClementineDandonneau@gmail.com',
     }),
   ]);
 
@@ -64,7 +72,7 @@ export async function seed() {
 
   // Permissions
   await Promise.all([
-    ...[u2, u3, u4, u5].map((u) => {
+    ...[u2, u3, u4, u5, u6, u7].map((u) => {
       return Perm.create({
         orgId: 'algolia',
         projectId: null,
@@ -80,7 +88,7 @@ export async function seed() {
     }),
     Perm.create({
       orgId: 'algolia',
-      projectId: null,
+      projectId: p1.id,
       userId: u1.id,
       role: 'owner',
     }),
@@ -96,17 +104,14 @@ export async function seed() {
       userId: u3.id,
       role: 'viewer',
     }),
-    Perm.create({
-      orgId: 'algolia',
-      projectId: p1.id,
-      userId: u4.id,
-      role: 'collaborator',
-    }),
-    Perm.create({
-      orgId: 'algolia',
-      projectId: p1.id,
-      userId: u5.id,
-      role: 'collaborator',
+
+    ...[u4, u5, u6, u7].map((u) => {
+      return Perm.create({
+        orgId: 'algolia',
+        projectId: p1.id,
+        userId: u.id,
+        role: 'contributor',
+      });
     }),
   ]);
 

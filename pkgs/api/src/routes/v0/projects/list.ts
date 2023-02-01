@@ -29,7 +29,8 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
       res.status(200).send({
         data: projects.map((p) => {
-          return {
+          // For excess property check
+          const tmp: ResListProjects['data'][0] = {
             id: p.id,
             description: p.description,
             name: p.name,
@@ -43,6 +44,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
             createdAt: p.createdAt.toISOString(),
             updatedAt: p.updatedAt.toISOString(),
           };
+          return tmp;
         }),
         pagination,
       });

@@ -3,7 +3,7 @@ export interface DBPerm {
   orgId: string;
   projectId: string | null;
   userId: string;
-  role: 'collaborator' | 'owner' | 'reviewer' | 'viewer';
+  role: 'contributor' | 'owner' | 'reviewer' | 'viewer';
   createdAt: string;
   updatedAt: string;
 }

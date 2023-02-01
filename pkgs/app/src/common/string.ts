@@ -1,9 +1,8 @@
+import { presetPalettes } from '@ant-design/colors';
+import stringHash from 'string-hash';
+
 export function slugify(title: string): string {
   return title.replace(/[^a-zA-Z]/g, '').toLocaleLowerCase();
-}
-
-export function getRandomID(): string {
-  return (Math.random() + 1).toString(36).substring(2);
 }
 
 export function acronymize(name: string): string {
@@ -28,11 +27,20 @@ export function acronymize(name: string): string {
 }
 
 // https://stackoverflow.com/questions/3426404/create-a-hexadecimal-colour-based-on-a-string-with-javascript
-export function stringToColor(str: string): string {
+export function stringToColorRandom(str: string): string {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
     hash = str.charCodeAt(i) + ((hash << 5) - hash);
     hash = hash & hash;
   }
   return `hsl(${hash % 250}, 85%, 80%)`;
+}
+
+const palette = Object.entries(presetPalettes);
+palette.pop();
+export function stringToColor(str: string): string {
+  const hashedText = stringHash(str);
+  const colorIndex = hashedText % palette.length;
+
+  return palette[colorIndex][1][2];
 }

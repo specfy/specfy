@@ -21,17 +21,12 @@ import {
 } from 'antd';
 import type { ItemType } from 'antd/es/menu/hooks/useItems';
 import Title from 'antd/es/typography/Title';
-import type { ResListPerms, ReqListPerms } from 'api/src/types/api/perms';
 import type { ApiProject } from 'api/src/types/api/projects';
 import { useEffect, useMemo, useState } from 'react';
-import { useQuery } from 'react-query';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { useListComponents } from '../../api/components';
-import { fetchApi } from '../../api/fetch';
-import { useListPermsProject } from '../../api/perms';
 import { deleteProject, useGetProject } from '../../api/projects';
-import { AvatarAuto } from '../../components/AvatarAuto';
 import { BigHeading } from '../../components/BigHeading';
 import { Container } from '../../components/Container';
 import { ListRFCs } from '../../components/ListRFCs';
@@ -40,6 +35,7 @@ import { Time } from '../../components/Time';
 import imgUrl from '../../static/infra.png';
 import type { RouteProject } from '../../types/routes';
 
+import { Team } from './Team';
 import { TechnicalAspects } from './TechnicalAspect';
 import cls from './index.module.scss';
 
@@ -55,20 +51,9 @@ export const Project: React.FC = () => {
 
   // Data fetch
   const res = useGetProject(params);
-  const comps = useListComponents(params.project_slug, params);
-  const team = useQuery({
-    // enabled: typeof proj !== 'undefined',
-    queryKey:
-      typeof proj !== 'undefined'
-        ? ['listPermsProject', params.org_id, proj.id]
-        : undefined,
-    queryFn: async (): Promise<ResListPerms> => {
-      const { json } = await fetchApi<ResListPerms, ReqListPerms>(`/perms`, {
-        qp: { org_id: params.org_id, project_id: proj!.id },
-      });
-
-      return json;
-    },
+  const comps = useListComponents(params.project_slug, {
+    org_id: params.org_id,
+    project_id: proj?.id,
   });
 
   // Delete modal
@@ -188,37 +173,7 @@ export const Project: React.FC = () => {
 
             <Divider plain />
             <Title level={5}>Team</Title>
-            {/* <div className={cls.team}>
-              <div>
-                <div className={cls.teamLabel}>Admin</div>
-                <Avatar.Group>
-                  {proj.owners.map((user) => {
-                    return <AvatarAuto key={user} name="samuel bodin" />;
-                  })}
-                </Avatar.Group>
-              </div>
-              {proj.reviewers.length > 0 && (
-                <div>
-                  <div className={cls.teamLabel}>Reviewers</div>
-                  <Avatar.Group>
-                    {proj.reviewers.map((user) => {
-                      return <AvatarAuto key={user} name="raphael daguenet" />;
-                    })}
-                  </Avatar.Group>
-                </div>
-              )}
-              {proj.contributors.length > 0 && (
-                <div>
-                  <div className={cls.teamLabel}>Contributors</div>
-                  <Avatar.Group>
-                    {proj.contributors.map((user) => {
-                      return <AvatarAuto key={user} name="nicolas torres" />;
-                    })}
-                  </Avatar.Group>
-                </div>
-              )} */}
-            {/* </div> */}
-            <Typography.Text type="secondary">Nothing to show.</Typography.Text>
+            <Team org_id={params.org_id} project_id={proj.id} />
           </Card>
         </Col>
         <Col span={6}>

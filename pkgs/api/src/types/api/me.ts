@@ -6,6 +6,12 @@ export interface ApiMe {
   updatedAt: string;
 }
 
+export interface ApiUser {
+  id: string;
+  name: string;
+  email: string;
+}
+
 export interface ResGetMe {
   data: ApiMe;
 }

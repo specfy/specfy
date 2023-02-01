@@ -1,10 +1,12 @@
 import type { DBPerm } from '../db/perms';
 
+import type { ApiUser } from './me';
+
 export interface ApiPerm {
   id: string;
   orgId: string;
   projectId: string | null;
-  userId: string;
+  user: ApiUser;
   role: DBPerm['role'];
   createdAt: string;
   updatedAt: string;
