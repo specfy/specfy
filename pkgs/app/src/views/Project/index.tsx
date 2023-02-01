@@ -8,7 +8,6 @@ import {
 import {
   App,
   Avatar,
-  Breadcrumb,
   Button,
   Card,
   Col,
@@ -131,25 +130,21 @@ export const Project: React.FC = () => {
       <Row gutter={[16, 16]}>
         <Col span={18}>
           <div className={cls.header}>
-            <div>
-              <Breadcrumb style={{ margin: '0 0 4px 4px' }}>
-                <Breadcrumb.Item>
-                  <Link to="/">Home</Link>
-                </Breadcrumb.Item>
-              </Breadcrumb>
-              <BigHeading title={proj.name}>
-                <Time time={proj.updatedAt} />
-              </BigHeading>
-            </div>
-            <div>
-              <Dropdown.Button
-                type="default"
-                menu={{ items: actions }}
-                icon={<MoreOutlined />}
-              >
-                Edit
-              </Dropdown.Button>
-            </div>
+            <BigHeading
+              title={proj.name}
+              subtitle={<Time time={proj.updatedAt} />}
+              actions={
+                <div>
+                  <Dropdown.Button
+                    type="default"
+                    menu={{ items: actions }}
+                    icon={<MoreOutlined />}
+                  >
+                    Edit
+                  </Dropdown.Button>
+                </div>
+              }
+            ></BigHeading>
           </div>
         </Col>
         <Col span={18}>

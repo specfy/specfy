@@ -1,5 +1,11 @@
 @import '../../theme.scss';
 
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .title {
   margin-bottom: 0 !important;
   line-height: 32px !important;
@@ -29,4 +35,8 @@
 .subtitle {
   color: $gray-6;
   font-size: $font-s;
+}
+
+.actions {
+  margin-top: 22px;
 }

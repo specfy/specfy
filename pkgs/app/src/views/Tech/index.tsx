@@ -18,7 +18,7 @@ export const Tech: React.FC = () => {
   const params = tmpParams as RouteTech;
 
   const [proj, setProj] = useState<ApiProject>();
-  const [techName, setTechName] = useState<string>();
+  const [, setTechName] = useState<string>();
   const [usedBy, setUsedBy] = useState<ApiComponent[]>([]);
   const [icon, setIcon] = useState<React.ReactNode>();
 
@@ -83,19 +83,18 @@ export const Tech: React.FC = () => {
     <Container>
       <Row gutter={[16, 16]}>
         <Col span={18}>
-          <Breadcrumb>
-            <Breadcrumb.Item>
-              <Link to="/">Home</Link>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>
-              <Link to={`/org/${params.org_id}/${params.project_slug}`}>
-                Crawler
-              </Link>
-            </Breadcrumb.Item>
-          </Breadcrumb>
-          <BigHeading title={params.tech_slug} avatar={icon}>
-            <Tag>{techName}</Tag>
-          </BigHeading>
+          <BigHeading
+            title={params.tech_slug}
+            avatar={icon}
+            subtitle={<Tag>tech</Tag>}
+            breadcrumb={
+              <Breadcrumb.Item>
+                <Link to={`/org/${params.org_id}/${params.project_slug}`}>
+                  Crawler
+                </Link>
+              </Breadcrumb.Item>
+            }
+          ></BigHeading>
         </Col>
         <Col span={18}>
           <Card>

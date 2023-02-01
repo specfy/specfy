@@ -38,9 +38,15 @@ export function stringToColorRandom(str: string): string {
 
 const palette = Object.entries(presetPalettes);
 palette.pop();
-export function stringToColor(str: string): string {
+export function stringToColor(str: string): {
+  backgroundColor: string;
+  color: string;
+} {
   const hashedText = stringHash(str);
   const colorIndex = hashedText % palette.length;
 
-  return palette[colorIndex][1][2];
+  return {
+    backgroundColor: palette[colorIndex][1][2],
+    color: palette[colorIndex][1][0],
+  };
 }

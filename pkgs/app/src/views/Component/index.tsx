@@ -16,7 +16,6 @@ import { Link, useParams } from 'react-router-dom';
 import { useListComponents } from '../../api/components';
 import { useGetProject } from '../../api/projects';
 import { supported } from '../../common/component';
-import { AvatarAuto } from '../../components/AvatarAuto';
 import { BigHeading } from '../../components/BigHeading';
 import { Container } from '../../components/Container';
 import { ListRFCs } from '../../components/ListRFCs';
@@ -186,19 +185,18 @@ export const ComponentView: React.FC = () => {
     <Container className={cls.grid}>
       <div className={cls.left}>
         <div>
-          <Breadcrumb style={{ margin: '0 0 4px 4px' }}>
-            <Breadcrumb.Item>
-              <Link to="/">Home</Link>
-            </Breadcrumb.Item>
-            <Breadcrumb.Item>
-              <Link to={`/org/${params.org_id}/${params.project_slug}`}>
-                Crawler
-              </Link>
-            </Breadcrumb.Item>
-          </Breadcrumb>
-          <BigHeading title={comp.name} avatar={icon}>
-            <Tag>{comp.type}</Tag>
-          </BigHeading>
+          <BigHeading
+            title={comp.name}
+            avatar={icon}
+            subtitle={<Tag>{comp.type}</Tag>}
+            breadcrumb={
+              <Breadcrumb.Item>
+                <Link to={`/org/${params.org_id}/${params.project_slug}`}>
+                  Crawler
+                </Link>
+              </Breadcrumb.Item>
+            }
+          ></BigHeading>
         </div>
         <div>
           <Card>
