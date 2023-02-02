@@ -11,7 +11,13 @@ export interface DBComponent {
   description: string | null;
   tech: string[] | null;
 
-  display: Record<string, any>;
+  display: {
+    zIndex?: number;
+    color?: string;
+    backgroundColor?: string;
+    vertices?: Array<{ x: number; y: number }>;
+    pos: { x: number; y: number; width: number; height: number };
+  };
   inComponent: string | null;
   toComponents: string[];
   fromComponents: string[];

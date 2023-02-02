@@ -27,6 +27,7 @@ import { useListComponents } from '../../api/components';
 import { deleteProject, useGetProject } from '../../api/projects';
 import { BigHeading } from '../../components/BigHeading';
 import { Container } from '../../components/Container';
+import { Graph } from '../../components/Graph';
 import { ListRFCs } from '../../components/ListRFCs';
 import { ListUpdates } from '../../components/ListUpdates';
 import { Time } from '../../components/Time';
@@ -125,94 +126,91 @@ export const Project: React.FC = () => {
   }
 
   return (
-    <Container>
-      <Row gutter={[16, 16]}>
-        <Col span={18}>
-          <div className={cls.header}>
-            <BigHeading
-              title={proj.name}
-              subtitle={<Time time={proj.updatedAt} />}
-              actions={
-                <div>
-                  <Dropdown.Button
-                    type="default"
-                    menu={{ items: actions }}
-                    icon={<MoreOutlined />}
-                  >
-                    Edit
-                  </Dropdown.Button>
-                </div>
-              }
-            ></BigHeading>
+    <Container className={cls.container}>
+      <div className={cls.left}>
+        <div className={cls.header}>
+          <BigHeading
+            title={proj.name}
+            subtitle={<Time time={proj.updatedAt} />}
+            actions={
+              <div>
+                <Dropdown.Button
+                  type="default"
+                  menu={{ items: actions }}
+                  icon={<MoreOutlined />}
+                >
+                  Edit
+                </Dropdown.Button>
+              </div>
+            }
+          ></BigHeading>
+        </div>
+        <Card>
+          <div dangerouslySetInnerHTML={{ __html: proj.description }}></div>
+
+          <div className={cls.block}>
+            <Typography.Title level={5}>Technical Aspect</Typography.Title>
+            {comps.data?.data ? (
+              <TechnicalAspects
+                components={comps.data.data}
+                orgId={params.org_id}
+                slug={params.project_slug}
+              />
+            ) : (
+              <Typography.Text type="secondary">
+                Nothing to show.
+              </Typography.Text>
+            )}
           </div>
-        </Col>
-        <Col span={18}>
-          <Card>
-            <div dangerouslySetInnerHTML={{ __html: proj.description }}></div>
 
-            <div className={cls.block}>
-              <Typography.Title level={5}>Technical Aspect</Typography.Title>
-              {comps.data?.data ? (
-                <TechnicalAspects
-                  components={comps.data.data}
-                  orgId={params.org_id}
-                  slug={params.project_slug}
-                />
-              ) : (
-                <Typography.Text type="secondary">
-                  Nothing to show.
-                </Typography.Text>
-              )}
-            </div>
+          <div className={cls.block}>
+            <Typography.Title level={5}>Team</Typography.Title>
+            <Team org_id={params.org_id} project_id={proj.id} />
+          </div>
+        </Card>
+        <Row gutter={[16, 16]}>
+          <Col span={15}>
+            <Card>
+              <ListRFCs project={proj}></ListRFCs>
+            </Card>
+          </Col>
+          <Col span={9}>
+            <Card>
+              <ListUpdates
+                orgId={params.org_id}
+                projectSlug={params.project_slug}
+              ></ListUpdates>
+            </Card>
+          </Col>
+        </Row>
+      </div>
 
-            <div className={cls.block}>
-              <Typography.Title level={5}>Team</Typography.Title>
-              <Team org_id={params.org_id} project_id={proj.id} />
-            </div>
-          </Card>
-        </Col>
-        <Col span={6}>
-          <Card>
-            <div className={cls.infraPng}>
-              <img src={imgUrl} alt="" />
-            </div>
-          </Card>
-          {proj.links && (
-            <div>
-              <Divider />
-              {proj.links.map((link) => {
-                let icon = <LinkOutlined />;
-                if (link.title === 'Gihub') icon = <GithubOutlined />;
-                else if (link.title === 'Slack') icon = <SlackOutlined />;
-                return (
-                  <Link
-                    key={link.link}
-                    className={cls.link}
-                    to={link.link}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {icon} {link.title}
-                  </Link>
-                );
-              })}
-            </div>
-          )}
-        </Col>
-        <Col span={10}>
-          <Card>
-            <ListRFCs project={proj}></ListRFCs>
-          </Card>
-        </Col>
-        <Col span={8}>
-          <Card>
-            <ListUpdates
-              orgId={params.org_id}
-              projectSlug={params.project_slug}
-            ></ListUpdates>
-          </Card>
-        </Col>
-      </Row>
+      <div className={cls.right}>
+        <Card bordered={false} size="small">
+          <Graph components={comps.data!.data}></Graph>
+        </Card>
+        {proj.links && (
+          <div>
+            <Divider />
+            {proj.links.map((link) => {
+              let icon = <LinkOutlined />;
+              if (link.title === 'Gihub') icon = <GithubOutlined />;
+              else if (link.title === 'Slack') icon = <SlackOutlined />;
+              return (
+                <Link
+                  key={link.link}
+                  className={cls.link}
+                  to={link.link}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  {icon} {link.title}
+                </Link>
+              );
+            })}
+          </div>
+        )}
+      </div>
 
       <Modal
         title="Delete this project?"

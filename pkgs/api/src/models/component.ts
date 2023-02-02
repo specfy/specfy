@@ -64,7 +64,7 @@ export class Component extends Model<
   declare tech: string[];
 
   @Column({ type: DataType.JSON })
-  declare display: Record<string, any>;
+  declare display: DBComponent['display'];
 
   @Column({ field: 'in_component' })
   declare inComponent: string;

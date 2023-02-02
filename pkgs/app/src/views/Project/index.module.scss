@@ -5,12 +5,19 @@
   width: 250px;
 }
 
-.infraPng {
-  width: 100%;
-
-  img {
-    width: 100%;
-  }
+.container {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 65% 35%;
+}
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.right {
+  width: inherit;
+  margin: 96px 16px 0 0;
 }
 
 .team {

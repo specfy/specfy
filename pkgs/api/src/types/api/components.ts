@@ -15,7 +15,7 @@ export interface ApiComponent {
   description: string | null;
   tech: string[] | null;
 
-  display: Record<string, any>;
+  display: DBComponent['display'];
   inComponent: string | null;
   toComponents: string[];
   fromComponents: string[];
