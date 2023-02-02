@@ -10,6 +10,7 @@ import { useGetProject } from '../../api/projects';
 import { supported } from '../../common/component';
 import { BigHeading } from '../../components/BigHeading';
 import { Container } from '../../components/Container';
+import { Graph } from '../../components/Graph';
 import { ListRFCs } from '../../components/ListRFCs';
 import imgUrl from '../../static/component.png';
 import type { RouteComponent } from '../../types/routes';
@@ -289,7 +290,9 @@ export const ComponentView: React.FC = () => {
         </div>
       </div>
       <div className={cls.right}>
-        <img src={imgUrl} alt="" />
+        <Card bordered={false} size="small">
+          <Graph components={comps.data!.data} height={500}></Graph>
+        </Card>
       </div>
     </Container>
   );

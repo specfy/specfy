@@ -3,6 +3,7 @@
 .grid {
   display: grid;
   grid-template-columns: max(700px) 1fr;
+  gap: 16px;
 }
 
 .left {
@@ -11,7 +12,7 @@
   flex-direction: column;
 }
 .right {
-  padding-top: 85px;
+  padding-top: 98px;
   img {
     width: 100%;
   }

@@ -1,5 +1,4 @@
 import { ZoomInOutlined, ZoomOutOutlined } from '@ant-design/icons';
-import type { Node } from '@antv/x6';
 import { Graph as AntGraph } from '@antv/x6';
 import { Toolbar } from '@antv/x6-react-components';
 import type { ApiComponent } from 'api/src/types/api/components';
@@ -7,119 +6,14 @@ import { useEffect, useRef } from 'react';
 
 import './Node';
 import '@antv/x6-react-components/es/toolbar/style/index.css';
+import { componentsToGraph, showPorts } from './helpers';
+import cls from './index.module.scss';
 
-function componentsToGraph(graph: AntGraph, components: ApiComponent[]) {
-  const nodes = new Map<string, Node<Node.Properties>>();
-  // const copy = components.slice(0);
-
-  // Create all nodes
-
-  for (const comp of components) {
-    const node = graph.addNode({
-      ...comp.display.pos,
-      zIndex: comp.display.zIndex || 1,
-      label: comp.name,
-      shape: 'custom-node',
-      data: {
-        type: comp.type,
-      },
-      ports: {
-        groups: {
-          left: {
-            position: 'left',
-            attrs: {
-              circle: {
-                r: 4,
-                magnet: true,
-                stroke: '#C2C8D5',
-                strokeWidth: 1,
-                fill: '#fff',
-              },
-            },
-          },
-          bottom: {
-            position: 'bottom',
-            attrs: {
-              circle: {
-                r: 4,
-                magnet: true,
-                stroke: '#C2C8D5',
-                strokeWidth: 1,
-                fill: '#fff',
-              },
-            },
-          },
-        },
-      },
-      attrs: {
-        label: {},
-        body: {
-          rx: 3,
-          ry: 3,
-          strokeWidth: 1,
-        },
-      },
-    });
-    nodes.set(comp.id, node);
-  }
-
-  // Link all nodes
-  for (const comp of components) {
-    const curr = nodes.get(comp.id)!;
-
-    // Group
-    if (comp.inComponent) {
-      nodes.get(comp.inComponent)!.addChild(curr);
-    }
-
-    // Arrows
-    // if (true == 1) {
-    //   continue;
-    // }
-    if (comp.fromComponents) {
-      for (const from of comp.fromComponents) {
-        graph.addEdge({
-          source: nodes.get(from)!,
-          target: curr,
-          attrs: {
-            line: {
-              stroke: '#a0a0a0',
-              strokeWidth: 1,
-              targetMarker: {
-                name: 'classic',
-                size: 3,
-              },
-            },
-          },
-        });
-      }
-    }
-
-    if (comp.toComponents) {
-      for (const to of comp.toComponents) {
-        graph.addEdge({
-          source: curr,
-          target: nodes.get(to)!,
-          attrs: {
-            line: {
-              stroke: '#a0a0a0',
-              strokeWidth: 1,
-              targetMarker: {
-                name: 'classic',
-                size: 3,
-              },
-            },
-          },
-        });
-      }
-    }
-  }
-}
-
-export const Graph: React.FC<{ components: ApiComponent[] }> = ({
-  components,
-}) => {
-  const container = useRef(null);
+export const Graph: React.FC<{
+  components: ApiComponent[];
+  height?: number;
+}> = ({ components, height }) => {
+  const container = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!container.current) {
@@ -152,6 +46,12 @@ export const Graph: React.FC<{ components: ApiComponent[] }> = ({
         enabled: true,
       },
       connecting: {
+        router: {
+          name: 'manhattan',
+          args: {
+            padding: 1,
+          },
+        },
         // router: {
         // name: 'metro',
         // args: {
@@ -161,6 +61,12 @@ export const Graph: React.FC<{ components: ApiComponent[] }> = ({
         // },
         connector: {
           name: 'rounded',
+        },
+        anchor: 'center',
+        // connectionPoint: 'anchor',
+        allowBlank: false,
+        snap: {
+          radius: 20,
         },
       },
       // translating: {
@@ -176,6 +82,42 @@ export const Graph: React.FC<{ components: ApiComponent[] }> = ({
       //     return null;
       //   },
       // },
+    });
+
+    graph.on('node:mouseenter', (args) => {
+      const ports =
+        args.e.target!.parentElement.parentElement.parentElement.parentElement.querySelectorAll(
+          '.x6-port-body'
+        ) as NodeListOf<SVGElement>;
+
+      const doNotTouch: string[] = [];
+      graph.getConnectedEdges(args.node).forEach((edge) => {
+        doNotTouch.push(edge.id);
+        edge.attr('line/strokeDasharray', 5);
+        edge.attr('line/class', cls.animateRunningLine);
+        console.log(edge.getTargetCell());
+      });
+      graph.getEdges().forEach((edge) => {
+        if (doNotTouch.includes(edge.id)) {
+          return;
+        }
+        edge.attr('line/class', cls.hideElement);
+      });
+      showPorts(ports, true);
+    });
+    graph.on('node:mouseleave', (args) => {
+      const ports =
+        args.e.target!.parentElement.parentElement.parentElement.parentElement.querySelectorAll(
+          '.x6-port-body'
+        ) as NodeListOf<SVGElement>;
+      graph.getConnectedEdges(args.node)?.forEach((edge) => {
+        edge.attr('line/strokeDasharray', '');
+        edge.attr('line/class', '');
+      });
+      graph.getEdges().forEach((edge) => {
+        edge.attr('line/class', '');
+      });
+      showPorts(ports, false);
     });
     // graph.use(
     //   new Scroller({
@@ -212,7 +154,10 @@ export const Graph: React.FC<{ components: ApiComponent[] }> = ({
           />
         </Toolbar.Group>
       </Toolbar>
-      <div style={{ width: '100%', height: '350px' }} ref={container} />
+      <div
+        style={{ width: '100%', height: `${height || '350'}px` }}
+        ref={container}
+      />
     </div>
   );
 };
