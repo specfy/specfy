@@ -17,8 +17,7 @@ export interface ApiComponent {
 
   display: DBComponent['display'];
   inComponent: string | null;
-  toComponents: string[];
-  fromComponents: string[];
+  edges: DBComponent['edges'];
 
   createdAt: string;
   updatedAt: string;

@@ -302,8 +302,7 @@ export async function seed() {
       pos: { x: 20, y: 20, width: 410, height: 370 },
     },
     inComponent: null,
-    fromComponents: [],
-    toComponents: [],
+    edges: [],
   });
   const compute = await Component.create({
     name: 'Compute Engine',
@@ -315,8 +314,7 @@ export async function seed() {
       pos: { x: 30, y: 340, width: 150, height: 45 },
     },
     inComponent: gcp.id,
-    fromComponents: [],
-    toComponents: [],
+    edges: [],
   });
   const kube = await Component.create({
     name: 'Kubernetes',
@@ -328,8 +326,7 @@ export async function seed() {
       pos: { x: 150, y: 50, width: 240, height: 300 },
     },
     inComponent: gcp.id,
-    fromComponents: [],
-    toComponents: [],
+    edges: [],
   });
   const pg = await Component.create({
     name: 'Postgresql',
@@ -338,18 +335,16 @@ export async function seed() {
     projectId: p1.id,
     display: { zIndex: 3, pos: { x: 30, y: 190, width: 100, height: 32 } },
     inComponent: gcp.id,
-    fromComponents: [],
-    toComponents: [],
+    edges: [],
   });
   const dd = await Component.create({
     name: 'Datadog',
     type: 'thirdparty',
     orgId: 'algolia',
     projectId: p1.id,
-    display: { zIndex: 3, pos: { x: 440, y: 200, width: 100, height: 32 } },
+    display: { zIndex: 3, pos: { x: 440, y: 190, width: 100, height: 32 } },
     inComponent: null,
-    fromComponents: [],
-    toComponents: [],
+    edges: [],
   });
   const sentry = await Component.create({
     name: 'Sentry',
@@ -358,19 +353,16 @@ export async function seed() {
     projectId: p1.id,
     display: { zIndex: 3, pos: { x: 440, y: 240, width: 100, height: 32 } },
     inComponent: null,
-    fromComponents: [],
-    toComponents: [],
+    edges: [],
   });
   const algolia = await Component.create({
     name: 'Algolia',
     type: 'thirdparty',
     orgId: 'algolia',
     projectId: p1.id,
-    display: { zIndex: 3, pos: { x: 440, y: 280, width: 100, height: 32 } },
-
+    display: { zIndex: 3, pos: { x: 440, y: 290, width: 100, height: 32 } },
     inComponent: null,
-    fromComponents: [],
-    toComponents: [],
+    edges: [],
   });
   const redis = await Component.create({
     name: 'Redis',
@@ -379,18 +371,16 @@ export async function seed() {
     projectId: p1.id,
     display: { zIndex: 3, pos: { x: 30, y: 120, width: 100, height: 32 } },
     inComponent: gcp.id,
-    fromComponents: [],
-    toComponents: [],
+    edges: [],
   });
   const es = await Component.create({
     name: 'Elatiscsearch',
     type: 'component',
     orgId: 'algolia',
     projectId: p1.id,
-    display: { zIndex: 3, pos: { x: 34, y: 324, width: 100, height: 32 } },
+    display: { zIndex: 3, pos: { x: 34, y: 340, width: 100, height: 32 } },
     inComponent: compute.id,
-    fromComponents: [],
-    toComponents: [],
+    edges: [],
   });
   const rabbit = await Component.create({
     name: 'RabbitMQ',
@@ -399,8 +389,7 @@ export async function seed() {
     projectId: p1.id,
     display: { zIndex: 3, pos: { x: 210, y: 240, width: 100, height: 32 } },
     inComponent: kube.id,
-    fromComponents: [],
-    toComponents: [],
+    edges: [],
   });
   const analytics = await Component.create({
     name: 'Analytics API',
@@ -410,8 +399,7 @@ export async function seed() {
     projectId: p1.id,
     display: { zIndex: 3, pos: { x: 440, y: 90, width: 100, height: 32 } },
     inComponent: null,
-    fromComponents: [],
-    toComponents: [],
+    edges: [],
   });
   const api = await Component.create({
     name: 'Private API',
@@ -422,8 +410,64 @@ export async function seed() {
       'Morbi sit amet porttitor justo, quis sagittis nulla. Donec et ullamcorper dolor. Maecenas pharetra imperdiet nulla nec commodo.',
     display: { zIndex: 3, pos: { x: 210, y: 120, width: 100, height: 32 } },
     inComponent: kube.id,
-    fromComponents: [pg.id, analytics.id, redis.id, es.id],
-    toComponents: [pg.id, dd.id, sentry.id, redis.id],
+    edges: [
+      {
+        to: redis.id,
+        read: true,
+        write: true,
+        vertices: [],
+        portSource: 'left',
+        portTarget: 'right',
+      },
+      {
+        to: pg.id,
+        read: true,
+        write: true,
+        vertices: [],
+        portSource: 'left',
+        portTarget: 'right',
+      },
+      {
+        to: analytics.id,
+        read: true,
+        write: false,
+        vertices: [],
+        portSource: 'right',
+        portTarget: 'left',
+      },
+      {
+        to: es.id,
+        read: true,
+        write: true,
+        vertices: [],
+        portSource: 'left',
+        portTarget: 'right',
+      },
+      {
+        to: dd.id,
+        read: false,
+        write: true,
+        vertices: [],
+        portSource: 'right',
+        portTarget: 'left',
+      },
+      {
+        to: sentry.id,
+        read: false,
+        write: true,
+        vertices: [],
+        portSource: 'right',
+        portTarget: 'left',
+      },
+      {
+        to: algolia.id,
+        read: true,
+        write: true,
+        vertices: [],
+        portSource: 'right',
+        portTarget: 'left',
+      },
+    ],
     tech: ['NodeJS', 'Typescript', 'Bash', 'AtlasDB'],
   });
   await Component.create({
@@ -433,8 +477,32 @@ export async function seed() {
     projectId: p1.id,
     display: { zIndex: 4, pos: { x: 210, y: 60, width: 100, height: 32 } },
     inComponent: kube.id,
-    fromComponents: [api.id],
-    toComponents: [api.id, sentry.id],
+    edges: [
+      {
+        to: api.id,
+        read: true,
+        write: true,
+        vertices: [],
+        portSource: 'bottom',
+        portTarget: 'top',
+      },
+      {
+        to: algolia.id,
+        read: true,
+        write: false,
+        vertices: [],
+        portSource: 'right',
+        portTarget: 'left',
+      },
+      {
+        to: sentry.id,
+        read: false,
+        write: true,
+        vertices: [],
+        portSource: 'right',
+        portTarget: 'left',
+      },
+    ],
     tech: ['React', 'Typescript', 'Webpack'],
   });
   const manager = await Component.create({
@@ -446,8 +514,56 @@ export async function seed() {
       'Donec et ullamcorper dolor. Maecenas pharetra imperdiet nulla nec commodo.',
     display: { zIndex: 3, pos: { x: 210, y: 180, width: 100, height: 32 } },
     inComponent: kube.id,
-    fromComponents: [pg.id, es.id, rabbit.id],
-    toComponents: [pg.id, dd.id, es.id, sentry.id, rabbit.id, algolia.id],
+    edges: [
+      {
+        to: pg.id,
+        read: true,
+        write: true,
+        vertices: [],
+        portSource: 'left',
+        portTarget: 'right',
+      },
+      {
+        to: rabbit.id,
+        read: true,
+        write: true,
+        vertices: [],
+        portSource: 'bottom',
+        portTarget: 'top',
+      },
+      {
+        to: es.id,
+        read: true,
+        write: true,
+        vertices: [],
+        portSource: 'left',
+        portTarget: 'right',
+      },
+      {
+        to: algolia.id,
+        read: true,
+        write: true,
+        vertices: [],
+        portSource: 'right',
+        portTarget: 'left',
+      },
+      {
+        to: dd.id,
+        read: false,
+        write: true,
+        vertices: [],
+        portSource: 'right',
+        portTarget: 'left',
+      },
+      {
+        to: sentry.id,
+        read: false,
+        write: true,
+        vertices: [],
+        portSource: 'right',
+        portTarget: 'left',
+      },
+    ],
     tech: ['NodeJS', 'Typescript'],
   });
   const worker = await Component.create({
@@ -458,8 +574,48 @@ export async function seed() {
     description: 'Maecenas pharetra imperdiet nulla nec commodo.',
     display: { zIndex: 3, pos: { x: 210, y: 300, width: 100, height: 32 } },
     inComponent: kube.id,
-    fromComponents: [pg.id, es.id, rabbit.id, algolia.id],
-    toComponents: [pg.id, dd.id, sentry.id, rabbit.id],
+    edges: [
+      {
+        to: pg.id,
+        read: true,
+        write: false,
+        vertices: [],
+        portSource: 'left',
+        portTarget: 'right',
+      },
+      {
+        to: rabbit.id,
+        read: true,
+        write: true,
+        vertices: [],
+        portSource: 'top',
+        portTarget: 'bottom',
+      },
+      {
+        to: es.id,
+        read: true,
+        write: false,
+        vertices: [],
+        portSource: 'left',
+        portTarget: 'right',
+      },
+      {
+        to: dd.id,
+        read: false,
+        write: true,
+        vertices: [],
+        portSource: 'right',
+        portTarget: 'left',
+      },
+      {
+        to: sentry.id,
+        read: false,
+        write: true,
+        vertices: [],
+        portSource: 'right',
+        portTarget: 'left',
+      },
+    ],
     tech: ['NodeJS', 'Typescript'],
   });
 }

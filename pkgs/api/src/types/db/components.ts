@@ -15,12 +15,18 @@ export interface DBComponent {
     zIndex?: number;
     color?: string;
     backgroundColor?: string;
-    vertices?: Array<{ x: number; y: number }>;
     pos: { x: number; y: number; width: number; height: number };
   };
+  edges: Array<{
+    to: string;
+    read: boolean;
+    write: boolean;
+    vertices: Array<{ x: number; y: number }>;
+    portSource: 'bottom' | 'left' | 'right' | 'top';
+    portTarget: 'bottom' | 'left' | 'right' | 'top';
+  }>;
+
   inComponent: string | null;
-  toComponents: string[];
-  fromComponents: string[];
 
   createdAt: string;
   updatedAt: string;

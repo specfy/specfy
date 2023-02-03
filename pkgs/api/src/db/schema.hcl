@@ -249,11 +249,7 @@ table "components" {
     type = uuid
     null = true
   }
-  column "to_components" {
-    type = json
-    null = true
-  }
-  column "from_components" {
+  column "edges" {
     type = json
     null = true
   }

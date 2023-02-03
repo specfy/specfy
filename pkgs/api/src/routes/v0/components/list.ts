@@ -45,8 +45,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
             tech: p.tech,
             display: p.display,
             inComponent: p.inComponent,
-            fromComponents: p.fromComponents,
-            toComponents: p.toComponents,
+            edges: p.edges,
 
             createdAt: p.createdAt.toISOString(),
             updatedAt: p.updatedAt.toISOString(),

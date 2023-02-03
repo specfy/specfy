@@ -84,6 +84,14 @@
     transition: opacity 0.2s ease-in;
     opacity: 1;
   }
+  .x6-edge-label {
+    // transition: opacity 0.2s ease-in;
+    // opacity: 0;
+    & text {
+      font-size: 8px;
+      font-weight: 100;
+    }
+  }
   // .x6-node-selected .node {
   //   border-color: #1890ff;
   //   border-radius: 2px;
@@ -113,8 +121,11 @@
 .animateRunningLine {
   animation: running-line 30s infinite linear;
 }
+.animateRunningLineReverse {
+  animation: running-line 30s reverse infinite linear;
+}
 .animateExchangeLine {
-  animation: exchange-line 1s infinite linear;
+  animation: exchange-line 30s infinite linear;
 }
 .hideElement {
   // fill: $gray-1;
@@ -127,14 +138,8 @@
   }
 }
 @keyframes exchange-line {
-  0% {
-    stroke-dashoffset: 0;
-  }
-  50% {
-    stroke-dashoffset: 5;
-  }
-  100% {
-    stroke-dashoffset: 0;
+  from {
+    stroke-dashoffset: -500;
   }
 }
 @keyframes spin {

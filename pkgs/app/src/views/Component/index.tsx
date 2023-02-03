@@ -12,7 +12,6 @@ import { BigHeading } from '../../components/BigHeading';
 import { Container } from '../../components/Container';
 import { Graph } from '../../components/Graph';
 import { ListRFCs } from '../../components/ListRFCs';
-import imgUrl from '../../static/component.png';
 import type { RouteComponent } from '../../types/routes';
 
 import { Line } from './Line';
@@ -117,35 +116,34 @@ export const ComponentView: React.FC = () => {
     // First find direct ascendant then register all childs
     setContains(getAllChilds(comps.data!.data, comp.id));
 
-    // Find data exchange
-    for (const c of comps.data!.data) {
-      if (c.id === comp.id) {
+    for (const edge of comp.edges) {
+      if (edge.read && edge.write) {
+        _readwrite.set(edge.to, list.get(edge.to)!);
+      } else if (edge.write) {
+        _write.set(edge.to, list.get(edge.to)!);
+      } else {
+        _read.set(edge.to, list.get(edge.to)!);
+      }
+    }
+
+    for (const other of comps.data!.data) {
+      if (other.id === comp.id) {
         continue;
       }
 
-      const to = c.fromComponents.includes(comp.id);
-      const from = c.toComponents.includes(comp.id);
-      if (to && !from) _send.set(c.id, c);
-      else if (!to && from) _receive.set(c.id, c);
-      else if (to && from) _receivesend.set(c.id, c);
-    }
+      for (const edge of other.edges) {
+        if (edge.to !== comp.id) {
+          continue;
+        }
 
-    // Push this component read/write
-    for (const id of comp.toComponents) {
-      _write.set(id, list.get(id)!);
-    }
-    for (const id of comp.fromComponents) {
-      _read.set(id, list.get(id)!);
-    }
-
-    // Dedup read/write after everything is computed
-    for (const [id] of _read) {
-      if (!_write.has(id)) {
-        continue;
+        if (edge.read && edge.write) {
+          _receivesend.set(other.id, list.get(other.id)!);
+        } else if (edge.write) {
+          _receive.set(other.id, list.get(other.id)!);
+        } else {
+          _send.set(other.id, list.get(other.id)!);
+        }
       }
-      _read.delete(id);
-      _write.delete(id);
-      _readwrite.set(id, list.get(id)!);
     }
 
     setHosts(_hosts);

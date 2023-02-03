@@ -12,7 +12,6 @@ interface NodeData {
 const CustomNode: React.FC<{ node: Node }> = ({ node }) => {
   const label = node.getProp().label;
   const data = node.getData<NodeData>();
-  // console.log(label, node.getProp().position);
 
   return (
     <div className={classnames(cls.node, cls[data?.type])}>
@@ -23,7 +22,7 @@ const CustomNode: React.FC<{ node: Node }> = ({ node }) => {
 };
 
 const circle = {
-  r: 4,
+  r: 2,
   magnet: true,
   stroke: '#C2C8D5',
   strokeWidth: 1,

@@ -24,13 +24,12 @@ export class Component extends Model<
     DBComponent,
     | 'description'
     | 'display'
-    | 'fromComponents'
+    | 'edges'
     | 'inComponent'
     | 'name'
     | 'orgId'
     | 'projectId'
     | 'tech'
-    | 'toComponents'
     | 'type'
     | 'typeId'
   >
@@ -69,11 +68,8 @@ export class Component extends Model<
   @Column({ field: 'in_component' })
   declare inComponent: string;
 
-  @Column({ field: 'to_components', type: DataType.JSON })
-  declare toComponents: string[];
-
-  @Column({ field: 'from_components', type: DataType.JSON })
-  declare fromComponents: string[];
+  @Column({ type: DataType.JSON })
+  declare edges: DBComponent['edges'];
 
   @CreatedAt
   @Column({ field: 'created_at' })

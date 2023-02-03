@@ -20,6 +20,12 @@ export const Graph: React.FC<{
       return;
     }
 
+    const compById = new Map<string, ApiComponent>();
+
+    for (const comp of components) {
+      compById.set(comp.id, comp);
+    }
+
     const graph = new AntGraph({
       container: container.current,
       grid: {
@@ -46,28 +52,41 @@ export const Graph: React.FC<{
         enabled: true,
       },
       connecting: {
+        // // This one is good
+        // router: {
+        //   name: 'orth',
+        //   args: {
+        //     padding: 5,
+        //   },
+        // },
+        // router: {
+        //   name: 'er',
+        //   args: {
+        //     offset: 40,
+        //   },
+        // },
+        // router: {
+        //   name: 'manhattan',
+        //   args: {
+        //     padding: 1,
+        //     endDirections: ['left', 'right'],
+        //   },
+        // },
         router: {
-          name: 'manhattan',
+          name: 'metro',
           args: {
-            padding: 1,
+            endDirections: ['left', 'right'],
           },
         },
-        // router: {
-        // name: 'metro',
-        // args: {
-        // startDirections: ['bottom'],
-        // endDirections: ['top'],
-        // },
-        // },
         connector: {
           name: 'rounded',
         },
-        anchor: 'center',
+        // anchor: 'center',
         // connectionPoint: 'anchor',
-        allowBlank: false,
-        snap: {
-          radius: 20,
-        },
+        // allowBlank: false,
+        // snap: {
+        //   radius: 20,
+        // },
       },
       // translating: {
       //   restrict(view) {
@@ -86,16 +105,31 @@ export const Graph: React.FC<{
 
     graph.on('node:mouseenter', (args) => {
       const ports =
-        args.e.target!.parentElement.parentElement.parentElement.parentElement.querySelectorAll(
+        args.e.target.parentElement.parentElement.parentElement.parentElement.querySelectorAll(
           '.x6-port-body'
         ) as NodeListOf<SVGElement>;
 
       const doNotTouch: string[] = [];
       graph.getConnectedEdges(args.node).forEach((edge) => {
         doNotTouch.push(edge.id);
+        let animation = cls.animateRunningLine;
+        const data = edge.data.db;
+        if (!data.write) {
+          animation = cls.animateRunningLineReverse;
+        } else if (data.write && data.read) {
+          animation = cls.animateExchangeLine;
+        }
+
         edge.attr('line/strokeDasharray', 5);
-        edge.attr('line/class', cls.animateRunningLine);
-        console.log(edge.getTargetCell());
+        edge.attr('line/class', animation);
+        // edge.setLabels(
+        //   edge.getLabels().map((label, i) => {
+        //     edge.removeLabelAt(i);
+        //     label.attrs!.body.visibility = 'visible';
+        //     label.attrs!.label.visibility = 'visible';
+        //     return label;
+        //   })
+        // );
       });
       graph.getEdges().forEach((edge) => {
         if (doNotTouch.includes(edge.id)) {
@@ -116,6 +150,14 @@ export const Graph: React.FC<{
       });
       graph.getEdges().forEach((edge) => {
         edge.attr('line/class', '');
+        // edge.setLabels(
+        //   edge.getLabels().map((label, i) => {
+        //     edge.removeLabelAt(i);
+        //     label.attrs!.body.visibility = 'hidden';
+        //     label.attrs!.label.visibility = 'hidden';
+        //     return label;
+        //   })
+        // );
       });
       showPorts(ports, false);
     });
@@ -134,8 +176,7 @@ export const Graph: React.FC<{
 
     // graph.center();
     graph.zoomToFit();
-    graph.zoomTo(graph.zoom() - 0.05);
-    // console.log(graph.zoom());
+    graph.zoomTo(graph.zoom() - 0.1);
   }, [container, components]);
 
   return (
