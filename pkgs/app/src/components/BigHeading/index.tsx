@@ -1,4 +1,4 @@
-import { Breadcrumb, Space, Typography } from 'antd';
+import { Breadcrumb, Skeleton, Space, Typography } from 'antd';
 import { Link } from 'react-router-dom';
 
 import { AvatarAuto } from '../AvatarAuto';
@@ -39,6 +39,17 @@ export const BigHeading: React.FC<{
         </Space>
         <div className={cls.actions}>{actions}</div>
       </div>
+    </div>
+  );
+};
+
+export const BigHeadingLoading: React.FC = () => {
+  return (
+    <div className={cls.header}>
+      <Space size={'middle'}>
+        <Skeleton.Avatar active className={cls.skeletonAvatar} />
+        <Skeleton active paragraph={false} className={cls.skeletonTitle} />
+      </Space>
     </div>
   );
 };

@@ -1,5 +1,16 @@
 @import '../../theme.scss';
 
+.skeletonAvatar {
+  > span {
+    width: 50px !important;
+    height: 50px !important;
+  }
+}
+.skeletonTitle {
+  margin: 42px 0 12px 0;
+  width: 250px;
+}
+
 .header {
   display: flex;
   align-items: center;

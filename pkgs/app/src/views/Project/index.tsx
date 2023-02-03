@@ -13,6 +13,7 @@ import {
   Col,
   Divider,
   Dropdown,
+  List,
   Modal,
   Row,
   Skeleton,
@@ -25,7 +26,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { useListComponents } from '../../api/components';
 import { deleteProject, useGetProject } from '../../api/projects';
-import { BigHeading } from '../../components/BigHeading';
+import { BigHeading, BigHeadingLoading } from '../../components/BigHeading';
 import { Container } from '../../components/Container';
 import { Graph } from '../../components/Graph';
 import { ListRFCs } from '../../components/ListRFCs';
@@ -89,34 +90,23 @@ export const Project: React.FC = () => {
 
   if (res.isLoading || comps.isLoading) {
     return (
-      <Container>
-        <Row gutter={[16, 16]}>
-          <Col span={18}>
-            <Skeleton active paragraph={false} className={cls.skeletonTitle} />
-          </Col>
-          <Col span={18}>
-            <Card>
-              <Skeleton active paragraph={{ rows: 3 }}></Skeleton>
-              <Divider />
-              <Avatar.Group>
-                <Skeleton.Avatar active />
-                <Skeleton.Avatar active />
-                <Skeleton.Avatar active />
-              </Avatar.Group>
-            </Card>
-          </Col>
+      <Container className={cls.container}>
+        <div className={cls.left}>
+          <div className={cls.header}>
+            <BigHeadingLoading />
+          </div>
+          <Card>
+            <Skeleton active paragraph={{ rows: 3 }}></Skeleton>
+            <Divider />
+            <Avatar.Group>
+              <Skeleton.Avatar active />
+              <Skeleton.Avatar active />
+              <Skeleton.Avatar active />
+            </Avatar.Group>
+          </Card>
+        </div>
 
-          <Col span={12}>
-            <Card>
-              <Skeleton active title={false} paragraph={{ rows: 3 }}></Skeleton>
-            </Card>
-          </Col>
-          <Col span={6}>
-            <Card>
-              <Skeleton active title={false} paragraph={{ rows: 3 }}></Skeleton>
-            </Card>
-          </Col>
-        </Row>
+        <div className={cls.right}></div>
       </Container>
     );
   }
