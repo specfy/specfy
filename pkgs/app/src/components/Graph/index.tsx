@@ -1,14 +1,16 @@
 import { ZoomInOutlined, ZoomOutOutlined } from '@ant-design/icons';
 import { Graph as AntGraph } from '@antv/x6';
 import { Toolbar } from '@antv/x6-react-components';
+import { Button, Popover, Tooltip } from 'antd';
 import type { ApiComponent } from 'api/src/types/api/components';
 import { useEffect, useRef, useState } from 'react';
-
-import './CustomNode';
-import '@antv/x6-react-components/es/toolbar/style/index.css';
 import { useDebounce } from 'react-use';
 
+import { registerCustomNode } from './CustomNode';
 import { componentsToGraph, highlightCell, unHighlightCell } from './helpers';
+import cls from './index.module.scss';
+
+import '@antv/x6-react-components/es/toolbar/style/index.css';
 
 export const Graph: React.FC<{
   components: ApiComponent[];
@@ -22,6 +24,7 @@ export const Graph: React.FC<{
 
   const [revertHighlight, setRevertHighlight] = useState(false);
   const [drawed, setDrawed] = useState(false);
+  const [mouseover, setMouseOver] = useState(false);
 
   useEffect(() => {
     if (!container.current) {
@@ -116,6 +119,7 @@ export const Graph: React.FC<{
       // },
     });
     setG(graph);
+    registerCustomNode();
 
     graph.on('node:mouseenter', (args) => {
       highlightCell({
@@ -134,6 +138,13 @@ export const Graph: React.FC<{
         graph,
       });
       setRevertHighlight(true);
+    });
+
+    graph.on('graph:mouseenter', () => {
+      setMouseOver(true);
+    });
+    graph.on('graph:mouseleave', () => {
+      setMouseOver(false);
     });
 
     // graph.use(
@@ -180,14 +191,14 @@ export const Graph: React.FC<{
           hostsById: hostsById!,
         });
       },
-      drawed ? 1 : 500
+      drawed ? 100 : 500
     );
     prevHighlight.current = highlight;
   }, [g, highlight]);
 
   useDebounce(
     () => {
-      if (!revertHighlight) {
+      if (!revertHighlight || !highlight || mouseover) {
         return;
       }
 
@@ -198,26 +209,37 @@ export const Graph: React.FC<{
         hostsById: hostsById!,
       });
     },
-    50,
-    [revertHighlight]
+    100,
+    [revertHighlight, mouseover]
   );
 
+  function handleZoomIn() {
+    g?.zoom(0.2);
+  }
+  function handleZoomOut() {
+    g?.zoom(-0.2);
+  }
+
   return (
-    <div>
-      <Toolbar>
-        <Toolbar.Group>
-          <Toolbar.Item
-            name="zoomIn"
-            tooltip="Zoom In (Cmd +)"
+    <div className={cls.container}>
+      <div className={cls.toolbar}>
+        <Tooltip title="Zoom In (Cmd +)" placement="bottom">
+          <Button
+            className={cls.toolbarItem}
             icon={<ZoomInOutlined />}
+            type="text"
+            onClick={handleZoomIn}
           />
-          <Toolbar.Item
-            name="zoomOut"
-            tooltip="Zoom Out (Cmd -)"
+        </Tooltip>
+        <Tooltip title="Zoom Out (Cmd -)" placement="bottom">
+          <Button
+            className={cls.toolbarItem}
             icon={<ZoomOutOutlined />}
+            type="text"
+            onClick={handleZoomOut}
           />
-        </Toolbar.Group>
-      </Toolbar>
+        </Tooltip>
+      </div>
       <div
         style={{ width: '100%', height: `${height || '350'}px` }}
         ref={container}

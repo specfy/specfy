@@ -1,0 +1,62 @@
+@import '../../theme.scss';
+
+.node {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  border: 1px solid #c2c8d5;
+  border-left: 4px solid #91caff;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px 1px rgba(0, 0, 0, 0.06);
+
+  font-size: 11px;
+  color: $gray-9;
+
+  transition: box-shadow 0.2s ease-in;
+
+  &:hover {
+    box-shadow: 0 0 0 4px #d4e8fe;
+  }
+
+  &.thirdparty {
+    border-left-color: #d3adf7;
+
+    &:hover {
+      box-shadow: 0 0 0 4px #f9f0ff;
+    }
+  }
+  &.project {
+    border-left-color: #ffe58f;
+    &:hover {
+      box-shadow: 0 0 0 4px #fffbe6;
+    }
+  }
+  &.hosting {
+    align-items: flex-start;
+    box-shadow: none;
+    border-radius: 0;
+    border: 1px solid $gray-4;
+    border-top: 2px solid $gray-5;
+
+    &:hover {
+      box-shadow: 0 0 0 4px $gray-3;
+    }
+
+    .label {
+      margin: -20px 0 0 0;
+      font-weight: bold;
+      color: $gray-6;
+    }
+  }
+}
+
+.label {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 104px;
+  margin-left: 8px;
+  color: #666;
+  font-size: 12px;
+}

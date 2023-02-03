@@ -3,7 +3,7 @@ import { register } from '@antv/x6-react-shape';
 import type { ApiComponent } from 'api/src/types/api/components';
 import classnames from 'classnames';
 
-import cls from './index.module.scss';
+import cls from './custom.module.scss';
 
 interface NodeData {
   type: ApiComponent['type'];
@@ -16,7 +16,6 @@ const CustomNode: React.FC<{ node: Node }> = ({ node }) => {
   return (
     <div className={classnames(cls.node, cls[data?.type])}>
       <span className={cls.label}>{label}</span>
-      <span className="status"></span>
     </div>
   );
 };
@@ -31,37 +30,40 @@ const circle = {
     visibility: 'hidden',
   },
 };
-register({
-  shape: 'custom-node',
-  width: 180,
-  height: 36,
-  component: CustomNode,
-  ports: {
-    groups: {
-      top: {
-        position: 'top',
-        attrs: {
-          circle,
+
+export function registerCustomNode() {
+  register({
+    shape: 'custom-node',
+    width: 180,
+    height: 36,
+    component: CustomNode,
+    ports: {
+      groups: {
+        top: {
+          position: 'top',
+          attrs: {
+            circle,
+          },
         },
-      },
-      bottom: {
-        position: 'bottom',
-        attrs: {
-          circle,
+        bottom: {
+          position: 'bottom',
+          attrs: {
+            circle,
+          },
         },
-      },
-      left: {
-        position: 'left',
-        attrs: {
-          circle,
+        left: {
+          position: 'left',
+          attrs: {
+            circle,
+          },
         },
-      },
-      right: {
-        position: 'right',
-        attrs: {
-          circle,
+        right: {
+          position: 'right',
+          attrs: {
+            circle,
+          },
         },
       },
     },
-  },
-});
+  });
+}

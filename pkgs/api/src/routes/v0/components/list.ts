@@ -17,7 +17,6 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         page: 0,
         total: 0,
       };
-      console.log(req.query.org_id);
 
       const docs = await Component.findAll({
         where: {
