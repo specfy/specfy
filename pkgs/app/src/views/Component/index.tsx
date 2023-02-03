@@ -289,7 +289,11 @@ export const ComponentView: React.FC = () => {
       </div>
       <div className={cls.right}>
         <Card bordered={false} size="small">
-          <Graph components={comps.data!.data} height={500}></Graph>
+          <Graph
+            components={comps.data!.data}
+            height={500}
+            highlight={comp.id}
+          ></Graph>
         </Card>
       </div>
     </Container>

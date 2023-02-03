@@ -1,5 +1,7 @@
-import type { Node, Graph as AntGraph } from '@antv/x6';
+import type { Node, Cell, Graph as AntGraph } from '@antv/x6';
 import type { ApiComponent } from 'api/src/types/api/components';
+
+import cls from './index.module.scss';
 
 export function showPorts(ports: NodeListOf<SVGElement>, show: boolean) {
   for (let i = 0, len = ports.length; i < len; i = i + 1) {
@@ -104,4 +106,116 @@ export function componentsToGraph(graph: AntGraph, components: ApiComponent[]) {
       });
     }
   }
+}
+
+export function highlightCell({
+  graph,
+  cell,
+  container,
+  hostsById,
+}: {
+  graph: AntGraph;
+  cell: Cell;
+  container: HTMLDivElement;
+  hostsById: Set<string>;
+}) {
+  if (cell?.getData().type === 'hosting') {
+    return;
+  }
+
+  const $node = container.querySelector(`.x6-cell[data-cell-id="${cell.id}"]`);
+  if (!$node) {
+    return;
+  }
+
+  const ports = $node.querySelectorAll<SVGElement>('.x6-port-body');
+
+  const cellsHighlighted = new Set<string>([cell.id]);
+
+  graph.getConnectedEdges(cell).forEach((edge) => {
+    // doNotTouch.push(edge.id);
+    let animation = cls.animateRunningLine;
+    const data = edge.data.db;
+    if (!data.write) {
+      animation = cls.animateRunningLineReverse;
+    } else if (data.write && data.read) {
+      animation = cls.animateExchangeLine;
+    }
+
+    // Highlight other nodes from/to this node
+    const tmpTarget = edge.getTargetCell()!;
+    const tmpSource = edge.getSourceCell()!;
+    cellsHighlighted.add(edge.id);
+    cellsHighlighted.add(tmpTarget.id);
+    cellsHighlighted.add(tmpSource.id);
+
+    // Keep all related hosts highlighted
+    hostsById.forEach((id) => {
+      const host = graph.getCellById(id);
+      if (host.contains(tmpTarget)) {
+        cellsHighlighted.add(id);
+      } else if (host.contains(tmpSource)) {
+        cellsHighlighted.add(id);
+      }
+    });
+
+    edge.attr('line/strokeDasharray', 5);
+    edge.attr('line/class', animation);
+    // edge.setLabels(
+    //   edge.getLabels().map((label, i) => {
+    //     edge.removeLabelAt(i);
+    //     label.attrs!.body.visibility = 'visible';
+    //     label.attrs!.label.visibility = 'visible';
+    //     return label;
+    //   })
+    // );
+  });
+
+  container.querySelectorAll('.x6-cell').forEach((cel) => {
+    const id = cel.dataset.cellId;
+    if (cellsHighlighted.has(id)) {
+      return;
+    }
+
+    const tmp = graph.getCellById(id);
+    if (tmp && tmp.getData()?.type === 'hosting') {
+      if (tmp.contains(cell)) {
+        return;
+      }
+    }
+    cel.classList.add(cls.hideElement);
+  });
+
+  showPorts(ports, true);
+}
+
+export function unHighlightCell({
+  graph,
+  cell,
+  container,
+}: {
+  graph: AntGraph;
+  container: HTMLDivElement;
+  cell?: Cell;
+}) {
+  if (cell) {
+    const $node = container.querySelector(
+      `.x6-cell[data-cell-id="${cell.id}"]`
+    );
+    if (!$node) {
+      return;
+    }
+
+    const ports = $node.querySelectorAll<SVGElement>('.x6-port-body');
+
+    graph.getConnectedEdges(cell)?.forEach((edge) => {
+      edge.attr('line/strokeDasharray', '');
+      edge.attr('line/class', '');
+    });
+    showPorts(ports, false);
+  }
+
+  container.querySelectorAll('.x6-cell').forEach((cel) => {
+    cel.classList.remove(cls.hideElement);
+  });
 }
