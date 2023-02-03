@@ -4,7 +4,7 @@ import { Toolbar } from '@antv/x6-react-components';
 import type { ApiComponent } from 'api/src/types/api/components';
 import { useEffect, useRef } from 'react';
 
-import './Node';
+import './CustomNode';
 import '@antv/x6-react-components/es/toolbar/style/index.css';
 import { componentsToGraph, showPorts } from './helpers';
 import cls from './index.module.scss';
@@ -21,9 +21,13 @@ export const Graph: React.FC<{
     }
 
     const compById = new Map<string, ApiComponent>();
+    const hostsById = new Set<string>();
 
     for (const comp of components) {
       compById.set(comp.id, comp);
+      if (comp.type === 'hosting') {
+        hostsById.add(comp.id);
+      }
     }
 
     const graph = new AntGraph({
@@ -104,14 +108,19 @@ export const Graph: React.FC<{
     });
 
     graph.on('node:mouseenter', (args) => {
+      if (args.cell?.getData().type === 'hosting') {
+        return;
+      }
+
       const ports =
         args.e.target.parentElement.parentElement.parentElement.parentElement.querySelectorAll(
           '.x6-port-body'
         ) as NodeListOf<SVGElement>;
 
-      const doNotTouch: string[] = [];
+      const cellsHighlighted = new Set<string>([args.cell.id]);
+
       graph.getConnectedEdges(args.node).forEach((edge) => {
-        doNotTouch.push(edge.id);
+        // doNotTouch.push(edge.id);
         let animation = cls.animateRunningLine;
         const data = edge.data.db;
         if (!data.write) {
@@ -119,6 +128,23 @@ export const Graph: React.FC<{
         } else if (data.write && data.read) {
           animation = cls.animateExchangeLine;
         }
+
+        // Highlight other nodes from/to this node
+        const tmpTarget = edge.getTargetCell()!;
+        const tmpSource = edge.getSourceCell()!;
+        cellsHighlighted.add(edge.id);
+        cellsHighlighted.add(tmpTarget.id);
+        cellsHighlighted.add(tmpSource.id);
+
+        // Keep all related hosts highlighted
+        hosts.forEach((id) => {
+          const host = graph.getCellById(id);
+          if (host.contains(tmpTarget)) {
+            cellsHighlighted.add(id);
+          } else if (host.contains(tmpSource)) {
+            cellsHighlighted.add(id);
+          }
+        });
 
         edge.attr('line/strokeDasharray', 5);
         edge.attr('line/class', animation);
@@ -131,36 +157,41 @@ export const Graph: React.FC<{
         //   })
         // );
       });
-      graph.getEdges().forEach((edge) => {
-        if (doNotTouch.includes(edge.id)) {
+
+      container.current?.querySelectorAll('.x6-cell').forEach((cell) => {
+        const id = cell.dataset.cellId;
+        if (cellsHighlighted.has(id)) {
           return;
         }
-        edge.attr('line/class', cls.hideElement);
+
+        const tmp = graph.getCellById(id);
+        if (tmp && tmp.getData()?.type === 'hosting') {
+          if (tmp.contains(args.cell)) {
+            return;
+          }
+        }
+        cell.classList.add(cls.hideElement);
       });
+
       showPorts(ports, true);
     });
+
     graph.on('node:mouseleave', (args) => {
       const ports =
         args.e.target!.parentElement.parentElement.parentElement.parentElement.querySelectorAll(
           '.x6-port-body'
         ) as NodeListOf<SVGElement>;
+
+      container.current?.querySelectorAll('.x6-cell').forEach((cell) => {
+        cell.classList.remove(cls.hideElement);
+      });
       graph.getConnectedEdges(args.node)?.forEach((edge) => {
         edge.attr('line/strokeDasharray', '');
         edge.attr('line/class', '');
       });
-      graph.getEdges().forEach((edge) => {
-        edge.attr('line/class', '');
-        // edge.setLabels(
-        //   edge.getLabels().map((label, i) => {
-        //     edge.removeLabelAt(i);
-        //     label.attrs!.body.visibility = 'hidden';
-        //     label.attrs!.label.visibility = 'hidden';
-        //     return label;
-        //   })
-        // );
-      });
       showPorts(ports, false);
     });
+
     // graph.use(
     //   new Scroller({
     //     enabled: true,
@@ -177,6 +208,9 @@ export const Graph: React.FC<{
     // graph.center();
     graph.zoomToFit();
     graph.zoomTo(graph.zoom() - 0.1);
+    return () => {
+      graph.off();
+    };
   }, [container, components]);
 
   return (

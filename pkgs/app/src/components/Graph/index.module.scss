@@ -80,10 +80,14 @@
 }
 
 :global {
-  .x6-edge path {
+  .x6-cell {
     transition: opacity 0.2s ease-in;
     opacity: 1;
   }
+  // .x6-edge path {
+  //   transition: opacity 0.2s ease-in;
+  //   opacity: 1;
+  // }
   .x6-edge-label {
     // transition: opacity 0.2s ease-in;
     // opacity: 0;
@@ -129,7 +133,14 @@
 }
 .hideElement {
   // fill: $gray-1;
-  opacity: 0.1 !important;
+  opacity: 0.25 !important;
+}
+:global {
+  :local(.hideElement) {
+    &.x6-edge {
+      opacity: 0.1 !important;
+    }
+  }
 }
 
 @keyframes running-line {

@@ -15,6 +15,7 @@ export function componentsToGraph(graph: AntGraph, components: ApiComponent[]) {
   for (const comp of components) {
     compById.set(comp.id, comp);
     const node = graph.addNode({
+      id: comp.id,
       ...comp.display.pos,
       zIndex: comp.display.zIndex || 1,
       label: comp.name,
