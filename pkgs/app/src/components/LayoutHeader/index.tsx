@@ -6,6 +6,7 @@ import {
   SettingOutlined,
   LogoutOutlined,
   QuestionCircleOutlined,
+  AppstoreAddOutlined,
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Divider, Button, Menu, Dropdown, Badge, Layout } from 'antd';
@@ -14,8 +15,7 @@ import { Link } from 'react-router-dom';
 
 import { useListOrgs } from '../../api/orgs';
 import { useAuth } from '../../hooks/useAuth';
-import Logo from '../../static/logo.svg';
-import Logo1 from '../../static/specfy1.svg';
+import Logo1 from '../../static/logo2.svg';
 
 import cls from './index.module.scss';
 
@@ -68,7 +68,7 @@ export const LayoutHeader: React.FC = () => {
   return (
     <Layout.Header className={cls.header}>
       <Link className={cls.logo} to="/">
-        <img src={Logo} />
+        <AppstoreAddOutlined />
         <img src={Logo1} />
       </Link>
 
