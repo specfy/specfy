@@ -51,6 +51,10 @@ export async function seed() {
     id: 'algolia',
     name: 'Algolia',
   });
+  await Org.create({
+    id: 'samuelbodin',
+    name: "Samuel Bodin's org",
+  });
 
   // Projects
   const p1 = await Project.create({
@@ -79,6 +83,12 @@ export async function seed() {
         userId: u.id,
         role: 'viewer',
       });
+    }),
+    Perm.create({
+      orgId: 'samuelbodin',
+      projectId: null,
+      userId: u1.id,
+      role: 'owner',
     }),
     Perm.create({
       orgId: 'algolia',

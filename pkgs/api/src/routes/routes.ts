@@ -1,5 +1,7 @@
 import type { FastifyPluginAsync } from 'fastify';
 
+import { registerAuth } from '../middlewares/auth';
+
 import components from './v0/components';
 import documents from './v0/documents';
 import getMe from './v0/me/get';
@@ -8,6 +10,8 @@ import perms from './v0/perms';
 import projects from './v0/projects';
 
 export const routes: FastifyPluginAsync = async (f) => {
+  registerAuth(f);
+
   f.register(components, { prefix: '/0' });
   f.register(documents, { prefix: '/0' });
   f.register(getMe, { prefix: '/0' });

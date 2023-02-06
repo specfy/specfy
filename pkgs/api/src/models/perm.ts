@@ -14,7 +14,7 @@ import {
 
 import type { DBPerm } from '../types/db/perms';
 
-import type { Org } from './org';
+import { Org } from './org';
 import type { Project } from './project';
 import { User } from './user';
 
@@ -22,6 +22,9 @@ import { User } from './user';
   // includes
   withUser: {
     include: [User],
+  },
+  withOrg: {
+    include: [Org],
   },
 }))
 @Table({ tableName: 'perms', modelName: 'perm' })
@@ -45,6 +48,9 @@ export class Perm extends Model<
 
   @BelongsTo(() => User, 'user_id')
   declare user: User;
+
+  @BelongsTo(() => Org, 'org_id')
+  declare org: Org;
 
   @Column({ type: DataType.STRING })
   declare role: DBPerm['role'];

@@ -1,3 +1,4 @@
+import type { SelectProps } from 'antd';
 import {
   App,
   Button,
@@ -12,8 +13,10 @@ import {
 } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import type { ReqPostProject } from 'api/src/types/api/projects';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { useListOrgs } from '../../api/orgs';
 import { createProject } from '../../api/projects';
 import { Container } from '../../components/Container';
 
@@ -21,7 +24,19 @@ import cls from './index.module.scss';
 
 export const ProjectCreate: React.FC = () => {
   const { message } = App.useApp();
+  const orgsQuery = useListOrgs();
   const navigate = useNavigate();
+
+  const [orgs, setOrgs] = useState<SelectProps['options']>([]);
+
+  useEffect(() => {
+    if (orgsQuery.isLoading) return;
+    setOrgs(
+      orgsQuery.data!.map((org) => {
+        return { value: org.id, label: org.name };
+      })
+    );
+  }, [orgsQuery.isLoading]);
 
   const onFinish = async (values: ReqPostProject) => {
     const { slug } = await createProject(values);
@@ -59,19 +74,7 @@ export const ProjectCreate: React.FC = () => {
                   },
                 ]}
               >
-                <Select
-                  size="large"
-                  options={[
-                    {
-                      value: 'default',
-                      label: "Samuel Bodin's org",
-                    },
-                    {
-                      value: 'algolia',
-                      label: 'Algolia',
-                    },
-                  ]}
-                />
+                <Select size="large" options={orgs} />
               </Form.Item>
             </Col>
             <Col span={1}>

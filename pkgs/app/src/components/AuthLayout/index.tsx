@@ -1,5 +1,8 @@
+import { LoadingOutlined } from '@ant-design/icons';
 import { Layout } from 'antd';
+import { useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
+import { useMount } from 'react-use';
 
 import { useAuth } from '../../hooks/useAuth';
 import { LayoutHeader } from '../LayoutHeader';
@@ -9,11 +12,21 @@ import cls from './index.module.scss';
 export const AuthLayout: React.FC<{ children?: React.ReactNode }> = ({
   children,
 }) => {
-  const { user } = useAuth();
+  const [wait, setWait] = useState(true);
+  const auth = useAuth();
 
-  if (!user) {
+  useMount(async () => {
+    // TODO: make sure this is correct
+    await auth.tryLogin();
+    setWait(false);
+  });
+
+  if (wait) {
+    return <LoadingOutlined />;
+  }
+
+  if (!auth.user) {
     return <Navigate to="/login" />;
-    // return <div>hello</div>;
   }
 
   return (

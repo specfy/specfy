@@ -9,5 +9,5 @@ export const Login: React.FC = () => {
     login();
   });
 
-  return <div>login batard</div>;
+  return <div>login</div>;
 };

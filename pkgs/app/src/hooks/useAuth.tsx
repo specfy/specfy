@@ -7,12 +7,14 @@ import { getMe } from '../api/users';
 
 interface AuthContextInterface {
   user: ApiMe | null;
+  tryLogin: () => void;
   login: () => void;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextInterface>({
   user: null,
+  tryLogin: () => {},
   login: () => {},
   logout: () => {},
 });
@@ -25,10 +27,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const [user, setUser] = useState<ApiMe | null>(null);
 
-  const handleLogin = async () => {
+  const tryLogin = async () => {
     const data = await getMe();
-
     setUser(data);
+  };
+
+  const handleLogin = async () => {
+    await tryLogin();
 
     const origin = location.state?.from?.pathname || '/';
     navigate(origin);
@@ -42,6 +47,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const value = useMemo(
     () => ({
       user,
+      tryLogin: tryLogin,
       login: handleLogin,
       logout: handleLogout,
     }),
