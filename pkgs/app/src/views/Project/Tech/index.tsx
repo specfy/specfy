@@ -5,53 +5,39 @@ import type { ApiProject } from 'api/src/types/api/projects';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
-import { useListComponents } from '../../api/components';
-import { useGetProject } from '../../api/projects';
-import { supported } from '../../common/component';
-import { BigHeading } from '../../components/BigHeading';
-import { Container } from '../../components/Container';
-import type { RouteTech } from '../../types/routes';
+import { supported } from '../../../common/component';
+import { BigHeading } from '../../../components/BigHeading';
+import { Container } from '../../../components/Container';
+import type { RouteProject, RouteTech } from '../../../types/routes';
 import { Line } from '../Component/Line';
 
-export const Tech: React.FC = () => {
-  const tmpParams = useParams<Partial<RouteTech>>();
-  const params = tmpParams as RouteTech;
+export const Tech: React.FC<{
+  proj: ApiProject;
+  comps: ApiComponent[];
+  params: RouteProject;
+}> = ({ proj, comps, params }) => {
+  const route = useParams<Partial<RouteTech>>();
 
-  const [proj, setProj] = useState<ApiProject>();
   const [techname, setTechName] = useState<string>();
   const [usedBy, setUsedBy] = useState<ApiComponent[]>([]);
   const [icon, setIcon] = useState<React.ReactNode>();
 
-  // Data fetch
-  const res = useGetProject(params);
-  const comps = useListComponents(params.project_slug, {
-    org_id: params.org_id,
-    project_id: proj?.id,
-  });
-
   useEffect(() => {
-    setProj(res.data?.data);
-  }, [res.isLoading]);
-  useEffect(() => {
-    if (!comps.data?.data) {
-      return;
-    }
-
     setIcon(
-      params.tech_slug in supported ? (
+      route.tech_slug! in supported ? (
         <Avatar
-          icon={<i className={`devicon-${params.tech_slug}-plain colored`}></i>}
+          icon={<i className={`devicon-${route.tech_slug}-plain colored`}></i>}
         />
       ) : undefined
     );
 
     let name;
     const tmp = [];
-    for (const comp of comps.data!.data) {
+    for (const comp of comps) {
       if (!comp.tech) continue;
 
       for (const _tech of comp.tech) {
-        if (_tech.toLocaleLowerCase() === params.tech_slug) {
+        if (_tech.toLocaleLowerCase() === route.tech_slug) {
           tmp.push(comp);
           if (!name) name = _tech;
         }
@@ -60,24 +46,7 @@ export const Tech: React.FC = () => {
 
     if (name) setTechName(name);
     setUsedBy(tmp);
-  }, [comps.isLoading]);
-
-  if (res.isLoading || comps.isLoading) {
-    return (
-      <Container>
-        <Row gutter={[16, 16]}>
-          <Col span={18}>
-            <Skeleton active paragraph={false} />
-          </Col>
-          <Col span={18}>
-            <Card>
-              <Skeleton active paragraph={{ rows: 3 }}></Skeleton>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
-    );
-  }
+  }, [comps]);
 
   if (!techname) {
     return <div>not found</div>;

@@ -52,5 +52,6 @@ export class Project extends Model<
   @BeforeCreate
   static createSlug(model: Project): void {
     model.slug = slugify(model.name, { lower: true, trim: true });
+    model.links = [];
   }
 }

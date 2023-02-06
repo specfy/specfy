@@ -1,0 +1,22 @@
+@import './theme.scss';
+
+.ant-layout {
+  background-color: $gray-2;
+}
+
+.ant-menu.ant-menu-root.ant-menu-inline {
+  background-color: transparent;
+  border-inline-end: none;
+  .ant-menu-item {
+    color: $gray-8;
+    margin: 0;
+    &.ant-menu-item-selected {
+      background-color: $gray-45;
+      color: $gray-10;
+      font-weight: bold;
+    }
+    &:hover {
+      background-color: rgba($gray-4, 0.5);
+    }
+  }
+}

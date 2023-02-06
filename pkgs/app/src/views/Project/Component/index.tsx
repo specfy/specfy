@@ -1,18 +1,16 @@
-import { Avatar, Breadcrumb, Card, Skeleton, Tag, Typography } from 'antd';
+import { Avatar, Breadcrumb, Card, Tag, Typography } from 'antd';
 import type { ApiComponent } from 'api/src/types/api/components';
 import type { ApiProject } from 'api/src/types/api/projects';
 import type React from 'react';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
-import { useListComponents } from '../../api/components';
-import { useGetProject } from '../../api/projects';
-import { supported } from '../../common/component';
-import { BigHeading } from '../../components/BigHeading';
-import { Container } from '../../components/Container';
-import { Graph } from '../../components/Graph';
-import { ListRFCs } from '../../components/ListRFCs';
-import type { RouteComponent } from '../../types/routes';
+import { supported } from '../../../common/component';
+import { BigHeading } from '../../../components/BigHeading';
+import { Container } from '../../../components/Container';
+import { Graph } from '../../../components/Graph';
+import { ListRFCs } from '../../../components/ListRFCs';
+import type { RouteComponent, RouteProject } from '../../../types/routes';
 
 import { Line } from './Line';
 import cls from './index.module.scss';
@@ -28,20 +26,15 @@ function getAllChilds(list: ApiComponent[], id: string): ApiComponent[] {
   return tmp;
 }
 
-export const ComponentView: React.FC = () => {
+export const ComponentView: React.FC<{
+  proj: ApiProject;
+  comps: ApiComponent[];
+  params: RouteProject;
+}> = ({ proj, comps, params }) => {
   // TODO: filter RFC
-  const [proj, setProj] = useState<ApiProject>();
   const [comp, setComp] = useState<ApiComponent>();
   const [icon, setIcon] = useState<React.ReactNode>();
-  const tmpParams = useParams<Partial<RouteComponent>>();
-  const params = tmpParams as RouteComponent;
-
-  // Data fetch
-  const res = useGetProject(params);
-  const comps = useListComponents(params.project_slug, {
-    org_id: params.org_id,
-    project_id: proj?.id,
-  });
+  const route = useParams<Partial<RouteComponent>>();
 
   // Components
   const [inComp, setInComp] = useState<ApiComponent>();
@@ -55,18 +48,12 @@ export const ComponentView: React.FC = () => {
   const [receiveSend, setReceiveSend] = useState<ApiComponent[]>([]);
 
   useEffect(() => {
-    setProj(res.data?.data);
-  }, [res.isLoading]);
-
-  useEffect(() => {
-    if (!comps.data?.data) return;
-
     setComp(
-      comps.data.data.find((c) => {
-        return c.slug === params.component_slug!;
+      comps.find((c) => {
+        return c.slug === route.component_slug!;
       })
     );
-  }, [comps.isLoading, tmpParams]);
+  }, [route.component_slug]);
 
   useEffect(() => {
     if (!comp) {
@@ -81,7 +68,7 @@ export const ComponentView: React.FC = () => {
     );
 
     const list = new Map<string, ApiComponent>();
-    for (const c of comps.data!.data) {
+    for (const c of comps) {
       list.set(c.id, c);
     }
 
@@ -114,7 +101,7 @@ export const ComponentView: React.FC = () => {
 
     // Find contains
     // First find direct ascendant then register all childs
-    setContains(getAllChilds(comps.data!.data, comp.id));
+    setContains(getAllChilds(comps, comp.id));
 
     for (const edge of comp.edges) {
       if (edge.read && edge.write) {
@@ -126,7 +113,7 @@ export const ComponentView: React.FC = () => {
       }
     }
 
-    for (const other of comps.data!.data) {
+    for (const other of comps) {
       if (other.id === comp.id) {
         continue;
       }
@@ -155,20 +142,7 @@ export const ComponentView: React.FC = () => {
     setReceiveSend(Array.from(_receivesend.values()));
   }, [comp]);
 
-  if (res.isLoading || comps.isLoading) {
-    return (
-      <Container className={cls.grid}>
-        <div className={cls.left}>
-          <Skeleton active paragraph={false} />
-          <Card>
-            <Skeleton active paragraph={{ rows: 5 }}></Skeleton>
-          </Card>
-        </div>
-      </Container>
-    );
-  }
-
-  if (!comp || !proj) {
+  if (!comp) {
     return <div>not found</div>;
   }
 
@@ -289,11 +263,7 @@ export const ComponentView: React.FC = () => {
       </div>
       <div className={cls.right}>
         <Card bordered={false} size="small">
-          <Graph
-            components={comps.data!.data}
-            height={500}
-            highlight={comp.id}
-          ></Graph>
+          <Graph components={comps} height={500} highlight={comp.id}></Graph>
         </Card>
       </div>
     </Container>

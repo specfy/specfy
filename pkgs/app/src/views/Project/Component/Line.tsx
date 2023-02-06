@@ -1,7 +1,7 @@
 import type { ApiComponent } from 'api/src/types/api/components';
 import { Link } from 'react-router-dom';
 
-import type { RouteProject } from '../../types/routes';
+import type { RouteProject } from '../../../types/routes';
 
 import cls from './index.module.scss';
 

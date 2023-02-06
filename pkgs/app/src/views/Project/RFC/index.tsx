@@ -16,21 +16,22 @@ import {
   Button,
 } from 'antd';
 import Title from 'antd/es/typography/Title';
+import type { ApiComponent } from 'api/src/types/api/components';
 import type { Blocks } from 'api/src/types/api/document';
 import type { ApiDocument } from 'api/src/types/api/documents';
+import type { ApiProject } from 'api/src/types/api/projects';
 import clsn from 'classnames';
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
-import { useGetDocument } from '../../api/documents';
-import { useGetProject } from '../../api/projects';
-import { slugify } from '../../common/string';
-import { AvatarAuto } from '../../components/AvatarAuto';
-import { Container } from '../../components/Container';
-import { HeadingTree } from '../../components/HeadingTree';
-import { RFCStatusTag } from '../../components/RFCStatusTag';
-import { Time } from '../../components/Time';
-import type { RouteDocument } from '../../types/routes';
+import { useGetDocument } from '../../../api/documents';
+import { slugify } from '../../../common/string';
+import { AvatarAuto } from '../../../components/AvatarAuto';
+import { Container } from '../../../components/Container';
+import { HeadingTree } from '../../../components/HeadingTree';
+import { RFCStatusTag } from '../../../components/RFCStatusTag';
+import { Time } from '../../../components/Time';
+import type { RouteDocument, RouteProject } from '../../../types/routes';
 
 import cls from './index.module.scss';
 
@@ -81,14 +82,14 @@ export const Content: React.FC<{ block: Blocks }> = ({ block }) => {
   return <></>;
 };
 
-export const RFC: React.FC = () => {
+export const RFC: React.FC<{
+  proj: ApiProject;
+  comps: ApiComponent[];
+  params: RouteProject;
+}> = ({ proj, comps, params }) => {
   const [menu, setMenu] = useState(false);
   const [item, setItem] = useState<ApiDocument>();
   const p = useParams<Partial<RouteDocument>>();
-  const proj = useGetProject({
-    org_id: p.org_id!,
-    project_slug: p.project_slug!,
-  });
   const doc = useGetDocument({
     type: 'rfc',
     type_id: p.document_type_id!,
@@ -132,7 +133,7 @@ export const RFC: React.FC = () => {
           <Link to="/">Home</Link>
         </Breadcrumb.Item>
         <Breadcrumb.Item>
-          <Link to={`/org/${p.org_id}/${proj.data!.data.slug}`}>Crawler</Link>
+          <Link to={`/org/${p.org_id}/${proj.slug}`}>Crawler</Link>
           <Button
             size="small"
             icon={<MenuUnfoldOutlined />}

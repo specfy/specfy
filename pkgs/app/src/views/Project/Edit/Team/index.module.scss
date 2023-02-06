@@ -1,0 +1,30 @@
+@import '../../../../theme.scss';
+
+.line {
+  margin-bottom: 4px;
+}
+.add {
+  color: $gray-6;
+  font-style: italic;
+  font-weight: bold;
+  font-size: $font-s;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  &:hover {
+    color: $gray-7;
+    .emptyAvatar {
+      border-color: $gray-6;
+    }
+  }
+}
+.emptyAvatar {
+  border-radius: 30px;
+  display: inline-block;
+  border: 1px dashed $gray-5;
+  width: 32px;
+  height: 32px;
+  text-align: center;
+  line-height: 29px;
+  margin-right: 8px;
+}

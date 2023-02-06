@@ -16,9 +16,9 @@ import type { ReqPostProject } from 'api/src/types/api/projects';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useListOrgs } from '../../api/orgs';
-import { createProject } from '../../api/projects';
-import { Container } from '../../components/Container';
+import { useListOrgs } from '../../../api/orgs';
+import { createProject } from '../../../api/projects';
+import { Container } from '../../../components/Container';
 
 import cls from './index.module.scss';
 
