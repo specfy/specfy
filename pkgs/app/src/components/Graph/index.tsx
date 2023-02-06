@@ -1,7 +1,6 @@
 import { ZoomInOutlined, ZoomOutOutlined } from '@ant-design/icons';
 import { Graph as AntGraph } from '@antv/x6';
-import { Toolbar } from '@antv/x6-react-components';
-import { Button, Popover, Tooltip } from 'antd';
+import { Button, Tooltip } from 'antd';
 import type { ApiComponent } from 'api/src/types/api/components';
 import { useEffect, useRef, useState } from 'react';
 import { useDebounce } from 'react-use';

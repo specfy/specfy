@@ -13,7 +13,6 @@ import {
   Col,
   Divider,
   Dropdown,
-  List,
   Modal,
   Row,
   Skeleton,
@@ -32,7 +31,6 @@ import { Graph } from '../../components/Graph';
 import { ListRFCs } from '../../components/ListRFCs';
 import { ListUpdates } from '../../components/ListUpdates';
 import { Time } from '../../components/Time';
-import imgUrl from '../../static/infra.png';
 import type { RouteProject } from '../../types/routes';
 
 import { Team } from './Team';
