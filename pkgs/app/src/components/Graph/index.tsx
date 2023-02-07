@@ -2,7 +2,13 @@ import { ZoomInOutlined, ZoomOutOutlined } from '@ant-design/icons';
 import { Graph as AntGraph } from '@antv/x6';
 import { Button, Tooltip } from 'antd';
 import type { ApiComponent } from 'api/src/types/api/components';
-import { useEffect, useRef, useState } from 'react';
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from 'react';
 import { useDebounce } from 'react-use';
 
 import { registerCustomNode } from './CustomNode';
@@ -11,11 +17,18 @@ import cls from './index.module.scss';
 
 import '@antv/x6-react-components/es/toolbar/style/index.css';
 
-export const Graph: React.FC<{
+export interface GraphProps {
   components: ApiComponent[];
-  height?: number;
   highlight?: string;
-}> = ({ components, height, highlight }) => {
+}
+export interface GraphRef {
+  recenter: () => void;
+}
+
+export const Graph = forwardRef<GraphRef, GraphProps>(function Graph(
+  { components, highlight },
+  ref
+) {
   const container = useRef<HTMLDivElement>(null);
   const [g, setG] = useState<AntGraph>();
   const [hostsById, setHostsById] = useState<Set<string>>();
@@ -24,6 +37,21 @@ export const Graph: React.FC<{
   const [revertHighlight, setRevertHighlight] = useState(false);
   const [drawed, setDrawed] = useState(false);
   const [mouseover, setMouseOver] = useState(false);
+
+  useImperativeHandle(
+    ref,
+    () => {
+      return {
+        recenter: () => {
+          if (!g) return;
+
+          g!.zoomToFit();
+          g!.zoomTo(g!.zoom() - 0.1);
+        },
+      };
+    },
+    [g]
+  );
 
   useEffect(() => {
     if (!container.current) {
@@ -43,6 +71,7 @@ export const Graph: React.FC<{
 
     const graph = new AntGraph({
       container: container.current,
+      autoResize: true,
       grid: {
         size: 10,
         visible: true,
@@ -159,7 +188,7 @@ export const Graph: React.FC<{
     // );
     componentsToGraph(graph, components);
 
-    // graph.center();
+    graph.center();
     graph.zoomToFit();
     graph.zoomTo(graph.zoom() - 0.1);
 
@@ -239,10 +268,7 @@ export const Graph: React.FC<{
           />
         </Tooltip>
       </div>
-      <div
-        style={{ width: '100%', height: `${height || '350'}px` }}
-        ref={container}
-      />
+      <div style={{ width: '100%', height: `350px` }} ref={container} />
     </div>
   );
-};
+});

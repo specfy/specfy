@@ -6,6 +6,13 @@
   grid-template:
     'top top top'
     'left center right' auto / 200px minmax(700px, 1050px) minmax(350px, 1fr);
+  transition: grid-template 0.5s ease-in-out;
+
+  &.largerRight {
+    grid-template:
+      'top top top'
+      'left center right' auto / 200px minmax(500px, 1050px) minmax(500px, 1fr);
+  }
 }
 .header {
   grid-area: top;
@@ -23,7 +30,7 @@
 .right {
   grid-area: right;
   width: inherit;
-  margin: 0 16px 0 0;
+  margin: 0 0 0 0;
 }
 
 .links {

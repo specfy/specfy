@@ -11,7 +11,8 @@ import { Avatar, Button, Card, Divider, Menu, Skeleton } from 'antd';
 import type { ApiComponent } from 'api/src/types/api/components';
 import type { ApiOrg } from 'api/src/types/api/orgs';
 import type { ApiProject } from 'api/src/types/api/projects';
-import { useEffect, useMemo, useState } from 'react';
+import classnames from 'classnames';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, Route, Routes, useParams } from 'react-router-dom';
 
 import { useListComponents } from '../../api/components';
@@ -19,8 +20,10 @@ import { useListOrgs } from '../../api/orgs';
 import { useGetProject } from '../../api/projects';
 import { BigHeading, BigHeadingLoading } from '../../components/BigHeading';
 import { Container } from '../../components/Container';
+import type { GraphRef } from '../../components/Graph';
 import { Graph } from '../../components/Graph';
 import { Time } from '../../components/Time';
+import { useCurrentRoute } from '../../hooks/useCurrentRoute';
 import type { RouteProject } from '../../types/routes';
 
 import { ProjectActivity } from './Activity';
@@ -41,6 +44,9 @@ export const Project: React.FC = () => {
   const linkSelf = useMemo(() => {
     return `/org/${params.org_id}/${params.project_slug}`;
   }, [params]);
+  const [gridClass, setGridClass] = useState<string>();
+  const currRoute = useCurrentRoute();
+  const graphRef = useRef<GraphRef>(null);
 
   // Data fetch
   const getOrgs = useListOrgs();
@@ -62,6 +68,14 @@ export const Project: React.FC = () => {
   useEffect(() => {
     setComps(getComps.data?.data);
   }, [getComps.isFetched]);
+  useEffect(() => {
+    if (currRoute.pathname.match(/(\/c\/|\/t\/)/)) {
+      setGridClass(cls.largerRight);
+    } else {
+      setGridClass('');
+    }
+    setTimeout(() => graphRef.current?.recenter(), 650);
+  }, [currRoute]);
 
   const [menu] = useState(() => {
     return [
@@ -132,7 +146,7 @@ export const Project: React.FC = () => {
   }
 
   return (
-    <Container className={cls.container}>
+    <Container className={classnames(cls.container, gridClass)}>
       <div className={cls.header}>
         <BigHeading
           parent={org!.name}
@@ -207,7 +221,7 @@ export const Project: React.FC = () => {
 
       <div className={cls.right}>
         <Card bordered={false} size="small">
-          <Graph components={comps}></Graph>
+          <Graph components={comps} ref={graphRef}></Graph>
         </Card>
       </div>
     </Container>
