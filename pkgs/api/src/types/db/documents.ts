@@ -1,3 +1,5 @@
+import type { BlockLevelOne } from '../api';
+
 export interface DBDocument {
   id: string;
   orgId: string;
@@ -11,7 +13,7 @@ export interface DBDocument {
   use: string[];
   remove: string[];
   tldr: string;
-  blocks: Record<string, any>;
+  blocks: BlockLevelOne[];
   authors: string[];
   reviewers: string[];
   approvedBy: string[];

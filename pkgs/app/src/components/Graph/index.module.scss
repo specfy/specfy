@@ -1,6 +1,9 @@
 @import '../../theme.scss';
 
 .container {
+  min-height: 300px;
+  height: 100%;
+  position: relative;
   &:hover {
     .toolbar {
       opacity: 1;

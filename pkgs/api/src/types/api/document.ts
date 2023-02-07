@@ -26,10 +26,28 @@ export interface BlockContent {
   content: BlockText[];
 }
 
-export type BlockLevelOne = BlockBulletList | BlockContent | BlockHeading;
+export interface BlockQuote {
+  type: 'quote';
+  content: BlockContent[];
+}
+
+export interface BlockPanel {
+  type: 'panel';
+  panelType: 'error' | 'info' | 'success' | 'warning';
+  content: BlockContent[];
+}
+
+export type BlockLevelOne =
+  | BlockBulletList
+  | BlockContent
+  | BlockHeading
+  | BlockPanel
+  | BlockQuote;
 export type Blocks =
   | BlockBulletList
   | BlockContent
   | BlockHeading
   | BlockListItem
+  | BlockPanel
+  | BlockQuote
   | BlockText;

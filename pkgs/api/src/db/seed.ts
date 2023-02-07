@@ -226,6 +226,24 @@ export async function seed() {
         ],
       },
       { type: 'heading', content: 'Background & Motivation', level: 1 },
+      // {
+      //   type: 'media',
+      //   attrs: {
+      //     layout: 'center',
+      //   },
+      //   content: [
+      //     {
+      //       type: 'media',
+      //       attrs: {
+      //         width: 810,
+      //         id: '8873d820-e7d0-4e1e-8092-7e32464ea656',
+      //         collection: 'contentId-131176',
+      //         type: 'file',
+      //         height: 610,
+      //       },
+      //     },
+      //   ],
+      // },
       {
         type: 'content',
         content: [
@@ -236,7 +254,39 @@ export async function seed() {
           },
         ],
       },
+      // {
+      //   type: 'taskList',
+      //   content: [
+      //     {
+      //       type: 'taskItem',
+      //       attrs: {
+      //         state: 'DONE',
+      //         localId: '1',
+      //       },
+      //       content: [
+      //         {
+      //           text: 'dfkdjfkdj',
+      //           type: 'text',
+      //         },
+      //       ],
+      //     },
+      //   ],
+      // },
       { type: 'heading', content: 'Implementations', level: 1 },
+      {
+        type: 'quote',
+        content: [
+          {
+            type: 'content',
+            content: [
+              {
+                content: '"This is a quote" -- Samuel Bodin, 2023',
+                type: 'text',
+              },
+            ],
+          },
+        ],
+      },
       {
         type: 'content',
         content: [
@@ -250,6 +300,22 @@ export async function seed() {
       { type: 'heading', content: 'Solutions', level: 2 },
       { type: 'heading', content: '#1 Naive one', level: 3 },
       {
+        type: 'panel',
+        panelType: 'error',
+        content: [
+          {
+            type: 'content',
+            content: [
+              {
+                content:
+                  'Ut semper eros ipsum, eget rutrum nisi consequat vitae.',
+                type: 'text',
+              },
+            ],
+          },
+        ],
+      },
+      {
         type: 'content',
         content: [
           {
@@ -259,6 +325,18 @@ export async function seed() {
           },
         ],
       },
+      // {
+      //   type: 'code',
+      //   attrs: {
+      //     language: 'html',
+      //   },
+      //   content: [
+      //     {
+      //       text: '\u003Cdiv\u003Eprout\u003C\u002Fdiv\u003E\\n\u003Ccenter\u003E\u002F',
+      //       type: 'text',
+      //     },
+      //   ],
+      // },
       { type: 'heading', content: 'FAQ', level: 1 },
       {
         type: 'heading',

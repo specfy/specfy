@@ -7,7 +7,6 @@ import {
 import { Card, Typography, Space, Divider, Button } from 'antd';
 import Title from 'antd/es/typography/Title';
 import type { ApiComponent } from 'api/src/types/api/components';
-import type { Blocks } from 'api/src/types/api/document';
 import type { ApiDocument } from 'api/src/types/api/documents';
 import type { ApiProject } from 'api/src/types/api/projects';
 import clsn from 'classnames';
@@ -16,6 +15,7 @@ import { Link, useParams } from 'react-router-dom';
 
 import { useGetDocument } from '../../../api/documents';
 import { slugify } from '../../../common/string';
+import { ContentBlock } from '../../../components/Content';
 import { HeadingTree } from '../../../components/HeadingTree';
 import { RFCStatusTag } from '../../../components/RFCStatusTag';
 import { Time } from '../../../components/Time';
@@ -23,53 +23,6 @@ import { UserCard } from '../../../components/UserCard';
 import type { RouteDocument, RouteProject } from '../../../types/routes';
 
 import cls from './index.module.scss';
-
-export const Content: React.FC<{ block: Blocks }> = ({ block }) => {
-  if (block.type === 'heading') {
-    const id = `h-${slugify(block.content)}`;
-    if (block.level === 1) return <h1 id={id}>{block.content}</h1>;
-    else if (block.level === 2) return <h2 id={id}>{block.content}</h2>;
-    else if (block.level === 3) return <h3 id={id}>{block.content}</h3>;
-    else if (block.level === 4) return <h4 id={id}>{block.content}</h4>;
-    else if (block.level === 5) return <h5 id={id}>{block.content}</h5>;
-    else return <h6 id={id}>{block.content}</h6>;
-  } else if (block.type === 'content') {
-    return (
-      <p>
-        {block.content.map((blk, i) => {
-          return <Content block={blk} key={i} />;
-        })}
-      </p>
-    );
-  } else if (block.type === 'bulletList') {
-    return (
-      <ul>
-        {block.content.map((blk, i) => {
-          return <Content block={blk} key={i} />;
-        })}
-      </ul>
-    );
-  } else if (block.type === 'item') {
-    return (
-      <li>
-        {block.content.map((blk, i) => {
-          return <Content block={blk} key={i} />;
-        })}
-      </li>
-    );
-  } else if (block.type === 'text') {
-    let text = <>{block.content} </>;
-    if (block.style) {
-      if (block.style.bold) text = <strong>{text}</strong>;
-      if (block.style.italic) text = <em>{text}</em>;
-      if (block.style.code) text = <code>{text}</code>;
-    }
-    if (block.link) text = <Link to={block.link}>{text}</Link>;
-    return text;
-  }
-
-  return <></>;
-};
 
 export const RFC: React.FC<{
   proj: ApiProject;
@@ -143,7 +96,7 @@ export const RFC: React.FC<{
             <Divider />
 
             {item.blocks.map((blk, i) => {
-              return <Content block={blk} key={i} />;
+              return <ContentBlock block={blk} key={i} />;
             })}
             {item.blocks.length <= 0 && (
               <Typography.Text type="secondary">No content</Typography.Text>

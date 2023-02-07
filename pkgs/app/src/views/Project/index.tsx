@@ -5,7 +5,8 @@ import {
   TeamOutlined,
   HomeOutlined,
   ReadOutlined,
-  HistoryOutlined,
+  ClusterOutlined,
+  ThunderboltOutlined,
 } from '@ant-design/icons';
 import { Avatar, Button, Card, Divider, Menu, Skeleton } from 'antd';
 import type { ApiComponent } from 'api/src/types/api/components';
@@ -44,6 +45,8 @@ export const Project: React.FC = () => {
   const linkSelf = useMemo(() => {
     return `/org/${params.org_id}/${params.project_slug}`;
   }, [params]);
+
+  // Graph spec
   const [gridClass, setGridClass] = useState<string>();
   const currRoute = useCurrentRoute();
   const graphRef = useRef<GraphRef>(null);
@@ -73,10 +76,13 @@ export const Project: React.FC = () => {
       setGridClass(cls.largerRight);
     } else if (currRoute.pathname.match(/(\/rfc\/)/)) {
       setGridClass(cls.noRight);
+    } else if (currRoute.pathname.match(/(\/graph)/)) {
+      setGridClass(cls.noCenter);
     } else {
       setGridClass('');
     }
-    setTimeout(() => graphRef.current?.recenter(), 650);
+
+    setTimeout(() => graphRef.current?.recenter(), 750);
   }, [currRoute]);
 
   const [menu] = useState(() => {
@@ -91,7 +97,7 @@ export const Project: React.FC = () => {
         ),
       },
       {
-        key: 'Content',
+        key: 'content',
         label: (
           <Link to={`${linkSelf}/content`} className={cls.link}>
             <ReadOutlined />
@@ -100,10 +106,19 @@ export const Project: React.FC = () => {
         ),
       },
       {
+        key: 'graph',
+        label: (
+          <Link to={`${linkSelf}/graph`} className={cls.link}>
+            <ClusterOutlined />
+            Graph
+          </Link>
+        ),
+      },
+      {
         key: 'activity',
         label: (
           <Link to={`${linkSelf}/activity`} className={cls.link}>
-            <HistoryOutlined />
+            <ThunderboltOutlined />
             Activity
           </Link>
         ),
@@ -222,9 +237,7 @@ export const Project: React.FC = () => {
       </div>
 
       <div className={cls.right}>
-        <Card bordered={false} size="small">
-          <Graph components={comps} ref={graphRef}></Graph>
-        </Card>
+        <Graph components={comps} ref={graphRef}></Graph>
       </div>
     </Container>
   );
