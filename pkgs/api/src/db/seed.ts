@@ -62,16 +62,19 @@ export async function seed() {
     name: 'Crawler',
     description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pharetra eros vel felis scelerisque pretium. Maecenas ac feugiat orci, a sodales lacus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent urna libero, convallis eu commodo id, iaculis aliquam arcu.<br>
     Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; In interdum egestas massa, sit amet auctor ipsum maximus in. `,
+    links: [{ title: 'Github', link: 'https://github.com/bodinsamuel' }],
   });
   await Project.create({
     orgId: 'algolia',
     name: 'Dashboard',
     description: `Donec mollis pretium nisl at dignissim. Duis dui magna, tempus a scelerisque id, semper eu metus.`,
+    links: [],
   });
   const p3 = await Project.create({
     orgId: 'algolia',
     name: 'Analytics API',
     description: `Duis dui magna, tempus a scelerisque id, semper eu metus.`,
+    links: [],
   });
 
   // Permissions

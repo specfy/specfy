@@ -1,0 +1,42 @@
+@import '../../theme.scss';
+
+.container {
+  display: grid;
+  gap: 16px;
+  grid-template:
+    'top top top'
+    'left center right' auto / 200px minmax(700px, 1050px) minmax(350px, 1fr);
+}
+.header {
+  grid-area: top;
+  margin-bottom: $p-l;
+}
+.left {
+  grid-area: left;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.center {
+  grid-area: center;
+}
+.right {
+  grid-area: right;
+  width: inherit;
+  margin: 0 16px 0 0;
+}
+
+.links {
+  border-top: 1px solid $gray-4;
+  padding: $p-xxl $p-l;
+  margin-inline-end: $p-m;
+}
+.link {
+  color: $gray-7;
+  display: block;
+  font-size: $font;
+  line-height: $line-height-m;
+  display: flex;
+  gap: $p-m;
+  padding-left: $p-s;
+}

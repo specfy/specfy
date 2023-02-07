@@ -4,13 +4,13 @@ import type { ApiPerm } from 'api/src/types/api/perms';
 import type { ApiProject } from 'api/src/types/api/projects';
 import { useState, useEffect } from 'react';
 
-import { useListPermsProject } from '../../../../api/perms';
-import { AvatarAuto } from '../../../../components/AvatarAuto';
-import type { RouteProject } from '../../../../types/routes';
+import { useListPermsProject } from '../../../api/perms';
+import { AvatarAuto } from '../../../components/AvatarAuto';
+import type { RouteProject } from '../../../types/routes';
 
 import cls from './index.module.scss';
 
-export const ProjectEditTeam: React.FC<{
+export const ProjectTeam: React.FC<{
   proj: ApiProject;
   params: RouteProject;
 }> = ({ proj, params }) => {

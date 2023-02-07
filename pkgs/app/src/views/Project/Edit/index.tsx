@@ -8,7 +8,7 @@ import { Container } from '../../../components/Container';
 import type { RouteProject } from '../../../types/routes';
 
 import { ProjectEditContent } from './Content';
-import { ProjectEditTeam } from './Team';
+import { ProjectEditTeam } from '../Team';
 import cls from './index.module.scss';
 
 export const ProjectEdit: React.FC<{

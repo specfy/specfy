@@ -19,7 +19,7 @@ import type { Org } from './org';
 @Table({ tableName: 'projects', modelName: 'project' })
 export class Project extends Model<
   DBProject,
-  Pick<DBProject, 'description' | 'name' | 'orgId'>
+  Pick<DBProject, 'description' | 'links' | 'name' | 'orgId'>
 > {
   @PrimaryKey
   @Default(DataType.UUIDV4)
@@ -52,6 +52,5 @@ export class Project extends Model<
   @BeforeCreate
   static createSlug(model: Project): void {
     model.slug = slugify(model.name, { lower: true, trim: true });
-    model.links = [];
   }
 }

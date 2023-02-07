@@ -6,21 +6,16 @@ import { AvatarAuto } from '../AvatarAuto';
 import cls from './index.module.scss';
 
 export const BigHeading: React.FC<{
+  parent?: string;
+  parentLink?: string;
   title: string;
+  link: string;
   avatar?: React.ReactNode;
-  breadcrumb?: React.ReactNode;
   subtitle?: React.ReactNode;
   actions?: React.ReactNode;
-}> = ({ title, avatar, actions, breadcrumb, subtitle }) => {
+}> = ({ title, avatar, actions, subtitle, link, parent, parentLink }) => {
   return (
     <div>
-      <Breadcrumb style={{ margin: '0 0 4px 4px' }}>
-        <Breadcrumb.Item>
-          <Link to="/">Home</Link>
-        </Breadcrumb.Item>
-        {breadcrumb}
-      </Breadcrumb>
-
       <div className={cls.header}>
         <Space size={'middle'}>
           {avatar ? (
@@ -30,7 +25,13 @@ export const BigHeading: React.FC<{
           )}
           <div>
             <Typography.Title level={2} className={cls.title}>
-              {title}
+              {parent && (
+                <>
+                  <Link to={parentLink!}>{parent}</Link>
+                  <span className={cls.parentSlash}>/</span>
+                </>
+              )}
+              <Link to={link}>{title}</Link>
             </Typography.Title>
             <Space>
               <div className={cls.subtitle}>{subtitle}</div>

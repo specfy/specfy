@@ -23,6 +23,14 @@ const App: React.FC = () => {
         theme={{
           token: {
             borderRadius: 4,
+            colorPrimary: '#2a74dc',
+            colorLinkHover: '#2a74dc',
+            linkHoverDecoration: 'underline',
+            fontSizeHeading1: 28,
+            fontSizeHeading2: 24,
+            fontSizeHeading5: 16,
+            fontSizeHeading4: 18,
+            fontSizeHeading3: 20,
           },
         }}
       >

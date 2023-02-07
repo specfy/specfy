@@ -1,4 +1,4 @@
-import { Popover } from 'antd';
+import { Tooltip } from 'antd';
 import { DateTime } from 'luxon';
 import { useMemo } from 'react';
 
@@ -8,11 +8,11 @@ export const Time: React.FC<{ time: string }> = ({ time }) => {
   }, [time]);
 
   return (
-    <Popover
-      content={dt.toLocaleString(DateTime.DATETIME_SHORT)}
+    <Tooltip
+      title={dt.toLocaleString(DateTime.DATETIME_SHORT)}
       placement="right"
     >
       Updated {dt.toRelative()}
-    </Popover>
+    </Tooltip>
   );
 };

@@ -1,4 +1,4 @@
-import { Avatar, Breadcrumb, Card, Tag, Typography } from 'antd';
+import { Avatar, Card, Col, Row, Typography } from 'antd';
 import type { ApiComponent } from 'api/src/types/api/components';
 import type { ApiProject } from 'api/src/types/api/projects';
 import type React from 'react';
@@ -6,9 +6,6 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import { supported } from '../../../common/component';
-import { BigHeading } from '../../../components/BigHeading';
-import { Container } from '../../../components/Container';
-import { Graph } from '../../../components/Graph';
 import { ListRFCs } from '../../../components/ListRFCs';
 import type { RouteComponent, RouteProject } from '../../../types/routes';
 
@@ -147,125 +144,100 @@ export const ComponentView: React.FC<{
   }
 
   return (
-    <Container className={cls.grid}>
-      <div className={cls.left}>
-        <div>
-          <BigHeading
-            title={comp.name}
-            avatar={icon}
-            subtitle={<Tag>{comp.type}</Tag>}
-            breadcrumb={
-              <Breadcrumb.Item>
-                <Link to={`/org/${params.org_id}/${params.project_slug}`}>
-                  Crawler
-                </Link>
-              </Breadcrumb.Item>
-            }
-          ></BigHeading>
-        </div>
-        <div>
-          <Card>
-            {comp.description ? (
-              <div dangerouslySetInnerHTML={{ __html: comp.description }}></div>
-            ) : (
-              <Typography.Text type="secondary">
-                No description.
-              </Typography.Text>
-            )}
+    <Row gutter={[16, 16]}>
+      <Col span={24}>
+        <Card>
+          <Typography.Title level={4}>{comp.name}</Typography.Title>
+          {comp.description ? (
+            <div dangerouslySetInnerHTML={{ __html: comp.description }}></div>
+          ) : (
+            <Typography.Text type="secondary">No description.</Typography.Text>
+          )}
 
-            {(comp.tech ||
-              hosts.length > 0 ||
-              inComp ||
-              contains.length > 0) && (
-              <div className={cls.block}>
-                <Typography.Title level={5}>Stack</Typography.Title>
-                {comp.tech && (
-                  <div className={cls.line}>
-                    <div>Build with</div>
-                    <div>
-                      {comp.tech.map((tech) => {
-                        const name = tech.toLocaleLowerCase();
-                        return (
-                          <Link
-                            key={tech}
-                            to={`/org/${params.org_id}/${params.project_slug}/t/${name}`}
-                            className={cls.language}
-                          >
-                            <i className={`devicon-${name}-plain`}></i> {tech}
-                          </Link>
-                        );
-                      })}
-                    </div>
+          {(comp.tech || hosts.length > 0 || inComp || contains.length > 0) && (
+            <div className={cls.block}>
+              <Typography.Title level={5}>Stack</Typography.Title>
+              {comp.tech && (
+                <div className={cls.line}>
+                  <div>Build with</div>
+                  <div>
+                    {comp.tech.map((tech) => {
+                      const name = tech.toLocaleLowerCase();
+                      return (
+                        <Link
+                          key={tech}
+                          to={`/org/${params.org_id}/${params.project_slug}/t/${name}`}
+                          className={cls.language}
+                        >
+                          <i className={`devicon-${name}-plain`}></i> {tech}
+                        </Link>
+                      );
+                    })}
                   </div>
-                )}
+                </div>
+              )}
 
-                {hosts.length > 0 && (
-                  <Line title="Hosted on" list={hosts} params={params} />
-                )}
+              {hosts.length > 0 && (
+                <Line title="Hosted on" list={hosts} params={params} />
+              )}
 
-                {contains.length > 0 && (
-                  <Line title="Contains" list={contains} params={params} />
-                )}
+              {contains.length > 0 && (
+                <Line title="Contains" list={contains} params={params} />
+              )}
 
-                {inComp && (
-                  <Line title="Run inside" list={[inComp]} params={params} />
-                )}
-              </div>
-            )}
+              {inComp && (
+                <Line title="Run inside" list={[inComp]} params={params} />
+              )}
+            </div>
+          )}
 
-            {(readwrite.length > 0 ||
-              read.length > 0 ||
-              write.length > 0 ||
-              receive.length > 0 ||
-              send.length > 0 ||
-              receiveSend.length > 0) && (
-              <div className={cls.block}>
-                <Typography.Title level={5}>Data</Typography.Title>
+          {(readwrite.length > 0 ||
+            read.length > 0 ||
+            write.length > 0 ||
+            receive.length > 0 ||
+            send.length > 0 ||
+            receiveSend.length > 0) && (
+            <div className={cls.block}>
+              <Typography.Title level={5}>Data</Typography.Title>
 
-                {readwrite.length > 0 && (
-                  <Line
-                    title="Read and Write to"
-                    list={readwrite}
-                    params={params}
-                  />
-                )}
+              {readwrite.length > 0 && (
+                <Line
+                  title="Read and Write to"
+                  list={readwrite}
+                  params={params}
+                />
+              )}
 
-                {read.length > 0 && (
-                  <Line title="Read from" list={read} params={params} />
-                )}
+              {read.length > 0 && (
+                <Line title="Read from" list={read} params={params} />
+              )}
 
-                {receiveSend.length > 0 && (
-                  <Line
-                    title="Receive and Send to"
-                    list={receiveSend}
-                    params={params}
-                  />
-                )}
-                {receive.length > 0 && (
-                  <Line title="Receive from" list={receive} params={params} />
-                )}
-                {send.length > 0 && (
-                  <Line title="Send to" list={send} params={params} />
-                )}
+              {receiveSend.length > 0 && (
+                <Line
+                  title="Receive and Send to"
+                  list={receiveSend}
+                  params={params}
+                />
+              )}
+              {receive.length > 0 && (
+                <Line title="Receive from" list={receive} params={params} />
+              )}
+              {send.length > 0 && (
+                <Line title="Send to" list={send} params={params} />
+              )}
 
-                {write.length > 0 && (
-                  <Line title="Write to" list={write} params={params} />
-                )}
-              </div>
-            )}
-          </Card>
-        </div>
-        <div>
-          <Card>
-            <ListRFCs project={proj}></ListRFCs>
-          </Card>
-        </div>
-      </div>
-      <div className={cls.right}>
-        <Card bordered={false} size="small">
-          <Graph components={comps} height={500} highlight={comp.id}></Graph>
+              {write.length > 0 && (
+                <Line title="Write to" list={write} params={params} />
+              )}
+            </div>
+          )}
         </Card>
-      </div>
-    </Container>
+      </Col>
+      <Col span={24}>
+        <Card>
+          <ListRFCs project={proj}></ListRFCs>
+        </Card>
+      </Col>
+    </Row>
   );
 };

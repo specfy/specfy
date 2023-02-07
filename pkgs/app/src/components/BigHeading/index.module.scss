@@ -20,6 +20,16 @@
 .title {
   margin-bottom: 0 !important;
   line-height: 32px !important;
+  display: flex;
+  gap: $p;
+  .parentSlash {
+    color: $gray-8;
+    font-size: $font-l;
+    font-weight: normal;
+  }
+  a {
+    color: $gray-10;
+  }
 }
 
 .avatar {

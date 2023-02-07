@@ -1,13 +1,11 @@
-import { Avatar, Breadcrumb, Card, Col, Row, Skeleton, Tag } from 'antd';
+import { Avatar, Card, Col, Row, Tag, Typography } from 'antd';
 import Title from 'antd/es/typography/Title';
 import type { ApiComponent } from 'api/src/types/api/components';
 import type { ApiProject } from 'api/src/types/api/projects';
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { supported } from '../../../common/component';
-import { BigHeading } from '../../../components/BigHeading';
-import { Container } from '../../../components/Container';
 import type { RouteProject, RouteTech } from '../../../types/routes';
 import { Line } from '../Component/Line';
 
@@ -53,30 +51,18 @@ export const Tech: React.FC<{
   }
 
   return (
-    <Container>
-      <Row gutter={[16, 16]}>
-        <Col span={18}>
-          <BigHeading
-            title={techname}
-            avatar={icon}
-            subtitle={<Tag>tech</Tag>}
-            breadcrumb={
-              <Breadcrumb.Item>
-                <Link to={`/org/${params.org_id}/${params.project_slug}`}>
-                  Crawler
-                </Link>
-              </Breadcrumb.Item>
-            }
-          ></BigHeading>
-        </Col>
-        <Col span={18}>
-          <Card>
-            <Title level={5}>Used in</Title>
+    <Row gutter={[16, 16]}>
+      <Col span={24}>
+        <Card>
+          <Typography.Title level={4}>
+            {techname} <Tag>tech</Tag>
+          </Typography.Title>
 
-            <Line title="Components" list={usedBy} params={params} />
-          </Card>
-        </Col>
-      </Row>
-    </Container>
+          <Title level={5}>Used in</Title>
+
+          <Line title="Components" list={usedBy} params={params} />
+        </Card>
+      </Col>
+    </Row>
   );
 };

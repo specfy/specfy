@@ -1,20 +1,5 @@
 @import '../../../theme.scss';
 
-.container {
-  display: grid;
-  gap: 16px;
-  grid-template-columns: 65% 35%;
-}
-.left {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-.right {
-  width: inherit;
-  margin: 96px 16px 0 0;
-}
-
 .team {
   display: inline-flex;
   grid-template-columns: 1fr 1fr 1fr;
@@ -24,13 +9,6 @@
     align-items: center;
     gap: 4px;
   }
-}
-
-.link {
-  color: $gray-7;
-  display: block;
-  font-size: $font-m;
-  line-height: $line-height-m;
 }
 
 .block {
