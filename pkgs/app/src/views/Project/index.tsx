@@ -2,10 +2,12 @@ import {
   LinkOutlined,
   GithubOutlined,
   SlackOutlined,
-  FormOutlined,
   TeamOutlined,
+  HomeOutlined,
+  ReadOutlined,
+  HistoryOutlined,
 } from '@ant-design/icons';
-import { Avatar, Button, Card, Divider, Menu, Skeleton, Space } from 'antd';
+import { Avatar, Button, Card, Divider, Menu, Skeleton } from 'antd';
 import type { ApiComponent } from 'api/src/types/api/components';
 import type { ApiOrg } from 'api/src/types/api/orgs';
 import type { ApiProject } from 'api/src/types/api/projects';
@@ -21,7 +23,9 @@ import { Graph } from '../../components/Graph';
 import { Time } from '../../components/Time';
 import type { RouteProject } from '../../types/routes';
 
+import { ProjectActivity } from './Activity';
 import { ComponentView } from './Component';
+import { ProjectContent } from './Content';
 import { ProjectHome } from './Home';
 import { RFC } from './RFC';
 import { ProjectTeam } from './Team';
@@ -62,24 +66,38 @@ export const Project: React.FC = () => {
   const [menu] = useState(() => {
     return [
       {
-        key: 'content',
+        key: 'summary',
         label: (
-          <Link to={linkSelf}>
-            <Space size={'small'}>
-              <FormOutlined />
-              Dashboard
-            </Space>
+          <Link to={linkSelf} className={cls.link}>
+            <HomeOutlined />
+            Summary
+          </Link>
+        ),
+      },
+      {
+        key: 'Content',
+        label: (
+          <Link to={`${linkSelf}/content`} className={cls.link}>
+            <ReadOutlined />
+            Content
+          </Link>
+        ),
+      },
+      {
+        key: 'activity',
+        label: (
+          <Link to={`${linkSelf}/activity`} className={cls.link}>
+            <HistoryOutlined />
+            Activity
           </Link>
         ),
       },
       {
         key: 'team',
         label: (
-          <Link to={`${linkSelf}/team`}>
-            <Space size={'small'}>
-              <TeamOutlined />
-              Team
-            </Space>
+          <Link to={`${linkSelf}/team`} className={cls.link}>
+            <TeamOutlined />
+            Team
           </Link>
         ),
       },
@@ -157,6 +175,14 @@ export const Project: React.FC = () => {
           <Route
             path="/"
             element={<ProjectHome proj={proj} comps={comps} params={params} />}
+          />
+          <Route
+            path="/content"
+            element={<ProjectContent proj={proj} params={params} />}
+          />
+          <Route
+            path="/activity"
+            element={<ProjectActivity proj={proj} params={params} />}
           />
           <Route
             path="/team"

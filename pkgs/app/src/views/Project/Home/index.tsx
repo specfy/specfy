@@ -7,8 +7,8 @@ import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { deleteProject } from '../../../api/projects';
+import { ListActivity } from '../../../components/ListActivity';
 import { ListRFCs } from '../../../components/ListRFCs';
-import { ListUpdates } from '../../../components/ListUpdates';
 import type { RouteProject } from '../../../types/routes';
 
 import { Team } from './Team';
@@ -90,10 +90,10 @@ export const ProjectHome: React.FC<{
         </Col>
         <Col span={9}>
           <Card>
-            <ListUpdates
+            <ListActivity
               orgId={params.org_id}
               projectSlug={params.project_slug}
-            ></ListUpdates>
+            />
           </Card>
         </Col>
       </Row>

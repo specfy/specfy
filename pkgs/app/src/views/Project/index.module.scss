@@ -30,6 +30,7 @@
   border-top: 1px solid $gray-4;
   padding: $p-xxl $p-l;
   margin-inline-end: $p-m;
+  margin-left: $p-s;
 }
 .link {
   color: $gray-7;
@@ -38,5 +39,4 @@
   line-height: $line-height-m;
   display: flex;
   gap: $p-m;
-  padding-left: $p-s;
 }

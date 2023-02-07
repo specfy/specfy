@@ -187,10 +187,10 @@ export const Update: React.FC<{ evt: DBEvent; orgId: string }> = ({
   );
 };
 
-export const ListUpdates: React.FC<{ orgId: string; projectSlug?: string }> = ({
-  projectSlug,
-  orgId,
-}) => {
+export const ListActivity: React.FC<{
+  orgId: string;
+  projectSlug?: string;
+}> = ({ projectSlug, orgId }) => {
   const [initLoading, setInitLoading] = useState(true);
   const [list, setList] = useState<DBEvent[]>([]);
 
@@ -203,7 +203,7 @@ export const ListUpdates: React.FC<{ orgId: string; projectSlug?: string }> = ({
 
   return (
     <div>
-      <Title level={5}>Updates</Title>
+      <Title level={5}>Activity</Title>
       {initLoading && (
         <div>
           <Skeleton paragraph={{ rows: 0 }} active />

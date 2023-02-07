@@ -168,7 +168,7 @@ export const RFC: React.FC<{
                   <Link to="/">Public API</Link>
                 </li>
                 <li>
-                  <PlusOutlined style={{ color: '#52c41a' }} /> Updates{' '}
+                  <PlusOutlined style={{ color: '#52c41a' }} /> Activity{' '}
                   <Link to="/">Postgres</Link>
                 </li>
                 <li>

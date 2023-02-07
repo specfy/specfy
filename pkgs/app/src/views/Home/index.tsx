@@ -3,7 +3,7 @@ import Title from 'antd/es/typography/Title';
 
 import { Container } from '../../components/Container';
 import { ListProjects } from '../../components/ListProjects';
-import { ListUpdates } from '../../components/ListUpdates';
+import { ListActivity } from '../../components/ListActivity';
 
 export const Home: React.FC = () => {
   return (
@@ -19,7 +19,7 @@ export const Home: React.FC = () => {
         </Col>
         <Col span={8}>
           <Card>
-            <ListUpdates></ListUpdates>
+            <ListActivity></ListActivity>
           </Card>
         </Col>
       </Row>
