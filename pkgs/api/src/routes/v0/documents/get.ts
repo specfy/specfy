@@ -1,7 +1,9 @@
 import type { FastifyPluginCallback } from 'fastify';
 
 import { notFound } from '../../../common/errors';
+import { toApiUser } from '../../../common/formatters/user';
 import { Document } from '../../../models';
+import { TypeHasUser } from '../../../models/typeHasUser';
 import type {
   ReqDocumentParams,
   ReqGetDocument,
@@ -13,7 +15,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     Querystring: ReqGetDocument;
     Params: ReqDocumentParams;
     Reply: ResGetDocument;
-  }>('/:type/:typeId', async function (req, res) {
+  }>('/:type/:type_id', async function (req, res) {
     const p = await Document.findOne({
       where: {
         // TODO validation
@@ -27,6 +29,12 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       return notFound(res);
     }
 
+    const users = await TypeHasUser.scope('withUser').findAll({
+      where: {
+        documentId: p.id,
+      },
+    });
+
     res.status(200).send({
       data: {
         id: p.id,
@@ -39,8 +47,12 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         tldr: p.tldr,
         blocks: p.blocks as any,
         // TODO: fill this
-        authors: [],
-        reviewers: [],
+        authors: users
+          .filter((user) => user.role === 'author')
+          .map((u) => toApiUser(u.user)),
+        reviewers: users
+          .filter((user) => user.role === 'reviewer')
+          .map((u) => toApiUser(u.user)),
         approvedBy: [],
         // TODO: fill this
         create: [],

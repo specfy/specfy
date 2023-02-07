@@ -1,5 +1,6 @@
 import type { Pagination } from './api';
 import type { BlockLevelOne } from './document';
+import type { ApiUser } from './me';
 
 export interface ApiDocument {
   id: string;
@@ -15,8 +16,8 @@ export interface ApiDocument {
   remove: string[];
   tldr: string;
   blocks: BlockLevelOne[];
-  authors: string[];
-  reviewers: string[];
+  authors: ApiUser[];
+  reviewers: ApiUser[];
   approvedBy: string[];
   status: 'approved' | 'draft' | 'rejected';
   locked: boolean;

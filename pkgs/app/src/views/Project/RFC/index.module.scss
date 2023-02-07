@@ -1,29 +1,34 @@
 @import '../../../theme.scss';
 
 .container {
-  max-width: calc(760px + 500px);
-  transition: margin-left 0.3s ease-in-out;
-
+  display: grid;
+  grid-template-columns: minmax(765px, 1050px) 200px;
+  gap: $p-xl;
   &.withMenu {
     margin-left: 200px;
   }
-
   .title {
     margin-bottom: 4px;
   }
 }
 
+.right {
+  padding-top: $p-xxl;
+}
 .lastUpdate {
   color: $gray-6;
   font-size: $font-s;
 }
 
 .infoHeader {
-  margin-bottom: 8px;
+  margin-bottom: $p-s;
+  font-size: $font-s;
+  font-weight: bold;
+  color: $gray-8;
 }
 
 .infoBlock {
-  margin-bottom: 18px;
+  margin-bottom: $p-xxl;
 }
 
 .headings {
@@ -33,15 +38,19 @@
   z-index: 1;
 }
 
-.content {
-  .tldrList {
-    list-style: none;
-    padding: 0;
-    li {
-      margin: 0;
-    }
-  }
+.tldr {
+  margin-top: $p-xxl;
+}
 
+.tldrList {
+  list-style: none;
+  padding: 0;
+  li {
+    margin: 0;
+  }
+}
+
+.content {
   h1 {
     font-size: $font-xxl;
   }

@@ -320,3 +320,36 @@ table "perms" {
     unique = true
   }
 }
+
+
+
+// ------------------------ Team
+table "type_has_users" {
+  schema = schema.public
+  column "document_id" {
+    type = uuid
+    null = true
+  }
+  column "user_id" {
+    type = uuid
+    null = false
+  }
+  column "role" {
+    type = varchar(25)
+    null = false
+  }
+
+  column "created_at" {
+    type    = timestamp(6)
+    default = sql("now()")
+    null    = false
+  }
+
+  index "document_id_user_id" {
+    columns = [
+      column.document_id,
+      column.user_id,
+    ]
+    unique = true
+  }
+}

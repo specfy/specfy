@@ -71,6 +71,8 @@ export const Project: React.FC = () => {
   useEffect(() => {
     if (currRoute.pathname.match(/(\/c\/|\/t\/)/)) {
       setGridClass(cls.largerRight);
+    } else if (currRoute.pathname.match(/(\/rfc\/)/)) {
+      setGridClass(cls.noRight);
     } else {
       setGridClass('');
     }

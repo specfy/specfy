@@ -1,4 +1,12 @@
-import { Component, User, Document, Org, Project, Perm } from '../models';
+import {
+  Component,
+  User,
+  Document,
+  Org,
+  Project,
+  Perm,
+  TypeHasUser,
+} from '../models';
 
 import './';
 
@@ -129,7 +137,7 @@ export async function seed() {
   ]);
 
   // Contents
-  await Document.create({
+  const d1 = await Document.create({
     orgId: 'algolia',
     projectId: p1.id,
     type: 'rfc',
@@ -275,7 +283,7 @@ export async function seed() {
     // reviewers: ['2'],
     // approvedBy: ['3'],
   });
-  await Document.create({
+  const d2 = await Document.create({
     orgId: 'algolia',
     projectId: p1.id,
     type: 'rfc',
@@ -289,7 +297,7 @@ export async function seed() {
     locked: false,
     status: 'draft',
   });
-  await Document.create({
+  const d3 = await Document.create({
     orgId: 'algolia',
     projectId: p1.id,
     type: 'rfc',
@@ -302,6 +310,27 @@ export async function seed() {
     blocks: [],
     locked: false,
     status: 'rejected',
+  });
+
+  // Document has user
+  await Promise.all([
+    [d1.id, d2.id, d3.id].map((id) =>
+      TypeHasUser.create({
+        documentId: id,
+        userId: u1.id,
+        role: 'author',
+      })
+    ),
+    TypeHasUser.create({
+      documentId: d2.id,
+      userId: u2.id,
+      role: 'author',
+    }),
+  ]);
+  await TypeHasUser.create({
+    documentId: d1.id,
+    userId: u2.id,
+    role: 'reviewer',
   });
 
   // Components

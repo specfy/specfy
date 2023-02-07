@@ -5,13 +5,21 @@
   gap: 16px;
   grid-template:
     'top top top'
-    'left center right' auto / 200px minmax(700px, 1050px) minmax(350px, 1fr);
+    'left center right' auto / 150px minmax(765px, 1050px) minmax(400px, 1fr);
   transition: grid-template 0.5s ease-in-out;
 
   &.largerRight {
     grid-template:
       'top top top'
-      'left center right' auto / 200px minmax(500px, 1050px) minmax(500px, 1fr);
+      'left center right' auto / 150px minmax(500px, 1050px) minmax(500px, 1fr);
+  }
+  &.noRight {
+    grid-template:
+      'top top'
+      'left center' auto / 150px 1fr;
+    .right {
+      display: none;
+    }
   }
 }
 .header {
