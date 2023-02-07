@@ -254,24 +254,31 @@ export async function seed() {
           },
         ],
       },
-      // {
-      //   type: 'taskList',
-      //   content: [
-      //     {
-      //       type: 'taskItem',
-      //       attrs: {
-      //         state: 'DONE',
-      //         localId: '1',
-      //       },
-      //       content: [
-      //         {
-      //           text: 'dfkdjfkdj',
-      //           type: 'text',
-      //         },
-      //       ],
-      //     },
-      //   ],
-      // },
+      {
+        type: 'taskList',
+        content: [
+          {
+            type: 'task',
+            state: 'done',
+            content: [
+              {
+                content: 'dfkdjfkdj',
+                type: 'text',
+              },
+            ],
+          },
+          {
+            type: 'task',
+            state: 'todo',
+            content: [
+              {
+                content: 'dfkdjfkdj',
+                type: 'text',
+              },
+            ],
+          },
+        ],
+      },
       { type: 'heading', content: 'Implementations', level: 1 },
       {
         type: 'quote',

@@ -1,8 +1,10 @@
-import { Alert } from 'antd';
+import { Alert, Checkbox } from 'antd';
 import type { Blocks } from 'api/src/types/api';
 import { Link } from 'react-router-dom';
 
 import { slugify } from '../../common/string';
+
+import cls from './index.module.scss';
 
 export const ContentBlock: React.FC<{ block: Blocks }> = ({ block }) => {
   if (block.type === 'heading') {
@@ -63,6 +65,24 @@ export const ContentBlock: React.FC<{ block: Blocks }> = ({ block }) => {
           return <ContentBlock block={blk} key={i} />;
         })}
       ></Alert>
+    );
+  } else if (block.type === 'taskList') {
+    return (
+      <ul className={cls.taskList}>
+        {block.content.map((blk, i) => {
+          return <ContentBlock block={blk} key={i} />;
+        })}
+      </ul>
+    );
+  } else if (block.type === 'task') {
+    return (
+      <li>
+        <Checkbox checked={block.state === 'done'}>
+          {block.content.map((blk, i) => {
+            return <ContentBlock block={blk} key={i} />;
+          })}
+        </Checkbox>
+      </li>
     );
   }
 

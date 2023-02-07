@@ -37,12 +37,24 @@ export interface BlockPanel {
   content: BlockContent[];
 }
 
+export interface BlockTask {
+  type: 'task';
+  state: 'done' | 'todo';
+  content: BlockText[];
+}
+
+export interface BlockTaskList {
+  type: 'taskList';
+  content: BlockTask[];
+}
+
 export type BlockLevelOne =
   | BlockBulletList
   | BlockContent
   | BlockHeading
   | BlockPanel
-  | BlockQuote;
+  | BlockQuote
+  | BlockTaskList;
 export type Blocks =
   | BlockBulletList
   | BlockContent
@@ -50,4 +62,6 @@ export type Blocks =
   | BlockListItem
   | BlockPanel
   | BlockQuote
+  | BlockTask
+  | BlockTaskList
   | BlockText;
