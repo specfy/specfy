@@ -17,6 +17,9 @@ $size-center-max: 1050px;
       'top top top'
       'left center right' auto / $size-menu minmax(500px, $size-center-max)
       minmax(550px, 1fr);
+    .right {
+      height: 450px;
+    }
   }
   &.noRight {
     grid-template:

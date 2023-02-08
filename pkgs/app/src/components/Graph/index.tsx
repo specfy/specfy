@@ -19,19 +19,21 @@ import '@antv/x6-react-components/es/toolbar/style/index.css';
 
 export interface GraphProps {
   components: ApiComponent[];
-  highlight?: string;
 }
 export interface GraphRef {
   recenter: () => void;
+  highlightCell: (id: string) => void;
+  unHighlightCell: (id?: string) => void;
 }
 
 export const Graph = forwardRef<GraphRef, GraphProps>(function Graph(
-  { components, highlight },
+  { components },
   ref
 ) {
   const container = useRef<HTMLDivElement>(null);
   const [g, setG] = useState<AntGraph>();
   const [hostsById, setHostsById] = useState<Set<string>>();
+  const [highlight, setHighlight] = useState<string>();
   const prevHighlight = useRef<string>();
 
   const [revertHighlight, setRevertHighlight] = useState(false);
@@ -47,6 +49,36 @@ export const Graph = forwardRef<GraphRef, GraphProps>(function Graph(
 
           g!.zoomToFit();
           g!.zoomTo(g!.zoom() - 0.1);
+        },
+        highlightCell: (id: string) => {
+          if (!g || !container.current) {
+            return;
+          }
+
+          setHighlight(id);
+
+          highlightCell({
+            cell: g.getCellById(id)!,
+            container: container.current!,
+            graph: g,
+            hostsById: hostsById!,
+          });
+          prevHighlight.current = id;
+        },
+        unHighlightCell: (id?: string) => {
+          if (!g || !container.current) {
+            return;
+          }
+
+          unHighlightCell({
+            cell: id
+              ? g.getCellById(id)!
+              : prevHighlight.current
+              ? g.getCellById(prevHighlight.current)
+              : undefined,
+            container: container.current,
+            graph: g,
+          });
         },
       };
     },

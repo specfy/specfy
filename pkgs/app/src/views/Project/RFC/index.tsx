@@ -14,7 +14,6 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import { useGetDocument } from '../../../api/documents';
-import { slugify } from '../../../common/string';
 import { ContentBlock } from '../../../components/Content';
 import { HeadingTree } from '../../../components/HeadingTree';
 import { RFCStatusTag } from '../../../components/RFCStatusTag';

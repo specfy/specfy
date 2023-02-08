@@ -27,7 +27,8 @@ export const ComponentView: React.FC<{
   proj: ApiProject;
   comps: ApiComponent[];
   params: RouteProject;
-}> = ({ proj, comps, params }) => {
+  onLoad: (str: string) => void;
+}> = ({ proj, comps, params, onLoad }) => {
   // TODO: filter RFC
   const [comp, setComp] = useState<ApiComponent>();
   const [icon, setIcon] = useState<React.ReactNode>();
@@ -137,6 +138,7 @@ export const ComponentView: React.FC<{
     setReceive(Array.from(_receive.values()));
     setSend(Array.from(_send.values()));
     setReceiveSend(Array.from(_receivesend.values()));
+    onLoad(comp.id);
   }, [comp]);
 
   if (!comp) {

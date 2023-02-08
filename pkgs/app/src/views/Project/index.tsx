@@ -72,7 +72,8 @@ export const Project: React.FC = () => {
     setComps(getComps.data?.data);
   }, [getComps.isFetched]);
   useEffect(() => {
-    if (currRoute.pathname.match(/(\/c\/|\/t\/)/)) {
+    const isComp = currRoute.pathname.match(/\/c\//);
+    if (isComp || currRoute.pathname.match(/\/t\//)) {
       setGridClass(cls.largerRight);
     } else if (currRoute.pathname.match(/(\/rfc\/)/)) {
       setGridClass(cls.noRight);
@@ -82,8 +83,16 @@ export const Project: React.FC = () => {
       setGridClass('');
     }
 
+    if (!isComp) graphRef.current?.unHighlightCell();
+
     setTimeout(() => graphRef.current?.recenter(), 750);
   }, [currRoute]);
+
+  function handleCompLoad(id: string) {
+    // Todo: wait for graph to be ready somehow
+    graphRef.current?.unHighlightCell();
+    graphRef.current?.highlightCell(id);
+  }
 
   const [menu] = useState(() => {
     return [
@@ -179,7 +188,7 @@ export const Project: React.FC = () => {
         ></BigHeading>
       </div>
       <div className={cls.left}>
-        <Menu defaultSelectedKeys={['content']} mode="inline" items={menu} />
+        <Menu defaultSelectedKeys={['summary']} mode="inline" items={menu} />
         {proj.links.length > 0 && (
           <div className={cls.links}>
             {proj.links.map((link) => {
@@ -230,7 +239,12 @@ export const Project: React.FC = () => {
           <Route
             path="/c/:component_slug"
             element={
-              <ComponentView proj={proj} comps={comps} params={params} />
+              <ComponentView
+                proj={proj}
+                comps={comps}
+                params={params}
+                onLoad={handleCompLoad}
+              />
             }
           />
         </Routes>
