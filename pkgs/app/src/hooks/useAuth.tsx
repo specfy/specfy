@@ -29,12 +29,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const tryLogin = async () => {
     const data = await getMe();
+    if (!data) return false;
     setUser(data);
+    return true;
   };
 
   const handleLogin = async () => {
-    await tryLogin();
+    const success = await tryLogin();
 
+    if (!success) return;
     const origin = location.state?.from?.pathname || '/';
     navigate(origin);
   };
