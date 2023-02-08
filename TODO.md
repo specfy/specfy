@@ -8,7 +8,6 @@
 
 - Edit
   - Go back to project (or maybe keep the header)
-- Big view for graph
 - Link repo(s)
 
 ## User
