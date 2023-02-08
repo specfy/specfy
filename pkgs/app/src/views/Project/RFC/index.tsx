@@ -25,10 +25,9 @@ import cls from './index.module.scss';
 
 export const RFC: React.FC<{
   proj: ApiProject;
-  comps: ApiComponent[];
   params: RouteProject;
-}> = ({ proj, comps, params }) => {
-  const [menu, setMenu] = useState(false);
+}> = ({ proj, params }) => {
+  const [menu] = useState(true);
   const [item, setItem] = useState<ApiDocument>();
   const p = useParams<Partial<RouteDocument>>();
   const doc = useGetDocument({
@@ -40,10 +39,6 @@ export const RFC: React.FC<{
   useEffect(() => {
     setItem(doc.data?.data);
   }, [doc.isLoading]);
-
-  function onClickMenu() {
-    setMenu(menu ? false : true);
-  }
 
   if (doc.isLoading) {
     return null;

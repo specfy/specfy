@@ -23,7 +23,7 @@ export interface GraphProps {
 export interface GraphRef {
   recenter: () => void;
   highlightCell: (id: string) => void;
-  unHighlightCell: (id?: string) => void;
+  unHighlightCell: (clear?: true) => void;
 }
 
 export const Graph = forwardRef<GraphRef, GraphProps>(function Graph(
@@ -63,22 +63,23 @@ export const Graph = forwardRef<GraphRef, GraphProps>(function Graph(
             graph: g,
             hostsById: hostsById!,
           });
-          prevHighlight.current = id;
         },
-        unHighlightCell: (id?: string) => {
+        unHighlightCell: (clear?: true) => {
           if (!g || !container.current) {
             return;
           }
 
           unHighlightCell({
-            cell: id
-              ? g.getCellById(id)!
-              : prevHighlight.current
+            cell: prevHighlight.current
               ? g.getCellById(prevHighlight.current)
               : undefined,
             container: container.current,
             graph: g,
           });
+          if (clear) {
+            prevHighlight.current = undefined;
+            setHighlight(undefined);
+          }
         },
       };
     },

@@ -4,6 +4,9 @@
 body {
   background-color: $gray-2;
 }
+.ant-layout {
+  background-color: transparent;
+}
 
 // ----- Menu Inline
 .ant-menu.ant-menu-root.ant-menu-inline {

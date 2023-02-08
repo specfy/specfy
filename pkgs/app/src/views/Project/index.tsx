@@ -83,7 +83,7 @@ export const Project: React.FC = () => {
       setGridClass('');
     }
 
-    if (!isComp) graphRef.current?.unHighlightCell();
+    if (!isComp) graphRef.current?.unHighlightCell(true);
 
     setTimeout(() => graphRef.current?.recenter(), 750);
   }, [currRoute]);
@@ -94,7 +94,7 @@ export const Project: React.FC = () => {
     graphRef.current?.highlightCell(id);
   }
 
-  const [menu] = useState(() => {
+  const menu = useMemo(() => {
     return [
       {
         key: 'summary',
@@ -142,7 +142,7 @@ export const Project: React.FC = () => {
         ),
       },
     ];
-  });
+  }, [linkSelf, cls.link]);
 
   if (getProj.isLoading || getComps.isLoading) {
     return (
@@ -188,27 +188,34 @@ export const Project: React.FC = () => {
         ></BigHeading>
       </div>
       <div className={cls.left}>
-        <Menu defaultSelectedKeys={['summary']} mode="inline" items={menu} />
-        {proj.links.length > 0 && (
-          <div className={cls.links}>
-            {proj.links.map((link) => {
-              let icon = <LinkOutlined />;
-              if (link.title === 'Github') icon = <GithubOutlined />;
-              else if (link.title === 'Slack') icon = <SlackOutlined />;
-              return (
-                <Link
-                  key={link.link}
-                  className={cls.link}
-                  to={link.link}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {icon} {link.title}
-                </Link>
-              );
-            })}
-          </div>
-        )}
+        <div className={cls.menu}>
+          <Menu defaultSelectedKeys={['summary']} mode="inline" items={menu} />
+          {proj.links.length > 0 && (
+            <div className={cls.links}>
+              <Menu
+                mode="inline"
+                items={proj.links.map((link) => {
+                  let icon = <LinkOutlined />;
+                  if (link.title === 'Github') icon = <GithubOutlined />;
+                  else if (link.title === 'Slack') icon = <SlackOutlined />;
+                  return {
+                    key: link.link,
+                    label: (
+                      <Link
+                        className={cls.link}
+                        to={link.link}
+                        target="_blank"
+                        rel="noreferrer"
+                      >
+                        {icon} {link.title}
+                      </Link>
+                    ),
+                  };
+                })}
+              />
+            </div>
+          )}
+        </div>
       </div>
       <div className={cls.center}>
         <Routes>
