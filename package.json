@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "lint": "eslint --ext .js,.ts,.tsx .",
+    "lint:scss": "stylelint **/*.scss",
     "lint:fix": "npm run lint -- --fix"
   },
   "repository": {

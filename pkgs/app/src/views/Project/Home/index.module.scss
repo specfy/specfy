@@ -1,13 +1,14 @@
-@import '../../../theme.scss';
+@import "../../../theme";
 
 .team {
   display: inline-flex;
   grid-template-columns: 1fr 1fr 1fr;
   gap: 32px;
+
   > div {
     display: inline-flex;
-    align-items: center;
     gap: 4px;
+    align-items: center;
   }
 }
 
@@ -21,14 +22,16 @@
   grid-template-columns: 150px auto;
   margin-bottom: 12px;
 }
+
 .comp {
+  display: inline-block;
+  font-size: $font;
+
   a {
     color: $gray-8;
   }
-  font-size: $font;
-  display: inline-block;
 
-  & + .comp:before {
-    content: ', ';
+  & + .comp::before {
+    content: ", ";
   }
 }

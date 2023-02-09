@@ -1,14 +1,13 @@
 import { FormOutlined, TeamOutlined } from '@ant-design/icons';
-import { Card, MenuProps, Menu, Typography, Space } from 'antd';
+import { Menu, Typography, Space } from 'antd';
 import type { ApiProject } from 'api/src/types/api/projects';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 
 import { Container } from '../../../components/Container';
 import type { RouteProject } from '../../../types/routes';
 
 import { ProjectEditContent } from './Content';
-import { ProjectEditTeam } from '../Team';
 import cls from './index.module.scss';
 
 export const ProjectEdit: React.FC<{
@@ -59,10 +58,6 @@ export const ProjectEdit: React.FC<{
           <Route
             path="/"
             element={<ProjectEditContent proj={proj} params={params} />}
-          />
-          <Route
-            path="/team"
-            element={<ProjectEditTeam proj={proj} params={params} />}
           />
         </Routes>
       </div>

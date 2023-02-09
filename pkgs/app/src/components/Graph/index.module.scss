@@ -1,9 +1,10 @@
-@import '../../theme.scss';
+@import "../../theme";
 
 .container {
-  min-height: 300px;
-  height: 100%;
   position: relative;
+  height: 100%;
+  min-height: 300px;
+
   &:hover {
     .toolbar {
       opacity: 1;
@@ -15,44 +16,34 @@
 .toolbar {
   position: absolute;
   z-index: 1;
-  right: 18px;
   top: 10px;
+  right: 18px;
+
   opacity: 0;
+
   transition: opacity 0.2s ease-in-out;
+
   .toolbarItem {
-    background-color: rgba($gray-3, 0.5);
-    color: $gray-7;
     padding: 0 8px;
+    color: $gray-7;
+    background-color: rgba($gray-3, 0.5);
+
     &:hover {
-      background-color: rgba($gray-4, 1);
       color: $gray-8;
+      background-color: rgba($gray-4, 1);
     }
   }
 }
 
 // Graph
-:global {
-  .x6-cell {
-    transition: opacity 0.2s ease-in;
-    opacity: 1;
-  }
-
-  .x6-edge-label {
-    // transition: opacity 0.2s ease-in;
-    // opacity: 0;
-    & text {
-      font-size: 8px;
-      font-weight: 100;
-    }
-  }
-}
-
 .animateRunningLine {
   animation: running-line 30s infinite linear;
 }
+
 .animateRunningLineReverse {
   animation: running-line 30s reverse infinite linear;
 }
+
 .animateExchangeLine {
   animation: exchange-line 30s infinite linear;
 }
@@ -61,7 +52,20 @@
   // fill: $gray-1;
   opacity: 0.25 !important;
 }
+
 :global {
+  .x6-cell {
+    opacity: 1;
+    transition: opacity 0.2s ease-in;
+  }
+
+  .x6-edge-label {
+    & text {
+      font-size: 8px;
+      font-weight: 100;
+    }
+  }
+
   :local(.hideElement) {
     &.x6-edge {
       opacity: 0.1 !important;
@@ -74,15 +78,18 @@
     stroke-dashoffset: -1000;
   }
 }
+
 @keyframes exchange-line {
   from {
     stroke-dashoffset: -500;
   }
 }
+
 @keyframes spin {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }

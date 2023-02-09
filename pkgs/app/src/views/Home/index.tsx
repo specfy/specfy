@@ -2,8 +2,8 @@ import { Card, Col, Row } from 'antd';
 import Title from 'antd/es/typography/Title';
 
 import { Container } from '../../components/Container';
-import { ListProjects } from '../../components/ListProjects';
 import { ListActivity } from '../../components/ListActivity';
+import { ListProjects } from '../../components/ListProjects';
 
 export const Home: React.FC = () => {
   return (

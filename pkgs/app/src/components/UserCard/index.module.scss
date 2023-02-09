@@ -1,8 +1,9 @@
-@import '../../theme.scss';
+@import "../../theme";
 
 .userCard {
   display: flex;
   gap: $p-l;
+
   &.small {
     font-size: $font-s;
   }

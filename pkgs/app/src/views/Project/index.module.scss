@@ -1,18 +1,15 @@
-@import '../../theme.scss';
-
+@import "../../theme";
 
 $size-center-max: 850px;
 
 .container {
   display: grid;
+  grid-template: "center right" auto / minmax(750px, $size-center-max) minmax(550px, 1fr);
   gap: 16px;
-  grid-template:
-    'center right' auto / minmax(750px, $size-center-max) minmax(550px, 1fr);
   transition: grid-template 0.5s ease-in-out;
 
   &.largerRight {
-    grid-template:
-      'center right' auto / minmax(750px, $size-center-max) minmax(550px, 1fr);
+    grid-template: "center right" auto / minmax(750px, $size-center-max) minmax(550px, 1fr);
 
     .right {
       height: 450px;
@@ -20,8 +17,7 @@ $size-center-max: 850px;
   }
 
   &.noRight {
-    grid-template:
-      'center' auto / 1fr;
+    grid-template: "center" auto / 1fr;
 
     .right {
       display: none;
@@ -29,8 +25,7 @@ $size-center-max: 850px;
   }
 
   &.noCenter {
-    grid-template:
-      'right' auto / 1fr;
+    grid-template: "right" auto / 1fr;
 
     .right {
       height: 550px;
@@ -41,13 +36,13 @@ $size-center-max: 850px;
 .header {
   display: grid;
   grid-template-columns: 300px 1fr;
-  border-bottom: 1px solid #f9fbff;
   padding: $p-xl $p-xxl $p $p-xxl;
+  border-bottom: 1px solid #f9fbff;
 }
 
 .left {
-  grid-area: left;
   display: flex;
+  grid-area: left;
   flex-direction: column;
   gap: 16px;
 }
@@ -59,16 +54,16 @@ $size-center-max: 850px;
 .right {
   grid-area: right;
   width: inherit;
-  margin: 0 0 0 0;
   height: 450px;
+  margin: 0;
 }
 
 // ---- LEFT
 .menu {
-  background-color: transparent;
-  border: none;
   height: 35px;
   margin-top: $p-xl + 3px;
+  background-color: transparent;
+  border: none;
 
   a:hover {
     text-decoration: none;
@@ -78,16 +73,13 @@ $size-center-max: 850px;
     .ant-menu-item {
       padding-inline: $p-s;
 
-      &:after {
+      &::after {
         display: none;
       }
-
-      &:hover {}
 
       &.ant-menu-item-selected {
         :local(.link) {
           background-color: $gray-4 !important;
-
         }
       }
     }
@@ -95,20 +87,24 @@ $size-center-max: 850px;
 }
 
 .links {
-  border-top: 1px solid $gray-4;
   padding: $p-xxl 0;
+  border-top: 1px solid $gray-4;
+
   // margin-inline-end: $p-m;
   // margin-left: $p-s;
 }
 
 .link {
-  color: $gray-9 !important;
   display: block;
-  font-size: $font;
-  line-height: $line-height-m;
   display: flex;
   gap: $p-m;
+
   padding: $p-s $p-l;
+
+  font-size: $font;
+  line-height: $line-height-m;
+  color: $gray-9 !important;
+
   border-radius: 4px;
 
   &:hover {

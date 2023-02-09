@@ -1,26 +1,11 @@
-@import '../../theme.scss';
+@import "../../theme";
 
 .tree {
   width: 200px;
+
   :global {
     .ant-anchor {
       padding-top: 20px;
     }
   }
-}
-
-.lvl-1 {
-  font-size: $font;
-}
-.lvl-2 {
-  padding: 0 0 0 8px;
-  font-size: $font-s;
-}
-.lvl-3 {
-  padding: 0 0 0 16px;
-  font-size: $font-s;
-}
-.lvl-4 {
-  font-size: $font-s;
-  padding: 0 0 0 22px;
 }

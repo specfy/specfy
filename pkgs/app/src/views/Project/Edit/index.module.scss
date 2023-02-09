@@ -1,17 +1,19 @@
 .container {
   display: grid;
   grid-template:
-    'top top'
-    'left right' auto / 250px 750px;
+    "top top"
+    "left right" auto / 250px 750px;
   gap: 16px;
 }
 
 .top {
   grid-area: top;
 }
+
 .left {
   grid-area: left;
 }
+
 .right {
   grid-area: right;
 }

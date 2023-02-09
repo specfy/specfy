@@ -1,13 +1,13 @@
-@import '../../../theme.scss';
+@import "../../../theme";
 
 .slash {
-  font-size: $font-xxl;
   padding-top: 24px;
-  color: $gray-6;
+  font-size: $font-xxl;
   font-weight: 100;
+  color: $gray-6;
 }
 
 .subtitle {
-  margin: -8px 0 20px 0;
+  margin: -8px 0 20px;
   color: $gray-8;
 }

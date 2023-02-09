@@ -1,14 +1,16 @@
-@import '../../theme.scss';
+@import "../../theme";
 
 .header {
-  padding: 0 8px !important;
-  background: white !important;
   display: grid !important;
   grid-template-columns: 140px 50px 1fr 200px;
 
+  height: 53px !important;
+  padding: 0 8px !important;
+
   // border-bottom: 1px solid $gray-4;
   line-height: 53px !important;
-  height: 53px !important;
+
+  background: white !important;
 }
 
 .orgSelect {
@@ -16,9 +18,9 @@
 }
 
 .avatar {
-  background-color: $gray-3 !important;
-  color: $gray-8;
   margin-left: 16px;
+  color: $gray-8;
+  background-color: $gray-3 !important;
 
   >span {
     background-color: transparent;
@@ -26,10 +28,10 @@
 }
 
 .logo {
-  padding: 0 0 0 $p-l;
   display: flex;
-  align-items: center;
   gap: $p-l;
+  align-items: center;
+  padding: 0 0 0 $p-l;
 
   svg {
     font-size: $font-xxl;
@@ -44,8 +46,9 @@
   display: flex;
   gap: 8px;
   justify-content: flex-end;
-  padding-right: 8px;
+
   margin-top: -2px;
+  padding-right: 8px;
 }
 
 .menu {
@@ -54,12 +57,16 @@
 }
 
 .userDropdown {
-  background-color: #fff;
   width: 256px;
-  border-radius: $border-radius-s;
   padding-bottom: 4px;
-  box-shadow: #fff 0 0 0 0, rgba(0, 0, 0, 0.05) 0 0 0 1px,
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.1) 0 4px 6px -4px;
+
+  background-color: #fff;
+  border-radius: $border-radius-s;
+  box-shadow:
+    #fff 0 0 0 0,
+    rgb(0 0 0 / 5%) 0 0 0 1px,
+    rgb(0 0 0 / 10%) 0 10px 15px -3px,
+    rgb(0 0 0 / 10%) 0 4px 6px -4px;
 
   &Profil {
     padding: 12px 16px;
@@ -79,17 +86,17 @@
   }
 
   &Item {
+    display: block;
     padding: 8px 16px;
     color: $gray-8;
-    display: block;
 
     span {
       padding-right: 16px;
     }
 
     &:hover {
-      background-color: $gray-3;
       color: $gray-11;
+      background-color: $gray-3;
     }
   }
 }

@@ -1,22 +1,25 @@
-@import '../../theme.scss';
+@import "../../theme";
 
 .list {
   margin: 18px 8px 8px 4px;
 }
 
 .date {
-  color: $gray-5;
   font-size: $font-xs;
+  color: $gray-5;
 }
 
 .item {
+  overflow: hidden;
+
   font-size: $font-s;
   line-height: $line-height-s;
   text-overflow: ellipsis;
   white-space: nowrap;
-  overflow: hidden;
+
   .linkUser {
     color: $gray-8;
+
     // font-weight: bold;
   }
 }

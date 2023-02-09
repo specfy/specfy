@@ -1,10 +1,11 @@
-@import '../../theme.scss';
+@import "../../theme";
 
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 14px;
+
   h5 {
     margin-bottom: 0;
   }

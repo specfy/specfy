@@ -1,4 +1,4 @@
-@import '../../../theme.scss';
+@import "../../../theme";
 
 .container {
   display: grid;
@@ -19,8 +19,8 @@
 }
 
 .lastUpdate {
-  color: $gray-6;
   font-size: $font-s;
+  color: $gray-6;
 }
 
 .infoHeader {
@@ -36,9 +36,9 @@
 
 .headings {
   position: absolute;
-  left: -200px;
-  top: 20px;
   z-index: 1;
+  top: 20px;
+  left: -200px;
 }
 
 .tldr {
@@ -46,8 +46,8 @@
 }
 
 .tldrList {
-  list-style: none;
   padding: 0;
+  list-style: none;
 
   li {
     margin: 0;
@@ -75,8 +75,8 @@
 }
 
 .userList {
-  list-style: none;
   padding: 0;
+  list-style: none;
 
   li {
     margin-bottom: 4px;
