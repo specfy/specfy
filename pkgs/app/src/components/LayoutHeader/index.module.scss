@@ -4,10 +4,11 @@
   padding: 0 8px !important;
   background: white !important;
   display: grid !important;
-  grid-template-columns: 128px 50px 1fr 200px;
+  grid-template-columns: 140px 50px 1fr 200px;
 
-  border-bottom: 1px solid $gray-4;
-  line-height: 63px;
+  // border-bottom: 1px solid $gray-4;
+  line-height: 53px !important;
+  height: 53px !important;
 }
 
 .orgSelect {
@@ -18,19 +19,22 @@
   background-color: $gray-3 !important;
   color: $gray-8;
   margin-left: 16px;
-  > span {
+
+  >span {
     background-color: transparent;
   }
 }
 
 .logo {
-  padding: 0 0 0 8px;
+  padding: 0 0 0 $p-l;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: $p-l;
+
   svg {
     font-size: $font-xxl;
   }
+
   img {
     height: 35px;
   }
@@ -56,27 +60,33 @@
   padding-bottom: 4px;
   box-shadow: #fff 0 0 0 0, rgba(0, 0, 0, 0.05) 0 0 0 1px,
     rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.1) 0 4px 6px -4px;
+
   &Profil {
     padding: 12px 16px;
     line-height: $line-height-s;
+
     strong {
       font-size: $font-s;
       font-weight: normal;
       color: $gray-7;
     }
   }
+
   :global {
     .ant-divider {
       margin: 4px 0;
     }
   }
+
   &Item {
     padding: 8px 16px;
     color: $gray-8;
     display: block;
+
     span {
       padding-right: 16px;
     }
+
     &:hover {
       background-color: $gray-3;
       color: $gray-11;

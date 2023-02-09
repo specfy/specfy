@@ -1,93 +1,117 @@
 @import '../../theme.scss';
 
-$size-menu: 150px;
-$size-menu-short: 55px;
-$size-center-max: 1050px;
+
+$size-center-max: 850px;
 
 .container {
   display: grid;
   gap: 16px;
   grid-template:
-    'top top top'
-    'left center right' auto / $size-menu minmax(765px, $size-center-max)
-    minmax(400px, 1fr);
+    'center right' auto / minmax(750px, $size-center-max) minmax(550px, 1fr);
   transition: grid-template 0.5s ease-in-out;
 
   &.largerRight {
     grid-template:
-      'top top top'
-      'left center right' auto / $size-menu minmax(500px, $size-center-max)
-      minmax(550px, 1fr);
+      'center right' auto / minmax(750px, $size-center-max) minmax(550px, 1fr);
+
     .right {
       height: 450px;
     }
   }
+
   &.noRight {
     grid-template:
-      'top top'
-      'left center' auto / $size-menu-short 1fr;
+      'center' auto / 1fr;
+
     .right {
       display: none;
     }
-    .menu {
-      width: $size-menu-short;
-
-      &:hover {
-        width: $size-menu;
-      }
-    }
   }
+
   &.noCenter {
     grid-template:
-      'top top top'
-      'left center right' auto / $size-menu minmax(0px, 10px) 1fr;
+      'right' auto / 1fr;
+
     .right {
       height: 550px;
     }
-    // .center {
-    //   display: none;
-    // }
   }
 }
+
 .header {
-  grid-area: top;
-  margin-bottom: $p-l;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  border-bottom: 1px solid #f9fbff;
+  padding: $p-xl $p-xxl $p $p-xxl;
 }
+
 .left {
   grid-area: left;
   display: flex;
   flex-direction: column;
   gap: 16px;
 }
+
 .center {
   grid-area: center;
 }
+
 .right {
   grid-area: right;
   width: inherit;
   margin: 0 0 0 0;
-  height: 350px;
+  height: 450px;
 }
 
 // ---- LEFT
 .menu {
-  position: absolute;
-  z-index: 100;
-  width: $size-menu;
-  background: $gray-2;
-  transition: width 0.2s ease-in-out;
+  background-color: transparent;
+  border: none;
+  height: 35px;
+  margin-top: $p-xl + 3px;
+
+  a:hover {
+    text-decoration: none;
+  }
+
+  :global {
+    .ant-menu-item {
+      padding-inline: $p-s;
+
+      &:after {
+        display: none;
+      }
+
+      &:hover {}
+
+      &.ant-menu-item-selected {
+        :local(.link) {
+          background-color: $gray-4 !important;
+
+        }
+      }
+    }
+  }
 }
+
 .links {
   border-top: 1px solid $gray-4;
   padding: $p-xxl 0;
   // margin-inline-end: $p-m;
   // margin-left: $p-s;
 }
+
 .link {
-  color: $gray-7;
+  color: $gray-9 !important;
   display: block;
   font-size: $font;
   line-height: $line-height-m;
   display: flex;
   gap: $p-m;
+  padding: $p-s $p-l;
+  border-radius: 4px;
+
+  &:hover {
+    background-color: $gray-4 !important;
+  }
 }

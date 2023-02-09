@@ -1,11 +1,12 @@
 @import '../../theme.scss';
 
 .skeletonAvatar {
-  > span {
+  >span {
     width: 50px !important;
     height: 50px !important;
   }
 }
+
 .skeletonTitle {
   margin: 42px 0 12px 0;
   width: 250px;
@@ -22,11 +23,13 @@
   line-height: 32px !important;
   display: flex;
   gap: $p;
+
   .parentSlash {
     color: $gray-8;
     font-size: $font-l;
     font-weight: normal;
   }
+
   a {
     color: $gray-10;
   }
@@ -40,7 +43,7 @@
 }
 
 .avatarCustom,
-.avatarCustom > span {
+.avatarCustom>span {
   font-size: 35px !important;
   line-height: 45px;
   width: 50px;
@@ -48,6 +51,7 @@
   background-color: $gray-4;
   border-radius: 30px;
 }
+
 .avatarCustom i {
   padding-top: 5px;
   display: inline-block;
@@ -56,8 +60,4 @@
 .subtitle {
   color: $gray-6;
   font-size: $font-s;
-}
-
-.actions {
-  margin-top: 22px;
 }

@@ -72,12 +72,18 @@ export const Project: React.FC = () => {
     setComps(getComps.data?.data);
   }, [getComps.isFetched]);
   useEffect(() => {
-    const isComp = currRoute.pathname.match(/\/c\//);
-    if (isComp || currRoute.pathname.match(/\/t\//)) {
+    const sub = currRoute.pathname.split('/')[4];
+    const isComp = sub === 'c';
+    if (isComp || sub === 't') {
       setGridClass(cls.largerRight);
-    } else if (currRoute.pathname.match(/(\/rfc\/)/)) {
+    } else if (
+      sub === 'rfc' ||
+      sub === 'team' ||
+      sub === 'activity' ||
+      sub === 'content'
+    ) {
       setGridClass(cls.noRight);
-    } else if (currRoute.pathname.match(/(\/graph)/)) {
+    } else if (sub === 'graph') {
       setGridClass(cls.noCenter);
     } else {
       setGridClass('');
@@ -97,11 +103,11 @@ export const Project: React.FC = () => {
   const menu = useMemo(() => {
     return [
       {
-        key: 'summary',
+        key: 'home',
         label: (
           <Link to={linkSelf} className={cls.link}>
             <HomeOutlined />
-            Summary
+            Home
           </Link>
         ),
       },
@@ -172,7 +178,7 @@ export const Project: React.FC = () => {
   }
 
   return (
-    <Container className={classnames(cls.container, gridClass)}>
+    <div>
       <div className={cls.header}>
         <BigHeading
           parent={org!.name}
@@ -180,17 +186,20 @@ export const Project: React.FC = () => {
           title={proj.name}
           link={linkSelf}
           subtitle={<Time time={proj.updatedAt} />}
-          actions={
-            <div>
-              <Button>Edit</Button>
-            </div>
-          }
+          // actions={
+          //   <div>
+          //     <Button>Edit</Button>
+          //   </div>
+          // }
         ></BigHeading>
-      </div>
-      <div className={cls.left}>
-        <div className={cls.menu}>
-          <Menu defaultSelectedKeys={['summary']} mode="inline" items={menu} />
-          {proj.links.length > 0 && (
+        <Menu
+          defaultSelectedKeys={['summary']}
+          mode="horizontal"
+          items={menu}
+          className={cls.menu}
+        />
+
+        {/* {proj.links.length > 0 && (
             <div className={cls.links}>
               <Menu
                 mode="inline"
@@ -214,52 +223,58 @@ export const Project: React.FC = () => {
                 })}
               />
             </div>
-          )}
-        </div>
-      </div>
-      <div className={cls.center}>
-        <Routes>
-          <Route
-            path="/"
-            element={<ProjectHome proj={proj} comps={comps} params={params} />}
-          />
-          <Route
-            path="/content"
-            element={<ProjectContent proj={proj} params={params} />}
-          />
-          <Route
-            path="/activity"
-            element={<ProjectActivity proj={proj} params={params} />}
-          />
-          <Route
-            path="/team"
-            element={<ProjectTeam proj={proj} params={params} />}
-          />
-          <Route
-            path="/t/:tech_slug"
-            element={<Tech proj={proj} comps={comps} params={params} />}
-          />
-          <Route
-            path="/rfc/:document_type_id/:document_slug"
-            element={<RFC proj={proj} comps={comps} params={params} />}
-          />
-          <Route
-            path="/c/:component_slug"
-            element={
-              <ComponentView
-                proj={proj}
-                comps={comps}
-                params={params}
-                onLoad={handleCompLoad}
-              />
-            }
-          />
-        </Routes>
+          )} */}
       </div>
 
-      <div className={cls.right}>
-        <Graph components={comps} ref={graphRef}></Graph>
-      </div>
-    </Container>
+      <Container>
+        <div className={classnames(cls.container, gridClass)}>
+          <div className={cls.center}>
+            <Routes>
+              <Route
+                path="/"
+                element={
+                  <ProjectHome proj={proj} comps={comps} params={params} />
+                }
+              />
+              <Route
+                path="/content"
+                element={<ProjectContent proj={proj} params={params} />}
+              />
+              <Route
+                path="/activity"
+                element={<ProjectActivity proj={proj} params={params} />}
+              />
+              <Route
+                path="/team"
+                element={<ProjectTeam proj={proj} params={params} />}
+              />
+              <Route
+                path="/t/:tech_slug"
+                element={<Tech proj={proj} comps={comps} params={params} />}
+              />
+              <Route
+                path="/rfc/:document_type_id/:document_slug"
+                element={<RFC proj={proj} params={params} />}
+              />
+              <Route
+                path="/c/:component_slug"
+                element={
+                  <ComponentView
+                    proj={proj}
+                    comps={comps}
+                    params={params}
+                    onLoad={handleCompLoad}
+                  />
+                }
+              />
+            </Routes>
+          </div>
+
+          <div className={cls.right}>
+            <Graph components={comps} ref={graphRef}></Graph>
+          </div>
+        </div>
+      </Container>
+    </div>
   );
 };

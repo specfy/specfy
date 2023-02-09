@@ -2,11 +2,13 @@
 
 .container {
   display: grid;
-  grid-template-columns: minmax(765px, 1050px) 200px;
+  grid-template-columns: minmax(750px, 850px) 200px;
   gap: $p-xl;
+
   &.withMenu {
     margin-left: 200px;
   }
+
   .title {
     margin-bottom: 4px;
   }
@@ -15,6 +17,7 @@
 .right {
   padding-top: $p-xxl;
 }
+
 .lastUpdate {
   color: $gray-6;
   font-size: $font-s;
@@ -45,6 +48,7 @@
 .tldrList {
   list-style: none;
   padding: 0;
+
   li {
     margin: 0;
   }
@@ -54,13 +58,16 @@
   h1 {
     font-size: $font-xxl;
   }
+
   h2 {
     font-size: $font-l;
   }
+
   h3 {
     font-size: $font-m;
     color: $gray-9;
   }
+
   h4 {
     font-size: $font-m;
     color: $gray-8;
@@ -70,6 +77,7 @@
 .userList {
   list-style: none;
   padding: 0;
+
   li {
     margin-bottom: 4px;
   }

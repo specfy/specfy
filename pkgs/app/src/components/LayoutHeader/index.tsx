@@ -20,14 +20,14 @@ import Logo1 from '../../static/logo2.svg';
 import cls from './index.module.scss';
 
 const menuItems: MenuProps['items'] = [
-  {
-    key: 'review',
-    label: <Link to="/review">Review</Link>,
-  },
-  {
-    key: 'settings',
-    label: <Link to="/settings">Settings</Link>,
-  },
+  // {
+  //   key: 'review',
+  //   label: <Link to="/review">Review</Link>,
+  // },
+  // {
+  //   key: 'settings',
+  //   label: <Link to="/settings">Settings</Link>,
+  // },
 ];
 
 const createItems: MenuProps['items'] = [
