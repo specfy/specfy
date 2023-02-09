@@ -51,7 +51,7 @@ export const ProjectSettings: React.FC<{
         <div className={cls.gridAction}>
           <div>
             <Typography.Title level={4}> Delete this project</Typography.Title>
-            Deleting a project can't be reverted.
+            Deleting a project can&apos;t be undone.
           </div>
           <Button danger onClick={showModal}>
             Delete
@@ -80,8 +80,8 @@ export const ProjectSettings: React.FC<{
         ]}
       >
         <p>
-          Are you sure to delete this project? <br></br>This action is not
-          reversible
+          Are you sure to delete this project? <br></br>This action can&apos;t
+          be undone.
         </p>
       </Modal>
     </Container>

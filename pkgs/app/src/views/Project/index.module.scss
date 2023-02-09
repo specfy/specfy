@@ -93,13 +93,15 @@ $size-center-max: 850px;
 }
 
 .editMode {
-  margin-top: 35px;
   display: flex;
   gap: $p;
-  font-size: $font-s;
-  justify-content: end;
-  color: $gray-7;
   align-items: center;
+  justify-content: end;
+
+  margin-top: 35px;
+
+  font-size: $font-s;
+  color: $gray-7;
 
   :global {
     .ant-switch {
@@ -136,12 +138,11 @@ $size-center-max: 850px;
   }
 }
 
-
 // ---- Edit mode
 .isEditing {
   .editMode {
-    color: $gray-10;
     font-weight: bold;
+    color: $gray-10;
   }
 
   .header {
@@ -152,5 +153,4 @@ $size-center-max: 850px;
   :global(.ant-menu-item-selected) :local(.link) {
     background-color: $gray-2 !important;
   }
-
 }
