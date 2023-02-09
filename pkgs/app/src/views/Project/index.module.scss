@@ -33,12 +33,17 @@ $size-center-max: 850px;
   }
 }
 
+// ---- Grid zone
 .header {
   display: grid;
-  grid-template-columns: 300px 1fr;
-  padding: $p-xl $p-xxl $p $p-xxl;
-  border-bottom: 1px solid #f9fbff;
+  grid-template-columns: 300px 1fr 200px;
   align-content: normal;
+
+  padding: $p-xl $p-xxl $p $p-xxl;
+
+  border-bottom: 1px solid #f9fbff;
+
+  transition: background-color 0.25s ease-in-out;
 }
 
 .left {
@@ -59,7 +64,7 @@ $size-center-max: 850px;
   margin: 0;
 }
 
-// ---- LEFT
+// ---- Header
 .menu {
   height: 35px;
   margin-top: 35px;
@@ -80,9 +85,25 @@ $size-center-max: 850px;
 
       &.ant-menu-item-selected {
         :local(.link) {
-          background-color: $gray-4 !important;
+          background-color: $gray-4;
         }
       }
+    }
+  }
+}
+
+.editMode {
+  margin-top: 35px;
+  display: flex;
+  gap: $p;
+  font-size: $font-s;
+  justify-content: end;
+  color: $gray-7;
+  align-items: center;
+
+  :global {
+    .ant-switch {
+      width: 20px;
     }
   }
 }
@@ -108,7 +129,28 @@ $size-center-max: 850px;
 
   border-radius: 4px;
 
+  transition: background-color 0.25s ease-in-out;
+
   &:hover {
     background-color: $gray-4 !important;
   }
+}
+
+
+// ---- Edit mode
+.isEditing {
+  .editMode {
+    color: $gray-10;
+    font-weight: bold;
+  }
+
+  .header {
+    background-color: #fff2e8;
+  }
+
+  .link:hover,
+  :global(.ant-menu-item-selected) :local(.link) {
+    background-color: $gray-2 !important;
+  }
+
 }

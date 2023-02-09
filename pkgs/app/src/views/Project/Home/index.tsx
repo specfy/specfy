@@ -3,10 +3,7 @@ import { App, Button, Card, Col, Modal, Row, Typography } from 'antd';
 import type { ItemType } from 'antd/es/menu/hooks/useItems';
 import type { ApiComponent } from 'api/src/types/api/components';
 import type { ApiProject } from 'api/src/types/api/projects';
-import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
-import { deleteProject } from '../../../api/projects';
 import { ListActivity } from '../../../components/ListActivity';
 import { ListRFCs } from '../../../components/ListRFCs';
 import type { RouteProject } from '../../../types/routes';
@@ -19,41 +16,8 @@ export const ProjectHome: React.FC<{
   proj: ApiProject;
   comps: ApiComponent[];
   params: RouteProject;
-}> = ({ proj, comps, params }) => {
-  const { message } = App.useApp();
-  const navigate = useNavigate();
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [waitToRead, setWaitToRead] = useState(true);
-
-  // Delete modal
-  const showModal = () => {
-    setIsModalOpen(true);
-    setTimeout(() => setWaitToRead(false), 2000);
-  };
-  const cancelDelete = () => {
-    setIsModalOpen(false);
-    setWaitToRead(true);
-  };
-  const confirmDelete = async () => {
-    await deleteProject(params);
-    message.success('Project deleted');
-
-    navigate(`/org/${params.org_id}`);
-  };
-
-  const actions = useMemo<ItemType[]>(() => {
-    return [
-      {
-        key: 'remove',
-        label: 'Delete',
-        icon: <DeleteOutlined />,
-        onClick: showModal,
-        danger: true,
-      },
-    ];
-  }, []);
-
+  editMode: boolean;
+}> = ({ proj, comps, params, editMode }) => {
   return (
     <>
       <Row gutter={[16, 16]}>
@@ -97,32 +61,6 @@ export const ProjectHome: React.FC<{
           </Card>
         </Col>
       </Row>
-
-      <Modal
-        title="Delete this project?"
-        open={isModalOpen}
-        onOk={confirmDelete}
-        onCancel={cancelDelete}
-        footer={[
-          <Button key="back" type="text" onClick={cancelDelete}>
-            Return
-          </Button>,
-          <Button
-            danger
-            key="submit"
-            type="primary"
-            disabled={waitToRead}
-            onClick={confirmDelete}
-          >
-            Delete
-          </Button>,
-        ]}
-      >
-        <p>
-          Are you sure to delete this project? <br></br>This action is not
-          reversible
-        </p>
-      </Modal>
     </>
   );
 };

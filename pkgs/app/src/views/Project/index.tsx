@@ -7,8 +7,9 @@ import {
   ReadOutlined,
   ClusterOutlined,
   ThunderboltOutlined,
+  SettingOutlined,
 } from '@ant-design/icons';
-import { Avatar, Button, Card, Divider, Menu, Skeleton } from 'antd';
+import { Avatar, Card, Divider, Menu, Skeleton, Switch } from 'antd';
 import type { ApiComponent } from 'api/src/types/api/components';
 import type { ApiOrg } from 'api/src/types/api/orgs';
 import type { ApiProject } from 'api/src/types/api/projects';
@@ -32,6 +33,7 @@ import { ComponentView } from './Component';
 import { ProjectContent } from './Content';
 import { ProjectHome } from './Home';
 import { RFC } from './RFC';
+import { ProjectSettings } from './Settings';
 import { ProjectTeam } from './Team';
 import { Tech } from './Tech';
 import cls from './index.module.scss';
@@ -62,6 +64,9 @@ export const Project: React.FC = () => {
   });
   const [comps, setComps] = useState<ApiComponent[]>();
 
+  // Edit mode
+  const [editMode, setEditMode] = useState<boolean>(false);
+
   useEffect(() => {
     setOrg(getOrgs.data?.find((o) => o.id === params.org_id));
   }, [getOrgs.isFetched]);
@@ -76,17 +81,12 @@ export const Project: React.FC = () => {
     const isComp = sub === 'c';
     if (isComp || sub === 't') {
       setGridClass(cls.largerRight);
-    } else if (
-      sub === 'rfc' ||
-      sub === 'team' ||
-      sub === 'activity' ||
-      sub === 'content'
-    ) {
-      setGridClass(cls.noRight);
     } else if (sub === 'graph') {
       setGridClass(cls.noCenter);
-    } else {
+    } else if (sub === undefined) {
       setGridClass('');
+    } else {
+      setGridClass(cls.noRight);
     }
 
     if (!isComp) graphRef.current?.unHighlightCell(true);
@@ -98,6 +98,10 @@ export const Project: React.FC = () => {
     // Todo: wait for graph to be ready somehow
     graphRef.current?.unHighlightCell();
     graphRef.current?.highlightCell(id);
+  }
+
+  function handleEditMode(val: boolean) {
+    setEditMode(val);
   }
 
   const menu = useMemo(() => {
@@ -147,6 +151,15 @@ export const Project: React.FC = () => {
           </Link>
         ),
       },
+      {
+        key: 'settings',
+        label: (
+          <Link to={`${linkSelf}/settings`} className={cls.link}>
+            <SettingOutlined />
+            Settings
+          </Link>
+        ),
+      },
     ];
   }, [linkSelf, cls.link]);
 
@@ -178,7 +191,7 @@ export const Project: React.FC = () => {
   }
 
   return (
-    <div>
+    <div className={editMode ? cls.isEditing : undefined}>
       <div className={cls.header}>
         <BigHeading
           parent={org!.name}
@@ -186,11 +199,6 @@ export const Project: React.FC = () => {
           title={proj.name}
           link={linkSelf}
           subtitle={<Time time={proj.updatedAt} />}
-          // actions={
-          //   <div>
-          //     <Button>Edit</Button>
-          //   </div>
-          // }
         ></BigHeading>
         <Menu
           defaultSelectedKeys={['summary']}
@@ -198,6 +206,18 @@ export const Project: React.FC = () => {
           items={menu}
           className={cls.menu}
         />
+        <div className={cls.editMode}>
+          Edit
+          <Switch
+            defaultChecked={false}
+            onChange={handleEditMode}
+            size="small"
+          />
+          {/* <Button type="text" >
+            <EditFilled />
+            Edit Mode
+          </Button> */}
+        </div>
 
         {/* {proj.links.length > 0 && (
             <div className={cls.links}>
@@ -233,7 +253,12 @@ export const Project: React.FC = () => {
               <Route
                 path="/"
                 element={
-                  <ProjectHome proj={proj} comps={comps} params={params} />
+                  <ProjectHome
+                    proj={proj}
+                    comps={comps}
+                    params={params}
+                    editMode={editMode}
+                  />
                 }
               />
               <Route
@@ -266,6 +291,10 @@ export const Project: React.FC = () => {
                     onLoad={handleCompLoad}
                   />
                 }
+              />
+              <Route
+                path="/settings"
+                element={<ProjectSettings proj={proj} params={params} />}
               />
             </Routes>
           </div>

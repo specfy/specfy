@@ -31,7 +31,7 @@
     color: $gray-9;
   }
 
-  &+.comp::before {
+  & + .comp::before {
     content: ", ";
   }
 }

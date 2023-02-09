@@ -21,9 +21,11 @@
 .title {
   display: flex;
   gap: $p;
+
   margin-bottom: 0 !important;
-  line-height: 32px !important;
+
   font-size: $font-l !important;
+  line-height: 32px !important;
 
   .parentSlash {
     font-size: $font-l;
@@ -32,8 +34,8 @@
   }
 
   a {
-    color: $gray-10;
     display: block;
+    color: $gray-10;
     white-space: pre;
   }
 }
@@ -46,7 +48,7 @@
 }
 
 .avatarCustom,
-.avatarCustom>span {
+.avatarCustom > span {
   width: 50px;
   height: 50px;
 

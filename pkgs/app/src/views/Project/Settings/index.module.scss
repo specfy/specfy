@@ -1,0 +1,14 @@
+@import "../../../theme";
+
+.container {
+  max-width: 750px;
+  display: flex;
+  gap: $p-xxl;
+  flex-direction: column;
+}
+
+.gridAction {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
