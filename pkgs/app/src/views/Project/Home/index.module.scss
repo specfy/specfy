@@ -5,7 +5,7 @@
   grid-template-columns: 1fr 1fr 1fr;
   gap: 32px;
 
-  > div {
+  >div {
     display: inline-flex;
     gap: 4px;
     align-items: center;
@@ -28,10 +28,10 @@
   font-size: $font;
 
   a {
-    color: $gray-8;
+    color: $gray-9;
   }
 
-  & + .comp::before {
+  &+.comp::before {
     content: ", ";
   }
 }

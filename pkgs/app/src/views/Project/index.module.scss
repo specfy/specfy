@@ -38,6 +38,7 @@ $size-center-max: 850px;
   grid-template-columns: 300px 1fr;
   padding: $p-xl $p-xxl $p $p-xxl;
   border-bottom: 1px solid #f9fbff;
+  align-content: normal;
 }
 
 .left {
@@ -61,7 +62,7 @@ $size-center-max: 850px;
 // ---- LEFT
 .menu {
   height: 35px;
-  margin-top: $p-xl + 3px;
+  margin-top: 35px;
   background-color: transparent;
   border: none;
 
@@ -99,7 +100,7 @@ $size-center-max: 850px;
   display: flex;
   gap: $p-m;
 
-  padding: $p-s $p-l;
+  padding: $p-xs $p-l;
 
   font-size: $font;
   line-height: $line-height-m;
