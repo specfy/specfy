@@ -31,7 +31,18 @@
     color: $gray-9;
   }
 
-  & + .comp::before {
+  &+.comp::before {
     content: ", ";
+  }
+}
+
+
+.editable {
+  white-space: pre-line;
+  border-left: 2px solid #0958d9;
+  padding-left: $p-l;
+
+  &.edited {
+    border-left-color: #52c41a;
   }
 }

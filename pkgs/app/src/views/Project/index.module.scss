@@ -36,7 +36,7 @@ $size-center-max: 850px;
 // ---- Grid zone
 .header {
   display: grid;
-  grid-template-columns: 300px 1fr 200px;
+  grid-template-columns: 300px 1fr 250px;
   align-content: normal;
 
   padding: $p-xl $p-xxl $p $p-xxl;
@@ -71,9 +71,6 @@ $size-center-max: 850px;
   background-color: transparent;
   border: none;
 
-  a:hover {
-    text-decoration: none;
-  }
 
   :global {
     .ant-menu-item {
@@ -92,21 +89,36 @@ $size-center-max: 850px;
   }
 }
 
-.editMode {
+.editZone {
   display: flex;
-  gap: $p;
   align-items: center;
   justify-content: end;
 
   margin-top: 35px;
+  gap: $p-l;
+}
 
+.editMode {
+  display: flex;
+  gap: $p;
+  align-items: center;
   font-size: $font-s;
   color: $gray-7;
+  background-color: white;
+  box-shadow: 1px 1px 2px $gray-4;
+
+  padding: $p $p-l;
+  height: 35px;
+
+  .link {
+    color: $gray-8 !important;
+  }
 
   :global {
     .ant-switch {
       width: 20px;
     }
+
   }
 }
 
@@ -135,22 +147,13 @@ $size-center-max: 850px;
 
   &:hover {
     background-color: $gray-4 !important;
+    text-decoration: none;
   }
 }
 
 // ---- Edit mode
 .isEditing {
   .editMode {
-    font-weight: bold;
-    color: $gray-10;
-  }
-
-  .header {
-    background-color: #fff2e8;
-  }
-
-  .link:hover,
-  :global(.ant-menu-item-selected) :local(.link) {
-    background-color: $gray-2 !important;
+    box-shadow: -1px 1px 2px 0 $gray-5;
   }
 }

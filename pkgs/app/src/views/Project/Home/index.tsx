@@ -1,11 +1,12 @@
-import { DeleteOutlined } from '@ant-design/icons';
-import { App, Button, Card, Col, Modal, Row, Typography } from 'antd';
-import type { ItemType } from 'antd/es/menu/hooks/useItems';
+import { Card, Col, Row, Typography } from 'antd';
 import type { ApiComponent } from 'api/src/types/api/components';
 import type { ApiProject } from 'api/src/types/api/projects';
+import classnames from 'classnames';
+import { useState } from 'react';
 
 import { ListActivity } from '../../../components/ListActivity';
 import { ListRFCs } from '../../../components/ListRFCs';
+import { useEdit } from '../../../hooks/useEdit';
 import type { RouteProject } from '../../../types/routes';
 
 import { Team } from './Team';
@@ -16,14 +17,36 @@ export const ProjectHome: React.FC<{
   proj: ApiProject;
   comps: ApiComponent[];
   params: RouteProject;
-  editMode: boolean;
-}> = ({ proj, comps, params, editMode }) => {
+}> = ({ proj, comps, params }) => {
+  const edit = useEdit();
+  const [desc] = useState(() => {
+    return edit.get('project', proj.id, 'description') || proj.description;
+  });
+
   return (
     <>
       <Row gutter={[16, 16]}>
         <Col span={24}>
           <Card>
-            <div dangerouslySetInnerHTML={{ __html: proj.description }}></div>
+            <div
+              className={classnames(
+                edit.isEnabled && cls.editable,
+                edit.isEdited('project', proj.id, 'description')
+                  ? cls.edited
+                  : undefined
+              )}
+              dangerouslySetInnerHTML={{ __html: desc }}
+              contentEditable={edit.isEnabled}
+              onInput={(e) => {
+                console.log(e.currentTarget);
+                edit.set(
+                  'project',
+                  proj.id,
+                  'description',
+                  e.currentTarget.innerText
+                );
+              }}
+            ></div>
 
             <div className={cls.block}>
               <Typography.Title level={5}>Technical Aspect</Typography.Title>

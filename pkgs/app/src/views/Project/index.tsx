@@ -8,6 +8,7 @@ import {
   ClusterOutlined,
   ThunderboltOutlined,
   SettingOutlined,
+  FileAddOutlined,
 } from '@ant-design/icons';
 import { Avatar, Card, Divider, Menu, Skeleton, Switch } from 'antd';
 import type { ApiComponent } from 'api/src/types/api/components';
@@ -26,6 +27,7 @@ import type { GraphRef } from '../../components/Graph';
 import { Graph } from '../../components/Graph';
 import { Time } from '../../components/Time';
 import { useCurrentRoute } from '../../hooks/useCurrentRoute';
+import { useEdit } from '../../hooks/useEdit';
 import type { RouteProject } from '../../types/routes';
 
 import { ProjectActivity } from './Activity';
@@ -33,6 +35,8 @@ import { ComponentView } from './Component';
 import { ProjectContent } from './Content';
 import { ProjectHome } from './Home';
 import { RFC } from './RFC';
+import { ProjectRevisions } from './Revisions';
+import { ProjectRevisionCurrent } from './Revisions/Current';
 import { ProjectSettings } from './Settings';
 import { ProjectTeam } from './Team';
 import { Tech } from './Tech';
@@ -65,7 +69,7 @@ export const Project: React.FC = () => {
   const [comps, setComps] = useState<ApiComponent[]>();
 
   // Edit mode
-  const [editMode, setEditMode] = useState<boolean>(false);
+  const edit = useEdit();
 
   useEffect(() => {
     setOrg(getOrgs.data?.find((o) => o.id === params.org_id));
@@ -101,7 +105,7 @@ export const Project: React.FC = () => {
   }
 
   function handleEditMode(val: boolean) {
-    setEditMode(val);
+    edit.enable(val);
   }
 
   const menu = useMemo(() => {
@@ -191,7 +195,7 @@ export const Project: React.FC = () => {
   }
 
   return (
-    <div className={editMode ? cls.isEditing : undefined}>
+    <div className={classnames(edit.isEnabled && cls.isEditing)}>
       <div className={cls.header}>
         <BigHeading
           parent={org!.name}
@@ -206,17 +210,21 @@ export const Project: React.FC = () => {
           items={menu}
           className={cls.menu}
         />
-        <div className={cls.editMode}>
-          Edit
-          <Switch
-            defaultChecked={false}
-            onChange={handleEditMode}
-            size="small"
-          />
-          {/* <Button type="text" >
-            <EditFilled />
-            Edit Mode
-          </Button> */}
+        <div className={cls.editZone}>
+          <div className={cls.editMode}>
+            {edit.isEnabled ? (
+              <Link to={`${linkSelf}/revisions/current`} className={cls.link}>
+                <FileAddOutlined /> {Object.values(edit.edits).length} updates
+              </Link>
+            ) : (
+              'Edit'
+            )}
+            <Switch
+              defaultChecked={false}
+              onChange={handleEditMode}
+              size="small"
+            />
+          </div>
         </div>
 
         {/* {proj.links.length > 0 && (
@@ -253,12 +261,7 @@ export const Project: React.FC = () => {
               <Route
                 path="/"
                 element={
-                  <ProjectHome
-                    proj={proj}
-                    comps={comps}
-                    params={params}
-                    editMode={editMode}
-                  />
+                  <ProjectHome proj={proj} comps={comps} params={params} />
                 }
               />
               <Route
@@ -295,6 +298,14 @@ export const Project: React.FC = () => {
               <Route
                 path="/settings"
                 element={<ProjectSettings proj={proj} params={params} />}
+              />
+              <Route
+                path="/revisions"
+                element={<ProjectRevisions proj={proj} params={params} />}
+              />
+              <Route
+                path="/revisions/current"
+                element={<ProjectRevisionCurrent proj={proj} params={params} />}
               />
             </Routes>
           </div>

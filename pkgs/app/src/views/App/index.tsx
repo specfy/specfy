@@ -7,6 +7,7 @@ import { queryClient } from '../../common/query';
 import { AuthLayout } from '../../components/AuthLayout';
 import { NotFound } from '../../components/NotFound';
 import { AuthProvider } from '../../hooks/useAuth';
+import { EditProvider } from '../../hooks/useEdit';
 import { Home } from '../Home';
 import { Login } from '../Login';
 import { Project } from '../Project';
@@ -45,7 +46,11 @@ const App: React.FC = () => {
 
                 <Route
                   path="/org/:org_id/:project_slug/*"
-                  element={<Project />}
+                  element={
+                    <EditProvider>
+                      <Project />
+                    </EditProvider>
+                  }
                 />
               </Route>
               <Route path="*" element={<NotFound />} />
