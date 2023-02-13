@@ -32,8 +32,8 @@ export class Project extends Model<
   @Column
   declare name: string;
 
-  @Column({ type: DataType.STRING })
-  declare description: CreationOptional<string>;
+  @Column({ type: DataType.JSON })
+  declare description: CreationOptional<DBProject['description']>;
 
   @Column
   declare slug: string;

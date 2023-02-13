@@ -1,67 +1,80 @@
-export interface BlockListItem {
-  type: 'item';
-  content: BlockContent[];
+// ----- Text
+export interface BlockText {
+  type: 'text';
+  text: string;
+  marks?: Array<{ type: 'bold' } | { type: 'italic' }>;
+  link?: string;
+}
+export interface BlockParagraph {
+  type: 'paragraph';
+  content: Array<BlockHardBreak | BlockText>;
+}
+export interface BlockHardBreak {
+  type: 'hardBreak';
 }
 
+// ----- Headings
 export interface BlockHeading {
   type: 'heading';
-  content: string;
-  level: 1 | 2 | 3 | 4;
+  attrs: { level: 1 | 2 | 3 | 4 };
+  content: BlockText[];
 }
 
+// ----- Bullet List
+export interface BlockListItem {
+  type: 'listItem';
+  content: BlockParagraph[];
+}
 export interface BlockBulletList {
   type: 'bulletList';
   content: BlockListItem[];
 }
 
-export interface BlockText {
-  type: 'text';
-  content: string;
-  style?: { bold?: boolean; italic?: boolean; code?: boolean };
-  link?: string;
-}
-
-export interface BlockContent {
-  type: 'content';
-  content: BlockText[];
-}
-
+// ----- Blockquote
 export interface BlockQuote {
-  type: 'quote';
-  content: BlockContent[];
+  type: 'blockquote';
+  content: BlockParagraph[];
 }
 
-export interface BlockPanel {
-  type: 'panel';
-  panelType: 'error' | 'info' | 'success' | 'warning';
-  content: BlockContent[];
+// export interface BlockPanel {
+//   type: 'panel';
+//   panelType: 'error' | 'info' | 'success' | 'warning';
+//   content: BlockContent[];
+// }
+
+// export interface BlockTask {
+//   type: 'task';
+//   state: 'done' | 'todo';
+//   content: BlockText[];
+// }
+
+// export interface BlockTaskList {
+//   type: 'taskList';
+//   content: BlockTask[];
+// }
+
+export interface BlockDoc {
+  type: 'doc';
+  content: BlockLevelOne[];
 }
 
-export interface BlockTask {
-  type: 'task';
-  state: 'done' | 'todo';
-  content: BlockText[];
-}
-
-export interface BlockTaskList {
-  type: 'taskList';
-  content: BlockTask[];
-}
-
+export type BlockLevelZero = BlockDoc;
 export type BlockLevelOne =
   | BlockBulletList
-  | BlockContent
   | BlockHeading
-  | BlockPanel
-  | BlockQuote
-  | BlockTaskList;
+  | BlockParagraph
+  | BlockQuote;
 export type Blocks =
   | BlockBulletList
-  | BlockContent
+  | BlockHardBreak
   | BlockHeading
   | BlockListItem
-  | BlockPanel
+  | BlockParagraph
   | BlockQuote
-  | BlockTask
-  | BlockTaskList
   | BlockText;
+export type BlocksWithContent =
+  | BlockBulletList
+  | BlockHeading
+  | BlockListItem
+  | BlockParagraph
+  | BlockQuote;

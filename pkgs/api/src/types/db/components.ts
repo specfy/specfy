@@ -1,3 +1,5 @@
+import type { BlockLevelZero } from '../api';
+
 export interface DBComponent {
   id: string;
   orgId: string;
@@ -8,7 +10,7 @@ export interface DBComponent {
 
   name: string;
   slug: string;
-  description: string | null;
+  description: BlockLevelZero;
   tech: string[] | null;
 
   display: {

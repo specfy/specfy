@@ -53,7 +53,7 @@ export class Component extends Model<
   @Column
   declare name: string;
 
-  @Column({ type: DataType.STRING })
+  @Column({ type: DataType.JSON })
   declare description: DBComponent['description'];
 
   @Column

@@ -68,20 +68,53 @@ export async function seed() {
   const p1 = await Project.create({
     orgId: 'algolia',
     name: 'Crawler',
-    description: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pharetra eros vel felis scelerisque pretium. Maecenas ac feugiat orci, a sodales lacus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent urna libero, convallis eu commodo id, iaculis aliquam arcu.<br>
-    Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; In interdum egestas massa, sit amet auctor ipsum maximus in. `,
+    description: {
+      type: 'doc',
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pharetra eros vel felis scelerisque pretium. Maecenas ac feugiat orci, a sodales lacus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent urna libero, convallis eu commodo id, iaculis aliquam arcu.`,
+            },
+            { type: 'hardBreak' },
+            {
+              type: 'text',
+              text: `Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; In interdum egestas massa, sit amet auctor ipsum maximus in. `,
+            },
+          ],
+        },
+      ],
+    },
     links: [{ title: 'Github', link: 'https://github.com/bodinsamuel' }],
   });
   await Project.create({
     orgId: 'algolia',
     name: 'Dashboard',
-    description: `Donec mollis pretium nisl at dignissim. Duis dui magna, tempus a scelerisque id, semper eu metus.`,
+    description: {
+      type: 'doc',
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: `Donec mollis pretium nisl at dignissim. Duis dui magna, tempus a scelerisque id, semper eu metus.`,
+            },
+          ],
+        },
+      ],
+    },
     links: [],
   });
   const p3 = await Project.create({
     orgId: 'algolia',
     name: 'Analytics API',
-    description: `Duis dui magna, tempus a scelerisque id, semper eu metus.`,
+    description: {
+      type: 'doc',
+      content: [],
+    },
     links: [],
   });
 
@@ -147,221 +180,249 @@ export async function seed() {
     // use: ['4', '6'],
     // remove: ['1'],
     tldr: 'Donec eget porttitor nisi. Proin ac augue bibendum, posuere dui vel, volutpat ligula.',
-    blocks: [
-      { type: 'heading', content: 'Overview', level: 1 },
-      {
-        type: 'content',
-        content: [
-          {
-            type: 'text',
-            content:
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquam eget nibh eu sodales. Donec bibendum eros at tincidunt aliquam. Praesent non ipsum in enim elementum posuere. Aenean pellentesque et velit quis pretium. Duis et ligula imperdiet, fermentum nulla et, viverra magna. Donec eget porttitor nisi. Proin ac augue bibendum, posuere dui vel, volutpat ligula. Nunc eget blandit metus. Etiam interdum laoreet libero eu pharetra. Phasellus lobortis mauris posuere velit finibus, a ultrices neque faucibus. Maecenas laoreet varius quam.',
-          },
-          {
-            type: 'text',
-            content: 'A link to a documentation',
-            link: 'https://google.com',
-          },
-        ],
-      },
-      { type: 'heading', content: 'Goals and Non-Goals', level: 1 },
-      {
-        type: 'content',
-        content: [
-          {
-            type: 'text',
-            content:
-              'Donec scelerisque ante vel felis gravida bibendum. Vestibulum quam purus, porta ac ornare sit amet, imperdiet at augue. Duis ac libero nec magna malesuada rhoncus at sit amet purus. Donec sed vulputate est. Donec accumsan ullamcorper auctor. Ut orci lectus, ornare id interdum sit amet, hendrerit et elit. Proin venenatis semper ipsum eget cursus. ',
-          },
-          {
-            type: 'text',
-            content:
-              'Aliquam nunc ante, sodales eget egestas id, elementum et dui.',
-            style: { code: true },
-          },
-        ],
-      },
-      {
-        type: 'bulletList',
-        content: [
-          {
-            type: 'item',
-            content: [
-              {
-                type: 'content',
-                content: [
-                  {
-                    type: 'text',
-                    content: 'lorem ipsum',
-                  },
-                ],
-              },
-            ],
-          },
-          {
-            type: 'item',
-            content: [
-              {
-                type: 'content',
-                content: [
-                  {
-                    type: 'text',
-                    content: 'dolor',
-                    style: { bold: true },
-                  },
-                  {
-                    type: 'text',
-                    content: 'sit',
-                    style: { bold: true, italic: true },
-                  },
-                  {
-                    type: 'text',
-                    content: 'amet',
-                    style: { italic: true },
-                  },
-                ],
-              },
-            ],
-          },
-        ],
-      },
-      { type: 'heading', content: 'Background & Motivation', level: 1 },
-      // {
-      //   type: 'media',
-      //   attrs: {
-      //     layout: 'center',
-      //   },
-      //   content: [
-      //     {
-      //       type: 'media',
-      //       attrs: {
-      //         width: 810,
-      //         id: '8873d820-e7d0-4e1e-8092-7e32464ea656',
-      //         collection: 'contentId-131176',
-      //         type: 'file',
-      //         height: 610,
-      //       },
-      //     },
-      //   ],
-      // },
-      {
-        type: 'content',
-        content: [
-          {
-            type: 'text',
-            content:
-              'Pellentesque suscipit venenatis tellus vitae posuere. Donec at tellus ut ligula efficitur fermentum. Nam pharetra arcu et mattis porta. Aliquam vehicula quam non nisl tincidunt dignissim. Nunc egestas mi in ligula dignissim tristique. Vestibulum quis lacinia arcu. Fusce vehicula enim vitae erat feugiat, at laoreet tortor blandit.',
-          },
-        ],
-      },
-      {
-        type: 'taskList',
-        content: [
-          {
-            type: 'task',
-            state: 'done',
-            content: [
-              {
-                content: 'dfkdjfkdj',
-                type: 'text',
-              },
-            ],
-          },
-          {
-            type: 'task',
-            state: 'todo',
-            content: [
-              {
-                content: 'dfkdjfkdj',
-                type: 'text',
-              },
-            ],
-          },
-        ],
-      },
-      { type: 'heading', content: 'Implementations', level: 1 },
-      {
-        type: 'quote',
-        content: [
-          {
-            type: 'content',
-            content: [
-              {
-                content: '"This is a quote" -- Samuel Bodin, 2023',
-                type: 'text',
-              },
-            ],
-          },
-        ],
-      },
-      {
-        type: 'content',
-        content: [
-          {
-            type: 'text',
-            content:
-              'Phasellus orci ante, lobortis vel ullamcorper at, placerat eget leo. Pellentesque in nisi aliquam, rutrum nunc quis, bibendum velit. Etiam efficitur lacinia cursus. Duis neque nunc, consequat sit amet dignissim vel, semper a eros. Duis vel augue ut mauris molestie sodales nec id diam. Aenean blandit ornare nisl vitae venenatis. Ut accumsan ultricies lacinia. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Suspendisse potenti. Vestibulum ipsum dolor, rhoncus vel arcu non, sollicitudin eleifend quam. Fusce et nisi mi. Maecenas nisi quam, interdum at eros vitae, aliquam rutrum nunc. Praesent et pharetra dolor. Nam hendrerit nulla ex, vel lacinia ligula interdum a.',
-          },
-        ],
-      },
-      { type: 'heading', content: 'Solutions', level: 2 },
-      { type: 'heading', content: '#1 Naive one', level: 3 },
-      {
-        type: 'panel',
-        panelType: 'error',
-        content: [
-          {
-            type: 'content',
-            content: [
-              {
-                content:
-                  'Ut semper eros ipsum, eget rutrum nisi consequat vitae.',
-                type: 'text',
-              },
-            ],
-          },
-        ],
-      },
-      {
-        type: 'content',
-        content: [
-          {
-            type: 'text',
-            content:
-              'Praesent sodales lorem id diam pellentesque, quis tincidunt risus porttitor. Vivamus dapibus aliquet ipsum. Nullam non leo neque. Aliquam in enim id nulla elementum pretium. Nullam scelerisque quam ut mattis egestas. Ut semper eros ipsum, eget rutrum nisi consequat vitae. Morbi sit amet porttitor justo, quis sagittis nulla. Donec et ullamcorper dolor. Maecenas pharetra imperdiet nulla nec commodo. Nunc id tellus felis. Suspendisse dui massa, volutpat ac tincidunt eu, cursus eget metus. Proin vel viverra mi. Maecenas a finibus felis, et dapibus orci. Sed molestie sed ex vitae sodales. Vestibulum ut leo posuere nulla commodo iaculis.',
-          },
-        ],
-      },
-      // {
-      //   type: 'code',
-      //   attrs: {
-      //     language: 'html',
-      //   },
-      //   content: [
-      //     {
-      //       text: '\u003Cdiv\u003Eprout\u003C\u002Fdiv\u003E\\n\u003Ccenter\u003E\u002F',
-      //       type: 'text',
-      //     },
-      //   ],
-      // },
-      { type: 'heading', content: 'FAQ', level: 1 },
-      {
-        type: 'heading',
-        content: 'What is this awesome website?',
-        level: 2,
-      },
-      {
-        type: 'content',
-        content: [
-          {
-            type: 'text',
-            content:
-              ' Morbi sit amet porttitor justo, quis sagittis nulla. Donec et ullamcorper dolor. Maecenas pharetra imperdiet nulla nec commodo. ',
-          },
-        ],
-      },
-      { type: 'heading', content: 'Thanks', level: 4 },
-    ],
+    content: {
+      type: 'doc',
+      content: [
+        {
+          type: 'heading',
+          content: [{ type: 'text', text: 'Overview' }],
+          attrs: { level: 1 },
+        },
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquam eget nibh eu sodales. Donec bibendum eros at tincidunt aliquam. Praesent non ipsum in enim elementum posuere. Aenean pellentesque et velit quis pretium. Duis et ligula imperdiet, fermentum nulla et, viverra magna. Donec eget porttitor nisi. Proin ac augue bibendum, posuere dui vel, volutpat ligula. Nunc eget blandit metus. Etiam interdum laoreet libero eu pharetra. Phasellus lobortis mauris posuere velit finibus, a ultrices neque faucibus. Maecenas laoreet varius quam.',
+            },
+            {
+              type: 'text',
+              text: 'A link to a documentation',
+              link: 'https://google.com',
+            },
+          ],
+        },
+        {
+          type: 'heading',
+          content: [{ type: 'text', text: 'Goals and Non-Goals' }],
+          attrs: { level: 1 },
+        },
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'Donec scelerisque ante vel felis gravida bibendum. Vestibulum quam purus, porta ac ornare sit amet, imperdiet at augue. Duis ac libero nec magna malesuada rhoncus at sit amet purus. Donec sed vulputate est. Donec accumsan ullamcorper auctor. Ut orci lectus, ornare id interdum sit amet, hendrerit et elit. Proin venenatis semper ipsum eget cursus. ',
+            },
+            {
+              type: 'text',
+              text: 'Aliquam nunc ante, sodales eget egestas id, elementum et dui.',
+              // style: { code: true },
+            },
+          ],
+        },
+        {
+          type: 'bulletList',
+          content: [
+            {
+              type: 'listItem',
+              content: [
+                {
+                  type: 'paragraph',
+                  content: [
+                    {
+                      type: 'text',
+                      text: 'lorem ipsum',
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              type: 'listItem',
+              content: [
+                {
+                  type: 'paragraph',
+                  content: [
+                    {
+                      type: 'text',
+                      text: 'dolor',
+                      marks: [{ type: 'bold' }],
+                    },
+                    {
+                      type: 'text',
+                      text: 'sit',
+                      marks: [{ type: 'bold' }, { type: 'italic' }],
+                    },
+                    {
+                      type: 'text',
+                      text: 'amet',
+                      marks: [{ type: 'italic' }],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: 'heading',
+          content: [{ type: 'text', text: 'Background & Motivation' }],
+          attrs: { level: 1 },
+        },
+        // {
+        //   type: 'media',
+        //   attrs: {
+        //     layout: 'center',
+        //   },
+        //   content: [
+        //     {
+        //       type: 'media',
+        //       attrs: {
+        //         width: 810,
+        //         id: '8873d820-e7d0-4e1e-8092-7e32464ea656',
+        //         collection: 'contentId-131176',
+        //         type: 'file',
+        //         height: 610,
+        //       },
+        //     },
+        //   ],
+        // },
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'Pellentesque suscipit venenatis tellus vitae posuere. Donec at tellus ut ligula efficitur fermentum. Nam pharetra arcu et mattis porta. Aliquam vehicula quam non nisl tincidunt dignissim. Nunc egestas mi in ligula dignissim tristique. Vestibulum quis lacinia arcu. Fusce vehicula enim vitae erat feugiat, at laoreet tortor blandit.',
+            },
+          ],
+        },
+        // {
+        //   type: 'taskList',
+        //   content: [
+        //     {
+        //       type: 'task',
+        //       state: 'done',
+        //       content: [
+        //         {
+        //           text: 'dfkdjfkdj',
+        //           type: 'text',
+        //         },
+        //       ],
+        //     },
+        //     {
+        //       type: 'task',
+        //       state: 'todo',
+        //       content: [
+        //         {
+        //           text: 'dfkdjfkdj',
+        //           type: 'text',
+        //         },
+        //       ],
+        //     },
+        //   ],
+        // },
+        {
+          type: 'heading',
+          content: [{ type: 'text', text: 'Implementations' }],
+          attrs: { level: 1 },
+        },
+        {
+          type: 'blockquote',
+          content: [
+            {
+              type: 'paragraph',
+              content: [
+                {
+                  text: '"This is a quote" -- Samuel Bodin, 2023',
+                  type: 'text',
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'Phasellus orci ante, lobortis vel ullamcorper at, placerat eget leo. Pellentesque in nisi aliquam, rutrum nunc quis, bibendum velit. Etiam efficitur lacinia cursus. Duis neque nunc, consequat sit amet dignissim vel, semper a eros. Duis vel augue ut mauris molestie sodales nec id diam. Aenean blandit ornare nisl vitae venenatis. Ut accumsan ultricies lacinia. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Suspendisse potenti. Vestibulum ipsum dolor, rhoncus vel arcu non, sollicitudin eleifend quam. Fusce et nisi mi. Maecenas nisi quam, interdum at eros vitae, aliquam rutrum nunc. Praesent et pharetra dolor. Nam hendrerit nulla ex, vel lacinia ligula interdum a.',
+            },
+          ],
+        },
+        {
+          type: 'heading',
+          content: [{ type: 'text', text: 'Solutions' }],
+          attrs: { level: 2 },
+        },
+        {
+          type: 'heading',
+          content: [{ type: 'text', text: '#1 Naive one' }],
+          attrs: { level: 3 },
+        },
+        // {
+        //   type: 'panel',
+        //   panelType: 'error',
+        //   content: [
+        //     {
+        //       type: 'paragraph',
+        //       content: [
+        //         {
+        //           content:
+        //             'Ut semper eros ipsum, eget rutrum nisi consequat vitae.',
+        //           type: 'text',
+        //         },
+        //       ],
+        //     },
+        //   ],
+        // },
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'Praesent sodales lorem id diam pellentesque, quis tincidunt risus porttitor. Vivamus dapibus aliquet ipsum. Nullam non leo neque. Aliquam in enim id nulla elementum pretium. Nullam scelerisque quam ut mattis egestas. Ut semper eros ipsum, eget rutrum nisi consequat vitae. Morbi sit amet porttitor justo, quis sagittis nulla. Donec et ullamcorper dolor. Maecenas pharetra imperdiet nulla nec commodo. Nunc id tellus felis. Suspendisse dui massa, volutpat ac tincidunt eu, cursus eget metus. Proin vel viverra mi. Maecenas a finibus felis, et dapibus orci. Sed molestie sed ex vitae sodales. Vestibulum ut leo posuere nulla commodo iaculis.',
+            },
+          ],
+        },
+        // {
+        //   type: 'code',
+        //   attrs: {
+        //     language: 'html',
+        //   },
+        //   content: [
+        //     {
+        //       text: '\u003Cdiv\u003Eprout\u003C\u002Fdiv\u003E\\n\u003Ccenter\u003E\u002F',
+        //       type: 'text',
+        //     },
+        //   ],
+        // },
+        {
+          type: 'heading',
+          content: [{ type: 'text', text: 'FAQ' }],
+          attrs: { level: 1 },
+        },
+        {
+          type: 'heading',
+          content: [{ type: 'text', text: 'What is this awesome website?' }],
+          attrs: { level: 2 },
+        },
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: ' Morbi sit amet porttitor justo, quis sagittis nulla. Donec et ullamcorper dolor. Maecenas pharetra imperdiet nulla nec commodo. ',
+            },
+          ],
+        },
+        {
+          type: 'heading',
+          content: [{ type: 'text', text: 'Thanks' }],
+          attrs: { level: 4 },
+        },
+      ],
+    },
     locked: true,
     status: 'approved',
     // authors: ['1'],
@@ -378,7 +439,7 @@ export async function seed() {
     // use: ['4', '6'],
     // remove: ['1'],
     tldr: 'Donec eget porttitor nisi. Proin ac augue bibendum, posuere dui vel, volutpat ligula.',
-    blocks: [],
+    content: { type: 'doc', content: [] },
     locked: false,
     status: 'draft',
   });
@@ -392,7 +453,7 @@ export async function seed() {
     // use: ['4', '6'],
     // remove: ['1'],
     tldr: 'Donec eget porttitor nisi. Proin ac augue bibendum, posuere dui vel, volutpat ligula.',
-    blocks: [],
+    content: { type: 'doc', content: [] },
     locked: false,
     status: 'rejected',
   });
@@ -424,6 +485,7 @@ export async function seed() {
     type: 'hosting',
     orgId: 'algolia',
     projectId: p1.id,
+    description: { type: 'doc', content: [] },
     display: {
       zIndex: 1,
       pos: { x: 20, y: 20, width: 410, height: 370 },
@@ -436,6 +498,7 @@ export async function seed() {
     type: 'hosting',
     orgId: 'algolia',
     projectId: p1.id,
+    description: { type: 'doc', content: [] },
     display: {
       zIndex: 2,
       pos: { x: 30, y: 340, width: 150, height: 45 },
@@ -448,6 +511,7 @@ export async function seed() {
     type: 'hosting',
     orgId: 'algolia',
     projectId: p1.id,
+    description: { type: 'doc', content: [] },
     display: {
       zIndex: 2,
       pos: { x: 150, y: 50, width: 240, height: 300 },
@@ -460,6 +524,7 @@ export async function seed() {
     type: 'component',
     orgId: 'algolia',
     projectId: p1.id,
+    description: { type: 'doc', content: [] },
     display: { zIndex: 3, pos: { x: 30, y: 190, width: 100, height: 32 } },
     inComponent: gcp.id,
     edges: [],
@@ -469,6 +534,7 @@ export async function seed() {
     type: 'thirdparty',
     orgId: 'algolia',
     projectId: p1.id,
+    description: { type: 'doc', content: [] },
     display: { zIndex: 3, pos: { x: 440, y: 190, width: 100, height: 32 } },
     inComponent: null,
     edges: [],
@@ -478,6 +544,7 @@ export async function seed() {
     type: 'thirdparty',
     orgId: 'algolia',
     projectId: p1.id,
+    description: { type: 'doc', content: [] },
     display: { zIndex: 3, pos: { x: 440, y: 240, width: 100, height: 32 } },
     inComponent: null,
     edges: [],
@@ -487,6 +554,7 @@ export async function seed() {
     type: 'thirdparty',
     orgId: 'algolia',
     projectId: p1.id,
+    description: { type: 'doc', content: [] },
     display: { zIndex: 3, pos: { x: 440, y: 290, width: 100, height: 32 } },
     inComponent: null,
     edges: [],
@@ -496,6 +564,7 @@ export async function seed() {
     type: 'component',
     orgId: 'algolia',
     projectId: p1.id,
+    description: { type: 'doc', content: [] },
     display: { zIndex: 3, pos: { x: 30, y: 120, width: 100, height: 32 } },
     inComponent: gcp.id,
     edges: [],
@@ -505,6 +574,7 @@ export async function seed() {
     type: 'component',
     orgId: 'algolia',
     projectId: p1.id,
+    description: { type: 'doc', content: [] },
     display: { zIndex: 3, pos: { x: 34, y: 340, width: 100, height: 32 } },
     inComponent: compute.id,
     edges: [],
@@ -514,6 +584,7 @@ export async function seed() {
     type: 'component',
     orgId: 'algolia',
     projectId: p1.id,
+    description: { type: 'doc', content: [] },
     display: { zIndex: 3, pos: { x: 210, y: 240, width: 100, height: 32 } },
     inComponent: kube.id,
     edges: [],
@@ -524,6 +595,7 @@ export async function seed() {
     typeId: p3.id,
     orgId: 'algolia',
     projectId: p1.id,
+    description: { type: 'doc', content: [] },
     display: { zIndex: 3, pos: { x: 440, y: 90, width: 100, height: 32 } },
     inComponent: null,
     edges: [],
@@ -533,8 +605,20 @@ export async function seed() {
     type: 'component',
     orgId: 'algolia',
     projectId: p1.id,
-    description:
-      'Morbi sit amet porttitor justo, quis sagittis nulla. Donec et ullamcorper dolor. Maecenas pharetra imperdiet nulla nec commodo.',
+    description: {
+      type: 'doc',
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'Morbi sit amet porttitor justo, quis sagittis nulla. Donec et ullamcorper dolor. Maecenas pharetra imperdiet nulla nec commodo.',
+            },
+          ],
+        },
+      ],
+    },
     display: { zIndex: 3, pos: { x: 210, y: 120, width: 100, height: 32 } },
     inComponent: kube.id,
     edges: [
@@ -602,6 +686,7 @@ export async function seed() {
     type: 'component',
     orgId: 'algolia',
     projectId: p1.id,
+    description: { type: 'doc', content: [] },
     display: { zIndex: 4, pos: { x: 210, y: 60, width: 100, height: 32 } },
     inComponent: kube.id,
     edges: [
@@ -637,8 +722,20 @@ export async function seed() {
     type: 'component',
     orgId: 'algolia',
     projectId: p1.id,
-    description:
-      'Donec et ullamcorper dolor. Maecenas pharetra imperdiet nulla nec commodo.',
+    description: {
+      type: 'doc',
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'Donec et ullamcorper dolor. Maecenas pharetra imperdiet nulla nec commodo.',
+            },
+          ],
+        },
+      ],
+    },
     display: { zIndex: 3, pos: { x: 210, y: 180, width: 100, height: 32 } },
     inComponent: kube.id,
     edges: [
@@ -698,7 +795,20 @@ export async function seed() {
     type: 'component',
     orgId: 'algolia',
     projectId: p1.id,
-    description: 'Maecenas pharetra imperdiet nulla nec commodo.',
+    description: {
+      type: 'doc',
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'Maecenas pharetra imperdiet nulla nec commodo.',
+            },
+          ],
+        },
+      ],
+    },
     display: { zIndex: 3, pos: { x: 210, y: 300, width: 100, height: 32 } },
     inComponent: kube.id,
     edges: [

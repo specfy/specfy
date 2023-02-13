@@ -4,9 +4,8 @@ import {
   CheckCircleOutlined,
   MenuUnfoldOutlined,
 } from '@ant-design/icons';
-import { Card, Typography, Space, Divider, Button } from 'antd';
+import { Card, Typography, Space, Divider } from 'antd';
 import Title from 'antd/es/typography/Title';
-import type { ApiComponent } from 'api/src/types/api/components';
 import type { ApiDocument } from 'api/src/types/api/documents';
 import type { ApiProject } from 'api/src/types/api/projects';
 import clsn from 'classnames';
@@ -14,7 +13,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import { useGetDocument } from '../../../api/documents';
-import { ContentBlock } from '../../../components/Content';
+import { ContentDoc } from '../../../components/Content';
 import { HeadingTree } from '../../../components/HeadingTree';
 import { RFCStatusTag } from '../../../components/RFCStatusTag';
 import { Time } from '../../../components/Time';
@@ -89,16 +88,14 @@ export const RFC: React.FC<{
           <Typography className={cls.content}>
             <Divider />
 
-            {item.blocks.map((blk, i) => {
-              return <ContentBlock block={blk} key={i} />;
-            })}
-            {item.blocks.length <= 0 && (
+            <ContentDoc doc={item.content} />
+            {item.content.content.length <= 0 && (
               <Typography.Text type="secondary">No content</Typography.Text>
             )}
           </Typography>
           {menu && (
             <div className={cls.headings}>
-              <HeadingTree blocks={item.blocks}></HeadingTree>
+              <HeadingTree blocks={item.content.content}></HeadingTree>
             </div>
           )}
         </Card>

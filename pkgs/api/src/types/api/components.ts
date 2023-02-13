@@ -1,6 +1,7 @@
 import type { DBComponent } from '../db/components';
 
 import type { Pagination } from './api';
+import type { BlockLevelZero } from './document';
 
 export interface ApiComponent {
   id: string;
@@ -12,7 +13,7 @@ export interface ApiComponent {
 
   name: string;
   slug: string;
-  description: string | null;
+  description: BlockLevelZero;
   tech: string[] | null;
 
   display: DBComponent['display'];

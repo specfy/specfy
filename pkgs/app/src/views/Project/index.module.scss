@@ -71,7 +71,6 @@ $size-center-max: 850px;
   background-color: transparent;
   border: none;
 
-
   :global {
     .ant-menu-item {
       padding-inline: $p-s;
@@ -91,34 +90,41 @@ $size-center-max: 850px;
 
 .editZone {
   display: flex;
+  gap: $p-l;
   align-items: center;
   justify-content: end;
 
   margin-top: 35px;
-  gap: $p-l;
 }
 
 .editMode {
   display: flex;
   gap: $p;
   align-items: center;
+
+  height: 28px;
+  padding: $p $p-l;
+
   font-size: $font-s;
   color: $gray-7;
+
   background-color: white;
   box-shadow: 1px 1px 2px $gray-4;
-
-  padding: $p $p-l;
-  height: 35px;
+  border-radius: $border-radius;
 
   .link {
+    border-radius: $border-radius 0 0 $border-radius;
     color: $gray-8 !important;
+
+    &:hover {
+      background-color: $gray-3 !important;
+    }
   }
 
   :global {
     .ant-switch {
       width: 20px;
     }
-
   }
 }
 
@@ -146,8 +152,9 @@ $size-center-max: 850px;
   transition: background-color 0.25s ease-in-out;
 
   &:hover {
-    background-color: $gray-4 !important;
     text-decoration: none;
+    color: $gray-10 !important;
+    background-color: $gray-4 !important;
   }
 }
 
@@ -155,5 +162,6 @@ $size-center-max: 850px;
 .isEditing {
   .editMode {
     box-shadow: -1px 1px 2px 0 $gray-5;
+    padding-left: 0;
   }
 }

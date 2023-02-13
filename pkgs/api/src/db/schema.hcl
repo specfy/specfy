@@ -85,7 +85,7 @@ table "projects" {
     null = false
   }
   column "description" {
-    type = text
+    type = json
     null = true
   }
   column "links" {
@@ -152,7 +152,7 @@ table "documents" {
     type = varchar(500)
     null = false
   }
-  column "blocks" {
+  column "content" {
     type = json
     null = false
   }
@@ -232,7 +232,7 @@ table "components" {
     null = false
   }
   column "description" {
-    type = text
+    type = json
     null = true
   }
   column "tech" {

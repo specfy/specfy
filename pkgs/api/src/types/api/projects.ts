@@ -1,11 +1,12 @@
 import type { Pagination } from './api';
+import type { BlockLevelZero } from './document';
 
 export interface ApiProject {
   id: string;
   orgId: string;
   slug: string;
   name: string;
-  description: string;
+  description: BlockLevelZero;
   links: Array<{ title: string; link: string }>;
   owners: string[];
   reviewers: string[];

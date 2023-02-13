@@ -8,7 +8,6 @@ import {
   ClusterOutlined,
   ThunderboltOutlined,
   SettingOutlined,
-  FileAddOutlined,
 } from '@ant-design/icons';
 import { Avatar, Card, Divider, Menu, Skeleton, Switch } from 'antd';
 import type { ApiComponent } from 'api/src/types/api/components';
@@ -17,6 +16,7 @@ import type { ApiProject } from 'api/src/types/api/projects';
 import classnames from 'classnames';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, Route, Routes, useParams } from 'react-router-dom';
+import { useDebounce } from 'react-use';
 
 import { useListComponents } from '../../api/components';
 import { useListOrgs } from '../../api/orgs';
@@ -70,6 +70,14 @@ export const Project: React.FC = () => {
 
   // Edit mode
   const edit = useEdit();
+  const [updateCount, setUpdateCount] = useState(0);
+  useDebounce(
+    () => {
+      setUpdateCount(edit.getNumberOfUpdates());
+    },
+    500,
+    [edit.edits]
+  );
 
   useEffect(() => {
     setOrg(getOrgs.data?.find((o) => o.id === params.org_id));
@@ -214,7 +222,7 @@ export const Project: React.FC = () => {
           <div className={cls.editMode}>
             {edit.isEnabled ? (
               <Link to={`${linkSelf}/revisions/current`} className={cls.link}>
-                <FileAddOutlined /> {Object.values(edit.edits).length} updates
+                {updateCount} updates
               </Link>
             ) : (
               'Edit'

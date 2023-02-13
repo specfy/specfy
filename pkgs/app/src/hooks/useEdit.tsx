@@ -1,58 +1,97 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { useMemo, useState, createContext, useContext } from 'react';
 
-interface EditContextInterface {
+export interface EditContextInterface {
   isEnabled: boolean;
-  edits: Record<string, Record<string, string | null>>;
+  lastUpdate: number;
+  edits: Record<string, Record<string, any>>;
+  setEdits: (bag: Record<string, Record<string, any>>) => void;
+  getNumberOfUpdates: () => number;
+  getOriginals: () => Record<string, Record<string, any>>;
   enable: (val: boolean) => void;
-  isEdited: (type: string, id: string, field: string) => boolean;
-  get: (type: string, id: string, field: string) => string | undefined;
-  set: (type: string, id: string, field: string, value: string | null) => void;
+  get: <T extends Record<string, any>>(
+    type: string,
+    id: string,
+    original: T
+  ) => {
+    edits: Partial<T>;
+    set: <TField extends string>(field: TField, value: T[TField]) => void;
+    remove: <TField extends string>(field: TField) => void;
+  };
 }
 
 const EditContext = createContext<EditContextInterface>({
   isEnabled: false,
+  lastUpdate: -1,
   edits: {},
+  setEdits: () => {},
+  getOriginals: () => {
+    return {};
+  },
+  getNumberOfUpdates: () => 0,
   enable() {},
-  isEdited() {
-    return false;
-  },
   get() {
-    return '';
+    return { edits: {}, set() {}, remove() {} };
   },
-  set() {},
 });
+
+export function isDiff(a: any, b: any): boolean {
+  return JSON.stringify(a) !== JSON.stringify(b);
+}
 
 export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [enabled, setEnabled] = useState<boolean>(false);
   const [edits, setEdits] = useState<EditContextInterface['edits']>({});
+  const [lastUpdate, setLastUpdate] = useState<number>(Date.now());
+  const [originals, setOriginals] = useState<Record<string, any>>({});
 
-  const v = useMemo<EditContextInterface>(
+  const memoized = useMemo<EditContextInterface>(
     () => ({
       isEnabled: enabled,
+      lastUpdate,
       edits,
+      getOriginals: () => originals,
+      getNumberOfUpdates: () => {
+        return Object.entries(edits).reduce((updates, [key, curr]) => {
+          return Object.entries(curr).reduce((_, [k, v]) => {
+            return isDiff(originals[key][k], v) ? updates + 1 : updates;
+          }, updates);
+        }, 0);
+      },
       enable: (val) => {
         setEnabled(val);
       },
-      isEdited(type, id, field) {
-        return typeof edits[`${type}_${id}`]?.[field] !== 'undefined';
+      setEdits: (bag) => {
+        setEdits(bag);
       },
-      get(type, id, field) {
-        return edits[`${type}_${id}`]?.[field] || undefined;
-      },
-      set(type, id, field, value) {
+      get(type, id, original) {
         const key = `${type}_${id}`;
-        if (!edits[key]) edits[key] = { type, id };
-        edits[key][field] = value;
-        setEdits({ ...edits });
+        setOriginals({ ...originals, [key]: original });
+        if (typeof edits[key] === 'undefined') {
+          edits[key] = {};
+        }
+        return {
+          edits: edits[key] as any,
+          set: (field, value) => {
+            edits[key][field] = value;
+            setEdits({ ...edits });
+            setLastUpdate(Date.now());
+          },
+          remove: (field) => {
+            delete edits[key][field];
+            setEdits({ ...edits });
+          },
+        };
       },
     }),
     [edits, enabled]
   );
 
-  return <EditContext.Provider value={v}>{children}</EditContext.Provider>;
+  return (
+    <EditContext.Provider value={memoized}>{children}</EditContext.Provider>
+  );
 };
 
 export const useEdit = (): EditContextInterface => {

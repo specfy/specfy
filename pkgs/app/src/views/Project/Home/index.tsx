@@ -1,9 +1,10 @@
 import { Card, Col, Row, Typography } from 'antd';
 import type { ApiComponent } from 'api/src/types/api/components';
 import type { ApiProject } from 'api/src/types/api/projects';
-import classnames from 'classnames';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 
+import { ContentDoc } from '../../../components/Content';
+import { Editor } from '../../../components/Editor';
 import { ListActivity } from '../../../components/ListActivity';
 import { ListRFCs } from '../../../components/ListRFCs';
 import { useEdit } from '../../../hooks/useEdit';
@@ -19,8 +20,12 @@ export const ProjectHome: React.FC<{
   params: RouteProject;
 }> = ({ proj, comps, params }) => {
   const edit = useEdit();
+  const curr = useMemo(() => {
+    if (!edit.isEnabled) return null;
+    return edit.get<ApiProject>('project', proj.id, proj);
+  }, [edit.isEnabled]);
   const [desc] = useState(() => {
-    return edit.get('project', proj.id, 'description') || proj.description;
+    return curr?.edits?.description || proj.description;
   });
 
   return (
@@ -28,25 +33,13 @@ export const ProjectHome: React.FC<{
       <Row gutter={[16, 16]}>
         <Col span={24}>
           <Card>
-            <div
-              className={classnames(
-                edit.isEnabled && cls.editable,
-                edit.isEdited('project', proj.id, 'description')
-                  ? cls.edited
-                  : undefined
-              )}
-              dangerouslySetInnerHTML={{ __html: desc }}
-              contentEditable={edit.isEnabled}
-              onInput={(e) => {
-                console.log(e.currentTarget);
-                edit.set(
-                  'project',
-                  proj.id,
-                  'description',
-                  e.currentTarget.innerText
-                );
-              }}
-            ></div>
+            {!edit.isEnabled && <ContentDoc doc={desc} />}
+            {edit.isEnabled && (
+              <Editor
+                content={desc}
+                onUpdate={(json) => curr?.set('description', json)}
+              />
+            )}
 
             <div className={cls.block}>
               <Typography.Title level={5}>Technical Aspect</Typography.Title>

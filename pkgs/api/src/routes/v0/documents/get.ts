@@ -45,7 +45,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         name: p.name,
         slug: p.slug,
         tldr: p.tldr,
-        blocks: p.blocks as any,
+        content: p.content as any,
         // TODO: fill this
         authors: users
           .filter((user) => user.role === 'author')

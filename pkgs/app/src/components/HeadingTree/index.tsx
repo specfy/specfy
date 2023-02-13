@@ -12,17 +12,24 @@ export const HeadingTree: React.FC<{ blocks: BlockLevelOne[] }> = ({
   blocks,
 }) => {
   const [headings, setHeadings] = useState<AnchorLinkItemProps[]>([]);
+
   useMount(() => {
     const tmp = [];
     for (let index = 0; index < blocks.length; index++) {
       const blk = blocks[index];
-      if (blk.type !== 'heading' || blk.level > 1) continue;
+      if (blk.type !== 'heading' || blk.attrs.level > 1) {
+        continue;
+      }
+
+      const text = blk.content.map((e) => e.text).join('');
+
       tmp.push({
         key: index,
-        href: `#h-${slugify(blk.content)}`,
-        title: blk.content,
+        href: `#h-${slugify(text)}`,
+        title: text,
       });
     }
+
     setHeadings(tmp);
   });
 

@@ -22,7 +22,7 @@ export class Document extends Model<
   DBDocument,
   Pick<
     DBDocument,
-    | 'blocks'
+    | 'content'
     | 'locked'
     | 'name'
     | 'orgId'
@@ -63,7 +63,7 @@ export class Document extends Model<
   declare tldr: string;
 
   @Column({ type: DataType.JSON })
-  declare blocks: CreationOptional<Record<string, any>>;
+  declare content: CreationOptional<DBDocument['content']>;
   // authors: string[];
   // reviewers: string[];
   // approvedBy: string[];

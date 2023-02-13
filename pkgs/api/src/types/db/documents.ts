@@ -1,4 +1,4 @@
-import type { BlockLevelOne } from '../api';
+import type { BlockLevelZero } from '../api';
 
 export interface DBDocument {
   id: string;
@@ -13,7 +13,7 @@ export interface DBDocument {
   use: string[];
   remove: string[];
   tldr: string;
-  blocks: BlockLevelOne[];
+  content: BlockLevelZero;
   authors: string[];
   reviewers: string[];
   approvedBy: string[];
