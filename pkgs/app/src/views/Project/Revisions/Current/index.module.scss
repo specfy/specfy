@@ -4,6 +4,8 @@
   background-color: #fff;
 
   box-shadow: $box-shadow;
+  margin-bottom: $p-l;
+  max-width: 1200px;
 }
 
 .title {
@@ -13,14 +15,34 @@
 
   padding: $p $p-xl;
 
-  font-size: $font-m;
+  font-size: $font;
 
   border-bottom: 1px solid $gray-4;
+
+  .titleLeft {
+    flex: auto;
+    display: flex;
+    align-items: center;
+    gap: $p-l;
+  }
+
+  a {
+    color: $gray-10;
+
+    &:hover {
+      text-decoration: underline;
+      color: $primary;
+    }
+  }
 }
 
 .left,
 .right {
-  padding: $p $p-l;
+  padding: $p-l $p-l;
+}
+
+.left {
+  border-right: 1px solid $gray-4;
 }
 
 .toggle {
@@ -33,9 +55,8 @@
 }
 
 .diff {
-  display: flex;
-  gap: $p-xl;
-  padding-bottom: $p-l;
+  display: grid;
+  grid-template-columns: 50% 50%;
 }
 
 .removed {
@@ -47,5 +68,10 @@
 }
 
 .propose {
-  max-width: calc(600px);
+  max-width: 600px;
+}
+
+.empty {
+  font-style: italic;
+  color: $gray-6;
 }

@@ -16,9 +16,10 @@ import cls from './index.module.scss';
 
 export const Editor: React.FC<{
   content: BlockLevelZero;
+  minHeight?: number;
   limit?: number;
   onUpdate: (content: BlockLevelZero) => void;
-}> = ({ content, limit, onUpdate }) => {
+}> = ({ content, limit, minHeight, onUpdate }) => {
   const editor = useEditor({
     extensions: [
       Document,
@@ -72,7 +73,11 @@ export const Editor: React.FC<{
           </button>
         </BubbleMenu>
       )}
-      <EditorContent editor={editor} className={cls.editor} />
+      <EditorContent
+        editor={editor}
+        className={cls.editor}
+        style={{ minHeight }}
+      />
     </div>
   );
 };

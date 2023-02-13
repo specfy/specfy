@@ -4,6 +4,7 @@ import { useState } from 'react';
 import type { EditContextSub } from '../../hooks/useEdit';
 
 import { ToolbarMini } from './Toolbar';
+import cls from './index.module.scss';
 
 import { Editor } from '.';
 
@@ -29,7 +30,7 @@ export const EditorMini: <T extends Record<string, any>>(
   };
 
   return (
-    <>
+    <div className={cls.mini}>
       <ToolbarMini isUpdated={isUpdated} onRevert={handleRevert} />
       <Editor
         content={content}
@@ -38,6 +39,6 @@ export const EditorMini: <T extends Record<string, any>>(
           setIsUpdated(true);
         }}
       />
-    </>
+    </div>
   );
 };

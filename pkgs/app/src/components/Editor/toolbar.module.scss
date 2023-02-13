@@ -3,8 +3,8 @@
 .toolbarMini {
   position: absolute;
   z-index: 1;
-  top: $p-xxl + 4px;
-  left: 0;
+  top: 0;
+  left: -24px;
 
   display: flex;
   flex-direction: column;
@@ -13,6 +13,7 @@
   padding: $p-m - 1px 0;
 
   background-color: $gray-2;
+  min-height: 40px;
 
   button {
     color: $gray-6;

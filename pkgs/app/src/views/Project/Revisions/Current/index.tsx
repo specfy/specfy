@@ -1,10 +1,11 @@
-import { DownOutlined, LoadingOutlined } from '@ant-design/icons';
-import { Button, Card, Form, Input, Typography } from 'antd';
+import { CaretDownOutlined, LoadingOutlined } from '@ant-design/icons';
+import { Button, Card, Checkbox, Form, Typography } from 'antd';
 import type { ApiProject, BlockLevelZero } from 'api/src/types/api';
 import type { Change } from 'diff';
-import { diffJson, diffChars } from 'diff';
+import { diffChars } from 'diff';
 import { useEffect, useMemo, useState } from 'react';
 import { renderToString } from 'react-dom/server';
+import { Link } from 'react-router-dom';
 
 import { ContentDoc } from '../../../../components/Content';
 import { Editor } from '../../../../components/Editor';
@@ -16,6 +17,7 @@ import cls from './index.module.scss';
 
 interface Computed {
   id: string;
+  couple: string;
   name: string;
   old: any;
   new: any;
@@ -62,6 +64,7 @@ export const ProjectRevisionCurrent: React.FC<{
         const b = <ContentDoc doc={value} />;
         const tmp: Computed = {
           id: `${couple}-${key}`,
+          couple,
           name: key,
           old: originals[couple][key],
           new: value,
@@ -70,7 +73,6 @@ export const ProjectRevisionCurrent: React.FC<{
             renderToString(b).replaceAll('<!-- -->', '')
           ),
         };
-        console.log(diffJson(originals[couple][key], value));
         tmps.push(tmp);
       }
     }
@@ -92,22 +94,37 @@ export const ProjectRevisionCurrent: React.FC<{
       </Typography.Title>
       <div className={cls.staged}>
         {computed.map((c, i) => {
+          const left = c.diff
+            .map((d) => {
+              if (d.added) return null;
+              if (d.removed)
+                return <span className={cls.removed}>{d.value}</span>;
+              else return d.value;
+            })
+            .filter((e) => e);
+          const type = 'type' in originals[c.couple] ? 'Components' : 'Project';
+          let to = `/org/${params.org_id}/${params.project_slug}`;
+          if (type === 'Components') to += `/c/${originals[c.couple].slug}`;
+
           return (
             <div key={i} className={cls.update}>
               <div className={cls.title}>
-                <div className={cls.toggle}>
-                  <DownOutlined />
+                <div className={cls.titleLeft}>
+                  <div className={cls.toggle}>
+                    <CaretDownOutlined />
+                  </div>
+                  <Link to={to}>
+                    {type} / {originals[c.couple].name} [{c.name}]
+                  </Link>
                 </div>
-                {c.name}
+                <div>
+                  <Checkbox checked>Add</Checkbox>
+                </div>
               </div>
               <div className={cls.diff}>
                 <div className={cls.left}>
-                  {c.diff.map((d) => {
-                    if (d.added) return null;
-                    if (d.removed)
-                      return <span className={cls.removed}>{d.value}</span>;
-                    else return d.value;
-                  })}
+                  {left}
+                  {!left.length && <span className={cls.empty}>Empty...</span>}
                 </div>
                 <div className={cls.right}>
                   {c.diff.map((d) => {
@@ -126,7 +143,11 @@ export const ProjectRevisionCurrent: React.FC<{
         <Card>
           <Typography.Title level={4}>Propose changes</Typography.Title>
           <Form.Item required>
-            <Editor content={description} onUpdate={setDescription} />
+            <Editor
+              content={description}
+              onUpdate={setDescription}
+              minHeight="100px"
+            />
           </Form.Item>
           <Button type="primary" block>
             Propose changes

@@ -2,11 +2,14 @@ import { Avatar, Card, Col, Row, Typography } from 'antd';
 import type { ApiComponent } from 'api/src/types/api/components';
 import type { ApiProject } from 'api/src/types/api/projects';
 import type React from 'react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import { supported } from '../../../common/component';
+import { ContentDoc } from '../../../components/Content';
+import { EditorMini } from '../../../components/Editor/Mini';
 import { ListRFCs } from '../../../components/ListRFCs';
+import { useEdit } from '../../../hooks/useEdit';
 import type { RouteComponent, RouteProject } from '../../../types/routes';
 
 import { Line } from './Line';
@@ -44,6 +47,17 @@ export const ComponentView: React.FC<{
   const [receive, setReceive] = useState<ApiComponent[]>([]);
   const [send, setSend] = useState<ApiComponent[]>([]);
   const [receiveSend, setReceiveSend] = useState<ApiComponent[]>([]);
+
+  // Edition
+  const edit = useEdit();
+  const curr = useMemo(() => {
+    if (!edit.isEnabled || !comp) return null;
+    return edit.get<ApiComponent>('component', comp.id, comp);
+  }, [edit.isEnabled, comp]);
+  const desc = useMemo(() => {
+    if (!comp) return undefined;
+    return curr?.edits?.description || comp?.description;
+  }, [comp]);
 
   useEffect(() => {
     setComp(
@@ -150,10 +164,19 @@ export const ComponentView: React.FC<{
       <Col span={24}>
         <Card>
           <Typography.Title level={4}>{comp.name}</Typography.Title>
-          {comp.description ? (
-            <div dangerouslySetInnerHTML={{ __html: comp.description }}></div>
-          ) : (
-            <Typography.Text type="secondary">No description.</Typography.Text>
+          {!edit.isEnabled && desc && <ContentDoc doc={desc} />}
+          {!desc?.content.length && !edit.isEnabled && (
+            <Typography.Text type="secondary">
+              Write something...
+            </Typography.Text>
+          )}
+          {edit.isEnabled && (
+            <EditorMini
+              key={comp.name}
+              curr={curr!}
+              field="description"
+              originalContent={comp.description}
+            />
           )}
 
           {(comp.tech || hosts.length > 0 || inComp || contains.length > 0) && (

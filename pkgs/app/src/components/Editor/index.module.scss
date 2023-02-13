@@ -1,8 +1,13 @@
 @import "../../theme";
 
+.mini {
+  position: relative;
+}
+
 .editor {
-  padding: $p-s $p $p-s $p-l;
+  padding: $p $p $p-s $p-l;
   background-color: $gray-2;
+  min-height: 40px;
 
   p {
     margin-bottom: $p-m;
