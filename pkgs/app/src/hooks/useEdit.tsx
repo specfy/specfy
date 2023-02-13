@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { useMemo, useState, createContext, useContext } from 'react';
 
+export interface EditContextSub<T extends Record<string, any>> {
+  edits: Partial<T>;
+  set: <TField extends string>(field: TField, value: T[TField]) => void;
+  remove: <TField extends string>(field: TField) => void;
+}
 export interface EditContextInterface {
   isEnabled: boolean;
   lastUpdate: number;
@@ -13,11 +18,7 @@ export interface EditContextInterface {
     type: string,
     id: string,
     original: T
-  ) => {
-    edits: Partial<T>;
-    set: <TField extends string>(field: TField, value: T[TField]) => void;
-    remove: <TField extends string>(field: TField) => void;
-  };
+  ) => EditContextSub<T>;
 }
 
 const EditContext = createContext<EditContextInterface>({

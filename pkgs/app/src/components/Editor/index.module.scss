@@ -1,10 +1,31 @@
 @import "../../theme";
 
 .editor {
+  padding: $p-s $p $p-s $p-l;
+  background-color: $gray-2;
 
-  /* stylelint-disable-next-line selector-class-pattern */
-  :global(.ProseMirror-focused):focus {
-    outline: none;
+  p {
+    margin-bottom: $p-m;
+  }
+
+  :global {
+
+    /* stylelint-disable-next-line selector-class-pattern */
+    .ProseMirror-focused:focus {
+      outline: none;
+    }
+
+    /* stylelint-disable-next-line selector-class-pattern */
+    .ProseMirror p.is-editor-empty:first-child::before {
+      pointer-events: none;
+      content: attr(data-placeholder);
+
+      float: left;
+
+      height: 0;
+
+      color: #adb5bd;
+    }
   }
 }
 

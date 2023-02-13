@@ -4,7 +4,7 @@ import type { ApiProject } from 'api/src/types/api/projects';
 import { useMemo, useState } from 'react';
 
 import { ContentDoc } from '../../../components/Content';
-import { Editor } from '../../../components/Editor';
+import { EditorMini } from '../../../components/Editor/Mini';
 import { ListActivity } from '../../../components/ListActivity';
 import { ListRFCs } from '../../../components/ListRFCs';
 import { useEdit } from '../../../hooks/useEdit';
@@ -35,9 +35,10 @@ export const ProjectHome: React.FC<{
           <Card>
             {!edit.isEnabled && <ContentDoc doc={desc} />}
             {edit.isEnabled && (
-              <Editor
-                content={desc}
-                onUpdate={(json) => curr?.set('description', json)}
+              <EditorMini
+                curr={curr!}
+                field="description"
+                originalContent={proj.description}
               />
             )}
 

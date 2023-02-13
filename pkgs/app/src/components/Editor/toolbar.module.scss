@@ -1,0 +1,27 @@
+@import "../../theme";
+
+.toolbarMini {
+  position: absolute;
+  z-index: 1;
+  top: $p-xxl + 4px;
+  left: 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: $p;
+
+  padding: $p-m - 1px 0;
+
+  background-color: $gray-2;
+
+  button {
+    color: $gray-6;
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+
+    &.isUpdated {
+      color: $gray-8;
+    }
+  }
+}

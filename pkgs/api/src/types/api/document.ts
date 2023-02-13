@@ -7,7 +7,7 @@ export interface BlockText {
 }
 export interface BlockParagraph {
   type: 'paragraph';
-  content: Array<BlockHardBreak | BlockText>;
+  content?: Array<BlockHardBreak | BlockText>;
 }
 export interface BlockHardBreak {
   type: 'hardBreak';

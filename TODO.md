@@ -7,8 +7,8 @@
 ## Project
 
 - Edit
-  - Go back to project (or maybe keep the header)
-- Link repo(s)
+  - Manage links
+- Rename
 
 ## User
 
@@ -22,3 +22,18 @@
 ## API
 
 - Handle pagination correctly
+
+## Content
+
+- List other content on the left / right
+
+## Editor
+
+- Panel
+- Task
+- TaskList
+- Decisions / Vote
+- Code Block
+- Mention
+- Link to other documents
+- Media

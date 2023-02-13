@@ -103,7 +103,9 @@ export const ContentDoc: React.FC<{ doc: BlockLevelZero }> = ({ doc }) => {
   );
 };
 
-function map(block: BlocksWithContent): JSX.Element[] {
+function map(block: BlocksWithContent): JSX.Element | JSX.Element[] {
+  if (!block.content) return <></>;
+
   return block.content.map((blk, i) => {
     return <ContentBlock block={blk} key={i} />;
   });

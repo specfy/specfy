@@ -2,7 +2,7 @@
 
 .update {
   background-color: #fff;
-  border-radius: $border-radius-s;
+
   box-shadow: $box-shadow;
 }
 
@@ -15,10 +15,37 @@
 
   font-size: $font-m;
 
-  border-bottom: 1px solid $gray-5;
+  border-bottom: 1px solid $gray-4;
+}
+
+.left,
+.right {
+  padding: $p $p-l;
 }
 
 .toggle {
   cursor: pointer;
   font-size: $font-s;
+}
+
+.staged {
+  margin-bottom: $p-l;
+}
+
+.diff {
+  display: flex;
+  gap: $p-xl;
+  padding-bottom: $p-l;
+}
+
+.removed {
+  background-color: #ffccc7;
+}
+
+.added {
+  background-color: #d9f7be;
+}
+
+.propose {
+  max-width: calc(600px);
 }

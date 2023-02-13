@@ -10,6 +10,7 @@ import { Placeholder } from '@tiptap/extension-placeholder';
 import { Text } from '@tiptap/extension-text';
 import { BubbleMenu, useEditor, EditorContent } from '@tiptap/react';
 import type { BlockLevelZero } from 'api/src/types/api';
+import { useEffect } from 'react';
 
 import cls from './index.module.scss';
 
@@ -40,8 +41,14 @@ export const Editor: React.FC<{
     onUpdate: (e) => {
       onUpdate(e.editor.getJSON() as any);
     },
-    content: content,
+    content,
   });
+
+  useEffect(() => {
+    if (!editor || editor.isDestroyed) return;
+
+    editor.commands.setContent(content);
+  }, [content]);
 
   return (
     <div>
