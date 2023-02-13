@@ -7,15 +7,18 @@
 }
 
 .title {
-  padding: $p $p-xl;
-  font-size: $font-m;
   display: flex;
   gap: $p-l;
   align-items: center;
+
+  padding: $p $p-xl;
+
+  font-size: $font-m;
+
   border-bottom: 1px solid $gray-5;
 }
 
 .toggle {
-  font-size: $font-s;
   cursor: pointer;
+  font-size: $font-s;
 }

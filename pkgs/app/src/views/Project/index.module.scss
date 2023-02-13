@@ -109,12 +109,12 @@ $size-center-max: 850px;
   color: $gray-7;
 
   background-color: white;
-  box-shadow: 1px 1px 2px $gray-4;
   border-radius: $border-radius;
+  box-shadow: 1px 1px 2px $gray-4;
 
   .link {
-    border-radius: $border-radius 0 0 $border-radius;
     color: $gray-8 !important;
+    border-radius: $border-radius 0 0 $border-radius;
 
     &:hover {
       background-color: $gray-3 !important;
@@ -152,8 +152,8 @@ $size-center-max: 850px;
   transition: background-color 0.25s ease-in-out;
 
   &:hover {
-    text-decoration: none;
     color: $gray-10 !important;
+    text-decoration: none;
     background-color: $gray-4 !important;
   }
 }
@@ -161,7 +161,7 @@ $size-center-max: 850px;
 // ---- Edit mode
 .isEditing {
   .editMode {
-    box-shadow: -1px 1px 2px 0 $gray-5;
     padding-left: 0;
+    box-shadow: -1px 1px 2px 0 $gray-5;
   }
 }

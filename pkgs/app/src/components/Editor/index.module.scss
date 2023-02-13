@@ -1,6 +1,8 @@
 @import "../../theme";
 
 .editor {
+
+  /* stylelint-disable-next-line selector-class-pattern */
   :global(.ProseMirror-focused):focus {
     outline: none;
   }

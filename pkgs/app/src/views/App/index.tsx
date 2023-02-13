@@ -32,6 +32,7 @@ const App: React.FC = () => {
             fontSizeHeading5: 16,
             fontSizeHeading4: 18,
             fontSizeHeading3: 20,
+            fontFamily: `"Source Sans Pro", system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Noto Sans", sans-serif, BlinkMacSystemFont, Oxygen, "Open Sans", "Helvetica Neue"`,
           },
         }}
       >
