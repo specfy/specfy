@@ -1,7 +1,7 @@
 import { Card, Col, Row, Typography } from 'antd';
 import type { ApiComponent } from 'api/src/types/api/components';
 import type { ApiProject } from 'api/src/types/api/projects';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
 
 import { ContentDoc } from '../../../components/Content';
 import { EditorMini } from '../../../components/Editor/Mini';
@@ -21,12 +21,11 @@ export const ProjectHome: React.FC<{
 }> = ({ proj, comps, params }) => {
   const edit = useEdit();
   const curr = useMemo(() => {
-    if (!edit.isEnabled) return null;
     return edit.get<ApiProject>('project', proj.id, proj);
   }, [edit.isEnabled]);
-  const [desc] = useState(() => {
+  const desc = useMemo(() => {
     return curr?.edits?.description || proj.description;
-  });
+  }, [proj, curr]);
 
   return (
     <>

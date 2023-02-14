@@ -172,8 +172,8 @@ export const ProjectRevisionCurrent: React.FC<{
         <>Changes ({computed.length})</>
       </Typography.Title>
       <div className={cls.staged}>
-        {computed.map((c, i) => {
-          return <Update key={i} c={c} url={to} onRevert={handleRevert} />;
+        {computed.map((c) => {
+          return <Update key={c.id} c={c} url={to} onRevert={handleRevert} />;
         })}
       </div>
       <div className={cls.propose}>

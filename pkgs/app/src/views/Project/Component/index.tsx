@@ -51,13 +51,13 @@ export const ComponentView: React.FC<{
   // Edition
   const edit = useEdit();
   const curr = useMemo(() => {
-    if (!edit.isEnabled || !comp) return null;
+    if (!comp) return null;
     return edit.get<ApiComponent>('component', comp.id, comp);
   }, [edit.isEnabled, comp]);
   const desc = useMemo(() => {
     if (!comp) return undefined;
     return curr?.edits?.description || comp?.description;
-  }, [comp]);
+  }, [comp, curr]);
 
   useEffect(() => {
     setComp(

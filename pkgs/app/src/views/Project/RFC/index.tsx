@@ -40,12 +40,12 @@ export const RFC: React.FC<{
   // Edition
   const edit = useEdit();
   const curr = useMemo(() => {
-    if (!edit.isEnabled || !item) return null;
+    if (!item) return null;
     return edit.get<ApiDocument>('document', item.id, item);
   }, [edit.isEnabled, item]);
   const content = useMemo(() => {
-    return curr?.edits?.content || item?.content;
-  }, [item]);
+    return curr?.edits.content || item?.content;
+  }, [item, curr]);
 
   useEffect(() => {
     setItem(doc.data?.data);
@@ -112,7 +112,9 @@ export const RFC: React.FC<{
               <Editor
                 content={content}
                 minHeight="500px"
-                onUpdate={(json) => console.log(json)}
+                onUpdate={(json) => {
+                  curr?.set('content', json);
+                }}
               />
             )}
           </Typography>
