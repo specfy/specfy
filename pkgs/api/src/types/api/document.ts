@@ -2,7 +2,11 @@
 export interface BlockText {
   type: 'text';
   text: string;
-  marks?: Array<{ type: 'bold' } | { type: 'italic' }>;
+  marks?: Array<
+    | { type: 'bold' }
+    | { type: 'italic' }
+    | { type: 'link'; attrs: { href: string; target: string } }
+  >;
   link?: string;
 }
 export interface BlockParagraph {
@@ -36,6 +40,11 @@ export interface BlockQuote {
   content: BlockParagraph[];
 }
 
+// ----- Divider / separator / horizontal
+export interface BlockHorizontalRule {
+  type: 'horizontalRule';
+}
+
 // export interface BlockPanel {
 //   type: 'panel';
 //   panelType: 'error' | 'info' | 'success' | 'warning';
@@ -62,12 +71,14 @@ export type BlockLevelZero = BlockDoc;
 export type BlockLevelOne =
   | BlockBulletList
   | BlockHeading
+  | BlockHorizontalRule
   | BlockParagraph
   | BlockQuote;
 export type Blocks =
   | BlockBulletList
   | BlockHardBreak
   | BlockHeading
+  | BlockHorizontalRule
   | BlockListItem
   | BlockParagraph
   | BlockQuote

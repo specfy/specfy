@@ -1,17 +1,25 @@
-import { BoldOutlined, ItalicOutlined } from '@ant-design/icons';
+import { Blockquote } from '@tiptap/extension-blockquote';
 import { Bold } from '@tiptap/extension-bold';
+import { BulletList } from '@tiptap/extension-bullet-list';
 import { CharacterCount } from '@tiptap/extension-character-count';
 import { Document } from '@tiptap/extension-document';
+import { FloatingMenu as FloatingMenuC } from '@tiptap/extension-floating-menu';
 import { HardBreak } from '@tiptap/extension-hard-break';
+import { Heading } from '@tiptap/extension-heading';
 import { History } from '@tiptap/extension-history';
+import { HorizontalRule } from '@tiptap/extension-horizontal-rule';
 import { Italic } from '@tiptap/extension-italic';
+import { Link } from '@tiptap/extension-link';
+import { ListItem } from '@tiptap/extension-list-item';
 import { Paragraph } from '@tiptap/extension-paragraph';
 import { Placeholder } from '@tiptap/extension-placeholder';
 import { Text } from '@tiptap/extension-text';
-import { BubbleMenu, useEditor, EditorContent } from '@tiptap/react';
+import { useEditor, EditorContent } from '@tiptap/react';
 import type { BlockLevelZero } from 'api/src/types/api';
 import { useEffect } from 'react';
 
+import { BubbleMenu } from './BubbleMenu';
+import { FloatingMenu } from './FloatingMenu';
 import { removeEmptyContent } from './helpers';
 import cls from './index.module.scss';
 
@@ -29,6 +37,16 @@ export const Editor: React.FC<{
       Bold,
       Italic,
       HardBreak,
+      Heading,
+      BulletList,
+      ListItem,
+      Blockquote,
+      FloatingMenuC,
+      HorizontalRule,
+      Link.configure({
+        linkOnPaste: true,
+        openOnClick: false,
+      }),
       Placeholder.configure({
         placeholder: 'Write something …',
       }),
@@ -59,26 +77,8 @@ export const Editor: React.FC<{
 
   return (
     <div>
-      {editor && (
-        <BubbleMenu
-          editor={editor}
-          tippyOptions={{ duration: 100, arrow: true, placement: 'bottom' }}
-          className={cls.floatingMenu}
-        >
-          <button
-            onClick={() => editor.chain().focus().toggleBold().run()}
-            className={editor.isActive('bold') ? cls.isActive : ''}
-          >
-            <BoldOutlined />
-          </button>
-          <button
-            onClick={() => editor.chain().focus().toggleItalic().run()}
-            className={editor.isActive('italic') ? cls.isActive : ''}
-          >
-            <ItalicOutlined />
-          </button>
-        </BubbleMenu>
-      )}
+      {editor && <BubbleMenu editor={editor} />}
+      {editor && <FloatingMenu editor={editor} />}
       <EditorContent
         editor={editor}
         className={cls.editor}

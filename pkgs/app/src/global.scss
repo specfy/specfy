@@ -51,3 +51,11 @@ body {
     }
   }
 }
+
+.ant-typography {
+  hr {
+    border: none;
+    border-top: 1px solid $gray-44;
+    margin: $p-xxl 0;
+  }
+}

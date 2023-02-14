@@ -1,0 +1,36 @@
+@import "../../../theme";
+
+.menu {
+  display: flex;
+  gap: 0;
+
+  padding: $p-s $p-m;
+
+  background-color: #fff;
+  border: 1px solid $gray-3;
+  border-radius: $border-radius;
+  box-shadow: 0 3px 15px -3px rgb(13 20 33 / 13%);
+
+  button {
+    cursor: pointer;
+
+    padding: $p $p-m;
+
+    font-size: $font;
+
+    background-color: #fff;
+    border: none;
+    border-radius: $border-radius-s;
+    line-height: 0;
+
+    transition: background-color 0.25s ease-in-out, color 0.25s ease-in-out;
+
+    &:hover {
+      background-color: $gray-4;
+    }
+
+    &.isActive {
+      color: $primary;
+    }
+  }
+}

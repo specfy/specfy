@@ -9,15 +9,17 @@ import Title from 'antd/es/typography/Title';
 import type { ApiDocument } from 'api/src/types/api/documents';
 import type { ApiProject } from 'api/src/types/api/projects';
 import clsn from 'classnames';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import { useGetDocument } from '../../../api/documents';
 import { ContentDoc } from '../../../components/Content';
+import { Editor } from '../../../components/Editor';
 import { HeadingTree } from '../../../components/HeadingTree';
 import { RFCStatusTag } from '../../../components/RFCStatusTag';
 import { Time } from '../../../components/Time';
 import { UserCard } from '../../../components/UserCard';
+import { useEdit } from '../../../hooks/useEdit';
 import type { RouteDocument, RouteProject } from '../../../types/routes';
 
 import cls from './index.module.scss';
@@ -35,6 +37,16 @@ export const RFC: React.FC<{
     org_id: p.org_id!,
   });
 
+  // Edition
+  const edit = useEdit();
+  const curr = useMemo(() => {
+    if (!edit.isEnabled || !item) return null;
+    return edit.get<ApiDocument>('document', item.id, item);
+  }, [edit.isEnabled, item]);
+  const content = useMemo(() => {
+    return curr?.edits?.content || item?.content;
+  }, [item]);
+
   useEffect(() => {
     setItem(doc.data?.data);
   }, [doc.isLoading]);
@@ -43,7 +55,7 @@ export const RFC: React.FC<{
     return null;
   }
 
-  if (!item) {
+  if (!item || !content) {
     return <div>not found</div>;
   }
 
@@ -63,34 +75,45 @@ export const RFC: React.FC<{
               <Time time={item.updatedAt} />
             </div>
           </Space>
+          {!edit.isEnabled && (
+            <div>
+              {item.tldr && <p className={cls.tldr}>{item.tldr}</p>}
 
-          {item.tldr && <p className={cls.tldr}>{item.tldr}</p>}
-
-          <ul className={cls.tldrList}>
-            <li>
-              <PlusOutlined style={{ color: '#52c41a' }} /> Creates{' '}
-              <Link to="/">Public API</Link>
-            </li>
-            <li>
-              <PlusOutlined style={{ color: '#52c41a' }} /> Activity{' '}
-              <Link to="/">Postgres</Link>
-            </li>
-            <li>
-              <PlusOutlined style={{ color: '#52c41a' }} /> Introduces{' '}
-              <Link to="/">NodeJS</Link>
-            </li>
-            <li>
-              <MinusOutlined style={{ color: '#fa541c' }} /> Removes{' '}
-              <Link to="/">Golang</Link>
-            </li>
-          </ul>
+              <ul className={cls.tldrList}>
+                <li>
+                  <PlusOutlined style={{ color: '#52c41a' }} /> Creates{' '}
+                  <Link to="/">Public API</Link>
+                </li>
+                <li>
+                  <PlusOutlined style={{ color: '#52c41a' }} /> Activity{' '}
+                  <Link to="/">Postgres</Link>
+                </li>
+                <li>
+                  <PlusOutlined style={{ color: '#52c41a' }} /> Introduces{' '}
+                  <Link to="/">NodeJS</Link>
+                </li>
+                <li>
+                  <MinusOutlined style={{ color: '#fa541c' }} /> Removes{' '}
+                  <Link to="/">Golang</Link>
+                </li>
+              </ul>
+              <Divider />
+            </div>
+          )}
 
           <Typography className={cls.content}>
-            <Divider />
-
-            <ContentDoc doc={item.content} />
-            {item.content.content.length <= 0 && (
-              <Typography.Text type="secondary">No content</Typography.Text>
+            {!edit.isEnabled && <ContentDoc doc={content} />}
+            {!edit.isEnabled && item.content.content.length <= 0 && (
+              <Typography.Text type="secondary">
+                Write something...
+              </Typography.Text>
+            )}
+            {edit.isEnabled && (
+              <Editor
+                content={content}
+                minHeight="500px"
+                onUpdate={(json) => console.log(json)}
+              />
             )}
           </Typography>
           {menu && (

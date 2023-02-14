@@ -1,8 +1,4 @@
-import {
-  BoldOutlined,
-  ItalicOutlined,
-  HistoryOutlined,
-} from '@ant-design/icons';
+import { HistoryOutlined } from '@ant-design/icons';
 import { Bold } from '@tiptap/extension-bold';
 import { CharacterCount } from '@tiptap/extension-character-count';
 import { Document } from '@tiptap/extension-document';
@@ -12,7 +8,7 @@ import { Italic } from '@tiptap/extension-italic';
 import { Paragraph } from '@tiptap/extension-paragraph';
 import { Placeholder } from '@tiptap/extension-placeholder';
 import { Text } from '@tiptap/extension-text';
-import { BubbleMenu, useEditor, EditorContent } from '@tiptap/react';
+import { useEditor, EditorContent } from '@tiptap/react';
 import { Button, Tooltip } from 'antd';
 import type { BlockLevelZero } from 'api/src/types/api';
 import classnames from 'classnames';
@@ -20,8 +16,8 @@ import { useState, useEffect } from 'react';
 
 import type { EditContextSub } from '../../hooks/useEdit';
 
+import { BubbleMenu } from './BubbleMenu';
 import { removeEmptyContent } from './helpers';
-import clsGlobal from './index.module.scss';
 import cls from './mini.module.scss';
 
 interface Prop<T extends Record<string, any>> {
@@ -74,26 +70,7 @@ const Editor: React.FC<{
 
   return (
     <div>
-      {editor && (
-        <BubbleMenu
-          editor={editor}
-          tippyOptions={{ duration: 100, arrow: true, placement: 'bottom' }}
-          className={clsGlobal.floatingMenu}
-        >
-          <button
-            onClick={() => editor.chain().focus().toggleBold().run()}
-            className={editor.isActive('bold') ? clsGlobal.isActive : ''}
-          >
-            <BoldOutlined />
-          </button>
-          <button
-            onClick={() => editor.chain().focus().toggleItalic().run()}
-            className={editor.isActive('italic') ? clsGlobal.isActive : ''}
-          >
-            <ItalicOutlined />
-          </button>
-        </BubbleMenu>
-      )}
+      {editor && <BubbleMenu editor={editor} />}
       <EditorContent
         editor={editor}
         className={cls.editor}

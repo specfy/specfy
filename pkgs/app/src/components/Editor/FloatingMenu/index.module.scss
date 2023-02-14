@@ -1,0 +1,53 @@
+@import "../../../theme";
+
+.menu {
+  z-index: 2;
+
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+
+  width: 150px;
+  min-width: 150px;
+  padding: 6px;
+
+  background-color: #fff;
+  border: 1px solid $gray-3;
+  border-radius: $border-radius;
+  box-shadow: 0 3px 15px -3px rgb(13 20 33 / 13%);
+
+  position: absolute;
+  top: 20px;
+}
+
+.item {
+  cursor: pointer;
+
+  display: grid;
+  grid-template-columns: 30px auto;
+  gap: $p-l;
+  align-items: center;
+
+  padding: $p-xs $p-xs;
+
+  font-size: $font;
+  font-weight: 600;
+
+  border-radius: $border-radius;
+
+  &:hover {
+    background-color: $gray-44;
+  }
+}
+
+.icon {
+  width: 30px;
+  padding: $p;
+
+  background-color: #fff;
+  border: 1px solid $gray-44;
+  border-radius: $border-radius;
+
+  font-size: $font-m;
+  line-height: 0;
+}

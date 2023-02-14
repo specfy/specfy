@@ -1,35 +1,30 @@
 @import "../../theme";
 
-.floatingMenu {
-  display: flex;
-  gap: 0;
+.editor {
+  min-height: 400px;
+  padding: $p-xl $p $p-s 0;
 
-  padding: $p-s $p-m;
+  p {
+    margin-bottom: $p-m;
+  }
 
-  background-color: #fff;
-  border: 1px solid $gray-3;
-  border-radius: $border-radius;
-  box-shadow: 0 3px 15px -3px rgb(13 20 33 / 13%);
+  :global {
 
-  button {
-    cursor: pointer;
-
-    padding: $p-s $p-m;
-
-    font-size: $font-s;
-
-    background-color: #fff;
-    border: none;
-    border-radius: $border-radius-s;
-
-    transition: background-color 0.25s ease-in-out, color 0.25s ease-in-out;
-
-    &:hover {
-      background-color: $gray-4;
+    /* stylelint-disable-next-line selector-class-pattern */
+    .ProseMirror-focused:focus {
+      outline: none;
     }
 
-    &.isActive {
-      color: $primary;
+    /* stylelint-disable-next-line selector-class-pattern */
+    .ProseMirror p.is-editor-empty:first-child::before {
+      pointer-events: none;
+      content: attr(data-placeholder);
+
+      float: left;
+
+      height: 0;
+
+      color: #adb5bd;
     }
   }
 }

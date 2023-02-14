@@ -193,12 +193,20 @@ export async function seed() {
           content: [
             {
               type: 'text',
-              text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquam eget nibh eu sodales. Donec bibendum eros at tincidunt aliquam. Praesent non ipsum in enim elementum posuere. Aenean pellentesque et velit quis pretium. Duis et ligula imperdiet, fermentum nulla et, viverra magna. Donec eget porttitor nisi. Proin ac augue bibendum, posuere dui vel, volutpat ligula. Nunc eget blandit metus. Etiam interdum laoreet libero eu pharetra. Phasellus lobortis mauris posuere velit finibus, a ultrices neque faucibus. Maecenas laoreet varius quam.',
+              text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque aliquam eget nibh eu sodales. Donec bibendum eros at tincidunt aliquam. Praesent non ipsum in enim elementum posuere. Aenean pellentesque et velit quis pretium. Duis et ligula imperdiet, fermentum nulla et, viverra magna. Donec eget porttitor nisi. Proin ac augue bibendum, posuere dui vel, volutpat ligula. Nunc eget blandit metus. Etiam interdum laoreet libero eu pharetra. Phasellus lobortis mauris posuere velit finibus, a ultrices neque faucibus. Maecenas laoreet varius quam. ',
             },
             {
               type: 'text',
               text: 'A link to a documentation',
-              link: 'https://google.com',
+              marks: [
+                {
+                  attrs: {
+                    href: 'http://localhost:5173/org/algolia/crawler',
+                    target: '_blank',
+                  },
+                  type: 'link',
+                },
+              ],
             },
           ],
         },
@@ -246,12 +254,12 @@ export async function seed() {
                   content: [
                     {
                       type: 'text',
-                      text: 'dolor',
+                      text: 'dolor ',
                       marks: [{ type: 'bold' }],
                     },
                     {
                       type: 'text',
-                      text: 'sit',
+                      text: ' sit ',
                       marks: [{ type: 'bold' }, { type: 'italic' }],
                     },
                     {
@@ -397,6 +405,9 @@ export async function seed() {
         //     },
         //   ],
         // },
+        {
+          type: 'horizontalRule',
+        },
         {
           type: 'heading',
           content: [{ type: 'text', text: 'FAQ' }],

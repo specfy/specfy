@@ -24,6 +24,12 @@ export const ContentBlock: React.FC<{ block: Blocks }> = ({ block }) => {
       for (const mark of block.marks) {
         if (mark.type === 'bold') text = <strong>{text}</strong>;
         if (mark.type === 'italic') text = <em>{text}</em>;
+        if (mark.type === 'link')
+          text = (
+            <a href={mark.attrs.href} target="_blank" rel="noreferrer">
+              {text}
+            </a>
+          );
       }
       // if (block.style.code) text = <code>{text}</code>;
     }
@@ -58,6 +64,11 @@ export const ContentBlock: React.FC<{ block: Blocks }> = ({ block }) => {
   // Blockquote
   else if (block.type === 'blockquote') {
     return <blockquote>{map(block)}</blockquote>;
+  }
+
+  // Horizontal
+  else if (block.type === 'horizontalRule') {
+    return <hr />;
   }
 
   /*else if (block.type === 'panel') {
