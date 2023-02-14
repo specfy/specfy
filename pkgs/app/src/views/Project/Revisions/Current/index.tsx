@@ -1,4 +1,8 @@
-import { CaretDownOutlined, LoadingOutlined } from '@ant-design/icons';
+import {
+  CaretDownOutlined,
+  HistoryOutlined,
+  LoadingOutlined,
+} from '@ant-design/icons';
 import { Button, Card, Checkbox, Form, Typography } from 'antd';
 import type { ApiProject, BlockLevelZero } from 'api/src/types/api';
 import type { Change } from 'diff';
@@ -19,10 +23,69 @@ interface Computed {
   id: string;
   couple: string;
   name: string;
-  old: any;
-  new: any;
+  original: any;
   diff: Change[];
 }
+
+export const Update: React.FC<{
+  c: Computed;
+  url: string;
+  onRevert: (couple: string, field: string) => void;
+}> = ({ c, url, onRevert }) => {
+  const [left] = useState(() => {
+    return c.diff
+      .map((d) => {
+        if (d.added) return null;
+        if (d.removed) return <span className={cls.removed}>{d.value}</span>;
+        else return d.value;
+      })
+      .filter((e) => e);
+  });
+  const type = 'type' in c.original ? 'Components' : 'Project';
+  const to = url + (type === 'Components' ? `/c/${c.original.slug}` : '');
+
+  return (
+    <div className={cls.update}>
+      <div className={cls.title}>
+        <div className={cls.titleLeft}>
+          <div className={cls.toggle}>
+            <CaretDownOutlined />
+          </div>
+          <Link to={to}>
+            {type} / {c.original.name} [{c.name}]
+          </Link>
+        </div>
+        <div className={cls.titleRight}>
+          <Button
+            type="text"
+            icon={<HistoryOutlined />}
+            size="small"
+            onClick={() => onRevert(c.couple, c.name)}
+          >
+            Revert
+          </Button>
+          |<Checkbox checked>Staged</Checkbox>
+        </div>
+      </div>
+      <div className={cls.diff}>
+        <div className={cls.left}>
+          {!left.length ? (
+            <span className={cls.empty}>Empty...</span>
+          ) : (
+            <>{left}</>
+          )}
+        </div>
+        <div className={cls.right}>
+          {c.diff.map((d) => {
+            if (d.removed) return null;
+            if (d.added) return <span className={cls.added}>{d.value}</span>;
+            else return d.value;
+          })}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export const ProjectRevisionCurrent: React.FC<{
   proj: ApiProject;
@@ -39,6 +102,7 @@ export const ProjectRevisionCurrent: React.FC<{
     type: 'doc',
     content: [],
   });
+  const [to] = useState(() => `/org/${params.org_id}/${params.project_slug}`);
 
   useEffect(() => {
     if (!edits || !originals) {
@@ -66,8 +130,7 @@ export const ProjectRevisionCurrent: React.FC<{
           id: `${couple}-${key}`,
           couple,
           name: key,
-          old: originals[couple][key],
-          new: value,
+          original: originals[couple],
           diff: diffChars(
             renderToString(a).replaceAll('<!-- -->', ''),
             renderToString(b).replaceAll('<!-- -->', '')
@@ -83,6 +146,13 @@ export const ProjectRevisionCurrent: React.FC<{
     setTimeout(() => edit.setEdits(cleaned), 1);
   }, [edits, originals]);
 
+  const handleRevert = (couple: string, field: string) => {
+    // TODO: undo revert
+    delete edit.edits[couple][field];
+    edit.setEdits({ ...edit.edits });
+    setLastComputed(-1);
+  };
+
   if (!computed) {
     return <LoadingOutlined />;
   }
@@ -90,53 +160,11 @@ export const ProjectRevisionCurrent: React.FC<{
   return (
     <div>
       <Typography.Title level={3}>
-        <>Updates ({edits.length})</>
+        <>Updates ({computed.length})</>
       </Typography.Title>
       <div className={cls.staged}>
         {computed.map((c, i) => {
-          const left = c.diff
-            .map((d) => {
-              if (d.added) return null;
-              if (d.removed)
-                return <span className={cls.removed}>{d.value}</span>;
-              else return d.value;
-            })
-            .filter((e) => e);
-          const type = 'type' in originals[c.couple] ? 'Components' : 'Project';
-          let to = `/org/${params.org_id}/${params.project_slug}`;
-          if (type === 'Components') to += `/c/${originals[c.couple].slug}`;
-
-          return (
-            <div key={i} className={cls.update}>
-              <div className={cls.title}>
-                <div className={cls.titleLeft}>
-                  <div className={cls.toggle}>
-                    <CaretDownOutlined />
-                  </div>
-                  <Link to={to}>
-                    {type} / {originals[c.couple].name} [{c.name}]
-                  </Link>
-                </div>
-                <div>
-                  <Checkbox checked>Add</Checkbox>
-                </div>
-              </div>
-              <div className={cls.diff}>
-                <div className={cls.left}>
-                  {left}
-                  {!left.length && <span className={cls.empty}>Empty...</span>}
-                </div>
-                <div className={cls.right}>
-                  {c.diff.map((d) => {
-                    if (d.removed) return null;
-                    if (d.added)
-                      return <span className={cls.added}>{d.value}</span>;
-                    else return d.value;
-                  })}
-                </div>
-              </div>
-            </div>
-          );
+          return <Update key={i} c={c} url={to} onRevert={handleRevert} />;
         })}
       </div>
       <div className={cls.propose}>

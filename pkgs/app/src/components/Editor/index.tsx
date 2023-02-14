@@ -16,7 +16,7 @@ import cls from './index.module.scss';
 
 export const Editor: React.FC<{
   content: BlockLevelZero;
-  minHeight?: number;
+  minHeight?: string;
   limit?: number;
   onUpdate: (content: BlockLevelZero) => void;
 }> = ({ content, limit, minHeight, onUpdate }) => {
