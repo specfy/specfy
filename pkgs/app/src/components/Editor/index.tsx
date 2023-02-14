@@ -30,7 +30,6 @@ export const Editor: React.FC<{
       Italic,
       HardBreak,
       Placeholder.configure({
-        // Use a placeholder:
         placeholder: 'Write something …',
       }),
       History.configure({
@@ -43,7 +42,13 @@ export const Editor: React.FC<{
     onUpdate: (e) => {
       onUpdate(removeEmptyContent(e.editor.getJSON() as any));
     },
-    content,
+    content:
+      content.content.length === 0
+        ? {
+            type: 'doc',
+            content: [{ type: 'paragraph' }],
+          }
+        : content,
   });
 
   useEffect(() => {

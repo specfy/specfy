@@ -73,7 +73,7 @@ export const Project: React.FC = () => {
   const [updateCount, setUpdateCount] = useState(0);
   useDebounce(
     () => {
-      setUpdateCount(edit.getNumberOfUpdates());
+      setUpdateCount(edit.getNumberOfChanges());
     },
     500,
     [edit.edits]
@@ -222,7 +222,7 @@ export const Project: React.FC = () => {
           <div className={cls.editMode}>
             {edit.isEnabled ? (
               <Link to={`${linkSelf}/revisions/current`} className={cls.link}>
-                {updateCount} updates
+                {updateCount} {updateCount > 1 ? 'changes' : 'change'}
               </Link>
             ) : (
               'Edit'

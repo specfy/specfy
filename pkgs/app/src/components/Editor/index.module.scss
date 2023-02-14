@@ -1,39 +1,5 @@
 @import "../../theme";
 
-.mini {
-  position: relative;
-}
-
-.editor {
-  padding: $p $p $p-s $p-l;
-  background-color: $gray-2;
-  min-height: 40px;
-
-  p {
-    margin-bottom: $p-m;
-  }
-
-  :global {
-
-    /* stylelint-disable-next-line selector-class-pattern */
-    .ProseMirror-focused:focus {
-      outline: none;
-    }
-
-    /* stylelint-disable-next-line selector-class-pattern */
-    .ProseMirror p.is-editor-empty:first-child::before {
-      pointer-events: none;
-      content: attr(data-placeholder);
-
-      float: left;
-
-      height: 0;
-
-      color: #adb5bd;
-    }
-  }
-}
-
 .floatingMenu {
   display: flex;
   gap: 0;

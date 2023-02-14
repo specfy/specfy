@@ -11,7 +11,7 @@ export interface EditContextInterface {
   lastUpdate: number;
   edits: Record<string, Record<string, any>>;
   setEdits: (bag: Record<string, Record<string, any>>) => void;
-  getNumberOfUpdates: () => number;
+  getNumberOfChanges: () => number;
   getOriginals: () => Record<string, Record<string, any>>;
   enable: (val: boolean) => void;
   get: <T extends Record<string, any>>(
@@ -29,7 +29,7 @@ const EditContext = createContext<EditContextInterface>({
   getOriginals: () => {
     return {};
   },
-  getNumberOfUpdates: () => 0,
+  getNumberOfChanges: () => 0,
   enable() {},
   get() {
     return { edits: {}, set() {}, remove() {} };
@@ -54,11 +54,11 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
       lastUpdate,
       edits,
       getOriginals: () => originals,
-      getNumberOfUpdates: () => {
-        return Object.entries(edits).reduce((updates, [key, curr]) => {
+      getNumberOfChanges: () => {
+        return Object.entries(edits).reduce((changes, [key, curr]) => {
           return Object.entries(curr).reduce((_, [k, v]) => {
-            return isDiff(originals[key][k], v) ? updates + 1 : updates;
-          }, updates);
+            return isDiff(originals[key][k], v) ? changes + 1 : changes;
+          }, changes);
         }, 0);
       },
       enable: (val) => {

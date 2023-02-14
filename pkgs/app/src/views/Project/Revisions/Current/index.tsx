@@ -109,7 +109,7 @@ export const ProjectRevisionCurrent: React.FC<{
   const [computed, setComputed] = useState<Computed[]>([]);
   const [description, setDescription] = useState<BlockLevelZero>({
     type: 'doc',
-    content: [],
+    content: [{ type: 'paragraph' }],
   });
   const [to] = useState(() => `/org/${params.org_id}/${params.project_slug}`);
 
@@ -169,7 +169,7 @@ export const ProjectRevisionCurrent: React.FC<{
   return (
     <div>
       <Typography.Title level={3}>
-        <>Updates ({computed.length})</>
+        <>Changes ({computed.length})</>
       </Typography.Title>
       <div className={cls.staged}>
         {computed.map((c, i) => {
