@@ -4,7 +4,6 @@
   background-color: #fff;
 
   box-shadow: $box-shadow;
-  margin-bottom: $p-l;
   max-width: 1200px;
 }
 
@@ -44,7 +43,7 @@
 
 .left,
 .right {
-  padding: $p-l $p-l;
+  padding: $p-xl $p-l;
 }
 
 .left {
@@ -57,7 +56,9 @@
 }
 
 .staged {
-  margin-bottom: $p-l;
+  margin-bottom: $p-xxl;
+  display: grid;
+  gap: $p-xxl;
 }
 
 .diff {
@@ -71,6 +72,7 @@
 
 .added {
   background-color: #d9f7be;
+  display: inline-block;
 }
 
 .propose {

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import type { EditContextSub } from '../../hooks/useEdit';
 
 import { ToolbarMini } from './Toolbar';
+import { removeEmptyContent } from './helpers';
 import cls from './index.module.scss';
 
 import { Editor } from '.';
@@ -35,7 +36,7 @@ export const EditorMini: <T extends Record<string, any>>(
       <Editor
         content={content}
         onUpdate={(json) => {
-          curr?.set(field, json);
+          curr?.set(field, removeEmptyContent(json) as any);
           setIsUpdated(true);
         }}
       />

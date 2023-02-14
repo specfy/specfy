@@ -6,7 +6,7 @@ import {
 import { Button, Card, Checkbox, Form, Typography } from 'antd';
 import type { ApiProject, BlockLevelZero } from 'api/src/types/api';
 import type { Change } from 'diff';
-import { diffChars } from 'diff';
+import { diffWordsWithSpace } from 'diff';
 import { useEffect, useMemo, useState } from 'react';
 import { renderToString } from 'react-dom/server';
 import { Link } from 'react-router-dom';
@@ -40,6 +40,15 @@ export const Update: React.FC<{
         else return d.value;
       })
       .filter((e) => e);
+  });
+  const [right] = useState(() => {
+    return c.diff
+      .map((d) => {
+        if (d.removed) return null;
+        if (d.added) return <span className={cls.added}>{d.value}</span>;
+        else return d.value;
+      })
+      .filter((e): e is string => !!e);
   });
   const type = 'type' in c.original ? 'Components' : 'Project';
   const to = url + (type === 'Components' ? `/c/${c.original.slug}` : '');
@@ -76,11 +85,11 @@ export const Update: React.FC<{
           )}
         </div>
         <div className={cls.right}>
-          {c.diff.map((d) => {
-            if (d.removed) return null;
-            if (d.added) return <span className={cls.added}>{d.value}</span>;
-            else return d.value;
-          })}
+          {!right.length ? (
+            <span className={cls.empty}>Deleted...</span>
+          ) : (
+            <>{right}</>
+          )}
         </div>
       </div>
     </div>
@@ -131,7 +140,7 @@ export const ProjectRevisionCurrent: React.FC<{
           couple,
           name: key,
           original: originals[couple],
-          diff: diffChars(
+          diff: diffWordsWithSpace(
             renderToString(a).replaceAll('<!-- -->', ''),
             renderToString(b).replaceAll('<!-- -->', '')
           ),
