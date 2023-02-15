@@ -34,6 +34,17 @@ export interface BlockBulletList {
   content: BlockListItem[];
 }
 
+// ----- Task List
+export interface BlockTaskItem {
+  type: 'taskItem';
+  content: BlockParagraph[];
+  attrs: { checked: boolean };
+}
+export interface BlockTaskList {
+  type: 'taskList';
+  content: BlockTaskItem[];
+}
+
 // ----- Blockquote
 export interface BlockQuote {
   type: 'blockquote';
@@ -73,7 +84,8 @@ export type BlockLevelOne =
   | BlockHeading
   | BlockHorizontalRule
   | BlockParagraph
-  | BlockQuote;
+  | BlockQuote
+  | BlockTaskList;
 export type Blocks =
   | BlockBulletList
   | BlockHardBreak
@@ -82,10 +94,14 @@ export type Blocks =
   | BlockListItem
   | BlockParagraph
   | BlockQuote
+  | BlockTaskItem
+  | BlockTaskList
   | BlockText;
 export type BlocksWithContent =
   | BlockBulletList
   | BlockHeading
   | BlockListItem
   | BlockParagraph
-  | BlockQuote;
+  | BlockQuote
+  | BlockTaskItem
+  | BlockTaskList;

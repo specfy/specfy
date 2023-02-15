@@ -305,31 +305,31 @@ export async function seed() {
             },
           ],
         },
-        // {
-        //   type: 'taskList',
-        //   content: [
-        //     {
-        //       type: 'task',
-        //       state: 'done',
-        //       content: [
-        //         {
-        //           text: 'dfkdjfkdj',
-        //           type: 'text',
-        //         },
-        //       ],
-        //     },
-        //     {
-        //       type: 'task',
-        //       state: 'todo',
-        //       content: [
-        //         {
-        //           text: 'dfkdjfkdj',
-        //           type: 'text',
-        //         },
-        //       ],
-        //     },
-        //   ],
-        // },
+        {
+          type: 'taskList',
+          content: [
+            {
+              type: 'taskItem',
+              attrs: { checked: true },
+              content: [
+                {
+                  type: 'paragraph',
+                  content: [{ type: 'text', text: 'A checked task.' }],
+                },
+              ],
+            },
+            {
+              type: 'taskItem',
+              attrs: { checked: false },
+              content: [
+                {
+                  type: 'paragraph',
+                  content: [{ type: 'text', text: 'Not done.' }],
+                },
+              ],
+            },
+          ],
+        },
         {
           type: 'heading',
           content: [{ type: 'text', text: 'Implementations' }],
@@ -423,7 +423,7 @@ export async function seed() {
           content: [
             {
               type: 'text',
-              text: ' Morbi sit amet porttitor justo, quis sagittis nulla. Donec et ullamcorper dolor. Maecenas pharetra imperdiet nulla nec commodo. ',
+              text: 'Morbi sit amet porttitor justo, quis sagittis nulla. Donec et ullamcorper dolor. Maecenas pharetra imperdiet nulla nec commodo. ',
             },
           ],
         },

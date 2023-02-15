@@ -55,7 +55,6 @@ export const ContentBlock: React.FC<{ block: Blocks }> = ({ block }) => {
   else if (block.type === 'listItem') {
     return <li>{map(block)}</li>;
   }
-
   // Bullet List
   else if (block.type === 'bulletList') {
     return <ul>{map(block)}</ul>;
@@ -69,6 +68,19 @@ export const ContentBlock: React.FC<{ block: Blocks }> = ({ block }) => {
   // Horizontal
   else if (block.type === 'horizontalRule') {
     return <hr />;
+  }
+
+  // Task List
+  else if (block.type === 'taskList') {
+    return <ul className={cls.taskList}>{map(block)}</ul>;
+  }
+  // Task Item
+  else if (block.type === 'taskItem') {
+    return (
+      <li>
+        <Checkbox checked={block.attrs.checked}>{map(block)}</Checkbox>
+      </li>
+    );
   }
 
   /*else if (block.type === 'panel') {

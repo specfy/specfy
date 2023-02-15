@@ -31,6 +31,7 @@
         color: #adb5bd;
       }
 
+      // Placeholder
       p.is-empty,
       h1.is-empty,
       h2.is-empty,
@@ -42,6 +43,16 @@
           float: left;
           height: 0;
           pointer-events: none;
+        }
+      }
+
+      ul[data-type="taskList"] {
+        list-style: none;
+
+        li {
+          margin-left: 0;
+          display: flex;
+          gap: $p
         }
       }
     }

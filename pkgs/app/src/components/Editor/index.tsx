@@ -12,6 +12,8 @@ import { Link } from '@tiptap/extension-link';
 import { ListItem } from '@tiptap/extension-list-item';
 import { Paragraph } from '@tiptap/extension-paragraph';
 import { Placeholder } from '@tiptap/extension-placeholder';
+import { TaskItem } from '@tiptap/extension-task-item';
+import { TaskList } from '@tiptap/extension-task-list';
 import { Text } from '@tiptap/extension-text';
 import { useEditor, EditorContent } from '@tiptap/react';
 import type { BlockLevelZero } from 'api/src/types/api';
@@ -45,6 +47,8 @@ export const Editor: React.FC<{
       Blockquote,
       CustomFloatingMenu,
       HorizontalRule,
+      TaskList,
+      TaskItem,
       Link.configure({
         linkOnPaste: true,
         openOnClick: false,

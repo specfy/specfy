@@ -1,9 +1,4 @@
-import {
-  PlusOutlined,
-  MinusOutlined,
-  CheckCircleOutlined,
-  MenuUnfoldOutlined,
-} from '@ant-design/icons';
+import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import { Card, Typography, Space, Divider } from 'antd';
 import Title from 'antd/es/typography/Title';
 import type { ApiDocument } from 'api/src/types/api/documents';
