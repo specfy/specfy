@@ -1,15 +1,12 @@
 @import "../../../theme";
 
-.menu {
+$width: 180px;
+
+.container {
   z-index: 2;
 
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-
-  width: 150px;
-  min-width: 150px;
-  padding: 6px;
+  width: $width;
+  min-width: $width;
 
   background-color: #fff;
   border: 1px solid $gray-3;
@@ -18,13 +15,31 @@
 
   position: absolute;
   top: 20px;
+  overflow: scroll;
+  max-height: 185px;
+}
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.25s ease-in-out;
+  width: $width;
+  padding: $p;
+
+  &.hide {
+    transform: translate3d(-180px, 0, 0);
+  }
+
+  &.show {
+    transform: translate3d(0, 0, 0);
+  }
 }
 
 .item {
   cursor: pointer;
 
   display: grid;
-  grid-template-columns: 30px auto;
+  grid-template-columns: 30px auto 20px;
   gap: $p-l;
   align-items: center;
 
@@ -50,4 +65,14 @@
 
   font-size: $font-m;
   line-height: 0;
+}
+
+.right {
+  line-height: 0;
+}
+
+.subHeading {
+  position: absolute;
+  top: 0;
+  transform: translate3d(180px, 0, 0);
 }

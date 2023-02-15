@@ -16,15 +16,34 @@
     }
 
     /* stylelint-disable-next-line selector-class-pattern */
-    .ProseMirror p.is-editor-empty:first-child::before {
-      pointer-events: none;
-      content: attr(data-placeholder);
+    .ProseMirror {
+      min-height: inherit;
 
-      float: left;
+      /* stylelint-disable-next-line selector-class-pattern */
+      p.is-editor-empty:first-child::before {
+        pointer-events: none;
+        content: attr(data-placeholder);
 
-      height: 0;
+        float: left;
 
-      color: #adb5bd;
+        height: 0;
+
+        color: #adb5bd;
+      }
+
+      p.is-empty,
+      h1.is-empty,
+      h2.is-empty,
+      h3.is-empty,
+      h4.is-empty {
+        &:before {
+          color: #adb5bd;
+          content: attr(data-placeholder);
+          float: left;
+          height: 0;
+          pointer-events: none;
+        }
+      }
     }
   }
 }

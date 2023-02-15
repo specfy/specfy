@@ -21,15 +21,19 @@
     }
 
     /* stylelint-disable-next-line selector-class-pattern */
-    .ProseMirror p.is-editor-empty:first-child::before {
-      pointer-events: none;
-      content: attr(data-placeholder);
+    .ProseMirror {
+      min-height: inherit;
 
-      float: left;
+      p.is-editor-empty:first-child::before {
+        pointer-events: none;
+        content: attr(data-placeholder);
 
-      height: 0;
+        float: left;
 
-      color: #adb5bd;
+        height: 0;
+
+        color: #adb5bd;
+      }
     }
   }
 }

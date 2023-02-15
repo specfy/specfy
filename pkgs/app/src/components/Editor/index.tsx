@@ -3,7 +3,6 @@ import { Bold } from '@tiptap/extension-bold';
 import { BulletList } from '@tiptap/extension-bullet-list';
 import { CharacterCount } from '@tiptap/extension-character-count';
 import { Document } from '@tiptap/extension-document';
-import { FloatingMenu as FloatingMenuC } from '@tiptap/extension-floating-menu';
 import { HardBreak } from '@tiptap/extension-hard-break';
 import { Heading } from '@tiptap/extension-heading';
 import { History } from '@tiptap/extension-history';
@@ -20,6 +19,7 @@ import { useEffect } from 'react';
 
 import { BubbleMenu } from './BubbleMenu';
 import { FloatingMenu } from './FloatingMenu';
+import { CustomFloatingMenu } from './extensions/CustomFloatingMenu';
 import { removeEmptyContent } from './helpers';
 import cls from './index.module.scss';
 
@@ -37,18 +37,26 @@ export const Editor: React.FC<{
       Bold,
       Italic,
       HardBreak,
-      Heading,
+      Heading.configure({
+        levels: [1, 2, 3, 4],
+      }),
       BulletList,
       ListItem,
       Blockquote,
-      FloatingMenuC,
+      CustomFloatingMenu,
       HorizontalRule,
       Link.configure({
         linkOnPaste: true,
         openOnClick: false,
       }),
       Placeholder.configure({
-        placeholder: 'Write something …',
+        placeholder: ({ node }) => {
+          if (node.type.name === 'heading') {
+            return `Title ${node.attrs.level}`;
+          }
+
+          return 'Write something …';
+        },
       }),
       History.configure({
         depth: 100,

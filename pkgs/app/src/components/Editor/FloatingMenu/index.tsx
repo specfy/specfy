@@ -3,55 +3,148 @@ import {
   IconTextSize,
   IconList,
   IconSeparator,
+  IconHeading,
+  IconCaretRight,
 } from '@tabler/icons-react';
 import type { Editor } from '@tiptap/core';
-import { FloatingMenu as FM } from '@tiptap/react';
+import type { Plugin } from '@tiptap/pm/state';
+import classnames from 'classnames';
+import { useCallback, useEffect, useState } from 'react';
+
+import { FloatingMenuPlugin } from '../extensions/CustomFloatingMenu/plugin';
 
 import cls from './index.module.scss';
 
 export const FloatingMenu: React.FC<{ editor: Editor }> = ({ editor }) => {
+  const [element, setElement] = useState<HTMLDivElement | null>(null);
+
+  // Menu logic
+  const [showSub, setShowSub] = useState<string | undefined>();
+  const [, setSelected] = useState<boolean>(false);
+  const [plugin, setPlugin] = useState<Plugin<any>>();
+
+  useEffect(() => {
+    if (!element) {
+      return;
+    }
+
+    if (editor.isDestroyed) {
+      return;
+    }
+
+    const tmp = FloatingMenuPlugin({
+      pluginKey: 'floatingMenu',
+      editor,
+      element,
+      tippyOptions: { duration: 250, offset: [5, -40] },
+      shouldShow: null,
+      onBlur: () => {
+        setShowSub(undefined);
+        setSelected(false);
+      },
+    });
+
+    setPlugin(tmp);
+    editor.registerPlugin(tmp);
+    return () => editor.unregisterPlugin('floatingMenu');
+  }, [editor, element]);
+
+  const select = useCallback(() => {
+    // TODO: make this work
+    plugin?.spec.getRef().hide();
+    setSelected(true);
+  }, [editor, plugin]);
+
   return (
-    <FM
-      editor={editor}
-      tippyOptions={{ duration: 250, offset: [0, -40] }}
-      className={cls.menu}
+    <div
+      ref={setElement}
+      className={cls.container}
+      style={{ visibility: 'hidden' }}
     >
-      <div
-        className={cls.item}
-        onClick={() => editor.chain().focus().setParagraph().run()} // TODO: make this work
-      >
-        <div className={cls.icon}>
-          <IconTextSize size="1em" />
+      <div className={classnames(cls.menu, cls.main, showSub && cls.hide)}>
+        <div
+          className={cls.item}
+          onClick={() => {
+            editor.chain().focus().setParagraph().run();
+            select();
+          }}
+        >
+          <div className={cls.icon}>
+            <IconTextSize size="1em" />
+          </div>
+          <div>Text</div>
         </div>
-        <div>Text</div>
+        <div className={cls.item} onClick={() => setShowSub('headings')}>
+          <div className={cls.icon}>
+            <IconHeading size="1em" />
+          </div>
+          <div>Titles</div>
+          <div className={cls.right}>
+            <IconCaretRight size="1em" />
+          </div>
+        </div>
+        <div
+          className={cls.item}
+          onClick={() => {
+            editor.chain().focus().toggleBulletList().run();
+            select();
+          }}
+        >
+          <div className={cls.icon}>
+            <IconList size="1em" />
+          </div>
+          <div>List</div>
+        </div>
+        <div
+          className={cls.item}
+          onClick={() => {
+            editor.chain().focus().toggleBlockquote().run();
+            select();
+          }}
+        >
+          <div className={cls.icon}>
+            <IconQuote size="1em" />
+          </div>
+          <div>Quote</div>
+        </div>
+        <div
+          className={cls.item}
+          onClick={() => {
+            editor.chain().focus().setHorizontalRule().run();
+            select();
+          }}
+        >
+          <div className={cls.icon}>
+            <IconSeparator size="1em" />
+          </div>
+          <div>Divider</div>
+        </div>
       </div>
       <div
-        className={cls.item}
-        onClick={() => editor.chain().focus().toggleBulletList().run()}
+        className={classnames(
+          cls.menu,
+          cls.subHeading,
+          showSub === 'headings' && cls.show
+        )}
       >
-        <div className={cls.icon}>
-          <IconList size="1em" />
-        </div>
-        <div>List</div>
+        {[1, 2, 3, 4].map((level: any) => {
+          return (
+            <div
+              key={`heading-lvl-${level}`}
+              className={cls.item}
+              onClick={() => {
+                editor.chain().focus().setHeading({ level }).run();
+                select();
+              }}
+            >
+              <div className={cls.icon}>
+                <IconHeading size="1em" />
+              </div>
+              <div>Title {level}</div>
+            </div>
+          );
+        })}
       </div>
-      <div
-        className={cls.item}
-        onClick={() => editor.chain().focus().toggleBlockquote().run()}
-      >
-        <div className={cls.icon}>
-          <IconQuote size="1em" />
-        </div>
-        <div>Quote</div>
-      </div>
-      <div
-        className={cls.item}
-        onClick={() => editor.chain().focus().setHorizontalRule().run()}
-      >
-        <div className={cls.icon}>
-          <IconSeparator size="1em" />
-        </div>
-        <div>Divider</div>
-      </div>
-    </FM>
+    </div>
   );
 };

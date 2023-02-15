@@ -63,7 +63,7 @@ export const RFC: React.FC<{
     <div className={clsn(cls.container, menu ? cls.withMenu : null)}>
       <div>
         <Card>
-          <Title level={2} className={cls.title}>
+          <Title level={1} className={cls.title}>
             {item.name}{' '}
             <Typography.Text type="secondary" className={cls.subtitle}>
               RFC-{item.typeId}
