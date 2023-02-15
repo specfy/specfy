@@ -17,11 +17,11 @@
     padding: $p $p-m;
 
     font-size: $font;
+    line-height: 0;
 
     background-color: #fff;
     border: none;
     border-radius: $border-radius-s;
-    line-height: 0;
 
     transition: background-color 0.25s ease-in-out, color 0.25s ease-in-out;
 

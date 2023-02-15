@@ -10,16 +10,14 @@
 
   :global {
 
-    /* stylelint-disable-next-line selector-class-pattern */
+    // stylelint-disable selector-class-pattern
     .ProseMirror-focused:focus {
       outline: none;
     }
 
-    /* stylelint-disable-next-line selector-class-pattern */
     .ProseMirror {
       min-height: inherit;
 
-      /* stylelint-disable-next-line selector-class-pattern */
       p.is-editor-empty:first-child::before {
         pointer-events: none;
         content: attr(data-placeholder);
@@ -37,12 +35,15 @@
       h2.is-empty,
       h3.is-empty,
       h4.is-empty {
-        &:before {
-          color: #adb5bd;
-          content: attr(data-placeholder);
-          float: left;
-          height: 0;
+        &::before {
           pointer-events: none;
+          content: attr(data-placeholder);
+
+          float: left;
+
+          height: 0;
+
+          color: #adb5bd;
         }
       }
 
@@ -50,11 +51,13 @@
         list-style: none;
 
         li {
-          margin-left: 0;
           display: flex;
-          gap: $p
+          gap: $p;
+          margin-left: 0;
         }
       }
     }
+
+    // stylelint-enable selector-class-pattern
   }
 }

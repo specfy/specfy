@@ -3,28 +3,30 @@
 $width: 180px;
 
 .container {
+  position: absolute;
   z-index: 2;
+  top: 20px;
+
+  overflow: scroll;
 
   width: $width;
   min-width: $width;
+  max-height: 185px;
 
   background-color: #fff;
   border: 1px solid $gray-3;
   border-radius: $border-radius;
   box-shadow: 0 3px 15px -3px rgb(13 20 33 / 13%);
-
-  position: absolute;
-  top: 20px;
-  overflow: scroll;
-  max-height: 185px;
 }
 
 .menu {
   display: flex;
   flex-direction: column;
-  transition: transform 0.25s ease-in-out;
+
   width: $width;
   padding: $p;
+
+  transition: transform 0.25s ease-in-out;
 
   &.hide {
     transform: translate3d(-180px, 0, 0);
@@ -59,12 +61,12 @@ $width: 180px;
   width: 30px;
   padding: $p;
 
+  font-size: $font-m;
+  line-height: 0;
+
   background-color: #fff;
   border: 1px solid $gray-44;
   border-radius: $border-radius;
-
-  font-size: $font-m;
-  line-height: 0;
 }
 
 .right {

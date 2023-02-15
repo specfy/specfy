@@ -54,28 +54,28 @@ body {
 
 .ant-typography {
   hr {
+    margin: $p-xxl 0;
     border: none;
     border-top: 1px solid $gray-44;
-    margin: $p-xxl 0;
   }
 
   h1 {
-    font-size: $font-xl;
     margin-bottom: $p-m;
+    font-size: $font-xl;
   }
 
   h2 {
-    font-size: $font-l;
     margin-bottom: $p-m;
+    font-size: $font-l;
   }
 
   h3 {
-    font-size: $font-m;
     margin-bottom: $p-s;
+    font-size: $font-m;
   }
 
   h4 {
-    font-size: $font;
     margin-bottom: $p-s;
+    font-size: $font;
   }
 }
