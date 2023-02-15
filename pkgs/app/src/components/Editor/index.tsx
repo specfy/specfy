@@ -49,7 +49,9 @@ export const Editor: React.FC<{
       CustomFloatingMenu,
       HorizontalRule,
       TaskList,
-      TaskItem,
+      TaskItem.configure({
+        nested: true,
+      }),
       Code.configure({
         HTMLAttributes: { spellcheck: 'false' },
       }),

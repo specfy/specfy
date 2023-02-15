@@ -4,4 +4,9 @@ ul.taskList {
   li {
     margin-left: 0;
   }
+
+  ul {
+    margin-bottom: 0;
+    list-style: none;
+  }
 }
