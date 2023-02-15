@@ -19,9 +19,11 @@ export const ContentBlock: React.FC<{ block: Blocks }> = ({ block }) => {
 
   // Text
   else if (block.type === 'text') {
-    let text = <>{block.text} </>;
+    let text = <>{block.text}</>;
     if (block.marks) {
       for (const mark of block.marks) {
+        if (mark.type === 'code') return <code>{text}</code>;
+
         if (mark.type === 'bold') text = <strong>{text}</strong>;
         if (mark.type === 'italic') text = <em>{text}</em>;
         if (mark.type === 'link')

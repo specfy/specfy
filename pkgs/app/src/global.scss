@@ -78,4 +78,10 @@ body {
     margin-bottom: $p-s;
     font-size: $font;
   }
+
+  code {
+    font-family: "JetBrains Mono";
+    border: none;
+    color: $gray-8;
+  }
 }

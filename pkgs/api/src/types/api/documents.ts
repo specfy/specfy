@@ -1,5 +1,5 @@
 import type { Pagination } from './api';
-import type { BlockLevelOne, BlockLevelZero } from './document';
+import type { BlockLevelZero } from './document';
 import type { ApiUser } from './me';
 
 export interface ApiDocument {

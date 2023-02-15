@@ -4,6 +4,7 @@ export interface BlockText {
   text: string;
   marks?: Array<
     | { type: 'bold' }
+    | { type: 'code' }
     | { type: 'italic' }
     | { type: 'link'; attrs: { href: string; target: string } }
   >;
