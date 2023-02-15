@@ -80,7 +80,6 @@ export class FloatingMenuView {
       $anchor.parent.isTextblock &&
       !$anchor.parent.type.spec.code &&
       !$anchor.parent.textContent;
-    console.log($anchor.parent);
 
     if (
       !view.hasFocus() ||

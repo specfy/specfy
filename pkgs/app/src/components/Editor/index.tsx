@@ -2,6 +2,7 @@ import { Blockquote } from '@tiptap/extension-blockquote';
 import { Bold } from '@tiptap/extension-bold';
 import { BulletList } from '@tiptap/extension-bullet-list';
 import { CharacterCount } from '@tiptap/extension-character-count';
+import { Code } from '@tiptap/extension-code';
 import { Document } from '@tiptap/extension-document';
 import { HardBreak } from '@tiptap/extension-hard-break';
 import { Heading } from '@tiptap/extension-heading';
@@ -49,6 +50,9 @@ export const Editor: React.FC<{
       HorizontalRule,
       TaskList,
       TaskItem,
+      Code.configure({
+        HTMLAttributes: { spellcheck: 'false' },
+      }),
       Link.configure({
         linkOnPaste: true,
         openOnClick: false,

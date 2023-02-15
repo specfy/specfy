@@ -1,6 +1,7 @@
 import { HistoryOutlined } from '@ant-design/icons';
 import { Bold } from '@tiptap/extension-bold';
 import { CharacterCount } from '@tiptap/extension-character-count';
+import { Code } from '@tiptap/extension-code';
 import { Document } from '@tiptap/extension-document';
 import { HardBreak } from '@tiptap/extension-hard-break';
 import { History } from '@tiptap/extension-history';
@@ -40,6 +41,7 @@ const Editor: React.FC<{
       Bold,
       Italic,
       HardBreak,
+      Code,
       Placeholder.configure({
         placeholder: 'Write something …',
       }),

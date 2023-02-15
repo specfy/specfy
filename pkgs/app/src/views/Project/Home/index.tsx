@@ -32,14 +32,16 @@ export const ProjectHome: React.FC<{
       <Row gutter={[16, 16]}>
         <Col span={24}>
           <Card>
-            {!edit.isEnabled && <ContentDoc doc={desc} />}
-            {edit.isEnabled && (
-              <EditorMini
-                curr={curr!}
-                field="description"
-                originalContent={proj.description}
-              />
-            )}
+            <Typography>
+              {!edit.isEnabled && <ContentDoc doc={desc} />}
+              {edit.isEnabled && (
+                <EditorMini
+                  curr={curr!}
+                  field="description"
+                  originalContent={proj.description}
+                />
+              )}
+            </Typography>
 
             <div className={cls.block}>
               <Typography.Title level={5}>Technical Aspect</Typography.Title>

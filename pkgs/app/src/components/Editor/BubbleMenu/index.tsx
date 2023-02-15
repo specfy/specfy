@@ -1,4 +1,4 @@
-import { IconBold, IconItalic, IconLink } from '@tabler/icons-react';
+import { IconBold, IconCode, IconItalic, IconLink } from '@tabler/icons-react';
 import type { Editor } from '@tiptap/core';
 import { BubbleMenu as BM } from '@tiptap/react';
 import { useCallback } from 'react';
@@ -51,6 +51,12 @@ export const BubbleMenu: React.FC<{ editor: Editor }> = ({ editor }) => {
         className={editor.isActive('link') ? cls.isActive : ''}
       >
         <IconLink size="1em" />
+      </button>
+      <button
+        onClick={() => editor.chain().focus().toggleCode().run()}
+        className={editor.isActive('code') ? cls.isActive : ''}
+      >
+        <IconCode size="1em" />
       </button>
     </BM>
   );
