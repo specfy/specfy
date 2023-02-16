@@ -106,7 +106,7 @@ export const EditorMini: <T extends Record<string, any>>(
   p: Prop<T>
 ) => React.ReactElement<Prop<T>> = ({ curr, field, originalContent }) => {
   const [content, setContent] = useState<BlockLevelZero>(() => {
-    return curr?.edits[field] || originalContent;
+    return curr?.changes[field] || originalContent;
   });
 
   const [isUpdated, setIsUpdated] = useState(false);

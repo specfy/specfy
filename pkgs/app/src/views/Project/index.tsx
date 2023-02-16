@@ -70,10 +70,11 @@ export const Project: React.FC = () => {
   const [updateCount, setUpdateCount] = useState(0);
   useDebounce(
     () => {
+      console.log('debounced');
       setUpdateCount(edit.getNumberOfChanges());
     },
     500,
-    [edit.edits]
+    [edit.lastUpdate]
   );
 
   useEffect(() => {

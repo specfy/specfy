@@ -1,102 +1,24 @@
-import {
-  CaretDownOutlined,
-  HistoryOutlined,
-  LoadingOutlined,
-} from '@ant-design/icons';
+import { LoadingOutlined } from '@ant-design/icons';
 import { App, Button, Card, Form, Input, Typography } from 'antd';
 import type { ApiProject, BlockLevelZero } from 'api/src/types/api';
-import type { Change } from 'diff';
 import { diffWordsWithSpace } from 'diff';
 import { useEffect, useMemo, useState } from 'react';
 import { renderToString } from 'react-dom/server';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 import { createRevision } from '../../../../api/revisions';
 import { ContentDoc } from '../../../../components/Content';
 import { Editor } from '../../../../components/Editor';
-import type { EditContextInterface } from '../../../../hooks/useEdit';
+import type {
+  EditChange,
+  EditContextInterface,
+} from '../../../../hooks/useEdit';
 import { isDiff, useEdit } from '../../../../hooks/useEdit';
 import type { RouteProject } from '../../../../types/routes';
 
+import type { ComputedForDiff } from './Diff';
+import { Diff } from './Diff';
 import cls from './index.module.scss';
-
-interface Computed {
-  id: string;
-  couple: string;
-  name: string;
-  original: any;
-  diff: Change[];
-}
-
-export const Update: React.FC<{
-  c: Computed;
-  url: string;
-  onRevert: (couple: string, field: string) => void;
-}> = ({ c, url, onRevert }) => {
-  const [left] = useState(() => {
-    return c.diff
-      .map((d) => {
-        if (d.added) return null;
-        if (d.removed) return <span className={cls.removed}>{d.value}</span>;
-        else return d.value;
-      })
-      .filter((e) => e);
-  });
-  const [right] = useState(() => {
-    return c.diff
-      .map((d) => {
-        if (d.removed) return null;
-        if (d.added) return <span className={cls.added}>{d.value}</span>;
-        else return d.value;
-      })
-      .filter((e): e is string => !!e);
-  });
-  const type = 'type' in c.original ? 'Components' : 'Project';
-  const to = url + (type === 'Components' ? `/c/${c.original.slug}` : '');
-
-  // TODO: undo revert
-  return (
-    <div className={cls.update}>
-      <div className={cls.title}>
-        <div className={cls.titleLeft}>
-          <div className={cls.toggle}>
-            <CaretDownOutlined />
-          </div>
-          <Link to={to}>
-            {type} / {c.original.name} [{c.name}]
-          </Link>
-        </div>
-        <div className={cls.titleRight}>
-          <Button
-            type="text"
-            icon={<HistoryOutlined />}
-            size="small"
-            onClick={() => onRevert(c.couple, c.name)}
-          >
-            Revert
-          </Button>
-          {/* |<Checkbox checked>Staged</Checkbox> */}
-        </div>
-      </div>
-      <div className={cls.diff}>
-        <div className={cls.left}>
-          {!left.length ? (
-            <span className={cls.empty}>Empty...</span>
-          ) : (
-            <>{left}</>
-          )}
-        </div>
-        <div className={cls.right}>
-          {!right.length ? (
-            <span className={cls.empty}>Deleted...</span>
-          ) : (
-            <>{right}</>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-};
 
 export const ProjectRevisionCreate: React.FC<{
   proj: ApiProject;
@@ -108,13 +30,13 @@ export const ProjectRevisionCreate: React.FC<{
 
   // Edition
   const edit = useEdit();
-  const [edits, originals] = useMemo(() => {
-    return [Object.entries(edit.edits), edit.getOriginals()];
-  }, [edit.edits]);
+  const changes = useMemo(() => {
+    return edit.changes;
+  }, [edit.changes]);
 
   // Local
   const [lastComputed, setLastComputed] = useState<number>();
-  const [computed, setComputed] = useState<Computed[]>([]);
+  const [computed, setComputed] = useState<ComputedForDiff[]>([]);
   const [to] = useState(() => `/org/${params.org_id}/${params.project_slug}`);
 
   // Form
@@ -127,32 +49,33 @@ export const ProjectRevisionCreate: React.FC<{
   });
 
   useEffect(() => {
-    if (!edits || !originals) {
+    if (!changes || !edit.lastUpdate) {
       return;
     }
-    if (lastComputed && edit.lastUpdate <= lastComputed) {
+    if (lastComputed && edit.lastUpdate.getTime() <= lastComputed) {
       return;
     }
 
-    const cleaned: EditContextInterface['edits'] = {};
-    const tmps: Computed[] = [];
+    const cleaned: EditContextInterface['changes'] = [];
+    const tmps: ComputedForDiff[] = [];
 
-    for (const [couple, obj] of edits) {
-      cleaned[couple] = {};
+    // Remove non modified fields
+    for (const { type, id, values, original } of changes) {
+      const clean: EditChange = { type, id, original, values: {} };
 
-      for (const [key, value] of Object.entries(obj)) {
-        if (!isDiff(originals[couple][key], value)) {
+      for (const [key, value] of Object.entries(values)) {
+        if (!isDiff(original[key], value)) {
           continue;
         }
 
-        cleaned[couple][key] = value;
-        const a = <ContentDoc doc={originals[couple][key]} />;
+        clean.values[key] = value;
+        const a = <ContentDoc doc={original[key]} />;
         const b = <ContentDoc doc={value} />;
-        const tmp: Computed = {
-          id: `${couple}-${key}`,
-          couple,
-          name: key,
-          original: originals[couple],
+        const tmp: ComputedForDiff = {
+          type,
+          id,
+          key,
+          original: original,
           diff: diffWordsWithSpace(
             renderToString(a).replaceAll('<!-- -->', ''),
             renderToString(b).replaceAll('<!-- -->', '')
@@ -160,23 +83,24 @@ export const ProjectRevisionCreate: React.FC<{
         };
         tmps.push(tmp);
       }
+      cleaned.push(clean);
     }
 
     const now = Date.now();
     setComputed(tmps);
     setLastComputed(now);
-    setTimeout(() => edit.setEdits(cleaned), 1);
-  }, [edits, originals]);
+    setTimeout(() => {
+      edit.setChanges(cleaned);
+    }, 1);
+  }, [changes]);
 
   useEffect(() => {
     setCanSubmit(title !== '' && description.content.length > 0);
   }, [title, description]);
 
-  const handleRevert = (couple: string, field: string) => {
-    // TODO: undo revert
-    delete edit.edits[couple][field];
-    edit.setEdits({ ...edit.edits });
-    setLastComputed(-1);
+  const handleRevert = (type: string, id: string, key: string) => {
+    // TODO: possibility to undo revert
+    edit.revert(type, id, key);
   };
 
   const onSubmit = async () => {
@@ -196,6 +120,10 @@ export const ProjectRevisionCreate: React.FC<{
 
   if (!computed) {
     return <LoadingOutlined />;
+  }
+
+  if (!edit.lastUpdate || edit.changes.length === 0 || computed.length === 0) {
+    return <>No changes to commit...</>;
   }
 
   return (
@@ -232,7 +160,7 @@ export const ProjectRevisionCreate: React.FC<{
       </div>
       <div className={cls.staged}>
         {computed.map((c) => {
-          return <Update key={c.id} c={c} url={to} onRevert={handleRevert} />;
+          return <Diff key={c.id} comp={c} url={to} onRevert={handleRevert} />;
         })}
       </div>
     </div>

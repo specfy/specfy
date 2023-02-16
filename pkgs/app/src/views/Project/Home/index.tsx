@@ -24,7 +24,7 @@ export const ProjectHome: React.FC<{
     return edit.get<ApiProject>('project', proj.id, proj);
   }, [edit.isEnabled]);
   const desc = useMemo(() => {
-    return curr?.edits?.description || proj.description;
+    return curr?.changes?.description || proj.description;
   }, [proj, curr]);
 
   return (
