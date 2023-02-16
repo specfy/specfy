@@ -3,7 +3,7 @@ import {
   HistoryOutlined,
   LoadingOutlined,
 } from '@ant-design/icons';
-import { Button, Card, Checkbox, Form, Typography } from 'antd';
+import { Button, Card, Checkbox, Form, Input, Typography } from 'antd';
 import type { ApiProject, BlockLevelZero } from 'api/src/types/api';
 import type { Change } from 'diff';
 import { diffWordsWithSpace } from 'diff';
@@ -53,6 +53,7 @@ export const Update: React.FC<{
   const type = 'type' in c.original ? 'Components' : 'Project';
   const to = url + (type === 'Components' ? `/c/${c.original.slug}` : '');
 
+  // TODO: undo revert
   return (
     <div className={cls.update}>
       <div className={cls.title}>
@@ -73,7 +74,7 @@ export const Update: React.FC<{
           >
             Revert
           </Button>
-          |<Checkbox checked>Staged</Checkbox>
+          {/* |<Checkbox checked>Staged</Checkbox> */}
         </div>
       </div>
       <div className={cls.diff}>
@@ -107,11 +108,15 @@ export const ProjectRevisionCurrent: React.FC<{
 
   const [lastComputed, setLastComputed] = useState<number>();
   const [computed, setComputed] = useState<Computed[]>([]);
+  const [to] = useState(() => `/org/${params.org_id}/${params.project_slug}`);
+
+  // Form
+  const [canSubmit, setCanSubmit] = useState<boolean>(false);
+  const [title, setTitle] = useState<string>();
   const [description, setDescription] = useState<BlockLevelZero>({
     type: 'doc',
     content: [{ type: 'paragraph' }],
   });
-  const [to] = useState(() => `/org/${params.org_id}/${params.project_slug}`);
 
   useEffect(() => {
     if (!edits || !originals) {
@@ -155,6 +160,10 @@ export const ProjectRevisionCurrent: React.FC<{
     setTimeout(() => edit.setEdits(cleaned), 1);
   }, [edits, originals]);
 
+  useEffect(() => {
+    setCanSubmit(title !== '' && description.content.length > 0);
+  }, [title, description]);
+
   const handleRevert = (couple: string, field: string) => {
     // TODO: undo revert
     delete edit.edits[couple][field];
@@ -171,25 +180,32 @@ export const ProjectRevisionCurrent: React.FC<{
       <Typography.Title level={3}>
         <>Changes ({computed.length})</>
       </Typography.Title>
-      <div className={cls.staged}>
-        {computed.map((c) => {
-          return <Update key={c.id} c={c} url={to} onRevert={handleRevert} />;
-        })}
-      </div>
       <div className={cls.propose}>
         <Card>
-          <Typography.Title level={4}>Propose changes</Typography.Title>
+          <Form.Item required>
+            <Input
+              size="large"
+              placeholder="Title"
+              onChange={(e) => setTitle(e.target.value)}
+            />
+          </Form.Item>
           <Form.Item required>
             <Editor
               content={description}
               onUpdate={setDescription}
               minHeight="100px"
+              inputLike={true}
             />
           </Form.Item>
-          <Button type="primary" block>
+          <Button type="primary" block disabled={!canSubmit}>
             Propose changes
           </Button>
         </Card>
+      </div>
+      <div className={cls.staged}>
+        {computed.map((c) => {
+          return <Update key={c.id} c={c} url={to} onRevert={handleRevert} />;
+        })}
       </div>
     </div>
   );

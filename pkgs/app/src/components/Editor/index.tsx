@@ -22,6 +22,7 @@ import { TaskList } from '@tiptap/extension-task-list';
 import { Text } from '@tiptap/extension-text';
 import { useEditor, EditorContent } from '@tiptap/react';
 import type { BlockLevelZero } from 'api/src/types/api';
+import classnames from 'classnames';
 import { useEffect } from 'react';
 
 import { BubbleMenu } from './BubbleMenu';
@@ -34,8 +35,9 @@ export const Editor: React.FC<{
   content: BlockLevelZero;
   minHeight?: string;
   limit?: number;
+  inputLike?: boolean;
   onUpdate: (content: BlockLevelZero) => void;
-}> = ({ content, limit, minHeight, onUpdate }) => {
+}> = ({ content, limit, minHeight, onUpdate, inputLike }) => {
   const editor = useEditor({
     extensions: [
       Document,
@@ -106,7 +108,7 @@ export const Editor: React.FC<{
   }, [content]);
 
   return (
-    <div>
+    <div className={classnames(inputLike && cls.inputLike)}>
       {editor && <BubbleMenu editor={editor} />}
       {editor && <FloatingMenu editor={editor} />}
       <EditorContent

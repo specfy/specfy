@@ -42,7 +42,7 @@
 
 .left,
 .right {
-  padding: $p-xl $p-l;
+  padding: $p-l $p-xxl;
 }
 
 .left {
@@ -57,7 +57,6 @@
 .staged {
   display: grid;
   gap: $p-xxl;
-  margin-bottom: $p-xxl;
 }
 
 .diff {
@@ -75,7 +74,8 @@
 }
 
 .propose {
-  max-width: 600px;
+  max-width: $main-col-w;
+  margin-bottom: $p-xxl;
 }
 
 .empty {

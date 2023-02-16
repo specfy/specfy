@@ -132,3 +132,10 @@ body {
     margin-right: $p;
   }
 }
+
+.ant-btn {
+
+  &:disabled {
+    border: 1px solid transparent;
+  }
+}

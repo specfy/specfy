@@ -1,8 +1,13 @@
 @import "../../styles/theme";
 
+.inputLike {
+  border: 1px solid $gray-300;
+  border-radius: $border-radius-s;
+  padding: $p $p-l;
+}
+
 .editor {
   min-height: 400px;
-  padding: $p-xl $p $p-s 0;
 
   p {
     margin-bottom: $p-m;
