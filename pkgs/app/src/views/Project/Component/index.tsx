@@ -1,10 +1,12 @@
-import { Avatar, Card, Col, Row, Typography } from 'antd';
+import type { IconType } from '@icons-pack/react-simple-icons';
+import { Card, Col, Row, Typography } from 'antd';
 import type { ApiComponent } from 'api/src/types/api/components';
 import type { ApiProject } from 'api/src/types/api/projects';
 import type React from 'react';
 import { useEffect, useMemo, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
+import type { TechInfo } from '../../../common/component';
 import { supported } from '../../../common/component';
 import { ContentDoc } from '../../../components/Content';
 import { EditorMini } from '../../../components/Editor/Mini';
@@ -34,7 +36,8 @@ export const ComponentView: React.FC<{
 }> = ({ proj, comps, params, onLoad }) => {
   // TODO: filter RFC
   const [comp, setComp] = useState<ApiComponent>();
-  const [icon, setIcon] = useState<React.ReactNode>();
+  const [info, setInfo] = useState<TechInfo>();
+  const [Icon, setIcon] = useState<IconType>();
   const route = useParams<Partial<RouteComponent>>();
 
   // Components
@@ -73,11 +76,13 @@ export const ComponentView: React.FC<{
     }
 
     const name = comp.name.toLocaleLowerCase();
-    setIcon(
-      name in supported ? (
-        <Avatar icon={<i className={`devicon-${name}-plain colored`}></i>} />
-      ) : undefined
-    );
+    if (name in supported) {
+      setInfo(supported[name]);
+      setIcon(supported[name].Icon);
+    } else {
+      setInfo(undefined);
+      setIcon(undefined);
+    }
 
     const list = new Map<string, ApiComponent>();
     for (const c of comps) {
@@ -163,7 +168,14 @@ export const ComponentView: React.FC<{
     <Row gutter={[16, 16]}>
       <Col span={24}>
         <Card>
-          <Typography.Title level={4}>{comp.name}</Typography.Title>
+          <Typography.Title level={2}>
+            {Icon && (
+              <div className={cls.icon}>
+                <Icon size="1em" />
+              </div>
+            )}
+            {comp.name}
+          </Typography.Title>
           {!edit.isEnabled && desc && <ContentDoc doc={desc} />}
           {!desc?.content.length && !edit.isEnabled && (
             <Typography.Text type="secondary">

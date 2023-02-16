@@ -18,7 +18,7 @@ export const Line: React.FC<{
       <div className={cls.values}>
         {techs?.map((tech) => {
           const name = tech.toLocaleLowerCase();
-          const Icon = tech in supported && supported[tech].Icon;
+          const Icon = name in supported && supported[name].Icon;
           return (
             <Link
               key={tech}
@@ -31,7 +31,7 @@ export const Line: React.FC<{
           );
         })}
         {comps?.map((c) => {
-          const Icon = c.name in supported && supported[c.name].Icon;
+          const Icon = c.slug in supported && supported[c.slug].Icon;
           return (
             <Link
               key={c.id}

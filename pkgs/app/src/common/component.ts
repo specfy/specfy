@@ -22,70 +22,26 @@ import {
    Icon: ,
  },
 */
-export const supported: Record<
-  string,
-  {
-    Icon?: IconType;
-    type: 'db' | 'hosting' | 'language' | 'messaging' | 'sass' | 'tool';
-  }
-> = {
-  AtlasDB: {
-    type: 'language',
-  },
-  Algolia: {
-    type: 'db',
-    Icon: Algolia,
-  },
-  Datadog: {
-    type: 'sass',
-    Icon: Datadog,
-  },
-  Sentry: {
-    type: 'sass',
-    Icon: Sentry,
-  },
-  Elasticsearch: {
-    type: 'db',
-    Icon: Elasticsearch,
-  },
-  GCP: {
-    type: 'hosting',
-    Icon: Googlecloud,
-  },
-  Kubernetes: {
-    type: 'hosting',
-    Icon: Kubernetes,
-  },
-  Bash: {
-    type: 'language',
-    Icon: Gnubash,
-  },
-  NodeJS: {
-    type: 'language',
-    Icon: Nodedotjs,
-  },
-  Typescript: {
-    type: 'language',
-    Icon: Typescript,
-  },
-  RabbitMQ: {
-    type: 'messaging',
-    Icon: Rabbitmq,
-  },
-  React: {
-    type: 'language',
-    Icon: ReactJs,
-  },
-  Postgresql: {
-    type: 'db',
-    Icon: Postgresql,
-  },
-  Redis: {
-    type: 'db',
-    Icon: Redis,
-  },
-  Webpack: {
-    type: 'tool',
-    Icon: Webpack,
-  },
+export interface TechInfo {
+  name: string;
+  Icon?: IconType;
+  type: 'db' | 'hosting' | 'language' | 'messaging' | 'sass' | 'tool';
+}
+
+export const supported: Record<string, TechInfo> = {
+  atlasdb: { name: 'AtlasDB', type: 'tool' },
+  algolia: { name: 'Algolia', type: 'db', Icon: Algolia },
+  datadog: { name: 'Datadog', type: 'sass', Icon: Datadog },
+  sentry: { name: 'Sentry', type: 'sass', Icon: Sentry },
+  elasticsearch: { name: 'Elasticsearch', type: 'db', Icon: Elasticsearch },
+  gcp: { name: 'GCP', type: 'hosting', Icon: Googlecloud },
+  kubernetes: { name: 'Kubernetes', type: 'hosting', Icon: Kubernetes },
+  bash: { name: 'Bash', type: 'language', Icon: Gnubash },
+  nodejs: { name: 'NodeJS', type: 'language', Icon: Nodedotjs },
+  typescript: { name: 'Typescript', type: 'language', Icon: Typescript },
+  rabbitmq: { name: 'RabbitMQ', type: 'messaging', Icon: Rabbitmq },
+  react: { name: 'React', type: 'language', Icon: ReactJs },
+  postgresql: { name: 'Postgresql', type: 'db', Icon: Postgresql },
+  redis: { name: 'Redis', type: 'db', Icon: Redis },
+  webpack: { name: 'Webpack', type: 'tool', Icon: Webpack },
 };

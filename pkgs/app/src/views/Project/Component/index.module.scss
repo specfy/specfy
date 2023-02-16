@@ -1,5 +1,12 @@
 @import "../../../styles/theme";
 
+.icon {
+  float: left;
+  font-size: $font-xxl;
+  color: $gray-500;
+  margin-right: $p-l;
+}
+
 .grid {
   display: grid;
   grid-template-columns: max(700px) 1fr;
