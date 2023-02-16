@@ -81,7 +81,43 @@ body {
 
   code {
     font-family: "JetBrains Mono";
+    color: #eb5757;
     border: none;
-    color: #EB5757;
+  }
+
+  table {
+    overflow: hidden;
+    table-layout: fixed;
+    border-collapse: collapse;
+
+    width: 100%;
+    margin: 0;
+
+    td,
+    th {
+      position: relative;
+
+      box-sizing: border-box;
+      min-width: 1em;
+      padding: $p $p-l;
+
+      vertical-align: top;
+
+      border: 1px solid $gray-44;
+
+      >* {
+        margin-bottom: 0;
+      }
+    }
+
+    th {
+      font-weight: bold;
+      text-align: left;
+      background-color: $gray-2;
+    }
+
+    p {
+      margin: 0;
+    }
   }
 }

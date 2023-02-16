@@ -57,7 +57,7 @@ export const RFC: React.FC<{
   return (
     <div className={clsn(cls.container, menu ? cls.withMenu : null)}>
       <div>
-        <Card>
+        <Card className={cls.card}>
           <Title level={1} className={cls.title}>
             {item.name}{' '}
             <Typography.Text type="secondary" className={cls.subtitle}>

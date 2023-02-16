@@ -6,6 +6,7 @@ import {
   IconHeading,
   IconCaretRight,
   IconCheckbox,
+  IconTable,
 } from '@tabler/icons-react';
 import type { Editor } from '@tiptap/core';
 import type { Plugin } from '@tiptap/pm/state';
@@ -119,6 +120,22 @@ export const FloatingMenu: React.FC<{ editor: Editor }> = ({ editor }) => {
             <IconQuote size="1em" />
           </div>
           <div>Quote</div>
+        </div>
+        <div
+          className={cls.item}
+          onClick={() => {
+            editor
+              .chain()
+              .focus()
+              .insertTable({ rows: 3, cols: 3, withHeaderRow: true })
+              .run();
+            select();
+          }}
+        >
+          <div className={cls.icon}>
+            <IconTable size="1em" />
+          </div>
+          <div>Table</div>
         </div>
         <div
           className={cls.item}

@@ -7,18 +7,36 @@
   p {
     margin-bottom: $p-m;
   }
+}
 
-  :global {
+:global {
 
-    // stylelint-disable selector-class-pattern
-    .ProseMirror-focused:focus {
-      outline: none;
+  // stylelint-disable selector-class-pattern
+  .ProseMirror-focused:focus {
+    outline: none;
+  }
+
+  .ProseMirror {
+    min-height: inherit;
+
+    p.is-editor-empty:first-child::before {
+      pointer-events: none;
+      content: attr(data-placeholder);
+
+      float: left;
+
+      height: 0;
+
+      color: #adb5bd;
     }
 
-    .ProseMirror {
-      min-height: inherit;
-
-      p.is-editor-empty:first-child::before {
+    // Placeholder
+    p.is-empty,
+    h1.is-empty,
+    h2.is-empty,
+    h3.is-empty,
+    h4.is-empty {
+      &::before {
         pointer-events: none;
         content: attr(data-placeholder);
 
@@ -28,50 +46,75 @@
 
         color: #adb5bd;
       }
+    }
 
-      // Placeholder
-      p.is-empty,
-      h1.is-empty,
-      h2.is-empty,
-      h3.is-empty,
-      h4.is-empty {
-        &::before {
-          pointer-events: none;
-          content: attr(data-placeholder);
+    // List
+    ul[data-type="taskList"] {
+      list-style: none;
 
-          float: left;
+      li {
+        display: flex;
+        gap: $p;
+        margin-left: 0;
 
-          height: 0;
-
-          color: #adb5bd;
+        >label {
+          user-select: none;
+          flex: 0 0 auto;
+          margin-right: 0.5rem;
         }
-      }
 
-      ul[data-type="taskList"] {
-        list-style: none;
+        >div {
+          flex: 1 1 auto;
+        }
 
-        li {
-          display: flex;
-          gap: $p;
-          margin-left: 0;
-
-          >label {
-            flex: 0 0 auto;
-            margin-right: 0.5rem;
-            user-select: none;
-          }
-
-          >div {
-            flex: 1 1 auto;
-          }
-
-          ul {
-            margin-bottom: 0;
-          }
+        ul {
+          margin-bottom: 0;
         }
       }
     }
 
-    // stylelint-enable selector-class-pattern
+    // Table
+    .tableWrapper {
+      padding: 1rem 0;
+      overflow-x: auto;
+    }
+
+    table {
+
+      .selectedCell::after {
+        pointer-events: none;
+        content: "";
+
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+
+        background: rgba($gray-44, 0.4);
+      }
+
+      .column-resize-handle {
+        pointer-events: none;
+        cursor: row-resize;
+
+        position: absolute;
+        top: 0;
+        right: -2px;
+        bottom: -2px;
+
+        width: 4px;
+
+        background-color: #adf;
+      }
+    }
+
+    .resize-cursor {
+      cursor: ew-resize;
+      cursor: col-resize;
+    }
   }
+
+  // stylelint-enable selector-class-pattern
 }

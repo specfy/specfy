@@ -57,6 +57,31 @@ export interface BlockHorizontalRule {
   type: 'horizontalRule';
 }
 
+// ----- Table
+export interface BlockTableAttrs {
+  colspan: number;
+  rowspan: number;
+  colwidth: number[] | null;
+}
+export interface BlockTableHeader {
+  type: 'tableHeader';
+  content: BlockParagraph[];
+  attrs: BlockTableAttrs;
+}
+export interface BlockTableCell {
+  type: 'tableCell';
+  attrs: BlockTableAttrs;
+  content: BlockParagraph[];
+}
+export interface BlockTableRow {
+  type: 'tableRow';
+  content: Array<BlockTableCell | BlockTableHeader>;
+}
+export interface BlockTable {
+  type: 'table';
+  content: BlockTableRow[];
+}
+
 // export interface BlockPanel {
 //   type: 'panel';
 //   panelType: 'error' | 'info' | 'success' | 'warning';
@@ -86,6 +111,7 @@ export type BlockLevelOne =
   | BlockHorizontalRule
   | BlockParagraph
   | BlockQuote
+  | BlockTable
   | BlockTaskList;
 export type Blocks =
   | BlockBulletList
@@ -95,6 +121,10 @@ export type Blocks =
   | BlockListItem
   | BlockParagraph
   | BlockQuote
+  | BlockTable
+  | BlockTableCell
+  | BlockTableHeader
+  | BlockTableRow
   | BlockTaskItem
   | BlockTaskList
   | BlockText;
@@ -104,5 +134,9 @@ export type BlocksWithContent =
   | BlockListItem
   | BlockParagraph
   | BlockQuote
+  | BlockTable
+  | BlockTableCell
+  | BlockTableHeader
+  | BlockTableRow
   | BlockTaskItem
   | BlockTaskList;

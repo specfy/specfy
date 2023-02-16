@@ -13,6 +13,10 @@ import { Link } from '@tiptap/extension-link';
 import { ListItem } from '@tiptap/extension-list-item';
 import { Paragraph } from '@tiptap/extension-paragraph';
 import { Placeholder } from '@tiptap/extension-placeholder';
+import { Table } from '@tiptap/extension-table';
+import { TableCell } from '@tiptap/extension-table-cell';
+import { TableHeader } from '@tiptap/extension-table-header';
+import { TableRow } from '@tiptap/extension-table-row';
 import { TaskItem } from '@tiptap/extension-task-item';
 import { TaskList } from '@tiptap/extension-task-list';
 import { Text } from '@tiptap/extension-text';
@@ -52,6 +56,14 @@ export const Editor: React.FC<{
       TaskItem.configure({
         nested: true,
       }),
+      Table.configure({
+        resizable: true,
+        lastColumnResizable: false,
+        cellMinWidth: 50,
+      }),
+      TableCell,
+      TableHeader,
+      TableRow,
       Code.configure({
         HTMLAttributes: { spellcheck: 'false' },
       }),

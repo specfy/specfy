@@ -2,7 +2,7 @@
 
 .container {
   display: grid;
-  grid-template-columns: minmax(750px, 850px) 200px;
+  grid-template-columns: ($main-col-w + 60px) 200px;
   gap: $p-xl;
 
   &.withMenu {
@@ -16,6 +16,10 @@
 
 .right {
   padding-top: $p-xxl;
+}
+
+.card {
+  padding: 0 $p-l;
 }
 
 .lastUpdate {

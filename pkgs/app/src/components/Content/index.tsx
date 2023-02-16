@@ -85,6 +85,22 @@ export const ContentBlock: React.FC<{ block: Blocks }> = ({ block }) => {
     );
   }
 
+  // Table
+  else if (block.type === 'table') {
+    return <table>{map(block)}</table>;
+  } else if (block.type === 'tableRow') {
+    return <tr>{map(block)}</tr>;
+  } else if (block.type === 'tableCell') {
+    return <td {...block.attrs}>{map(block)}</td>;
+  } else if (block.type === 'tableHeader') {
+    const { colwidth, ...others } = block.attrs;
+    return (
+      <th {...others} style={colwidth ? { width: `${colwidth}px` } : undefined}>
+        {map(block)}
+      </th>
+    );
+  }
+
   /*else if (block.type === 'panel') {
     return (
       <Alert

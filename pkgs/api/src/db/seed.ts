@@ -410,6 +410,97 @@ export async function seed() {
         //   ],
         // },
         {
+          type: 'table',
+          content: [
+            {
+              type: 'tableRow',
+              content: [
+                {
+                  type: 'tableHeader',
+                  attrs: {
+                    colspan: 1,
+                    rowspan: 1,
+                    colwidth: [150],
+                  },
+                  content: [
+                    {
+                      type: 'paragraph',
+                      content: [
+                        {
+                          type: 'text',
+                          text: 'Name',
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  type: 'tableHeader',
+                  attrs: {
+                    colspan: 1,
+                    rowspan: 1,
+                    colwidth: null,
+                  },
+                  content: [
+                    {
+                      type: 'paragraph',
+                      content: [
+                        {
+                          type: 'text',
+                          text: 'Description',
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              type: 'tableRow',
+              content: [
+                {
+                  type: 'tableCell',
+                  attrs: {
+                    colspan: 1,
+                    rowspan: 1,
+                    colwidth: null,
+                  },
+                  content: [
+                    {
+                      type: 'paragraph',
+                      content: [
+                        {
+                          type: 'text',
+                          text: 'Samuel Bodin',
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  type: 'tableCell',
+                  attrs: {
+                    colspan: 1,
+                    rowspan: 1,
+                    colwidth: null,
+                  },
+                  content: [
+                    {
+                      type: 'paragraph',
+                      content: [
+                        {
+                          type: 'text',
+                          text: 'Amazing developer much wow',
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
           type: 'horizontalRule',
         },
         {
