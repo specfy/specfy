@@ -1,4 +1,3 @@
-import type { IconType } from '@icons-pack/react-simple-icons';
 import { Card, Col, Row, Typography } from 'antd';
 import type { ApiComponent } from 'api/src/types/api/components';
 import type { ApiProject } from 'api/src/types/api/projects';
@@ -37,7 +36,7 @@ export const ComponentView: React.FC<{
   // TODO: filter RFC
   const [comp, setComp] = useState<ApiComponent>();
   const [info, setInfo] = useState<TechInfo>();
-  const [Icon, setIcon] = useState<IconType>();
+  const [Icon, setIcon] = useState<TechInfo['Icon']>();
   const route = useParams<Partial<RouteComponent>>();
 
   // Components

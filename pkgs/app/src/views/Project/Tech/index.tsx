@@ -10,6 +10,8 @@ import { supported } from '../../../common/component';
 import type { RouteTech } from '../../../types/routes';
 import { Line } from '../Component/Line';
 
+import cls from './index.module.scss';
+
 export const Tech: React.FC<{
   proj: ApiProject;
   comps: ApiComponent[];
@@ -20,10 +22,15 @@ export const Tech: React.FC<{
   const [techname, setTechName] = useState<string>();
   const [usedBy, setUsedBy] = useState<ApiComponent[]>([]);
   const [info, setInfo] = useState<TechInfo>();
+  const [Icon, setIcon] = useState<TechInfo['Icon']>();
 
   useEffect(() => {
     if (route.tech_slug && route.tech_slug in supported) {
       setInfo(supported[route.tech_slug]);
+      setIcon(supported[route.tech_slug].Icon);
+    } else {
+      setInfo(undefined);
+      setIcon(undefined);
     }
 
     let name;
@@ -54,6 +61,11 @@ export const Tech: React.FC<{
       <Col span={24}>
         <Card>
           <Typography.Title level={2}>
+            {Icon && (
+              <div className={cls.icon}>
+                <Icon size="1em" />
+              </div>
+            )}
             {techname}
             {info ? <Tag>{info.type}</Tag> : <Tag>tech</Tag>}
           </Typography.Title>
