@@ -1,7 +1,4 @@
 import {
-  LinkOutlined,
-  GithubOutlined,
-  SlackOutlined,
   TeamOutlined,
   HomeOutlined,
   ReadOutlined,
@@ -36,7 +33,7 @@ import { ProjectContent } from './Content';
 import { ProjectHome } from './Home';
 import { RFC } from './RFC';
 import { ProjectRevisions } from './Revisions';
-import { ProjectRevisionCurrent } from './Revisions/Current';
+import { ProjectRevisionCreate } from './Revisions/Create';
 import { ProjectSettings } from './Settings';
 import { ProjectTeam } from './Team';
 import { Tech } from './Tech';
@@ -313,7 +310,7 @@ export const Project: React.FC = () => {
               />
               <Route
                 path="/revisions/current"
-                element={<ProjectRevisionCurrent proj={proj} params={params} />}
+                element={<ProjectRevisionCreate proj={proj} params={params} />}
               />
             </Routes>
           </div>

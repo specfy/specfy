@@ -11,6 +11,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     Body: ReqPostProject;
     Reply: ResPostProject;
   }>('/', async function (req, res) {
+    // TODO: validation
     const p = await Project.create({
       name: req.body.name,
       description: req.body.description,

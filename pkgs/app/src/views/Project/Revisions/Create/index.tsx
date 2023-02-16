@@ -3,14 +3,15 @@ import {
   HistoryOutlined,
   LoadingOutlined,
 } from '@ant-design/icons';
-import { Button, Card, Checkbox, Form, Input, Typography } from 'antd';
+import { App, Button, Card, Form, Input, Typography } from 'antd';
 import type { ApiProject, BlockLevelZero } from 'api/src/types/api';
 import type { Change } from 'diff';
 import { diffWordsWithSpace } from 'diff';
 import { useEffect, useMemo, useState } from 'react';
 import { renderToString } from 'react-dom/server';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
+import { createRevision } from '../../../../api/revisions';
 import { ContentDoc } from '../../../../components/Content';
 import { Editor } from '../../../../components/Editor';
 import type { EditContextInterface } from '../../../../hooks/useEdit';
@@ -97,22 +98,29 @@ export const Update: React.FC<{
   );
 };
 
-export const ProjectRevisionCurrent: React.FC<{
+export const ProjectRevisionCreate: React.FC<{
   proj: ApiProject;
   params: RouteProject;
 }> = ({ proj, params }) => {
+  // Global
+  const { message } = App.useApp();
+  const navigate = useNavigate();
+
+  // Edition
   const edit = useEdit();
   const [edits, originals] = useMemo(() => {
     return [Object.entries(edit.edits), edit.getOriginals()];
   }, [edit.edits]);
 
+  // Local
   const [lastComputed, setLastComputed] = useState<number>();
   const [computed, setComputed] = useState<Computed[]>([]);
   const [to] = useState(() => `/org/${params.org_id}/${params.project_slug}`);
 
   // Form
   const [canSubmit, setCanSubmit] = useState<boolean>(false);
-  const [title, setTitle] = useState<string>();
+  // TODO: keep those values in Edit Mode
+  const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<BlockLevelZero>({
     type: 'doc',
     content: [{ type: 'paragraph' }],
@@ -171,6 +179,21 @@ export const ProjectRevisionCurrent: React.FC<{
     setLastComputed(-1);
   };
 
+  const onSubmit = async () => {
+    console.log('on finish?');
+    const { id } = await createRevision({
+      orgId: params.org_id,
+      projectId: proj.id,
+      parentId: null, // TODO: compute this
+      title,
+      description,
+      changes: [], // TODO: compute this
+    });
+    message.success('Revision created');
+
+    navigate(`/org/${params.org_id}/${params.project_slug}/r/${id}`);
+  };
+
   if (!computed) {
     return <LoadingOutlined />;
   }
@@ -182,24 +205,29 @@ export const ProjectRevisionCurrent: React.FC<{
       </Typography.Title>
       <div className={cls.propose}>
         <Card>
-          <Form.Item required>
-            <Input
-              size="large"
-              placeholder="Title"
-              onChange={(e) => setTitle(e.target.value)}
-            />
-          </Form.Item>
-          <Form.Item required>
+          <Form onFinish={onSubmit}>
+            <Form.Item required name="title">
+              <Input
+                size="large"
+                placeholder="Title"
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            </Form.Item>
             <Editor
               content={description}
               onUpdate={setDescription}
               minHeight="100px"
               inputLike={true}
             />
-          </Form.Item>
-          <Button type="primary" block disabled={!canSubmit}>
-            Propose changes
-          </Button>
+            <Button
+              type="primary"
+              block
+              disabled={!canSubmit}
+              htmlType="submit"
+            >
+              Propose changes
+            </Button>
+          </Form>
         </Card>
       </div>
       <div className={cls.staged}>

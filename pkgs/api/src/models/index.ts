@@ -3,5 +3,6 @@ export { Document } from './document';
 export { Org } from './org';
 export { Perm } from './perm';
 export { Project } from './project';
-export { User } from './user';
+export { Revision } from './revision';
 export { TypeHasUser } from './typeHasUser';
+export { User } from './user';

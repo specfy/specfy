@@ -353,3 +353,61 @@ table "type_has_users" {
     unique = true
   }
 }
+
+
+// ------------------------ Revisions
+table "revisions" {
+  schema = schema.public
+
+  column "id" {
+    type = uuid
+    null = false
+  }
+  column "parent_id" {
+    type = uuid
+    null = true
+  }
+  column "org_id" {
+    type = varchar(35)
+    null = false
+  }
+  column "project_id" {
+    type = uuid
+    null = false
+  }
+
+  column "title" {
+    type = varchar(250)
+    null = false
+  }
+  column "description" {
+    type = json
+    null = false
+  }
+
+  column "changes" {
+    type = json
+    null = false
+  }
+
+  column "locked" {
+    type = boolean
+    null = false
+    default = false
+  }
+
+  column "created_at" {
+    type    = timestamp(6)
+    default = sql("now()")
+    null    = false
+  }
+  column "updated_at" {
+    type    = timestamp(6)
+    default = sql("now()")
+    null    = false
+  }
+
+  primary_key {
+    columns = [column.id]
+  }
+}
