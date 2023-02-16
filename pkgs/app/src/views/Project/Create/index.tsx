@@ -102,8 +102,8 @@ export const ProjectCreate: React.FC = () => {
 
           <Divider />
 
-          <Button type="primary" htmlType="submit" size="large">
-            Submit
+          <Button type="primary" htmlType="submit">
+            Create project
           </Button>
         </Form>
       </Card>

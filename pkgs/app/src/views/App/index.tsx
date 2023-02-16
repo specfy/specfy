@@ -24,15 +24,21 @@ const App: React.FC = () => {
         theme={{
           token: {
             borderRadius: 4,
-            colorPrimary: '#2a74dc',
-            colorLinkHover: '#2a74dc',
-            linkHoverDecoration: 'underline',
+            colorPrimary: '#1d4ed8',
+            colorLinkHover: '#0369a1',
+            // linkHoverDecoration: 'underline',
             fontSizeHeading1: 28,
             fontSizeHeading2: 24,
             fontSizeHeading5: 16,
             fontSizeHeading4: 18,
             fontSizeHeading3: 20,
+            fontSize: 14,
             fontFamily: `"Source Sans Pro", system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Noto Sans", sans-serif, BlinkMacSystemFont, Oxygen, "Open Sans", "Helvetica Neue"`,
+            colorSuccess: '#059669', // emerald
+            colorSuccessBg: '#d1fae5', // emerald
+            colorError: '#dc2626',
+            colorErrorBg: '#fee2e2',
+            colorBgBase: '#fff',
           },
         }}
       >

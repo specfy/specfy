@@ -1,4 +1,4 @@
-@import "../../../theme";
+@import "../../../styles/theme";
 
 .team {
   display: inline-flex;
@@ -14,34 +14,4 @@
 
 .block {
   margin-top: 32px;
-}
-
-// Comp
-.line {
-  display: grid;
-  grid-template-columns: 150px auto;
-  margin-bottom: 12px;
-}
-
-.comp {
-  display: inline-block;
-  font-size: $font;
-
-  a {
-    color: $gray-9;
-  }
-
-  & + .comp::before {
-    content: ", ";
-  }
-}
-
-.editable {
-  padding-left: $p-l;
-  white-space: pre-line;
-  border-left: 2px solid #0958d9;
-
-  &.edited {
-    border-left-color: #52c41a;
-  }
 }

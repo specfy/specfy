@@ -183,35 +183,19 @@ export const ComponentView: React.FC<{
             <div className={cls.block}>
               <Typography.Title level={5}>Stack</Typography.Title>
               {comp.tech && (
-                <div className={cls.line}>
-                  <div>Build with</div>
-                  <div>
-                    {comp.tech.map((tech) => {
-                      const name = tech.toLocaleLowerCase();
-                      return (
-                        <Link
-                          key={tech}
-                          to={`/org/${params.org_id}/${params.project_slug}/t/${name}`}
-                          className={cls.language}
-                        >
-                          <i className={`devicon-${name}-plain`}></i> {tech}
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </div>
+                <Line title="Build with" techs={comp.tech} params={params} />
               )}
 
               {hosts.length > 0 && (
-                <Line title="Hosted on" list={hosts} params={params} />
+                <Line title="Hosted on" comps={hosts} params={params} />
               )}
 
               {contains.length > 0 && (
-                <Line title="Contains" list={contains} params={params} />
+                <Line title="Contains" comps={contains} params={params} />
               )}
 
               {inComp && (
-                <Line title="Run inside" list={[inComp]} params={params} />
+                <Line title="Run inside" comps={[inComp]} params={params} />
               )}
             </div>
           )}
@@ -228,31 +212,31 @@ export const ComponentView: React.FC<{
               {readwrite.length > 0 && (
                 <Line
                   title="Read and Write to"
-                  list={readwrite}
+                  comps={readwrite}
                   params={params}
                 />
               )}
 
               {read.length > 0 && (
-                <Line title="Read from" list={read} params={params} />
+                <Line title="Read from" comps={read} params={params} />
               )}
 
               {receiveSend.length > 0 && (
                 <Line
                   title="Receive and Send to"
-                  list={receiveSend}
+                  comps={receiveSend}
                   params={params}
                 />
               )}
               {receive.length > 0 && (
-                <Line title="Receive from" list={receive} params={params} />
+                <Line title="Receive from" comps={receive} params={params} />
               )}
               {send.length > 0 && (
-                <Line title="Send to" list={send} params={params} />
+                <Line title="Send to" comps={send} params={params} />
               )}
 
               {write.length > 0 && (
-                <Line title="Write to" list={write} params={params} />
+                <Line title="Write to" comps={write} params={params} />
               )}
             </div>
           )}

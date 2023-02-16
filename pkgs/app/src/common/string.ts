@@ -36,17 +36,49 @@ export function stringToColorRandom(str: string): string {
   return `hsl(${hash % 250}, 85%, 80%)`;
 }
 
-const palette = Object.entries(presetPalettes);
-palette.pop();
+const paletteBg = [
+  '#fca5a5',
+  '#fdba74',
+  '#fde047',
+  '#bef264',
+  '#86efac',
+  '#6ee7b7',
+  '#5eead4',
+  '#67e8f9',
+  '#7dd3fc',
+  '#93c5fd',
+  '#a5b4fc',
+  '#d8b4fe',
+  '#f0abfc',
+  '#f9a8d4',
+  '#fda4af',
+];
+const paletteColor = [
+  '#dc2626',
+  '#ea580c',
+  '#ca8a04',
+  '#65a30d',
+  '#16a34a',
+  '#059669',
+  '#0d9488',
+  '#0891b2',
+  '#0284c7',
+  '#2563eb',
+  '#4f46e5',
+  '#9333ea',
+  '#c026d3',
+  '#db2777',
+  '#e11d48',
+];
 export function stringToColor(str: string): {
   backgroundColor: string;
   color: string;
 } {
   const hashedText = stringHash(str);
-  const colorIndex = hashedText % palette.length;
+  const colorIndex = hashedText % paletteColor.length;
 
   return {
-    backgroundColor: palette[colorIndex][1][2],
-    color: palette[colorIndex][1][0],
+    backgroundColor: paletteBg[colorIndex],
+    color: paletteColor[colorIndex],
   };
 }

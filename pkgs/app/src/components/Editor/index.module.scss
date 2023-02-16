@@ -1,4 +1,4 @@
-@import "../../theme";
+@import "../../styles/theme";
 
 .editor {
   min-height: 400px;
@@ -75,12 +75,11 @@
 
     // Table
     .tableWrapper {
-      padding: 1rem 0;
       overflow-x: auto;
+      padding: 1rem 0;
     }
 
     table {
-
       .selectedCell::after {
         pointer-events: none;
         content: "";

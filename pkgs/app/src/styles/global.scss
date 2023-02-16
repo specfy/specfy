@@ -121,3 +121,14 @@ body {
     }
   }
 }
+
+// Tag
+.ant-tag {
+  padding: 0 $p-l;
+  border: none;
+  border-radius: 10px;
+
+  .anticon {
+    margin-right: $p;
+  }
+}

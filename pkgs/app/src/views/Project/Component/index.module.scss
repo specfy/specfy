@@ -1,4 +1,4 @@
-@import "../../../theme";
+@import "../../../styles/theme";
 
 .grid {
   display: grid;
@@ -20,17 +20,46 @@
   }
 }
 
-.language {
-  display: inline-block;
-  margin: 0 22px 0 0;
-  font-size: $font;
-  color: $gray-8;
-}
-
 .line {
   display: grid;
   grid-template-columns: 150px auto;
-  margin-bottom: 12px;
+  margin-bottom: $p-xxl;
+
+  .label {
+    font-size: $font-s;
+    color: $gray-500;
+  }
+
+  .values {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $p-xs $p-m;
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+
+  .item {
+    display: inline-flex;
+    gap: $p-m;
+    align-items: center;
+
+    min-width: 120px;
+    padding: 0 $p-m;
+
+    font-size: $font;
+    color: $gray-700;
+
+    border-radius: 10px;
+
+    &:hover {
+      color: $blue-700;
+      background: $gray-100;
+    }
+
+    >svg {
+      font-size: $font-s;
+    }
+  }
 }
 
 .block {

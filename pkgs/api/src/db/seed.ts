@@ -676,7 +676,7 @@ export async function seed() {
     edges: [],
   });
   const es = await Component.create({
-    name: 'Elatiscsearch',
+    name: 'Elasticsearch',
     type: 'component',
     orgId: 'algolia',
     projectId: p1.id,

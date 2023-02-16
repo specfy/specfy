@@ -1,22 +1,21 @@
 import { Typography } from 'antd';
 import type { ApiComponent } from 'api/src/types/api/components';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 
-import cls from './index.module.scss';
+import type { RouteProject } from '../../../types/routes';
+import { Line } from '../Component/Line';
 
 export const TechnicalAspects: React.FC<{
   components: ApiComponent[];
-  orgId: string;
-  slug: string;
-}> = ({ components, orgId, slug }) => {
+  params: RouteProject;
+}> = ({ components, params }) => {
   const [hosts, setHosts] = useState<ApiComponent[]>([]);
-  const [techs, setTechs] = useState<Array<[string, string]>>([]);
+  const [techs, setTechs] = useState<string[]>([]);
   const [tp, setTP] = useState<ApiComponent[]>([]);
   const [projects, setProjects] = useState<ApiComponent[]>([]);
 
   useEffect(() => {
-    const _techs = new Map<string, string>();
+    const _techs = new Set<string>();
     const _hosts = [];
     const _tp = [];
     const _projects = [];
@@ -31,12 +30,12 @@ export const TechnicalAspects: React.FC<{
       }
       if (comp.tech) {
         for (const t of comp.tech) {
-          _techs.set(t, t.toLocaleLowerCase());
+          _techs.add(t);
         }
       }
     }
 
-    setTechs(Array.from(_techs.entries()));
+    setTechs(Array.from(_techs.values()));
     setHosts(_hosts);
     setTP(_tp);
     setProjects(_projects);
@@ -52,86 +51,20 @@ export const TechnicalAspects: React.FC<{
         )}
 
       {techs.length > 0 && (
-        <div className={cls.line}>
-          <div>Stack</div>
-          <div>
-            {hosts.map((comp) => {
-              return (
-                <span key={comp.id} className={cls.comp}>
-                  <Link to={`/org/${orgId}/${slug}/c/${comp.slug}`}>
-                    {comp.name}
-                  </Link>
-                </span>
-              );
-            })}
-            {techs.map((tech) => {
-              return (
-                <span key={tech[1]} className={cls.comp}>
-                  <Link to={`/org/${orgId}/${slug}/t/${tech[1]}`}>
-                    {tech[0]}
-                  </Link>
-                </span>
-              );
-            })}
-          </div>
-        </div>
+        <Line title="Stack" comps={hosts} techs={techs} params={params} />
       )}
       {components.length > 0 && (
-        <div className={cls.line}>
-          <div>Components</div>
-          <div>
-            {components.map((comp) => {
-              if (comp.type !== 'component') {
-                return null;
-              }
-              return (
-                <span key={comp.id} className={cls.comp}>
-                  <Link
-                    key={comp.id}
-                    to={`/org/${orgId}/${slug}/c/${comp.slug}`}
-                  >
-                    {comp.name}
-                  </Link>
-                </span>
-              );
-            })}
-          </div>
-        </div>
+        <Line
+          title="Components"
+          comps={components.filter((c) => c.type === 'component')}
+          params={params}
+        />
       )}
       {tp.length > 0 && (
-        <div className={cls.line}>
-          <div>Third Parties</div>
-          <div>
-            {tp.map((comp) => {
-              return (
-                <span key={comp.id} className={cls.comp}>
-                  <Link
-                    key={comp.id}
-                    to={`/org/${orgId}/${slug}/c/${comp.slug}`}
-                  >
-                    {comp.name}
-                  </Link>
-                </span>
-              );
-            })}
-          </div>
-        </div>
+        <Line title="Third Parties" comps={tp} params={params} />
       )}
       {projects.length > 0 && (
-        <div className={cls.line}>
-          <div>Depends on projects</div>
-          <div>
-            {projects.map((comp) => {
-              return (
-                <span key={comp.id} className={cls.comp}>
-                  <Link to={`/org/${orgId}/${slug}/c/${comp.slug}`}>
-                    {comp.name}
-                  </Link>
-                </span>
-              );
-            })}
-          </div>
-        </div>
+        <Line title="Depends on projects" comps={projects} params={params} />
       )}
     </>
   );

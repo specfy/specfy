@@ -46,11 +46,7 @@ export const ProjectHome: React.FC<{
             <div className={cls.block}>
               <Typography.Title level={5}>Technical Aspect</Typography.Title>
               {comps ? (
-                <TechnicalAspects
-                  components={comps}
-                  orgId={params.org_id}
-                  slug={params.project_slug}
-                />
+                <TechnicalAspects components={comps} params={params} />
               ) : (
                 <Typography.Text type="secondary">
                   Nothing to show.

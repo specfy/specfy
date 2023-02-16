@@ -14,6 +14,7 @@
     "@antv/x6-plugin-scroller": "2.0.7",
     "@antv/x6-react-components": "2.0.7",
     "@antv/x6-react-shape": "2.1.0",
+    "@icons-pack/react-simple-icons": "6.2.0",
     "@tabler/icons": "2.4.0",
     "@tabler/icons-react": "2.4.0",
     "@tiptap/extension-blockquote": "2.0.0-beta.217",
