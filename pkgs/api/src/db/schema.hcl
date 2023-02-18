@@ -132,6 +132,11 @@ table "documents" {
     type = uuid
     null = false
   }
+  column "blob_id" {
+    type = uuid
+    null = false
+  }
+
   column "type" {
     type = varchar(25)
     null = false
@@ -363,10 +368,6 @@ table "revisions" {
     type = uuid
     null = false
   }
-  column "parent_id" {
-    type = uuid
-    null = true
-  }
   column "org_id" {
     type = varchar(35)
     null = false
@@ -384,13 +385,68 @@ table "revisions" {
     type = json
     null = false
   }
-
-  column "changes" {
+  column "blobs" {
     type = json
     null = false
   }
-
   column "locked" {
+    type = boolean
+    null = false
+    default = false
+  }
+
+  column "created_at" {
+    type    = timestamp(6)
+    default = sql("now()")
+    null    = false
+  }
+  column "updated_at" {
+    type    = timestamp(6)
+    default = sql("now()")
+    null    = false
+  }
+
+  primary_key {
+    columns = [column.id]
+  }
+}
+
+
+// ------------------------ Blobs
+table "blobs" {
+  schema = schema.public
+
+  column "id" {
+    type = uuid
+    null = false
+  }
+
+  column "org_id" {
+    type = varchar(35)
+    null = false
+  }
+  column "project_id" {
+    type = uuid
+    null = false
+  }
+
+  column "type" {
+    type = varchar(35)
+    null = false
+  }
+  column "type_id" {
+    type = uuid
+    null = false
+  }
+  column "parent_id" {
+    type = uuid
+    null = true
+  }
+  column "blob" {
+    type = json
+    null = false
+  }
+  column "deleted" {
     type = boolean
     null = false
     default = false

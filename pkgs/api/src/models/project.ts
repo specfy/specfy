@@ -9,14 +9,11 @@ import {
   Column,
   DataType,
   BeforeCreate,
-  AfterCreate,
 } from 'sequelize-typescript';
 import slugify from 'slugify';
 
-import { GIT_DIR } from '../common/git';
 import type { DBProject, DBProjectLink } from '../types/db/projects';
 
-import { GitBase } from './git/base';
 import type { Org } from './org';
 
 @Table({ tableName: 'projects', modelName: 'project' })

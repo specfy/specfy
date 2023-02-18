@@ -15,11 +15,12 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     const p = await Revision.create({
       orgId: req.body.orgId,
       projectId: req.body.projectId,
-      parentId: req.body.parentId,
       title: req.body.title,
       description: req.body.description,
-      changes: req.body.changes,
     });
+
+    for (const change of req.body.changes) {
+    }
 
     res.status(200).send({
       id: p.id,

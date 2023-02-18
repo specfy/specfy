@@ -10,23 +10,23 @@ import {
   DataType,
 } from 'sequelize-typescript';
 
-import type { DBRevision } from '../types/db/revisions';
+import type { DBBlob } from '../types/db/blobs';
 
 import type { Org } from './org';
 import type { Project } from './project';
 
-@Table({ tableName: 'revisions', modelName: 'revision' })
-export class Revision extends Model<
-  DBRevision,
-  Pick<DBRevision, 'blobs' | 'description' | 'orgId' | 'projectId' | 'title'>
+@Table({ tableName: 'blobs', modelName: 'blob' })
+export class Blob extends Model<
+  DBBlob,
+  Pick<
+    DBBlob,
+    'blob' | 'deleted' | 'orgId' | 'parentId' | 'projectId' | 'type' | 'typeId'
+  >
 > {
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column(DataType.UUID)
   declare id: CreationOptional<string>;
-
-  @Column({ field: 'parent_id', type: DataType.STRING })
-  declare parentId: ForeignKey<string>;
 
   @Column({ field: 'org_id', type: DataType.STRING })
   declare orgId: ForeignKey<Org['id']>;
@@ -35,16 +35,19 @@ export class Revision extends Model<
   declare projectId: ForeignKey<Project['id']>;
 
   @Column
-  declare title: string;
+  declare type: string;
+
+  @Column({ field: 'type_id' })
+  declare typeId: string;
+
+  @Column({ field: 'parent_id' })
+  declare parentId: string;
 
   @Column({ type: DataType.JSON })
-  declare description: CreationOptional<DBRevision['description']>;
-
-  @Column({ type: DataType.JSON })
-  declare blobs: CreationOptional<DBRevision['blobs']>;
+  declare blob: CreationOptional<DBBlob['blob']>;
 
   @Column({ type: DataType.BOOLEAN })
-  declare locked: CreationOptional<DBRevision['locked']>;
+  declare deleted: CreationOptional<DBBlob['deleted']>;
 
   @CreatedAt
   @Column({ field: 'created_at' })

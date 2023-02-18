@@ -1,4 +1,5 @@
 import type { CreationOptional, ForeignKey } from 'sequelize';
+import type { HookOptions } from 'sequelize-typescript';
 import {
   Model,
   CreatedAt,
@@ -11,9 +12,11 @@ import {
   BeforeCreate,
 } from 'sequelize-typescript';
 import slugify from 'slugify';
+import { v4 as uuidv4 } from 'uuid';
 
 import type { DBDocument } from '../types/db/documents';
 
+import { Blob } from './blob';
 import type { Org } from './org';
 import type { Project } from './project';
 
@@ -41,6 +44,9 @@ export class Document extends Model<DBDocument, CreateProp> {
 
   @Column({ field: 'project_id', type: DataType.UUIDV4 })
   declare projectId: ForeignKey<Project['id']>;
+
+  @Column({ field: 'blob_id', type: DataType.UUIDV4 })
+  declare blobId: ForeignKey<Blob['id']>;
 
   @Column
   declare type: 'rfc';
@@ -82,7 +88,10 @@ export class Document extends Model<DBDocument, CreateProp> {
   declare updatedAt: Date;
 
   @BeforeCreate
-  static async before(model: Document): Promise<void> {
+  static async onBeforeCreate(
+    model: Document,
+    { transaction }: HookOptions
+  ): Promise<void> {
     model.slug = slugify(model.name, { lower: true, trim: true });
     model.typeId =
       (await this.count({
@@ -90,5 +99,21 @@ export class Document extends Model<DBDocument, CreateProp> {
           orgId: model.orgId,
         },
       })) + 1;
+    model.id = model.id || uuidv4();
+
+    const { id, orgId, projectId, createdAt, updatedAt, ...simplified } =
+      model.toJSON();
+    const blob = await Blob.create(
+      {
+        orgId: model.orgId,
+        projectId: model.projectId,
+        type: 'document',
+        typeId: model.id,
+        blob: simplified,
+        deleted: false,
+      },
+      { transaction }
+    );
+    model.blobId = blob.id;
   }
 }

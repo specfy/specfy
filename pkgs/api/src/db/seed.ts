@@ -6,6 +6,8 @@ import {
   Project,
   Perm,
   TypeHasUser,
+  Revision,
+  Blob,
 } from '../models';
 
 import './';
@@ -18,6 +20,8 @@ export async function clean() {
     Document.truncate(),
     Component.truncate(),
     Perm.truncate(),
+    Revision.truncate(),
+    Blob.truncate(),
   ]);
 }
 
