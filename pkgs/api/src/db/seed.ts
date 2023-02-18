@@ -66,6 +66,7 @@ export async function seed() {
 
   // Projects
   const p1 = await Project.create({
+    id: '00000000-0000-4000-0000-000000000000',
     orgId: 'algolia',
     name: 'Crawler',
     description: {
@@ -90,6 +91,7 @@ export async function seed() {
     links: [{ title: 'Github', link: 'https://github.com/bodinsamuel' }],
   });
   await Project.create({
+    id: '10000000-0000-4000-0000-000000000000',
     orgId: 'algolia',
     name: 'Dashboard',
     description: {
@@ -109,6 +111,7 @@ export async function seed() {
     links: [],
   });
   const p3 = await Project.create({
+    id: '20000000-0000-4000-0000-000000000000',
     orgId: 'algolia',
     name: 'Analytics API',
     description: {
@@ -171,6 +174,7 @@ export async function seed() {
 
   // Contents
   const d1 = await Document.create({
+    id: '01000000-0000-4000-0000-000000000000',
     orgId: 'algolia',
     projectId: p1.id,
     type: 'rfc',
@@ -536,6 +540,7 @@ export async function seed() {
     // approvedBy: ['3'],
   });
   const d2 = await Document.create({
+    id: '01100000-0000-4000-0000-000000000000',
     orgId: 'algolia',
     projectId: p1.id,
     type: 'rfc',
@@ -550,6 +555,7 @@ export async function seed() {
     status: 'draft',
   });
   const d3 = await Document.create({
+    id: '01200000-0000-4000-0000-000000000000',
     orgId: 'algolia',
     projectId: p1.id,
     type: 'rfc',
@@ -823,7 +829,7 @@ export async function seed() {
     ],
     tech: ['React', 'Typescript', 'Webpack'],
   });
-  const manager = await Component.create({
+  await Component.create({
     name: 'Manager',
     type: 'component',
     orgId: 'algolia',
@@ -896,7 +902,7 @@ export async function seed() {
     ],
     tech: ['NodeJS', 'Typescript'],
   });
-  const worker = await Component.create({
+  await Component.create({
     name: 'Worker',
     type: 'component',
     orgId: 'algolia',

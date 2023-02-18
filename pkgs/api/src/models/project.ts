@@ -9,17 +9,21 @@ import {
   Column,
   DataType,
   BeforeCreate,
+  AfterCreate,
 } from 'sequelize-typescript';
 import slugify from 'slugify';
 
+import { GIT_DIR } from '../common/git';
 import type { DBProject, DBProjectLink } from '../types/db/projects';
 
+import { GitBase } from './git/base';
 import type { Org } from './org';
 
 @Table({ tableName: 'projects', modelName: 'project' })
 export class Project extends Model<
   DBProject,
-  Pick<DBProject, 'description' | 'links' | 'name' | 'orgId'>
+  Partial<Pick<DBProject, 'id'>> &
+    Pick<DBProject, 'description' | 'links' | 'name' | 'orgId'>
 > {
   @PrimaryKey
   @Default(DataType.UUIDV4)

@@ -17,9 +17,7 @@ import type { DBDocument } from '../types/db/documents';
 import type { Org } from './org';
 import type { Project } from './project';
 
-@Table({ tableName: 'documents', modelName: 'document' })
-export class Document extends Model<
-  DBDocument,
+type CreateProp = Partial<Pick<DBDocument, 'id'>> &
   Pick<
     DBDocument,
     | 'content'
@@ -30,8 +28,9 @@ export class Document extends Model<
     | 'status'
     | 'tldr'
     | 'type'
-  >
-> {
+  >;
+@Table({ tableName: 'documents', modelName: 'document' })
+export class Document extends Model<DBDocument, CreateProp> {
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column(DataType.UUID)
