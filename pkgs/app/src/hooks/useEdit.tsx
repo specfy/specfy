@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
+import type { ApiBlob } from 'api/src/types/api/blob';
 import { useMemo, useState, createContext, useContext } from 'react';
 
 export interface EditContextSub<T extends Record<string, any>> {
@@ -8,7 +9,7 @@ export interface EditContextSub<T extends Record<string, any>> {
 }
 
 export interface EditChange {
-  type: string;
+  type: ApiBlob['type'];
   id: string;
   original: Record<string, any>;
   values: Record<string, any>;

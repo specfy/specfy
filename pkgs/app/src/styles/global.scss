@@ -139,3 +139,19 @@ body {
     border: 1px solid transparent;
   }
 }
+
+// Input
+.ant-input-group {
+  .ant-input-group-addon {
+    background-color: $gray-100;
+    border-color: $gray-200;
+  }
+
+  .ant-input-affix-wrapper {
+    border-color: $gray-200;
+
+    .ant-input-prefix {
+      margin-inline-end: $p-m;
+    }
+  }
+}

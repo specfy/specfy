@@ -15,14 +15,14 @@ import type { DBBlob } from '../types/db/blobs';
 import type { Org } from './org';
 import type { Project } from './project';
 
-@Table({ tableName: 'blobs', modelName: 'blob' })
-export class Blob extends Model<
-  DBBlob,
+export type PropBlobCreate = Partial<Pick<DBBlob, 'id'>> &
   Pick<
     DBBlob,
     'blob' | 'deleted' | 'orgId' | 'parentId' | 'projectId' | 'type' | 'typeId'
-  >
-> {
+  >;
+
+@Table({ tableName: 'blobs', modelName: 'blob' })
+export class RevisionBlob extends Model<DBBlob, PropBlobCreate> {
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column(DataType.UUID)

@@ -76,6 +76,11 @@ table "projects" {
     type = varchar(35)
     null = false
   }
+  column "blob_id" {
+    type = uuid
+    null = false
+  }
+
   column "name" {
     type = varchar(100)
     null = false
@@ -92,6 +97,7 @@ table "projects" {
     type = json
     null = true
   }
+
   column "created_at" {
     type    = timestamp(6)
     default = sql("now()")
@@ -215,6 +221,10 @@ table "components" {
     null = false
   }
   column "project_id" {
+    type = uuid
+    null = false
+  }
+  column "blob_id" {
     type = uuid
     null = false
   }
@@ -390,6 +400,16 @@ table "revisions" {
     null = false
   }
   column "locked" {
+    type = boolean
+    null = false
+    default = false
+  }
+  column "status" {
+    type = varchar(25)
+    null = false
+    default = "draft"
+  }
+  column "merged" {
     type = boolean
     null = false
     default = false

@@ -1,4 +1,4 @@
-export { Blob } from './blob';
+export { RevisionBlob } from './blob';
 export { Component } from './component';
 export { Document } from './document';
 export { Org } from './org';

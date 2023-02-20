@@ -11,9 +11,13 @@ import {
   BeforeCreate,
 } from 'sequelize-typescript';
 import slugify from 'slugify';
+import { v4 as uuidv4 } from 'uuid';
 
+import type { DBBlobComponent } from '../types/db/blobs';
 import type { DBComponent } from '../types/db/components';
 
+import type { PropBlobCreate } from './blob';
+import { RevisionBlob } from './blob';
 import type { Org } from './org';
 import type { Project } from './project';
 
@@ -45,8 +49,12 @@ export class Component extends Model<
   @Column({ field: 'project_id', type: DataType.UUIDV4 })
   declare projectId: ForeignKey<Project['id']>;
 
+  @Column({ field: 'blob_id', type: DataType.UUIDV4 })
+  declare blobId: ForeignKey<RevisionBlob['id']>;
+
   @Column({ type: DataType.STRING })
   declare type: DBComponent['type'];
+
   @Column({ field: 'type_id', type: DataType.STRING })
   declare typeId: DBComponent['typeId'];
 
@@ -80,9 +88,29 @@ export class Component extends Model<
   declare updatedAt: Date;
 
   @BeforeCreate
-  static createSlug(model: Component): void {
+  static async onBeforeCreate(
+    model: Component,
+    { transaction }
+  ): Promise<void> {
     model.slug = slugify(model.name, { lower: true, trim: true });
-
     model.type = model.type || 'component';
+    model.id = model.id || uuidv4();
+
+    const body: PropBlobCreate = {
+      orgId: model.orgId,
+      projectId: model.id,
+      parentId: null,
+      type: 'component',
+      typeId: model.id,
+      blob: model.getJsonForBlob(),
+      deleted: false,
+    };
+    const blob = await RevisionBlob.create(body, { transaction });
+    model.blobId = blob.id;
+  }
+
+  getJsonForBlob(): DBBlobComponent['blob'] {
+    const { id, orgId, createdAt, updatedAt, ...simplified } = this.toJSON();
+    return simplified;
   }
 }

@@ -5,6 +5,7 @@ import {
   ClusterOutlined,
   ThunderboltOutlined,
   SettingOutlined,
+  HistoryOutlined,
 } from '@ant-design/icons';
 import { Avatar, Card, Divider, Menu, Skeleton, Switch } from 'antd';
 import type { ApiComponent } from 'api/src/types/api/components';
@@ -34,6 +35,7 @@ import { ProjectHome } from './Home';
 import { RFC } from './RFC';
 import { ProjectRevisions } from './Revisions';
 import { ProjectRevisionCreate } from './Revisions/Create';
+import { ProjectRevisionsList } from './Revisions/List';
 import { ProjectSettings } from './Settings';
 import { ProjectTeam } from './Team';
 import { Tech } from './Tech';
@@ -143,6 +145,15 @@ export const Project: React.FC = () => {
         ),
       },
       {
+        key: 'revisions',
+        label: (
+          <Link to={`${linkSelf}/revisions`} className={cls.link}>
+            <HistoryOutlined />
+            Revisions
+          </Link>
+        ),
+      },
+      {
         key: 'activity',
         label: (
           <Link to={`${linkSelf}/activity`} className={cls.link}>
@@ -207,7 +218,11 @@ export const Project: React.FC = () => {
           parentLink={linkOrg}
           title={proj.name}
           link={linkSelf}
-          subtitle={<Time time={proj.updatedAt} />}
+          subtitle={
+            <>
+              updated <Time time={proj.updatedAt} />
+            </>
+          }
         ></BigHeading>
         <Menu
           defaultSelectedKeys={['summary']}
@@ -306,7 +321,7 @@ export const Project: React.FC = () => {
               />
               <Route
                 path="/revisions"
-                element={<ProjectRevisions proj={proj} params={params} />}
+                element={<ProjectRevisionsList proj={proj} params={params} />}
               />
               <Route
                 path="/revisions/current"

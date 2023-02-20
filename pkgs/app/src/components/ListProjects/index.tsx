@@ -46,7 +46,7 @@ export const ListProjects: React.FC = () => {
                   }
                   description={
                     <div className={cls.info}>
-                      <Time time={item.updatedAt} />
+                      updated <Time time={item.updatedAt} />
                     </div>
                   }
                 />

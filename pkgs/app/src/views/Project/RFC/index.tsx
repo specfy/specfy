@@ -67,7 +67,7 @@ export const RFC: React.FC<{
           <Space>
             <RFCStatusTag status={item.status} locked={item.locked} />
             <div className={cls.lastUpdate}>
-              <Time time={item.updatedAt} />
+              updated <Time time={item.updatedAt} />
             </div>
           </Space>
           {!edit.isEnabled && (

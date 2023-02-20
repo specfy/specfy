@@ -7,7 +7,7 @@ import {
   Perm,
   TypeHasUser,
   Revision,
-  Blob,
+  RevisionBlob,
 } from '../models';
 
 import './';
@@ -21,7 +21,7 @@ export async function clean() {
     Component.truncate(),
     Perm.truncate(),
     Revision.truncate(),
-    Blob.truncate(),
+    RevisionBlob.truncate(),
   ]);
 }
 
@@ -970,6 +970,72 @@ export async function seed() {
       },
     ],
     tech: ['NodeJS', 'Typescript'],
+  });
+
+  // Revisions
+  const projectRev = new Project({
+    ...p1,
+    name: 'Open Crawler',
+    description: {
+      type: 'doc',
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.`,
+            },
+            {
+              type: 'text',
+              text: ' Sed pharetra eros vel felis scelerisque pretium. ',
+              marks: [{ type: 'code' }],
+            },
+            {
+              type: 'text',
+              text: 'Maecenas ac feugiat orci, a sodales lacus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent urna libero, convallis eu commodo id, iaculis aliquam arcu.',
+            },
+            { type: 'hardBreak' },
+            {
+              type: 'text',
+              text: `Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; In interdum egestas massa, sit amet auctor ipsum maximus in. `,
+            },
+          ],
+        },
+      ],
+    },
+  });
+  const b = await RevisionBlob.create({
+    id: '00000000-0000-4000-0000-000000000000',
+    orgId: 'algolia',
+    projectId: p1.id,
+    deleted: false,
+    type: 'project',
+    typeId: p1.id,
+    blob: projectRev.getJsonForBlob(),
+  });
+  await Revision.create({
+    id: '00000000-0000-4000-0000-000000000000',
+    orgId: 'algolia',
+    projectId: p1.id,
+    title: 'Update project name, description',
+    description: {
+      type: 'doc',
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: `Maecenas pharetra imperdiet nulla nec commodo.`,
+            },
+          ],
+        },
+      ],
+    },
+    status: 'waiting',
+    merged: false,
+    blobs: [b.id],
   });
 }
 

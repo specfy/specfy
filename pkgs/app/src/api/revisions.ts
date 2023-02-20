@@ -3,6 +3,8 @@ import type {
   ReqGetRevision,
   ResGetRevision,
   ResPostRevision,
+  ReqListRevisions,
+  ResListRevisions,
 } from 'api/src/types/api/revisions';
 import { useQuery } from 'react-query';
 
@@ -22,6 +24,22 @@ export async function createRevision(
   queryClient.removeQueries(['listRevisions', data.orgId]);
 
   return json;
+}
+
+export function useListRevisions(opts: ReqListRevisions) {
+  return useQuery({
+    queryKey: ['listRevisions', opts.org_id, opts.project_id],
+    queryFn: async (): Promise<ResListRevisions> => {
+      const { json } = await fetchApi<ResListRevisions, ReqListRevisions>(
+        '/revisions',
+        {
+          qp: opts,
+        }
+      );
+
+      return json;
+    },
+  });
 }
 
 // export async function deleteRevision(opts: ReqRevisionParams) {

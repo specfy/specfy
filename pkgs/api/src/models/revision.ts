@@ -15,18 +15,24 @@ import type { DBRevision } from '../types/db/revisions';
 import type { Org } from './org';
 import type { Project } from './project';
 
+type PropCreate = Partial<Pick<DBRevision, 'id'>> &
+  Pick<
+    DBRevision,
+    | 'blobs'
+    | 'description'
+    | 'merged'
+    | 'orgId'
+    | 'projectId'
+    | 'status'
+    | 'title'
+  >;
+
 @Table({ tableName: 'revisions', modelName: 'revision' })
-export class Revision extends Model<
-  DBRevision,
-  Pick<DBRevision, 'blobs' | 'description' | 'orgId' | 'projectId' | 'title'>
-> {
+export class Revision extends Model<DBRevision, PropCreate> {
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column(DataType.UUID)
   declare id: CreationOptional<string>;
-
-  @Column({ field: 'parent_id', type: DataType.STRING })
-  declare parentId: ForeignKey<string>;
 
   @Column({ field: 'org_id', type: DataType.STRING })
   declare orgId: ForeignKey<Org['id']>;
@@ -45,6 +51,12 @@ export class Revision extends Model<
 
   @Column({ type: DataType.BOOLEAN })
   declare locked: CreationOptional<DBRevision['locked']>;
+
+  @Column({ type: DataType.STRING })
+  declare status: CreationOptional<DBRevision['status']>;
+
+  @Column({ type: DataType.BOOLEAN })
+  declare merged: CreationOptional<DBRevision['merged']>;
 
   @CreatedAt
   @Column({ field: 'created_at' })

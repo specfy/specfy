@@ -1,0 +1,42 @@
+@import "../../../../styles/theme";
+
+.container {
+  max-width: $max-w;
+  margin: 0 auto;
+
+  :global(.ant-table) {
+    box-shadow: $box-shadow;
+  }
+}
+
+.search {
+  margin-bottom: $p-xxl;
+  width: 50%;
+  min-width: 500px;
+}
+
+th.tcell {
+  background: $gray-100 !important;
+  background: #fff !important;
+
+  .th {
+    display: flex;
+    gap: $p-m;
+    padding: $p;
+  }
+}
+
+td.tcell {
+  padding: $p-m $p-xl !important;
+}
+
+.title {
+  font-size: $font-m;
+  color: $gray-800;
+  font-weight: 600;
+}
+
+.subtitle {
+  font-size: $font-s;
+  color: $gray-600;
+}

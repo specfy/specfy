@@ -17,7 +17,7 @@ export interface DBDocument {
   // authors: string[];
   // reviewers: string[];
   // approvedBy: string[];
-  status: 'approved' | 'draft' | 'rejected';
+  status: 'approved' | 'draft' | 'rejected' | 'waiting';
   locked: boolean;
   createdAt: string;
   updatedAt: string;

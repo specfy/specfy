@@ -1,6 +1,7 @@
 import { LoadingOutlined } from '@ant-design/icons';
 import { App, Button, Card, Form, Input, Typography } from 'antd';
 import type { ApiProject, BlockLevelZero } from 'api/src/types/api';
+import type { ReqPostRevision } from 'api/src/types/api/revisions';
 import { diffWordsWithSpace } from 'diff';
 import { useEffect, useMemo, useState } from 'react';
 import { renderToString } from 'react-dom/server';
@@ -95,7 +96,17 @@ export const ProjectRevisionCreate: React.FC<{
   }, [changes]);
 
   useEffect(() => {
-    setCanSubmit(title !== '' && description.content.length > 0);
+    let enoughContent = description.content.length > 0;
+    if (
+      description.content.length === 1 &&
+      description.content[0].type === 'paragraph' &&
+      !description.content[0].content
+    ) {
+      // Placeholder
+      enoughContent = false;
+    }
+
+    setCanSubmit(title !== '' && enoughContent);
   }, [title, description]);
 
   const handleRevert = (type: string, id: string, key: string) => {
@@ -105,17 +116,27 @@ export const ProjectRevisionCreate: React.FC<{
 
   const onSubmit = async () => {
     console.log('on finish?');
+    const blobs: ReqPostRevision['blobs'] = [];
+    for (const change of changes) {
+      blobs.push({
+        type: change.type,
+        typeId: change.id,
+        parentId: null,
+        blob: { ...change.original, ...change.values } as any,
+        deleted: false,
+      });
+    }
+
     const { id } = await createRevision({
       orgId: params.org_id,
       projectId: proj.id,
-      parentId: null, // TODO: compute this
       title,
       description,
-      changes: [], // TODO: compute this
+      blobs,
     });
     message.success('Revision created');
 
-    navigate(`/org/${params.org_id}/${params.project_slug}/r/${id}`);
+    navigate(`/org/${params.org_id}/${params.project_slug}/revisions/${id}`);
   };
 
   if (!computed) {

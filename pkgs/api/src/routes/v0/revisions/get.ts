@@ -12,7 +12,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     Querystring: ReqGetRevision;
     Reply: ResGetRevision;
   }>('/', async function (req, res) {
-    const p = await Revision.findOne({
+    const rev = await Revision.findOne({
       where: {
         // TODO validation
         orgId: req.query.org_id,
@@ -21,21 +21,23 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       },
     });
 
-    if (!p) {
+    if (!rev) {
       return notFound(res);
     }
 
     res.status(200).send({
       data: {
-        id: p.id,
-        orgId: p.orgId,
-        projectId: p.projectId,
-        parentId: p.parentId,
-        title: p.title,
-        description: p.description,
-        changes: p.changes,
-        createdAt: p.createdAt.toISOString(),
-        updatedAt: p.updatedAt.toISOString(),
+        id: rev.id,
+        orgId: rev.orgId,
+        projectId: rev.projectId,
+        title: rev.title,
+        description: rev.description,
+        locked: rev.locked,
+        merged: rev.merged,
+        status: rev.status,
+        blobs: rev.blobs,
+        createdAt: rev.createdAt.toISOString(),
+        updatedAt: rev.updatedAt.toISOString(),
       },
     });
   });

@@ -12,7 +12,7 @@ export const Time: React.FC<{ time: string }> = ({ time }) => {
       title={dt.toLocaleString(DateTime.DATETIME_SHORT)}
       placement="bottom"
     >
-      Updated {dt.toRelative()}
+      {dt.toRelative()}
     </Tooltip>
   );
 };
