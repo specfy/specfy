@@ -338,10 +338,14 @@ table "perms" {
 
 
 
-// ------------------------ Team
+// ------------------------ Type Has Users
 table "type_has_users" {
   schema = schema.public
   column "document_id" {
+    type = uuid
+    null = true
+  }
+  column "revision_id" {
     type = uuid
     null = true
   }
@@ -363,6 +367,13 @@ table "type_has_users" {
   index "document_id_user_id" {
     columns = [
       column.document_id,
+      column.user_id,
+    ]
+    unique = true
+  }
+  index "revision_id_user_id" {
+    columns = [
+      column.revision_id,
       column.user_id,
     ]
     unique = true

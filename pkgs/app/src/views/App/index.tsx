@@ -29,9 +29,9 @@ const App: React.FC = () => {
             // linkHoverDecoration: 'underline',
             fontSizeHeading1: 28,
             fontSizeHeading2: 24,
-            fontSizeHeading5: 16,
-            fontSizeHeading4: 18,
             fontSizeHeading3: 20,
+            fontSizeHeading4: 18,
+            fontSizeHeading5: 16,
             fontSize: 14,
             fontFamily: `"Source Sans Pro", system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Noto Sans", sans-serif, BlinkMacSystemFont, Oxygen, "Open Sans", "Helvetica Neue"`,
             colorSuccess: '#059669', // emerald

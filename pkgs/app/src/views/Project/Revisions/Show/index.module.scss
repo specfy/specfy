@@ -1,0 +1,44 @@
+@import "../../../../styles/theme";
+
+.container {
+  display: grid;
+  grid-template-columns: ($main-col-w + 60px) 200px;
+  gap: $p-xl;
+
+  max-width: $max-w;
+  margin: 0 auto;
+}
+
+.title {
+  margin-bottom: $p;
+}
+
+.subtitle {
+  font-size: $font-s;
+  color: $gray-400;
+}
+
+.content {
+  padding: $p-xxl 0 0 0;
+}
+
+// Right
+.infoHeader {
+  margin-bottom: $p-s;
+  font-size: $font-s;
+  font-weight: 600;
+  color: $gray-900;
+}
+
+.infoBlock {
+  margin-bottom: $p-xxl;
+}
+
+.userList {
+  padding: 0;
+  list-style: none;
+
+  li {
+    margin-bottom: 4px;
+  }
+}

@@ -9,6 +9,7 @@ export type DBBlobBase = {
   orgId: string;
   projectId: string;
 
+  type: 'component' | 'document' | 'project';
   typeId: string;
   parentId: string | null;
   deleted: boolean;

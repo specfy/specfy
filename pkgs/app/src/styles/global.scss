@@ -21,6 +21,27 @@ body {
   }
 }
 
+// Global typo
+h1.ant-typography {
+  margin-bottom: $p-m;
+  font-size: $font-xxl;
+}
+
+h2.ant-typography {
+  margin-bottom: $p-m;
+  font-size: $font-xl;
+}
+
+h3.ant-typography {
+  margin-bottom: $p-s;
+  font-size: $font-l;
+}
+
+h4.ant-typography {
+  margin-bottom: $p-s;
+  font-size: $font-m;
+}
+
 // ----- Menu Inline
 .ant-menu.ant-menu-root.ant-menu-inline {
   background-color: transparent;
@@ -52,6 +73,7 @@ body {
   }
 }
 
+// User Content
 .ant-typography {
   hr {
     margin: $p-xxl 0;
@@ -134,7 +156,6 @@ body {
 }
 
 .ant-btn {
-
   &:disabled {
     border: 1px solid transparent;
   }

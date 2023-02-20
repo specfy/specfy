@@ -27,11 +27,15 @@ import { User } from './user';
 })
 export class TypeHasUser extends Model<
   DBTypeHasUser,
-  Pick<DBTypeHasUser, 'documentId' | 'role' | 'userId'>
+  Pick<DBTypeHasUser, 'documentId' | 'revisionId' | 'role' | 'userId'>
 > {
   @PrimaryKey
   @Column({ field: 'document_id', type: DataType.UUIDV4 })
   declare documentId: ForeignKey<DBDocument['id']>;
+
+  @PrimaryKey
+  @Column({ field: 'revision_id', type: DataType.UUIDV4 })
+  declare revisionId: ForeignKey<DBDocument['id']>;
 
   @PrimaryKey
   @Column({ field: 'user_id', type: DataType.UUIDV4 })

@@ -75,23 +75,14 @@ export const ProjectRevisionsList: React.FC<{
                     {item.title}
                   </Link>
                   <div className={cls.subtitle}>
+                    <RFCStatusTag
+                      status={item.status}
+                      locked={item.locked}
+                      merged={item.merged}
+                    />{' '}
                     opened <Time time={item.createdAt} />
                   </div>
                 </>
-              );
-            }}
-          />
-          <Table.Column
-            title="Status"
-            dataIndex="status"
-            className={cls.tcell}
-            render={(_, item: ApiRevision) => {
-              return (
-                <RFCStatusTag
-                  status={item.status}
-                  locked={item.locked}
-                  merged={item.merged}
-                />
               );
             }}
           />

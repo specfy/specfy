@@ -46,13 +46,13 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         slug: p.slug,
         tldr: p.tldr,
         content: p.content as any,
-        // TODO: fill this
         authors: users
           .filter((user) => user.role === 'author')
           .map((u) => toApiUser(u.user)),
         reviewers: users
           .filter((user) => user.role === 'reviewer')
           .map((u) => toApiUser(u.user)),
+        // TODO: fill this
         approvedBy: [],
         // TODO: fill this
         create: [],

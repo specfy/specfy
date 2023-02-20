@@ -33,9 +33,9 @@ import { ComponentView } from './Component';
 import { ProjectContent } from './Content';
 import { ProjectHome } from './Home';
 import { RFC } from './RFC';
-import { ProjectRevisions } from './Revisions';
 import { ProjectRevisionCreate } from './Revisions/Create';
 import { ProjectRevisionsList } from './Revisions/List';
+import { ProjectRevisionsShow } from './Revisions/Show';
 import { ProjectSettings } from './Settings';
 import { ProjectTeam } from './Team';
 import { Tech } from './Tech';
@@ -326,6 +326,10 @@ export const Project: React.FC = () => {
               <Route
                 path="/revisions/current"
                 element={<ProjectRevisionCreate proj={proj} params={params} />}
+              />
+              <Route
+                path="/revisions/:revision_id"
+                element={<ProjectRevisionsShow proj={proj} params={params} />}
               />
             </Routes>
           </div>

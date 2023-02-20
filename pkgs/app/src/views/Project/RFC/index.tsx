@@ -39,7 +39,7 @@ export const RFC: React.FC<{
     return edit.get<ApiDocument>('document', item.id, item);
   }, [edit.isEnabled, item]);
   const content = useMemo(() => {
-    return curr?.edits.content || item?.content;
+    return curr?.changes.content || item?.content;
   }, [item, curr]);
 
   useEffect(() => {

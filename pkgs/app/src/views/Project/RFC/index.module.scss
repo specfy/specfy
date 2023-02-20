@@ -14,9 +14,7 @@
   }
 }
 
-.right {
-  padding-top: $p-xxl;
-}
+.right {}
 
 .card {
   padding: 0 $p-l;
@@ -30,8 +28,8 @@
 .infoHeader {
   margin-bottom: $p-s;
   font-size: $font-s;
-  font-weight: bold;
-  color: $gray-8;
+  font-weight: 600;
+  color: $gray-900;
 }
 
 .infoBlock {
@@ -60,24 +58,6 @@
 
 .content {
   padding: $p-xxl 0 0 0;
-
-  h1 {
-    font-size: $font-xxl;
-  }
-
-  h2 {
-    font-size: $font-l;
-  }
-
-  h3 {
-    font-size: $font-m;
-    color: $gray-9;
-  }
-
-  h4 {
-    font-size: $font-m;
-    color: $gray-8;
-  }
 }
 
 .userList {

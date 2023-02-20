@@ -45,6 +45,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
             content: p.content as any,
             // TODO: fill this
             authors: [],
+            // TODO: remove this
             reviewers: [],
             approvedBy: [],
             // TODO: fill this

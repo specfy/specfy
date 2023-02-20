@@ -42,6 +42,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           merged: rev.merged,
           status: rev.status,
           blobs: rev.blobs,
+          authors: [], // TODO: fill this
           createdAt: rev.createdAt.toISOString(),
           updatedAt: rev.updatedAt.toISOString(),
         };

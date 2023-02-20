@@ -18,6 +18,8 @@ import { Org } from './org';
 import type { Project } from './project';
 import { User } from './user';
 
+type PropCreatePerm = Pick<DBPerm, 'orgId' | 'projectId' | 'role' | 'userId'>;
+
 @Scopes(() => ({
   // includes
   withUser: {
@@ -28,10 +30,7 @@ import { User } from './user';
   },
 }))
 @Table({ tableName: 'perms', modelName: 'perm' })
-export class Perm extends Model<
-  DBPerm,
-  Pick<DBPerm, 'orgId' | 'projectId' | 'role' | 'userId'>
-> {
+export class Perm extends Model<DBPerm, PropCreatePerm> {
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column(DataType.UUID)

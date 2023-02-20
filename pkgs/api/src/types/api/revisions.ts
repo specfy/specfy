@@ -7,8 +7,11 @@ import type {
 import type { DBRevision } from '../db/revisions';
 
 import type { Pagination } from './api';
+import type { ApiUser } from './me';
 
-export type ApiRevision = DBRevision;
+export type ApiRevision = DBRevision & {
+  authors: ApiUser[];
+};
 
 // GET /
 export type ReqListRevisions = {
@@ -33,12 +36,16 @@ export type ReqPostRevision = Pick<
 export type ResPostRevision = Pick<ApiRevision, 'id'>;
 
 // GET /:id
+export interface ReqRevisionParams {
+  revision_id: string;
+}
 export interface ReqGetRevision {
-  id: string;
   org_id: string;
   project_id: string;
 }
 
 export interface ResGetRevision {
-  data: ApiRevision;
+  data: ApiRevision & {
+    reviewers: ApiUser[];
+  };
 }

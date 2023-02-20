@@ -22,6 +22,7 @@ export async function clean() {
     Perm.truncate(),
     Revision.truncate(),
     RevisionBlob.truncate(),
+    TypeHasUser.truncate(),
   ]);
 }
 
@@ -1012,9 +1013,10 @@ export async function seed() {
     deleted: false,
     type: 'project',
     typeId: p1.id,
+    parentId: p1.blobId,
     blob: projectRev.getJsonForBlob(),
   });
-  await Revision.create({
+  const rev = await Revision.create({
     id: '00000000-0000-4000-0000-000000000000',
     orgId: 'algolia',
     projectId: p1.id,
@@ -1036,6 +1038,21 @@ export async function seed() {
     status: 'waiting',
     merged: false,
     blobs: [b.id],
+  });
+  await TypeHasUser.create({
+    revisionId: rev.id,
+    userId: u1.id,
+    role: 'author',
+  });
+  await TypeHasUser.create({
+    revisionId: rev.id,
+    userId: u2.id,
+    role: 'reviewer',
+  });
+  await TypeHasUser.create({
+    revisionId: rev.id,
+    userId: u3.id,
+    role: 'reviewer',
   });
 }
 

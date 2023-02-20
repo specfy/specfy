@@ -12,8 +12,9 @@ import {
 
 import type { DBUser } from '../types/db/users';
 
+type PropCreateUser = Pick<DBUser, 'email' | 'name'>;
 @Table({ tableName: 'users', modelName: 'user' })
-export class User extends Model<DBUser, Pick<DBUser, 'email' | 'name'>> {
+export class User extends Model<DBUser, PropCreateUser> {
   @PrimaryKey
   @Default(DataType.UUIDV4)
   @Column(DataType.UUID)

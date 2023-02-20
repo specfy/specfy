@@ -5,6 +5,7 @@ import type {
   ResPostRevision,
   ReqListRevisions,
   ResListRevisions,
+  ReqRevisionParams,
 } from 'api/src/types/api/revisions';
 import { useQuery } from 'react-query';
 
@@ -55,14 +56,18 @@ export function useListRevisions(opts: ReqListRevisions) {
 //   return json;
 // }
 
-export function useGetRevision(opts: ReqGetRevision) {
+export function useGetRevision({
+  org_id,
+  project_id,
+  revision_id,
+}: ReqGetRevision & ReqRevisionParams) {
   return useQuery({
-    queryKey: ['getRevision', opts.id, opts.org_id, opts.project_id],
+    queryKey: ['getRevision', revision_id, org_id, project_id],
     queryFn: async (): Promise<ResGetRevision> => {
       const { json } = await fetchApi<ResGetRevision, ReqGetRevision>(
-        `/revisions`,
+        `/revisions/${revision_id}`,
         {
-          qp: opts,
+          qp: { org_id, project_id },
         }
       );
 
