@@ -28,7 +28,18 @@
     gap: $p-xl;
 
     padding-top: $p-xxl;
+    padding-bottom: $p-xxl;
   }
+}
+
+.card {
+  background-color: #fff;
+  border: 1px solid $gray-100;
+  box-shadow: $box-shadow;
+}
+
+.main {
+  padding: $p-xxxl;
 }
 
 .title {
@@ -62,5 +73,57 @@
 
   li {
     margin-bottom: 4px;
+  }
+}
+
+// Merge
+.merge {
+  background-color: #fff;
+  border-top: 1px solid $gray-100;
+}
+
+.checkLine {
+  display: flex;
+  gap: $p-m;
+  padding: $p-l $p-xxl;
+  border-bottom: 1px solid $gray-100;
+
+  :global(> .anticon) {
+    font-size: $font-l;
+    color: $gray-400;
+  }
+
+  &.success {
+    :global(> .anticon) {
+      color: $green-600;
+    }
+  }
+
+  &.warning {
+    color: $orange-600;
+
+    :global(> .anticon) {
+      color: $orange-600;
+    }
+  }
+
+  &.danger {
+    color: $red-600;
+
+    :global(> .anticon) {
+      color: $red-600;
+    }
+  }
+
+  &:last-child {
+    padding: $p-xl $p-xl;
+    background-color: $gray-50;
+    border-bottom: none;
+  }
+}
+
+.mergeButton {
+  &.success {
+    background-color: $green-600;
   }
 }

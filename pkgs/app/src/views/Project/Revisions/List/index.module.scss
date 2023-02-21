@@ -23,11 +23,12 @@ th.tcell {
     display: flex;
     gap: $p-m;
     padding: $p;
+    font-weight: 400;
   }
 }
 
-td.tcell {
-  padding: $p-m $p-xl !important;
+tbody td.tcell {
+  padding: $p-l $p-xxl !important;
 }
 
 .title {

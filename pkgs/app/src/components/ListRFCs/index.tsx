@@ -26,8 +26,8 @@ export const ListRFCs: React.FC<{ project: ApiProject }> = ({ project }) => {
       <div className={cls.header}>
         <Title level={5}>Technical Specs</Title>
 
-        <div className={cls.empty}>
-          <Button type="default" size="small" icon={<PlusOutlined />}>
+        <div>
+          <Button type="primary" size="small" icon={<PlusOutlined />} ghost>
             Create
           </Button>
         </div>

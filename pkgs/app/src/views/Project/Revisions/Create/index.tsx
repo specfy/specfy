@@ -1,4 +1,4 @@
-import { LoadingOutlined } from '@ant-design/icons';
+import { BranchesOutlined, LoadingOutlined } from '@ant-design/icons';
 import { App, Button, Card, Form, Input, Typography } from 'antd';
 import type { ApiProject, BlockLevelZero } from 'api/src/types/api';
 import type { ReqPostRevision } from 'api/src/types/api/revisions';
@@ -166,7 +166,12 @@ export const ProjectRevisionCreate: React.FC<{
               />
             </Typography>
             <div className={cls.action}>
-              <Button type="primary" disabled={!canSubmit} htmlType="submit">
+              <Button
+                type="primary"
+                disabled={!canSubmit}
+                htmlType="submit"
+                icon={<BranchesOutlined />}
+              >
                 Propose changes
               </Button>
             </div>

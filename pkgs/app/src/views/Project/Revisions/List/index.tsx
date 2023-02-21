@@ -36,8 +36,9 @@ export const ProjectRevisionsList: React.FC<{
             size="large"
             prefix={<SearchOutlined />}
             addonBefore={
-              <Select defaultValue="Open" style={{ width: 'calc(100px)' }}>
-                <Select.Option value="Open">Open</Select.Option>
+              <Select defaultValue="Opened" style={{ width: 'calc(100px)' }}>
+                <Select.Option value="Opened">Opened</Select.Option>
+                <Select.Option value="Waiting">Waiting</Select.Option>
                 <Select.Option value="Approved">Approved</Select.Option>
                 <Select.Option value="Merged">Merged</Select.Option>
                 <Select.Option value="Rejected">Rejected</Select.Option>
@@ -58,7 +59,7 @@ export const ProjectRevisionsList: React.FC<{
           <Table.Column
             title={
               <div className={cls.th}>
-                <HistoryOutlined /> {res.data.pagination.total} Revisions
+                <HistoryOutlined /> {res.data.pagination.totalItems} Revisions
               </div>
             }
             dataIndex="name"

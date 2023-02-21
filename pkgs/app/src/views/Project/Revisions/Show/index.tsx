@@ -1,7 +1,14 @@
-import { Card, Skeleton, Typography } from 'antd';
+import {
+  CheckCircleFilled,
+  CloseCircleOutlined,
+  MinusCircleOutlined,
+  PullRequestOutlined,
+} from '@ant-design/icons';
+import { Button, Card, Skeleton, Typography } from 'antd';
 import type { ApiProject } from 'api/src/types/api';
 import type { ResListRevisionBlobs } from 'api/src/types/api/blob';
 import type { ResGetRevision } from 'api/src/types/api/revisions';
+import classnames from 'classnames';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
@@ -48,6 +55,9 @@ export const ProjectRevisionsShow: React.FC<{
     setBlobs(resBlobs.data?.data);
   }, [resBlobs.isFetched]);
 
+  // Merge status
+  const [canMerge, setCanMerge] = useState<boolean>();
+
   useEffect(() => {
     if (!blobs) {
       return;
@@ -66,6 +76,11 @@ export const ProjectRevisionsShow: React.FC<{
     setComputed(tmps);
   }, [blobs]);
 
+  useEffect(() => {
+    if (!rev) return;
+    setCanMerge(rev.status === 'approved');
+  }, [rev]);
+
   if (res.isLoading) {
     return (
       <div>
@@ -81,24 +96,55 @@ export const ProjectRevisionsShow: React.FC<{
   return (
     <div className={cls.container}>
       <div className={cls.left}>
-        <Card>
-          <Typography.Title level={1} className={cls.title}>
-            {rev.title}
-          </Typography.Title>
+        <div className={cls.card}>
+          <div className={cls.main}>
+            <Typography.Title level={1} className={cls.title}>
+              {rev.title}
+            </Typography.Title>
 
-          <div className={cls.subtitle}>
-            <RFCStatusTag
-              status={rev.status}
-              locked={rev.locked}
-              merged={rev.merged}
-            />{' '}
-            opened <Time time={rev.createdAt} />
+            <div className={cls.subtitle}>
+              <RFCStatusTag
+                status={rev.status}
+                locked={rev.locked}
+                merged={rev.merged}
+              />{' '}
+              opened <Time time={rev.createdAt} />
+            </div>
+
+            <Typography className={cls.content}>
+              <ContentDoc doc={rev.description} />
+            </Typography>
           </div>
 
-          <Typography className={cls.content}>
-            <ContentDoc doc={rev.description} />
-          </Typography>
-        </Card>
+          <div className={cls.merge}>
+            {rev.status === 'approved' && (
+              <div className={classnames(cls.checkLine, cls.success)}>
+                <CheckCircleFilled /> Approved
+              </div>
+            )}
+            {rev.status === 'rejected' && (
+              <div className={classnames(cls.checkLine, cls.danger)}>
+                <CloseCircleOutlined /> Rejected
+              </div>
+            )}
+            {rev.status === 'waiting' && (
+              <div className={classnames(cls.checkLine, cls.warning)}>
+                <MinusCircleOutlined /> Waiting for one review
+              </div>
+            )}
+            <div className={cls.checkLine}>
+              <Button
+                type="primary"
+                icon={<PullRequestOutlined />}
+                disabled={!canMerge}
+                className={classnames(cls.mergeButton, canMerge && cls.success)}
+              >
+                Merge
+              </Button>
+              {rev.status === 'draft' && <>This revision is still in draft</>}
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className={cls.right}>
