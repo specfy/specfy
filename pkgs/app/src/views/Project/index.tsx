@@ -135,7 +135,7 @@ export const Project: React.FC = () => {
   }
 
   return (
-    <div className={classnames(edit.isEnabled && cls.isEditing)}>
+    <div className={classnames(edit.isEnabled() && cls.isEditing)}>
       <div className={cls.header}>
         <BigHeading
           parent={org!.name}
@@ -151,7 +151,7 @@ export const Project: React.FC = () => {
         <ProjectMenu proj={proj} params={params} />
         <div className={cls.editZone}>
           <div className={cls.editMode}>
-            {edit.isEnabled ? (
+            {edit.isEnabled() ? (
               <Link to={`${linkSelf}/revisions/current`} className={cls.link}>
                 {updateCount} {updateCount > 1 ? 'changes' : 'change'}
               </Link>

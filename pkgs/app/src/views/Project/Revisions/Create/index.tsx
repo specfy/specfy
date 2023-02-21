@@ -128,6 +128,7 @@ export const ProjectRevisionCreate: React.FC<{
     });
 
     // Discard local changes
+    edit.enable(false);
     edit.setChanges([]);
 
     message.success('Revision created');

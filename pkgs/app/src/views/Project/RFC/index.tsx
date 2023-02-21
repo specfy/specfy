@@ -70,7 +70,7 @@ export const RFC: React.FC<{
               updated <Time time={item.updatedAt} />
             </div>
           </Space>
-          {!edit.isEnabled && (
+          {!edit.isEnabled() && (
             <div>
               {item.tldr && <p className={cls.tldr}>{item.tldr}</p>}
 
@@ -97,13 +97,13 @@ export const RFC: React.FC<{
           )}
 
           <Typography className={cls.content}>
-            {!edit.isEnabled && <ContentDoc doc={content} />}
-            {!edit.isEnabled && item.content.content.length <= 0 && (
+            {!edit.isEnabled() && <ContentDoc doc={content} />}
+            {!edit.isEnabled() && item.content.content.length <= 0 && (
               <Typography.Text type="secondary">
                 Write something...
               </Typography.Text>
             )}
-            {edit.isEnabled && (
+            {edit.isEnabled() && (
               <Editor
                 content={content}
                 minHeight="500px"

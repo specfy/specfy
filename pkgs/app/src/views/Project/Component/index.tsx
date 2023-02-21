@@ -55,10 +55,10 @@ export const ComponentView: React.FC<{
   const curr = useMemo(() => {
     if (!comp) return null;
     return edit.get<ApiComponent>('component', comp.id, comp);
-  }, [edit.isEnabled, comp]);
+  }, [comp]);
   const desc = useMemo(() => {
     if (!comp) return undefined;
-    return curr?.edits?.description || comp?.description;
+    return curr?.changes?.description || comp?.description;
   }, [comp, curr]);
 
   useEffect(() => {
@@ -175,13 +175,13 @@ export const ComponentView: React.FC<{
             )}
             {comp.name}
           </Typography.Title>
-          {!edit.isEnabled && desc && <ContentDoc doc={desc} />}
-          {!desc?.content.length && !edit.isEnabled && (
+          {!edit.isEnabled() && desc && <ContentDoc doc={desc} />}
+          {!desc?.content.length && !edit.isEnabled() && (
             <Typography.Text type="secondary">
               Write something...
             </Typography.Text>
           )}
-          {edit.isEnabled && (
+          {edit.isEnabled() && (
             <EditorMini
               key={comp.name}
               curr={curr!}

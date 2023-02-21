@@ -33,8 +33,8 @@ export const ProjectHome: React.FC<{
         <Col span={24}>
           <Card>
             <Typography>
-              {!edit.isEnabled && <ContentDoc doc={desc} />}
-              {edit.isEnabled && (
+              {!edit.isEnabled() && <ContentDoc doc={desc} />}
+              {edit.isEnabled() && (
                 <EditorMini
                   curr={curr!}
                   field="description"

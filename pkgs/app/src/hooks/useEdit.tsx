@@ -16,7 +16,7 @@ export type TmpBlob = Pick<ApiBlob, 'blob' | 'type' | 'typeId'> & {
 };
 
 export interface EditContextInterface {
-  isEnabled: boolean;
+  isEnabled: () => boolean;
   lastUpdate: Date | null;
   changes: TmpBlob[];
   setChanges: (bag: TmpBlob[]) => void;
@@ -35,7 +35,7 @@ export interface EditContextInterface {
 }
 
 const EditContext = createContext<EditContextInterface>({
-  isEnabled: false,
+  isEnabled: () => false,
   lastUpdate: null,
   changes: [],
   setChanges: () => {},
@@ -60,7 +60,7 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const memoized = useMemo<EditContextInterface>(
     () => ({
-      isEnabled: enabled,
+      isEnabled: () => enabled,
       lastUpdate,
       // Changes is not reactive when using get();
       changes,
@@ -79,6 +79,7 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
       },
       setChanges: (bag) => {
         setChanges(bag);
+        setLastUpdate(new Date());
       },
       revert(type, typeId, key) {
         setChanges(
