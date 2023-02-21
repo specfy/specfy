@@ -1,7 +1,11 @@
 import { HistoryOutlined, SearchOutlined } from '@ant-design/icons';
 import { Input, Select, Skeleton, Table } from 'antd';
 import type { ApiProject } from 'api/src/types/api';
-import type { ApiRevision } from 'api/src/types/api/revisions';
+import type {
+  ApiRevision,
+  ReqListRevisions,
+} from 'api/src/types/api/revisions';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { useListRevisions } from '../../../../api/revisions';
@@ -15,9 +19,12 @@ export const ProjectRevisionsList: React.FC<{
   proj: ApiProject;
   params: RouteProject;
 }> = ({ proj, params }) => {
+  const [filterStatus, setFilterStatus] =
+    useState<ReqListRevisions['status']>('opened');
   const res = useListRevisions({
     org_id: params.org_id,
     project_id: proj.id,
+    status: filterStatus,
   });
 
   if (res.isLoading) {
@@ -36,13 +43,17 @@ export const ProjectRevisionsList: React.FC<{
             size="large"
             prefix={<SearchOutlined />}
             addonBefore={
-              <Select defaultValue="Opened" style={{ width: 'calc(100px)' }}>
-                <Select.Option value="Opened">Opened</Select.Option>
-                <Select.Option value="Waiting">Waiting</Select.Option>
-                <Select.Option value="Approved">Approved</Select.Option>
-                <Select.Option value="Merged">Merged</Select.Option>
-                <Select.Option value="Rejected">Rejected</Select.Option>
-                <Select.Option value="All">All</Select.Option>
+              <Select
+                defaultValue={filterStatus}
+                style={{ width: 'calc(100px)' }}
+                onChange={setFilterStatus}
+              >
+                <Select.Option value="opened">Opened</Select.Option>
+                <Select.Option value="waiting">Waiting</Select.Option>
+                <Select.Option value="approved">Approved</Select.Option>
+                <Select.Option value="merged">Merged</Select.Option>
+                <Select.Option value="rejected">Rejected</Select.Option>
+                <Select.Option value="all">All</Select.Option>
               </Select>
             }
             placeholder="Search..."

@@ -6,6 +6,7 @@ import type {
   ReqListRevisions,
   ResListRevisions,
   ReqRevisionParams,
+  ResMergeRevision,
 } from 'api/src/types/api/revisions';
 import { useQuery } from 'react-query';
 
@@ -29,7 +30,7 @@ export async function createRevision(
 
 export function useListRevisions(opts: ReqListRevisions) {
   return useQuery({
-    queryKey: ['listRevisions', opts.org_id, opts.project_id],
+    queryKey: ['listRevisions', opts.org_id, opts.project_id, opts.status],
     queryFn: async (): Promise<ResListRevisions> => {
       const { json } = await fetchApi<ResListRevisions, ReqListRevisions>(
         '/revisions',
@@ -74,4 +75,25 @@ export function useGetRevision({
       return json;
     },
   });
+}
+
+export async function mergeRevision({
+  org_id,
+  project_id,
+  revision_id,
+}: ReqGetRevision & ReqRevisionParams): Promise<ResMergeRevision> {
+  const { json, res } = await fetchApi<ResMergeRevision, ReqGetRevision>(
+    `/revisions/${revision_id}/merge`,
+    {
+      qp: { org_id, project_id },
+    },
+    'POST'
+  );
+
+  if (res.status === 200) {
+    queryClient.removeQueries(['listRevisions', org_id, project_id]);
+    queryClient.removeQueries(['getRevision', revision_id, org_id, project_id]);
+  }
+
+  return json;
 }

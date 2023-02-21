@@ -4,7 +4,7 @@ import {
   MinusCircleOutlined,
   PullRequestOutlined,
 } from '@ant-design/icons';
-import { Button, Card, Skeleton, Typography } from 'antd';
+import { App, Button, Skeleton, Typography } from 'antd';
 import type { ApiProject } from 'api/src/types/api';
 import type { ResListRevisionBlobs } from 'api/src/types/api/blob';
 import type { ResGetRevision } from 'api/src/types/api/revisions';
@@ -13,7 +13,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useListRevisionBlobs } from '../../../../api/blobs';
-import { useGetRevision } from '../../../../api/revisions';
+import { mergeRevision, useGetRevision } from '../../../../api/revisions';
 import { diffTwoBlob } from '../../../../common/diff';
 import { ContentDoc } from '../../../../components/Content';
 import type { ComputedForDiff } from '../../../../components/DiffRow';
@@ -30,6 +30,9 @@ export const ProjectRevisionsShow: React.FC<{
   proj: ApiProject;
   params: RouteProject;
 }> = ({ proj, params }) => {
+  // Global
+  const { message } = App.useApp();
+
   const more = useParams<Partial<RouteRevision>>();
   const [rev, setRev] = useState<ResGetRevision['data']>();
   const [blobs, setBlobs] = useState<ResListRevisionBlobs['data']>();
@@ -57,6 +60,7 @@ export const ProjectRevisionsShow: React.FC<{
 
   // Merge status
   const [canMerge, setCanMerge] = useState<boolean>();
+  const [merging, setMerging] = useState<boolean>(false);
 
   useEffect(() => {
     if (!blobs) {
@@ -81,13 +85,31 @@ export const ProjectRevisionsShow: React.FC<{
     setCanMerge(rev.status === 'approved' && !rev.merged);
   }, [rev]);
 
-  if (res.isLoading) {
+  if (res.isLoading && !res.isRefetching) {
     return (
       <div>
         <Skeleton active title={false} paragraph={{ rows: 3 }}></Skeleton>
       </div>
     );
   }
+
+  const onMerge = async () => {
+    setMerging(true);
+    const resMerge = await mergeRevision({
+      org_id: params.org_id,
+      project_id: proj.id,
+      revision_id: rev!.id,
+    });
+
+    setTimeout(() => {
+      setMerging(false);
+      if (resMerge?.data?.done) {
+        message.success('Revision merged');
+      } else {
+        message.error('Revision could not be merged');
+      }
+    }, 500);
+  };
 
   if (!rev) {
     return <>Not found</>;
@@ -139,11 +161,13 @@ export const ProjectRevisionsShow: React.FC<{
                 type={rev.merged ? 'ghost' : 'primary'}
                 icon={<PullRequestOutlined />}
                 disabled={!canMerge}
+                loading={merging}
                 className={classnames(
                   cls.mergeButton,
                   canMerge && cls.success,
                   rev.merged && cls.merged
                 )}
+                onClick={onMerge}
               >
                 {rev.merged ? 'Merged' : 'Merge'}
               </Button>

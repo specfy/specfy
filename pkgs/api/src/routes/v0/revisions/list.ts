@@ -1,4 +1,6 @@
 import type { FastifyPluginCallback } from 'fastify';
+import type { WhereOptions } from 'sequelize';
+import { Op } from 'sequelize';
 
 import { Revision } from '../../../models';
 import type { Pagination } from '../../../types/api';
@@ -6,6 +8,7 @@ import type {
   ReqListRevisions,
   ResListRevisions,
 } from '../../../types/api/revisions';
+import type { DBRevision } from '../../../types/db/revisions';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{
@@ -18,11 +21,25 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       totalItems: 0,
     };
 
+    const filter: WhereOptions<DBRevision> = {};
+    if (req.query.status) {
+      if (req.query.status === 'merged') {
+        filter.merged = true;
+      } else if (req.query.status === 'opened') {
+        filter.mergedAt = null;
+        filter.closedAt = null;
+        filter.status = { [Op.not]: 'draft' };
+      } else if (req.query.status !== 'all') {
+        filter.status = req.query.status;
+      }
+    }
+
     const list = await Revision.findAll({
       where: {
         // TODO validation
         orgId: req.query.org_id,
         projectId: req.query.project_id,
+        ...filter,
       },
       order: [['createdAt', 'DESC']],
       limit: 10,
@@ -33,6 +50,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         // TODO validation
         orgId: req.query.org_id,
         projectId: req.query.project_id,
+        ...filter,
       },
     });
     pagination.totalItems = count;

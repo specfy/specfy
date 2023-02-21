@@ -27,6 +27,7 @@ export const ProjectMenu: React.FC<{
   const revisions = useListRevisions({
     org_id: params.org_id,
     project_id: proj.id,
+    status: 'opened',
   });
   const location = useLocation();
 

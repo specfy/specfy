@@ -13,13 +13,17 @@ export async function fetchApi<
     url.search = new URLSearchParams(opts.qp).toString();
   }
 
+  const headers: Record<string, string> = {};
+  if (opts?.body) {
+    headers['content-type'] = 'application/json';
+  }
+
   const res = await fetch(url, {
     method: method || 'GET',
     body: opts?.body && JSON.stringify(opts.body),
-    headers: {
-      'content-type': 'application/json',
-    },
+    headers,
   });
+
   let json: T;
   if (res.status !== 204) {
     json = (await res.json()) as T;

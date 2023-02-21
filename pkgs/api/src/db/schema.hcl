@@ -425,6 +425,11 @@ table "revisions" {
     null = false
     default = false
   }
+  column "merged" {
+    type = boolean
+    null = false
+    default = false
+  }
 
   column "created_at" {
     type    = timestamp(6)
