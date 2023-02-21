@@ -78,7 +78,7 @@ export const ProjectRevisionsShow: React.FC<{
 
   useEffect(() => {
     if (!rev) return;
-    setCanMerge(rev.status === 'approved');
+    setCanMerge(rev.status === 'approved' && !rev.merged);
   }, [rev]);
 
   if (res.isLoading) {
@@ -132,16 +132,33 @@ export const ProjectRevisionsShow: React.FC<{
                 <MinusCircleOutlined /> Waiting for one review
               </div>
             )}
-            <div className={cls.checkLine}>
+            <div
+              className={classnames(cls.checkLine, rev.merged && cls.merged)}
+            >
               <Button
-                type="primary"
+                type={rev.merged ? 'ghost' : 'primary'}
                 icon={<PullRequestOutlined />}
                 disabled={!canMerge}
-                className={classnames(cls.mergeButton, canMerge && cls.success)}
+                className={classnames(
+                  cls.mergeButton,
+                  canMerge && cls.success,
+                  rev.merged && cls.merged
+                )}
               >
-                Merge
+                {rev.merged ? 'Merged' : 'Merge'}
               </Button>
               {rev.status === 'draft' && <>This revision is still in draft</>}
+              {rev.status === 'rejected' && <>Requires one approval to merge</>}
+              {rev.status === 'closed' && (
+                <span>
+                  This revision was closed <Time time={rev.closedAt!} />
+                </span>
+              )}
+              {rev.merged && (
+                <span>
+                  <Time time={rev.mergedAt!} />
+                </span>
+              )}
             </div>
           </div>
         </div>

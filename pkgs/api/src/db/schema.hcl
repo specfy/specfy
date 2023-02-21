@@ -436,6 +436,14 @@ table "revisions" {
     default = sql("now()")
     null    = false
   }
+  column "merged_at" {
+    type    = timestamp(6)
+    null    = true
+  }
+  column "closed_at" {
+    type    = timestamp(6)
+    null    = true
+  }
 
   primary_key {
     columns = [column.id]

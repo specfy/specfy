@@ -53,6 +53,8 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           .map((u) => toApiUser(u.user)),
         createdAt: rev.createdAt.toISOString(),
         updatedAt: rev.updatedAt.toISOString(),
+        mergedAt: rev.mergedAt?.toISOString(),
+        closedAt: rev.closedAt?.toISOString(),
       },
     });
   });

@@ -74,8 +74,8 @@ export class Document extends Model<DBDocument, CreateProp> {
   // reviewers: string[];
   // approvedBy: string[];
 
-  @Column
-  declare status: 'approved' | 'draft' | 'rejected';
+  @Column({ type: DataType.STRING })
+  declare status: DBDocument['status'];
 
   @Column
   declare locked: boolean;

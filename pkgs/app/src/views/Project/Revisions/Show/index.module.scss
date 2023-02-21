@@ -87,6 +87,8 @@
   gap: $p-m;
   padding: $p-l $p-xxl;
   border-bottom: 1px solid $gray-100;
+  align-items: center;
+  color: $gray-500;
 
   :global(> .anticon) {
     font-size: $font-l;
@@ -119,11 +121,23 @@
     padding: $p-xl $p-xl;
     background-color: $gray-50;
     border-bottom: none;
+
+    &.merged {
+      background-color: $purple-50;
+    }
   }
 }
 
 .mergeButton {
   &.success {
     background-color: $green-600;
+
+    &:hover {
+      background-color: $green-500;
+    }
+  }
+
+  &.merged {
+    color: $purple-700;
   }
 }
