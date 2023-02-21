@@ -10,7 +10,7 @@ import {
 import { Badge, Menu } from 'antd';
 import type { ApiProject } from 'api/src/types/api';
 import { useEffect, useMemo, useState } from 'react';
-import { Link, matchPath, useLocation, useMatch } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import { useListRevisions } from '../../api/revisions';
 import type { RouteProject } from '../../types/routes';

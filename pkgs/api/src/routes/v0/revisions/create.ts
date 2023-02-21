@@ -7,6 +7,7 @@ import {
   Revision,
   RevisionBlob,
   Document,
+  TypeHasUser,
 } from '../../../models';
 import type {
   ReqPostRevision,
@@ -46,7 +47,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       }
 
       // TODO: validation
-      return await Revision.create(
+      const revision = await Revision.create(
         {
           orgId: req.body.orgId,
           projectId: req.body.projectId,
@@ -58,6 +59,14 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         },
         { transaction }
       );
+
+      await TypeHasUser.create({
+        revisionId: revision.id,
+        role: 'author',
+        userId: req.user!.id,
+      });
+
+      return revision;
     });
 
     res.status(200).send({

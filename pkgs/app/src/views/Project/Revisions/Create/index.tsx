@@ -24,7 +24,7 @@ function proposeTitle(computed: ComputedForDiff[]): string {
   console.log('hello', computed);
   if (computed.length === 1) {
     const item = computed[0];
-    const type = item.type === 'project' ? 'project' : item.original.name;
+    const type = item.type === 'project' ? 'project' : item.previous.name;
     return `fix(${type}): update ${item.key}`;
   }
 
@@ -73,7 +73,7 @@ export const ProjectRevisionCreate: React.FC<{
 
     // Remove non modified fields
     for (const change of changes) {
-      const res = diffTwoBlob(change, change.original);
+      const res = diffTwoBlob(change, change.previous);
       tmps.push(...res.computed);
       cleaned.push(res.clean);
     }
@@ -113,8 +113,8 @@ export const ProjectRevisionCreate: React.FC<{
       blobs.push({
         type: change.type,
         typeId: change.typeId,
-        parentId: change.original.blobId,
-        blob: { ...change.original, ...change.blob } as any,
+        parentId: change.previous.blobId,
+        blob: { ...change.previous, ...change.blob } as any,
         deleted: false,
       });
     }

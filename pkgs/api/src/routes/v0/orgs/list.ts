@@ -7,7 +7,10 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     const orgs: ResListOrgs['data'] = [];
 
     for (const perm of req.perms!) {
-      if (perm.projectId) continue;
+      if (perm.projectId) {
+        continue;
+      }
+
       orgs.push({
         id: perm.org.id,
         name: perm.org.name,
