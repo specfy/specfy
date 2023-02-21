@@ -7,10 +7,14 @@ import { useParams } from 'react-router-dom';
 
 import { useListRevisionBlobs } from '../../../../api/blobs';
 import { useGetRevision } from '../../../../api/revisions';
+import { diffTwoBlob } from '../../../../common/diff';
 import { ContentDoc } from '../../../../components/Content';
+import type { ComputedForDiff } from '../../../../components/DiffRow';
+import { DiffRow } from '../../../../components/DiffRow';
 import { RFCStatusTag } from '../../../../components/RFCStatusTag';
 import { Time } from '../../../../components/Time';
 import { UserCard } from '../../../../components/UserCard';
+import type { EditContextInterface } from '../../../../hooks/useEdit';
 import type { RouteProject, RouteRevision } from '../../../../types/routes';
 
 import cls from './index.module.scss';
@@ -22,6 +26,8 @@ export const ProjectRevisionsShow: React.FC<{
   const more = useParams<Partial<RouteRevision>>();
   const [rev, setRev] = useState<ResGetRevision['data']>();
   const [blobs, setBlobs] = useState<ResListRevisionBlobs['data']>();
+  const [computed, setComputed] = useState<ComputedForDiff[]>([]);
+  const [to] = useState(() => `/org/${params.org_id}/${params.project_slug}`);
 
   // Data fetching
   const res = useGetRevision({
@@ -41,6 +47,24 @@ export const ProjectRevisionsShow: React.FC<{
   useEffect(() => {
     setBlobs(resBlobs.data?.data);
   }, [resBlobs.isFetched]);
+
+  useEffect(() => {
+    if (!blobs) {
+      return;
+    }
+
+    const cleaned: EditContextInterface['changes'] = [];
+    const tmps: ComputedForDiff[] = [];
+
+    // Remove non modified fields
+    for (const blob of blobs) {
+      const diff = diffTwoBlob(blob, blob.previous);
+      tmps.push(...diff.computed);
+      cleaned.push(diff.clean);
+    }
+
+    setComputed(tmps);
+  }, [blobs]);
 
   if (res.isLoading) {
     return (
@@ -112,6 +136,16 @@ export const ProjectRevisionsShow: React.FC<{
       {resBlobs.isLoading && (
         <div>
           <Skeleton active title={false} paragraph={{ rows: 3 }}></Skeleton>
+        </div>
+      )}
+
+      {computed && (
+        <div className={cls.staged}>
+          {computed.map((c) => {
+            return (
+              <DiffRow key={c.typeId} comp={c} url={to} onRevert={() => null} />
+            );
+          })}
         </div>
       )}
     </div>

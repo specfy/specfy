@@ -44,16 +44,6 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       return;
     }
 
-    // const parentIds = list.map((blob) => blob.parentId);
-    // const list = await RevisionBlob.findAll({
-    //   where: {
-    //     id: rev.blobs,
-    //   },
-    //   order: [['createdAt', 'ASC']],
-    //   limit: 100,
-    //   offset: 0,
-    // });
-
     res.status(200).send({
       data: list.map((blob) => {
         const ex: ApiBlobWithPrevious = {
@@ -64,7 +54,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           type: blob.type as any,
           typeId: blob.typeId,
           blob: blob.blob as any,
-          previous: blob.previousBlob.blob,
+          previous: blob.previousBlob?.blob || null,
           deleted: blob.deleted,
           createdAt: blob.createdAt.toISOString(),
           updatedAt: blob.updatedAt.toISOString(),

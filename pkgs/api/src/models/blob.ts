@@ -16,7 +16,6 @@ import type { DBBlob } from '../types/db/blobs';
 
 import type { Org } from './org';
 import type { Project } from './project';
-import { User } from './user';
 
 export type PropBlobCreate = Partial<Pick<DBBlob, 'id'>> &
   Pick<
@@ -56,7 +55,7 @@ export class RevisionBlob extends Model<DBBlob, PropBlobCreate> {
   declare blob: CreationOptional<DBBlob['blob']>;
 
   @BelongsTo(() => RevisionBlob, 'parent_id')
-  declare previousBlob: RevisionBlob;
+  declare previousBlob: RevisionBlob | undefined;
 
   @Column({ type: DataType.BOOLEAN })
   declare deleted: CreationOptional<DBBlob['deleted']>;

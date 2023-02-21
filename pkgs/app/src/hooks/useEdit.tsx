@@ -4,32 +4,32 @@ import { useMemo, useState, createContext, useContext } from 'react';
 
 export interface EditContextSub<T extends Record<string, any>> {
   changes: Partial<T>;
-  set: <TField extends string>(key: TField, value: T[TField]) => void;
-  revert: <TField extends string>(key: TField) => void;
+  set: <TField extends keyof TmpBlob['blob']>(
+    key: TField,
+    value: T[TField]
+  ) => void;
+  revert: <TField extends keyof TmpBlob['blob']>(key: TField) => void;
 }
 
-export interface EditChange {
-  type: ApiBlob['type'];
-  id: string;
+export type TmpBlob = Pick<ApiBlob, 'blob' | 'type' | 'typeId'> & {
   original: Record<string, any>;
-  values: Record<string, any>;
-}
+};
 
 export interface EditContextInterface {
   isEnabled: boolean;
   lastUpdate: Date | null;
-  changes: EditChange[];
-  setChanges: (bag: EditChange[]) => void;
+  changes: TmpBlob[];
+  setChanges: (bag: TmpBlob[]) => void;
   getNumberOfChanges: () => number;
   enable: (val: boolean) => void;
-  revert: <TField extends string>(
-    type: string,
-    id: string,
+  revert: <TField extends keyof TmpBlob['blob']>(
+    type: ApiBlob['type'],
+    typeId: string,
     key: TField
   ) => void;
   get: <T extends Record<string, any>>(
-    type: string,
-    id: string,
+    type: ApiBlob['type'],
+    typeId: string,
     original: T
   ) => EditContextSub<T>;
 }
@@ -67,7 +67,7 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
       getNumberOfChanges: () => {
         let count = 0;
         for (const change of changes) {
-          for (const [key, val] of Object.entries(change.values)) {
+          for (const [key, val] of Object.entries(change.blob)) {
             count += isDiff(change.original[key], val) ? 1 : 0;
           }
         }
@@ -80,31 +80,31 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
       setChanges: (bag) => {
         setChanges(bag);
       },
-      revert(type, id, key) {
+      revert(type, typeId, key) {
         setChanges(
           changes.map((change) => {
-            if (change.type !== type && change.id !== id) return change;
-            delete change.values[key];
+            if (change.type !== type && change.typeId !== typeId) return change;
+            delete change.blob[key];
             return change;
           })
         );
         setLastUpdate(new Date());
       },
-      get(type, id, original) {
-        let has = changes.find((c) => c.type === type && c.id === id);
+      get(type, typeId, original) {
+        let has = changes.find((c) => c.type === type && c.typeId === typeId);
         if (!has) {
-          has = { type, id, original, values: {} };
+          has = { type, typeId, original, blob: {} as any };
           setChanges([...changes, has]);
         }
 
         return {
-          changes: has.values as any,
+          changes: has.blob as any,
           set: (key, value) => {
-            has!.values[key] = value;
+            has!.blob[key] = value;
             setLastUpdate(new Date());
           },
           revert: (key) => {
-            delete has?.values[key];
+            delete has?.blob[key];
             setLastUpdate(new Date());
           },
         };

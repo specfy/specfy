@@ -11,7 +11,7 @@ export function useListRevisionBlobs({
   org_id,
   project_id,
   revision_id,
-}: ReqGetRevision & ReqRevisionParams) {
+}: Partial<ReqRevisionParams> & ReqGetRevision) {
   return useQuery({
     enabled: !!revision_id,
     queryKey: ['listRevisions', revision_id, org_id, project_id],

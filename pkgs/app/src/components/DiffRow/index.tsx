@@ -1,5 +1,5 @@
 import { CaretDownOutlined, HistoryOutlined } from '@ant-design/icons';
-import { Button } from 'antd';
+import { Alert, Button } from 'antd';
 import type { Change } from 'diff';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -8,17 +8,21 @@ import cls from './index.module.scss';
 
 export interface ComputedForDiff {
   type: string;
-  id: string;
+  typeId: string;
   key: string;
   original: any;
   diff: Change[];
 }
 
-export const Diff: React.FC<{
+export const DiffRow: React.FC<{
   comp: ComputedForDiff;
   url: string;
   onRevert: (type: string, id: string, key: string) => void;
 }> = ({ comp, url, onRevert }) => {
+  if (!comp.original) {
+    return <Alert type="error" message="An error has ocurred" />;
+  }
+
   const [left] = useState(() => {
     return comp.diff
       .map((d) => {
@@ -57,7 +61,7 @@ export const Diff: React.FC<{
             type="text"
             icon={<HistoryOutlined />}
             size="small"
-            onClick={() => onRevert(comp.type, comp.id, comp.key)}
+            onClick={() => onRevert(comp.type, comp.typeId, comp.key)}
           >
             Revert
           </Button>

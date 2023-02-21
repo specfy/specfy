@@ -25,7 +25,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         orgId: req.query.org_id,
         projectId: req.query.project_id,
       },
-      order: [['createdAt', 'ASC']],
+      order: [['createdAt', 'DESC']],
       limit: 10,
       offset: 0,
     });

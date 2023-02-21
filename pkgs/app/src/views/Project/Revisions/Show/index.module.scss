@@ -2,11 +2,33 @@
 
 .container {
   display: grid;
-  grid-template-columns: ($main-col-w + 60px) 200px;
-  gap: $p-xl;
+  grid-template:
+    "left right"
+    "staged staged" / 1fr;
+  row-gap: $p-xxl;
+  column-gap: $p-xl;
 
+  min-width: $min-w;
   max-width: $max-w;
   margin: 0 auto;
+
+  .left {
+    grid-area: left;
+  }
+
+  .right {
+    grid-area: right;
+    width: 250px;
+  }
+
+  .staged {
+    display: flex;
+    grid-area: staged;
+    flex-direction: column;
+    gap: $p-xl;
+
+    padding-top: $p-xxl;
+  }
 }
 
 .title {

@@ -1,84 +1,37 @@
 @import "../../../../styles/theme";
 
-.update {
-  max-width: 1200px;
-  background-color: #fff;
-  box-shadow: $box-shadow;
-}
-
-.title {
-  display: flex;
-  gap: $p-l;
-  align-items: center;
-
-  padding: $p $p-xl;
-
-  font-size: $font;
-
-  border-bottom: 1px solid $gray-4;
-
-  .titleLeft {
-    display: flex;
-    flex: auto;
-    gap: $p-l;
-    align-items: center;
-  }
-
-  a {
-    color: $gray-10;
-
-    &:hover {
-      color: $primary;
-      text-decoration: underline;
-    }
-  }
-
-  .titleRight {
-    display: flex;
-    gap: $p-l;
-    align-items: center;
-  }
-}
-
-.left,
-.right {
-  padding: $p-l $p-xxl;
-}
-
-.left {
-  border-right: 1px solid $gray-4;
-}
-
-.toggle {
-  cursor: pointer;
-  font-size: $font-s;
-}
-
-.staged {
+.container {
   display: grid;
-  gap: $p-xxl;
+  grid-template:
+    "left right"
+    "staged staged" / 1fr;
+  row-gap: $p-xxl;
+  column-gap: $p-xl;
+
+  min-width: $min-w;
+  max-width: $max-w;
+  margin: 0 auto;
+
+  .left {
+    grid-area: left;
+  }
+
+  .right {
+    grid-area: right;
+    width: 250px;
+  }
+
+  .staged {
+    display: flex;
+    grid-area: staged;
+    flex-direction: column;
+    gap: $p-xl;
+
+    padding-top: $p-xxl;
+  }
 }
 
-.diff {
-  display: grid;
-  grid-template-columns: 50% 50%;
-}
-
-.removed {
-  background-color: #ffccc7;
-}
-
-.added {
-  display: inline-block;
-  background-color: #d9f7be;
-}
-
-.propose {
-  max-width: $main-col-w;
-  margin-bottom: $p-xxl;
-}
-
-.empty {
-  font-style: italic;
-  color: $gray-6;
+.action {
+  margin-top: $p-xl;
+  text-align: right;
 }

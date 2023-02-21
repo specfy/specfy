@@ -15,12 +15,11 @@
 
   :global {
 
-    /* stylelint-disable-next-line selector-class-pattern */
+    // stylelint-disable selector-class-pattern
     .ProseMirror-focused:focus {
       outline: none;
     }
 
-    /* stylelint-disable-next-line selector-class-pattern */
     .ProseMirror {
       min-height: inherit;
 
@@ -35,6 +34,8 @@
         color: #adb5bd;
       }
     }
+
+    // stylelint-enable selector-class-pattern
   }
 }
 

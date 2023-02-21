@@ -1,0 +1,74 @@
+@import "../../styles/theme";
+
+.update {
+  max-width: $max-w;
+  background-color: #fff;
+  box-shadow: $box-shadow;
+}
+
+.title {
+  display: flex;
+  gap: $p-l;
+  align-items: center;
+
+  padding: $p $p-xl;
+
+  font-size: $font;
+
+  border-bottom: 1px solid $gray-4;
+
+  .titleLeft {
+    display: flex;
+    flex: auto;
+    gap: $p-l;
+    align-items: center;
+  }
+
+  a {
+    color: $gray-10;
+
+    &:hover {
+      color: $primary;
+      text-decoration: underline;
+    }
+  }
+
+  .titleRight {
+    display: flex;
+    gap: $p-l;
+    align-items: center;
+  }
+}
+
+.diff {
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
+
+.removed {
+  background-color: #ffccc7;
+}
+
+.added {
+  display: inline-block;
+  background-color: #d9f7be;
+}
+
+.left,
+.right {
+  padding: $p-l $p-xl;
+}
+
+.left {
+  border-right: 1px solid $gray-4;
+}
+
+.toggle {
+  cursor: pointer;
+  font-size: $font-s;
+}
+
+.empty {
+  font-style: italic;
+  color: $gray-6;
+}

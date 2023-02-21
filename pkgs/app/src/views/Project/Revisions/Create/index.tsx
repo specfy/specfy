@@ -2,23 +2,18 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { App, Button, Card, Form, Input, Typography } from 'antd';
 import type { ApiProject, BlockLevelZero } from 'api/src/types/api';
 import type { ReqPostRevision } from 'api/src/types/api/revisions';
-import { diffWordsWithSpace } from 'diff';
 import { useEffect, useMemo, useState } from 'react';
-import { renderToString } from 'react-dom/server';
 import { useNavigate } from 'react-router-dom';
 
 import { createRevision } from '../../../../api/revisions';
-import { ContentDoc } from '../../../../components/Content';
+import { diffTwoBlob } from '../../../../common/diff';
+import type { ComputedForDiff } from '../../../../components/DiffRow';
+import { DiffRow } from '../../../../components/DiffRow';
 import { Editor } from '../../../../components/Editor';
-import type {
-  EditChange,
-  EditContextInterface,
-} from '../../../../hooks/useEdit';
-import { isDiff, useEdit } from '../../../../hooks/useEdit';
+import type { EditContextInterface } from '../../../../hooks/useEdit';
+import { useEdit } from '../../../../hooks/useEdit';
 import type { RouteProject } from '../../../../types/routes';
 
-import type { ComputedForDiff } from './Diff';
-import { Diff } from './Diff';
 import cls from './index.module.scss';
 
 export const ProjectRevisionCreate: React.FC<{
@@ -61,30 +56,10 @@ export const ProjectRevisionCreate: React.FC<{
     const tmps: ComputedForDiff[] = [];
 
     // Remove non modified fields
-    for (const { type, id, values, original } of changes) {
-      const clean: EditChange = { type, id, original, values: {} };
-
-      for (const [key, value] of Object.entries(values)) {
-        if (!isDiff(original[key], value)) {
-          continue;
-        }
-
-        clean.values[key] = value;
-        const a = <ContentDoc doc={original[key]} />;
-        const b = <ContentDoc doc={value} />;
-        const tmp: ComputedForDiff = {
-          type,
-          id,
-          key,
-          original: original,
-          diff: diffWordsWithSpace(
-            renderToString(a).replaceAll('<!-- -->', ''),
-            renderToString(b).replaceAll('<!-- -->', '')
-          ),
-        };
-        tmps.push(tmp);
-      }
-      cleaned.push(clean);
+    for (const change of changes) {
+      const res = diffTwoBlob(change, change.original);
+      tmps.push(...res.computed);
+      cleaned.push(res.clean);
     }
 
     const now = Date.now();
@@ -109,20 +84,19 @@ export const ProjectRevisionCreate: React.FC<{
     setCanSubmit(title !== '' && enoughContent);
   }, [title, description]);
 
-  const handleRevert = (type: string, id: string, key: string) => {
+  const handleRevert = (type: string, typeId: string, key: string) => {
     // TODO: possibility to undo revert
-    edit.revert(type, id, key);
+    edit.revert(type as any, typeId, key as any);
   };
 
   const onSubmit = async () => {
-    console.log('on finish?');
     const blobs: ReqPostRevision['blobs'] = [];
     for (const change of changes) {
       blobs.push({
         type: change.type,
-        typeId: change.id,
-        parentId: null,
-        blob: { ...change.original, ...change.values } as any,
+        typeId: change.typeId,
+        parentId: change.original.blobId,
+        blob: { ...change.original, ...change.blob } as any,
         deleted: false,
       });
     }
@@ -134,8 +108,11 @@ export const ProjectRevisionCreate: React.FC<{
       description,
       blobs,
     });
-    message.success('Revision created');
 
+    // Discard local changes
+    edit.setChanges([]);
+
+    message.success('Revision created');
     navigate(`/org/${params.org_id}/${params.project_slug}/revisions/${id}`);
   };
 
@@ -148,11 +125,8 @@ export const ProjectRevisionCreate: React.FC<{
   }
 
   return (
-    <div>
-      <Typography.Title level={3}>
-        <>Changes ({computed.length})</>
-      </Typography.Title>
-      <div className={cls.propose}>
+    <div className={cls.container}>
+      <div className={cls.left}>
         <Card>
           <Form onFinish={onSubmit}>
             <Form.Item required name="title">
@@ -162,26 +136,29 @@ export const ProjectRevisionCreate: React.FC<{
                 onChange={(e) => setTitle(e.target.value)}
               />
             </Form.Item>
-            <Editor
-              content={description}
-              onUpdate={setDescription}
-              minHeight="100px"
-              inputLike={true}
-            />
-            <Button
-              type="primary"
-              block
-              disabled={!canSubmit}
-              htmlType="submit"
-            >
-              Propose changes
-            </Button>
+
+            <Typography>
+              <Editor
+                content={description}
+                onUpdate={setDescription}
+                minHeight="100px"
+                inputLike={true}
+              />
+            </Typography>
+            <div className={cls.action}>
+              <Button type="primary" disabled={!canSubmit} htmlType="submit">
+                Propose changes
+              </Button>
+            </div>
           </Form>
         </Card>
       </div>
+      <div className={cls.right}></div>
       <div className={cls.staged}>
         {computed.map((c) => {
-          return <Diff key={c.id} comp={c} url={to} onRevert={handleRevert} />;
+          return (
+            <DiffRow key={c.typeId} comp={c} url={to} onRevert={handleRevert} />
+          );
         })}
       </div>
     </div>
