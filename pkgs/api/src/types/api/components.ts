@@ -1,28 +1,8 @@
 import type { DBComponent } from '../db/components';
 
 import type { Pagination } from './api';
-import type { BlockLevelZero } from './document';
 
-export interface ApiComponent {
-  id: string;
-  orgId: string;
-  projectId: string;
-
-  type: DBComponent['type'];
-  typeId: string | null;
-
-  name: string;
-  slug: string;
-  description: BlockLevelZero;
-  tech: string[] | null;
-
-  display: DBComponent['display'];
-  inComponent: string | null;
-  edges: DBComponent['edges'];
-
-  createdAt: string;
-  updatedAt: string;
-}
+export type ApiComponent = DBComponent;
 
 // GET /
 export interface ReqListComponents {

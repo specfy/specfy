@@ -52,8 +52,8 @@ export class Document extends Model<DBDocument, CreateProp> {
   @Column
   declare type: 'rfc';
 
-  @Column({ field: 'type_id' })
-  declare typeId: number;
+  @Column({ field: 'type_id', type: DataType.INTEGER })
+  declare typeId: DBDocument['typeId'];
 
   @Column
   declare name: string;

@@ -4,21 +4,18 @@ export interface DBDocument {
   id: string;
   orgId: string;
   projectId: string;
+  blobId: string;
+
   type: 'rfc';
-  typeId: string;
+  typeId: number;
+
   name: string;
   slug: string;
-  // create: string;
-  // update: string[];
-  // use: string[];
-  // remove: string[];
   tldr: string;
   content: BlockLevelZero;
-  // authors: string[];
-  // reviewers: string[];
-  // approvedBy: string[];
   status: 'approved' | 'draft' | 'rejected' | 'waiting';
   locked: boolean;
+
   createdAt: string;
   updatedAt: string;
 }

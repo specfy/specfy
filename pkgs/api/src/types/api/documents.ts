@@ -1,29 +1,13 @@
+import type { DBDocument } from '../db/documents';
+
 import type { Pagination } from './api';
-import type { BlockLevelZero } from './document';
 import type { ApiUser } from './me';
 
-export interface ApiDocument {
-  id: string;
-  orgId: string;
-  projectId: string;
-  type: 'rfc';
-  typeId: number;
-  name: string;
-  slug: string;
-  create: string[];
-  update: string[];
-  use: string[];
-  remove: string[];
-  tldr: string;
-  content: BlockLevelZero;
+export type ApiDocument = DBDocument & {
   authors: ApiUser[];
   reviewers: ApiUser[];
   approvedBy: string[];
-  status: 'approved' | 'draft' | 'rejected';
-  locked: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
+};
 
 // GET /
 export interface ReqListDocuments {

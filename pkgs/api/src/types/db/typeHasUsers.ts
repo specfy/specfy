@@ -3,5 +3,6 @@ export interface DBTypeHasUser {
   revisionId: string | null;
   userId: string;
   role: 'author' | 'reviewer';
+
   createdAt: string;
 }

@@ -36,6 +36,8 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
             id: p.id,
             orgId: p.orgId,
             projectId: p.projectId,
+            blobId: p.blobId,
+
             type: p.type,
             typeId: p.typeId,
             name: p.name,

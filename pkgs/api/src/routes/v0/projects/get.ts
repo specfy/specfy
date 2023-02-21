@@ -27,15 +27,12 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     res.status(200).send({
       data: {
         id: p.id,
+        orgId: p.orgId,
+        blobId: p.blobId,
         name: p.name,
         description: p.description,
         links: p.links,
-        orgId: p.orgId,
         slug: p.slug,
-        // TODO: fill this
-        contributors: [],
-        owners: [],
-        reviewers: [],
         createdAt: p.createdAt.toISOString(),
         updatedAt: p.updatedAt.toISOString(),
       },

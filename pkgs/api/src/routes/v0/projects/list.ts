@@ -33,15 +33,12 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           // For excess property check
           const tmp: ResListProjects['data'][0] = {
             id: p.id,
+            orgId: p.orgId,
+            blobId: p.blobId,
             description: p.description,
             name: p.name,
-            orgId: p.orgId,
             slug: p.slug,
-            // TODO: remove this from list
-            links: p.links,
-            contributors: [],
-            owners: [],
-            reviewers: [],
+            links: p.links, // TODO: remove this in /list
             createdAt: p.createdAt.toISOString(),
             updatedAt: p.updatedAt.toISOString(),
           };

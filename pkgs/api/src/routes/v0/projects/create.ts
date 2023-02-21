@@ -13,9 +13,9 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
   }>('/', async function (req, res) {
     // TODO: validation
     const p = await Project.create({
+      orgId: req.body.orgId,
       name: req.body.name,
       description: req.body.description,
-      orgId: req.body.orgId,
       links: [],
     });
 

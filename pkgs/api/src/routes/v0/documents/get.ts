@@ -40,6 +40,8 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         id: p.id,
         orgId: p.orgId,
         projectId: p.projectId,
+        blobId: p.blobId,
+
         type: p.type,
         typeId: p.typeId,
         name: p.name,
@@ -54,13 +56,9 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           .map((u) => toApiUser(u.user)),
         // TODO: fill this
         approvedBy: [],
-        // TODO: fill this
-        create: [],
-        remove: [],
-        update: [],
-        use: [],
         status: p.status,
         locked: p.locked,
+
         createdAt: p.createdAt.toISOString(),
         updatedAt: p.updatedAt.toISOString(),
       },

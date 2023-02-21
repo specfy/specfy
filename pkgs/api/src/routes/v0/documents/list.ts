@@ -36,25 +36,23 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
             id: p.id,
             orgId: p.orgId,
             projectId: p.projectId,
+            blobId: p.blobId,
+
             type: p.type,
             typeId: p.typeId,
             name: p.name,
             slug: p.slug,
             tldr: p.tldr,
-            // TODO: remove all this
+            // TODO: remove all this in /list
             content: p.content as any,
             // TODO: fill this
             authors: [],
-            // TODO: remove this
+            // TODO: remove this in /list
             reviewers: [],
             approvedBy: [],
-            // TODO: fill this
-            create: [],
-            remove: [],
-            update: [],
-            use: [],
             status: p.status,
             locked: p.locked,
+
             createdAt: p.createdAt.toISOString(),
             updatedAt: p.updatedAt.toISOString(),
           };

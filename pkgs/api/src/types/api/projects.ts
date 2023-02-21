@@ -1,19 +1,8 @@
-import type { Pagination } from './api';
-import type { BlockLevelZero } from './document';
+import type { DBProject } from '../db/projects';
 
-export interface ApiProject {
-  id: string;
-  orgId: string;
-  slug: string;
-  name: string;
-  description: BlockLevelZero;
-  links: Array<{ title: string; link: string }>;
-  owners: string[];
-  reviewers: string[];
-  contributors: string[];
-  createdAt: string;
-  updatedAt: string;
-}
+import type { Pagination } from './api';
+
+export type ApiProject = DBProject;
 
 // GET /
 export interface ReqListProjects {
