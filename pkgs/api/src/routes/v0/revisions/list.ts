@@ -14,9 +14,8 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
   }>('/', async function (req, res) {
     // TODO: pagination
     const pagination: Pagination = {
-      current: 0,
-      page: 0,
-      total: 0,
+      currentPage: 1,
+      totalItems: 0,
     };
 
     const list = await Revision.findAll({
@@ -29,6 +28,14 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       limit: 10,
       offset: 0,
     });
+    const count = await Revision.count({
+      where: {
+        // TODO validation
+        orgId: req.query.org_id,
+        projectId: req.query.project_id,
+      },
+    });
+    pagination.totalItems = count;
 
     res.status(200).send({
       data: list.map((rev) => {

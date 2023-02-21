@@ -10,7 +10,7 @@ export interface ComputedForDiff {
   type: string;
   typeId: string;
   key: string;
-  original: any;
+  previous: any;
   diff: Change[];
 }
 
@@ -19,30 +19,40 @@ export const DiffRow: React.FC<{
   url: string;
   onRevert: (type: string, id: string, key: string) => void;
 }> = ({ comp, url, onRevert }) => {
-  if (!comp.original) {
+  if (!comp.previous) {
     return <Alert type="error" message="An error has ocurred" />;
   }
 
   const [left] = useState(() => {
     return comp.diff
-      .map((d) => {
+      .map((d, i) => {
         if (d.added) return null;
-        if (d.removed) return <span className={cls.removed}>{d.value}</span>;
+        if (d.removed)
+          return (
+            <span className={cls.removed} key={i}>
+              {d.value}
+            </span>
+          );
         else return d.value;
       })
       .filter((e) => e);
   });
   const [right] = useState(() => {
     return comp.diff
-      .map((d) => {
+      .map((d, i) => {
         if (d.removed) return null;
-        if (d.added) return <span className={cls.added}>{d.value}</span>;
+        if (d.added)
+          return (
+            <span className={cls.added} key={i}>
+              {d.value}
+            </span>
+          );
         else return d.value;
       })
       .filter((e): e is string => !!e);
   });
   const type = comp.type === 'project' ? 'Project' : 'Components';
-  const to = url + (type === 'Components' ? `/c/${comp.original.slug}` : '');
+  const to = url + (type === 'Components' ? `/c/${comp.previous.slug}` : '');
 
   // TODO: undo revert
   return (
@@ -53,7 +63,7 @@ export const DiffRow: React.FC<{
             <CaretDownOutlined />
           </div>
           <Link to={to}>
-            {type} / {comp.original.name} [{comp.key}]
+            {type} / {comp.previous.name} [{comp.key}]
           </Link>
         </div>
         <div className={cls.titleRight}>

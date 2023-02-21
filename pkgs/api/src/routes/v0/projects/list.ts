@@ -13,9 +13,8 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     async function (req, res) {
       // TODO: pagination
       const pagination: Pagination = {
-        current: 0,
-        page: 0,
-        total: 0,
+        currentPage: 0,
+        totalItems: 0,
       };
 
       const projects = await Project.findAll({

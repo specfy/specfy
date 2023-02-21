@@ -22,21 +22,21 @@ export type DBBlobDocument = {
   type: 'document';
   blob: Omit<
     DBDocument,
-    'createdAt' | 'id' | 'orgId' | 'projectId' | 'updatedAt'
+    'blobId' | 'createdAt' | 'id' | 'orgId' | 'projectId' | 'updatedAt'
   >;
 };
 export type DBBlobComponent = {
   type: 'component';
   blob: Omit<
     DBComponent,
-    'createdAt' | 'id' | 'orgId' | 'projectId' | 'updatedAt'
+    'blobId' | 'createdAt' | 'id' | 'orgId' | 'projectId' | 'updatedAt'
   >;
 };
 export type DBBlobProject = {
   type: 'project';
   blob: Omit<
     DBProject,
-    'createdAt' | 'id' | 'orgId' | 'projectId' | 'updatedAt'
+    'blobId' | 'createdAt' | 'id' | 'orgId' | 'projectId' | 'updatedAt'
   >;
 };
 

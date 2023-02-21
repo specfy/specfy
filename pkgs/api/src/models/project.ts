@@ -76,7 +76,8 @@ export class Project extends Model<
   }
 
   getJsonForBlob(): DBBlobProject['blob'] {
-    const { id, orgId, createdAt, updatedAt, ...simplified } = this.toJSON();
+    const { id, orgId, createdAt, updatedAt, blobId, ...simplified } =
+      this.toJSON();
     return simplified;
   }
 }

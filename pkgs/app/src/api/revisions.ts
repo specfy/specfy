@@ -22,7 +22,7 @@ export async function createRevision(
     'POST'
   );
 
-  queryClient.removeQueries(['listRevisions', data.orgId]);
+  queryClient.removeQueries(['listRevisions', data.orgId, data.projectId]);
 
   return json;
 }

@@ -16,6 +16,21 @@ import type { RouteProject } from '../../../../types/routes';
 
 import cls from './index.module.scss';
 
+function proposeTitle(computed: ComputedForDiff[]): string {
+  if (computed.length === 0) {
+    return '';
+  }
+
+  console.log('hello', computed);
+  if (computed.length === 1) {
+    const item = computed[0];
+    const type = item.type === 'project' ? 'project' : item.original.name;
+    return `fix(${type}): update ${item.key}`;
+  }
+
+  return '';
+}
+
 export const ProjectRevisionCreate: React.FC<{
   proj: ApiProject;
   params: RouteProject;
@@ -44,6 +59,7 @@ export const ProjectRevisionCreate: React.FC<{
     content: [{ type: 'paragraph' }],
   });
 
+  // Compute changes
   useEffect(() => {
     if (!changes || !edit.lastUpdate) {
       return;
@@ -68,8 +84,10 @@ export const ProjectRevisionCreate: React.FC<{
     setTimeout(() => {
       edit.setChanges(cleaned);
     }, 1);
+    setTitle(proposeTitle(tmps));
   }, [changes]);
 
+  // Can submit form?
   useEffect(() => {
     let enoughContent = description.content.length > 0;
     if (
@@ -123,13 +141,14 @@ export const ProjectRevisionCreate: React.FC<{
   if (!edit.lastUpdate || edit.changes.length === 0 || computed.length === 0) {
     return <>No changes to commit...</>;
   }
+  console.log('on render once');
 
   return (
     <div className={cls.container}>
       <div className={cls.left}>
         <Card>
           <Form onFinish={onSubmit}>
-            <Form.Item required name="title">
+            <Form.Item required name="title" initialValue={title}>
               <Input
                 size="large"
                 placeholder="Title"

@@ -113,8 +113,15 @@ export class Document extends Model<DBDocument, CreateProp> {
   }
 
   getJsonForBlob(): DBBlobDocument['blob'] {
-    const { id, orgId, projectId, createdAt, updatedAt, ...simplified } =
-      this.toJSON();
+    const {
+      id,
+      orgId,
+      projectId,
+      createdAt,
+      updatedAt,
+      blobId,
+      ...simplified
+    } = this.toJSON();
     return simplified;
   }
 }

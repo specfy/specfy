@@ -161,6 +161,13 @@ h4.ant-typography {
   }
 }
 
+// Badge
+.ant-badge {
+  .ant-badge-count {
+    box-shadow: none;
+  }
+}
+
 // Input
 .ant-input-group {
   .ant-input-group-addon {

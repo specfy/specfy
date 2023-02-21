@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 
 import type { TechInfo } from '../../../common/component';
 import { supported } from '../../../common/component';
-import type { RouteTech } from '../../../types/routes';
+import type { RouteProject, RouteTech } from '../../../types/routes';
 import { Line } from '../Component/Line';
 
 import cls from './index.module.scss';
@@ -15,7 +15,7 @@ import cls from './index.module.scss';
 export const Tech: React.FC<{
   proj: ApiProject;
   comps: ApiComponent[];
-  params: RouteTech;
+  params: RouteProject;
 }> = ({ comps, params }) => {
   const route = useParams<Partial<RouteTech>>();
 

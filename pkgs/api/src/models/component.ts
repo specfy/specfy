@@ -110,7 +110,8 @@ export class Component extends Model<
   }
 
   getJsonForBlob(): DBBlobComponent['blob'] {
-    const { id, orgId, createdAt, updatedAt, ...simplified } = this.toJSON();
+    const { id, orgId, createdAt, updatedAt, blobId, ...simplified } =
+      this.toJSON();
     return simplified;
   }
 }

@@ -1,13 +1,4 @@
-import {
-  TeamOutlined,
-  HomeOutlined,
-  ReadOutlined,
-  ClusterOutlined,
-  ThunderboltOutlined,
-  SettingOutlined,
-  HistoryOutlined,
-} from '@ant-design/icons';
-import { Avatar, Card, Divider, Menu, Skeleton, Switch } from 'antd';
+import { Avatar, Card, Divider, Skeleton, Switch } from 'antd';
 import type { ApiComponent } from 'api/src/types/api/components';
 import type { ApiOrg } from 'api/src/types/api/orgs';
 import type { ApiProject } from 'api/src/types/api/projects';
@@ -23,6 +14,7 @@ import { BigHeading, BigHeadingLoading } from '../../components/BigHeading';
 import { Container } from '../../components/Container';
 import type { GraphRef } from '../../components/Graph';
 import { Graph } from '../../components/Graph';
+import { ProjectMenu } from '../../components/ProjectMenu';
 import { Time } from '../../components/Time';
 import { useCurrentRoute } from '../../hooks/useCurrentRoute';
 import { useEdit } from '../../hooks/useEdit';
@@ -115,74 +107,6 @@ export const Project: React.FC = () => {
     edit.enable(val);
   }
 
-  const menu = useMemo(() => {
-    return [
-      {
-        key: 'home',
-        label: (
-          <Link to={linkSelf} className={cls.link}>
-            <HomeOutlined />
-            Home
-          </Link>
-        ),
-      },
-      {
-        key: 'content',
-        label: (
-          <Link to={`${linkSelf}/content`} className={cls.link}>
-            <ReadOutlined />
-            Content
-          </Link>
-        ),
-      },
-      {
-        key: 'graph',
-        label: (
-          <Link to={`${linkSelf}/graph`} className={cls.link}>
-            <ClusterOutlined />
-            Graph
-          </Link>
-        ),
-      },
-      {
-        key: 'revisions',
-        label: (
-          <Link to={`${linkSelf}/revisions`} className={cls.link}>
-            <HistoryOutlined />
-            Revisions
-          </Link>
-        ),
-      },
-      {
-        key: 'activity',
-        label: (
-          <Link to={`${linkSelf}/activity`} className={cls.link}>
-            <ThunderboltOutlined />
-            Activity
-          </Link>
-        ),
-      },
-      {
-        key: 'team',
-        label: (
-          <Link to={`${linkSelf}/team`} className={cls.link}>
-            <TeamOutlined />
-            Team
-          </Link>
-        ),
-      },
-      {
-        key: 'settings',
-        label: (
-          <Link to={`${linkSelf}/settings`} className={cls.link}>
-            <SettingOutlined />
-            Settings
-          </Link>
-        ),
-      },
-    ];
-  }, [linkSelf, cls.link]);
-
   if (getProj.isLoading || getComps.isLoading) {
     return (
       <Container className={cls.container}>
@@ -224,12 +148,7 @@ export const Project: React.FC = () => {
             </>
           }
         ></BigHeading>
-        <Menu
-          defaultSelectedKeys={['summary']}
-          mode="horizontal"
-          items={menu}
-          className={cls.menu}
-        />
+        <ProjectMenu proj={proj} params={params} />
         <div className={cls.editZone}>
           <div className={cls.editMode}>
             {edit.isEnabled ? (

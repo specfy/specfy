@@ -12,7 +12,7 @@ export interface EditContextSub<T extends Record<string, any>> {
 }
 
 export type TmpBlob = Pick<ApiBlob, 'blob' | 'type' | 'typeId'> & {
-  original: Record<string, any>;
+  previous: Record<string, any>;
 };
 
 export interface EditContextInterface {
@@ -30,7 +30,7 @@ export interface EditContextInterface {
   get: <T extends Record<string, any>>(
     type: ApiBlob['type'],
     typeId: string,
-    original: T
+    previous: T
   ) => EditContextSub<T>;
 }
 
@@ -68,7 +68,7 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
         let count = 0;
         for (const change of changes) {
           for (const [key, val] of Object.entries(change.blob)) {
-            count += isDiff(change.original[key], val) ? 1 : 0;
+            count += isDiff(change.previous[key], val) ? 1 : 0;
           }
         }
 
@@ -90,10 +90,10 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
         );
         setLastUpdate(new Date());
       },
-      get(type, typeId, original) {
+      get(type, typeId, previous) {
         let has = changes.find((c) => c.type === type && c.typeId === typeId);
         if (!has) {
-          has = { type, typeId, original, blob: {} as any };
+          has = { type, typeId, previous, blob: {} as any };
           setChanges([...changes, has]);
         }
 

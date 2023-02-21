@@ -8,30 +8,35 @@ import { isDiff } from '../hooks/useEdit';
 
 export function diffTwoBlob(
   { type, typeId, blob }: Pick<TmpBlob, 'blob' | 'type' | 'typeId'>,
-  original: Record<string, any> | null
+  previous: Record<string, any> | null
 ) {
   const clean: TmpBlob = {
     type,
     typeId,
-    original: original || {},
+    previous: previous || {},
     blob: {} as any,
   };
   const computed: ComputedForDiff[] = [];
 
   for (const [key, value] of Object.entries(blob)) {
-    if (original && !isDiff(original[key], value)) {
-      continue;
+    if (previous) {
+      if (!isDiff(previous[key], value)) {
+        continue;
+      }
+      if (!previous[key] && !value) {
+        continue;
+      }
     }
 
     if (key === 'description' || key === 'content') {
       clean.blob[key as keyof TmpBlob['blob']] = value;
-      const a = original ? <ContentDoc doc={original[key]} /> : <></>;
+      const a = previous ? <ContentDoc doc={previous[key]} /> : <></>;
       const b = <ContentDoc doc={value} />;
       const tmp: ComputedForDiff = {
         type,
         typeId,
         key,
-        original,
+        previous,
         diff: diffWordsWithSpace(
           renderToString(a).replaceAll('<!-- -->', ''),
           renderToString(b).replaceAll('<!-- -->', '')
@@ -42,12 +47,13 @@ export function diffTwoBlob(
       // TODO: Handle arrays
       continue;
     } else {
+      console.log('problematic', key, { previous: previous![key], value });
       const tmp: ComputedForDiff = {
         type,
         typeId,
         key,
-        original,
-        diff: diffWordsWithSpace(original ? original[key] : '', value),
+        previous,
+        diff: diffWordsWithSpace(previous ? previous[key] : '', value),
       };
       computed.push(tmp);
     }

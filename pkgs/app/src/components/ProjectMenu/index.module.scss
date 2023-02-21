@@ -1,0 +1,51 @@
+@import "../../styles/theme";
+
+.link {
+  display: flex;
+  gap: $p-m;
+
+  padding: $p-xs $p-l;
+
+  font-size: $font;
+  line-height: $line-height-m;
+  color: $gray-700 !important;
+
+  border-radius: 4px;
+
+  transition: background-color 0.25s ease-in-out;
+
+  &:hover {
+    color: $gray-10 !important;
+    text-decoration: none;
+    background-color: $gray-4 !important;
+  }
+
+  .badged {
+    display: flex;
+    align-items: center;
+    gap: $p-m;
+  }
+}
+
+.menu {
+  height: 35px;
+  margin-top: 35px;
+  background-color: transparent;
+  border: none;
+
+  :global {
+    .ant-menu-item {
+      padding-inline: $p-s;
+
+      &::after {
+        display: none;
+      }
+
+      &.ant-menu-item-selected {
+        :local(.link) {
+          background-color: $gray-4;
+        }
+      }
+    }
+  }
+}
