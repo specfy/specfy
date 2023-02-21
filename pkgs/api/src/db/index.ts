@@ -1,6 +1,7 @@
 import { Sequelize } from 'sequelize-typescript';
 
 import { env } from '../common/env';
+import { logger } from '../logger';
 import * as models from '../models';
 
 const isProduction = env('ENVIRONMENT') === 'production';
@@ -13,7 +14,9 @@ const url = env(
 );
 
 export const db = new Sequelize(url, {
-  logging: true,
+  logging: (sql) => {
+    logger.debug(sql);
+  },
   dialectOptions: {
     ssl:
       isProduction && !isSSLDisabled

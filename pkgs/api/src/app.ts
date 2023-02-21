@@ -2,8 +2,13 @@ import path from 'path';
 
 import { fastifyAutoload } from '@fastify/autoload';
 import cors from '@fastify/cors';
-import type { FastifyInstance, FastifyPluginOptions } from 'fastify';
+import type {
+  FastifyInstance,
+  FastifyPluginOptions,
+  FastifyServerOptions,
+} from 'fastify';
 
+import { logger } from './logger';
 import { routes } from './routes/routes';
 import './db';
 
@@ -21,4 +26,8 @@ export default async (f: FastifyInstance, opts: FastifyPluginOptions) => {
   });
 
   await routes(f, opts);
+};
+
+export const options: FastifyServerOptions = {
+  logger,
 };

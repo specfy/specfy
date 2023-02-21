@@ -1,13 +1,11 @@
 import closeWithGrace from 'close-with-grace';
 import Fastify from 'fastify';
 
-import appService from './app';
+import appService, { options } from './app';
 // Require library to exit fastify process, gracefully (if possible)
 
 // Instantiate Fastify with some config
-const app = Fastify({
-  logger: true,
-});
+const app = Fastify(options);
 
 // Register your application as a normal plugin.
 app.register(appService);
