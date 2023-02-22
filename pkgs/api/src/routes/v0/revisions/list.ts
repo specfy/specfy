@@ -41,7 +41,9 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     if (req.query.search) {
       filter.title = { [Op.iLike]: `%${req.query.search}%` };
     }
+    // TODO: search in content
 
+    // TODO: return author
     const list = await Revision.findAll({
       where: {
         // TODO validation
@@ -50,6 +52,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         ...filter,
       },
       order: [['createdAt', 'DESC']],
+      // TODO: add limit/offset to qp
       limit: 10,
       offset: 0,
     });

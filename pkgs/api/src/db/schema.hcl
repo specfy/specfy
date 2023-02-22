@@ -167,11 +167,6 @@ table "documents" {
     type = json
     null = false
   }
-  column "status" {
-    type = varchar(25)
-    null = false
-    default = "draft"
-  }
   column "locked" {
     type = boolean
     null = false

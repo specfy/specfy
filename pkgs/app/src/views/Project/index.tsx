@@ -22,9 +22,9 @@ import type { RouteProject } from '../../types/routes';
 
 import { ProjectActivity } from './Activity';
 import { ComponentView } from './Component';
-import { ProjectContent } from './Content';
+import { ProjectContentList } from './Content/List';
+import { RFC } from './Content/RFC';
 import { ProjectHome } from './Home';
-import { RFC } from './RFC';
 import { ProjectRevisionCreate } from './Revisions/Create';
 import { ProjectRevisionsList } from './Revisions/List';
 import { ProjectRevisionsShow } from './Revisions/Show';
@@ -205,7 +205,7 @@ export const Project: React.FC = () => {
               />
               <Route
                 path="/content"
-                element={<ProjectContent proj={proj} params={params} />}
+                element={<ProjectContentList proj={proj} params={params} />}
               />
               <Route
                 path="/activity"

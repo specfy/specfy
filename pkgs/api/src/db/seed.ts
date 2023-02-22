@@ -539,7 +539,6 @@ export async function seed() {
       ],
     },
     locked: true,
-    status: 'approved',
     // authors: ['1'],
     // reviewers: ['2'],
     // approvedBy: ['3'],
@@ -557,7 +556,6 @@ export async function seed() {
     tldr: 'Donec eget porttitor nisi. Proin ac augue bibendum, posuere dui vel, volutpat ligula.',
     content: { type: 'doc', content: [] },
     locked: false,
-    status: 'draft',
   });
   const d3 = await Document.create({
     id: '01200000-0000-4000-0000-000000000000',
@@ -572,7 +570,6 @@ export async function seed() {
     tldr: 'Donec eget porttitor nisi. Proin ac augue bibendum, posuere dui vel, volutpat ligula.',
     content: { type: 'doc', content: [] },
     locked: false,
-    status: 'rejected',
   });
 
   // Document has user

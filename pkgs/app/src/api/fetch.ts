@@ -10,7 +10,7 @@ export async function fetchApi<
   url.pathname = `/0${path}`;
 
   if (opts?.qp) {
-    url.search = new URLSearchParams(opts.qp).toString();
+    url.search = new URLSearchParams({ ...opts.qp }).toString();
   }
 
   const headers: Record<string, string> = {};

@@ -7,15 +7,14 @@ import clsn from 'classnames';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
-import { useGetDocument } from '../../../api/documents';
-import { ContentDoc } from '../../../components/Content';
-import { Editor } from '../../../components/Editor';
-import { HeadingTree } from '../../../components/HeadingTree';
-import { RFCStatusTag } from '../../../components/RFCStatusTag';
-import { Time } from '../../../components/Time';
-import { UserCard } from '../../../components/UserCard';
-import { useEdit } from '../../../hooks/useEdit';
-import type { RouteDocument, RouteProject } from '../../../types/routes';
+import { useGetDocument } from '../../../../api/documents';
+import { ContentDoc } from '../../../../components/Content';
+import { Editor } from '../../../../components/Editor';
+import { HeadingTree } from '../../../../components/HeadingTree';
+import { Time } from '../../../../components/Time';
+import { UserCard } from '../../../../components/UserCard';
+import { useEdit } from '../../../../hooks/useEdit';
+import type { RouteDocument, RouteProject } from '../../../../types/routes';
 
 import cls from './index.module.scss';
 
@@ -65,7 +64,6 @@ export const RFC: React.FC<{
             </Typography.Text>
           </Title>
           <Space>
-            <RFCStatusTag status={item.status} locked={item.locked} />
             <div className={cls.lastUpdate}>
               updated <Time time={item.updatedAt} />
             </div>

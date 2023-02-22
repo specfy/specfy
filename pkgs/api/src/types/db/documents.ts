@@ -13,7 +13,6 @@ export interface DBDocument {
   slug: string;
   tldr: string;
   content: BlockLevelZero;
-  status: 'approved' | 'draft' | 'rejected' | 'waiting';
   locked: boolean;
 
   createdAt: string;

@@ -1,4 +1,6 @@
 import type { FastifyPluginCallback } from 'fastify';
+import type { WhereOptions } from 'sequelize';
+import { Op } from 'sequelize';
 
 import { Document } from '../../../models';
 import type { Pagination } from '../../../types/api/api';
@@ -6,6 +8,7 @@ import type {
   ReqListDocuments,
   ResListDocuments,
 } from '../../../types/api/documents';
+import type { DBDocument } from '../../../types/db/documents';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{ Querystring: ReqListDocuments; Reply: ResListDocuments }>(
@@ -13,20 +16,40 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     async function (req, res) {
       // TODO: pagination
       const pagination: Pagination = {
-        currentPage: 0,
+        currentPage: 1,
         totalItems: 0,
       };
 
+      const filter: WhereOptions<DBDocument> = {};
+
+      // Search
+      if (req.query.search) {
+        filter.name = { [Op.iLike]: `%${req.query.search}%` };
+      }
+      // TODO: search in content
+
+      // TODO: return author
       const docs = await Document.findAll({
         where: {
           // TODO: validation
           orgId: req.query.org_id,
           projectId: req.query.project_id,
+          ...filter,
         },
         order: [['typeId', 'DESC']],
+        // TODO: add limit/offset to qp
         limit: 10,
         offset: 0,
       });
+      const count = await Document.count({
+        where: {
+          // TODO validation
+          orgId: req.query.org_id,
+          projectId: req.query.project_id,
+          ...filter,
+        },
+      });
+      pagination.totalItems = count;
 
       res.status(200).send({
         data: docs.map((p) => {
@@ -49,7 +72,6 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
             // TODO: remove this in /list
             reviewers: [],
             approvedBy: [],
-            status: p.status,
             locked: p.locked,
 
             createdAt: p.createdAt.toISOString(),

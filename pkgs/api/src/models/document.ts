@@ -24,14 +24,7 @@ import type { Project } from './project';
 type CreateProp = Partial<Pick<DBDocument, 'id'>> &
   Pick<
     DBDocument,
-    | 'content'
-    | 'locked'
-    | 'name'
-    | 'orgId'
-    | 'projectId'
-    | 'status'
-    | 'tldr'
-    | 'type'
+    'content' | 'locked' | 'name' | 'orgId' | 'projectId' | 'tldr' | 'type'
   >;
 @Table({ tableName: 'documents', modelName: 'document' })
 export class Document extends Model<DBDocument, CreateProp> {
@@ -61,21 +54,11 @@ export class Document extends Model<DBDocument, CreateProp> {
   @Column
   declare slug: string;
 
-  // create: string;
-  // update: string[];
-  // use: string[];
-  // remove: string[];
   @Column
   declare tldr: string;
 
   @Column({ type: DataType.JSON })
   declare content: CreationOptional<DBDocument['content']>;
-  // authors: string[];
-  // reviewers: string[];
-  // approvedBy: string[];
-
-  @Column({ type: DataType.STRING })
-  declare status: DBDocument['status'];
 
   @Column
   declare locked: boolean;

@@ -6,7 +6,6 @@ import type { ApiProject } from 'api/src/types/api/projects';
 import { Link } from 'react-router-dom';
 
 import { useListDocuments } from '../../api/documents';
-import { RFCStatusTag } from '../RFCStatusTag';
 
 import cls from './index.module.scss';
 
@@ -54,13 +53,6 @@ export const ListRFCs: React.FC<{ project: ApiProject }> = ({ project }) => {
                   RFC-{item.typeId} - {item.name}
                 </Link>
               );
-            }}
-          />
-          <Table.Column
-            title="Status"
-            dataIndex="status"
-            render={(_, item: ApiDocument) => {
-              return <RFCStatusTag status={item.status} locked={item.locked} />;
             }}
           />
         </Table>

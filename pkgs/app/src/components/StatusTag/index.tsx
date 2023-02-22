@@ -3,7 +3,7 @@ import { Tag } from 'antd';
 
 import cls from './index.module.scss';
 
-export const RFCStatusTag: React.FC<{
+export const StatusTag: React.FC<{
   status: string;
   locked: boolean;
   merged?: boolean;

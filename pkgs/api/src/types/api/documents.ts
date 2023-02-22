@@ -13,6 +13,7 @@ export type ApiDocument = DBDocument & {
 export interface ReqListDocuments {
   org_id: string;
   project_id: string;
+  search?: string;
 }
 
 export interface ResListDocuments {

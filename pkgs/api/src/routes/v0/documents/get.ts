@@ -56,7 +56,6 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           .map((u) => toApiUser(u.user)),
         // TODO: fill this
         approvedBy: [],
-        status: p.status,
         locked: p.locked,
 
         createdAt: p.createdAt.toISOString(),

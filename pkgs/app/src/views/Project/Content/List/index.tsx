@@ -1,44 +1,37 @@
 import {
-  CloseCircleOutlined,
-  HistoryOutlined,
   SearchOutlined,
+  CloseCircleOutlined,
+  ReadOutlined,
 } from '@ant-design/icons';
-import { Button, Empty, Input, Select, Skeleton, Table } from 'antd';
-import type { ApiProject } from 'api/src/types/api';
-import type {
-  ApiRevision,
-  ReqListRevisions,
-} from 'api/src/types/api/revisions';
+import { Button, Empty, Input, Skeleton, Table } from 'antd';
+import type { ApiDocument, ApiProject } from 'api/src/types/api';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDebounce } from 'react-use';
 
-import { useListRevisions } from '../../../../api/revisions';
-import { StatusTag } from '../../../../components/StatusTag';
+import { useListDocuments } from '../../../../api/documents';
 import { Time } from '../../../../components/Time';
 import type { RouteProject } from '../../../../types/routes';
 
 import cls from './index.module.scss';
 
-export const ProjectRevisionsList: React.FC<{
+export const ProjectContentList: React.FC<{
   proj: ApiProject;
   params: RouteProject;
 }> = ({ proj, params }) => {
-  const [filterStatus, setFilterStatus] =
-    useState<ReqListRevisions['status']>('opened');
   const [search, setSearch] = useState<string>('');
-  const [searchDebounced, setSearchDebounced] = useState<string>();
+  const [searchDebounced, setSearchDebounced] = useState<string>('');
   useDebounce(
     () => {
+      console.log(search);
       setSearchDebounced(search);
     },
     500,
     [search]
   );
-  const res = useListRevisions({
+  const res = useListDocuments({
     org_id: params.org_id,
     project_id: proj.id,
-    status: filterStatus,
     search: searchDebounced,
   });
 
@@ -48,7 +41,6 @@ export const ProjectRevisionsList: React.FC<{
   };
   const handleReset = () => {
     setSearch('');
-    setFilterStatus('opened');
   };
 
   return (
@@ -61,23 +53,8 @@ export const ProjectRevisionsList: React.FC<{
               prefix={<SearchOutlined />}
               onChange={handleInput}
               value={search}
-              addonBefore={
-                <Select
-                  defaultValue={filterStatus}
-                  value={filterStatus}
-                  style={{ width: 'calc(100px)' }}
-                  onChange={setFilterStatus}
-                >
-                  <Select.Option value="opened">Opened</Select.Option>
-                  <Select.Option value="waiting">Waiting</Select.Option>
-                  <Select.Option value="approved">Approved</Select.Option>
-                  <Select.Option value="merged">Merged</Select.Option>
-                  <Select.Option value="rejected">Rejected</Select.Option>
-                  <Select.Option value="all">All</Select.Option>
-                </Select>
-              }
               suffix={
-                (search || filterStatus !== 'opened') && (
+                search && (
                   <Button
                     onClick={handleReset}
                     title="Reset search filters..."
@@ -109,29 +86,24 @@ export const ProjectRevisionsList: React.FC<{
           <Table.Column
             title={
               <div className={cls.th}>
-                <HistoryOutlined /> {res.data.pagination.totalItems} Revisions
+                <ReadOutlined /> {res.data.pagination.totalItems} Documents
               </div>
             }
             dataIndex="name"
             className={cls.tcell}
             key="name"
-            render={(_, item: ApiRevision) => {
+            render={(_, item: ApiDocument) => {
               return (
                 <>
                   <Link
-                    to={`/org/${params.org_id}/${params.project_slug}/revisions/${item.id}`}
+                    to={`/org/${params.org_id}/${params.project_slug}/rfc/${item.typeId}/${item.slug}`}
                     relative="path"
                     className={cls.title}
                   >
-                    {item.title}
+                    RFC-{item.typeId} - {item.name}
                   </Link>
                   <div className={cls.subtitle}>
-                    <StatusTag
-                      status={item.status}
-                      locked={item.locked}
-                      merged={item.merged}
-                    />{' '}
-                    opened <Time time={item.createdAt} />
+                    Updated <Time time={item.updatedAt} />
                   </div>
                 </>
               );

@@ -18,7 +18,7 @@ import { diffTwoBlob } from '../../../../common/diff';
 import { ContentDoc } from '../../../../components/Content';
 import type { ComputedForDiff } from '../../../../components/DiffRow';
 import { DiffRow } from '../../../../components/DiffRow';
-import { RFCStatusTag } from '../../../../components/RFCStatusTag';
+import { StatusTag } from '../../../../components/StatusTag';
 import { Time } from '../../../../components/Time';
 import { UserCard } from '../../../../components/UserCard';
 import type { EditContextInterface } from '../../../../hooks/useEdit';
@@ -125,7 +125,7 @@ export const ProjectRevisionsShow: React.FC<{
             </Typography.Title>
 
             <div className={cls.subtitle}>
-              <RFCStatusTag
+              <StatusTag
                 status={rev.status}
                 locked={rev.locked}
                 merged={rev.merged}
