@@ -18,6 +18,7 @@ export type ReqListRevisions = {
   org_id: string;
   project_id: string;
   status?: ApiRevision['status'] | 'all' | 'merged' | 'opened';
+  search?: string;
 };
 export type ResListRevisions = {
   data: ApiRevision[];

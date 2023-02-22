@@ -9,10 +9,16 @@
   }
 }
 
+.searchWrapper {
+  display: flex;
+  align-items: center;
+  margin-bottom: $p-xxl;
+  gap: $p-l;
+}
+
 .search {
   width: 50%;
   min-width: 500px;
-  margin-bottom: $p-xxl;
 }
 
 th.tcell {

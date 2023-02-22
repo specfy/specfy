@@ -30,7 +30,13 @@ export async function createRevision(
 
 export function useListRevisions(opts: ReqListRevisions) {
   return useQuery({
-    queryKey: ['listRevisions', opts.org_id, opts.project_id, opts.status],
+    queryKey: [
+      'listRevisions',
+      opts.org_id,
+      opts.project_id,
+      opts.status,
+      opts.search,
+    ],
     queryFn: async (): Promise<ResListRevisions> => {
       const { json } = await fetchApi<ResListRevisions, ReqListRevisions>(
         '/revisions',

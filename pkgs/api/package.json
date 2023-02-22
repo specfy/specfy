@@ -6,7 +6,7 @@
   "scripts": {
     "test": "tap \"test/**/*.test.js\"",
     "start": "node index.js",
-    "dev": "fastify start --options 'build/options.js' -w -P build/app.js",
+    "dev": "fastify start --logging-module='build/logger.js' -o -w -P build/app.js",
     "build": "tsc -p tsconfig.json -w",
     "migrate": "cd src/db && atlas schema apply --env local_main",
     "seed": "node ./build/db/seed.js"

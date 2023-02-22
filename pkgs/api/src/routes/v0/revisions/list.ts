@@ -22,6 +22,8 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     };
 
     const filter: WhereOptions<DBRevision> = {};
+
+    // Status filtering
     if (req.query.status) {
       if (req.query.status === 'merged') {
         filter.merged = true;
@@ -31,7 +33,13 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         filter.status = { [Op.not]: 'draft' };
       } else if (req.query.status !== 'all') {
         filter.status = req.query.status;
+        filter.mergedAt = { [Op.is]: null };
       }
+    }
+
+    // Search
+    if (req.query.search) {
+      filter.title = { [Op.iLike]: `%${req.query.search}%` };
     }
 
     const list = await Revision.findAll({

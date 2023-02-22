@@ -1,5 +1,9 @@
-import { HistoryOutlined, SearchOutlined } from '@ant-design/icons';
-import { Input, Select, Skeleton, Table } from 'antd';
+import {
+  CloseCircleOutlined,
+  HistoryOutlined,
+  SearchOutlined,
+} from '@ant-design/icons';
+import { Button, Empty, Input, Select, Skeleton, Table } from 'antd';
 import type { ApiProject } from 'api/src/types/api';
 import type {
   ApiRevision,
@@ -7,6 +11,7 @@ import type {
 } from 'api/src/types/api/revisions';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useDebounce } from 'react-use';
 
 import { useListRevisions } from '../../../../api/revisions';
 import { RFCStatusTag } from '../../../../components/RFCStatusTag';
@@ -21,45 +26,78 @@ export const ProjectRevisionsList: React.FC<{
 }> = ({ proj, params }) => {
   const [filterStatus, setFilterStatus] =
     useState<ReqListRevisions['status']>('opened');
+  const [search, setSearch] = useState<string>('');
+  const [searchDebounced, setSearchDebounced] = useState<string>();
+  useDebounce(
+    () => {
+      setSearchDebounced(search);
+    },
+    500,
+    [search]
+  );
   const res = useListRevisions({
     org_id: params.org_id,
     project_id: proj.id,
     status: filterStatus,
+    search: searchDebounced,
   });
 
-  if (res.isLoading) {
-    return (
-      <div>
-        <Skeleton active title={false} paragraph={{ rows: 3 }}></Skeleton>
-      </div>
-    );
-  }
+  // Handler
+  const handleInput: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+    setSearch(e.target.value);
+  };
+  const handleReset = () => {
+    setSearch('');
+    setFilterStatus('opened');
+  };
 
   return (
     <div className={cls.container}>
-      <div className={cls.search}>
-        <Input.Group compact>
-          <Input
-            size="large"
-            prefix={<SearchOutlined />}
-            addonBefore={
-              <Select
-                defaultValue={filterStatus}
-                style={{ width: 'calc(100px)' }}
-                onChange={setFilterStatus}
-              >
-                <Select.Option value="opened">Opened</Select.Option>
-                <Select.Option value="waiting">Waiting</Select.Option>
-                <Select.Option value="approved">Approved</Select.Option>
-                <Select.Option value="merged">Merged</Select.Option>
-                <Select.Option value="rejected">Rejected</Select.Option>
-                <Select.Option value="all">All</Select.Option>
-              </Select>
-            }
-            placeholder="Search..."
-          />
-        </Input.Group>
+      <div className={cls.searchWrapper}>
+        <div className={cls.search}>
+          <Input.Group compact>
+            <Input
+              size="large"
+              prefix={<SearchOutlined />}
+              onChange={handleInput}
+              value={search}
+              addonBefore={
+                <Select
+                  defaultValue={filterStatus}
+                  value={filterStatus}
+                  style={{ width: 'calc(100px)' }}
+                  onChange={setFilterStatus}
+                >
+                  <Select.Option value="opened">Opened</Select.Option>
+                  <Select.Option value="waiting">Waiting</Select.Option>
+                  <Select.Option value="approved">Approved</Select.Option>
+                  <Select.Option value="merged">Merged</Select.Option>
+                  <Select.Option value="rejected">Rejected</Select.Option>
+                  <Select.Option value="all">All</Select.Option>
+                </Select>
+              }
+              suffix={
+                (search || filterStatus !== 'opened') && (
+                  <Button
+                    onClick={handleReset}
+                    title="Reset search filters..."
+                    type="text"
+                    size="small"
+                    icon={<CloseCircleOutlined />}
+                  />
+                )
+              }
+              placeholder="Search..."
+            />
+          </Input.Group>
+        </div>
+        <div></div>
       </div>
+      {res.isLoading && (
+        <div>
+          <Skeleton active title={false} paragraph={{ rows: 3 }}></Skeleton>
+        </div>
+      )}
       {res.data && res.data.data.length > 0 && (
         <Table
           rowKey="id"
@@ -100,6 +138,7 @@ export const ProjectRevisionsList: React.FC<{
           />
         </Table>
       )}
+      {res.data && res.data.pagination.totalItems === 0 && <Empty />}
     </div>
   );
 };
