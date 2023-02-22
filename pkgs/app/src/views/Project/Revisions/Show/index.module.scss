@@ -85,10 +85,13 @@
 .checkLine {
   display: flex;
   gap: $p-m;
-  padding: $p-l $p-xxxl;
-  border-bottom: 1px solid $gray-100;
   align-items: center;
+
+  padding: $p-l $p-xxxl;
+
   color: $gray-500;
+
+  border-bottom: 1px solid $gray-100;
 
   :global(> .anticon) {
     font-size: $font-l;

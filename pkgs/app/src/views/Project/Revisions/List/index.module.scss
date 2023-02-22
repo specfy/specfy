@@ -11,9 +11,9 @@
 
 .searchWrapper {
   display: flex;
+  gap: $p-l;
   align-items: center;
   margin-bottom: $p-xxl;
-  gap: $p-l;
 }
 
 .search {

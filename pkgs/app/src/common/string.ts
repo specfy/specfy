@@ -1,4 +1,3 @@
-import { presetPalettes } from '@ant-design/colors';
 import stringHash from 'string-hash';
 
 export function slugify(title: string): string {
