@@ -25,7 +25,7 @@ const App: React.FC = () => {
           token: {
             borderRadius: 4,
             colorPrimary: '#1d4ed8',
-            colorLinkHover: '#0369a1',
+            colorLinkHover: '#1d4ed8',
             // linkHoverDecoration: 'underline',
             fontSizeHeading1: 28,
             fontSizeHeading2: 24,

@@ -1,5 +1,5 @@
-import { PlusOutlined } from '@ant-design/icons';
-import { Button, Skeleton, Table } from 'antd';
+import { FileOutlined } from '@ant-design/icons';
+import { Skeleton, Table } from 'antd';
 import Title from 'antd/es/typography/Title';
 import type { ApiDocument } from 'api/src/types/api/documents';
 import type { ApiProject } from 'api/src/types/api/projects';
@@ -24,12 +24,6 @@ export const ListRFCs: React.FC<{ project: ApiProject }> = ({ project }) => {
     <div>
       <div className={cls.header}>
         <Title level={5}>Technical Specs</Title>
-
-        <div>
-          <Button type="primary" size="small" icon={<PlusOutlined />} ghost>
-            Create
-          </Button>
-        </div>
       </div>
 
       {!l.data ||
@@ -39,18 +33,25 @@ export const ListRFCs: React.FC<{ project: ApiProject }> = ({ project }) => {
           </div>
         ))}
       {l.data && l.data.data.length > 0 && (
-        <Table rowKey="id" dataSource={l.data!.data} size="small">
+        <Table
+          rowKey="id"
+          dataSource={l.data!.data}
+          size="small"
+          pagination={false}
+        >
           <Table.Column
             title=""
             dataIndex="name"
             key="name"
+            className={cls.tcell}
             render={(_, item: ApiDocument) => {
               return (
                 <Link
                   to={`/org/${project.orgId}/${project.slug}/${item.type}/${item.typeId}/${item.slug}`}
                   relative="path"
+                  className={cls.title}
                 >
-                  RFC-{item.typeId} - {item.name}
+                  <FileOutlined /> RFC-{item.typeId} - {item.name}
                 </Link>
               );
             }}

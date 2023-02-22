@@ -14,3 +14,18 @@
 .empty {
   color: $gray-7;
 }
+
+th.tcell {
+  display: none;
+}
+
+tbody td.tcell {
+  padding: $p-l 0 !important;
+}
+
+.title {
+  font-size: $font;
+  color: $gray-900;
+  display: flex;
+  gap: $p-l;
+}

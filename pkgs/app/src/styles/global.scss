@@ -7,6 +7,12 @@ body {
   background-color: $gray-2;
 }
 
+a {
+  &:hover {
+    color: $blue-700;
+  }
+}
+
 .ant-layout {
   background-color: transparent;
 

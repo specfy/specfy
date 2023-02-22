@@ -47,11 +47,11 @@
 
   .item {
     display: inline-flex;
-    gap: $p-m;
+    gap: $p-s;
     align-items: center;
 
     min-width: 120px;
-    padding: 0 $p-m;
+    padding: $p-xs $p-l;
 
     font-size: $font;
     color: $gray-700;
