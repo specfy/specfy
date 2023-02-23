@@ -30,7 +30,7 @@ table "users" {
     columns = [column.id]
   }
 
-  index "idx_email" {
+  index "idx_users_email" {
     columns = [
       column.email
     ]
@@ -113,7 +113,7 @@ table "projects" {
     columns = [column.id]
   }
 
-  index "idx_org_slug" {
+  index "idx_projects_orgid_slug" {
     columns = [
       column.org_id,
       column.slug
@@ -188,13 +188,13 @@ table "documents" {
     columns = [column.id]
   }
 
-  index "idx_org_pid" {
+  index "idx_document_orgid_projectid" {
     columns = [
       column.org_id,
       column.project_id
     ]
   }
-  index "idx_org_type_type_id" {
+  index "idx_document_orgid_type_typeid" {
     columns = [
       column.org_id,
       column.type,
@@ -321,7 +321,7 @@ table "perms" {
   primary_key {
     columns = [column.id]
   }
-  index "idx_org_user_id_project_id" {
+  index "idx_team_org_userid_projectid" {
     columns = [
       column.org_id,
       column.user_id,
@@ -359,14 +359,14 @@ table "type_has_users" {
     null    = false
   }
 
-  index "document_id_user_id" {
+  index "idx_documentid_userid" {
     columns = [
       column.document_id,
       column.user_id,
     ]
     unique = true
   }
-  index "revision_id_user_id" {
+  index "idx_revisionid_userid" {
     columns = [
       column.revision_id,
       column.user_id,
@@ -414,11 +414,6 @@ table "revisions" {
     type = varchar(25)
     null = false
     default = "draft"
-  }
-  column "merged" {
-    type = boolean
-    null = false
-    default = false
   }
   column "merged" {
     type = boolean
@@ -506,3 +501,120 @@ table "blobs" {
     columns = [column.id]
   }
 }
+
+
+// ------------------------ Reviews
+table "reviews" {
+  schema = schema.public
+
+  column "id" {
+    type = bigint
+    null = false
+    identity {
+      generated = ALWAYS
+      start = 1472
+      increment = 1
+    }
+  }
+
+  column "org_id" {
+    type = varchar(35)
+    null = false
+  }
+  column "project_id" {
+    type = uuid
+    null = false
+  }
+  column "revision_id" {
+    type = uuid
+    null = false
+  }
+  column "user_id" {
+    type = uuid
+    null = false
+  }
+  column "comment_id" {
+    type = bigint
+    null = true
+  }
+
+  column "created_at" {
+    type    = timestamp(6)
+    default = sql("now()")
+    null    = false
+  }
+
+  primary_key {
+    columns = [column.id]
+  }
+
+  index "idx_reviews_orgid_projectid_revisionid" {
+    columns = [
+      column.org_id,
+      column.project_id,
+      column.revision_id,
+    ]
+  }
+}
+
+
+// ------------------------ Comments
+table "comments" {
+  schema = schema.public
+
+  column "id" {
+    type = bigint
+    null = false
+    identity {
+      generated = ALWAYS
+      start = 1472
+      increment = 1
+    }
+  }
+
+  column "org_id" {
+    type = varchar(35)
+    null = false
+  }
+  column "project_id" {
+    type = uuid
+    null = false
+  }
+  column "revision_id" {
+    type = uuid
+    null = false
+  }
+  column "user_id" {
+    type = uuid
+    null = false
+  }
+
+  column "content" {
+    type = json
+    null = false
+  }
+
+  column "created_at" {
+    type    = timestamp(6)
+    default = sql("now()")
+    null    = false
+  }
+  column "updated_at" {
+    type    = timestamp(6)
+    default = sql("now()")
+    null    = false
+  }
+
+  primary_key {
+    columns = [column.id]
+  }
+
+  index "idx_comments_orgid_projectid_revisionid" {
+    columns = [
+      column.org_id,
+      column.project_id,
+      column.revision_id,
+    ]
+  }
+}
+

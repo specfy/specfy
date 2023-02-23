@@ -1,9 +1,13 @@
 export async function fetchApi<
   T extends Record<string, any>,
-  TQuery = undefined
+  TQuery = undefined,
+  TBody = undefined
 >(
   path: string,
-  opts?: { qp?: TQuery; body?: any },
+  opts?: (TBody extends Record<string, any>
+    ? { body: TBody }
+    : { body?: undefined }) &
+    (TQuery extends Record<string, any> ? { qp: TQuery } : { qp?: undefined }),
   method?: RequestInit['method']
 ): Promise<{ res: Response; json: T }> {
   const url = new URL('http://localhost:3000/');

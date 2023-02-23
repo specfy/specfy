@@ -27,7 +27,7 @@ export const ProjectRevisionsList: React.FC<{
   const [filterStatus, setFilterStatus] =
     useState<ReqListRevisions['status']>('opened');
   const [search, setSearch] = useState<string>('');
-  const [searchDebounced, setSearchDebounced] = useState<string>();
+  const [searchDebounced, setSearchDebounced] = useState<string>('');
   useDebounce(
     () => {
       setSearchDebounced(search);

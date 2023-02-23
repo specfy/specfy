@@ -17,7 +17,7 @@
   &:hover {
     color: $gray-10 !important;
     text-decoration: none;
-    background-color: $gray-4 !important;
+    background-color: $neutral-100 !important;
   }
 
   .badged {
@@ -43,9 +43,16 @@
 
       &.ant-menu-item-selected {
         :local(.link) {
-          background-color: $gray-4;
+          font-weight: 600;
+          background-color: $neutral-100;
         }
       }
+    }
+
+    .ant-badge-count,
+    a:hover .ant-badge-count {
+      color: $gray-500;
+      background-color: $neutral-200;
     }
   }
 }

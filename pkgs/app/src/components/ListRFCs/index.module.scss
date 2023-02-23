@@ -24,8 +24,8 @@ tbody td.tcell {
 }
 
 .title {
-  font-size: $font;
-  color: $gray-900;
   display: flex;
   gap: $p-l;
+  font-size: $font;
+  color: $gray-900;
 }

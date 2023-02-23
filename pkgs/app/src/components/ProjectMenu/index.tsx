@@ -71,8 +71,7 @@ export const ProjectMenu: React.FC<{
               Revisions{' '}
               <Badge
                 count={revisions.data?.pagination.totalItems}
-                color="#e5e7eb"
-                style={{ color: '#6b7280' }}
+                showZero={false}
               />
             </div>
           </Link>

@@ -4,8 +4,8 @@ import {
   MinusCircleOutlined,
   PullRequestOutlined,
 } from '@ant-design/icons';
-import { App, Button, Skeleton, Typography } from 'antd';
-import type { ApiProject } from 'api/src/types/api';
+import { App, Button, Drawer, Skeleton, Space, Typography } from 'antd';
+import type { ApiProject, BlockLevelZero } from 'api/src/types/api';
 import type { ResListRevisionBlobs } from 'api/src/types/api/blob';
 import type { ResGetRevision } from 'api/src/types/api/revisions';
 import classnames from 'classnames';
@@ -13,11 +13,14 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useListRevisionBlobs } from '../../../../api/blobs';
+import { createComment } from '../../../../api/comments';
 import { mergeRevision, useGetRevision } from '../../../../api/revisions';
 import { diffTwoBlob } from '../../../../common/diff';
 import { ContentDoc } from '../../../../components/Content';
 import type { ComputedForDiff } from '../../../../components/DiffRow';
 import { DiffRow } from '../../../../components/DiffRow';
+import { Editor } from '../../../../components/Editor';
+import { getEmptyDoc } from '../../../../components/Editor/helpers';
 import { StatusTag } from '../../../../components/StatusTag';
 import { Time } from '../../../../components/Time';
 import { UserCard } from '../../../../components/UserCard';
@@ -38,16 +41,19 @@ export const ProjectRevisionsShow: React.FC<{
   const [blobs, setBlobs] = useState<ResListRevisionBlobs['data']>();
   const [computed, setComputed] = useState<ComputedForDiff[]>([]);
   const [to] = useState(() => `/org/${params.org_id}/${params.project_slug}`);
-
-  // Data fetching
-  const res = useGetRevision({
+  const qp = {
     org_id: params.org_id,
     project_id: proj.id,
     revision_id: more.revision_id!,
+  };
+
+  // --------- Data fetching
+  const res = useGetRevision({
+    ...qp,
+    revision_id: more.revision_id!,
   });
   const resBlobs = useListRevisionBlobs({
-    org_id: params.org_id,
-    project_id: proj.id,
+    ...qp,
     revision_id: rev?.id,
   });
 
@@ -58,7 +64,45 @@ export const ProjectRevisionsShow: React.FC<{
     setBlobs(resBlobs.data?.data);
   }, [resBlobs.isFetched]);
 
-  // Merge status
+  // --------- Review
+  const [canReview, setCanReview] = useState<boolean>(false);
+  const [reviewOpen, setReviewOpen] = useState(false);
+  const [review, setReview] = useState<BlockLevelZero>(getEmptyDoc());
+  // const [viewedCount, setViewedCount] = useState(0);
+
+  useEffect(() => {
+    if (!rev) return;
+    // Block if author
+    setCanReview(rev.merged ? false : true);
+  }, [rev]);
+
+  const onClickReview = (open: boolean) => {
+    setReviewOpen(open);
+  };
+  const onSubmitReview = async () => {
+    // TODO: handle errors
+    const resComment = await createComment(
+      {
+        ...qp,
+        revision_id: rev!.id,
+      },
+      {
+        approval: true,
+        content: review,
+      }
+    );
+
+    if (!resComment?.data?.id) {
+      message.error('Revision could not be approved');
+      return;
+    }
+
+    message.success('Revision approved');
+    setReviewOpen(false);
+    setReview(getEmptyDoc());
+  };
+
+  // --------- Merge
   const [canMerge, setCanMerge] = useState<boolean>();
   const [merging, setMerging] = useState<boolean>(false);
 
@@ -85,7 +129,8 @@ export const ProjectRevisionsShow: React.FC<{
     setCanMerge(rev.status === 'approved' && !rev.merged);
   }, [rev]);
 
-  if (res.isLoading && !res.isRefetching) {
+  // --------- Content
+  if (res.isLoading && !rev) {
     return (
       <div>
         <Skeleton active title={false} paragraph={{ rows: 3 }}></Skeleton>
@@ -227,6 +272,19 @@ export const ProjectRevisionsShow: React.FC<{
       )}
 
       {computed && (
+        <div className={cls.reviewBar}>
+          <Button
+            type={rev.merged ? 'ghost' : 'primary'}
+            disabled={!canReview}
+            className={classnames(cls.reviewButton, canReview && cls.success)}
+            onClick={() => onClickReview(true)}
+          >
+            {rev.merged ? 'Reviewed' : 'Add Review'}
+          </Button>
+        </div>
+      )}
+
+      {computed && (
         <div className={cls.staged}>
           {computed.map((c) => {
             return (
@@ -235,6 +293,29 @@ export const ProjectRevisionsShow: React.FC<{
           })}
         </div>
       )}
+
+      <Drawer
+        title="Review"
+        placement="right"
+        closable={true}
+        onClose={() => onClickReview(false)}
+        mask={false}
+        open={reviewOpen}
+        extra={
+          <Space>
+            <Button onClick={() => onClickReview(false)}>Cancel</Button>
+            <Button
+              onClick={onSubmitReview}
+              type="primary"
+              className={classnames(cls.reviewButton, cls.success)}
+            >
+              Approve
+            </Button>
+          </Space>
+        }
+      >
+        <Editor content={review} onUpdate={setReview} minHeight="300px" />
+      </Drawer>
     </div>
   );
 };

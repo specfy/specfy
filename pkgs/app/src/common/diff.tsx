@@ -47,7 +47,6 @@ export function diffTwoBlob(
       // TODO: Handle arrays
       continue;
     } else {
-      console.log('problematic', key, { previous: previous![key], value });
       const tmp: ComputedForDiff = {
         type,
         typeId,

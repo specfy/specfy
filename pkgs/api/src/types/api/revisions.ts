@@ -7,13 +7,14 @@ import type {
 import type { DBRevision } from '../db/revisions';
 
 import type { Pagination } from './api';
+import type { BlockLevelZero } from './document';
 import type { ApiUser } from './me';
 
 export type ApiRevision = DBRevision & {
   authors: ApiUser[];
 };
 
-// GET /
+// ------ GET /
 export type ReqListRevisions = {
   org_id: string;
   project_id: string;
@@ -25,7 +26,7 @@ export type ResListRevisions = {
   pagination: Pagination;
 };
 
-// POST /
+// ------ POST /
 type ApiBlobCreate = Pick<DBBlobBase, 'deleted' | 'parentId' | 'typeId'> &
   (DBBlobComponent | DBBlobDocument | DBBlobProject);
 
@@ -37,7 +38,7 @@ export type ReqPostRevision = Pick<
 };
 export type ResPostRevision = Pick<ApiRevision, 'id'>;
 
-// GET /:id
+// ------ GET /:id
 export interface ReqRevisionParams {
   revision_id: string;
 }
@@ -52,9 +53,20 @@ export interface ResGetRevision {
   };
 }
 
-// POST /:id/merge
+// ------ POST /:id/merge
 export interface ResMergeRevision {
   data: {
     done: true;
+  };
+}
+
+// ------ POST /:id/comment
+export interface ReqPostCommentRevision {
+  content: BlockLevelZero;
+  approval: boolean;
+}
+export interface ResPostCommentRevision {
+  data: {
+    id: number;
   };
 }

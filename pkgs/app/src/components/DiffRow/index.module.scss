@@ -11,7 +11,7 @@
   gap: $p-l;
   align-items: center;
 
-  padding: $p $p-xl;
+  padding: $p-l $p-xl;
 
   font-size: $font;
 
@@ -43,6 +43,12 @@
 .diff {
   display: grid;
   grid-template-columns: 50% 50%;
+  height: auto;
+
+  &.hide {
+    overflow: hidden;
+    height: 0;
+  }
 }
 
 .removed {

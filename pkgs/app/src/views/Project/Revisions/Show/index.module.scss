@@ -4,6 +4,7 @@
   display: grid;
   grid-template:
     "left right"
+    "review review"
     "staged staged" / 1fr;
   row-gap: $p-xxl;
   column-gap: $p-xl;
@@ -27,8 +28,15 @@
     flex-direction: column;
     gap: $p-xl;
 
-    padding-top: $p-xxl;
     padding-bottom: $p-xxl;
+  }
+
+  .reviewBar {
+    display: flex;
+    grid-area: review;
+    flex-direction: row;
+    justify-content: flex-end;
+    padding-top: $p-xxl;
   }
 }
 
@@ -131,7 +139,8 @@
   }
 }
 
-.mergeButton {
+.mergeButton,
+.reviewButton {
   &.success {
     background-color: $green-600;
 

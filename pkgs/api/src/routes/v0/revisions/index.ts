@@ -1,6 +1,7 @@
 import type { FastifyPluginCallback } from 'fastify';
 
 import blobsList from './blobs/list';
+import comment from './comment';
 import create from './create';
 import get from './get';
 import list from './list';
@@ -12,6 +13,7 @@ const fn: FastifyPluginCallback = async (f, _, done) => {
   f.register(get, { prefix: '/revisions/:revision_id' });
   f.register(blobsList, { prefix: '/revisions/:revision_id/blobs' });
   f.register(merge, { prefix: '/revisions/:revision_id/merge' });
+  f.register(comment, { prefix: '/revisions/:revision_id/comment' });
 
   done();
 };

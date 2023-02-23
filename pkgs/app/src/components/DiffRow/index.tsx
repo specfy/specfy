@@ -1,5 +1,10 @@
-import { CaretDownOutlined, HistoryOutlined } from '@ant-design/icons';
+import {
+  CaretDownOutlined,
+  CaretRightOutlined,
+  HistoryOutlined,
+} from '@ant-design/icons';
 import { Alert, Button } from 'antd';
+import classnames from 'classnames';
 import type { Change } from 'diff';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -19,10 +24,7 @@ export const DiffRow: React.FC<{
   url: string;
   onRevert: (type: string, id: string, key: string) => void;
 }> = ({ comp, url, onRevert }) => {
-  if (!comp.previous) {
-    return <Alert type="error" message="An error has ocurred" />;
-  }
-
+  // Compute diff
   const [left] = useState(() => {
     return comp.diff
       .map((d, i) => {
@@ -54,13 +56,24 @@ export const DiffRow: React.FC<{
   const type = comp.type === 'project' ? 'Project' : 'Components';
   const to = url + (type === 'Components' ? `/c/${comp.previous.slug}` : '');
 
+  // Actions
+  const [hide, setHide] = useState<boolean>(false);
+  const handleHideShow = () => {
+    setHide(!hide);
+  };
+
   // TODO: undo revert
   return (
     <div className={cls.update}>
       <div className={cls.title}>
         <div className={cls.titleLeft}>
           <div className={cls.toggle}>
-            <CaretDownOutlined />
+            <Button
+              type="text"
+              size="small"
+              onClick={handleHideShow}
+              icon={hide ? <CaretRightOutlined /> : <CaretDownOutlined />}
+            />
           </div>
           <Link to={to}>
             {type} / {comp.previous.name} [{comp.key}]
@@ -78,7 +91,7 @@ export const DiffRow: React.FC<{
           {/* |<Checkbox checked>Staged</Checkbox> */}
         </div>
       </div>
-      <div className={cls.diff}>
+      <div className={classnames(cls.diff, hide && cls.hide)}>
         <div className={cls.left}>
           {!left.length ? (
             <span className={cls.empty}>Empty...</span>

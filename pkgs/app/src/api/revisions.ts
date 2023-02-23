@@ -17,7 +17,7 @@ import { fetchApi } from './fetch';
 export async function createRevision(
   data: ReqPostRevision
 ): Promise<ResPostRevision> {
-  const { json } = await fetchApi<ResPostRevision>(
+  const { json } = await fetchApi<ResPostRevision, undefined, ReqPostRevision>(
     '/revisions',
     { body: data },
     'POST'
