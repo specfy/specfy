@@ -7,6 +7,7 @@ import type {
   ResListRevisions,
   ReqRevisionParams,
   ResMergeRevision,
+  ResCheckRevision,
 } from 'api/src/types/api/revisions';
 import { useQuery } from 'react-query';
 
@@ -50,26 +51,13 @@ export function useListRevisions(opts: ReqListRevisions) {
   });
 }
 
-// export async function deleteRevision(opts: ReqRevisionParams) {
-//   const { json } = await fetchApi<ResPostRevision>(
-//     `/revisions/${opts.org_id}/${opts.project_slug}`,
-//     undefined,
-//     'DELETE'
-//   );
-
-//   queryClient.removeQueries(['listRevisions', opts.org_id]);
-//   queryClient.removeQueries(['getRevision', opts.org_id, opts.project_slug]);
-
-//   return json;
-// }
-
 export function useGetRevision({
   org_id,
   project_id,
   revision_id,
 }: ReqGetRevision & ReqRevisionParams) {
   return useQuery({
-    queryKey: ['getRevision', revision_id, org_id, project_id],
+    queryKey: ['getRevision', org_id, project_id, revision_id],
     queryFn: async (): Promise<ResGetRevision> => {
       const { json } = await fetchApi<ResGetRevision, ReqGetRevision>(
         `/revisions/${revision_id}`,
@@ -98,7 +86,65 @@ export async function mergeRevision({
 
   if (res.status === 200) {
     queryClient.removeQueries(['listRevisions', org_id, project_id]);
-    queryClient.removeQueries(['getRevision', revision_id, org_id, project_id]);
+    queryClient.removeQueries(['getRevision', org_id, project_id]);
+    queryClient.removeQueries(['getRevisionChecks', org_id, project_id]);
+  } else {
+    queryClient.removeQueries([
+      'getRevisionChecks',
+      org_id,
+      project_id,
+      revision_id,
+    ]);
+  }
+
+  return json;
+}
+
+export function useGetRevisionChecks({
+  org_id,
+  project_id,
+  revision_id,
+}: Partial<ReqRevisionParams> & ReqGetRevision) {
+  return useQuery({
+    enabled: !!revision_id,
+    queryKey: ['getRevisionChecks', org_id, project_id, revision_id],
+    queryFn: async (): Promise<ResCheckRevision> => {
+      const { json } = await fetchApi<ResCheckRevision, ReqGetRevision>(
+        `/revisions/${revision_id}/checks`,
+        {
+          qp: { org_id, project_id },
+        }
+      );
+
+      return json;
+    },
+  });
+}
+
+export async function rebaseRevision({
+  org_id,
+  project_id,
+  revision_id,
+}: ReqGetRevision & ReqRevisionParams): Promise<ResMergeRevision> {
+  const { json, res } = await fetchApi<ResMergeRevision, ReqGetRevision>(
+    `/revisions/${revision_id}/rebase`,
+    {
+      qp: { org_id, project_id },
+    },
+    'POST'
+  );
+
+  if (res.status === 200) {
+    console.log('on clear');
+    queryClient.removeQueries(['listRevisions', org_id, project_id]);
+    queryClient.removeQueries(['listBlobs', org_id, project_id, revision_id]);
+    queryClient.removeQueries(['getRevision', org_id, project_id, revision_id]);
+    queryClient.removeQueries([
+      'getRevisionChecks',
+      org_id,
+      project_id,
+      revision_id,
+    ]);
   }
 
   return json;

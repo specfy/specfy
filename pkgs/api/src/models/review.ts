@@ -7,6 +7,7 @@ import {
   Column,
   DataType,
   Scopes,
+  BelongsTo,
 } from 'sequelize-typescript';
 
 import type { DBComment } from '../types/db/comments';
@@ -24,7 +25,7 @@ export type PropReviewCreate = Partial<Pick<DBReview, 'id'>> &
 @Scopes(() => ({
   // includes
   withUser: {
-    include: [{ model: User }],
+    include: [{ model: User, required: true }],
   },
 }))
 @Table({ tableName: 'reviews', modelName: 'review', updatedAt: false })
@@ -51,4 +52,7 @@ export class RevisionReview extends Model<DBReview, PropReviewCreate> {
   @CreatedAt
   @Column({ field: 'created_at' })
   declare createdAt: Date;
+
+  @BelongsTo(() => User, 'user_id')
+  declare user: User;
 }

@@ -14,7 +14,7 @@ export function useListRevisionBlobs({
 }: Partial<ReqRevisionParams> & ReqGetRevision) {
   return useQuery({
     enabled: !!revision_id,
-    queryKey: ['listRevisions', revision_id, org_id, project_id],
+    queryKey: ['listBlobs', org_id, project_id, revision_id],
     queryFn: async (): Promise<ResListRevisionBlobs> => {
       const { json } = await fetchApi<ResListRevisionBlobs, ReqGetRevision>(
         `/revisions/${revision_id}/blobs`,

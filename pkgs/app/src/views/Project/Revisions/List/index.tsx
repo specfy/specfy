@@ -72,7 +72,6 @@ export const ProjectRevisionsList: React.FC<{
                   <Select.Option value="waiting">Waiting</Select.Option>
                   <Select.Option value="approved">Approved</Select.Option>
                   <Select.Option value="merged">Merged</Select.Option>
-                  <Select.Option value="rejected">Rejected</Select.Option>
                   <Select.Option value="all">All</Select.Option>
                 </Select>
               }

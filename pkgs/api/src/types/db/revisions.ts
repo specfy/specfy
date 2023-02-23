@@ -10,7 +10,7 @@ export interface DBRevision {
   description: BlockLevelZero;
   blobs: string[];
   locked: boolean;
-  status: 'approved' | 'closed' | 'draft' | 'rejected' | 'waiting';
+  status: 'approved' | 'closed' | 'draft' | 'waiting';
   merged: boolean;
 
   createdAt: string;

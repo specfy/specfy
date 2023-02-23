@@ -21,9 +21,15 @@ export async function createComment(
 
   queryClient.removeQueries([
     'getRevision',
-    qp.revision_id,
     qp.org_id,
     qp.project_id,
+    qp.revision_id,
+  ]);
+  queryClient.removeQueries([
+    'getRevisionChecks',
+    qp.org_id,
+    qp.project_id,
+    qp.revision_id,
   ]);
 
   return json;

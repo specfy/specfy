@@ -9,6 +9,7 @@ import type { DBRevision } from '../db/revisions';
 import type { Pagination } from './api';
 import type { BlockLevelZero } from './document';
 import type { ApiUser } from './me';
+import type { ApiReview } from './reviews';
 
 export type ApiRevision = DBRevision & {
   authors: ApiUser[];
@@ -59,6 +60,9 @@ export interface ResMergeRevision {
     done: true;
   };
 }
+export interface ResMergeRevisionError {
+  cantMerge: string;
+}
 
 // ------ POST /:id/comment
 export interface ReqPostCommentRevision {
@@ -68,5 +72,21 @@ export interface ReqPostCommentRevision {
 export interface ResPostCommentRevision {
   data: {
     id: number;
+  };
+}
+
+// ------ POST /:id/checks
+export interface ResCheckRevision {
+  data: {
+    canMerge: boolean;
+    reviews: ApiReview[];
+    outdatedBlobs: string[];
+  };
+}
+
+// ------ POST /:id/rebase
+export interface ResRebaseRevision {
+  data: {
+    done: boolean;
   };
 }

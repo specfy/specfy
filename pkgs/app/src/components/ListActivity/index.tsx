@@ -1,7 +1,6 @@
 import {
   CommentOutlined,
   CheckCircleOutlined,
-  CloseCircleOutlined,
   DeleteOutlined,
   EditOutlined,
 } from '@ant-design/icons';
@@ -93,25 +92,6 @@ const tmpList: DBEvent[] = [
     },
   },
   {
-    id: 'e',
-    orgId: 'algolia',
-    projectId: '3hjfe8SUHer',
-    event: 'rejected',
-    typeId: '5',
-    userId: '1',
-    publishedAt: '2023-01-01T00:00:00Z',
-    payload: {
-      id: '7',
-      type: 'rfc',
-      slug: 'api-definition',
-      name: 'RFC-1 - API Definition',
-      project: {
-        id: '3hjfe8SUHer',
-        slug: 'crawler',
-      },
-    },
-  },
-  {
     id: 'f',
     orgId: 'algolia',
     projectId: '3hjfe8SUHer',
@@ -152,9 +132,6 @@ export const Update: React.FC<{ evt: DBEvent; orgId: string }> = ({
   } else if (evt.event === 'approved') {
     color = 'green';
     icon = <CheckCircleOutlined />;
-  } else if (evt.event === 'rejected') {
-    color = 'red';
-    icon = <CloseCircleOutlined />;
   }
 
   let target: ReactNode | undefined;

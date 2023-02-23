@@ -33,25 +33,27 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       return notFound(res);
     }
 
+    const where = {
+      orgId: req.query.org_id,
+      projectId: req.query.project_id,
+      revisionId: req.params.revision_id,
+      userId: req.user!.id,
+    };
+
     const com = await db.transaction(async (transaction) => {
       const created = await RevisionComment.create(
         {
-          orgId: req.query.org_id,
-          projectId: req.query.project_id,
-          revisionId: req.params.revision_id,
-          userId: req.user!.id,
+          ...where,
           content: req.body.content,
         },
         { transaction }
       );
 
       if (req.body.approval) {
+        await RevisionReview.destroy({ where, transaction });
         await RevisionReview.create(
           {
-            orgId: req.query.org_id,
-            projectId: req.query.project_id,
-            revisionId: req.params.revision_id,
-            userId: req.user!.id,
+            ...where,
             commentId: created.id,
           },
           { transaction }

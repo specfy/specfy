@@ -1,20 +1,27 @@
 import {
   CheckCircleFilled,
-  CloseCircleOutlined,
-  MinusCircleOutlined,
+  ExclamationCircleOutlined,
   PullRequestOutlined,
 } from '@ant-design/icons';
 import { App, Button, Drawer, Skeleton, Space, Typography } from 'antd';
 import type { ApiProject, BlockLevelZero } from 'api/src/types/api';
 import type { ResListRevisionBlobs } from 'api/src/types/api/blob';
-import type { ResGetRevision } from 'api/src/types/api/revisions';
+import type {
+  ResCheckRevision,
+  ResGetRevision,
+} from 'api/src/types/api/revisions';
 import classnames from 'classnames';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useListRevisionBlobs } from '../../../../api/blobs';
 import { createComment } from '../../../../api/comments';
-import { mergeRevision, useGetRevision } from '../../../../api/revisions';
+import {
+  mergeRevision,
+  rebaseRevision,
+  useGetRevision,
+  useGetRevisionChecks,
+} from '../../../../api/revisions';
 import { diffTwoBlob } from '../../../../common/diff';
 import { ContentDoc } from '../../../../components/Content';
 import type { ComputedForDiff } from '../../../../components/DiffRow';
@@ -39,6 +46,7 @@ export const ProjectRevisionsShow: React.FC<{
   const more = useParams<Partial<RouteRevision>>();
   const [rev, setRev] = useState<ResGetRevision['data']>();
   const [blobs, setBlobs] = useState<ResListRevisionBlobs['data']>();
+  const [checks, setChecks] = useState<ResCheckRevision['data']>();
   const [computed, setComputed] = useState<ComputedForDiff[]>([]);
   const [to] = useState(() => `/org/${params.org_id}/${params.project_slug}`);
   const qp = {
@@ -56,13 +64,23 @@ export const ProjectRevisionsShow: React.FC<{
     ...qp,
     revision_id: rev?.id,
   });
+  const resChecks = useGetRevisionChecks({
+    ...qp,
+    revision_id: rev?.id,
+  });
 
   useEffect(() => {
+    if (!res.data) return;
     setRev(res.data?.data);
   }, [res.isFetched]);
   useEffect(() => {
+    if (!resBlobs.data) return;
     setBlobs(resBlobs.data?.data);
   }, [resBlobs.isFetched]);
+  useEffect(() => {
+    if (!resChecks.data) return;
+    setChecks(resChecks.data?.data);
+  }, [resChecks.isFetched]);
 
   // --------- Review
   const [canReview, setCanReview] = useState<boolean>(false);
@@ -80,7 +98,6 @@ export const ProjectRevisionsShow: React.FC<{
     setReviewOpen(open);
   };
   const onSubmitReview = async () => {
-    // TODO: handle errors
     const resComment = await createComment(
       {
         ...qp,
@@ -103,7 +120,6 @@ export const ProjectRevisionsShow: React.FC<{
   };
 
   // --------- Merge
-  const [canMerge, setCanMerge] = useState<boolean>();
   const [merging, setMerging] = useState<boolean>(false);
 
   useEffect(() => {
@@ -124,20 +140,6 @@ export const ProjectRevisionsShow: React.FC<{
     setComputed(tmps);
   }, [blobs]);
 
-  useEffect(() => {
-    if (!rev) return;
-    setCanMerge(rev.status === 'approved' && !rev.merged);
-  }, [rev]);
-
-  // --------- Content
-  if (res.isLoading && !rev) {
-    return (
-      <div>
-        <Skeleton active title={false} paragraph={{ rows: 3 }}></Skeleton>
-      </div>
-    );
-  }
-
   const onMerge = async () => {
     setMerging(true);
     const resMerge = await mergeRevision({
@@ -155,6 +157,35 @@ export const ProjectRevisionsShow: React.FC<{
       }
     }, 500);
   };
+
+  // --------- Rebase
+  const [rebasing, setRebasing] = useState<boolean>(false);
+
+  const onClickRebase = async () => {
+    setRebasing(true);
+    const resRebase = await rebaseRevision({
+      ...qp,
+      revision_id: rev!.id,
+    });
+
+    setRebasing(false);
+
+    if (!resRebase?.data?.done) {
+      message.error('Revision could not be rebased');
+      return;
+    }
+
+    message.success('Revision rebased');
+  };
+
+  // --------- Content
+  if (res.isLoading && !rev) {
+    return (
+      <div>
+        <Skeleton active title={false} paragraph={{ rows: 3 }}></Skeleton>
+      </div>
+    );
+  }
 
   if (!rev) {
     return <>Not found</>;
@@ -183,53 +214,73 @@ export const ProjectRevisionsShow: React.FC<{
             </Typography>
           </div>
 
-          <div className={cls.merge}>
-            {rev.status === 'approved' && (
-              <div className={classnames(cls.checkLine, cls.success)}>
-                <CheckCircleFilled /> Approved
-              </div>
-            )}
-            {rev.status === 'rejected' && (
-              <div className={classnames(cls.checkLine, cls.danger)}>
-                <CloseCircleOutlined /> Rejected
-              </div>
-            )}
-            {rev.status === 'waiting' && (
-              <div className={classnames(cls.checkLine, cls.warning)}>
-                <MinusCircleOutlined /> Waiting for one review
-              </div>
-            )}
-            <div
-              className={classnames(cls.checkLine, rev.merged && cls.merged)}
-            >
-              <Button
-                type={rev.merged ? 'ghost' : 'primary'}
-                icon={<PullRequestOutlined />}
-                disabled={!canMerge}
-                loading={merging}
-                className={classnames(
-                  cls.mergeButton,
-                  canMerge && cls.success,
-                  rev.merged && cls.merged
-                )}
-                onClick={onMerge}
+          {checks && (
+            <div className={cls.merge}>
+              {rev.status === 'approved' && (
+                <div className={classnames(cls.checkLine, cls.success)}>
+                  <div className={cls.label}>
+                    <CheckCircleFilled /> Approved by
+                    {checks?.reviews.map((one) => {
+                      return <span key={one.id}>{one.user.name}</span>;
+                    })}
+                  </div>
+                </div>
+              )}
+              {rev.status === 'waiting' && (
+                <div className={classnames(cls.checkLine, cls.warning)}>
+                  <div className={cls.label}>
+                    <ExclamationCircleOutlined /> Waiting for one review
+                  </div>
+                </div>
+              )}
+              {!rev.merged && checks.outdatedBlobs.length > 0 && (
+                <div className={classnames(cls.checkLine, cls.danger)}>
+                  <div className={cls.label}>
+                    <ExclamationCircleOutlined /> This revision is not up to
+                    date
+                  </div>
+                  <div className={cls.actions}>
+                    <Button
+                      onClick={onClickRebase}
+                      type="default"
+                      loading={rebasing}
+                    >
+                      Rebase
+                    </Button>
+                  </div>
+                </div>
+              )}
+              <div
+                className={classnames(cls.checkLine, rev.merged && cls.merged)}
               >
-                {rev.merged ? 'Merged' : 'Merge'}
-              </Button>
-              {rev.status === 'draft' && <>This revision is still in draft</>}
-              {rev.status === 'rejected' && <>Requires one approval to merge</>}
-              {rev.status === 'closed' && (
-                <span>
-                  This revision was closed <Time time={rev.closedAt!} />
-                </span>
-              )}
-              {rev.merged && (
-                <span>
-                  <Time time={rev.mergedAt!} />
-                </span>
-              )}
+                <Button
+                  type={rev.merged ? 'ghost' : 'primary'}
+                  icon={<PullRequestOutlined />}
+                  disabled={!checks.canMerge}
+                  loading={merging}
+                  className={classnames(
+                    cls.mergeButton,
+                    checks.canMerge && !rev.merged && cls.success,
+                    rev.merged && cls.merged
+                  )}
+                  onClick={onMerge}
+                >
+                  {rev.merged ? 'Merged' : 'Merge'}
+                </Button>
+                {rev.status === 'draft' && <>This revision is still in draft</>}
+                {rev.status === 'closed' && (
+                  <span>
+                    This revision was closed <Time time={rev.closedAt!} />
+                  </span>
+                )}
+                {rev.merged && (
+                  <span>
+                    <Time time={rev.mergedAt!} />
+                  </span>
+                )}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
 
@@ -274,7 +325,7 @@ export const ProjectRevisionsShow: React.FC<{
       {computed && (
         <div className={cls.reviewBar}>
           <Button
-            type={rev.merged ? 'ghost' : 'primary'}
+            type={'primary'}
             disabled={!canReview}
             className={classnames(cls.reviewButton, canReview && cls.success)}
             onClick={() => onClickReview(true)}

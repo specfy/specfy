@@ -142,7 +142,6 @@ export const ProjectRevisionCreate: React.FC<{
   if (!edit.lastUpdate || edit.changes.length === 0 || computed.length === 0) {
     return <>No changes to commit...</>;
   }
-  console.log('on render once');
 
   return (
     <div className={cls.container}>

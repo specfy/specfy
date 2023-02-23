@@ -92,8 +92,8 @@
 
 .checkLine {
   display: flex;
-  gap: $p-m;
   align-items: center;
+  justify-content: space-between;
 
   padding: $p-l $p-xxxl;
 
@@ -101,13 +101,25 @@
 
   border-bottom: 1px solid $gray-100;
 
-  :global(> .anticon) {
-    font-size: $font-l;
-    color: $gray-400;
+  .actions {
+    // :global(.ant-btn) {
+    //   color: $gray-400;
+    // }
+  }
+
+  .label {
+    display: flex;
+    gap: $p-m;
+    align-items: center;
+
+    :global(> .anticon) {
+      font-size: $font-l;
+      color: $gray-400;
+    }
   }
 
   &.success {
-    :global(> .anticon) {
+    .label :global(> .anticon) {
       color: $green-600;
     }
   }
@@ -115,7 +127,7 @@
   &.warning {
     color: $orange-600;
 
-    :global(> .anticon) {
+    .label :global(> .anticon) {
       color: $orange-600;
     }
   }
@@ -123,7 +135,7 @@
   &.danger {
     color: $red-600;
 
-    :global(> .anticon) {
+    .label :global(> .anticon) {
       color: $red-600;
     }
   }

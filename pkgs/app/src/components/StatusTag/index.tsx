@@ -16,10 +16,6 @@ export const StatusTag: React.FC<{
     return (
       <Tag className={cls.approved}>{locked && <LockOutlined />}Approved</Tag>
     );
-  } else if (status === 'rejected') {
-    return (
-      <Tag className={cls.rejected}>{locked && <LockOutlined />}Rejected</Tag>
-    );
   } else if (status === 'waiting') {
     return (
       <Tag className={cls.waiting}>

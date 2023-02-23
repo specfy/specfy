@@ -30,7 +30,6 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       } else if (req.query.status === 'opened') {
         filter.mergedAt = null;
         filter.closedAt = null;
-        filter.status = { [Op.not]: 'draft' };
       } else if (req.query.status !== 'all') {
         filter.status = req.query.status;
         filter.mergedAt = { [Op.is]: null };
