@@ -3,11 +3,12 @@ import {
   CaretRightOutlined,
   HistoryOutlined,
 } from '@ant-design/icons';
-import { Alert, Button } from 'antd';
+import { Button } from 'antd';
 import classnames from 'classnames';
 import type { Change } from 'diff';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useMeasure } from 'react-use';
 
 import cls from './index.module.scss';
 
@@ -25,7 +26,7 @@ export const DiffRow: React.FC<{
   onRevert: (type: string, id: string, key: string) => void;
 }> = ({ comp, url, onRevert }) => {
   // Compute diff
-  const [left] = useState(() => {
+  const left = useMemo(() => {
     return comp.diff
       .map((d, i) => {
         if (d.added) return null;
@@ -38,8 +39,8 @@ export const DiffRow: React.FC<{
         else return d.value;
       })
       .filter((e) => e);
-  });
-  const [right] = useState(() => {
+  }, [comp]);
+  const right = useMemo(() => {
     return comp.diff
       .map((d, i) => {
         if (d.removed) return null;
@@ -52,7 +53,7 @@ export const DiffRow: React.FC<{
         else return d.value;
       })
       .filter((e): e is string => !!e);
-  });
+  }, [comp]);
   const type = comp.type === 'project' ? 'Project' : 'Components';
   const to = url + (type === 'Components' ? `/c/${comp.previous.slug}` : '');
 

@@ -15,7 +15,7 @@ import { fetchApi } from './fetch';
 export async function createProject(
   data: ReqPostProject
 ): Promise<ResPostProject> {
-  const { json } = await fetchApi<ResPostProject>(
+  const { json } = await fetchApi<ResPostProject, undefined, ReqPostProject>(
     '/projects',
     { body: data },
     'POST'

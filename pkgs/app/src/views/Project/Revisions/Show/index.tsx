@@ -138,7 +138,7 @@ export const ProjectRevisionsShow: React.FC<{
     }
 
     setComputed(tmps);
-  }, [blobs]);
+  }, [blobs, rev]);
 
   const onMerge = async () => {
     setMerging(true);
@@ -339,7 +339,12 @@ export const ProjectRevisionsShow: React.FC<{
         <div className={cls.staged}>
           {computed.map((c) => {
             return (
-              <DiffRow key={c.typeId} comp={c} url={to} onRevert={() => null} />
+              <DiffRow
+                key={`${c.type}-${c.typeId}-${c.key}`}
+                comp={c}
+                url={to}
+                onRevert={() => null}
+              />
             );
           })}
         </div>

@@ -135,7 +135,6 @@ export async function rebaseRevision({
   );
 
   if (res.status === 200) {
-    console.log('on clear');
     queryClient.removeQueries(['listRevisions', org_id, project_id]);
     queryClient.removeQueries(['listBlobs', org_id, project_id, revision_id]);
     queryClient.removeQueries(['getRevision', org_id, project_id, revision_id]);

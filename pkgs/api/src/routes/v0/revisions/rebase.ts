@@ -51,13 +51,9 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           transaction,
         });
 
-        console.log('prout');
-
         await iterate(
           list,
           async (blob, prev) => {
-            console.log('yo', blob.id);
-
             // If we can't find the prev, that means it's not longer in the main branch
             if (prev) {
               return;
@@ -86,8 +82,6 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           transaction
         );
 
-        console.log('prat');
-
         // Destroy all previous reviews
         await RevisionReview.scope('withUser').destroy({
           where: {
@@ -97,15 +91,15 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           },
           transaction,
         });
-        console.log('prut');
 
+        rev.changed('updatedAt', true);
         await rev.update(
           {
             status: rev.status === 'draft' ? 'draft' : 'waiting',
+            updatedAt: new Date().toISOString(),
           },
           { transaction }
         );
-        console.log('prit');
       });
     } catch (e) {
       res.status(200).send({

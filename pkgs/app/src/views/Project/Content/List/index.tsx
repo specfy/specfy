@@ -23,7 +23,6 @@ export const ProjectContentList: React.FC<{
   const [searchDebounced, setSearchDebounced] = useState<string>('');
   useDebounce(
     () => {
-      console.log(search);
       setSearchDebounced(search);
     },
     500,

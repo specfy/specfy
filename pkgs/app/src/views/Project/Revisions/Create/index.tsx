@@ -21,7 +21,6 @@ function proposeTitle(computed: ComputedForDiff[]): string {
     return '';
   }
 
-  console.log('hello', computed);
   if (computed.length === 1) {
     const item = computed[0];
     const type = item.type === 'project' ? 'project' : item.previous.name;
