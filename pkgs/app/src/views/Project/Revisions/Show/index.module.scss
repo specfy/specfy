@@ -36,6 +36,7 @@
     grid-area: review;
     flex-direction: row;
     justify-content: flex-end;
+
     padding-top: $p-xxl;
   }
 }
@@ -51,8 +52,12 @@
 
   .mainTop {
     display: flex;
-    justify-content: space-between;
     align-items: center;
+    justify-content: space-between;
+  }
+
+  .titleInput {
+    margin-bottom: $p-m;
   }
 }
 
@@ -71,27 +76,6 @@
 
 .content {
   padding: $p-xxl 0 0 0;
-}
-
-// Right
-.infoHeader {
-  margin-bottom: $p-s;
-  font-size: $font-s;
-  font-weight: 600;
-  color: $gray-900;
-}
-
-.infoBlock {
-  margin-bottom: $p-xxl;
-}
-
-.userList {
-  padding: 0;
-  list-style: none;
-
-  li {
-    margin-bottom: 4px;
-  }
 }
 
 // Merge
@@ -170,4 +154,14 @@
   &.merged {
     color: $purple-700;
   }
+}
+
+.addUserBtn {
+  width: auto !important;
+  height: auto !important;
+  padding: 1px $p-m 0 $p-m !important;
+
+  line-height: $line-height-s;
+
+  background-color: transparent !important;
 }

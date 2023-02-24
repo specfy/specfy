@@ -13,6 +13,7 @@ import {
 } from '@tabler/icons-react';
 import type { MenuProps } from 'antd';
 import {
+  Input,
   App,
   Button,
   Drawer,
@@ -47,9 +48,13 @@ import type { ComputedForDiff } from '../../../../components/DiffRow';
 import { DiffRow } from '../../../../components/DiffRow';
 import { Editor } from '../../../../components/Editor';
 import { getEmptyDoc } from '../../../../components/Editor/helpers';
+import {
+  SidebarBlock,
+  SidebarUserList,
+} from '../../../../components/SidebarBlock';
 import { StatusTag } from '../../../../components/StatusTag';
 import { Time } from '../../../../components/Time';
-import { UserCard } from '../../../../components/UserCard';
+import { UserCardAdd } from '../../../../components/UserCard';
 import type { EditContextInterface } from '../../../../hooks/useEdit';
 import type { RouteProject, RouteRevision } from '../../../../types/routes';
 
@@ -102,7 +107,16 @@ export const ProjectRevisionsShow: React.FC<{
   }, [resChecks.isFetched]);
 
   // --------- Edit
+  const [edit, setEdit] = useState(false);
   const [save, setSave] = useState(false);
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState(getEmptyDoc());
+  useEffect(() => {
+    if (edit || !rev) return;
+
+    setTitle(rev.title);
+    setDescription(rev.description);
+  }, [edit]);
   const actionsItems = useMemo(() => {
     if (!rev) {
       return;
@@ -145,6 +159,25 @@ export const ProjectRevisionsShow: React.FC<{
           },
     ];
   }, [rev]);
+  const onClickSave = async () => {
+    if (!rev) {
+      return;
+    }
+
+    setSave(true);
+
+    await updateRevision(qp, {
+      ...rev,
+      title,
+      description,
+      authors: rev.authors.map((u) => u.id),
+      reviewers: rev.reviewers.map((u) => u.id),
+    });
+
+    message.success('Revision updated');
+    setSave(false);
+    setEdit(false);
+  };
   const onMenuClick: MenuProps['onClick'] = async (e) => {
     if (!rev) {
       return;
@@ -294,20 +327,33 @@ export const ProjectRevisionsShow: React.FC<{
       <div className={cls.left}>
         <div className={cls.card}>
           <div className={cls.main}>
-            <div className={cls.mainTop}>
-              <Typography.Title level={1} className={cls.title}>
-                {rev.title}
-              </Typography.Title>
-              <Space>
-                {save && <LoadingOutlined />}
-                <Dropdown.Button
-                  menu={{ items: actionsItems, onClick: onMenuClick }}
-                  overlayClassName={cls.editDropdown}
-                >
-                  Edit
-                </Dropdown.Button>
-              </Space>
-            </div>
+            {!edit && (
+              <div className={cls.mainTop}>
+                <Typography.Title level={1} className={cls.title}>
+                  {rev.title}
+                </Typography.Title>
+                <Space>
+                  {save && <LoadingOutlined />}
+
+                  <Dropdown.Button
+                    menu={{ items: actionsItems, onClick: onMenuClick }}
+                    overlayClassName={cls.editDropdown}
+                    onClick={() => setEdit(true)}
+                  >
+                    Edit
+                  </Dropdown.Button>
+                </Space>
+              </div>
+            )}
+            {edit && (
+              <Input
+                size="large"
+                value={title}
+                className={cls.titleInput}
+                placeholder="Title..."
+                onChange={(e) => setTitle(e.target.value)}
+              />
+            )}
 
             <div className={cls.subtitle}>
               <StatusTag
@@ -319,11 +365,35 @@ export const ProjectRevisionsShow: React.FC<{
             </div>
 
             <Typography className={cls.content}>
-              <ContentDoc doc={rev.description} />
+              {!edit && <ContentDoc doc={rev.description} />}
+              {edit && (
+                <Editor
+                  content={description}
+                  onUpdate={setDescription}
+                  minHeight="200px"
+                  inputLike={true}
+                />
+              )}
             </Typography>
           </div>
 
-          {checks && (
+          {edit && (
+            <div className={cls.merge}>
+              <div className={classnames(cls.checkLine, cls.success)}>
+                <div className={cls.label}></div>
+
+                <Space className={cls.actions}>
+                  <Button type="text" onClick={() => setEdit(false)}>
+                    cancel
+                  </Button>
+                  <Button type="primary" onClick={onClickSave} loading={save}>
+                    Save
+                  </Button>
+                </Space>
+              </div>
+            </div>
+          )}
+          {checks && !edit && (
             <div className={cls.merge}>
               {rev.status === 'approved' && (
                 <div className={classnames(cls.checkLine, cls.success)}>
@@ -394,35 +464,15 @@ export const ProjectRevisionsShow: React.FC<{
       </div>
 
       <div className={cls.right}>
-        <div className={cls.infoBlock}>
-          <div className={cls.infoHeader}>Authors</div>
-          <ul className={cls.userList}>
-            {rev.authors.map((user) => {
-              return (
-                <li key={user.id}>
-                  <UserCard name={user.name} size="small" />
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-        <div className={cls.infoBlock}>
-          <div className={cls.infoHeader}>Reviewers</div>
-          <ul className={cls.userList}>
-            {rev.reviewers.map((user) => {
-              return (
-                <li key={user.id}>
-                  <UserCard name={user.name} size="small" />
-                </li>
-              );
-            })}
-            {rev.reviewers.length <= 0 && (
-              <Typography.Text type="secondary">
-                No one assigned
-              </Typography.Text>
-            )}
-          </ul>
-        </div>
+        <SidebarBlock title="Authors">
+          <>
+            <SidebarUserList list={rev.authors} />
+            {edit && <UserCardAdd size="small" />}
+          </>
+        </SidebarBlock>
+        <SidebarBlock title="Reviewers">
+          <SidebarUserList list={rev.reviewers} />
+        </SidebarBlock>
       </div>
 
       {resBlobs.isLoading && (
@@ -431,7 +481,7 @@ export const ProjectRevisionsShow: React.FC<{
         </div>
       )}
 
-      {computed && (
+      {computed && !edit && (
         <div className={cls.reviewBar}>
           <Button
             type={'primary'}

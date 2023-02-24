@@ -16,3 +16,17 @@ export const UserCard: React.FC<{
     </Space>
   );
 };
+
+export const UserCardAdd: React.FC<{
+  onAdd: (id: string) => void;
+  size?: 'default' | 'small';
+}> = ({ onAdd, size }) => {
+  return (
+    <Space
+      className={classnames(cls.userCard, cls.userCardAdd, size && cls[size])}
+    >
+      <div className={cls.avatarEmpty}></div>
+      Add user...
+    </Space>
+  );
+};

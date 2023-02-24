@@ -1,0 +1,27 @@
+@import "../../styles/theme";
+
+.block {
+  margin-bottom: $p-xxl;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: $p-s;
+
+  font-size: $font-s;
+  font-weight: 600;
+  color: $gray-900;
+}
+
+.list {
+  margin-bottom: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    margin-bottom: 4px;
+  }
+}

@@ -8,3 +8,34 @@
     font-size: $font-s;
   }
 }
+
+.userCardAdd {
+  cursor: pointer;
+  color: $gray-400;
+  transition: color 0.25s ease-in-out;
+
+  &:hover {
+    color: $gray-600;
+
+    .avatarEmpty {
+      border-color: $gray-600;
+    }
+  }
+
+  &.small {
+    .avatarEmpty {
+      width: 24px;
+      height: 24px;
+    }
+  }
+}
+
+.avatarEmpty {
+  width: 32px;
+  height: 32px;
+
+  border: 1px dashed $gray-400;
+  border-radius: 50%;
+
+  transition: border 0.25s ease-in-out;
+}

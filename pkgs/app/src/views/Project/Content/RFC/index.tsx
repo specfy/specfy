@@ -11,8 +11,11 @@ import { useGetDocument } from '../../../../api/documents';
 import { ContentDoc } from '../../../../components/Content';
 import { Editor } from '../../../../components/Editor';
 import { HeadingTree } from '../../../../components/HeadingTree';
+import {
+  SidebarBlock,
+  SidebarUserList,
+} from '../../../../components/SidebarBlock';
 import { Time } from '../../../../components/Time';
-import { UserCard } from '../../../../components/UserCard';
 import { useEdit } from '../../../../hooks/useEdit';
 import type { RouteDocument, RouteProject } from '../../../../types/routes';
 
@@ -120,35 +123,12 @@ export const RFC: React.FC<{
       </div>
 
       <div className={cls.right}>
-        <div className={cls.infoBlock}>
-          <div className={cls.infoHeader}>Authors</div>
-          <ul className={cls.userList}>
-            {item.authors.map((user) => {
-              return (
-                <li key={user.id}>
-                  <UserCard name={user.name} size="small" />
-                </li>
-              );
-            })}
-          </ul>
-        </div>
-        <div className={cls.infoBlock}>
-          <div className={cls.infoHeader}>Reviewers</div>
-          <ul className={cls.userList}>
-            {item.reviewers.map((user) => {
-              return (
-                <li key={user.id}>
-                  <UserCard name={user.name} size="small" />
-                </li>
-              );
-            })}
-            {item.reviewers.length <= 0 && (
-              <Typography.Text type="secondary">
-                No one assigned
-              </Typography.Text>
-            )}
-          </ul>
-        </div>
+        <SidebarBlock title="Authors">
+          <SidebarUserList list={item.authors} />
+        </SidebarBlock>
+        <SidebarBlock title="Reviewers">
+          <SidebarUserList list={item.reviewers} />
+        </SidebarBlock>
       </div>
     </div>
   );
