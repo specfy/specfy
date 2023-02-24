@@ -12,7 +12,7 @@ import {
   Typography,
 } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-import type { ReqPostProject } from 'api/src/types/api/projects';
+import type { ReqPostProject } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 

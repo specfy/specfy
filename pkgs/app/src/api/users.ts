@@ -1,4 +1,4 @@
-import type { ApiMe, ResGetMe } from 'api/src/types/api/me';
+import type { ApiMe, ResGetMe } from 'api/src/types/api';
 import { useQuery } from 'react-query';
 
 import { fetchApi } from './fetch';

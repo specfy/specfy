@@ -1,6 +1,6 @@
 import type { FastifyPluginCallback } from 'fastify';
 
-import type { ResListOrgs } from '../../../types/api/orgs';
+import type { ResListOrgs } from '../../../types/api';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{ Reply: ResListOrgs }>('/', async function (req, res) {

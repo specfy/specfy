@@ -22,13 +22,14 @@ import {
   Space,
   Typography,
 } from 'antd';
-import type { ApiProject, BlockLevelZero } from 'api/src/types/api';
-import type { ResListRevisionBlobs } from 'api/src/types/api/blob';
 import type {
+  ApiProject,
+  BlockLevelZero,
+  ResListRevisionBlobs,
   ReqPutRevision,
   ResCheckRevision,
   ResGetRevision,
-} from 'api/src/types/api/revisions';
+} from 'api/src/types/api';
 import classnames from 'classnames';
 import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';

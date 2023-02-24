@@ -1,5 +1,5 @@
 import type { RevisionReview } from '../../models';
-import type { ApiReview } from '../../types/api/reviews';
+import type { ApiReview } from '../../types/api';
 
 import { toApiUser } from './user';
 

@@ -9,6 +9,7 @@ import orgs from './v0/orgs';
 import perms from './v0/perms';
 import projects from './v0/projects';
 import revisions from './v0/revisions';
+import users from './v0/users';
 
 export const routes: FastifyPluginAsync = async (f) => {
   registerAuth(f);
@@ -20,6 +21,7 @@ export const routes: FastifyPluginAsync = async (f) => {
   f.register(perms, { prefix: '/0' });
   f.register(projects, { prefix: '/0' });
   f.register(revisions, { prefix: '/0' });
+  f.register(users, { prefix: '/0' });
 
   f.get('/', async function () {
     return { root: true };

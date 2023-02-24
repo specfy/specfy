@@ -1,6 +1,6 @@
 import type { Node } from '@antv/x6';
 import { register } from '@antv/x6-react-shape';
-import type { ApiComponent } from 'api/src/types/api/components';
+import type { ApiComponent } from 'api/src/types/api';
 import classnames from 'classnames';
 
 import cls from './custom.module.scss';

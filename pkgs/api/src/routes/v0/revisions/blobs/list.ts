@@ -3,13 +3,11 @@ import type { FastifyPluginCallback } from 'fastify';
 import { notFound } from '../../../../common/errors';
 import { Revision, RevisionBlob } from '../../../../models';
 import type {
-  ApiBlobWithPrevious,
-  ResListRevisionBlobs,
-} from '../../../../types/api/blob';
-import type {
   ReqGetRevision,
   ReqRevisionParams,
-} from '../../../../types/api/revisions';
+  ApiBlobWithPrevious,
+  ResListRevisionBlobs,
+} from '../../../../types/api';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{

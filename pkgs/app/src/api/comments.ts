@@ -3,7 +3,7 @@ import type {
   ReqPostCommentRevision,
   ReqRevisionParams,
   ResPostCommentRevision,
-} from 'api/src/types/api/revisions';
+} from 'api/src/types/api';
 
 import { queryClient } from '../common/query';
 

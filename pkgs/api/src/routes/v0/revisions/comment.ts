@@ -10,7 +10,7 @@ import type {
   ReqPostCommentRevision,
   ReqRevisionParams,
   ResPostCommentRevision,
-} from '../../../types/api/revisions';
+} from '../../../types/api';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.post<{

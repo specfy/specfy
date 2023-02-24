@@ -1,11 +1,11 @@
 import type { FastifyPluginCallback } from 'fastify';
 
 import { Project } from '../../../models';
-import type { Pagination } from '../../../types/api/api';
 import type {
+  Pagination,
   ReqListProjects,
   ResListProjects,
-} from '../../../types/api/projects';
+} from '../../../types/api';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{ Querystring: ReqListProjects; Reply: ResListProjects }>(

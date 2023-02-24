@@ -1,8 +1,7 @@
 import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
 import { Card, Typography, Space, Divider } from 'antd';
 import Title from 'antd/es/typography/Title';
-import type { ApiDocument } from 'api/src/types/api/documents';
-import type { ApiProject } from 'api/src/types/api/projects';
+import type { ApiDocument, ApiProject } from 'api/src/types/api';
 import clsn from 'classnames';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';

@@ -1,10 +1,7 @@
 import type { FastifyPluginCallback } from 'fastify';
 
 import { Project } from '../../../models';
-import type {
-  ReqPostProject,
-  ResPostProject,
-} from '../../../types/api/projects';
+import type { ReqPostProject, ResPostProject } from '../../../types/api';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.post<{

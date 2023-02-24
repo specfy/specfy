@@ -1,5 +1,5 @@
 import type { Node, Cell, Graph as AntGraph } from '@antv/x6';
-import type { ApiComponent } from 'api/src/types/api/components';
+import type { ApiComponent } from 'api/src/types/api';
 
 import cls from './index.module.scss';
 

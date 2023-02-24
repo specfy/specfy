@@ -4,11 +4,11 @@ import { Op } from 'sequelize';
 
 import { toApiRevision } from '../../../common/formatters/revision';
 import { Revision } from '../../../models';
-import type { Pagination } from '../../../types/api';
 import type {
+  Pagination,
   ReqListRevisions,
   ResListRevisions,
-} from '../../../types/api/revisions';
+} from '../../../types/api';
 import type { DBRevision } from '../../../types/db/revisions';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
@@ -16,7 +16,6 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     Querystring: ReqListRevisions;
     Reply: ResListRevisions;
   }>('/', async function (req, res) {
-    // TODO: pagination
     const pagination: Pagination = {
       currentPage: 1,
       totalItems: 0,

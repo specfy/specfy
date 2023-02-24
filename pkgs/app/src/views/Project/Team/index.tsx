@@ -1,7 +1,6 @@
 import { PlusOutlined } from '@ant-design/icons';
 import { Card, Typography, Form, Space, Input } from 'antd';
-import type { ApiPerm } from 'api/src/types/api/perms';
-import type { ApiProject } from 'api/src/types/api/projects';
+import type { ApiProject, ApiPerm } from 'api/src/types/api';
 import { useState, useEffect } from 'react';
 
 import { useListPermsProject } from '../../../api/perms';

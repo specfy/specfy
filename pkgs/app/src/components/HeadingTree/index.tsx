@@ -1,6 +1,6 @@
 import { Anchor } from 'antd';
 import type { AnchorLinkItemProps } from 'antd/es/anchor/Anchor';
-import type { BlockLevelOne } from 'api/src/types/api/document';
+import type { BlockLevelOne } from 'api/src/types/api';
 import { useState } from 'react';
 import { useMount } from 'react-use';
 

@@ -2,10 +2,7 @@ import type { FastifyPluginCallback } from 'fastify';
 
 import { notFound } from '../../../common/errors';
 import { Project } from '../../../models';
-import type {
-  ReqProjectParams,
-  ResGetProject,
-} from '../../../types/api/projects';
+import type { ReqProjectParams, ResGetProject } from '../../../types/api';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{

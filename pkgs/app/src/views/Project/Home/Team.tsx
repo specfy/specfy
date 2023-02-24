@@ -1,5 +1,5 @@
 import { Avatar, Skeleton, Typography } from 'antd';
-import type { ApiPerm, ReqListPerms } from 'api/src/types/api/perms';
+import type { ApiPerm, ReqListPerms } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
 
 import { useListPermsProject } from '../../../api/perms';

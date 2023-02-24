@@ -1,4 +1,4 @@
-import type { ApiOrg, ResListOrgs } from 'api/src/types/api/orgs';
+import type { ApiOrg, ResListOrgs } from 'api/src/types/api';
 import { useQuery } from 'react-query';
 
 export async function listOrgs(): Promise<ApiOrg[]> {

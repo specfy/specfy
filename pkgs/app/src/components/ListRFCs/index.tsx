@@ -1,8 +1,7 @@
 import { FileOutlined } from '@ant-design/icons';
 import { Skeleton, Table } from 'antd';
 import Title from 'antd/es/typography/Title';
-import type { ApiDocument } from 'api/src/types/api/documents';
-import type { ApiProject } from 'api/src/types/api/projects';
+import type { ApiDocument, ApiProject } from 'api/src/types/api';
 import { Link } from 'react-router-dom';
 
 import { useListDocuments } from '../../api/documents';

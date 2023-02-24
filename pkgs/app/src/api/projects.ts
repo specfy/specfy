@@ -5,7 +5,7 @@ import type {
   ResGetProject,
   ResListProjects,
   ResPostProject,
-} from 'api/src/types/api/projects';
+} from 'api/src/types/api';
 import { useQuery } from 'react-query';
 
 import { queryClient } from '../common/query';

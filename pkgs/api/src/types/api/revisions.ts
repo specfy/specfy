@@ -8,8 +8,8 @@ import type { DBRevision } from '../db/revisions';
 
 import type { Pagination } from './api';
 import type { BlockLevelZero } from './document';
-import type { ApiUser } from './me';
 import type { ApiReview } from './reviews';
+import type { ApiUser } from './users';
 
 export type ApiRevision = DBRevision & {
   authors: ApiUser[];

@@ -4,7 +4,7 @@ import type {
   ReqListDocuments,
   ResGetDocument,
   ResListDocuments,
-} from 'api/src/types/api/documents';
+} from 'api/src/types/api';
 import { useQuery } from 'react-query';
 
 import { fetchApi } from './fetch';

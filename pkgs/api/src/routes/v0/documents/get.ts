@@ -8,7 +8,7 @@ import type {
   ReqDocumentParams,
   ReqGetDocument,
   ResGetDocument,
-} from '../../../types/api/documents';
+} from '../../../types/api';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{

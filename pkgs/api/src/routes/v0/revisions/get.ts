@@ -8,7 +8,7 @@ import type {
   ReqGetRevision,
   ReqRevisionParams,
   ResGetRevision,
-} from '../../../types/api/revisions';
+} from '../../../types/api';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{

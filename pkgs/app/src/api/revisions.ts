@@ -10,7 +10,7 @@ import type {
   ResCheckRevision,
   ReqPutRevision,
   ResPutRevision,
-} from 'api/src/types/api/revisions';
+} from 'api/src/types/api';
 import { useQuery } from 'react-query';
 
 import { queryClient } from '../common/query';

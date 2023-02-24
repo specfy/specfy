@@ -1,4 +1,4 @@
-import type { ReqListPerms, ResListPerms } from 'api/src/types/api/perms';
+import type { ReqListPerms, ResListPerms } from 'api/src/types/api';
 import { useQuery } from 'react-query';
 
 import { fetchApi } from './fetch';

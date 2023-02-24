@@ -1,7 +1,7 @@
 import { ZoomInOutlined, ZoomOutOutlined } from '@ant-design/icons';
 import { Graph as AntGraph } from '@antv/x6';
 import { Button, Tooltip } from 'antd';
-import type { ApiComponent } from 'api/src/types/api/components';
+import type { ApiComponent } from 'api/src/types/api';
 import {
   forwardRef,
   useEffect,

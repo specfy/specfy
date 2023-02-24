@@ -1,7 +1,4 @@
-import type {
-  ReqListComponents,
-  ResListComponents,
-} from 'api/src/types/api/components';
+import type { ReqListComponents, ResListComponents } from 'api/src/types/api';
 import { useQuery } from 'react-query';
 
 import { fetchApi } from './fetch';

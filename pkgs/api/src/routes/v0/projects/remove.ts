@@ -1,7 +1,7 @@
 import type { FastifyPluginCallback } from 'fastify';
 
 import { Project } from '../../../models';
-import type { ReqProjectParams } from '../../../types/api/projects';
+import type { ReqProjectParams } from '../../../types/api';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.delete<{

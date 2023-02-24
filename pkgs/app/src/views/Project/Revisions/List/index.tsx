@@ -4,11 +4,11 @@ import {
   SearchOutlined,
 } from '@ant-design/icons';
 import { Button, Empty, Input, Select, Skeleton, Table } from 'antd';
-import type { ApiProject } from 'api/src/types/api';
 import type {
+  ApiProject,
   ApiRevision,
   ReqListRevisions,
-} from 'api/src/types/api/revisions';
+} from 'api/src/types/api';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDebounce } from 'react-use';

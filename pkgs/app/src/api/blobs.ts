@@ -1,8 +1,8 @@
-import type { ResListRevisionBlobs } from 'api/src/types/api/blob';
 import type {
+  ResListRevisionBlobs,
   ReqGetRevision,
   ReqRevisionParams,
-} from 'api/src/types/api/revisions';
+} from 'api/src/types/api';
 import { useQuery } from 'react-query';
 
 import { fetchApi } from './fetch';

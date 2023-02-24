@@ -1,6 +1,5 @@
 import { Card, Col, Row, Typography } from 'antd';
-import type { ApiComponent } from 'api/src/types/api/components';
-import type { ApiProject } from 'api/src/types/api/projects';
+import type { ApiComponent, ApiProject } from 'api/src/types/api';
 import { useMemo } from 'react';
 
 import { ContentDoc } from '../../../components/Content';

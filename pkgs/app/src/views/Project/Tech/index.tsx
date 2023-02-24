@@ -1,7 +1,6 @@
 import { Card, Col, Row, Tag, Typography } from 'antd';
 import Title from 'antd/es/typography/Title';
-import type { ApiComponent } from 'api/src/types/api/components';
-import type { ApiProject } from 'api/src/types/api/projects';
+import type { ApiComponent, ApiProject } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 

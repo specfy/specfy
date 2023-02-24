@@ -1,7 +1,7 @@
 import type { FastifyPluginCallback } from 'fastify';
 
 import { User } from '../../../models';
-import type { ResGetMe } from '../../../types/api/me';
+import type { ResGetMe } from '../../../types/api';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{ Reply: ResGetMe }>('/me', async function (_req, res) {

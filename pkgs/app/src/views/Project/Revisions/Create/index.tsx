@@ -1,7 +1,10 @@
 import { BranchesOutlined, LoadingOutlined } from '@ant-design/icons';
 import { App, Button, Card, Form, Input, Typography } from 'antd';
-import type { ApiProject, BlockLevelZero } from 'api/src/types/api';
-import type { ReqPostRevision } from 'api/src/types/api/revisions';
+import type {
+  ApiProject,
+  BlockLevelZero,
+  ReqPostRevision,
+} from 'api/src/types/api';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 

@@ -1,5 +1,5 @@
 import type { User } from '../../models';
-import type { ApiUser } from '../../types/api/me';
+import type { ApiUser } from '../../types/api';
 
 export function toApiUser(user: User): ApiUser {
   return {

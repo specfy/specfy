@@ -1,5 +1,5 @@
 import type { Revision, TypeHasUser } from '../../models';
-import type { ApiRevision } from '../../types/api/revisions';
+import type { ApiRevision } from '../../types/api';
 
 import { toApiUser } from './user';
 

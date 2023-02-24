@@ -1,7 +1,5 @@
 import { Avatar, Card, Divider, Skeleton, Switch } from 'antd';
-import type { ApiComponent } from 'api/src/types/api/components';
-import type { ApiOrg } from 'api/src/types/api/orgs';
-import type { ApiProject } from 'api/src/types/api/projects';
+import type { ApiComponent, ApiOrg, ApiProject } from 'api/src/types/api';
 import classnames from 'classnames';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, Route, Routes, useParams } from 'react-router-dom';

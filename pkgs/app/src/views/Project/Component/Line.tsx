@@ -1,4 +1,4 @@
-import type { ApiComponent } from 'api/src/types/api/components';
+import type { ApiComponent } from 'api/src/types/api';
 import { Link } from 'react-router-dom';
 
 import { supported } from '../../../common/component';

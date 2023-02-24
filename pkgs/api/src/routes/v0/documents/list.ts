@@ -3,11 +3,11 @@ import type { WhereOptions } from 'sequelize';
 import { Op } from 'sequelize';
 
 import { Document } from '../../../models';
-import type { Pagination } from '../../../types/api/api';
 import type {
   ReqListDocuments,
   ResListDocuments,
-} from '../../../types/api/documents';
+  Pagination,
+} from '../../../types/api';
 import type { DBDocument } from '../../../types/db/documents';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {

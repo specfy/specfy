@@ -8,7 +8,7 @@ import type {
   ReqPutRevision,
   ReqRevisionParams,
   ResPutRevision,
-} from '../../../types/api/revisions';
+} from '../../../types/api';
 
 function diffUsers(
   origin: TypeHasUser[],

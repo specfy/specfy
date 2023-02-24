@@ -1,7 +1,7 @@
 import type { DBDocument } from '../db/documents';
 
 import type { Pagination } from './api';
-import type { ApiUser } from './me';
+import type { ApiUser } from './users';
 
 export type ApiDocument = DBDocument & {
   authors: ApiUser[];

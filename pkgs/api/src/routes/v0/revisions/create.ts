@@ -9,10 +9,7 @@ import {
   Document,
   TypeHasUser,
 } from '../../../models';
-import type {
-  ReqPostRevision,
-  ResPostRevision,
-} from '../../../types/api/revisions';
+import type { ReqPostRevision, ResPostRevision } from '../../../types/api';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.post<{
