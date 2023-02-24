@@ -60,7 +60,7 @@ export type ReqPutRevision = Pick<
   'blobs' | 'description' | 'locked' | 'status' | 'title'
 > & { authors: string[]; reviewers: string[] };
 export interface ResPutRevision {
-  data: { done: true };
+  data: { done: boolean };
 }
 
 // ------ POST /:id/merge

@@ -10,11 +10,9 @@ import { useGetDocument } from '../../../../api/documents';
 import { ContentDoc } from '../../../../components/Content';
 import { Editor } from '../../../../components/Editor';
 import { HeadingTree } from '../../../../components/HeadingTree';
-import {
-  SidebarBlock,
-  SidebarUserList,
-} from '../../../../components/SidebarBlock';
+import { SidebarBlock } from '../../../../components/SidebarBlock';
 import { Time } from '../../../../components/Time';
+import { UserList } from '../../../../components/UserList';
 import { useEdit } from '../../../../hooks/useEdit';
 import type { RouteDocument, RouteProject } from '../../../../types/routes';
 
@@ -123,10 +121,10 @@ export const RFC: React.FC<{
 
       <div className={cls.right}>
         <SidebarBlock title="Authors">
-          <SidebarUserList list={item.authors} />
+          <UserList list={item.authors} />
         </SidebarBlock>
         <SidebarBlock title="Reviewers">
-          <SidebarUserList list={item.reviewers} />
+          <UserList list={item.reviewers} />
         </SidebarBlock>
       </div>
     </div>

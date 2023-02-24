@@ -1,6 +1,11 @@
-import { Space } from 'antd';
+import { AutoComplete, Space } from 'antd';
+import type { DefaultOptionType } from 'antd/es/select';
+import type { ApiUser } from 'api/src/types/api';
 import classnames from 'classnames';
+import { useEffect, useState } from 'react';
+import { useDebounce } from 'react-use';
 
+import { useListUser } from '../../api/users';
 import { AvatarAuto } from '../AvatarAuto';
 
 import cls from './index.module.scss';
@@ -18,15 +23,64 @@ export const UserCard: React.FC<{
 };
 
 export const UserCardAdd: React.FC<{
-  onAdd: (id: string) => void;
+  params: { org_id: string; project_id?: string };
+  onAdd: (user: ApiUser) => void;
   size?: 'default' | 'small';
-}> = ({ onAdd, size }) => {
+  excludeIds?: string[];
+}> = ({ onAdd, params, size, excludeIds }) => {
+  const [options, setOptions] = useState<DefaultOptionType[]>([]);
+  const [search, setSearch] = useState<string>();
+  const [searchDebounced, setSearchDebounced] = useState<string>();
+
+  const res = useListUser({ ...params, search: searchDebounced });
+  useDebounce(
+    () => {
+      setSearchDebounced(search);
+    },
+    250,
+    [search]
+  );
+
+  useEffect(() => {
+    if (!res || !search) {
+      setOptions([]);
+      return;
+    }
+    if (res.isLoading) {
+      return;
+    }
+
+    let tmp =
+      res.data?.data.map((user) => {
+        return { label: user.name, value: user.id };
+      }) || [];
+    if (excludeIds) {
+      tmp = tmp.filter((user) => !excludeIds.includes(user.value));
+    }
+    setOptions(tmp);
+  }, [res.isLoading, searchDebounced]);
+
+  const onSelect = (id: string) => {
+    onAdd(res.data!.data.find((user) => user.id === id)!);
+    setSearch('');
+    setOptions([]);
+  };
+
   return (
     <Space
       className={classnames(cls.userCard, cls.userCardAdd, size && cls[size])}
     >
       <div className={cls.avatarEmpty}></div>
-      Add user...
+      <AutoComplete
+        placeholder="Add user..."
+        allowClear
+        size="small"
+        value={search}
+        options={options}
+        onSearch={setSearch}
+        onSelect={onSelect}
+        className={cls.search}
+      />
     </Space>
   );
 };

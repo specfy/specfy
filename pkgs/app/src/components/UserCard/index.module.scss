@@ -5,7 +5,7 @@
   gap: $p-l;
 
   &.small {
-    font-size: $font-s;
+    font-size: $font;
   }
 }
 
@@ -27,6 +27,10 @@
       width: 24px;
       height: 24px;
     }
+  }
+
+  .search {
+    width: 150px;
   }
 }
 

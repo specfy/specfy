@@ -29,6 +29,7 @@ import type {
   ReqPutRevision,
   ResCheckRevision,
   ResGetRevision,
+  ApiUser,
 } from 'api/src/types/api';
 import classnames from 'classnames';
 import { useEffect, useMemo, useState } from 'react';
@@ -49,13 +50,10 @@ import type { ComputedForDiff } from '../../../../components/DiffRow';
 import { DiffRow } from '../../../../components/DiffRow';
 import { Editor } from '../../../../components/Editor';
 import { getEmptyDoc } from '../../../../components/Editor/helpers';
-import {
-  SidebarBlock,
-  SidebarUserList,
-} from '../../../../components/SidebarBlock';
+import { SidebarBlock } from '../../../../components/SidebarBlock';
 import { StatusTag } from '../../../../components/StatusTag';
 import { Time } from '../../../../components/Time';
-import { UserCardAdd } from '../../../../components/UserCard';
+import { UserList } from '../../../../components/UserList';
 import type { EditContextInterface } from '../../../../hooks/useEdit';
 import type { RouteProject, RouteRevision } from '../../../../types/routes';
 
@@ -111,13 +109,21 @@ export const ProjectRevisionsShow: React.FC<{
   const [edit, setEdit] = useState(false);
   const [save, setSave] = useState(false);
   const [title, setTitle] = useState('');
+  const [authors, setAuthors] = useState<ApiUser[]>();
+  const [reviewers, setReviewers] = useState<ApiUser[]>();
   const [description, setDescription] = useState(getEmptyDoc());
+
   useEffect(() => {
-    if (edit || !rev) return;
+    if (!rev) {
+      return;
+    }
 
     setTitle(rev.title);
     setDescription(rev.description);
-  }, [edit]);
+    setAuthors([...rev.authors]);
+    setReviewers([...rev.reviewers]);
+  }, [edit, rev]);
+
   const actionsItems = useMemo(() => {
     if (!rev) {
       return;
@@ -160,6 +166,14 @@ export const ProjectRevisionsShow: React.FC<{
           },
     ];
   }, [rev]);
+
+  const onChangeAuthor = (list: ApiUser[]) => {
+    setAuthors([...list]);
+  };
+  const onChangeReviewer = (list: ApiUser[]) => {
+    setReviewers([...list]);
+  };
+
   const onClickSave = async () => {
     if (!rev) {
       return;
@@ -167,18 +181,25 @@ export const ProjectRevisionsShow: React.FC<{
 
     setSave(true);
 
-    await updateRevision(qp, {
+    const up = await updateRevision(qp, {
       ...rev,
       title,
       description,
-      authors: rev.authors.map((u) => u.id),
-      reviewers: rev.reviewers.map((u) => u.id),
+      authors: authors!.map((u) => u.id),
+      reviewers: reviewers!.map((u) => u.id),
     });
 
-    message.success('Revision updated');
     setSave(false);
+
+    if (!up?.data?.done) {
+      message.error('Revision could not saved');
+      return;
+    }
+
+    message.success('Revision updated');
     setEdit(false);
   };
+
   const onMenuClick: MenuProps['onClick'] = async (e) => {
     if (!rev) {
       return;
@@ -371,7 +392,7 @@ export const ProjectRevisionsShow: React.FC<{
                 <Editor
                   content={description}
                   onUpdate={setDescription}
-                  minHeight="200px"
+                  minHeight="100px"
                   inputLike={true}
                 />
               )}
@@ -466,13 +487,22 @@ export const ProjectRevisionsShow: React.FC<{
 
       <div className={cls.right}>
         <SidebarBlock title="Authors">
-          <>
-            <SidebarUserList list={rev.authors} />
-            {edit && <UserCardAdd size="small" />}
-          </>
+          <UserList
+            list={authors || rev.authors}
+            params={qp}
+            edit={edit}
+            onChange={onChangeAuthor}
+            exclude={reviewers || rev.reviewers}
+          />
         </SidebarBlock>
         <SidebarBlock title="Reviewers">
-          <SidebarUserList list={rev.reviewers} />
+          <UserList
+            list={reviewers || rev.reviewers}
+            params={qp}
+            edit={edit}
+            onChange={onChangeReviewer}
+            exclude={authors || rev.authors}
+          />
         </SidebarBlock>
       </div>
 

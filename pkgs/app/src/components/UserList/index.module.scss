@@ -1,0 +1,25 @@
+@import "../../styles/theme";
+
+.list {
+  margin-bottom: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    margin-bottom: 4px;
+  }
+}
+
+.user {
+  display: flex;
+  gap: $p-m;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.remove {
+  width: auto !important;
+  height: $p-xxl !important;
+  padding: 1px $p-s 2px $p-s !important;
+  line-height: $line-height-s;
+}
