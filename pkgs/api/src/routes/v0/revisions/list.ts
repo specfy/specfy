@@ -2,6 +2,7 @@ import type { FastifyPluginCallback } from 'fastify';
 import type { WhereOptions } from 'sequelize';
 import { Op } from 'sequelize';
 
+import { toApiRevision } from '../../../common/formatters/revision';
 import { Revision } from '../../../models';
 import type { Pagination } from '../../../types/api';
 import type {
@@ -67,22 +68,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
     res.status(200).send({
       data: list.map((rev) => {
-        return {
-          id: rev.id,
-          orgId: rev.orgId,
-          projectId: rev.projectId,
-          title: rev.title,
-          description: rev.description,
-          locked: rev.locked,
-          merged: rev.merged,
-          status: rev.status,
-          blobs: rev.blobs,
-          authors: [], // TODO: fill this
-          createdAt: rev.createdAt.toISOString(),
-          updatedAt: rev.updatedAt.toISOString(),
-          mergedAt: rev.mergedAt?.toISOString(),
-          closedAt: rev.closedAt?.toISOString(),
-        };
+        return toApiRevision(rev, [] /* TODO: fill authors */);
       }),
       pagination,
     });

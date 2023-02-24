@@ -48,6 +48,16 @@
 
 .main {
   padding: $p-xxxl;
+
+  .mainTop {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.editDropdown {
+  min-width: 125px !important;
 }
 
 .title {
@@ -101,11 +111,7 @@
 
   border-bottom: 1px solid $gray-100;
 
-  .actions {
-    // :global(.ant-btn) {
-    //   color: $gray-400;
-    // }
-  }
+  .actions {}
 
   .label {
     display: flex;

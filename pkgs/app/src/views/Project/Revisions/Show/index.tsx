@@ -1,17 +1,35 @@
 import {
   CheckCircleFilled,
   ExclamationCircleOutlined,
+  LoadingOutlined,
   PullRequestOutlined,
 } from '@ant-design/icons';
-import { App, Button, Drawer, Skeleton, Space, Typography } from 'antd';
+import {
+  IconEyeCheck,
+  IconEyeOff,
+  IconGitPullRequestClosed,
+  IconLock,
+  IconLockAccessOff,
+} from '@tabler/icons-react';
+import type { MenuProps } from 'antd';
+import {
+  App,
+  Button,
+  Drawer,
+  Dropdown,
+  Skeleton,
+  Space,
+  Typography,
+} from 'antd';
 import type { ApiProject, BlockLevelZero } from 'api/src/types/api';
 import type { ResListRevisionBlobs } from 'api/src/types/api/blob';
 import type {
+  ReqPutRevision,
   ResCheckRevision,
   ResGetRevision,
 } from 'api/src/types/api/revisions';
 import classnames from 'classnames';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useListRevisionBlobs } from '../../../../api/blobs';
@@ -19,6 +37,7 @@ import { createComment } from '../../../../api/comments';
 import {
   mergeRevision,
   rebaseRevision,
+  updateRevision,
   useGetRevision,
   useGetRevisionChecks,
 } from '../../../../api/revisions';
@@ -82,6 +101,81 @@ export const ProjectRevisionsShow: React.FC<{
     setChecks(resChecks.data?.data);
   }, [resChecks.isFetched]);
 
+  // --------- Edit
+  const [save, setSave] = useState(false);
+  const actionsItems = useMemo(() => {
+    if (!rev) {
+      return;
+    }
+
+    return [
+      rev.status === 'draft'
+        ? {
+            key: 'waiting',
+            icon: <IconEyeCheck size={16} />,
+            label: 'Set ready for Review',
+          }
+        : {
+            key: 'draft',
+            icon: <IconEyeOff size={16} />,
+            label: 'Back to Draft',
+          },
+      !rev.locked
+        ? {
+            key: 'lock',
+            icon: <IconLock size={16} />,
+            label: 'Lock',
+          }
+        : {
+            key: 'unlock',
+            icon: <IconLockAccessOff size={16} />,
+            label: 'Unlock',
+          },
+      !rev.closedAt
+        ? {
+            key: 'close',
+            icon: <IconGitPullRequestClosed size={16} />,
+            label: 'Close',
+            danger: true,
+          }
+        : {
+            key: 'reopen',
+            icon: <IconGitPullRequestClosed size={16} />,
+            label: 'Reopen',
+          },
+    ];
+  }, [rev]);
+  const onMenuClick: MenuProps['onClick'] = async (e) => {
+    if (!rev) {
+      return;
+    }
+
+    setSave(true);
+
+    const body: ReqPutRevision = {
+      ...rev,
+      authors: rev.authors.map((u) => u.id),
+      reviewers: rev.reviewers.map((u) => u.id),
+    };
+
+    if (e.key === 'lock') {
+      await updateRevision(qp, { ...body, locked: true });
+    } else if (e.key === 'unlock') {
+      await updateRevision(qp, { ...body, locked: false });
+    } else if (e.key === 'close') {
+      await updateRevision(qp, { ...body, status: 'closed' });
+    } else if (e.key === 'reopen') {
+      await updateRevision(qp, { ...body, status: 'draft' });
+    } else if (e.key === 'waiting') {
+      await updateRevision(qp, { ...body, status: 'waiting' });
+    } else if (e.key === 'draft') {
+      await updateRevision(qp, { ...body, status: 'draft' });
+    }
+
+    message.success('Revision updated');
+    setSave(false);
+  };
+
   // --------- Review
   const [canReview, setCanReview] = useState<boolean>(false);
   const [reviewOpen, setReviewOpen] = useState(false);
@@ -91,7 +185,11 @@ export const ProjectRevisionsShow: React.FC<{
   useEffect(() => {
     if (!rev) return;
     // Block if author
-    setCanReview(rev.merged ? false : true);
+    setCanReview(
+      rev.merged || rev.status === 'draft' || rev.status === 'closed'
+        ? false
+        : true
+    );
   }, [rev]);
 
   const onClickReview = (open: boolean) => {
@@ -196,9 +294,20 @@ export const ProjectRevisionsShow: React.FC<{
       <div className={cls.left}>
         <div className={cls.card}>
           <div className={cls.main}>
-            <Typography.Title level={1} className={cls.title}>
-              {rev.title}
-            </Typography.Title>
+            <div className={cls.mainTop}>
+              <Typography.Title level={1} className={cls.title}>
+                {rev.title}
+              </Typography.Title>
+              <Space>
+                {save && <LoadingOutlined />}
+                <Dropdown.Button
+                  menu={{ items: actionsItems, onClick: onMenuClick }}
+                  overlayClassName={cls.editDropdown}
+                >
+                  Edit
+                </Dropdown.Button>
+              </Space>
+            </div>
 
             <div className={cls.subtitle}>
               <StatusTag
@@ -370,7 +479,9 @@ export const ProjectRevisionsShow: React.FC<{
           </Space>
         }
       >
-        <Editor content={review} onUpdate={setReview} minHeight="300px" />
+        <Typography>
+          <Editor content={review} onUpdate={setReview} minHeight="300px" />
+        </Typography>
       </Drawer>
     </div>
   );

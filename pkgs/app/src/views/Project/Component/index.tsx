@@ -182,12 +182,14 @@ export const ComponentView: React.FC<{
             </Typography.Text>
           )}
           {edit.isEnabled() && (
-            <EditorMini
-              key={comp.name}
-              curr={curr!}
-              field="description"
-              originalContent={comp.description}
-            />
+            <Typography>
+              <EditorMini
+                key={comp.name}
+                curr={curr!}
+                field="description"
+                originalContent={comp.description}
+              />
+            </Typography>
           )}
 
           {(comp.tech || hosts.length > 0 || inComp || contains.length > 0) && (

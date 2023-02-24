@@ -8,6 +8,8 @@ import type {
   ReqRevisionParams,
   ResMergeRevision,
   ResCheckRevision,
+  ReqPutRevision,
+  ResPutRevision,
 } from 'api/src/types/api/revisions';
 import { useQuery } from 'react-query';
 
@@ -25,6 +27,27 @@ export async function createRevision(
   );
 
   queryClient.removeQueries(['listRevisions', data.orgId, data.projectId]);
+
+  return json;
+}
+
+export async function updateRevision(
+  { org_id, project_id, revision_id }: ReqGetRevision & ReqRevisionParams,
+  data: ReqPutRevision
+): Promise<ResPutRevision> {
+  const { json } = await fetchApi<
+    ResPutRevision,
+    ReqGetRevision,
+    ReqPutRevision
+  >(
+    `/revisions/${revision_id}`,
+    { body: data, qp: { org_id, project_id } },
+    'PUT'
+  );
+
+  queryClient.removeQueries(['listRevisions', org_id, project_id]);
+  queryClient.removeQueries(['listBlobs', org_id, project_id, revision_id]);
+  queryClient.removeQueries(['getRevision', org_id, project_id, revision_id]);
 
   return json;
 }

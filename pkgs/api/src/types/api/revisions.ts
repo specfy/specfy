@@ -54,6 +54,15 @@ export interface ResGetRevision {
   };
 }
 
+// ------ POST /:id
+export type ReqPutRevision = Pick<
+  ResGetRevision['data'],
+  'blobs' | 'description' | 'locked' | 'status' | 'title'
+> & { authors: string[]; reviewers: string[] };
+export interface ResPutRevision {
+  data: { done: true };
+}
+
 // ------ POST /:id/merge
 export interface ResMergeRevision {
   data: {

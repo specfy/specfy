@@ -66,9 +66,9 @@ export class Revision extends Model<DBRevision, PropCreate> {
   @Column({ field: 'updated_at' })
   declare updatedAt: Date;
 
-  @Column({ field: 'merged_at' })
-  declare mergedAt: Date;
+  @Column({ field: 'merged_at', type: DataType.DATE })
+  declare mergedAt: Date | null;
 
-  @Column({ field: 'closed_at' })
-  declare closedAt: Date;
+  @Column({ field: 'closed_at', type: DataType.DATE })
+  declare closedAt: Date | null;
 }

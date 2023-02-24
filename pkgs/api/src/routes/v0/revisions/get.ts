@@ -1,6 +1,7 @@
 import type { FastifyPluginCallback } from 'fastify';
 
 import { notFound } from '../../../common/errors';
+import { toApiRevision } from '../../../common/formatters/revision';
 import { toApiUser } from '../../../common/formatters/user';
 import { Revision, TypeHasUser } from '../../../models';
 import type {
@@ -36,25 +37,10 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
     res.status(200).send({
       data: {
-        id: rev.id,
-        orgId: rev.orgId,
-        projectId: rev.projectId,
-        title: rev.title,
-        description: rev.description,
-        locked: rev.locked,
-        merged: rev.merged,
-        status: rev.status,
-        blobs: rev.blobs,
-        authors: users
-          .filter((user) => user.role === 'author')
-          .map((u) => toApiUser(u.user)),
+        ...toApiRevision(rev, users),
         reviewers: users
           .filter((user) => user.role === 'reviewer')
           .map((u) => toApiUser(u.user)),
-        createdAt: rev.createdAt.toISOString(),
-        updatedAt: rev.updatedAt.toISOString(),
-        mergedAt: rev.mergedAt?.toISOString(),
-        closedAt: rev.closedAt?.toISOString(),
       },
     });
   });
