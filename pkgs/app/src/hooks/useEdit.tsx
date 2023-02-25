@@ -84,7 +84,7 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
       revert(type, typeId, key) {
         setChanges(
           changes.map((change) => {
-            if (change.type !== type && change.typeId !== typeId) return change;
+            if (change.type !== type || change.typeId !== typeId) return change;
             delete change.blob[key];
             return change;
           })
