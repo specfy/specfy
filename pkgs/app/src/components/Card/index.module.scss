@@ -1,0 +1,25 @@
+@import "../../styles/theme";
+
+.card {
+  background-color: #fff;
+  border: 1px solid $gray-100;
+  border-radius: $border-radius-s;
+  box-shadow: $box-shadow2;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+
+  padding: $p-xl $p-xl;
+
+  color: $gray-500;
+
+  background-color: $gray-50;
+  border-top: 1px solid $gray-100;
+}
+
+.content {
+  padding: $p-xxl;
+}

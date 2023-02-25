@@ -5,9 +5,9 @@
 }
 
 .editor {
-  min-height: 40px;
+  min-height: 30px;
   padding: $p $p $p-s $p-l;
-  background-color: $gray-2;
+  box-shadow: $box-shadow-editable;
 
   p {
     margin-bottom: $p-m;
@@ -52,16 +52,16 @@
   min-height: 40px;
   padding: $p-m - 1px 0;
 
-  background-color: $gray-2;
+  background-color: $blue-50;
 
   button {
-    color: $gray-6;
+    color: $sky-200;
     background-color: transparent;
     border: none;
     box-shadow: none;
 
     &.isUpdated {
-      color: $gray-8;
+      color: $blue-400;
     }
   }
 }

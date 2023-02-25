@@ -36,6 +36,9 @@ $font-m: 16px;
 $font-l: 20px;
 $font-xl: 24px;
 $font-xxl: 28px;
+$font-normal: 400;
+$font-semi: 600;
+$font-bold: 900;
 
 // Line height
 $line-height-s: 16px;
@@ -58,6 +61,8 @@ $p-xxxl: 24px;
 
 // Box Shadow
 $box-shadow: 1px 1px 2px $gray-4;
+$box-shadow2: 0 0 #0000, 0 1px 3px 0 rgb(0 0 0 / 10%), 0 1px 2px -1px rgb(0 0 0 / 10%);
+$box-shadow-editable: -2px 0 0 0 $blue-50;
 
 // Main column
 $main-col-w: 760px;

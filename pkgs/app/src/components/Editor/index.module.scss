@@ -1,9 +1,9 @@
 @import "../../styles/theme";
 
 .inputLike {
-  padding: $p $p-l;
-  border: 1px solid $gray-300;
+  padding: 0 $p-l;
   border-radius: $border-radius-s;
+  box-shadow: $box-shadow-editable;
 }
 
 .editor {

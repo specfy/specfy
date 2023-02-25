@@ -65,14 +65,11 @@ $size-center-max: 850px;
 }
 
 // ---- Header
-
 .editZone {
   display: flex;
   gap: $p-l;
   align-items: center;
   justify-content: end;
-
-  margin-top: 35px;
 }
 
 .editMode {
@@ -90,12 +87,13 @@ $size-center-max: 850px;
   border-radius: $border-radius;
   box-shadow: 1px 1px 2px $gray-4;
 
-  .link {
-    color: $gray-8 !important;
-    border-radius: $border-radius 0 0 $border-radius;
+  a {
+    padding: $p-xs $p-m;
+    font-size: $font;
+    color: $green-700 !important;
 
     &:hover {
-      background-color: $gray-3 !important;
+      // background-color: $neutral-100 !important;
     }
   }
 
@@ -139,7 +137,6 @@ $size-center-max: 850px;
 // ---- Edit mode
 .isEditing {
   .editMode {
-    padding-left: 0;
     box-shadow: -1px 1px 2px 0 $gray-5;
   }
 }

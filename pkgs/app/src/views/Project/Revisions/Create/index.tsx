@@ -1,5 +1,5 @@
 import { BranchesOutlined, LoadingOutlined } from '@ant-design/icons';
-import { App, Button, Card, Form, Input, Typography } from 'antd';
+import { App, Button, Form, Input, Typography } from 'antd';
 import type {
   ApiProject,
   BlockLevelZero,
@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { createRevision } from '../../../../api/revisions';
 import { diffTwoBlob } from '../../../../common/diff';
+import { Card } from '../../../../components/Card';
 import type { ComputedForDiff } from '../../../../components/DiffRow';
 import { DiffRow } from '../../../../components/DiffRow';
 import { Editor } from '../../../../components/Editor';
@@ -143,7 +144,7 @@ export const ProjectRevisionCreate: React.FC<{
 
     // Discard local changes
     edit.enable(false);
-    edit.setChanges([]);
+    edit.setChanges([], new Date());
 
     message.success('Revision created');
     navigate(`/org/${params.org_id}/${params.project_slug}/revisions/${id}`);
@@ -162,23 +163,26 @@ export const ProjectRevisionCreate: React.FC<{
       <div className={cls.left}>
         <Card>
           <Form onFinish={onSubmit}>
-            <Form.Item required name="title" initialValue={title}>
-              <Input
-                size="large"
-                placeholder="Title"
-                onChange={(e) => setTitle(e.target.value)}
-              />
-            </Form.Item>
+            <Card.Content>
+              <Typography.Title level={2}>Create Revision</Typography.Title>
+              <Form.Item required name="title" initialValue={title}>
+                <Input
+                  size="large"
+                  placeholder="Title"
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+              </Form.Item>
 
-            <Typography>
-              <Editor
-                content={description}
-                onUpdate={setDescription}
-                minHeight="100px"
-                inputLike={true}
-              />
-            </Typography>
-            <div className={cls.action}>
+              <Typography>
+                <Editor
+                  content={description}
+                  onUpdate={setDescription}
+                  minHeight="100px"
+                  inputLike={true}
+                />
+              </Typography>
+            </Card.Content>
+            <Card.Actions>
               <Button
                 type="primary"
                 disabled={!canSubmit}
@@ -187,7 +191,7 @@ export const ProjectRevisionCreate: React.FC<{
               >
                 Propose changes
               </Button>
-            </div>
+            </Card.Actions>
           </Form>
         </Card>
       </div>

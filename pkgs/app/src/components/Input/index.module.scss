@@ -1,0 +1,13 @@
+@import "../../styles/theme";
+
+.fakeH1 {
+  margin-bottom: $p-m;
+  padding: 0 $p-l;
+
+  font-size: $font-xxl;
+  font-weight: $font-semi;
+  line-height: 0;
+
+  border: none;
+  box-shadow: $box-shadow-editable;
+}

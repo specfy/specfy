@@ -3,10 +3,6 @@
 .container {
   max-width: $max-w;
   margin: 0 auto;
-
-  :global(.ant-table) {
-    box-shadow: $box-shadow;
-  }
 }
 
 .searchWrapper {
@@ -17,8 +13,14 @@
 }
 
 .search {
+  display: flex;
+  gap: $p-l;
   width: 50%;
   min-width: 500px;
+
+  .inputs {
+    width: calc(100% - 30px);
+  }
 }
 
 th.tcell {

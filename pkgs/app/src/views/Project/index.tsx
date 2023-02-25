@@ -59,6 +59,7 @@ export const Project: React.FC = () => {
 
   // Edit mode
   const edit = useEdit();
+  const isEditing = edit.isEnabled();
   const [updateCount, setUpdateCount] = useState(0);
   useDebounce(
     () => {
@@ -133,7 +134,7 @@ export const Project: React.FC = () => {
   }
 
   return (
-    <div className={classnames(edit.isEnabled() && cls.isEditing)}>
+    <div className={classnames(isEditing && cls.isEditing)}>
       <div className={cls.header}>
         <BigHeading
           parent={org!.name}
@@ -142,27 +143,33 @@ export const Project: React.FC = () => {
           link={linkSelf}
           subtitle={
             <>
-              updated <Time time={proj.updatedAt} />
+              <div className={cls.editZone}>
+                <div className={cls.editMode}>
+                  <Switch
+                    defaultChecked={false}
+                    onChange={handleEditMode}
+                    checked={isEditing}
+                    size="small"
+                  />
+                  {isEditing ? (
+                    <Link to={`${linkSelf}/revisions/current`}>
+                      {updateCount} pending{' '}
+                      {updateCount > 1 ? 'changes' : 'change'}
+                    </Link>
+                  ) : (
+                    'Edit'
+                  )}
+                </div>
+                {!isEditing && (
+                  <div>
+                    updated <Time time={proj.updatedAt} />
+                  </div>
+                )}
+              </div>
             </>
           }
         ></BigHeading>
         <ProjectMenu proj={proj} params={params} />
-        <div className={cls.editZone}>
-          <div className={cls.editMode}>
-            {edit.isEnabled() ? (
-              <Link to={`${linkSelf}/revisions/current`} className={cls.link}>
-                {updateCount} {updateCount > 1 ? 'changes' : 'change'}
-              </Link>
-            ) : (
-              'Edit'
-            )}
-            <Switch
-              defaultChecked={false}
-              onChange={handleEditMode}
-              size="small"
-            />
-          </div>
-        </div>
 
         {/* {proj.links.length > 0 && (
             <div className={cls.links}>

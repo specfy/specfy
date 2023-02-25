@@ -2,14 +2,20 @@ import {
   SearchOutlined,
   CloseCircleOutlined,
   ReadOutlined,
+  LoadingOutlined,
 } from '@ant-design/icons';
-import { Button, Empty, Input, Skeleton, Table } from 'antd';
-import type { ApiDocument, ApiProject } from 'api/src/types/api';
-import { useState } from 'react';
+import { Button, Input, Table } from 'antd';
+import type {
+  ApiDocument,
+  ApiProject,
+  ResListDocuments,
+} from 'api/src/types/api';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDebounce } from 'react-use';
 
 import { useListDocuments } from '../../../../api/documents';
+import { Card } from '../../../../components/Card';
 import { Time } from '../../../../components/Time';
 import type { RouteProject } from '../../../../types/routes';
 
@@ -19,11 +25,14 @@ export const ProjectContentList: React.FC<{
   proj: ApiProject;
   params: RouteProject;
 }> = ({ proj, params }) => {
+  const [loading, setLoading] = useState<boolean>(true);
+  const [list, setList] = useState<ResListDocuments>();
   const [search, setSearch] = useState<string>('');
   const [searchDebounced, setSearchDebounced] = useState<string>('');
   useDebounce(
     () => {
       setSearchDebounced(search);
+      setLoading(false);
     },
     500,
     [search]
@@ -34,9 +43,19 @@ export const ProjectContentList: React.FC<{
     search: searchDebounced,
   });
 
+  useEffect(() => {
+    setLoading(res.isLoading);
+    if (!res.data) {
+      return;
+    }
+
+    setList(res.data);
+  }, [res.data]);
+
   // Handler
   const handleInput: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setSearch(e.target.value);
+    setLoading(true);
   };
   const handleReset = () => {
     setSearch('');
@@ -46,7 +65,7 @@ export const ProjectContentList: React.FC<{
     <div className={cls.container}>
       <div className={cls.searchWrapper}>
         <div className={cls.search}>
-          <Input.Group compact>
+          <Input.Group compact className={cls.inputs}>
             <Input
               size="large"
               prefix={<SearchOutlined />}
@@ -66,51 +85,47 @@ export const ProjectContentList: React.FC<{
               placeholder="Search..."
             />
           </Input.Group>
+          {loading && <LoadingOutlined size={32} />}
         </div>
       </div>
 
-      {res.isLoading && (
-        <div>
-          <Skeleton active title={false} paragraph={{ rows: 3 }}></Skeleton>
-        </div>
-      )}
-
-      {res.data && res.data.data.length > 0 && (
-        <Table
-          rowKey="id"
-          dataSource={res.data!.data}
-          size="small"
-          pagination={{ position: ['bottomCenter'] }}
-        >
-          <Table.Column
-            title={
-              <div className={cls.th}>
-                <ReadOutlined /> {res.data.pagination.totalItems} Documents
-              </div>
-            }
-            dataIndex="name"
-            className={cls.tcell}
-            key="name"
-            render={(_, item: ApiDocument) => {
-              return (
-                <>
-                  <Link
-                    to={`/org/${params.org_id}/${params.project_slug}/rfc/${item.typeId}/${item.slug}`}
-                    relative="path"
-                    className={cls.title}
-                  >
-                    RFC-{item.typeId} - {item.name}
-                  </Link>
-                  <div className={cls.subtitle}>
-                    Updated <Time time={item.updatedAt} />
-                  </div>
-                </>
-              );
-            }}
-          />
-        </Table>
-      )}
-      {res.data && res.data.pagination.totalItems === 0 && <Empty />}
+      <Card>
+        {list && (
+          <Table
+            rowKey="id"
+            dataSource={list.data}
+            size="small"
+            pagination={{ position: ['bottomCenter'] }}
+          >
+            <Table.Column
+              title={
+                <div className={cls.th}>
+                  <ReadOutlined /> {list.pagination.totalItems} Documents
+                </div>
+              }
+              dataIndex="name"
+              className={cls.tcell}
+              key="name"
+              render={(_, item: ApiDocument) => {
+                return (
+                  <>
+                    <Link
+                      to={`/org/${params.org_id}/${params.project_slug}/rfc/${item.typeId}/${item.slug}`}
+                      relative="path"
+                      className={cls.title}
+                    >
+                      RFC-{item.typeId} - {item.name}
+                    </Link>
+                    <div className={cls.subtitle}>
+                      Updated <Time time={item.updatedAt} />
+                    </div>
+                  </>
+                );
+              }}
+            />
+          </Table>
+        )}
+      </Card>
     </div>
   );
 };

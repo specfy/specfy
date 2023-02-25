@@ -45,11 +45,13 @@ import {
   useGetRevisionChecks,
 } from '../../../../api/revisions';
 import { diffTwoBlob } from '../../../../common/diff';
+import { Card } from '../../../../components/Card';
 import { ContentDoc } from '../../../../components/Content';
 import type { ComputedForDiff } from '../../../../components/DiffRow';
 import { DiffRow } from '../../../../components/DiffRow';
 import { Editor } from '../../../../components/Editor';
 import { getEmptyDoc } from '../../../../components/Editor/helpers';
+import { FakeInput } from '../../../../components/Input';
 import { SidebarBlock } from '../../../../components/SidebarBlock';
 import { StatusTag } from '../../../../components/StatusTag';
 import { Time } from '../../../../components/Time';
@@ -347,8 +349,8 @@ export const ProjectRevisionsShow: React.FC<{
   return (
     <div className={cls.container}>
       <div className={cls.left}>
-        <div className={cls.card}>
-          <div className={cls.main}>
+        <Card>
+          <Card.Content>
             {!edit && (
               <div className={cls.mainTop}>
                 <Typography.Title level={1} className={cls.title}>
@@ -368,7 +370,7 @@ export const ProjectRevisionsShow: React.FC<{
               </div>
             )}
             {edit && (
-              <Input
+              <FakeInput.H1
                 size="large"
                 value={title}
                 className={cls.titleInput}
@@ -397,7 +399,7 @@ export const ProjectRevisionsShow: React.FC<{
                 />
               )}
             </Typography>
-          </div>
+          </Card.Content>
 
           {edit && (
             <div className={cls.merge}>
@@ -482,7 +484,7 @@ export const ProjectRevisionsShow: React.FC<{
               </div>
             </div>
           )}
-        </div>
+        </Card>
       </div>
 
       <div className={cls.right}>

@@ -10,6 +10,7 @@ import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import type { TmpBlob } from '../../hooks/useEdit';
+import { Card } from '../Card';
 
 import cls from './index.module.scss';
 
@@ -66,7 +67,7 @@ export const DiffRow: React.FC<{
 
   // TODO: undo revert
   return (
-    <div className={cls.update}>
+    <Card>
       <div className={cls.title}>
         <div className={cls.titleLeft}>
           <div className={cls.toggle}>
@@ -109,6 +110,6 @@ export const DiffRow: React.FC<{
           )}
         </div>
       </div>
-    </div>
+    </Card>
   );
 };

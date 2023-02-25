@@ -41,24 +41,10 @@
   }
 }
 
-.card {
-  background-color: #fff;
-  border: 1px solid $gray-100;
-  box-shadow: $box-shadow;
-}
-
-.main {
-  padding: $p-xxxl;
-
-  .mainTop {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .titleInput {
-    margin-bottom: $p-m;
-  }
+.mainTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .editDropdown {
