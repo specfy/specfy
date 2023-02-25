@@ -119,7 +119,6 @@ export const ProjectRevisionCreate: React.FC<{
   const handleRevert = (type: string, typeId: string, key: string) => {
     // TODO: possibility to undo revert
     edit.revert(type as any, typeId, key as any);
-    console.log('revert', type, typeId, key);
   };
 
   const onSubmit = async () => {
