@@ -430,7 +430,7 @@ export const ProjectRevisionsShow: React.FC<{
               {rev.status === 'waiting' && (
                 <div className={classnames(cls.checkLine, cls.warning)}>
                   <div className={cls.label}>
-                    <ExclamationCircleOutlined /> Waiting for one review
+                    <ExclamationCircleOutlined /> A review is required to merge
                   </div>
                 </div>
               )}

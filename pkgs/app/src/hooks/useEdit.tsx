@@ -19,7 +19,7 @@ export interface EditContextInterface {
   isEnabled: () => boolean;
   lastUpdate: Date | null;
   changes: TmpBlob[];
-  setChanges: (bag: TmpBlob[]) => void;
+  setChanges: (bag: TmpBlob[], time: Date) => void;
   getNumberOfChanges: () => number;
   enable: (val: boolean) => void;
   revert: <TField extends keyof TmpBlob['blob']>(
@@ -77,9 +77,9 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
       enable: (val) => {
         setEnabled(val);
       },
-      setChanges: (bag) => {
+      setChanges: (bag, time) => {
         setChanges(bag);
-        setLastUpdate(new Date());
+        setLastUpdate(time);
       },
       revert(type, typeId, key) {
         setChanges(

@@ -22,12 +22,23 @@ import cls from './index.module.scss';
 function proposeTitle(computed: ComputedForDiff[]): string {
   if (computed.length === 0) {
     return '';
-  }
-
-  if (computed.length === 1) {
+  } else if (computed.length === 1) {
     const item = computed[0];
     const type = item.type === 'project' ? 'project' : item.previous.name;
     return `fix(${type}): update ${item.key}`;
+  } else {
+    const types = new Set<ComputedForDiff['type']>();
+    const names = new Set<string>();
+    for (const change of computed) {
+      types.add(change.type);
+      names.add(change.previous.name);
+    }
+
+    if (types.size === 1) {
+      return `fix(${Array.from(types.values()).join('')}): update ${Array.from(
+        names.values()
+      ).join(', ')}`;
+    }
   }
 
   return '';
@@ -80,11 +91,11 @@ export const ProjectRevisionCreate: React.FC<{
       cleaned.push(res.clean);
     }
 
-    const now = Date.now();
+    const now = new Date();
     setComputed(tmps);
-    setLastComputed(now);
+    setLastComputed(now.getTime());
     setTimeout(() => {
-      edit.setChanges(cleaned);
+      edit.setChanges(cleaned, now);
     }, 1);
     setTitle(proposeTitle(tmps));
   }, [changes]);
@@ -100,6 +111,7 @@ export const ProjectRevisionCreate: React.FC<{
       // Placeholder
       enoughContent = false;
     }
+    console.log(enoughContent, title);
 
     setCanSubmit(title !== '' && enoughContent);
   }, [title, description]);

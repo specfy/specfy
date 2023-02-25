@@ -8,12 +8,13 @@ import classnames from 'classnames';
 import type { Change } from 'diff';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useMeasure } from 'react-use';
+
+import type { TmpBlob } from '../../hooks/useEdit';
 
 import cls from './index.module.scss';
 
 export interface ComputedForDiff {
-  type: string;
+  type: TmpBlob['type'];
   typeId: string;
   key: string;
   previous: any;
