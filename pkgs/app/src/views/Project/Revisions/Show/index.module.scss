@@ -6,7 +6,7 @@
     "left right"
     "review review"
     "staged staged" / 1fr;
-  row-gap: $p-xxl;
+  row-gap: $p-2xl;
   column-gap: $p-xl;
 
   min-width: $min-w;
@@ -28,7 +28,7 @@
     flex-direction: column;
     gap: $p-xl;
 
-    padding-bottom: $p-xxl;
+    padding-bottom: $p-2xl;
   }
 
   .reviewBar {
@@ -37,7 +37,7 @@
     flex-direction: row;
     justify-content: flex-end;
 
-    padding-top: $p-xxl;
+    padding-top: $p-2xl;
   }
 }
 
@@ -61,7 +61,7 @@
 }
 
 .content {
-  padding: $p-xxl 0 0 0;
+  padding: $p-2xl 0 0 0;
 }
 
 // Merge
@@ -75,7 +75,7 @@
   align-items: center;
   justify-content: space-between;
 
-  padding: $p-xl $p-xxxl;
+  padding: $p-xl $p-3xl;
 
   color: $gray-500;
 

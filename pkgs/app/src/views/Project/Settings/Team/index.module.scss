@@ -1,0 +1,66 @@
+@import "../../../../styles/theme";
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.lines {
+  display: flex;
+  flex-direction: column;
+  gap: $p-3xl;
+}
+
+.title {
+  padding: $p-m $p-2xl 0 $p-2xl;
+}
+
+.line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: $p-l $p-2xl;
+
+  border-top: 1px solid $gray-100;
+
+  &:last-child {
+    border-bottom: 1px solid $gray-100;
+  }
+
+  &:hover {
+    background-color: rgba($gray-50, 50%);
+  }
+}
+
+.left {
+  display: flex;
+  gap: $p-l;
+}
+
+.right {
+  display: flex;
+  gap: $p-m;
+  align-items: center;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+}
+
+.sub {
+  font-size: $font-s;
+  line-height: $line-height-s;
+  color: $gray-400;
+}
+
+.search {
+  width: 250px;
+}
+
+.empty {
+  padding: 0 $p-2xl $p-l;
+  color: $gray-400;
+}

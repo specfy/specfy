@@ -4,7 +4,7 @@ import type { ApiUser } from './users';
 
 export type ApiPerm = Omit<DBPerm, 'userId'> & { user: ApiUser };
 
-// GET /:org_id
+// GET /
 export interface ReqListPerms {
   org_id: string;
   project_id?: string;
@@ -12,4 +12,27 @@ export interface ReqListPerms {
 
 export interface ResListPerms {
   data: ApiPerm[];
+}
+
+// POST /
+export interface ReqPostPerms {
+  org_id: string;
+  project_id: string;
+  userId: string;
+  role: ApiPerm['role'];
+}
+
+export interface ResPostPerms {
+  data: { done: boolean };
+}
+
+// DELETE /
+export interface ReqDeletePerms {
+  org_id: string;
+  project_id?: string;
+  userId: string;
+}
+
+export interface ResDeletePerms {
+  data: { done: boolean };
 }

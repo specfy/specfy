@@ -27,7 +27,6 @@ import { ProjectRevisionCreate } from './Revisions/Create';
 import { ProjectRevisionsList } from './Revisions/List';
 import { ProjectRevisionsShow } from './Revisions/Show';
 import { ProjectSettings } from './Settings';
-import { ProjectTeam } from './Team';
 import { Tech } from './Tech';
 import cls from './index.module.scss';
 
@@ -217,10 +216,6 @@ export const Project: React.FC = () => {
                 element={<ProjectActivity proj={proj} params={params} />}
               />
               <Route
-                path="/team"
-                element={<ProjectTeam proj={proj} params={params} />}
-              />
-              <Route
                 path="/t/:tech_slug"
                 element={<Tech proj={proj} comps={comps} params={params} />}
               />
@@ -240,7 +235,7 @@ export const Project: React.FC = () => {
                 }
               />
               <Route
-                path="/settings"
+                path="/settings/*"
                 element={<ProjectSettings proj={proj} params={params} />}
               />
               <Route

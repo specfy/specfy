@@ -1,89 +1,79 @@
-import { App, Button, Card, Input, Modal, Typography } from 'antd';
+import { IconSettings, IconUsers } from '@tabler/icons-react';
+import { Menu } from 'antd';
 import type { ApiProject } from 'api/src/types/api';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useMemo, useState } from 'react';
+import { Link, Route, Routes, useLocation } from 'react-router-dom';
 
-import { deleteProject } from '../../../api/projects';
 import { Container } from '../../../components/Container';
 import type { RouteProject } from '../../../types/routes';
 
+import { SettingsGeneral } from './General';
+import { SettingsTeam } from './Team';
 import cls from './index.module.scss';
 
 export const ProjectSettings: React.FC<{
   proj: ApiProject;
   params: RouteProject;
 }> = ({ proj, params }) => {
-  const { message } = App.useApp();
-  const navigate = useNavigate();
+  const location = useLocation();
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [waitToRead, setWaitToRead] = useState(true);
+  // Menu
+  const linkSelf = useMemo(() => {
+    return `/org/${params.org_id}/${params.project_slug}/settings`;
+  }, [params]);
+  const [open, setOpen] = useState<string>('');
 
-  // Delete modal
-  const showModal = () => {
-    setIsModalOpen(true);
-    setTimeout(() => setWaitToRead(false), 2000);
-  };
-  const cancelDelete = () => {
-    setIsModalOpen(false);
-    setWaitToRead(true);
-  };
-  const confirmDelete = async () => {
-    await deleteProject(params);
-    message.success('Project deleted');
-
-    navigate(`/org/${params.org_id}`);
-  };
+  const menu = useMemo(() => {
+    return [
+      {
+        key: 'general',
+        label: (
+          <Link to={linkSelf} className={cls.link}>
+            <IconSettings />
+            General
+          </Link>
+        ),
+      },
+      {
+        key: 'team',
+        label: (
+          <Link to={`${linkSelf}/team`} className={cls.link}>
+            <IconUsers />
+            Team
+          </Link>
+        ),
+      },
+    ];
+  }, [linkSelf]);
+  useEffect(() => {
+    if (location.pathname.match(/team/)) {
+      setOpen('team');
+    } else {
+      setOpen('general');
+    }
+  }, [location]);
 
   return (
     <Container className={cls.container}>
-      <Card>
-        <div>
-          <Typography.Title level={4}>Rename this project</Typography.Title>
-          <Input.Group compact>
-            <Input value={proj.name} style={{ width: '250px' }} />
-            <Button type="primary">Rename</Button>
-          </Input.Group>
-        </div>
-      </Card>
+      <Menu
+        selectedKeys={[open]}
+        mode="vertical"
+        items={menu}
+        className={cls.menu}
+      />
 
-      <Card>
-        <div className={cls.gridAction}>
-          <div>
-            <Typography.Title level={4}> Delete this project</Typography.Title>
-            Deleting a project can&apos;t be undone.
-          </div>
-          <Button danger onClick={showModal}>
-            Delete
-          </Button>
-        </div>
-      </Card>
-
-      <Modal
-        title="Delete this project?"
-        open={isModalOpen}
-        onOk={confirmDelete}
-        onCancel={cancelDelete}
-        footer={[
-          <Button key="back" type="text" onClick={cancelDelete}>
-            Return
-          </Button>,
-          <Button
-            danger
-            key="submit"
-            type="primary"
-            disabled={waitToRead}
-            onClick={confirmDelete}
-          >
-            Delete
-          </Button>,
-        ]}
-      >
-        <p>
-          Are you sure to delete this project? <br></br>This action can&apos;t
-          be undone.
-        </p>
-      </Modal>
+      <div className={cls.flex}>
+        <Routes>
+          <Route
+            path="/"
+            element={<SettingsGeneral proj={proj} params={params} />}
+          />
+          <Route
+            path="/team"
+            element={<SettingsTeam proj={proj} params={params} />}
+          />
+        </Routes>
+      </div>
     </Container>
   );
 };

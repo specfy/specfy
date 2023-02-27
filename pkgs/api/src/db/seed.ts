@@ -28,7 +28,7 @@ export async function clean() {
 
 export async function seed() {
   // Users
-  const [u1, u2, u3, u4, u5, u6, u7] = await Promise.all([
+  const [u1, u2, u3, u4, u5, u6, u7, u8] = await Promise.all([
     await User.create({
       name: 'Samuel Bodin',
       email: 'bodin.samuel@gmail.com',
@@ -56,6 +56,10 @@ export async function seed() {
     await User.create({
       name: 'Clementine Dandonneau',
       email: 'ClementineDandonneau@gmail.com',
+    }),
+    await User.create({
+      name: 'Lisha A. James',
+      email: 'LishaAJames@gmail.com',
     }),
   ]);
 
@@ -128,7 +132,7 @@ export async function seed() {
 
   // Permissions
   await Promise.all([
-    ...[u2, u3, u4, u5, u6, u7].map((u) => {
+    ...[u2, u3, u4, u5, u6, u7, u8].map((u) => {
       return Perm.create({
         orgId: 'algolia',
         projectId: null,

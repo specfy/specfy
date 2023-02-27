@@ -9,7 +9,7 @@
   display: flex;
   gap: $p-l;
   align-items: center;
-  margin-bottom: $p-xxl;
+  margin-bottom: $p-2xl;
 }
 
 .search {
@@ -36,7 +36,7 @@ th.tcell {
 }
 
 tbody td.tcell {
-  padding: $p-l $p-xxl !important;
+  padding: $p-l $p-2xl !important;
 }
 
 .title {

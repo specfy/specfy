@@ -39,7 +39,7 @@ $size-center-max: 850px;
   grid-template-columns: 300px 1fr 250px;
   align-content: normal;
 
-  padding: $p-xl $p-xxl $p $p-xxl;
+  padding: $p-xl $p-2xl $p $p-2xl;
 
   border-bottom: 1px solid #f9fbff;
 
@@ -105,7 +105,7 @@ $size-center-max: 850px;
 }
 
 .links {
-  padding: $p-xxl 0;
+  padding: $p-2xl 0;
   border-top: 1px solid $gray-4;
 
   // margin-inline-end: $p-m;

@@ -1,11 +1,20 @@
-import type { ReqListPerms, ResListPerms } from 'api/src/types/api';
+import type {
+  ReqDeletePerms,
+  ReqListPerms,
+  ReqPostPerms,
+  ResDeletePerms,
+  ResListPerms,
+  ResPostPerms,
+} from 'api/src/types/api';
 import { useQuery } from 'react-query';
+
+import { queryClient } from '../common/query';
 
 import { fetchApi } from './fetch';
 
 export function useListPerms(opts: Pick<ReqListPerms, 'org_id'>) {
   return useQuery({
-    queryKey: ['listPermsOrg', opts.org_id],
+    queryKey: ['listPerms', opts.org_id],
     queryFn: async (): Promise<ResListPerms> => {
       const { json } = await fetchApi<ResListPerms, ReqListPerms>('/perms', {
         qp: { org_id: opts.org_id },
@@ -18,7 +27,7 @@ export function useListPerms(opts: Pick<ReqListPerms, 'org_id'>) {
 
 export function useListPermsProject(opts: Required<ReqListPerms>) {
   return useQuery({
-    queryKey: ['listPermsProject', opts.org_id, opts.project_id],
+    queryKey: ['listPerms', opts.org_id, opts.project_id],
     queryFn: async (): Promise<ResListPerms> => {
       const { json } = await fetchApi<ResListPerms, ReqListPerms>(`/perms`, {
         qp: { org_id: opts.org_id, project_id: opts.project_id },
@@ -27,4 +36,28 @@ export function useListPermsProject(opts: Required<ReqListPerms>) {
       return json;
     },
   });
+}
+
+export async function updatePerm(opts: ReqPostPerms) {
+  const { json } = await fetchApi<ResPostPerms, undefined, ReqPostPerms>(
+    '/perms',
+    { body: opts },
+    'PUT'
+  );
+
+  queryClient.removeQueries(['listPerms', opts.org_id, opts.project_id]);
+
+  return json;
+}
+
+export async function removePerm(opts: ReqDeletePerms) {
+  const { json } = await fetchApi<ResDeletePerms, undefined, ReqDeletePerms>(
+    '/perms',
+    { body: opts },
+    'DELETE'
+  );
+
+  queryClient.removeQueries(['listPerms', opts.org_id, opts.project_id]);
+
+  return json;
 }

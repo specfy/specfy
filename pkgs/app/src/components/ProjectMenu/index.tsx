@@ -1,5 +1,4 @@
 import {
-  TeamOutlined,
   HomeOutlined,
   ReadOutlined,
   ClusterOutlined,
@@ -87,15 +86,6 @@ export const ProjectMenu: React.FC<{
         ),
       },
       {
-        key: 'team',
-        label: (
-          <Link to={`${linkSelf}/team`} className={cls.link}>
-            <TeamOutlined />
-            Team
-          </Link>
-        ),
-      },
-      {
         key: 'settings',
         label: (
           <Link to={`${linkSelf}/settings`} className={cls.link}>
@@ -118,8 +108,6 @@ export const ProjectMenu: React.FC<{
       setOpen('graph');
     } else if (location.pathname.match(/activity/)) {
       setOpen('activity');
-    } else if (location.pathname.match(/team/)) {
-      setOpen('team');
     } else if (location.pathname.match(/settings/)) {
       setOpen('settings');
     } else {

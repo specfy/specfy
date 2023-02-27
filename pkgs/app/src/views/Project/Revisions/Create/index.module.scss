@@ -5,7 +5,7 @@
   grid-template:
     "left right"
     "staged staged" / 1fr;
-  row-gap: $p-xxl;
+  row-gap: $p-2xl;
   column-gap: $p-xl;
 
   min-width: $min-w;
@@ -27,6 +27,6 @@
     flex-direction: column;
     gap: $p-xl;
 
-    padding-top: $p-xxl;
+    padding-top: $p-2xl;
   }
 }

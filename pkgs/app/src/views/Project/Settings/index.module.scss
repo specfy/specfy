@@ -1,14 +1,19 @@
 @import "../../../styles/theme";
 
 .container {
-  display: flex;
-  flex-direction: column;
-  gap: $p-xxl;
-  max-width: 750px;
+  display: grid;
+  grid-template-columns: 200px 750px;
+  gap: $p-2xl;
 }
 
-.gridAction {
+.link {
   display: flex;
+  gap: $p-m;
   align-items: center;
-  justify-content: space-between;
+}
+
+.flex {
+  display: flex;
+  flex-direction: column;
+  gap: $p-5xl;
 }
