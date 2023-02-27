@@ -2,7 +2,7 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { IconCheck, IconPlus, IconTrash } from '@tabler/icons-react';
 import { Typography, Button, Input, Select, App } from 'antd';
 import type { ApiProject, ApiPerm, ApiUser } from 'api/src/types/api';
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { useDebounce } from 'react-use';
 
 import {
@@ -63,6 +63,7 @@ const Row: React.FC<RowProps> = ({
       userId,
     });
     message.success('User removed');
+
     setTimeout(() => setLoading(false), 250);
     onUpdated();
   };
@@ -136,7 +137,6 @@ export const SettingsTeam: React.FC<{
     if (!team.data) {
       return;
     }
-    console.log('hello?');
 
     const tmp: Record<ApiPerm['role'], ApiPerm[]> = {
       reviewer: [],
@@ -181,8 +181,6 @@ export const SettingsTeam: React.FC<{
 
   // --- Actions
   const onUpdate = () => {
-    console.log('e?');
-
     team.refetch();
   };
 
@@ -192,7 +190,7 @@ export const SettingsTeam: React.FC<{
         <div>
           <Typography.Title level={2}>Team members</Typography.Title>
           <Typography.Text type="secondary">
-            Invite or manage your project's members.
+            Invite or manage your project&apos;s members.
           </Typography.Text>
         </div>
 
@@ -243,7 +241,7 @@ export const SettingsTeam: React.FC<{
                 );
               })}
               {reviewers.length <= 0 && (
-                <div className={cls.empty}>No match...</div>
+                <div className={cls.empty}>Nothing to show...</div>
               )}
             </div>
 
@@ -294,7 +292,7 @@ export const SettingsTeam: React.FC<{
         {searchDebounced && (
           <div>
             {options.map((u) => {
-              const perm = team.data?.data.find((p) => p.user.id === u.id);
+              const perm = team.data?.data.find((i) => i.user.id === u.id);
               return (
                 <Row
                   key={u.id}
