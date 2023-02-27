@@ -1,9 +1,12 @@
-import { Card, Col, Row, Typography } from 'antd';
+import { Typography } from 'antd';
 import type { ApiComponent, ApiProject } from 'api/src/types/api';
 import { useMemo } from 'react';
 
+import { Card } from '../../../components/Card';
+import { Container } from '../../../components/Container';
 import { ContentDoc } from '../../../components/Content';
 import { EditorMini } from '../../../components/Editor/Mini';
+import { Graph } from '../../../components/Graph';
 import { ListActivity } from '../../../components/ListActivity';
 import { ListRFCs } from '../../../components/ListRFCs';
 import { useEdit } from '../../../hooks/useEdit';
@@ -28,52 +31,51 @@ export const ProjectHome: React.FC<{
 
   return (
     <>
-      <Row gutter={[16, 16]}>
-        <Col span={24}>
-          <Card>
-            <Typography>
-              {!edit.isEnabled() && <ContentDoc doc={desc} />}
-              {edit.isEnabled() && (
-                <EditorMini
-                  curr={curr!}
-                  field="description"
-                  originalContent={proj.description}
-                />
-              )}
-            </Typography>
+      <Container.Left>
+        <Card padded>
+          <Typography>
+            {!edit.isEnabled() && <ContentDoc doc={desc} />}
+            {edit.isEnabled() && (
+              <EditorMini
+                curr={curr!}
+                field="description"
+                originalContent={proj.description}
+              />
+            )}
+          </Typography>
 
-            <div className={cls.block}>
-              <Typography.Title level={5}>Technical Aspect</Typography.Title>
-              {comps ? (
-                <TechnicalAspects components={comps} params={params} />
-              ) : (
-                <Typography.Text type="secondary">
-                  Nothing to show.
-                </Typography.Text>
-              )}
-            </div>
+          <div className={cls.block}>
+            <Typography.Title level={5}>Technical Aspect</Typography.Title>
+            {comps ? (
+              <TechnicalAspects components={comps} params={params} />
+            ) : (
+              <Typography.Text type="secondary">
+                Nothing to show.
+              </Typography.Text>
+            )}
+          </div>
 
-            <div className={cls.block}>
-              <Typography.Title level={5}>Team</Typography.Title>
-              <Team org_id={params.org_id} project_id={proj.id} />
-            </div>
-          </Card>
-        </Col>
+          <div className={cls.block}>
+            <Typography.Title level={5}>Team</Typography.Title>
+            <Team org_id={params.org_id} project_id={proj.id} />
+          </div>
+        </Card>
 
-        <Col span={15}>
-          <Card>
-            <ListRFCs project={proj}></ListRFCs>
-          </Card>
-        </Col>
-        <Col span={9}>
-          <Card>
-            <ListActivity
-              orgId={params.org_id}
-              projectSlug={params.project_slug}
-            />
-          </Card>
-        </Col>
-      </Row>
+        <Card>
+          <ListRFCs project={proj}></ListRFCs>
+        </Card>
+        <Card>
+          <ListActivity
+            orgId={params.org_id}
+            projectSlug={params.project_slug}
+          />
+        </Card>
+      </Container.Left>
+      <Container.Right>
+        <Card>
+          <Graph components={comps} />
+        </Card>
+      </Container.Right>
     </>
   );
 };

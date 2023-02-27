@@ -5,6 +5,10 @@
   border: 1px solid $gray-100;
   border-radius: $border-radius-s;
   box-shadow: $box-shadow2;
+
+  &.padded {
+    padding: $p-2xl;
+  }
 }
 
 .actions {

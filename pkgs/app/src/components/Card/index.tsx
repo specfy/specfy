@@ -1,7 +1,14 @@
+import classnames from 'classnames';
+
 import cls from './index.module.scss';
 
-const OriginCard: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  return <div className={cls.card}>{children}</div>;
+const OriginCard: React.FC<{ children: React.ReactNode; padded?: boolean }> = ({
+  children,
+  padded,
+}) => {
+  return (
+    <div className={classnames(cls.card, padded && cls.padded)}>{children}</div>
+  );
 };
 
 const Actions: React.FC<{ children: React.ReactNode }> = ({ children }) => {

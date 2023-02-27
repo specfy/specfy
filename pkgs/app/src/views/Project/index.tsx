@@ -1,7 +1,7 @@
 import { Avatar, Card, Divider, Skeleton, Switch } from 'antd';
 import type { ApiComponent, ApiOrg, ApiProject } from 'api/src/types/api';
 import classnames from 'classnames';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Link, Route, Routes, useParams } from 'react-router-dom';
 import { useDebounce } from 'react-use';
 
@@ -10,11 +10,8 @@ import { useListOrgs } from '../../api/orgs';
 import { useGetProject } from '../../api/projects';
 import { BigHeading, BigHeadingLoading } from '../../components/BigHeading';
 import { Container } from '../../components/Container';
-import type { GraphRef } from '../../components/Graph';
-import { Graph } from '../../components/Graph';
 import { ProjectMenu } from '../../components/ProjectMenu';
 import { Time } from '../../components/Time';
-import { useCurrentRoute } from '../../hooks/useCurrentRoute';
 import { useEdit } from '../../hooks/useEdit';
 import type { RouteProject } from '../../types/routes';
 
@@ -22,6 +19,7 @@ import { ProjectActivity } from './Activity';
 import { ComponentView } from './Component';
 import { ProjectContentList } from './Content/List';
 import { RFC } from './Content/RFC';
+import { ProjectGraph } from './Graph';
 import { ProjectHome } from './Home';
 import { ProjectRevisionCreate } from './Revisions/Create';
 import { ProjectRevisionsList } from './Revisions/List';
@@ -39,11 +37,6 @@ export const Project: React.FC = () => {
   const linkSelf = useMemo(() => {
     return `/org/${params.org_id}/${params.project_slug}`;
   }, [params]);
-
-  // Graph spec
-  const [gridClass, setGridClass] = useState<string>();
-  const currRoute = useCurrentRoute();
-  const graphRef = useRef<GraphRef>(null);
 
   // Data fetch
   const getOrgs = useListOrgs();
@@ -77,29 +70,6 @@ export const Project: React.FC = () => {
   useEffect(() => {
     setComps(getComps.data?.data);
   }, [getComps.isFetched]);
-  useEffect(() => {
-    const sub = currRoute.pathname.split('/')[4];
-    const isComp = sub === 'c';
-    if (isComp || sub === 't') {
-      setGridClass(cls.largerRight);
-    } else if (sub === 'graph') {
-      setGridClass(cls.noCenter);
-    } else if (sub === undefined) {
-      setGridClass('');
-    } else {
-      setGridClass(cls.noRight);
-    }
-
-    if (!isComp) graphRef.current?.unHighlightCell(true);
-
-    setTimeout(() => graphRef.current?.recenter(), 750);
-  }, [currRoute]);
-
-  function handleCompLoad(id: string) {
-    // Todo: wait for graph to be ready somehow
-    graphRef.current?.unHighlightCell();
-    graphRef.current?.highlightCell(id);
-  }
 
   function handleEditMode(val: boolean) {
     edit.enable(val);
@@ -198,65 +168,54 @@ export const Project: React.FC = () => {
       </div>
 
       <Container>
-        <div className={classnames(cls.container, gridClass)}>
-          <div className={cls.center}>
-            <Routes>
-              <Route
-                path="/"
-                element={
-                  <ProjectHome proj={proj} comps={comps} params={params} />
-                }
-              />
-              <Route
-                path="/content"
-                element={<ProjectContentList proj={proj} params={params} />}
-              />
-              <Route
-                path="/activity"
-                element={<ProjectActivity proj={proj} params={params} />}
-              />
-              <Route
-                path="/t/:tech_slug"
-                element={<Tech proj={proj} comps={comps} params={params} />}
-              />
-              <Route
-                path="/rfc/:document_type_id/:document_slug"
-                element={<RFC proj={proj} params={params} />}
-              />
-              <Route
-                path="/c/:component_slug"
-                element={
-                  <ComponentView
-                    proj={proj}
-                    comps={comps}
-                    params={params}
-                    onLoad={handleCompLoad}
-                  />
-                }
-              />
-              <Route
-                path="/settings/*"
-                element={<ProjectSettings proj={proj} params={params} />}
-              />
-              <Route
-                path="/revisions"
-                element={<ProjectRevisionsList proj={proj} params={params} />}
-              />
-              <Route
-                path="/revisions/current"
-                element={<ProjectRevisionCreate proj={proj} params={params} />}
-              />
-              <Route
-                path="/revisions/:revision_id"
-                element={<ProjectRevisionsShow proj={proj} params={params} />}
-              />
-            </Routes>
-          </div>
-
-          <div className={cls.right}>
-            <Graph components={comps} ref={graphRef}></Graph>
-          </div>
-        </div>
+        <Routes>
+          <Route
+            path="/"
+            element={<ProjectHome proj={proj} comps={comps} params={params} />}
+          />
+          <Route
+            path="/content"
+            element={<ProjectContentList proj={proj} params={params} />}
+          />
+          <Route
+            path="/graph"
+            element={<ProjectGraph proj={proj} params={params} comps={comps} />}
+          />
+          <Route
+            path="/activity"
+            element={<ProjectActivity proj={proj} params={params} />}
+          />
+          <Route
+            path="/t/:tech_slug"
+            element={<Tech proj={proj} comps={comps} params={params} />}
+          />
+          <Route
+            path="/rfc/:document_type_id/:document_slug"
+            element={<RFC proj={proj} params={params} />}
+          />
+          <Route
+            path="/c/:component_slug"
+            element={
+              <ComponentView proj={proj} comps={comps} params={params} />
+            }
+          />
+          <Route
+            path="/settings/*"
+            element={<ProjectSettings proj={proj} params={params} />}
+          />
+          <Route
+            path="/revisions"
+            element={<ProjectRevisionsList proj={proj} params={params} />}
+          />
+          <Route
+            path="/revisions/current"
+            element={<ProjectRevisionCreate proj={proj} params={params} />}
+          />
+          <Route
+            path="/revisions/:revision_id"
+            element={<ProjectRevisionsShow proj={proj} params={params} />}
+          />
+        </Routes>
       </Container>
     </div>
   );

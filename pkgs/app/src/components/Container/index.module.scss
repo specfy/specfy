@@ -1,3 +1,21 @@
+@import "../../styles/theme";
+
 .container {
-  padding: 24px;
+  display: flex;
+  margin: $p-3xl;
+  gap: $p-3xl;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: $p-3xl;
+  max-width: 50%;
+  min-width: 750px;
+}
+
+.right {
+  width: inherit;
+  min-width: calc(50% - $p-3xl * 2);
+  max-width: 50%;
 }

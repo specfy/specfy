@@ -1,13 +1,17 @@
-import { Card, Col, Row, Typography } from 'antd';
+import { Typography } from 'antd';
 import type { ApiComponent, ApiProject } from 'api/src/types/api';
 import type React from 'react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import type { TechInfo } from '../../../common/component';
 import { supported } from '../../../common/component';
+import { Card } from '../../../components/Card';
+import { Container } from '../../../components/Container';
 import { ContentDoc } from '../../../components/Content';
 import { EditorMini } from '../../../components/Editor/Mini';
+import type { GraphRef } from '../../../components/Graph';
+import { Graph } from '../../../components/Graph';
 import { ListRFCs } from '../../../components/ListRFCs';
 import { useEdit } from '../../../hooks/useEdit';
 import type { RouteComponent, RouteProject } from '../../../types/routes';
@@ -30,13 +34,13 @@ export const ComponentView: React.FC<{
   proj: ApiProject;
   comps: ApiComponent[];
   params: RouteProject;
-  onLoad: (str: string) => void;
-}> = ({ proj, comps, params, onLoad }) => {
+}> = ({ proj, comps, params }) => {
   // TODO: filter RFC
   const [comp, setComp] = useState<ApiComponent>();
   const [info, setInfo] = useState<TechInfo>();
   const [Icon, setIcon] = useState<TechInfo['Icon']>();
   const route = useParams<Partial<RouteComponent>>();
+  const graphRef = useRef<GraphRef>(null);
 
   // Components
   const [inComp, setInComp] = useState<ApiComponent>();
@@ -155,7 +159,18 @@ export const ComponentView: React.FC<{
     setReceive(Array.from(_receive.values()));
     setSend(Array.from(_send.values()));
     setReceiveSend(Array.from(_receivesend.values()));
-    onLoad(comp.id);
+  }, [comp]);
+
+  useEffect(() => {
+    if (!comp) {
+      return;
+    }
+
+    setTimeout(() => {
+      graphRef.current?.recenter();
+      graphRef.current?.unHighlightCell();
+      graphRef.current?.highlightCell(comp.id);
+    }, 500);
   }, [comp]);
 
   if (!comp) {
@@ -163,9 +178,9 @@ export const ComponentView: React.FC<{
   }
 
   return (
-    <Row gutter={[16, 16]}>
-      <Col span={24}>
-        <Card>
+    <>
+      <Container.Left>
+        <Card padded>
           <Typography.Title level={2}>
             {Icon && (
               <div className={cls.icon}>
@@ -253,12 +268,15 @@ export const ComponentView: React.FC<{
             </div>
           )}
         </Card>
-      </Col>
-      <Col span={24}>
-        <Card>
+        <Card padded>
           <ListRFCs project={proj}></ListRFCs>
         </Card>
-      </Col>
-    </Row>
+      </Container.Left>
+      <Container.Right>
+        <Card>
+          <Graph components={comps} ref={graphRef} />
+        </Card>
+      </Container.Right>
+    </>
   );
 };

@@ -1,6 +1,7 @@
 @import "../../../../styles/theme";
 
 .container {
+  min-width: $min-w;
   max-width: $max-w;
   margin: 0 auto;
 }

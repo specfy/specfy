@@ -1,38 +1,5 @@
 @import "../../styles/theme";
 
-$size-center-max: 850px;
-
-.container {
-  display: grid;
-  grid-template: "center right" auto / minmax(750px, $size-center-max) minmax(550px, 1fr);
-  gap: 16px;
-  transition: grid-template 0.5s ease-in-out;
-
-  &.largerRight {
-    grid-template: "center right" auto / minmax(750px, $size-center-max) minmax(550px, 1fr);
-
-    .right {
-      height: 450px;
-    }
-  }
-
-  &.noRight {
-    grid-template: "center" auto / 1fr;
-
-    .right {
-      display: none;
-    }
-  }
-
-  &.noCenter {
-    grid-template: "right" auto / 1fr;
-
-    .right {
-      height: 550px;
-    }
-  }
-}
-
 // ---- Grid zone
 .header {
   display: grid;
@@ -44,24 +11,6 @@ $size-center-max: 850px;
   border-bottom: 1px solid #f9fbff;
 
   transition: background-color 0.25s ease-in-out;
-}
-
-.left {
-  display: flex;
-  grid-area: left;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.center {
-  grid-area: center;
-}
-
-.right {
-  grid-area: right;
-  width: inherit;
-  height: 450px;
-  margin: 0;
 }
 
 // ---- Header
@@ -91,10 +40,6 @@ $size-center-max: 850px;
     padding: $p-xs $p-m;
     font-size: $font;
     color: $green-700 !important;
-
-    &:hover {
-      // background-color: $neutral-100 !important;
-    }
   }
 
   :global {

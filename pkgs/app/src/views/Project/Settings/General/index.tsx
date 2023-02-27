@@ -77,20 +77,18 @@ export const SettingsGeneral: React.FC<{
         </Card.Actions>
       </Card>
 
-      <Card>
-        <Card.Content>
-          <div className={cls.actions}>
-            <div>
-              <Typography.Title level={4}>Delete this project</Typography.Title>
-              <Typography.Text type="secondary">
-                Deleting a project can&apos;t be undone.
-              </Typography.Text>
-            </div>
-            <Button danger type="primary" onClick={showModal}>
-              Delete Project
-            </Button>
+      <Card padded>
+        <div className={cls.actions}>
+          <div>
+            <Typography.Title level={4}>Delete this project</Typography.Title>
+            <Typography.Text type="secondary">
+              Deleting a project can&apos;t be undone.
+            </Typography.Text>
           </div>
-        </Card.Content>
+          <Button danger type="primary" onClick={showModal}>
+            Delete Project
+          </Button>
+        </div>
       </Card>
 
       <Modal

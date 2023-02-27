@@ -19,7 +19,9 @@ import '@antv/x6-react-components/es/toolbar/style/index.css';
 
 export interface GraphProps {
   components: ApiComponent[];
+  readonly?: boolean;
 }
+
 export interface GraphRef {
   recenter: () => void;
   highlightCell: (id: string) => void;
@@ -27,7 +29,7 @@ export interface GraphRef {
 }
 
 export const Graph = forwardRef<GraphRef, GraphProps>(function Graph(
-  { components },
+  { components, readonly },
   ref
 ) {
   const container = useRef<HTMLDivElement>(null);
@@ -48,7 +50,7 @@ export const Graph = forwardRef<GraphRef, GraphProps>(function Graph(
           if (!g) return;
 
           g!.zoomToFit();
-          g!.zoomTo(g!.zoom() - 0.1);
+          g!.zoomTo(g!.zoom() - 0.15);
         },
         highlightCell: (id: string) => {
           if (!g || !container.current) {
@@ -114,6 +116,7 @@ export const Graph = forwardRef<GraphRef, GraphProps>(function Graph(
           thickness: 1,
         },
       },
+      interacting: readonly,
       background: {
         color: '#fff',
       },
@@ -221,9 +224,11 @@ export const Graph = forwardRef<GraphRef, GraphProps>(function Graph(
     // );
     componentsToGraph(graph, components);
 
-    graph.center();
-    graph.zoomToFit();
-    graph.zoomTo(graph.zoom() - 0.1);
+    setTimeout(() => {
+      graph.center();
+      graph.zoomToFit();
+      graph.zoomTo(graph.zoom() - 0.15);
+    }, 150);
 
     return () => {
       graph.off();
