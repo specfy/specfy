@@ -3,6 +3,7 @@ import {
   CaretDownOutlined,
   HistoryOutlined,
 } from '@ant-design/icons';
+import { Transform } from '@antv/x6-plugin-transform';
 import { Badge, Button, Tooltip } from 'antd';
 import type { ApiComponent, ApiProject } from 'api/src/types/api';
 import classnames from 'classnames';
@@ -12,12 +13,21 @@ import { useDebounce } from 'react-use';
 import { useEdit } from '../../../hooks/useEdit';
 import { useGraph } from '../../../hooks/useGraph';
 
-import cls from './index.module.scss';
+import cls from './edit.module.scss';
 
+/**
+ * TODO: hamburger menu
+ * TODO: revert does work correctly when switching back to graph
+ * TODO: revert should revert all sub node?
+ * TODO: group/ungroup
+ * TODO: undo/redo
+ * TODO: select tool
+ */
 export const GraphEdit: React.FC<{
   proj: ApiProject;
   comps: ApiComponent[];
-}> = ({ comps }) => {
+  changedIds: string[];
+}> = ({ comps, changedIds }) => {
   const g = useGraph();
 
   // Edit mode
@@ -27,7 +37,7 @@ export const GraphEdit: React.FC<{
   // UI
   const [selected, setSelected] = useState<ApiComponent>();
   const [info, setInfo] = useState<ApiComponent['display']>();
-  const [changed, setChanged] = useState<string[]>([]);
+  const [changed, setChanged] = useState<string[]>(() => changedIds);
   const [hide, setHide] = useState<boolean>(true);
 
   useEffect(() => {
@@ -44,21 +54,55 @@ export const GraphEdit: React.FC<{
       g.recenter(0.4);
     }, 250);
 
+    if (!isEditing) {
+      return;
+    }
+
+    graph.use(
+      new Transform({
+        resizing: true,
+        rotating: false,
+      })
+    );
+
+    // TODO: fix this
+    let localSelected: ApiComponent;
+
     graph.on('cell:change:*', (e) => {
-      if (e.key !== 'size' && e.key !== 'position' && e.key !== 'vertices') {
+      if (
+        e.key !== 'size' &&
+        e.key !== 'position' &&
+        e.key !== 'vertices' &&
+        e.key !== 'size'
+      ) {
         return;
       }
 
+      let id = e.cell.id;
+      if (e.key === 'vertices' && e.cell.isEdge()) {
+        id = e.cell.getSourceCellId()!;
+      }
+
       setChanged((old) => {
-        if (old.includes(e.cell.id)) {
+        if (old.includes(id)) {
           return old;
         }
-        return [...old, e.cell.id];
+        return [...old, id];
       });
     });
 
+    graph.on('node:change:size', (e) => {
+      if (!localSelected || localSelected.id !== e.cell.id) {
+        return;
+      }
+
+      setInfo({
+        zIndex: e.cell.zIndex || 1,
+        pos: { ...e.node.position(), ...e.current },
+      });
+    });
     graph.on('node:change:position', (e) => {
-      if (!selected || selected.id !== e.cell.id) {
+      if (!localSelected || localSelected.id !== e.cell.id) {
         return;
       }
 
@@ -71,6 +115,7 @@ export const GraphEdit: React.FC<{
     graph.on('node:mousedown', (e) => {
       const found = comps.find((comp) => comp.id === e.cell.id);
       setSelected(found);
+      localSelected = found;
       setInfo({
         zIndex: e.cell.zIndex || 1,
         pos: { ...e.cell.position(), ...e.cell.size() },
@@ -179,12 +224,13 @@ export const GraphEdit: React.FC<{
           <div className={cls.title}>{selected.name}</div>
           <div className={cls.inside}>
             <div className={cls.xy}>
-              <div>x: {info.pos.x}</div>
-              <div>y: {info.pos.y}</div>
+              <div>x: {info.pos.x.toFixed(0)}</div>
+              <div>y: {info.pos.y.toFixed(0)}</div>
             </div>
             <div>
               <div className={cls.label}>Size</div>
               <div className={cls.inputs}>
+                Width
                 <input
                   className={cls.input}
                   value={info.pos.width}
@@ -192,7 +238,7 @@ export const GraphEdit: React.FC<{
                     handleSize('width', e.target.value);
                   }}
                 />
-                <span>x</span>
+                Height
                 <input
                   className={cls.input}
                   value={info.pos.height}

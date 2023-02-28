@@ -1,3 +1,5 @@
+import { LoadingOutlined } from '@ant-design/icons';
+import { IconLoader } from '@tabler/icons-react';
 import type { ApiProject, ApiComponent } from 'api/src/types/api';
 import { useState } from 'react';
 import { useMount } from 'react-use';
@@ -17,9 +19,12 @@ export const ProjectGraph: React.FC<{
   const edit = useEdit();
   const isEditing = edit.isEnabled();
   const [components, setComponents] = useState(() => comps);
+  const [changedIds, setChangedIds] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useMount(() => {
     const tmp: ApiComponent[] = [];
+    const ids: string[] = [];
     for (const comp of components) {
       const modified = edit.changes.find(
         (c) => c.typeId === comp.id && c.type === 'component'
@@ -28,6 +33,8 @@ export const ProjectGraph: React.FC<{
         tmp.push(comp);
         continue;
       }
+
+      ids.push(comp.id);
 
       tmp.push({
         ...comp,
@@ -42,19 +49,29 @@ export const ProjectGraph: React.FC<{
     }
 
     setComponents(tmp);
+    setChangedIds(ids);
+    setLoading(false);
   });
+
+  if (loading) {
+    return <LoadingOutlined />;
+  }
 
   return (
     <div>
       <Card>
-        <GraphEdit comps={components} proj={proj} />
+        <GraphEdit comps={components} proj={proj} changedIds={changedIds} />
         <div
           style={{
             width: 'calc(100vw - 24px * 2)',
             height: 'calc(100vh - 200px)',
           }}
         >
-          <Graph components={components} readonly={!isEditing} />
+          <Graph
+            components={components}
+            readonly={!isEditing}
+            toolbarFull={true}
+          />
         </div>
       </Card>
     </div>

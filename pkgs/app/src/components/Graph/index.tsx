@@ -1,7 +1,8 @@
-import { ZoomInOutlined, ZoomOutOutlined } from '@ant-design/icons';
 import { Graph as AntGraph } from '@antv/x6';
+import { IconZoomIn, IconZoomReplace, IconZoomOut } from '@tabler/icons-react';
 import { Button, Tooltip } from 'antd';
 import type { ApiComponent } from 'api/src/types/api';
+import classnames from 'classnames';
 import { useEffect, useRef, useState } from 'react';
 import { useDebounce } from 'react-use';
 
@@ -16,8 +17,13 @@ import '@antv/x6-react-components/es/toolbar/style/index.css';
 export interface GraphProps {
   components: ApiComponent[];
   readonly?: boolean;
+  toolbarFull?: boolean;
 }
-export const Graph: React.FC<GraphProps> = ({ components, readonly }) => {
+export const Graph: React.FC<GraphProps> = ({
+  components,
+  readonly,
+  toolbarFull,
+}) => {
   const gref = useGraph();
 
   const container = useRef<HTMLDivElement>(null);
@@ -97,13 +103,6 @@ export const Graph: React.FC<GraphProps> = ({ components, readonly }) => {
         //   },
         // },
         // router: {
-        //   name: 'er',
-        //   args: {
-        //     offset: 10,
-        //     endDirections: ['left', 'right'],
-        //   },
-        // },
-        // router: {
         //   name: 'manhattan',
         //   args: {
         //     padding: 100,
@@ -118,33 +117,23 @@ export const Graph: React.FC<GraphProps> = ({ components, readonly }) => {
         //     endDirections: ['left', 'right'],
         //   },
         // },
-        // router: {
-        //   name: 'is',
-        //   args: {},
-        // },
         connector: {
           name: 'smooth',
         },
-        // anchor: 'center',
-        // connectionPoint: 'anchor',
-        // allowBlank: false,
-        // snap: {
-        //   radius: 20,
-        // },
       },
-      // translating: {
-      //   restrict(view) {
-      //     const cell = view!.cell;
-      //     if (cell.isNode()) {
-      //       const parent = cell.getParent();
-      //       if (parent) {
-      //         return parent.getBBox();
-      //       }
-      //     }
+      translating: {
+        restrict(view) {
+          const cell = view!.cell;
+          if (cell.isNode()) {
+            const parent = cell.getParent();
+            if (parent) {
+              return parent.getBBox();
+            }
+          }
 
-      //     return null;
-      //   },
-      // },
+          return null;
+        },
+      },
     });
     setG(graph);
     gref.setRef(graph);
@@ -258,26 +247,41 @@ export const Graph: React.FC<GraphProps> = ({ components, readonly }) => {
   function handleZoomOut() {
     g?.zoom(-0.2);
   }
+  function handmeZoomReset() {
+    g?.center();
+    g?.zoomToFit();
+    g?.zoomTo(g?.zoom() - 0.3);
+  }
 
   return (
     <div className={cls.container}>
-      <div className={cls.toolbar}>
-        <Tooltip title="Zoom In (Cmd +)" placement="bottom">
-          <Button
-            className={cls.toolbarItem}
-            icon={<ZoomInOutlined />}
-            type="text"
-            onClick={handleZoomIn}
-          />
-        </Tooltip>
-        <Tooltip title="Zoom Out (Cmd -)" placement="bottom">
-          <Button
-            className={cls.toolbarItem}
-            icon={<ZoomOutOutlined />}
-            type="text"
-            onClick={handleZoomOut}
-          />
-        </Tooltip>
+      <div className={classnames(cls.top, toolbarFull && cls.full)}>
+        <div className={cls.toolbar}>
+          <Tooltip title="Zoom In (Cmd +)" placement="bottom">
+            <Button
+              className={cls.toolbarItem}
+              icon={<IconZoomIn />}
+              type="text"
+              onClick={handleZoomIn}
+            />
+          </Tooltip>
+          <Tooltip title="Zoom Reset" placement="bottom">
+            <Button
+              className={cls.toolbarItem}
+              icon={<IconZoomReplace />}
+              type="text"
+              onClick={handmeZoomReset}
+            />
+          </Tooltip>
+          <Tooltip title="Zoom Out (Cmd -)" placement="bottom">
+            <Button
+              className={cls.toolbarItem}
+              icon={<IconZoomOut />}
+              type="text"
+              onClick={handleZoomOut}
+            />
+          </Tooltip>
+        </div>
       </div>
       <div style={{ width: '100%', minHeight: `100%` }} ref={container} />
     </div>
