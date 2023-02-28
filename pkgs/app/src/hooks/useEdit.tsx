@@ -95,7 +95,7 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
         let has = changes.find((c) => c.type === type && c.typeId === typeId);
         if (!has) {
           has = { type, typeId, previous, blob: {} as any };
-          setChanges([...changes, has]);
+          setChanges((c) => [...c, has!]);
         }
 
         return {

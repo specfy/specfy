@@ -9,7 +9,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { createRevision } from '../../../../api/revisions';
-import { diffTwoBlob } from '../../../../common/diff';
+import { diffTwoBlob, proposeTitle } from '../../../../common/diff';
 import { Card } from '../../../../components/Card';
 import type { ComputedForDiff } from '../../../../components/DiffRow';
 import { DiffRow } from '../../../../components/DiffRow';
@@ -19,31 +19,6 @@ import { useEdit } from '../../../../hooks/useEdit';
 import type { RouteProject } from '../../../../types/routes';
 
 import cls from './index.module.scss';
-
-function proposeTitle(computed: ComputedForDiff[]): string {
-  if (computed.length === 0) {
-    return '';
-  } else if (computed.length === 1) {
-    const item = computed[0];
-    const type = item.type === 'project' ? 'project' : item.previous.name;
-    return `fix(${type}): update ${item.key}`;
-  } else {
-    const types = new Set<ComputedForDiff['type']>();
-    const names = new Set<string>();
-    for (const change of computed) {
-      types.add(change.type);
-      names.add(change.previous.name);
-    }
-
-    if (types.size === 1) {
-      return `fix(${Array.from(types.values()).join('')}): update ${Array.from(
-        names.values()
-      ).join(', ')}`;
-    }
-  }
-
-  return '';
-}
 
 export const ProjectRevisionCreate: React.FC<{
   proj: ApiProject;

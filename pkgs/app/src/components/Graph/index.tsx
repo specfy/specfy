@@ -2,14 +2,10 @@ import { ZoomInOutlined, ZoomOutOutlined } from '@ant-design/icons';
 import { Graph as AntGraph } from '@antv/x6';
 import { Button, Tooltip } from 'antd';
 import type { ApiComponent } from 'api/src/types/api';
-import {
-  forwardRef,
-  useEffect,
-  useImperativeHandle,
-  useRef,
-  useState,
-} from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDebounce } from 'react-use';
+
+import { useGraph } from '../../hooks/useGraph';
 
 import { registerCustomNode } from './CustomNode';
 import { componentsToGraph, highlightCell, unHighlightCell } from './helpers';
@@ -21,78 +17,19 @@ export interface GraphProps {
   components: ApiComponent[];
   readonly?: boolean;
 }
+export const Graph: React.FC<GraphProps> = ({ components, readonly }) => {
+  const gref = useGraph();
 
-export interface GraphRef {
-  recenter: () => void;
-  highlightCell: (id: string) => void;
-  unHighlightCell: (clear?: true) => void;
-}
-
-export const Graph = forwardRef<GraphRef, GraphProps>(function Graph(
-  { components, readonly },
-  ref
-) {
   const container = useRef<HTMLDivElement>(null);
   const [g, setG] = useState<AntGraph>();
   const [hostsById, setHostsById] = useState<Set<string>>();
-  const [highlight, setHighlight] = useState<string>();
-  const prevHighlight = useRef<string>();
 
   const [revertHighlight, setRevertHighlight] = useState(false);
   const [drawed, setDrawed] = useState(false);
   const [mouseover, setMouseOver] = useState(false);
 
-  useImperativeHandle(
-    ref,
-    () => {
-      return {
-        recenter: () => {
-          if (!g) return;
-
-          g!.zoomToFit();
-          g!.zoomTo(g!.zoom() - 0.15);
-        },
-        highlightCell: (id: string) => {
-          if (!g || !container.current) {
-            return;
-          }
-
-          setHighlight(id);
-
-          highlightCell({
-            cell: g.getCellById(id)!,
-            container: container.current!,
-            graph: g,
-            hostsById: hostsById!,
-          });
-        },
-        unHighlightCell: (clear?: true) => {
-          if (!g || !container.current) {
-            return;
-          }
-
-          unHighlightCell({
-            cell: prevHighlight.current
-              ? g.getCellById(prevHighlight.current)
-              : undefined,
-            container: container.current,
-            graph: g,
-          });
-          if (clear) {
-            prevHighlight.current = undefined;
-            setHighlight(undefined);
-          }
-        },
-      };
-    },
-    [g]
-  );
-
+  // ---- Init
   useEffect(() => {
-    if (!container.current) {
-      return;
-    }
-
     const compById = new Map<string, ApiComponent>();
     const _hostsById = new Set<string>();
 
@@ -103,6 +40,12 @@ export const Graph = forwardRef<GraphRef, GraphProps>(function Graph(
       }
     }
     setHostsById(_hostsById);
+  }, [components]);
+
+  useEffect(() => {
+    if (!container.current || !hostsById) {
+      return;
+    }
 
     const graph = new AntGraph({
       container: container.current,
@@ -116,7 +59,13 @@ export const Graph = forwardRef<GraphRef, GraphProps>(function Graph(
           thickness: 1,
         },
       },
-      interacting: readonly,
+      interacting: function () {
+        if (readonly) {
+          return false;
+        }
+
+        return true;
+      },
       background: {
         color: '#fff',
       },
@@ -132,34 +81,49 @@ export const Graph = forwardRef<GraphRef, GraphProps>(function Graph(
         enabled: true,
       },
       connecting: {
+        router: {
+          name: 'normal',
+          args: {
+            padding: 5,
+            endDirections: ['left', 'right'],
+          },
+        },
         // // This one is good
         // router: {
         //   name: 'orth',
         //   args: {
         //     padding: 5,
+        //     endDirections: ['left', 'right'],
         //   },
         // },
         // router: {
         //   name: 'er',
         //   args: {
-        //     offset: 40,
+        //     offset: 10,
+        //     endDirections: ['left', 'right'],
         //   },
         // },
         // router: {
         //   name: 'manhattan',
         //   args: {
+        //     padding: 100,
+        //     startDirections: ['bottom'],
+        //     endDirections: ['top'],
+        //   },
+        // },
+        // router: {
+        //   name: 'metro',
+        //   args: {
         //     padding: 1,
         //     endDirections: ['left', 'right'],
         //   },
         // },
-        router: {
-          name: 'metro',
-          args: {
-            endDirections: ['left', 'right'],
-          },
-        },
+        // router: {
+        //   name: 'is',
+        //   args: {},
+        // },
         connector: {
-          name: 'rounded',
+          name: 'smooth',
         },
         // anchor: 'center',
         // connectionPoint: 'anchor',
@@ -183,6 +147,7 @@ export const Graph = forwardRef<GraphRef, GraphProps>(function Graph(
       // },
     });
     setG(graph);
+    gref.setRef(graph);
     registerCustomNode();
 
     graph.on('node:mouseenter', (args) => {
@@ -190,7 +155,7 @@ export const Graph = forwardRef<GraphRef, GraphProps>(function Graph(
         cell: args.cell,
         container: container.current!,
         graph,
-        hostsById: _hostsById,
+        hostsById: hostsById,
       });
       setRevertHighlight(false);
     });
@@ -224,52 +189,60 @@ export const Graph = forwardRef<GraphRef, GraphProps>(function Graph(
     // );
     componentsToGraph(graph, components);
 
-    setTimeout(() => {
+    const cancel = setTimeout(() => {
+      // console.log('on zoom');
       graph.center();
       graph.zoomToFit();
       graph.zoomTo(graph.zoom() - 0.15);
     }, 150);
 
     return () => {
+      clearTimeout(cancel);
       graph.off();
+      graph.dispose();
     };
-  }, [container, components]);
+  }, [container, hostsById, readonly]);
 
+  // ---- Highlight
   useEffect(() => {
-    if (!g || !highlight) {
+    if (!g) {
       return;
     }
 
     unHighlightCell({
       container: container.current!,
       graph: g,
-      cell: prevHighlight.current
-        ? g.getCellById(prevHighlight.current)
-        : undefined,
+      cell: gref.prevHighlight ? g.getCellById(gref.prevHighlight) : undefined,
     });
     setDrawed(true);
-    setTimeout(
-      () => {
-        highlightCell({
-          cell: g.getCellById(highlight)!,
-          container: container.current!,
-          graph: g,
-          hostsById: hostsById!,
-        });
-      },
-      drawed ? 100 : 500
-    );
-    prevHighlight.current = highlight;
-  }, [g, highlight]);
+
+    let cancel: number;
+    if (gref.highlight) {
+      cancel = setTimeout(
+        () => {
+          highlightCell({
+            cell: g.getCellById(gref.highlight!)!,
+            container: container.current!,
+            graph: g,
+            hostsById: hostsById!,
+          });
+        },
+        drawed ? 1 : 500
+      );
+    }
+    return () => {
+      clearTimeout(cancel);
+    };
+  }, [g, gref]);
 
   useDebounce(
     () => {
-      if (!revertHighlight || !highlight || mouseover) {
+      if (!revertHighlight || !gref.highlight || mouseover) {
         return;
       }
 
       highlightCell({
-        cell: g!.getCellById(highlight!)!,
+        cell: g!.getCellById(gref.highlight!)!,
         container: container.current!,
         graph: g!,
         hostsById: hostsById!,
@@ -306,7 +279,7 @@ export const Graph = forwardRef<GraphRef, GraphProps>(function Graph(
           />
         </Tooltip>
       </div>
-      <div style={{ width: '100%', height: `350px` }} ref={container} />
+      <div style={{ width: '100%', minHeight: `100%` }} ref={container} />
     </div>
   );
-});
+};

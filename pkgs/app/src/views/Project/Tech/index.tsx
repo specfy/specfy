@@ -1,15 +1,15 @@
 import { Tag, Typography } from 'antd';
 import Title from 'antd/es/typography/Title';
 import type { ApiComponent, ApiProject } from 'api/src/types/api';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import type { TechInfo } from '../../../common/component';
 import { supported } from '../../../common/component';
 import { Card } from '../../../components/Card';
 import { Container } from '../../../components/Container';
-import type { GraphRef } from '../../../components/Graph';
 import { Graph } from '../../../components/Graph';
+import { useGraph } from '../../../hooks/useGraph';
 import type { RouteProject, RouteTech } from '../../../types/routes';
 import { Line } from '../Component/Line';
 
@@ -20,8 +20,8 @@ export const Tech: React.FC<{
   comps: ApiComponent[];
   params: RouteProject;
 }> = ({ comps, params }) => {
+  const gref = useGraph();
   const route = useParams<Partial<RouteTech>>();
-  const graphRef = useRef<GraphRef>(null);
 
   const [techname, setTechName] = useState<string>();
   const [usedBy, setUsedBy] = useState<ApiComponent[]>([]);
@@ -29,8 +29,14 @@ export const Tech: React.FC<{
   const [Icon, setIcon] = useState<TechInfo['Icon']>();
 
   useEffect(() => {
-    graphRef.current?.recenter();
-    graphRef.current?.unHighlightCell();
+    if (!gref) {
+      return;
+    }
+
+    setTimeout(() => {
+      gref.recenter();
+      gref.unsetHighlight();
+    }, 500);
   }, []);
 
   useEffect(() => {
@@ -86,7 +92,7 @@ export const Tech: React.FC<{
       </Container.Left>
       <Container.Right>
         <Card>
-          <Graph components={comps} ref={graphRef} />
+          <Graph components={comps} readonly={true} />
         </Card>
       </Container.Right>
     </>

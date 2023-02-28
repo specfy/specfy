@@ -83,6 +83,27 @@ export function componentsToGraph(graph: AntGraph, components: ApiComponent[]) {
             },
           },
         },
+        tools: {
+          items: [
+            // {
+            //   name: 'vertices',
+            //   snapRadius: 1,
+            //   args: {
+            //     attrs: { fill: '#34d399', width: 5, height: 5 },
+            //   },
+            // },
+            // Useless for now
+            // {
+            //   name: 'segments',
+            //   args: {
+            //     snapRadius: 20,
+            //     attrs: {
+            //       fill: '#444',
+            //     },
+            //   },
+            // },
+          ],
+        },
         labels: [
           {
             attrs: {

@@ -1,6 +1,6 @@
 import { Typography } from 'antd';
 import type { ApiComponent, ApiProject } from 'api/src/types/api';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { Card } from '../../../components/Card';
 import { Container } from '../../../components/Container';
@@ -10,6 +10,7 @@ import { Graph } from '../../../components/Graph';
 import { ListActivity } from '../../../components/ListActivity';
 import { ListRFCs } from '../../../components/ListRFCs';
 import { useEdit } from '../../../hooks/useEdit';
+import { useGraph } from '../../../hooks/useGraph';
 import type { RouteProject } from '../../../types/routes';
 
 import { Team } from './Team';
@@ -21,13 +22,26 @@ export const ProjectHome: React.FC<{
   comps: ApiComponent[];
   params: RouteProject;
 }> = ({ proj, comps, params }) => {
+  const gref = useGraph();
   const edit = useEdit();
+
   const curr = useMemo(() => {
     return edit.get<ApiProject>('project', proj.id, proj);
   }, [edit.isEnabled]);
   const desc = useMemo(() => {
     return curr?.changes?.description || proj.description;
   }, [proj, curr]);
+
+  useEffect(() => {
+    if (!gref) {
+      return;
+    }
+
+    setTimeout(() => {
+      gref.recenter();
+      gref.unsetHighlight(true);
+    }, 500);
+  }, []);
 
   return (
     <>
@@ -73,7 +87,7 @@ export const ProjectHome: React.FC<{
       </Container.Left>
       <Container.Right>
         <Card>
-          <Graph components={comps} />
+          <Graph components={comps} readonly={true} />
         </Card>
       </Container.Right>
     </>

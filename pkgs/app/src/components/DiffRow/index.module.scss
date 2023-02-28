@@ -37,7 +37,11 @@
 .diff {
   display: grid;
   grid-template-columns: 50% 50%;
+
   height: auto;
+
+  font-family: "Source Sans Pro";
+  font-weight: 300;
 
   &.hide {
     overflow: hidden;

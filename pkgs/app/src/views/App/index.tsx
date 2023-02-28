@@ -9,6 +9,7 @@ import { AuthLayout } from '../../components/AuthLayout';
 import { NotFound } from '../../components/NotFound';
 import { AuthProvider } from '../../hooks/useAuth';
 import { EditProvider } from '../../hooks/useEdit';
+import { GraphProvider } from '../../hooks/useGraph';
 import { Home } from '../Home';
 import { Login } from '../Login';
 import { Project } from '../Project';
@@ -59,9 +60,11 @@ const App: React.FC = () => {
                 <Route
                   path="/org/:org_id/:project_slug/*"
                   element={
-                    <EditProvider>
-                      <Project />
-                    </EditProvider>
+                    <GraphProvider>
+                      <EditProvider>
+                        <Project />
+                      </EditProvider>
+                    </GraphProvider>
                   }
                 />
               </Route>

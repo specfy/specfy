@@ -2,16 +2,17 @@
 
 .container {
   display: flex;
-  margin: $p-3xl;
   gap: $p-3xl;
+  margin: $p-3xl;
 }
 
 .left {
   display: flex;
   flex-direction: column;
   gap: $p-3xl;
-  max-width: 50%;
+
   min-width: 750px;
+  max-width: 50%;
 }
 
 .right {

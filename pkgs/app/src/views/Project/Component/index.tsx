@@ -1,7 +1,7 @@
 import { Typography } from 'antd';
 import type { ApiComponent, ApiProject } from 'api/src/types/api';
 import type React from 'react';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import type { TechInfo } from '../../../common/component';
@@ -10,10 +10,10 @@ import { Card } from '../../../components/Card';
 import { Container } from '../../../components/Container';
 import { ContentDoc } from '../../../components/Content';
 import { EditorMini } from '../../../components/Editor/Mini';
-import type { GraphRef } from '../../../components/Graph';
 import { Graph } from '../../../components/Graph';
 import { ListRFCs } from '../../../components/ListRFCs';
 import { useEdit } from '../../../hooks/useEdit';
+import { useGraph } from '../../../hooks/useGraph';
 import type { RouteComponent, RouteProject } from '../../../types/routes';
 
 import { Line } from './Line';
@@ -35,12 +35,13 @@ export const ComponentView: React.FC<{
   comps: ApiComponent[];
   params: RouteProject;
 }> = ({ proj, comps, params }) => {
+  const gref = useGraph();
+
   // TODO: filter RFC
   const [comp, setComp] = useState<ApiComponent>();
   const [info, setInfo] = useState<TechInfo>();
   const [Icon, setIcon] = useState<TechInfo['Icon']>();
   const route = useParams<Partial<RouteComponent>>();
-  const graphRef = useRef<GraphRef>(null);
 
   // Components
   const [inComp, setInComp] = useState<ApiComponent>();
@@ -162,14 +163,14 @@ export const ComponentView: React.FC<{
   }, [comp]);
 
   useEffect(() => {
-    if (!comp) {
+    if (!gref || !comp) {
       return;
     }
 
     setTimeout(() => {
-      graphRef.current?.recenter();
-      graphRef.current?.unHighlightCell();
-      graphRef.current?.highlightCell(comp.id);
+      gref.recenter();
+      gref.unsetHighlight();
+      gref.setHighlight(comp!.id);
     }, 500);
   }, [comp]);
 
@@ -274,7 +275,7 @@ export const ComponentView: React.FC<{
       </Container.Left>
       <Container.Right>
         <Card>
-          <Graph components={comps} ref={graphRef} />
+          <Graph components={comps} readonly={true} />
         </Card>
       </Container.Right>
     </>
