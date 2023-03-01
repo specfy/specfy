@@ -11,6 +11,7 @@ import { Container } from '../../../components/Container';
 import { ContentDoc } from '../../../components/Content';
 import { EditorMini } from '../../../components/Editor/Mini';
 import { Graph, GraphContainer } from '../../../components/Graph';
+import { Toolbar } from '../../../components/Graph/Toolbar';
 import { ListRFCs } from '../../../components/ListRFCs';
 import { useEdit } from '../../../hooks/useEdit';
 import { useGraph } from '../../../hooks/useGraph';
@@ -277,6 +278,9 @@ export const ComponentView: React.FC<{
         <Card>
           <GraphContainer>
             <Graph components={comps} readonly={true} />
+            <Toolbar position="bottom">
+              <Toolbar.Zoom />
+            </Toolbar>
           </GraphContainer>
         </Card>
       </Container.Right>

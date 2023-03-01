@@ -77,9 +77,9 @@ export const Graph: React.FC<GraphProps> = ({ components, readonly }) => {
         minScale: 0.5,
         maxScale: 2,
       },
-      panning: {
-        enabled: true,
-      },
+      // panning: {
+      //   enabled: true,
+      // },
       connecting: {
         router: {
           name: 'normal',
@@ -117,7 +117,11 @@ export const Graph: React.FC<GraphProps> = ({ components, readonly }) => {
       },
       translating: {
         restrict(view) {
-          const cell = view!.cell;
+          if (!view) {
+            return null;
+          }
+
+          const cell = view.cell;
           if (cell.isNode()) {
             const parent = cell.getParent();
             if (parent) {

@@ -9,6 +9,7 @@ import { supported } from '../../../common/component';
 import { Card } from '../../../components/Card';
 import { Container } from '../../../components/Container';
 import { Graph, GraphContainer } from '../../../components/Graph';
+import { Toolbar } from '../../../components/Graph/Toolbar';
 import { useGraph } from '../../../hooks/useGraph';
 import type { RouteProject, RouteTech } from '../../../types/routes';
 import { Line } from '../Component/Line';
@@ -94,6 +95,9 @@ export const Tech: React.FC<{
         <Card>
           <GraphContainer>
             <Graph components={comps} readonly={true} />
+            <Toolbar position="bottom">
+              <Toolbar.Zoom />
+            </Toolbar>
           </GraphContainer>
         </Card>
       </Container.Right>

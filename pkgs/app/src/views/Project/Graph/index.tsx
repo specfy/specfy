@@ -30,7 +30,7 @@ export const ProjectGraph: React.FC<{
       const modified = edit.changes.find(
         (c) => c.typeId === comp.id && c.type === 'component'
       );
-      if (!modified) {
+      if (!modified || !('display' in modified.blob)) {
         tmp.push(comp);
         continue;
       }

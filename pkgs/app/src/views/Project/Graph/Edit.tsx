@@ -4,6 +4,7 @@ import {
   HistoryOutlined,
 } from '@ant-design/icons';
 import { History } from '@antv/x6-plugin-history';
+import { Selection } from '@antv/x6-plugin-selection';
 import { Transform } from '@antv/x6-plugin-transform';
 import { Badge, Button, Tooltip } from 'antd';
 import type { ApiComponent, ApiProject } from 'api/src/types/api';
@@ -26,6 +27,8 @@ import cls from './edit.module.scss';
  * TODO: vertices
  * TODO: clear listComponents after merge
  * TODO: load edited in other pages
+ * TODO: undo a change should recomputed changed
+ * TODO: disable highlight when transforming / moving
  */
 export const GraphEdit: React.FC<{
   proj: ApiProject;
@@ -49,6 +52,7 @@ export const GraphEdit: React.FC<{
       return;
     }
 
+    g.unsetHighlight();
     const graph = g.getRef();
     if (!graph) {
       return;
@@ -83,6 +87,15 @@ export const GraphEdit: React.FC<{
             return false;
           }
         },
+      })
+    );
+    graph.use(
+      new Selection({
+        enabled: true,
+        multiple: true,
+        rubberband: true,
+        movable: true,
+        showNodeSelectionBox: true,
       })
     );
 

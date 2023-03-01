@@ -16,7 +16,7 @@ import '@antv/x6-react-components/es/toolbar/style/index.css';
 
 const ToolbarContainer: React.FC<{
   position: 'bottom' | 'top';
-  visible: boolean;
+  visible?: boolean;
   children: React.ReactElement | React.ReactElement[];
 }> = ({ children, position, visible }) => {
   return (
@@ -163,15 +163,6 @@ export const ToolbarHistory: React.FC = () => {
           disabled={!canUndo}
         />
       </Tooltip>
-      {/* <Tooltip title="Redo" placement="bottom">
-        <Button
-          className={cls.toolbarItem}
-          type="text"
-          onClick={handmeZoomReset}
-        >
-          {zoom}%
-        </Button>
-      </Tooltip> */}
       <Tooltip title="Redo (Cmd -)" placement="bottom">
         <Button
           className={cls.toolbarItem}

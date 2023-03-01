@@ -104,6 +104,16 @@
       opacity: 0.1 !important;
     }
   }
+
+  .x6-widget-selection-inner {
+    border: 1px dotted $blue-400;
+    box-shadow: none;
+  }
+
+  .x6-widget-selection-box.x6-widget-selection-box-node {
+    border: none;
+    box-shadow: none;
+  }
 }
 
 @keyframes running-line {
