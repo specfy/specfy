@@ -8,7 +8,7 @@ import type { TechInfo } from '../../../common/component';
 import { supported } from '../../../common/component';
 import { Card } from '../../../components/Card';
 import { Container } from '../../../components/Container';
-import { Graph } from '../../../components/Graph';
+import { Graph, GraphContainer } from '../../../components/Graph';
 import { useGraph } from '../../../hooks/useGraph';
 import type { RouteProject, RouteTech } from '../../../types/routes';
 import { Line } from '../Component/Line';
@@ -92,7 +92,9 @@ export const Tech: React.FC<{
       </Container.Left>
       <Container.Right>
         <Card>
-          <Graph components={comps} readonly={true} />
+          <GraphContainer>
+            <Graph components={comps} readonly={true} />
+          </GraphContainer>
         </Card>
       </Container.Right>
     </>

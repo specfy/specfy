@@ -4,11 +4,15 @@
   display: inline-block;
   flex-shrink: 0;
 
-  width: 104px;
-  margin-left: 8px;
+  width: inherit;
+  padding: 0 $p-m;
 
   font-size: 12px;
   color: #666;
+  text-overflow: ellipsis;
+  white-space: pre-wrap;
+  line-height: 12px;
+  overflow: hidden;
 }
 
 .node {

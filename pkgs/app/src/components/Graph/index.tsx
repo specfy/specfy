@@ -1,8 +1,6 @@
 import { Graph as AntGraph } from '@antv/x6';
-import { IconZoomIn, IconZoomReplace, IconZoomOut } from '@tabler/icons-react';
-import { Button, Tooltip } from 'antd';
+import { Keyboard } from '@antv/x6-plugin-keyboard';
 import type { ApiComponent } from 'api/src/types/api';
-import classnames from 'classnames';
 import { useEffect, useRef, useState } from 'react';
 import { useDebounce } from 'react-use';
 
@@ -19,11 +17,7 @@ export interface GraphProps {
   readonly?: boolean;
   toolbarFull?: boolean;
 }
-export const Graph: React.FC<GraphProps> = ({
-  components,
-  readonly,
-  toolbarFull,
-}) => {
+export const Graph: React.FC<GraphProps> = ({ components, readonly }) => {
   const gref = useGraph();
 
   const container = useRef<HTMLDivElement>(null);
@@ -139,6 +133,12 @@ export const Graph: React.FC<GraphProps> = ({
     gref.setRef(graph);
     registerCustomNode();
 
+    graph.use(
+      new Keyboard({
+        enabled: true,
+      })
+    );
+
     graph.on('node:mouseenter', (args) => {
       highlightCell({
         cell: args.cell,
@@ -165,21 +165,9 @@ export const Graph: React.FC<GraphProps> = ({
       setMouseOver(false);
     });
 
-    // graph.use(
-    //   new Scroller({
-    //     enabled: true,
-    //     autoResize: true,
-    //     pageBreak: true,
-    //     pageVisible: true,
-    //     pannable: true,
-    //     pageWidth: 600,
-    //     pageHeight: 600,
-    //   })
-    // );
     componentsToGraph(graph, components);
 
     const cancel = setTimeout(() => {
-      // console.log('on zoom');
       graph.center();
       graph.zoomToFit();
       graph.zoomTo(graph.zoom() - 0.15);
@@ -205,7 +193,7 @@ export const Graph: React.FC<GraphProps> = ({
     });
     setDrawed(true);
 
-    let cancel: number;
+    let cancel: any;
     if (gref.highlight) {
       cancel = setTimeout(
         () => {
@@ -219,6 +207,7 @@ export const Graph: React.FC<GraphProps> = ({
         drawed ? 1 : 500
       );
     }
+
     return () => {
       clearTimeout(cancel);
     };
@@ -241,49 +230,11 @@ export const Graph: React.FC<GraphProps> = ({
     [revertHighlight, mouseover]
   );
 
-  function handleZoomIn() {
-    g?.zoom(0.2);
-  }
-  function handleZoomOut() {
-    g?.zoom(-0.2);
-  }
-  function handmeZoomReset() {
-    g?.center();
-    g?.zoomToFit();
-    g?.zoomTo(g?.zoom() - 0.3);
-  }
+  return <div style={{ width: '100%', minHeight: `100%` }} ref={container} />;
+};
 
-  return (
-    <div className={cls.container}>
-      <div className={classnames(cls.top, toolbarFull && cls.full)}>
-        <div className={cls.toolbar}>
-          <Tooltip title="Zoom In (Cmd +)" placement="bottom">
-            <Button
-              className={cls.toolbarItem}
-              icon={<IconZoomIn />}
-              type="text"
-              onClick={handleZoomIn}
-            />
-          </Tooltip>
-          <Tooltip title="Zoom Reset" placement="bottom">
-            <Button
-              className={cls.toolbarItem}
-              icon={<IconZoomReplace />}
-              type="text"
-              onClick={handmeZoomReset}
-            />
-          </Tooltip>
-          <Tooltip title="Zoom Out (Cmd -)" placement="bottom">
-            <Button
-              className={cls.toolbarItem}
-              icon={<IconZoomOut />}
-              type="text"
-              onClick={handleZoomOut}
-            />
-          </Tooltip>
-        </div>
-      </div>
-      <div style={{ width: '100%', minHeight: `100%` }} ref={container} />
-    </div>
-  );
+export const GraphContainer: React.FC<{
+  children: React.ReactElement | React.ReactElement[];
+}> = ({ children }) => {
+  return <div className={cls.container}>{children}</div>;
 };

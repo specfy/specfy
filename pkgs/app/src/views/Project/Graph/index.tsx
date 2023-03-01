@@ -5,7 +5,8 @@ import { useState } from 'react';
 import { useMount } from 'react-use';
 
 import { Card } from '../../../components/Card';
-import { Graph } from '../../../components/Graph';
+import { Graph, GraphContainer } from '../../../components/Graph';
+import { Toolbar } from '../../../components/Graph/Toolbar';
 import { useEdit } from '../../../hooks/useEdit';
 import type { RouteProject } from '../../../types/routes';
 
@@ -61,18 +62,27 @@ export const ProjectGraph: React.FC<{
     <div>
       <Card>
         <GraphEdit comps={components} proj={proj} changedIds={changedIds} />
-        <div
-          style={{
-            width: 'calc(100vw - 24px * 2)',
-            height: 'calc(100vh - 200px)',
-          }}
-        >
-          <Graph
-            components={components}
-            readonly={!isEditing}
-            toolbarFull={true}
-          />
-        </div>
+        <GraphContainer>
+          <div
+            style={{
+              width: 'calc(100vw - 24px * 2)',
+              height: 'calc(100vh - 200px)',
+            }}
+          >
+            <Graph
+              components={components}
+              readonly={!isEditing}
+              toolbarFull={true}
+            />
+          </div>
+          <Toolbar position="top" visible>
+            <Toolbar.Main />
+          </Toolbar>
+          <Toolbar position="bottom" visible>
+            <Toolbar.Zoom />
+            <Toolbar.History />
+          </Toolbar>
+        </GraphContainer>
       </Card>
     </div>
   );

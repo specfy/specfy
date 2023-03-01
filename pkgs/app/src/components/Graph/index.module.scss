@@ -7,14 +7,14 @@
   font-weight: 300;
 
   &:hover {
-    .top {
+    .menu {
       opacity: 1;
     }
   }
 }
 
 // Toolbar
-.top {
+.menu {
   pointer-events: none;
 
   position: absolute;
@@ -23,6 +23,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  gap: $p-l;
 
   width: 100%;
   padding: $p-l $p-l;
@@ -31,10 +32,19 @@
 
   transition: opacity 0.2s ease-in-out;
 
-  &.full {
-    justify-content: center;
+  &.visible {
     opacity: 1;
   }
+
+  &.top {
+    justify-content: center;
+  }
+
+  &.bottom {
+    justify-content: left;
+    bottom: 0;
+  }
+
 }
 
 .toolbar {
@@ -43,9 +53,13 @@
   border-radius: $border-radius;
   box-shadow: $box-shadow2;
 
-  .toolbarItem {
+  :global(.ant-btn) {
     padding: 0 8px;
-    color: $gray-7;
+    color: $gray-600;
+
+    &:disabled {
+      color: $gray-300;
+    }
 
     &:hover {
       color: $primary;

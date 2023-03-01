@@ -6,7 +6,7 @@ import { Card } from '../../../components/Card';
 import { Container } from '../../../components/Container';
 import { ContentDoc } from '../../../components/Content';
 import { EditorMini } from '../../../components/Editor/Mini';
-import { Graph } from '../../../components/Graph';
+import { Graph, GraphContainer } from '../../../components/Graph';
 import { ListActivity } from '../../../components/ListActivity';
 import { ListRFCs } from '../../../components/ListRFCs';
 import { useEdit } from '../../../hooks/useEdit';
@@ -87,7 +87,9 @@ export const ProjectHome: React.FC<{
       </Container.Left>
       <Container.Right>
         <Card>
-          <Graph components={comps} readonly={true} />
+          <GraphContainer>
+            <Graph components={comps} readonly={true} />
+          </GraphContainer>
         </Card>
       </Container.Right>
     </>

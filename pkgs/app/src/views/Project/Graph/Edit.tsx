@@ -3,6 +3,7 @@ import {
   CaretDownOutlined,
   HistoryOutlined,
 } from '@ant-design/icons';
+import { History } from '@antv/x6-plugin-history';
 import { Transform } from '@antv/x6-plugin-transform';
 import { Badge, Button, Tooltip } from 'antd';
 import type { ApiComponent, ApiProject } from 'api/src/types/api';
@@ -22,6 +23,9 @@ import cls from './edit.module.scss';
  * TODO: group/ungroup
  * TODO: undo/redo
  * TODO: select tool
+ * TODO: vertices
+ * TODO: clear listComponents after merge
+ * TODO: load edited in other pages
  */
 export const GraphEdit: React.FC<{
   proj: ApiProject;
@@ -58,10 +62,27 @@ export const GraphEdit: React.FC<{
       return;
     }
 
+    // ---- PLUGIN
     graph.use(
       new Transform({
-        resizing: true,
+        resizing: {
+          enabled: true,
+          minHeight: 30,
+          minWidth: 60,
+        },
         rotating: false,
+      })
+    );
+    graph.use(
+      new History({
+        enabled: true,
+        beforeAddCommand: (args, event) => {
+          // not sure why sometimes args is correct and sometimes it's event
+          const type = (event || args) as any;
+          if (type.key === 'attrs' || type.key === 'tools') {
+            return false;
+          }
+        },
       })
     );
 
@@ -98,7 +119,7 @@ export const GraphEdit: React.FC<{
 
       setInfo({
         zIndex: e.cell.zIndex || 1,
-        pos: { ...e.node.position(), ...e.current },
+        pos: { ...e.node.position(), ...e.current! },
       });
     });
     graph.on('node:change:position', (e) => {
@@ -108,12 +129,16 @@ export const GraphEdit: React.FC<{
 
       setInfo({
         zIndex: e.cell.zIndex || 1,
-        pos: { ...e.node.size(), ...e.current },
+        pos: { ...e.node.size(), ...e.current! },
       });
     });
 
     graph.on('node:mousedown', (e) => {
       const found = comps.find((comp) => comp.id === e.cell.id);
+      if (!found) {
+        return;
+      }
+
       setSelected(found);
       localSelected = found;
       setInfo({
@@ -122,13 +147,6 @@ export const GraphEdit: React.FC<{
       });
     });
 
-    graph.on('node:dblclick', ({ node }) => {
-      node.setTools([
-        {
-          name: 'node-editor',
-        },
-      ]);
-    });
     graph.on('edge:mouseenter', ({ cell }) => {
       cell.setTools([
         {
@@ -252,7 +270,7 @@ export const GraphEdit: React.FC<{
         </div>
       )}
 
-      {isEditing && (
+      {isEditing && changed.length > 0 && (
         <div className={cls.block}>
           <div
             className={classnames(cls.title, cls.toggle)}
