@@ -50,7 +50,7 @@ export interface EditContextInterface {
   isEnabled: () => boolean;
   lastUpdate: Date | null;
   changes: TmpBlob[];
-  hasChange: (type: ApiBlob['type'], typeId: string, key: string) => boolean;
+  hasChange: (type: ApiBlob['type'], typeId: string) => boolean;
   setChanges: (bag: TmpBlob[], time: Date) => void;
   getNumberOfChanges: () => number;
   enable: (val: boolean) => void;
@@ -59,11 +59,6 @@ export interface EditContextInterface {
     typeId: string,
     key: TField
   ) => void;
-  // get: (
-  //   type: ApiBlob['type'],
-  //   typeId: string,
-  //   previous: DBBlobComponent | DBBlobDocument | DBBlobProject
-  // ) => EditContextSub;
   get: GetMethod;
 }
 
@@ -84,7 +79,7 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
 
   const memoized = useMemo<EditContextInterface>(() => {
-    return {
+    const tmp: EditContextInterface = {
       isEnabled: () => enabled,
       lastUpdate,
       changes: store,
@@ -99,10 +94,10 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
       enable: (val) => {
         setEnabled(val);
       },
-      hasChange(type, typeId, key) {
+      hasChange(type, typeId) {
         const has = store.find((c) => c.type === type && c.typeId === typeId);
 
-        return Boolean(has && key in has.blob);
+        return Boolean(has && Object.keys(has.blob).length > 0);
       },
       setChanges: (bag, time) => {
         store.splice(0, store.length);
@@ -129,7 +124,6 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
           changes: has!.blob as any,
           set: (key, value) => {
             if (!isDiff(previous[key], value)) {
-              console.log('on skip?', value, previous[key]);
               delete has!.blob[key];
             } else {
               has!.blob[key] = value;
@@ -143,6 +137,7 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
         };
       },
     };
+    return tmp;
   }, [enabled, lastUpdate]);
 
   return (

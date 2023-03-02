@@ -34,8 +34,6 @@ export const ProjectGraph: React.FC<{
         continue;
       }
 
-      console.log('on a une modif', modified);
-
       tmp.push({
         ...comp,
         ...modified.blob,

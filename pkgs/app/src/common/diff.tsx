@@ -42,7 +42,7 @@ export function diffTwoBlob(
   const clean: TmpBlob = {
     type,
     typeId,
-    previous: previous || ({} as any),
+    previous: (previous || {}) as any,
     blob: {} as any,
   };
   const computed: ComputedForDiff[] = [];
@@ -73,12 +73,10 @@ export function diffTwoBlob(
         ),
       };
       computed.push(tmp);
-    } else if (Array.isArray(value)) {
-      // TODO: Handle arrays
-      continue;
-    } else if (value != null && typeof value == 'object') {
-      console.log('coucou', key, value);
-
+    } else if (
+      (value != null && typeof value == 'object') ||
+      Array.isArray(value)
+    ) {
       const tmp: ComputedForDiff = {
         type,
         typeId,

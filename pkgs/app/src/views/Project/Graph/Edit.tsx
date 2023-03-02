@@ -22,14 +22,13 @@ import cls from './edit.module.scss';
 
 /**
  * TODO: hamburger menu
- * TODO: revert does work correctly when switching back to graph
  * TODO: revert should revert all sub node?
  * TODO: group/ungroup
- * TODO: undo/redo
- * TODO: vertices
  * TODO: clear listComponents after merge
  * TODO: load edited in other pages
  * TODO: disable highlight when transforming / moving
+ *
+ * TODO: https://github.com/antvis/X6/issues/3327
  */
 export const GraphEdit: React.FC<{
   proj: ApiProject;
@@ -246,7 +245,7 @@ export const GraphEdit: React.FC<{
           continue;
         }
 
-        if (!edit.hasChange('component', comp.id, 'display')) {
+        if (!edit.hasChange('component', comp.id)) {
           continue;
         }
 
@@ -258,6 +257,7 @@ export const GraphEdit: React.FC<{
     500,
     [edit.lastUpdate]
   );
+
   // Size change
   const handleSize = (type: 'height' | 'width', value: string) => {
     if (!selected || !info) {
@@ -286,17 +286,35 @@ export const GraphEdit: React.FC<{
   };
 
   const handleRevert = (id: string) => {
+    const graph = g.getRef();
+    if (!graph) {
+      return;
+    }
+
     const find = edit.changes.find<TmpBlobComponent>(
       (comp): comp is TmpBlobComponent => comp.typeId === id
     );
-    const cell = g.getRef()?.getCellById(id);
+    const cell = graph.getCellById(id);
     if (!find || !cell) {
       return;
     }
 
     if (cell.isNode()) {
-      cell.setSize({ ...find.previous.display.pos });
-      cell.setPosition({ ...find.previous.display.pos });
+      graph.batchUpdate(() => {
+        cell.setSize({ ...find.previous.display.pos });
+        cell.setPosition({ ...find.previous.display.pos });
+        const outgoing = graph.getOutgoingEdges(cell);
+
+        if (!outgoing) {
+          return;
+        }
+        outgoing.forEach((edge) => {
+          const old = find.previous.edges.find(
+            (prev) => prev.to === edge.getTargetCellId()
+          );
+          edge.setVertices(old!.vertices);
+        });
+      });
       setChanged(changed.filter((comp) => comp.id !== id));
     }
   };
