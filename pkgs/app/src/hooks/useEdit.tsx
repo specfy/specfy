@@ -16,6 +16,9 @@ export interface EditContextSub<
   TBlob extends
     | DBBlobComponent['blob']
     | DBBlobDocument['blob']
+    | DBBlobProject['blob'] =
+    | DBBlobComponent['blob']
+    | DBBlobDocument['blob']
     | DBBlobProject['blob']
 > {
   changes: Partial<TBlob>;
@@ -43,6 +46,9 @@ export interface GetMethod {
   >;
   (type: 'component', typeId: string, previous: ApiComponent): EditContextSub<
     DBBlobComponent['blob']
+  >;
+  (type: 'document', typeId: string, previous: ApiDocument): EditContextSub<
+    DBBlobDocument['blob']
   >;
 }
 

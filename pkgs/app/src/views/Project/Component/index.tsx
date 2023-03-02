@@ -59,7 +59,7 @@ export const ComponentView: React.FC<{
   const edit = useEdit();
   const curr = useMemo(() => {
     if (!comp) return null;
-    return edit.get<ApiComponent>('component', comp.id, comp);
+    return edit.get('component', comp.id, comp);
   }, [comp]);
   const desc = useMemo(() => {
     if (!comp) return undefined;

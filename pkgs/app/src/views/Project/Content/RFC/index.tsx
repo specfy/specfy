@@ -34,8 +34,10 @@ export const RFC: React.FC<{
   // Edition
   const edit = useEdit();
   const curr = useMemo(() => {
-    if (!item) return null;
-    return edit.get<ApiDocument>('document', item.id, item);
+    if (!item) {
+      return null;
+    }
+    return edit.get('document', item.id, item);
   }, [edit.isEnabled, item]);
   const content = useMemo(() => {
     return curr?.changes.content || item?.content;

@@ -27,7 +27,7 @@ export const ProjectHome: React.FC<{
   const edit = useEdit();
 
   const curr = useMemo(() => {
-    return edit.get<ApiProject>('project', proj.id, proj);
+    return edit.get('project', proj.id, proj);
   }, [edit.isEnabled]);
   const desc = useMemo(() => {
     return curr?.changes?.description || proj.description;
@@ -80,10 +80,7 @@ export const ProjectHome: React.FC<{
           <ListRFCs project={proj}></ListRFCs>
         </Card>
         <Card>
-          <ListActivity
-            orgId={params.org_id}
-            projectSlug={params.project_slug}
-          />
+          <ListActivity orgId={params.org_id} />
         </Card>
       </Container.Left>
       <Container.Right>

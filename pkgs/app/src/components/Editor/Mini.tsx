@@ -21,9 +21,9 @@ import { BubbleMenu } from './BubbleMenu';
 import { removeEmptyContent } from './helpers';
 import cls from './mini.module.scss';
 
-interface Prop<T extends Record<string, any>> {
-  curr: EditContextSub<T>;
-  field: string;
+interface Prop<T extends EditContextSub = EditContextSub> {
+  curr: T;
+  field: any;
   originalContent: BlockLevelZero;
 }
 
@@ -102,17 +102,20 @@ const ToolbarMini: React.FC<{
   );
 };
 
-export const EditorMini: <T extends Record<string, any>>(
-  p: Prop<T>
-) => React.ReactElement<Prop<T>> = ({ curr, field, originalContent }) => {
+export const EditorMini: (p: Prop) => React.ReactElement<Prop> = ({
+  curr,
+  field,
+  originalContent,
+}) => {
   const [content, setContent] = useState<BlockLevelZero>(() => {
+    // @ts-expect-error
     return curr?.changes[field] || originalContent;
   });
 
   const [isUpdated, setIsUpdated] = useState(false);
 
   const handleRevert = () => {
-    curr?.remove(field);
+    curr?.revert(field);
     setContent({ ...originalContent });
     setIsUpdated(false);
   };

@@ -16,7 +16,7 @@ export const ProjectGraph: React.FC<{
   proj: ApiProject;
   comps: ApiComponent[];
   params: RouteProject;
-}> = ({ proj, comps, params }) => {
+}> = ({ proj, comps }) => {
   const edit = useEdit();
   const isEditing = edit.isEnabled();
   const [components, setComponents] = useState(() => comps);

@@ -166,8 +166,7 @@ export const Update: React.FC<{ evt: DBEvent; orgId: string }> = ({
 
 export const ListActivity: React.FC<{
   orgId: string;
-  projectSlug?: string;
-}> = ({ projectSlug, orgId }) => {
+}> = ({ orgId }) => {
   const [initLoading, setInitLoading] = useState(true);
   const [list, setList] = useState<DBEvent[]>([]);
 

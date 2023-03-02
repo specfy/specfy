@@ -10,7 +10,7 @@ export const ProjectActivity: React.FC<{
 }> = ({ params }) => {
   return (
     <Card>
-      <ListActivity orgId={params.org_id} projectSlug={params.project_slug} />
+      <ListActivity orgId={params.org_id} />
     </Card>
   );
 };

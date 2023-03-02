@@ -21,7 +21,7 @@ export const SettingsGeneral: React.FC<{
 
   // Edit
   const [name, setName] = useState(() => proj.name);
-  const onName = (e) => {
+  const onName: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setName(e.target.value);
   };
 
@@ -47,7 +47,7 @@ export const SettingsGeneral: React.FC<{
         <div>
           <Typography.Title level={2}>General Settings</Typography.Title>
           <Typography.Text type="secondary">
-            Manage your project general's settings
+            Manage your project general&apos;s settings
           </Typography.Text>
         </div>
       </div>
