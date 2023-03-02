@@ -3,7 +3,7 @@
 // ---- Grid zone
 .header {
   display: grid;
-  grid-template-columns: 300px 1fr 250px;
+  grid-template-columns: 300px 1fr;
   align-content: normal;
 
   padding: $p-xl $p-2xl $p $p-2xl;

@@ -1,32 +1,56 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import type { ApiBlob } from 'api/src/types/api';
+import type {
+  ApiBlob,
+  ApiComponent,
+  ApiDocument,
+  ApiProject,
+} from 'api/src/types/api';
+import type {
+  DBBlobComponent,
+  DBBlobDocument,
+  DBBlobProject,
+} from 'api/src/types/db/blobs';
 import { useMemo, useState, createContext, useContext } from 'react';
 
-export interface EditContextSub<T extends Record<string, any>> {
-  changes: Partial<T>;
-  set: <TField extends keyof TmpBlob['blob']>(
-    key: TField,
-    value: T[TField]
-  ) => void;
-  revert: <TField extends keyof TmpBlob['blob']>(key: TField) => void;
+export interface EditContextSub<
+  TBlob extends
+    | DBBlobComponent['blob']
+    | DBBlobDocument['blob']
+    | DBBlobProject['blob']
+> {
+  changes: Partial<TBlob>;
+  set: <TKey extends keyof TBlob>(key: TKey, value: TBlob[TKey]) => void;
+  revert: <TKey extends keyof TmpBlob['blob']>(key: TKey) => void;
 }
 
-export type TmpBlob<T extends Record<string, any> = Record<string, any>> = Pick<
-  ApiBlob,
-  'blob' | 'type' | 'typeId'
-> & {
-  previous: T;
+export type TmpBlob = TmpBlobComponent | TmpBlobDocument | TmpBlobProject;
+export type TmpBlobComponent = DBBlobComponent & {
+  typeId: string;
+  previous: ApiComponent;
 };
+export type TmpBlobDocument = DBBlobDocument & {
+  typeId: string;
+  previous: ApiDocument;
+};
+export type TmpBlobProject = DBBlobProject & {
+  typeId: string;
+  previous: ApiProject;
+};
+
+export interface GetMethod {
+  (type: 'project', typeId: string, previous: ApiProject): EditContextSub<
+    DBBlobProject['blob']
+  >;
+  (type: 'component', typeId: string, previous: ApiComponent): EditContextSub<
+    DBBlobComponent['blob']
+  >;
+}
 
 export interface EditContextInterface {
   isEnabled: () => boolean;
   lastUpdate: Date | null;
   changes: TmpBlob[];
-  hasChange: <TField extends keyof TmpBlob['blob']>(
-    type: ApiBlob['type'],
-    typeId: string,
-    key: TField
-  ) => boolean;
+  hasChange: (type: ApiBlob['type'], typeId: string, key: string) => boolean;
   setChanges: (bag: TmpBlob[], time: Date) => void;
   getNumberOfChanges: () => number;
   enable: (val: boolean) => void;
@@ -35,11 +59,12 @@ export interface EditContextInterface {
     typeId: string,
     key: TField
   ) => void;
-  get: <T extends Record<string, any>>(
-    type: ApiBlob['type'],
-    typeId: string,
-    previous: T
-  ) => EditContextSub<T>;
+  // get: (
+  //   type: ApiBlob['type'],
+  //   typeId: string,
+  //   previous: DBBlobComponent | DBBlobDocument | DBBlobProject
+  // ) => EditContextSub;
+  get: GetMethod;
 }
 
 const EditContext = createContext<EditContextInterface>(
@@ -52,31 +77,14 @@ export function isDiff(a: any, b: any): boolean {
 
 export const store: EditContextInterface['changes'] = [];
 
-export function getOrCreate<T extends Record<string, any>>(
-  type: ApiBlob['type'],
-  typeId: string,
-  previous: T
-): TmpBlob<T> {
-  let has = store.find<TmpBlob<T>>(
-    (c): c is TmpBlob<T> => c.type === type && c.typeId === typeId
-  );
-  if (!has) {
-    has = { type, typeId, previous, blob: {} as any };
-    store.push(has);
-  }
-
-  return has;
-}
-
 export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [enabled, setEnabled] = useState<boolean>(false);
-  // const [changes, setChanges] = useState<EditContextInterface['changes']>([]);
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
 
-  const memoized = useMemo<EditContextInterface>(
-    () => ({
+  const memoized = useMemo<EditContextInterface>(() => {
+    return {
       isEnabled: () => enabled,
       lastUpdate,
       changes: store,
@@ -110,12 +118,18 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
         setLastUpdate(new Date());
       },
       get(type, typeId, previous) {
-        const has = getOrCreate(type, typeId, previous);
+        let has = store.find((c) => c.type === type && c.typeId === typeId);
+        if (!has) {
+          // eslint-disable-next-line @typescript-eslint/consistent-type-assertions
+          has = { type, typeId, previous, blob: {} } as TmpBlob;
+          store.push(has!);
+        }
 
         return {
-          changes: has.blob as any,
+          changes: has!.blob as any,
           set: (key, value) => {
             if (!isDiff(previous[key], value)) {
+              console.log('on skip?', value, previous[key]);
               delete has!.blob[key];
             } else {
               has!.blob[key] = value;
@@ -128,9 +142,8 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
           },
         };
       },
-    }),
-    [enabled, lastUpdate]
-  );
+    };
+  }, [enabled, lastUpdate]);
 
   return (
     <EditContext.Provider value={memoized}>{children}</EditContext.Provider>

@@ -37,12 +37,12 @@ export function proposeTitle(computed: ComputedForDiff[]): string {
 
 export function diffTwoBlob(
   { type, typeId, blob }: Pick<TmpBlob, 'blob' | 'type' | 'typeId'>,
-  previous: Record<string, any> | null
+  previous: Record<string, any>
 ) {
   const clean: TmpBlob = {
     type,
     typeId,
-    previous: previous || {},
+    previous: previous || ({} as any),
     blob: {} as any,
   };
   const computed: ComputedForDiff[] = [];
@@ -77,6 +77,8 @@ export function diffTwoBlob(
       // TODO: Handle arrays
       continue;
     } else if (value != null && typeof value == 'object') {
+      console.log('coucou', key, value);
+
       const tmp: ComputedForDiff = {
         type,
         typeId,

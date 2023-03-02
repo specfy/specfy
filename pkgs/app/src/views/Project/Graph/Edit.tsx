@@ -9,10 +9,12 @@ import { Selection } from '@antv/x6-plugin-selection';
 import { Transform } from '@antv/x6-plugin-transform';
 import { Badge, Button, Tooltip } from 'antd';
 import type { ApiComponent, ApiProject } from 'api/src/types/api';
+import type { DBComponent } from 'api/src/types/db/components';
 import classnames from 'classnames';
 import { useCallback, useEffect, useState } from 'react';
 import { useDebounce } from 'react-use';
 
+import type { TmpBlobComponent } from '../../../hooks/useEdit';
 import { useEdit } from '../../../hooks/useEdit';
 import { useGraph } from '../../../hooks/useGraph';
 
@@ -27,7 +29,6 @@ import cls from './edit.module.scss';
  * TODO: vertices
  * TODO: clear listComponents after merge
  * TODO: load edited in other pages
- * TODO: undo a change should recomputed changed
  * TODO: disable highlight when transforming / moving
  */
 export const GraphEdit: React.FC<{
@@ -47,9 +48,14 @@ export const GraphEdit: React.FC<{
   const [hide, setHide] = useState<boolean>(true);
 
   // This function is outside because it requires "edit" ref
-  const updateNode = useCallback(
+  const updateEdge = useCallback(
     (e: Cell.EventArgs['change:*']) => {
-      let id = e.cell.id;
+      if (!e.cell.isEdge()) {
+        return;
+      }
+
+      const id = e.cell.getSourceCellId()!;
+      const targetId = e.cell.getTargetCellId()!;
 
       // Find related component
       const comp = comps.find((c) => c.id === id);
@@ -57,21 +63,40 @@ export const GraphEdit: React.FC<{
         return;
       }
 
-      // Updates edges
-      if (e.key === 'vertices' && e.cell.isEdge()) {
-        id = e.cell.getSourceCellId()!;
+      const has = edit.get('component', id, comp);
+      const edges: DBComponent['edges'] = has.changes.edges
+        ? has.changes.edges
+        : JSON.parse(JSON.stringify(comp.edges));
+      const edge = edges.find((ed) => ed.to === targetId);
+      if (!edge) {
         return;
       }
 
-      if (e.cell.isNode()) {
-        const has = edit.get('component', id, comp);
-        // @ts-expect-error FIX THIS
-        has.set('display', {
-          ...comp.display,
-          pos: { ...e.cell.position(), ...e.cell.size() },
-        });
+      edge.vertices = e.current;
+      has.set('edges', edges);
+      return;
+    },
+    [edit]
+  );
+  const updateNode = useCallback(
+    (e: Cell.EventArgs['change:*']) => {
+      if (!e.cell.isNode()) {
         return;
       }
+
+      const id = e.cell.id;
+      // Find related component
+      const comp = comps.find((c) => c.id === id);
+      if (!comp) {
+        return;
+      }
+
+      const has = edit.get('component', id, comp);
+      has.set('display', {
+        ...comp.display,
+        pos: { ...e.cell.position(), ...e.cell.size() },
+      });
+      return;
     },
     [edit]
   );
@@ -141,7 +166,11 @@ export const GraphEdit: React.FC<{
         return;
       }
 
-      updateNode(e);
+      if (e.key === 'vertices') {
+        updateEdge(e);
+      } else {
+        updateNode(e);
+      }
     });
 
     graph.on('node:change:size', (e) => {
@@ -257,7 +286,9 @@ export const GraphEdit: React.FC<{
   };
 
   const handleRevert = (id: string) => {
-    const find = edit.changes.find((comp) => comp.typeId === id);
+    const find = edit.changes.find<TmpBlobComponent>(
+      (comp): comp is TmpBlobComponent => comp.typeId === id
+    );
     const cell = g.getRef()?.getCellById(id);
     if (!find || !cell) {
       return;

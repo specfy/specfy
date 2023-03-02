@@ -1,5 +1,4 @@
 import { LoadingOutlined } from '@ant-design/icons';
-import { IconLoader } from '@tabler/icons-react';
 import type { ApiProject, ApiComponent } from 'api/src/types/api';
 import { useState } from 'react';
 import { useMount } from 'react-use';
@@ -7,6 +6,7 @@ import { useMount } from 'react-use';
 import { Card } from '../../../components/Card';
 import { Graph, GraphContainer } from '../../../components/Graph';
 import { Toolbar } from '../../../components/Graph/Toolbar';
+import type { TmpBlobComponent } from '../../../hooks/useEdit';
 import { useEdit } from '../../../hooks/useEdit';
 import type { RouteProject } from '../../../types/routes';
 
@@ -25,23 +25,27 @@ export const ProjectGraph: React.FC<{
   useMount(() => {
     const tmp: ApiComponent[] = [];
     for (const comp of components) {
-      const modified = edit.changes.find(
-        (c) => c.typeId === comp.id && c.type === 'component'
+      const modified = edit.changes.find<TmpBlobComponent>(
+        (c): c is TmpBlobComponent =>
+          c.typeId === comp.id && c.type === 'component'
       );
-      if (!modified || !('display' in modified.blob)) {
+      if (!modified || Object.keys(modified.blob).length <= 0) {
         tmp.push(comp);
         continue;
       }
 
+      console.log('on a une modif', modified);
+
       tmp.push({
         ...comp,
-        ...(modified.blob as ApiComponent),
+        ...modified.blob,
         display: {
           ...comp.display,
           pos: {
-            ...(modified.blob as ApiComponent).display.pos,
+            ...(modified.blob.display || comp.display).pos,
           },
         },
+        edges: modified.blob.edges || comp.edges,
       });
     }
 

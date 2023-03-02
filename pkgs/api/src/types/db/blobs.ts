@@ -2,7 +2,7 @@ import type { DBComponent } from './components';
 import type { DBDocument } from './documents';
 import type { DBProject } from './projects';
 
-export type DBBlobContent = DBComponent | DBDocument | DBProject;
+export type DBBlobAll = DBComponent | DBDocument | DBProject;
 export type DBBlobBase = {
   id: string;
 
