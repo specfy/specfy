@@ -57,7 +57,7 @@ export const Project: React.FC = () => {
     () => {
       setUpdateCount(edit.getNumberOfChanges());
     },
-    500,
+    250,
     [edit.lastUpdate]
   );
 

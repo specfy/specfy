@@ -11,14 +11,22 @@ export interface EditContextSub<T extends Record<string, any>> {
   revert: <TField extends keyof TmpBlob['blob']>(key: TField) => void;
 }
 
-export type TmpBlob = Pick<ApiBlob, 'blob' | 'type' | 'typeId'> & {
-  previous: Record<string, any>;
+export type TmpBlob<T extends Record<string, any> = Record<string, any>> = Pick<
+  ApiBlob,
+  'blob' | 'type' | 'typeId'
+> & {
+  previous: T;
 };
 
 export interface EditContextInterface {
   isEnabled: () => boolean;
   lastUpdate: Date | null;
   changes: TmpBlob[];
+  hasChange: <TField extends keyof TmpBlob['blob']>(
+    type: ApiBlob['type'],
+    typeId: string,
+    key: TField
+  ) => boolean;
   setChanges: (bag: TmpBlob[], time: Date) => void;
   getNumberOfChanges: () => number;
   enable: (val: boolean) => void;
@@ -34,42 +42,48 @@ export interface EditContextInterface {
   ) => EditContextSub<T>;
 }
 
-const EditContext = createContext<EditContextInterface>({
-  isEnabled: () => false,
-  lastUpdate: null,
-  changes: [],
-  setChanges: () => {},
-  getNumberOfChanges: () => 0,
-  enable() {},
-  revert() {},
-  get() {
-    return { changes: {}, set() {}, revert() {} };
-  },
-});
+const EditContext = createContext<EditContextInterface>(
+  {} as EditContextInterface
+);
 
 export function isDiff(a: any, b: any): boolean {
   return JSON.stringify(a) !== JSON.stringify(b);
+}
+
+export const store: EditContextInterface['changes'] = [];
+
+export function getOrCreate<T extends Record<string, any>>(
+  type: ApiBlob['type'],
+  typeId: string,
+  previous: T
+): TmpBlob<T> {
+  let has = store.find<TmpBlob<T>>(
+    (c): c is TmpBlob<T> => c.type === type && c.typeId === typeId
+  );
+  if (!has) {
+    has = { type, typeId, previous, blob: {} as any };
+    store.push(has);
+  }
+
+  return has;
 }
 
 export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [enabled, setEnabled] = useState<boolean>(false);
-  const [changes, setChanges] = useState<EditContextInterface['changes']>([]);
+  // const [changes, setChanges] = useState<EditContextInterface['changes']>([]);
   const [lastUpdate, setLastUpdate] = useState<Date | null>(null);
 
   const memoized = useMemo<EditContextInterface>(
     () => ({
       isEnabled: () => enabled,
       lastUpdate,
-      // Changes is not reactive when using get();
-      changes,
+      changes: store,
       getNumberOfChanges: () => {
         let count = 0;
-        for (const change of changes) {
-          for (const [key, val] of Object.entries(change.blob)) {
-            count += isDiff(change.previous[key], val) ? 1 : 0;
-          }
+        for (const change of store) {
+          count += Object.keys(change.blob).length;
         }
 
         return count;
@@ -77,31 +91,35 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
       enable: (val) => {
         setEnabled(val);
       },
+      hasChange(type, typeId, key) {
+        const has = store.find((c) => c.type === type && c.typeId === typeId);
+
+        return Boolean(has && key in has.blob);
+      },
       setChanges: (bag, time) => {
-        setChanges(bag);
+        store.splice(0, store.length);
+        store.push(...bag);
         setLastUpdate(time);
       },
       revert(type, typeId, key) {
-        setChanges(
-          changes.map((change) => {
-            if (change.type !== type || change.typeId !== typeId) return change;
-            delete change.blob[key];
-            return change;
-          })
-        );
+        store.forEach((change) => {
+          if (change.type !== type || change.typeId !== typeId) return change;
+          delete change.blob[key];
+          return change;
+        });
         setLastUpdate(new Date());
       },
       get(type, typeId, previous) {
-        let has = changes.find((c) => c.type === type && c.typeId === typeId);
-        if (!has) {
-          has = { type, typeId, previous, blob: {} as any };
-          setChanges((c) => [...c, has!]);
-        }
+        const has = getOrCreate(type, typeId, previous);
 
         return {
           changes: has.blob as any,
           set: (key, value) => {
-            has!.blob[key] = value;
+            if (!isDiff(previous[key], value)) {
+              delete has!.blob[key];
+            } else {
+              has!.blob[key] = value;
+            }
             setLastUpdate(new Date());
           },
           revert: (key) => {
@@ -111,7 +129,7 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
         };
       },
     }),
-    [changes, enabled, lastUpdate]
+    [enabled, lastUpdate]
   );
 
   return (

@@ -5,7 +5,7 @@ import type {
   BlockLevelZero,
   ReqPostRevision,
 } from 'api/src/types/api';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { createRevision } from '../../../../api/revisions';
@@ -30,9 +30,7 @@ export const ProjectRevisionCreate: React.FC<{
 
   // Edition
   const edit = useEdit();
-  const changes = useMemo(() => {
-    return edit.changes;
-  }, [edit.changes]);
+  const changes = edit.changes;
 
   // Local
   const [lastComputed, setLastComputed] = useState<number>();
@@ -74,7 +72,7 @@ export const ProjectRevisionCreate: React.FC<{
       edit.setChanges(cleaned, now);
     }, 1);
     setTitle(proposeTitle(tmps));
-  }, [changes]);
+  }, [changes, edit.lastUpdate]);
 
   // Can submit form?
   useEffect(() => {

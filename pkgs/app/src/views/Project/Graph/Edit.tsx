@@ -3,13 +3,14 @@ import {
   CaretDownOutlined,
   HistoryOutlined,
 } from '@ant-design/icons';
+import type { Cell } from '@antv/x6';
 import { History } from '@antv/x6-plugin-history';
 import { Selection } from '@antv/x6-plugin-selection';
 import { Transform } from '@antv/x6-plugin-transform';
 import { Badge, Button, Tooltip } from 'antd';
 import type { ApiComponent, ApiProject } from 'api/src/types/api';
 import classnames from 'classnames';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useDebounce } from 'react-use';
 
 import { useEdit } from '../../../hooks/useEdit';
@@ -23,7 +24,6 @@ import cls from './edit.module.scss';
  * TODO: revert should revert all sub node?
  * TODO: group/ungroup
  * TODO: undo/redo
- * TODO: select tool
  * TODO: vertices
  * TODO: clear listComponents after merge
  * TODO: load edited in other pages
@@ -33,8 +33,7 @@ import cls from './edit.module.scss';
 export const GraphEdit: React.FC<{
   proj: ApiProject;
   comps: ApiComponent[];
-  changedIds: string[];
-}> = ({ comps, changedIds }) => {
+}> = ({ comps }) => {
   const g = useGraph();
 
   // Edit mode
@@ -44,8 +43,38 @@ export const GraphEdit: React.FC<{
   // UI
   const [selected, setSelected] = useState<ApiComponent>();
   const [info, setInfo] = useState<ApiComponent['display']>();
-  const [changed, setChanged] = useState<string[]>(() => changedIds);
+  const [changed, setChanged] = useState<ApiComponent[]>([]);
   const [hide, setHide] = useState<boolean>(true);
+
+  // This function is outside because it requires "edit" ref
+  const updateNode = useCallback(
+    (e: Cell.EventArgs['change:*']) => {
+      let id = e.cell.id;
+
+      // Find related component
+      const comp = comps.find((c) => c.id === id);
+      if (!comp) {
+        return;
+      }
+
+      // Updates edges
+      if (e.key === 'vertices' && e.cell.isEdge()) {
+        id = e.cell.getSourceCellId()!;
+        return;
+      }
+
+      if (e.cell.isNode()) {
+        const has = edit.get('component', id, comp);
+        // @ts-expect-error FIX THIS
+        has.set('display', {
+          ...comp.display,
+          pos: { ...e.cell.position(), ...e.cell.size() },
+        });
+        return;
+      }
+    },
+    [edit]
+  );
 
   useEffect(() => {
     if (!g) {
@@ -112,17 +141,7 @@ export const GraphEdit: React.FC<{
         return;
       }
 
-      let id = e.cell.id;
-      if (e.key === 'vertices' && e.cell.isEdge()) {
-        id = e.cell.getSourceCellId()!;
-      }
-
-      setChanged((old) => {
-        if (old.includes(id)) {
-          return old;
-        }
-        return [...old, id];
-      });
+      updateNode(e);
     });
 
     graph.on('node:change:size', (e) => {
@@ -135,6 +154,7 @@ export const GraphEdit: React.FC<{
         pos: { ...e.node.position(), ...e.current! },
       });
     });
+
     graph.on('node:change:position', (e) => {
       if (!localSelected || localSelected.id !== e.cell.id) {
         return;
@@ -190,24 +210,24 @@ export const GraphEdit: React.FC<{
         return;
       }
 
+      const tmp: ApiComponent[] = [];
       for (const cell of Object.values(json.cells)) {
-        if (!changed.includes(cell.id!)) {
-          continue;
-        }
         const comp = comps.find((c) => c.id === cell.id);
         if (!comp) {
           continue;
         }
 
-        const ec = edit.get('component', comp.id, comp);
-        ec.set('display' as any, {
-          ...comp.display,
-          pos: { ...cell.position, ...cell.size },
-        });
+        if (!edit.hasChange('component', comp.id, 'display')) {
+          continue;
+        }
+
+        tmp.push(comp);
       }
+
+      setChanged(tmp);
     },
     500,
-    [changed]
+    [edit.lastUpdate]
   );
   // Size change
   const handleSize = (type: 'height' | 'width', value: string) => {
@@ -228,12 +248,14 @@ export const GraphEdit: React.FC<{
     if (cell.isNode()) {
       cell.setSize({ height: replace.pos.height, width: replace.pos.width });
     }
+
     setInfo(replace);
   };
 
   const handleHideShow = () => {
     setHide(!hide);
   };
+
   const handleRevert = (id: string) => {
     const find = edit.changes.find((comp) => comp.typeId === id);
     const cell = g.getRef()?.getCellById(id);
@@ -244,7 +266,7 @@ export const GraphEdit: React.FC<{
     if (cell.isNode()) {
       cell.setSize({ ...find.previous.display.pos });
       cell.setPosition({ ...find.previous.display.pos });
-      setChanged(changed.filter((changedId) => changedId !== id));
+      setChanged(changed.filter((comp) => comp.id !== id));
     }
   };
 
@@ -297,17 +319,16 @@ export const GraphEdit: React.FC<{
           </div>
           {!hide && (
             <div className={classnames(cls.inside, cls.change)}>
-              {changed.map((id) => {
-                const comp = comps.find((c) => c.id === id);
+              {changed.map((comp) => {
                 return (
-                  <div key={id}>
+                  <div key={comp.id}>
                     {comp!.name}
                     <Tooltip title="Revert">
                       <Button
                         type="text"
                         size="small"
                         icon={<HistoryOutlined />}
-                        onClick={() => handleRevert(id)}
+                        onClick={() => handleRevert(comp.id)}
                       />
                     </Tooltip>
                   </div>

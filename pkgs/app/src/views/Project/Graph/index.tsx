@@ -20,12 +20,10 @@ export const ProjectGraph: React.FC<{
   const edit = useEdit();
   const isEditing = edit.isEnabled();
   const [components, setComponents] = useState(() => comps);
-  const [changedIds, setChangedIds] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useMount(() => {
     const tmp: ApiComponent[] = [];
-    const ids: string[] = [];
     for (const comp of components) {
       const modified = edit.changes.find(
         (c) => c.typeId === comp.id && c.type === 'component'
@@ -34,8 +32,6 @@ export const ProjectGraph: React.FC<{
         tmp.push(comp);
         continue;
       }
-
-      ids.push(comp.id);
 
       tmp.push({
         ...comp,
@@ -50,7 +46,6 @@ export const ProjectGraph: React.FC<{
     }
 
     setComponents(tmp);
-    setChangedIds(ids);
     setLoading(false);
   });
 
@@ -61,7 +56,7 @@ export const ProjectGraph: React.FC<{
   return (
     <div>
       <Card>
-        <GraphEdit comps={components} proj={proj} changedIds={changedIds} />
+        <GraphEdit comps={components} proj={proj} />
         <GraphContainer>
           <div
             style={{
