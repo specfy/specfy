@@ -9,6 +9,7 @@ import {
   Column,
   DataType,
   BeforeCreate,
+  BeforeUpdate,
 } from 'sequelize-typescript';
 import slugify from 'slugify';
 import { v4 as uuidv4 } from 'uuid';
@@ -107,6 +108,13 @@ export class Component extends Model<
     };
     const blob = await RevisionBlob.create(body, { transaction });
     model.blobId = blob.id;
+  }
+
+  @BeforeUpdate
+  static async onBeforeUpdate(model: Component) {
+    if (model.name !== model.previous.name) {
+      model.slug = slugify(model.name, { lower: true, trim: true });
+    }
   }
 
   getJsonForBlob(): DBBlobComponent['blob'] {
