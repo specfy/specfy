@@ -1,12 +1,10 @@
+import { LoadingOutlined } from '@ant-design/icons';
 import {
-  CheckCircleFilled,
-  ExclamationCircleOutlined,
-  LoadingOutlined,
-  PullRequestOutlined,
-} from '@ant-design/icons';
-import {
+  IconCircleCheckFilled,
+  IconExclamationCircle,
   IconEyeCheck,
   IconEyeOff,
+  IconGitPullRequest,
   IconGitPullRequestClosed,
   IconLock,
   IconLockAccessOff,
@@ -421,7 +419,7 @@ export const ProjectRevisionsShow: React.FC<{
               {rev.status === 'approved' && (
                 <div className={classnames(cls.checkLine, cls.success)}>
                   <div className={cls.label}>
-                    <CheckCircleFilled /> Approved by
+                    <IconCircleCheckFilled /> Approved by
                     {checks?.reviews.map((one) => {
                       return <span key={one.id}>{one.user.name}</span>;
                     })}
@@ -431,15 +429,14 @@ export const ProjectRevisionsShow: React.FC<{
               {rev.status === 'waiting' && (
                 <div className={classnames(cls.checkLine, cls.warning)}>
                   <div className={cls.label}>
-                    <ExclamationCircleOutlined /> A review is required to merge
+                    <IconExclamationCircle /> A review is required to merge
                   </div>
                 </div>
               )}
               {!rev.merged && checks.outdatedBlobs.length > 0 && (
                 <div className={classnames(cls.checkLine, cls.danger)}>
                   <div className={cls.label}>
-                    <ExclamationCircleOutlined /> This revision is not up to
-                    date
+                    <IconExclamationCircle /> This revision is not up to date
                   </div>
                   <div className={cls.actions}>
                     <Button
@@ -457,7 +454,7 @@ export const ProjectRevisionsShow: React.FC<{
               >
                 <Button
                   type={rev.merged ? 'ghost' : 'primary'}
-                  icon={<PullRequestOutlined />}
+                  icon={<IconGitPullRequest />}
                   disabled={!checks.canMerge}
                   loading={merging}
                   className={classnames(

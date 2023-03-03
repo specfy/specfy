@@ -1,9 +1,5 @@
-import {
-  CloseCircleOutlined,
-  HistoryOutlined,
-  LoadingOutlined,
-  SearchOutlined,
-} from '@ant-design/icons';
+import { LoadingOutlined } from '@ant-design/icons';
+import { IconCircleX, IconHistory, IconSearch } from '@tabler/icons-react';
 import { Button, Input, Select, Table } from 'antd';
 import type {
   ApiProject,
@@ -75,7 +71,7 @@ export const ProjectRevisionsList: React.FC<{
           <Input.Group compact className={cls.inputs}>
             <Input
               size="large"
-              prefix={<SearchOutlined />}
+              prefix={<IconSearch />}
               onChange={handleInput}
               value={search}
               addonBefore={
@@ -99,7 +95,7 @@ export const ProjectRevisionsList: React.FC<{
                     title="Reset search filters..."
                     type="text"
                     size="small"
-                    icon={<CloseCircleOutlined />}
+                    icon={<IconCircleX />}
                   />
                 )
               }
@@ -121,7 +117,10 @@ export const ProjectRevisionsList: React.FC<{
             <Table.Column
               title={
                 <div className={cls.th}>
-                  <HistoryOutlined /> {list.pagination.totalItems} Revisions
+                  <span>
+                    <IconHistory />
+                  </span>{' '}
+                  {list.pagination.totalItems} Revisions
                 </div>
               }
               dataIndex="name"

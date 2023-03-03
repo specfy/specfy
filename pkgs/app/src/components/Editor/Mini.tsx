@@ -1,4 +1,4 @@
-import { HistoryOutlined } from '@ant-design/icons';
+import { IconHistory } from '@tabler/icons-react';
 import { Bold } from '@tiptap/extension-bold';
 import { CharacterCount } from '@tiptap/extension-character-count';
 import { Code } from '@tiptap/extension-code';
@@ -91,7 +91,7 @@ const ToolbarMini: React.FC<{
       <div className={cls.hover}>
         <Tooltip title="Revert all changes">
           <Button
-            icon={<HistoryOutlined />}
+            icon={<IconHistory />}
             size="small"
             className={classnames(isUpdated && cls.isUpdated)}
             onClick={onRevert}

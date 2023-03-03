@@ -86,7 +86,9 @@
   }
 
   &Item {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: $p-m;
     padding: 8px 16px;
     color: $gray-8;
 

@@ -1,4 +1,4 @@
-import { LockOutlined } from '@ant-design/icons';
+import { IconLock } from '@tabler/icons-react';
 import { Tag } from 'antd';
 
 import cls from './index.module.scss';
@@ -9,22 +9,18 @@ export const StatusTag: React.FC<{
   merged?: boolean;
 }> = ({ status, locked, merged }) => {
   if (merged) {
-    return <Tag className={cls.merged}>{locked && <LockOutlined />}Merged</Tag>;
+    return <Tag className={cls.merged}>{locked && <IconLock />}Merged</Tag>;
   }
 
   if (status === 'approved') {
-    return (
-      <Tag className={cls.approved}>{locked && <LockOutlined />}Approved</Tag>
-    );
+    return <Tag className={cls.approved}>{locked && <IconLock />}Approved</Tag>;
   } else if (status === 'waiting') {
     return (
-      <Tag className={cls.waiting}>
-        {locked && <LockOutlined />}Waiting Review
-      </Tag>
+      <Tag className={cls.waiting}>{locked && <IconLock />}Waiting Review</Tag>
     );
   } else if (status === 'closed') {
-    return <Tag className={cls.closed}>{locked && <LockOutlined />}Closed</Tag>;
+    return <Tag className={cls.closed}>{locked && <IconLock />}Closed</Tag>;
   } else {
-    return <Tag className={cls.draft}>{locked && <LockOutlined />}Draft</Tag>;
+    return <Tag className={cls.draft}>{locked && <IconLock />}Draft</Tag>;
   }
 };

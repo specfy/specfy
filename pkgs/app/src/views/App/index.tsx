@@ -48,7 +48,7 @@ const App: React.FC = () => {
         }}
       >
         <QueryClientProvider client={queryClient}>
-          <ReactQueryDevtools initialIsOpen={false} />
+          {/* <ReactQueryDevtools initialIsOpen={false} /> */}
           <AuthProvider>
             <Routes>
               <Route path="/login" element={<Login />} />

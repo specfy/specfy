@@ -1,4 +1,5 @@
-import { BranchesOutlined, LoadingOutlined } from '@ant-design/icons';
+import { LoadingOutlined } from '@ant-design/icons';
+import { IconGitPullRequestDraft } from '@tabler/icons-react';
 import { App, Button, Form, Input, Typography } from 'antd';
 import type {
   ApiProject,
@@ -159,7 +160,7 @@ export const ProjectRevisionCreate: React.FC<{
                 type="primary"
                 disabled={!canSubmit}
                 htmlType="submit"
-                icon={<BranchesOutlined />}
+                icon={<IconGitPullRequestDraft />}
               >
                 Propose changes
               </Button>

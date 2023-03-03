@@ -1,9 +1,10 @@
 import {
-  CommentOutlined,
-  CheckCircleOutlined,
-  DeleteOutlined,
-  EditOutlined,
-} from '@ant-design/icons';
+  IconCircleCheck,
+  IconCirclePlus,
+  IconEdit,
+  IconMessage,
+  IconTrash,
+} from '@tabler/icons-react';
 import { Skeleton, Timeline } from 'antd';
 import Title from 'antd/es/typography/Title';
 import type { DBEvent } from 'api/src/types/db/events';
@@ -121,17 +122,18 @@ export const Update: React.FC<{ evt: DBEvent; orgId: string }> = ({
   let icon: ReactNode | undefined;
   if (evt.event === 'created') {
     color = 'blue';
+    icon = <IconCirclePlus />;
   } else if (evt.event === 'updated') {
-    icon = <EditOutlined />;
+    icon = <IconEdit />;
   } else if (evt.event === 'deleted') {
     color = 'red';
-    icon = <DeleteOutlined />;
+    icon = <IconTrash />;
   } else if (evt.event === 'commented') {
     color = 'gray';
-    icon = <CommentOutlined />;
+    icon = <IconMessage />;
   } else if (evt.event === 'approved') {
     color = 'green';
-    icon = <CheckCircleOutlined />;
+    icon = <IconCircleCheck />;
   }
 
   let target: ReactNode | undefined;

@@ -86,14 +86,14 @@
     gap: $p-m;
     align-items: center;
 
-    :global(> .anticon) {
+    :global(> .tabler-icon) {
       font-size: $font-l;
       color: $gray-400;
     }
   }
 
   &.success {
-    .label :global(> .anticon) {
+    .label :global(> .tabler-icon) {
       color: $green-600;
     }
   }
@@ -101,7 +101,7 @@
   &.warning {
     color: $orange-600;
 
-    .label :global(> .anticon) {
+    .label :global(> .tabler-icon) {
       color: $orange-600;
     }
   }
@@ -109,7 +109,7 @@
   &.danger {
     color: $red-600;
 
-    .label :global(> .anticon) {
+    .label :global(> .tabler-icon) {
       color: $red-600;
     }
   }

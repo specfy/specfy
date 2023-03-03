@@ -1,4 +1,4 @@
-import { FileOutlined } from '@ant-design/icons';
+import { IconFileText } from '@tabler/icons-react';
 import { Skeleton, Table } from 'antd';
 import Title from 'antd/es/typography/Title';
 import type { ApiDocument, ApiProject } from 'api/src/types/api';
@@ -50,7 +50,10 @@ export const ListRFCs: React.FC<{ project: ApiProject }> = ({ project }) => {
                   relative="path"
                   className={cls.title}
                 >
-                  <FileOutlined /> RFC-{item.typeId} - {item.name}
+                  <span>
+                    <IconFileText />
+                  </span>
+                  RFC-{item.typeId} - {item.name}
                 </Link>
               );
             }}

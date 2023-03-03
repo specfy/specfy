@@ -70,7 +70,10 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       return { reviews };
     });
 
-    const canMerge = checks.reviews.length > 0 && outdatedBlobs.length === 0;
+    const canMerge =
+      rev.status === 'approved' &&
+      checks.reviews.length > 0 &&
+      outdatedBlobs.length === 0;
 
     res.status(200).send({
       data: {

@@ -16,7 +16,7 @@
   -webkit-font-smoothing: antialiased;
 }
 
-.ant-btn > .tabler-icon + span {
+.ant-btn>.tabler-icon+span {
   margin-inline-start: $p-m;
 }
 
@@ -176,8 +176,9 @@ h4.ant-typography {
   border: none;
   border-radius: 10px;
 
-  .anticon {
+  .tabler-icon {
     margin-right: $p;
+    font-size: 11px;
   }
 }
 

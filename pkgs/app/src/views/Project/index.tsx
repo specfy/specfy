@@ -1,4 +1,6 @@
-import { Avatar, Card, Divider, Skeleton, Switch } from 'antd';
+import { IconCirclePlus } from '@tabler/icons-react';
+import type { MenuProps } from 'antd';
+import { Avatar, Button, Divider, Dropdown, Skeleton, Switch } from 'antd';
 import type { ApiComponent, ApiOrg, ApiProject } from 'api/src/types/api';
 import classnames from 'classnames';
 import { useEffect, useMemo, useState } from 'react';
@@ -9,6 +11,7 @@ import { useListComponents } from '../../api/components';
 import { useListOrgs } from '../../api/orgs';
 import { useGetProject } from '../../api/projects';
 import { BigHeading, BigHeadingLoading } from '../../components/BigHeading';
+import { Card } from '../../components/Card';
 import { Container } from '../../components/Container';
 import { ProjectMenu } from '../../components/ProjectMenu';
 import { Time } from '../../components/Time';
@@ -60,6 +63,18 @@ export const Project: React.FC = () => {
     250,
     [edit.lastUpdate]
   );
+  const createItems = useMemo<MenuProps['items']>(() => {
+    return [
+      {
+        key: '1',
+        label: <Link to={`${linkSelf}/new/rfc`}>New RFC</Link>,
+      },
+      {
+        key: '2',
+        label: <Link to={`${linkSelf}/new/component`}>New Component</Link>,
+      },
+    ];
+  }, [linkSelf]);
 
   useEffect(() => {
     setOrg(getOrgs.data?.find((o) => o.id === params.org_id));
@@ -82,7 +97,7 @@ export const Project: React.FC = () => {
           <BigHeadingLoading />
         </div>
         <div className={cls.center}>
-          <Card>
+          <Card padded>
             <Skeleton active paragraph={{ rows: 3 }}></Skeleton>
             <Divider />
             <Avatar.Group>
@@ -121,10 +136,18 @@ export const Project: React.FC = () => {
                     size="small"
                   />
                   {isEditing ? (
-                    <Link to={`${linkSelf}/revisions/current`}>
-                      {updateCount} pending{' '}
-                      {updateCount > 1 ? 'changes' : 'change'}
-                    </Link>
+                    <>
+                      <Link to={`${linkSelf}/revisions/current`}>
+                        {updateCount} pending{' '}
+                        {updateCount > 1 ? 'changes' : 'change'}
+                      </Link>
+                      <Dropdown
+                        menu={{ items: createItems }}
+                        placement="bottomRight"
+                      >
+                        <Button icon={<IconCirclePlus />} type="text" />
+                      </Dropdown>
+                    </>
                   ) : (
                     'Edit'
                   )}

@@ -2,7 +2,6 @@ import type { SelectProps } from 'antd';
 import {
   App,
   Button,
-  Card,
   Col,
   Divider,
   Form,
@@ -18,6 +17,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { useListOrgs } from '../../../api/orgs';
 import { createProject } from '../../../api/projects';
+import { Card } from '../../../components/Card';
 import { Container } from '../../../components/Container';
 
 import cls from './index.module.scss';

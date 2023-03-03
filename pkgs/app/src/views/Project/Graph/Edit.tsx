@@ -1,12 +1,12 @@
-import {
-  CaretRightOutlined,
-  CaretDownOutlined,
-  HistoryOutlined,
-} from '@ant-design/icons';
 import type { Cell } from '@antv/x6';
 import { History } from '@antv/x6-plugin-history';
 import { Selection } from '@antv/x6-plugin-selection';
 import { Transform } from '@antv/x6-plugin-transform';
+import {
+  IconCaretRight,
+  IconCaretDown,
+  IconHistory,
+} from '@tabler/icons-react';
 import { Badge, Button, Tooltip } from 'antd';
 import type { ApiComponent, ApiProject } from 'api/src/types/api';
 import type { DBComponent } from 'api/src/types/db/components';
@@ -361,7 +361,7 @@ export const GraphEdit: React.FC<{
             onClick={handleHideShow}
           >
             <div className={cls.titleLeft}>
-              <div>{hide ? <CaretRightOutlined /> : <CaretDownOutlined />}</div>
+              <div>{hide ? <IconCaretRight /> : <IconCaretDown />}</div>
               Changes
             </div>
             <Badge count={changed.length} color="#9ca3af" />
@@ -376,7 +376,7 @@ export const GraphEdit: React.FC<{
                       <Button
                         type="text"
                         size="small"
-                        icon={<HistoryOutlined />}
+                        icon={<IconHistory />}
                         onClick={() => handleRevert(comp.id)}
                       />
                     </Tooltip>

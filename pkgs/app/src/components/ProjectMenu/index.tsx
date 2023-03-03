@@ -1,11 +1,11 @@
 import {
-  HomeOutlined,
-  ReadOutlined,
-  ClusterOutlined,
-  ThunderboltOutlined,
-  SettingOutlined,
-  HistoryOutlined,
-} from '@ant-design/icons';
+  IconBolt,
+  IconBook,
+  IconHistory,
+  IconHome,
+  IconSchema,
+  IconSettings,
+} from '@tabler/icons-react';
 import { Badge, Menu } from 'antd';
 import type { ApiProject } from 'api/src/types/api';
 import { useEffect, useMemo, useState } from 'react';
@@ -38,7 +38,9 @@ export const ProjectMenu: React.FC<{
         key: 'home',
         label: (
           <Link to={linkSelf} className={cls.link}>
-            <HomeOutlined />
+            <span>
+              <IconHome />
+            </span>
             Home
           </Link>
         ),
@@ -47,7 +49,9 @@ export const ProjectMenu: React.FC<{
         key: 'content',
         label: (
           <Link to={`${linkSelf}/content`} className={cls.link}>
-            <ReadOutlined />
+            <span>
+              <IconBook />
+            </span>
             Content
           </Link>
         ),
@@ -56,7 +60,9 @@ export const ProjectMenu: React.FC<{
         key: 'graph',
         label: (
           <Link to={`${linkSelf}/graph`} className={cls.link}>
-            <ClusterOutlined />
+            <span>
+              <IconSchema />
+            </span>
             Graph
           </Link>
         ),
@@ -65,7 +71,9 @@ export const ProjectMenu: React.FC<{
         key: 'revisions',
         label: (
           <Link to={`${linkSelf}/revisions`} className={cls.link}>
-            <HistoryOutlined />
+            <span>
+              <IconHistory />
+            </span>
             <div className={cls.badged}>
               Revisions{' '}
               <Badge
@@ -80,7 +88,9 @@ export const ProjectMenu: React.FC<{
         key: 'activity',
         label: (
           <Link to={`${linkSelf}/activity`} className={cls.link}>
-            <ThunderboltOutlined />
+            <span>
+              <IconBolt />
+            </span>
             Activity
           </Link>
         ),
@@ -89,7 +99,9 @@ export const ProjectMenu: React.FC<{
         key: 'settings',
         label: (
           <Link to={`${linkSelf}/settings`} className={cls.link}>
-            <SettingOutlined />
+            <span>
+              <IconSettings />
+            </span>
             Settings
           </Link>
         ),

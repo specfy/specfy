@@ -1,8 +1,8 @@
 import {
-  CaretDownOutlined,
-  CaretRightOutlined,
-  HistoryOutlined,
-} from '@ant-design/icons';
+  IconCaretDown,
+  IconCaretRight,
+  IconHistory,
+} from '@tabler/icons-react';
 import { Button } from 'antd';
 import classnames from 'classnames';
 import type { Change } from 'diff';
@@ -75,7 +75,7 @@ export const DiffRow: React.FC<{
               type="text"
               size="small"
               onClick={handleHideShow}
-              icon={hide ? <CaretRightOutlined /> : <CaretDownOutlined />}
+              icon={hide ? <IconCaretRight /> : <IconCaretDown />}
             />
           </div>
           <Link to={to}>
@@ -85,7 +85,7 @@ export const DiffRow: React.FC<{
         <div className={cls.titleRight}>
           <Button
             type="text"
-            icon={<HistoryOutlined />}
+            icon={<IconHistory />}
             size="small"
             onClick={() => onRevert(comp.type, comp.typeId, comp.key)}
           >

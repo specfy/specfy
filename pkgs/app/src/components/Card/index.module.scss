@@ -5,6 +5,7 @@
   border: 1px solid $gray-100;
   border-radius: $border-radius-s;
   box-shadow: $box-shadow2;
+  position: relative;
 
   &.padded {
     padding: $p-2xl;

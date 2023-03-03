@@ -1,13 +1,12 @@
 import {
-  PlusCircleOutlined,
-  BellOutlined,
-  UserOutlined,
-  CaretDownFilled,
-  SettingOutlined,
-  LogoutOutlined,
-  QuestionCircleOutlined,
-  AppstoreAddOutlined,
-} from '@ant-design/icons';
+  IconApps,
+  IconBell,
+  IconCaretDown,
+  IconHelp,
+  IconLogout,
+  IconSettings,
+  IconUserCircle,
+} from '@tabler/icons-react';
 import type { MenuProps } from 'antd';
 import { Divider, Button, Menu, Dropdown, Badge, Layout } from 'antd';
 import { useEffect, useState } from 'react';
@@ -28,21 +27,6 @@ const menuItems: MenuProps['items'] = [
   //   key: 'settings',
   //   label: <Link to="/settings">Settings</Link>,
   // },
-];
-
-const createItems: MenuProps['items'] = [
-  {
-    key: '1',
-    label: <Link to="/new/rfc">New RFC</Link>,
-  },
-  {
-    key: '2',
-    label: <Link to="/new/project">New Project</Link>,
-  },
-  {
-    key: '3',
-    label: <Link to="/new/org">New Organisation</Link>,
-  },
 ];
 
 const userItems: MenuProps['items'] = [];
@@ -68,7 +52,7 @@ export const LayoutHeader: React.FC = () => {
   return (
     <Layout.Header className={cls.header}>
       <Link className={cls.logo} to="/">
-        <AppstoreAddOutlined />
+        <IconApps />
         <img src={Logo1} />
       </Link>
 
@@ -76,7 +60,7 @@ export const LayoutHeader: React.FC = () => {
         <Dropdown menu={{ items: orgs }} placement="bottomRight">
           <Button
             type="text"
-            icon={<CaretDownFilled />}
+            icon={<IconCaretDown />}
             className={cls.orgSelect}
           />
         </Dropdown>
@@ -93,13 +77,8 @@ export const LayoutHeader: React.FC = () => {
 
       <div className={cls.right}>
         <div>
-          <Dropdown menu={{ items: createItems }} placement="bottomRight">
-            <Button icon={<PlusCircleOutlined />} type="text" />
-          </Dropdown>
-        </div>
-        <div>
-          <Badge count={1} size="small">
-            <Button icon={<BellOutlined />} type="text" />
+          <Badge count={0} size="small">
+            <Button icon={<IconBell />} type="text" />
           </Badge>
         </div>
         <div>
@@ -115,16 +94,16 @@ export const LayoutHeader: React.FC = () => {
                 </div>
                 <Divider />
                 <Link to="/account/" className={cls.userDropdownItem}>
-                  <SettingOutlined />
+                  <IconSettings />
                   Settings
                 </Link>
                 <Link to="/account/" className={cls.userDropdownItem}>
-                  <QuestionCircleOutlined />
+                  <IconHelp />
                   Support
                 </Link>
                 <Divider />
                 <Link to="/logout/" className={cls.userDropdownItem}>
-                  <LogoutOutlined />
+                  <IconLogout />
                   Logout
                 </Link>
               </div>
@@ -135,7 +114,7 @@ export const LayoutHeader: React.FC = () => {
               type="text"
               shape="default"
               className={cls.avatar}
-              icon={<UserOutlined />}
+              icon={<IconUserCircle />}
             ></Button>
           </Dropdown>
         </div>

@@ -1,9 +1,5 @@
-import {
-  SearchOutlined,
-  CloseCircleOutlined,
-  ReadOutlined,
-  LoadingOutlined,
-} from '@ant-design/icons';
+import { LoadingOutlined } from '@ant-design/icons';
+import { IconBook, IconCircleX, IconSearch } from '@tabler/icons-react';
 import { Button, Input, Table } from 'antd';
 import type {
   ApiDocument,
@@ -68,7 +64,7 @@ export const ProjectContentList: React.FC<{
           <Input.Group compact className={cls.inputs}>
             <Input
               size="large"
-              prefix={<SearchOutlined />}
+              prefix={<IconSearch />}
               onChange={handleInput}
               value={search}
               suffix={
@@ -78,7 +74,7 @@ export const ProjectContentList: React.FC<{
                     title="Reset search filters..."
                     type="text"
                     size="small"
-                    icon={<CloseCircleOutlined />}
+                    icon={<IconCircleX />}
                   />
                 )
               }
@@ -100,7 +96,10 @@ export const ProjectContentList: React.FC<{
             <Table.Column
               title={
                 <div className={cls.th}>
-                  <ReadOutlined /> {list.pagination.totalItems} Documents
+                  <span>
+                    <IconBook />
+                  </span>{' '}
+                  {list.pagination.totalItems} Documents
                 </div>
               }
               dataIndex="name"

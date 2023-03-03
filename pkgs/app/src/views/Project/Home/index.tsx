@@ -76,10 +76,10 @@ export const ProjectHome: React.FC<{
           </div>
         </Card>
 
-        <Card>
+        <Card padded>
           <ListRFCs project={proj}></ListRFCs>
         </Card>
-        <Card>
+        <Card padded>
           <ListActivity orgId={params.org_id} />
         </Card>
       </Container.Left>

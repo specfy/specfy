@@ -1,5 +1,5 @@
-import { PlusOutlined, MinusOutlined } from '@ant-design/icons';
-import { Card, Typography, Space, Divider } from 'antd';
+import { IconCircleMinus, IconCirclePlus } from '@tabler/icons-react';
+import { Typography, Space, Divider } from 'antd';
 import Title from 'antd/es/typography/Title';
 import type { ApiDocument, ApiProject } from 'api/src/types/api';
 import clsn from 'classnames';
@@ -7,6 +7,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import { useGetDocument } from '../../../../api/documents';
+import { Card } from '../../../../components/Card';
 import { ContentDoc } from '../../../../components/Content';
 import { Editor } from '../../../../components/Editor';
 import { HeadingTree } from '../../../../components/HeadingTree';
@@ -58,7 +59,7 @@ export const RFC: React.FC<{
   return (
     <div className={clsn(cls.container, menu ? cls.withMenu : null)}>
       <div>
-        <Card className={cls.card}>
+        <Card padded>
           <Title level={1} className={cls.title}>
             {item.name}{' '}
             <Typography.Text type="secondary" className={cls.subtitle}>
@@ -76,19 +77,19 @@ export const RFC: React.FC<{
 
               <ul className={cls.tldrList}>
                 <li>
-                  <PlusOutlined style={{ color: '#52c41a' }} /> Creates{' '}
+                  <IconCirclePlus style={{ color: '#52c41a' }} /> Creates{' '}
                   <Link to="/">Public API</Link>
                 </li>
                 <li>
-                  <PlusOutlined style={{ color: '#52c41a' }} /> Activity{' '}
+                  <IconCirclePlus style={{ color: '#52c41a' }} /> Activity{' '}
                   <Link to="/">Postgres</Link>
                 </li>
                 <li>
-                  <PlusOutlined style={{ color: '#52c41a' }} /> Introduces{' '}
+                  <IconCirclePlus style={{ color: '#52c41a' }} /> Introduces{' '}
                   <Link to="/">NodeJS</Link>
                 </li>
                 <li>
-                  <MinusOutlined style={{ color: '#fa541c' }} /> Removes{' '}
+                  <IconCircleMinus style={{ color: '#fa541c' }} /> Removes{' '}
                   <Link to="/">Golang</Link>
                 </li>
               </ul>
