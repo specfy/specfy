@@ -87,9 +87,11 @@
 
   &Item {
     display: flex;
-    align-items: center;
     gap: $p-m;
+    align-items: center;
+
     padding: 8px 16px;
+
     color: $gray-8;
 
     span {

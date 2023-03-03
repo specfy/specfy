@@ -49,12 +49,12 @@ a {
 
 // Global typo
 h1.ant-typography {
-  margin-bottom: $p;
+  margin-bottom: $p-l;
   font-size: $font-xxl;
 }
 
 h2.ant-typography {
-  margin-bottom: $p;
+  margin-bottom: $p-m;
   font-size: $font-xl;
 }
 
@@ -108,7 +108,7 @@ h4.ant-typography {
   }
 
   h1 {
-    margin-bottom: $p-m;
+    margin-bottom: $p-l;
     font-size: $font-xl;
   }
 

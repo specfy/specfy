@@ -12,6 +12,7 @@ import { ContentDoc } from '../../../components/Content';
 import { EditorMini } from '../../../components/Editor/Mini';
 import { Graph, GraphContainer } from '../../../components/Graph';
 import { Toolbar } from '../../../components/Graph/Toolbar';
+import { FakeInput } from '../../../components/Input';
 import { ListRFCs } from '../../../components/ListRFCs';
 import { useEdit } from '../../../hooks/useEdit';
 import { useGraph } from '../../../hooks/useGraph';
@@ -57,13 +58,14 @@ export const ComponentView: React.FC<{
 
   // Edition
   const edit = useEdit();
+  const isEditing = edit.isEnabled();
   const curr = useMemo(() => {
     if (!comp) return null;
     return edit.get('component', comp.id, comp);
   }, [comp]);
   const desc = useMemo(() => {
-    if (!comp) return undefined;
-    return curr?.changes?.description || comp?.description;
+    if (!comp || !curr) return undefined;
+    return curr.changes.description || comp.description;
   }, [comp, curr]);
 
   useEffect(() => {
@@ -183,30 +185,42 @@ export const ComponentView: React.FC<{
     <>
       <Container.Left>
         <Card padded>
-          <Typography.Title level={2}>
-            {Icon && (
-              <div className={cls.icon}>
-                <Icon size="1em" />
-              </div>
-            )}
-            {comp.name}
-          </Typography.Title>
-          {!edit.isEnabled() && desc && <ContentDoc doc={desc} />}
-          {!desc?.content.length && !edit.isEnabled() && (
-            <Typography.Text type="secondary">
-              Write something...
-            </Typography.Text>
+          {!isEditing && (
+            <Typography.Title level={1}>
+              {Icon && (
+                <div className={cls.icon}>
+                  <Icon size="1em" />
+                </div>
+              )}
+              {curr?.changes.name || comp.name}
+            </Typography.Title>
           )}
-          {edit.isEnabled() && (
-            <Typography>
+          {isEditing && (
+            <FakeInput.H1
+              size="large"
+              value={curr?.changes.name || comp.name}
+              className={cls.titleInput}
+              placeholder="Title..."
+              onChange={(e) => curr?.set('name', e.target.value)}
+            />
+          )}
+
+          <Typography>
+            {!isEditing && desc && <ContentDoc doc={desc} />}
+            {!desc?.content.length && !isEditing && (
+              <Typography.Text type="secondary">
+                Write something...
+              </Typography.Text>
+            )}
+            {isEditing && (
               <EditorMini
                 key={comp.name}
                 curr={curr!}
                 field="description"
                 originalContent={comp.description}
               />
-            </Typography>
-          )}
+            )}
+          </Typography>
 
           {(comp.tech || hosts.length > 0 || inComp || contains.length > 0) && (
             <div className={cls.block}>

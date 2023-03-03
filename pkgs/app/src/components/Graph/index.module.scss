@@ -21,9 +21,9 @@
   z-index: 10;
 
   display: flex;
+  gap: $p-l;
   align-items: center;
   justify-content: flex-end;
-  gap: $p-l;
 
   width: 100%;
   padding: $p-l $p-l;
@@ -41,8 +41,8 @@
   }
 
   &.bottom {
-    justify-content: left;
     bottom: 0;
+    justify-content: left;
   }
 
 }

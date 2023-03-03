@@ -1,4 +1,4 @@
-import { IconHistory } from '@tabler/icons-react';
+// import { IconHistory } from '@tabler/icons-react';
 import { Bold } from '@tiptap/extension-bold';
 import { CharacterCount } from '@tiptap/extension-character-count';
 import { Code } from '@tiptap/extension-code';
@@ -10,9 +10,9 @@ import { Paragraph } from '@tiptap/extension-paragraph';
 import { Placeholder } from '@tiptap/extension-placeholder';
 import { Text } from '@tiptap/extension-text';
 import { useEditor, EditorContent } from '@tiptap/react';
-import { Button, Tooltip } from 'antd';
+// import { Button, Tooltip } from 'antd';
 import type { BlockLevelZero } from 'api/src/types/api';
-import classnames from 'classnames';
+// import classnames from 'classnames';
 import { useState, useEffect } from 'react';
 
 import type { EditContextSub } from '../../hooks/useEdit';
@@ -82,25 +82,26 @@ const Editor: React.FC<{
   );
 };
 
-const ToolbarMini: React.FC<{
-  isUpdated: boolean;
-  onRevert: () => void;
-}> = ({ isUpdated, onRevert }) => {
-  return (
-    <div className={cls.toolbar}>
-      <div className={cls.hover}>
-        <Tooltip title="Revert all changes">
-          <Button
-            icon={<IconHistory />}
-            size="small"
-            className={classnames(isUpdated && cls.isUpdated)}
-            onClick={onRevert}
-          />
-        </Tooltip>
-      </div>
-    </div>
-  );
-};
+// TODO: delete or improve
+// const ToolbarMini: React.FC<{
+//   isUpdated: boolean;
+//   onRevert: () => void;
+// }> = ({ isUpdated, onRevert }) => {
+//   return (
+//     <div className={cls.toolbar}>
+//       <div className={cls.hover}>
+//         <Tooltip title="Revert all changes">
+//           <Button
+//             icon={<IconHistory />}
+//             size="small"
+//             className={classnames(isUpdated && cls.isUpdated)}
+//             onClick={onRevert}
+//           />
+//         </Tooltip>
+//       </div>
+//     </div>
+//   );
+// };
 
 export const EditorMini: (p: Prop) => React.ReactElement<Prop> = ({
   curr,
@@ -114,15 +115,14 @@ export const EditorMini: (p: Prop) => React.ReactElement<Prop> = ({
 
   const [isUpdated, setIsUpdated] = useState(false);
 
-  const handleRevert = () => {
-    curr?.revert(field);
-    setContent({ ...originalContent });
-    setIsUpdated(false);
-  };
+  // const handleRevert = () => {
+  //   curr?.revert(field);
+  //   setContent({ ...originalContent });
+  //   setIsUpdated(false);
+  // };
 
   return (
     <div className={cls.mini}>
-      <ToolbarMini isUpdated={isUpdated} onRevert={handleRevert} />
       <Editor
         content={content}
         onUpdate={(json) => {
@@ -130,6 +130,7 @@ export const EditorMini: (p: Prop) => React.ReactElement<Prop> = ({
           setIsUpdated(true);
         }}
       />
+      {/* <ToolbarMini isUpdated={isUpdated} onRevert={handleRevert} /> */}
     </div>
   );
 };

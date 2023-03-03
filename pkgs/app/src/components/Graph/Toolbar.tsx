@@ -77,8 +77,8 @@ const ToolbarZoom: React.FC = () => {
     }
 
     graph.center();
-    graph.zoomToFit();
-    graph.zoomTo(graph.zoom() - 0.3);
+    // graph.zoomTo(1);
+    graph.zoomToFit({ padding: 40 });
   }
 
   return (
@@ -91,7 +91,7 @@ const ToolbarZoom: React.FC = () => {
           onClick={handleZoomIn}
         />
       </Tooltip>
-      <Tooltip title="Reset Zoom" placement="bottom">
+      <Tooltip title="Reset to fit" placement="bottom">
         <Button
           className={cls.toolbarItem}
           type="text"

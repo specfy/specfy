@@ -1,17 +1,8 @@
 @import "../../styles/theme";
-
-.inputLike {
-  padding: 0 $p-l;
-  border-radius: $border-radius-s;
-  box-shadow: $box-shadow-editable;
-}
+@import "../../styles/mixin";
 
 .editor {
   min-height: 400px;
-
-  p {
-    margin-bottom: $p-m;
-  }
 }
 
 :global {
@@ -22,7 +13,10 @@
   }
 
   .ProseMirror {
+    @include editable;
+
     min-height: inherit;
+
 
     p.is-editor-empty:first-child::before {
       pointer-events: none;

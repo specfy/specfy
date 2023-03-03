@@ -1,4 +1,5 @@
 @import "../../styles/theme";
+@import "../../styles/mixin";
 
 .mini {
   position: relative;
@@ -6,12 +7,6 @@
 
 .editor {
   min-height: 30px;
-  padding: $p $p $p-s $p-l;
-  box-shadow: $box-shadow-editable;
-
-  p {
-    margin-bottom: $p-m;
-  }
 
   :global {
 
@@ -21,7 +16,10 @@
     }
 
     .ProseMirror {
+      @include editable;
+
       min-height: inherit;
+
 
       p.is-editor-empty:first-child::before {
         pointer-events: none;
@@ -34,34 +32,32 @@
         color: #adb5bd;
       }
     }
-
-    // stylelint-enable selector-class-pattern
   }
 }
 
-.toolbar {
-  position: absolute;
-  z-index: 1;
-  top: 0;
-  left: -24px;
+// .toolbar {
+//   position: absolute;
+//   z-index: 1;
+//   top: 0;
+//   right: -24px;
 
-  display: flex;
-  flex-direction: column;
-  gap: $p;
+//   display: flex;
+//   flex-direction: column;
+//   gap: $p;
 
-  min-height: 40px;
-  padding: $p-m - 1px 0;
+//   min-height: 40px;
+//   padding: $p-m - 1px 0;
 
-  background-color: $blue-50;
+//   background-color: $blue-50;
 
-  button {
-    color: $sky-200;
-    background-color: transparent;
-    border: none;
-    box-shadow: none;
+//   button {
+//     color: $sky-200;
+//     background-color: transparent;
+//     border: none;
+//     box-shadow: none;
 
-    &.isUpdated {
-      color: $blue-400;
-    }
-  }
-}
+//     &.isUpdated {
+//       color: $blue-400;
+//     }
+//   }
+// }

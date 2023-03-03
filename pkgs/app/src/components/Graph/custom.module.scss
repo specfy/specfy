@@ -1,6 +1,7 @@
 @import "../../styles/theme";
 
 .label {
+  overflow: hidden;
   display: inline-block;
   flex-shrink: 0;
 
@@ -8,11 +9,10 @@
   padding: 0 $p-m;
 
   font-size: 12px;
+  line-height: 12px;
   color: #666;
   text-overflow: ellipsis;
   white-space: pre-wrap;
-  line-height: 12px;
-  overflow: hidden;
 }
 
 .node {

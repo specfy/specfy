@@ -151,7 +151,6 @@ export const ProjectRevisionCreate: React.FC<{
                   content={description}
                   onUpdate={setDescription}
                   minHeight="100px"
-                  inputLike={true}
                 />
               </Typography>
             </Card.Content>

@@ -392,7 +392,6 @@ export const ProjectRevisionsShow: React.FC<{
                   content={description}
                   onUpdate={setDescription}
                   minHeight="100px"
-                  inputLike={true}
                 />
               )}
             </Typography>

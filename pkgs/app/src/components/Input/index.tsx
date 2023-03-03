@@ -4,7 +4,11 @@ import { Input } from 'antd';
 import cls from './index.module.scss';
 
 const H1: React.FC<InputProps> = (args) => {
-  return <Input {...args} className={cls.fakeH1} />;
+  return (
+    <div className={cls.fake}>
+      <Input {...args} className={cls.input} />
+    </div>
+  );
 };
 
 export type FakeInputProps = {

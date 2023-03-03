@@ -1,13 +1,14 @@
 @import "../../styles/theme";
+@import "../../styles/mixin";
 
-.fakeH1 {
-  margin-bottom: $p-m;
-  padding: 0 $p-l;
+.fake {
+  margin-bottom: $p-l;
+}
+
+.input {
+  @include editable(4px $p-m);
 
   font-size: $font-xxl;
   font-weight: $font-semi;
   line-height: 0;
-
-  border: none;
-  box-shadow: $box-shadow-editable;
 }
