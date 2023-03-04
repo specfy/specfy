@@ -264,6 +264,7 @@ export const ComponentView: React.FC<{
             )}
             {isEditing && (
               <EditorMini
+                key={comp.id}
                 doc={comp.description}
                 onUpdate={(doc) => {
                   storeComponents.updateField(comp!.id, 'description', doc);

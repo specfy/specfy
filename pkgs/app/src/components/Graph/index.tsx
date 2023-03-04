@@ -18,8 +18,8 @@ export const Graph: React.FC<{
   readonly?: boolean;
 }> = ({ memoize, readonly }) => {
   // Data
-  const [components, setComponents] = useState<ApiComponent[]>();
   const storeComponents = useComponentsStore();
+  const [components, setComponents] = useState<ApiComponent[]>();
 
   // Graph
   const gref = useGraph();
@@ -40,25 +40,29 @@ export const Graph: React.FC<{
     setComponents(Object.values(storeComponents.components));
   }, [storeComponents]);
 
-  useEffect(() => {
-    if (!components) {
-      return;
-    }
-
-    const compById = new Map<string, ApiComponent>();
-    const _hostsById = new Set<string>();
-
-    for (const comp of components) {
-      compById.set(comp.id, comp);
-      if (comp.type === 'hosting') {
-        _hostsById.add(comp.id);
+  useDebounce(
+    () => {
+      if (!components) {
+        return;
       }
-    }
-    setHostsById(_hostsById);
-  }, [components]);
+
+      const compById = new Map<string, ApiComponent>();
+      const _hostsById = new Set<string>();
+
+      for (const comp of components) {
+        compById.set(comp.id, comp);
+        if (comp.type === 'hosting') {
+          _hostsById.add(comp.id);
+        }
+      }
+      setHostsById(_hostsById);
+    },
+    100,
+    [components]
+  );
 
   useEffect(() => {
-    if (!container.current || !hostsById) {
+    if (!container.current || !hostsById || !components) {
       return;
     }
 
@@ -195,7 +199,7 @@ export const Graph: React.FC<{
     return () => {
       clearTimeout(cancel);
       graph.off();
-      graph.dispose();
+      // graph.dispose(); break edition
     };
   }, [container, hostsById, readonly]);
 
@@ -249,7 +253,11 @@ export const Graph: React.FC<{
     [revertHighlight, mouseover]
   );
 
-  return <div style={{ width: '100%', minHeight: `100%` }} ref={container} />;
+  return (
+    <div style={{ width: '100%', height: `100%` }}>
+      <div ref={container} />
+    </div>
+  );
 };
 
 export const GraphContainer: React.FC<{
