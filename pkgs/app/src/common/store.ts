@@ -50,6 +50,7 @@ function find<T extends Allowed>(id: any): T | undefined {
 
 export default { add, find };
 
+// ------------------------------------------ Staging Store
 interface StagingState {
   diffs: ComputedForDiff[];
   clean: TmpBlob[];
@@ -64,18 +65,26 @@ export const useStagingStore = create<StagingState>()((set) => ({
   },
 }));
 
+// ------------------------------------------ Project Store
 interface ProjectState {
   project: ApiProject | null;
   update: (value: ApiProject) => void;
+  revertField: (field: keyof ApiProject) => void;
 }
 
-export const useProjectStore = create<ProjectState>()((set) => ({
+export const useProjectStore = create<ProjectState>()((set, get) => ({
   project: null,
   update: (value) => {
     set({ project: value });
   },
+  revertField: (field) => {
+    const proj = get().project!;
+    const item = originalStore.find((i): i is ApiProject => proj.id === i.id)!;
+    set({ project: { ...proj, [field]: item[field] } });
+  },
 }));
 
+// ------------------------------------------ Component Store
 interface ComponentsState {
   components: Record<string, ApiComponent>;
   fill: (value: ApiComponent[]) => void;
@@ -87,6 +96,7 @@ interface ComponentsState {
     field: TKey,
     value: ApiComponent[TKey]
   ) => void;
+  revertField: (id: string, field: keyof ApiComponent) => void;
 }
 export const useComponentsStore = create<ComponentsState>()((set, get) => ({
   components: {},
@@ -125,8 +135,16 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
       })
     );
   },
+  revertField: (id, field) => {
+    const comp = get().components[id];
+    const item = originalStore.find(
+      (i): i is ApiComponent => comp.id === i.id
+    )!;
+    get().updateField(id, field, item[field]);
+  },
 }));
 
+// ------------------------------------------ Document Store
 interface DocumentsState {
   documents: Record<string, ApiDocument>;
   add: (values: ApiDocument[]) => void;
@@ -137,6 +155,7 @@ interface DocumentsState {
     field: TKey,
     value: ApiDocument[TKey]
   ) => void;
+  revertField: (id: string, field: keyof ApiDocument) => void;
 }
 export const useDocumentsStore = create<DocumentsState>()((set, get) => ({
   documents: {},
@@ -169,5 +188,10 @@ export const useDocumentsStore = create<DocumentsState>()((set, get) => ({
         state.documents[id][field] = value;
       })
     );
+  },
+  revertField: (id, field) => {
+    const comp = get().documents[id];
+    const item = originalStore.find((i): i is ApiDocument => comp.id === i.id)!;
+    get().updateField(id, field, item[field]);
   },
 }));

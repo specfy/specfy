@@ -11,9 +11,10 @@ import { Badge, Button, Tooltip } from 'antd';
 import type { ApiComponent, ApiProject } from 'api/src/types/api';
 import classnames from 'classnames';
 import { useCallback, useEffect, useState } from 'react';
+import { useDebounce } from 'react-use';
 
-import { useComponentsStore } from '../../../common/store';
-import type { TmpBlobComponent } from '../../../hooks/useEdit';
+import type { TmpBlobComponent } from '../../../common/store';
+import { useComponentsStore, useStagingStore } from '../../../common/store';
 import { useEdit } from '../../../hooks/useEdit';
 import { useGraph } from '../../../hooks/useGraph';
 
@@ -34,6 +35,7 @@ export const GraphEdit: React.FC<{
   comps: ApiComponent[];
 }> = ({ comps }) => {
   const storeComponents = useComponentsStore();
+  const storeStaging = useStagingStore(); // TODO: it is probably triggering too many render
   const g = useGraph();
 
   // Edit mode
@@ -230,33 +232,36 @@ export const GraphEdit: React.FC<{
     };
   }, [g, isEditing]);
 
-  // // Debounce change registry
-  // useDebounce(
-  //   () => {
-  //     const json = g.getRef()?.toJSON();
-  //     if (!json) {
-  //       return;
-  //     }
+  // Debounce change registry
+  useDebounce(
+    () => {
+      const json = g.getRef()?.toJSON();
+      if (!json) {
+        return;
+      }
 
-  //     const tmp: ApiComponent[] = [];
-  //     for (const cell of Object.values(json.cells)) {
-  //       const comp = comps.find((c) => c.id === cell.id);
-  //       if (!comp) {
-  //         continue;
-  //       }
+      const tmp: ApiComponent[] = [];
+      for (const cell of Object.values(json.cells)) {
+        const comp = comps.find((c) => c.id === cell.id);
+        if (!comp) {
+          continue;
+        }
 
-  //       if (!edit.hasChange('component', comp.id)) {
-  //         continue;
-  //       }
+        const has = storeStaging.clean.find(
+          (clean) => clean.type === 'component' && clean.typeId === comp.id
+        );
+        if (!has || Object.keys(has.blob).length <= 0) {
+          continue;
+        }
 
-  //       tmp.push(comp);
-  //     }
+        tmp.push(comp);
+      }
 
-  //     setChanged(tmp);
-  //   },
-  //   500,
-  //   [edit.lastUpdate]
-  // );
+      setChanged(tmp);
+    },
+    200,
+    [storeStaging]
+  );
 
   // Size change
   const handleSize = (type: 'height' | 'width', value: string) => {
@@ -291,7 +296,7 @@ export const GraphEdit: React.FC<{
       return;
     }
 
-    const find = edit.changes.find<TmpBlobComponent>(
+    const find = storeStaging.clean.find<TmpBlobComponent>(
       (comp): comp is TmpBlobComponent => comp.typeId === id
     );
     const cell = graph.getCellById(id);
@@ -315,7 +320,6 @@ export const GraphEdit: React.FC<{
           edge.setVertices(old!.vertices);
         });
       });
-      setChanged(changed.filter((comp) => comp.id !== id));
     }
   };
 

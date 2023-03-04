@@ -8,7 +8,7 @@ import classnames from 'classnames';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import type { ComputedForDiff } from '../../common/store';
+import type { ComputedForDiff, TmpBlob } from '../../common/store';
 import { Card } from '../Card';
 
 import cls from './index.module.scss';
@@ -16,7 +16,7 @@ import cls from './index.module.scss';
 export const DiffRow: React.FC<{
   comp: ComputedForDiff;
   url: string;
-  onRevert: (type: string, id: string, key: string) => void;
+  onRevert: (type: TmpBlob['type'], id: string, key: string) => void;
 }> = ({ comp, url, onRevert }) => {
   // Compute diff
   const left = useMemo(() => {

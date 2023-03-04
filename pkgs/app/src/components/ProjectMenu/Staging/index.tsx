@@ -56,7 +56,7 @@ export const Staging: React.FC<{ link: string }> = ({ link }) => {
       setCount(tmp);
       staging.update(diffs, clean);
     },
-    250,
+    150,
     [project, components, documents]
   );
 

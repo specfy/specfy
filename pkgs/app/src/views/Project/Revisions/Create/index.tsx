@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { createRevision } from '../../../../api/revisions';
 import { proposeTitle } from '../../../../common/diff';
+import type { TmpBlob } from '../../../../common/store';
 import {
   useStagingStore,
   useProjectStore,
@@ -34,9 +35,9 @@ export const ProjectRevisionCreate: React.FC<{
 
   // Edition
   const edit = useEdit();
-  const { project } = useProjectStore();
-  const { components } = useComponentsStore();
-  const { documents } = useDocumentsStore();
+  const storeProject = useProjectStore();
+  const storeComponents = useComponentsStore();
+  const storeDocuments = useDocumentsStore();
   const staging = useStagingStore();
 
   // Local
@@ -71,9 +72,15 @@ export const ProjectRevisionCreate: React.FC<{
     setCanSubmit(title !== '' && enoughContent);
   }, [title, description]);
 
-  const handleRevert = (type: string, typeId: string, key: string) => {
+  const handleRevert = (type: TmpBlob['type'], typeId: string, key: string) => {
+    if (type === 'project') {
+      storeProject.revertField(key as any);
+    } else if (type === 'component') {
+      storeComponents.revertField(typeId, key as any);
+    } else if (type === 'document') {
+      storeDocuments.revertField(typeId, key as any);
+    }
     // TODO: possibility to undo revert
-    edit.revert(type as any, typeId, key as any);
   };
 
   const onSubmit = async () => {
