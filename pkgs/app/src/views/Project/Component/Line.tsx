@@ -1,14 +1,14 @@
 import type { ApiComponent } from 'api/src/types/api';
 import { Link } from 'react-router-dom';
 
-import { supported } from '../../../common/component';
+import { supportedIndexed } from '../../../common/component';
 import type { RouteProject } from '../../../types/routes';
 
 import cls from './index.module.scss';
 
 export const Line: React.FC<{
   comps?: ApiComponent[];
-  techs?: string[];
+  techs?: string[] | null;
   title: string;
   params: RouteProject;
 }> = ({ comps, techs, title, params }) => {
@@ -18,7 +18,7 @@ export const Line: React.FC<{
       <div className={cls.values}>
         {techs?.map((tech) => {
           const name = tech.toLocaleLowerCase();
-          const Icon = name in supported && supported[name].Icon;
+          const Icon = name in supportedIndexed && supportedIndexed[name].Icon;
           return (
             <Link
               key={tech}
@@ -31,7 +31,8 @@ export const Line: React.FC<{
           );
         })}
         {comps?.map((c) => {
-          const Icon = c.slug in supported && supported[c.slug].Icon;
+          const Icon =
+            c.slug in supportedIndexed && supportedIndexed[c.slug].Icon;
           return (
             <Link
               key={c.id}

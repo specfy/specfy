@@ -16,9 +16,6 @@
   -webkit-font-smoothing: antialiased;
 }
 
-.ant-btn>.tabler-icon+span {
-  margin-inline-start: $p-m;
-}
 
 // ----- Layout
 body {
@@ -182,9 +179,18 @@ h4.ant-typography {
   }
 }
 
+// Button
 .ant-btn {
   &:disabled {
     border: 1px solid transparent;
+  }
+
+  &>.tabler-icon+span {
+    margin-inline-start: $p-m;
+  }
+
+  &.ant-btn-sm {
+    font-size: $font-s;
   }
 }
 
@@ -202,6 +208,11 @@ h4.ant-typography {
 
 .ant-input {
   padding: $p-m $p-l;
+
+  &.ant-input-sm {
+    padding: $p-s;
+    font-size: $font-s;
+  }
 }
 
 .ant-input-group {

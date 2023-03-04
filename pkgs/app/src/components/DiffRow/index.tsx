@@ -5,22 +5,13 @@ import {
 } from '@tabler/icons-react';
 import { Button } from 'antd';
 import classnames from 'classnames';
-import type { Change } from 'diff';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import type { TmpBlob } from '../../hooks/useEdit';
+import type { ComputedForDiff } from '../../common/store';
 import { Card } from '../Card';
 
 import cls from './index.module.scss';
-
-export interface ComputedForDiff {
-  type: TmpBlob['type'];
-  typeId: string;
-  key: string;
-  previous: any;
-  diff: Change[];
-}
 
 export const DiffRow: React.FC<{
   comp: ComputedForDiff;

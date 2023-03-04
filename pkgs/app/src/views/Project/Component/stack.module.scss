@@ -1,0 +1,40 @@
+@import "../../../styles/theme";
+
+.container {
+  width: 250px;
+}
+
+.search {
+  margin-bottom: $p-m;
+}
+
+.list {
+  overflow: scroll;
+  max-height: 210px;
+}
+
+.group {
+  margin-bottom: $p-m;
+}
+
+.groupTitle {
+  padding: 0 0 0 $p-s;
+  font-size: $font-s;
+  color: $gray-400;
+}
+
+.item {
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: $p-s $p-m;
+
+  border-radius: $border-radius;
+
+  &:hover {
+    background-color: $gray-100;
+  }
+}

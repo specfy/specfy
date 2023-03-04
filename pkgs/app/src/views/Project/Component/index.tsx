@@ -1,15 +1,18 @@
-import { Typography } from 'antd';
+import { IconPlus } from '@tabler/icons-react';
+import { Button, Popover, Typography } from 'antd';
 import type { ApiComponent, ApiProject } from 'api/src/types/api';
 import type React from 'react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import type { TechInfo } from '../../../common/component';
-import { supported } from '../../../common/component';
+import { supportedIndexed } from '../../../common/component';
+import { useComponentsStore } from '../../../common/store';
 import { Card } from '../../../components/Card';
 import { Container } from '../../../components/Container';
 import { ContentDoc } from '../../../components/Content';
 import { EditorMini } from '../../../components/Editor/Mini';
+import { getEmptyDoc } from '../../../components/Editor/helpers';
 import { Graph, GraphContainer } from '../../../components/Graph';
 import { Toolbar } from '../../../components/Graph/Toolbar';
 import { FakeInput } from '../../../components/Input';
@@ -19,6 +22,7 @@ import { useGraph } from '../../../hooks/useGraph';
 import type { RouteComponent, RouteProject } from '../../../types/routes';
 
 import { Line } from './Line';
+import { Stack } from './Stack';
 import cls from './index.module.scss';
 
 function getAllChilds(list: ApiComponent[], id: string): ApiComponent[] {
@@ -34,9 +38,8 @@ function getAllChilds(list: ApiComponent[], id: string): ApiComponent[] {
 
 export const ComponentView: React.FC<{
   proj: ApiProject;
-  comps: ApiComponent[];
   params: RouteProject;
-}> = ({ proj, comps, params }) => {
+}> = ({ proj, params }) => {
   const gref = useGraph();
 
   // TODO: filter RFC
@@ -46,6 +49,7 @@ export const ComponentView: React.FC<{
   const route = useParams<Partial<RouteComponent>>();
 
   // Components
+  const [components, setComponents] = useState<ApiComponent[]>();
   const [inComp, setInComp] = useState<ApiComponent>();
   const [hosts, setHosts] = useState<ApiComponent[]>([]);
   const [contains, setContains] = useState<ApiComponent[]>([]);
@@ -59,22 +63,14 @@ export const ComponentView: React.FC<{
   // Edition
   const edit = useEdit();
   const isEditing = edit.isEnabled();
-  const curr = useMemo(() => {
-    if (!comp) return null;
-    return edit.get('component', comp.id, comp);
-  }, [comp]);
-  const desc = useMemo(() => {
-    if (!comp || !curr) return undefined;
-    return curr.changes.description || comp.description;
-  }, [comp, curr]);
+  const storeComponents = useComponentsStore();
+
+  const [openSearch, setOpenSearch] = useState(false);
 
   useEffect(() => {
-    setComp(
-      comps.find((c) => {
-        return c.slug === route.component_slug!;
-      })
-    );
-  }, [route.component_slug]);
+    setComponents(Object.values(storeComponents.components));
+    setComp(storeComponents.select(route.component_slug!));
+  }, [route.component_slug, storeComponents]);
 
   useEffect(() => {
     if (!comp) {
@@ -82,20 +78,21 @@ export const ComponentView: React.FC<{
     }
 
     const name = comp.name.toLocaleLowerCase();
-    if (name in supported) {
-      setInfo(supported[name]);
-      setIcon(supported[name].Icon);
+    if (name in supportedIndexed) {
+      setInfo(supportedIndexed[name]);
+      setIcon(supportedIndexed[name].Icon);
     } else {
       setInfo(undefined);
       setIcon(undefined);
     }
 
     const list = new Map<string, ApiComponent>();
-    for (const c of comps) {
+    for (const c of components!) {
       list.set(c.id, c);
     }
 
-    const _in = comp.inComponent && list.get(comp.inComponent);
+    const inVal = comp.inComponent;
+    const _in = inVal && list.get(inVal);
 
     const _hosts: ApiComponent[] = [];
     const _read = new Map<string, ApiComponent>();
@@ -124,7 +121,7 @@ export const ComponentView: React.FC<{
 
     // Find contains
     // First find direct ascendant then register all childs
-    setContains(getAllChilds(comps, comp.id));
+    setContains(getAllChilds(components!, comp.id));
 
     for (const edge of comp.edges) {
       if (edge.read && edge.write) {
@@ -136,7 +133,7 @@ export const ComponentView: React.FC<{
       }
     }
 
-    for (const other of comps) {
+    for (const other of components!) {
       if (other.id === comp.id) {
         continue;
       }
@@ -177,6 +174,55 @@ export const ComponentView: React.FC<{
     }, 500);
   }, [comp]);
 
+  const handlePickStack = (obj: ApiComponent | ApiProject | TechInfo) => {
+    setOpenSearch(false);
+
+    if ('key' in obj) {
+      if (obj.type === 'hosting') {
+        let exists = components!.find((c) => c.name === obj.name);
+        if (!exists) {
+          exists = {
+            id: 'ere',
+            orgId: proj.orgId,
+            projectId: proj.id,
+            type: 'hosting',
+            typeId: null,
+            name: obj.name,
+            slug: obj.key,
+            description: getEmptyDoc(),
+            tech: null,
+            display: { pos: { x: 0, y: 0, width: 100, height: 32 } },
+            edges: [],
+            blobId: '',
+            inComponent: null,
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+          };
+
+          storeComponents.create(exists);
+        }
+
+        if (hosts.find((host) => host.name === exists!.name)) {
+          // Already added
+          return;
+        }
+
+        storeComponents.updateField(comp!.id, 'inComponent', exists.id);
+        return;
+      }
+
+      if (obj.type === 'language' || obj.type === 'tool') {
+        const techs = comp!.tech || [];
+        if (techs.includes(obj.name)) {
+          // Already added
+          return;
+        }
+
+        storeComponents.updateField(comp!.id, 'tech', [...techs, obj.name]);
+      }
+    }
+  };
+
   if (!comp) {
     return <div>not found</div>;
   }
@@ -192,58 +238,101 @@ export const ComponentView: React.FC<{
                   <Icon size="1em" />
                 </div>
               )}
-              {curr?.changes.name || comp.name}
+              {comp.name}
             </Typography.Title>
           )}
           {isEditing && (
             <FakeInput.H1
               size="large"
-              value={curr?.changes.name || comp.name}
+              value={comp.name}
               className={cls.titleInput}
               placeholder="Title..."
-              onChange={(e) => curr?.set('name', e.target.value)}
+              onChange={(e) => {
+                storeComponents.updateField(comp!.id, 'name', e.target.value);
+              }}
             />
           )}
 
           <Typography>
-            {!isEditing && desc && <ContentDoc doc={desc} />}
-            {!desc?.content.length && !isEditing && (
+            {!isEditing && comp.description && (
+              <ContentDoc doc={comp.description} />
+            )}
+            {!comp.description?.content.length && !isEditing && (
               <Typography.Text type="secondary">
                 Write something...
               </Typography.Text>
             )}
             {isEditing && (
               <EditorMini
-                key={comp.name}
-                curr={curr!}
-                field="description"
-                originalContent={comp.description}
+                doc={comp.description}
+                onUpdate={(doc) => {
+                  storeComponents.updateField(comp!.id, 'description', doc);
+                }}
               />
             )}
           </Typography>
 
-          {(comp.tech || hosts.length > 0 || inComp || contains.length > 0) && (
+          {(isEditing ||
+            comp.tech ||
+            hosts.length > 0 ||
+            inComp ||
+            contains.length > 0) && (
             <div className={cls.block}>
-              <Typography.Title level={5}>Stack</Typography.Title>
-              {comp.tech && (
+              <div className={cls.blockTitle}>
+                <Typography.Title level={5}>Stack</Typography.Title>
+
+                <Popover
+                  content={
+                    <Stack
+                      comps={components!}
+                      searchStack={['language', 'tool', 'hosting']}
+                      searchProject={false}
+                      searchComponents={['hosting', 'component']}
+                      usedTech={comp.tech}
+                      onPick={handlePickStack}
+                    />
+                  }
+                  open={openSearch}
+                  onOpenChange={setOpenSearch}
+                  trigger="click"
+                  placement="rightTop"
+                  showArrow={false}
+                  destroyTooltipOnHide={true}
+                >
+                  <Button
+                    className={cls.add}
+                    type="text"
+                    size="small"
+                    onClick={() => setOpenSearch(!openSearch)}
+                  >
+                    <IconPlus /> Add Stack
+                  </Button>
+                </Popover>
+              </div>
+              {(isEditing || comp.tech) && (
                 <Line title="Build with" techs={comp.tech} params={params} />
               )}
 
-              {hosts.length > 0 && (
+              {(isEditing || hosts.length > 0) && (
                 <Line title="Hosted on" comps={hosts} params={params} />
               )}
 
-              {contains.length > 0 && (
+              {(isEditing || contains.length > 0) && (
                 <Line title="Contains" comps={contains} params={params} />
               )}
 
-              {inComp && (
-                <Line title="Run inside" comps={[inComp]} params={params} />
+              {(isEditing || inComp) && (
+                <Line
+                  title="Run inside"
+                  comps={inComp && [inComp]}
+                  params={params}
+                />
               )}
             </div>
           )}
 
-          {(readwrite.length > 0 ||
+          {(isEditing ||
+            readwrite.length > 0 ||
             read.length > 0 ||
             write.length > 0 ||
             receive.length > 0 ||
@@ -252,7 +341,7 @@ export const ComponentView: React.FC<{
             <div className={cls.block}>
               <Typography.Title level={5}>Data</Typography.Title>
 
-              {readwrite.length > 0 && (
+              {(isEditing || readwrite.length > 0) && (
                 <Line
                   title="Read and Write to"
                   comps={readwrite}
@@ -260,25 +349,25 @@ export const ComponentView: React.FC<{
                 />
               )}
 
-              {read.length > 0 && (
+              {(isEditing || read.length > 0) && (
                 <Line title="Read from" comps={read} params={params} />
               )}
 
-              {receiveSend.length > 0 && (
+              {(isEditing || receiveSend.length > 0) && (
                 <Line
                   title="Receive and Send to"
                   comps={receiveSend}
                   params={params}
                 />
               )}
-              {receive.length > 0 && (
+              {(isEditing || receive.length > 0) && (
                 <Line title="Receive from" comps={receive} params={params} />
               )}
-              {send.length > 0 && (
+              {(isEditing || send.length > 0) && (
                 <Line title="Send to" comps={send} params={params} />
               )}
 
-              {write.length > 0 && (
+              {(isEditing || write.length > 0) && (
                 <Line title="Write to" comps={write} params={params} />
               )}
             </div>
@@ -291,7 +380,7 @@ export const ComponentView: React.FC<{
       <Container.Right>
         <Card>
           <GraphContainer>
-            <Graph components={comps} readonly={true} />
+            <Graph readonly={true} />
             <Toolbar position="bottom">
               <Toolbar.Zoom />
             </Toolbar>

@@ -1,7 +1,8 @@
 import { Typography } from 'antd';
-import type { ApiComponent, ApiProject } from 'api/src/types/api';
-import { useEffect, useMemo } from 'react';
+import type { BlockLevelZero } from 'api/src/types/api';
+import { useCallback, useEffect } from 'react';
 
+import { useProjectStore } from '../../../common/store';
 import { Card } from '../../../components/Card';
 import { Container } from '../../../components/Container';
 import { ContentDoc } from '../../../components/Content';
@@ -19,19 +20,13 @@ import { TechnicalAspects } from './TechnicalAspect';
 import cls from './index.module.scss';
 
 export const ProjectHome: React.FC<{
-  proj: ApiProject;
-  comps: ApiComponent[];
   params: RouteProject;
-}> = ({ proj, comps, params }) => {
+}> = ({ params }) => {
   const gref = useGraph();
   const edit = useEdit();
+  const isEditing = edit.isEnabled();
 
-  const curr = useMemo(() => {
-    return edit.get('project', proj.id, proj);
-  }, [edit.isEnabled]);
-  const desc = useMemo(() => {
-    return curr?.changes?.description || proj.description;
-  }, [proj, curr]);
+  const { update, project } = useProjectStore();
 
   useEffect(() => {
     if (!gref) {
@@ -44,40 +39,34 @@ export const ProjectHome: React.FC<{
     }, 500);
   }, []);
 
+  const onUpdate = useCallback((doc: BlockLevelZero) => {
+    update({ ...project!, description: doc });
+  }, []);
+
   return (
     <>
       <Container.Left>
         <Card padded>
           <Typography>
-            {!edit.isEnabled() && <ContentDoc doc={desc} />}
-            {edit.isEnabled() && (
-              <EditorMini
-                curr={curr!}
-                field="description"
-                originalContent={proj.description}
-              />
+            {!isEditing && <ContentDoc doc={project!.description} />}
+            {isEditing && (
+              <EditorMini doc={project!.description} onUpdate={onUpdate} />
             )}
           </Typography>
 
           <div className={cls.block}>
             <Typography.Title level={5}>Technical Aspect</Typography.Title>
-            {comps ? (
-              <TechnicalAspects components={comps} params={params} />
-            ) : (
-              <Typography.Text type="secondary">
-                Nothing to show.
-              </Typography.Text>
-            )}
+            <TechnicalAspects params={params} />
           </div>
 
           <div className={cls.block}>
             <Typography.Title level={5}>Team</Typography.Title>
-            <Team org_id={params.org_id} project_id={proj.id} />
+            <Team org_id={params.org_id} project_id={project!.id} />
           </div>
         </Card>
 
         <Card padded>
-          <ListRFCs project={proj}></ListRFCs>
+          <ListRFCs project={project!}></ListRFCs>
         </Card>
         <Card padded>
           <ListActivity orgId={params.org_id} />
@@ -86,7 +75,7 @@ export const ProjectHome: React.FC<{
       <Container.Right>
         <Card>
           <GraphContainer>
-            <Graph components={comps} readonly={true} />
+            <Graph readonly={true} />
             <Toolbar position="bottom">
               <Toolbar.Zoom />
             </Toolbar>

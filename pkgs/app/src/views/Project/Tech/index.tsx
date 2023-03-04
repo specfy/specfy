@@ -5,7 +5,8 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import type { TechInfo } from '../../../common/component';
-import { supported } from '../../../common/component';
+import { supportedIndexed } from '../../../common/component';
+import { useComponentsStore } from '../../../common/store';
 import { Card } from '../../../components/Card';
 import { Container } from '../../../components/Container';
 import { Graph, GraphContainer } from '../../../components/Graph';
@@ -18,16 +19,21 @@ import cls from './index.module.scss';
 
 export const Tech: React.FC<{
   proj: ApiProject;
-  comps: ApiComponent[];
   params: RouteProject;
-}> = ({ comps, params }) => {
+}> = ({ params }) => {
   const gref = useGraph();
   const route = useParams<Partial<RouteTech>>();
+  const storeComponents = useComponentsStore();
 
+  const [components, setComponents] = useState<ApiComponent[]>();
   const [techname, setTechName] = useState<string>();
   const [usedBy, setUsedBy] = useState<ApiComponent[]>([]);
   const [info, setInfo] = useState<TechInfo>();
   const [Icon, setIcon] = useState<TechInfo['Icon']>();
+
+  useEffect(() => {
+    setComponents(Object.values(storeComponents.components));
+  }, [storeComponents]);
 
   useEffect(() => {
     if (!gref) {
@@ -41,9 +47,13 @@ export const Tech: React.FC<{
   }, []);
 
   useEffect(() => {
-    if (route.tech_slug && route.tech_slug in supported) {
-      setInfo(supported[route.tech_slug]);
-      setIcon(supported[route.tech_slug].Icon);
+    if (!components) {
+      return;
+    }
+
+    if (route.tech_slug && route.tech_slug in supportedIndexed) {
+      setInfo(supportedIndexed[route.tech_slug]);
+      setIcon(supportedIndexed[route.tech_slug].Icon);
     } else {
       setInfo(undefined);
       setIcon(undefined);
@@ -51,7 +61,7 @@ export const Tech: React.FC<{
 
     let name;
     const tmp = [];
-    for (const comp of comps) {
+    for (const comp of components) {
       if (!comp.tech) {
         continue;
       }
@@ -66,7 +76,7 @@ export const Tech: React.FC<{
 
     if (name) setTechName(name);
     setUsedBy(tmp);
-  }, [comps]);
+  }, [components]);
 
   if (!techname) {
     return <div>not found</div>;
@@ -94,7 +104,7 @@ export const Tech: React.FC<{
       <Container.Right>
         <Card>
           <GraphContainer>
-            <Graph components={comps} readonly={true} />
+            <Graph readonly={true} />
             <Toolbar position="bottom">
               <Toolbar.Zoom />
             </Toolbar>

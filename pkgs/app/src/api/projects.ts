@@ -9,6 +9,7 @@ import type {
 import { useQuery } from 'react-query';
 
 import { queryClient } from '../common/query';
+import originalStore from '../common/store';
 
 import { fetchApi } from './fetch';
 
@@ -62,6 +63,8 @@ export function useGetProject(opts: ReqProjectParams) {
       const { json } = await fetchApi<ResGetProject>(
         `/projects/${opts.org_id}/${opts.project_slug}`
       );
+
+      originalStore.add(json.data);
 
       return json;
     },

@@ -1,4 +1,3 @@
-import { LoadingOutlined } from '@ant-design/icons';
 import { IconGitPullRequestDraft } from '@tabler/icons-react';
 import { App, Button, Form, Input, Typography } from 'antd';
 import type {
@@ -10,12 +9,16 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { createRevision } from '../../../../api/revisions';
-import { diffTwoBlob, proposeTitle } from '../../../../common/diff';
+import { proposeTitle } from '../../../../common/diff';
+import {
+  useStagingStore,
+  useProjectStore,
+  useComponentsStore,
+  useDocumentsStore,
+} from '../../../../common/store';
 import { Card } from '../../../../components/Card';
-import type { ComputedForDiff } from '../../../../components/DiffRow';
 import { DiffRow } from '../../../../components/DiffRow';
 import { Editor } from '../../../../components/Editor';
-import type { EditContextInterface } from '../../../../hooks/useEdit';
 import { useEdit } from '../../../../hooks/useEdit';
 import type { RouteProject } from '../../../../types/routes';
 
@@ -31,11 +34,12 @@ export const ProjectRevisionCreate: React.FC<{
 
   // Edition
   const edit = useEdit();
-  const changes = edit.changes;
+  const { project } = useProjectStore();
+  const { components } = useComponentsStore();
+  const { documents } = useDocumentsStore();
+  const staging = useStagingStore();
 
   // Local
-  const [lastComputed, setLastComputed] = useState<number>();
-  const [computed, setComputed] = useState<ComputedForDiff[]>([]);
   const [to] = useState(() => `/org/${params.org_id}/${params.project_slug}`);
 
   // Form
@@ -49,31 +53,8 @@ export const ProjectRevisionCreate: React.FC<{
 
   // Compute changes
   useEffect(() => {
-    if (!changes || !edit.lastUpdate) {
-      return;
-    }
-    if (lastComputed && edit.lastUpdate.getTime() <= lastComputed) {
-      return;
-    }
-
-    const cleaned: EditContextInterface['changes'] = [];
-    const tmps: ComputedForDiff[] = [];
-
-    // Remove non modified fields
-    for (const change of changes) {
-      const res = diffTwoBlob(change, change.previous);
-      tmps.push(...res.computed);
-      cleaned.push(res.clean);
-    }
-
-    const now = new Date();
-    setComputed(tmps);
-    setLastComputed(now.getTime());
-    setTimeout(() => {
-      edit.setChanges(cleaned, now);
-    }, 1);
-    setTitle(proposeTitle(tmps));
-  }, [changes, edit.lastUpdate]);
+    setTitle(proposeTitle(staging.diffs));
+  }, [staging]);
 
   // Can submit form?
   useEffect(() => {
@@ -97,7 +78,7 @@ export const ProjectRevisionCreate: React.FC<{
 
   const onSubmit = async () => {
     const blobs: ReqPostRevision['blobs'] = [];
-    for (const change of changes) {
+    for (const change of staging.clean) {
       blobs.push({
         type: change.type,
         typeId: change.typeId,
@@ -117,17 +98,14 @@ export const ProjectRevisionCreate: React.FC<{
 
     // Discard local changes
     edit.enable(false);
-    edit.setChanges([], new Date());
+    staging.update([], []);
+    // TODO: clean models in all stores
 
     message.success('Revision created');
     navigate(`/org/${params.org_id}/${params.project_slug}/revisions/${id}`);
   };
 
-  if (!computed) {
-    return <LoadingOutlined />;
-  }
-
-  if (!edit.lastUpdate || edit.changes.length === 0 || computed.length === 0) {
+  if (staging.diffs.length === 0) {
     return <>No changes to commit...</>;
   }
 
@@ -169,7 +147,7 @@ export const ProjectRevisionCreate: React.FC<{
       </div>
       <div className={cls.right}></div>
       <div className={cls.staged}>
-        {computed.map((c) => {
+        {staging.diffs.map((c) => {
           return (
             <DiffRow key={c.typeId} comp={c} url={to} onRevert={handleRevert} />
           );

@@ -1,4 +1,3 @@
-// import { IconHistory } from '@tabler/icons-react';
 import { Bold } from '@tiptap/extension-bold';
 import { CharacterCount } from '@tiptap/extension-character-count';
 import { Code } from '@tiptap/extension-code';
@@ -10,22 +9,13 @@ import { Paragraph } from '@tiptap/extension-paragraph';
 import { Placeholder } from '@tiptap/extension-placeholder';
 import { Text } from '@tiptap/extension-text';
 import { useEditor, EditorContent } from '@tiptap/react';
-// import { Button, Tooltip } from 'antd';
 import type { BlockLevelZero } from 'api/src/types/api';
-// import classnames from 'classnames';
-import { useState, useEffect } from 'react';
-
-import type { EditContextSub } from '../../hooks/useEdit';
+import type React from 'react';
+import { useMemo, useEffect } from 'react';
 
 import { BubbleMenu } from './BubbleMenu';
 import { removeEmptyContent } from './helpers';
 import cls from './mini.module.scss';
-
-interface Prop<T extends EditContextSub = EditContextSub> {
-  curr: T;
-  field: any;
-  originalContent: BlockLevelZero;
-}
 
 const Editor: React.FC<{
   content: BlockLevelZero;
@@ -103,33 +93,18 @@ const Editor: React.FC<{
 //   );
 // };
 
-export const EditorMini: (p: Prop) => React.ReactElement<Prop> = ({
-  curr,
-  field,
-  originalContent,
-}) => {
-  const [content, setContent] = useState<BlockLevelZero>(() => {
-    // @ts-expect-error
-    return curr?.changes[field] || originalContent;
-  });
-
-  const [isUpdated, setIsUpdated] = useState(false);
-
-  // const handleRevert = () => {
-  //   curr?.revert(field);
-  //   setContent({ ...originalContent });
-  //   setIsUpdated(false);
-  // };
+export const EditorMini: React.FC<{
+  doc: BlockLevelZero;
+  onUpdate: (content: BlockLevelZero) => void;
+}> = ({ doc, onUpdate }) => {
+  // To prevent rerender
+  const content = useMemo(() => {
+    return doc;
+  }, []);
 
   return (
     <div className={cls.mini}>
-      <Editor
-        content={content}
-        onUpdate={(json) => {
-          curr?.set(field, json as any);
-          setIsUpdated(true);
-        }}
-      />
+      <Editor content={content} onUpdate={onUpdate} />
       {/* <ToolbarMini isUpdated={isUpdated} onRevert={handleRevert} /> */}
     </div>
   );

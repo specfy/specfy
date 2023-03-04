@@ -1,5 +1,11 @@
-import type { ReqListComponents, ResListComponents } from 'api/src/types/api';
+import type {
+  ApiComponent,
+  ReqListComponents,
+  ResListComponents,
+} from 'api/src/types/api';
 import { useQuery } from 'react-query';
+
+import originalStore from '../common/store';
 
 import { fetchApi } from './fetch';
 
@@ -10,7 +16,7 @@ export function useListComponents(
   return useQuery({
     enabled: !!(opts.org_id && opts.project_id),
     queryKey: ['listComponents', opts.org_id, slug],
-    queryFn: async (): Promise<ResListComponents> => {
+    queryFn: async (): Promise<ApiComponent[]> => {
       const { json } = await fetchApi<
         ResListComponents,
         Partial<ReqListComponents>
@@ -18,7 +24,10 @@ export function useListComponents(
         qp: opts,
       });
 
-      return json;
+      return json.data.map((component) => {
+        originalStore.add(component);
+        return component;
+      });
     },
   });
 }

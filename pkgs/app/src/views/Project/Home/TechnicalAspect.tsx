@@ -2,19 +2,30 @@ import { Typography } from 'antd';
 import type { ApiComponent } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
 
+import { useComponentsStore } from '../../../common/store';
 import type { RouteProject } from '../../../types/routes';
 import { Line } from '../Component/Line';
 
 export const TechnicalAspects: React.FC<{
-  components: ApiComponent[];
   params: RouteProject;
-}> = ({ components, params }) => {
+}> = ({ params }) => {
+  const storeComponents = useComponentsStore();
+
   const [hosts, setHosts] = useState<ApiComponent[]>([]);
   const [techs, setTechs] = useState<string[]>([]);
   const [tp, setTP] = useState<ApiComponent[]>([]);
   const [projects, setProjects] = useState<ApiComponent[]>([]);
+  const [components, setComponents] = useState<ApiComponent[]>();
 
   useEffect(() => {
+    setComponents(Object.values(storeComponents.components));
+  }, [storeComponents]);
+
+  useEffect(() => {
+    if (!components) {
+      return;
+    }
+
     const _techs = new Set<string>();
     const _hosts = [];
     const _tp = [];
@@ -40,6 +51,10 @@ export const TechnicalAspects: React.FC<{
     setTP(_tp);
     setProjects(_projects);
   }, [components]);
+
+  if (!components) {
+    return null;
+  }
 
   return (
     <>

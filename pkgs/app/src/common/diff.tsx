@@ -2,9 +2,8 @@ import { diffJson, diffWordsWithSpace } from 'diff';
 import { renderToString } from 'react-dom/server';
 
 import { ContentDoc } from '../components/Content';
-import type { ComputedForDiff } from '../components/DiffRow';
-import type { TmpBlob } from '../hooks/useEdit';
-import { isDiff } from '../hooks/useEdit';
+
+import type { ComputedForDiff, TmpBlob } from './store';
 
 export function proposeTitle(computed: ComputedForDiff[]): string {
   if (computed.length === 0) {
@@ -35,21 +34,25 @@ export function proposeTitle(computed: ComputedForDiff[]): string {
   return '';
 }
 
-export function diffTwoBlob(
-  { type, typeId, blob }: Pick<TmpBlob, 'blob' | 'type' | 'typeId'>,
-  previous: Record<string, any>
-) {
+export function isDiffSimple(a: any, b: any): boolean {
+  return JSON.stringify(a) !== JSON.stringify(b);
+}
+
+export function diffTwoBlob({ blob, previous, type, typeId }: TmpBlob): {
+  clean: TmpBlob;
+  computed: ComputedForDiff[];
+} {
   const clean: TmpBlob = {
     type,
     typeId,
-    previous: (previous || {}) as any,
+    previous,
     blob: {} as any,
   };
   const computed: ComputedForDiff[] = [];
 
   for (const [key, value] of Object.entries(blob)) {
     if (previous) {
-      if (!isDiff(previous[key], value)) {
+      if (!isDiffSimple(previous[key], value)) {
         continue;
       }
       if (!previous[key] && !value) {

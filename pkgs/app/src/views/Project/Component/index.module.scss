@@ -30,7 +30,9 @@
 .line {
   display: grid;
   grid-template-columns: 150px auto;
+  align-items: flex-start;
   margin-bottom: $p-2xl;
+  line-height: $line-height-m;
 
   .label {
     font-size: $font-s;
@@ -71,4 +73,14 @@
 
 .block {
   margin-top: 32px;
+}
+
+.blockTitle {
+  display: flex;
+  gap: $p-l;
+  align-items: baseline;
+}
+
+.add {
+  color: $gray-600;
 }

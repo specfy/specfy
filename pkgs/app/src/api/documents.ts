@@ -7,6 +7,8 @@ import type {
 } from 'api/src/types/api';
 import { useQuery } from 'react-query';
 
+import originalStore from '../common/store';
+
 import { fetchApi } from './fetch';
 
 export function useListDocuments(opts: ReqListDocuments) {
@@ -37,6 +39,7 @@ export function useGetDocument(opts: ReqDocumentParams & ReqGetDocument) {
         }
       );
 
+      originalStore.add(json.data);
       return json;
     },
   });

@@ -9,11 +9,10 @@ import {
 } from '@tabler/icons-react';
 import { Badge, Button, Tooltip } from 'antd';
 import type { ApiComponent, ApiProject } from 'api/src/types/api';
-import type { DBComponent } from 'api/src/types/db/components';
 import classnames from 'classnames';
 import { useCallback, useEffect, useState } from 'react';
-import { useDebounce } from 'react-use';
 
+import { useComponentsStore } from '../../../common/store';
 import type { TmpBlobComponent } from '../../../hooks/useEdit';
 import { useEdit } from '../../../hooks/useEdit';
 import { useGraph } from '../../../hooks/useGraph';
@@ -34,6 +33,7 @@ export const GraphEdit: React.FC<{
   proj: ApiProject;
   comps: ApiComponent[];
 }> = ({ comps }) => {
+  const storeComponents = useComponentsStore();
   const g = useGraph();
 
   // Edit mode
@@ -62,21 +62,22 @@ export const GraphEdit: React.FC<{
         return;
       }
 
-      const has = edit.get('component', id, comp);
-      const edges: DBComponent['edges'] = has.changes.edges
-        ? has.changes.edges
-        : JSON.parse(JSON.stringify(comp.edges));
+      // Because objects are read only we copy, modify and apply the modification in zustand again
+      const edges: ApiComponent['edges'] = JSON.parse(
+        JSON.stringify(comp.edges)
+      );
       const edge = edges.find((ed) => ed.to === targetId);
       if (!edge) {
         return;
       }
 
       edge.vertices = e.current;
-      has.set('edges', edges);
+      storeComponents.updateField(comp.id, 'edges', edges);
       return;
     },
     [edit]
   );
+
   const updateNode = useCallback(
     (e: Cell.EventArgs['change:*']) => {
       if (!e.cell.isNode()) {
@@ -90,8 +91,7 @@ export const GraphEdit: React.FC<{
         return;
       }
 
-      const has = edit.get('component', id, comp);
-      has.set('display', {
+      storeComponents.updateField(id, 'display', {
         ...comp.display,
         pos: { ...e.cell.position(), ...e.cell.size() },
       });
@@ -230,33 +230,33 @@ export const GraphEdit: React.FC<{
     };
   }, [g, isEditing]);
 
-  // Debounce change registry
-  useDebounce(
-    () => {
-      const json = g.getRef()?.toJSON();
-      if (!json) {
-        return;
-      }
+  // // Debounce change registry
+  // useDebounce(
+  //   () => {
+  //     const json = g.getRef()?.toJSON();
+  //     if (!json) {
+  //       return;
+  //     }
 
-      const tmp: ApiComponent[] = [];
-      for (const cell of Object.values(json.cells)) {
-        const comp = comps.find((c) => c.id === cell.id);
-        if (!comp) {
-          continue;
-        }
+  //     const tmp: ApiComponent[] = [];
+  //     for (const cell of Object.values(json.cells)) {
+  //       const comp = comps.find((c) => c.id === cell.id);
+  //       if (!comp) {
+  //         continue;
+  //       }
 
-        if (!edit.hasChange('component', comp.id)) {
-          continue;
-        }
+  //       if (!edit.hasChange('component', comp.id)) {
+  //         continue;
+  //       }
 
-        tmp.push(comp);
-      }
+  //       tmp.push(comp);
+  //     }
 
-      setChanged(tmp);
-    },
-    500,
-    [edit.lastUpdate]
-  );
+  //     setChanged(tmp);
+  //   },
+  //   500,
+  //   [edit.lastUpdate]
+  // );
 
   // Size change
   const handleSize = (type: 'height' | 'width', value: string) => {

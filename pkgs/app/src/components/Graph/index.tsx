@@ -4,6 +4,7 @@ import type { ApiComponent } from 'api/src/types/api';
 import { useEffect, useRef, useState } from 'react';
 import { useDebounce } from 'react-use';
 
+import { useComponentsStore } from '../../common/store';
 import { useGraph } from '../../hooks/useGraph';
 
 import { registerCustomNode } from './CustomNode';
@@ -12,12 +13,15 @@ import cls from './index.module.scss';
 
 import '@antv/x6-react-components/es/toolbar/style/index.css';
 
-export interface GraphProps {
-  components: ApiComponent[];
+export const Graph: React.FC<{
+  memoize?: boolean;
   readonly?: boolean;
-  toolbarFull?: boolean;
-}
-export const Graph: React.FC<GraphProps> = ({ components, readonly }) => {
+}> = ({ memoize, readonly }) => {
+  // Data
+  const [components, setComponents] = useState<ApiComponent[]>();
+  const storeComponents = useComponentsStore();
+
+  // Graph
   const gref = useGraph();
 
   const container = useRef<HTMLDivElement>(null);
@@ -30,6 +34,17 @@ export const Graph: React.FC<GraphProps> = ({ components, readonly }) => {
 
   // ---- Init
   useEffect(() => {
+    if (memoize && components) {
+      return;
+    }
+    setComponents(Object.values(storeComponents.components));
+  }, [storeComponents]);
+
+  useEffect(() => {
+    if (!components) {
+      return;
+    }
+
     const compById = new Map<string, ApiComponent>();
     const _hostsById = new Set<string>();
 
@@ -169,7 +184,7 @@ export const Graph: React.FC<GraphProps> = ({ components, readonly }) => {
       setMouseOver(false);
     });
 
-    componentsToGraph(graph, components);
+    componentsToGraph(graph, components!);
 
     const cancel = setTimeout(() => {
       graph.center();

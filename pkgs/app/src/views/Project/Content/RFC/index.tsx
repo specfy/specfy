@@ -7,6 +7,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import { useGetDocument } from '../../../../api/documents';
+import { useDocumentsStore } from '../../../../common/store';
 import { Card } from '../../../../components/Card';
 import { ContentDoc } from '../../../../components/Content';
 import { Editor } from '../../../../components/Editor';
@@ -31,28 +32,24 @@ export const RFC: React.FC<{
     type_id: p.document_type_id!,
     org_id: p.org_id!,
   });
+  const documentsStore = useDocumentsStore();
 
   // Edition
   const edit = useEdit();
-  const curr = useMemo(() => {
-    if (!item) {
-      return null;
-    }
-    return edit.get('document', item.id, item);
-  }, [edit.isEnabled, item]);
-  const content = useMemo(() => {
-    return curr?.changes.content || item?.content;
-  }, [item, curr]);
+  const isEditing = isEditing;
 
   useEffect(() => {
-    setItem(doc.data?.data);
+    if (doc.data?.data) {
+      documentsStore.add([doc.data.data]);
+      setItem(documentsStore.select(doc.data.data.slug));
+    }
   }, [doc.isLoading]);
 
   if (doc.isLoading) {
     return null;
   }
 
-  if (!item || !content) {
+  if (!item) {
     return <div>not found</div>;
   }
 
@@ -71,7 +68,7 @@ export const RFC: React.FC<{
               updated <Time time={item.updatedAt} />
             </div>
           </Space>
-          {!edit.isEnabled() && (
+          {!isEditing && (
             <div>
               {item.tldr && <p className={cls.tldr}>{item.tldr}</p>}
 
@@ -98,18 +95,18 @@ export const RFC: React.FC<{
           )}
 
           <Typography className={cls.content}>
-            {!edit.isEnabled() && <ContentDoc doc={content} />}
-            {!edit.isEnabled() && item.content.content.length <= 0 && (
+            {!isEditing && <ContentDoc doc={item.content} />}
+            {!isEditing && item.content.content.length <= 0 && (
               <Typography.Text type="secondary">
                 Write something...
               </Typography.Text>
             )}
-            {edit.isEnabled() && (
+            {isEditing && (
               <Editor
-                content={content}
+                content={item.content}
                 minHeight="500px"
                 onUpdate={(json) => {
-                  curr?.set('content', json);
+                  documentsStore.updateField(item.id, 'content', json);
                 }}
               />
             )}

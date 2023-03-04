@@ -1,19 +1,20 @@
 import { IconCirclePlus } from '@tabler/icons-react';
 import type { MenuProps } from 'antd';
 import { Avatar, Button, Divider, Dropdown, Skeleton, Switch } from 'antd';
-import type { ApiComponent, ApiOrg, ApiProject } from 'api/src/types/api';
+import type { ApiOrg, ApiProject } from 'api/src/types/api';
 import classnames from 'classnames';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, Route, Routes, useParams } from 'react-router-dom';
-import { useDebounce } from 'react-use';
 
 import { useListComponents } from '../../api/components';
 import { useListOrgs } from '../../api/orgs';
 import { useGetProject } from '../../api/projects';
+import { useComponentsStore, useProjectStore } from '../../common/store';
 import { BigHeading, BigHeadingLoading } from '../../components/BigHeading';
 import { Card } from '../../components/Card';
 import { Container } from '../../components/Container';
 import { ProjectMenu } from '../../components/ProjectMenu';
+import { Staging } from '../../components/ProjectMenu/Staging';
 import { Time } from '../../components/Time';
 import { useEdit } from '../../hooks/useEdit';
 import type { RouteProject } from '../../types/routes';
@@ -50,19 +51,12 @@ export const Project: React.FC = () => {
     org_id: params.org_id,
     project_id: proj?.id,
   });
-  const [comps, setComps] = useState<ApiComponent[]>();
+  const storeProject = useProjectStore();
+  const storeComponents = useComponentsStore();
 
   // Edit mode
   const edit = useEdit();
   const isEditing = edit.isEnabled();
-  const [updateCount, setUpdateCount] = useState(0);
-  useDebounce(
-    () => {
-      setUpdateCount(edit.getNumberOfChanges());
-    },
-    250,
-    [edit.lastUpdate]
-  );
   const createItems = useMemo<MenuProps['items']>(() => {
     return [
       {
@@ -81,9 +75,14 @@ export const Project: React.FC = () => {
   }, [getOrgs.isFetched]);
   useEffect(() => {
     setProj(getProj.data?.data);
+    if (getProj.data?.data) {
+      storeProject.update(getProj.data.data);
+    }
   }, [getProj.isFetched]);
   useEffect(() => {
-    setComps(getComps.data?.data);
+    if (getComps.data) {
+      storeComponents.fill(getComps.data);
+    }
   }, [getComps.isFetched]);
 
   function handleEditMode(val: boolean) {
@@ -113,7 +112,7 @@ export const Project: React.FC = () => {
     );
   }
 
-  if (!proj || !comps) {
+  if (!proj) {
     return <div>not found</div>;
   }
 
@@ -137,10 +136,7 @@ export const Project: React.FC = () => {
                   />
                   {isEditing ? (
                     <>
-                      <Link to={`${linkSelf}/revisions/current`}>
-                        {updateCount} pending{' '}
-                        {updateCount > 1 ? 'changes' : 'change'}
-                      </Link>
+                      <Staging link={linkSelf} />
                       <Dropdown
                         menu={{ items: createItems }}
                         placement="bottomRight"
@@ -192,17 +188,14 @@ export const Project: React.FC = () => {
 
       <Container>
         <Routes>
-          <Route
-            path="/"
-            element={<ProjectHome proj={proj} comps={comps} params={params} />}
-          />
+          <Route path="/" element={<ProjectHome params={params} />} />
           <Route
             path="/content"
             element={<ProjectContentList proj={proj} params={params} />}
           />
           <Route
             path="/graph"
-            element={<ProjectGraph proj={proj} params={params} comps={comps} />}
+            element={<ProjectGraph proj={proj} params={params} />}
           />
           <Route
             path="/activity"
@@ -210,7 +203,7 @@ export const Project: React.FC = () => {
           />
           <Route
             path="/t/:tech_slug"
-            element={<Tech proj={proj} comps={comps} params={params} />}
+            element={<Tech proj={proj} params={params} />}
           />
           <Route
             path="/rfc/:document_type_id/:document_slug"
@@ -218,9 +211,7 @@ export const Project: React.FC = () => {
           />
           <Route
             path="/c/:component_slug"
-            element={
-              <ComponentView proj={proj} comps={comps} params={params} />
-            }
+            element={<ComponentView proj={proj} params={params} />}
           />
           <Route
             path="/settings/*"
