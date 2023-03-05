@@ -36,7 +36,7 @@ export const RFC: React.FC<{
 
   // Edition
   const edit = useEdit();
-  const isEditing = isEditing;
+  const isEditing = edit.isEnabled();
 
   useEffect(() => {
     if (doc.data?.data) {
