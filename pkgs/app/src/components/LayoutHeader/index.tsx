@@ -112,7 +112,6 @@ export const LayoutHeader: React.FC = () => {
           >
             <Button
               type="text"
-              shape="default"
               className={cls.avatar}
               icon={<IconUserCircle />}
             ></Button>

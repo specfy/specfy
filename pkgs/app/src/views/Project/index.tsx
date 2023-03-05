@@ -24,7 +24,7 @@ import { ComponentView } from './Component';
 import { ProjectContentList } from './Content/List';
 import { RFC } from './Content/RFC';
 import { ProjectGraph } from './Graph';
-import { ProjectHome } from './Home';
+import { ProjectOverview } from './Overview';
 import { ProjectRevisionCreate } from './Revisions/Create';
 import { ProjectRevisionsList } from './Revisions/List';
 import { ProjectRevisionsShow } from './Revisions/Show';
@@ -36,10 +36,10 @@ export const Project: React.FC = () => {
   const tmpParams = useParams<Partial<RouteProject>>();
   const params = tmpParams as RouteProject;
   const linkOrg = useMemo(() => {
-    return `/org/${params.org_id}`;
+    return `/${params.org_id}`;
   }, [params]);
   const linkSelf = useMemo(() => {
-    return `/org/${params.org_id}/${params.project_slug}`;
+    return `/${params.org_id}/${params.project_slug}`;
   }, [params]);
 
   // Data fetch
@@ -188,7 +188,7 @@ export const Project: React.FC = () => {
 
       <Container>
         <Routes>
-          <Route path="/" element={<ProjectHome params={params} />} />
+          <Route path="/" element={<ProjectOverview params={params} />} />
           <Route
             path="/content"
             element={<ProjectContentList proj={proj} params={params} />}

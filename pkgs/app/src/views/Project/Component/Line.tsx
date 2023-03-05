@@ -22,7 +22,7 @@ export const Line: React.FC<{
           return (
             <Link
               key={tech}
-              to={`/org/${params.org_id}/${params.project_slug}/t/${name}`}
+              to={`/${params.org_id}/${params.project_slug}/t/${name}`}
               className={cls.item}
             >
               {Icon && <Icon size="1em" />}
@@ -36,7 +36,7 @@ export const Line: React.FC<{
           return (
             <Link
               key={c.id}
-              to={`/org/${params.org_id}/${params.project_slug}/c/${c.slug}`}
+              to={`/${params.org_id}/${params.project_slug}/c/${c.slug}`}
               className={cls.item}
             >
               {Icon && <Icon size="1em" />}

@@ -19,7 +19,7 @@ import { Team } from './Team';
 import { TechnicalAspects } from './TechnicalAspect';
 import cls from './index.module.scss';
 
-export const ProjectHome: React.FC<{
+export const ProjectOverview: React.FC<{
   params: RouteProject;
 }> = ({ params }) => {
   const gref = useGraph();

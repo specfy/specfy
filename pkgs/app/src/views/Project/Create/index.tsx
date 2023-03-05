@@ -42,7 +42,7 @@ export const ProjectCreate: React.FC = () => {
     const { slug } = await createProject(values);
     message.success('Project created');
 
-    navigate(`/org/${values.orgId}/${slug}`);
+    navigate(`/${values.orgId}/${slug}`);
   };
 
   const onFinishFailed = (errorInfo: any) => {

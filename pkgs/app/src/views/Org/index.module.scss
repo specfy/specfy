@@ -1,0 +1,29 @@
+@import "../../styles/theme";
+
+.container {
+  display: grid;
+}
+
+.header {
+  display: flex;
+  gap: $p-2xl;
+  padding: $p-2xl;
+  border: 1px solid $gray-200;
+}
+
+.avatar {
+  width: 100px;
+  height: 100px;
+  background-color: $gray-200;
+  border-radius: $border-radius;
+}
+
+.description {
+  width: 100%;
+  padding: $p-m 0;
+}
+
+.menu {
+  // margin: $p-3xl 0 0 (-$p-xl);
+  margin: ($p-5xl - 2px) 0 0 (-$p);
+}

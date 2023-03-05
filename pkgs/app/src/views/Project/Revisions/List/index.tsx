@@ -130,7 +130,7 @@ export const ProjectRevisionsList: React.FC<{
                 return (
                   <>
                     <Link
-                      to={`/org/${params.org_id}/${params.project_slug}/revisions/${item.id}`}
+                      to={`/${params.org_id}/${params.project_slug}/revisions/${item.id}`}
                       relative="path"
                       className={cls.title}
                     >

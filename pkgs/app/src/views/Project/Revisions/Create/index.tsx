@@ -41,7 +41,7 @@ export const ProjectRevisionCreate: React.FC<{
   const staging = useStagingStore();
 
   // Local
-  const [to] = useState(() => `/org/${params.org_id}/${params.project_slug}`);
+  const [to] = useState(() => `/${params.org_id}/${params.project_slug}`);
 
   // Form
   const [canSubmit, setCanSubmit] = useState<boolean>(false);
@@ -109,7 +109,7 @@ export const ProjectRevisionCreate: React.FC<{
     // TODO: clean models in all stores
 
     message.success('Revision created');
-    navigate(`/org/${params.org_id}/${params.project_slug}/revisions/${id}`);
+    navigate(`/${params.org_id}/${params.project_slug}/revisions/${id}`);
   };
 
   if (staging.diffs.length === 0) {

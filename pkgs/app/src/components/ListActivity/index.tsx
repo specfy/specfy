@@ -141,7 +141,7 @@ export const Update: React.FC<{ evt: DBEvent; orgId: string }> = ({
     target = (
       <Link
         className={cls.linkTarget}
-        to={`/org/${orgId}/${pl.project.slug}/c/${pl.id}-${pl.slug}`}
+        to={`/${orgId}/${pl.project.slug}/c/${pl.id}-${pl.slug}`}
       >
         {pl.name}
       </Link>

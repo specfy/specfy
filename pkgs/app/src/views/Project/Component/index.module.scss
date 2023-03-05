@@ -31,7 +31,9 @@
   display: grid;
   grid-template-columns: 150px auto;
   align-items: flex-start;
+
   margin-bottom: $p-2xl;
+
   line-height: $line-height-m;
 
   .label {

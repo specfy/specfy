@@ -214,7 +214,7 @@ export async function seed() {
               marks: [
                 {
                   attrs: {
-                    href: 'http://localhost:5173/org/algolia/crawler',
+                    href: 'http://localhost:5173/algolia/crawler',
                     target: '_blank',
                   },
                   type: 'link',

@@ -70,7 +70,7 @@ export const ProjectRevisionsShow: React.FC<{
   const [blobs, setBlobs] = useState<ResListRevisionBlobs['data']>();
   const [checks, setChecks] = useState<ResCheckRevision['data']>();
   const [computed, setComputed] = useState<ComputedForDiff[]>([]);
-  const [to] = useState(() => `/org/${params.org_id}/${params.project_slug}`);
+  const [to] = useState(() => `/${params.org_id}/${params.project_slug}`);
   const qp = {
     org_id: params.org_id,
     project_id: proj.id,

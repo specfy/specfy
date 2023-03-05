@@ -9,18 +9,31 @@
 
   // border-bottom: 1px solid $gray-4;
   line-height: 53px !important;
+  color: white;
 
-  background: white !important;
-}
+  background: $slate-800 !important;
 
-.orgSelect {
-  color: $gray-6;
+  :global {
+    .ant-btn {
+      color: white;
+
+      &.ant-btn-text {
+        &:hover {
+          color: $gray-100;
+          background-color: $slate-700;
+        }
+      }
+    }
+
+    .ant-divider {
+      border-inline-start: 1px solid rgb(255 255 255 / 20%);
+    }
+  }
 }
 
 .avatar {
   margin-left: 16px;
   color: $gray-8;
-  background-color: $gray-3 !important;
 
   >span {
     background-color: transparent;
@@ -39,6 +52,7 @@
 
   img {
     height: 35px;
+    filter: invert(1);
   }
 }
 
@@ -49,6 +63,8 @@
 
   margin-top: -2px;
   padding-right: 8px;
+
+  color: inherit;
 }
 
 .menu {

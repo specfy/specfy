@@ -1,9 +1,9 @@
 import {
+  IconApps,
   IconBolt,
   IconBook,
   IconHistory,
   IconHome,
-  IconSchema,
   IconSettings,
 } from '@tabler/icons-react';
 import { Badge, Menu } from 'antd';
@@ -21,7 +21,7 @@ export const ProjectMenu: React.FC<{
   params: RouteProject;
 }> = ({ proj, params }) => {
   const linkSelf = useMemo(() => {
-    return `/org/${params.org_id}/${params.project_slug}`;
+    return `/${params.org_id}/${params.project_slug}`;
   }, [params]);
   const revisions = useListRevisions({
     org_id: params.org_id,
@@ -35,13 +35,13 @@ export const ProjectMenu: React.FC<{
   const menu = useMemo(() => {
     return [
       {
-        key: 'home',
+        key: 'overview',
         label: (
           <Link to={linkSelf} className={cls.link}>
             <span>
               <IconHome />
             </span>
-            Home
+            Overview
           </Link>
         ),
       },
@@ -61,7 +61,7 @@ export const ProjectMenu: React.FC<{
         label: (
           <Link to={`${linkSelf}/graph`} className={cls.link}>
             <span>
-              <IconSchema />
+              <IconApps />
             </span>
             Graph
           </Link>
@@ -75,7 +75,7 @@ export const ProjectMenu: React.FC<{
               <IconHistory />
             </span>
             <div className={cls.badged}>
-              Revisions{' '}
+              Revisions
               <Badge
                 count={revisions.data?.pagination.totalItems}
                 showZero={false}
@@ -123,7 +123,7 @@ export const ProjectMenu: React.FC<{
     } else if (location.pathname.match(/settings/)) {
       setOpen('settings');
     } else {
-      setOpen('home');
+      setOpen('overview');
     }
   }, [location]);
 

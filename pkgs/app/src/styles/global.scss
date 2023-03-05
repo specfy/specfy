@@ -232,6 +232,51 @@ h4.ant-typography {
 
 // Menu
 .ant-menu {
+  .ant-menu-item {
+    padding-inline: $p-s;
+
+    &::after {
+      display: none;
+    }
+
+    a {
+      display: flex;
+      gap: $p-m;
+      align-items: center;
+
+      padding: $p-xs $p-l;
+
+      font-size: $font;
+      line-height: $line-height-m;
+
+      border-radius: 4px;
+
+      transition: background-color 0.25s ease-in-out;
+
+      &:hover {
+        text-decoration: none;
+        background-color: rgba($gray-200, 50%) !important;
+      }
+    }
+
+    &.ant-menu-item-selected {
+      a {
+        background-color: rgba($gray-200, 50%) !important;
+      }
+    }
+
+    .ant-badge-count,
+    a:hover .ant-badge-count {
+      color: $gray-500;
+      background-color: $gray-200;
+    }
+  }
+
+  &.ant-menu-horizontal {
+    border: none;
+  }
+
+
   &.ant-menu-light {
     background-color: transparent;
 

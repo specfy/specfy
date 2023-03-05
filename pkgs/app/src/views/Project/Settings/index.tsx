@@ -19,7 +19,7 @@ export const ProjectSettings: React.FC<{
 
   // Menu
   const linkSelf = useMemo(() => {
-    return `/org/${params.org_id}/${params.project_slug}/settings`;
+    return `/${params.org_id}/${params.project_slug}/settings`;
   }, [params]);
   const [open, setOpen] = useState<string>('');
 

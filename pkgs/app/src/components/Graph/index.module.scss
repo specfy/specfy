@@ -2,10 +2,13 @@
 
 .container {
   position: relative;
+
+  display: grid;
+
   height: 100%;
   min-height: 450px;
+
   font-weight: 300;
-  display: grid;
 
   &:hover {
     .menu {

@@ -31,7 +31,7 @@ export const ListProjects: React.FC = () => {
               <Skeleton title={false} loading={false} active>
                 <List.Item.Meta
                   avatar={
-                    <Link to={`/org/${p.org_id}/${item.slug}`} relative="path">
+                    <Link to={`/${p.org_id}/${item.slug}`} relative="path">
                       <AvatarAuto
                         className={cls.avatar}
                         name={item.name}
@@ -40,7 +40,7 @@ export const ListProjects: React.FC = () => {
                     </Link>
                   }
                   title={
-                    <Link to={`/org/${p.org_id}/${item.slug}`} relative="path">
+                    <Link to={`/${p.org_id}/${item.slug}`} relative="path">
                       {item.name}
                     </Link>
                   }

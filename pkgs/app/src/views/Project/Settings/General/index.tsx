@@ -38,7 +38,7 @@ export const SettingsGeneral: React.FC<{
     await deleteProject(params);
     message.success('Project deleted');
 
-    navigate(`/org/${params.org_id}`);
+    navigate(`/${params.org_id}`);
   };
 
   return (
@@ -60,7 +60,7 @@ export const SettingsGeneral: React.FC<{
                 <div className={cls.desc}>
                   The project is accessible at{' '}
                   <em>
-                    https://specfy.com/org/
+                    https://specfy.com/
                     {proj.orgId}/<strong>{proj.slug}</strong>
                   </em>
                 </div>

@@ -10,8 +10,8 @@ import { NotFound } from '../../components/NotFound';
 import { AuthProvider } from '../../hooks/useAuth';
 import { EditProvider } from '../../hooks/useEdit';
 import { GraphProvider } from '../../hooks/useGraph';
-import { Home } from '../Home';
 import { Login } from '../Login';
+import { Org } from '../Org';
 import { Project } from '../Project';
 import { ProjectCreate } from '../Project/Create';
 
@@ -54,11 +54,13 @@ const App: React.FC = () => {
               <Route path="/login" element={<Login />} />
               <Route element={<AuthLayout></AuthLayout>}>
                 <Route path="/" element={<HomeRedirect />} />
-                <Route path="/org/:org_id" element={<Home />} />
                 <Route path="/new/project" element={<ProjectCreate />} />
 
+                <Route path="/:org_id" element={<Org />} />
+                <Route path="/:org_id/_/*" element={<Org />} />
+
                 <Route
-                  path="/org/:org_id/:project_slug/*"
+                  path="/:org_id/:project_slug/*"
                   element={
                     <GraphProvider>
                       <EditProvider>
