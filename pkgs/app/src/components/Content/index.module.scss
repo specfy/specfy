@@ -1,3 +1,5 @@
+@import "../../styles/theme";
+
 ul.taskList {
   list-style: none;
 
@@ -8,5 +10,78 @@ ul.taskList {
   ul {
     margin-bottom: 0;
     list-style: none;
+  }
+}
+
+.image {
+  position: relative;
+
+  img {
+    width: 100%;
+    object-fit: contain;
+    image-orientation: none;
+  }
+}
+
+.vote {
+  // padding-left: $p-m;
+  display: flex;
+  flex-direction: column;
+  gap: $p-xl;
+  margin-bottom: $p-2xl;
+
+  .voteItem {
+    padding: $p-l $p-xl;
+    border: 1px solid $gray-100;
+    border-radius: $border-radius;
+    transition: opacity 0.25s ease-in-out;
+
+
+    &.voteAccepted {
+      .voteResult {
+        color: $emerald-500;
+        border-color: $emerald-500;
+      }
+    }
+
+    &.voteRejected {
+      opacity: 0.4;
+
+      &:hover {
+        opacity: 1;
+      }
+
+      .voteResult {
+        color: $orange-500;
+        border-color: $orange-500;
+      }
+    }
+  }
+
+  .voteHeader {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    margin-bottom: $p;
+
+    color: $gray-600;
+  }
+
+  .voteLabel {
+    display: flex;
+    gap: $p-m;
+    align-items: center;
+  }
+
+  .voteResult {
+    display: flex;
+    gap: $p-m;
+    align-items: center;
+
+    padding: 0 $p-m;
+
+    border: 1px solid $gray-100;
+    border-radius: $border-radius;
   }
 }

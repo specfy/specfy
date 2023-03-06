@@ -99,9 +99,9 @@ h4.ant-typography {
 // User Content
 .ant-typography {
   hr {
-    margin: $p-2xl 0;
+    margin: $p-3xl 10%;
     border: none;
-    border-top: 1px solid $gray-44;
+    border-top: 1px solid $gray-300;
   }
 
   h1 {
@@ -138,6 +138,8 @@ h4.ant-typography {
     width: 100%;
     margin: 0;
 
+    border-radius: $border-radius-s;
+
     td,
     th {
       position: relative;
@@ -148,7 +150,7 @@ h4.ant-typography {
 
       vertical-align: top;
 
-      border: 1px solid $gray-44;
+      border: 1px solid $slate-200;
 
       >* {
         margin-bottom: 0;
@@ -156,9 +158,13 @@ h4.ant-typography {
     }
 
     th {
+      padding: $p-m $p-xl;
+
       font-weight: bold;
+      color: $slate-800;
       text-align: left;
-      background-color: $gray-2;
+
+      background-color: $slate-100;
     }
 
     p {

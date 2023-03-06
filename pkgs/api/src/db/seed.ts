@@ -323,6 +323,11 @@ export async function seed() {
             },
           ],
         },
+        // {
+        //   type: 'revision',
+        //   content: [
+        //   ]
+        // },
         {
           type: 'heading',
           content: [{ type: 'text', text: 'Goals and Non-Goals' }],
@@ -390,24 +395,10 @@ export async function seed() {
           content: [{ type: 'text', text: 'Background & Motivation' }],
           attrs: { level: 1 },
         },
-        // {
-        //   type: 'media',
-        //   attrs: {
-        //     layout: 'center',
-        //   },
-        //   content: [
-        //     {
-        //       type: 'media',
-        //       attrs: {
-        //         width: 810,
-        //         id: '8873d820-e7d0-4e1e-8092-7e32464ea656',
-        //         collection: 'contentId-131176',
-        //         type: 'file',
-        //         height: 610,
-        //       },
-        //     },
-        //   ],
-        // },
+        {
+          type: 'image',
+          attrs: { src: 'https://source.unsplash.com/hbb6GkG6p9M/800x400', alt: null, title: null}
+        },
         {
           type: 'paragraph',
           content: [
@@ -481,32 +472,48 @@ export async function seed() {
           attrs: { level: 2 },
         },
         {
-          type: 'heading',
-          content: [{ type: 'text', text: '#1 Naive one' }],
-          attrs: { level: 3 },
-        },
-        // {
-        //   type: 'panel',
-        //   panelType: 'error',
-        //   content: [
-        //     {
-        //       type: 'paragraph',
-        //       content: [
-        //         {
-        //           content:
-        //             'Ut semper eros ipsum, eget rutrum nisi consequat vitae.',
-        //           type: 'text',
-        //         },
-        //       ],
-        //     },
-        //   ],
-        // },
-        {
-          type: 'paragraph',
+          type: 'vote',
+          voteId: '', // TODO: fill this
           content: [
             {
-              type: 'text',
-              text: 'Praesent sodales lorem id diam pellentesque, quis tincidunt risus porttitor. Vivamus dapibus aliquet ipsum. Nullam non leo neque. Aliquam in enim id nulla elementum pretium. Nullam scelerisque quam ut mattis egestas. Ut semper eros ipsum, eget rutrum nisi consequat vitae. Morbi sit amet porttitor justo, quis sagittis nulla. Donec et ullamcorper dolor. Maecenas pharetra imperdiet nulla nec commodo. Nunc id tellus felis. Suspendisse dui massa, volutpat ac tincidunt eu, cursus eget metus. Proin vel viverra mi. Maecenas a finibus felis, et dapibus orci. Sed molestie sed ex vitae sodales. Vestibulum ut leo posuere nulla commodo iaculis.',
+              type: 'voteItem',
+              voteChoice: '1',
+              content: [
+                {
+                  type: 'heading',
+                  content: [{ type: 'text', text: '#1 Naive solution' }],
+                  attrs: { level: 3 },
+                },
+                {
+                  type: 'paragraph',
+                  content: [
+                    {
+                      type: 'text',
+                      text: 'Praesent sodales lorem id diam pellentesque, quis tincidunt risus porttitor. Vivamus dapibus aliquet ipsum. Nullam non leo neque. Aliquam in enim id nulla elementum pretium. Nullam scelerisque quam ut mattis egestas. Ut semper eros ipsum, eget rutrum nisi consequat vitae. Morbi sit amet porttitor justo, quis sagittis nulla. Donec et ullamcorper dolor. Maecenas pharetra imperdiet nulla nec commodo. Nunc id tellus felis. Suspendisse dui massa, volutpat ac tincidunt eu, cursus eget metus. Proin vel viverra mi. Maecenas a finibus felis, et dapibus orci. Sed molestie sed ex vitae sodales. Vestibulum ut leo posuere nulla commodo iaculis.',
+                    },
+                  ],
+                },
+              ]
+            },
+            {
+              type: 'voteItem',
+              voteChoice: '2',
+              content: [
+                {
+                  type: 'heading',
+                  content: [{ type: 'text', text: '#2 Over-engineered solution' }],
+                  attrs: { level: 3 },
+                },
+                {
+                  type: 'paragraph',
+                  content: [
+                    {
+                      type: 'text',
+                      text: 'Praesent sodales lorem id diam pellentesque, quis tincidunt risus porttitor. Vivamus dapibus aliquet ipsum. Nullam non leo neque. Aliquam in enim id nulla elementum pretium. Nullam scelerisque quam ut mattis egestas. Ut semper eros ipsum, eget rutrum nisi consequat vitae. Morbi sit amet porttitor justo, quis sagittis nulla. Donec et ullamcorper dolor. Maecenas pharetra imperdiet nulla nec commodo. Nunc id tellus felis. Suspendisse dui massa, volutpat ac tincidunt eu, cursus eget metus. Proin vel viverra mi. Maecenas a finibus felis, et dapibus orci. Sed molestie sed ex vitae sodales. Vestibulum ut leo posuere nulla commodo iaculis.',
+                    },
+                  ],
+                },
+              ]
             },
           ],
         },
@@ -620,6 +627,21 @@ export async function seed() {
           type: 'heading',
           content: [{ type: 'text', text: 'FAQ' }],
           attrs: { level: 1 },
+        },
+        {
+          type: 'panel',
+          panelType: 'error',
+          content: [
+            {
+              type: 'paragraph',
+              content: [
+                {
+                  type: 'text',
+                  text: 'Ut semper eros ipsum, eget rutrum nisi consequat vitae.',
+                },
+              ],
+            },
+          ],
         },
         {
           type: 'heading',

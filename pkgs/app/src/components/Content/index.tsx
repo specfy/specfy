@@ -1,12 +1,19 @@
-import { Alert, Checkbox } from 'antd';
+import {
+  IconHeartFilled,
+  IconThumbDown,
+  IconThumbUp,
+} from '@tabler/icons-react';
+import { Alert, Avatar, Checkbox, Typography } from 'antd';
 import type {
   BlockLevelZero,
   Blocks,
   BlocksWithContent,
 } from 'api/src/types/api';
+import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 
 import { slugify } from '../../common/string';
+import { AvatarAuto } from '../AvatarAuto';
 
 import cls from './index.module.scss';
 
@@ -85,6 +92,19 @@ export const ContentBlock: React.FC<{ block: Blocks }> = ({ block }) => {
     );
   }
 
+  // Image
+  else if (block.type === 'image') {
+    return (
+      <div className={cls.image}>
+        <img
+          src={block.attrs.src}
+          alt={block.attrs.alt || ''}
+          title={block.attrs.title || ''}
+        />
+      </div>
+    );
+  }
+
   // Table
   else if (block.type === 'table') {
     return <table>{map(block)}</table>;
@@ -101,7 +121,8 @@ export const ContentBlock: React.FC<{ block: Blocks }> = ({ block }) => {
     );
   }
 
-  /*else if (block.type === 'panel') {
+  // Panel
+  else if (block.type === 'panel') {
     return (
       <Alert
         type={block.panelType}
@@ -111,27 +132,51 @@ export const ContentBlock: React.FC<{ block: Blocks }> = ({ block }) => {
         })}
       ></Alert>
     );
-  } else if (block.type === 'taskList') {
-    return (
-      <ul className={cls.taskList}>
-        {block.content.map((blk, i) => {
-          return <ContentBlock block={blk} key={i} />;
-        })}
-      </ul>
-    );
-  } else if (block.type === 'task') {
-    return (
-      <li>
-        <Checkbox checked={block.state === 'done'}>
-          {block.content.map((blk, i) => {
-            return <ContentBlock block={blk} key={i} />;
-          })}
-        </Checkbox>
-      </li>
-    );
-  }*/
+  }
 
-  return <>unsupported block &quot;{JSON.stringify(block)}&quot;</>;
+  // Vote
+  else if (block.type === 'vote') {
+    return <div className={cls.vote}>{map(block)}</div>;
+  } else if (block.type === 'voteItem') {
+    const accepted = block.voteChoice === '1';
+    return (
+      <div
+        className={classnames(
+          cls.voteItem,
+          accepted ? cls.voteAccepted : cls.voteRejected
+        )}
+      >
+        <div className={cls.voteHeader}>
+          <div className={cls.voteLabel}>
+            {accepted && (
+              <div className={cls.voteResult}>
+                <IconHeartFilled />
+                Accepted
+              </div>
+            )}
+            {!accepted && (
+              <div className={cls.voteResult}>
+                <IconThumbDown />
+                Rejected
+              </div>
+            )}
+            Solution
+            {block.voteChoice}
+          </div>
+          <div>
+            <Avatar.Group>
+              {['Samuel Bodin', 'Raphael Da', 'Nico Tore'].map((name) => {
+                return <AvatarAuto key={name} name={name} />;
+              })}
+            </Avatar.Group>
+          </div>
+        </div>
+        <div className={cls.voteInner}>{map(block)}</div>
+      </div>
+    );
+  }
+
+  return <div>unsupported block &quot;{JSON.stringify(block)}&quot;</div>;
 };
 
 export const ContentDoc: React.FC<{ doc: BlockLevelZero }> = ({ doc }) => {

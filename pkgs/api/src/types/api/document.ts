@@ -82,23 +82,32 @@ export interface BlockTable {
   content: BlockTableRow[];
 }
 
-// export interface BlockPanel {
-//   type: 'panel';
-//   panelType: 'error' | 'info' | 'success' | 'warning';
-//   content: BlockContent[];
-// }
+// ----- Panel
+export interface BlockPanel {
+  type: 'panel';
+  panelType: 'error' | 'info' | 'success' | 'warning';
+  content: BlockParagraph[];
+}
 
-// export interface BlockTask {
-//   type: 'task';
-//   state: 'done' | 'todo';
-//   content: BlockText[];
-// }
+// ----- Vote
+export interface BlockVoteItem {
+  type: 'voteItem';
+  voteChoice: string;
+  content: BlockLevelOne[];
+}
+export interface BlockVote {
+  type: 'vote';
+  voteId: string;
+  content: BlockVoteItem[];
+}
 
-// export interface BlockTaskList {
-//   type: 'taskList';
-//   content: BlockTask[];
-// }
+// ----- Image
+export interface BlockImage {
+  type: 'image';
+  attrs: { src: string; alt: string | null; title: string | null };
+}
 
+// _---------_
 export interface BlockDoc {
   type: 'doc';
   content: BlockLevelOne[];
@@ -109,16 +118,21 @@ export type BlockLevelOne =
   | BlockBulletList
   | BlockHeading
   | BlockHorizontalRule
+  | BlockImage
+  | BlockPanel
   | BlockParagraph
   | BlockQuote
   | BlockTable
-  | BlockTaskList;
+  | BlockTaskList
+  | BlockVote;
 export type Blocks =
   | BlockBulletList
   | BlockHardBreak
   | BlockHeading
   | BlockHorizontalRule
+  | BlockImage
   | BlockListItem
+  | BlockPanel
   | BlockParagraph
   | BlockQuote
   | BlockTable
@@ -127,11 +141,14 @@ export type Blocks =
   | BlockTableRow
   | BlockTaskItem
   | BlockTaskList
-  | BlockText;
+  | BlockText
+  | BlockVote
+  | BlockVoteItem;
 export type BlocksWithContent =
   | BlockBulletList
   | BlockHeading
   | BlockListItem
+  | BlockPanel
   | BlockParagraph
   | BlockQuote
   | BlockTable
@@ -139,4 +156,6 @@ export type BlocksWithContent =
   | BlockTableHeader
   | BlockTableRow
   | BlockTaskItem
-  | BlockTaskList;
+  | BlockTaskList
+  | BlockVote
+  | BlockVoteItem;
