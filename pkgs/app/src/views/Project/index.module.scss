@@ -6,11 +6,9 @@
   grid-template-columns: 300px 1fr;
   align-content: normal;
 
-  padding: $p-xl $p-2xl $p $p-2xl;
+  padding: $p-3xl $p-2xl $p-xl $p-3xl;
 
-  border-bottom: 1px solid #f9fbff;
-
-  transition: background-color 0.25s ease-in-out;
+  border: 1px solid $gray-200;
 }
 
 // ---- Header
@@ -27,19 +25,17 @@
   align-items: center;
 
   height: 28px;
-  padding: $p $p-l;
+  padding: $p $p-l $p 0;
 
   font-size: $font-s;
   color: $gray-7;
 
-  background-color: white;
   border-radius: $border-radius;
-  box-shadow: 1px 1px 2px $gray-4;
 
   a {
     padding: $p-xs $p-m;
     font-size: $font;
-    color: $green-700 !important;
+    color: $gray-600 !important;
   }
 
   :global {
@@ -52,9 +48,6 @@
 .links {
   padding: $p-2xl 0;
   border-top: 1px solid $gray-4;
-
-  // margin-inline-end: $p-m;
-  // margin-left: $p-s;
 }
 
 .link {
@@ -76,12 +69,5 @@
     color: $gray-10 !important;
     text-decoration: none;
     background-color: $gray-4 !important;
-  }
-}
-
-// ---- Edit mode
-.isEditing {
-  .editMode {
-    box-shadow: -1px 1px 2px 0 $gray-5;
   }
 }

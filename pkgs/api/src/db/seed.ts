@@ -66,8 +66,8 @@ export async function seed() {
 
   // Org
   await Org.create({
-    id: 'algolia',
-    name: 'Algolia',
+    id: 'company',
+    name: 'My Company',
   });
   await Org.create({
     id: 'samuelbodin',
@@ -76,7 +76,7 @@ export async function seed() {
 
   // Projects
   const defProject = {
-    orgId: 'algolia',
+    orgId: 'company',
     links: [],
     edges: [],
     description: {
@@ -234,7 +234,7 @@ export async function seed() {
   await Promise.all([
     ...[u2, u3, u4, u5, u6, u7, u8].map((u) => {
       return Perm.create({
-        orgId: 'algolia',
+        orgId: 'company',
         projectId: null,
         userId: u.id,
         role: 'viewer',
@@ -247,25 +247,25 @@ export async function seed() {
       role: 'owner',
     }),
     Perm.create({
-      orgId: 'algolia',
+      orgId: 'company',
       projectId: null,
       userId: u1.id,
       role: 'owner',
     }),
     Perm.create({
-      orgId: 'algolia',
+      orgId: 'company',
       projectId: p1.id,
       userId: u1.id,
       role: 'owner',
     }),
     Perm.create({
-      orgId: 'algolia',
+      orgId: 'company',
       projectId: p1.id,
       userId: u2.id,
       role: 'reviewer',
     }),
     Perm.create({
-      orgId: 'algolia',
+      orgId: 'company',
       projectId: p1.id,
       userId: u3.id,
       role: 'viewer',
@@ -273,7 +273,7 @@ export async function seed() {
 
     ...[u4, u5, u6, u7].map((u) => {
       return Perm.create({
-        orgId: 'algolia',
+        orgId: 'company',
         projectId: p1.id,
         userId: u.id,
         role: 'contributor',
@@ -284,7 +284,7 @@ export async function seed() {
   // Contents
   const d1 = await Document.create({
     id: '01000000-0000-4000-0000-000000000000',
-    orgId: 'algolia',
+    orgId: 'company',
     projectId: p1.id,
     type: 'rfc',
     name: 'API definition',
@@ -649,7 +649,7 @@ export async function seed() {
   });
   const d2 = await Document.create({
     id: '01100000-0000-4000-0000-000000000000',
-    orgId: 'algolia',
+    orgId: 'company',
     projectId: p1.id,
     type: 'rfc',
     name: 'Frontend definition',
@@ -663,7 +663,7 @@ export async function seed() {
   });
   const d3 = await Document.create({
     id: '01200000-0000-4000-0000-000000000000',
-    orgId: 'algolia',
+    orgId: 'company',
     projectId: p1.id,
     type: 'rfc',
     name: 'Use of Oauth2 in authentication system',
@@ -701,12 +701,12 @@ export async function seed() {
   const gcp = await Component.create({
     name: 'GCP',
     type: 'hosting',
-    orgId: 'algolia',
+    orgId: 'company',
     projectId: p1.id,
     description: { type: 'doc', content: [] },
     display: {
       zIndex: 1,
-      pos: { x: 20, y: 20, width: 410, height: 370 },
+      pos: { x: -80, y: 20, width: 490, height: 370 },
     },
     inComponent: null,
     edges: [],
@@ -714,12 +714,12 @@ export async function seed() {
   const compute = await Component.create({
     name: 'Compute Engine',
     type: 'hosting',
-    orgId: 'algolia',
+    orgId: 'company',
     projectId: p1.id,
     description: { type: 'doc', content: [] },
     display: {
       zIndex: 2,
-      pos: { x: 30, y: 340, width: 150, height: 45 },
+      pos: { x: -60, y: 320, width: 150, height: 55 },
     },
     inComponent: gcp.id,
     edges: [],
@@ -727,7 +727,7 @@ export async function seed() {
   const kube = await Component.create({
     name: 'Kubernetes',
     type: 'hosting',
-    orgId: 'algolia',
+    orgId: 'company',
     projectId: p1.id,
     description: { type: 'doc', content: [] },
     display: {
@@ -740,67 +740,67 @@ export async function seed() {
   const pg = await Component.create({
     name: 'Postgresql',
     type: 'component',
-    orgId: 'algolia',
+    orgId: 'company',
     projectId: p1.id,
     description: { type: 'doc', content: [] },
-    display: { zIndex: 3, pos: { x: 30, y: 190, width: 100, height: 32 } },
+    display: { zIndex: 3, pos: { x: -10, y: 190, width: 100, height: 32 } },
     inComponent: gcp.id,
     edges: [],
   });
   const dd = await Component.create({
     name: 'Datadog',
     type: 'thirdparty',
-    orgId: 'algolia',
+    orgId: 'company',
     projectId: p1.id,
     description: { type: 'doc', content: [] },
-    display: { zIndex: 3, pos: { x: 440, y: 190, width: 100, height: 32 } },
+    display: { zIndex: 3, pos: { x: 450, y: 190, width: 100, height: 32 } },
     inComponent: null,
     edges: [],
   });
   const sentry = await Component.create({
     name: 'Sentry',
     type: 'thirdparty',
-    orgId: 'algolia',
+    orgId: 'company',
     projectId: p1.id,
     description: { type: 'doc', content: [] },
-    display: { zIndex: 3, pos: { x: 440, y: 240, width: 100, height: 32 } },
+    display: { zIndex: 3, pos: { x: 450, y: 250, width: 100, height: 32 } },
     inComponent: null,
     edges: [],
   });
   const algolia = await Component.create({
     name: 'Algolia',
     type: 'thirdparty',
-    orgId: 'algolia',
+    orgId: 'company',
     projectId: p1.id,
     description: { type: 'doc', content: [] },
-    display: { zIndex: 3, pos: { x: 440, y: 290, width: 100, height: 32 } },
+    display: { zIndex: 3, pos: { x: 450, y: 310, width: 100, height: 32 } },
     inComponent: null,
     edges: [],
   });
   const redis = await Component.create({
     name: 'Redis',
     type: 'component',
-    orgId: 'algolia',
+    orgId: 'company',
     projectId: p1.id,
     description: { type: 'doc', content: [] },
-    display: { zIndex: 3, pos: { x: 30, y: 120, width: 100, height: 32 } },
+    display: { zIndex: 3, pos: { x: -10, y: 120, width: 100, height: 32 } },
     inComponent: gcp.id,
     edges: [],
   });
   const es = await Component.create({
     name: 'Elasticsearch',
     type: 'component',
-    orgId: 'algolia',
+    orgId: 'company',
     projectId: p1.id,
     description: { type: 'doc', content: [] },
-    display: { zIndex: 3, pos: { x: 34, y: 340, width: 100, height: 32 } },
+    display: { zIndex: 3, pos: { x: -40, y: 330, width: 100, height: 32 } },
     inComponent: compute.id,
     edges: [],
   });
   const rabbit = await Component.create({
     name: 'RabbitMQ',
     type: 'component',
-    orgId: 'algolia',
+    orgId: 'company',
     projectId: p1.id,
     description: { type: 'doc', content: [] },
     display: { zIndex: 3, pos: { x: 210, y: 240, width: 100, height: 32 } },
@@ -808,20 +808,20 @@ export async function seed() {
     edges: [],
   });
   const analytics = await Component.create({
-    name: 'Analytics API',
+    name: 'Dashboard',
     type: 'project',
     typeId: p3.id,
-    orgId: 'algolia',
+    orgId: 'company',
     projectId: p1.id,
     description: { type: 'doc', content: [] },
-    display: { zIndex: 3, pos: { x: 440, y: 90, width: 100, height: 32 } },
+    display: { zIndex: 3, pos: { x: 450, y: 90, width: 100, height: 32 } },
     inComponent: null,
     edges: [],
   });
   const api = await Component.create({
-    name: 'Private API',
+    name: 'API',
     type: 'component',
-    orgId: 'algolia',
+    orgId: 'company',
     projectId: p1.id,
     description: {
       type: 'doc',
@@ -868,7 +868,7 @@ export async function seed() {
         to: es.id,
         read: true,
         write: true,
-        vertices: [],
+        vertices: [ { "x": 160, "y": 180 }, { "x": 110, "y": 300 } ],
         portSource: 'left',
         portTarget: 'right',
       },
@@ -892,7 +892,7 @@ export async function seed() {
         to: algolia.id,
         read: true,
         write: true,
-        vertices: [],
+        vertices: [{ "x": 400, "y": 280 }],
         portSource: 'right',
         portTarget: 'left',
       },
@@ -902,7 +902,7 @@ export async function seed() {
   await Component.create({
     name: 'Frontend',
     type: 'component',
-    orgId: 'algolia',
+    orgId: 'company',
     projectId: p1.id,
     description: { type: 'doc', content: [] },
     display: { zIndex: 4, pos: { x: 210, y: 60, width: 100, height: 32 } },
@@ -920,7 +920,7 @@ export async function seed() {
         to: algolia.id,
         read: true,
         write: false,
-        vertices: [],
+        vertices: [{ "x": 390, "y": 270 }],
         portSource: 'right',
         portTarget: 'left',
       },
@@ -928,7 +928,7 @@ export async function seed() {
         to: sentry.id,
         read: false,
         write: true,
-        vertices: [],
+        vertices: [{ "x": 400, "y": 230 } ],
         portSource: 'right',
         portTarget: 'left',
       },
@@ -938,7 +938,7 @@ export async function seed() {
   await Component.create({
     name: 'Manager',
     type: 'component',
-    orgId: 'algolia',
+    orgId: 'company',
     projectId: p1.id,
     description: {
       type: 'doc',
@@ -1011,7 +1011,7 @@ export async function seed() {
   await Component.create({
     name: 'Worker',
     type: 'component',
-    orgId: 'algolia',
+    orgId: 'company',
     projectId: p1.id,
     description: {
       type: 'doc',
@@ -1102,14 +1102,14 @@ export async function seed() {
               type: 'text',
               text: `Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; In interdum egestas massa, sit amet auctor ipsum maximus in. `,
             },
-          ],
+
         },
       ],
     },
   });
   const b = await RevisionBlob.create({
     id: '00000000-0000-4000-0000-000000000000',
-    orgId: 'algolia',
+    orgId: 'company',
     projectId: p1.id,
     deleted: false,
     type: 'project',
@@ -1119,7 +1119,7 @@ export async function seed() {
   });
   const rev = await Revision.create({
     id: '00000000-0000-4000-0000-000000000000',
-    orgId: 'algolia',
+    orgId: 'company',
     projectId: p1.id,
     title: 'Update project name, description',
     description: {

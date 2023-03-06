@@ -16,7 +16,7 @@ import { Project } from '../Project';
 import { ProjectCreate } from '../Project/Create';
 
 const HomeRedirect: React.FC = () => {
-  return <Navigate to={'/algolia'}></Navigate>;
+  return <Navigate to={'/company'}></Navigate>;
 };
 
 const App: React.FC = () => {

@@ -115,7 +115,7 @@ export const ProjectMenu: React.FC<{
     } else if (location.pathname.match(/revisions/)) {
       setOpen('revisions');
     } else if (location.pathname.match(/\/c\/|\/t\//)) {
-      setOpen('home');
+      setOpen('overview');
     } else if (location.pathname.match(/graph/)) {
       setOpen('graph');
     } else if (location.pathname.match(/activity/)) {

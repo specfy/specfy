@@ -141,7 +141,7 @@ export const Org: React.FC = () => {
       <div className={cls.header}>
         <div className={cls.avatar}></div>
         <div className={cls.description}>
-          <Title level={1}>Algolia</Title>
+          <Title level={1}>My Company</Title>
 
           <Menu
             selectedKeys={[selected]}
