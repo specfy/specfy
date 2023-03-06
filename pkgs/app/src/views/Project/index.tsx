@@ -165,32 +165,6 @@ export const Project: React.FC = () => {
           }
         ></BigHeading>
         <ProjectMenu proj={proj} params={params} />
-
-        {/* {proj.links.length > 0 && (
-            <div className={cls.links}>
-              <Menu
-                mode="inline"
-                items={proj.links.map((link) => {
-                  let icon = <LinkOutlined />;
-                  if (link.title === 'Github') icon = <GithubOutlined />;
-                  else if (link.title === 'Slack') icon = <SlackOutlined />;
-                  return {
-                    key: link.link,
-                    label: (
-                      <Link
-                        className={cls.link}
-                        to={link.link}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        {icon} {link.title}
-                      </Link>
-                    ),
-                  };
-                })}
-              />
-            </div>
-          )} */}
       </div>
 
       <Container>

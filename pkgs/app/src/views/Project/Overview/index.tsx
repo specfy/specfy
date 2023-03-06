@@ -1,6 +1,9 @@
-import { Typography } from 'antd';
+import { LinkOutlined } from '@ant-design/icons';
+import { IconBrandGithub, IconBrandSlack } from '@tabler/icons-react';
+import { Menu, Typography } from 'antd';
 import type { ApiComponent, BlockLevelZero } from 'api/src/types/api';
 import { useCallback, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import { useComponentsStore, useProjectStore } from '../../../common/store';
 import { Card } from '../../../components/Card';
@@ -58,6 +61,28 @@ export const ProjectOverview: React.FC<{
               <EditorMini doc={project!.description} onUpdate={onUpdate} />
             )}
           </Typography>
+
+          {project!.links.length > 0 && (
+            <div className={cls.links}>
+              {project!.links.map((link) => {
+                let icon = <LinkOutlined />;
+                if (link.title === 'Github') icon = <IconBrandGithub />;
+                else if (link.title === 'Slack') icon = <IconBrandSlack />;
+
+                return (
+                  <a
+                    key={link.link}
+                    className={cls.link}
+                    href={link.link}
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    {icon} {link.title}
+                  </a>
+                );
+              })}
+            </div>
+          )}
 
           <div className={cls.block}>
             <Typography.Title level={5}>Technical Aspect</Typography.Title>

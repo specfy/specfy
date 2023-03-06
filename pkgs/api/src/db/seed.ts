@@ -139,7 +139,7 @@ export async function seed() {
         },
       ],
     },
-    links: [{ title: 'Github', link: 'https://github.com/bodinsamuel' }],
+    links: [{ title: 'Github', link: 'https://github.com/bodinsamuel' }, { title: 'Slack', link: 'https://slack.com/foobar' }],
     display: {
       zIndex: 1,
       pos: { x: 200, y: 70, width: 100, height: 32 },
