@@ -3,15 +3,23 @@ import type { ApiComponent } from 'api/src/types/api';
 
 import cls from './index.module.scss';
 
+export type ComponentForGraph = Pick<
+  ApiComponent,
+  'display' | 'edges' | 'id' | 'inComponent' | 'name' | 'type'
+>;
+
 export function showPorts(ports: NodeListOf<SVGElement>, show: boolean) {
   for (let i = 0, len = ports.length; i < len; i = i + 1) {
     ports[i].style.visibility = show ? 'visible' : 'hidden';
   }
 }
 
-export function componentsToGraph(graph: AntGraph, components: ApiComponent[]) {
+export function componentsToGraph(
+  graph: AntGraph,
+  components: ComponentForGraph[]
+) {
   const nodes = new Map<string, Node<Node.Properties>>();
-  const compById = new Map<string, ApiComponent>();
+  const compById = new Map<string, ComponentForGraph>();
 
   // Create all nodes
   for (const comp of components) {

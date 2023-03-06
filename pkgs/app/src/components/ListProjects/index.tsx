@@ -1,35 +1,31 @@
 import { IconPlus, IconUsers } from '@tabler/icons-react';
-import { Button, Skeleton, Table } from 'antd';
+import { Button, Table } from 'antd';
 import Title from 'antd/es/typography/Title';
 import type { ApiProject } from 'api/src/types/api';
 import classnames from 'classnames';
-import { Link, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
-import { useListProjects } from '../../api/projects';
-import type { RouteOrg } from '../../types/routes';
+import { useProjectsStore } from '../../common/store';
 import { AvatarAuto } from '../AvatarAuto';
 import { Time } from '../Time';
 
 import cls from './index.module.scss';
 
 export const ListProjects: React.FC = () => {
-  const p = useParams<Partial<RouteOrg>>();
-  const res = useListProjects({ org_id: p.org_id! });
+  const storeProjects = useProjectsStore();
+  const [list, setList] = useState<ApiProject[]>();
 
-  if (res.isLoading) {
-    return (
-      <div>
-        <Skeleton active title={false} paragraph={{ rows: 3 }}></Skeleton>
-      </div>
-    );
-  }
+  useEffect(() => {
+    setList(storeProjects.projects);
+  }, [storeProjects.projects]);
 
   return (
     <div>
       <Title level={3}>Projects</Title>
 
-      {!res.data ||
-        (res.data.data.length <= 0 && (
+      {!list ||
+        (list.length <= 0 && (
           <div className={cls.empty}>
             <Button type="default" icon={<IconPlus />}>
               Create a project
@@ -37,13 +33,13 @@ export const ListProjects: React.FC = () => {
           </div>
         ))}
 
-      {res.data && res.data.data.length > 0 && (
+      {list && list.length > 0 && (
         <Table
           rowKey="id"
-          dataSource={res.data.data}
+          dataSource={list}
           size="small"
           showHeader={false}
-          pagination={{ position: ['bottomCenter'] }}
+          pagination={false}
         >
           <Table.Column
             dataIndex="slug"

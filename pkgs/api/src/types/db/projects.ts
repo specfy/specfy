@@ -1,5 +1,7 @@
 import type { BlockLevelZero } from '../api';
 
+import type { GraphEdge, GraphItemDisplay } from './graph';
+
 export interface DBProject {
   id: string;
   orgId: string;
@@ -8,6 +10,9 @@ export interface DBProject {
   name: string;
   description: BlockLevelZero;
   links: DBProjectLink[];
+
+  display: GraphItemDisplay;
+  edges: GraphEdge[];
 
   createdAt: string;
   updatedAt: string;

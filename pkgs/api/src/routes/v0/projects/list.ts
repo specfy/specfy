@@ -1,5 +1,6 @@
 import type { FastifyPluginCallback } from 'fastify';
 
+import { toApiProject } from '../../../common/formatters/project';
 import { Project } from '../../../models';
 import type {
   Pagination,
@@ -28,21 +29,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       });
 
       res.status(200).send({
-        data: projects.map((p) => {
-          // For excess property check
-          const tmp: ResListProjects['data'][0] = {
-            id: p.id,
-            orgId: p.orgId,
-            blobId: p.blobId,
-            description: p.description,
-            name: p.name,
-            slug: p.slug,
-            links: p.links, // TODO: remove this in /list
-            createdAt: p.createdAt.toISOString(),
-            updatedAt: p.updatedAt.toISOString(),
-          };
-          return tmp;
-        }),
+        data: projects.map(toApiProject),
         pagination,
       });
     }

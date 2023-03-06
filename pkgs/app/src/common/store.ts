@@ -65,6 +65,19 @@ export const useStagingStore = create<StagingState>()((set) => ({
   },
 }));
 
+// ------------------------------------------ Projects Store
+interface ProjectsState {
+  projects: ApiProject[];
+  fill: (value: ApiProject[]) => void;
+}
+
+export const useProjectsStore = create<ProjectsState>()((set) => ({
+  projects: [],
+  fill: (values) => {
+    set({ projects: values });
+  },
+}));
+
 // ------------------------------------------ Project Store
 interface ProjectState {
   project: ApiProject | null;

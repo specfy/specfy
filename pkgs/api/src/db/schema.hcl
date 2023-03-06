@@ -98,6 +98,15 @@ table "projects" {
     null = true
   }
 
+  column "display" {
+    type = json
+    null = false
+  }
+  column "edges" {
+    type = json
+    null = true
+  }
+
   column "created_at" {
     type    = timestamp(6)
     default = sql("now()")

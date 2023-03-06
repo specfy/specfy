@@ -9,6 +9,7 @@ import {
   Revision,
   RevisionBlob,
 } from '../models';
+import type { ApiProject } from '../types/api';
 
 import './';
 
@@ -74,10 +75,51 @@ export async function seed() {
   });
 
   // Projects
-  const p1 = await Project.create({
-    id: '00000000-0000-4000-0000-000000000000',
+  const defProject = {
     orgId: 'algolia',
-    name: 'Crawler',
+    links: [],
+    edges: [],
+    description: {
+      type: 'doc',
+      content: [],
+    },
+  } as unknown as ApiProject;
+  const p0 = await Project.create({
+    ...defProject,
+    id: '10000000-0000-4000-0000-000000000000',
+    name: 'Dashboard',
+    description: {
+      type: 'doc',
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: `Donec mollis pretium nisl at dignissim. Duis dui magna, tempus a scelerisque id, semper eu metus.`,
+            },
+          ],
+        },
+      ],
+    },
+    display: {
+      zIndex: 1,
+      pos: { x: 20, y: 10, width: 100, height: 32 },
+    },
+  });
+  const p3 = await Project.create({
+    ...defProject,
+    id: '20000000-0000-4000-0000-000000000000',
+    name: 'Frontend',
+    display: {
+      zIndex: 1,
+      pos: { x: 220, y: -20, width: 100, height: 32 },
+    },
+  });
+  const p1 = await Project.create({
+    ...defProject,
+    id: '00000000-0000-4000-0000-000000000000',
+    name: 'Analytics',
     description: {
       type: 'doc',
       content: [
@@ -98,36 +140,94 @@ export async function seed() {
       ],
     },
     links: [{ title: 'Github', link: 'https://github.com/bodinsamuel' }],
-  });
-  await Project.create({
-    id: '10000000-0000-4000-0000-000000000000',
-    orgId: 'algolia',
-    name: 'Dashboard',
-    description: {
-      type: 'doc',
-      content: [
-        {
-          type: 'paragraph',
-          content: [
-            {
-              type: 'text',
-              text: `Donec mollis pretium nisl at dignissim. Duis dui magna, tempus a scelerisque id, semper eu metus.`,
-            },
-          ],
-        },
-      ],
+    display: {
+      zIndex: 1,
+      pos: { x: 200, y: 70, width: 100, height: 32 },
     },
-    links: [],
   });
-  const p3 = await Project.create({
-    id: '20000000-0000-4000-0000-000000000000',
-    orgId: 'algolia',
-    name: 'Analytics API',
-    description: {
-      type: 'doc',
-      content: [],
+  const p4 = await Project.create({
+    ...defProject,
+    name: 'API',
+    display: {
+      zIndex: 1,
+      pos: { x: -150, y: 40, width: 100, height: 32 },
     },
-    links: [],
+  });
+  const p5 = await Project.create({
+    ...defProject,
+    name: 'Billing',
+    display: {
+      zIndex: 1,
+      pos: { x: 20, y: 120, width: 100, height: 32 },
+    },
+  });
+
+  await p0.update({
+    edges: [
+      {
+        to: p4.id,
+        read: true,
+        write: false,
+        vertices: [],
+        portSource: 'left',
+        portTarget: 'right',
+      },
+      {
+        to: p5.id,
+        read: true,
+        write: false,
+        vertices: [
+          { x: -5, y: 60 },
+          { x: -5, y: 110 },
+        ],
+        portSource: 'left',
+        portTarget: 'left',
+      },
+    ],
+  });
+  await p3.update({
+    edges: [
+      {
+        to: p0.id,
+        read: true,
+        write: false,
+        vertices: [],
+        portSource: 'left',
+        portTarget: 'right',
+      },
+    ],
+  });
+  await p1.update({
+    edges: [
+      {
+        to: p0.id,
+        read: true,
+        write: false,
+        vertices: [],
+        portSource: 'left',
+        portTarget: 'right',
+      },
+      {
+        to: p4.id,
+        read: true,
+        write: false,
+        vertices: [{ x: 20, y: 80 }],
+        portSource: 'left',
+        portTarget: 'right',
+      },
+    ],
+  });
+  await p5.update({
+    edges: [
+      {
+        to: p1.id,
+        read: true,
+        write: false,
+        vertices: [],
+        portSource: 'right',
+        portTarget: 'left',
+      },
+    ],
   });
 
   // Permissions

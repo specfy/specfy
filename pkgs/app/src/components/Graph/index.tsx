@@ -1,25 +1,25 @@
 import { Graph as AntGraph } from '@antv/x6';
 import { Keyboard } from '@antv/x6-plugin-keyboard';
-import type { ApiComponent } from 'api/src/types/api';
 import { useEffect, useRef, useState } from 'react';
 import { useDebounce } from 'react-use';
 
 import { useGraph } from '../../hooks/useGraph';
 
 import { registerCustomNode } from './CustomNode';
+import type { ComponentForGraph } from './helpers';
 import { componentsToGraph, highlightCell, unHighlightCell } from './helpers';
 import cls from './index.module.scss';
 
 import '@antv/x6-react-components/es/toolbar/style/index.css';
 
 export const Graph: React.FC<{
-  components: ApiComponent[];
+  components: ComponentForGraph[];
   memoize?: boolean;
   readonly?: boolean;
 }> = ({ memoize, readonly, components }) => {
   // Graph
   const gref = useGraph();
-  const [comps, setComps] = useState<ApiComponent[]>();
+  const [comps, setComps] = useState<ComponentForGraph[]>();
 
   const container = useRef<HTMLDivElement>(null);
   const [g, setG] = useState<AntGraph>();
@@ -44,7 +44,7 @@ export const Graph: React.FC<{
         return;
       }
 
-      const compById = new Map<string, ApiComponent>();
+      const compById = new Map<string, ComponentForGraph>();
       const _hostsById = new Set<string>();
 
       for (const comp of comps) {

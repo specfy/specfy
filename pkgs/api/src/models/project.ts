@@ -25,7 +25,10 @@ import type { Org } from './org';
 export class Project extends Model<
   DBProject,
   Partial<Pick<DBProject, 'id'>> &
-    Pick<DBProject, 'description' | 'links' | 'name' | 'orgId'>
+    Pick<
+      DBProject,
+      'description' | 'display' | 'edges' | 'links' | 'name' | 'orgId'
+    >
 > {
   @PrimaryKey
   @Default(DataType.UUIDV4)
@@ -49,6 +52,12 @@ export class Project extends Model<
 
   @Column({ type: DataType.JSON })
   declare links: CreationOptional<DBProjectLink[]>;
+
+  @Column({ type: DataType.JSON })
+  declare display: DBProject['display'];
+
+  @Column({ type: DataType.JSON })
+  declare edges: DBProject['edges'];
 
   @CreatedAt
   @Column({ field: 'created_at' })

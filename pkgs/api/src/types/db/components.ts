@@ -1,5 +1,7 @@
 import type { BlockLevelZero } from '../api';
 
+import type { GraphEdge, GraphItemDisplay } from './graph';
+
 export interface DBComponent {
   id: string;
   orgId: string;
@@ -14,20 +16,8 @@ export interface DBComponent {
   description: BlockLevelZero;
   tech: string[] | null;
 
-  display: {
-    zIndex?: number;
-    color?: string;
-    backgroundColor?: string;
-    pos: { x: number; y: number; width: number; height: number };
-  };
-  edges: Array<{
-    to: string;
-    read: boolean;
-    write: boolean;
-    vertices: Array<{ x: number; y: number }>;
-    portSource: 'bottom' | 'left' | 'right' | 'top';
-    portTarget: 'bottom' | 'left' | 'right' | 'top';
-  }>;
+  display: GraphItemDisplay;
+  edges: GraphEdge[];
 
   inComponent: string | null;
 
