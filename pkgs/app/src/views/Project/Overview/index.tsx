@@ -1,8 +1,8 @@
 import { Typography } from 'antd';
-import type { BlockLevelZero } from 'api/src/types/api';
-import { useCallback, useEffect } from 'react';
+import type { ApiComponent, BlockLevelZero } from 'api/src/types/api';
+import { useCallback, useEffect, useState } from 'react';
 
-import { useProjectStore } from '../../../common/store';
+import { useComponentsStore, useProjectStore } from '../../../common/store';
 import { Card } from '../../../components/Card';
 import { Container } from '../../../components/Container';
 import { ContentDoc } from '../../../components/Content';
@@ -24,9 +24,11 @@ export const ProjectOverview: React.FC<{
 }> = ({ params }) => {
   const gref = useGraph();
   const edit = useEdit();
-  const isEditing = edit.isEnabled();
-
+  const storeComponents = useComponentsStore();
   const { update, project } = useProjectStore();
+
+  const [components, setComponents] = useState<ApiComponent[]>();
+  const isEditing = edit.isEnabled();
 
   useEffect(() => {
     if (!gref) {
@@ -38,6 +40,9 @@ export const ProjectOverview: React.FC<{
       gref.unsetHighlight(true);
     }, 500);
   }, []);
+  useEffect(() => {
+    setComponents(Object.values(storeComponents.components));
+  }, [storeComponents]);
 
   const onUpdate = useCallback((doc: BlockLevelZero) => {
     update({ ...project!, description: doc });
@@ -68,19 +73,18 @@ export const ProjectOverview: React.FC<{
         <Card padded>
           <ListRFCs project={project!}></ListRFCs>
         </Card>
-        <Card padded>
-          <ListActivity orgId={params.org_id} />
-        </Card>
       </Container.Left>
       <Container.Right>
         <Card>
           <GraphContainer>
-            <Graph readonly={true} />
+            <Graph readonly={true} components={components!} />
             <Toolbar position="bottom">
               <Toolbar.Zoom />
             </Toolbar>
           </GraphContainer>
         </Card>
+
+        <ListActivity orgId={params.org_id} />
       </Container.Right>
     </>
   );

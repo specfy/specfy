@@ -16,7 +16,7 @@ import { Project } from '../Project';
 import { ProjectCreate } from '../Project/Create';
 
 const HomeRedirect: React.FC = () => {
-  return <Navigate to={'/org/algolia'}></Navigate>;
+  return <Navigate to={'/algolia'}></Navigate>;
 };
 
 const App: React.FC = () => {
@@ -27,7 +27,8 @@ const App: React.FC = () => {
           token: {
             borderRadius: 4,
             colorPrimary: '#4f46e5',
-            colorLinkHover: '#1d4ed8',
+            colorLink: '#1d4ed8',
+            colorLinkHover: '#3b82f6',
             // linkHoverDecoration: 'underline',
             fontSizeHeading1: 28,
             fontSizeHeading2: 24,
@@ -49,30 +50,31 @@ const App: React.FC = () => {
       >
         <QueryClientProvider client={queryClient}>
           {/* <ReactQueryDevtools initialIsOpen={false} /> */}
-          <AuthProvider>
-            <Routes>
-              <Route path="/login" element={<Login />} />
-              <Route element={<AuthLayout></AuthLayout>}>
-                <Route path="/" element={<HomeRedirect />} />
-                <Route path="/new/project" element={<ProjectCreate />} />
 
-                <Route path="/:org_id" element={<Org />} />
-                <Route path="/:org_id/_/*" element={<Org />} />
+          <GraphProvider>
+            <AuthProvider>
+              <Routes>
+                <Route path="/login" element={<Login />} />
+                <Route element={<AuthLayout></AuthLayout>}>
+                  <Route path="/" element={<HomeRedirect />} />
+                  <Route path="/new/project" element={<ProjectCreate />} />
 
-                <Route
-                  path="/:org_id/:project_slug/*"
-                  element={
-                    <GraphProvider>
+                  <Route path="/:org_id" element={<Org />} />
+                  <Route path="/:org_id/_/*" element={<Org />} />
+
+                  <Route
+                    path="/:org_id/:project_slug/*"
+                    element={
                       <EditProvider>
                         <Project />
                       </EditProvider>
-                    </GraphProvider>
-                  }
-                />
-              </Route>
-              <Route path="*" element={<NotFound />} />
-            </Routes>
-          </AuthProvider>
+                    }
+                  />
+                </Route>
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </AuthProvider>
+          </GraphProvider>
         </QueryClientProvider>
       </ConfigProvider>
     </AntdApp>

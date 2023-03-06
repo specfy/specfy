@@ -74,7 +74,7 @@ export const ProjectGraph: React.FC<{
               height: 'calc(100vh - 200px)',
             }}
           >
-            <Graph readonly={!isEditing} memoize />
+            <Graph readonly={!isEditing} components={components!} memoize />
           </div>
           <Toolbar position="top" visible>
             <Toolbar.Main />

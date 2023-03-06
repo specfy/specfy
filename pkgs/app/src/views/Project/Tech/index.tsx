@@ -104,7 +104,7 @@ export const Tech: React.FC<{
       <Container.Right>
         <Card>
           <GraphContainer>
-            <Graph readonly={true} />
+            <Graph readonly={true} components={components!} />
             <Toolbar position="bottom">
               <Toolbar.Zoom />
             </Toolbar>

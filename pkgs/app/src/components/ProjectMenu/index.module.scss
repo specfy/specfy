@@ -1,12 +1,6 @@
 @import "../../styles/theme";
 
 .link {
-  &:hover {
-    color: $gray-10 !important;
-    text-decoration: none;
-    background-color: $neutral-100 !important;
-  }
-
   .badged {
     display: flex;
     gap: $p-m;

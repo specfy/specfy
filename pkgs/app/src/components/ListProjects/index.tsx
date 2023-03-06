@@ -1,5 +1,8 @@
-import { List, Skeleton } from 'antd';
+import { IconPlus, IconUsers } from '@tabler/icons-react';
+import { Button, Skeleton, Table } from 'antd';
 import Title from 'antd/es/typography/Title';
+import type { ApiProject } from 'api/src/types/api';
+import classnames from 'classnames';
 import { Link, useParams } from 'react-router-dom';
 
 import { useListProjects } from '../../api/projects';
@@ -11,50 +14,82 @@ import cls from './index.module.scss';
 
 export const ListProjects: React.FC = () => {
   const p = useParams<Partial<RouteOrg>>();
-  const q = useListProjects({ org_id: p.org_id! });
+  const res = useListProjects({ org_id: p.org_id! });
 
-  if (q.isLoading) {
-    return <Skeleton active></Skeleton>;
+  if (res.isLoading) {
+    return (
+      <div>
+        <Skeleton active title={false} paragraph={{ rows: 3 }}></Skeleton>
+      </div>
+    );
   }
 
   return (
     <div>
-      <Title level={5}>Projects</Title>
-      <List
-        className={cls.list}
-        dataSource={q.data?.data}
-        itemLayout="horizontal"
-        size="small"
-        renderItem={(item) => {
-          return (
-            <List.Item key={item.name} className={cls.item}>
-              <Skeleton title={false} loading={false} active>
-                <List.Item.Meta
-                  avatar={
-                    <Link to={`/${p.org_id}/${item.slug}`} relative="path">
-                      <AvatarAuto
-                        className={cls.avatar}
-                        name={item.name}
-                        size="large"
-                      />
-                    </Link>
-                  }
-                  title={
-                    <Link to={`/${p.org_id}/${item.slug}`} relative="path">
-                      {item.name}
-                    </Link>
-                  }
-                  description={
-                    <div className={cls.info}>
-                      updated <Time time={item.updatedAt} />
+      <Title level={3}>Projects</Title>
+
+      {!res.data ||
+        (res.data.data.length <= 0 && (
+          <div className={cls.empty}>
+            <Button type="default" icon={<IconPlus />}>
+              Create a project
+            </Button>
+          </div>
+        ))}
+
+      {res.data && res.data.data.length > 0 && (
+        <Table
+          rowKey="id"
+          dataSource={res.data.data}
+          size="small"
+          showHeader={false}
+          pagination={{ position: ['bottomCenter'] }}
+        >
+          <Table.Column
+            dataIndex="slug"
+            key="slug"
+            className={classnames(cls.item, cls.tdAvatar)}
+            render={(_, item: ApiProject) => {
+              return (
+                <Link to={`/${item.orgId}/${item.slug}`} relative="path">
+                  <AvatarAuto
+                    className={cls.avatar}
+                    name={item.name}
+                    size="large"
+                  />
+                </Link>
+              );
+            }}
+          />
+          <Table.Column
+            dataIndex="name"
+            key="name"
+            className={cls.item}
+            render={(_, item: ApiProject) => {
+              return (
+                <>
+                  <Link
+                    to={`/${item.orgId}/${item.slug}`}
+                    relative="path"
+                    className={cls.title}
+                  >
+                    {item.name}
+                  </Link>
+
+                  <div className={cls.info}>
+                    <div>
+                      <IconUsers /> 12
                     </div>
-                  }
-                />
-              </Skeleton>
-            </List.Item>
-          );
-        }}
-      />
+                    <div>
+                      Updated <Time time={item.updatedAt} />
+                    </div>
+                  </div>
+                </>
+              );
+            }}
+          />
+        </Table>
+      )}
     </div>
   );
 };

@@ -47,6 +47,7 @@ export const Project: React.FC = () => {
   const [org, setOrg] = useState<ApiOrg>();
   const getProj = useGetProject(params);
   const [proj, setProj] = useState<ApiProject>();
+  const [loading, setLoading] = useState<boolean>(true);
   const getComps = useListComponents(params.project_slug, {
     org_id: params.org_id,
     project_id: proj?.id,
@@ -74,41 +75,47 @@ export const Project: React.FC = () => {
     setOrg(getOrgs.data?.find((o) => o.id === params.org_id));
   }, [getOrgs.isFetched]);
   useEffect(() => {
-    setProj(getProj.data?.data);
-    if (getProj.data?.data) {
-      storeProject.update(getProj.data.data);
-    }
-  }, [getProj.isFetched]);
+    setTimeout(() => {
+      setProj(getProj.data?.data);
+      if (getProj.data?.data) {
+        storeProject.update(getProj.data.data);
+      }
+    }, 200);
+  }, [getProj.isLoading]);
   useEffect(() => {
     if (getComps.data) {
       storeComponents.fill(getComps.data);
     }
   }, [getComps.isFetched]);
+  useEffect(() => {
+    setLoading(!proj || getComps.isLoading);
+  }, [proj, getComps]);
 
   function handleEditMode(val: boolean) {
     edit.enable(val);
   }
 
-  if (getProj.isLoading || getComps.isLoading) {
+  if (loading) {
     return (
-      <Container className={cls.container}>
+      <div>
         <div className={cls.header}>
           <BigHeadingLoading />
         </div>
-        <div className={cls.center}>
-          <Card padded>
-            <Skeleton active paragraph={{ rows: 3 }}></Skeleton>
-            <Divider />
-            <Avatar.Group>
-              <Skeleton.Avatar active />
-              <Skeleton.Avatar active />
-              <Skeleton.Avatar active />
-            </Avatar.Group>
-          </Card>
-        </div>
 
-        <div className={cls.right}></div>
-      </Container>
+        <Container>
+          <Container.Left>
+            <Card padded>
+              <Skeleton active paragraph={{ rows: 3 }}></Skeleton>
+              <Divider />
+              <Avatar.Group>
+                <Skeleton.Avatar active />
+                <Skeleton.Avatar active />
+                <Skeleton.Avatar active />
+              </Avatar.Group>
+            </Card>
+          </Container.Left>
+        </Container>
+      </div>
     );
   }
 

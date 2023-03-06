@@ -4,7 +4,6 @@ import type { ApiComponent } from 'api/src/types/api';
 import { useEffect, useRef, useState } from 'react';
 import { useDebounce } from 'react-use';
 
-import { useComponentsStore } from '../../common/store';
 import { useGraph } from '../../hooks/useGraph';
 
 import { registerCustomNode } from './CustomNode';
@@ -14,15 +13,13 @@ import cls from './index.module.scss';
 import '@antv/x6-react-components/es/toolbar/style/index.css';
 
 export const Graph: React.FC<{
+  components: ApiComponent[];
   memoize?: boolean;
   readonly?: boolean;
-}> = ({ memoize, readonly }) => {
-  // Data
-  const storeComponents = useComponentsStore();
-  const [components, setComponents] = useState<ApiComponent[]>();
-
+}> = ({ memoize, readonly, components }) => {
   // Graph
   const gref = useGraph();
+  const [comps, setComps] = useState<ApiComponent[]>();
 
   const container = useRef<HTMLDivElement>(null);
   const [g, setG] = useState<AntGraph>();
@@ -34,22 +31,23 @@ export const Graph: React.FC<{
 
   // ---- Init
   useEffect(() => {
-    if (memoize && components) {
+    if (memoize && comps) {
       return;
     }
-    setComponents(Object.values(storeComponents.components));
-  }, [storeComponents]);
+
+    setComps(components);
+  }, [components]);
 
   useDebounce(
     () => {
-      if (!components) {
+      if (!comps) {
         return;
       }
 
       const compById = new Map<string, ApiComponent>();
       const _hostsById = new Set<string>();
 
-      for (const comp of components) {
+      for (const comp of comps) {
         compById.set(comp.id, comp);
         if (comp.type === 'hosting') {
           _hostsById.add(comp.id);
@@ -58,11 +56,11 @@ export const Graph: React.FC<{
       setHostsById(_hostsById);
     },
     100,
-    [components]
+    [comps]
   );
 
   useEffect(() => {
-    if (!container.current || !hostsById || !components) {
+    if (!container.current || !hostsById || !comps) {
       return;
     }
 
@@ -188,7 +186,7 @@ export const Graph: React.FC<{
       setMouseOver(false);
     });
 
-    componentsToGraph(graph, components!);
+    componentsToGraph(graph, comps);
 
     const cancel = setTimeout(() => {
       graph.center();

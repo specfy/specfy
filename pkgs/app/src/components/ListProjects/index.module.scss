@@ -1,20 +1,26 @@
 @import "../../styles/theme";
 
-.list {
-  .item {
-    padding: 12px 8px 12px 4px;
-  }
+.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100px;
+}
 
-  .avatar {
-    margin-top: 4px;
-  }
+.title {
+  font-size: $font-m;
+}
 
-  .info {
-    font-size: $font-s;
-  }
+.item {
+  padding: $p-xl $p $p-xl $p-m !important;
 
-  h4 {
-    margin-top: 4px !important;
-    margin-bottom: 0 !important;
+  &.tdAvatar {
+    width: 64px;
   }
+}
+
+.info {
+  display: flex;
+  gap: $p-xl;
+  font-size: $font-s;
 }

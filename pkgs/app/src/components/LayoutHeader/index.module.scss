@@ -32,7 +32,7 @@
 }
 
 .avatar {
-  margin-left: 16px;
+  margin-left: $p-l;
   color: $gray-8;
 
   >span {
@@ -85,7 +85,7 @@
     rgb(0 0 0 / 10%) 0 4px 6px -4px;
 
   &Profil {
-    padding: 12px 16px;
+    padding: $p-l $p-xl;
     line-height: $line-height-s;
 
     strong {
