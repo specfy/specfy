@@ -5,7 +5,7 @@ import { ContentSidebar } from '../../../components/Content/Sidebar';
 import type { RouteProject } from '../../../types/routes';
 
 import { ProjectContentList } from './List';
-import { RFC } from './RFC';
+import { DocumentShow } from './Show';
 import cls from './index.module.scss';
 
 export const ProjectContentIndex: React.FC<{
@@ -23,7 +23,7 @@ export const ProjectContentIndex: React.FC<{
           />
           <Route
             path="/:document_slug"
-            element={<RFC proj={proj} params={params} />}
+            element={<DocumentShow proj={proj} />}
           />
         </Routes>
       </div>

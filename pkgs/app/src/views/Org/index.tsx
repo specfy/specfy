@@ -38,7 +38,7 @@ export const Org: React.FC = () => {
       {
         key: 'overview',
         label: (
-          <Link to={linkSelf} className={cls.link}>
+          <Link to={linkSelf}>
             <span>
               <IconHome />
             </span>
@@ -49,7 +49,7 @@ export const Org: React.FC = () => {
       {
         key: 'content',
         label: (
-          <Link to={`${linkSelf}/content`} className={cls.link}>
+          <Link to={`${linkSelf}/content`}>
             <span>
               <IconBook />
             </span>
@@ -60,7 +60,7 @@ export const Org: React.FC = () => {
       {
         key: 'graph',
         label: (
-          <Link to={`${linkSelf}/graph`} className={cls.link}>
+          <Link to={`${linkSelf}/graph`}>
             <span>
               <IconApps />
             </span>
@@ -71,7 +71,7 @@ export const Org: React.FC = () => {
       {
         key: 'policies',
         label: (
-          <Link to={`${linkSelf}/policies`} className={cls.link}>
+          <Link to={`${linkSelf}/policies`}>
             <span>
               <IconAdjustments />
             </span>
@@ -82,7 +82,7 @@ export const Org: React.FC = () => {
       {
         key: 'team',
         label: (
-          <Link to={`${linkSelf}/team`} className={cls.link}>
+          <Link to={`${linkSelf}/team`}>
             <span>
               <IconUsers />
             </span>
@@ -94,7 +94,7 @@ export const Org: React.FC = () => {
       {
         key: 'activity',
         label: (
-          <Link to={`${linkSelf}/activity`} className={cls.link}>
+          <Link to={`${linkSelf}/activity`}>
             <span>
               <IconBolt />
             </span>
@@ -105,7 +105,7 @@ export const Org: React.FC = () => {
       {
         key: 'settings',
         label: (
-          <Link to={`${linkSelf}/settings`} className={cls.link}>
+          <Link to={`${linkSelf}/settings`}>
             <span>
               <IconSettings />
             </span>

@@ -14,12 +14,24 @@ export interface ReqListDocuments {
   org_id: string;
   project_id: string;
   search?: string;
+  type?: ApiDocument['type'];
 }
 
 export interface ResListDocuments {
-  data: ApiDocument[];
+  data: DocumentSimple[];
   pagination: Pagination;
 }
+export type DocumentSimple = Pick<
+  ApiDocument,
+  | 'createdAt'
+  | 'id'
+  | 'name'
+  | 'slug'
+  | 'tldr'
+  | 'type'
+  | 'typeId'
+  | 'updatedAt'
+>;
 
 // GET /:id
 export interface ReqDocumentParams {

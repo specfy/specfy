@@ -63,7 +63,7 @@ export const FloatingMenu: React.FC<{ editor: Editor }> = ({ editor }) => {
       className={cls.container}
       style={{ visibility: 'hidden' }}
     >
-      <div className={classnames(cls.menu, cls.main, showSub && cls.hide)}>
+      <div className={classnames(cls.menu, showSub && cls.hide)}>
         <div
           className={cls.item}
           onClick={() => {

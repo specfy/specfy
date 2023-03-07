@@ -3,7 +3,7 @@ import { register } from '@antv/x6-react-shape';
 import type { ApiComponent } from 'api/src/types/api';
 import classnames from 'classnames';
 
-import cls from './custom.module.scss';
+import cls from './index.module.scss';
 
 interface NodeData {
   type: ApiComponent['type'];

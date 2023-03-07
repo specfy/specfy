@@ -139,10 +139,7 @@ export const Update: React.FC<{ evt: DBEvent; orgId: string }> = ({
   let target: ReactNode | undefined;
   if (pl.type === 'rfc') {
     target = (
-      <Link
-        className={cls.linkTarget}
-        to={`/${orgId}/${pl.project.slug}/c/${pl.id}-${pl.slug}`}
-      >
+      <Link to={`/${orgId}/${pl.project.slug}/c/${pl.id}-${pl.slug}`}>
         {pl.name}
       </Link>
     );

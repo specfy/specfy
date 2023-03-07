@@ -5,11 +5,16 @@ import type { ApiDocument, ApiProject } from 'api/src/types/api';
 import { Link } from 'react-router-dom';
 
 import { useListDocuments } from '../../api/documents';
+import { typeToText } from '../../common/document';
 
 import cls from './index.module.scss';
 
 export const ListRFCs: React.FC<{ project: ApiProject }> = ({ project }) => {
-  const l = useListDocuments({ org_id: project.orgId, project_id: project.id });
+  const l = useListDocuments({
+    org_id: project.orgId,
+    project_id: project.id,
+    type: 'rfc',
+  });
 
   if (l.isLoading) {
     return (
@@ -53,7 +58,7 @@ export const ListRFCs: React.FC<{ project: ApiProject }> = ({ project }) => {
                   <span>
                     <IconFileText />
                   </span>
-                  RFC-{item.typeId} - {item.name}
+                  {typeToText[item.type]}-{item.typeId} - {item.name}
                 </Link>
               );
             }}

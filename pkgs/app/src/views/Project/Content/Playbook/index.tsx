@@ -8,16 +8,13 @@ import { useGetDocument } from '../../../../api/documents';
 import { useDocumentsStore } from '../../../../common/store';
 import { ContentDoc } from '../../../../components/Content';
 import { Editor } from '../../../../components/Editor';
-import { HeadingTree } from '../../../../components/HeadingTree';
-import { SidebarBlock } from '../../../../components/SidebarBlock';
 import { Time } from '../../../../components/Time';
-import { UserList } from '../../../../components/UserList';
 import { useEdit } from '../../../../hooks/useEdit';
 import type { RouteDocument, RouteProject } from '../../../../types/routes';
 
 import cls from './index.module.scss';
 
-export const RFC: React.FC<{
+export const Playbook: React.FC<{
   proj: ApiProject;
   params: RouteProject;
 }> = ({ proj, params }) => {
@@ -52,11 +49,6 @@ export const RFC: React.FC<{
   return (
     <div className={cls.container}>
       <div>
-        <div className={cls.headings}>
-          <HeadingTree blocks={item.content.content}></HeadingTree>
-        </div>
-      </div>
-      <div>
         <Title level={1} className={cls.title}>
           <span className={cls.type}>[RFC-{item.typeId}]</span>
           {item.name}
@@ -84,15 +76,6 @@ export const RFC: React.FC<{
             />
           )}
         </Typography>
-      </div>
-
-      <div>
-        <SidebarBlock title="Authors">
-          <UserList list={item.authors} />
-        </SidebarBlock>
-        <SidebarBlock title="Reviewers">
-          <UserList list={item.reviewers} />
-        </SidebarBlock>
       </div>
     </div>
   );

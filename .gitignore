@@ -107,3 +107,5 @@ build/
 .DS_Store
 
 .vscode
+
+*.scss.d.ts

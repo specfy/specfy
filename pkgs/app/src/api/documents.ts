@@ -13,7 +13,13 @@ import { fetchApi } from './fetch';
 
 export function useListDocuments(opts: ReqListDocuments) {
   return useQuery({
-    queryKey: ['listDocuments', opts.org_id, opts.project_id, opts.search],
+    queryKey: [
+      'listDocuments',
+      opts.org_id,
+      opts.project_id,
+      opts.search,
+      opts.type,
+    ],
     queryFn: async (): Promise<ResListDocuments> => {
       const { json } = await fetchApi<ResListDocuments, ReqListDocuments>(
         '/documents',

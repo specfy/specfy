@@ -43,8 +43,8 @@ export class Document extends Model<DBDocument, CreateProp> {
   @Column({ field: 'blob_id', type: DataType.UUIDV4 })
   declare blobId: ForeignKey<RevisionBlob['id']>;
 
-  @Column
-  declare type: 'rfc';
+  @Column({ type: DataType.STRING })
+  declare type: DBDocument['type'];
 
   @Column({ field: 'type_id', type: DataType.INTEGER })
   declare typeId: DBDocument['typeId'];
@@ -78,6 +78,7 @@ export class Document extends Model<DBDocument, CreateProp> {
       (await this.count({
         where: {
           orgId: model.orgId,
+          type: model.type,
         },
       })) + 1;
     model.slug = slugify(`${model.type}-${model.typeId}-${model.name}`, {

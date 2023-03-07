@@ -42,12 +42,12 @@ export function diffTwoBlob({ blob, previous, type, typeId }: TmpBlob): {
   clean: TmpBlob;
   computed: ComputedForDiff[];
 } {
-  const clean: TmpBlob = {
+  const clean = {
     type,
     typeId,
     previous,
-    blob: {} as any,
-  };
+    blob: {},
+  } as unknown as TmpBlob;
   const computed: ComputedForDiff[] = [];
 
   for (const [key, value] of Object.entries(blob)) {

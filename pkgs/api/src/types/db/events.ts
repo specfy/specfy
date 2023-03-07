@@ -8,15 +8,3 @@ export interface DBEvent {
   publishedAt: string;
   payload: Record<string, any>;
 }
-
-// {
-//   id: string;
-//   type: 'rfc';
-//   name: string;
-//   slug: string;
-
-//   project: {
-//     id: string;
-//     slug: string;
-//   };
-// }

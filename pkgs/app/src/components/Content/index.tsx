@@ -171,7 +171,7 @@ export const ContentBlock: React.FC<{ block: Blocks }> = ({ block }) => {
             </Avatar.Group>
           </div>
         </div>
-        <div className={cls.voteInner}>{map(block)}</div>
+        <div>{map(block)}</div>
       </div>
     );
   }

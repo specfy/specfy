@@ -8,7 +8,7 @@ import { Button, Tooltip } from 'antd';
 import classnames from 'classnames';
 import { useEffect, useState } from 'react';
 
-import { useGraph } from '../../hooks/useGraph';
+import { useGraph } from '../../../hooks/useGraph';
 
 import cls from './index.module.scss';
 

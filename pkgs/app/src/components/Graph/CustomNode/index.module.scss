@@ -1,4 +1,4 @@
-@import "../../styles/theme";
+@import "../../../styles/theme";
 
 .label {
   overflow: hidden;
@@ -27,8 +27,8 @@
 
   background-color: #fff;
   border: 1px solid $gray-100;
-  border-left: 4px solid $blue-300;
   border-radius: $border-radius;
+  border-left: 4px solid transparent;
   box-shadow: 0 2px 5px 1px rgb(0 0 0 / 6%);
 
   transition: box-shadow 0.2s ease-in;
@@ -71,5 +71,9 @@
       font-weight: 600;
       color: $gray-400;
     }
+  }
+
+  &.component {
+    border-left-color: $blue-100;
   }
 }

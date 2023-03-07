@@ -371,7 +371,6 @@ export const ProjectRevisionsShow: React.FC<{
               <FakeInput.H1
                 size="large"
                 value={title}
-                className={cls.titleInput}
                 placeholder="Title..."
                 onChange={(e) => setTitle(e.target.value)}
               />
@@ -403,7 +402,7 @@ export const ProjectRevisionsShow: React.FC<{
               <div className={classnames(cls.checkLine, cls.success)}>
                 <div className={cls.label}></div>
 
-                <Space className={cls.actions}>
+                <Space>
                   <Button type="text" onClick={() => setEdit(false)}>
                     cancel
                   </Button>
@@ -438,7 +437,7 @@ export const ProjectRevisionsShow: React.FC<{
                   <div className={cls.label}>
                     <IconExclamationCircle /> This revision is not up to date
                   </div>
-                  <div className={cls.actions}>
+                  <div>
                     <Button
                       onClick={onClickRebase}
                       type="default"

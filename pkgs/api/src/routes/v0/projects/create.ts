@@ -14,6 +14,8 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       name: req.body.name,
       description: req.body.description,
       links: [],
+      display: { pos: { x: 0, y: 0, width: 100, height: 32 } },
+      edges: [],
     });
 
     res.status(200).send({

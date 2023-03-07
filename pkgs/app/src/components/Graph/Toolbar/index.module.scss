@@ -1,0 +1,55 @@
+@import "../../../styles/theme";
+
+
+.menu {
+  pointer-events: none;
+
+  position: absolute;
+  z-index: 10;
+
+  display: flex;
+  gap: $p-l;
+  align-items: center;
+  justify-content: flex-end;
+
+  width: 100%;
+  padding: $p-l $p-l;
+
+  opacity: 0;
+
+  transition: opacity 0.2s ease-in-out;
+
+  &.visible {
+    opacity: 1;
+  }
+
+  &.top {
+    justify-content: center;
+  }
+
+  &.bottom {
+    bottom: 0;
+    justify-content: left;
+  }
+}
+
+.toolbar {
+  pointer-events: all;
+  background-color: #fff;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow2;
+
+  :global(.ant-btn) {
+    padding: 0 8px;
+    color: $gray-600;
+
+    &:disabled {
+      color: $gray-300;
+    }
+
+    &:hover {
+      color: $primary;
+      background-color: $gray-50;
+    }
+  }
+}

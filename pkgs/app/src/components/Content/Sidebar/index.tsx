@@ -1,13 +1,19 @@
 import { LoadingOutlined } from '@ant-design/icons';
-import { IconFileText, IconCircleX, IconSearch } from '@tabler/icons-react';
+import {
+  IconFileText,
+  IconCircleX,
+  IconSearch,
+  IconFileCode,
+} from '@tabler/icons-react';
 import { Button, Input, Tree } from 'antd';
 import type { DirectoryTreeProps } from 'antd/es/tree';
-import type { ApiDocument, ApiProject } from 'api/src/types/api';
+import type { ApiProject, DocumentSimple } from 'api/src/types/api';
 import { useMemo, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDebounce } from 'react-use';
 
 import { useListDocuments } from '../../../api/documents';
+import { typeToText } from '../../../common/document';
 import type { RouteProject } from '../../../types/routes';
 
 import cls from './index.module.scss';
@@ -26,7 +32,7 @@ export const ContentSidebar: React.FC<{
   const [loading, setLoading] = useState<boolean>(true);
   const [list, setList] = useState<
     Array<{
-      doc: ApiDocument;
+      doc: DocumentSimple;
       before: string;
       center: string;
       after: string;
@@ -76,18 +82,36 @@ export const ContentSidebar: React.FC<{
       return;
     }
 
+    const rfc = [];
+    const playbook = [];
+    for (const doc of res.data.data) {
+      if (doc.type === 'pb') {
+        playbook.push({
+          key: doc.slug,
+          title: doc.name,
+          isLeaf: true,
+          icon: <IconFileCode />,
+        });
+      } else {
+        rfc.push({
+          key: doc.slug,
+          title: `RFC-${doc.typeId} - ${doc.name}`,
+          isLeaf: true,
+          icon: <IconFileText />,
+        });
+      }
+    }
+
     return [
       {
         title: 'RFC',
         key: 'rfc',
-        children: res.data.data.map((doc) => {
-          return {
-            key: doc.slug,
-            title: `RFC-${doc.typeId} - ${doc.name}`,
-            isLeaf: true,
-            icon: <IconFileText />,
-          };
-        }),
+        children: rfc,
+      },
+      {
+        title: 'Playbook',
+        key: 'pb',
+        children: playbook,
       },
     ];
   }, [res.isLoading]);
@@ -97,7 +121,6 @@ export const ContentSidebar: React.FC<{
     if (split.length <= 3) {
       return;
     }
-    console.log(split);
 
     return [split[4]];
   }, [location]);
@@ -134,7 +157,7 @@ export const ContentSidebar: React.FC<{
   return (
     <div className={cls.tree}>
       <div className={cls.treeHeader}>
-        <Input.Group compact className={cls.inputs}>
+        <Input.Group compact>
           <Input
             size="large"
             prefix={<IconSearch />}
@@ -174,7 +197,7 @@ export const ContentSidebar: React.FC<{
                   <mark>{item.center}</mark>
                   {item.after}
                   <br />
-                  RFC-{item.doc.typeId}
+                  {typeToText[item.doc.type]}-{item.doc.typeId}
                 </div>
               </Link>
             );

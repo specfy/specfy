@@ -50,7 +50,7 @@ export const Team: React.FC<Required<ReqListPerms>> = (opts) => {
     <div>
       <div className={cls.team}>
         <div>
-          <div className={cls.teamLabel}>Admin</div>
+          <div>Admin</div>
           <Avatar.Group>
             {owners.map((perm) => {
               return <AvatarAuto key={perm.id} name={perm.user.name} />;
@@ -59,7 +59,7 @@ export const Team: React.FC<Required<ReqListPerms>> = (opts) => {
         </div>
         {reviewers.length > 0 && (
           <div>
-            <div className={cls.teamLabel}>Reviewers</div>
+            <div>Reviewers</div>
             <Avatar.Group>
               {reviewers.map((perm) => {
                 return <AvatarAuto key={perm.id} name={perm.user.name} />;
@@ -69,7 +69,7 @@ export const Team: React.FC<Required<ReqListPerms>> = (opts) => {
         )}
         {contributors.length > 0 && (
           <div>
-            <div className={cls.teamLabel}>Contributors</div>
+            <div>Contributors</div>
             <Avatar.Group>
               {contributors.map((perm) => {
                 return <AvatarAuto key={perm.id} name={perm.user.name} />;
@@ -79,7 +79,7 @@ export const Team: React.FC<Required<ReqListPerms>> = (opts) => {
         )}
         {viewers.length > 0 && (
           <div>
-            <div className={cls.teamLabel}>Viewers</div>
+            <div>Viewers</div>
             <Avatar.Group>
               {viewers.map((perm) => {
                 return <AvatarAuto key={perm.id} name={perm.user.name} />;

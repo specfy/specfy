@@ -26,10 +26,14 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       if (req.query.search) {
         filter.name = { [Op.iLike]: `%${req.query.search}%` };
       }
+      if (req.query.type) {
+        filter.type = req.query.type;
+      }
       // TODO: search in content
 
-      // TODO: return author
       const docs = await Document.findAll({
+        // prettier-ignore
+        attributes: [ 'id', 'type', 'typeId', 'name', 'slug', 'tldr', 'createdAt', 'updatedAt' ],
         where: {
           // TODO: validation
           orgId: req.query.org_id,
@@ -38,7 +42,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         },
         order: [['typeId', 'DESC']],
         // TODO: add limit/offset to qp
-        limit: 10,
+        limit: 200,
         offset: 0,
       });
       const count = await Document.count({
@@ -56,23 +60,12 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           // For excess property check
           const tmp: ResListDocuments['data'][0] = {
             id: p.id,
-            orgId: p.orgId,
-            projectId: p.projectId,
-            blobId: p.blobId,
 
             type: p.type,
             typeId: p.typeId,
             name: p.name,
             slug: p.slug,
             tldr: p.tldr,
-            // TODO: remove all this in /list
-            content: {} as any,
-            // TODO: fill this
-            authors: [],
-            // TODO: remove this in /list
-            reviewers: [],
-            approvedBy: [],
-            locked: p.locked,
 
             createdAt: p.createdAt.toISOString(),
             updatedAt: p.updatedAt.toISOString(),

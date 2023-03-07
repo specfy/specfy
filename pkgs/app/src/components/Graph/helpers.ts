@@ -143,7 +143,7 @@ export function highlightCell({
   graph.batchUpdate(() => {
     graph.getConnectedEdges(cell).forEach((edge) => {
       // doNotTouch.push(edge.id);
-      let animation = cls.animateRunningLine;
+      let animation: string = cls.animateRunningLine;
       const data = edge.data.db;
       if (!data.write) {
         animation = cls.animateRunningLineReverse;

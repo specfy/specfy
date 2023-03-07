@@ -9,6 +9,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { useListDocuments } from '../../../../api/documents';
+import { typeToText } from '../../../../common/document';
 import { Card } from '../../../../components/Card';
 import { Time } from '../../../../components/Time';
 import type { RouteProject } from '../../../../types/routes';
@@ -63,7 +64,7 @@ export const ProjectContentList: React.FC<{
                       relative="path"
                       className={cls.title}
                     >
-                      RFC-{item.typeId} - {item.name}
+                      {typeToText[item.type]}-{item.typeId} - {item.name}
                     </Link>
                     <div className={cls.subtitle}>
                       Updated <Time time={item.updatedAt} />

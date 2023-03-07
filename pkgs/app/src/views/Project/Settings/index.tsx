@@ -55,12 +55,7 @@ export const ProjectSettings: React.FC<{
 
   return (
     <Container className={cls.container}>
-      <Menu
-        selectedKeys={[open]}
-        mode="vertical"
-        items={menu}
-        className={cls.menu}
-      />
+      <Menu selectedKeys={[open]} mode="vertical" items={menu} />
 
       <div className={cls.flex}>
         <Routes>

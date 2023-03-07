@@ -245,7 +245,6 @@ export const ComponentView: React.FC<{
             <FakeInput.H1
               size="large"
               value={comp.name}
-              className={cls.titleInput}
               placeholder="Title..."
               onChange={(e) => {
                 storeComponents.updateField(comp!.id, 'name', e.target.value);

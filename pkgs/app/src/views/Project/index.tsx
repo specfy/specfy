@@ -2,7 +2,6 @@ import { IconCirclePlus } from '@tabler/icons-react';
 import type { MenuProps } from 'antd';
 import { Avatar, Button, Divider, Dropdown, Skeleton, Switch } from 'antd';
 import type { ApiOrg, ApiProject } from 'api/src/types/api';
-import classnames from 'classnames';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, Route, Routes, useParams } from 'react-router-dom';
 
@@ -123,7 +122,7 @@ export const Project: React.FC = () => {
   }
 
   return (
-    <div className={classnames(isEditing && cls.isEditing)}>
+    <div>
       <div className={cls.header}>
         <BigHeading
           parent={org!.name}

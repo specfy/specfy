@@ -58,11 +58,7 @@ export const LayoutHeader: React.FC = () => {
 
       <div>
         <Dropdown menu={{ items: orgs }} placement="bottomRight">
-          <Button
-            type="text"
-            icon={<IconCaretDown />}
-            className={cls.orgSelect}
-          />
+          <Button type="text" icon={<IconCaretDown />} />
         </Dropdown>
       </div>
 

@@ -10,8 +10,8 @@ export const SidebarBlock: React.FC<{
   return (
     <div className={cls.block}>
       <div className={cls.header}>
-        <div className={cls.label}>{title}</div>
-        <div className={cls.actions}>{actions}</div>
+        <div>{title}</div>
+        <div>{actions}</div>
       </div>
       {children}
     </div>

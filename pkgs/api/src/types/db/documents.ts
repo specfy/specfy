@@ -6,7 +6,7 @@ export interface DBDocument {
   projectId: string;
   blobId: string;
 
-  type: 'rfc';
+  type: 'pb' | 'rfc';
   typeId: number;
 
   name: string;
