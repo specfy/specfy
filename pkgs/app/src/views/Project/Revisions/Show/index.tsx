@@ -42,9 +42,10 @@ import {
   useGetRevisionChecks,
 } from '../../../../api/revisions';
 import { diffTwoBlob } from '../../../../common/diff';
+import type { ComputedForDiff } from '../../../../common/store';
 import { Card } from '../../../../components/Card';
+import { Container } from '../../../../components/Container';
 import { ContentDoc } from '../../../../components/Content';
-import type { ComputedForDiff } from '../../../../components/DiffRow';
 import { DiffRow } from '../../../../components/DiffRow';
 import { Editor } from '../../../../components/Editor';
 import { getEmptyDoc } from '../../../../components/Editor/helpers';
@@ -344,7 +345,7 @@ export const ProjectRevisionsShow: React.FC<{
   }
 
   return (
-    <div className={cls.container}>
+    <Container className={cls.container}>
       <div className={cls.left}>
         <Card>
           <Card.Content>
@@ -561,6 +562,6 @@ export const ProjectRevisionsShow: React.FC<{
           <Editor content={review} onUpdate={setReview} minHeight="300px" />
         </Typography>
       </Drawer>
-    </div>
+    </Container>
   );
 };

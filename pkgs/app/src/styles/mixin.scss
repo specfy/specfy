@@ -18,3 +18,36 @@
     box-shadow: rgb(0 0 0 / 9%) 0 1px 4px;
   }
 }
+
+@mixin link() {
+  cursor: pointer;
+
+  display: inline-flex;
+  gap: $p-s;
+  align-items: center;
+
+  color: $gray-700;
+
+  border-radius: 10px;
+
+  &:hover {
+    color: $blue-700;
+  }
+}
+
+@mixin button() {
+  cursor: pointer;
+
+  display: inline-flex;
+  gap: $p-s;
+  align-items: center;
+
+  color: $gray-700;
+
+  border-radius: 10px;
+
+  &:hover {
+    color: $blue-700;
+    background: $gray-100;
+  }
+}

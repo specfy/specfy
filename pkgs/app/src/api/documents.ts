@@ -29,13 +29,12 @@ export function useListDocuments(opts: ReqListDocuments) {
 
 export function useGetDocument(opts: ReqDocumentParams & ReqGetDocument) {
   return useQuery({
-    enabled: !!opts.type_id,
-    queryKey: ['getDocument', opts.type, opts.type_id],
+    queryKey: ['getDocument', opts.org_id, opts.project_id, opts.document_slug],
     queryFn: async (): Promise<ResGetDocument> => {
       const { json } = await fetchApi<ResGetDocument, ReqGetDocument>(
-        `/documents/${opts.type}/${opts.type_id}`,
+        `/documents/${opts.document_slug}`,
         {
-          qp: { org_id: opts.org_id },
+          qp: { org_id: opts.org_id, project_id: opts.project_id },
         }
       );
 

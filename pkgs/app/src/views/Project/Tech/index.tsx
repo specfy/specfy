@@ -83,7 +83,7 @@ export const Tech: React.FC<{
   }
 
   return (
-    <>
+    <Container>
       <Container.Left>
         <Card padded>
           <Typography.Title level={2}>
@@ -111,6 +111,6 @@ export const Tech: React.FC<{
           </GraphContainer>
         </Card>
       </Container.Right>
-    </>
+    </Container>
   );
 };

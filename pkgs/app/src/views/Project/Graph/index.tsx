@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { useComponentsStore } from '../../../common/store';
 import { Card } from '../../../components/Card';
+import { Container } from '../../../components/Container';
 import { Graph, GraphContainer } from '../../../components/Graph';
 import { Toolbar } from '../../../components/Graph/Toolbar';
 import { useEdit } from '../../../hooks/useEdit';
@@ -64,7 +65,7 @@ export const ProjectGraph: React.FC<{
   }
 
   return (
-    <div>
+    <Container>
       <Card>
         <GraphEdit comps={components!} proj={proj} />
         <GraphContainer>
@@ -85,6 +86,6 @@ export const ProjectGraph: React.FC<{
           </Toolbar>
         </GraphContainer>
       </Card>
-    </div>
+    </Container>
   );
 };

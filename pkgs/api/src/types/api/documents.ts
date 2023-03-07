@@ -23,11 +23,11 @@ export interface ResListDocuments {
 
 // GET /:id
 export interface ReqDocumentParams {
-  type: string;
-  type_id: string;
+  document_slug: string;
 }
 export interface ReqGetDocument {
   org_id: string;
+  project_id: string;
 }
 
 export interface ResGetDocument {

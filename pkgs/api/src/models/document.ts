@@ -74,13 +74,16 @@ export class Document extends Model<DBDocument, CreateProp> {
 
   @BeforeCreate
   static async onBeforeCreate(model: Document, { transaction }): Promise<void> {
-    model.slug = slugify(model.name, { lower: true, trim: true });
     model.typeId =
       (await this.count({
         where: {
           orgId: model.orgId,
         },
       })) + 1;
+    model.slug = slugify(`${model.type}-${model.typeId}-${model.name}`, {
+      lower: true,
+      trim: true,
+    });
     model.id = model.id || uuidv4();
 
     const body: PropBlobCreate = {

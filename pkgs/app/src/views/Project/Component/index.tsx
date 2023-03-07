@@ -228,7 +228,7 @@ export const ComponentView: React.FC<{
   }
 
   return (
-    <>
+    <Container>
       <Container.Left>
         <Card padded>
           {!isEditing && (
@@ -388,6 +388,6 @@ export const ComponentView: React.FC<{
           </GraphContainer>
         </Card>
       </Container.Right>
-    </>
+    </Container>
   );
 };

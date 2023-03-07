@@ -1,13 +1,16 @@
 @import "../../../../styles/theme";
 
 .container {
+  position: relative;
+
   display: grid;
-  grid-template-columns: ($main-col-w + 60px) 200px;
+  grid-template-columns: 200px ($main-col-w) 200px;
   gap: $p-xl;
 
-  &.withMenu {
-    margin-left: 200px;
-  }
+  min-height: 100vh;
+  padding: $p-3xl;
+
+  background-color: #fff;
 
   .title {
     margin-bottom: 4px;
@@ -23,7 +26,8 @@
   position: absolute;
   z-index: 1;
   top: 20px;
-  left: -200px;
+
+  // left: -200px;
 }
 
 .tldr {

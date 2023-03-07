@@ -1,6 +1,6 @@
 import type { ApiProject } from 'api/src/types/api';
 
-import { Card } from '../../../components/Card';
+import { Container } from '../../../components/Container';
 import { ListActivity } from '../../../components/ListActivity';
 import type { RouteProject } from '../../../types/routes';
 
@@ -9,8 +9,8 @@ export const ProjectActivity: React.FC<{
   params: RouteProject;
 }> = ({ params }) => {
   return (
-    <Card padded>
+    <Container>
       <ListActivity orgId={params.org_id} />
-    </Card>
+    </Container>
   );
 };

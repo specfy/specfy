@@ -1,9 +1,8 @@
 import { LinkOutlined } from '@ant-design/icons';
 import { IconBrandGithub, IconBrandSlack } from '@tabler/icons-react';
-import { Menu, Typography } from 'antd';
+import { Typography } from 'antd';
 import type { ApiComponent, BlockLevelZero } from 'api/src/types/api';
 import { useCallback, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 
 import { useComponentsStore, useProjectStore } from '../../../common/store';
 import { Card } from '../../../components/Card';
@@ -52,7 +51,7 @@ export const ProjectOverview: React.FC<{
   }, []);
 
   return (
-    <>
+    <Container>
       <Container.Left>
         <Card padded>
           <Typography>
@@ -111,6 +110,6 @@ export const ProjectOverview: React.FC<{
 
         <ListActivity orgId={params.org_id} />
       </Container.Right>
-    </>
+    </Container>
   );
 };

@@ -18,6 +18,7 @@ import {
   useDocumentsStore,
 } from '../../../../common/store';
 import { Card } from '../../../../components/Card';
+import { Container } from '../../../../components/Container';
 import { DiffRow } from '../../../../components/DiffRow';
 import { Editor } from '../../../../components/Editor';
 import { useEdit } from '../../../../hooks/useEdit';
@@ -117,7 +118,7 @@ export const ProjectRevisionCreate: React.FC<{
   }
 
   return (
-    <div className={cls.container}>
+    <Container className={cls.container}>
       <div className={cls.left}>
         <Card>
           <Form onFinish={onSubmit}>
@@ -160,6 +161,6 @@ export const ProjectRevisionCreate: React.FC<{
           );
         })}
       </div>
-    </div>
+    </Container>
   );
 };

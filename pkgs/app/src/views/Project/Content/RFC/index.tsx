@@ -3,12 +3,11 @@ import { Typography, Space, Divider } from 'antd';
 import Title from 'antd/es/typography/Title';
 import type { ApiDocument, ApiProject } from 'api/src/types/api';
 import clsn from 'classnames';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import { useGetDocument } from '../../../../api/documents';
 import { useDocumentsStore } from '../../../../common/store';
-import { Card } from '../../../../components/Card';
 import { ContentDoc } from '../../../../components/Content';
 import { Editor } from '../../../../components/Editor';
 import { HeadingTree } from '../../../../components/HeadingTree';
@@ -28,9 +27,9 @@ export const RFC: React.FC<{
   const [item, setItem] = useState<ApiDocument>();
   const p = useParams<Partial<RouteDocument>>();
   const doc = useGetDocument({
-    type: 'rfc',
-    type_id: p.document_type_id!,
-    org_id: p.org_id!,
+    org_id: proj.orgId,
+    project_id: proj.id,
+    document_slug: p.document_slug!,
   });
   const documentsStore = useDocumentsStore();
 
@@ -43,7 +42,7 @@ export const RFC: React.FC<{
       documentsStore.add([doc.data.data]);
       setItem(documentsStore.select(doc.data.data.slug));
     }
-  }, [doc.isLoading]);
+  }, [doc.data]);
 
   if (doc.isLoading) {
     return null;
@@ -56,67 +55,65 @@ export const RFC: React.FC<{
   return (
     <div className={clsn(cls.container, menu ? cls.withMenu : null)}>
       <div>
-        <Card padded>
-          <Title level={1} className={cls.title}>
-            {item.name}{' '}
-            <Typography.Text type="secondary" className={cls.subtitle}>
-              RFC-{item.typeId}
+        <div className={cls.headings}>
+          <HeadingTree blocks={item.content.content}></HeadingTree>
+        </div>
+      </div>
+      <div>
+        <Title level={1} className={cls.title}>
+          {item.name}{' '}
+          <Typography.Text type="secondary" className={cls.subtitle}>
+            RFC-{item.typeId}
+          </Typography.Text>
+        </Title>
+        <Space>
+          <div className={cls.lastUpdate}>
+            updated <Time time={item.updatedAt} />
+          </div>
+        </Space>
+        {!isEditing && (
+          <div>
+            {item.tldr && <p className={cls.tldr}>{item.tldr}</p>}
+
+            <ul className={cls.tldrList}>
+              <li>
+                <IconCirclePlus style={{ color: '#52c41a' }} /> Creates{' '}
+                <Link to="/">Public API</Link>
+              </li>
+              <li>
+                <IconCirclePlus style={{ color: '#52c41a' }} /> Activity{' '}
+                <Link to="/">Postgres</Link>
+              </li>
+              <li>
+                <IconCirclePlus style={{ color: '#52c41a' }} /> Introduces{' '}
+                <Link to="/">NodeJS</Link>
+              </li>
+              <li>
+                <IconCircleMinus style={{ color: '#fa541c' }} /> Removes{' '}
+                <Link to="/">Golang</Link>
+              </li>
+            </ul>
+            <Divider />
+          </div>
+        )}
+
+        <Typography className={cls.content}>
+          {!isEditing && <ContentDoc doc={item.content} />}
+          {!isEditing && item.content.content.length <= 0 && (
+            <Typography.Text type="secondary">
+              Write something...
             </Typography.Text>
-          </Title>
-          <Space>
-            <div className={cls.lastUpdate}>
-              updated <Time time={item.updatedAt} />
-            </div>
-          </Space>
-          {!isEditing && (
-            <div>
-              {item.tldr && <p className={cls.tldr}>{item.tldr}</p>}
-
-              <ul className={cls.tldrList}>
-                <li>
-                  <IconCirclePlus style={{ color: '#52c41a' }} /> Creates{' '}
-                  <Link to="/">Public API</Link>
-                </li>
-                <li>
-                  <IconCirclePlus style={{ color: '#52c41a' }} /> Activity{' '}
-                  <Link to="/">Postgres</Link>
-                </li>
-                <li>
-                  <IconCirclePlus style={{ color: '#52c41a' }} /> Introduces{' '}
-                  <Link to="/">NodeJS</Link>
-                </li>
-                <li>
-                  <IconCircleMinus style={{ color: '#fa541c' }} /> Removes{' '}
-                  <Link to="/">Golang</Link>
-                </li>
-              </ul>
-              <Divider />
-            </div>
           )}
-
-          <Typography className={cls.content}>
-            {!isEditing && <ContentDoc doc={item.content} />}
-            {!isEditing && item.content.content.length <= 0 && (
-              <Typography.Text type="secondary">
-                Write something...
-              </Typography.Text>
-            )}
-            {isEditing && (
-              <Editor
-                content={item.content}
-                minHeight="500px"
-                onUpdate={(json) => {
-                  documentsStore.updateField(item.id, 'content', json);
-                }}
-              />
-            )}
-          </Typography>
-          {menu && (
-            <div className={cls.headings}>
-              <HeadingTree blocks={item.content.content}></HeadingTree>
-            </div>
+          {isEditing && (
+            <Editor
+              content={item.content}
+              minHeight="500px"
+              onUpdate={(json) => {
+                documentsStore.updateField(item.id, 'content', json);
+              }}
+            />
           )}
-        </Card>
+        </Typography>
       </div>
 
       <div className={cls.right}>

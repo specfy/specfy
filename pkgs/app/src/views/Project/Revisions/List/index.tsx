@@ -13,6 +13,7 @@ import { useDebounce } from 'react-use';
 
 import { useListRevisions } from '../../../../api/revisions';
 import { Card } from '../../../../components/Card';
+import { Container } from '../../../../components/Container';
 import { StatusTag } from '../../../../components/StatusTag';
 import { Time } from '../../../../components/Time';
 import type { RouteProject } from '../../../../types/routes';
@@ -65,7 +66,7 @@ export const ProjectRevisionsList: React.FC<{
   };
 
   return (
-    <div className={cls.container}>
+    <Container className={cls.container}>
       <div className={cls.searchWrapper}>
         <div className={cls.search}>
           <Input.Group compact className={cls.inputs}>
@@ -151,6 +152,6 @@ export const ProjectRevisionsList: React.FC<{
           </Table>
         )}
       </Card>
-    </div>
+    </Container>
   );
 };

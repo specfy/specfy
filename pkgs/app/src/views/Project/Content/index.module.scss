@@ -1,0 +1,13 @@
+@import "../../../styles/theme";
+
+.container {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+}
+
+
+.presentation {
+  // min-width: $min-w;
+  // max-width: $max-w;
+  // margin: 0 auto;
+}

@@ -1,7 +1,7 @@
 import { App as AntdApp, ConfigProvider } from 'antd';
 import type React from 'react';
 import { QueryClientProvider } from 'react-query';
-import { ReactQueryDevtools } from 'react-query/devtools';
+// import { ReactQueryDevtools } from 'react-query/devtools';
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import { queryClient } from '../../common/query';

@@ -21,8 +21,7 @@ import type { RouteProject } from '../../types/routes';
 
 import { ProjectActivity } from './Activity';
 import { ComponentView } from './Component';
-import { ProjectContentList } from './Content/List';
-import { RFC } from './Content/RFC';
+import { ProjectContentIndex } from './Content';
 import { ProjectGraph } from './Graph';
 import { ProjectOverview } from './Overview';
 import { ProjectRevisionCreate } from './Revisions/Create';
@@ -167,51 +166,45 @@ export const Project: React.FC = () => {
         <ProjectMenu proj={proj} params={params} />
       </div>
 
-      <Container>
-        <Routes>
-          <Route path="/" element={<ProjectOverview params={params} />} />
-          <Route
-            path="/content"
-            element={<ProjectContentList proj={proj} params={params} />}
-          />
-          <Route
-            path="/graph"
-            element={<ProjectGraph proj={proj} params={params} />}
-          />
-          <Route
-            path="/activity"
-            element={<ProjectActivity proj={proj} params={params} />}
-          />
-          <Route
-            path="/t/:tech_slug"
-            element={<Tech proj={proj} params={params} />}
-          />
-          <Route
-            path="/rfc/:document_type_id/:document_slug"
-            element={<RFC proj={proj} params={params} />}
-          />
-          <Route
-            path="/c/:component_slug"
-            element={<ComponentView proj={proj} params={params} />}
-          />
-          <Route
-            path="/settings/*"
-            element={<ProjectSettings proj={proj} params={params} />}
-          />
-          <Route
-            path="/revisions"
-            element={<ProjectRevisionsList proj={proj} params={params} />}
-          />
-          <Route
-            path="/revisions/current"
-            element={<ProjectRevisionCreate proj={proj} params={params} />}
-          />
-          <Route
-            path="/revisions/:revision_id"
-            element={<ProjectRevisionsShow proj={proj} params={params} />}
-          />
-        </Routes>
-      </Container>
+      <Routes>
+        <Route path="/" element={<ProjectOverview params={params} />} />
+        <Route
+          path="/content/*"
+          element={<ProjectContentIndex proj={proj} params={params} />}
+        />
+        <Route
+          path="/graph"
+          element={<ProjectGraph proj={proj} params={params} />}
+        />
+        <Route
+          path="/activity"
+          element={<ProjectActivity proj={proj} params={params} />}
+        />
+        <Route
+          path="/t/:tech_slug"
+          element={<Tech proj={proj} params={params} />}
+        />
+        <Route
+          path="/c/:component_slug"
+          element={<ComponentView proj={proj} params={params} />}
+        />
+        <Route
+          path="/settings/*"
+          element={<ProjectSettings proj={proj} params={params} />}
+        />
+        <Route
+          path="/revisions"
+          element={<ProjectRevisionsList proj={proj} params={params} />}
+        />
+        <Route
+          path="/revisions/current"
+          element={<ProjectRevisionCreate proj={proj} params={params} />}
+        />
+        <Route
+          path="/revisions/:revision_id"
+          element={<ProjectRevisionsShow proj={proj} params={params} />}
+        />
+      </Routes>
     </div>
   );
 };

@@ -1,27 +1,9 @@
 @import "../../../../styles/theme";
 
-.container {
-  min-width: $min-w;
-  max-width: $max-w;
-  margin: 0 auto;
-}
-
-.searchWrapper {
-  display: flex;
-  gap: $p-l;
-  align-items: center;
-  margin-bottom: $p-2xl;
-}
-
-.search {
-  display: flex;
-  gap: $p-l;
-  width: 50%;
-  min-width: 500px;
-
-  .inputs {
-    width: calc(100% - 30px);
-  }
+.list {
+  min-width: $main-col-w;
+  max-width: $main-col-w;
+  margin: $p-4xl;
 }
 
 th.tcell {

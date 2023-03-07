@@ -15,7 +15,6 @@ export type RouteComponent = RouteProject & {
 };
 
 export type RouteDocument = RouteProject & {
-  document_type_id: string;
   document_slug: string;
 };
 

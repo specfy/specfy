@@ -66,7 +66,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
             slug: p.slug,
             tldr: p.tldr,
             // TODO: remove all this in /list
-            content: p.content as any,
+            content: {} as any,
             // TODO: fill this
             authors: [],
             // TODO: remove this in /list

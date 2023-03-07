@@ -1,8 +1,6 @@
 import { Anchor } from 'antd';
-import type { AnchorLinkItemProps } from 'antd/es/anchor/Anchor';
 import type { BlockLevelOne } from 'api/src/types/api';
-import { useState } from 'react';
-import { useMount } from 'react-use';
+import { useMemo } from 'react';
 
 import { slugify } from '../../common/string';
 
@@ -11,9 +9,7 @@ import cls from './index.module.scss';
 export const HeadingTree: React.FC<{ blocks: BlockLevelOne[] }> = ({
   blocks,
 }) => {
-  const [headings, setHeadings] = useState<AnchorLinkItemProps[]>([]);
-
-  useMount(() => {
+  const headings = useMemo(() => {
     const tmp = [];
     for (let index = 0; index < blocks.length; index++) {
       const blk = blocks[index];
@@ -30,8 +26,8 @@ export const HeadingTree: React.FC<{ blocks: BlockLevelOne[] }> = ({
       });
     }
 
-    setHeadings(tmp);
-  });
+    return tmp;
+  }, [blocks]);
 
   return (
     <div className={cls.tree}>

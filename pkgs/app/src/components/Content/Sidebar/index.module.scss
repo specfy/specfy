@@ -1,0 +1,38 @@
+@import "../../../styles/theme";
+@import "../../../styles/mixin";
+
+.tree {
+  position: sticky;
+  top: 0;
+
+  width: auto;
+  height: 100vh;
+  max-height: 100vh;
+
+  background-color: #fff;
+  border-right: 1px solid $gray-200;
+
+  .treeHeader {
+    margin: $p-l $p-l
+  }
+}
+
+.search {
+  margin: $p-l $p-l;
+
+  .result {
+    @include button;
+
+    display: flex;
+    padding: $p $p-l;
+
+    mark {
+      padding: 0;
+      font-weight: 600;
+      color: $primary;
+      background-color: transparent;
+    }
+
+    &:hover {}
+  }
+}
