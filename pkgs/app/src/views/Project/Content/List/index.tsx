@@ -59,7 +59,7 @@ export const ProjectContentList: React.FC<{
                 return (
                   <>
                     <Link
-                      to={`/${params.org_id}/${params.project_slug}/content/${item.type}-${item.typeId}-${item.slug}`}
+                      to={`/${params.org_id}/${params.project_slug}/content/${item.slug}`}
                       relative="path"
                       className={cls.title}
                     >

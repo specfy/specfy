@@ -46,7 +46,7 @@ export const ListRFCs: React.FC<{ project: ApiProject }> = ({ project }) => {
             render={(_, item: ApiDocument) => {
               return (
                 <Link
-                  to={`/${project.orgId}/${project.slug}/content/${item.type}-${item.typeId}-${item.slug}`}
+                  to={`/${project.orgId}/${project.slug}/content/${item.slug}`}
                   relative="path"
                   className={cls.title}
                 >
