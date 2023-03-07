@@ -6,33 +6,104 @@ import { Document, TypeHasUser } from '../../models';
  */
 export async function seedPlaybook(p1: Project, [u1]: User[]) {
   const d1 = await Document.create({
+    id: '00300000-0000-4000-0000-000000000000',
+    orgId: 'company',
+    projectId: p1.id,
+    type: 'pb',
+    tldr: '',
+    name: 'Connect to Production',
+    content: {
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'Execute this command',
+            },
+          ],
+        },
+        {
+          type: 'codeBlock',
+          attrs: {
+            language: 'bash',
+          },
+          content: [
+            {
+              type: 'text',
+              text: './connect.sh --quiet',
+            },
+          ],
+        },
+      ],
+      type: 'doc',
+    },
+    locked: false,
+  });
+  const d2 = await Document.create({
     id: '00100000-0000-4000-0000-000000000000',
     orgId: 'company',
     projectId: p1.id,
     type: 'pb',
     tldr: '',
     name: 'Restart Production',
-    content: { content: [], type: 'doc' },
+    content: {
+      type: 'doc',
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'Execute this command',
+            },
+          ],
+        },
+        {
+          type: 'codeBlock',
+          attrs: {
+            language: 'bash',
+          },
+          content: [
+            {
+              type: 'text',
+              text: './restart.sh --quiet',
+            },
+          ],
+        },
+      ],
+    },
     locked: false,
   });
-  const d2 = await Document.create({
+  const d3 = await Document.create({
     id: '00200000-0000-4000-0000-000000000000',
     orgId: 'company',
     projectId: p1.id,
     type: 'pb',
     tldr: '',
     name: 'Deploy',
-    content: { content: [], type: 'doc' },
-    locked: false,
-  });
-  const d3 = await Document.create({
-    id: '00300000-0000-4000-0000-000000000000',
-    orgId: 'company',
-    projectId: p1.id,
-    type: 'pb',
-    tldr: '',
-    name: 'Stop Production',
-    content: { content: [], type: 'doc' },
+    content: {
+      content: [
+        {
+          type: 'paragraph',
+          content: [
+            {
+              type: 'text',
+              text: 'To deploy you first need to connect to production, deploy and then restart',
+            },
+          ],
+        },
+        {
+          type: 'document',
+          attrs: { type: d1.type, typeid: d1.typeId },
+        },
+        {
+          type: 'document',
+          attrs: { type: d2.type, typeid: d2.typeId },
+        },
+      ],
+      type: 'doc',
+    },
     locked: false,
   });
 
@@ -220,6 +291,16 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
                   type: 'text',
                 },
               ],
+            },
+          ],
+        },
+        {
+          type: 'codeBlock',
+          attrs: { language: 'typescript' },
+          content: [
+            {
+              type: 'text',
+              text: 'function getDocument(req: Req) {\n   const docs = await Document.findOne({\n     where: {\n      orgId: req.query.org_id,\n      slug: req.params.document_slug,\n     },\n   });\n\n   if (docs.length <= 0) {\n    return null;\n  }\n    \n  return docs.map((doc) => doc.id);\n}',
             },
           ],
         },

@@ -33,12 +33,36 @@ export function useListDocuments(opts: ReqListDocuments) {
   });
 }
 
-export function useGetDocument(opts: ReqDocumentParams & ReqGetDocument) {
+export function slugToTypeId(slug: string): ReqDocumentParams | null {
+  const split = slug.split('-');
+  if (split.length <= 1) {
+    return null;
+  }
+  if (split[0] !== 'rfc' && split[0] !== 'pb') {
+    return null;
+  }
+
+  return {
+    document_type: split[0],
+    document_typeid: split[1],
+  };
+}
+
+export function useGetDocument(
+  opts: Partial<ReqDocumentParams> & ReqGetDocument
+) {
   return useQuery({
-    queryKey: ['getDocument', opts.org_id, opts.project_id, opts.document_slug],
+    enabled: Boolean(opts.document_type && opts.document_typeid),
+    queryKey: [
+      'getDocument',
+      opts.org_id,
+      opts.project_id,
+      opts.document_type,
+      opts.document_typeid,
+    ],
     queryFn: async (): Promise<ResGetDocument> => {
       const { json } = await fetchApi<ResGetDocument, ReqGetDocument>(
-        `/documents/${opts.document_slug}`,
+        `/documents/${opts.document_type}/${opts.document_typeid}`,
         {
           qp: { org_id: opts.org_id, project_id: opts.project_id },
         }

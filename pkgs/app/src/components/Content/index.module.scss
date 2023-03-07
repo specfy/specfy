@@ -23,65 +23,42 @@ ul.taskList {
   }
 }
 
+
+
+.code {
+  display: flex !important;
+  padding: 0 !important;
+  background-color: $gray-50 !important;
+  border: none !important;
+
+  >code {
+    >span {
+      display: flex;
+      border-left: $p-s solid $gray-200;
+    }
+
+    >span:first-child>span {
+      padding-top: $p-m
+    }
+
+    >span:last-child>span {
+      padding-bottom: $p-m
+    }
+  }
+
+
+  :global .linenumber {
+    margin-right: $p-m;
+    padding-right: $p-m !important;
+    color: $gray-500;
+    background-color: $gray-200;
+  }
+}
+
+
 .vote {
-  // padding-left: $p-m;
   display: flex;
   flex-direction: column;
   gap: $p-xl;
-  margin-bottom: $p-2xl;
-
-  .voteItem {
-    padding: $p-l $p-xl;
-    border: 1px solid $gray-100;
-    border-radius: $border-radius;
-    transition: opacity 0.25s ease-in-out;
-
-
-    &.voteAccepted {
-      .voteResult {
-        color: $emerald-500;
-        border-color: $emerald-500;
-      }
-    }
-
-    &.voteRejected {
-      opacity: 0.4;
-
-      &:hover {
-        opacity: 1;
-      }
-
-      .voteResult {
-        color: $orange-500;
-        border-color: $orange-500;
-      }
-    }
-  }
-
-  .voteHeader {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-
-    margin-bottom: $p;
-
-    color: $gray-600;
-  }
-
-  .voteLabel {
-    display: flex;
-    gap: $p-m;
-    align-items: center;
-  }
-
-  .voteResult {
-    display: flex;
-    gap: $p-m;
-    align-items: center;
-
-    padding: 0 $p-m;
-
-    border: 1px solid $gray-100;
-    border-radius: $border-radius;
-  }
+  margin-bottom: $p-3xl;
 }

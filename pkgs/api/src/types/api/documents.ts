@@ -35,7 +35,8 @@ export type DocumentSimple = Pick<
 
 // GET /:id
 export interface ReqDocumentParams {
-  document_slug: string;
+  document_type: ApiDocument['type'];
+  document_typeid: ApiDocument['typeId'];
 }
 export interface ReqGetDocument {
   org_id: string;

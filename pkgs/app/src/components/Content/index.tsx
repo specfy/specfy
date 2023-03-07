@@ -1,20 +1,18 @@
-import {
-  IconHeartFilled,
-  IconThumbDown,
-  IconThumbUp,
-} from '@tabler/icons-react';
-import { Alert, Avatar, Checkbox, Typography } from 'antd';
+import { Alert, Checkbox } from 'antd';
 import type {
   BlockLevelZero,
   Blocks,
   BlocksWithContent,
 } from 'api/src/types/api';
-import classnames from 'classnames';
 import { Link } from 'react-router-dom';
+import { LightAsync as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { a11yLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
 import { slugify } from '../../common/string';
-import { AvatarAuto } from '../AvatarAuto';
 
+import { ContentBlockDocument } from './BlockDocument';
+import { ContentBlockVoteItem } from './BlockVoteItem';
+import { map } from './helpers';
 import cls from './index.module.scss';
 
 export const ContentBlock: React.FC<{ block: Blocks }> = ({ block }) => {
@@ -29,7 +27,8 @@ export const ContentBlock: React.FC<{ block: Blocks }> = ({ block }) => {
     let text = <>{block.text}</>;
     if (block.marks) {
       for (const mark of block.marks) {
-        if (mark.type === 'code') return <code>{text}</code>;
+        if (mark.type === 'code')
+          return <code className="inlineCode">{text}</code>;
 
         if (mark.type === 'bold') text = <strong>{text}</strong>;
         if (mark.type === 'italic') text = <em>{text}</em>;
@@ -40,7 +39,6 @@ export const ContentBlock: React.FC<{ block: Blocks }> = ({ block }) => {
             </a>
           );
       }
-      // if (block.style.code) text = <code>{text}</code>;
     }
     if (block.link) text = <Link to={block.link}>{text}</Link>;
     return text;
@@ -121,16 +119,25 @@ export const ContentBlock: React.FC<{ block: Blocks }> = ({ block }) => {
     );
   }
 
+  // CodeBlock
+  else if (block.type === 'codeBlock') {
+    return (
+      <SyntaxHighlighter
+        language={block.attrs.language}
+        style={a11yLight}
+        wrapLines={true}
+        showLineNumbers={true}
+        className={cls.code}
+      >
+        {block.content[0].text}
+      </SyntaxHighlighter>
+    );
+  }
+
   // Panel
   else if (block.type === 'panel') {
     return (
-      <Alert
-        type={block.panelType}
-        banner
-        description={block.content.map((blk, i) => {
-          return <ContentBlock block={blk} key={i} />;
-        })}
-      ></Alert>
+      <Alert type={block.panelType} banner description={map(block)}></Alert>
     );
   }
 
@@ -138,42 +145,12 @@ export const ContentBlock: React.FC<{ block: Blocks }> = ({ block }) => {
   else if (block.type === 'vote') {
     return <div className={cls.vote}>{map(block)}</div>;
   } else if (block.type === 'voteItem') {
-    const accepted = block.voteChoice === '1';
-    return (
-      <div
-        className={classnames(
-          cls.voteItem,
-          accepted ? cls.voteAccepted : cls.voteRejected
-        )}
-      >
-        <div className={cls.voteHeader}>
-          <div className={cls.voteLabel}>
-            {accepted && (
-              <div className={cls.voteResult}>
-                <IconHeartFilled />
-                Accepted
-              </div>
-            )}
-            {!accepted && (
-              <div className={cls.voteResult}>
-                <IconThumbDown />
-                Rejected
-              </div>
-            )}
-            Solution
-            {block.voteChoice}
-          </div>
-          <div>
-            <Avatar.Group>
-              {['Samuel Bodin', 'Raphael Da', 'Nico Tore'].map((name) => {
-                return <AvatarAuto key={name} name={name} />;
-              })}
-            </Avatar.Group>
-          </div>
-        </div>
-        <div>{map(block)}</div>
-      </div>
-    );
+    return <ContentBlockVoteItem block={block} />;
+  }
+
+  // Document
+  else if (block.type === 'document') {
+    return <ContentBlockDocument block={block} />;
   }
 
   return <div>unsupported block &quot;{JSON.stringify(block)}&quot;</div>;
@@ -188,11 +165,3 @@ export const ContentDoc: React.FC<{ doc: BlockLevelZero }> = ({ doc }) => {
     </>
   );
 };
-
-function map(block: BlocksWithContent): JSX.Element | JSX.Element[] {
-  if (!block.content) return <></>;
-
-  return block.content.map((blk, i) => {
-    return <ContentBlock block={blk} key={i} />;
-  });
-}

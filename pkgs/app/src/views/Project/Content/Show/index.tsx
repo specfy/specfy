@@ -21,8 +21,8 @@ export const DocumentShow: React.FC<{
   }, [params]);
 
   if (type === 'rfc') {
-    return <RFC proj={proj} params={params} />;
+    return <RFC proj={proj} />;
   }
 
-  return <Playbook proj={proj} params={params} />;
+  return <Playbook proj={proj} />;
 };

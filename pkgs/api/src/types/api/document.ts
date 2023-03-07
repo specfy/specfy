@@ -1,3 +1,5 @@
+import type { ApiDocument } from './documents';
+
 // ----- Text
 export interface BlockText {
   type: 'text';
@@ -107,6 +109,19 @@ export interface BlockImage {
   attrs: { src: string; alt: string | null; title: string | null };
 }
 
+// ----- CodeBlock
+export interface BlockCodeBlock {
+  type: 'codeBlock';
+  attrs: { language: string };
+  content: BlockText[];
+}
+
+// ----- Document
+export interface BlockDocument {
+  type: 'document';
+  attrs: { type: ApiDocument['type']; typeid: ApiDocument['typeId'] };
+}
+
 // _---------_
 export interface BlockDoc {
   type: 'doc';
@@ -116,6 +131,8 @@ export interface BlockDoc {
 export type BlockLevelZero = BlockDoc;
 export type BlockLevelOne =
   | BlockBulletList
+  | BlockCodeBlock
+  | BlockDocument
   | BlockHeading
   | BlockHorizontalRule
   | BlockImage
@@ -127,6 +144,8 @@ export type BlockLevelOne =
   | BlockVote;
 export type Blocks =
   | BlockBulletList
+  | BlockCodeBlock
+  | BlockDocument
   | BlockHardBreak
   | BlockHeading
   | BlockHorizontalRule
@@ -146,6 +165,7 @@ export type Blocks =
   | BlockVoteItem;
 export type BlocksWithContent =
   | BlockBulletList
+  | BlockCodeBlock
   | BlockHeading
   | BlockListItem
   | BlockPanel

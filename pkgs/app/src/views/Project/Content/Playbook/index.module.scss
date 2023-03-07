@@ -4,8 +4,9 @@
   position: relative;
 
   display: grid;
-  grid-template-columns: 200px ($main-col-w) 200px;
+  grid-template-columns: $main-col-w;
   gap: $p-xl;
+  justify-content: center;
 
   min-height: 100vh;
   padding: $p-3xl;

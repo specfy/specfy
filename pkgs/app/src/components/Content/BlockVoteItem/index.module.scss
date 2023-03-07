@@ -1,0 +1,60 @@
+@import "../../../styles/theme";
+
+.item {
+  border: 1px solid $gray-100;
+  border-radius: $border-radius;
+  transition: opacity 0.25s ease-in-out;
+
+
+  &.accepted {
+    .result {
+      color: $emerald-500;
+      border-color: $emerald-500;
+    }
+  }
+
+  &.rejected {
+    .result {
+      color: $orange-500;
+      border-color: $orange-500;
+    }
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  color: $gray-600;
+  cursor: pointer;
+  padding: $p-l $p-xl;
+
+}
+
+.label {
+  display: flex;
+  gap: $p-m;
+  align-items: center;
+}
+
+.result {
+  display: flex;
+  gap: $p-m;
+  align-items: center;
+
+  padding: 0 $p-m;
+
+  border: 1px solid $gray-100;
+  border-radius: $border-radius;
+}
+
+.content {
+  overflow: hidden;
+  padding: 0 $p-xl $p-m $p-xl;
+
+  &.close {
+    height: 0;
+    padding-bottom: 0;
+  }
+}

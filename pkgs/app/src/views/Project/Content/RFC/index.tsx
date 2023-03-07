@@ -1,10 +1,10 @@
 import { Typography, Space } from 'antd';
 import Title from 'antd/es/typography/Title';
 import type { ApiDocument, ApiProject } from 'api/src/types/api';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useGetDocument } from '../../../../api/documents';
+import { slugToTypeId, useGetDocument } from '../../../../api/documents';
 import { useDocumentsStore } from '../../../../common/store';
 import { ContentDoc } from '../../../../components/Content';
 import { Editor } from '../../../../components/Editor';
@@ -13,20 +13,22 @@ import { SidebarBlock } from '../../../../components/SidebarBlock';
 import { Time } from '../../../../components/Time';
 import { UserList } from '../../../../components/UserList';
 import { useEdit } from '../../../../hooks/useEdit';
-import type { RouteDocument, RouteProject } from '../../../../types/routes';
+import type { RouteDocument } from '../../../../types/routes';
 
 import cls from './index.module.scss';
 
 export const RFC: React.FC<{
   proj: ApiProject;
-  params: RouteProject;
-}> = ({ proj, params }) => {
+}> = ({ proj }) => {
   const [item, setItem] = useState<ApiDocument>();
-  const p = useParams<Partial<RouteDocument>>();
+  const params = useParams<Partial<RouteDocument>>();
+  const reqParams = useMemo(() => {
+    return slugToTypeId(params.document_slug!);
+  }, [params]);
   const doc = useGetDocument({
     org_id: proj.orgId,
     project_id: proj.id,
-    document_slug: p.document_slug!,
+    ...reqParams,
   });
   const documentsStore = useDocumentsStore();
 

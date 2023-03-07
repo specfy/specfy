@@ -15,13 +15,14 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     Querystring: ReqGetDocument;
     Params: ReqDocumentParams;
     Reply: ResGetDocument;
-  }>('/:document_slug', async function (req, res) {
+  }>('/:document_type/:document_typeid', async function (req, res) {
     const p = await Document.findOne({
       where: {
         // TODO validation
         orgId: req.query.org_id,
         projectId: req.query.project_id,
-        slug: req.params.document_slug,
+        type: req.params.document_type,
+        typeId: req.params.document_typeid,
       },
     });
 
