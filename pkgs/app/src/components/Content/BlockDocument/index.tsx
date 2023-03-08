@@ -52,7 +52,9 @@ export const ContentBlockDocument: React.FC<{
   if (isCircular) {
     return (
       <div>
-        <IconRepeat /> Go to <a href={`#${data.slug}`}>{data.name}</a>
+        <p>
+          <IconRepeat /> Go to <a href={`#${data.slug}`}>{data.name}</a>
+        </p>
       </div>
     );
   }

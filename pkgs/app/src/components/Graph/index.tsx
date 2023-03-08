@@ -1,5 +1,6 @@
 import { Graph as AntGraph } from '@antv/x6';
 import { Keyboard } from '@antv/x6-plugin-keyboard';
+import type { CSSProperties } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { useDebounce } from 'react-use';
 
@@ -260,6 +261,11 @@ export const Graph: React.FC<{
 
 export const GraphContainer: React.FC<{
   children: React.ReactElement | React.ReactElement[];
-}> = ({ children }) => {
-  return <div className={cls.container}>{children}</div>;
+  style?: CSSProperties;
+}> = ({ children, style }) => {
+  return (
+    <div className={cls.container} style={style}>
+      {children}
+    </div>
+  );
 };

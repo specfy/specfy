@@ -4,13 +4,13 @@
   min-width: $min-w;
   max-width: $max-w;
   margin: 0 auto;
+  flex-direction: column;
 }
 
 .searchWrapper {
   display: flex;
   gap: $p-l;
   align-items: center;
-  margin-bottom: $p-2xl;
 }
 
 .search {

@@ -57,7 +57,7 @@ export const OrgOverview: React.FC<{ params: RouteOrg }> = ({ params }) => {
       </Container.Left>
       <Container.Right>
         <Card>
-          <GraphContainer>
+          <GraphContainer style={{ minHeight: '350px' }}>
             <Graph readonly={true} components={components} />
             <Toolbar position="bottom">
               <Toolbar.Zoom />

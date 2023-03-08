@@ -46,17 +46,17 @@ export const Org: React.FC = () => {
           </Link>
         ),
       },
-      {
-        key: 'content',
-        label: (
-          <Link to={`${linkSelf}/content`}>
-            <span>
-              <IconBook />
-            </span>
-            Content
-          </Link>
-        ),
-      },
+      // {
+      //   key: 'content',
+      //   label: (
+      //     <Link to={`${linkSelf}/content`}>
+      //       <span>
+      //         <IconBook />
+      //       </span>
+      //       Content
+      //     </Link>
+      //   ),
+      // },
       {
         key: 'graph',
         label: (

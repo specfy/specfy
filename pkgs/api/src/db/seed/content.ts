@@ -11,18 +11,9 @@ export async function seedPlaybook(p1: Project, [u1]: User[]) {
     projectId: p1.id,
     type: 'pb',
     tldr: '',
-    name: 'Connect to Production',
+    name: 'SSH to Production',
     content: {
       content: [
-        {
-          type: 'paragraph',
-          content: [
-            {
-              type: 'text',
-              text: 'Execute this command',
-            },
-          ],
-        },
         {
           type: 'codeBlock',
           attrs: {

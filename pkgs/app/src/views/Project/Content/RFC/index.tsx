@@ -3,7 +3,6 @@ import Title from 'antd/es/typography/Title';
 import type { ApiDocument, ApiProject } from 'api/src/types/api';
 
 import { useDocumentsStore } from '../../../../common/store';
-import { slugify } from '../../../../common/string';
 import { ContentDoc } from '../../../../components/Content';
 import { Editor } from '../../../../components/Editor';
 import { HeadingTree } from '../../../../components/HeadingTree';
