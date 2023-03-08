@@ -1,18 +1,18 @@
 import { LoadingOutlined } from '@ant-design/icons';
-import { IconCaretDown, IconCaretRight } from '@tabler/icons-react';
-import type { BlockDocument } from 'api/src/types/api';
-import classnames from 'classnames';
-import { useState } from 'react';
+import { IconRepeat } from '@tabler/icons-react';
+import type { ApiDocument, BlockDocument } from 'api/src/types/api';
+import { useMemo } from 'react';
 
 import { ContentDoc } from '..';
 import { useGetDocument } from '../../../api/documents';
 import { useProjectStore } from '../../../common/store';
+import type { Payload } from '../helpers';
 
-import cls from './index.module.scss';
-
-export const ContentBlockDocument: React.FC<{ block: BlockDocument }> = ({
-  block,
-}) => {
+export const ContentBlockDocument: React.FC<{
+  block: BlockDocument;
+  pl: Payload;
+  onRender?: (doc: ApiDocument) => void;
+}> = ({ block, pl, onRender }) => {
   const storeProject = useProjectStore();
 
   const doc = useGetDocument({
@@ -21,41 +21,45 @@ export const ContentBlockDocument: React.FC<{ block: BlockDocument }> = ({
     document_type: block.attrs.type,
     document_typeid: block.attrs.typeid,
   });
-  const [open, setOpen] = useState(true);
+
+  const isCircular = useMemo(() => {
+    if (!doc.data) {
+      return;
+    }
+
+    if (onRender) {
+      onRender(doc.data.data);
+    }
+
+    if (pl.displayed.includes(doc.data.data.id)) {
+      return true;
+    }
+
+    pl.displayed.push(doc.data.data.id);
+    return false;
+  }, [doc.data]);
 
   if (doc.isLoading || !doc.data) {
     return (
-      <div className={cls.block}>
+      <div>
         <LoadingOutlined />
       </div>
     );
   }
 
   const data = doc.data.data;
-  const handleKey: React.KeyboardEventHandler<HTMLDivElement> = (e) => {
-    if (e.code !== 'Enter' && e.code !== 'Space') {
-      return;
-    }
 
-    e.preventDefault();
-    setOpen(!open);
-  };
+  if (isCircular) {
+    return (
+      <div>
+        <IconRepeat /> Go to <a href={`#${data.slug}`}>{data.name}</a>
+      </div>
+    );
+  }
 
   return (
-    <div className={cls.block}>
-      <div
-        className={cls.header}
-        onClick={() => setOpen(!open)}
-        onKeyUpCapture={handleKey}
-        tabIndex={0}
-        role="group"
-      >
-        {open ? <IconCaretDown /> : <IconCaretRight />}
-        {data.name}
-      </div>
-      <div className={classnames(cls.content, !open && cls.close)}>
-        <ContentDoc doc={data.content} />
-      </div>
+    <div id={data.slug}>
+      <ContentDoc doc={data.content} pl={pl} />
     </div>
   );
 };

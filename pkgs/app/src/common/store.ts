@@ -160,8 +160,12 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
 // ------------------------------------------ Document Store
 interface DocumentsState {
   documents: Record<string, ApiDocument>;
+  current: string | null;
   add: (values: ApiDocument[]) => void;
-  select: (slug: string) => ApiDocument | undefined;
+  select: (
+    type: ApiDocument['type'],
+    typeId: number
+  ) => ApiDocument | undefined;
   update: (value: ApiDocument) => void;
   updateField: <TKey extends keyof ApiDocument>(
     id: string,
@@ -169,9 +173,11 @@ interface DocumentsState {
     value: ApiDocument[TKey]
   ) => void;
   revertField: (id: string, field: keyof ApiDocument) => void;
+  setCurrent: (id: string) => void;
 }
 export const useDocumentsStore = create<DocumentsState>()((set, get) => ({
   documents: {},
+  current: null,
   add: (values) => {
     set(
       produce((state: DocumentsState) => {
@@ -181,10 +187,10 @@ export const useDocumentsStore = create<DocumentsState>()((set, get) => ({
       })
     );
   },
-  select: (slug) => {
-    for (const comp of Object.values(get().documents)) {
-      if (comp.slug === slug) {
-        return comp;
+  select: (type, typeId) => {
+    for (const doc of Object.values(get().documents)) {
+      if (doc.type === type && doc.typeId === typeId) {
+        return doc;
       }
     }
   },
@@ -206,5 +212,12 @@ export const useDocumentsStore = create<DocumentsState>()((set, get) => ({
     const comp = get().documents[id];
     const item = originalStore.find((i): i is ApiDocument => comp.id === i.id)!;
     get().updateField(id, field, item[field]);
+  },
+  setCurrent: (id) => {
+    set(
+      produce((state: DocumentsState) => {
+        state.current = id;
+      })
+    );
   },
 }));

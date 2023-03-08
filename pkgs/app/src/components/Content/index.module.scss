@@ -38,17 +38,17 @@ ul.taskList {
     }
 
     >span:first-child>span {
-      padding-top: $p-m
+      padding-top: $p-l
     }
 
     >span:last-child>span {
-      padding-bottom: $p-m
+      padding-bottom: $p-l
     }
   }
 
 
   :global .linenumber {
-    margin-right: $p-m;
+    margin-right: $p-xl;
     padding-right: $p-m !important;
     color: $gray-500;
     background-color: $gray-200;

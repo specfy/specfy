@@ -67,7 +67,7 @@ export async function seedPlaybook(p1: Project, [u1]: User[]) {
           content: [
             {
               type: 'text',
-              text: './restart.sh --quiet',
+              text: './restart.sh --prod',
             },
           ],
         },
@@ -94,12 +94,70 @@ export async function seedPlaybook(p1: Project, [u1]: User[]) {
           ],
         },
         {
-          type: 'document',
-          attrs: { type: d1.type, typeid: d1.typeId },
+          type: 'step',
+          attrs: {},
+          content: [
+            {
+              type: 'document',
+              attrs: { type: d1.type, typeid: d1.typeId },
+            },
+          ],
         },
         {
-          type: 'document',
-          attrs: { type: d2.type, typeid: d2.typeId },
+          type: 'step',
+          attrs: { title: 'Build Docker' },
+          content: [
+            {
+              type: 'codeBlock',
+              attrs: {
+                language: 'bash',
+              },
+              content: [
+                {
+                  type: 'text',
+                  text: 'docker build  -f Dockerfile -t production .',
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: 'step',
+          attrs: { title: 'Push built docker image' },
+          content: [
+            {
+              type: 'codeBlock',
+              attrs: {
+                language: 'bash',
+              },
+              content: [
+                {
+                  type: 'text',
+                  text: 'docker push production',
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: 'step',
+          attrs: {},
+          content: [
+            {
+              type: 'document',
+              attrs: { type: d2.type, typeid: d2.typeId },
+            },
+          ],
+        },
+        {
+          type: 'step',
+          attrs: {},
+          content: [
+            {
+              type: 'document',
+              attrs: { type: 'pb', typeid: 3 },
+            },
+          ],
         },
       ],
       type: 'doc',

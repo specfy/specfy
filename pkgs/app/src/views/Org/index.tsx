@@ -118,7 +118,6 @@ export const Org: React.FC = () => {
 
   useEffect(() => {
     const path = location.pathname.split('/');
-    console.log(path[3]);
     if (path[3] === 'content') {
       setSelected('content');
     } else if (path[3] === 'graph') {

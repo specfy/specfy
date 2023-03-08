@@ -116,6 +116,13 @@ export interface BlockCodeBlock {
   content: BlockText[];
 }
 
+// ----- Step
+export interface BlockStep {
+  type: 'step';
+  attrs: { title?: string };
+  content: BlockLevelOne[];
+}
+
 // ----- Document
 export interface BlockDocument {
   type: 'document';
@@ -139,6 +146,7 @@ export type BlockLevelOne =
   | BlockPanel
   | BlockParagraph
   | BlockQuote
+  | BlockStep
   | BlockTable
   | BlockTaskList
   | BlockVote;
@@ -154,6 +162,7 @@ export type Blocks =
   | BlockPanel
   | BlockParagraph
   | BlockQuote
+  | BlockStep
   | BlockTable
   | BlockTableCell
   | BlockTableHeader
@@ -171,6 +180,7 @@ export type BlocksWithContent =
   | BlockPanel
   | BlockParagraph
   | BlockQuote
+  | BlockStep
   | BlockTable
   | BlockTableCell
   | BlockTableHeader
