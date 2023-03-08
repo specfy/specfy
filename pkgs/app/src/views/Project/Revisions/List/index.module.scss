@@ -24,22 +24,6 @@
   }
 }
 
-th.tcell {
-  background: $gray-100 !important;
-  background: #fff !important;
-
-  .th {
-    display: flex;
-    gap: $p-m;
-    padding: $p;
-    font-weight: 400;
-  }
-}
-
-tbody td.tcell {
-  padding: $p-l $p-2xl !important;
-}
-
 .title {
   font-size: $font-m;
   font-weight: 600;

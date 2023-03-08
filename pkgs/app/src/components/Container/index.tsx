@@ -20,12 +20,20 @@ const Right: React.FC<{
 }> = ({ children, className }) => {
   return <div className={classnames(cls.right, className)}>{children}</div>;
 };
+const Center: React.FC<{
+  children: React.ReactNode;
+  className?: string;
+}> = ({ children, className }) => {
+  return <div className={classnames(cls.center, className)}>{children}</div>;
+};
 
 export type ContainerProps = typeof OriginContainer & {
   Left: typeof Left;
   Right: typeof Right;
+  Center: typeof Center;
 };
 
 export const Container = OriginContainer as ContainerProps;
 Container.Left = Left;
 Container.Right = Right;
+Container.Center = Center;

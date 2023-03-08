@@ -1,5 +1,6 @@
 import type { IconType } from '@icons-pack/react-simple-icons';
 import {
+  Php,
   Microsoftazure,
   Eslint,
   Pingdom,
@@ -44,6 +45,7 @@ export const supportedArray: TechInfo[] = [
   { key: 'gcp', name: 'GCP', type: 'hosting', Icon: Googlecloud },
   { key: 'kubernetes', name: 'Kubernetes', type: 'hosting', Icon: Kubernetes },
   { key: 'nodejs', name: 'NodeJS', type: 'language', Icon: Nodedotjs },
+  { key: 'php', name: 'PHP', type: 'language', Icon: Php },
   { key: 'pingom', name: 'Pingdom', type: 'sass', Icon: Pingdom },
   { key: 'postgresql', name: 'Postgresql', type: 'db', Icon: Postgresql },
   { key: 'rabbitmq', name: 'RabbitMQ', type: 'messaging', Icon: Rabbitmq },

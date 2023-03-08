@@ -7,7 +7,8 @@
 }
 
 .right,
-.left {
+.left,
+.center {
   display: flex;
   flex-direction: column;
   gap: $p-3xl;
@@ -21,4 +22,10 @@
 .right {
   width: inherit;
   min-width: calc(50% - $p-3xl * 2);
+}
+
+.center {
+  justify-content: space-around;
+  min-width: $min-w;
+  max-width: $max-w;
 }

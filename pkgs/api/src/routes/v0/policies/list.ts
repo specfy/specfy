@@ -46,6 +46,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           id: policy.id,
           orgId: policy.orgId,
           type: policy.type,
+          tech: policy.tech,
           content: policy.content,
           createdAt: policy.createdAt.toISOString(),
           updatedAt: policy.updatedAt.toISOString(),

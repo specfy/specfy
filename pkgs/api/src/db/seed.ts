@@ -8,11 +8,13 @@ import {
   TypeHasUser,
   Revision,
   RevisionBlob,
+  Policy,
 } from '../models';
 import type { ApiProject } from '../types/api';
 
 import './';
-import { seedPlaybook, seedRFC } from './seed/content';
+import { seedPlaybook, seedRFC } from './seed/documents';
+import { seedPolicies } from './seed/policies';
 
 export async function clean() {
   await Promise.all([
@@ -25,6 +27,7 @@ export async function clean() {
     Revision.truncate(),
     RevisionBlob.truncate(),
     TypeHasUser.truncate(),
+    Policy.truncate(),
   ]);
 }
 
@@ -749,6 +752,8 @@ export async function seed() {
     userId: u3.id,
     role: 'reviewer',
   });
+
+  await seedPolicies([u1]);
 }
 
 (async () => {

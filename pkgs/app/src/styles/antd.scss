@@ -318,3 +318,26 @@ h4.ant-typography {
     white-space: pre;
   }
 }
+
+
+// Table
+.ant-table {
+  thead {
+    th {
+      background: #fff !important;
+
+      >div {
+        display: flex;
+        gap: $p-m;
+        padding: $p;
+        font-weight: 400;
+      }
+    }
+  }
+
+  tbody {
+    td {
+      padding: $p-l $p-2xl !important;
+    }
+  }
+}

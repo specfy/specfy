@@ -5,7 +5,6 @@ import {
   UpdatedAt,
   Table,
   PrimaryKey,
-  Default,
   Column,
   DataType,
 } from 'sequelize-typescript';
@@ -17,18 +16,24 @@ import type { Org } from './org';
 @Table({ tableName: 'policies', modelName: 'policy' })
 export class Policy extends Model<
   DBPolicy,
-  Partial<Pick<DBPolicy, 'id'>> & Pick<DBPolicy, 'content' | 'orgId' | 'type'>
+  Partial<Pick<DBPolicy, 'id'>> &
+    Pick<DBPolicy, 'content' | 'name' | 'orgId' | 'tech' | 'type'>
 > {
   @PrimaryKey
-  @Default(DataType.UUIDV4)
-  @Column(DataType.UUID)
-  declare id: CreationOptional<string>;
+  @Column({ type: DataType.BIGINT, autoIncrement: true })
+  declare id: CreationOptional<number>;
 
   @Column({ field: 'org_id', type: DataType.STRING })
   declare orgId: ForeignKey<Org['id']>;
 
   @Column({ type: DataType.STRING })
   declare type: DBPolicy['type'];
+
+  @Column({ type: DataType.STRING })
+  declare name: DBPolicy['name'];
+
+  @Column({ type: DataType.STRING })
+  declare tech: DBPolicy['tech'];
 
   @Column({ type: DataType.JSON })
   declare content: DBPolicy['content'];

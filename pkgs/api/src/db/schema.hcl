@@ -353,6 +353,10 @@ table "type_has_users" {
     type = uuid
     null = true
   }
+  column "policy_id" {
+    type = bigint
+    null = true
+  }
   column "user_id" {
     type = uuid
     null = false
@@ -648,9 +652,17 @@ table "policies" {
   }
 
   column "type" {
-    type = varchar
+    type = varchar(35)
+    null = false
   }
-
+  column "name" {
+    type = varchar(250)
+    null = true
+  }
+  column "tech" {
+    type = varchar(35)
+    null = true
+  }
   column "content" {
     type = json
     null = false
