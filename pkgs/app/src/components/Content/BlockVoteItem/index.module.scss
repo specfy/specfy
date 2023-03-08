@@ -22,13 +22,15 @@
 }
 
 .header {
+  cursor: pointer;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  color: $gray-600;
-  cursor: pointer;
   padding: $p-l $p-xl;
+
+  color: $gray-600;
 
 }
 

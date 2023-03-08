@@ -5,7 +5,7 @@ import { Op } from 'sequelize';
 import { toApiUser } from '../../../common/formatters/user';
 import { Perm } from '../../../models';
 import type { ResListPerms, ReqListPerms } from '../../../types/api';
-import type { DBPerm } from '../../../types/db/perms';
+import type { DBPerm } from '../../../types/db';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{

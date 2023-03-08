@@ -9,7 +9,7 @@ import type {
   ReqListRevisions,
   ResListRevisions,
 } from '../../../types/api';
-import type { DBRevision } from '../../../types/db/revisions';
+import type { DBRevision } from '../../../types/db';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{

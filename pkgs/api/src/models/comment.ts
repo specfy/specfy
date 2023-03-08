@@ -10,11 +10,13 @@ import {
   Scopes,
 } from 'sequelize-typescript';
 
-import type { DBComment } from '../types/db/comments';
-import type { DBOrg } from '../types/db/orgs';
-import type { DBProject } from '../types/db/projects';
-import type { DBRevision } from '../types/db/revisions';
-import type { DBUser } from '../types/db/users';
+import type {
+  DBComment,
+  DBOrg,
+  DBProject,
+  DBRevision,
+  DBUser,
+} from '../types/db';
 
 import { User } from './user';
 

@@ -1,6 +1,5 @@
 import {
   IconHome,
-  IconBook,
   IconBolt,
   IconSettings,
   IconApps,

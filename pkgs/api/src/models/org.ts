@@ -9,7 +9,7 @@ import {
   Scopes,
 } from 'sequelize-typescript';
 
-import type { DBOrg } from '../types/db/orgs';
+import type { DBOrg } from '../types/db';
 
 import { Perm } from './perm';
 

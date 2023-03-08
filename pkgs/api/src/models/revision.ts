@@ -10,7 +10,7 @@ import {
   DataType,
 } from 'sequelize-typescript';
 
-import type { DBRevision } from '../types/db/revisions';
+import type { DBRevision } from '../types/db';
 
 import type { Org } from './org';
 import type { Project } from './project';

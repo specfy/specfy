@@ -10,7 +10,7 @@ import {
   DataType,
 } from 'sequelize-typescript';
 
-import type { DBUser } from '../types/db/users';
+import type { DBUser } from '../types/db';
 
 type PropCreateUser = Pick<DBUser, 'email' | 'name'>;
 @Table({ tableName: 'users', modelName: 'user' })

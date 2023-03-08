@@ -2,11 +2,7 @@ import { Transaction } from 'sequelize';
 
 import type { RevisionBlob } from '../models';
 import { Project, Component, Document } from '../models';
-import {
-  isDocumentBlob,
-  isComponentBlob,
-  isProjectBlob,
-} from '../types/db/blobs';
+import { isDocumentBlob, isComponentBlob, isProjectBlob } from '../types/db';
 
 export async function iterate(
   blobs: RevisionBlob[],

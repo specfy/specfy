@@ -9,8 +9,7 @@ import {
   PrimaryKey,
 } from 'sequelize-typescript';
 
-import type { DBDocument } from '../types/db/documents';
-import type { DBTypeHasUser } from '../types/db/typeHasUsers';
+import type { DBDocument, DBTypeHasUser } from '../types/db';
 
 import { User } from './user';
 

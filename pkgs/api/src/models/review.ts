@@ -10,12 +10,14 @@ import {
   BelongsTo,
 } from 'sequelize-typescript';
 
-import type { DBComment } from '../types/db/comments';
-import type { DBOrg } from '../types/db/orgs';
-import type { DBProject } from '../types/db/projects';
-import type { DBReview } from '../types/db/reviews';
-import type { DBRevision } from '../types/db/revisions';
-import type { DBUser } from '../types/db/users';
+import type {
+  DBComment,
+  DBOrg,
+  DBProject,
+  DBReview,
+  DBRevision,
+  DBUser,
+} from '../types/db';
 
 import { User } from './user';
 

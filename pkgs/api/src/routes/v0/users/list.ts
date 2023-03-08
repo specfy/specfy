@@ -9,7 +9,7 @@ import type {
   ReqListUsers,
   ResListUsers,
 } from '../../../types/api';
-import type { DBUser } from '../../../types/db/users';
+import type { DBUser } from '../../../types/db';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{

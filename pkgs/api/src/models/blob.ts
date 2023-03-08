@@ -12,7 +12,7 @@ import {
   BelongsTo,
 } from 'sequelize-typescript';
 
-import type { DBBlob } from '../types/db/blobs';
+import type { DBBlob } from '../types/db';
 
 import type { Org } from './org';
 import type { Project } from './project';

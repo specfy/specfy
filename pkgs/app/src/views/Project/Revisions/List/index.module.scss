@@ -1,10 +1,10 @@
 @import "../../../../styles/theme";
 
 .container {
+  flex-direction: column;
   min-width: $min-w;
   max-width: $max-w;
   margin: 0 auto;
-  flex-direction: column;
 }
 
 .searchWrapper {

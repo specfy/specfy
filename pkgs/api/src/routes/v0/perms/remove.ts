@@ -3,7 +3,7 @@ import type { WhereOptions } from 'sequelize';
 
 import { Perm } from '../../../models';
 import type { ReqDeletePerms, ResDeletePerms } from '../../../types/api';
-import type { DBPerm } from '../../../types/db/perms';
+import type { DBPerm } from '../../../types/db';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.delete<{

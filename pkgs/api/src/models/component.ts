@@ -14,8 +14,7 @@ import {
 import slugify from 'slugify';
 import { v4 as uuidv4 } from 'uuid';
 
-import type { DBBlobComponent } from '../types/db/blobs';
-import type { DBComponent } from '../types/db/components';
+import type { DBBlobComponent, DBComponent } from '../types/db';
 
 import type { PropBlobCreate } from './blob';
 import { RevisionBlob } from './blob';

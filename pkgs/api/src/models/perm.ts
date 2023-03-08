@@ -12,7 +12,7 @@ import {
   Scopes,
 } from 'sequelize-typescript';
 
-import type { DBPerm } from '../types/db/perms';
+import type { DBPerm } from '../types/db';
 
 import { Org } from './org';
 import type { Project } from './project';

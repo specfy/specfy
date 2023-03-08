@@ -7,7 +7,7 @@ import {
 } from '@tabler/icons-react';
 import { Skeleton, Timeline } from 'antd';
 import Title from 'antd/es/typography/Title';
-import type { DBEvent } from 'api/src/types/db/events';
+import type { DBEvent } from 'api/src/types/db';
 import type { ReactNode } from 'react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';

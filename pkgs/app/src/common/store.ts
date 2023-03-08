@@ -3,7 +3,7 @@ import type {
   DBBlobComponent,
   DBBlobDocument,
   DBBlobProject,
-} from 'api/src/types/db/blobs';
+} from 'api/src/types/db';
 import type { Change } from 'diff';
 import { produce } from 'immer';
 import { create } from 'zustand';

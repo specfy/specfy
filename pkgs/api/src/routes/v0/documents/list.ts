@@ -8,7 +8,7 @@ import type {
   ResListDocuments,
   Pagination,
 } from '../../../types/api';
-import type { DBDocument } from '../../../types/db/documents';
+import type { DBDocument } from '../../../types/db';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{ Querystring: ReqListDocuments; Reply: ResListDocuments }>(

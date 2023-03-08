@@ -627,3 +627,55 @@ table "comments" {
   }
 }
 
+
+// ------------------------ Policies
+table "policies" {
+  schema = schema.public
+
+  column "id" {
+    type = bigint
+    null = false
+    identity {
+      generated = ALWAYS
+      start = 1
+      increment = 1
+    }
+  }
+
+  column "org_id" {
+    type = varchar(35)
+    null = false
+  }
+
+  column "type" {
+    type = varchar
+  }
+
+  column "content" {
+    type = json
+    null = false
+  }
+
+  column "created_at" {
+    type    = timestamp(6)
+    default = sql("now()")
+    null    = false
+  }
+  column "updated_at" {
+    type    = timestamp(6)
+    default = sql("now()")
+    null    = false
+  }
+
+  primary_key {
+    columns = [column.id]
+  }
+
+  index "idx_policies_orgid_type" {
+    columns = [
+      column.org_id,
+      column.type,
+    ]
+  }
+}
+
