@@ -1,42 +1,20 @@
-import { IconPlus } from '@tabler/icons-react';
-import { Button, Form, Modal, Typography } from 'antd';
+import { Typography } from 'antd';
 import type { ApiComponent, ApiProject } from 'api/src/types/api';
 import type { GraphEdge } from 'api/src/types/db';
 import type React from 'react';
 import { useEffect, useState } from 'react';
 
-import type { TechInfo } from '../../common/component';
+import { getAllChilds, positionEdge } from '../../common/component';
 import { useComponentsStore } from '../../common/store';
 import {
   ComponentLine,
   ComponentLineTech,
 } from '../../components/ComponentLine';
-import { getEmptyDoc } from '../../components/Editor/helpers';
-import {
-  ComponentSelect,
-  LanguageSelect,
-  StackSearch,
-} from '../../components/StackSearch';
+import { ComponentSelect, LanguageSelect } from '../../components/StackSearch';
 import { useEdit } from '../../hooks/useEdit';
 import type { RouteComponent } from '../../types/routes';
 
 import cls from './index.module.scss';
-
-function getAllChilds(list: ApiComponent[], id: string): ApiComponent[] {
-  const tmp = [];
-  for (const c of list) {
-    if (c.inComponent === id) {
-      tmp.push(c);
-      tmp.push(...getAllChilds(list, c.id));
-    }
-  }
-  return tmp;
-}
-
-interface AllComponent {
-  category: string;
-  component: ApiComponent;
-}
 
 export const ComponentDetails: React.FC<{
   proj: ApiProject;
@@ -44,6 +22,7 @@ export const ComponentDetails: React.FC<{
   component: ApiComponent;
   components: ApiComponent[];
 }> = ({ proj, params, component, components }) => {
+  // TODO: Special case for project !
   // Components
   const [inComp, setInComp] = useState<ApiComponent>();
   const [hosts, setHosts] = useState<ApiComponent[]>([]);
@@ -54,14 +33,11 @@ export const ComponentDetails: React.FC<{
   const [receive, setReceive] = useState<ApiComponent[]>([]);
   const [answer, setAnswer] = useState<ApiComponent[]>([]);
   const [receiveAnswer, setReceiveAnswer] = useState<ApiComponent[]>([]);
-  const [all, setAll] = useState<AllComponent[]>([]);
 
   // Edition
   const edit = useEdit();
   const isEditing = edit.isEnabled();
   const storeComponents = useComponentsStore();
-
-  const [openHost, setOpenHost] = useState(false);
 
   useEffect(() => {
     const list = new Map<string, ApiComponent>();
@@ -140,56 +116,40 @@ export const ComponentDetails: React.FC<{
     setReceive(Array.from(_receive.values()));
     setAnswer(Array.from(_answer.values()));
     setReceiveAnswer(Array.from(_receiveanswer.values()));
-  }, [component]);
+  }, [components]);
 
-  const handlePickStack = (obj: ApiComponent | ApiProject | TechInfo) => {
-    setOpenStack(false);
+  // TODO: create component
+  // if (obj.type === 'hosting') {
+  //   let exists = components!.find((c) => c.name === obj.name);
+  //   if (!exists) {
+  //     exists = {
+  //       id: 'ere',
+  //       orgId: proj.orgId,
+  //       projectId: proj.id,
+  //       type: 'hosting',
+  //       typeId: null,
+  //       name: obj.name,
+  //       slug: obj.key,
+  //       description: getEmptyDoc(),
+  //       tech: null,
+  //       display: { pos: { x: 0, y: 0, width: 100, height: 32 } },
+  //       edges: [],
+  //       blobId: '',
+  //       inComponent: null,
+  //       createdAt: new Date().toISOString(),
+  //       updatedAt: new Date().toISOString(),
+  //     };
 
-    if ('key' in obj) {
-      if (obj.type === 'hosting') {
-        let exists = components!.find((c) => c.name === obj.name);
-        if (!exists) {
-          exists = {
-            id: 'ere',
-            orgId: proj.orgId,
-            projectId: proj.id,
-            type: 'hosting',
-            typeId: null,
-            name: obj.name,
-            slug: obj.key,
-            description: getEmptyDoc(),
-            tech: null,
-            display: { pos: { x: 0, y: 0, width: 100, height: 32 } },
-            edges: [],
-            blobId: '',
-            inComponent: null,
-            createdAt: new Date().toISOString(),
-            updatedAt: new Date().toISOString(),
-          };
+  //     storeComponents.create(exists);
+  //   }
 
-          storeComponents.create(exists);
-        }
+  //   if (hosts.find((host) => host.name === exists!.name)) {
+  //     // Already added
+  //     return;
+  //   }
 
-        if (hosts.find((host) => host.name === exists!.name)) {
-          // Already added
-          return;
-        }
-
-        storeComponents.updateField(component.id, 'inComponent', exists.id);
-        return;
-      }
-
-      if (obj.type === 'language' || obj.type === 'tool') {
-        const techs = component.tech || [];
-        if (techs.includes(obj.name)) {
-          // Already added
-          return;
-        }
-
-        storeComponents.updateField(component.id, 'tech', [...techs, obj.name]);
-      }
-    }
-  };
+  //   storeComponents.updateField(component.id, 'inComponent', exists.id);
+  //   return;
 
   const handleStackChange = (values: string[]) => {
     storeComponents.updateField(component.id, 'tech', [...values]);
@@ -197,17 +157,24 @@ export const ComponentDetails: React.FC<{
 
   const handlePickData = (
     obj: string[],
-    category: 'read' | 'readwrite' | 'write',
+    category:
+      | 'answer'
+      | 'read'
+      | 'readwrite'
+      | 'receive'
+      | 'receiveAnswer'
+      | 'write',
     original: ApiComponent[]
   ) => {
     const isRemove = original.length > obj.length;
     const isFrom =
       category === 'readwrite' || category === 'read' || category === 'write';
 
-    // Remove edge
+    // ---- Remove edge
     if (isRemove) {
       const diff = original.filter((x) => !obj.includes(x.id))[0];
 
+      // Remove from this component to other
       if (isFrom) {
         const tmp: GraphEdge[] = [];
         for (const edge of component.edges) {
@@ -218,48 +185,39 @@ export const ComponentDetails: React.FC<{
         }
 
         storeComponents.updateField(component.id, 'edges', tmp);
+        return;
       }
+
+      // Remove from this other to this component
+      const tmp: GraphEdge[] = [];
+      for (const edge of diff.edges) {
+        if (component.id === edge.to) {
+          continue;
+        }
+        tmp.push(edge);
+      }
+      storeComponents.updateField(diff.id, 'edges', tmp);
       return;
     }
 
-    // Add edges
+    // ---- Add edges
     const diff = obj.filter((x) => !original.find((o) => o.id === x))[0];
     const add = components.find((c) => c.id === diff)!;
+    console.log(diff, add, obj, original);
 
     if (isFrom) {
       const tmp: GraphEdge[] = [];
       let exists: GraphEdge | false = false;
       for (const edge of component.edges) {
         if (edge.to === diff) {
-          const copy = JSON.parse(JSON.stringify(edge));
-          exists = copy;
+          exists = JSON.parse(JSON.stringify(edge));
           continue;
         }
 
         tmp.push(edge);
       }
-      const isCurrentAbove =
-        component.display.pos.y + component.display.pos.height <
-        add.display.pos.y;
-      const isCurrentBelow =
-        component.display.pos.y > add.display.pos.y + add.display.pos.height;
-      const isCurrentRight =
-        component.display.pos.x > add.display.pos.x + add.display.pos.width;
-      const isCurrentLeft =
-        component.display.pos.x + component.display.pos.x < add.display.pos.x;
 
-      let source: GraphEdge['portSource'] = 'left';
-      let target: GraphEdge['portTarget'] = 'right';
-      if (isCurrentLeft) {
-        source = 'right';
-        target = 'left';
-      } else if (isCurrentAbove && !isCurrentRight) {
-        source = 'bottom';
-        target = 'top';
-      } else if (isCurrentBelow) {
-        source = 'top';
-        target = 'bottom';
-      }
+      const { source, target } = positionEdge(component, add);
 
       const edge: GraphEdge =
         exists !== false
@@ -279,7 +237,40 @@ export const ComponentDetails: React.FC<{
       tmp.push(edge);
 
       storeComponents.updateField(component.id, 'edges', tmp);
+      return;
     }
+
+    const tmp: GraphEdge[] = [];
+    let exists: GraphEdge | false = false;
+    for (const edge of add.edges) {
+      if (edge.to === component.id) {
+        exists = JSON.parse(JSON.stringify(edge));
+        continue;
+      }
+
+      tmp.push(edge);
+    }
+
+    const { source, target } = positionEdge(component, add);
+
+    const edge: GraphEdge =
+      exists !== false
+        ? exists
+        : {
+            to: component.id,
+            portSource: 'left',
+            portTarget: 'left',
+            read: false,
+            write: false,
+            vertices: [],
+          };
+    edge.portSource = target;
+    edge.portTarget = source;
+    edge.read = category !== 'receive';
+    edge.write = category !== 'answer';
+    tmp.push(edge);
+
+    storeComponents.updateField(add.id, 'edges', tmp);
   };
 
   return (
@@ -288,15 +279,6 @@ export const ComponentDetails: React.FC<{
         <div className={cls.block}>
           <div className={cls.blockTitle}>
             <Typography.Title level={5}>Stack</Typography.Title>
-
-            {/* <Button
-              className={cls.add}
-              type="text"
-              size="small"
-              onClick={() => setOpenStack(!openStack)}
-            >
-              <IconPlus /> Add
-            </Button> */}
           </div>
 
           {(isEditing || component.tech) && (
@@ -319,15 +301,6 @@ export const ComponentDetails: React.FC<{
         <div className={cls.block}>
           <div className={cls.blockTitle}>
             <Typography.Title level={5}>Hosting</Typography.Title>
-
-            <Button
-              className={cls.add}
-              type="text"
-              size="small"
-              onClick={() => setOpenHost(!openHost)}
-            >
-              <IconPlus /> Edit
-            </Button>
           </div>
 
           {(isEditing || hosts.length > 0) && (
@@ -414,7 +387,16 @@ export const ComponentDetails: React.FC<{
               comps={receiveAnswer}
               params={params}
               editing={isEditing}
-            />
+            >
+              <ComponentSelect
+                current={component}
+                components={components}
+                values={receiveAnswer}
+                onChange={(res) =>
+                  handlePickData(res, 'receiveAnswer', receiveAnswer)
+                }
+              />
+            </ComponentLine>
           )}
           {(isEditing || receive.length > 0) && (
             <ComponentLine
@@ -422,7 +404,14 @@ export const ComponentDetails: React.FC<{
               comps={receive}
               params={params}
               editing={isEditing}
-            />
+            >
+              <ComponentSelect
+                current={component}
+                components={components}
+                values={receive}
+                onChange={(res) => handlePickData(res, 'receive', receive)}
+              />
+            </ComponentLine>
           )}
           {(isEditing || answer.length > 0) && (
             <ComponentLine
@@ -430,59 +419,17 @@ export const ComponentDetails: React.FC<{
               comps={answer}
               params={params}
               editing={isEditing}
-            />
+            >
+              <ComponentSelect
+                current={component}
+                components={components}
+                values={answer}
+                onChange={(res) => handlePickData(res, 'answer', answer)}
+              />
+            </ComponentLine>
           )}
         </div>
       )}
-
-      <Modal
-        title=""
-        open={openHost}
-        onCancel={() => {
-          setOpenHost(!openHost);
-        }}
-        bodyStyle={{ minHeight: '200px' }}
-        closable={false}
-        footer={[
-          <Button
-            key="back"
-            type="text"
-            onClick={() => {
-              setOpenHost(!openHost);
-            }}
-          >
-            close
-          </Button>,
-        ]}
-      >
-        <Form name="basic" layout="vertical">
-          <Form.Item label="Hosted on">
-            <StackSearch
-              comps={components!}
-              searchStack={['hosting']}
-              searchProject={false}
-              searchComponents={['hosting']}
-              defaultResults={false}
-              onPick={(obj) => {
-                // TODO:
-              }}
-            />
-            {hosts.length > 0 && <div>{hosts[0].name}</div>}
-          </Form.Item>
-          <Form.Item label="Contains"></Form.Item>
-          <Form.Item label="Run Inside"></Form.Item>
-        </Form>
-        {/* <StackSearch
-          comps={components!}
-          searchStack={['hosting']}
-          searchProject={false}
-          searchComponents={['hosting']}
-          usedTech={component.tech}
-          onPick={(obj) => {
-            handlePickStack(obj);
-          }}
-        /> */}
-      </Modal>
     </div>
   );
 };

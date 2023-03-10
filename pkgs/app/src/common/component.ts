@@ -38,6 +38,8 @@ import {
   Gnubash,
   CssThree,
 } from '@icons-pack/react-simple-icons';
+import type { ApiComponent } from 'api/src/types/api';
+import type { GraphEdge } from 'api/src/types/db';
 
 /*
  a: {
@@ -100,3 +102,48 @@ export const supportedIndexed: Record<string, TechInfo> = {};
 Object.values(supportedArray).forEach((v) => {
   supportedIndexed[v.key] = v;
 });
+
+/**
+ * Position the edge on port from a to b.
+ */
+export function positionEdge(
+  a: ApiComponent,
+  b: ApiComponent
+): { source: GraphEdge['portSource']; target: GraphEdge['portTarget'] } {
+  const isCurrentAbove =
+    a.display.pos.y + a.display.pos.height < b.display.pos.y;
+  const isCurrentBelow =
+    a.display.pos.y > b.display.pos.y + b.display.pos.height;
+  const isCurrentRight =
+    a.display.pos.x > b.display.pos.x + b.display.pos.width;
+  const isCurrentLeft = a.display.pos.x + a.display.pos.x < b.display.pos.x;
+
+  let source: GraphEdge['portSource'] = 'left';
+  let target: GraphEdge['portTarget'] = 'right';
+  if (isCurrentLeft) {
+    source = 'right';
+    target = 'left';
+  } else if (isCurrentAbove && !isCurrentRight) {
+    source = 'bottom';
+    target = 'top';
+  } else if (isCurrentBelow) {
+    source = 'top';
+    target = 'bottom';
+  }
+
+  return { source, target };
+}
+
+/**
+ * Get all childs of a component.
+ */
+export function getAllChilds(list: ApiComponent[], id: string): ApiComponent[] {
+  const tmp = [];
+  for (const c of list) {
+    if (c.inComponent === id) {
+      tmp.push(c);
+      tmp.push(...getAllChilds(list, c.id));
+    }
+  }
+  return tmp;
+}
