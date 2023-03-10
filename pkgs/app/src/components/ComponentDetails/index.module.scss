@@ -1,0 +1,20 @@
+@import "../../styles/theme";
+@import "../../styles/mixin";
+
+.block {
+  margin-top: 32px;
+}
+
+.blockTitle {
+  display: flex;
+  gap: $p-l;
+  align-items: baseline;
+
+  >h5 {
+    min-width: 60px;
+  }
+}
+
+.add {
+  color: $gray-600;
+}

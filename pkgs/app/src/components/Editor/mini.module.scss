@@ -20,6 +20,10 @@
 
       min-height: inherit;
 
+      p:last-child {
+        margin-bottom: 0;
+      }
+
 
       p.is-editor-empty:first-child::before {
         pointer-events: none;

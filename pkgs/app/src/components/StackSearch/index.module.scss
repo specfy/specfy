@@ -1,16 +1,21 @@
-@import "../../../styles/theme";
+@import "../../styles/theme";
 
 .container {
-  width: 250px;
+  // width: 250px;
+  position: relative;
 }
 
-.search {
-  margin-bottom: $p-m;
-}
+.search {}
 
 .list {
   overflow: scroll;
-  max-height: 210px;
+  max-height: 150px;
+  position: absolute;
+  background: #fff;
+  box-shadow: $box-shadow2;
+  width: 100%;
+  z-index: 1;
+  padding: $p-l $p-m 0 $p-m;
 }
 
 .group {

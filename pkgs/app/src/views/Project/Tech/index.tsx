@@ -8,12 +8,12 @@ import type { TechInfo } from '../../../common/component';
 import { supportedIndexed } from '../../../common/component';
 import { useComponentsStore } from '../../../common/store';
 import { Card } from '../../../components/Card';
+import { ComponentLine } from '../../../components/ComponentLine';
 import { Container } from '../../../components/Container';
 import { Graph, GraphContainer } from '../../../components/Graph';
 import { Toolbar } from '../../../components/Graph/Toolbar';
 import { useGraph } from '../../../hooks/useGraph';
 import type { RouteProject, RouteTech } from '../../../types/routes';
-import { Line } from '../Component/Line';
 
 import cls from './index.module.scss';
 
@@ -98,7 +98,7 @@ export const Tech: React.FC<{
 
           <Title level={5}>Used in</Title>
 
-          <Line title="Components" comps={usedBy} params={params} />
+          <ComponentLine title="Components" comps={usedBy} params={params} />
         </Card>
       </Container.Left>
       <Container.Right>

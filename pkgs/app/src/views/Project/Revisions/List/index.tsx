@@ -112,7 +112,6 @@ export const ProjectRevisionsList: React.FC<{
           <Table
             rowKey="id"
             dataSource={list.data}
-            size="small"
             pagination={{ position: ['bottomCenter'] }}
           >
             <Table.Column

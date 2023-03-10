@@ -37,7 +37,6 @@ export const ListProjects: React.FC = () => {
         <Table
           rowKey="id"
           dataSource={list}
-          size="small"
           showHeader={false}
           pagination={false}
         >

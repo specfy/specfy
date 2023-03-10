@@ -37,12 +37,7 @@ export const ListRFCs: React.FC<{ project: ApiProject }> = ({ project }) => {
           </div>
         ))}
       {l.data && l.data.data.length > 0 && (
-        <Table
-          rowKey="id"
-          dataSource={l.data!.data}
-          size="small"
-          pagination={false}
-        >
+        <Table rowKey="id" dataSource={l.data!.data} pagination={false}>
           <Table.Column
             title=""
             dataIndex="name"

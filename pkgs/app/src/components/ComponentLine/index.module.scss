@@ -1,0 +1,55 @@
+@import "../../styles/theme";
+@import "../../styles/mixin";
+
+.line {
+  display: grid;
+  grid-template-columns: 150px auto;
+  align-items: flex-start;
+
+  margin-bottom: $p-2xl;
+
+  line-height: $line-height-m;
+
+  .label {
+    padding-top: 2px;
+    font-size: $font-s;
+    color: $gray-500;
+  }
+
+  .values {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $p-xs $p-m;
+    align-items: flex-start;
+    justify-content: flex-start;
+    min-height: 28px;
+
+    &.clickToEdit {
+      @include editable;
+    }
+  }
+
+  .item {
+    display: inline-flex;
+    gap: $p-s;
+    align-items: center;
+
+    min-width: 120px;
+    padding: $p-xs $p-l;
+
+    font-size: $font;
+    color: $gray-700;
+
+    border-radius: 10px;
+
+    &:hover {
+      color: $blue-700;
+      background: $gray-100;
+    }
+
+    >svg {
+      font-size: $font-s;
+    }
+  }
+
+}

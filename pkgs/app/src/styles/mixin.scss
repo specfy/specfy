@@ -4,17 +4,18 @@
   margin: (-$p) (-$p-m);
   padding: $padding !important;
 
-  border: 1px solid transparent;
+  outline: 1px solid transparent;
+  border: none;
   border-radius: $border-radius-s;
 
   transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
 
   &:hover {
-    border: 1px solid $blue-100;
+    outline: 1px solid $blue-100;
   }
 
   &:focus {
-    border: 1px solid $blue-400;
+    outline: 1px solid $blue-400;
     box-shadow: rgb(0 0 0 / 9%) 0 1px 4px;
   }
 }

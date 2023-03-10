@@ -3,8 +3,11 @@ import type { ApiComponent } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
 
 import { useComponentsStore } from '../../../common/store';
+import {
+  ComponentLine,
+  ComponentLineTech,
+} from '../../../components/ComponentLine';
 import type { RouteProject } from '../../../types/routes';
-import { Line } from '../Component/Line';
 
 export const TechnicalAspects: React.FC<{
   params: RouteProject;
@@ -66,20 +69,27 @@ export const TechnicalAspects: React.FC<{
         )}
 
       {techs.length > 0 && (
-        <Line title="Stack" comps={hosts} techs={techs} params={params} />
+        <ComponentLineTech title="Stack" techs={techs} params={params} />
+      )}
+      {hosts.length > 0 && (
+        <ComponentLine title="Hosts" comps={hosts} params={params} />
       )}
       {components.length > 0 && (
-        <Line
+        <ComponentLine
           title="Components"
           comps={components.filter((c) => c.type === 'component')}
           params={params}
         />
       )}
       {tp.length > 0 && (
-        <Line title="Third Parties" comps={tp} params={params} />
+        <ComponentLine title="Third Parties" comps={tp} params={params} />
       )}
       {projects.length > 0 && (
-        <Line title="Depends on projects" comps={projects} params={params} />
+        <ComponentLine
+          title="Depends on projects"
+          comps={projects}
+          params={params}
+        />
       )}
     </>
   );

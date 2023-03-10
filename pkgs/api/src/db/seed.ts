@@ -494,7 +494,7 @@ export async function seed() {
         portTarget: 'left',
       },
     ],
-    tech: ['NodeJS', 'Typescript', 'Bash', 'AtlasDB'],
+    tech: ['nodejs', 'typescript', 'bash', 'AtlasDB'],
   });
   await Component.create({
     name: 'Frontend',
@@ -530,7 +530,7 @@ export async function seed() {
         portTarget: 'left',
       },
     ],
-    tech: ['React', 'Typescript', 'Webpack'],
+    tech: ['react', 'typescript', 'webpack'],
   });
   await Component.create({
     name: 'Manager',
@@ -603,7 +603,7 @@ export async function seed() {
         portTarget: 'left',
       },
     ],
-    tech: ['NodeJS', 'Typescript'],
+    tech: ['nodejs', 'typescript'],
   });
   await Component.create({
     name: 'Worker',
@@ -668,7 +668,7 @@ export async function seed() {
         portTarget: 'left',
       },
     ],
-    tech: ['NodeJS', 'Typescript'],
+    tech: ['nodejs', 'typescript'],
   });
 
   // Revisions
