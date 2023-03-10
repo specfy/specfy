@@ -1,6 +1,7 @@
 import { IconPlus } from '@tabler/icons-react';
-import { Button, Form, Input, Modal, Select, Typography } from 'antd';
+import { Button, Form, Modal, Typography } from 'antd';
 import type { ApiComponent, ApiProject } from 'api/src/types/api';
+import type { GraphEdge } from 'api/src/types/db';
 import type React from 'react';
 import { useEffect, useState } from 'react';
 
@@ -11,7 +12,11 @@ import {
   ComponentLineTech,
 } from '../../components/ComponentLine';
 import { getEmptyDoc } from '../../components/Editor/helpers';
-import { LanguageSelect, StackSearch } from '../../components/StackSearch';
+import {
+  ComponentSelect,
+  LanguageSelect,
+  StackSearch,
+} from '../../components/StackSearch';
 import { useEdit } from '../../hooks/useEdit';
 import type { RouteComponent } from '../../types/routes';
 
@@ -47,8 +52,8 @@ export const ComponentDetails: React.FC<{
   const [write, setWrite] = useState<ApiComponent[]>([]);
   const [readwrite, setReadWrite] = useState<ApiComponent[]>([]);
   const [receive, setReceive] = useState<ApiComponent[]>([]);
-  const [send, setSend] = useState<ApiComponent[]>([]);
-  const [receiveSend, setReceiveSend] = useState<ApiComponent[]>([]);
+  const [answer, setAnswer] = useState<ApiComponent[]>([]);
+  const [receiveAnswer, setReceiveAnswer] = useState<ApiComponent[]>([]);
   const [all, setAll] = useState<AllComponent[]>([]);
 
   // Edition
@@ -56,9 +61,7 @@ export const ComponentDetails: React.FC<{
   const isEditing = edit.isEnabled();
   const storeComponents = useComponentsStore();
 
-  const [openStack, setOpenStack] = useState(false);
   const [openHost, setOpenHost] = useState(false);
-  const [openSearchData, setOpenSearchData] = useState(false);
 
   useEffect(() => {
     const list = new Map<string, ApiComponent>();
@@ -74,9 +77,8 @@ export const ComponentDetails: React.FC<{
     const _write = new Map<string, ApiComponent>();
     const _readwrite = new Map<string, ApiComponent>();
     const _receive = new Map<string, ApiComponent>();
-    const _send = new Map<string, ApiComponent>();
-    const _receivesend = new Map<string, ApiComponent>();
-    const _all: AllComponent[] = [];
+    const _answer = new Map<string, ApiComponent>();
+    const _receiveanswer = new Map<string, ApiComponent>();
 
     // Recursive find hosts
     if (_in) {
@@ -104,13 +106,10 @@ export const ComponentDetails: React.FC<{
     for (const edge of component.edges) {
       if (edge.read && edge.write) {
         _readwrite.set(edge.to, list.get(edge.to)!);
-        _all.push({ category: 'push', component: list.get(edge.to)! });
       } else if (edge.write) {
         _write.set(edge.to, list.get(edge.to)!);
-        _all.push({ category: 'write', component: list.get(edge.to)! });
       } else {
         _read.set(edge.to, list.get(edge.to)!);
-        _all.push({ category: 'read', component: list.get(edge.to)! });
       }
     }
 
@@ -125,14 +124,11 @@ export const ComponentDetails: React.FC<{
         }
 
         if (edge.read && edge.write) {
-          _receivesend.set(other.id, list.get(other.id)!);
-          _all.push({ category: 'receivesend', component: list.get(edge.to)! });
+          _receiveanswer.set(other.id, list.get(other.id)!);
         } else if (edge.write) {
           _receive.set(other.id, list.get(other.id)!);
-          _all.push({ category: 'receive', component: list.get(edge.to)! });
         } else {
-          _send.set(other.id, list.get(other.id)!);
-          _all.push({ category: 'send', component: list.get(edge.to)! });
+          _answer.set(other.id, list.get(other.id)!);
         }
       }
     }
@@ -142,9 +138,8 @@ export const ComponentDetails: React.FC<{
     setWrite(Array.from(_write.values()));
     setReadWrite(Array.from(_readwrite.values()));
     setReceive(Array.from(_receive.values()));
-    setSend(Array.from(_send.values()));
-    setReceiveSend(Array.from(_receivesend.values()));
-    setAll(_all);
+    setAnswer(Array.from(_answer.values()));
+    setReceiveAnswer(Array.from(_receiveanswer.values()));
   }, [component]);
 
   const handlePickStack = (obj: ApiComponent | ApiProject | TechInfo) => {
@@ -200,8 +195,91 @@ export const ComponentDetails: React.FC<{
     storeComponents.updateField(component.id, 'tech', [...values]);
   };
 
-  const handlePickData = (obj: ApiComponent | ApiProject | TechInfo) => {
-    console.log(obj);
+  const handlePickData = (
+    obj: string[],
+    category: 'read' | 'readwrite' | 'write',
+    original: ApiComponent[]
+  ) => {
+    const isRemove = original.length > obj.length;
+    const isFrom =
+      category === 'readwrite' || category === 'read' || category === 'write';
+
+    // Remove edge
+    if (isRemove) {
+      const diff = original.filter((x) => !obj.includes(x.id))[0];
+
+      if (isFrom) {
+        const tmp: GraphEdge[] = [];
+        for (const edge of component.edges) {
+          if (edge.to === diff.id) {
+            continue;
+          }
+          tmp.push(edge);
+        }
+
+        storeComponents.updateField(component.id, 'edges', tmp);
+      }
+      return;
+    }
+
+    // Add edges
+    const diff = obj.filter((x) => !original.find((o) => o.id === x))[0];
+    const add = components.find((c) => c.id === diff)!;
+
+    if (isFrom) {
+      const tmp: GraphEdge[] = [];
+      let exists: GraphEdge | false = false;
+      for (const edge of component.edges) {
+        if (edge.to === diff) {
+          const copy = JSON.parse(JSON.stringify(edge));
+          exists = copy;
+          continue;
+        }
+
+        tmp.push(edge);
+      }
+      const isCurrentAbove =
+        component.display.pos.y + component.display.pos.height <
+        add.display.pos.y;
+      const isCurrentBelow =
+        component.display.pos.y > add.display.pos.y + add.display.pos.height;
+      const isCurrentRight =
+        component.display.pos.x > add.display.pos.x + add.display.pos.width;
+      const isCurrentLeft =
+        component.display.pos.x + component.display.pos.x < add.display.pos.x;
+
+      let source: GraphEdge['portSource'] = 'left';
+      let target: GraphEdge['portTarget'] = 'right';
+      if (isCurrentLeft) {
+        source = 'right';
+        target = 'left';
+      } else if (isCurrentAbove && !isCurrentRight) {
+        source = 'bottom';
+        target = 'top';
+      } else if (isCurrentBelow) {
+        source = 'top';
+        target = 'bottom';
+      }
+
+      const edge: GraphEdge =
+        exists !== false
+          ? exists
+          : {
+              to: diff,
+              portSource: 'left',
+              portTarget: 'left',
+              read: false,
+              write: false,
+              vertices: [],
+            };
+      edge.portSource = source;
+      edge.portTarget = target;
+      edge.read = category !== 'write';
+      edge.write = category !== 'read';
+      tmp.push(edge);
+
+      storeComponents.updateField(component.id, 'edges', tmp);
+    }
   };
 
   return (
@@ -275,20 +353,11 @@ export const ComponentDetails: React.FC<{
         read.length > 0 ||
         write.length > 0 ||
         receive.length > 0 ||
-        send.length > 0 ||
-        receiveSend.length > 0) && (
+        answer.length > 0 ||
+        receiveAnswer.length > 0) && (
         <div className={cls.block}>
           <div className={cls.blockTitle}>
             <Typography.Title level={5}>Data</Typography.Title>
-
-            <Button
-              className={cls.add}
-              type="text"
-              size="small"
-              onClick={() => setOpenSearchData(!openSearchData)}
-            >
-              <IconPlus /> Edit
-            </Button>
           </div>
 
           {(isEditing || readwrite.length > 0) && (
@@ -296,18 +365,55 @@ export const ComponentDetails: React.FC<{
               title="Read and Write to"
               comps={readwrite}
               params={params}
-            />
+              editing={isEditing}
+            >
+              <ComponentSelect
+                current={component}
+                components={components}
+                values={readwrite}
+                onChange={(res) => handlePickData(res, 'readwrite', readwrite)}
+              />
+            </ComponentLine>
           )}
 
           {(isEditing || read.length > 0) && (
-            <ComponentLine title="Read from" comps={read} params={params} />
+            <ComponentLine
+              title="Read from"
+              comps={read}
+              params={params}
+              editing={isEditing}
+            >
+              <ComponentSelect
+                current={component}
+                components={components}
+                values={read}
+                onChange={(res) => handlePickData(res, 'read', read)}
+              />
+            </ComponentLine>
           )}
 
-          {(isEditing || receiveSend.length > 0) && (
+          {(isEditing || write.length > 0) && (
             <ComponentLine
-              title="Receive and Send to"
-              comps={receiveSend}
+              title="Write to"
+              comps={write}
               params={params}
+              editing={isEditing}
+            >
+              <ComponentSelect
+                current={component}
+                components={components}
+                values={write}
+                onChange={(res) => handlePickData(res, 'write', write)}
+              />
+            </ComponentLine>
+          )}
+
+          {(isEditing || receiveAnswer.length > 0) && (
+            <ComponentLine
+              title="Receive and Answer to"
+              comps={receiveAnswer}
+              params={params}
+              editing={isEditing}
             />
           )}
           {(isEditing || receive.length > 0) && (
@@ -315,47 +421,19 @@ export const ComponentDetails: React.FC<{
               title="Receive from"
               comps={receive}
               params={params}
+              editing={isEditing}
             />
           )}
-          {(isEditing || send.length > 0) && (
-            <ComponentLine title="Send to" comps={send} params={params} />
-          )}
-
-          {(isEditing || write.length > 0) && (
-            <ComponentLine title="Write to" comps={write} params={params} />
+          {(isEditing || answer.length > 0) && (
+            <ComponentLine
+              title="Answer to"
+              comps={answer}
+              params={params}
+              editing={isEditing}
+            />
           )}
         </div>
       )}
-
-      <Modal
-        title=""
-        open={openStack}
-        onCancel={() => setOpenStack(!openStack)}
-        bodyStyle={{ minHeight: '200px' }}
-        closable={false}
-        footer={[
-          <Button
-            key="back"
-            type="text"
-            onClick={() => setOpenStack(!openStack)}
-          >
-            cancel
-          </Button>,
-        ]}
-      >
-        <StackSearch
-          comps={components!}
-          searchStack={['language']}
-          searchProject={false}
-          searchComponents={false}
-          usedTech={component.tech}
-          defaultResults={true}
-          onPick={(obj) => {
-            handlePickStack(obj);
-            setOpenStack(!openStack);
-          }}
-        />
-      </Modal>
 
       <Modal
         title=""

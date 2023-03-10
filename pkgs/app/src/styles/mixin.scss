@@ -4,11 +4,12 @@
   margin: (-$p) (-$p-m);
   padding: $padding !important;
 
-  outline: 1px solid transparent;
   border: none;
   border-radius: $border-radius-s;
+  outline: 1px solid transparent;
 
   transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
+  cursor: text;
 
   &:hover {
     outline: 1px solid $blue-100;

@@ -18,6 +18,7 @@ export const ComponentLineTech: React.FC<{
 }> = ({ techs, title, params, editing, children }) => {
   const [show, setShow] = useState(false);
   const ref = useRef(null);
+
   useClickAway(ref, (e) => {
     if ((e.target as HTMLElement).closest('.ant-select-dropdown')) {
       return;
@@ -68,42 +69,57 @@ export const ComponentLineTech: React.FC<{
 
 export const ComponentLine: React.FC<{
   comps?: ApiComponent[];
-  techs?: string[] | null;
   title: string;
   params: RouteProject;
-}> = ({ comps, techs, title, params }) => {
+  editing?: boolean;
+  children?: React.ReactElement;
+}> = ({ comps, title, params, editing, children }) => {
+  const [show, setShow] = useState(false);
+  const ref = useRef(null);
+
+  useClickAway(ref, (e) => {
+    if ((e.target as HTMLElement).closest('.ant-select-dropdown')) {
+      console.log('a');
+
+      return;
+    }
+    console.log('aho');
+
+    setShow(false);
+  });
+
+  const handleClick: React.MouseEventHandler<HTMLDivElement> = (e) => {
+    if ((e.target as HTMLDivElement).role !== 'textbox') {
+      return;
+    }
+    setShow(true);
+  };
+
   return (
-    <div className={cls.line}>
+    <div className={cls.line} ref={ref}>
       <div className={cls.label}>{title}</div>
-      <div className={cls.values}>
-        {techs?.map((tech) => {
-          const name = tech.toLocaleLowerCase();
-          const Icon = name in supportedIndexed && supportedIndexed[name].Icon;
-          return (
-            <Link
-              key={tech}
-              to={`/${params.org_id}/${params.project_slug}/t/${name}`}
-              className={cls.item}
-            >
-              {Icon && <Icon size="1em" />}
-              {tech}
-            </Link>
-          );
-        })}
-        {comps?.map((c) => {
-          const Icon =
-            c.slug in supportedIndexed && supportedIndexed[c.slug].Icon;
-          return (
-            <Link
-              key={c.id}
-              to={`/${params.org_id}/${params.project_slug}/c/${c.slug}`}
-              className={cls.item}
-            >
-              {Icon && <Icon size="1em" />}
-              {c.name}
-            </Link>
-          );
-        })}
+      <div
+        className={classnames(cls.values, editing && cls.clickToEdit)}
+        onClick={handleClick}
+        tabIndex={editing ? 0 : undefined}
+        role={editing ? 'textbox' : undefined}
+      >
+        {!show &&
+          comps?.map((c) => {
+            const Icon =
+              c.slug in supportedIndexed && supportedIndexed[c.slug].Icon;
+            return (
+              <Link
+                key={c.id}
+                to={`/${params.org_id}/${params.project_slug}/c/${c.slug}`}
+                className={cls.item}
+              >
+                {Icon && <Icon size="1em" />}
+                {c.name}
+              </Link>
+            );
+          })}
+        {show && children}
       </div>
     </div>
   );

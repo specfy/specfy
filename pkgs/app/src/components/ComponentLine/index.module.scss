@@ -9,6 +9,8 @@
   margin-bottom: $p-2xl;
 
   line-height: $line-height-m;
+  min-height: 44px;
+
 
   .label {
     padding-top: 2px;
@@ -22,10 +24,12 @@
     gap: $p-xs $p-m;
     align-items: flex-start;
     justify-content: flex-start;
-    min-height: 28px;
+
+    min-height: 44px;
 
     &.clickToEdit {
       @include editable;
+      margin: -5px -8px;
     }
   }
 
