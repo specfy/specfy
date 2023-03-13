@@ -42,12 +42,15 @@ export const ComponentSelect: React.FC<{
   values: ApiComponent[];
   components: ApiComponent[];
   current: ApiComponent;
-  onChange: (values: string[]) => void;
-}> = ({ onChange, values, components, current }) => {
+  filter?: Array<ApiComponent['type']>;
+  multiple?: false;
+  onChange: (values: string[] | string) => void;
+}> = ({ onChange, values, components, current, multiple, filter }) => {
   const options = useMemo<DefaultOptionType[]>(() => {
+    const filterDefault = filter || ['component', 'project', 'thirdparty'];
     const tmp: DefaultOptionType[] = [];
     for (const component of components) {
-      if (component.type === 'hosting') {
+      if (!filterDefault.includes(component.type)) {
         continue;
       }
       if (component.id === current.id) {
@@ -68,7 +71,7 @@ export const ComponentSelect: React.FC<{
     <Select
       style={{ width: '100%' }}
       autoFocus={true}
-      mode="multiple"
+      mode={multiple !== false ? 'multiple' : undefined}
       allowClear
       value={computed}
       options={options}

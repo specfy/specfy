@@ -69,10 +69,11 @@ export const ComponentDetails: React.FC<{
         }
         l = list.get(l.inComponent)!;
       }
-
-      if (_in.type !== 'hosting') {
-        setInComp(_in);
-      }
+    }
+    if (_in && _in.type !== 'hosting') {
+      setInComp(_in);
+    } else {
+      setInComp(undefined);
     }
 
     // Find contains
@@ -156,7 +157,7 @@ export const ComponentDetails: React.FC<{
   };
 
   const handlePickData = (
-    obj: string[],
+    obj: string[] | string,
     category:
       | 'answer'
       | 'read'
@@ -166,13 +167,14 @@ export const ComponentDetails: React.FC<{
       | 'write',
     original: ApiComponent[]
   ) => {
-    const isRemove = original.length > obj.length;
+    const values = obj as string[];
+    const isRemove = original.length > values.length;
     const isFrom =
       category === 'readwrite' || category === 'read' || category === 'write';
 
     // ---- Remove edge
     if (isRemove) {
-      const diff = original.filter((x) => !obj.includes(x.id))[0];
+      const diff = original.filter((x) => !values.includes(x.id))[0];
 
       // Remove from this component to other
       if (isFrom) {
@@ -201,9 +203,8 @@ export const ComponentDetails: React.FC<{
     }
 
     // ---- Add edges
-    const diff = obj.filter((x) => !original.find((o) => o.id === x))[0];
+    const diff = values.filter((x) => !original.find((o) => o.id === x))[0];
     const add = components.find((c) => c.id === diff)!;
-    console.log(diff, add, obj, original);
 
     if (isFrom) {
       const tmp: GraphEdge[] = [];
@@ -273,6 +274,29 @@ export const ComponentDetails: React.FC<{
     storeComponents.updateField(add.id, 'edges', tmp);
   };
 
+  const handleInComponent = (values: string[] | string) => {
+    storeComponents.updateField(
+      component.id,
+      'inComponent',
+      (values as string) || null
+    );
+  };
+
+  const handleContains = (values: string[] | string) => {
+    for (const value of values) {
+      console.log(value);
+      storeComponents.updateField(value, 'inComponent', component.id);
+    }
+  };
+
+  const handleHost = (values: string[] | string) => {
+    storeComponents.updateField(
+      component.id,
+      'inComponent',
+      (values as string) || null
+    );
+  };
+
   return (
     <div>
       {(isEditing || component.tech) && (
@@ -304,11 +328,42 @@ export const ComponentDetails: React.FC<{
           </div>
 
           {(isEditing || hosts.length > 0) && (
-            <ComponentLine title="Hosted on" comps={hosts} params={params} />
+            <ComponentLine
+              title="Hosted on"
+              comps={hosts}
+              params={params}
+              editing={isEditing}
+            >
+              <ComponentSelect
+                current={component}
+                components={components}
+                values={hosts.length > 0 ? [hosts[0]] : []}
+                filter={['hosting']}
+                multiple={false}
+                onChange={(res) => handleHost(res)}
+              />
+            </ComponentLine>
           )}
 
           {(isEditing || contains.length > 0) && (
-            <ComponentLine title="Contains" comps={contains} params={params} />
+            <ComponentLine
+              title="Contains"
+              comps={contains}
+              params={params}
+              editing={isEditing}
+            >
+              <ComponentSelect
+                current={component}
+                components={components}
+                values={contains}
+                filter={
+                  component.type === 'hosting'
+                    ? ['component', 'hosting']
+                    : ['component']
+                }
+                onChange={(res) => handleContains(res)}
+              />
+            </ComponentLine>
           )}
 
           {(isEditing || inComp) && (
@@ -316,7 +371,17 @@ export const ComponentDetails: React.FC<{
               title="Run inside"
               comps={inComp && [inComp]}
               params={params}
-            />
+              editing={isEditing}
+            >
+              <ComponentSelect
+                current={component}
+                components={components}
+                values={inComp ? [inComp] : []}
+                multiple={false}
+                filter={['component']}
+                onChange={(res) => handleInComponent(res)}
+              />
+            </ComponentLine>
           )}
         </div>
       )}
