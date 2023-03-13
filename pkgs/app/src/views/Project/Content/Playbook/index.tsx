@@ -37,11 +37,6 @@ export const Playbook: React.FC<{
           {!isEditing && (
             <ContentDoc key={doc.id} id={doc.id} doc={doc.content} />
           )}
-          {!isEditing && doc.content.content.length <= 0 && (
-            <Typography.Text type="secondary">
-              Write something...
-            </Typography.Text>
-          )}
           {isEditing && (
             <Editor
               content={doc.content}

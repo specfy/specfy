@@ -12,7 +12,7 @@ import { Time } from '../Time';
 
 import cls from './index.module.scss';
 
-export const ListProjects: React.FC = () => {
+export const ListProjects: React.FC<{ orgId: string }> = ({ orgId }) => {
   const storeProjects = useProjectsStore();
   const [list, setList] = useState<ApiProject[]>();
   const [search, setSearch] = useState<string>('');
@@ -35,19 +35,26 @@ export const ListProjects: React.FC = () => {
     <div>
       <div className={cls.header}>
         <Title level={3}>Projects</Title>
-        <Input
-          prefix={<IconSearch />}
-          style={{ width: '200px' }}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+        <div className={cls.actions}>
+          <Link to={`/${orgId}/_/project/new`}>
+            <Button type="default" icon={<IconPlus />}></Button>
+          </Link>
+          <Input
+            prefix={<IconSearch />}
+            style={{ width: '200px' }}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
       </div>
 
       {!list ||
         (list.length <= 0 && (
           <div className={cls.empty}>
-            <Button type="default" icon={<IconPlus />}>
-              Create a project
-            </Button>
+            <Link to={`/${orgId}/_/project/new`}>
+              <Button type="default" icon={<IconPlus />}>
+                Create a project
+              </Button>
+            </Link>
           </div>
         ))}
 

@@ -1,4 +1,4 @@
-import { Alert, Checkbox } from 'antd';
+import { Alert, Checkbox, Typography } from 'antd';
 import type { BlockLevelZero, Blocks } from 'api/src/types/api';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -167,10 +167,21 @@ export const ContentDoc: React.FC<{
   doc: BlockLevelZero;
   id?: string;
   pl?: Payload;
-}> = ({ doc, id, pl }) => {
+  noPlaceholder?: true;
+}> = ({ doc, id, pl, noPlaceholder }) => {
   const [payload] = useState<Payload>(() => {
     return pl || { displayed: [id as string] };
   });
+
+  console.log(doc.content);
+  if (doc.content.length <= 0) {
+    if (noPlaceholder) {
+      return null;
+    }
+    return (
+      <Typography.Text type="secondary">Write something...</Typography.Text>
+    );
+  }
 
   return (
     <>

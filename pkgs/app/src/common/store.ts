@@ -80,7 +80,7 @@ export const useProjectsStore = create<ProjectsState>()((set) => ({
 }));
 
 // ------------------------------------------ Project Store
-interface ProjectState {
+export interface ProjectState {
   project: ApiProject | null;
   update: (value: ApiProject) => void;
   revertField: (field: keyof ApiProject) => void;
@@ -99,7 +99,7 @@ export const useProjectStore = create<ProjectState>()((set, get) => ({
 }));
 
 // ------------------------------------------ Component Store
-interface ComponentsState {
+export interface ComponentsState {
   components: Record<string, ApiComponent>;
   fill: (value: ApiComponent[]) => void;
   create: (value: ApiComponent) => void;
@@ -112,6 +112,7 @@ interface ComponentsState {
   ) => void;
   revertField: (id: string, field: keyof ApiComponent) => void;
 }
+
 export const useComponentsStore = create<ComponentsState>()((set, get) => ({
   components: {},
   fill: (values) => {
@@ -159,7 +160,7 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
 }));
 
 // ------------------------------------------ Document Store
-interface DocumentsState {
+export interface DocumentsState {
   documents: Record<string, ApiDocument>;
   current: string | null;
   add: (values: ApiDocument[]) => void;

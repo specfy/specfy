@@ -11,6 +11,6 @@ export function removeEmptyContent(json: BlockDoc): BlockLevelZero {
 export function getEmptyDoc(): BlockLevelZero {
   return {
     type: 'doc',
-    content: [{ type: 'paragraph' }],
+    content: [],
   };
 }

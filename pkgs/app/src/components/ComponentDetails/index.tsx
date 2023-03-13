@@ -2,7 +2,7 @@ import { Typography } from 'antd';
 import type { ApiComponent, ApiProject } from 'api/src/types/api';
 import type { GraphEdge } from 'api/src/types/db';
 import type React from 'react';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 import { getAllChilds, positionEdge } from '../../common/component';
 import { useComponentsStore } from '../../common/store';
@@ -15,6 +15,13 @@ import { useEdit } from '../../hooks/useEdit';
 import type { RouteComponent } from '../../types/routes';
 
 import cls from './index.module.scss';
+
+interface IsType {
+  hosting: boolean;
+  component: boolean;
+  thirdParty: boolean;
+  project: boolean;
+}
 
 export const ComponentDetails: React.FC<{
   proj: ApiProject;
@@ -33,6 +40,14 @@ export const ComponentDetails: React.FC<{
   const [receive, setReceive] = useState<ApiComponent[]>([]);
   const [answer, setAnswer] = useState<ApiComponent[]>([]);
   const [receiveAnswer, setReceiveAnswer] = useState<ApiComponent[]>([]);
+  const is = useMemo<IsType>(() => {
+    return {
+      component: component.type === 'component',
+      hosting: component.type === 'hosting',
+      project: component.type === 'project',
+      thirdParty: component.type === 'thirdparty',
+    };
+  }, [component]);
 
   // Edition
   const edit = useEdit();
@@ -118,39 +133,6 @@ export const ComponentDetails: React.FC<{
     setAnswer(Array.from(_answer.values()));
     setReceiveAnswer(Array.from(_receiveanswer.values()));
   }, [components]);
-
-  // TODO: create component
-  // if (obj.type === 'hosting') {
-  //   let exists = components!.find((c) => c.name === obj.name);
-  //   if (!exists) {
-  //     exists = {
-  //       id: 'ere',
-  //       orgId: proj.orgId,
-  //       projectId: proj.id,
-  //       type: 'hosting',
-  //       typeId: null,
-  //       name: obj.name,
-  //       slug: obj.key,
-  //       description: getEmptyDoc(),
-  //       tech: null,
-  //       display: { pos: { x: 0, y: 0, width: 100, height: 32 } },
-  //       edges: [],
-  //       blobId: '',
-  //       inComponent: null,
-  //       createdAt: new Date().toISOString(),
-  //       updatedAt: new Date().toISOString(),
-  //     };
-
-  //     storeComponents.create(exists);
-  //   }
-
-  //   if (hosts.find((host) => host.name === exists!.name)) {
-  //     // Already added
-  //     return;
-  //   }
-
-  //   storeComponents.updateField(component.id, 'inComponent', exists.id);
-  //   return;
 
   const handleStackChange = (values: string[]) => {
     storeComponents.updateField(component.id, 'tech', [...values]);
@@ -311,7 +293,7 @@ export const ComponentDetails: React.FC<{
 
   return (
     <div>
-      {(isEditing || component.tech) && (
+      {(isEditing || component.tech) && is.component && !component.techId && (
         <div className={cls.block}>
           <div className={cls.blockTitle}>
             <Typography.Title level={5}>Stack</Typography.Title>
@@ -333,67 +315,64 @@ export const ComponentDetails: React.FC<{
         </div>
       )}
 
-      {(isEditing || hosts.length > 0 || inComp || contains.length > 0) && (
-        <div className={cls.block}>
-          <div className={cls.blockTitle}>
-            <Typography.Title level={5}>Hosting</Typography.Title>
+      {(isEditing || hosts.length > 0 || inComp || contains.length > 0) &&
+        (is.component || is.hosting) && (
+          <div className={cls.block}>
+            <div className={cls.blockTitle}>
+              <Typography.Title level={5}>Hosting</Typography.Title>
+            </div>
+
+            {(isEditing || hosts.length > 0) && (
+              <ComponentLine
+                title="Hosted on"
+                comps={hosts}
+                params={params}
+                editing={isEditing}
+              >
+                <ComponentSelect
+                  current={component}
+                  values={hosts.length > 0 ? [hosts[0]] : []}
+                  filter={['hosting']}
+                  multiple={false}
+                  onChange={(res) => handleHost(res)}
+                />
+              </ComponentLine>
+            )}
+
+            {(isEditing || contains.length > 0) && (
+              <ComponentLine
+                title="Contains"
+                comps={contains}
+                params={params}
+                editing={isEditing}
+              >
+                <ComponentSelect
+                  current={component}
+                  values={contains}
+                  filter={is.hosting ? ['component', 'hosting'] : ['component']}
+                  onChange={(res) => handleContains(res)}
+                />
+              </ComponentLine>
+            )}
+
+            {(isEditing || inComp) && (
+              <ComponentLine
+                title="Run inside"
+                comps={inComp && [inComp]}
+                params={params}
+                editing={isEditing}
+              >
+                <ComponentSelect
+                  current={component}
+                  values={inComp ? [inComp] : []}
+                  multiple={false}
+                  filter={['component']}
+                  onChange={(res) => handleInComponent(res)}
+                />
+              </ComponentLine>
+            )}
           </div>
-
-          {(isEditing || hosts.length > 0) && (
-            <ComponentLine
-              title="Hosted on"
-              comps={hosts}
-              params={params}
-              editing={isEditing}
-            >
-              <ComponentSelect
-                current={component}
-                values={hosts.length > 0 ? [hosts[0]] : []}
-                filter={['hosting']}
-                multiple={false}
-                onChange={(res) => handleHost(res)}
-              />
-            </ComponentLine>
-          )}
-
-          {(isEditing || contains.length > 0) && (
-            <ComponentLine
-              title="Contains"
-              comps={contains}
-              params={params}
-              editing={isEditing}
-            >
-              <ComponentSelect
-                current={component}
-                values={contains}
-                filter={
-                  component.type === 'hosting'
-                    ? ['component', 'hosting']
-                    : ['component']
-                }
-                onChange={(res) => handleContains(res)}
-              />
-            </ComponentLine>
-          )}
-
-          {(isEditing || inComp) && (
-            <ComponentLine
-              title="Run inside"
-              comps={inComp && [inComp]}
-              params={params}
-              editing={isEditing}
-            >
-              <ComponentSelect
-                current={component}
-                values={inComp ? [inComp] : []}
-                multiple={false}
-                filter={['component']}
-                onChange={(res) => handleInComponent(res)}
-              />
-            </ComponentLine>
-          )}
-        </div>
-      )}
+        )}
 
       {(isEditing ||
         readwrite.length > 0 ||
@@ -401,103 +380,106 @@ export const ComponentDetails: React.FC<{
         write.length > 0 ||
         receive.length > 0 ||
         answer.length > 0 ||
-        receiveAnswer.length > 0) && (
-        <div className={cls.block}>
-          <div className={cls.blockTitle}>
-            <Typography.Title level={5}>Data</Typography.Title>
+        receiveAnswer.length > 0) &&
+        !is.hosting && (
+          <div className={cls.block}>
+            <div className={cls.blockTitle}>
+              <Typography.Title level={5}>Data</Typography.Title>
+            </div>
+
+            {(isEditing || readwrite.length > 0) && (
+              <ComponentLine
+                title="Read and Write to"
+                comps={readwrite}
+                params={params}
+                editing={isEditing}
+              >
+                <ComponentSelect
+                  current={component}
+                  values={readwrite}
+                  onChange={(res) =>
+                    handlePickData(res, 'readwrite', readwrite)
+                  }
+                />
+              </ComponentLine>
+            )}
+
+            {(isEditing || read.length > 0) && (
+              <ComponentLine
+                title="Read from"
+                comps={read}
+                params={params}
+                editing={isEditing}
+              >
+                <ComponentSelect
+                  current={component}
+                  values={read}
+                  onChange={(res) => handlePickData(res, 'read', read)}
+                />
+              </ComponentLine>
+            )}
+
+            {(isEditing || write.length > 0) && (
+              <ComponentLine
+                title="Write to"
+                comps={write}
+                params={params}
+                editing={isEditing}
+              >
+                <ComponentSelect
+                  current={component}
+                  values={write}
+                  onChange={(res) => handlePickData(res, 'write', write)}
+                />
+              </ComponentLine>
+            )}
+
+            {(isEditing || receiveAnswer.length > 0) && (
+              <ComponentLine
+                title="Receive and Answer to"
+                comps={receiveAnswer}
+                params={params}
+                editing={isEditing}
+              >
+                <ComponentSelect
+                  current={component}
+                  values={receiveAnswer}
+                  onChange={(res) =>
+                    handlePickData(res, 'receiveAnswer', receiveAnswer)
+                  }
+                />
+              </ComponentLine>
+            )}
+            {(isEditing || receive.length > 0) && (
+              <ComponentLine
+                title="Receive from"
+                comps={receive}
+                params={params}
+                editing={isEditing}
+              >
+                <ComponentSelect
+                  current={component}
+                  values={receive}
+                  onChange={(res) => handlePickData(res, 'receive', receive)}
+                />
+              </ComponentLine>
+            )}
+            {(isEditing || answer.length > 0) && (
+              <ComponentLine
+                title="Answer to"
+                comps={answer}
+                params={params}
+                editing={isEditing}
+              >
+                <ComponentSelect
+                  current={component}
+                  values={answer}
+                  onChange={(res) => handlePickData(res, 'answer', answer)}
+                />
+              </ComponentLine>
+            )}
           </div>
-
-          {(isEditing || readwrite.length > 0) && (
-            <ComponentLine
-              title="Read and Write to"
-              comps={readwrite}
-              params={params}
-              editing={isEditing}
-            >
-              <ComponentSelect
-                current={component}
-                values={readwrite}
-                onChange={(res) => handlePickData(res, 'readwrite', readwrite)}
-              />
-            </ComponentLine>
-          )}
-
-          {(isEditing || read.length > 0) && (
-            <ComponentLine
-              title="Read from"
-              comps={read}
-              params={params}
-              editing={isEditing}
-            >
-              <ComponentSelect
-                current={component}
-                values={read}
-                onChange={(res) => handlePickData(res, 'read', read)}
-              />
-            </ComponentLine>
-          )}
-
-          {(isEditing || write.length > 0) && (
-            <ComponentLine
-              title="Write to"
-              comps={write}
-              params={params}
-              editing={isEditing}
-            >
-              <ComponentSelect
-                current={component}
-                values={write}
-                onChange={(res) => handlePickData(res, 'write', write)}
-              />
-            </ComponentLine>
-          )}
-
-          {(isEditing || receiveAnswer.length > 0) && (
-            <ComponentLine
-              title="Receive and Answer to"
-              comps={receiveAnswer}
-              params={params}
-              editing={isEditing}
-            >
-              <ComponentSelect
-                current={component}
-                values={receiveAnswer}
-                onChange={(res) =>
-                  handlePickData(res, 'receiveAnswer', receiveAnswer)
-                }
-              />
-            </ComponentLine>
-          )}
-          {(isEditing || receive.length > 0) && (
-            <ComponentLine
-              title="Receive from"
-              comps={receive}
-              params={params}
-              editing={isEditing}
-            >
-              <ComponentSelect
-                current={component}
-                values={receive}
-                onChange={(res) => handlePickData(res, 'receive', receive)}
-              />
-            </ComponentLine>
-          )}
-          {(isEditing || answer.length > 0) && (
-            <ComponentLine
-              title="Answer to"
-              comps={answer}
-              params={params}
-              editing={isEditing}
-            >
-              <ComponentSelect
-                current={component}
-                values={answer}
-                onChange={(res) => handlePickData(res, 'answer', answer)}
-              />
-            </ComponentLine>
-          )}
-        </div>
-      )}
+        )}
     </div>
   );
 };

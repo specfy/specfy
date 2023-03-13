@@ -1,112 +1,47 @@
-import type { SelectProps } from 'antd';
-import {
-  App,
-  Button,
-  Col,
-  Divider,
-  Form,
-  Input,
-  Row,
-  Select,
-  Typography,
-} from 'antd';
-import TextArea from 'antd/es/input/TextArea';
-import type { ReqPostProject } from 'api/src/types/api';
-import { useEffect, useState } from 'react';
+import { IconCircleArrowRight } from '@tabler/icons-react';
+import { App, Button, Input, Typography } from 'antd';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useListOrgs } from '../../../api/orgs';
 import { createProject } from '../../../api/projects';
-import { Card } from '../../../components/Card';
-import { Container } from '../../../components/Container';
+import type { RouteOrg } from '../../../types/routes';
 
 import cls from './index.module.scss';
 
-export const ProjectCreate: React.FC = () => {
+export const ProjectCreate: React.FC<{ params: RouteOrg }> = ({ params }) => {
   const { message } = App.useApp();
-  const orgsQuery = useListOrgs();
   const navigate = useNavigate();
 
-  const [orgs, setOrgs] = useState<SelectProps['options']>([]);
+  const [name, setName] = useState<string>('');
 
-  useEffect(() => {
-    if (orgsQuery.isLoading) return;
-    setOrgs(
-      orgsQuery.data!.map((org) => {
-        return { value: org.id, label: org.name };
-      })
-    );
-  }, [orgsQuery.isLoading]);
-
-  const onFinish = async (values: ReqPostProject) => {
-    const { slug } = await createProject(values);
+  const onFinish = async (e) => {
+    e.preventDefault();
+    const { slug } = await createProject({ name, orgId: params.org_id });
     message.success('Project created');
 
-    navigate(`/${values.orgId}/${slug}`);
-  };
-
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
+    navigate(`/${params.org_id}/${slug}`);
   };
 
   return (
-    <Container>
-      <Typography.Title level={3}>Create a new project</Typography.Title>
-      <div className={cls.subtitle}>
-        A project defines a new infrastructure inside your organisation.
+    <form onSubmit={onFinish} className={cls.form}>
+      <Typography.Title level={4}>Create Project</Typography.Title>
+      <div className={cls.title}>
+        <Input
+          size="large"
+          placeholder="Project name..."
+          className={cls.input}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
+        <Button
+          type="primary"
+          disabled={!name || name.length < 2}
+          className={cls.button}
+          onClick={onFinish}
+          htmlType="submit"
+          icon={<IconCircleArrowRight />}
+        ></Button>
       </div>
-      <Card>
-        <Form
-          name="basic"
-          layout="vertical"
-          onFinish={onFinish}
-          onFinishFailed={onFinishFailed}
-        >
-          <Row gutter={[16, 16]}>
-            <Col span={8}>
-              <Form.Item
-                label="Organisation"
-                name="orgId"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please select an organization',
-                  },
-                ]}
-              >
-                <Select size="large" options={orgs} />
-              </Form.Item>
-            </Col>
-            <Col span={1}>
-              <div className={cls.slash}>/</div>
-            </Col>
-            <Col span={15}>
-              <Form.Item
-                label="Project Name"
-                name="name"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please input a project name',
-                  },
-                ]}
-              >
-                <Input size="large" />
-              </Form.Item>
-            </Col>
-          </Row>
-
-          <Form.Item label="Description" name="description">
-            <TextArea rows={4} showCount maxLength={500} />
-          </Form.Item>
-
-          <Divider />
-
-          <Button type="primary" htmlType="submit">
-            Create project
-          </Button>
-        </Form>
-      </Card>
-    </Container>
+    </form>
   );
 };

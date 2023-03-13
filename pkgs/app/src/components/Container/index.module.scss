@@ -3,10 +3,10 @@
 .container {
   display: flex;
   gap: $p-3xl;
-
   max-width: $main-col-w * 2;
-  margin: 0 auto;
   padding: $p-3xl;
+
+  // margin: 0 auto; // this trigger a weird animation
 }
 
 .right,

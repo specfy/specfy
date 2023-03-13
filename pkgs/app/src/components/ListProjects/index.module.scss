@@ -6,6 +6,11 @@
   justify-content: space-between;
 }
 
+.actions {
+  display: flex;
+  gap: $p-m;
+}
+
 .empty {
   display: flex;
   align-items: center;

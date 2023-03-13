@@ -20,6 +20,7 @@ import type { RouteProject } from '../../types/routes';
 
 import { ProjectActivity } from './Activity';
 import { ComponentView } from './Component';
+import { ProjectComponentCreate } from './Component/Create';
 import { ProjectContentIndex } from './Content';
 import { ProjectGraph } from './Graph';
 import { ProjectOverview } from './Overview';
@@ -182,6 +183,10 @@ export const Project: React.FC = () => {
         <Route
           path="/t/:tech_slug"
           element={<Tech proj={proj} params={params} />}
+        />
+        <Route
+          path="/new/component"
+          element={<ProjectComponentCreate params={params} />}
         />
         <Route
           path="/c/:component_slug"

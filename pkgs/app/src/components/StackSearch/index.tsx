@@ -3,16 +3,15 @@ import { Button, Select } from 'antd';
 import type { DefaultOptionType, SelectProps } from 'antd/es/select';
 import type { ApiComponent } from 'api/src/types/api';
 import { useMemo, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 
 import {
+  createLocal,
   supportedArray,
   supportedIndexed,
   supportedTypeToText,
 } from '../../common/component';
 import { useComponentsStore, useProjectStore } from '../../common/store';
 import { slugify } from '../../common/string';
-import { getEmptyDoc } from '../Editor/helpers';
 
 import cls from './index.module.scss';
 
@@ -59,6 +58,7 @@ export const ComponentSelect: React.FC<{
   const storeComponents = useComponentsStore();
   const storeProject = useProjectStore();
   const [search, setSearch] = useState('');
+  const hasHost = filter?.includes('hosting');
 
   const options = useMemo<DefaultOptionType[]>(() => {
     const filterDefault = filter || ['component', 'project', 'thirdparty'];
@@ -129,38 +129,6 @@ export const ComponentSelect: React.FC<{
     });
   }, [values]);
 
-  const addItem = (
-    data: Partial<Pick<ApiComponent, 'techId' | 'type'>> &
-      Pick<ApiComponent, 'name' | 'slug'>
-  ) => {
-    const hasHost = filter?.includes('hosting');
-    const proj = storeProject.project!;
-
-    const id = uuidv4();
-
-    const add: ApiComponent = {
-      id: id,
-      orgId: proj.id,
-      projectId: proj.id,
-      techId: data.techId || null,
-      type: data.type || (hasHost ? 'hosting' : 'component'),
-      typeId: null,
-      name: data.name,
-      slug: data.slug,
-      description: getEmptyDoc(),
-      tech: null,
-      display: { pos: { x: 0, y: 0, width: 100, height: 32 } },
-      edges: [],
-      blobId: '',
-      inComponent: null,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-
-    storeComponents.create(add);
-    return id;
-  };
-
   // Add new item
   const handleAddItem = () => {
     const slug = slugify(search);
@@ -168,7 +136,11 @@ export const ComponentSelect: React.FC<{
       return;
     }
 
-    addItem({ name: search, slug });
+    createLocal(
+      { name: search, slug, type: hasHost ? 'hosting' : 'component' },
+      storeProject,
+      storeComponents
+    );
   };
 
   const onSelect: SelectProps['onSelect'] = (value, option) => {
@@ -178,18 +150,22 @@ export const ComponentSelect: React.FC<{
 
     const supp = supportedIndexed[option.value!];
 
-    let type: ApiComponent['type'] = 'component';
+    let type: ApiComponent['type'] = hasHost ? 'hosting' : 'component';
     if (supp) {
       if (supp.type === 'sass') type = 'thirdparty';
       else if (supp.type === 'hosting') type = 'hosting';
     }
 
-    const id = addItem({
-      name: supp.name,
-      slug: supp.key,
-      type,
-      techId: option.value as string,
-    });
+    const id = createLocal(
+      {
+        name: supp.name,
+        slug: supp.key,
+        type,
+        techId: option.value as string,
+      },
+      storeProject,
+      storeComponents
+    );
     onChange([...computed, id]);
   };
 
@@ -215,7 +191,6 @@ export const ComponentSelect: React.FC<{
       onSelect={onSelect}
       onDeselect={onDeSelect}
       dropdownRender={(menu) => {
-        const hasHost = filter?.includes('hosting');
         return (
           <>
             {menu}

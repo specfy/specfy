@@ -69,8 +69,12 @@ export function diffTwoBlob({ blob, previous, type, typeId }: TmpBlob): {
     clean.blob[key as keyof TmpBlob['blob']] = value;
 
     if (key === 'description' || key === 'content') {
-      const a = previous ? <ContentDoc doc={previous[key]} /> : <></>;
-      const b = <ContentDoc doc={value} />;
+      const a = previous ? (
+        <ContentDoc doc={previous[key]} noPlaceholder />
+      ) : (
+        <></>
+      );
+      const b = <ContentDoc doc={value} noPlaceholder />;
       const tmp: ComputedForDiff = {
         type,
         typeId,

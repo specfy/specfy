@@ -43,11 +43,6 @@ export const RFC: React.FC<{
 
         <Typography className={cls.content}>
           {!isEditing && <ContentDoc doc={doc.content} />}
-          {!isEditing && doc.content.content.length <= 0 && (
-            <Typography.Text type="secondary">
-              Write something...
-            </Typography.Text>
-          )}
           {isEditing && (
             <Editor
               content={doc.content}

@@ -13,6 +13,7 @@ import { Link, Route, Routes, useLocation, useParams } from 'react-router-dom';
 
 import { Container } from '../../components/Container';
 import type { RouteOrg } from '../../types/routes';
+import { ProjectCreate } from '../Project/Create';
 
 import { OrgActivity } from './Activity';
 import { OrgContent } from './Content';
@@ -159,6 +160,10 @@ export const Org: React.FC = () => {
           <Route path="/team" element={<OrgTeam params={params} />} />
           <Route path="/activity" element={<OrgActivity params={params} />} />
           <Route path="/settings/*" element={<OrgSettings params={params} />} />
+          <Route
+            path="/project/new"
+            element={<ProjectCreate params={params} />}
+          />
         </Routes>
       </Container>
     </div>

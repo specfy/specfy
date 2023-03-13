@@ -115,11 +115,6 @@ export const ComponentView: React.FC<{
             {!isEditing && comp.description && (
               <ContentDoc doc={comp.description} />
             )}
-            {!comp.description?.content.length && !isEditing && (
-              <Typography.Text type="secondary">
-                Write something...
-              </Typography.Text>
-            )}
             {isEditing && (
               <EditorMini
                 key={comp.id}

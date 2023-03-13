@@ -1,4 +1,6 @@
-@import "../../../styles/theme";
+@import "../../../../styles/theme";
+
+$width: $main-col-w / 1.5;
 
 .form {
   display: flex;
@@ -6,11 +8,14 @@
   flex-direction: column;
   justify-content: center;
 
-  width: $main-col-w / 1.5;
-  height: calc(100vh - $height-header-org-total - ($p-4xl * 2));
+  width: $width;
+  height: calc(100vh - $height-header-project-total - ($p-4xl * 2));
   margin: 0 auto;
 }
 
+.type {
+  width: $width;
+}
 
 .title {
   display: flex;

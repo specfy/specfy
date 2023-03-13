@@ -12,7 +12,10 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     const p = await Project.create({
       orgId: req.body.orgId,
       name: req.body.name,
-      description: req.body.description,
+      description: {
+        type: 'doc',
+        content: [],
+      },
       links: [],
       display: { pos: { x: 0, y: 0, width: 100, height: 32 } },
       edges: [],

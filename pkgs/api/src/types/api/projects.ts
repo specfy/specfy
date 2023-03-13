@@ -15,7 +15,7 @@ export interface ResListProjects {
 }
 
 // POST /
-export type ReqPostProject = Pick<ApiProject, 'description' | 'name' | 'orgId'>;
+export type ReqPostProject = Pick<ApiProject, 'name' | 'orgId'>;
 export type ResPostProject = Pick<ApiProject, 'id' | 'slug'>;
 
 // GET /:org_id/:project_slug

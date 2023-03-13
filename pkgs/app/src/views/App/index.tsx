@@ -13,7 +13,6 @@ import { GraphProvider } from '../../hooks/useGraph';
 import { Login } from '../Login';
 import { Org } from '../Org';
 import { Project } from '../Project';
-import { ProjectCreate } from '../Project/Create';
 
 const HomeRedirect: React.FC = () => {
   return <Navigate to={'/company'}></Navigate>;
@@ -57,7 +56,6 @@ const App: React.FC = () => {
                 <Route path="/login" element={<Login />} />
                 <Route element={<AuthLayout></AuthLayout>}>
                   <Route path="/" element={<HomeRedirect />} />
-                  <Route path="/new/project" element={<ProjectCreate />} />
 
                   <Route path="/:org_id" element={<Org />} />
                   <Route path="/:org_id/_/*" element={<Org />} />

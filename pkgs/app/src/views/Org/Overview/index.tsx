@@ -12,7 +12,7 @@ import { ListActivity } from '../../../components/ListActivity';
 import { ListProjects } from '../../../components/ListProjects';
 import type { RouteOrg } from '../../../types/routes';
 
-import cls from './index.module.scss';
+// import cls from './index.module.scss';
 
 export const OrgOverview: React.FC<{ params: RouteOrg }> = ({ params }) => {
   const storeProjects = useProjectsStore();
@@ -52,7 +52,7 @@ export const OrgOverview: React.FC<{ params: RouteOrg }> = ({ params }) => {
     <>
       <Container.Left>
         <Card padded>
-          <ListProjects></ListProjects>
+          <ListProjects orgId={params.org_id}></ListProjects>
         </Card>
       </Container.Left>
       <Container.Right>

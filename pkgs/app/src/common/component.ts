@@ -48,6 +48,11 @@ import {
 } from '@icons-pack/react-simple-icons';
 import type { ApiComponent } from 'api/src/types/api';
 import type { GraphEdge } from 'api/src/types/db';
+import { v4 as uuidv4 } from 'uuid';
+
+import { getEmptyDoc } from '../components/Editor/helpers';
+
+import type { ComponentsState, ProjectState } from './store';
 
 /*
  a: {
@@ -177,4 +182,35 @@ export function getAllChilds(list: ApiComponent[], id: string): ApiComponent[] {
     }
   }
   return tmp;
+}
+
+export function createLocal(
+  data: Partial<Pick<ApiComponent, 'techId'>> &
+    Pick<ApiComponent, 'name' | 'slug' | 'type'>,
+  storeProject: ProjectState,
+  storeComponents: ComponentsState
+) {
+  const id = uuidv4();
+
+  const add: ApiComponent = {
+    id: id,
+    orgId: storeProject.project!.id,
+    projectId: storeProject.project!.id,
+    techId: data.techId || null,
+    type: data.type,
+    typeId: null,
+    name: data.name,
+    slug: data.slug,
+    description: getEmptyDoc(),
+    tech: null,
+    display: { pos: { x: 0, y: 0, width: 100, height: 32 } },
+    edges: [],
+    blobId: '',
+    inComponent: null,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+
+  storeComponents.create(add);
+  return id;
 }
