@@ -173,7 +173,6 @@ export const ContentDoc: React.FC<{
     return pl || { displayed: [id as string] };
   });
 
-  console.log(doc.content);
   if (doc.content.length <= 0) {
     if (noPlaceholder) {
       return null;

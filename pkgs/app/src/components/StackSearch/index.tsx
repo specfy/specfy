@@ -141,11 +141,12 @@ export const ComponentSelect: React.FC<{
       storeProject,
       storeComponents
     );
+    // TODO: find a way to fix this
   };
 
   const onSelect: SelectProps['onSelect'] = (value, option) => {
     if (!option.techType) {
-      return onChange([...computed, value]);
+      return onChange(multiple === false ? value : [...computed, value]);
     }
 
     const supp = supportedIndexed[option.value!];
@@ -166,7 +167,8 @@ export const ComponentSelect: React.FC<{
       storeProject,
       storeComponents
     );
-    onChange([...computed, id]);
+    // TODO: find a way to fix this
+    // onChange([...computed, id]);
   };
 
   const onDeSelect = (value: string) => {
