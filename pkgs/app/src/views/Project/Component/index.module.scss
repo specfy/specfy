@@ -26,3 +26,35 @@
     width: 100%;
   }
 }
+
+.titleEdit {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.tagType {
+  margin-top: -$p-l;
+  background-color: #fff;
+  border: 1px solid transparent !important;
+
+  &.component {
+    color: $blue-600;
+    border-color: $blue-300 !important;
+  }
+
+  &.thirdparty {
+    color: $purple-600;
+    border-color: $purple-300 !important;
+  }
+
+  &.project {
+    color: $yellow-600;
+    border-color: $yellow-300 !important;
+  }
+
+  &.hosting {
+    color: $slate-600;
+    border-color: $slate-300 !important;
+  }
+}

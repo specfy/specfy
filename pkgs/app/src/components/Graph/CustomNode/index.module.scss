@@ -33,23 +33,19 @@
 
   transition: box-shadow 0.2s ease-in;
 
-  &:hover {
-    box-shadow: 0 0 0 4px #d4e8fe;
-  }
-
   &.thirdparty {
-    border-left-color: #d3adf7;
+    border-left-color: $purple-300;
 
     &:hover {
-      box-shadow: 0 0 0 4px #f9f0ff;
+      box-shadow: 0 0 0 4px $purple-50;
     }
   }
 
   &.project {
-    border-left-color: #ffe58f;
+    border-left-color: $yellow-300;
 
     &:hover {
-      box-shadow: 0 0 0 4px #fffbe6;
+      box-shadow: 0 0 0 4px $yellow-50;
     }
   }
 
@@ -75,5 +71,9 @@
 
   &.component {
     border-left-color: $blue-300;
+
+    &:hover {
+      box-shadow: 0 0 0 4px $blue-50;
+    }
   }
 }

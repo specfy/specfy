@@ -5,7 +5,11 @@ import type { ApiComponent } from 'api/src/types/api';
 import { useMemo, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-import { supportedArray, supportedIndexed } from '../../common/component';
+import {
+  supportedArray,
+  supportedIndexed,
+  supportedTypeToText,
+} from '../../common/component';
 import { useComponentsStore, useProjectStore } from '../../common/store';
 import { slugify } from '../../common/string';
 import { getEmptyDoc } from '../Editor/helpers';
@@ -86,14 +90,13 @@ export const ComponentSelect: React.FC<{
         if (components.find((c) => c.slug === supp.key)) {
           continue;
         }
-        let type = 'service';
-        if (supp.type === 'sass') type = 'third party';
 
         sugg.push({
           value: supp.key,
           label: (
             <div className={cls.sugg}>
-              <IconPlus /> Create {type} &quot;{supp.name}&quot;
+              <IconPlus /> Create {supportedTypeToText[supp.type]} &quot;
+              {supp.name}&quot;
             </div>
           ),
           techType: supp.type,
@@ -236,7 +239,7 @@ export const ComponentSelect: React.FC<{
                       icon={<IconPlus />}
                       onClick={handleAddItem}
                     >
-                      Create host &quot;{search}&quot;
+                      Create hosting &quot;{search}&quot;
                     </Button>
                   </div>
                 )}

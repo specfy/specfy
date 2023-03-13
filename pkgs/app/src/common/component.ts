@@ -118,6 +118,22 @@ Object.values(supportedArray).forEach((v) => {
   supportedIndexed[v.key] = v;
 });
 
+export const supportedTypeToText: Record<TechInfo['type'], string> = {
+  db: 'database',
+  hosting: 'hosting',
+  language: 'language',
+  messaging: 'service',
+  tool: 'tool',
+  sass: 'third-party',
+};
+
+export const internalTypeToText: Record<ApiComponent['type'], string> = {
+  component: 'Service',
+  hosting: 'Hosting',
+  project: 'Project',
+  thirdparty: 'Third-Party',
+};
+
 /**
  * Position the edge on port from a to b.
  */

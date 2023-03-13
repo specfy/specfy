@@ -1,9 +1,9 @@
 @import "../../styles/theme";
 
 .create {
-  border-top: 1px solid $gray-200;
-  padding: $p-m 0 0 0;
   margin: $p-l 0 $p $p-m;
+  padding: $p-m 0 0 0;
+  border-top: 1px solid $gray-200;
 }
 
 .sugg {

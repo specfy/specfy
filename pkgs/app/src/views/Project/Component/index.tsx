@@ -1,11 +1,15 @@
-import { Typography } from 'antd';
+import { Tag, Typography } from 'antd';
 import type { ApiComponent, ApiProject } from 'api/src/types/api';
+import classnames from 'classnames';
 import type React from 'react';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import type { TechInfo } from '../../../common/component';
-import { supportedIndexed } from '../../../common/component';
+import {
+  internalTypeToText,
+  supportedIndexed,
+} from '../../../common/component';
 import { useComponentsStore } from '../../../common/store';
 import { Card } from '../../../components/Card';
 import { ComponentDetails } from '../../../components/ComponentDetails';
@@ -80,26 +84,31 @@ export const ComponentView: React.FC<{
     <Container>
       <Container.Left>
         <Card padded>
-          {!isEditing && (
-            <Typography.Title level={1}>
-              {Icon && (
-                <div className={cls.icon}>
-                  <Icon size="1em" />
-                </div>
-              )}
-              {comp.name}
-            </Typography.Title>
-          )}
-          {isEditing && (
-            <FakeInput.H1
-              size="large"
-              value={comp.name}
-              placeholder="Title..."
-              onChange={(e) => {
-                storeComponents.updateField(comp!.id, 'name', e.target.value);
-              }}
-            />
-          )}
+          <div className={cls.titleEdit}>
+            {!isEditing && (
+              <Typography.Title level={1}>
+                {Icon && (
+                  <div className={cls.icon}>
+                    <Icon size="1em" />
+                  </div>
+                )}
+                {comp.name}
+              </Typography.Title>
+            )}
+            {isEditing && (
+              <FakeInput.H1
+                size="large"
+                value={comp.name}
+                placeholder="Title..."
+                onChange={(e) => {
+                  storeComponents.updateField(comp!.id, 'name', e.target.value);
+                }}
+              />
+            )}
+            <Tag className={classnames(cls.tagType, cls[comp.type])}>
+              {internalTypeToText[comp.type]}
+            </Tag>
+          </div>
 
           <Typography>
             {!isEditing && comp.description && (

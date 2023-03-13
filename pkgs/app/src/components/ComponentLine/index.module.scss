@@ -6,10 +6,10 @@
   grid-template-columns: 150px auto;
   align-items: flex-start;
 
+  min-height: 44px;
   margin-bottom: $p-2xl;
 
   line-height: $line-height-m;
-  min-height: 44px;
 
 
   .label {
@@ -29,6 +29,7 @@
 
     &.clickToEdit {
       @include editable;
+
       margin: -5px -8px;
     }
   }
