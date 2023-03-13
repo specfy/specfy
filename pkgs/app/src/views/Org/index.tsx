@@ -4,7 +4,7 @@ import {
   IconSettings,
   IconApps,
   IconUsers,
-  IconAdjustments,
+  IconSchool,
 } from '@tabler/icons-react';
 import { Badge, Menu } from 'antd';
 import Title from 'antd/es/typography/Title';
@@ -35,13 +35,13 @@ export const Org: React.FC = () => {
   const menu = useMemo(() => {
     return [
       {
-        key: 'overview',
+        key: 'home',
         label: (
           <Link to={linkSelf}>
             <span>
               <IconHome />
             </span>
-            Overview
+            Home
           </Link>
         ),
       },
@@ -72,7 +72,7 @@ export const Org: React.FC = () => {
         label: (
           <Link to={`${linkSelf}/policies`}>
             <span>
-              <IconAdjustments />
+              <IconSchool />
             </span>
             Policies
           </Link>
@@ -130,7 +130,7 @@ export const Org: React.FC = () => {
     } else if (path[3] === 'policies') {
       setSelected('policies');
     } else {
-      setSelected('overview');
+      setSelected('home');
     }
   }, [location]);
 

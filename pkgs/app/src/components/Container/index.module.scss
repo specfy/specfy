@@ -3,6 +3,9 @@
 .container {
   display: flex;
   gap: $p-3xl;
+
+  max-width: $main-col-w * 2;
+  margin: 0 auto;
   padding: $p-3xl;
 }
 
@@ -16,7 +19,7 @@
 }
 
 .left {
-  min-width: 750px;
+  min-width: $main-col-w;
 }
 
 .right {

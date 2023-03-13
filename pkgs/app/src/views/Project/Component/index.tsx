@@ -48,6 +48,7 @@ export const ComponentView: React.FC<{
   useEffect(() => {
     setComponents(Object.values(storeComponents.components));
     setComp(storeComponents.select(params.component_slug));
+    window.scrollTo(0, 0);
   }, [params.component_slug, storeComponents]);
 
   useEffect(() => {

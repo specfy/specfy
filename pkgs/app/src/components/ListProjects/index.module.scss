@@ -1,5 +1,11 @@
 @import "../../styles/theme";
 
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .empty {
   display: flex;
   align-items: center;

@@ -339,5 +339,11 @@ h4.ant-typography {
     td {
       padding: $p-l $p-2xl !important;
     }
+
+    tr:last-of-type {
+      td {
+        border-bottom: none !important;
+      }
+    }
   }
 }

@@ -1,5 +1,5 @@
-import { IconPlus, IconUsers } from '@tabler/icons-react';
-import { Button, Table } from 'antd';
+import { IconPlus, IconSearch, IconUsers } from '@tabler/icons-react';
+import { Button, Input, Table } from 'antd';
 import Title from 'antd/es/typography/Title';
 import type { ApiProject } from 'api/src/types/api';
 import classnames from 'classnames';
@@ -15,14 +15,32 @@ import cls from './index.module.scss';
 export const ListProjects: React.FC = () => {
   const storeProjects = useProjectsStore();
   const [list, setList] = useState<ApiProject[]>();
+  const [search, setSearch] = useState<string>('');
 
   useEffect(() => {
     setList(storeProjects.projects);
   }, [storeProjects.projects]);
 
+  useEffect(() => {
+    if (!search) {
+      setList(storeProjects.projects);
+      return;
+    }
+
+    const reg = new RegExp(search, 'i');
+    setList(storeProjects.projects.filter((proj) => proj.name.match(reg)));
+  }, [search]);
+
   return (
     <div>
-      <Title level={3}>Projects</Title>
+      <div className={cls.header}>
+        <Title level={3}>Projects</Title>
+        <Input
+          prefix={<IconSearch />}
+          style={{ width: '200px' }}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
 
       {!list ||
         (list.length <= 0 && (
