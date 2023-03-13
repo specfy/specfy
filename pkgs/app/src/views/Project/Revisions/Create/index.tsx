@@ -90,7 +90,7 @@ export const ProjectRevisionCreate: React.FC<{
       blobs.push({
         type: change.type,
         typeId: change.typeId,
-        parentId: change.previous.blobId,
+        parentId: change.previous ? change.previous.blobId : null,
         blob: { ...change.previous, ...change.blob } as any,
         deleted: false,
       });
@@ -157,7 +157,12 @@ export const ProjectRevisionCreate: React.FC<{
       <div className={cls.staged}>
         {staging.diffs.map((c) => {
           return (
-            <DiffRow key={c.typeId} comp={c} url={to} onRevert={handleRevert} />
+            <DiffRow
+              key={`${c.typeId}-${c.key}`}
+              comp={c}
+              url={to}
+              onRevert={handleRevert}
+            />
           );
         })}
       </div>

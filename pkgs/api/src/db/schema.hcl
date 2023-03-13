@@ -232,6 +232,10 @@ table "components" {
     type = uuid
     null = false
   }
+  column "tech_id" {
+    type = varchar(100)
+    null = true
+  }
 
   column "type" {
     type = varchar(25)

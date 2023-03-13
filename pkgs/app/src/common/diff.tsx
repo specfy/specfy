@@ -10,14 +10,16 @@ export function proposeTitle(computed: ComputedForDiff[]): string {
     return '';
   } else if (computed.length === 1) {
     const item = computed[0];
-    const type = item.type === 'project' ? 'project' : item.previous.name;
+    const type = item.type === 'project' ? 'project' : item.current.name;
     return `fix(${type}): update ${item.key}`;
   } else {
     const types = new Set<ComputedForDiff['type']>();
     const names = new Set<string>();
     for (const change of computed) {
       types.add(change.type);
-      names.add(change.previous.name);
+      if (change.previous) {
+        names.add(change.previous.name);
+      }
     }
 
     if (types.size === 1) {
@@ -60,6 +62,10 @@ export function diffTwoBlob({ blob, previous, type, typeId }: TmpBlob): {
       }
     }
 
+    if (!previous && !value) {
+      continue;
+    }
+
     clean.blob[key as keyof TmpBlob['blob']] = value;
 
     if (key === 'description' || key === 'content') {
@@ -69,6 +75,7 @@ export function diffTwoBlob({ blob, previous, type, typeId }: TmpBlob): {
         type,
         typeId,
         key,
+        current: blob,
         previous,
         diff: diffWordsWithSpace(
           renderToString(a).replaceAll('<!-- -->', ''),
@@ -84,6 +91,7 @@ export function diffTwoBlob({ blob, previous, type, typeId }: TmpBlob): {
         type,
         typeId,
         key,
+        current: blob,
         previous,
         diff: diffJson(previous ? previous[key] : '', value),
       };
@@ -93,6 +101,7 @@ export function diffTwoBlob({ blob, previous, type, typeId }: TmpBlob): {
         type,
         typeId,
         key,
+        current: blob,
         previous,
         diff: diffWordsWithSpace(previous ? previous[key] : '', value || ''),
       };

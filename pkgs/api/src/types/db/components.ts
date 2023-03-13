@@ -7,6 +7,7 @@ export interface DBComponent {
   orgId: string;
   projectId: string;
   blobId: string;
+  techId: string | null;
 
   type: 'component' | 'hosting' | 'project' | 'thirdparty';
   typeId: string | null;

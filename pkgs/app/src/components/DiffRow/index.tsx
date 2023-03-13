@@ -48,7 +48,11 @@ export const DiffRow: React.FC<{
       .filter((e): e is string => !!e);
   }, [comp]);
   const type = comp.type === 'project' ? 'Project' : 'Components';
-  const to = url + (type === 'Components' ? `/c/${comp.previous.slug}` : '');
+  const to =
+    url +
+    (type === 'Components'
+      ? `/c/${comp.previous?.slug || comp.current.slug}`
+      : '');
 
   // Actions
   const [hide, setHide] = useState<boolean>(false);
@@ -70,7 +74,7 @@ export const DiffRow: React.FC<{
             />
           </div>
           <Link to={to}>
-            {type} / {comp.previous.name} [{comp.key}]
+            {type} / {comp.previous?.name || comp.current.name} [{comp.key}]
           </Link>
         </div>
         <div className={cls.titleRight}>
@@ -94,8 +98,11 @@ export const DiffRow: React.FC<{
           )}
         </div>
         <div className={cls.right}>
-          {!right.length ? (
+          {!right.length && left.length > 0 && (
             <span className={cls.empty}>Deleted...</span>
+          )}
+          {!right.length && !left.length ? (
+            <span className={cls.empty}>Empty...</span>
           ) : (
             <>{right}</>
           )}

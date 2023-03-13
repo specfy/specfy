@@ -13,11 +13,11 @@ export type Allowed = ApiComponent | ApiDocument | ApiProject;
 export type TmpBlob = TmpBlobComponent | TmpBlobDocument | TmpBlobProject;
 export type TmpBlobComponent = DBBlobComponent & {
   typeId: string;
-  previous: ApiComponent;
+  previous: ApiComponent | null;
 };
 export type TmpBlobDocument = DBBlobDocument & {
   typeId: string;
-  previous: ApiDocument;
+  previous: ApiDocument | null;
 };
 export type TmpBlobProject = DBBlobProject & {
   typeId: string;
@@ -28,7 +28,8 @@ export interface ComputedForDiff {
   type: TmpBlob['type'];
   typeId: string;
   key: string;
-  previous: any;
+  current: TmpBlob['blob'];
+  previous: ApiComponent | ApiDocument | ApiProject | null;
   diff: Change[];
 }
 

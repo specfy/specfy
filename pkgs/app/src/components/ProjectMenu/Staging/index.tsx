@@ -32,11 +32,6 @@ export const Staging: React.FC<{ link: string }> = ({ link }) => {
       for (const item of store) {
         const original = originalStore.find(item.id) as typeof item;
 
-        if (!original) {
-          tmp += 1;
-          continue;
-        }
-
         let type: TmpBlob['type'] = 'component';
         if ('links' in item) type = 'project';
         else if ('content' in item) type = 'document';
@@ -45,7 +40,7 @@ export const Staging: React.FC<{ link: string }> = ({ link }) => {
           type,
           typeId: item.id,
           blob: item,
-          previous: original,
+          previous: original || null,
         } as TmpBlob);
 
         tmp += Object.keys(diff.clean.blob).length;

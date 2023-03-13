@@ -34,6 +34,7 @@ export class Component extends Model<
     | 'orgId'
     | 'projectId'
     | 'tech'
+    | 'techId'
     | 'type'
     | 'typeId'
   >
@@ -51,6 +52,9 @@ export class Component extends Model<
 
   @Column({ field: 'blob_id', type: DataType.UUIDV4 })
   declare blobId: ForeignKey<RevisionBlob['id']>;
+
+  @Column({ field: 'tech_id', type: DataType.STRING })
+  declare techId: DBComponent['techId'];
 
   @Column({ type: DataType.STRING })
   declare type: DBComponent['type'];

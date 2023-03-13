@@ -95,7 +95,9 @@ export const ComponentLine: React.FC<Line & { comps?: ApiComponent[] }> = ({
       params={params}
       items={comps?.map((c) => {
         const Icon =
-          c.slug in supportedIndexed && supportedIndexed[c.slug].Icon;
+          c.techId &&
+          c.techId in supportedIndexed &&
+          supportedIndexed[c.techId].Icon;
 
         return (
           <Link

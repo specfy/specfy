@@ -51,10 +51,9 @@ export const ComponentView: React.FC<{
       return;
     }
 
-    const name = comp.name.toLocaleLowerCase();
-    if (name in supportedIndexed) {
-      setInfo(supportedIndexed[name]);
-      setIcon(supportedIndexed[name].Icon);
+    if (comp.techId && comp.techId in supportedIndexed) {
+      setInfo(supportedIndexed[comp.techId]);
+      setIcon(supportedIndexed[comp.techId].Icon);
     } else {
       setInfo(undefined);
       setIcon(undefined);

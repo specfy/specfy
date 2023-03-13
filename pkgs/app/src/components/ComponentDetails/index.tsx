@@ -2,7 +2,7 @@ import { Typography } from 'antd';
 import type { ApiComponent, ApiProject } from 'api/src/types/api';
 import type { GraphEdge } from 'api/src/types/db';
 import type React from 'react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import { getAllChilds, positionEdge } from '../../common/component';
 import { useComponentsStore } from '../../common/store';
@@ -275,6 +275,15 @@ export const ComponentDetails: React.FC<{
   };
 
   const handleInComponent = (values: string[] | string) => {
+    if (typeof values === 'string') {
+      const childs = getAllChilds(components!, component.id);
+      for (const child of childs) {
+        if (child.inComponent === component.id) {
+          storeComponents.updateField(child.id, 'inComponent', null);
+        }
+      }
+    }
+
     storeComponents.updateField(
       component.id,
       'inComponent',
@@ -284,7 +293,10 @@ export const ComponentDetails: React.FC<{
 
   const handleContains = (values: string[] | string) => {
     for (const value of values) {
-      console.log(value);
+      if (value === component.inComponent) {
+        storeComponents.updateField(component.id, 'inComponent', null);
+      }
+
       storeComponents.updateField(value, 'inComponent', component.id);
     }
   };
@@ -336,7 +348,6 @@ export const ComponentDetails: React.FC<{
             >
               <ComponentSelect
                 current={component}
-                components={components}
                 values={hosts.length > 0 ? [hosts[0]] : []}
                 filter={['hosting']}
                 multiple={false}
@@ -354,7 +365,6 @@ export const ComponentDetails: React.FC<{
             >
               <ComponentSelect
                 current={component}
-                components={components}
                 values={contains}
                 filter={
                   component.type === 'hosting'
@@ -375,7 +385,6 @@ export const ComponentDetails: React.FC<{
             >
               <ComponentSelect
                 current={component}
-                components={components}
                 values={inComp ? [inComp] : []}
                 multiple={false}
                 filter={['component']}
@@ -407,7 +416,6 @@ export const ComponentDetails: React.FC<{
             >
               <ComponentSelect
                 current={component}
-                components={components}
                 values={readwrite}
                 onChange={(res) => handlePickData(res, 'readwrite', readwrite)}
               />
@@ -423,7 +431,6 @@ export const ComponentDetails: React.FC<{
             >
               <ComponentSelect
                 current={component}
-                components={components}
                 values={read}
                 onChange={(res) => handlePickData(res, 'read', read)}
               />
@@ -439,7 +446,6 @@ export const ComponentDetails: React.FC<{
             >
               <ComponentSelect
                 current={component}
-                components={components}
                 values={write}
                 onChange={(res) => handlePickData(res, 'write', write)}
               />
@@ -455,7 +461,6 @@ export const ComponentDetails: React.FC<{
             >
               <ComponentSelect
                 current={component}
-                components={components}
                 values={receiveAnswer}
                 onChange={(res) =>
                   handlePickData(res, 'receiveAnswer', receiveAnswer)
@@ -472,7 +477,6 @@ export const ComponentDetails: React.FC<{
             >
               <ComponentSelect
                 current={component}
-                components={components}
                 values={receive}
                 onChange={(res) => handlePickData(res, 'receive', receive)}
               />
@@ -487,7 +491,6 @@ export const ComponentDetails: React.FC<{
             >
               <ComponentSelect
                 current={component}
-                components={components}
                 values={answer}
                 onChange={(res) => handlePickData(res, 'answer', answer)}
               />
