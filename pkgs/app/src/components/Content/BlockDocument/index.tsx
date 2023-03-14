@@ -18,8 +18,7 @@ export const ContentBlockDocument: React.FC<{
   const doc = useGetDocument({
     org_id: storeProject.project!.orgId,
     project_id: storeProject.project!.id,
-    document_type: block.attrs.type,
-    document_typeid: block.attrs.typeid,
+    document_id: block.attrs.id,
   });
 
   const isCircular = useMemo(() => {

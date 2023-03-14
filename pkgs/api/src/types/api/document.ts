@@ -126,7 +126,7 @@ export interface BlockStep {
 // ----- Document
 export interface BlockDocument {
   type: 'document';
-  attrs: { type: ApiDocument['type']; typeid: ApiDocument['typeId'] };
+  attrs: { id: ApiDocument['id'] };
 }
 
 // _---------_

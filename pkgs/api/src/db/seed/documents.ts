@@ -90,7 +90,7 @@ export async function seedPlaybook(p1: Project, [u1]: User[]) {
           content: [
             {
               type: 'document',
-              attrs: { type: d1.type, typeid: d1.typeId },
+              attrs: { id: d1.id },
             },
           ],
         },
@@ -136,7 +136,7 @@ export async function seedPlaybook(p1: Project, [u1]: User[]) {
           content: [
             {
               type: 'document',
-              attrs: { type: d2.type, typeid: d2.typeId },
+              attrs: { id: d2.id },
             },
           ],
         },
@@ -146,7 +146,7 @@ export async function seedPlaybook(p1: Project, [u1]: User[]) {
           content: [
             {
               type: 'document',
-              attrs: { type: 'pb', typeid: 3 },
+              attrs: { id: 'd3grRPVYnx' }, // Circular ref
             },
           ],
         },
