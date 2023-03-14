@@ -21,6 +21,7 @@ import { Card } from '../../../../components/Card';
 import { Container } from '../../../../components/Container';
 import { DiffRow } from '../../../../components/DiffRow';
 import { Editor } from '../../../../components/Editor';
+import { FakeInput } from '../../../../components/Input';
 import { useEdit } from '../../../../hooks/useEdit';
 import type { RouteProject } from '../../../../types/routes';
 
@@ -123,14 +124,12 @@ export const ProjectRevisionCreate: React.FC<{
         <Card>
           <Form onFinish={onSubmit}>
             <Card.Content>
-              <Typography.Title level={2}>Create Revision</Typography.Title>
-              <Form.Item required name="title" initialValue={title}>
-                <Input
-                  size="large"
-                  placeholder="Title"
-                  onChange={(e) => setTitle(e.target.value)}
-                />
-              </Form.Item>
+              <FakeInput.H1
+                size="large"
+                value={title}
+                placeholder="Revision title..."
+                onChange={(e) => setTitle(e.target.value)}
+              />
 
               <Typography>
                 <Editor

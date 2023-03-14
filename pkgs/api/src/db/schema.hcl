@@ -354,11 +354,11 @@ table "type_has_users" {
     null = true
   }
   column "revision_id" {
-    type = uuid
+    type = varchar(15)
     null = true
   }
   column "policy_id" {
-    type = bigint
+    type = varchar(15)
     null = true
   }
   column "user_id" {
@@ -405,7 +405,7 @@ table "revisions" {
   schema = schema.public
 
   column "id" {
-    type = uuid
+    type = varchar(15)
     null = false
   }
   column "org_id" {
@@ -497,7 +497,7 @@ table "blobs" {
     null = false
   }
   column "parent_id" {
-    type = varchar(36)
+    type = uuid
     null = true
   }
   column "blob" {
@@ -550,7 +550,7 @@ table "reviews" {
     null = false
   }
   column "revision_id" {
-    type = uuid
+    type = varchar(15)
     null = false
   }
   column "user_id" {
@@ -605,7 +605,7 @@ table "comments" {
     null = false
   }
   column "revision_id" {
-    type = uuid
+    type = varchar(15)
     null = false
   }
   column "user_id" {
@@ -648,13 +648,8 @@ table "policies" {
   schema = schema.public
 
   column "id" {
-    type = bigint
+    type = varchar(15)
     null = false
-    identity {
-      generated = ALWAYS
-      start = 1
-      increment = 1
-    }
   }
 
   column "org_id" {

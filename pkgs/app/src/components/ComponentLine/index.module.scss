@@ -1,13 +1,15 @@
 @import "../../styles/theme";
 @import "../../styles/mixin";
 
+$min-height: 34px;
+
 .line {
   display: grid;
   grid-template-columns: 150px auto;
   align-items: flex-start;
 
-  min-height: 44px;
-  margin-bottom: $p-2xl;
+  min-height: $min-height;
+  margin-bottom: $p-l;
 
   line-height: $line-height-m;
 
@@ -21,11 +23,11 @@
   .values {
     display: flex;
     flex-wrap: wrap;
-    gap: $p-xs $p-m;
+    gap: $p $p;
     align-items: flex-start;
     justify-content: flex-start;
 
-    min-height: 44px;
+    min-height: $min-height;
 
     &.clickToEdit {
       @include editable;
@@ -45,11 +47,12 @@
     font-size: $font;
     color: $gray-700;
 
+    background: $slate-50;
     border-radius: 10px;
 
     &:hover {
-      color: $blue-700;
-      background: $gray-100;
+      color: $primary;
+      background: $slate-100;
     }
 
     >svg {

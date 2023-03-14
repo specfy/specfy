@@ -5,11 +5,12 @@ import {
   UpdatedAt,
   Table,
   PrimaryKey,
-  Default,
   Column,
   DataType,
+  BeforeCreate,
 } from 'sequelize-typescript';
 
+import { nanoid } from '../common/id';
 import type { DBRevision } from '../types/db';
 
 import type { Org } from './org';
@@ -30,8 +31,7 @@ type PropCreate = Partial<Pick<DBRevision, 'id'>> &
 @Table({ tableName: 'revisions', modelName: 'revision' })
 export class Revision extends Model<DBRevision, PropCreate> {
   @PrimaryKey
-  @Default(DataType.UUIDV4)
-  @Column(DataType.UUID)
+  @Column(DataType.STRING)
   declare id: CreationOptional<string>;
 
   @Column({ field: 'org_id', type: DataType.STRING })
@@ -71,4 +71,9 @@ export class Revision extends Model<DBRevision, PropCreate> {
 
   @Column({ field: 'closed_at', type: DataType.DATE })
   declare closedAt: Date | null;
+
+  @BeforeCreate
+  static async onBeforeCreate(model: Revision): Promise<void> {
+    model.id = model.id || nanoid();
+  }
 }

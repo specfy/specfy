@@ -101,10 +101,11 @@ export async function seed() {
   });
   const compute = await Component.create({
     id: 'jZDC3Lsc02',
-    name: 'Compute Engine',
+    name: 'GCE',
     type: 'hosting',
     orgId: 'company',
     projectId: p1.id,
+    techId: 'gce',
     description: { type: 'doc', content: [] },
     display: {
       zIndex: 2,
@@ -531,7 +532,7 @@ export async function seed() {
     blob: projectRev.getJsonForBlob(),
   });
   const rev = await Revision.create({
-    id: '00000000-0000-4000-0000-000000000000',
+    id: '1oxA2sPxkR',
     orgId: 'company',
     projectId: p1.id,
     title: 'Update project name, description',

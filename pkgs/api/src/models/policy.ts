@@ -7,8 +7,10 @@ import {
   PrimaryKey,
   Column,
   DataType,
+  BeforeCreate,
 } from 'sequelize-typescript';
 
+import { nanoid } from '../common/id';
 import type { DBPolicy } from '../types/db';
 
 import type { Org } from './org';
@@ -20,8 +22,8 @@ export class Policy extends Model<
     Pick<DBPolicy, 'content' | 'name' | 'orgId' | 'tech' | 'type'>
 > {
   @PrimaryKey
-  @Column({ type: DataType.BIGINT, autoIncrement: true })
-  declare id: CreationOptional<number>;
+  @Column({ type: DataType.STRING })
+  declare id: CreationOptional<DBPolicy['id']>;
 
   @Column({ field: 'org_id', type: DataType.STRING })
   declare orgId: ForeignKey<Org['id']>;
@@ -50,4 +52,9 @@ export class Policy extends Model<
   //   const { id, orgId, createdAt, updatedAt, ...simplified } = this.toJSON();
   //   return simplified;
   // }
+
+  @BeforeCreate
+  static async onBeforeCreate(model: Policy): Promise<void> {
+    model.id = model.id || nanoid();
+  }
 }

@@ -85,6 +85,7 @@ export const supportedArray: TechInfo[] = [
   { key: 'elasticloud', name: 'Elastic Cloud', type: 'sass', Icon: Elasticcloud },
   { key: 'elixir', name: 'Elixir', type: 'language', Icon: Elixir },
   { key: 'eslint', name: 'Eslint', type: 'tool', Icon: Eslint },
+  { key: 'gce', name: 'GCE', type: 'hosting', Icon: Googlecloud },
   { key: 'gcp', name: 'GCP', type: 'hosting', Icon: Googlecloud },
   { key: 'golang', name: 'Go', type: 'language', Icon: Go },
   { key: 'html', name: 'HTML', type: 'language', Icon: Html5 },

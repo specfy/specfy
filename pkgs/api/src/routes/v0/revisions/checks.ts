@@ -49,7 +49,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         list,
         async (blob, prev) => {
           // If we can't find the prev, that means it's not longer in the main branch
-          if (!prev) {
+          if (!prev && blob.parentId) {
             outdatedBlobs.push(blob.id);
           }
         },
