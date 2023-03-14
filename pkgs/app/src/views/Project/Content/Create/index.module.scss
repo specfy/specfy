@@ -1,0 +1,33 @@
+@import "../../../../styles/theme";
+
+$width: $main-col-w / 1.5;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: $p-m;
+  justify-content: center;
+
+  width: $width;
+  height: calc(100vh - $height-header-project-total - ($p-4xl * 2));
+  margin: 0 auto;
+}
+
+.type {
+  width: $width;
+}
+
+.title {
+  display: flex;
+  gap: $p-m;
+}
+
+.input {
+  padding: $p-l;
+  font-size: $font-l;
+}
+
+.button {
+  width: 48px !important;
+  height: 48px;
+}

@@ -58,7 +58,6 @@ export const Staging: React.FC<{ link: string }> = ({ link }) => {
           blob: { id: null } as any,
           previous: item || null,
         } as TmpBlob);
-        console.log('on find remove', item, diff);
 
         tmp += 1;
         diffs.push(...diff.computed);

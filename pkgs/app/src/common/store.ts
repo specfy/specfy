@@ -1,3 +1,4 @@
+import { nanoid } from 'api/src/common/id';
 import type { ApiComponent, ApiDocument, ApiProject } from 'api/src/types/api';
 import type {
   DBBlobComponent,
@@ -7,6 +8,10 @@ import type {
 import type { Change } from 'diff';
 import { produce } from 'immer';
 import { create } from 'zustand';
+
+import { getEmptyDoc } from '../components/Editor/helpers';
+
+import { slugify } from './string';
 
 export type Allowed = ApiComponent | ApiDocument | ApiProject;
 
@@ -203,12 +208,14 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
 // ------------------------------------------ Document Store
 export interface DocumentsState {
   documents: Record<string, ApiDocument>;
-  current: string | null;
   add: (values: ApiDocument[]) => void;
   select: (
     type: ApiDocument['type'],
     typeId: number
   ) => ApiDocument | undefined;
+  create: (
+    data: Pick<ApiDocument, 'name' | 'orgId' | 'projectId' | 'type'>
+  ) => ApiDocument;
   update: (value: ApiDocument) => void;
   updateField: <TKey extends keyof ApiDocument>(
     id: string,
@@ -216,11 +223,9 @@ export interface DocumentsState {
     value: ApiDocument[TKey]
   ) => void;
   revertField: (id: string, field: keyof ApiDocument) => void;
-  setCurrent: (id: string) => void;
 }
 export const useDocumentsStore = create<DocumentsState>()((set, get) => ({
   documents: {},
-  current: null,
   add: (values) => {
     set(
       produce((state: DocumentsState) => {
@@ -236,6 +241,32 @@ export const useDocumentsStore = create<DocumentsState>()((set, get) => ({
         return doc;
       }
     }
+  },
+  create: (data) => {
+    const doc = {
+      id: nanoid(),
+      orgId: data.orgId,
+      projectId: data.projectId,
+      type: data.type,
+      typeId: 99,
+      blobId: '',
+      name: data.name,
+      slug: slugify(data.name),
+      content: getEmptyDoc(),
+      authors: [],
+      approvedBy: [],
+      reviewers: [],
+      tldr: '',
+      locked: false,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    set(
+      produce((state: DocumentsState) => {
+        state.documents[doc.id] = doc;
+      })
+    );
+    return doc;
   },
   update: (value) => {
     set(
@@ -255,12 +286,5 @@ export const useDocumentsStore = create<DocumentsState>()((set, get) => ({
     const comp = get().documents[id];
     const item = originalStore.find((i): i is ApiDocument => comp.id === i.id)!;
     get().updateField(id, field, item[field]);
-  },
-  setCurrent: (id) => {
-    set(
-      produce((state: DocumentsState) => {
-        state.current = id;
-      })
-    );
   },
 }));

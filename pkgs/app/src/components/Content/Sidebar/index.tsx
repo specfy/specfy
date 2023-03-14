@@ -142,7 +142,7 @@ export const ContentSidebar: React.FC<{
     }
     for (const item of res.data!.data) {
       if (item.slug === keys[0]) {
-        navigate(`/${proj.orgId}/${proj.slug}/content/${item.slug}`);
+        navigate(`/${proj.orgId}/${proj.slug}/content/${item.id}-${item.slug}`);
       }
     }
   };
@@ -219,7 +219,9 @@ export const ContentSidebar: React.FC<{
             onKeyDown={handleKeyPress}
           />
         </Input.Group>
-        <Button icon={<IconPlus />} />
+        <Link to={'new'}>
+          <Button icon={<IconPlus />} />
+        </Link>
         <Button
           icon={<IconLayoutSidebarLeftCollapse />}
           onClick={handleCollapse}
@@ -232,7 +234,7 @@ export const ContentSidebar: React.FC<{
               <Link
                 key={item.doc.id}
                 className={classnames(cls.result, focus === i && cls.selected)}
-                to={`/${proj.orgId}/${proj.slug}/content/${item.doc.slug}`}
+                to={`/${proj.orgId}/${proj.slug}/content/${item.doc.id}-${item.doc.slug}`}
                 onClick={handleReset}
                 tabIndex={0}
               >

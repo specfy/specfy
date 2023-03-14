@@ -107,7 +107,7 @@ export function diffTwoBlob({ blob, previous, type, typeId }: TmpBlob): {
         key,
         current: blob,
         previous,
-        diff: diffWordsWithSpace(previous ? previous[key] : '', value || ''),
+        diff: diffWordsWithSpace(previous ? previous[key] : '', `${value}`),
       };
       computed.push(tmp);
     }

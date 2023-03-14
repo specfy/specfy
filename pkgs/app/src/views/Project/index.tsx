@@ -64,11 +64,11 @@ export const Project: React.FC = () => {
     return [
       {
         key: '1',
-        label: <Link to={`${linkSelf}/new/rfc`}>New RFC</Link>,
+        label: <Link to={`${linkSelf}/content/new`}>New RFC</Link>,
       },
       {
         key: '2',
-        label: <Link to={`${linkSelf}/new/component`}>New Component</Link>,
+        label: <Link to={`${linkSelf}/component/new`}>New Component</Link>,
       },
     ];
   }, [linkSelf]);
@@ -191,7 +191,7 @@ export const Project: React.FC = () => {
           element={<Tech proj={proj} params={params} />}
         />
         <Route
-          path="/new/component"
+          path="/component/new"
           element={<ProjectComponentCreate params={params} />}
         />
         <Route

@@ -78,7 +78,7 @@ export class Document extends Model<DBDocument, CreateProp> {
           type: model.type,
         },
       })) + 1;
-    model.slug = slugify(`${model.type}-${model.typeId}-${model.name}`, {
+    model.slug = slugify(model.name, {
       lower: true,
       trim: true,
     });

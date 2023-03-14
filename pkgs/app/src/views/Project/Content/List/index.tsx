@@ -46,7 +46,7 @@ export const ProjectContentList: React.FC<{
           >
             <Table.Column
               title={
-                <div className={cls.th}>
+                <div>
                   <span>
                     <IconBook />
                   </span>{' '}
@@ -54,13 +54,12 @@ export const ProjectContentList: React.FC<{
                 </div>
               }
               dataIndex="name"
-              className={cls.tcell}
               key="name"
               render={(_, item: ApiDocument) => {
                 return (
                   <>
                     <Link
-                      to={`/${params.org_id}/${params.project_slug}/content/${item.slug}`}
+                      to={`/${params.org_id}/${params.project_slug}/content/${item.id}-${item.slug}`}
                       relative="path"
                       className={cls.title}
                     >

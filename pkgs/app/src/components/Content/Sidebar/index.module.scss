@@ -5,8 +5,7 @@
   position: sticky;
   top: 0;
 
-  width: auto;
-  width: 300px;
+  min-width: 300px;
   height: 100vh;
   max-height: 100vh;
 
@@ -25,7 +24,7 @@
   }
 
   &.collapsed {
-    width: 50px;
+    min-width: 50px;
     padding: $p-l 0 0 $p-l;
     border-right: none
   }

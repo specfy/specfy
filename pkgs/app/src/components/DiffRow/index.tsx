@@ -47,12 +47,21 @@ export const DiffRow: React.FC<{
       })
       .filter((e): e is string => !!e);
   }, [comp]);
-  const type = comp.type === 'project' ? 'Project' : 'Components';
-  const to =
-    url +
-    (type === 'Components'
-      ? `/c/${comp.typeId}-${comp.previous?.slug || comp.current.slug}`
-      : '');
+
+  const [type, to] = useMemo<[string, string]>(() => {
+    if (comp.type === 'project') {
+      return ['Project', url];
+    } else if (comp.type === 'document') {
+      return [
+        'Documents',
+        `${url}/content/${comp.typeId}-${comp.current!.slug}`,
+      ];
+    }
+    return [
+      'Components',
+      `/c/${comp.typeId}-${comp.previous?.slug || comp.current!.slug}`,
+    ];
+  }, [comp]);
 
   // Actions
   const [hide, setHide] = useState<boolean>(false);

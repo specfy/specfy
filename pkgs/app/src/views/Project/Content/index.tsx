@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import { ContentSidebar } from '../../../components/Content/Sidebar';
 import type { RouteProject } from '../../../types/routes';
 
+import { ProjectContentCreate } from './Create';
 import { ProjectContentList } from './List';
 import { DocumentShow } from './Show';
 import cls from './index.module.scss';
@@ -20,6 +21,10 @@ export const ProjectContentIndex: React.FC<{
           <Route
             path="/"
             element={<ProjectContentList proj={proj} params={params} />}
+          />
+          <Route
+            path="/new"
+            element={<ProjectContentCreate params={params} />}
           />
           <Route
             path="/:document_slug"
