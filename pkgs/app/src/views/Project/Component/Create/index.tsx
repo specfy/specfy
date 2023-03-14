@@ -33,9 +33,9 @@ export const ProjectComponentCreate: React.FC<{ params: RouteProject }> = ({
 
   const onFinish = async () => {
     const slug = slugify(name);
-    createLocal({ name, slug, type }, storeProject, storeComponents);
+    const id = createLocal({ name, slug, type }, storeProject, storeComponents);
 
-    navigate(`/${params.org_id}/${params.project_slug}/c/${slug}`);
+    navigate(`/${params.org_id}/${params.project_slug}/c/${id}-${slug}`);
   };
 
   return (

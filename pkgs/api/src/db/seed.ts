@@ -85,7 +85,7 @@ export async function seed() {
 
   // Components
   const gcp = await Component.create({
-    id: 'm85x39D901',
+    id: 'jZDC3Lsc01',
     name: 'GCP',
     type: 'hosting',
     orgId: 'company',
@@ -100,7 +100,7 @@ export async function seed() {
     edges: [],
   });
   const compute = await Component.create({
-    id: 'm85x39D902',
+    id: 'jZDC3Lsc02',
     name: 'Compute Engine',
     type: 'hosting',
     orgId: 'company',
@@ -114,7 +114,7 @@ export async function seed() {
     edges: [],
   });
   const kube = await Component.create({
-    id: 'm85x39D903',
+    id: 'jZDC3Lsc03',
     name: 'Kubernetes',
     type: 'hosting',
     orgId: 'company',
@@ -129,7 +129,7 @@ export async function seed() {
     edges: [],
   });
   const pg = await Component.create({
-    id: 'm85x39D904',
+    id: 'jZDC3Lsc04',
     name: 'Postgresql',
     type: 'component',
     orgId: 'company',
@@ -141,7 +141,7 @@ export async function seed() {
     edges: [],
   });
   const dd = await Component.create({
-    id: 'm85x39D905',
+    id: 'jZDC3Lsc05',
     name: 'Datadog',
     type: 'thirdparty',
     orgId: 'company',
@@ -153,7 +153,7 @@ export async function seed() {
     edges: [],
   });
   const sentry = await Component.create({
-    id: 'm85x39D906',
+    id: 'jZDC3Lsc06',
     name: 'Sentry',
     type: 'thirdparty',
     orgId: 'company',
@@ -165,7 +165,7 @@ export async function seed() {
     edges: [],
   });
   const algolia = await Component.create({
-    id: 'm85x39D907',
+    id: 'jZDC3Lsc07',
     name: 'Algolia',
     type: 'thirdparty',
     orgId: 'company',
@@ -177,7 +177,7 @@ export async function seed() {
     edges: [],
   });
   const redis = await Component.create({
-    id: 'm85x39D908',
+    id: 'jZDC3Lsc08',
     name: 'Redis',
     type: 'component',
     orgId: 'company',
@@ -189,7 +189,7 @@ export async function seed() {
     edges: [],
   });
   const es = await Component.create({
-    id: 'm85x39D909',
+    id: 'jZDC3Lsc09',
     name: 'Elasticsearch',
     type: 'component',
     orgId: 'company',
@@ -201,7 +201,7 @@ export async function seed() {
     edges: [],
   });
   const rabbit = await Component.create({
-    id: 'm85x39D910',
+    id: 'jZDC3Lsc10',
     name: 'RabbitMQ',
     type: 'component',
     orgId: 'company',
@@ -213,7 +213,7 @@ export async function seed() {
     edges: [],
   });
   const analytics = await Component.create({
-    id: 'm85x39D911',
+    id: 'jZDC3Lsc11',
     name: 'Dashboard',
     type: 'project',
     typeId: p3.id,
@@ -225,7 +225,7 @@ export async function seed() {
     edges: [],
   });
   const api = await Component.create({
-    id: 'm85x39D912',
+    id: 'jZDC3Lsc12',
     name: 'API',
     type: 'component',
     orgId: 'company',
@@ -310,6 +310,7 @@ export async function seed() {
     tech: ['nodejs', 'typescript', 'bash', 'AtlasDB'],
   });
   await Component.create({
+    id: 'jZDC3Lsc13',
     name: 'Frontend',
     type: 'component',
     orgId: 'company',
@@ -346,7 +347,7 @@ export async function seed() {
     tech: ['react', 'typescript', 'webpack'],
   });
   await Component.create({
-    id: 'm85x39D913',
+    id: 'jZDC3Lsc14',
     name: 'Manager',
     type: 'component',
     orgId: 'company',
@@ -420,7 +421,7 @@ export async function seed() {
     tech: ['nodejs', 'typescript'],
   });
   await Component.create({
-    id: 'm85x39D914',
+    id: 'jZDC3Lsc15',
     name: 'Worker',
     type: 'component',
     orgId: 'company',

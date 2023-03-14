@@ -102,7 +102,7 @@ export const ComponentLine: React.FC<Line & { comps?: ApiComponent[] }> = ({
         return (
           <Link
             key={c.id}
-            to={`/${params.org_id}/${params.project_slug}/c/${c.slug}`}
+            to={`/${params.org_id}/${params.project_slug}/c/${c.id}-${c.slug}`}
             className={cls.item}
           >
             {Icon && <Icon size="1em" />}

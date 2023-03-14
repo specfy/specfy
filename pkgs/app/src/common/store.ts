@@ -98,7 +98,7 @@ export interface ComponentsState {
   fill: (value: ApiComponent[]) => void;
   create: (value: ApiComponent) => void;
   setCurrent: (curr: ApiComponent | null) => void;
-  select: (slug: string) => ApiComponent | undefined;
+  select: (id: string) => ApiComponent | undefined;
   update: (value: ApiComponent) => void;
   updateField: <TKey extends keyof ApiComponent>(
     id: string,
@@ -132,9 +132,9 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
       })
     );
   },
-  select: (slug) => {
+  select: (id) => {
     for (const comp of Object.values(get().components)) {
-      if (comp.slug === slug) {
+      if (comp.id === id) {
         return comp;
       }
     }

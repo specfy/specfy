@@ -54,7 +54,8 @@ export const ComponentView: React.FC<{
   }, [storeComponents]);
 
   useEffect(() => {
-    const curr = storeComponents.select(params.component_slug);
+    const split = params.component_slug.split('-')[0];
+    const curr = storeComponents.select(split);
     setComp(curr);
     storeComponents.setCurrent(curr!);
   }, [params.component_slug]);

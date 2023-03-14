@@ -51,7 +51,7 @@ export const DiffRow: React.FC<{
   const to =
     url +
     (type === 'Components'
-      ? `/c/${comp.previous?.slug || comp.current.slug}`
+      ? `/c/${comp.typeId}-${comp.previous?.slug || comp.current.slug}`
       : '');
 
   // Actions
