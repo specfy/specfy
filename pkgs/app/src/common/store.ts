@@ -66,28 +66,21 @@ export const useStagingStore = create<StagingState>()((set) => ({
   },
 }));
 
-// ------------------------------------------ Projects Store
-interface ProjectsState {
-  projects: ApiProject[];
-  fill: (value: ApiProject[]) => void;
-}
-
-export const useProjectsStore = create<ProjectsState>()((set) => ({
-  projects: [],
-  fill: (values) => {
-    set({ projects: values });
-  },
-}));
-
 // ------------------------------------------ Project Store
 export interface ProjectState {
+  projects: ApiProject[];
   project: ApiProject | null;
+  fill: (value: ApiProject[]) => void;
   update: (value: ApiProject) => void;
   revertField: (field: keyof ApiProject) => void;
 }
 
 export const useProjectStore = create<ProjectState>()((set, get) => ({
   project: null,
+  projects: [],
+  fill: (values) => {
+    set({ projects: values });
+  },
   update: (value) => {
     set({ project: value });
   },
@@ -100,9 +93,11 @@ export const useProjectStore = create<ProjectState>()((set, get) => ({
 
 // ------------------------------------------ Component Store
 export interface ComponentsState {
+  current: ApiComponent | null;
   components: Record<string, ApiComponent>;
   fill: (value: ApiComponent[]) => void;
   create: (value: ApiComponent) => void;
+  setCurrent: (curr: ApiComponent | null) => void;
   select: (slug: string) => ApiComponent | undefined;
   update: (value: ApiComponent) => void;
   updateField: <TKey extends keyof ApiComponent>(
@@ -114,6 +109,7 @@ export interface ComponentsState {
 }
 
 export const useComponentsStore = create<ComponentsState>()((set, get) => ({
+  current: null,
   components: {},
   fill: (values) => {
     const map: ComponentsState['components'] = {};
@@ -126,6 +122,13 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
     set(
       produce((state: ComponentsState) => {
         state.components[value.id] = value;
+      })
+    );
+  },
+  setCurrent: (curr) => {
+    set(
+      produce((state) => {
+        state.current = curr;
       })
     );
   },

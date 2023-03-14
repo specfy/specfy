@@ -10,11 +10,11 @@ import {
   RevisionBlob,
   Policy,
 } from '../models';
-import type { ApiProject } from '../types/api';
 
 import './';
 import { seedPlaybook, seedRFC } from './seed/documents';
 import { seedPolicies } from './seed/policies';
+import { seedProjects } from './seed/projects';
 
 export async function clean() {
   await Promise.all([
@@ -78,221 +78,14 @@ export async function seed() {
     name: "Samuel Bodin's org",
   });
 
-  // Projects
-  const defProject = {
-    orgId: 'company',
-    links: [],
-    edges: [],
-    description: {
-      type: 'doc',
-      content: [],
-    },
-  } as unknown as ApiProject;
-  const p0 = await Project.create({
-    ...defProject,
-    id: '10000000-0000-4000-0000-000000000000',
-    name: 'Dashboard',
-    description: {
-      type: 'doc',
-      content: [
-        {
-          type: 'paragraph',
-          content: [
-            {
-              type: 'text',
-              text: `Donec mollis pretium nisl at dignissim. Duis dui magna, tempus a scelerisque id, semper eu metus.`,
-            },
-          ],
-        },
-      ],
-    },
-    display: {
-      zIndex: 1,
-      pos: { x: 20, y: 10, width: 100, height: 32 },
-    },
-  });
-  const p3 = await Project.create({
-    ...defProject,
-    id: '20000000-0000-4000-0000-000000000000',
-    name: 'Frontend',
-    display: {
-      zIndex: 1,
-      pos: { x: 220, y: -20, width: 100, height: 32 },
-    },
-  });
-  const p1 = await Project.create({
-    ...defProject,
-    id: '00000000-0000-4000-0000-000000000000',
-    name: 'Analytics',
-    description: {
-      type: 'doc',
-      content: [
-        {
-          type: 'paragraph',
-          content: [
-            {
-              type: 'text',
-              text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pharetra eros vel felis scelerisque pretium. Maecenas ac feugiat orci, a sodales lacus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent urna libero, convallis eu commodo id, iaculis aliquam arcu.`,
-            },
-            { type: 'hardBreak' },
-            {
-              type: 'text',
-              text: `Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; In interdum egestas massa, sit amet auctor ipsum maximus in. `,
-            },
-          ],
-        },
-      ],
-    },
-    links: [
-      { title: 'Github', link: 'https://github.com/bodinsamuel' },
-      { title: 'Slack', link: 'https://slack.com/foobar' },
-    ],
-    display: {
-      zIndex: 1,
-      pos: { x: 200, y: 70, width: 100, height: 32 },
-    },
-  });
-  const p4 = await Project.create({
-    ...defProject,
-    name: 'API',
-    display: {
-      zIndex: 1,
-      pos: { x: -150, y: 40, width: 100, height: 32 },
-    },
-  });
-  const p5 = await Project.create({
-    ...defProject,
-    name: 'Billing',
-    display: {
-      zIndex: 1,
-      pos: { x: 20, y: 120, width: 100, height: 32 },
-    },
-  });
-
-  await p0.update({
-    edges: [
-      {
-        to: p4.id,
-        read: true,
-        write: false,
-        vertices: [],
-        portSource: 'left',
-        portTarget: 'right',
-      },
-      {
-        to: p5.id,
-        read: true,
-        write: false,
-        vertices: [
-          { x: -5, y: 60 },
-          { x: -5, y: 110 },
-        ],
-        portSource: 'left',
-        portTarget: 'left',
-      },
-    ],
-  });
-  await p3.update({
-    edges: [
-      {
-        to: p0.id,
-        read: true,
-        write: false,
-        vertices: [],
-        portSource: 'left',
-        portTarget: 'right',
-      },
-    ],
-  });
-  await p1.update({
-    edges: [
-      {
-        to: p0.id,
-        read: true,
-        write: false,
-        vertices: [],
-        portSource: 'left',
-        portTarget: 'right',
-      },
-      {
-        to: p4.id,
-        read: true,
-        write: false,
-        vertices: [{ x: 20, y: 80 }],
-        portSource: 'left',
-        portTarget: 'right',
-      },
-    ],
-  });
-  await p5.update({
-    edges: [
-      {
-        to: p1.id,
-        read: true,
-        write: false,
-        vertices: [],
-        portSource: 'right',
-        portTarget: 'left',
-      },
-    ],
-  });
-
-  // Permissions
-  await Promise.all([
-    ...[u2, u3, u4, u5, u6, u7, u8].map((u) => {
-      return Perm.create({
-        orgId: 'company',
-        projectId: null,
-        userId: u.id,
-        role: 'viewer',
-      });
-    }),
-    Perm.create({
-      orgId: 'samuelbodin',
-      projectId: null,
-      userId: u1.id,
-      role: 'owner',
-    }),
-    Perm.create({
-      orgId: 'company',
-      projectId: null,
-      userId: u1.id,
-      role: 'owner',
-    }),
-    Perm.create({
-      orgId: 'company',
-      projectId: p1.id,
-      userId: u1.id,
-      role: 'owner',
-    }),
-    Perm.create({
-      orgId: 'company',
-      projectId: p1.id,
-      userId: u2.id,
-      role: 'reviewer',
-    }),
-    Perm.create({
-      orgId: 'company',
-      projectId: p1.id,
-      userId: u3.id,
-      role: 'viewer',
-    }),
-
-    ...[u4, u5, u6, u7].map((u) => {
-      return Perm.create({
-        orgId: 'company',
-        projectId: p1.id,
-        userId: u.id,
-        role: 'contributor',
-      });
-    }),
-  ]);
+  const { p1, p3 } = await seedProjects([u1, u2, u3, u4, u5, u6, u7, u8]);
 
   await seedRFC(p1, [u1, u2]);
   await seedPlaybook(p1, [u1]);
 
   // Components
   const gcp = await Component.create({
+    id: 'm85x39D901',
     name: 'GCP',
     type: 'hosting',
     orgId: 'company',
@@ -307,6 +100,7 @@ export async function seed() {
     edges: [],
   });
   const compute = await Component.create({
+    id: 'm85x39D902',
     name: 'Compute Engine',
     type: 'hosting',
     orgId: 'company',
@@ -320,6 +114,7 @@ export async function seed() {
     edges: [],
   });
   const kube = await Component.create({
+    id: 'm85x39D903',
     name: 'Kubernetes',
     type: 'hosting',
     orgId: 'company',
@@ -334,6 +129,7 @@ export async function seed() {
     edges: [],
   });
   const pg = await Component.create({
+    id: 'm85x39D904',
     name: 'Postgresql',
     type: 'component',
     orgId: 'company',
@@ -345,6 +141,7 @@ export async function seed() {
     edges: [],
   });
   const dd = await Component.create({
+    id: 'm85x39D905',
     name: 'Datadog',
     type: 'thirdparty',
     orgId: 'company',
@@ -356,6 +153,7 @@ export async function seed() {
     edges: [],
   });
   const sentry = await Component.create({
+    id: 'm85x39D906',
     name: 'Sentry',
     type: 'thirdparty',
     orgId: 'company',
@@ -367,6 +165,7 @@ export async function seed() {
     edges: [],
   });
   const algolia = await Component.create({
+    id: 'm85x39D907',
     name: 'Algolia',
     type: 'thirdparty',
     orgId: 'company',
@@ -378,6 +177,7 @@ export async function seed() {
     edges: [],
   });
   const redis = await Component.create({
+    id: 'm85x39D908',
     name: 'Redis',
     type: 'component',
     orgId: 'company',
@@ -389,6 +189,7 @@ export async function seed() {
     edges: [],
   });
   const es = await Component.create({
+    id: 'm85x39D909',
     name: 'Elasticsearch',
     type: 'component',
     orgId: 'company',
@@ -400,6 +201,7 @@ export async function seed() {
     edges: [],
   });
   const rabbit = await Component.create({
+    id: 'm85x39D910',
     name: 'RabbitMQ',
     type: 'component',
     orgId: 'company',
@@ -411,6 +213,7 @@ export async function seed() {
     edges: [],
   });
   const analytics = await Component.create({
+    id: 'm85x39D911',
     name: 'Dashboard',
     type: 'project',
     typeId: p3.id,
@@ -422,6 +225,7 @@ export async function seed() {
     edges: [],
   });
   const api = await Component.create({
+    id: 'm85x39D912',
     name: 'API',
     type: 'component',
     orgId: 'company',
@@ -542,6 +346,7 @@ export async function seed() {
     tech: ['react', 'typescript', 'webpack'],
   });
   await Component.create({
+    id: 'm85x39D913',
     name: 'Manager',
     type: 'component',
     orgId: 'company',
@@ -615,6 +420,7 @@ export async function seed() {
     tech: ['nodejs', 'typescript'],
   });
   await Component.create({
+    id: 'm85x39D914',
     name: 'Worker',
     type: 'component',
     orgId: 'company',

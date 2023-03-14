@@ -5,15 +5,14 @@ import {
   UpdatedAt,
   Table,
   PrimaryKey,
-  Default,
   Column,
   DataType,
   BeforeCreate,
   BeforeUpdate,
 } from 'sequelize-typescript';
 import slugify from 'slugify';
-import { v4 as uuidv4 } from 'uuid';
 
+import { nanoid } from '../common/id';
 import type { DBBlobComponent, DBComponent } from '../types/db';
 
 import type { PropBlobCreate } from './blob';
@@ -24,30 +23,30 @@ import type { Project } from './project';
 @Table({ tableName: 'components', modelName: 'project' })
 export class Component extends Model<
   DBComponent,
-  Pick<
-    DBComponent,
-    | 'description'
-    | 'display'
-    | 'edges'
-    | 'inComponent'
-    | 'name'
-    | 'orgId'
-    | 'projectId'
-    | 'tech'
-    | 'techId'
-    | 'type'
-    | 'typeId'
-  >
+  Partial<Pick<DBComponent, 'id'>> &
+    Pick<
+      DBComponent,
+      | 'description'
+      | 'display'
+      | 'edges'
+      | 'inComponent'
+      | 'name'
+      | 'orgId'
+      | 'projectId'
+      | 'tech'
+      | 'techId'
+      | 'type'
+      | 'typeId'
+    >
 > {
   @PrimaryKey
-  @Default(DataType.UUIDV4)
-  @Column(DataType.UUID)
+  @Column(DataType.STRING)
   declare id: CreationOptional<string>;
 
   @Column({ field: 'org_id', type: DataType.STRING })
   declare orgId: ForeignKey<Org['id']>;
 
-  @Column({ field: 'project_id', type: DataType.UUIDV4 })
+  @Column({ field: 'project_id', type: DataType.STRING })
   declare projectId: ForeignKey<Project['id']>;
 
   @Column({ field: 'blob_id', type: DataType.UUIDV4 })
@@ -98,7 +97,7 @@ export class Component extends Model<
   ): Promise<void> {
     model.slug = slugify(model.name, { lower: true, trim: true });
     model.type = model.type || 'component';
-    model.id = model.id || uuidv4();
+    model.id = model.id || nanoid();
 
     const body: PropBlobCreate = {
       orgId: model.orgId,

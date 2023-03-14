@@ -42,7 +42,7 @@ table "users" {
 table "orgs" {
   schema = schema.public
   column "id" {
-    type = varchar(35)
+    type = varchar(36)
     null = false
   }
   column "name" {
@@ -69,11 +69,11 @@ table "orgs" {
 table "projects" {
   schema = schema.public
   column "id" {
-    type = uuid
+    type = varchar(15)
     null = false
   }
   column "org_id" {
-    type = varchar(35)
+    type = varchar(36)
     null = false
   }
   column "blob_id" {
@@ -136,15 +136,15 @@ table "projects" {
 table "documents" {
   schema = schema.public
   column "id" {
-    type = uuid
+    type = varchar(15)
     null = false
   }
   column "org_id" {
-    type = varchar(35)
+    type = varchar(36)
     null = false
   }
   column "project_id" {
-    type = uuid
+    type = varchar(15)
     null = false
   }
   column "blob_id" {
@@ -217,15 +217,15 @@ table "documents" {
 table "components" {
   schema = schema.public
   column "id" {
-    type = uuid
+    type = varchar(15)
     null = false
   }
   column "org_id" {
-    type = varchar(35)
+    type = varchar(36)
     null = false
   }
   column "project_id" {
-    type = uuid
+    type = varchar(15)
     null = false
   }
   column "blob_id" {
@@ -233,7 +233,7 @@ table "components" {
     null = false
   }
   column "tech_id" {
-    type = varchar(100)
+    type = varchar(50)
     null = true
   }
 
@@ -242,7 +242,7 @@ table "components" {
     null = false
   }
   column "type_id" {
-    type = uuid
+    type = varchar(36)
     null = true
   }
 
@@ -269,7 +269,7 @@ table "components" {
   }
 
   column "in_component" {
-    type = uuid
+    type = varchar(15)
     null = true
   }
   column "edges" {
@@ -302,11 +302,11 @@ table "perms" {
     null = false
   }
   column "org_id" {
-    type = varchar(35)
+    type = varchar(36)
     null = false
   }
   column "project_id" {
-    type = uuid
+    type = varchar(15)
     null = true
   }
 
@@ -350,7 +350,7 @@ table "perms" {
 table "type_has_users" {
   schema = schema.public
   column "document_id" {
-    type = uuid
+    type = varchar(15)
     null = true
   }
   column "revision_id" {
@@ -390,6 +390,13 @@ table "type_has_users" {
     ]
     unique = true
   }
+  index "idx_policyid_userid" {
+    columns = [
+      column.policy_id,
+      column.user_id,
+    ]
+    unique = true
+  }
 }
 
 
@@ -402,11 +409,11 @@ table "revisions" {
     null = false
   }
   column "org_id" {
-    type = varchar(35)
+    type = varchar(36)
     null = false
   }
   column "project_id" {
-    type = uuid
+    type = varchar(15)
     null = false
   }
 
@@ -473,24 +480,24 @@ table "blobs" {
   }
 
   column "org_id" {
-    type = varchar(35)
+    type = varchar(36)
     null = false
   }
   column "project_id" {
-    type = uuid
+    type = varchar(15)
     null = false
   }
 
   column "type" {
-    type = varchar(35)
+    type = varchar(36)
     null = false
   }
   column "type_id" {
-    type = uuid
+    type = varchar(36)
     null = false
   }
   column "parent_id" {
-    type = uuid
+    type = varchar(36)
     null = true
   }
   column "blob" {
@@ -535,11 +542,11 @@ table "reviews" {
   }
 
   column "org_id" {
-    type = varchar(35)
+    type = varchar(36)
     null = false
   }
   column "project_id" {
-    type = uuid
+    type = varchar(15)
     null = false
   }
   column "revision_id" {
@@ -590,11 +597,11 @@ table "comments" {
   }
 
   column "org_id" {
-    type = varchar(35)
+    type = varchar(36)
     null = false
   }
   column "project_id" {
-    type = uuid
+    type = varchar(15)
     null = false
   }
   column "revision_id" {
@@ -651,12 +658,12 @@ table "policies" {
   }
 
   column "org_id" {
-    type = varchar(35)
+    type = varchar(36)
     null = false
   }
 
   column "type" {
-    type = varchar(35)
+    type = varchar(36)
     null = false
   }
   column "name" {
@@ -664,7 +671,7 @@ table "policies" {
     null = true
   }
   column "tech" {
-    type = varchar(35)
+    type = varchar(36)
     null = true
   }
   column "content" {

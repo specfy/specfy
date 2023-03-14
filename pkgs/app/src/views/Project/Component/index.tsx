@@ -51,8 +51,13 @@ export const ComponentView: React.FC<{
 
   useEffect(() => {
     setComponents(Object.values(storeComponents.components));
-    setComp(storeComponents.select(params.component_slug));
-  }, [params.component_slug, storeComponents]);
+  }, [storeComponents]);
+
+  useEffect(() => {
+    const curr = storeComponents.select(params.component_slug);
+    setComp(curr);
+    storeComponents.setCurrent(curr!);
+  }, [params.component_slug]);
 
   useEffect(() => {
     if (!comp) {

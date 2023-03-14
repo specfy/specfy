@@ -59,12 +59,15 @@ export const ComponentSelect: React.FC<{
   const storeProject = useProjectStore();
   const [search, setSearch] = useState('');
   const hasHost = filter?.includes('hosting');
+  const [filterDefault] = useState(
+    () => filter || ['component', 'project', 'thirdparty']
+  );
 
-  const options = useMemo<DefaultOptionType[]>(() => {
-    const filterDefault = filter || ['component', 'project', 'thirdparty'];
+  const optionsComponents = useMemo<DefaultOptionType[]>(() => {
     const tmp: DefaultOptionType[] = [];
     const components = Object.values(storeComponents.components);
 
+    // Components
     for (const component of components) {
       if (!filterDefault.includes(component.type)) {
         continue;
@@ -79,49 +82,100 @@ export const ComponentSelect: React.FC<{
       });
     }
 
-    const sugg: DefaultOptionType[] = [];
-    for (const supp of supportedArray) {
-      if (
-        (filterDefault.includes('hosting') && supp.type === 'hosting') ||
-        (filterDefault.includes('thirdparty') && supp.type === 'sass') ||
-        (filterDefault.includes('component') &&
-          (supp.type === 'db' || supp.type === 'messaging'))
-      ) {
-        if (components.find((c) => c.slug === supp.key)) {
-          continue;
-        }
+    return tmp;
+  }, [storeComponents.components]);
 
-        sugg.push({
-          value: supp.key,
-          label: (
-            <div className={cls.sugg}>
-              <IconPlus /> Create {supportedTypeToText[supp.type]} &quot;
-              {supp.name}&quot;
-            </div>
-          ),
-          techType: supp.type,
-          filter: supp.name,
-        });
+  const optionsTech = useMemo<DefaultOptionType[]>(() => {
+    const components = Object.values(storeComponents.components);
+    const tmp: DefaultOptionType[] = [];
+
+    for (const supp of supportedArray) {
+      if (supp.type === 'hosting' && !filterDefault.includes('hosting')) {
+        continue;
       }
+      if (supp.type === 'sass' && !filterDefault.includes('thirdparty')) {
+        continue;
+      }
+      if (
+        (supp.type === 'db' || supp.type === 'messaging') &&
+        !filterDefault.includes('component')
+      ) {
+        continue;
+      }
+      if (components.find((c) => c.slug === supp.key)) {
+        continue;
+      }
+
+      tmp.push({
+        value: supp.key,
+        label: (
+          <div className={cls.sugg}>
+            <IconPlus /> Create {supportedTypeToText[supp.type]} &quot;
+            {supp.name}&quot;
+          </div>
+        ),
+        techType: supp.type,
+        filter: supp.name,
+      });
     }
 
+    return tmp;
+  }, [storeComponents.components]);
+
+  const optionsProjects = useMemo<DefaultOptionType[]>(() => {
+    if (!filterDefault.includes('project')) {
+      return [];
+    }
+
+    const tmp: DefaultOptionType[] = [];
+    const curr = storeComponents.current!;
+    const created = Object.values(storeComponents.components).filter(
+      (c) => c.type === 'project'
+    );
+
+    for (const project of storeProject.projects) {
+      if (project.id === curr.id) {
+        continue;
+      }
+      if (created.find((c) => c.typeId === project.id)) {
+        continue;
+      }
+
+      tmp.push({
+        value: project.id,
+        label: project.name,
+        filter: project.name,
+        projectId: project.id,
+      });
+    }
+
+    return tmp;
+  }, [storeComponents.components]);
+
+  const options = useMemo(() => {
     const res: DefaultOptionType[] = [
       {
         label: 'Available',
-        options: tmp,
+        options: optionsComponents,
       },
     ];
 
-    if (sugg.length > 0) {
+    if (optionsProjects.length > 0) {
+      res.push({
+        label: 'Projects',
+        options: optionsProjects,
+      });
+    }
+
+    if (optionsTech.length > 0) {
       res.push({
         label: 'Suggestions',
-        options: sugg,
-        optionFilterProp: 'value',
+        options: optionsTech,
       });
     }
 
     return res;
-  }, [storeComponents.components]);
+  }, [optionsComponents, optionsTech, optionsProjects]);
 
   const computed = useMemo<string[]>(() => {
     return values.map((component) => {
@@ -145,10 +199,30 @@ export const ComponentSelect: React.FC<{
   };
 
   const onSelect: SelectProps['onSelect'] = (value, option) => {
-    if (!option.techType) {
+    // Classic component
+    if (!option.techType && !option.projectId) {
       return onChange(multiple === false ? value : [...computed, value]);
     }
 
+    // Project
+    if (option.projectId) {
+      const proj = storeProject.projects.find(
+        (p) => p.id === option.projectId
+      )!;
+      const id = createLocal(
+        {
+          name: proj.name,
+          slug: proj.slug,
+          type: 'project',
+          typeId: proj.id,
+        },
+        storeProject,
+        storeComponents
+      );
+      return;
+    }
+
+    // Tech
     const supp = supportedIndexed[option.value!];
 
     let type: ApiComponent['type'] = hasHost ? 'hosting' : 'component';

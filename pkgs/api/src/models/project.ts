@@ -5,15 +5,14 @@ import {
   UpdatedAt,
   Table,
   PrimaryKey,
-  Default,
   Column,
   DataType,
   BeforeCreate,
   BeforeUpdate,
 } from 'sequelize-typescript';
 import slugify from 'slugify';
-import { v4 as uuidv4 } from 'uuid';
 
+import { nanoid } from '../common/id';
 import type { DBBlobProject, DBProject, DBProjectLink } from '../types/db';
 
 import type { PropBlobCreate } from './blob';
@@ -30,8 +29,7 @@ export class Project extends Model<
     >
 > {
   @PrimaryKey
-  @Default(DataType.UUIDV4)
-  @Column(DataType.UUID)
+  @Column(DataType.STRING)
   declare id: CreationOptional<string>;
 
   @Column({ field: 'org_id', type: DataType.STRING })
@@ -69,7 +67,7 @@ export class Project extends Model<
   @BeforeCreate
   static async onBeforeCreate(model: Project, { transaction }): Promise<void> {
     model.slug = slugify(model.name, { lower: true, trim: true });
-    model.id = model.id || uuidv4();
+    model.id = model.id || nanoid();
 
     const body: PropBlobCreate = {
       orgId: model.orgId,

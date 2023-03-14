@@ -38,7 +38,7 @@ export class RevisionComment extends Model<DBComment, PropCommentCreate> {
   @Column({ field: 'org_id', type: DataType.STRING })
   declare orgId: ForeignKey<DBOrg['id']>;
 
-  @Column({ field: 'project_id', type: DataType.UUIDV4 })
+  @Column({ field: 'project_id', type: DataType.STRING })
   declare projectId: ForeignKey<DBProject['id']>;
 
   @Column({ field: 'revision_id', type: DataType.UUIDV4 })

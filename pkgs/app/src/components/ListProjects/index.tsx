@@ -6,14 +6,14 @@ import classnames from 'classnames';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { useProjectsStore } from '../../common/store';
+import { useProjectStore } from '../../common/store';
 import { AvatarAuto } from '../AvatarAuto';
 import { Time } from '../Time';
 
 import cls from './index.module.scss';
 
 export const ListProjects: React.FC<{ orgId: string }> = ({ orgId }) => {
-  const storeProjects = useProjectsStore();
+  const storeProjects = useProjectStore();
   const [list, setList] = useState<ApiProject[]>();
   const [search, setSearch] = useState<string>('');
 

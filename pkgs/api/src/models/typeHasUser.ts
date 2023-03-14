@@ -32,7 +32,7 @@ export class TypeHasUser extends Model<
   >
 > {
   @PrimaryKey
-  @Column({ field: 'document_id', type: DataType.UUIDV4 })
+  @Column({ field: 'document_id', type: DataType.STRING })
   declare documentId: ForeignKey<DBDocument['id']>;
 
   @PrimaryKey

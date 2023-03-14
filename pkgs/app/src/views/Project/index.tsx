@@ -7,7 +7,7 @@ import { Link, Route, Routes, useParams } from 'react-router-dom';
 
 import { useListComponents } from '../../api/components';
 import { useListOrgs } from '../../api/orgs';
-import { useGetProject } from '../../api/projects';
+import { useGetProject, useListProjects } from '../../api/projects';
 import { useComponentsStore, useProjectStore } from '../../common/store';
 import { BigHeading, BigHeadingLoading } from '../../components/BigHeading';
 import { Card } from '../../components/Card';
@@ -41,8 +41,13 @@ export const Project: React.FC = () => {
     return `/${params.org_id}/${params.project_slug}`;
   }, [params]);
 
+  // Stores
+  const storeProject = useProjectStore();
+  const storeComponents = useComponentsStore();
+
   // Data fetch
   const getOrgs = useListOrgs();
+  const getProjects = useListProjects({ org_id: params.org_id });
   const [org, setOrg] = useState<ApiOrg>();
   const getProj = useGetProject(params);
   const [proj, setProj] = useState<ApiProject>();
@@ -51,8 +56,6 @@ export const Project: React.FC = () => {
     org_id: params.org_id,
     project_id: proj?.id,
   });
-  const storeProject = useProjectStore();
-  const storeComponents = useComponentsStore();
 
   // Edit mode
   const edit = useEdit();
@@ -73,6 +76,9 @@ export const Project: React.FC = () => {
   useEffect(() => {
     setOrg(getOrgs.data?.find((o) => o.id === params.org_id));
   }, [getOrgs.isFetched]);
+  useEffect(() => {
+    storeProject.fill(getProjects.data?.data || []);
+  }, [getProjects.isLoading]);
   useEffect(() => {
     setTimeout(() => {
       setProj(getProj.data?.data);

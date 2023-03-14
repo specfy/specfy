@@ -39,7 +39,7 @@ export class Perm extends Model<DBPerm, PropCreatePerm> {
   @Column({ field: 'org_id', type: DataType.STRING })
   declare orgId: ForeignKey<Org['id']>;
 
-  @Column({ field: 'project_id', type: DataType.UUIDV4 })
+  @Column({ field: 'project_id', type: DataType.STRING })
   declare projectId: ForeignKey<Project['id']>;
 
   @Column({ field: 'user_id', type: DataType.UUIDV4 })

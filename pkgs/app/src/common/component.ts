@@ -46,9 +46,9 @@ import {
   Gnubash,
   CssThree,
 } from '@icons-pack/react-simple-icons';
+import { nanoid } from 'api/src/common/id';
 import type { ApiComponent } from 'api/src/types/api';
 import type { GraphEdge } from 'api/src/types/db';
-import { v4 as uuidv4 } from 'uuid';
 
 import { getEmptyDoc } from '../components/Editor/helpers';
 
@@ -185,12 +185,12 @@ export function getAllChilds(list: ApiComponent[], id: string): ApiComponent[] {
 }
 
 export function createLocal(
-  data: Partial<Pick<ApiComponent, 'techId'>> &
+  data: Partial<Pick<ApiComponent, 'techId' | 'typeId'>> &
     Pick<ApiComponent, 'name' | 'slug' | 'type'>,
   storeProject: ProjectState,
   storeComponents: ComponentsState
 ) {
-  const id = uuidv4();
+  const id = nanoid();
 
   const add: ApiComponent = {
     id: id,
@@ -198,7 +198,7 @@ export function createLocal(
     projectId: storeProject.project!.id,
     techId: data.techId || null,
     type: data.type,
-    typeId: null,
+    typeId: data.typeId || null,
     name: data.name,
     slug: data.slug,
     description: getEmptyDoc(),

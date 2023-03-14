@@ -5,15 +5,14 @@ import {
   UpdatedAt,
   Table,
   PrimaryKey,
-  Default,
   Column,
   DataType,
   BeforeCreate,
   BeforeUpdate,
 } from 'sequelize-typescript';
 import slugify from 'slugify';
-import { v4 as uuidv4 } from 'uuid';
 
+import { nanoid } from '../common/id';
 import type { DBBlobDocument, DBDocument } from '../types/db';
 
 import type { PropBlobCreate } from './blob';
@@ -29,14 +28,13 @@ type CreateProp = Partial<Pick<DBDocument, 'id'>> &
 @Table({ tableName: 'documents', modelName: 'document' })
 export class Document extends Model<DBDocument, CreateProp> {
   @PrimaryKey
-  @Default(DataType.UUIDV4)
-  @Column(DataType.UUID)
+  @Column(DataType.STRING)
   declare id: CreationOptional<string>;
 
   @Column({ field: 'org_id', type: DataType.STRING })
   declare orgId: ForeignKey<Org['id']>;
 
-  @Column({ field: 'project_id', type: DataType.UUIDV4 })
+  @Column({ field: 'project_id', type: DataType.STRING })
   declare projectId: ForeignKey<Project['id']>;
 
   @Column({ field: 'blob_id', type: DataType.UUIDV4 })
@@ -84,7 +82,7 @@ export class Document extends Model<DBDocument, CreateProp> {
       lower: true,
       trim: true,
     });
-    model.id = model.id || uuidv4();
+    model.id = model.id || nanoid();
 
     const body: PropBlobCreate = {
       orgId: model.orgId,

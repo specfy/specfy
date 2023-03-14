@@ -6,7 +6,7 @@ import { Document, TypeHasUser } from '../../models';
  */
 export async function seedPlaybook(p1: Project, [u1]: User[]) {
   const d1 = await Document.create({
-    id: '00300000-0000-4000-0000-000000000000',
+    id: 'd1grRPVYnx',
     orgId: 'company',
     projectId: p1.id,
     type: 'pb',
@@ -32,7 +32,7 @@ export async function seedPlaybook(p1: Project, [u1]: User[]) {
     locked: false,
   });
   const d2 = await Document.create({
-    id: '00100000-0000-4000-0000-000000000000',
+    id: 'd2grRPVYnx',
     orgId: 'company',
     projectId: p1.id,
     type: 'pb',
@@ -67,7 +67,7 @@ export async function seedPlaybook(p1: Project, [u1]: User[]) {
     locked: false,
   });
   const d3 = await Document.create({
-    id: '00200000-0000-4000-0000-000000000000',
+    id: 'd3grRPVYnx',
     orgId: 'company',
     projectId: p1.id,
     type: 'pb',
@@ -174,7 +174,7 @@ export async function seedPlaybook(p1: Project, [u1]: User[]) {
 export async function seedRFC(p1: Project, [u1, u2]: User[]) {
   // Contents
   const d1 = await Document.create({
-    id: '01000000-0000-4000-0000-000000000000',
+    id: 'r1grRPVYnx',
     orgId: 'company',
     projectId: p1.id,
     type: 'rfc',
@@ -570,7 +570,7 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
     locked: true,
   });
   const d2 = await Document.create({
-    id: '01100000-0000-4000-0000-000000000000',
+    id: 'r2grRPVYnx',
     orgId: 'company',
     projectId: p1.id,
     type: 'rfc',
@@ -580,7 +580,7 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
     locked: false,
   });
   const d3 = await Document.create({
-    id: '01200000-0000-4000-0000-000000000000',
+    id: 'r3grRPVYnx',
     orgId: 'company',
     projectId: p1.id,
     type: 'rfc',
