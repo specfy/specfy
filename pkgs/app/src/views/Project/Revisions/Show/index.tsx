@@ -1,6 +1,7 @@
 import { LoadingOutlined } from '@ant-design/icons';
 import {
   IconCircleCheckFilled,
+  IconDotsVertical,
   IconExclamationCircle,
   IconEyeCheck,
   IconEyeOff,
@@ -361,6 +362,7 @@ export const ProjectRevisionsShow: React.FC<{
                     menu={{ items: actionsItems, onClick: onMenuClick }}
                     overlayClassName={cls.editDropdown}
                     onClick={() => setEdit(true)}
+                    icon={<IconDotsVertical />}
                   >
                     Edit
                   </Dropdown.Button>

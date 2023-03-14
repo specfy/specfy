@@ -1,9 +1,12 @@
-import { Tag, Typography } from 'antd';
+import { IconDotsVertical } from '@tabler/icons-react';
+import type { MenuProps } from 'antd';
+import { App, Button, Dropdown, Tag, Typography } from 'antd';
 import type { ApiComponent, ApiProject } from 'api/src/types/api';
 import classnames from 'classnames';
+import type { MenuClickEventHandler } from 'rc-menu/lib/interface';
 import type React from 'react';
-import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useEffect, useMemo, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import type { TechInfo } from '../../../common/component';
 import {
@@ -30,6 +33,8 @@ export const ComponentView: React.FC<{
   proj: ApiProject;
 }> = ({ proj }) => {
   const gref = useGraph();
+  const { message } = App.useApp();
+  const navigate = useNavigate();
 
   // TODO: filter RFC
   const [comp, setComp] = useState<ApiComponent>();
@@ -80,6 +85,19 @@ export const ComponentView: React.FC<{
     }, 500);
   }, [comp?.id]);
 
+  const menuItems = useMemo<MenuProps['items']>(() => {
+    return [{ key: 'delete', label: 'Delete', danger: true }];
+  }, []);
+
+  const onClickMenu: MenuClickEventHandler = (e) => {
+    if (e.key === 'delete') {
+      edit.enable(true);
+      storeComponents.remove(comp!.id);
+      message.success('Component deleted');
+      navigate(`/${params.org_id}/${params.project_slug}`);
+    }
+  };
+
   if (!comp) {
     return <div>not found</div>;
   }
@@ -109,9 +127,14 @@ export const ComponentView: React.FC<{
                 }}
               />
             )}
-            <Tag className={classnames(cls.tagType, cls[comp.type])}>
-              {internalTypeToText[comp.type]}
-            </Tag>
+            <div>
+              <Tag className={classnames(cls.tagType, cls[comp.type])}>
+                {internalTypeToText[comp.type]}
+              </Tag>
+              <Dropdown menu={{ items: menuItems, onClick: onClickMenu }}>
+                <Button icon={<IconDotsVertical />} type="ghost" />
+              </Dropdown>
+            </div>
           </div>
 
           <Typography>

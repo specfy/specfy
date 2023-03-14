@@ -50,20 +50,24 @@ export const ProjectOverview: React.FC<{
     update({ ...project!, description: doc });
   }, []);
 
+  if (!project) {
+    return null;
+  }
+
   return (
     <Container>
       <Container.Left>
         <Card padded>
           <Typography>
-            {!isEditing && <ContentDoc doc={project!.description} />}
+            {!isEditing && <ContentDoc doc={project.description} />}
             {isEditing && (
-              <EditorMini doc={project!.description} onUpdate={onUpdate} />
+              <EditorMini doc={project.description} onUpdate={onUpdate} />
             )}
           </Typography>
 
-          {project!.links.length > 0 && (
+          {project.links.length > 0 && (
             <div className={cls.links}>
-              {project!.links.map((link) => {
+              {project.links.map((link) => {
                 let icon = <LinkOutlined />;
                 if (link.title === 'Github') icon = <IconBrandGithub />;
                 else if (link.title === 'Slack') icon = <IconBrandSlack />;
@@ -90,12 +94,12 @@ export const ProjectOverview: React.FC<{
 
           <div className={cls.block}>
             <Typography.Title level={5}>Team</Typography.Title>
-            <Team org_id={params.org_id} project_id={project!.id} />
+            <Team org_id={params.org_id} project_id={project.id} />
           </div>
         </Card>
 
         <Card padded>
-          <ListRFCs project={project!}></ListRFCs>
+          <ListRFCs project={project}></ListRFCs>
         </Card>
       </Container.Left>
       <Container.Right>

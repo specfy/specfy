@@ -28,7 +28,7 @@ export interface ComputedForDiff {
   type: TmpBlob['type'];
   typeId: string;
   key: string;
-  current: TmpBlob['blob'];
+  current: TmpBlob['blob'] | null;
   previous: ApiComponent | ApiDocument | ApiProject | null;
   diff: Change[];
 }
@@ -49,7 +49,16 @@ function find<T extends Allowed>(id: any): T | undefined {
   });
 }
 
-export default { add, find };
+function allowedType(item: Allowed) {
+  if ('links' in item) {
+    return 'project';
+  } else if ('content' in item) {
+    return 'document';
+  }
+  return 'component';
+}
+
+export default { add, find, allowedType, originalStore };
 
 // ------------------------------------------ Staging Store
 interface StagingState {
@@ -106,6 +115,7 @@ export interface ComponentsState {
     value: ApiComponent[TKey]
   ) => void;
   revertField: (id: string, field: keyof ApiComponent) => void;
+  remove: (id: string) => void;
 }
 
 export const useComponentsStore = create<ComponentsState>()((set, get) => ({
@@ -159,6 +169,34 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
       (i): i is ApiComponent => comp.id === i.id
     )!;
     get().updateField(id, field, item[field]);
+  },
+  remove: (id) => {
+    const components = Object.values(get().components);
+    const map: ComponentsState['components'] = {};
+
+    for (const copy of components) {
+      if (copy.id === id) {
+        continue;
+      }
+
+      if (copy.inComponent === id) {
+        copy.inComponent = null;
+      }
+
+      // Remove any edges pointing toward this component
+      const edges: ApiComponent['edges'] = [];
+      for (const edge of copy.edges) {
+        if (edge.to === id) {
+          continue;
+        }
+
+        edges.push(edge);
+      }
+
+      map[copy.id] = { ...copy, edges };
+    }
+
+    set({ components: map });
   },
 }));
 

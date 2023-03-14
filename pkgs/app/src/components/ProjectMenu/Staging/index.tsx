@@ -29,21 +29,39 @@ export const Staging: React.FC<{ link: string }> = ({ link }) => {
 
       const diffs: ComputedForDiff[] = [];
       const clean: TmpBlob[] = [];
+
+      // Find added and modified
       for (const item of store) {
         const original = originalStore.find(item.id) as typeof item;
 
-        let type: TmpBlob['type'] = 'component';
-        if ('links' in item) type = 'project';
-        else if ('content' in item) type = 'document';
-
         const diff = diffTwoBlob({
-          type,
+          type: originalStore.allowedType(item),
           typeId: item.id,
           blob: item,
           previous: original || null,
         } as TmpBlob);
 
         tmp += Object.keys(diff.clean.blob).length;
+        diffs.push(...diff.computed);
+        clean.push(diff.clean);
+      }
+
+      // Find deleted
+      for (const item of originalStore.originalStore) {
+        if (store.find((i) => i.id === item.id)) {
+          continue;
+        }
+
+        const diff = diffTwoBlob({
+          type: originalStore.allowedType(item),
+          typeId: item.id,
+          blob: { id: null } as any,
+          previous: item || null,
+        } as TmpBlob);
+        console.log('on find remove', item, diff);
+
+        tmp += 1;
+        const type = originalStore.allowedType(item);
         diffs.push(...diff.computed);
         clean.push(diff.clean);
       }
