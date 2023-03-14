@@ -33,7 +33,6 @@ export const ComponentView: React.FC<{
 
   // TODO: filter RFC
   const [comp, setComp] = useState<ApiComponent>();
-  const [info, setInfo] = useState<TechInfo>();
   const [Icon, setIcon] = useState<TechInfo['Icon']>();
   const params = useParams<Partial<RouteComponent>>() as RouteComponent;
 
@@ -47,18 +46,15 @@ export const ComponentView: React.FC<{
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    const split = params.component_slug.split('-')[0];
+    storeComponents.setCurrent(split);
   }, [params.component_slug]);
 
   useEffect(() => {
     setComponents(Object.values(storeComponents.components));
-  }, [storeComponents]);
-
-  useEffect(() => {
-    const split = params.component_slug.split('-')[0];
-    const curr = storeComponents.select(split);
+    const curr = storeComponents.select(storeComponents.current!);
     setComp(curr);
-    storeComponents.setCurrent(curr!);
-  }, [params.component_slug]);
+  }, [storeComponents]);
 
   useEffect(() => {
     if (!comp) {
@@ -66,13 +62,11 @@ export const ComponentView: React.FC<{
     }
 
     if (comp.techId && comp.techId in supportedIndexed) {
-      setInfo(supportedIndexed[comp.techId]);
       setIcon(supportedIndexed[comp.techId].Icon);
     } else {
-      setInfo(undefined);
       setIcon(undefined);
     }
-  }, [comp]);
+  }, [comp?.techId]);
 
   useEffect(() => {
     if (!gref || !comp) {
@@ -84,7 +78,7 @@ export const ComponentView: React.FC<{
       gref.unsetHighlight();
       gref.setHighlight(comp!.id);
     }, 500);
-  }, [comp]);
+  }, [comp?.id]);
 
   if (!comp) {
     return <div>not found</div>;

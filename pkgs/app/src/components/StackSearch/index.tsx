@@ -102,7 +102,7 @@ export const ComponentSelect: React.FC<{
       ) {
         continue;
       }
-      if (components.find((c) => c.slug === supp.key)) {
+      if (components.find((c) => c.techId === supp.key)) {
         continue;
       }
 

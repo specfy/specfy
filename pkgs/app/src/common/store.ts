@@ -93,11 +93,11 @@ export const useProjectStore = create<ProjectState>()((set, get) => ({
 
 // ------------------------------------------ Component Store
 export interface ComponentsState {
-  current: ApiComponent | null;
+  current: string | null;
   components: Record<string, ApiComponent>;
   fill: (value: ApiComponent[]) => void;
   create: (value: ApiComponent) => void;
-  setCurrent: (curr: ApiComponent | null) => void;
+  setCurrent: (id: string) => void;
   select: (id: string) => ApiComponent | undefined;
   update: (value: ApiComponent) => void;
   updateField: <TKey extends keyof ApiComponent>(
