@@ -30,6 +30,9 @@ import { useEffect } from 'react';
 import { BubbleMenu } from './BubbleMenu';
 import { FloatingMenu } from './FloatingMenu';
 import { CustomFloatingMenu } from './extensions/CustomFloatingMenu';
+import { Panel } from './extensions/Panel';
+import { Vote } from './extensions/Vote';
+import { VoteItem } from './extensions/VoteItem';
 import { removeEmptyContent } from './helpers';
 import cls from './index.module.scss';
 
@@ -84,6 +87,9 @@ export const Editor: React.FC<{
         },
       }),
       Image,
+      VoteItem,
+      Vote,
+      Panel,
       CodeBlockLowlight.configure({
         lowlight,
       }),
