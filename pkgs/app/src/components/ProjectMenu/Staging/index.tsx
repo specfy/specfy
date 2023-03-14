@@ -61,7 +61,6 @@ export const Staging: React.FC<{ link: string }> = ({ link }) => {
         console.log('on find remove', item, diff);
 
         tmp += 1;
-        const type = originalStore.allowedType(item);
         diffs.push(...diff.computed);
         clean.push(diff.clean);
       }

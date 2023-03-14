@@ -21,7 +21,8 @@ export const Playbook: React.FC<{
   const isEditing = edit.isEnabled();
 
   return (
-    <div className={cls.container}>
+    <>
+      <div></div>
       <div>
         <Title level={1} className={cls.title} id={doc.slug}>
           <span className={cls.type}>[PB-{doc.typeId}]</span>
@@ -48,6 +49,6 @@ export const Playbook: React.FC<{
           )}
         </Typography>
       </div>
-    </div>
+    </>
   );
 };

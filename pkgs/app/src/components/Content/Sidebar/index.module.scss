@@ -6,6 +6,7 @@
   top: 0;
 
   width: auto;
+  width: 300px;
   height: 100vh;
   max-height: 100vh;
 
@@ -13,11 +14,24 @@
   border-right: 1px solid $gray-200;
 
   .treeHeader {
-    margin: $p-l $p-l
+    display: flex;
+    gap: $p-m;
+    margin: $p-l $p-l;
+  }
+
+  .search {
+    flex: 1 1 0;
+    margin-right: $p-l;
+  }
+
+  &.collapsed {
+    width: 50px;
+    padding: $p-l 0 0 $p-l;
+    border-right: none
   }
 }
 
-.search {
+.results {
   margin: $p-l $p-l;
 
   .result {
@@ -33,6 +47,10 @@
       background-color: transparent;
     }
 
-    &:hover {}
+    &:focus-visible,
+    &.selected {
+      outline: 2px solid #d1c9ff;
+      outline-offset: 1px;
+    }
   }
 }

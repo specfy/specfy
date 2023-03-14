@@ -1,8 +1,8 @@
 @import "../../../styles/theme";
 
 .container {
-  display: grid;
-  grid-template-columns: 300px 1fr;
+  display: flex;
+  background-color: #fff;
 }
 
 
@@ -10,4 +10,6 @@
   // min-width: $min-w;
   // max-width: $max-w;
   // margin: 0 auto;
+  display: flex;
+  width: 100%;
 }

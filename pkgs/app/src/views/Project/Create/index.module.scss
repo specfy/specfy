@@ -2,8 +2,8 @@
 
 .form {
   display: flex;
-  gap: $p-m;
   flex-direction: column;
+  gap: $p-m;
   justify-content: center;
 
   width: $main-col-w / 1.5;

@@ -1,0 +1,19 @@
+@import "../../../../styles/theme";
+
+.wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.container {
+  position: relative;
+
+  display: grid;
+  grid-template-columns: 200px ($main-col-w) 200px;
+  gap: $p-xl;
+
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: $p-3xl;
+}

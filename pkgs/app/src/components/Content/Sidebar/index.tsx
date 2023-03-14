@@ -4,11 +4,15 @@ import {
   IconCircleX,
   IconSearch,
   IconFileCode,
+  IconLayoutSidebarLeftCollapse,
+  IconPlus,
+  IconLayoutSidebarLeftExpand,
 } from '@tabler/icons-react';
 import { Button, Input, Tree } from 'antd';
 import type { DirectoryTreeProps } from 'antd/es/tree';
 import type { ApiProject, DocumentSimple } from 'api/src/types/api';
-import { useMemo, useState } from 'react';
+import classnames from 'classnames';
+import { useMemo, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDebounce } from 'react-use';
 
@@ -24,11 +28,15 @@ export const ContentSidebar: React.FC<{
 }> = ({ params, proj }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [collapsed, setCollapsed] = useState<boolean>(false);
 
+  // Data fetch
   const res = useListDocuments({
     org_id: params.org_id,
     project_id: proj.id,
   });
+
+  // Search
   const [loading, setLoading] = useState<boolean>(true);
   const [list, setList] = useState<
     Array<{
@@ -39,6 +47,8 @@ export const ContentSidebar: React.FC<{
     }>
   >();
   const [search, setSearch] = useState<string>('');
+  const [focus, setFocus] = useState<number>(0);
+  const refList = useRef<HTMLDivElement>(null);
 
   useDebounce(
     () => {
@@ -72,6 +82,7 @@ export const ContentSidebar: React.FC<{
       }
 
       setList(matched);
+      setFocus(0);
     },
     250,
     [search]
@@ -145,6 +156,22 @@ export const ContentSidebar: React.FC<{
     setSearch('');
     setList(undefined);
   };
+  const handleKeyPress: React.KeyboardEventHandler<HTMLInputElement> = (e) => {
+    if (e.code === 'ArrowDown') {
+      e.preventDefault();
+      setFocus(focus + 1 === list!.length ? 0 : focus + 1);
+    } else if (e.code === 'ArrowUp') {
+      e.preventDefault();
+      setFocus(Math.max(0, focus - 1));
+    } else if (e.code === 'Enter') {
+      if (list![focus]) {
+        (refList.current?.childNodes[focus] as HTMLAnchorElement).click();
+      }
+    }
+  };
+  const handleCollapse = () => {
+    setCollapsed(!collapsed);
+  };
 
   if (res.isLoading) {
     return (
@@ -154,12 +181,22 @@ export const ContentSidebar: React.FC<{
     );
   }
 
+  if (collapsed) {
+    return (
+      <div className={classnames(cls.tree, cls.collapsed)}>
+        <Button
+          icon={<IconLayoutSidebarLeftExpand />}
+          onClick={handleCollapse}
+        />
+      </div>
+    );
+  }
+
   return (
-    <div className={cls.tree}>
+    <div className={classnames(cls.tree, collapsed && cls.collapsed)}>
       <div className={cls.treeHeader}>
-        <Input.Group compact>
+        <Input.Group compact className={cls.search}>
           <Input
-            size="large"
             prefix={<IconSearch />}
             onChange={handleInput}
             value={search}
@@ -179,18 +216,25 @@ export const ContentSidebar: React.FC<{
               )
             }
             placeholder="Search..."
+            onKeyDown={handleKeyPress}
           />
         </Input.Group>
+        <Button icon={<IconPlus />} />
+        <Button
+          icon={<IconLayoutSidebarLeftCollapse />}
+          onClick={handleCollapse}
+        />
       </div>
       {list && (
-        <div className={cls.search}>
-          {list.map((item) => {
+        <div className={cls.results} ref={refList}>
+          {list.map((item, i) => {
             return (
               <Link
                 key={item.doc.id}
-                className={cls.result}
+                className={classnames(cls.result, focus === i && cls.selected)}
                 to={`/${proj.orgId}/${proj.slug}/content/${item.doc.slug}`}
                 onClick={handleReset}
+                tabIndex={0}
               >
                 <div>
                   {item.before}

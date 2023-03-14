@@ -8,6 +8,8 @@ import type { RouteDocument } from '../../../../types/routes';
 import { Playbook } from '../Playbook';
 import { RFC } from '../RFC';
 
+import cls from './index.module.scss';
+
 export const DocumentShow: React.FC<{
   proj: ApiProject;
 }> = ({ proj }) => {
@@ -37,8 +39,20 @@ export const DocumentShow: React.FC<{
   }
 
   if (reqParams?.document_type === 'rfc') {
-    return <RFC proj={proj} doc={doc.data.data} />;
+    return (
+      <div className={cls.wrapper}>
+        <div className={cls.container}>
+          <RFC proj={proj} doc={doc.data.data} />
+        </div>
+      </div>
+    );
   }
 
-  return <Playbook proj={proj} doc={doc.data.data} />;
+  return (
+    <div className={cls.wrapper}>
+      <div className={cls.container}>
+        <Playbook proj={proj} doc={doc.data.data} />
+      </div>
+    </div>
+  );
 };

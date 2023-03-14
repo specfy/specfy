@@ -24,7 +24,7 @@ export const RFC: React.FC<{
   const isEditing = edit.isEnabled();
 
   return (
-    <div className={cls.container}>
+    <>
       <div>
         <div className={cls.headings}>
           <HeadingTree blocks={doc.content.content}></HeadingTree>
@@ -63,6 +63,6 @@ export const RFC: React.FC<{
           <UserList list={doc.reviewers} />
         </SidebarBlock>
       </div>
-    </div>
+    </>
   );
 };

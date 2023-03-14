@@ -206,6 +206,11 @@ h4.ant-typography {
     .ant-input-prefix {
       margin-inline-end: $p-m;
     }
+
+    .ant-input-suffix {
+      align-self: center;
+      height: 22px;
+    }
   }
 }
 
