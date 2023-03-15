@@ -31,20 +31,16 @@ export const DocumentShow: React.FC<{
   });
 
   useEffect(() => {
-    const [type, typeId] = params.document_slug.split('-');
-    const exists = documentsStore.select(
-      type as ApiDocument['type'],
-      parseInt(typeId)
-    );
-    if (exists) {
-      setDoc(exists);
+    const [id] = params.document_slug.split('-');
+    if (documentsStore.documents[id]) {
+      setDoc(documentsStore.documents[id]);
       return;
     }
     if (getDoc.data?.data) {
       documentsStore.add([getDoc.data.data]);
       setDoc(getDoc.data.data);
     }
-  }, [getDoc.data]);
+  }, [getDoc.data, documentsStore.documents]);
 
   if (!doc) {
     return <div>not found</div>;

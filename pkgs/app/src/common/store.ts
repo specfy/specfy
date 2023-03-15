@@ -209,10 +209,6 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
 export interface DocumentsState {
   documents: Record<string, ApiDocument>;
   add: (values: ApiDocument[]) => void;
-  select: (
-    type: ApiDocument['type'],
-    typeId: number
-  ) => ApiDocument | undefined;
   create: (
     data: Pick<ApiDocument, 'name' | 'orgId' | 'projectId' | 'type'>
   ) => ApiDocument;
@@ -234,13 +230,6 @@ export const useDocumentsStore = create<DocumentsState>()((set, get) => ({
         }
       })
     );
-  },
-  select: (type, typeId) => {
-    for (const doc of Object.values(get().documents)) {
-      if (doc.type === type && doc.typeId === typeId) {
-        return doc;
-      }
-    }
   },
   create: (data) => {
     const doc = {
