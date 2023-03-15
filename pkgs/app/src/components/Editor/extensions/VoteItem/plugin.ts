@@ -1,8 +1,11 @@
 import { mergeAttributes, Node } from '@tiptap/core';
+import { ReactNodeViewRenderer } from '@tiptap/react';
 
 export interface VoteItemOptions {
   HTMLAttributes: Record<string, any>;
 }
+
+import { VoteItemView } from './View';
 
 declare module '@tiptap/core' {
   // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -39,12 +42,21 @@ export const VoteItem = Node.create<VoteItemOptions>({
 
   defining: true,
 
-  renderHTML({ HTMLAttributes }) {
-    return [
-      'div',
-      mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
-      0,
-    ];
+  addAttributes() {
+    return {
+      voteChoice: {
+        default: 0,
+        rendered: false,
+      },
+    };
+  },
+
+  renderHTML(a) {
+    return ['div', mergeAttributes(a.HTMLAttributes), 0];
+  },
+
+  addNodeView() {
+    return ReactNodeViewRenderer(VoteItemView, {});
   },
 
   addCommands() {

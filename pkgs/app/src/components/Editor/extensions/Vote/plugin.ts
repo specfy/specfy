@@ -1,5 +1,7 @@
 import { mergeAttributes, Node } from '@tiptap/core';
 
+import cls from '../../../Content/index.module.scss';
+
 export interface VoteOptions {
   HTMLAttributes: Record<string, any>;
 }
@@ -39,10 +41,21 @@ export const Vote = Node.create<VoteOptions>({
 
   defining: true,
 
+  addAttributes() {
+    return {
+      voteId: {
+        default: 0,
+        rendered: false,
+      },
+    };
+  },
+
   renderHTML({ HTMLAttributes }) {
     return [
       'div',
-      mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
+      mergeAttributes(this.options.HTMLAttributes, HTMLAttributes, {
+        class: cls.vote,
+      }),
       0,
     ];
   },

@@ -5,13 +5,15 @@ import classnames from 'classnames';
 import { useState } from 'react';
 
 import { AvatarAuto } from '../../AvatarAuto';
+import type { Payload } from '../helpers';
 import { map } from '../helpers';
 
 import cls from './index.module.scss';
 
-export const ContentBlockVoteItem: React.FC<{ block: BlockVoteItem }> = ({
-  block,
-}) => {
+export const ContentBlockVoteItem: React.FC<{
+  block: BlockVoteItem;
+  pl: Payload;
+}> = ({ block, pl }) => {
   const accepted = block.voteChoice === '1';
   const [open, setOpen] = useState(accepted);
 
@@ -38,8 +40,7 @@ export const ContentBlockVoteItem: React.FC<{ block: BlockVoteItem }> = ({
               Rejected
             </div>
           )}
-          Solution
-          {block.voteChoice}
+          Choice {block.voteChoice}
         </div>
         <div>
           <Avatar.Group>
@@ -50,7 +51,7 @@ export const ContentBlockVoteItem: React.FC<{ block: BlockVoteItem }> = ({
         </div>
       </div>
       <div className={classnames(cls.content, !open && cls.close)}>
-        {map(block)}
+        {map(block, pl)}
       </div>
     </div>
   );

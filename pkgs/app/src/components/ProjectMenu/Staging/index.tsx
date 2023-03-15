@@ -20,6 +20,8 @@ export const Staging: React.FC<{ link: string }> = ({ link }) => {
 
   useDebounce(
     () => {
+      // TODO: this is too slow
+
       let tmp = 0;
       const store: Allowed[] = [
         project!,

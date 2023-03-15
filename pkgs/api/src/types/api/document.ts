@@ -84,9 +84,9 @@ export interface BlockTable {
   content: BlockTableRow[];
 }
 
-// ----- Panel
-export interface BlockPanel {
-  type: 'panel';
+// ----- Banner
+export interface BlockBanner {
+  type: 'banner';
   attrs: { type: 'error' | 'info' | 'success' | 'warning' };
   content: BlockParagraph[];
 }
@@ -137,13 +137,13 @@ export interface BlockDoc {
 
 export type BlockLevelZero = BlockDoc;
 export type BlockLevelOne =
+  | BlockBanner
   | BlockBulletList
   | BlockCodeBlock
   | BlockDocument
   | BlockHeading
   | BlockHorizontalRule
   | BlockImage
-  | BlockPanel
   | BlockParagraph
   | BlockQuote
   | BlockStep
@@ -151,6 +151,7 @@ export type BlockLevelOne =
   | BlockTaskList
   | BlockVote;
 export type Blocks =
+  | BlockBanner
   | BlockBulletList
   | BlockCodeBlock
   | BlockDocument
@@ -159,7 +160,6 @@ export type Blocks =
   | BlockHorizontalRule
   | BlockImage
   | BlockListItem
-  | BlockPanel
   | BlockParagraph
   | BlockQuote
   | BlockStep
@@ -173,11 +173,11 @@ export type Blocks =
   | BlockVote
   | BlockVoteItem;
 export type BlocksWithContent =
+  | BlockBanner
   | BlockBulletList
   | BlockCodeBlock
   | BlockHeading
   | BlockListItem
-  | BlockPanel
   | BlockParagraph
   | BlockQuote
   | BlockStep

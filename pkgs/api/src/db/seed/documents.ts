@@ -532,7 +532,7 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
           attrs: { level: 1 },
         },
         {
-          type: 'panel',
+          type: 'banner',
           attrs: { type: 'error' },
           content: [
             {

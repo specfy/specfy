@@ -6,6 +6,7 @@ import { LightAsync as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { a11yLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
 import { slugify } from '../../common/string';
+import { Banner } from '../Banner';
 
 import { ContentBlockDocument } from './BlockDocument';
 import { ContentBlockStep } from './BlockStep';
@@ -136,22 +137,16 @@ export const ContentBlock: React.FC<{ block: Blocks; pl: Payload }> = ({
     );
   }
 
-  // Panel
-  else if (block.type === 'panel') {
-    return (
-      <Alert
-        type={block.attrs.type}
-        banner
-        description={map(block, pl)}
-      ></Alert>
-    );
+  // Banner
+  else if (block.type === 'banner') {
+    return <Banner type={block.attrs.type}>{map(block, pl)}</Banner>;
   }
 
   // Vote
   else if (block.type === 'vote') {
     return <div className={cls.vote}>{map(block, pl)}</div>;
   } else if (block.type === 'voteItem') {
-    return <ContentBlockVoteItem block={block} />;
+    return <ContentBlockVoteItem block={block} pl={pl} />;
   }
 
   // Step

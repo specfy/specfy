@@ -29,9 +29,6 @@
 
 ## Editor
 
-- Panel
-- Task
-- TaskList
 - Decisions / Vote
 - Code Block
 - Mention

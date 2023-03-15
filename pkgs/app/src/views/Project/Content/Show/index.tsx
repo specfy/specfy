@@ -4,6 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import { useGetDocument } from '../../../../api/documents';
 import { useDocumentsStore } from '../../../../common/store';
+import { useEdit } from '../../../../hooks/useEdit';
 import type { RouteDocument } from '../../../../types/routes';
 import { Playbook } from '../Playbook';
 import { RFC } from '../RFC';
@@ -16,6 +17,7 @@ export const DocumentShow: React.FC<{
   const params = useParams<Partial<RouteDocument>>() as RouteDocument;
   const documentsStore = useDocumentsStore();
   const [doc, setDoc] = useState<ApiDocument>();
+  const edit = useEdit();
 
   // Parse params
   const reqParams = useMemo(() => {
@@ -31,16 +33,23 @@ export const DocumentShow: React.FC<{
   });
 
   useEffect(() => {
-    const [id] = params.document_slug.split('-');
-    if (documentsStore.documents[id]) {
-      setDoc(documentsStore.documents[id]);
-      return;
-    }
     if (getDoc.data?.data) {
       documentsStore.add([getDoc.data.data]);
       setDoc(getDoc.data.data);
     }
-  }, [getDoc.data, documentsStore.documents]);
+  }, [getDoc.data]);
+
+  useEffect(() => {
+    // Update doc only if we exit edit mode to avoid rerender the whole view at each keystroke
+    if (!edit.isEnabled() && edit.prev()) {
+      const [id] = params.document_slug.split('-');
+
+      if (documentsStore.documents[id]) {
+        setDoc(documentsStore.documents[id]);
+        return;
+      }
+    }
+  }, [edit, documentsStore.documents]);
 
   if (!doc) {
     return <div>not found</div>;

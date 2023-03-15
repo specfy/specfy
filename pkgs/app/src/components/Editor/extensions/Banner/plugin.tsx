@@ -1,34 +1,34 @@
 import { mergeAttributes, Node } from '@tiptap/core';
 import { ReactNodeViewRenderer } from '@tiptap/react';
 
-import { PanelView } from './View';
+import { BannerView } from './View';
 
-export type PanelOptions = {
+export type BannerOptions = {
   HTMLAttributes: Record<string, any>;
 };
 
 declare module '@tiptap/core' {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   interface Commands<ReturnType> {
-    panel: {
+    banner: {
       /**
        * Set a blockquote node
        */
-      setPanel: () => ReturnType;
+      setBanner: () => ReturnType;
       /**
        * Toggle a blockquote node
        */
-      togglePanel: () => ReturnType;
+      toggleBanner: () => ReturnType;
       /**
        * Unset a blockquote node
        */
-      unsetPanel: () => ReturnType;
+      unsetBanner: () => ReturnType;
     };
   }
 }
 
-export const Panel = Node.create<PanelOptions>({
-  name: 'panel',
+export const Banner = Node.create<BannerOptions>({
+  name: 'banner',
 
   addOptions() {
     return {
@@ -56,22 +56,22 @@ export const Panel = Node.create<PanelOptions>({
   },
 
   addNodeView() {
-    return ReactNodeViewRenderer(PanelView, {});
+    return ReactNodeViewRenderer(BannerView, {});
   },
 
   addCommands() {
     return {
-      setPanel:
+      setBanner:
         () =>
         ({ commands }) => {
           return commands.wrapIn(this.name);
         },
-      togglePanel:
+      toggleBanner:
         () =>
         ({ commands }) => {
           return commands.toggleWrap(this.name);
         },
-      unsetPanel:
+      unsetBanner:
         () =>
         ({ commands }) => {
           return commands.lift(this.name);
