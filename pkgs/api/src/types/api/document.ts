@@ -87,7 +87,7 @@ export interface BlockTable {
 // ----- Panel
 export interface BlockPanel {
   type: 'panel';
-  panelType: 'error' | 'info' | 'success' | 'warning';
+  attrs: { type: 'error' | 'info' | 'success' | 'warning' };
   content: BlockParagraph[];
 }
 

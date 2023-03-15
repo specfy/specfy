@@ -139,7 +139,11 @@ export const ContentBlock: React.FC<{ block: Blocks; pl: Payload }> = ({
   // Panel
   else if (block.type === 'panel') {
     return (
-      <Alert type={block.panelType} banner description={map(block, pl)}></Alert>
+      <Alert
+        type={block.attrs.type}
+        banner
+        description={map(block, pl)}
+      ></Alert>
     );
   }
 
