@@ -1,0 +1,17 @@
+@import "../../../../styles/theme";
+
+.code {
+  margin-bottom: $p-l;
+  font-family: "JetBrains Mono";
+  font-size: $font;
+  background-color: $gray-50;
+
+  >pre,
+  >textarea {
+    padding: $p-xl $p-2xl !important;
+  }
+
+  textarea {
+    outline: none;
+  }
+}

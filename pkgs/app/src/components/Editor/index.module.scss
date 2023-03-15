@@ -112,7 +112,14 @@
       cursor: ew-resize;
       cursor: col-resize;
     }
+
+    >img {
+      width: 100%;
+      object-fit: contain;
+      image-orientation: none;
+    }
   }
+
 
   // stylelint-enable selector-class-pattern
 }

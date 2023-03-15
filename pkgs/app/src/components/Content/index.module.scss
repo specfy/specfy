@@ -27,23 +27,23 @@ ul.taskList {
 
 .code {
   display: flex !important;
-  padding: 0 !important;
   background-color: $gray-50 !important;
   border: none !important;
+  padding: $p-xl $p-2xl !important;
 
   >code {
     >span {
       display: flex;
-      border-left: $p-s solid $gray-200;
+      // border-left: $p-s solid $gray-200;
     }
 
-    >span:first-child>span {
-      padding-top: $p-l
-    }
+    // >span:first-child>span {
+    //   padding-top: $p-l
+    // }
 
-    >span:last-child>span {
-      padding-bottom: $p-l
-    }
+    // >span:last-child>span {
+    //   padding-bottom: $p-l
+    // }
   }
 
 

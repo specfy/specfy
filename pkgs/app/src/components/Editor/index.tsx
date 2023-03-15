@@ -3,7 +3,6 @@ import { Bold } from '@tiptap/extension-bold';
 import { BulletList } from '@tiptap/extension-bullet-list';
 import { CharacterCount } from '@tiptap/extension-character-count';
 import { Code } from '@tiptap/extension-code';
-import { CodeBlockLowlight } from '@tiptap/extension-code-block-lowlight';
 import { Document } from '@tiptap/extension-document';
 import { HardBreak } from '@tiptap/extension-hard-break';
 import { Heading } from '@tiptap/extension-heading';
@@ -24,12 +23,12 @@ import { TaskList } from '@tiptap/extension-task-list';
 import { Text } from '@tiptap/extension-text';
 import { useEditor, EditorContent } from '@tiptap/react';
 import type { BlockLevelZero } from 'api/src/types/api';
-import { lowlight } from 'lowlight/lib/core';
 import { useEffect } from 'react';
 
 import { BubbleMenu } from './BubbleMenu';
 import { FloatingMenu } from './FloatingMenu';
 import { Banner } from './extensions/Banner';
+import { CodeBlock } from './extensions/CodeBlock';
 import { CustomFloatingMenu } from './extensions/CustomFloatingMenu';
 import { Vote } from './extensions/Vote';
 import { VoteItem } from './extensions/VoteItem';
@@ -90,9 +89,7 @@ export const Editor: React.FC<{
       VoteItem,
       Vote,
       Banner,
-      CodeBlockLowlight.configure({
-        lowlight,
-      }),
+      CodeBlock,
       History.configure({
         depth: 100,
       }),

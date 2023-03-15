@@ -2,7 +2,7 @@ import { Alert, Checkbox, Typography } from 'antd';
 import type { BlockLevelZero, Blocks } from 'api/src/types/api';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { LightAsync as SyntaxHighlighter } from 'react-syntax-highlighter';
+import { PrismAsyncLight } from 'react-syntax-highlighter';
 import { a11yLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
 
 import { slugify } from '../../common/string';
@@ -125,15 +125,15 @@ export const ContentBlock: React.FC<{ block: Blocks; pl: Payload }> = ({
   // CodeBlock
   else if (block.type === 'codeBlock') {
     return (
-      <SyntaxHighlighter
+      <PrismAsyncLight
         language={block.attrs.language}
         style={a11yLight}
         wrapLines={true}
-        showLineNumbers={true}
+        showLineNumbers={false}
         className={cls.code}
       >
         {block.content[0].text}
-      </SyntaxHighlighter>
+      </PrismAsyncLight>
     );
   }
 

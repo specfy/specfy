@@ -5,11 +5,6 @@ import { useMemo, useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
 
 import { Banner } from '../../../Banner';
-
-export type BannerOptions = {
-  HTMLAttributes: Record<string, any>;
-};
-
 import { EditorMenu } from '../../Menu';
 
 export const BannerView: React.FC<NodeViewProps> = ({
