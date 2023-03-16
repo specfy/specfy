@@ -4,6 +4,7 @@ import { BulletList } from '@tiptap/extension-bullet-list';
 import { CharacterCount } from '@tiptap/extension-character-count';
 import { Code } from '@tiptap/extension-code';
 import { Document } from '@tiptap/extension-document';
+import { Gapcursor } from '@tiptap/extension-gapcursor';
 import { HardBreak } from '@tiptap/extension-hard-break';
 import { Heading } from '@tiptap/extension-heading';
 import { History } from '@tiptap/extension-history';
@@ -28,8 +29,10 @@ import { useEffect } from 'react';
 import { BubbleMenu } from './BubbleMenu';
 import { FloatingMenu } from './FloatingMenu';
 import { Banner } from './extensions/Banner';
+import { BlockDocument } from './extensions/BlockDocument';
 import { CodeBlock } from './extensions/CodeBlock';
 import { CustomFloatingMenu } from './extensions/CustomFloatingMenu';
+import { Step } from './extensions/Step';
 import { Vote } from './extensions/Vote';
 import { VoteItem } from './extensions/VoteItem';
 import { removeEmptyContent } from './helpers';
@@ -90,6 +93,9 @@ export const Editor: React.FC<{
       Vote,
       Banner,
       CodeBlock,
+      BlockDocument,
+      Step,
+      Gapcursor,
       History.configure({
         depth: 100,
       }),

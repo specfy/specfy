@@ -94,12 +94,12 @@ export interface BlockBanner {
 // ----- Vote
 export interface BlockVoteItem {
   type: 'voteItem';
-  voteChoice: string;
+  attrs: { choiceId: string };
   content: BlockLevelOne[];
 }
 export interface BlockVote {
   type: 'vote';
-  voteId: string;
+  attrs: { voteId: string };
   content: BlockVoteItem[];
 }
 
@@ -125,7 +125,7 @@ export interface BlockStep {
 
 // ----- Document
 export interface BlockDocument {
-  type: 'document';
+  type: 'blockDocument';
   attrs: { id: ApiDocument['id'] };
 }
 

@@ -89,7 +89,7 @@ export async function seedPlaybook(p1: Project, [u1]: User[]) {
           attrs: {},
           content: [
             {
-              type: 'document',
+              type: 'blockDocument',
               attrs: { id: d1.id },
             },
           ],
@@ -135,7 +135,7 @@ export async function seedPlaybook(p1: Project, [u1]: User[]) {
           attrs: {},
           content: [
             {
-              type: 'document',
+              type: 'blockDocument',
               attrs: { id: d2.id },
             },
           ],
@@ -145,7 +145,7 @@ export async function seedPlaybook(p1: Project, [u1]: User[]) {
           attrs: {},
           content: [
             {
-              type: 'document',
+              type: 'blockDocument',
               attrs: { id: 'd3grRPVYnx' }, // Circular ref
             },
           ],
@@ -374,11 +374,11 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
         },
         {
           type: 'vote',
-          voteId: '', // TODO: fill this
+          attrs: { voteId: '' }, // TODO: fill this
           content: [
             {
               type: 'voteItem',
-              voteChoice: '1',
+              attrs: { choiceId: '1' },
               content: [
                 {
                   type: 'heading',
@@ -398,7 +398,7 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
             },
             {
               type: 'voteItem',
-              voteChoice: '2',
+              attrs: { choiceId: '2' },
               content: [
                 {
                   type: 'heading',

@@ -1,17 +1,60 @@
 @import "../../../../styles/theme";
 
-.code {
-  margin-bottom: $p-l;
-  font-family: "JetBrains Mono";
-  font-size: $font;
+.wrapper {
+  position: relative;
+  padding: $p-xl $p-2xl;
   background-color: $gray-50;
+  border-radius: $border-radius-s;
 
-  >pre,
-  >textarea {
-    padding: $p-xl $p-2xl !important;
+  .pre,
+  .code {
+    font-weight: inherit;
+    font-style: inherit;
+    font-variant-ligatures: inherit;
+    line-height: inherit;
+    text-rendering: inherit;
+    letter-spacing: inherit;
+
+    -webkit-font-smoothing: antialiased;
   }
 
-  textarea {
-    outline: none;
+  .pre {
+    margin: 0;
+    padding: 0;
+    background-color: transparent;
+    border: none;
+
+    .code {
+      display: block;
+
+      width: 100%;
+
+      font-family: "JetBrains Mono";
+      font-size: $font;
+      text-shadow: none;
+
+      background-color: transparent;
+    }
   }
+}
+
+.edit {
+  position: absolute;
+  z-index: 1;
+  top: $p-xl;
+
+  width: 100%;
+
+  color: black;
+
+  -webkit-text-fill-color: transparent;
+
+}
+
+
+.display {
+  pointer-events: none;
+  position: relative;
+  z-index: 2;
+  padding-bottom: $p-xl;
 }

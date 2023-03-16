@@ -21,6 +21,7 @@ export const Staging: React.FC<{ link: string }> = ({ link }) => {
   useDebounce(
     () => {
       // TODO: this is too slow
+      // TODO: remove HTML diff it's broken
 
       let tmp = 0;
       const store: Allowed[] = [

@@ -8,7 +8,7 @@ export const VoteItemView: React.FC<NodeViewProps> = ({ node }) => {
   return (
     <NodeViewWrapper className={classnames(cls.item)}>
       <div className={cls.header} tabIndex={0} role="group">
-        <div className={cls.label}>Choice {node.attrs.voteChoice}</div>
+        <div className={cls.label}>Choice {node.attrs.choiceId}</div>
       </div>
       <div className={classnames(cls.content)}>
         <NodeViewContent />

@@ -1,19 +1,28 @@
 import type { NodeViewProps } from '@tiptap/core';
 import { NodeViewContent, NodeViewWrapper } from '@tiptap/react';
 import { Select } from 'antd';
+import classnames from 'classnames';
 import { highlight, languages } from 'prismjs';
 import { useMemo, useRef, useState } from 'react';
-import Editor from 'react-simple-code-editor';
 import { useClickAway } from 'react-use';
-
 import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-javascript';
 import 'prismjs/components/prism-typescript';
+import 'prismjs/components/prism-css';
+import 'prismjs/components/prism-bash';
 import 'prismjs/themes/prism.css';
 
 import { EditorMenu } from '../../Menu';
 
 import cls from './index.module.scss';
+
+const map = {
+  javascript: 'Javascript',
+  typescript: 'Typescript',
+  css: 'CSS',
+  html: 'HTML',
+  bash: 'Bash',
+};
 
 export const CodeBlockView: React.FC<NodeViewProps> = ({
   node,
@@ -21,8 +30,8 @@ export const CodeBlockView: React.FC<NodeViewProps> = ({
 }) => {
   const ref = useRef(null);
   const [show, setShow] = useState(false);
-  const [content, setContent] = useState(
-    () => (node.content as any).content[0].text
+  const [type, setType] = useState(() =>
+    node.attrs.language in map ? node.attrs.language : 'javascript'
   );
 
   useClickAway(ref, (e) => {
@@ -39,38 +48,47 @@ export const CodeBlockView: React.FC<NodeViewProps> = ({
       { value: 'typescript', label: 'Typescript' },
       { value: 'css', label: 'CSS' },
       { value: 'html', label: 'HTML' },
+      { value: 'bash', label: 'Bash' },
     ];
   }, []);
 
   const onChange = (value: string) => {
+    setType(value);
     updateAttributes({
       language: value,
     });
   };
-  const onUpdate = (value: string) => {
-    setContent(value);
-  };
 
   return (
     <NodeViewWrapper onMouseDown={() => setShow(true)} ref={ref}>
-      <EditorMenu show={show}>
-        <Select
-          options={options}
-          size="small"
-          style={{ width: '100px' }}
-          value={node.attrs.language}
-          onChange={onChange}
-        />
-      </EditorMenu>
-      <Editor
-        value={content}
-        onValueChange={onUpdate}
-        highlight={(code) =>
-          highlight(code, languages[node.attrs.language], node.attrs.language)
-        }
-        padding={10}
-        className={cls.code}
-      />
+      <div className={cls.wrapper}>
+        <EditorMenu show={show}>
+          <Select
+            options={options}
+            size="small"
+            style={{ width: '100px' }}
+            value={type}
+            onChange={onChange}
+          />
+        </EditorMenu>
+        <div className={cls.edit} spellCheck="false">
+          <pre className={cls.pre}>
+            <code className={classnames(cls.code)}>
+              <NodeViewContent />
+            </code>
+          </pre>
+        </div>
+        <div className={cls.display}>
+          <pre className={cls.pre}>
+            <code
+              className={classnames('hljs', `language-${type}`, cls.code)}
+              dangerouslySetInnerHTML={{
+                __html: highlight(node.textContent, languages[type], type),
+              }}
+            ></code>
+          </pre>
+        </div>
+      </div>
     </NodeViewWrapper>
   );
 };

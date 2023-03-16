@@ -17,7 +17,8 @@ export const ContentBlockStep: React.FC<{ block: BlockStep; pl: Payload }> = ({
   const [open, setOpen] = useState(true);
   const [title, setTitle] = useState(() => block.attrs.title);
   const [hasDocument] = useState(
-    () => block.content.length === 1 && block.content[0].type === 'document'
+    () =>
+      block.content.length === 1 && block.content[0].type === 'blockDocument'
   );
 
   const handleKey: React.KeyboardEventHandler<HTMLDivElement> = (e) => {

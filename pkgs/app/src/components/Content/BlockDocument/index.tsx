@@ -5,7 +5,7 @@ import { useMemo } from 'react';
 
 import { ContentDoc } from '..';
 import { useGetDocument } from '../../../api/documents';
-import { useProjectStore } from '../../../common/store';
+import { useDocumentsStore, useProjectStore } from '../../../common/store';
 import type { Payload } from '../helpers';
 
 export const ContentBlockDocument: React.FC<{
@@ -14,6 +14,7 @@ export const ContentBlockDocument: React.FC<{
   onRender?: (doc: ApiDocument) => void;
 }> = ({ block, pl, onRender }) => {
   const storeProject = useProjectStore();
+  const documentsStore = useDocumentsStore();
 
   const doc = useGetDocument({
     org_id: storeProject.project!.orgId,
@@ -33,6 +34,8 @@ export const ContentBlockDocument: React.FC<{
     if (pl.displayed.includes(doc.data.data.id)) {
       return true;
     }
+
+    documentsStore.add([doc.data.data]);
 
     pl.displayed.push(doc.data.data.id);
     return false;

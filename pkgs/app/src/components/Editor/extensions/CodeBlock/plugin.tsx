@@ -53,12 +53,14 @@ export const CodeBlock = Node.create<CodeBlockOptions>({
 
   code: true,
 
+  isolating: true,
+
   defining: true,
 
   addAttributes() {
     return {
       language: {
-        default: null,
+        default: 'js',
         rendered: false,
       },
     };
@@ -73,20 +75,11 @@ export const CodeBlock = Node.create<CodeBlockOptions>({
     ];
   },
 
-  // renderHTML({ node, HTMLAttributes }) {
-  //   return [
-  //     'pre',
-  //     mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
-  //     ['code', 0],
-  //   ];
-  // },
-
   renderHTML(a) {
-    return ['div', mergeAttributes(a.HTMLAttributes), 0];
+    return ['div', mergeAttributes(a.HTMLAttributes)];
   },
 
   addNodeView() {
-    console.log('on render?');
     return ReactNodeViewRenderer(CodeBlockView, {});
   },
 
@@ -159,6 +152,27 @@ export const CodeBlock = Node.create<CodeBlockOptions>({
 
         return editor.commands.exitCode();
       },
+
+      'Shift-Tab': (p) => {
+        const { $from, $to } = p.editor.state.selection;
+        const { tr } = p.editor.state;
+
+        // TODO: remove tab
+        return true;
+      },
+      Tab: (p) => {
+        const { $from } = p.editor.state.selection;
+
+        if ($from.parent.type !== this.type) {
+          return false;
+        }
+
+        const { tr } = p.editor.state;
+        tr.insertText('  ', $from.pos);
+        p.editor.view.dispatch(tr);
+
+        return true;
+      },
     };
   },
 
@@ -186,7 +200,7 @@ export const CodeBlock = Node.create<CodeBlockOptions>({
       // this plugin creates a code block for pasted content from VS Code
       // we can also detect the copied code language
       new Plugin({
-        key: new PluginKey('codeBlockVSCodeHandler'),
+        key: new PluginKey('codeBlockHighlight'),
         props: {
           handlePaste: (view, event) => {
             if (!event.clipboardData) {

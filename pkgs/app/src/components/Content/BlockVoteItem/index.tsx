@@ -14,7 +14,7 @@ export const ContentBlockVoteItem: React.FC<{
   block: BlockVoteItem;
   pl: Payload;
 }> = ({ block, pl }) => {
-  const accepted = block.voteChoice === '1';
+  const accepted = block.attrs.choiceId === '1';
   const [open, setOpen] = useState(accepted);
 
   return (
@@ -40,7 +40,7 @@ export const ContentBlockVoteItem: React.FC<{
               Rejected
             </div>
           )}
-          Choice {block.voteChoice}
+          Choice {block.attrs.choiceId}
         </div>
         <div>
           <Avatar.Group>

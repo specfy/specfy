@@ -11,6 +11,7 @@ export const BannerView: React.FC<NodeViewProps> = ({
   node,
   updateAttributes,
 }) => {
+  // TODO: handle cursor focus
   const ref = useRef(null);
   const [show, setShow] = useState(false);
 

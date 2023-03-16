@@ -1,34 +1,34 @@
 import { mergeAttributes, Node } from '@tiptap/core';
 import { ReactNodeViewRenderer } from '@tiptap/react';
 
-export interface VoteItemOptions {
+export interface BlockDocumentOptions {
   HTMLAttributes: Record<string, any>;
 }
 
-import { VoteItemView } from './View';
+import { BlockDocumentView } from './View';
 
 declare module '@tiptap/core' {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   interface Commands<ReturnType> {
-    voteItem: {
+    blockDocument: {
       /**
        * Set a blockquote node
        */
-      setVoteItem: () => ReturnType;
+      setBlockDocument: () => ReturnType;
       /**
        * Toggle a blockquote node
        */
-      toggleVoteItem: () => ReturnType;
+      toggleBlockDocument: () => ReturnType;
       /**
        * Unset a blockquote node
        */
-      unsetVoteItem: () => ReturnType;
+      unsetBlockDocument: () => ReturnType;
     };
   }
 }
 
-export const VoteItem = Node.create<VoteItemOptions>({
-  name: 'voteItem',
+export const BlockDocument = Node.create<BlockDocumentOptions>({
+  name: 'blockDocument',
 
   addOptions() {
     return {
@@ -44,7 +44,7 @@ export const VoteItem = Node.create<VoteItemOptions>({
 
   addAttributes() {
     return {
-      choiceId: {
+      id: {
         default: 0,
         rendered: false,
       },
@@ -56,22 +56,22 @@ export const VoteItem = Node.create<VoteItemOptions>({
   },
 
   addNodeView() {
-    return ReactNodeViewRenderer(VoteItemView, {});
+    return ReactNodeViewRenderer(BlockDocumentView, {});
   },
 
   addCommands() {
     return {
-      setVoteItem:
+      setBlockDocument:
         () =>
         ({ commands }) => {
           return commands.wrapIn(this.name);
         },
-      toggleVoteItem:
+      toggleBlockDocument:
         () =>
         ({ commands }) => {
           return commands.toggleWrap(this.name);
         },
-      unsetVoteItem:
+      unsetBlockDocument:
         () =>
         ({ commands }) => {
           return commands.lift(this.name);

@@ -195,7 +195,7 @@ export const ContentSidebar: React.FC<{
   return (
     <div className={classnames(cls.tree, collapsed && cls.collapsed)}>
       <div className={cls.treeHeader}>
-        <Input.Group compact className={cls.search}>
+        <div className={cls.search}>
           <Input
             prefix={<IconSearch />}
             onChange={handleInput}
@@ -218,7 +218,7 @@ export const ContentSidebar: React.FC<{
             placeholder="Search..."
             onKeyDown={handleKeyPress}
           />
-        </Input.Group>
+        </div>
         <Link to={'new'}>
           <Button icon={<IconPlus />} />
         </Link>

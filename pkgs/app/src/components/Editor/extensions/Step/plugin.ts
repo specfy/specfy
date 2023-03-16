@@ -1,34 +1,34 @@
 import { mergeAttributes, Node } from '@tiptap/core';
 import { ReactNodeViewRenderer } from '@tiptap/react';
 
-export interface VoteItemOptions {
+import { StepView } from './View';
+
+export interface StepOptions {
   HTMLAttributes: Record<string, any>;
 }
-
-import { VoteItemView } from './View';
 
 declare module '@tiptap/core' {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   interface Commands<ReturnType> {
-    voteItem: {
+    step: {
       /**
        * Set a blockquote node
        */
-      setVoteItem: () => ReturnType;
+      setStep: () => ReturnType;
       /**
        * Toggle a blockquote node
        */
-      toggleVoteItem: () => ReturnType;
+      toggleStep: () => ReturnType;
       /**
        * Unset a blockquote node
        */
-      unsetVoteItem: () => ReturnType;
+      unsetStep: () => ReturnType;
     };
   }
 }
 
-export const VoteItem = Node.create<VoteItemOptions>({
-  name: 'voteItem',
+export const Step = Node.create<StepOptions>({
+  name: 'step',
 
   addOptions() {
     return {
@@ -36,15 +36,15 @@ export const VoteItem = Node.create<VoteItemOptions>({
     };
   },
 
-  content: 'block*',
+  content: '(blockDocument|block)+',
 
   group: 'block',
 
-  defining: true,
+  isolating: true,
 
   addAttributes() {
     return {
-      choiceId: {
+      stepId: {
         default: 0,
         rendered: false,
       },
@@ -56,22 +56,22 @@ export const VoteItem = Node.create<VoteItemOptions>({
   },
 
   addNodeView() {
-    return ReactNodeViewRenderer(VoteItemView, {});
+    return ReactNodeViewRenderer(StepView, {});
   },
 
   addCommands() {
     return {
-      setVoteItem:
+      setStep:
         () =>
         ({ commands }) => {
           return commands.wrapIn(this.name);
         },
-      toggleVoteItem:
+      toggleStep:
         () =>
         ({ commands }) => {
           return commands.toggleWrap(this.name);
         },
-      unsetVoteItem:
+      unsetStep:
         () =>
         ({ commands }) => {
           return commands.lift(this.name);

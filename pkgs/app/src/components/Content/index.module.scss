@@ -27,31 +27,24 @@ ul.taskList {
 
 .code {
   display: flex !important;
+  padding: $p-xl $p-2xl !important;
   background-color: $gray-50 !important;
   border: none !important;
-  padding: $p-xl $p-2xl !important;
 
-  >code {
-    >span {
-      display: flex;
-      // border-left: $p-s solid $gray-200;
-    }
+  code,
+  code span {
+    font-family: "JetBrains Mono" !important;
+    font-size: $font !important;
+    text-shadow: none !important;
 
-    // >span:first-child>span {
-    //   padding-top: $p-l
-    // }
+    font-weight: inherit;
+    font-style: inherit;
+    font-variant-ligatures: inherit;
+    line-height: inherit;
+    text-rendering: inherit;
+    letter-spacing: inherit;
 
-    // >span:last-child>span {
-    //   padding-bottom: $p-l
-    // }
-  }
-
-
-  :global .linenumber {
-    margin-right: $p-xl;
-    padding-right: $p-m !important;
-    color: $gray-500;
-    background-color: $gray-200;
+    -webkit-font-smoothing: antialiased;
   }
 }
 

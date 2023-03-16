@@ -40,6 +40,7 @@ export const Playbook: React.FC<{
           )}
           {isEditing && (
             <Editor
+              key={doc.id}
               content={doc.content}
               minHeight="500px"
               onUpdate={(json) => {

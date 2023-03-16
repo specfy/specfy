@@ -1,9 +1,9 @@
-import { Alert, Checkbox, Typography } from 'antd';
+import { Checkbox, Typography } from 'antd';
 import type { BlockLevelZero, Blocks } from 'api/src/types/api';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PrismAsyncLight } from 'react-syntax-highlighter';
-import { a11yLight } from 'react-syntax-highlighter/dist/esm/styles/hljs';
+import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 import { slugify } from '../../common/string';
 import { Banner } from '../Banner';
@@ -127,7 +127,7 @@ export const ContentBlock: React.FC<{ block: Blocks; pl: Payload }> = ({
     return (
       <PrismAsyncLight
         language={block.attrs.language}
-        style={a11yLight}
+        style={prism}
         wrapLines={true}
         showLineNumbers={false}
         className={cls.code}
@@ -155,7 +155,7 @@ export const ContentBlock: React.FC<{ block: Blocks; pl: Payload }> = ({
   }
 
   // Document
-  else if (block.type === 'document') {
+  else if (block.type === 'blockDocument') {
     return <ContentBlockDocument block={block} pl={pl} />;
   }
 
