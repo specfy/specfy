@@ -1,11 +1,13 @@
 import { Typography, Space } from 'antd';
 import Title from 'antd/es/typography/Title';
 import type { ApiDocument, ApiProject } from 'api/src/types/api';
+import { useEffect, useState } from 'react';
 
 import { useDocumentsStore } from '../../../../common/store';
 import { ContentDoc } from '../../../../components/Content';
 import { Editor } from '../../../../components/Editor';
 import { HeadingTree } from '../../../../components/HeadingTree';
+import { FakeInput } from '../../../../components/Input';
 import { SidebarBlock } from '../../../../components/SidebarBlock';
 import { Time } from '../../../../components/Time';
 import { UserList } from '../../../../components/UserList';
@@ -22,6 +24,15 @@ export const RFC: React.FC<{
   // Edition
   const edit = useEdit();
   const isEditing = edit.isEnabled();
+  const [title, setTitle] = useState('');
+
+  useEffect(() => {
+    if (!doc) {
+      return;
+    }
+
+    setTitle(doc.name);
+  }, [edit, doc]);
 
   return (
     <>
@@ -31,10 +42,23 @@ export const RFC: React.FC<{
         </div>
       </div>
       <div>
-        <Title level={1} className={cls.title} id={doc.slug}>
-          <span className={cls.type}>[RFC-{doc.typeId}]</span>
-          {doc.name}
-        </Title>
+        {!isEditing && (
+          <Title level={1} className={cls.title} id={doc.slug}>
+            <span className={cls.type}>[RFC-{doc.typeId}]</span>
+            {title}
+          </Title>
+        )}
+        {isEditing && (
+          <FakeInput.H1
+            size="large"
+            value={title}
+            placeholder="Title..."
+            onChange={(e) => {
+              setTitle(e.target.value);
+              documentsStore.updateField(doc.id, 'name', e.target.value);
+            }}
+          />
+        )}
         <Space>
           <div className={cls.lastUpdate}>
             Updated <Time time={doc.updatedAt} />
