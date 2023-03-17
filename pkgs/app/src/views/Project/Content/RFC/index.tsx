@@ -27,10 +27,6 @@ export const RFC: React.FC<{
   const [title, setTitle] = useState('');
 
   useEffect(() => {
-    if (!doc) {
-      return;
-    }
-
     setTitle(doc.name);
   }, [edit, doc]);
 
