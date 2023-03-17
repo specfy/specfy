@@ -1,0 +1,9 @@
+@import "../../../styles/theme";
+
+.staging {
+  display: flex;
+
+  .updated {
+    padding: 0 $p-l;
+  }
+}

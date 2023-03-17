@@ -13,7 +13,7 @@ const EditContext = createContext<EditContextInterface>(
 export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [enabled, setEnabled] = useState<boolean>(false);
+  const [enabled, setEnabled] = useState<boolean>(true);
   const [prev, setPrev] = useState<boolean>(false);
 
   const memoized = useMemo<EditContextInterface>(() => {

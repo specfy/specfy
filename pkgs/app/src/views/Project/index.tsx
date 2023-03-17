@@ -1,6 +1,6 @@
 import { IconCirclePlus } from '@tabler/icons-react';
 import type { MenuProps } from 'antd';
-import { Avatar, Button, Divider, Dropdown, Skeleton, Switch } from 'antd';
+import { Avatar, Button, Divider, Dropdown, Skeleton } from 'antd';
 import type { ApiOrg, ApiProject } from 'api/src/types/api';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, Route, Routes, useParams } from 'react-router-dom';
@@ -14,8 +14,6 @@ import { Card } from '../../components/Card';
 import { Container } from '../../components/Container';
 import { ProjectMenu } from '../../components/ProjectMenu';
 import { Staging } from '../../components/ProjectMenu/Staging';
-import { Time } from '../../components/Time';
-import { useEdit } from '../../hooks/useEdit';
 import type { RouteProject } from '../../types/routes';
 
 import { ProjectActivity } from './Activity';
@@ -58,13 +56,11 @@ export const Project: React.FC = () => {
   });
 
   // Edit mode
-  const edit = useEdit();
-  const isEditing = edit.isEnabled();
   const createItems = useMemo<MenuProps['items']>(() => {
     return [
       {
         key: '1',
-        label: <Link to={`${linkSelf}/content/new`}>New RFC</Link>,
+        label: <Link to={`${linkSelf}/content/new`}>New Content</Link>,
       },
       {
         key: '2',
@@ -95,10 +91,6 @@ export const Project: React.FC = () => {
   useEffect(() => {
     setLoading(!proj || getComps.isLoading);
   }, [proj, getComps]);
-
-  function handleEditMode(val: boolean) {
-    edit.enable(val);
-  }
 
   if (loading) {
     return (
@@ -139,32 +131,10 @@ export const Project: React.FC = () => {
           subtitle={
             <>
               <div className={cls.editZone}>
-                <div className={cls.editMode}>
-                  <Switch
-                    defaultChecked={false}
-                    onChange={handleEditMode}
-                    checked={isEditing}
-                    size="small"
-                  />
-                  {isEditing ? (
-                    <>
-                      <Staging link={linkSelf} />
-                      <Dropdown
-                        menu={{ items: createItems }}
-                        placement="bottomRight"
-                      >
-                        <Button icon={<IconCirclePlus />} type="text" />
-                      </Dropdown>
-                    </>
-                  ) : (
-                    'Edit'
-                  )}
-                </div>
-                {!isEditing && (
-                  <div>
-                    updated <Time time={proj.updatedAt} />
-                  </div>
-                )}
+                <Dropdown menu={{ items: createItems }} placement="bottomRight">
+                  <Button icon={<IconCirclePlus />} type="default" />
+                </Dropdown>
+                <Staging link={linkSelf} />
               </div>
             </>
           }
@@ -196,7 +166,7 @@ export const Project: React.FC = () => {
         />
         <Route
           path="/c/:component_slug"
-          element={<ComponentView proj={proj} params={params} />}
+          element={<ComponentView proj={proj} />}
         />
         <Route
           path="/settings/*"

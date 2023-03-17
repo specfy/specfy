@@ -36,8 +36,10 @@ export const DocumentShow: React.FC<{
     if (getDoc.data?.data) {
       documentsStore.add([getDoc.data.data]);
       setDoc(getDoc.data.data);
+    } else if (documentsStore.documents[reqParams.document_id]) {
+      setDoc(documentsStore.documents[reqParams.document_id]);
     }
-  }, [getDoc.data]);
+  }, [getDoc]);
 
   useEffect(() => {
     // Update doc only if we exit edit mode to avoid rerender the whole view at each keystroke

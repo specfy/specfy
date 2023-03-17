@@ -14,36 +14,11 @@
 // ---- Header
 .editZone {
   display: flex;
-  gap: $p-l;
+  gap: $p;
   align-items: center;
   justify-content: end;
 }
 
-.editMode {
-  display: flex;
-  gap: $p;
-  align-items: center;
-
-  height: 28px;
-  padding: $p $p-l $p 0;
-
-  font-size: $font-s;
-  color: $gray-7;
-
-  border-radius: $border-radius;
-
-  a {
-    padding: $p-xs $p-m;
-    font-size: $font;
-    color: $gray-600 !important;
-  }
-
-  :global {
-    .ant-switch {
-      width: 20px;
-    }
-  }
-}
 
 .links {
   padding: $p-2xl 0;

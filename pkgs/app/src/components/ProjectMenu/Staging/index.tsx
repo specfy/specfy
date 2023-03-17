@@ -1,3 +1,4 @@
+import { Button } from 'antd';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDebounce } from 'react-use';
@@ -10,6 +11,9 @@ import originalStore, {
   useComponentsStore,
   useProjectStore,
 } from '../../../common/store';
+import { Time } from '../../Time';
+
+import cls from './index.module.scss';
 
 export const Staging: React.FC<{ link: string }> = ({ link }) => {
   const [count, setCount] = useState(0);
@@ -75,8 +79,18 @@ export const Staging: React.FC<{ link: string }> = ({ link }) => {
   );
 
   return (
-    <Link to={`${link}/revisions/current`}>
-      {count} pending {count > 1 ? 'changes' : 'change'}
-    </Link>
+    <div className={cls.staging}>
+      {count > 0 ? (
+        <Link to={`${link}/revisions/current`}>
+          <Button type="default">
+            {count} pending {count > 1 ? 'changes' : 'change'}
+          </Button>
+        </Link>
+      ) : (
+        <div className={cls.updated}>
+          Updated <Time time={project!.updatedAt} />
+        </div>
+      )}
+    </div>
   );
 };
