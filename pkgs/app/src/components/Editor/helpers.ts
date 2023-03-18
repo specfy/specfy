@@ -8,9 +8,9 @@ export function removeEmptyContent(json: BlockDoc): BlockLevelZero {
     : json;
 }
 
-export function getEmptyDoc(): BlockLevelZero {
+export function getEmptyDoc(withPlaceholder?: true): BlockLevelZero {
   return {
     type: 'doc',
-    content: [],
+    content: withPlaceholder ? [{ type: 'paragraph', attrs: { uid: '' } }] : [],
   };
 }

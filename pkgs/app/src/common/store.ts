@@ -4,6 +4,7 @@ import type {
   ApiComponent,
   ApiDocument,
   ApiProject,
+  BlockLevelZero,
 } from 'api/src/types/api';
 import type { Change } from 'diff';
 import { produce } from 'immer';
@@ -20,7 +21,7 @@ export type TmpBlob = ApiBlobWithPrevious;
 
 export interface ComputedForDiff {
   key: string;
-  diff: Change[];
+  diff: BlockLevelZero | Change[];
 }
 
 const originalStore: Allowed[] = [];

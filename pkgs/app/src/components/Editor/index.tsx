@@ -22,7 +22,8 @@ import { TableRow } from '@tiptap/extension-table-row';
 import { TaskItem } from '@tiptap/extension-task-item';
 import { TaskList } from '@tiptap/extension-task-list';
 import { Text } from '@tiptap/extension-text';
-import { useEditor, EditorContent } from '@tiptap/react';
+import { Schema } from '@tiptap/pm/model';
+import { useEditor, EditorContent, Mark, mergeAttributes } from '@tiptap/react';
 import type { BlockLevelZero } from 'api/src/types/api';
 import { useEffect } from 'react';
 
@@ -30,6 +31,7 @@ import { BubbleMenu } from './BubbleMenu';
 import { FloatingMenu } from './FloatingMenu';
 import { Banner } from './extensions/Banner';
 import { BlockDocument } from './extensions/BlockDocument';
+import { BlockUid } from './extensions/BlockUid';
 import { CodeBlock } from './extensions/CodeBlock';
 import { CustomFloatingMenu } from './extensions/CustomFloatingMenu';
 import { Step } from './extensions/Step';
@@ -38,13 +40,43 @@ import { VoteItem } from './extensions/VoteItem';
 import { removeEmptyContent } from './helpers';
 import cls from './index.module.scss';
 
-export const Editor: React.FC<{
+export interface Props {
   content: BlockLevelZero;
   minHeight?: string;
   limit?: number;
   onUpdate: (content: BlockLevelZero) => void;
-}> = ({ content, limit, minHeight, onUpdate }) => {
-  const editor = useEditor({
+}
+
+export const DiffMarkExtension = Mark.create({
+  name: 'diffMark',
+
+  addAttributes() {
+    return {
+      type: {
+        renderHTML: ({ type }: { type: number }) => {
+          const color = {
+            [1]: '#bcf5bc',
+            [-1]: '#ff8989',
+          }[type];
+          return {
+            style: 'background-color: ' + color,
+          };
+        },
+      },
+    };
+  },
+
+  renderHTML({ HTMLAttributes }) {
+    return [
+      'span',
+      mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
+      0,
+    ];
+  },
+});
+
+export function createEditorSchema(props: Pick<Props, 'limit'>) {
+  return {
     extensions: [
       Document,
       Paragraph,
@@ -96,30 +128,68 @@ export const Editor: React.FC<{
       BlockDocument,
       Step,
       Gapcursor,
+      BlockUid,
+      DiffMarkExtension,
       History.configure({
         depth: 100,
       }),
       CharacterCount.configure({
-        limit,
+        limit: props.limit,
       }),
     ],
-    onUpdate: (e) => {
-      onUpdate(removeEmptyContent(e.editor.getJSON() as any));
+  };
+}
+
+export const Editor: React.FC<Props> = (props) => {
+  const editor = useEditor({
+    ...createEditorSchema(props),
+
+    onBeforeCreate: (p) => {
+      const schema = p.editor.schema;
+      const spec = schema.spec;
+
+      // We add uid to all extensions
+      for (const node of Object.values(schema.nodes)) {
+        if (node.name === 'text' || node.name === 'doc') {
+          continue;
+        }
+        const def = spec.nodes.get(node.name)!;
+        spec.nodes = spec.nodes.update(node.name, {
+          ...def,
+          attrs: {
+            ...def.attrs,
+            uid: {
+              default: null,
+            },
+          },
+        });
+      }
+
+      p.editor.schema = new Schema({
+        nodes: spec.nodes,
+        marks: spec.marks,
+        topNode: spec.topNode,
+      });
+    },
+    onUpdate: (p) => {
+      props.onUpdate(removeEmptyContent(p.editor.getJSON() as any));
     },
     content:
-      content.content.length === 0
+      props.content.content.length === 0
         ? {
             type: 'doc',
             content: [{ type: 'paragraph' }],
           }
-        : content,
+        : props.content,
   });
 
   useEffect(() => {
-    if (!editor || editor.isDestroyed) return;
+    if (!editor || editor.isDestroyed) {
+      return;
+    }
 
-    editor.commands.setContent(content);
-  }, [content]);
+    editor.commands.setContent(props.content);
+  }, [props.content]);
 
   return (
     <div>
@@ -128,7 +198,7 @@ export const Editor: React.FC<{
       <EditorContent
         editor={editor}
         className={cls.editor}
-        style={{ minHeight }}
+        style={{ minHeight: props.minHeight }}
       />
     </div>
   );

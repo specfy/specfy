@@ -1,5 +1,9 @@
 import type { ApiDocument } from './documents';
 
+export interface BlockDefaultAttrs {
+  uid: string;
+}
+
 // ----- Text
 export interface BlockText {
   type: 'text';
@@ -15,48 +19,55 @@ export interface BlockText {
 export interface BlockParagraph {
   type: 'paragraph';
   content?: Array<BlockHardBreak | BlockText>;
+  attrs: BlockDefaultAttrs;
 }
 export interface BlockHardBreak {
   type: 'hardBreak';
+  attrs: BlockDefaultAttrs;
 }
 
 // ----- Headings
 export interface BlockHeading {
   type: 'heading';
-  attrs: { level: 1 | 2 | 3 | 4 };
   content: BlockText[];
+  attrs: BlockDefaultAttrs & { level: 1 | 2 | 3 | 4 };
 }
 
 // ----- Bullet List
 export interface BlockListItem {
   type: 'listItem';
   content: BlockParagraph[];
+  attrs: BlockDefaultAttrs;
 }
 export interface BlockBulletList {
   type: 'bulletList';
   content: BlockListItem[];
+  attrs: BlockDefaultAttrs;
 }
 
 // ----- Task List
 export interface BlockTaskItem {
   type: 'taskItem';
   content: BlockParagraph[];
-  attrs: { checked: boolean };
+  attrs: BlockDefaultAttrs & { checked: boolean };
 }
 export interface BlockTaskList {
   type: 'taskList';
   content: BlockTaskItem[];
+  attrs: BlockDefaultAttrs;
 }
 
 // ----- Blockquote
 export interface BlockQuote {
   type: 'blockquote';
   content: BlockParagraph[];
+  attrs: BlockDefaultAttrs;
 }
 
 // ----- Divider / separator / horizontal
 export interface BlockHorizontalRule {
   type: 'horizontalRule';
+  attrs: BlockDefaultAttrs;
 }
 
 // ----- Table
@@ -68,65 +79,72 @@ export interface BlockTableAttrs {
 export interface BlockTableHeader {
   type: 'tableHeader';
   content: BlockParagraph[];
-  attrs: BlockTableAttrs;
+  attrs: BlockDefaultAttrs & BlockTableAttrs;
 }
 export interface BlockTableCell {
   type: 'tableCell';
-  attrs: BlockTableAttrs;
+
   content: BlockParagraph[];
+  attrs: BlockDefaultAttrs & BlockTableAttrs;
 }
 export interface BlockTableRow {
   type: 'tableRow';
   content: Array<BlockTableCell | BlockTableHeader>;
+  attrs: BlockDefaultAttrs;
 }
 export interface BlockTable {
   type: 'table';
   content: BlockTableRow[];
+  attrs: BlockDefaultAttrs;
 }
 
 // ----- Banner
 export interface BlockBanner {
   type: 'banner';
-  attrs: { type: 'error' | 'info' | 'success' | 'warning' };
   content: BlockParagraph[];
+  attrs: BlockDefaultAttrs & { type: 'error' | 'info' | 'success' | 'warning' };
 }
 
 // ----- Vote
 export interface BlockVoteItem {
   type: 'voteItem';
-  attrs: { choiceId: string };
   content: BlockLevelOne[];
+  attrs: BlockDefaultAttrs & { choiceId: string };
 }
 export interface BlockVote {
   type: 'vote';
-  attrs: { voteId: string };
   content: BlockVoteItem[];
+  attrs: BlockDefaultAttrs & { voteId: string };
 }
 
 // ----- Image
 export interface BlockImage {
   type: 'image';
-  attrs: { src: string; alt: string | null; title: string | null };
+  attrs: BlockDefaultAttrs & {
+    src: string;
+    alt: string | null;
+    title: string | null;
+  };
 }
 
 // ----- CodeBlock
 export interface BlockCodeBlock {
   type: 'codeBlock';
-  attrs: { language: string };
   content: BlockText[];
+  attrs: BlockDefaultAttrs & { language: string };
 }
 
 // ----- Step
 export interface BlockStep {
   type: 'step';
-  attrs: { title?: string };
   content: BlockLevelOne[];
+  attrs: BlockDefaultAttrs & { title?: string };
 }
 
 // ----- Document
 export interface BlockDocument {
   type: 'blockDocument';
-  attrs: { id: ApiDocument['id'] };
+  attrs: BlockDefaultAttrs & { id: ApiDocument['id'] };
 }
 
 // _---------_

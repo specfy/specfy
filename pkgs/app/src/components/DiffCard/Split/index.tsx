@@ -1,12 +1,20 @@
+import classnames from 'classnames';
 import { useMemo } from 'react';
 
 import type { ComputedForDiff } from '../../../common/store';
 
 import cls from './index.module.scss';
 
+const LABEL_MAP: Record<string, string> = {
+  content: 'Content',
+  description: 'Description',
+};
+
 export const Split: React.FC<{
   diff: ComputedForDiff;
-}> = ({ diff }) => {
+  created: boolean;
+  hideLabel?: true;
+}> = ({ diff, hideLabel, created }) => {
   // Compute diff
   const left = useMemo(() => {
     return diff.diff
@@ -39,23 +47,45 @@ export const Split: React.FC<{
   }, [diff]);
 
   return (
-    <div className={cls.split}>
-      <div className={cls.left}>
-        {!left.length ? (
-          <span className={cls.empty}>Empty...</span>
-        ) : (
-          <>{left}</>
+    <div>
+      <div
+        className={classnames(
+          cls.split,
+          !hideLabel && cls.withLabel,
+          created && cls.isCreated
         )}
-      </div>
-      <div className={cls.right}>
-        {!right.length && left.length > 0 && (
-          <span className={cls.empty}>Deleted...</span>
-        )}
-        {!right.length && !left.length ? (
-          <span className={cls.empty}>Empty...</span>
-        ) : (
-          <>{right}</>
-        )}
+      >
+        <div className={cls.left}>
+          {!created && (
+            <>
+              {!hideLabel && !created && (
+                <div className={cls.label}>
+                  {diff.key in LABEL_MAP ? LABEL_MAP[diff.key] : diff.key}
+                </div>
+              )}
+              {!left.length ? (
+                <span className={cls.empty}>Empty...</span>
+              ) : (
+                <>{left}</>
+              )}
+            </>
+          )}
+        </div>
+        <div className={cls.right}>
+          {!hideLabel && created && (
+            <div className={cls.label}>
+              {diff.key in LABEL_MAP ? LABEL_MAP[diff.key] : diff.key}
+            </div>
+          )}
+          {!right.length && left.length > 0 && (
+            <span className={cls.empty}>Deleted...</span>
+          )}
+          {!right.length && !left.length ? (
+            <span className={cls.empty}>Empty...</span>
+          ) : (
+            <>{right}</>
+          )}
+        </div>
       </div>
     </div>
   );

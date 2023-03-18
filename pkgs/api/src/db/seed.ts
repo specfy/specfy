@@ -1,3 +1,4 @@
+import { nanoid } from '../common/id';
 import {
   Component,
   User,
@@ -238,6 +239,7 @@ export async function seed() {
       content: [
         {
           type: 'paragraph',
+          attrs: { uid: nanoid() },
           content: [
             {
               type: 'text',
@@ -360,6 +362,7 @@ export async function seed() {
       content: [
         {
           type: 'paragraph',
+          attrs: { uid: nanoid() },
           content: [
             {
               type: 'text',
@@ -434,6 +437,7 @@ export async function seed() {
       content: [
         {
           type: 'paragraph',
+          attrs: { uid: nanoid() },
           content: [
             {
               type: 'text',
@@ -489,8 +493,7 @@ export async function seed() {
     ],
     tech: ['nodejs', 'typescript'],
   });
-
-  await seedRevisions(p1, users, rfcs);
+  await seedRevisions(p1, users, rfcs, { api });
 
   await seedPolicies([u1]);
 }

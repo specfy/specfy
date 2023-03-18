@@ -54,3 +54,11 @@ ul.taskList {
   gap: $p-xl;
   margin-bottom: $p-3xl;
 }
+
+.added {
+  background-color: #d9f7be;
+}
+
+.removed {
+  background-color: #ffccc7;
+}

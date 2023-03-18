@@ -1,5 +1,6 @@
 import { Checkbox, Typography } from 'antd';
 import type { BlockLevelZero, Blocks } from 'api/src/types/api';
+import classnames from 'classnames';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { PrismAsyncLight } from 'react-syntax-highlighter';
@@ -15,14 +16,34 @@ import type { Payload } from './helpers';
 import { map } from './helpers';
 import cls from './index.module.scss';
 
-export const ContentBlock: React.FC<{ block: Blocks; pl: Payload }> = ({
-  block,
-  pl,
-}) => {
+type BlockWithDiff = Blocks & {
+  diff?: { added?: true; removed?: true; moved?: boolean };
+};
+
+function styleDiff(block: BlockWithDiff): string {
+  if (!block.diff) {
+    return '';
+  }
+
+  if (block.diff.added) {
+    return cls.added;
+  }
+  if (block.diff.removed) {
+    return cls.removed;
+  }
+  return '';
+}
+
+export const ContentBlock: React.FC<{
+  block: BlockWithDiff;
+  pl: Payload;
+}> = ({ block, pl }) => {
+  const stl = styleDiff(block);
+
   // Ordered by probability
   // Paragraph
   if (block.type === 'paragraph') {
-    return <p>{map(block, pl)}</p>;
+    return <p className={stl}>{map(block, pl)}</p>;
   }
 
   // Text
@@ -30,8 +51,9 @@ export const ContentBlock: React.FC<{ block: Blocks; pl: Payload }> = ({
     let text = <>{block.text}</>;
     if (block.marks) {
       for (const mark of block.marks) {
-        if (mark.type === 'code')
+        if (mark.type === 'code') {
           return <code className="inlineCode">{text}</code>;
+        }
 
         if (mark.type === 'bold') text = <strong>{text}</strong>;
         if (mark.type === 'italic') text = <em>{text}</em>;
@@ -53,26 +75,56 @@ export const ContentBlock: React.FC<{ block: Blocks; pl: Payload }> = ({
   else if (block.type === 'heading') {
     const id = `h-${slugify(block.content.map((e) => e.text).join(''))}`;
     const els = map(block, pl);
-    if (block.attrs.level === 1) return <h1 id={id}>{els}</h1>;
-    else if (block.attrs.level === 2) return <h2 id={id}>{els}</h2>;
-    else if (block.attrs.level === 3) return <h3 id={id}>{els}</h3>;
-    else if (block.attrs.level === 4) return <h4 id={id}>{els}</h4>;
-    else if (block.attrs.level === 5) return <h5 id={id}>{els}</h5>;
-    else return <h6 id={id}>{els}</h6>;
+    if (block.attrs.level === 1)
+      return (
+        <h1 id={id} className={stl}>
+          {els}
+        </h1>
+      );
+    else if (block.attrs.level === 2)
+      return (
+        <h2 id={id} className={stl}>
+          {els}
+        </h2>
+      );
+    else if (block.attrs.level === 3)
+      return (
+        <h3 id={id} className={stl}>
+          {els}
+        </h3>
+      );
+    else if (block.attrs.level === 4)
+      return (
+        <h4 id={id} className={stl}>
+          {els}
+        </h4>
+      );
+    else if (block.attrs.level === 5)
+      return (
+        <h5 id={id} className={stl}>
+          {els}
+        </h5>
+      );
+    else
+      return (
+        <h6 id={id} className={stl}>
+          {els}
+        </h6>
+      );
   }
 
   // List Items
   else if (block.type === 'listItem') {
-    return <li>{map(block, pl)}</li>;
+    return <li className={stl}>{map(block, pl)}</li>;
   }
   // Bullet List
   else if (block.type === 'bulletList') {
-    return <ul>{map(block, pl)}</ul>;
+    return <ul className={stl}>{map(block, pl)}</ul>;
   }
 
   // Blockquote
   else if (block.type === 'blockquote') {
-    return <blockquote>{map(block, pl)}</blockquote>;
+    return <blockquote className={stl}>{map(block, pl)}</blockquote>;
   }
 
   // Horizontal
@@ -82,12 +134,12 @@ export const ContentBlock: React.FC<{ block: Blocks; pl: Payload }> = ({
 
   // Task List
   else if (block.type === 'taskList') {
-    return <ul className={cls.taskList}>{map(block, pl)}</ul>;
+    return <ul className={classnames(cls.taskList, stl)}>{map(block, pl)}</ul>;
   }
   // Task Item
   else if (block.type === 'taskItem') {
     return (
-      <li>
+      <li className={stl}>
         <Checkbox checked={block.attrs.checked}>{map(block, pl)}</Checkbox>
       </li>
     );
@@ -96,7 +148,7 @@ export const ContentBlock: React.FC<{ block: Blocks; pl: Payload }> = ({
   // Image
   else if (block.type === 'image') {
     return (
-      <div className={cls.image}>
+      <div className={classnames(cls.image, stl)}>
         <img
           src={block.attrs.src}
           alt={block.attrs.alt || ''}
@@ -108,15 +160,23 @@ export const ContentBlock: React.FC<{ block: Blocks; pl: Payload }> = ({
 
   // Table
   else if (block.type === 'table') {
-    return <table>{map(block, pl)}</table>;
+    return <table className={stl}>{map(block, pl)}</table>;
   } else if (block.type === 'tableRow') {
-    return <tr>{map(block, pl)}</tr>;
+    return <tr className={stl}>{map(block, pl)}</tr>;
   } else if (block.type === 'tableCell') {
-    return <td {...block.attrs}>{map(block, pl)}</td>;
+    return (
+      <td className={stl} {...block.attrs}>
+        {map(block, pl)}
+      </td>
+    );
   } else if (block.type === 'tableHeader') {
     const { colwidth, ...others } = block.attrs;
     return (
-      <th {...others} style={colwidth ? { width: `${colwidth}px` } : undefined}>
+      <th
+        className={stl}
+        {...others}
+        style={colwidth ? { width: `${colwidth}px` } : undefined}
+      >
         {map(block, pl)}
       </th>
     );
@@ -125,38 +185,56 @@ export const ContentBlock: React.FC<{ block: Blocks; pl: Payload }> = ({
   // CodeBlock
   else if (block.type === 'codeBlock') {
     return (
-      <PrismAsyncLight
-        language={block.attrs.language}
-        style={prism}
-        wrapLines={true}
-        showLineNumbers={false}
-        className={cls.code}
-      >
-        {block.content[0].text}
-      </PrismAsyncLight>
+      <div className={stl}>
+        <PrismAsyncLight
+          language={block.attrs.language}
+          style={prism}
+          wrapLines={true}
+          showLineNumbers={false}
+          className={cls.code}
+        >
+          {block.content[0].text}
+        </PrismAsyncLight>
+      </div>
     );
   }
 
   // Banner
   else if (block.type === 'banner') {
-    return <Banner type={block.attrs.type}>{map(block, pl)}</Banner>;
+    return (
+      <div className={stl}>
+        <Banner type={block.attrs.type}>{map(block, pl)}</Banner>
+      </div>
+    );
   }
 
   // Vote
   else if (block.type === 'vote') {
-    return <div className={cls.vote}>{map(block, pl)}</div>;
+    return <div className={classnames(cls.vote, stl)}>{map(block, pl)}</div>;
   } else if (block.type === 'voteItem') {
-    return <ContentBlockVoteItem block={block} pl={pl} />;
+    return (
+      <div className={stl}>
+        <ContentBlockVoteItem block={block} pl={pl} />
+      </div>
+    );
   }
 
   // Step
   else if (block.type === 'step') {
-    return <ContentBlockStep block={block} pl={pl} />;
+    return (
+      <div className={stl}>
+        <ContentBlockStep block={block} pl={pl} />
+      </div>
+    );
   }
 
   // Document
   else if (block.type === 'blockDocument') {
-    return <ContentBlockDocument block={block} pl={pl} />;
+    return (
+      <div className={stl}>
+        <ContentBlockDocument block={block} pl={pl} />
+      </div>
+    );
   }
 
   return <div>unsupported block &quot;{JSON.stringify(block)}&quot;</div>;

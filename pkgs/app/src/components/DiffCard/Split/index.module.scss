@@ -3,6 +3,12 @@
 .split {
   display: grid;
   grid-template-columns: 50% 50%;
+
+  &.withLabel:not(.isCreated) {
+    .right {
+      padding-top: $p-4xl + 1px;
+    }
+  }
 }
 
 .removed {
@@ -16,7 +22,7 @@
 
 .left,
 .right {
-  padding: $p-l $p-xl;
+  padding: $p $p-xl;
 }
 
 .left {
@@ -31,4 +37,9 @@
 .empty {
   font-style: italic;
   color: $gray-6;
+}
+
+.label {
+  padding: $p-s 0;
+  font-weight: 600;
 }

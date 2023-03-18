@@ -1,3 +1,4 @@
+import { nanoid } from '../../common/id';
 import type { User } from '../../models';
 import { Perm, Project } from '../../models';
 import type { ApiProject } from '../../types/api';
@@ -25,6 +26,7 @@ export async function seedProjects(users: User[]) {
       content: [
         {
           type: 'paragraph',
+          attrs: { uid: nanoid() },
           content: [
             {
               type: 'text',
@@ -59,12 +61,13 @@ export async function seedProjects(users: User[]) {
       content: [
         {
           type: 'paragraph',
+          attrs: { uid: 'UidC3Ls190' },
           content: [
             {
               type: 'text',
               text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pharetra eros vel felis scelerisque pretium. Maecenas ac feugiat orci, a sodales lacus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent urna libero, convallis eu commodo id, iaculis aliquam arcu.`,
             },
-            { type: 'hardBreak' },
+            { type: 'hardBreak', attrs: { uid: 'UidC3Ls191' } },
             {
               type: 'text',
               text: `Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; In interdum egestas massa, sit amet auctor ipsum maximus in. `,

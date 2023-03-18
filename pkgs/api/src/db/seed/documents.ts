@@ -17,6 +17,7 @@ export async function seedPlaybook(p1: Project, [u1]: User[]) {
         {
           type: 'codeBlock',
           attrs: {
+            uid: 'UidgrRPV001',
             language: 'bash',
           },
           content: [
@@ -43,6 +44,9 @@ export async function seedPlaybook(p1: Project, [u1]: User[]) {
       content: [
         {
           type: 'paragraph',
+          attrs: {
+            uid: 'UidgrRPV002',
+          },
           content: [
             {
               type: 'text',
@@ -53,6 +57,7 @@ export async function seedPlaybook(p1: Project, [u1]: User[]) {
         {
           type: 'codeBlock',
           attrs: {
+            uid: 'UidgrRPV003',
             language: 'bash',
           },
           content: [
@@ -77,6 +82,9 @@ export async function seedPlaybook(p1: Project, [u1]: User[]) {
       content: [
         {
           type: 'paragraph',
+          attrs: {
+            uid: 'UidgrRPV004',
+          },
           content: [
             {
               type: 'text',
@@ -86,22 +94,25 @@ export async function seedPlaybook(p1: Project, [u1]: User[]) {
         },
         {
           type: 'step',
-          attrs: {},
+          attrs: {
+            uid: 'UidgrRPV005',
+          },
           content: [
             {
               type: 'blockDocument',
-              attrs: { id: d1.id },
+              attrs: { id: d1.id, uid: 'UidgrRPV006' },
             },
           ],
         },
         {
           type: 'step',
-          attrs: { title: 'Build Docker' },
+          attrs: { title: 'Build Docker', uid: 'UidgrRPV007' },
           content: [
             {
               type: 'codeBlock',
               attrs: {
                 language: 'bash',
+                uid: 'UidgrRPV008',
               },
               content: [
                 {
@@ -114,12 +125,13 @@ export async function seedPlaybook(p1: Project, [u1]: User[]) {
         },
         {
           type: 'step',
-          attrs: { title: 'Push built docker image' },
+          attrs: { title: 'Push built docker image', uid: 'UidgrRPV009' },
           content: [
             {
               type: 'codeBlock',
               attrs: {
                 language: 'bash',
+                uid: 'UidgrRPV010',
               },
               content: [
                 {
@@ -132,21 +144,21 @@ export async function seedPlaybook(p1: Project, [u1]: User[]) {
         },
         {
           type: 'step',
-          attrs: {},
+          attrs: { uid: 'UidgrRPV011' },
           content: [
             {
               type: 'blockDocument',
-              attrs: { id: d2.id },
+              attrs: { id: d2.id, uid: 'UidgrRPV012' },
             },
           ],
         },
         {
           type: 'step',
-          attrs: {},
+          attrs: { uid: 'UidgrRPV013' },
           content: [
             {
               type: 'blockDocument',
-              attrs: { id: 'd3grRPVYnx' }, // Circular ref
+              attrs: { id: 'd3grRPVYnx', uid: 'UidgrRPV014' }, // Circular ref
             },
           ],
         },
@@ -186,10 +198,11 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
         {
           type: 'heading',
           content: [{ type: 'text', text: 'Overview' }],
-          attrs: { level: 1 },
+          attrs: { level: 1, uid: 'UidgrRPV001' },
         },
         {
           type: 'paragraph',
+          attrs: { uid: 'UidgrRPV002' },
           content: [
             {
               type: 'text',
@@ -213,10 +226,11 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
         {
           type: 'heading',
           content: [{ type: 'text', text: 'Goals and Non-Goals' }],
-          attrs: { level: 1 },
+          attrs: { level: 1, uid: 'UidgrRPV003' },
         },
         {
           type: 'paragraph',
+          attrs: { uid: 'UidgrRPV004' },
           content: [
             {
               type: 'text',
@@ -230,12 +244,15 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
         },
         {
           type: 'bulletList',
+          attrs: { uid: 'UidgrRPV005' },
           content: [
             {
               type: 'listItem',
+              attrs: { uid: 'UidgrRPV006' },
               content: [
                 {
                   type: 'paragraph',
+                  attrs: { uid: 'UidgrRPV007' },
                   content: [
                     {
                       type: 'text',
@@ -247,9 +264,11 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
             },
             {
               type: 'listItem',
+              attrs: { uid: 'UidgrRPV008' },
               content: [
                 {
                   type: 'paragraph',
+                  attrs: { uid: 'UidgrRPV009' },
                   content: [
                     {
                       type: 'text',
@@ -275,7 +294,7 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
         {
           type: 'heading',
           content: [{ type: 'text', text: 'Background & Motivation' }],
-          attrs: { level: 1 },
+          attrs: { level: 1, uid: 'UidgrRPV010' },
         },
         {
           type: 'image',
@@ -283,10 +302,12 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
             src: 'https://source.unsplash.com/hbb6GkG6p9M/800x400',
             alt: null,
             title: null,
+            uid: 'UidgrRPV011',
           },
         },
         {
           type: 'paragraph',
+          attrs: { uid: 'UidgrRPV012' },
           content: [
             {
               type: 'text',
@@ -296,23 +317,26 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
         },
         {
           type: 'taskList',
+          attrs: { uid: 'UidgrRPV013' },
           content: [
             {
               type: 'taskItem',
-              attrs: { checked: true },
+              attrs: { checked: true, uid: 'UidgrRPV014' },
               content: [
                 {
                   type: 'paragraph',
+                  attrs: { uid: 'UidgrRPV015' },
                   content: [{ type: 'text', text: 'A checked task.' }],
                 },
               ],
             },
             {
               type: 'taskItem',
-              attrs: { checked: false },
+              attrs: { checked: false, uid: 'UidgrRPV016' },
               content: [
                 {
                   type: 'paragraph',
+                  attrs: { uid: 'UidgrRPV017' },
                   content: [{ type: 'text', text: 'Not done.' }],
                 },
               ],
@@ -322,13 +346,15 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
         {
           type: 'heading',
           content: [{ type: 'text', text: 'Implementations' }],
-          attrs: { level: 1 },
+          attrs: { level: 1, uid: 'UidgrRPV018' },
         },
         {
           type: 'blockquote',
+          attrs: { uid: 'UidgrRPV019' },
           content: [
             {
               type: 'paragraph',
+              attrs: { uid: 'UidgrRPV020' },
               content: [
                 {
                   text: '"This is a quote" -- Samuel Bodin, 2023',
@@ -340,7 +366,7 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
         },
         {
           type: 'codeBlock',
-          attrs: { language: 'typescript' },
+          attrs: { language: 'typescript', uid: 'UidgrRPV021' },
           content: [
             {
               type: 'text',
@@ -350,6 +376,7 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
         },
         {
           type: 'paragraph',
+          attrs: { uid: 'UidgrRPV022' },
           content: [
             {
               type: 'text',
@@ -365,23 +392,24 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
         {
           type: 'heading',
           content: [{ type: 'text', text: 'Solutions' }],
-          attrs: { level: 2 },
+          attrs: { level: 2, uid: 'UidgrRPV023' },
         },
         {
           type: 'vote',
-          attrs: { voteId: '' }, // TODO: fill this
+          attrs: { voteId: '', uid: 'UidgrRPV024' }, // TODO: fill this
           content: [
             {
               type: 'voteItem',
-              attrs: { choiceId: '1' },
+              attrs: { choiceId: '1', uid: 'UidgrRPV025' },
               content: [
                 {
                   type: 'heading',
                   content: [{ type: 'text', text: '#1 Naive solution' }],
-                  attrs: { level: 3 },
+                  attrs: { level: 3, uid: 'UidgrRPV026' },
                 },
                 {
                   type: 'paragraph',
+                  attrs: { uid: 'UidgrRPV027' },
                   content: [
                     {
                       type: 'text',
@@ -393,17 +421,18 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
             },
             {
               type: 'voteItem',
-              attrs: { choiceId: '2' },
+              attrs: { choiceId: '2', uid: 'UidgrRPV028' },
               content: [
                 {
                   type: 'heading',
                   content: [
                     { type: 'text', text: '#2 Over-engineered solution' },
                   ],
-                  attrs: { level: 3 },
+                  attrs: { level: 3, uid: 'UidgrRPV029' },
                 },
                 {
                   type: 'paragraph',
+                  attrs: { uid: 'UidgrRPV030' },
                   content: [
                     {
                       type: 'text',
@@ -415,23 +444,13 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
             },
           ],
         },
-        // {
-        //   type: 'code',
-        //   attrs: {
-        //     language: 'html',
-        //   },
-        //   content: [
-        //     {
-        //       text: '\u003Cdiv\u003Eprout\u003C\u002Fdiv\u003E\\n\u003Ccenter\u003E\u002F',
-        //       type: 'text',
-        //     },
-        //   ],
-        // },
         {
           type: 'table',
+          attrs: { uid: 'UidgrRPV031' },
           content: [
             {
               type: 'tableRow',
+              attrs: { uid: 'UidgrRPV032' },
               content: [
                 {
                   type: 'tableHeader',
@@ -439,10 +458,12 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
                     colspan: 1,
                     rowspan: 1,
                     colwidth: [150],
+                    uid: 'UidgrRPV033',
                   },
                   content: [
                     {
                       type: 'paragraph',
+                      attrs: { uid: 'UidgrRPV034' },
                       content: [
                         {
                           type: 'text',
@@ -458,10 +479,12 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
                     colspan: 1,
                     rowspan: 1,
                     colwidth: null,
+                    uid: 'UidgrRPV035',
                   },
                   content: [
                     {
                       type: 'paragraph',
+                      attrs: { uid: 'UidgrRPV036' },
                       content: [
                         {
                           type: 'text',
@@ -475,6 +498,7 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
             },
             {
               type: 'tableRow',
+              attrs: { uid: 'UidgrRPV136' },
               content: [
                 {
                   type: 'tableCell',
@@ -482,10 +506,12 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
                     colspan: 1,
                     rowspan: 1,
                     colwidth: null,
+                    uid: 'UidgrRPV037',
                   },
                   content: [
                     {
                       type: 'paragraph',
+                      attrs: { uid: 'UidgrRPV038' },
                       content: [
                         {
                           type: 'text',
@@ -501,10 +527,12 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
                     colspan: 1,
                     rowspan: 1,
                     colwidth: null,
+                    uid: 'UidgrRPV039',
                   },
                   content: [
                     {
                       type: 'paragraph',
+                      attrs: { uid: 'UidgrRPV040' },
                       content: [
                         {
                           type: 'text',
@@ -520,18 +548,20 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
         },
         {
           type: 'horizontalRule',
+          attrs: { uid: 'UidgrRPV041' },
         },
         {
           type: 'heading',
           content: [{ type: 'text', text: 'FAQ' }],
-          attrs: { level: 1 },
+          attrs: { level: 1, uid: 'UidgrRPV042' },
         },
         {
           type: 'banner',
-          attrs: { type: 'error' },
+          attrs: { type: 'error', uid: 'UidgrRPV043' },
           content: [
             {
               type: 'paragraph',
+              attrs: { uid: 'UidgrRPV044' },
               content: [
                 {
                   type: 'text',
@@ -544,10 +574,11 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
         {
           type: 'heading',
           content: [{ type: 'text', text: 'What is this awesome website?' }],
-          attrs: { level: 2 },
+          attrs: { level: 2, uid: 'UidgrRPV045' },
         },
         {
           type: 'paragraph',
+          attrs: { uid: 'UidgrRPV046' },
           content: [
             {
               type: 'text',
@@ -558,7 +589,7 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
         {
           type: 'heading',
           content: [{ type: 'text', text: 'Thanks' }],
-          attrs: { level: 4 },
+          attrs: { level: 4, uid: 'UidgrRPV047' },
         },
       ],
     },

@@ -1,11 +1,21 @@
-import type { ApiBlobWithPrevious } from 'api/src/types/api';
+import { Editor } from '@tiptap/react';
+import type { ApiBlobWithPrevious, ApiComponent } from 'api/src/types/api';
 import { diffJson, diffWordsWithSpace } from 'diff';
-import { renderToString } from 'react-dom/server';
 
-import { ContentDoc } from '../components/Content';
 import type { BlobWithDiff } from '../components/DiffCard';
+import { createEditorSchema } from '../components/Editor';
+import { getEmptyDoc } from '../components/Editor/helpers';
+
+import { diffEditor } from './diffProsemirror';
 
 const IGNORED = ['id', 'createdAt', 'updatedAt', 'blobId'];
+const IGNORED_COMPONENT: Array<keyof ApiComponent> = [
+  'orgId',
+  'projectId',
+  'type',
+  'typeId',
+];
+
 export function proposeTitle(computed: BlobWithDiff[]): string {
   if (computed.length === 0) {
     return '';
@@ -58,8 +68,13 @@ export function diffTwoBlob(blob: ApiBlobWithPrevious): BlobWithDiff {
     return clean;
   }
 
+  const editor = new Editor(createEditorSchema({}));
+
   for (const [key, value] of Object.entries(blob.blob)) {
     if (IGNORED.includes(key)) {
+      continue;
+    }
+    if (blob.type === 'component' && IGNORED_COMPONENT.includes(key)) {
       continue;
     }
 
@@ -78,17 +93,12 @@ export function diffTwoBlob(blob: ApiBlobWithPrevious): BlobWithDiff {
     }
 
     if (key === 'description' || key === 'content') {
-      const a = clean.previous ? (
-        <ContentDoc doc={prev} noPlaceholder />
-      ) : (
-        <></>
-      );
-      const b = <ContentDoc doc={value} noPlaceholder />;
       clean.diffs.push({
         key,
-        diff: diffWordsWithSpace(
-          renderToString(a).replaceAll('<!-- -->', ''),
-          renderToString(b).replaceAll('<!-- -->', '')
+        diff: diffEditor(
+          editor.schema,
+          prev || getEmptyDoc(true),
+          value || getEmptyDoc(true)
         ),
       });
     } else if (
