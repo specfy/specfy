@@ -128,7 +128,7 @@ export const ComponentSelect: React.FC<{
     }
 
     const tmp: DefaultOptionType[] = [];
-    const curr = storeComponents.current!;
+    const curr = storeComponents.components[storeComponents.current!];
     const created = Object.values(storeComponents.components).filter(
       (c) => c.type === 'project'
     );

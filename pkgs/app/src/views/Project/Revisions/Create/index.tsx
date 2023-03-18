@@ -1,6 +1,7 @@
 import { IconGitPullRequestDraft } from '@tabler/icons-react';
-import { App, Button, Form, Input, Typography } from 'antd';
+import { App, Button, Form, Typography } from 'antd';
 import type {
+  ApiBlobWithPrevious,
   ApiProject,
   BlockLevelZero,
   ReqPostRevision,
@@ -10,7 +11,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { createRevision } from '../../../../api/revisions';
 import { proposeTitle } from '../../../../common/diff';
-import type { TmpBlob } from '../../../../common/store';
 import {
   useStagingStore,
   useProjectStore,
@@ -19,7 +19,7 @@ import {
 } from '../../../../common/store';
 import { Card } from '../../../../components/Card';
 import { Container } from '../../../../components/Container';
-import { DiffRow } from '../../../../components/DiffRow';
+import { DiffCard } from '../../../../components/DiffCard';
 import { Editor } from '../../../../components/Editor';
 import { FakeInput } from '../../../../components/Input';
 import { useEdit } from '../../../../hooks/useEdit';
@@ -74,7 +74,11 @@ export const ProjectRevisionCreate: React.FC<{
     setCanSubmit(title !== '' && enoughContent);
   }, [title, description]);
 
-  const handleRevert = (type: TmpBlob['type'], typeId: string, key: string) => {
+  const handleRevert = (
+    type: ApiBlobWithPrevious['type'],
+    typeId: string,
+    key: string
+  ) => {
     if (type === 'project') {
       storeProject.revertField(key as any);
     } else if (type === 'component') {
@@ -87,14 +91,8 @@ export const ProjectRevisionCreate: React.FC<{
 
   const onSubmit = async () => {
     const blobs: ReqPostRevision['blobs'] = [];
-    for (const change of staging.clean) {
-      blobs.push({
-        type: change.type,
-        typeId: change.typeId,
-        parentId: change.previous ? change.previous.blobId : null,
-        blob: { ...change.previous, ...change.blob } as any,
-        deleted: false,
-      });
+    for (const { diffs, createdAt, updatedAt, ...change } of staging.diffs) {
+      blobs.push(change);
     }
 
     const { id } = await createRevision({
@@ -107,7 +105,7 @@ export const ProjectRevisionCreate: React.FC<{
 
     // Discard local changes
     edit.enable(false);
-    staging.update([], []);
+    staging.update([]);
     // TODO: clean models in all stores
 
     message.success('Revision created');
@@ -154,16 +152,18 @@ export const ProjectRevisionCreate: React.FC<{
       </div>
       <div className={cls.right}></div>
       <div className={cls.staged}>
-        {staging.diffs.map((c) => {
-          return (
-            <DiffRow
-              key={`${c.typeId}-${c.key}`}
-              comp={c}
-              url={to}
-              onRevert={handleRevert}
-            />
-          );
-        })}
+        <div className={cls.staged}>
+          {staging.diffs.map((diff) => {
+            return (
+              <DiffCard
+                key={diff.typeId}
+                diff={diff}
+                url={to}
+                onRevert={() => null}
+              ></DiffCard>
+            );
+          })}
+        </div>
       </div>
     </Container>
   );

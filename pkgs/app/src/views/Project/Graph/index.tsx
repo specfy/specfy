@@ -32,31 +32,6 @@ export const ProjectGraph: React.FC<{
       return;
     }
 
-    // const tmp: ApiComponent[] = [];
-    // for (const comp of components) {
-    //   const modified = edit.changes.find<TmpBlobComponent>(
-    //     (c): c is TmpBlobComponent =>
-    //       c.typeId === comp.id && c.type === 'component'
-    //   );
-    //   if (!modified || Object.keys(modified.blob).length <= 0) {
-    //     tmp.push(comp);
-    //     continue;
-    //   }
-
-    //   tmp.push({
-    //     ...comp,
-    //     ...modified.blob,
-    //     display: {
-    //       ...comp.display,
-    //       pos: {
-    //         ...(modified.blob.display || comp.display).pos,
-    //       },
-    //     },
-    //     edges: modified.blob.edges || comp.edges,
-    //   });
-    // }
-
-    // setComponents(tmp);
     setLoading(false);
   }, [components]);
 

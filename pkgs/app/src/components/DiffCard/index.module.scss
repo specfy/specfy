@@ -1,0 +1,43 @@
+@import "../../styles/theme";
+
+.header {
+  display: flex;
+  gap: $p;
+  align-items: center;
+
+  padding: $p-m;
+
+  border-bottom: 1px solid $gray-100;
+}
+
+.created {
+  color: $lime-500;
+  background-color: $lime-50;
+
+}
+
+.deleted {
+  color: $red-500;
+  background-color: $red-50;
+}
+
+.updated {
+  color: $primary;
+  background-color: $blue-50;
+  background-color: transparent;
+
+}
+
+.diff {
+  height: auto;
+
+  &.hide {
+    overflow: hidden;
+    height: 0;
+  }
+}
+
+.unmodifiedTitle {
+  margin-bottom: 0 !important;
+  padding: $p-xl $p-2xl;
+}

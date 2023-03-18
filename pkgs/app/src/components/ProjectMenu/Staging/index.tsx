@@ -4,13 +4,14 @@ import { Link } from 'react-router-dom';
 import { useDebounce } from 'react-use';
 
 import { diffTwoBlob } from '../../../common/diff';
-import type { Allowed, ComputedForDiff, TmpBlob } from '../../../common/store';
+import type { Allowed } from '../../../common/store';
 import originalStore, {
   useStagingStore,
   useDocumentsStore,
   useComponentsStore,
   useProjectStore,
 } from '../../../common/store';
+import type { BlobWithDiff } from '../../DiffCard';
 import { Time } from '../../Time';
 
 import cls from './index.module.scss';
@@ -34,23 +35,33 @@ export const Staging: React.FC<{ link: string }> = ({ link }) => {
         ...Object.values(documents),
       ];
 
-      const diffs: ComputedForDiff[] = [];
-      const clean: TmpBlob[] = [];
+      const diffs: BlobWithDiff[] = [];
 
       // Find added and modified
       for (const item of store) {
         const original = originalStore.find(item.id) as typeof item;
 
         const diff = diffTwoBlob({
+          id: '',
+          orgId: '',
+          projectId: '',
+          deleted: false,
+          parentId: null,
+          previous: original || null,
           type: originalStore.allowedType(item),
           typeId: item.id,
-          blob: item,
-          previous: original || null,
-        } as TmpBlob);
+          blob: item as any, // Can't fix this
+          createdAt: '',
+          updatedAt: '',
+        });
 
-        tmp += Object.keys(diff.clean.blob).length;
-        diffs.push(...diff.computed);
-        clean.push(diff.clean);
+        if (diff.diffs.length <= 0) {
+          continue;
+        }
+
+        // clean.push(diff.clean);
+        tmp += diff.diffs.length;
+        diffs.push(diff);
       }
 
       // Find deleted
@@ -60,19 +71,25 @@ export const Staging: React.FC<{ link: string }> = ({ link }) => {
         }
 
         const diff = diffTwoBlob({
+          id: '',
+          orgId: '',
+          projectId: '',
+          deleted: true,
+          parentId: null,
           type: originalStore.allowedType(item),
           typeId: item.id,
-          blob: { id: null } as any,
+          blob: null,
           previous: item || null,
-        } as TmpBlob);
+          createdAt: '',
+          updatedAt: '',
+        });
 
         tmp += 1;
-        diffs.push(...diff.computed);
-        clean.push(diff.clean);
+        diffs.push(diff);
       }
 
       setCount(tmp);
-      staging.update(diffs, clean);
+      staging.update(diffs);
     },
     150,
     [project, components, documents]

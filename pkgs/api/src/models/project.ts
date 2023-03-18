@@ -69,17 +69,7 @@ export class Project extends Model<
     model.slug = slugify(model.name, { lower: true, trim: true });
     model.id = model.id || nanoid();
 
-    const body: PropBlobCreate = {
-      orgId: model.orgId,
-      projectId: model.id,
-      parentId: null,
-      type: 'project',
-      typeId: model.id,
-      blob: model.getJsonForBlob(),
-      deleted: false,
-    };
-    const blob = await RevisionBlob.create(body, { transaction });
-    model.blobId = blob.id;
+    await model.createBlob(transaction);
   }
 
   @BeforeUpdate
@@ -90,8 +80,21 @@ export class Project extends Model<
   }
 
   getJsonForBlob(): DBBlobProject['blob'] {
-    const { id, orgId, createdAt, updatedAt, blobId, ...simplified } =
-      this.toJSON();
-    return simplified;
+    return this.toJSON();
+  }
+
+  async createBlob(transaction?: any) {
+    const body: PropBlobCreate = {
+      orgId: this.orgId,
+      projectId: this.id,
+      parentId: null,
+      type: 'project',
+      typeId: this.id,
+      blob: this.getJsonForBlob(),
+      deleted: false,
+    };
+
+    const blob = await RevisionBlob.create(body, { transaction });
+    this.blobId = blob.id;
   }
 }

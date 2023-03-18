@@ -334,6 +334,14 @@ table "perms" {
   primary_key {
     columns = [column.id]
   }
+  index "idx_team_org_userid" {
+    columns = [
+      column.org_id,
+      column.user_id
+    ]
+    where = "project_id IS NULL"
+    unique = true
+  }
   index "idx_team_org_userid_projectid" {
     columns = [
       column.org_id,
@@ -502,7 +510,7 @@ table "blobs" {
   }
   column "blob" {
     type = json
-    null = false
+    null = true
   }
   column "deleted" {
     type = boolean

@@ -116,7 +116,7 @@ export const ProjectRevisionsList: React.FC<{
           >
             <Table.Column
               title={
-                <div className={cls.th}>
+                <div>
                   <span>
                     <IconHistory />
                   </span>{' '}
@@ -124,7 +124,6 @@ export const ProjectRevisionsList: React.FC<{
                 </div>
               }
               dataIndex="name"
-              className={cls.tcell}
               key="name"
               render={(_, item: ApiRevision) => {
                 return (

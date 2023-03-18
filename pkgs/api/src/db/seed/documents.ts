@@ -210,11 +210,6 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
             },
           ],
         },
-        // {
-        //   type: 'revision',
-        //   content: [
-        //   ]
-        // },
         {
           type: 'heading',
           content: [{ type: 'text', text: 'Goals and Non-Goals' }],
@@ -610,4 +605,6 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
     userId: u2.id,
     role: 'reviewer',
   });
+
+  return { d1, d2, d3 };
 }

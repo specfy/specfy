@@ -15,6 +15,7 @@ import './';
 import { seedPlaybook, seedRFC } from './seed/documents';
 import { seedPolicies } from './seed/policies';
 import { seedProjects } from './seed/projects';
+import { seedRevisions } from './seed/revisions';
 
 export async function clean() {
   await Promise.all([
@@ -67,6 +68,7 @@ export async function seed() {
       email: 'LishaAJames@gmail.com',
     }),
   ]);
+  const users = [u1, u2, u3, u4, u5, u6, u7, u8];
 
   // Org
   await Org.create({
@@ -78,9 +80,9 @@ export async function seed() {
     name: "Samuel Bodin's org",
   });
 
-  const { p1, p3 } = await seedProjects([u1, u2, u3, u4, u5, u6, u7, u8]);
+  const { p1, p3 } = await seedProjects(users);
 
-  await seedRFC(p1, [u1, u2]);
+  const rfcs = await seedRFC(p1, [u1, u2]);
   await seedPlaybook(p1, [u1]);
 
   // Components
@@ -488,87 +490,7 @@ export async function seed() {
     tech: ['nodejs', 'typescript'],
   });
 
-  // Revisions
-  const projectRev = new Project({
-    ...p1,
-    name: 'Open Crawler',
-    description: {
-      type: 'doc',
-      content: [
-        {
-          type: 'paragraph',
-          content: [
-            {
-              type: 'text',
-              text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.`,
-            },
-            {
-              type: 'text',
-              text: ' Sed pharetra eros vel felis scelerisque pretium. ',
-              marks: [{ type: 'code' }],
-            },
-            {
-              type: 'text',
-              text: 'Maecenas ac feugiat orci, a sodales lacus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent urna libero, convallis eu commodo id, iaculis aliquam arcu.',
-            },
-            { type: 'hardBreak' },
-            {
-              type: 'text',
-              text: `Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; In interdum egestas massa, sit amet auctor ipsum maximus in. `,
-            },
-          ],
-        },
-      ],
-    },
-  });
-  const b = await RevisionBlob.create({
-    id: '00000000-0000-4000-0000-000000000000',
-    orgId: 'company',
-    projectId: p1.id,
-    deleted: false,
-    type: 'project',
-    typeId: p1.id,
-    parentId: p1.blobId,
-    blob: projectRev.getJsonForBlob(),
-  });
-  const rev = await Revision.create({
-    id: '1oxA2sPxkR',
-    orgId: 'company',
-    projectId: p1.id,
-    title: 'Update project name, description',
-    description: {
-      type: 'doc',
-      content: [
-        {
-          type: 'paragraph',
-          content: [
-            {
-              type: 'text',
-              text: `Maecenas pharetra imperdiet nulla nec commodo.`,
-            },
-          ],
-        },
-      ],
-    },
-    status: 'waiting',
-    merged: false,
-    blobs: [b.id],
-  });
-  await TypeHasUser.create({
-    revisionId: rev.id,
-    userId: u1.id,
-    role: 'author',
-  });
-  await TypeHasUser.create({
-    revisionId: rev.id,
-    userId: u2.id,
-    role: 'reviewer',
-  });
-  await TypeHasUser.create({
-    revisionId: rev.id,
-    userId: u3.id,
-    role: 'reviewer',
-  });
+  await seedRevisions(p1, users, rfcs);
 
   await seedPolicies([u1]);
 }

@@ -1,40 +1,25 @@
 import { nanoid } from 'api/src/common/id';
-import type { ApiComponent, ApiDocument, ApiProject } from 'api/src/types/api';
 import type {
-  DBBlobComponent,
-  DBBlobDocument,
-  DBBlobProject,
-} from 'api/src/types/db';
+  ApiBlobWithPrevious,
+  ApiComponent,
+  ApiDocument,
+  ApiProject,
+} from 'api/src/types/api';
 import type { Change } from 'diff';
 import { produce } from 'immer';
 import { create } from 'zustand';
 
+import type { BlobWithDiff } from '../components/DiffCard';
 import { getEmptyDoc } from '../components/Editor/helpers';
 
 import { slugify } from './string';
 
 export type Allowed = ApiComponent | ApiDocument | ApiProject;
 
-export type TmpBlob = TmpBlobComponent | TmpBlobDocument | TmpBlobProject;
-export type TmpBlobComponent = DBBlobComponent & {
-  typeId: string;
-  previous: ApiComponent | null;
-};
-export type TmpBlobDocument = DBBlobDocument & {
-  typeId: string;
-  previous: ApiDocument | null;
-};
-export type TmpBlobProject = DBBlobProject & {
-  typeId: string;
-  previous: ApiProject;
-};
+export type TmpBlob = ApiBlobWithPrevious;
 
 export interface ComputedForDiff {
-  type: TmpBlob['type'];
-  typeId: string;
   key: string;
-  current: TmpBlob['blob'] | null;
-  previous: ApiComponent | ApiDocument | ApiProject | null;
   diff: Change[];
 }
 
@@ -54,7 +39,7 @@ function find<T extends Allowed>(id: any): T | undefined {
   });
 }
 
-function allowedType(item: Allowed) {
+function allowedType(item: Allowed): ApiBlobWithPrevious['type'] {
   if ('links' in item) {
     return 'project';
   } else if ('content' in item) {
@@ -67,16 +52,14 @@ export default { add, find, allowedType, originalStore };
 
 // ------------------------------------------ Staging Store
 interface StagingState {
-  diffs: ComputedForDiff[];
-  clean: TmpBlob[];
-  update: (diffs: ComputedForDiff[], clean: TmpBlob[]) => void;
+  diffs: BlobWithDiff[];
+  update: (diffs: BlobWithDiff[]) => void;
 }
 
 export const useStagingStore = create<StagingState>()((set) => ({
   diffs: [],
-  clean: [],
-  update: (diffs, clean) => {
-    set({ diffs, clean });
+  update: (diffs) => {
+    set({ diffs });
   },
 }));
 

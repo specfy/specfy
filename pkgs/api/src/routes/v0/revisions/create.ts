@@ -21,14 +21,16 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       const tmp = { orgId: req.body.orgId, projectId: req.body.projectId };
 
       for (const blob of req.body.blobs) {
-        let blobToModel: Component | Document | Project;
+        let blobToModel: Component | Document | Project | null = null;
 
-        if (blob.type === 'document') {
-          blobToModel = new Document({ ...tmp, ...blob.blob });
-        } else if (blob.type === 'component') {
-          blobToModel = new Component({ ...tmp, ...blob.blob });
-        } else {
-          blobToModel = new Project({ ...tmp, ...blob.blob });
+        if (!blob.deleted && blob.blob) {
+          if (blob.type === 'document') {
+            blobToModel = new Document({ ...tmp, ...blob.blob });
+          } else if (blob.type === 'component') {
+            blobToModel = new Component({ ...tmp, ...blob.blob });
+          } else {
+            blobToModel = new Project({ ...tmp, ...blob.blob });
+          }
         }
 
         // TODO: validation
@@ -36,7 +38,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           {
             ...tmp,
             ...blob,
-            blob: blobToModel.getJsonForBlob(),
+            blob: blobToModel ? blobToModel.getJsonForBlob() : null,
           },
           { transaction }
         );

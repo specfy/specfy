@@ -43,11 +43,11 @@ import {
   useGetRevisionChecks,
 } from '../../../../api/revisions';
 import { diffTwoBlob } from '../../../../common/diff';
-import type { ComputedForDiff } from '../../../../common/store';
 import { Card } from '../../../../components/Card';
 import { Container } from '../../../../components/Container';
 import { ContentDoc } from '../../../../components/Content';
-import { DiffRow } from '../../../../components/DiffRow';
+import type { BlobWithDiff } from '../../../../components/DiffCard';
+import { DiffCard } from '../../../../components/DiffCard';
 import { Editor } from '../../../../components/Editor';
 import { getEmptyDoc } from '../../../../components/Editor/helpers';
 import { FakeInput } from '../../../../components/Input';
@@ -55,7 +55,6 @@ import { SidebarBlock } from '../../../../components/SidebarBlock';
 import { StatusTag } from '../../../../components/StatusTag';
 import { Time } from '../../../../components/Time';
 import { UserList } from '../../../../components/UserList';
-import type { EditContextInterface } from '../../../../hooks/useEdit';
 import type { RouteProject, RouteRevision } from '../../../../types/routes';
 
 import cls from './index.module.scss';
@@ -71,13 +70,15 @@ export const ProjectRevisionsShow: React.FC<{
   const [rev, setRev] = useState<ResGetRevision['data']>();
   const [blobs, setBlobs] = useState<ResListRevisionBlobs['data']>();
   const [checks, setChecks] = useState<ResCheckRevision['data']>();
-  const [computed, setComputed] = useState<ComputedForDiff[]>([]);
   const [to] = useState(() => `/${params.org_id}/${params.project_slug}`);
   const qp = {
     org_id: params.org_id,
     project_id: proj.id,
     revision_id: more.revision_id!,
   };
+
+  // diff
+  const [diffs, setDiffs] = useState<BlobWithDiff[]>([]);
 
   // --------- Data fetching
   const res = useGetRevision({
@@ -281,17 +282,15 @@ export const ProjectRevisionsShow: React.FC<{
       return;
     }
 
-    const cleaned: EditContextInterface['changes'] = [];
-    const tmps: ComputedForDiff[] = [];
+    const _diffs: BlobWithDiff[] = [];
 
     // Remove non modified fields
     for (const blob of blobs) {
-      const diff = diffTwoBlob(blob, blob.previous);
-      tmps.push(...diff.computed);
-      cleaned.push(diff.clean);
+      const diff = diffTwoBlob(blob);
+      _diffs.push(diff);
     }
 
-    setComputed(tmps);
+    setDiffs(_diffs);
   }, [blobs, rev]);
 
   const onMerge = async () => {
@@ -511,7 +510,7 @@ export const ProjectRevisionsShow: React.FC<{
         </div>
       )}
 
-      {computed && !edit && (
+      {!edit && (
         <div className={cls.reviewBar}>
           <Button
             type={'primary'}
@@ -524,16 +523,16 @@ export const ProjectRevisionsShow: React.FC<{
         </div>
       )}
 
-      {computed && (
+      {diffs && (
         <div className={cls.staged}>
-          {computed.map((c) => {
+          {diffs.map((diff) => {
             return (
-              <DiffRow
-                key={`${c.type}-${c.typeId}-${c.key}`}
-                comp={c}
+              <DiffCard
+                key={diff.typeId}
+                diff={diff}
                 url={to}
                 onRevert={() => null}
-              />
+              ></DiffCard>
             );
           })}
         </div>

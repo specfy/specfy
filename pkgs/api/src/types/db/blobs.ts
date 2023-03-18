@@ -10,6 +10,7 @@ export type DBBlobBase = {
   projectId: string;
 
   type: 'component' | 'document' | 'project';
+  blob: DBBlobAll | null;
   typeId: string;
   parentId: string | null;
   deleted: boolean;
@@ -20,24 +21,15 @@ export type DBBlobBase = {
 
 export type DBBlobDocument = {
   type: 'document';
-  blob: Omit<
-    DBDocument,
-    'blobId' | 'createdAt' | 'id' | 'orgId' | 'projectId' | 'updatedAt'
-  >;
+  blob: DBDocument | null;
 };
 export type DBBlobComponent = {
   type: 'component';
-  blob: Omit<
-    DBComponent,
-    'blobId' | 'createdAt' | 'id' | 'orgId' | 'projectId' | 'updatedAt'
-  >;
+  blob: DBComponent | null;
 };
 export type DBBlobProject = {
   type: 'project';
-  blob: Omit<
-    DBProject,
-    'blobId' | 'createdAt' | 'id' | 'orgId' | 'projectId' | 'updatedAt'
-  >;
+  blob: DBProject | null;
 };
 
 export type DBBlob = DBBlobBase &

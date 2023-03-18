@@ -104,89 +104,95 @@ export async function seedProjects(users: User[]) {
   });
 
   // ---- Edges for graph
-  await p0.update({
-    edges: [
-      {
-        to: p4.id,
-        read: true,
-        write: false,
-        vertices: [],
-        portSource: 'left',
-        portTarget: 'right',
-      },
-      {
-        to: p5.id,
-        read: true,
-        write: false,
-        vertices: [
-          { x: -5, y: 60 },
-          { x: -5, y: 110 },
-        ],
-        portSource: 'left',
-        portTarget: 'left',
-      },
-    ],
-  });
-  await p3.update({
-    edges: [
-      {
-        to: p0.id,
-        read: true,
-        write: false,
-        vertices: [],
-        portSource: 'left',
-        portTarget: 'right',
-      },
-    ],
-  });
-  await p1.update({
-    edges: [
-      {
-        to: p0.id,
-        read: true,
-        write: false,
-        vertices: [],
-        portSource: 'left',
-        portTarget: 'right',
-      },
-      {
-        to: p4.id,
-        read: true,
-        write: false,
-        vertices: [{ x: 20, y: 80 }],
-        portSource: 'left',
-        portTarget: 'right',
-      },
-    ],
-  });
-  await p5.update({
-    edges: [
-      {
-        to: p1.id,
-        read: true,
-        write: false,
-        vertices: [],
-        portSource: 'right',
-        portTarget: 'left',
-      },
-    ],
-  });
+  p0.set('edges', [
+    {
+      to: p4.id,
+      read: true,
+      write: false,
+      vertices: [],
+      portSource: 'left',
+      portTarget: 'right',
+    },
+    {
+      to: p5.id,
+      read: true,
+      write: false,
+      vertices: [
+        { x: -5, y: 60 },
+        { x: -5, y: 110 },
+      ],
+      portSource: 'left',
+      portTarget: 'left',
+    },
+  ]);
+  await p0.createBlob();
+  await p0.save();
+
+  p3.set('edges', [
+    {
+      to: p0.id,
+      read: true,
+      write: false,
+      vertices: [],
+      portSource: 'left',
+      portTarget: 'right',
+    },
+  ]);
+  await p3.createBlob();
+  await p3.save();
+
+  p1.set('edges', [
+    {
+      to: p0.id,
+      read: true,
+      write: false,
+      vertices: [],
+      portSource: 'left',
+      portTarget: 'right',
+    },
+    {
+      to: p4.id,
+      read: true,
+      write: false,
+      vertices: [{ x: 20, y: 80 }],
+      portSource: 'left',
+      portTarget: 'right',
+    },
+  ]);
+  await p1.createBlob();
+  await p1.save();
+
+  p5.set('edges', [
+    {
+      to: p1.id,
+      read: true,
+      write: false,
+      vertices: [],
+      portSource: 'right',
+      portTarget: 'left',
+    },
+  ]);
+  await p5.createBlob();
+  await p5.save();
 
   // ---- Permissions
   await Promise.all([
-    ...users.map((u) => {
+    Perm.create({
+      orgId: 'samuelbodin',
+      projectId: null,
+      userId: users[0].id,
+      role: 'owner',
+    }),
+    ...users.map((u, i) => {
+      if (i === 0) {
+        return;
+      }
       return Perm.create({
         orgId: 'company',
         projectId: null,
         userId: u.id,
         role: 'viewer',
       });
-    }),
-    Perm.create({
-      orgId: 'samuelbodin',
-      projectId: null,
-      userId: users[0].id,
-      role: 'owner',
     }),
     Perm.create({
       orgId: 'company',

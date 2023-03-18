@@ -83,30 +83,16 @@ const ToolbarZoom: React.FC = () => {
 
   return (
     <div className={cls.toolbar}>
-      <Tooltip title="Zoom In (Cmd +)" placement="bottom">
-        <Button
-          className={cls.toolbarItem}
-          icon={<IconZoomIn />}
-          type="text"
-          onClick={handleZoomIn}
-        />
+      <Tooltip title="Zoom Out (Cmd -)" placement="bottom">
+        <Button icon={<IconZoomOut />} type="text" onClick={handleZoomOut} />
       </Tooltip>
       <Tooltip title="Reset to fit" placement="bottom">
-        <Button
-          className={cls.toolbarItem}
-          type="text"
-          onClick={handmeZoomReset}
-        >
+        <Button type="text" onClick={handmeZoomReset}>
           {zoom}%
         </Button>
       </Tooltip>
-      <Tooltip title="Zoom Out (Cmd -)" placement="bottom">
-        <Button
-          className={cls.toolbarItem}
-          icon={<IconZoomOut />}
-          type="text"
-          onClick={handleZoomOut}
-        />
+      <Tooltip title="Zoom In (Cmd +)" placement="bottom">
+        <Button icon={<IconZoomIn />} type="text" onClick={handleZoomIn} />
       </Tooltip>
     </div>
   );
@@ -156,7 +142,6 @@ export const ToolbarHistory: React.FC = () => {
     <div className={cls.toolbar}>
       <Tooltip title="Undo (Cmd +)" placement="bottom">
         <Button
-          className={cls.toolbarItem}
           icon={<IconArrowBackUp />}
           type="text"
           onClick={handleUndo}
@@ -165,7 +150,6 @@ export const ToolbarHistory: React.FC = () => {
       </Tooltip>
       <Tooltip title="Redo (Cmd -)" placement="bottom">
         <Button
-          className={cls.toolbarItem}
           icon={<IconArrowForwardUp />}
           type="text"
           onClick={handleRedo}
