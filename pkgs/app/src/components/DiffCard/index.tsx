@@ -42,6 +42,9 @@ const DiffCardComponent: React.FC<{
             />
           );
         }
+        if (d.key === 'display') {
+          return <div key={d.key}>Modified display in Graph</div>;
+        }
 
         return <Split key={d.key} diff={d} created={!diff.previous} />;
       })}
@@ -54,12 +57,15 @@ const DiffCardDocument: React.FC<{
 }> = ({ diff }) => {
   if (diff.deleted) {
     return (
-      <div className={cls.content}>
-        <ContentDoc
-          doc={(diff.previous as ApiDocument).content}
-          id={diff.typeId}
-        />
-      </div>
+      <>
+        <div className={cls.fileDeleted}>Document deleted</div>
+        <div className={cls.content}>
+          <ContentDoc
+            doc={(diff.previous as ApiDocument).content}
+            id={diff.typeId}
+          />
+        </div>
+      </>
     );
   }
 
