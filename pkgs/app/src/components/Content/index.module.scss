@@ -57,14 +57,16 @@ ul.taskList {
 
 .added {
   padding: 0 $p-2xl;
-  border-left: 4px solid #d9f7be;
-  border-left: 4px solid $lime-300;
+  background-color: $lime-50;
+  border-left: 5px solid $lime-300;
 }
 
 .removed {
   padding: 0 $p-2xl;
+
   text-decoration: line-through;
+
   opacity: 0.7;
-  border-left: 4px solid #ffccc7;
-  border-left: 4px solid $red-300;
+  background-color: $red-50;
+  border-left: 5px solid $red-300;
 }

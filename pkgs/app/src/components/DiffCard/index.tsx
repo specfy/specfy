@@ -4,15 +4,21 @@ import {
   IconExternalLink,
 } from '@tabler/icons-react';
 import { Button, Tag, Typography } from 'antd';
-import type { ApiBlobWithPrevious, BlockLevelZero } from 'api/src/types/api';
+import type {
+  ApiBlobWithPrevious,
+  ApiDocument,
+  BlockLevelZero,
+} from 'api/src/types/api';
 import classnames from 'classnames';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import type { ComputedForDiff } from '../../common/store';
 import { Card } from '../Card';
+import { ContentDoc } from '../Content';
 
-import { Split, SplitContent } from './Split';
+import { Split } from './Split';
+import { UnifiedContent } from './Unified/Content';
 import cls from './index.module.scss';
 
 export type BlobWithDiff = ApiBlobWithPrevious & { diffs: ComputedForDiff[] };
@@ -28,7 +34,70 @@ const DiffCardComponent: React.FC<{
         }
         if (d.key === 'description') {
           return (
-            <SplitContent
+            <UnifiedContent
+              key={d.key}
+              doc={d.diff as unknown as BlockLevelZero}
+              id={diff.typeId}
+              // created={!diff.previous}
+            />
+          );
+        }
+
+        return <Split key={d.key} diff={d} created={!diff.previous} />;
+      })}
+    </>
+  );
+};
+
+const DiffCardDocument: React.FC<{
+  diff: BlobWithDiff;
+}> = ({ diff }) => {
+  if (diff.deleted) {
+    return (
+      <div className={cls.content}>
+        <ContentDoc
+          doc={(diff.previous as ApiDocument).content}
+          id={diff.typeId}
+        />
+      </div>
+    );
+  }
+
+  return (
+    <>
+      {diff.diffs.map((d) => {
+        if (d.key === 'name') {
+          return null;
+        }
+        if (d.key === 'content') {
+          return (
+            <UnifiedContent
+              key={d.key}
+              doc={d.diff as unknown as BlockLevelZero}
+              id={diff.typeId}
+              // created={!diff.previous}
+            />
+          );
+        }
+
+        return <Split key={d.key} diff={d} created={!diff.previous} />;
+      })}
+    </>
+  );
+};
+
+const DiffCardProject: React.FC<{
+  diff: BlobWithDiff;
+}> = ({ diff }) => {
+  return (
+    <>
+      {diff.diffs.map((d) => {
+        if (d.key === 'name') {
+          return null;
+        }
+        if (d.key === 'description') {
+          return (
+            <UnifiedContent
               key={d.key}
               doc={d.diff as unknown as BlockLevelZero}
               id={diff.typeId}
@@ -99,42 +168,34 @@ export const DiffCard: React.FC<{
           <Button type="text" icon={<IconExternalLink />} size="small"></Button>
         </Link>
       </div>
-      <div className={classnames(cls.diff, hide && cls.hide)}>
-        {hasName && (
-          <Typography.Title level={3}>
-            <Split
-              key={hasName.key}
-              diff={hasName}
-              hideLabel={true}
-              created={!diff.parentId}
-            />
-          </Typography.Title>
+      <div
+        className={classnames(
+          cls.diff,
+          hide && cls.hide,
+          diff.deleted && cls.removed
         )}
-        {!hasName && (
-          <Typography.Title level={3} className={cls.unmodifiedTitle}>
-            {diff.previous?.name || diff.blob?.name || ''}
-          </Typography.Title>
-        )}
-        {diff.type === 'component' && <DiffCardComponent diff={diff} />}
-        {diff.type !== 'component' &&
-          diff.diffs.map((d) => {
-            if (d.key === 'name') {
-              return null;
-            }
-            if (d.key === 'description' || d.key === 'content') {
-              console.log('on diff', diff.type, diff.blob?.name, d.diff);
-              return (
-                <SplitContent
-                  key={d.key}
-                  doc={d.diff as unknown as BlockLevelZero}
-                  id={diff.typeId}
-                  // created={!diff.previous}
-                />
-              );
-            }
+      >
+        <div className={cls.diffContent}>
+          {hasName && (
+            <Typography.Title level={3}>
+              <Split
+                key={hasName.key}
+                diff={hasName}
+                hideLabel={true}
+                created={!diff.parentId}
+              />
+            </Typography.Title>
+          )}
+          {!hasName && (
+            <Typography.Title level={3} className={cls.unmodifiedTitle}>
+              {diff.previous?.name || diff.blob?.name || ''}
+            </Typography.Title>
+          )}
 
-            return <Split key={d.key} diff={d} created={!diff.parentId} />;
-          })}
+          {diff.type === 'component' && <DiffCardComponent diff={diff} />}
+          {diff.type === 'document' && <DiffCardDocument diff={diff} />}
+          {diff.type === 'project' && <DiffCardProject diff={diff} />}
+        </div>
       </div>
     </Card>
   );

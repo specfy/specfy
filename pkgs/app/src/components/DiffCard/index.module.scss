@@ -28,7 +28,10 @@
 
 .diff {
   height: auto;
-  padding: $p-2xl 0 $p-2xl 0;
+
+  .diffContent {
+    padding: $p-2xl 0 $p-2xl 0;
+  }
 
   &.hide {
     overflow: hidden;
@@ -39,4 +42,16 @@
 .unmodifiedTitle {
   margin-bottom: 0 !important;
   padding: 0 $p-2xl;
+}
+
+
+.removed {
+  text-decoration: line-through;
+  opacity: 0.7;
+  background-color: $red-50;
+  border-left: 5px solid $red-300;
+}
+
+.content {
+  padding: $p-2xl $p-2xl 0 $p-2xl;
 }
