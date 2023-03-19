@@ -97,8 +97,8 @@ export function diffTwoBlob(blob: ApiBlobWithPrevious): BlobWithDiff {
         key,
         diff: diffEditor(
           editor.schema,
-          prev || getEmptyDoc(true),
-          value || getEmptyDoc(true)
+          prev ? JSON.parse(JSON.stringify(prev)) : getEmptyDoc(true),
+          value ? JSON.parse(JSON.stringify(value)) : getEmptyDoc(true)
         ),
       });
     } else if (

@@ -1,5 +1,5 @@
 import { Checkbox, Typography } from 'antd';
-import type { BlockLevelZero, Blocks } from 'api/src/types/api';
+import type { BlockLevelZero, BlockWithDiff } from 'api/src/types/api';
 import classnames from 'classnames';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -15,10 +15,6 @@ import { ContentBlockVoteItem } from './BlockVoteItem';
 import type { Payload } from './helpers';
 import { map } from './helpers';
 import cls from './index.module.scss';
-
-type BlockWithDiff = Blocks & {
-  diff?: { added?: true; removed?: true; moved?: boolean };
-};
 
 function styleDiff(block: BlockWithDiff): string {
   if (!block.diff) {

@@ -43,3 +43,38 @@
   padding: $p-s 0;
   font-weight: 600;
 }
+
+.content {
+  width: 50%;
+  // margin: 0 auto
+}
+
+.group {
+  margin-bottom: $p-xl;
+}
+
+.unchanged {
+  display: flex;
+  gap: $p-m;
+
+  padding: $p $p-2xl;
+
+  color: $gray-400;
+
+  background-color: rgba($blue-50, 0.5);
+}
+
+.accordion {
+  height: auto;
+  opacity: 0.7;
+  filter: saturate(0);
+
+  &.hide {
+    overflow: hidden;
+    height: 0;
+  }
+}
+
+.unchangedContent {
+  padding: $p-2xl $p-2xl;
+}

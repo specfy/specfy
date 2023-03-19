@@ -11,9 +11,8 @@ import { Link } from 'react-router-dom';
 
 import type { ComputedForDiff } from '../../common/store';
 import { Card } from '../Card';
-import { ContentDoc } from '../Content';
 
-import { Split } from './Split';
+import { Split, SplitContent } from './Split';
 import cls from './index.module.scss';
 
 export type BlobWithDiff = ApiBlobWithPrevious & { diffs: ComputedForDiff[] };
@@ -29,7 +28,12 @@ const DiffCardComponent: React.FC<{
         }
         if (d.key === 'description') {
           return (
-            <ContentDoc key={d.key} doc={d.diff as unknown as BlockLevelZero} />
+            <SplitContent
+              key={d.key}
+              doc={d.diff as unknown as BlockLevelZero}
+              id={diff.typeId}
+              // created={!diff.previous}
+            />
           );
         }
 
@@ -120,9 +124,11 @@ export const DiffCard: React.FC<{
             if (d.key === 'description' || d.key === 'content') {
               console.log('on diff', diff.type, diff.blob?.name, d.diff);
               return (
-                <ContentDoc
+                <SplitContent
                   key={d.key}
                   doc={d.diff as unknown as BlockLevelZero}
+                  id={diff.typeId}
+                  // created={!diff.previous}
                 />
               );
             }

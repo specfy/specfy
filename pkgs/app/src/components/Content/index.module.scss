@@ -56,9 +56,15 @@ ul.taskList {
 }
 
 .added {
-  background-color: #d9f7be;
+  padding: 0 $p-2xl;
+  border-left: 4px solid #d9f7be;
+  border-left: 4px solid $lime-300;
 }
 
 .removed {
-  background-color: #ffccc7;
+  padding: 0 $p-2xl;
+  text-decoration: line-through;
+  opacity: 0.7;
+  border-left: 4px solid #ffccc7;
+  border-left: 4px solid $red-300;
 }

@@ -207,3 +207,7 @@ export type BlocksWithContent =
   | BlockTaskList
   | BlockVote
   | BlockVoteItem;
+
+export type BlockWithDiff = Blocks & {
+  diff?: { added?: true; removed?: true; moved?: boolean; unchanged?: true };
+};

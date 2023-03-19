@@ -109,10 +109,10 @@ export async function seedRevisions(
   };
   delete content[6];
   delete content[10];
-  content.splice(15, 0, {
+  content.splice(12, 0, {
     type: 'heading',
-    content: [{ type: 'text', text: 'Added' }],
-    attrs: { level: 1, uid: nanoid() },
+    content: [{ type: 'text', text: 'Implementations Details' }],
+    attrs: { level: 3, uid: nanoid() },
   });
   const d1Rev = new Document({
     ...rfcs.d1.toJSON(),
