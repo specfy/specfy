@@ -3,7 +3,7 @@ import type { BlockLevelZero } from 'api/src/types/api';
 import type { Schema } from 'prosemirror-model';
 // import { Fragment, Node } from 'prosemirror-model';
 
-import { getEmptyDoc } from '../components/Editor/helpers';
+import { getEmptyDoc } from '../content';
 
 // CF: https://github.com/hamflx/prosemirror-diff/blob/master/src/DiffType.js
 // export const DiffType = {

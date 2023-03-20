@@ -6,14 +6,14 @@ import { Link } from 'react-router-dom';
 import { PrismAsyncLight } from 'react-syntax-highlighter';
 import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
+import type { Payload } from '../../common/content';
+import { map } from '../../common/content';
 import { slugify } from '../../common/string';
 import { Banner } from '../Banner';
 
 import { ContentBlockDocument } from './BlockDocument';
 import { ContentBlockStep } from './BlockStep';
 import { ContentBlockVoteItem } from './BlockVoteItem';
-import type { Payload } from './helpers';
-import { map } from './helpers';
 import cls from './index.module.scss';
 
 function styleDiff(block: BlockWithDiff): string {

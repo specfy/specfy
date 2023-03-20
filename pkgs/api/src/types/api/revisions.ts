@@ -28,7 +28,10 @@ export type ResListRevisions = {
 };
 
 // ------ POST /
-type ApiBlobCreate = Pick<DBBlobBase, 'deleted' | 'parentId' | 'typeId'> &
+type ApiBlobCreate = Pick<
+  DBBlobBase,
+  'created' | 'deleted' | 'parentId' | 'typeId'
+> &
   (DBBlobComponent | DBBlobDocument | DBBlobProject);
 
 export type ReqPostRevision = Pick<

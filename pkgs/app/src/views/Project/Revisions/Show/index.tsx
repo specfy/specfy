@@ -42,6 +42,7 @@ import {
   useGetRevision,
   useGetRevisionChecks,
 } from '../../../../api/revisions';
+import { getEmptyDoc } from '../../../../common/content';
 import { diffTwoBlob } from '../../../../common/diff';
 import { Card } from '../../../../components/Card';
 import { Container } from '../../../../components/Container';
@@ -49,7 +50,6 @@ import { ContentDoc } from '../../../../components/Content';
 import type { BlobWithDiff } from '../../../../components/DiffCard';
 import { DiffCard } from '../../../../components/DiffCard';
 import { Editor } from '../../../../components/Editor';
-import { getEmptyDoc } from '../../../../components/Editor/helpers';
 import { FakeInput } from '../../../../components/Input';
 import { SidebarBlock } from '../../../../components/SidebarBlock';
 import { StatusTag } from '../../../../components/StatusTag';

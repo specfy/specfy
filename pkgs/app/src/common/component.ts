@@ -50,8 +50,7 @@ import { nanoid } from 'api/src/common/id';
 import type { ApiComponent } from 'api/src/types/api';
 import type { GraphEdge } from 'api/src/types/db';
 
-import { getEmptyDoc } from '../components/Editor/helpers';
-
+import { getEmptyDoc } from './content';
 import type { ComponentsState, ProjectState } from './store';
 
 /*

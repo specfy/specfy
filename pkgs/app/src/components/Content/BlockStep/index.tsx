@@ -3,9 +3,9 @@ import type { ApiDocument, BlockDocument, BlockStep } from 'api/src/types/api';
 import classnames from 'classnames';
 import { useEffect, useRef, useState } from 'react';
 
+import type { Payload } from '../../../common/content';
+import { map } from '../../../common/content';
 import { ContentBlockDocument } from '../BlockDocument';
-import type { Payload } from '../helpers';
-import { map } from '../helpers';
 
 import cls from './index.module.scss';
 

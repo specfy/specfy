@@ -16,6 +16,7 @@ export async function seedPolicies([u1]: User[]) {
           type: 'heading',
           attrs: {
             level: 2,
+            uid: 'UidgrPPP001',
           },
           content: [
             {
@@ -38,6 +39,7 @@ export async function seedPolicies([u1]: User[]) {
           type: 'heading',
           attrs: {
             level: 2,
+            uid: 'UidgrPPP002',
           },
           content: [
             {
@@ -50,6 +52,7 @@ export async function seedPolicies([u1]: User[]) {
           type: 'heading',
           attrs: {
             level: 2,
+            uid: 'UidgrPPP003',
           },
           content: [
             {
@@ -62,6 +65,7 @@ export async function seedPolicies([u1]: User[]) {
           type: 'heading',
           attrs: {
             level: 2,
+            uid: 'UidgrPPP004',
           },
           content: [
             {
@@ -74,6 +78,7 @@ export async function seedPolicies([u1]: User[]) {
           type: 'heading',
           attrs: {
             level: 2,
+            uid: 'UidgrPPP005',
           },
           content: [
             {
@@ -86,6 +91,7 @@ export async function seedPolicies([u1]: User[]) {
           type: 'heading',
           attrs: {
             level: 2,
+            uid: 'UidgrPPP006',
           },
           content: [
             {
@@ -98,6 +104,7 @@ export async function seedPolicies([u1]: User[]) {
           type: 'heading',
           attrs: {
             level: 2,
+            uid: 'UidgrPPP007',
           },
           content: [
             {
@@ -127,6 +134,7 @@ export async function seedPolicies([u1]: User[]) {
       content: [
         {
           type: 'paragraph',
+          attrs: { uid: 'UidgrPPP008' },
           content: [
             {
               type: 'text',
@@ -136,6 +144,7 @@ export async function seedPolicies([u1]: User[]) {
         },
         {
           type: 'paragraph',
+          attrs: { uid: 'UidgrPPP009' },
           content: [
             {
               type: 'text',
@@ -155,6 +164,7 @@ export async function seedPolicies([u1]: User[]) {
       content: [
         {
           type: 'paragraph',
+          attrs: { uid: 'UidgrPPP010' },
           content: [
             {
               type: 'text',

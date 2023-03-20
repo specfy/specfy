@@ -13,8 +13,9 @@ import type { BlockLevelZero } from 'api/src/types/api';
 import type React from 'react';
 import { useMemo, useEffect } from 'react';
 
+import { removeEmptyContent } from '../../common/content';
+
 import { BubbleMenu } from './BubbleMenu';
-import { removeEmptyContent } from './helpers';
 import cls from './mini.module.scss';
 
 const Editor: React.FC<{

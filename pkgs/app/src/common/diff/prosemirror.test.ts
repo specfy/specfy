@@ -1,10 +1,10 @@
 import { Editor } from '@tiptap/react';
 import { describe, expect, it } from 'vitest';
 
-import { createEditorSchema } from '../components/Editor';
-import { getEmptyDoc } from '../components/Editor/helpers';
+import { createEditorSchema } from '../../components/Editor';
+import { getEmptyDoc } from '../content';
 
-import { diffEditor } from './diffProsemirror';
+import { diffEditor } from './prosemirror';
 
 describe('diff', () => {
   const editor = new Editor({

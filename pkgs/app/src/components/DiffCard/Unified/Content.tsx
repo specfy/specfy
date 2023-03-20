@@ -4,8 +4,8 @@ import type { BlockLevelZero, BlockWithDiff } from 'api/src/types/api';
 import classnames from 'classnames';
 import { useMemo, useState } from 'react';
 
+import type { Payload } from '../../../common/content';
 import { ContentBlock } from '../../Content';
-import type { Payload } from '../../Content/helpers';
 
 import cls from './content.module.scss';
 

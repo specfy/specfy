@@ -4,9 +4,9 @@ import type { BlockVoteItem } from 'api/src/types/api';
 import classnames from 'classnames';
 import { useState } from 'react';
 
+import type { Payload } from '../../../common/content';
+import { map } from '../../../common/content';
 import { AvatarAuto } from '../../AvatarAuto';
-import type { Payload } from '../helpers';
-import { map } from '../helpers';
 
 import cls from './index.module.scss';
 

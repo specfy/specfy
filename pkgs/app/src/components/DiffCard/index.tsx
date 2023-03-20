@@ -42,6 +42,18 @@ const DiffCardComponent: React.FC<{
       </>
     );
   }
+  if (diff.created) {
+    return (
+      <>
+        <div className={cls.content}>
+          <ContentDoc
+            doc={(diff.blob as ApiComponent).description}
+            id={diff.typeId}
+          />
+        </div>
+      </>
+    );
+  }
 
   return (
     <>

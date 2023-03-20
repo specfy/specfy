@@ -11,8 +11,8 @@ import { produce } from 'immer';
 import { create } from 'zustand';
 
 import type { BlobWithDiff } from '../components/DiffCard';
-import { getEmptyDoc } from '../components/Editor/helpers';
 
+import { getEmptyDoc } from './content';
 import { slugify } from './string';
 
 export type Allowed = ApiComponent | ApiDocument | ApiProject;

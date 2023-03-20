@@ -2,11 +2,11 @@ import { Editor } from '@tiptap/react';
 import type { ApiBlobWithPrevious, ApiComponent } from 'api/src/types/api';
 import { diffJson, diffWordsWithSpace } from 'diff';
 
-import type { BlobWithDiff } from '../components/DiffCard';
-import { createEditorSchema } from '../components/Editor';
-import { getEmptyDoc } from '../components/Editor/helpers';
+import type { BlobWithDiff } from '../../components/DiffCard';
+import { createEditorSchema } from '../../components/Editor';
+import { getEmptyDoc } from '../content';
 
-import { diffEditor } from './diffProsemirror';
+import { diffEditor } from './prosemirror';
 
 const IGNORED = [
   'id',
@@ -108,20 +108,32 @@ export function diffTwoBlob(blob: ApiBlobWithPrevious): BlobWithDiff {
           value ? JSON.parse(JSON.stringify(value)) : getEmptyDoc(true)
         ),
       });
-    } else if (
-      (value != null && typeof value == 'object') ||
-      Array.isArray(value)
-    ) {
+      continue;
+    }
+    if (key === 'edges') {
+      clean.diffs.push({
+        key,
+        diff: diffEditor(
+          editor.schema,
+          prev ? JSON.parse(JSON.stringify(prev)) : getEmptyDoc(true),
+          value ? JSON.parse(JSON.stringify(value)) : getEmptyDoc(true)
+        ),
+      });
+      continue;
+    }
+
+    if ((value != null && typeof value == 'object') || Array.isArray(value)) {
       clean.diffs.push({
         key,
         diff: diffJson(prev, value),
       });
-    } else {
-      clean.diffs.push({
-        key,
-        diff: diffWordsWithSpace(prev, `${value}`),
-      });
+      continue;
     }
+
+    clean.diffs.push({
+      key,
+      diff: diffWordsWithSpace(prev, `${value}`),
+    });
   }
 
   return clean;

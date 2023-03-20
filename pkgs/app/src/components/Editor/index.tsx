@@ -27,6 +27,8 @@ import { useEditor, EditorContent, Mark, mergeAttributes } from '@tiptap/react';
 import type { BlockLevelZero } from 'api/src/types/api';
 import { useEffect } from 'react';
 
+import { removeEmptyContent } from '../../common/content';
+
 import { BubbleMenu } from './BubbleMenu';
 import { FloatingMenu } from './FloatingMenu';
 import { Banner } from './extensions/Banner';
@@ -37,7 +39,6 @@ import { CustomFloatingMenu } from './extensions/CustomFloatingMenu';
 import { Step } from './extensions/Step';
 import { Vote } from './extensions/Vote';
 import { VoteItem } from './extensions/VoteItem';
-import { removeEmptyContent } from './helpers';
 import cls from './index.module.scss';
 
 export interface Props {
