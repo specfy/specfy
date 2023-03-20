@@ -36,28 +36,28 @@ $min-height: 34px;
     }
   }
 
-  .item {
-    display: inline-flex;
-    gap: $p-s;
-    align-items: center;
+}
 
-    min-width: 120px;
-    padding: $p-xs $p-l;
+.item {
+  display: inline-flex;
+  gap: $p-s;
+  align-items: center;
 
-    font-size: $font;
-    color: $gray-700;
+  min-width: 120px;
+  padding: $p-xs $p-l;
 
-    background: $slate-50;
-    border-radius: 10px;
+  font-size: $font;
+  color: $gray-700;
 
-    &:hover {
-      color: $primary;
-      background: $slate-100;
-    }
+  background: $slate-50;
+  border-radius: 10px;
 
-    >svg {
-      font-size: $font-s;
-    }
+  &:hover {
+    color: $primary;
+    background: $slate-100;
   }
 
+  >svg {
+    font-size: $font-s;
+  }
 }

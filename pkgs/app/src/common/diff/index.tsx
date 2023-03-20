@@ -6,6 +6,7 @@ import type { BlobWithDiff } from '../../components/DiffCard';
 import { createEditorSchema } from '../../components/Editor';
 import { getEmptyDoc } from '../content';
 
+import { diffObjectsArray, diffStringArray } from './array';
 import { diffEditor } from './prosemirror';
 
 const IGNORED = [
@@ -81,7 +82,10 @@ export function diffTwoBlob(blob: ApiBlobWithPrevious): BlobWithDiff {
     if (IGNORED.includes(key)) {
       continue;
     }
-    if (blob.type === 'component' && IGNORED_COMPONENT.includes(key)) {
+    if (
+      blob.type === 'component' &&
+      IGNORED_COMPONENT.includes(key as keyof ApiComponent)
+    ) {
       continue;
     }
 
@@ -113,11 +117,14 @@ export function diffTwoBlob(blob: ApiBlobWithPrevious): BlobWithDiff {
     if (key === 'edges') {
       clean.diffs.push({
         key,
-        diff: diffEditor(
-          editor.schema,
-          prev ? JSON.parse(JSON.stringify(prev)) : getEmptyDoc(true),
-          value ? JSON.parse(JSON.stringify(value)) : getEmptyDoc(true)
-        ),
+        diff: diffObjectsArray(prev || [], value || [], 'to'),
+      });
+      continue;
+    }
+    if (key === 'tech') {
+      clean.diffs.push({
+        key,
+        diff: diffStringArray(prev || [], value || []),
       });
       continue;
     }

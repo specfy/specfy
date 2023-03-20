@@ -22,12 +22,11 @@ import { TableRow } from '@tiptap/extension-table-row';
 import { TaskItem } from '@tiptap/extension-task-item';
 import { TaskList } from '@tiptap/extension-task-list';
 import { Text } from '@tiptap/extension-text';
-import { Schema } from '@tiptap/pm/model';
 import { useEditor, EditorContent, Mark, mergeAttributes } from '@tiptap/react';
 import type { BlockLevelZero } from 'api/src/types/api';
 import { useEffect } from 'react';
 
-import { removeEmptyContent } from '../../common/content';
+import { addUidToSchema, removeEmptyContent } from '../../common/content';
 
 import { BubbleMenu } from './BubbleMenu';
 import { FloatingMenu } from './FloatingMenu';
@@ -146,31 +145,7 @@ export const Editor: React.FC<Props> = (props) => {
     ...createEditorSchema(props),
 
     onBeforeCreate: (p) => {
-      const schema = p.editor.schema;
-      const spec = schema.spec;
-
-      // We add uid to all extensions
-      for (const node of Object.values(schema.nodes)) {
-        if (node.name === 'text' || node.name === 'doc') {
-          continue;
-        }
-        const def = spec.nodes.get(node.name)!;
-        spec.nodes = spec.nodes.update(node.name, {
-          ...def,
-          attrs: {
-            ...def.attrs,
-            uid: {
-              default: null,
-            },
-          },
-        });
-      }
-
-      p.editor.schema = new Schema({
-        nodes: spec.nodes,
-        marks: spec.marks,
-        topNode: spec.topNode,
-      });
+      addUidToSchema(p.editor);
     },
     onUpdate: (p) => {
       props.onUpdate(removeEmptyContent(p.editor.getJSON() as any));

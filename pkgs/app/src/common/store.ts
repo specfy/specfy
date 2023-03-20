@@ -4,6 +4,7 @@ import type {
   ApiComponent,
   ApiDocument,
   ApiProject,
+  ApiRevision,
   BlockLevelZero,
 } from 'api/src/types/api';
 import type { Change } from 'diff';
@@ -19,9 +20,17 @@ export type Allowed = ApiComponent | ApiDocument | ApiProject;
 
 export type TmpBlob = ApiBlobWithPrevious;
 
-export interface ComputedForDiff {
-  key: string;
-  diff: BlockLevelZero | Change[];
+export interface DiffObjectsArray<T> {
+  added: T[];
+  deleted: T[];
+  unchanged: T[];
+  modified: T[];
+  changes: number;
+}
+
+export interface ComputedForDiff<T = string> {
+  key: T;
+  diff: BlockLevelZero | Change[] | DiffObjectsArray<any>;
 }
 
 const originalStore: Allowed[] = [];
@@ -259,5 +268,24 @@ export const useDocumentsStore = create<DocumentsState>()((set, get) => ({
     const comp = get().documents[id];
     const item = originalStore.find((i): i is ApiDocument => comp.id === i.id)!;
     get().updateField(id, field, item[field]);
+  },
+}));
+
+// ------------------------------------------ Revision Store
+interface RevisionState {
+  current: ApiRevision | null;
+  blobs: ApiBlobWithPrevious[];
+  setCurrent: (current: ApiRevision | null) => void;
+  setBlobs: (blobs: ApiBlobWithPrevious[]) => void;
+}
+
+export const useRevisionStore = create<RevisionState>()((set) => ({
+  current: null,
+  blobs: [],
+  setCurrent: (current) => {
+    set({ current });
+  },
+  setBlobs: (blobs) => {
+    set({ blobs });
   },
 }));

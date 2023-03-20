@@ -1,7 +1,7 @@
 @import "../../../styles/theme";
 
 .group {
-  margin-bottom: $p-xl;
+  margin-bottom: 0;
 }
 
 .unchanged {
@@ -27,5 +27,5 @@
 }
 
 .unchangedContent {
-  padding: $p-2xl $p-2xl 0 $p-2xl;
+  padding: 0 0 $p-2xl 0;
 }

@@ -16,6 +16,21 @@ export interface Line {
   children?: React.ReactElement;
 }
 
+export const ComponentItem: React.FC<{
+  techId?: keyof typeof supportedIndexed | null;
+  children: React.ReactNode;
+  className?: string;
+}> = ({ children, techId, className }) => {
+  const Icon =
+    techId && techId in supportedIndexed && supportedIndexed[techId].Icon;
+  return (
+    <span className={classnames(cls.item, className)}>
+      {Icon && <Icon size="1em" />}
+      {children}
+    </span>
+  );
+};
+
 const InternalLine: React.FC<
   Line & {
     items?: React.ReactElement[];
@@ -64,19 +79,19 @@ export const ComponentLineTech: React.FC<
     <InternalLine
       {...rest}
       params={params}
-      items={techs?.map((tech) => {
-        const supp = tech in supportedIndexed ? supportedIndexed[tech] : null;
-        const Icon = supp?.Icon;
-        const slug = supp?.key || tech.toLocaleLowerCase();
+      items={techs?.map((techId) => {
+        const supp =
+          techId in supportedIndexed ? supportedIndexed[techId] : null;
+        const slug = supp?.key || techId.toLocaleLowerCase();
 
         return (
           <Link
-            key={tech}
+            key={techId}
             to={`/${params.org_id}/${params.project_slug}/t/${slug}`}
-            className={cls.item}
           >
-            {Icon && <Icon size="1em" />}
-            {supp?.name || tech}
+            <ComponentItem techId={techId}>
+              {supp?.name || techId}
+            </ComponentItem>
           </Link>
         );
       })}
@@ -94,19 +109,12 @@ export const ComponentLine: React.FC<Line & { comps?: ApiComponent[] }> = ({
       {...rest}
       params={params}
       items={comps?.map((c) => {
-        const Icon =
-          c.techId &&
-          c.techId in supportedIndexed &&
-          supportedIndexed[c.techId].Icon;
-
         return (
           <Link
             key={c.id}
             to={`/${params.org_id}/${params.project_slug}/c/${c.id}-${c.slug}`}
-            className={cls.item}
           >
-            {Icon && <Icon size="1em" />}
-            {c.name}
+            <ComponentItem techId={c.techId}>{c.name}</ComponentItem>
           </Link>
         );
       })}

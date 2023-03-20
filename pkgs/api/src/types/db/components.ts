@@ -15,7 +15,7 @@ export interface DBComponent {
   name: string;
   slug: string;
   description: BlockLevelZero;
-  tech: string[] | null;
+  tech: string[];
 
   display: GraphItemDisplay;
   edges: GraphEdge[];

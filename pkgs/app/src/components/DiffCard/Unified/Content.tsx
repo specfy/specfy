@@ -1,5 +1,6 @@
 // import { IconFold } from '@tabler/icons-react';
 // import { Button } from 'antd';
+import { Typography } from 'antd';
 import type { BlockLevelZero, BlockWithDiff } from 'api/src/types/api';
 import classnames from 'classnames';
 import { useMemo, useState } from 'react';
@@ -73,7 +74,7 @@ export const UnifiedContent: React.FC<{ doc: BlockLevelZero; id: string }> = ({
   }, [doc]);
 
   return (
-    <div>
+    <Typography>
       {grouped.map(({ blocks, unchanged }, a) => {
         const comp = blocks.map((blk, i) => {
           return <ContentBlock block={blk} key={i} pl={payload} />;
@@ -83,6 +84,6 @@ export const UnifiedContent: React.FC<{ doc: BlockLevelZero; id: string }> = ({
         }
         return <div key={a}>{comp}</div>;
       })}
-    </div>
+    </Typography>
   );
 };

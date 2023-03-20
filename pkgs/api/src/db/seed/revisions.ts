@@ -75,6 +75,7 @@ export async function seedRevisions(
     typeId: p1.id,
     orgId: 'company',
     projectId: p1.id,
+    techId: 'pubsub',
     description: {
       type: 'doc',
       content: [
@@ -91,8 +92,18 @@ export async function seedRevisions(
       ],
     },
     display: { zIndex: 3, pos: { x: 450, y: 90, width: 100, height: 32 } },
-    inComponent: null,
-    edges: [],
+    inComponent: components.gce.id,
+    tech: [],
+    edges: [
+      {
+        to: components.api.id,
+        read: false,
+        write: true,
+        vertices: [],
+        portSource: 'left',
+        portTarget: 'top',
+      },
+    ],
   });
   const blob2 = await RevisionBlob.create({
     orgId: 'company',
@@ -116,8 +127,12 @@ export async function seedRevisions(
     portSource: 'right',
     portTarget: 'left',
   });
+  edges[0].write = false;
+  const tech = ['golang', ...components.api.tech];
+  tech.pop();
   const component2Rev = new Component({
     ...components.api.toJSON(),
+    tech,
     description: {
       type: 'doc',
       content: [

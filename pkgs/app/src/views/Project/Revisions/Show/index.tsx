@@ -44,6 +44,7 @@ import {
 } from '../../../../api/revisions';
 import { getEmptyDoc } from '../../../../common/content';
 import { diffTwoBlob } from '../../../../common/diff';
+import { useRevisionStore } from '../../../../common/store';
 import { Card } from '../../../../components/Card';
 import { Container } from '../../../../components/Container';
 import { ContentDoc } from '../../../../components/Content';
@@ -65,6 +66,7 @@ export const ProjectRevisionsShow: React.FC<{
 }> = ({ proj, params }) => {
   // Global
   const { message } = App.useApp();
+  const storeRevision = useRevisionStore();
 
   const more = useParams<Partial<RouteRevision>>();
   const [rev, setRev] = useState<ResGetRevision['data']>();
@@ -96,11 +98,13 @@ export const ProjectRevisionsShow: React.FC<{
 
   useEffect(() => {
     if (!res.data) return;
-    setRev(res.data?.data);
+    setRev(res.data.data);
+    storeRevision.setCurrent(res.data.data);
   }, [res.isFetched]);
   useEffect(() => {
     if (!resBlobs.data) return;
-    setBlobs(resBlobs.data?.data);
+    setBlobs(resBlobs.data.data);
+    storeRevision.setBlobs(resBlobs.data.data);
   }, [resBlobs.isFetched]);
   useEffect(() => {
     if (!resChecks.data) return;

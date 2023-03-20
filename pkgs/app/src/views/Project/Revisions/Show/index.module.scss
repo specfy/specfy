@@ -32,15 +32,21 @@
   }
 
   .reviewBar {
+    position: sticky;
+    z-index: 1;
+    top: 0;
+
     display: flex;
     grid-area: review;
     flex-direction: row;
+    align-items: center;
     justify-content: flex-end;
 
-    padding-top: $p-2xl;
-    position: sticky;
-    top: 0;
-    z-index: 1;
+    height: 50px;
+    padding: $p-l $p-l;
+
+    background-color: #fff;
+    box-shadow: $box-shadow;
   }
 }
 

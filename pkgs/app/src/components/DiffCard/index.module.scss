@@ -1,5 +1,7 @@
 @import "../../styles/theme";
 
+$border-width: 10px;
+
 .header {
   display: flex;
   gap: $p;
@@ -13,9 +15,10 @@
 .diff {
   position: relative;
   height: auto;
+  border-left: $border-width solid transparent;
 
   .diffContent {
-    padding: $p-2xl 0 $p-2xl 0;
+    padding: 0 0 $p-4xl 0;
   }
 
   &.hide {
@@ -23,40 +26,56 @@
     height: 0;
   }
 
-  &.unified {
-    // width: 50%;
+  &.added,
+  &.removed {
+    margin: 0;
+    padding-left: 0;
+
+    .title {
+      padding: 0 $p-4xl;
+    }
   }
 }
 
 .title {
-  // margin-bottom: 0 !important;
-  padding: 0 $p-2xl;
+  padding: 0 $p-4xl;
 }
 
 
 // Diff
 .addedInline {
-  background-color: $lime-200;
+  background-color: $lime-200 !important;
 }
 
 .added {
+  margin: 0 (-$p-4xl) 0 (-$p-4xl - $border-width);
+  padding-left: $p-4xl;
   background-color: $lime-50;
-  border-left: 10px solid $lime-200;
+  border-left: $border-width solid $lime-200;
 }
 
 .removedInline {
-  background-color: $red-200;
+  text-decoration: line-through;
+  background-color: $red-200 !important;
 }
 
 .removed {
+  margin: 0 (-$p-4xl) 0 (-$p-4xl - $border-width);
+  padding-left: $p-4xl;
+
   text-decoration: line-through;
+
   opacity: 0.7;
   background-color: $red-50;
-  border-left: 10px solid $red-200;
+  border-left: $border-width solid $red-200;
 }
 
 .content {
-  padding: $p-2xl $p-2xl 0 $p-2xl;
+  padding: $p-2xl $p-4xl 0 $p-4xl;
+
+  >h3 {
+    margin-bottom: $p-2xl !important;
+  }
 }
 
 .fileDeleted {
@@ -72,6 +91,30 @@
 
   font-family: $font-code;
   font-size: $font-s;
-  color: $red-900;
   font-weight: 600;
+  color: $red-900;
+}
+
+.line {
+  padding-top: $p-m;
+
+  >div {
+    padding-top: $p-s;
+    padding-bottom: $p-s;
+  }
+}
+
+.techs {
+  display: flex;
+  gap: $p-m;
+}
+
+.icon {
+  display: inline-flex;
+
+  margin-right: $p-l;
+
+  font-size: $font-xxl;
+  color: $gray-500;
+  vertical-align: sub;
 }

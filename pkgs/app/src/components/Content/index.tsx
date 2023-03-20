@@ -10,6 +10,7 @@ import type { Payload } from '../../common/content';
 import { map } from '../../common/content';
 import { slugify } from '../../common/string';
 import { Banner } from '../Banner';
+import clsDiff from '../DiffCard/index.module.scss';
 
 import { ContentBlockDocument } from './BlockDocument';
 import { ContentBlockStep } from './BlockStep';
@@ -22,10 +23,10 @@ function styleDiff(block: BlockWithDiff): string {
   }
 
   if (block.diff.added) {
-    return cls.added;
+    return clsDiff.added;
   }
   if (block.diff.removed) {
-    return cls.removed;
+    return clsDiff.removed;
   }
   return '';
 }
@@ -120,7 +121,11 @@ export const ContentBlock: React.FC<{
 
   // Blockquote
   else if (block.type === 'blockquote') {
-    return <blockquote className={stl}>{map(block, pl)}</blockquote>;
+    return (
+      <div className={stl}>
+        <blockquote>{map(block, pl)}</blockquote>
+      </div>
+    );
   }
 
   // Horizontal

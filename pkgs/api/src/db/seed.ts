@@ -99,10 +99,11 @@ export async function seed() {
       zIndex: 1,
       pos: { x: -80, y: 20, width: 490, height: 370 },
     },
+    tech: [],
     inComponent: null,
     edges: [],
   });
-  const compute = await Component.create({
+  const gce = await Component.create({
     id: 'jZDC3Lsc02',
     name: 'GCE',
     type: 'hosting',
@@ -114,6 +115,7 @@ export async function seed() {
       zIndex: 2,
       pos: { x: -60, y: 320, width: 150, height: 55 },
     },
+    tech: [],
     inComponent: gcp.id,
     edges: [],
   });
@@ -129,6 +131,7 @@ export async function seed() {
       zIndex: 2,
       pos: { x: 150, y: 50, width: 240, height: 300 },
     },
+    tech: [],
     inComponent: gcp.id,
     edges: [],
   });
@@ -143,6 +146,7 @@ export async function seed() {
     display: { zIndex: 3, pos: { x: -10, y: 190, width: 100, height: 32 } },
     inComponent: gcp.id,
     edges: [],
+    tech: [],
   });
   const dd = await Component.create({
     id: 'jZDC3Lsc05',
@@ -155,6 +159,7 @@ export async function seed() {
     display: { zIndex: 3, pos: { x: 450, y: 190, width: 100, height: 32 } },
     inComponent: null,
     edges: [],
+    tech: [],
   });
   const sentry = await Component.create({
     id: 'jZDC3Lsc06',
@@ -167,6 +172,7 @@ export async function seed() {
     display: { zIndex: 3, pos: { x: 450, y: 250, width: 100, height: 32 } },
     inComponent: null,
     edges: [],
+    tech: [],
   });
   const algolia = await Component.create({
     id: 'jZDC3Lsc07',
@@ -179,6 +185,7 @@ export async function seed() {
     display: { zIndex: 3, pos: { x: 450, y: 310, width: 100, height: 32 } },
     inComponent: null,
     edges: [],
+    tech: [],
   });
   const redis = await Component.create({
     id: 'jZDC3Lsc08',
@@ -191,6 +198,7 @@ export async function seed() {
     display: { zIndex: 3, pos: { x: -10, y: 120, width: 100, height: 32 } },
     inComponent: gcp.id,
     edges: [],
+    tech: [],
   });
   const es = await Component.create({
     id: 'jZDC3Lsc09',
@@ -201,8 +209,9 @@ export async function seed() {
     techId: 'elasticsearch',
     description: { type: 'doc', content: [] },
     display: { zIndex: 3, pos: { x: -40, y: 330, width: 100, height: 32 } },
-    inComponent: compute.id,
+    inComponent: gce.id,
     edges: [],
+    tech: [],
   });
   const rabbit = await Component.create({
     id: 'jZDC3Lsc10',
@@ -215,6 +224,7 @@ export async function seed() {
     display: { zIndex: 3, pos: { x: 210, y: 240, width: 100, height: 32 } },
     inComponent: kube.id,
     edges: [],
+    tech: [],
   });
   const analytics = await Component.create({
     id: 'jZDC3Lsc11',
@@ -227,6 +237,7 @@ export async function seed() {
     display: { zIndex: 3, pos: { x: 450, y: 90, width: 100, height: 32 } },
     inComponent: null,
     edges: [],
+    tech: [],
   });
   const api = await Component.create({
     id: 'jZDC3Lsc12',
@@ -493,7 +504,7 @@ export async function seed() {
     ],
     tech: ['nodejs', 'typescript'],
   });
-  await seedRevisions(p1, users, rfcs, { api, pg });
+  await seedRevisions(p1, users, rfcs, { api, pg, gce });
 
   await seedPolicies([u1]);
 }

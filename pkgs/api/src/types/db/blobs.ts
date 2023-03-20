@@ -9,8 +9,6 @@ export type DBBlobBase = {
   orgId: string;
   projectId: string;
 
-  type: 'component' | 'document' | 'project';
-  blob: DBBlobAll | null;
   typeId: string;
   parentId: string | null;
   created: boolean;
@@ -20,21 +18,20 @@ export type DBBlobBase = {
   updatedAt: string;
 };
 
-export type DBBlobDocument = {
+export type DBBlobDocument = DBBlobBase & {
   type: 'document';
   blob: DBDocument | null;
 };
-export type DBBlobComponent = {
+export type DBBlobComponent = DBBlobBase & {
   type: 'component';
   blob: DBComponent | null;
 };
-export type DBBlobProject = {
+export type DBBlobProject = DBBlobBase & {
   type: 'project';
   blob: DBProject | null;
 };
 
-export type DBBlob = DBBlobBase &
-  (DBBlobComponent | DBBlobDocument | DBBlobProject);
+export type DBBlob = DBBlobComponent | DBBlobDocument | DBBlobProject;
 
 export function isDocumentBlob(blob: any): blob is DBBlobBase & DBBlobDocument {
   return blob.type === 'document';
