@@ -73,7 +73,7 @@ export const UnifiedContent: React.FC<{ doc: BlockLevelZero; id: string }> = ({
   }, [doc]);
 
   return (
-    <div className={cls.content}>
+    <div>
       {grouped.map(({ blocks, unchanged }, a) => {
         const comp = blocks.map((blk, i) => {
           return <ContentBlock block={blk} key={i} pl={payload} />;

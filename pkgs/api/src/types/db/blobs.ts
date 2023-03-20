@@ -13,6 +13,7 @@ export type DBBlobBase = {
   blob: DBBlobAll | null;
   typeId: string;
   parentId: string | null;
+  created: boolean;
   deleted: boolean;
 
   createdAt: string;

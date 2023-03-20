@@ -6,6 +6,7 @@ import {
 import { Button, Tag, Typography } from 'antd';
 import type {
   ApiBlobWithPrevious,
+  ApiComponent,
   ApiDocument,
   BlockLevelZero,
 } from 'api/src/types/api';
@@ -13,11 +14,13 @@ import classnames from 'classnames';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import type { ComputedForDiff } from '../../common/store';
+import { TYPE_TO_TEXT } from '../../common/document';
+import type { Allowed, ComputedForDiff } from '../../common/store';
 import { Card } from '../Card';
 import { ContentDoc } from '../Content';
 
 import { Split } from './Split';
+import { UnifiedDiff } from './Unified';
 import { UnifiedContent } from './Unified/Content';
 import cls from './index.module.scss';
 
@@ -26,6 +29,20 @@ export type BlobWithDiff = ApiBlobWithPrevious & { diffs: ComputedForDiff[] };
 const DiffCardComponent: React.FC<{
   diff: BlobWithDiff;
 }> = ({ diff }) => {
+  if (diff.deleted) {
+    return (
+      <>
+        <div className={cls.fileDeleted}>Component deleted</div>
+        <div className={cls.content}>
+          <ContentDoc
+            doc={(diff.previous as ApiComponent).description}
+            id={diff.typeId}
+          />
+        </div>
+      </>
+    );
+  }
+
   return (
     <>
       {diff.diffs.map((d) => {
@@ -62,6 +79,18 @@ const DiffCardDocument: React.FC<{
         <div className={cls.content}>
           <ContentDoc
             doc={(diff.previous as ApiDocument).content}
+            id={diff.typeId}
+          />
+        </div>
+      </>
+    );
+  }
+  if (diff.created) {
+    return (
+      <>
+        <div className={cls.content}>
+          <ContentDoc
+            doc={(diff.blob as ApiDocument).content}
             id={diff.typeId}
           />
         </div>
@@ -127,24 +156,18 @@ export const DiffCard: React.FC<{
     key: string
   ) => void;
 }> = ({ diff, url, onRevert }) => {
+  const using = (diff.blob || diff.previous) as Allowed;
+
   const [type, to] = useMemo<[string, string]>(() => {
     if (diff.type === 'project') {
       return ['Project', url];
     }
 
     if (diff.type === 'document') {
-      return [
-        'Documents',
-        `${url}/content/${diff.typeId}-${
-          diff.blob ? diff.blob.slug : diff.previous!.slug
-        }`,
-      ];
+      return ['Documents', `${url}/content/${diff.typeId}-${using.slug}`];
     }
 
-    return [
-      'Components',
-      `/c/${diff.typeId}-${diff.previous?.slug || diff.blob!.slug}`,
-    ];
+    return ['Components', `/c/${diff.typeId}-${using.slug}`];
   }, [diff]);
 
   const hasName = useMemo(() => {
@@ -168,7 +191,9 @@ export const DiffCard: React.FC<{
             icon={hide ? <IconCaretRight /> : <IconCaretDown />}
           />
         </div>
-        <Tag>{type}</Tag>
+        <Tag>
+          {type} / {using.name}
+        </Tag>
 
         <Link to={to}>
           <Button type="text" icon={<IconExternalLink />} size="small"></Button>
@@ -178,25 +203,32 @@ export const DiffCard: React.FC<{
         className={classnames(
           cls.diff,
           hide && cls.hide,
-          diff.deleted && cls.removed
+          diff.deleted && cls.removed,
+          diff.created && cls.added,
+          cls.unified
         )}
       >
         <div className={cls.diffContent}>
-          {hasName && (
-            <Typography.Title level={3}>
-              <Split
-                key={hasName.key}
-                diff={hasName}
-                hideLabel={true}
-                created={!diff.parentId}
-              />
-            </Typography.Title>
-          )}
-          {!hasName && (
-            <Typography.Title level={3} className={cls.unmodifiedTitle}>
-              {diff.previous?.name || diff.blob?.name || ''}
-            </Typography.Title>
-          )}
+          <Typography.Title level={3} className={cls.title}>
+            <>
+              {'content' in using && (
+                <>
+                  {TYPE_TO_TEXT[using.type]} - {using.typeId} -{' '}
+                </>
+              )}
+
+              {hasName && !diff.created ? (
+                <UnifiedDiff
+                  key={hasName.key}
+                  diff={hasName}
+                  // hideLabel={true}
+                  // created={!diff.parentId}
+                />
+              ) : (
+                using.name || ''
+              )}
+            </>
+          </Typography.Title>
 
           {diff.type === 'component' && <DiffCardComponent diff={diff} />}
           {diff.type === 'document' && <DiffCardDocument diff={diff} />}

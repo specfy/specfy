@@ -19,6 +19,7 @@ export async function seedRevisions(
   rfcs: Record<string, Document>,
   components: Record<string, Component>
 ) {
+  // --------------------------------------------------------
   // Update Project
   const projectRev = new Project({
     ...p1.toJSON(),
@@ -57,6 +58,7 @@ export async function seedRevisions(
     id: '00000000-0000-4000-0000-000000000000',
     orgId: 'company',
     projectId: p1.id,
+    created: false,
     deleted: false,
     type: 'project',
     typeId: p1.id,
@@ -64,6 +66,7 @@ export async function seedRevisions(
     blob: projectRev.getJsonForBlob(),
   });
 
+  // --------------------------------------------------------
   // Create component
   const componentRev = new Component({
     id: 'jZDC3Lsc99',
@@ -72,7 +75,21 @@ export async function seedRevisions(
     typeId: p1.id,
     orgId: 'company',
     projectId: p1.id,
-    description: { type: 'doc', content: [] },
+    description: {
+      type: 'doc',
+      content: [
+        {
+          type: 'paragraph',
+          attrs: { uid: nanoid() },
+          content: [
+            {
+              type: 'text',
+              text: `Suspendisse vel congue arcu. Sed id sagittis justo. Maecenas feugiat at turpis in iaculis. Quisque vel lectus dolor. Donec finibus interdum lectus, ac dictum nisl faucibus mattis. Curabitur a quam laoreet, feugiat nulla a, rutrum augue. Duis eu varius ex. Aliquam a iaculis mauris. Sed congue dui sed risus blandit, id aliquet est aliquet. Vestibulum bibendum felis in augue pretium, ac lacinia purus gravida. Donec sed lacus facilisis ante laoreet porta id sit amet nulla. Pellentesque efficitur tincidunt eros id posuere.`,
+            },
+          ],
+        },
+      ],
+    },
     display: { zIndex: 3, pos: { x: 450, y: 90, width: 100, height: 32 } },
     inComponent: null,
     edges: [],
@@ -80,55 +97,12 @@ export async function seedRevisions(
   const blob2 = await RevisionBlob.create({
     orgId: 'company',
     projectId: p1.id,
+    created: true,
     deleted: false,
     type: 'component',
     typeId: componentRev.id,
     parentId: null,
     blob: componentRev.getJsonForBlob(),
-  });
-
-  // Delete RFC
-  const blob3 = await RevisionBlob.create({
-    orgId: 'company',
-    projectId: p1.id,
-    deleted: true,
-    type: 'document',
-    typeId: rfcs.d2.id,
-    parentId: rfcs.d2.blobId,
-    blob: null,
-  });
-
-  // Update RFC
-  const content: BlockLevelOne[] = JSON.parse(
-    JSON.stringify(rfcs.d1.content.content)
-  );
-  content[2] = {
-    type: 'heading',
-    content: [{ type: 'text', text: 'Goals' }],
-    attrs: { level: 1, uid: content[2].attrs.uid },
-  };
-  delete content[6];
-  delete content[10];
-  content.splice(12, 0, {
-    type: 'heading',
-    content: [{ type: 'text', text: 'Implementations Details' }],
-    attrs: { level: 3, uid: nanoid() },
-  });
-  const d1Rev = new Document({
-    ...rfcs.d1.toJSON(),
-    content: {
-      type: 'doc',
-      content: content.filter(Boolean),
-    },
-  });
-  const blob4 = await RevisionBlob.create({
-    orgId: 'company',
-    projectId: p1.id,
-    deleted: false,
-    type: 'document',
-    typeId: rfcs.d1.id,
-    parentId: rfcs.d1.blobId,
-    blob: d1Rev.getJsonForBlob(),
   });
 
   // Update component
@@ -162,14 +136,111 @@ export async function seedRevisions(
     display: { zIndex: 3, pos: { x: 450, y: 90, width: 140, height: 42 } },
     edges: edges,
   });
-  const blob5 = await RevisionBlob.create({
+  const blob3 = await RevisionBlob.create({
     orgId: 'company',
     projectId: p1.id,
+    created: false,
     deleted: false,
     type: 'component',
     typeId: components.api.id,
     parentId: components.api.blobId,
     blob: component2Rev.getJsonForBlob(),
+  });
+
+  // Delete component
+  const blob4 = await RevisionBlob.create({
+    orgId: 'company',
+    projectId: p1.id,
+    created: false,
+    deleted: true,
+    type: 'component',
+    typeId: components.pg.id,
+    parentId: components.pg.blobId,
+    blob: null,
+  });
+
+  // --------------------------------------------------------
+  // Create RFC
+  const d2Rev = new Document({
+    ...rfcs.d1.toJSON(),
+    id: nanoid(),
+    name: 'Use RabbitMQ to publish jobs',
+    content: {
+      type: 'doc',
+      content: [
+        {
+          type: 'heading',
+          content: [{ type: 'text', text: 'Implementations Details' }],
+          attrs: { level: 3, uid: nanoid() },
+        },
+        {
+          type: 'paragraph',
+          attrs: { uid: nanoid() },
+          content: [
+            {
+              type: 'text',
+              text: `Suspendisse vel congue arcu. Sed id sagittis justo. Maecenas feugiat at turpis in iaculis. Quisque vel lectus dolor. Donec finibus interdum lectus, ac dictum nisl faucibus mattis. Curabitur a quam laoreet, feugiat nulla a, rutrum augue. Duis eu varius ex. Aliquam a iaculis mauris. Sed congue dui sed risus blandit, id aliquet est aliquet. Vestibulum bibendum felis in augue pretium, ac lacinia purus gravida. Donec sed lacus facilisis ante laoreet porta id sit amet nulla. Pellentesque efficitur tincidunt eros id posuere.`,
+            },
+          ],
+        },
+      ],
+    },
+  });
+  const blob5 = await RevisionBlob.create({
+    orgId: 'company',
+    projectId: p1.id,
+    created: true,
+    deleted: false,
+    type: 'document',
+    typeId: d2Rev.id,
+    parentId: null,
+    blob: d2Rev.getJsonForBlob(),
+  });
+
+  // Update RFC
+  const content: BlockLevelOne[] = JSON.parse(
+    JSON.stringify(rfcs.d1.content.content)
+  );
+  content[2] = {
+    type: 'heading',
+    content: [{ type: 'text', text: 'Goals' }],
+    attrs: { level: 1, uid: content[2].attrs.uid },
+  };
+  delete content[6];
+  delete content[10];
+  content.splice(12, 0, {
+    type: 'heading',
+    content: [{ type: 'text', text: 'Implementations Details' }],
+    attrs: { level: 3, uid: nanoid() },
+  });
+  const d1Rev = new Document({
+    ...rfcs.d1.toJSON(),
+    content: {
+      type: 'doc',
+      content: content.filter(Boolean),
+    },
+  });
+  const blob6 = await RevisionBlob.create({
+    orgId: 'company',
+    projectId: p1.id,
+    created: false,
+    deleted: false,
+    type: 'document',
+    typeId: rfcs.d1.id,
+    parentId: rfcs.d1.blobId,
+    blob: d1Rev.getJsonForBlob(),
+  });
+
+  // Delete RFC
+  const blob7 = await RevisionBlob.create({
+    orgId: 'company',
+    projectId: p1.id,
+    created: false,
+    deleted: true,
+    type: 'document',
+    typeId: rfcs.d2.id,
+    parentId: rfcs.d2.blobId,
+    blob: null,
   });
 
   // ----- Create revisions
@@ -195,7 +266,15 @@ export async function seedRevisions(
     },
     status: 'waiting',
     merged: false,
-    blobs: [blob1.id, blob2.id, blob3.id, blob4.id, blob5.id],
+    blobs: [
+      blob1.id,
+      blob2.id,
+      blob3.id,
+      blob4.id,
+      blob5.id,
+      blob6.id,
+      blob7.id,
+    ],
   });
 
   await TypeHasUser.create({

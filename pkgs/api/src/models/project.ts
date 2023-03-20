@@ -91,6 +91,7 @@ export class Project extends Model<
       type: 'project',
       typeId: this.id,
       blob: this.getJsonForBlob(),
+      created: true,
       deleted: false,
     };
 

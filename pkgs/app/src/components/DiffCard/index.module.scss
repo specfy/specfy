@@ -7,23 +7,7 @@
 
   padding: $p-m;
 
-  border-bottom: 1px solid $gray-100;
-}
-
-.created {
-  color: $lime-500;
-  background-color: $lime-50;
-}
-
-.deleted {
-  color: $red-500;
-  background-color: $red-50;
-}
-
-.updated {
-  color: $primary;
-  background-color: $blue-50;
-  background-color: transparent;
+  border-bottom: 1px solid $gray-200;
 }
 
 .diff {
@@ -38,19 +22,37 @@
     overflow: hidden;
     height: 0;
   }
+
+  &.unified {
+    // width: 50%;
+  }
 }
 
-.unmodifiedTitle {
-  margin-bottom: 0 !important;
+.title {
+  // margin-bottom: 0 !important;
   padding: 0 $p-2xl;
 }
 
+
+// Diff
+.addedInline {
+  background-color: $lime-200;
+}
+
+.added {
+  background-color: $lime-50;
+  border-left: 10px solid $lime-200;
+}
+
+.removedInline {
+  background-color: $red-200;
+}
 
 .removed {
   text-decoration: line-through;
   opacity: 0.7;
   background-color: $red-50;
-  border-left: 10px solid $red-300;
+  border-left: 10px solid $red-200;
 }
 
 .content {
@@ -67,4 +69,9 @@
 
   width: 100%;
   height: 100%;
+
+  font-family: $font-code;
+  font-size: $font-s;
+  color: $red-900;
+  font-weight: 600;
 }

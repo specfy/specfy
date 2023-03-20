@@ -4,8 +4,8 @@
   display: grid;
   grid-template:
     "left right"
-    "review review"
-    "staged staged" / 1fr;
+    "review empty"
+    "staged empty" / 1fr;
   row-gap: $p-2xl;
   column-gap: $p-xl;
 
@@ -38,6 +38,9 @@
     justify-content: flex-end;
 
     padding-top: $p-2xl;
+    position: sticky;
+    top: 0;
+    z-index: 1;
   }
 }
 

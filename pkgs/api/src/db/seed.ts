@@ -493,7 +493,7 @@ export async function seed() {
     ],
     tech: ['nodejs', 'typescript'],
   });
-  await seedRevisions(p1, users, rfcs, { api });
+  await seedRevisions(p1, users, rfcs, { api, pg });
 
   await seedPolicies([u1]);
 }

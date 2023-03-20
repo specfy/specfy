@@ -53,6 +53,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           typeId: blob.typeId,
           blob: blob.blob as any,
           previous: blob.previousBlob?.blob || null,
+          created: blob.created,
           deleted: blob.deleted,
           createdAt: blob.createdAt.toISOString(),
           updatedAt: blob.updatedAt.toISOString(),

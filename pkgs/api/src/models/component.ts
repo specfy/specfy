@@ -106,6 +106,7 @@ export class Component extends Model<
       type: 'component',
       typeId: model.id,
       blob: model.getJsonForBlob(),
+      created: true,
       deleted: false,
     };
     const blob = await RevisionBlob.create(body, { transaction });

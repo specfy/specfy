@@ -512,6 +512,11 @@ table "blobs" {
     type = json
     null = true
   }
+  column "created" {
+    type = boolean
+    null = false
+    default = false
+  }
   column "deleted" {
     type = boolean
     null = false

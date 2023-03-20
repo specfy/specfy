@@ -17,7 +17,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDebounce } from 'react-use';
 
 import { useListDocuments } from '../../../api/documents';
-import { typeToText } from '../../../common/document';
+import { TYPE_TO_TEXT } from '../../../common/document';
 import type { RouteProject } from '../../../types/routes';
 
 import cls from './index.module.scss';
@@ -243,7 +243,7 @@ export const ContentSidebar: React.FC<{
                   <mark>{item.center}</mark>
                   {item.after}
                   <br />
-                  {typeToText[item.doc.type]}-{item.doc.typeId}
+                  {TYPE_TO_TEXT[item.doc.type]}-{item.doc.typeId}
                 </div>
               </Link>
             );

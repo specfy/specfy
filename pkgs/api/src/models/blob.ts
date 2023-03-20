@@ -20,7 +20,14 @@ import type { Project } from './project';
 export type PropBlobCreate = Partial<Pick<DBBlob, 'id'>> &
   Pick<
     DBBlob,
-    'blob' | 'deleted' | 'orgId' | 'parentId' | 'projectId' | 'type' | 'typeId'
+    | 'blob'
+    | 'created'
+    | 'deleted'
+    | 'orgId'
+    | 'parentId'
+    | 'projectId'
+    | 'type'
+    | 'typeId'
   >;
 
 @Scopes(() => ({
@@ -56,6 +63,9 @@ export class RevisionBlob extends Model<DBBlob, PropBlobCreate> {
 
   @BelongsTo(() => RevisionBlob, 'parent_id')
   declare previousBlob: RevisionBlob | undefined;
+
+  @Column({ type: DataType.BOOLEAN })
+  declare created: CreationOptional<DBBlob['deleted']>;
 
   @Column({ type: DataType.BOOLEAN })
   declare deleted: CreationOptional<DBBlob['deleted']>;

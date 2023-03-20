@@ -8,7 +8,14 @@ import { getEmptyDoc } from '../components/Editor/helpers';
 
 import { diffEditor } from './diffProsemirror';
 
-const IGNORED = ['id', 'createdAt', 'updatedAt', 'blobId'];
+const IGNORED = [
+  'id',
+  'createdAt',
+  'updatedAt',
+  'blobId',
+  'orgId',
+  'projectId',
+];
 const IGNORED_COMPONENT: Array<keyof ApiComponent> = [
   'orgId',
   'projectId',

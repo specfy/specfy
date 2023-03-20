@@ -5,7 +5,7 @@ import type { ApiDocument, ApiProject } from 'api/src/types/api';
 import { Link } from 'react-router-dom';
 
 import { useListDocuments } from '../../api/documents';
-import { typeToText } from '../../common/document';
+import { TYPE_TO_TEXT } from '../../common/document';
 
 import cls from './index.module.scss';
 
@@ -53,7 +53,7 @@ export const ListRFCs: React.FC<{ project: ApiProject }> = ({ project }) => {
                   <span>
                     <IconFileText />
                   </span>
-                  {typeToText[item.type]}-{item.typeId} - {item.name}
+                  {TYPE_TO_TEXT[item.type]}-{item.typeId} - {item.name}
                 </Link>
               );
             }}
