@@ -1,10 +1,37 @@
-import type { BlockLevelZero, BlockWithDiff } from 'api/src/types/api';
-// import { diff_match_patch } from 'diff-match-patch';
+import type { Node, Mark } from '@tiptap/pm/model';
+import type {
+  BlockDoc,
+  BlockLevelZero,
+  Blocks,
+  BlocksOfText,
+  BlocksWithContent,
+  BlocksWithText,
+  BlockText,
+} from 'api/src/types/api';
+import { diff_match_patch } from 'diff-match-patch';
 import jsonDiff from 'json-diff';
 import type { Schema } from 'prosemirror-model';
+import { Decoration } from 'prosemirror-view';
 // import { Fragment, Node } from 'prosemirror-model';
 
 import { getEmptyDoc } from '../content';
+
+// ----- Helpers
+function isTextNode(node?: Blocks): node is BlockText {
+  return node?.type === 'text';
+}
+
+function hasTextNodes(node: Blocks): node is BlocksWithText {
+  return node.type === 'paragraph' || node.type === 'heading';
+}
+
+export const createTextNode = (
+  schema: Schema,
+  text: string,
+  marks: Mark[] = []
+): Node => {
+  return schema.text(text, marks);
+};
 
 // CF: https://github.com/hamflx/prosemirror-diff/blob/master/src/DiffType.js
 // export const DiffType = {
@@ -345,71 +372,87 @@ import { getEmptyDoc } from '../content';
 //   return -1;
 // };
 
-// const findTextNodes = (textNodes, from, to) => {
-//   const result = [];
-//   let start = 0;
-//   for (let i = 0; i < textNodes.length && start < to; i++) {
-//     const node = textNodes[i];
-//     const text = getNodeText(node);
-//     const end = start + text.length;
-//     const intersect =
-//       (start >= from && start < to) ||
-//       (end > from && end <= to) ||
-//       (start <= from && end >= to);
-//     if (intersect) {
-//       result.push({ node, from: start, to: end });
-//     }
-//     start += text.length;
-//   }
-//   return result;
-// };
+interface FindTextNode {
+  node: BlockText;
+  from: number;
+  to: number;
+}
+function findTextNodes(
+  nodes: BlocksWithText,
+  from: number,
+  to: number
+): FindTextNode[] {
+  const result: FindTextNode[] = [];
+  let start = 0;
 
-// const applyTextNodeAttrsMarks = (
-//   schema: Schema,
-//   node: Node,
-//   base,
-//   textItems
-// ) => {
-//   if (!textItems.length) {
-//     return node;
-//   }
+  for (let i = 0; i < nodes.content!.length && start < to; i++) {
+    const node = nodes.content![i];
+    if (node.type === 'hardBreak') {
+      continue;
+    }
 
-//   const baseMarks = node.marks ?? [];
-//   const firstItem = textItems[0];
-//   const nodeText = getNodeText(node);
-//   const nodeEnd = base + nodeText.length;
-//   const result = [];
-//   if (firstItem.from - base > 0) {
-//     result.push(
-//       createTextNode(
-//         schema,
-//         nodeText.slice(0, firstItem.from - base),
-//         baseMarks
-//       )
-//     );
-//   }
-//   for (let i = 0; i < textItems.length; i++) {
-//     const { from, node: textNode, to } = textItems[i];
-//     result.push(
-//       createTextNode(
-//         schema,
-//         nodeText.slice(Math.max(from, base) - base, to - base),
-//         [...baseMarks, ...(textNode.marks ?? [])]
-//       )
-//     );
-//     const nextFrom = i + 1 < textItems.length ? textItems[i + 1].from : nodeEnd;
-//     if (nextFrom > to) {
-//       result.push(
-//         createTextNode(
-//           schema,
-//           nodeText.slice(to - base, nextFrom - base),
-//           baseMarks
-//         )
-//       );
-//     }
-//   }
-//   return result;
-// };
+    const text = node.text;
+    const end = start + text.length;
+    const intersect =
+      (start >= from && start < to) ||
+      (end > from && end <= to) ||
+      (start <= from && end >= to);
+    if (intersect) {
+      result.push({ node, from: start, to: end });
+    }
+    start += text.length;
+  }
+
+  return result;
+}
+
+function applyTextNodeAttrsMarks(
+  schema: Schema,
+  text: string,
+  mark: Mark | null,
+  base: number,
+  textItems: FindTextNode[]
+): BlocksOfText[] {
+  if (textItems.length <= 0) {
+    return [];
+  }
+
+  const baseMarks = mark ? [mark.toJSON()] : [];
+  const firstItem = textItems[0];
+  const nodeEnd = base + text.length;
+  const result: BlocksOfText[] = [];
+
+  if (firstItem.from - base > 0) {
+    result.push({
+      type: 'text',
+      text: text.slice(0, firstItem.from - base),
+      marks: baseMarks,
+    });
+  }
+
+  for (let i = 0; i < textItems.length; i++) {
+    const { from, node: textNode, to } = textItems[i];
+    result.push({
+      type: 'text',
+      text: text.slice(Math.max(from, base) - base, to - base),
+      marks:
+        baseMarks.length || textNode.marks?.length
+          ? [...baseMarks, ...(textNode.marks || [])]
+          : undefined,
+    });
+    const nextFrom = i + 1 < textItems.length ? textItems[i + 1].from : nodeEnd;
+
+    if (nextFrom > to) {
+      result.push({
+        type: 'text',
+        text: text.slice(to - base, nextFrom - base),
+        marks: baseMarks,
+      });
+    }
+  }
+
+  return result;
+}
 
 // const patchRemainNodes = (schema: Schema, oldChildren, newChildren) => {
 //   const finalLeftChildren = [];
@@ -532,28 +575,153 @@ import { getEmptyDoc } from '../content';
 //   return res.flat(Infinity);
 // };
 
+const TYPE_TO_MARK: Record<string, string> = {
+  '1': 'added',
+  '-1': 'removed',
+};
+
+export interface PatchText {
+  type: number;
+  text: string;
+  oldFrom: number;
+  oldTo: number;
+  newFrom: number;
+  newTo: number;
+}
+
+// Differ
+/**
+ * This will patch text node inside Paragraph and Headings.
+ * We first do a raw text diff to find deleted/added text
+ * Then we recreate nodes based on length to keep the marks alive
+ */
+function patchTexts(
+  schema: Schema,
+  oldNode: BlocksWithText,
+  newNode: BlocksWithText
+): BlocksOfText[] {
+  const dmp = new diff_match_patch();
+  const oldText = oldNode.content?.map((node) => node.text).join('') || '';
+  const newText = newNode.content?.map((node) => node.text).join('') || '';
+  const diffs = dmp.diff_main(oldText, newText);
+  let oldLen = 0;
+  let newLen = 0;
+  const hasChanged = false;
+
+  const patches: PatchText[] = [];
+  const nodes: BlocksOfText[] = [];
+
+  // Create new nodes based on diff
+  for (const diff of diffs) {
+    const type = diff[0];
+    const text = diff[1];
+
+    // const node = createTextNode(schema, text, mark);
+    // nodes.push(node);
+
+    const oldFrom = oldLen;
+    const oldTo = oldFrom + (type === 1 ? 0 : text.length);
+    const newFrom = newLen;
+    const newTo = newFrom + (type === -1 ? 0 : text.length);
+    oldLen = oldTo;
+    newLen = newTo;
+    patches.push({ type, text, oldFrom, oldTo, newFrom, newTo });
+  }
+
+  // Apply old marks on new nodes
+  for (const patch of patches) {
+    const mark =
+      patch.type !== 0
+        ? schema.mark('diffMark', { type: TYPE_TO_MARK[`${patch.type}`] })
+        : null;
+
+    if (patch.type === -1) {
+      // Deleted
+      const textItems = findTextNodes(oldNode, patch.oldFrom, patch.oldTo);
+      const node = applyTextNodeAttrsMarks(
+        schema,
+        patch.text,
+        mark,
+        patch.oldFrom,
+        textItems
+      );
+      if (node) {
+        nodes.push(...node);
+      }
+      continue;
+    }
+
+    // Added or Unchanged
+    const textItems = findTextNodes(newNode, patch.newFrom, patch.newTo);
+    const node = applyTextNodeAttrsMarks(
+      schema,
+      patch.text,
+      mark,
+      patch.newFrom,
+      textItems
+    );
+    if (node) {
+      nodes.push(...node);
+    }
+  }
+
+  // console.log(nodes);
+  return nodes;
+}
+
 function patchDocument(
   schema: Schema,
   oldDoc: BlockLevelZero,
   newDoc: BlockLevelZero
-) {
+): BlockLevelZero {
+  // console.log(schema);
+  // const doc = schema.nodeFromJSON({ type: 'doc', content: [] });
   const doc = getEmptyDoc();
   const idsLeft = new Map<string, number>();
   const idsRight = new Map<string, number>();
 
-  for (let index = 0; index < oldDoc.content.length; index++) {
-    idsLeft.set(oldDoc.content[index].attrs.uid, index);
+  if (oldDoc.content) {
+    // oldDoc.content.forEach((node, index) => {
+    for (let index = 0; index < oldDoc.content.length; index++) {
+      const node = oldDoc.content[index];
+      if (!isTextNode(node)) {
+        idsLeft.set(node.attrs.uid, index);
+      }
+    }
+    // });
   }
-  for (let index = 0; index < newDoc.content.length; index++) {
-    idsRight.set(newDoc.content[index].attrs.uid, index);
+  if (newDoc.content) {
+    for (let index = 0; index < newDoc.content.length; index++) {
+      const node = newDoc.content[index];
+      if (!isTextNode(node)) {
+        idsRight.set(node.attrs.uid, index);
+      }
+    }
   }
 
   const iLeft = 0;
   const iRight = 0;
+
+  /**
+   * This loop will pop "left - right" at the same time
+   * On each loop we check from left to right if:
+   * - it wasn't deleted
+   * - it wasn't modified
+   *
+   * then right to left if:
+   * - it's a new entry
+   *
+   * We use "attrs.uid" to easily find items otherwise it would be very complicated to find difference
+   * We push everything into a new document
+   * Add a key "diff" that can be used for rendering
+   * Add a marks "diff" that can be used for rendering
+   */
   // eslint-disable-next-line no-constant-condition
   while (true) {
-    const popLeft = oldDoc.content[iLeft];
-    const popRight = newDoc.content[iRight];
+    const popLeft = oldDoc.content?.[iLeft];
+    const popRight = newDoc.content?.[iRight];
+    const isTextLeft = isTextNode(popLeft);
+    const isTextRight = isTextNode(popRight);
     let typeLeft: 'added' | 'moved' | 'removed' | 'unchanged' | null = null;
     let typeRight:
       | 'added'
@@ -563,30 +731,60 @@ function patchDocument(
       | 'unchanged'
       | null = null;
 
+    // Check left item
     if (popLeft) {
-      const has = idsRight.get(popLeft.attrs.uid);
-      if (typeof has === 'undefined') {
-        typeLeft = 'removed';
-      } else if (popRight && popLeft.attrs.uid === popRight.attrs.uid) {
+      if (isTextLeft) {
         typeLeft = 'unchanged';
       } else {
-        typeLeft = 'moved';
+        const has = idsRight.get(popLeft.attrs.uid);
+        if (typeof has === 'undefined') {
+          typeLeft = 'removed';
+        } else if (
+          popRight &&
+          !isTextRight &&
+          popLeft.attrs.uid === popRight.attrs.uid
+        ) {
+          typeLeft = 'unchanged';
+        } else {
+          typeLeft = 'moved';
+        }
       }
     }
 
+    // Check right item
     if (popRight) {
-      const has = idsLeft.get(popRight.attrs.uid);
-      if (typeof has === 'undefined') {
-        typeRight = 'added';
-      } else if (popLeft && popLeft.attrs.uid === popRight.attrs.uid) {
-        const diffAttrs = jsonDiff.diff(popLeft.attrs, popRight.attrs);
-        if (diffAttrs) {
-          typeRight = 'modified';
-        } else {
-          typeRight = 'unchanged';
-        }
+      if (isTextRight) {
+        typeLeft = 'unchanged';
       } else {
-        typeRight = 'moved';
+        const has = idsLeft.get(popRight.attrs.uid);
+        if (typeof has === 'undefined') {
+          typeRight = 'added';
+        } else if (
+          popLeft &&
+          !isTextLeft &&
+          popLeft.attrs.uid === popRight.attrs.uid
+        ) {
+          // Diff attributes
+          const diffAttrs = jsonDiff.diff(popLeft.attrs, popRight.attrs);
+          if (diffAttrs) {
+            typeRight = 'modified';
+          } else {
+            typeRight = 'unchanged';
+          }
+
+          if (hasTextNodes(popLeft) && hasTextNodes(popRight)) {
+            // Diff text nodes
+            const nodes = patchTexts(schema, popLeft, popRight);
+            if (nodes.length) {
+              popRight.content = nodes as unknown as BlockText[];
+            }
+          } else if ('content' in popRight && 'content' in popLeft) {
+            // Recursively diff inner blocks
+            patchDocument(schema, popLeft, popRight);
+          }
+        } else {
+          typeRight = 'moved';
+        }
       }
     }
 
@@ -597,8 +795,8 @@ function patchDocument(
     // console.log({ typeLeft, typeRight, popLeft, popRight });
 
     if (typeLeft === 'unchanged' && typeRight === 'unchanged') {
-      oldDoc.content.shift();
-      const node = newDoc.content.shift();
+      oldDoc.content!.shift();
+      const node = newDoc.content!.shift();
       doc.content.push({
         ...node,
         diff: { unchanged: true },
@@ -607,7 +805,7 @@ function patchDocument(
       continue;
     }
     if (!typeLeft && typeRight === 'moved') {
-      const node = newDoc.content.shift();
+      const node = newDoc.content!.shift();
       doc.content.push({
         ...node,
         diff: { added: true },
@@ -617,8 +815,8 @@ function patchDocument(
     }
 
     if (typeRight === 'modified') {
-      const oldNode = oldDoc.content.shift();
-      const newNode = newDoc.content.shift();
+      const oldNode = oldDoc.content!.shift();
+      const newNode = newDoc.content!.shift();
       doc.content.push({
         ...oldNode,
         diff: { removed: true },
@@ -631,7 +829,7 @@ function patchDocument(
     }
 
     if (typeRight === 'added') {
-      const node = newDoc.content.shift();
+      const node = newDoc.content!.shift();
       doc.content.push({
         ...node,
         diff: { added: true },
@@ -640,7 +838,7 @@ function patchDocument(
     }
 
     if (typeLeft === 'removed' || typeLeft === 'moved') {
-      const node = oldDoc.content.shift();
+      const node = oldDoc.content!.shift();
       doc.content.push({
         ...node,
         diff: { removed: true, moved: typeLeft === 'moved' },
@@ -648,7 +846,7 @@ function patchDocument(
       continue;
     }
 
-    console.log({ typeLeft, typeRight, popLeft, popRight });
+    console.log('leftOver', { typeLeft, typeRight, popLeft, popRight });
     break;
 
     // if (typeLeft === 'removed' || typeLeft === 'moved') {
@@ -759,7 +957,7 @@ export function diffEditor(
   schema: Schema,
   oldDoc: BlockLevelZero,
   newDoc: BlockLevelZero
-) {
+): BlockLevelZero {
   return patchDocument(schema, oldDoc, newDoc);
 }
 

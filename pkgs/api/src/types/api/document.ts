@@ -11,6 +11,7 @@ export interface BlockText {
   marks?: Array<
     | { type: 'bold' }
     | { type: 'code' }
+    | { type: 'diffMark'; attrs: { type: 'added' | 'removed' } }
     | { type: 'italic' }
     | { type: 'link'; attrs: { href: string; target: string } }
   >;
@@ -207,6 +208,8 @@ export type BlocksWithContent =
   | BlockTaskList
   | BlockVote
   | BlockVoteItem;
+export type BlocksWithText = BlockHeading | BlockParagraph;
+export type BlocksOfText = BlockHardBreak | BlockText;
 
 export type BlockWithDiff = Blocks & {
   diff?: { added?: true; removed?: true; moved?: boolean; unchanged?: true };

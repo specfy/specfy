@@ -52,6 +52,13 @@ export const ContentBlock: React.FC<{
           return <code className="inlineCode">{text}</code>;
         }
 
+        if (mark.type === 'diffMark') {
+          if (mark.attrs.type === 'added') {
+            text = <span className={clsDiff.addedInline}>{text}</span>;
+          } else {
+            text = <span className={clsDiff.removedInline}>{text}</span>;
+          }
+        }
         if (mark.type === 'bold') text = <strong>{text}</strong>;
         if (mark.type === 'italic') text = <em>{text}</em>;
         if (mark.type === 'link')

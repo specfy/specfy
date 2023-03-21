@@ -213,14 +213,31 @@ export async function seedRevisions(
     blob: d2Rev.getJsonForBlob(),
   });
 
-  // Update RFC
+  // --Update RFC
   const content: BlockLevelOne[] = JSON.parse(
     JSON.stringify(rfcs.d1.content.content)
   );
+  // Modify title
   content[2] = {
     type: 'heading',
     content: [{ type: 'text', text: 'Goals' }],
     attrs: { level: 1, uid: content[2].attrs.uid },
+  };
+  // Modify text and hard hardbreak
+  content[3] = {
+    type: 'paragraph',
+    attrs: { uid: 'UidgrRPV004' },
+    content: [
+      {
+        type: 'text',
+        text: 'Donec scelerisque ante felis gravida bibendum. Vestibulum quam purus, porta ac ornare sit amet, imperdiet at augue. Duis ac libero nec magna malesuada rhoncus at sit amet purus. Donec sed vulputate est. Donec accumsan ullamcorper auctor. Ut orci lectus, ornare id interdum sit amet, hendrerit et elit. Proin venenatis semper ipsum eget cursus. ',
+      },
+      { type: 'hardBreak', attrs: { uid: nanoid() } },
+      {
+        type: 'text',
+        text: 'Aliquam nunc ante, sodales como eget egestas id, elementum et dui.',
+      },
+    ],
   };
   content[18] = {
     type: 'banner',
