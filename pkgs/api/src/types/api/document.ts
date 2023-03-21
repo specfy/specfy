@@ -208,7 +208,7 @@ export type BlocksWithContent =
   | BlockTaskList
   | BlockVote
   | BlockVoteItem;
-export type BlocksWithText = BlockHeading | BlockParagraph;
+export type BlocksWithText = BlockCodeBlock | BlockHeading | BlockParagraph;
 export type BlocksOfText = BlockHardBreak | BlockText;
 
 export type BlockWithDiff = Blocks & {

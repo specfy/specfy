@@ -312,7 +312,7 @@ describe('diff text', () => {
             {
               type: 'paragraph',
               attrs: { uid: '2' },
-              content: [{ type: 'text', text: 'Foobar' }],
+              content: [{ type: 'text', text: 'Hello' }],
             },
           ],
         },
@@ -325,7 +325,7 @@ describe('diff text', () => {
             {
               type: 'paragraph',
               attrs: { uid: '2' },
-              content: [{ type: 'text', text: 'barfoo' }],
+              content: [{ type: 'text', text: 'World' }],
             },
           ],
         },
@@ -345,10 +345,14 @@ describe('diff text', () => {
               content: [
                 {
                   type: 'text',
-                  text: 'Foobar',
+                  text: 'Hello',
                   marks: [{ type: 'diffMark', attrs: { type: 'removed' } }],
                 },
-                { type: 'text', text: 'barfoo' },
+                {
+                  type: 'text',
+                  text: 'World',
+                  marks: [{ type: 'diffMark', attrs: { type: 'added' } }],
+                },
               ],
             },
           ],

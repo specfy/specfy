@@ -239,21 +239,23 @@ export async function seedRevisions(
       },
     ],
   };
+  // Modify code
+  content[11] = {
+    type: 'codeBlock',
+    attrs: { language: 'typescript', uid: 'UidgrRPV021' },
+    content: [
+      {
+        type: 'text',
+        text: 'function getDocuments(req: Req) {\n   const docs = await Document.findOne({\n     where: {\n      orgId: req.query.org_id,\n      slug: req.params.document_slug,\n     },\n   });\n\n   if (docs.length <= 0) {\n    return null;\n  }\n    \n  return docs.map((doc) => doc.id);\n}',
+      },
+    ],
+  };
+
+  // Modify attributes
   content[18] = {
     type: 'banner',
     attrs: { type: 'info', uid: 'UidgrRPV043' },
-    content: [
-      {
-        type: 'paragraph',
-        attrs: { uid: 'UidgrRPV044' },
-        content: [
-          {
-            type: 'text',
-            text: 'Ut semper eros ipsum, eget rutrum nisi consequat vitae.',
-          },
-        ],
-      },
-    ],
+    content: content[18].content,
   };
   delete content[6];
   delete content[10];

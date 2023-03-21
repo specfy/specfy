@@ -1,6 +1,5 @@
 import type { Node, Mark } from '@tiptap/pm/model';
 import type {
-  BlockDoc,
   BlockLevelZero,
   Blocks,
   BlocksOfText,
@@ -11,8 +10,6 @@ import type {
 import { diff_match_patch } from 'diff-match-patch';
 import jsonDiff from 'json-diff';
 import type { Schema } from 'prosemirror-model';
-import { Decoration } from 'prosemirror-view';
-// import { Fragment, Node } from 'prosemirror-model';
 
 import { getEmptyDoc } from '../content';
 
@@ -22,7 +19,11 @@ function isTextNode(node?: Blocks): node is BlockText {
 }
 
 function hasTextNodes(node: Blocks): node is BlocksWithText {
-  return node.type === 'paragraph' || node.type === 'heading';
+  return (
+    node.type === 'paragraph' ||
+    node.type === 'heading' ||
+    node.type === 'codeBlock'
+  );
 }
 
 export const createTextNode = (
@@ -606,7 +607,9 @@ function patchTexts(
   const diffs = dmp.diff_main(oldText, newText);
   let oldLen = 0;
   let newLen = 0;
-  const hasChanged = false;
+
+  // This will group by words instead of matching by char
+  dmp.diff_cleanupSemantic(diffs);
 
   const patches: PatchText[] = [];
   const nodes: BlocksOfText[] = [];
@@ -615,9 +618,6 @@ function patchTexts(
   for (const diff of diffs) {
     const type = diff[0];
     const text = diff[1];
-
-    // const node = createTextNode(schema, text, mark);
-    // nodes.push(node);
 
     const oldFrom = oldLen;
     const oldTo = oldFrom + (type === 1 ? 0 : text.length);
@@ -671,11 +671,14 @@ function patchTexts(
 
 function patchDocument(
   schema: Schema,
-  oldDoc: BlockLevelZero,
-  newDoc: BlockLevelZero
+  refOldDoc: BlockLevelZero | BlocksWithContent,
+  refNewDoc: BlockLevelZero | BlocksWithContent
 ): BlockLevelZero {
-  // console.log(schema);
-  // const doc = schema.nodeFromJSON({ type: 'doc', content: [] });
+  // Because we shift the arrays we copy to avoid modifying the original
+  // Plus it breaks in recursive mode
+  const oldDoc = JSON.parse(JSON.stringify(refOldDoc));
+  const newDoc = JSON.parse(JSON.stringify(refNewDoc));
+
   const doc = getEmptyDoc();
   const idsLeft = new Map<string, number>();
   const idsRight = new Map<string, number>();
@@ -780,7 +783,8 @@ function patchDocument(
             }
           } else if ('content' in popRight && 'content' in popLeft) {
             // Recursively diff inner blocks
-            patchDocument(schema, popLeft, popRight);
+            const patched = patchDocument(schema, popLeft, popRight);
+            popRight.content = patched.content;
           }
         } else {
           typeRight = 'moved';
@@ -817,6 +821,7 @@ function patchDocument(
     if (typeRight === 'modified') {
       const oldNode = oldDoc.content!.shift();
       const newNode = newDoc.content!.shift();
+
       doc.content.push({
         ...oldNode,
         diff: { removed: true },
