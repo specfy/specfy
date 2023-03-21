@@ -72,7 +72,8 @@ export const ContentBlock: React.FC<{
     if (block.link) text = <Link to={block.link}>{text}</Link>;
     return text;
   } else if (block.type === 'hardBreak') {
-    return <br />;
+    console.log('hardBreak', block, { stl });
+    return <br className={stl} />;
   }
 
   // Headings

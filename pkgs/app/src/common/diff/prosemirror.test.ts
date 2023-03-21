@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest';
 import { createEditorSchema } from '../../components/Editor';
 import { getEmptyDoc } from '../content';
 
-import { diffEditor } from './prosemirror';
+import { diffEditor, findTextNodes } from './prosemirror';
 
 const editor = new Editor({
   ...createEditorSchema({}),
@@ -18,6 +18,29 @@ function doc(content: BlockLevelOne[]): BlockLevelZero {
     content,
   };
 }
+
+describe('findTextNodes', () => {
+  it('should find correct text nodes', () => {
+    const res = findTextNodes(
+      {
+        type: 'paragraph',
+        attrs: { uid: '1' },
+        content: [
+          { type: 'text', text: 'Foo' },
+          { type: 'hardBreak', attrs: { uid: '2' } },
+          { type: 'text', text: 'bar' },
+        ],
+      },
+      0,
+      6
+    );
+    expect(res).toStrictEqual([
+      { from: 0, to: 3, node: { type: 'text', text: 'Foo' } },
+      { from: 3, to: 4, node: { type: 'hardBreak', attrs: { uid: '2' } } },
+      { from: 4, to: 7, node: { type: 'text', text: 'bar' } },
+    ]);
+  });
+});
 
 describe('diff level one', () => {
   it('has no diff', () => {
@@ -360,6 +383,94 @@ describe('diff text', () => {
       ])
     );
   });
+
+  it('has diff added hardBreak', () => {
+    const diff = diffEditor(
+      editor.schema,
+      doc([
+        {
+          type: 'paragraph',
+          attrs: { uid: '1' },
+          content: [{ type: 'text', text: 'Foobar' }],
+        },
+      ]),
+      doc([
+        {
+          type: 'paragraph',
+          attrs: { uid: '1' },
+          content: [
+            { type: 'text', text: 'Foo' },
+            { type: 'hardBreak', attrs: { uid: '2' } },
+            { type: 'text', text: 'bar' },
+          ],
+        },
+      ])
+    );
+    expect(JSON.parse(JSON.stringify(diff))).toStrictEqual(
+      doc([
+        {
+          type: 'paragraph',
+          attrs: { uid: '1' },
+          diff: { unchanged: true },
+          content: [
+            { type: 'text', text: 'Foo' },
+            {
+              type: 'hardBreak',
+              marks: [{ type: 'diffMark', attrs: { type: 'added' } }],
+            },
+            {
+              type: 'text',
+              text: 'bar',
+            },
+          ],
+        },
+      ])
+    );
+  });
+
+  it('has diff removed hardBreak', () => {
+    const diff = diffEditor(
+      editor.schema,
+      doc([
+        {
+          type: 'paragraph',
+          attrs: { uid: '1' },
+          content: [
+            { type: 'text', text: 'Foo' },
+            { type: 'hardBreak', attrs: { uid: '2' } },
+            { type: 'text', text: 'bar' },
+          ],
+        },
+      ]),
+      doc([
+        {
+          type: 'paragraph',
+          attrs: { uid: '1' },
+          content: [{ type: 'text', text: 'Foobar' }],
+        },
+      ])
+    );
+    expect(JSON.parse(JSON.stringify(diff))).toStrictEqual(
+      doc([
+        {
+          type: 'paragraph',
+          attrs: { uid: '1' },
+          diff: { unchanged: true },
+          content: [
+            { type: 'text', text: 'Foo' },
+            {
+              type: 'hardBreak',
+              marks: [{ type: 'diffMark', attrs: { type: 'removed' } }],
+            },
+            {
+              type: 'text',
+              text: 'bar',
+            },
+          ],
+        },
+      ])
+    );
+  });
 });
 
 describe('diff formatting', () => {
@@ -391,7 +502,12 @@ describe('diff formatting', () => {
           attrs: { uid: '1' },
           diff: { unchanged: true },
           content: [
-            { type: 'text', text: 'Foobar', marks: [{ type: 'bold' }] },
+            {
+              type: 'text',
+              text: 'Foobar',
+              marks: [{ type: 'bold' }],
+              diff: { marked: true },
+            },
           ],
         },
       ])
@@ -424,7 +540,7 @@ describe('diff formatting', () => {
           type: 'paragraph',
           attrs: { uid: '1' },
           diff: { unchanged: true },
-          content: [{ type: 'text', text: 'Foobar' }],
+          content: [{ type: 'text', text: 'Foobar', diff: { marked: true } }],
         },
       ])
     );
