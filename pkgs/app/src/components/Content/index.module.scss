@@ -57,8 +57,8 @@ ul.taskList {
 
 .added {
   padding: 0 $p-2xl;
-  background-color: $lime-50;
-  border-left: 10px solid $lime-200;
+  background-color: $color-added;
+  border-left: 10px solid $color-added-hi;
 }
 
 .removed {
@@ -67,6 +67,6 @@ ul.taskList {
   text-decoration: line-through;
 
   opacity: 0.7;
-  background-color: $red-50;
-  border-left: 10px solid $red-200;
+  background-color: $color-removed;
+  border-left: 10px solid $color-removed-hi;
 }

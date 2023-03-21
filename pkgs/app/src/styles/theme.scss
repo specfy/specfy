@@ -28,6 +28,26 @@ $color-9: #003a8c;
 $color-10: #002766;
 $primary: $indigo-600;
 
+// Diff
+$color-added: rgba($lime-50, 0.5);
+$color-added-hi: $lime-200;
+$color-removed: rgba($red-50, 0.5);
+$color-removed-hi: $red-200;
+
+// github diff
+$color-added: #e6ffec;
+$color-added-hi: #abf2bc;
+$color-removed: #ffebe9;
+$color-removed-hi: rgb(255 129 130 / 40%);
+
+// github diff modified
+$color-added: rgba(#e6ffec, 0.15);
+$color-added-low: rgba(#e6ffec, 0.9);
+$color-added-hi: #abf2bc;
+$color-removed: rgba(#ffebe9, 0.25);
+$color-removed-low: rgba(#ffebe9, 0.9);
+$color-removed-hi: rgb(255 129 130 / 40%);
+
 // Font size
 $font-xs: 10px;
 $font-s: 12px;

@@ -142,12 +142,13 @@ export async function seedRevisions(
           content: [
             {
               type: 'text',
-              text: `Maecenas pharetra imperdiet nulla nec commodo.`,
+              text: `Maecenas pharetra imperdiet nulla nec commodo.Duis eu varius ex. Aliquam a iaculis mauris. Sed congue dui sed risus blandit, id aliquet est aliquet. Vestibulum bibendum felis in augue pretium, ac lacinia purus gravida. Donec sed lacus facilisis ante laoreet porta id sit amet nulla. Pellentesque efficitur tincidunt eros id posuere.`,
             },
           ],
         },
       ],
     },
+    inComponent: components.gce.id,
     display: { zIndex: 3, pos: { x: 450, y: 90, width: 140, height: 42 } },
     edges: edges,
   });
@@ -226,7 +227,7 @@ export async function seedRevisions(
   content.splice(12, 0, {
     type: 'heading',
     content: [{ type: 'text', text: 'Implementations Details' }],
-    attrs: { level: 3, uid: nanoid() },
+    attrs: { level: 1, uid: nanoid() },
   });
   const d1Rev = new Document({
     ...rfcs.d1.toJSON(),

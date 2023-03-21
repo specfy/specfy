@@ -50,13 +50,13 @@ $border-width: 10px;
 .added {
   margin: 0 (-$p-4xl) 0 (-$p-4xl - $border-width);
   padding-left: $p-4xl;
-  background-color: $lime-50;
-  border-left: $border-width solid $lime-200;
+  background-color: $color-added;
+  border-left: $border-width solid $color-added-hi;
 }
 
 .removedInline {
   text-decoration: line-through;
-  background-color: $red-200 !important;
+  background-color: $color-removed-hi !important;
 }
 
 .removed {
@@ -66,8 +66,8 @@ $border-width: 10px;
   text-decoration: line-through;
 
   opacity: 0.7;
-  background-color: $red-50;
-  border-left: $border-width solid $red-200;
+  background-color: $color-removed;
+  border-left: $border-width solid $color-removed-hi;
 }
 
 .content {
@@ -96,11 +96,38 @@ $border-width: 10px;
 }
 
 .line {
-  padding-top: $p-m;
+  padding-top: $p-xl;
+
+  // >strong {
+  //   font-size: $font-m;
+  // }
 
   >div {
     padding-top: $p-s;
     padding-bottom: $p-s;
+  }
+
+  .item {
+    background-color: transparent;
+    border: 1px solid $gray-200;
+  }
+
+  >.added {
+    background-color: transparent;
+
+    .item {
+      background-color: $color-added-low;
+      border-color: transparent;
+    }
+  }
+
+  >.removed {
+    background-color: transparent;
+
+    .item {
+      background-color: $color-removed-low;
+      border-color: transparent;
+    }
   }
 }
 
