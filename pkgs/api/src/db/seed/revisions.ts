@@ -222,6 +222,22 @@ export async function seedRevisions(
     content: [{ type: 'text', text: 'Goals' }],
     attrs: { level: 1, uid: content[2].attrs.uid },
   };
+  content[18] = {
+    type: 'banner',
+    attrs: { type: 'info', uid: 'UidgrRPV043' },
+    content: [
+      {
+        type: 'paragraph',
+        attrs: { uid: 'UidgrRPV044' },
+        content: [
+          {
+            type: 'text',
+            text: 'Ut semper eros ipsum, eget rutrum nisi consequat vitae.',
+          },
+        ],
+      },
+    ],
+  };
   delete content[6];
   delete content[10];
   content.splice(12, 0, {

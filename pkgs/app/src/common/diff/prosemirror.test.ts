@@ -6,12 +6,12 @@ import { getEmptyDoc } from '../content';
 
 import { diffEditor } from './prosemirror';
 
-describe('diff', () => {
-  const editor = new Editor({
-    ...createEditorSchema({}),
-    content: getEmptyDoc(),
-  });
+const editor = new Editor({
+  ...createEditorSchema({}),
+  content: getEmptyDoc(),
+});
 
+describe('diff level one', () => {
   it('has no diff', () => {
     const diff = diffEditor(editor.schema, getEmptyDoc(), getEmptyDoc());
     expect(diff).toStrictEqual({ type: 'doc', content: [] });
@@ -178,6 +178,264 @@ describe('diff', () => {
           diff: { removed: true, moved: false },
         },
         { type: 'paragraph', attrs: { uid: '2' }, diff: { unchanged: true } },
+      ],
+    });
+  });
+});
+
+describe('diff level N', () => {
+  it('has no diff', () => {
+    const diff = diffEditor(
+      editor.schema,
+      {
+        type: 'doc',
+        content: [
+          {
+            type: 'paragraph',
+            attrs: { uid: '1' },
+            content: [{ type: 'text', text: 'Foobar' }],
+          },
+        ],
+      },
+      {
+        type: 'doc',
+        content: [
+          {
+            type: 'paragraph',
+            attrs: { uid: '1' },
+            content: [{ type: 'text', text: 'Foobar' }],
+          },
+        ],
+      }
+    );
+    expect(diff).toStrictEqual({
+      type: 'doc',
+      content: [
+        {
+          type: 'paragraph',
+          attrs: { uid: '1' },
+          diff: { unchanged: true },
+          content: [{ type: 'text', text: 'Foobar' }],
+        },
+      ],
+    });
+  });
+
+  it('has diff with text', () => {
+    const diff = diffEditor(
+      editor.schema,
+      {
+        type: 'doc',
+        content: [
+          {
+            type: 'paragraph',
+            attrs: { uid: '1' },
+            content: [{ type: 'text', text: 'Foobar' }],
+          },
+        ],
+      },
+      {
+        type: 'doc',
+        content: [
+          {
+            type: 'paragraph',
+            attrs: { uid: '1' },
+            content: [{ type: 'text', text: 'Foo' }],
+          },
+        ],
+      }
+    );
+    expect(diff).toStrictEqual({
+      type: 'doc',
+      content: [
+        {
+          type: 'paragraph',
+          attrs: { uid: '1' },
+          diff: { modified: true },
+          content: [{ type: 'text', text: 'Foo' }],
+        },
+      ],
+    });
+  });
+
+  it('has diff nested text', () => {
+    const diff = diffEditor(
+      editor.schema,
+      {
+        type: 'doc',
+        content: [
+          {
+            type: 'banner',
+            attrs: { uid: '1', type: 'error' },
+            content: [
+              {
+                type: 'paragraph',
+                attrs: { uid: '2' },
+                content: [{ type: 'text', text: 'Foobar' }],
+              },
+            ],
+          },
+        ],
+      },
+      {
+        type: 'doc',
+        content: [
+          {
+            type: 'banner',
+            attrs: { uid: '1', type: 'error' },
+            content: [
+              {
+                type: 'paragraph',
+                attrs: { uid: '2' },
+                content: [{ type: 'text', text: 'barfoo' }],
+              },
+            ],
+          },
+        ],
+      }
+    );
+    expect(diff).toStrictEqual({
+      type: 'doc',
+      content: [
+        {
+          type: 'banner',
+          attrs: { uid: '1', type: 'error' },
+          diff: { modified: true },
+          content: [
+            {
+              type: 'paragraph',
+              attrs: { uid: '2' },
+              diff: { modified: true },
+              content: [{ type: 'text', text: 'barfoo' }],
+            },
+          ],
+        },
+      ],
+    });
+  });
+});
+
+describe('diff formatting', () => {
+  it('has diff with new mark', () => {
+    const diff = diffEditor(
+      editor.schema,
+      {
+        type: 'doc',
+        content: [
+          {
+            type: 'paragraph',
+            attrs: { uid: '1' },
+            content: [{ type: 'text', text: 'Foobar' }],
+          },
+        ],
+      },
+      {
+        type: 'doc',
+        content: [
+          {
+            type: 'paragraph',
+            attrs: { uid: '1' },
+            content: [
+              { type: 'text', text: 'Foobar', marks: [{ type: 'bold' }] },
+            ],
+          },
+        ],
+      }
+    );
+    expect(diff).toStrictEqual({
+      type: 'doc',
+      content: [
+        {
+          type: 'paragraph',
+          attrs: { uid: '1' },
+          diff: { modified: true },
+          content: [
+            { type: 'text', text: 'Foobar', marks: [{ type: 'bold' }] },
+          ],
+        },
+      ],
+    });
+  });
+  it('has diff with removed mark', () => {
+    const diff = diffEditor(
+      editor.schema,
+      {
+        type: 'doc',
+        content: [
+          {
+            type: 'paragraph',
+            attrs: { uid: '1' },
+            content: [
+              { type: 'text', text: 'Foobar', marks: [{ type: 'bold' }] },
+            ],
+          },
+        ],
+      },
+      {
+        type: 'doc',
+        content: [
+          {
+            type: 'paragraph',
+            attrs: { uid: '1' },
+            content: [{ type: 'text', text: 'Foobar' }],
+          },
+        ],
+      }
+    );
+    expect(diff).toStrictEqual({
+      type: 'doc',
+      content: [
+        {
+          type: 'paragraph',
+          attrs: { uid: '1' },
+          diff: { modified: true },
+          content: [{ type: 'text', text: 'Foobar' }],
+        },
+      ],
+    });
+  });
+});
+
+describe('diff attributes', () => {
+  it('has no diff', () => {
+    const diff = diffEditor(
+      editor.schema,
+      {
+        type: 'doc',
+        content: [
+          {
+            type: 'banner',
+            attrs: { uid: '1', type: 'error' },
+            content: [],
+          },
+        ],
+      },
+      {
+        type: 'doc',
+        content: [
+          {
+            type: 'banner',
+            attrs: { uid: '1', type: 'warning' },
+            content: [],
+          },
+        ],
+      }
+    );
+    expect(diff).toStrictEqual({
+      type: 'doc',
+      content: [
+        {
+          type: 'banner',
+          diff: { removed: true },
+          attrs: { uid: '1', type: 'error' },
+          content: [],
+        },
+        {
+          type: 'banner',
+          diff: { added: true },
+          attrs: { uid: '1', type: 'warning' },
+          content: [],
+        },
       ],
     });
   });

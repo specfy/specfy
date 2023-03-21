@@ -13,19 +13,9 @@ import cls from './content.module.scss';
 const Unchanged: React.FC<{ children: React.ReactElement[] }> = ({
   children,
 }) => {
-  // Actions
-  const [hide] = useState<boolean>(false);
-  // const handleHideShow = () => {
-  //   setHide(!hide);
-  // };
-
   return (
     <div className={cls.group}>
-      {/* <div className={cls.unchanged}>
-        <Button icon={<IconFold />} onClick={handleHideShow} size="small" />
-        {children.length} unchanged elements
-      </div> */}
-      <div className={classnames(cls.accordion, hide && cls.hide)}>
+      <div className={classnames(cls.accordion)}>
         <div className={cls.unchangedContent}>{children}</div>
       </div>
     </div>

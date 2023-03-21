@@ -1,5 +1,6 @@
-import type { BlockLevelZero } from 'api/src/types/api';
+import type { BlockLevelZero, BlockWithDiff } from 'api/src/types/api';
 // import { diff_match_patch } from 'diff-match-patch';
+import jsonDiff from 'json-diff';
 import type { Schema } from 'prosemirror-model';
 // import { Fragment, Node } from 'prosemirror-model';
 
@@ -546,50 +547,27 @@ function patchDocument(
   for (let index = 0; index < newDoc.content.length; index++) {
     idsRight.set(newDoc.content[index].attrs.uid, index);
   }
-  // for (const node of oldDoc.content) {
-  //   idsLeft.set(node.attrs.uid, node as unknown as Node);
-  // }
-  // for (const node of newDoc.content) {
-  //   idsLeft.set(node.attrs.uid, node as unknown as Node);
-  // }
 
   const iLeft = 0;
   const iRight = 0;
-  // let iPlusLeft = 0;
-  // const iPlusRight = 0;
   // eslint-disable-next-line no-constant-condition
   while (true) {
     const popLeft = oldDoc.content[iLeft];
     const popRight = newDoc.content[iRight];
     let typeLeft: 'added' | 'moved' | 'removed' | 'unchanged' | null = null;
-    let typeRight: 'added' | 'moved' | 'removed' | 'unchanged' | null = null;
+    let typeRight:
+      | 'added'
+      | 'modified'
+      | 'moved'
+      | 'removed'
+      | 'unchanged'
+      | null = null;
 
-    // if (popLeft) {
-    //   const has = idsRight.get(popLeft.attrs.uid);
-    //   if (typeof has === 'undefined') {
-    //     typeLeft = 'removed';
-    //   } else if (iLeft + iPlusRight === has) {
-    //     typeLeft = 'unchanged';
-    //   } else {
-    //     typeLeft = 'moved';
-    //   }
-    // }
-
-    // if (popRight) {
-    //   const has = idsLeft.get(popRight.attrs.uid);
-    //   if (typeof has === 'undefined') {
-    //     typeRight = 'added';
-    //   } else if (iLeft + iPlusRight === has) {
-    //     typeRight = 'unchanged';
-    //   } else {
-    //     typeRight = 'moved';
-    //   }
-    // }
     if (popLeft) {
       const has = idsRight.get(popLeft.attrs.uid);
       if (typeof has === 'undefined') {
         typeLeft = 'removed';
-      } else if (popLeft.attrs.uid === popRight.attrs.uid) {
+      } else if (popRight && popLeft.attrs.uid === popRight.attrs.uid) {
         typeLeft = 'unchanged';
       } else {
         typeLeft = 'moved';
@@ -601,7 +579,12 @@ function patchDocument(
       if (typeof has === 'undefined') {
         typeRight = 'added';
       } else if (popLeft && popLeft.attrs.uid === popRight.attrs.uid) {
-        typeRight = 'unchanged';
+        const diffAttrs = jsonDiff.diff(popLeft.attrs, popRight.attrs);
+        if (diffAttrs) {
+          typeRight = 'modified';
+        } else {
+          typeRight = 'unchanged';
+        }
       } else {
         typeRight = 'moved';
       }
@@ -630,6 +613,20 @@ function patchDocument(
         diff: { added: true },
       });
 
+      continue;
+    }
+
+    if (typeRight === 'modified') {
+      const oldNode = oldDoc.content.shift();
+      const newNode = newDoc.content.shift();
+      doc.content.push({
+        ...oldNode,
+        diff: { removed: true },
+      });
+      doc.content.push({
+        ...newNode,
+        diff: { added: true },
+      });
       continue;
     }
 

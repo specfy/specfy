@@ -10,4 +10,8 @@ export default defineConfig({
       localsConvention: 'camelCase',
     },
   },
+  // ...
+  define: {
+    process: { env: {}, argv: '' },
+  },
 });

@@ -19,11 +19,6 @@
   height: auto;
   opacity: 0.7;
   filter: saturate(0);
-
-  &.hide {
-    overflow: hidden;
-    height: 0;
-  }
 }
 
 .unchangedContent {
