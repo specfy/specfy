@@ -56,6 +56,10 @@ $border-width: 10px;
   }
 }
 
+.formatting {
+  text-decoration: underline;
+}
+
 .removed {
   margin: 0 (-$p-4xl) 0 (-$p-4xl - $border-width);
   padding-left: $p-4xl;

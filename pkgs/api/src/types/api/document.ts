@@ -1,3 +1,5 @@
+import type { FileData } from 'react-diff-view';
+
 import type { ApiDocument } from './documents';
 
 export interface BlockDefaultAttrs {
@@ -5,20 +7,20 @@ export interface BlockDefaultAttrs {
 }
 export interface MarkDiff {
   type: 'diffMark';
-  attrs: { type: 'added' | 'removed' | 'unchanged' };
+  attrs: { type: 'added' | 'formatting' | 'removed' | 'unchanged' };
 }
+export type Marks =
+  | MarkDiff
+  | { type: 'bold' }
+  | { type: 'code' }
+  | { type: 'italic' }
+  | { type: 'link'; attrs: { href: string; target: string } };
 
 // ----- Text
 export interface BlockText {
   type: 'text';
   text: string;
-  marks?: Array<
-    | MarkDiff
-    | { type: 'bold' }
-    | { type: 'code' }
-    | { type: 'italic' }
-    | { type: 'link'; attrs: { href: string; target: string } }
-  >;
+  marks?: Marks[];
   link?: string;
 }
 export interface BlockParagraph {
@@ -153,6 +155,7 @@ export interface BlockCodeBlock {
   content: BlockText[];
   attrs: BlockDefaultAttrs & { language: string };
   marks?: MarkDiff[];
+  codeDiff?: FileData;
 }
 
 // ----- Step

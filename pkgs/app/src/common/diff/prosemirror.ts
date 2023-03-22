@@ -7,10 +7,14 @@ import type {
   BlocksWithContent,
   BlocksWithText,
   BlockText,
+  MarkDiff,
+  Marks,
 } from 'api/src/types/api';
+import { createPatch, diffChars } from 'diff';
 import { diff_match_patch } from 'diff-match-patch';
 import jsonDiff from 'json-diff';
 import type { Schema } from 'prosemirror-model';
+import { parseDiff } from 'react-diff-view';
 
 import { getEmptyDoc } from '../content';
 
@@ -57,6 +61,31 @@ function getText(node: BlockHardBreak | BlockText): string {
   return node.text;
 }
 
+function getTexts(node: BlocksWithText): string {
+  return node.content?.map(getText).join('') || '';
+}
+
+function getMarks(nodes: FindTextNode[]): Marks[] {
+  const map = new Map<string, Marks>();
+  for (const item of nodes!) {
+    if (item.node.marks && item.node.marks.length > 0) {
+      for (const mark of item.node.marks) {
+        map.set(mark.type, mark);
+      }
+    }
+  }
+
+  return Array.from(map.values());
+}
+
+function diffMarks(oldMarks: Marks[], newMarks: Marks[]) {
+  oldMarks.sort((a, b) => (a.type < b.type ? -1 : 1));
+  newMarks.sort((a, b) => (a.type < b.type ? -1 : 1));
+  const diff = diffChars(JSON.stringify(newMarks), JSON.stringify(oldMarks));
+  // console.log('marks', { newMarks: newMarks, oldMarks, diffMark });
+  return diff.length > 1;
+}
+
 /**
  * This method get all nodes text inside a range.
  */
@@ -93,13 +122,14 @@ function applyTextNodeAttrsMarks(
   text: string,
   mark: Mark | null,
   base: number,
-  textItems: FindTextNode[]
+  textItems: FindTextNode[],
+  oldNode?: BlocksWithText
 ): BlocksOfText[] {
   if (textItems.length <= 0) {
     return [];
   }
 
-  const baseMarks = mark ? [mark.toJSON()] : [];
+  const baseMarks: MarkDiff[] = mark ? [mark.toJSON()] : [];
   const firstItem = textItems[0];
   const nodeEnd = base + text.length;
   const result: BlocksOfText[] = [];
@@ -114,6 +144,10 @@ function applyTextNodeAttrsMarks(
 
   for (let i = 0; i < textItems.length; i++) {
     const { from, node: textNode, to } = textItems[i];
+    const oldTexts =
+      baseMarks.length <= 0 && oldNode
+        ? findTextNodes(oldNode, from, to)
+        : null;
     const newText = text.slice(Math.max(from, base) - base, to - base);
 
     if (textNode.type === 'hardBreak') {
@@ -122,6 +156,14 @@ function applyTextNodeAttrsMarks(
         marks: baseMarks,
       });
     } else {
+      // Diff old marks to find formatting change
+      if (oldTexts) {
+        const oldMarks = getMarks(oldTexts);
+        if (diffMarks(oldMarks, textNode.marks || [])) {
+          baseMarks.push({ type: 'diffMark', attrs: { type: 'formatting' } });
+        }
+      }
+
       result.push({
         type: 'text',
         text: newText,
@@ -132,6 +174,7 @@ function applyTextNodeAttrsMarks(
       });
     }
 
+    // move cursor
     const nextFrom = i + 1 < textItems.length ? textItems[i + 1].from : nodeEnd;
 
     if (nextFrom > to) {
@@ -158,8 +201,8 @@ function patchTexts(
   newNode: BlocksWithText
 ): BlocksOfText[] {
   const dmp = new diff_match_patch();
-  const oldText = oldNode.content?.map(getText).join('') || '';
-  const newText = newNode.content?.map(getText).join('') || '';
+  const oldText = getTexts(oldNode);
+  const newText = getTexts(newNode);
   const diffs = dmp.diff_main(oldText, newText);
   let oldLen = 0;
   let newLen = 0;
@@ -218,7 +261,8 @@ function patchTexts(
       patch.text,
       mark,
       patch.newFrom,
-      textItems
+      textItems,
+      oldNode
     );
     if (node) {
       nodes.push(...node);
@@ -334,10 +378,28 @@ function patchDocument(
           }
 
           if (hasTextNodes(popLeft) && hasTextNodes(popRight)) {
-            // Diff text nodes
-            const nodes = patchTexts(schema, popLeft, popRight);
-            if (nodes.length) {
-              popRight.content = nodes as unknown as BlockText[];
+            if (popLeft.type === 'codeBlock' && popRight.type === 'codeBlock') {
+              const patchArray = createPatch(
+                'code',
+                getTexts(popLeft),
+                getTexts(popRight),
+                undefined,
+                undefined,
+                { context: 200 }
+              ).split('\n');
+              if (patchArray.length > 5) {
+                patchArray.splice(0, 2);
+                const patch = patchArray.join('\n');
+                popRight.codeDiff = parseDiff(patch, {
+                  nearbySequences: 'zip',
+                })[0];
+              }
+            } else {
+              // Diff text nodes
+              const nodes = patchTexts(schema, popLeft, popRight);
+              if (nodes.length) {
+                popRight.content = nodes as unknown as BlockText[];
+              }
             }
           } else if ('content' in popRight && 'content' in popLeft) {
             // Recursively diff inner blocks

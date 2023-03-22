@@ -2,10 +2,13 @@ import { IconArrowBack } from '@tabler/icons-react';
 import { Checkbox, Typography } from 'antd';
 import type { BlockLevelZero, Blocks, MarkDiff } from 'api/src/types/api';
 import classnames from 'classnames';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
+import { Diff, Hunk, tokenize, markEdits } from 'react-diff-view';
 import { Link } from 'react-router-dom';
 import { PrismAsyncLight } from 'react-syntax-highlighter';
 import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import 'react-diff-view/style/index.css';
+import refractor from 'refractor';
 
 import type { Payload } from '../../common/content';
 import { map } from '../../common/content';
@@ -64,6 +67,12 @@ export const ContentBlock: React.FC<{
           if (mark.attrs.type === 'added') {
             text = (
               <span className={classnames(clsDiff.added, clsDiff.i)}>
+                {text}
+              </span>
+            );
+          } else if (mark.attrs.type === 'formatting') {
+            text = (
+              <span className={classnames(clsDiff.formatting, clsDiff.i)}>
                 {text}
               </span>
             );
@@ -217,6 +226,33 @@ export const ContentBlock: React.FC<{
 
   // CodeBlock
   else if (block.type === 'codeBlock') {
+    if (block.codeDiff) {
+      const tokens = useMemo(() => {
+        return tokenize(block.codeDiff.hunks, {
+          highlight: true,
+          refractor,
+          // language: block.attrs.language,
+          language: 'js',
+          enhancers: [markEdits(block.codeDiff.hunks, { type: 'block' })],
+        });
+      }, [block.attrs.uid]);
+
+      return (
+        <div className={cls.codeDiff}>
+          <Diff
+            diffType="modify"
+            hunks={block.codeDiff.hunks}
+            viewType="unified"
+            tokens={tokens}
+          >
+            {(hunks) =>
+              hunks.map((hunk) => <Hunk key={hunk.content} hunk={hunk} />)
+            }
+          </Diff>
+        </div>
+      );
+    }
+
     return (
       <div className={stl}>
         <PrismAsyncLight

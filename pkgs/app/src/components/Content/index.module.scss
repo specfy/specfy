@@ -25,15 +25,21 @@ ul.taskList {
 
 
 
+.codeDiff {
+  margin-bottom: $p-l;
+  border: 1px solid $gray-50;
+}
+
 .code {
   display: flex !important;
   padding: $p-xl $p-2xl !important;
   background-color: $gray-50 !important;
   border: none !important;
+  margin-bottom: $p-l;
 
   code,
   code span {
-    font-family: "JetBrains Mono" !important;
+    font-family: $font-code !important;
     font-size: $font !important;
     font-weight: inherit;
     font-style: inherit;

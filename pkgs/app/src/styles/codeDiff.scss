@@ -1,0 +1,53 @@
+@import "./theme";
+
+table.diff {
+  --diff-background-color: initial;
+  --diff-text-color: initial;
+  --diff-font-family: #{$font-code};
+  --diff-selection-background-color: #b3d7ff;
+  --diff-selection-text-color: var(--diff-text-color);
+  --diff-gutter-selected-background-color: #fffce0;
+  --diff-gutter-selected-text-color: var(--diff-text-color);
+  --diff-gutter-insert-background-color: #{$color-added-hi};
+  --diff-gutter-insert-text-color: var(--diff-text-color);
+  --diff-code-insert-background-color: #{$color-added-low};
+  --diff-code-insert-text-color: var(--diff-text-color);
+  --diff-code-insert-edit-background-color: #{$color-added-hi};
+  --diff-code-insert-edit-text-color: var(--diff-text-color);
+  --diff-gutter-delete-background-color: #{$color-removed-hi};
+  --diff-gutter-delete-text-color: var(--diff-text-color);
+  --diff-code-delete-background-color: #{$color-removed-low};
+  --diff-code-delete-text-color: var(--diff-text-color);
+  --diff-code-delete-edit-background-color: #{$color-removed-hi};
+  --diff-code-delete-edit-text-color: var(--diff-text-color);
+  --diff-code-selected-background-color: #fffce0;
+  --diff-code-selected-text-color: var(--diff-text-color);
+  --diff-omit-gutter-line-color: #cb2a1d;
+
+  font-family: $font-code;
+  font-size: $font;
+
+  .diff-gutter-col {
+    width: 5ch;
+    background-color: $gray-50;
+  }
+
+  tr {
+    td {
+      min-width: initial;
+      padding: 0;
+      border: none;
+
+      &.diff-gutter {
+        padding: 0 $p-m;
+        color: $gray-500;
+        font-size: $font-s;
+        padding-top: 4px;
+      }
+
+      &.diff-code {
+        padding: 2px $p-l;
+      }
+    }
+  }
+}
