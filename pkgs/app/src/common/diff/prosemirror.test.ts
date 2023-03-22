@@ -661,6 +661,39 @@ describe('diff formatting', () => {
       ])
     );
   });
+
+  it.only('has diff with split lines + new mark', () => {
+    const diff = diffEditor(
+      editor.schema,
+      p([{ type: 'text', text: 'Lorem ipsum dolor sit amet.' }]),
+      p([
+        { type: 'text', text: 'Lorem ipsum ' },
+        { type: 'text', text: 'dolor', marks: [{ type: 'code' }] },
+        { type: 'text', text: ' sit amet.' },
+      ])
+    );
+    expect(JSON.parse(JSON.stringify(diff))).toStrictEqual(
+      doc([
+        {
+          type: 'paragraph',
+          attrs: { uid: '1' },
+          marks: [{ type: 'diffMark', attrs: { type: 'unchanged' } }],
+          content: [
+            { type: 'text', text: 'Lorem ipsum ' },
+            {
+              type: 'text',
+              text: 'dolor',
+              marks: [
+                { type: 'diffMark', attrs: { type: 'formatting' } },
+                { type: 'code' },
+              ],
+            },
+            { type: 'text', text: ' sit amet.' },
+          ],
+        },
+      ])
+    );
+  });
 });
 
 describe('diff attributes', () => {

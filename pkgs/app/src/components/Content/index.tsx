@@ -48,7 +48,8 @@ export const ContentBlock: React.FC<{
 }> = ({ block, pl }) => {
   const stl = styleDiff(block);
 
-  // Ordered by probability
+  // --- Ordered by ~ probability
+
   // Paragraph
   if (block.type === 'paragraph') {
     return <p className={stl}>{map(block, pl)}</p>;
@@ -59,10 +60,6 @@ export const ContentBlock: React.FC<{
     let text = <>{block.text}</>;
     if (block.marks) {
       for (const mark of block.marks) {
-        if (mark.type === 'code') {
-          return <code className="inlineCode">{text}</code>;
-        }
-
         if (mark.type === 'diffMark') {
           if (mark.attrs.type === 'added') {
             text = (
@@ -84,6 +81,11 @@ export const ContentBlock: React.FC<{
             );
           }
         }
+
+        if (mark.type === 'code') {
+          return <code className="inlineCode">{text}</code>;
+        }
+
         if (mark.type === 'bold') text = <strong>{text}</strong>;
         if (mark.type === 'italic') text = <em>{text}</em>;
         if (mark.type === 'link')
@@ -167,11 +169,6 @@ export const ContentBlock: React.FC<{
         <blockquote>{map(block, pl)}</blockquote>
       </div>
     );
-  }
-
-  // Horizontal
-  else if (block.type === 'horizontalRule') {
-    return <hr />;
   }
 
   // Task List
@@ -275,6 +272,11 @@ export const ContentBlock: React.FC<{
         <Banner type={block.attrs.type}>{map(block, pl)}</Banner>
       </div>
     );
+  }
+
+  // Horizontal
+  else if (block.type === 'horizontalRule') {
+    return <hr />;
   }
 
   // Vote

@@ -35,11 +35,13 @@ export async function seedRevisions(
               type: 'text',
               text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit.`,
             },
+            // Split this line and add marks code
             {
               type: 'text',
               text: ' Sed pharetra eros vel felis scelerisque pretium. ',
               marks: [{ type: 'code' }],
             },
+            // Split this line
             {
               type: 'text',
               text: 'Maecenas ac feugiat orci, a sodales lacus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent urna libero, convallis eu commodo id, iaculis aliquam arcu.',

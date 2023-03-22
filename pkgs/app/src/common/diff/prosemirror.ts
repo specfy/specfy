@@ -160,7 +160,12 @@ function applyTextNodeAttrsMarks(
       if (oldTexts) {
         const oldMarks = getMarks(oldTexts);
         if (diffMarks(oldMarks, textNode.marks || [])) {
-          baseMarks.push({ type: 'diffMark', attrs: { type: 'formatting' } });
+          if (!textNode.marks) textNode.marks = [];
+          // We want the mark to be first in array
+          textNode.marks.unshift({
+            type: 'diffMark',
+            attrs: { type: 'formatting' },
+          });
         }
       }
 
