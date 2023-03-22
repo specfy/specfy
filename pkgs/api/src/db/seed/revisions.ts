@@ -8,7 +8,7 @@ import {
   TypeHasUser,
   Project,
 } from '../../models';
-import type { BlockLevelOne } from '../../types/api';
+import type { BlockBanner, BlockLevelOne } from '../../types/api';
 
 /**
  * Seed projects
@@ -44,7 +44,7 @@ export async function seedRevisions(
               type: 'text',
               text: 'Maecenas ac feugiat orci, a sodales lacus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent urna libero, convallis eu commodo id, iaculis aliquam arcu.',
             },
-            { type: 'hardBreak', attrs: { uid: 'UidC3Ls191' } },
+            { type: 'hardBreak' },
             {
               type: 'text',
               text: `Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; In interdum egestas massa, sit amet auctor ipsum maximus in. `,
@@ -232,7 +232,7 @@ export async function seedRevisions(
         type: 'text',
         text: 'Donec scelerisque ante felis gravida bibendum. Vestibulum quam purus, porta ac ornare sit amet, imperdiet at augue. Duis ac libero nec magna malesuada rhoncus at sit amet purus. Donec sed vulputate est. Donec accumsan ullamcorper auctor. Ut orci lectus, ornare id interdum sit amet, hendrerit et elit. Proin venenatis semper ipsum eget cursus. ',
       },
-      { type: 'hardBreak', attrs: { uid: nanoid() } },
+      { type: 'hardBreak' },
       {
         type: 'text',
         text: 'Aliquam nunc ante, sodales como eget egestas id, elementum et dui.',
@@ -255,7 +255,7 @@ export async function seedRevisions(
   content[18] = {
     type: 'banner',
     attrs: { type: 'info', uid: 'UidgrRPV043' },
-    content: content[18].content,
+    content: (content[18] as BlockBanner).content,
   };
   delete content[6];
   delete content[10];

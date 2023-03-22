@@ -3,15 +3,19 @@ import type { ApiDocument } from './documents';
 export interface BlockDefaultAttrs {
   uid: string;
 }
+export interface MarkDiff {
+  type: 'diffMark';
+  attrs: { type: 'added' | 'removed' | 'unchanged' };
+}
 
 // ----- Text
 export interface BlockText {
   type: 'text';
   text: string;
   marks?: Array<
+    | MarkDiff
     | { type: 'bold' }
     | { type: 'code' }
-    | { type: 'diffMark'; attrs: { type: 'added' | 'removed' } }
     | { type: 'italic' }
     | { type: 'link'; attrs: { href: string; target: string } }
   >;
@@ -21,10 +25,11 @@ export interface BlockParagraph {
   type: 'paragraph';
   content?: Array<BlockHardBreak | BlockText>;
   attrs: BlockDefaultAttrs;
+  marks?: MarkDiff[];
 }
 export interface BlockHardBreak {
   type: 'hardBreak';
-  attrs: BlockDefaultAttrs;
+  marks?: MarkDiff[];
 }
 
 // ----- Headings
@@ -32,6 +37,7 @@ export interface BlockHeading {
   type: 'heading';
   content: BlockText[];
   attrs: BlockDefaultAttrs & { level: 1 | 2 | 3 | 4 };
+  marks?: MarkDiff[];
 }
 
 // ----- Bullet List
@@ -39,11 +45,13 @@ export interface BlockListItem {
   type: 'listItem';
   content: BlockParagraph[];
   attrs: BlockDefaultAttrs;
+  marks?: MarkDiff[];
 }
 export interface BlockBulletList {
   type: 'bulletList';
   content: BlockListItem[];
   attrs: BlockDefaultAttrs;
+  marks?: MarkDiff[];
 }
 
 // ----- Task List
@@ -51,11 +59,13 @@ export interface BlockTaskItem {
   type: 'taskItem';
   content: BlockParagraph[];
   attrs: BlockDefaultAttrs & { checked: boolean };
+  marks?: MarkDiff[];
 }
 export interface BlockTaskList {
   type: 'taskList';
   content: BlockTaskItem[];
   attrs: BlockDefaultAttrs;
+  marks?: MarkDiff[];
 }
 
 // ----- Blockquote
@@ -63,12 +73,14 @@ export interface BlockQuote {
   type: 'blockquote';
   content: BlockParagraph[];
   attrs: BlockDefaultAttrs;
+  marks?: MarkDiff[];
 }
 
 // ----- Divider / separator / horizontal
 export interface BlockHorizontalRule {
   type: 'horizontalRule';
   attrs: BlockDefaultAttrs;
+  marks?: MarkDiff[];
 }
 
 // ----- Table
@@ -81,22 +93,25 @@ export interface BlockTableHeader {
   type: 'tableHeader';
   content: BlockParagraph[];
   attrs: BlockDefaultAttrs & BlockTableAttrs;
+  marks?: MarkDiff[];
 }
 export interface BlockTableCell {
   type: 'tableCell';
-
   content: BlockParagraph[];
   attrs: BlockDefaultAttrs & BlockTableAttrs;
+  marks?: MarkDiff[];
 }
 export interface BlockTableRow {
   type: 'tableRow';
   content: Array<BlockTableCell | BlockTableHeader>;
   attrs: BlockDefaultAttrs;
+  marks?: MarkDiff[];
 }
 export interface BlockTable {
   type: 'table';
   content: BlockTableRow[];
   attrs: BlockDefaultAttrs;
+  marks?: MarkDiff[];
 }
 
 // ----- Banner
@@ -104,6 +119,7 @@ export interface BlockBanner {
   type: 'banner';
   content: BlockParagraph[];
   attrs: BlockDefaultAttrs & { type: 'error' | 'info' | 'success' | 'warning' };
+  marks?: MarkDiff[];
 }
 
 // ----- Vote
@@ -111,11 +127,13 @@ export interface BlockVoteItem {
   type: 'voteItem';
   content: BlockLevelOne[];
   attrs: BlockDefaultAttrs & { choiceId: string };
+  marks?: MarkDiff[];
 }
 export interface BlockVote {
   type: 'vote';
   content: BlockVoteItem[];
   attrs: BlockDefaultAttrs & { voteId: string };
+  marks?: MarkDiff[];
 }
 
 // ----- Image
@@ -126,6 +144,7 @@ export interface BlockImage {
     alt: string | null;
     title: string | null;
   };
+  marks?: MarkDiff[];
 }
 
 // ----- CodeBlock
@@ -133,6 +152,7 @@ export interface BlockCodeBlock {
   type: 'codeBlock';
   content: BlockText[];
   attrs: BlockDefaultAttrs & { language: string };
+  marks?: MarkDiff[];
 }
 
 // ----- Step
@@ -140,21 +160,23 @@ export interface BlockStep {
   type: 'step';
   content: BlockLevelOne[];
   attrs: BlockDefaultAttrs & { title?: string };
+  marks?: MarkDiff[];
 }
 
 // ----- Document
 export interface BlockDocument {
   type: 'blockDocument';
   attrs: BlockDefaultAttrs & { id: ApiDocument['id'] };
+  marks?: MarkDiff[];
 }
 
 // _---------_
-export interface BlockDoc {
+export interface BlockDoc<T = BlockLevelOne> {
   type: 'doc';
-  content: BlockLevelOne[];
+  content: T[];
 }
 
-export type BlockLevelZero = BlockDoc;
+export type BlockLevelZero<T = BlockLevelOne> = BlockDoc<T>;
 export type BlockLevelOne =
   | BlockBanner
   | BlockBulletList
@@ -210,7 +232,3 @@ export type BlocksWithContent =
   | BlockVoteItem;
 export type BlocksWithText = BlockCodeBlock | BlockHeading | BlockParagraph;
 export type BlocksOfText = BlockHardBreak | BlockText;
-
-export type BlockWithDiff = Blocks & {
-  diff?: { added?: true; removed?: true; moved?: boolean; unchanged?: true };
-};

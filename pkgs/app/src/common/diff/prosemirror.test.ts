@@ -27,7 +27,7 @@ describe('findTextNodes', () => {
         attrs: { uid: '1' },
         content: [
           { type: 'text', text: 'Foo' },
-          { type: 'hardBreak', attrs: { uid: '2' } },
+          { type: 'hardBreak' },
           { type: 'text', text: 'bar' },
         ],
       },
@@ -36,7 +36,7 @@ describe('findTextNodes', () => {
     );
     expect(res).toStrictEqual([
       { from: 0, to: 3, node: { type: 'text', text: 'Foo' } },
-      { from: 3, to: 4, node: { type: 'hardBreak', attrs: { uid: '2' } } },
+      { from: 3, to: 4, node: { type: 'hardBreak' } },
       { from: 4, to: 7, node: { type: 'text', text: 'bar' } },
     ]);
   });
@@ -58,7 +58,13 @@ describe('diff level one', () => {
       doc([{ type: 'paragraph', attrs: { uid: '1' } }])
     );
     expect(JSON.parse(JSON.stringify(diff))).toStrictEqual(
-      doc([{ type: 'paragraph', attrs: { uid: '1' }, diff: { added: true } }])
+      doc([
+        {
+          type: 'paragraph',
+          attrs: { uid: '1' },
+          marks: [{ type: 'diffMark', attrs: { type: 'added' } }],
+        },
+      ])
     );
   });
 
@@ -73,7 +79,7 @@ describe('diff level one', () => {
         {
           type: 'paragraph',
           attrs: { uid: '1' },
-          diff: { removed: true, moved: false },
+          marks: [{ type: 'diffMark', attrs: { type: 'removed' } }],
         },
       ])
     );
@@ -96,10 +102,18 @@ describe('diff level one', () => {
         {
           type: 'paragraph',
           attrs: { uid: '1' },
-          diff: { removed: true, moved: true },
+          marks: [{ type: 'diffMark', attrs: { type: 'removed' } }],
         },
-        { type: 'paragraph', attrs: { uid: '2' }, diff: { unchanged: true } },
-        { type: 'paragraph', attrs: { uid: '1' }, diff: { added: true } },
+        {
+          type: 'paragraph',
+          attrs: { uid: '2' },
+          marks: [{ type: 'diffMark', attrs: { type: 'unchanged' } }],
+        },
+        {
+          type: 'paragraph',
+          attrs: { uid: '1' },
+          marks: [{ type: 'diffMark', attrs: { type: 'added' } }],
+        },
       ])
     );
   });
@@ -122,10 +136,18 @@ describe('diff level one', () => {
         {
           type: 'paragraph',
           attrs: { uid: '1' },
-          diff: { removed: true, moved: false },
+          marks: [{ type: 'diffMark', attrs: { type: 'removed' } }],
         },
-        { type: 'paragraph', attrs: { uid: '2' }, diff: { unchanged: true } },
-        { type: 'paragraph', attrs: { uid: '3' }, diff: { unchanged: true } },
+        {
+          type: 'paragraph',
+          attrs: { uid: '2' },
+          marks: [{ type: 'diffMark', attrs: { type: 'unchanged' } }],
+        },
+        {
+          type: 'paragraph',
+          attrs: { uid: '3' },
+          marks: [{ type: 'diffMark', attrs: { type: 'unchanged' } }],
+        },
       ])
     );
   });
@@ -148,11 +170,23 @@ describe('diff level one', () => {
         // {
         //   type: 'paragraph',
         //   attrs: { uid: '1' },
-        //   diff: { removed: true, moved: true },
+        //   marks: [{ type: 'diffMark', attrs: {type: 'removed'}}],
         // },
-        { type: 'paragraph', attrs: { uid: '0' }, diff: { added: true } },
-        { type: 'paragraph', attrs: { uid: '1' }, diff: { unchanged: true } },
-        { type: 'paragraph', attrs: { uid: '2' }, diff: { unchanged: true } },
+        {
+          type: 'paragraph',
+          attrs: { uid: '0' },
+          marks: [{ type: 'diffMark', attrs: { type: 'added' } }],
+        },
+        {
+          type: 'paragraph',
+          attrs: { uid: '1' },
+          marks: [{ type: 'diffMark', attrs: { type: 'unchanged' } }],
+        },
+        {
+          type: 'paragraph',
+          attrs: { uid: '2' },
+          marks: [{ type: 'diffMark', attrs: { type: 'unchanged' } }],
+        },
       ])
     );
   });
@@ -171,13 +205,21 @@ describe('diff level one', () => {
     );
     expect(JSON.parse(JSON.stringify(diff))).toStrictEqual(
       doc([
-        { type: 'paragraph', attrs: { uid: '3' }, diff: { added: true } },
+        {
+          type: 'paragraph',
+          attrs: { uid: '3' },
+          marks: [{ type: 'diffMark', attrs: { type: 'added' } }],
+        },
         {
           type: 'paragraph',
           attrs: { uid: '1' },
-          diff: { removed: true, moved: false },
+          marks: [{ type: 'diffMark', attrs: { type: 'removed' } }],
         },
-        { type: 'paragraph', attrs: { uid: '2' }, diff: { unchanged: true } },
+        {
+          type: 'paragraph',
+          attrs: { uid: '2' },
+          marks: [{ type: 'diffMark', attrs: { type: 'unchanged' } }],
+        },
       ])
     );
   });
@@ -207,7 +249,7 @@ describe('diff text', () => {
         {
           type: 'paragraph',
           attrs: { uid: '1' },
-          diff: { unchanged: true },
+          marks: [{ type: 'diffMark', attrs: { type: 'unchanged' } }],
           content: [{ type: 'text', text: 'Foobar' }],
         },
       ])
@@ -240,7 +282,7 @@ describe('diff text', () => {
         {
           type: 'paragraph',
           attrs: { uid: '1' },
-          diff: { unchanged: true },
+          marks: [{ type: 'diffMark', attrs: { type: 'unchanged' } }],
           content: [
             { type: 'text', text: 'Foo' },
             { type: 'text', text: 'bar' },
@@ -273,7 +315,7 @@ describe('diff text', () => {
         {
           type: 'paragraph',
           attrs: { uid: '1' },
-          diff: { unchanged: true },
+          marks: [{ type: 'diffMark', attrs: { type: 'unchanged' } }],
           content: [
             { type: 'text', text: 'Foo' },
             {
@@ -310,7 +352,7 @@ describe('diff text', () => {
         {
           type: 'paragraph',
           attrs: { uid: '1' },
-          diff: { unchanged: true },
+          marks: [{ type: 'diffMark', attrs: { type: 'unchanged' } }],
           content: [
             { type: 'text', text: 'Foo' },
             {
@@ -359,12 +401,12 @@ describe('diff text', () => {
         {
           type: 'banner',
           attrs: { uid: '1', type: 'error' },
-          diff: { unchanged: true },
+          marks: [{ type: 'diffMark', attrs: { type: 'unchanged' } }],
           content: [
             {
               type: 'paragraph',
               attrs: { uid: '2' },
-              diff: { unchanged: true },
+              marks: [{ type: 'diffMark', attrs: { type: 'unchanged' } }],
               content: [
                 {
                   type: 'text',
@@ -400,7 +442,7 @@ describe('diff text', () => {
           attrs: { uid: '1' },
           content: [
             { type: 'text', text: 'Foo' },
-            { type: 'hardBreak', attrs: { uid: '2' } },
+            { type: 'hardBreak' },
             { type: 'text', text: 'bar' },
           ],
         },
@@ -411,7 +453,7 @@ describe('diff text', () => {
         {
           type: 'paragraph',
           attrs: { uid: '1' },
-          diff: { unchanged: true },
+          marks: [{ type: 'diffMark', attrs: { type: 'unchanged' } }],
           content: [
             { type: 'text', text: 'Foo' },
             {
@@ -437,7 +479,7 @@ describe('diff text', () => {
           attrs: { uid: '1' },
           content: [
             { type: 'text', text: 'Foo' },
-            { type: 'hardBreak', attrs: { uid: '2' } },
+            { type: 'hardBreak' },
             { type: 'text', text: 'bar' },
           ],
         },
@@ -455,7 +497,7 @@ describe('diff text', () => {
         {
           type: 'paragraph',
           attrs: { uid: '1' },
-          diff: { unchanged: true },
+          marks: [{ type: 'diffMark', attrs: { type: 'unchanged' } }],
           content: [
             { type: 'text', text: 'Foo' },
             {
@@ -500,7 +542,7 @@ describe('diff formatting', () => {
         {
           type: 'paragraph',
           attrs: { uid: '1' },
-          diff: { unchanged: true },
+          marks: [{ type: 'diffMark', attrs: { type: 'unchanged' } }],
           content: [
             {
               type: 'text',
@@ -539,7 +581,7 @@ describe('diff formatting', () => {
         {
           type: 'paragraph',
           attrs: { uid: '1' },
-          diff: { unchanged: true },
+          marks: [{ type: 'diffMark', attrs: { type: 'unchanged' } }],
           content: [{ type: 'text', text: 'Foobar', diff: { marked: true } }],
         },
       ])
@@ -570,13 +612,13 @@ describe('diff attributes', () => {
       doc([
         {
           type: 'banner',
-          diff: { removed: true },
+          marks: [{ type: 'diffMark', attrs: { type: 'removed' } }],
           attrs: { uid: '1', type: 'error' },
           content: [],
         },
         {
           type: 'banner',
-          diff: { added: true },
+          marks: [{ type: 'diffMark', attrs: { type: 'added' } }],
           attrs: { uid: '1', type: 'warning' },
           content: [],
         },

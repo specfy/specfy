@@ -361,7 +361,7 @@ function patchDocument(
       const node = newDoc.content!.shift();
       doc.content.push({
         ...node,
-        diff: { unchanged: true },
+        marks: [{ type: 'diffMark', attrs: { type: 'unchanged' } }],
       });
 
       continue;
@@ -370,7 +370,7 @@ function patchDocument(
       const node = newDoc.content!.shift();
       doc.content.push({
         ...node,
-        diff: { added: true },
+        marks: [{ type: 'diffMark', attrs: { type: 'added' } }],
       });
 
       continue;
@@ -382,11 +382,11 @@ function patchDocument(
 
       doc.content.push({
         ...oldNode,
-        diff: { removed: true },
+        marks: [{ type: 'diffMark', attrs: { type: 'removed' } }],
       });
       doc.content.push({
         ...newNode,
-        diff: { added: true },
+        marks: [{ type: 'diffMark', attrs: { type: 'added' } }],
       });
       continue;
     }
@@ -395,7 +395,7 @@ function patchDocument(
       const node = newDoc.content!.shift();
       doc.content.push({
         ...node,
-        diff: { added: true },
+        marks: [{ type: 'diffMark', attrs: { type: 'added' } }],
       });
       continue;
     }
@@ -404,7 +404,7 @@ function patchDocument(
       const node = oldDoc.content!.shift();
       doc.content.push({
         ...node,
-        diff: { removed: true, moved: typeLeft === 'moved' },
+        marks: [{ type: 'diffMark', attrs: { type: 'removed' } }],
       });
       continue;
     }

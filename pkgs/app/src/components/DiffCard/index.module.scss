@@ -41,22 +41,19 @@ $border-width: 10px;
   padding: 0 $p-4xl;
 }
 
-
 // Diff
-.addedInline {
-  background-color: $lime-200 !important;
-}
-
 .added {
   margin: 0 (-$p-4xl) 0 (-$p-4xl - $border-width);
   padding-left: $p-4xl;
   background-color: $color-added;
   border-left: $border-width solid $color-added-hi;
-}
 
-.removedInline {
-  text-decoration: line-through;
-  background-color: $color-removed-hi !important;
+  &.i {
+    margin: 0;
+    padding-left: 0;
+    background-color: $color-added-hi;
+    border-left: none;
+  }
 }
 
 .removed {
@@ -68,6 +65,13 @@ $border-width: 10px;
   opacity: 0.7;
   background-color: $color-removed;
   border-left: $border-width solid $color-removed-hi;
+
+  &.i {
+    margin: 0;
+    padding-left: 0;
+    background-color: $color-removed-hi;
+    border-left: none;
+  }
 }
 
 .content {

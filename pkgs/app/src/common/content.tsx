@@ -1,10 +1,6 @@
 import type { Editor } from '@tiptap/core';
 import { Schema } from '@tiptap/pm/model';
-import type {
-  BlocksWithContent,
-  BlockDoc,
-  BlockLevelZero,
-} from 'api/src/types/api';
+import type { BlocksWithContent, BlockLevelZero } from 'api/src/types/api';
 
 import { ContentBlock } from '../components/Content';
 
@@ -25,7 +21,7 @@ export function map(
   });
 }
 
-export function removeEmptyContent(json: BlockDoc): BlockLevelZero {
+export function removeEmptyContent(json: BlockLevelZero): BlockLevelZero {
   return json.content.length === 1 &&
     json.content[0].type === 'paragraph' &&
     !json.content[0].content

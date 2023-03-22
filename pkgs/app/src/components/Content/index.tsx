@@ -1,5 +1,6 @@
+import { IconArrowBack } from '@tabler/icons-react';
 import { Checkbox, Typography } from 'antd';
-import type { BlockLevelZero, BlockWithDiff } from 'api/src/types/api';
+import type { BlockLevelZero, Blocks, MarkDiff } from 'api/src/types/api';
 import classnames from 'classnames';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -17,22 +18,29 @@ import { ContentBlockStep } from './BlockStep';
 import { ContentBlockVoteItem } from './BlockVoteItem';
 import cls from './index.module.scss';
 
-function styleDiff(block: BlockWithDiff): string {
-  if (!block.diff) {
+function styleDiff(block: Blocks): string {
+  if (!block.marks || block.marks.length <= 0) {
     return '';
   }
 
-  if (block.diff.added) {
+  const diffMark = block.marks.find((mark) => mark.type === 'diffMark') as
+    | MarkDiff
+    | undefined;
+  if (!diffMark) {
+    return '';
+  }
+
+  if (diffMark.attrs.type === 'added') {
     return clsDiff.added;
   }
-  if (block.diff.removed) {
+  if (diffMark.attrs.type === 'removed') {
     return clsDiff.removed;
   }
   return '';
 }
 
 export const ContentBlock: React.FC<{
-  block: BlockWithDiff;
+  block: Blocks;
   pl: Payload;
 }> = ({ block, pl }) => {
   const stl = styleDiff(block);
@@ -54,9 +62,17 @@ export const ContentBlock: React.FC<{
 
         if (mark.type === 'diffMark') {
           if (mark.attrs.type === 'added') {
-            text = <span className={clsDiff.addedInline}>{text}</span>;
+            text = (
+              <span className={classnames(clsDiff.added, clsDiff.i)}>
+                {text}
+              </span>
+            );
           } else {
-            text = <span className={clsDiff.removedInline}>{text}</span>;
+            text = (
+              <span className={classnames(clsDiff.removed, clsDiff.i)}>
+                {text}
+              </span>
+            );
           }
         }
         if (mark.type === 'bold') text = <strong>{text}</strong>;
@@ -72,8 +88,16 @@ export const ContentBlock: React.FC<{
     if (block.link) text = <Link to={block.link}>{text}</Link>;
     return text;
   } else if (block.type === 'hardBreak') {
-    console.log('hardBreak', block, { stl });
-    return <br className={stl} />;
+    return (
+      <>
+        {stl && (
+          <span className={classnames(stl, clsDiff.i)}>
+            <IconArrowBack />
+          </span>
+        )}
+        <br className={stl} />
+      </>
+    );
   }
 
   // Headings

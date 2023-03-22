@@ -1,7 +1,5 @@
-// import { IconFold } from '@tabler/icons-react';
-// import { Button } from 'antd';
 import { Typography } from 'antd';
-import type { BlockLevelZero, BlockWithDiff } from 'api/src/types/api';
+import type { BlockLevelZero, Blocks } from 'api/src/types/api';
 import classnames from 'classnames';
 import { useMemo, useState } from 'react';
 
@@ -31,18 +29,29 @@ export const UnifiedContent: React.FC<{ doc: BlockLevelZero; id: string }> = ({
   });
 
   const grouped = useMemo(() => {
-    const tmp: Array<{ unchanged: boolean; blocks: BlockWithDiff[] }> = [];
-    let acc: BlockWithDiff[] = [];
+    const tmp: Array<{ unchanged: boolean; blocks: Blocks[] }> = [];
+    let acc: Blocks[] = [];
     const showUnchanged = false;
+    const group = true;
+
+    if (!group) {
+      return [{ unchanged: false, blocks: doc.content }];
+    }
 
     let i = 0;
     // eslint-disable-next-line no-constant-condition
     while (true) {
-      const copy = doc.content[i] as BlockWithDiff;
+      const copy = doc.content[i];
       i++;
 
+      // Done
+      if (!copy) {
+        break;
+      }
+      const diffMark = copy.marks?.find((mark) => mark.type === 'diffMark');
+
       // Unchanged
-      if (copy?.diff?.unchanged && !showUnchanged) {
+      if (diffMark && diffMark.attrs.type !== 'unchanged' && !showUnchanged) {
         acc.push(copy);
         continue;
       }
@@ -51,11 +60,6 @@ export const UnifiedContent: React.FC<{ doc: BlockLevelZero; id: string }> = ({
       if (acc.length > 0) {
         tmp.push({ unchanged: true, blocks: acc });
         acc = [];
-      }
-
-      // Done
-      if (i >= doc.content.length) {
-        break;
       }
 
       tmp.push({ unchanged: false, blocks: [copy] });

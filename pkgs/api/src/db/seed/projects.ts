@@ -67,7 +67,7 @@ export async function seedProjects(users: User[]) {
               type: 'text',
               text: `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed pharetra eros vel felis scelerisque pretium. Maecenas ac feugiat orci, a sodales lacus. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Praesent urna libero, convallis eu commodo id, iaculis aliquam arcu.`,
             },
-            { type: 'hardBreak', attrs: { uid: 'UidC3Ls191' } },
+            { type: 'hardBreak' },
             {
               type: 'text',
               text: `Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; In interdum egestas massa, sit amet auctor ipsum maximus in. `,
