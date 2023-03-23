@@ -22,10 +22,10 @@ type PropCreate = Partial<Pick<DBRevision, 'id'>> &
     | 'blobs'
     | 'description'
     | 'merged'
+    | 'name'
     | 'orgId'
     | 'projectId'
     | 'status'
-    | 'title'
   >;
 
 @Table({ tableName: 'revisions', modelName: 'revision' })
@@ -43,7 +43,7 @@ export class Revision extends ActivitableModel<DBRevision, PropCreate> {
   declare projectId: ForeignKey<Project['id']>;
 
   @Column
-  declare title: string;
+  declare name: string;
 
   @Column({ type: DataType.JSON })
   declare description: CreationOptional<DBRevision['description']>;

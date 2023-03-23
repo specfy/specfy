@@ -425,7 +425,7 @@ table "revisions" {
     null = false
   }
 
-  column "title" {
+  column "name" {
     type = varchar(250)
     null = false
   }
@@ -743,11 +743,6 @@ table "activities" {
     null = false
   }
 
-
-  column "target_project_id" {
-    type = varchar(15)
-    null = true
-  }
   column "target_user_id" {
     type = uuid
     null = true

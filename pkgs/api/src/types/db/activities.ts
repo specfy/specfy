@@ -46,8 +46,6 @@ export interface DBActivity {
     | 'User.removed'
     | 'User.updated';
 
-  targetOrgId: string | null;
-  targetProjectId: string | null;
   targetUserId: string | null;
   targetComponentId: string | null;
   targetDocumentId: string | null;

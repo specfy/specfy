@@ -98,7 +98,7 @@ export const ProjectRevisionCreate: React.FC<{
     const { id } = await createRevision({
       orgId: params.org_id,
       projectId: proj.id,
-      title,
+      name: title,
       description,
       blobs,
     });

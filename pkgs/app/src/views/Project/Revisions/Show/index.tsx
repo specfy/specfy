@@ -124,7 +124,7 @@ export const ProjectRevisionsShow: React.FC<{
       return;
     }
 
-    setTitle(rev.title);
+    setTitle(rev.name);
     setDescription(rev.description);
     setAuthors([...rev.authors]);
     setReviewers([...rev.reviewers]);
@@ -189,7 +189,7 @@ export const ProjectRevisionsShow: React.FC<{
 
     const up = await updateRevision(qp, {
       ...rev,
-      title,
+      name: title,
       description,
       authors: authors!.map((u) => u.id),
       reviewers: reviewers!.map((u) => u.id),
@@ -356,7 +356,7 @@ export const ProjectRevisionsShow: React.FC<{
             {!edit && (
               <div className={cls.mainTop}>
                 <Typography.Title level={1} className={cls.title}>
-                  {rev.title}
+                  {rev.name}
                 </Typography.Title>
                 <Space>
                   {save && <LoadingOutlined />}

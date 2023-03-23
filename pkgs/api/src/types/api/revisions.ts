@@ -36,7 +36,7 @@ type ApiBlobCreate = Pick<
 
 export type ReqPostRevision = Pick<
   ApiRevision,
-  'description' | 'orgId' | 'projectId' | 'title'
+  'description' | 'name' | 'orgId' | 'projectId'
 > & {
   blobs: ApiBlobCreate[];
 };
@@ -60,7 +60,7 @@ export interface ResGetRevision {
 // ------ POST /:id
 export type ReqPutRevision = Pick<
   ResGetRevision['data'],
-  'blobs' | 'description' | 'locked' | 'status' | 'title'
+  'blobs' | 'description' | 'locked' | 'name' | 'status'
 > & { authors: string[]; reviewers: string[] };
 export interface ResPutRevision {
   data: { done: boolean };

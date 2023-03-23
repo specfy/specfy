@@ -6,7 +6,7 @@ export interface DBRevision {
   orgId: string;
   projectId: string;
 
-  title: string;
+  name: string;
   description: BlockLevelZero;
   blobs: string[];
   locked: boolean;

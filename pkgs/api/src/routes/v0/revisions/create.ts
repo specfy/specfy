@@ -50,7 +50,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         {
           orgId: req.body.orgId,
           projectId: req.body.projectId,
-          title: req.body.title,
+          name: req.body.name,
           description: req.body.description,
           status: 'draft',
           merged: false,

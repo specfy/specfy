@@ -301,7 +301,7 @@ export async function seedRevisions(
     id: '1oxA2sPxkR',
     orgId: 'company',
     projectId: p1.id,
-    title: 'fix: update project, create component, delete RFC-2',
+    name: 'fix: update project, create component, delete RFC-2',
     description: {
       type: 'doc',
       content: [

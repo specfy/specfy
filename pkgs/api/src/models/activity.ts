@@ -7,11 +7,39 @@ import {
   Column,
   DataType,
   BeforeCreate,
+  Scopes,
+  BelongsTo,
+  HasOne,
 } from 'sequelize-typescript';
 
 import { nanoid } from '../common/id';
 import type { DBActivity, DBOrg, DBProject, DBUser } from '../types/db';
 
+import { Component } from './component';
+import { Document } from './document';
+import { Policy } from './policy';
+import { Project } from './project';
+import { Revision } from './revision';
+import { User } from './user';
+
+@Scopes(() => ({
+  // includes
+  withUser: {
+    include: [{ model: User, attributes: ['id', 'name'], as: 'user' }],
+  },
+  withProject: {
+    include: [{ model: Project, attributes: ['id', 'name', 'slug'] }],
+  },
+  withTargets: {
+    include: [
+      { model: User, attributes: ['id', 'name'], as: 'target_user' },
+      { model: Document, attributes: ['id', 'name'] },
+      { model: Component, attributes: ['id', 'name'] },
+      { model: Revision, attributes: ['id', 'name'] },
+      { model: Policy, attributes: ['id', 'name'] },
+    ],
+  },
+}))
 @Table({ tableName: 'activities', modelName: 'activity', timestamps: false })
 export class Activity extends Model<
   DBActivity,
@@ -24,7 +52,6 @@ export class Activity extends Model<
       | 'targetComponentId'
       | 'targetDocumentId'
       | 'targetPolicyId'
-      | 'targetProjectId'
       | 'targetRevisionId'
       | 'targetUserId'
     >
@@ -50,9 +77,6 @@ export class Activity extends Model<
   @Column({ field: 'action', type: DataType.STRING })
   declare action: DBActivity['action'];
 
-  @Column({ field: 'target_project_id', type: DataType.STRING })
-  declare targetProjectId: DBActivity['targetProjectId'];
-
   @Column({ field: 'target_user_id', type: DataType.STRING })
   declare targetUserId: DBActivity['targetUserId'];
 
@@ -72,6 +96,33 @@ export class Activity extends Model<
   @Column({ field: 'created_at' })
   declare createdAt: Date;
 
+  // --- Rel
+  @BelongsTo(() => Project, { foreignKey: 'project_id' })
+  declare project: Project;
+
+  @BelongsTo(() => User, { foreignKey: 'user_id', as: 'user' })
+  declare user: User;
+
+  @HasOne(() => User, {
+    sourceKey: 'targetUserId',
+    foreignKey: 'id',
+    as: 'target_user',
+  })
+  declare targetUser: User;
+
+  @HasOne(() => Component, { sourceKey: 'targetComponentId', foreignKey: 'id' })
+  declare targetComponent: Component;
+
+  @HasOne(() => Document, { sourceKey: 'targetDocumentId', foreignKey: 'id' })
+  declare targetDocument: Document;
+
+  @HasOne(() => Revision, { sourceKey: 'targetRevisionId', foreignKey: 'id' })
+  declare targetRevision: Revision;
+
+  @HasOne(() => Policy, { sourceKey: 'targetPolicyId', foreignKey: 'id' })
+  declare targetPolicy: Policy;
+
+  // --- Hooks
   @BeforeCreate
   static async onBeforeCreate(model: Activity): Promise<void> {
     model.activityGroupId = model.activityGroupId || nanoid();

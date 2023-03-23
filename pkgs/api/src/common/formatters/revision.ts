@@ -11,7 +11,7 @@ export function toApiRevision(
     id: rev.id,
     orgId: rev.orgId,
     projectId: rev.projectId,
-    title: rev.title,
+    name: rev.name,
     description: rev.description,
     locked: rev.locked,
     merged: rev.merged,

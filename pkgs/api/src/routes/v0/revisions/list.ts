@@ -38,7 +38,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
     // Search
     if (req.query.search) {
-      filter.title = { [Op.iLike]: `%${req.query.search}%` };
+      filter.name = { [Op.iLike]: `%${req.query.search}%` };
     }
     // TODO: search in content
 
