@@ -177,6 +177,7 @@ export async function seedPolicies([u1]: User[]) {
   });
   await Promise.all(
     [p1, p2, p4, p5].map(async (p) => {
+      await p.onAfterCreate(u1);
       return await TypeHasUser.create({
         role: 'author',
         userId: u1.id,

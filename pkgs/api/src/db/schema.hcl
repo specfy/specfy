@@ -710,3 +710,80 @@ table "policies" {
   }
 }
 
+
+// ------------------------ Activities
+table "activities" {
+  schema = schema.public
+
+  column "id" {
+    type = varchar(15)
+    null = false
+  }
+
+  column "org_id" {
+    type = varchar(36)
+    null = false
+  }
+  column "project_id" {
+    type = varchar(15)
+    null = true
+  }
+
+  column "user_id" {
+    type = uuid
+    null = false
+  }
+
+  column "activity_group_id" {
+    type = varchar(15)
+    null = false
+  }
+  column "action" {
+    type = varchar(25)
+    null = false
+  }
+
+
+  column "target_project_id" {
+    type = varchar(15)
+    null = true
+  }
+  column "target_user_id" {
+    type = uuid
+    null = true
+  }
+  column "target_component_id" {
+    type = varchar(15)
+    null = true
+  }
+  column "target_document_id" {
+    type = varchar(15)
+    null = true
+  }
+  column "target_revision_id" {
+    type = varchar(15)
+    null = true
+  }
+  column "target_policy_id" {
+    type = varchar(15)
+    null = true
+  }
+
+  column "created_at" {
+    type    = timestamp(6)
+    default = sql("now()")
+    null    = false
+  }
+
+  primary_key {
+    columns = [column.id]
+  }
+
+  index "idx_activities_projectid_group" {
+    columns = [
+      column.org_id,
+      column.project_id,
+      column.activity_group_id,
+    ]
+  }
+}

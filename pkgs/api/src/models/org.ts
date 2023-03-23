@@ -1,5 +1,4 @@
 import {
-  Model,
   CreatedAt,
   UpdatedAt,
   Table,
@@ -9,8 +8,9 @@ import {
   Scopes,
 } from 'sequelize-typescript';
 
-import type { DBOrg } from '../types/db';
+import type { DBActivityType, DBOrg } from '../types/db';
 
+import ActivitableModel from './base/activitable';
 import { Perm } from './perm';
 
 @Scopes(() => ({
@@ -31,7 +31,9 @@ import { Perm } from './perm';
   },
 }))
 @Table({ tableName: 'orgs', modelName: 'org' })
-export class Org extends Model<DBOrg, Pick<DBOrg, 'id' | 'name'>> {
+export class Org extends ActivitableModel<DBOrg, Pick<DBOrg, 'id' | 'name'>> {
+  activityType: DBActivityType = 'Org';
+
   @PrimaryKey
   @Column
   declare id: string;

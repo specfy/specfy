@@ -1,15 +1,16 @@
 import { nanoid } from '../common/id';
 import {
+  Activity,
   Component,
-  User,
   Document,
   Org,
-  Project,
   Perm,
-  TypeHasUser,
+  Policy,
+  Project,
   Revision,
   RevisionBlob,
-  Policy,
+  TypeHasUser,
+  User,
 } from '../models';
 
 import './';
@@ -30,6 +31,7 @@ export async function clean() {
     RevisionBlob.truncate(),
     TypeHasUser.truncate(),
     Policy.truncate(),
+    Activity.truncate(),
   ]);
 }
 
@@ -72,14 +74,16 @@ export async function seed() {
   const users = [u1, u2, u3, u4, u5, u6, u7, u8];
 
   // Org
-  await Org.create({
+  const o1 = await Org.create({
     id: 'company',
     name: 'My Company',
   });
-  await Org.create({
+  await o1.onAfterCreate(users[0]);
+  const o2 = await Org.create({
     id: 'samuelbodin',
     name: "Samuel Bodin's org",
   });
+  await o2.onAfterCreate(users[0]);
 
   const { p1, p3 } = await seedProjects(users);
 
@@ -103,6 +107,7 @@ export async function seed() {
     inComponent: null,
     edges: [],
   });
+  await gcp.onAfterCreate(users[0]);
   const gce = await Component.create({
     id: 'jZDC3Lsc02',
     name: 'GCE',
@@ -119,6 +124,7 @@ export async function seed() {
     inComponent: gcp.id,
     edges: [],
   });
+  await gce.onAfterCreate(users[0]);
   const kube = await Component.create({
     id: 'jZDC3Lsc03',
     name: 'Kubernetes',
@@ -135,6 +141,7 @@ export async function seed() {
     inComponent: gcp.id,
     edges: [],
   });
+  await kube.onAfterCreate(users[0]);
   const pg = await Component.create({
     id: 'jZDC3Lsc04',
     name: 'Postgresql',
@@ -148,6 +155,7 @@ export async function seed() {
     edges: [],
     tech: [],
   });
+  await pg.onAfterCreate(users[0]);
   const dd = await Component.create({
     id: 'jZDC3Lsc05',
     name: 'Datadog',
@@ -161,6 +169,7 @@ export async function seed() {
     edges: [],
     tech: [],
   });
+  await dd.onAfterCreate(users[0]);
   const sentry = await Component.create({
     id: 'jZDC3Lsc06',
     name: 'Sentry',
@@ -174,6 +183,7 @@ export async function seed() {
     edges: [],
     tech: [],
   });
+  await sentry.onAfterCreate(users[0]);
   const algolia = await Component.create({
     id: 'jZDC3Lsc07',
     name: 'Algolia',
@@ -187,6 +197,7 @@ export async function seed() {
     edges: [],
     tech: [],
   });
+  await algolia.onAfterCreate(users[0]);
   const redis = await Component.create({
     id: 'jZDC3Lsc08',
     name: 'Redis',
@@ -200,6 +211,7 @@ export async function seed() {
     edges: [],
     tech: [],
   });
+  await redis.onAfterCreate(users[0]);
   const es = await Component.create({
     id: 'jZDC3Lsc09',
     name: 'Elasticsearch',
@@ -213,6 +225,7 @@ export async function seed() {
     edges: [],
     tech: [],
   });
+  await es.onAfterCreate(users[0]);
   const rabbit = await Component.create({
     id: 'jZDC3Lsc10',
     name: 'RabbitMQ',
@@ -226,6 +239,7 @@ export async function seed() {
     edges: [],
     tech: [],
   });
+  await rabbit.onAfterCreate(users[0]);
   const analytics = await Component.create({
     id: 'jZDC3Lsc11',
     name: 'Dashboard',
@@ -239,6 +253,7 @@ export async function seed() {
     edges: [],
     tech: [],
   });
+  await analytics.onAfterCreate(users[0]);
   const api = await Component.create({
     id: 'jZDC3Lsc12',
     name: 'API',
@@ -325,7 +340,8 @@ export async function seed() {
     ],
     tech: ['nodejs', 'typescript', 'bash', 'AtlasDB'],
   });
-  await Component.create({
+  await api.onAfterCreate(users[0]);
+  const front = await Component.create({
     id: 'jZDC3Lsc13',
     name: 'Frontend',
     type: 'component',
@@ -362,7 +378,8 @@ export async function seed() {
     ],
     tech: ['react', 'typescript', 'webpack'],
   });
-  await Component.create({
+  await front.onAfterCreate(users[0]);
+  const manager = await Component.create({
     id: 'jZDC3Lsc14',
     name: 'Manager',
     type: 'component',
@@ -437,7 +454,8 @@ export async function seed() {
     ],
     tech: ['nodejs', 'typescript'],
   });
-  await Component.create({
+  await manager.onAfterCreate(users[0]);
+  const worker = await Component.create({
     id: 'jZDC3Lsc15',
     name: 'Worker',
     type: 'component',
@@ -504,6 +522,9 @@ export async function seed() {
     ],
     tech: ['nodejs', 'typescript'],
   });
+  await worker.onAfterCreate(users[0]);
+
+  // --- Others
   await seedRevisions(p1, users, rfcs, { api, pg, gce });
 
   await seedPolicies([u1]);

@@ -1,6 +1,5 @@
 import type { CreationOptional, ForeignKey } from 'sequelize';
 import {
-  Model,
   CreatedAt,
   UpdatedAt,
   Table,
@@ -13,8 +12,9 @@ import {
 import slugify from 'slugify';
 
 import { nanoid } from '../common/id';
-import type { DBBlobDocument, DBDocument } from '../types/db';
+import type { DBActivityType, DBBlobDocument, DBDocument } from '../types/db';
 
+import ActivitableModel from './base/activitable';
 import type { PropBlobCreate } from './blob';
 import { RevisionBlob } from './blob';
 import type { Org } from './org';
@@ -26,7 +26,9 @@ type CreateProp = Partial<Pick<DBDocument, 'id'>> &
     'content' | 'locked' | 'name' | 'orgId' | 'projectId' | 'tldr' | 'type'
   >;
 @Table({ tableName: 'documents', modelName: 'document' })
-export class Document extends Model<DBDocument, CreateProp> {
+export class Document extends ActivitableModel<DBDocument, CreateProp> {
+  activityType: DBActivityType = 'Document';
+
   @PrimaryKey
   @Column(DataType.STRING)
   declare id: CreationOptional<string>;

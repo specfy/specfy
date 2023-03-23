@@ -41,6 +41,7 @@ export async function seedProjects(users: User[]) {
       pos: { x: 20, y: 10, width: 100, height: 32 },
     },
   });
+  await p0.onAfterCreate(users[0]);
 
   const p3 = await Project.create({
     ...defProject,
@@ -51,6 +52,7 @@ export async function seedProjects(users: User[]) {
       pos: { x: 220, y: -20, width: 100, height: 32 },
     },
   });
+  await p3.onAfterCreate(users[0]);
 
   const p1 = await Project.create({
     ...defProject,
@@ -85,6 +87,7 @@ export async function seedProjects(users: User[]) {
       pos: { x: 200, y: 70, width: 100, height: 32 },
     },
   });
+  await p1.onAfterCreate(users[0]);
 
   const p4 = await Project.create({
     ...defProject,
@@ -95,6 +98,7 @@ export async function seedProjects(users: User[]) {
       pos: { x: -150, y: 40, width: 100, height: 32 },
     },
   });
+  await p4.onAfterCreate(users[0]);
 
   const p5 = await Project.create({
     ...defProject,
@@ -105,6 +109,7 @@ export async function seedProjects(users: User[]) {
       pos: { x: 20, y: 120, width: 100, height: 32 },
     },
   });
+  await p5.onAfterCreate(users[0]);
 
   // ---- Edges for graph
   p0.set('edges', [
@@ -130,6 +135,7 @@ export async function seedProjects(users: User[]) {
   ]);
   await p0.createBlob();
   await p0.save();
+  await p0.onAfterUpdate(users[0]);
 
   p3.set('edges', [
     {
@@ -143,6 +149,7 @@ export async function seedProjects(users: User[]) {
   ]);
   await p3.createBlob();
   await p3.save();
+  await p3.onAfterUpdate(users[0]);
 
   p1.set('edges', [
     {
@@ -164,6 +171,7 @@ export async function seedProjects(users: User[]) {
   ]);
   await p1.createBlob();
   await p1.save();
+  await p1.onAfterUpdate(users[0]);
 
   p5.set('edges', [
     {
@@ -177,6 +185,7 @@ export async function seedProjects(users: User[]) {
   ]);
   await p5.createBlob();
   await p5.save();
+  await p5.onAfterUpdate(users[0]);
 
   // ---- Permissions
   await Promise.all([

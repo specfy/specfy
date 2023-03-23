@@ -1,6 +1,5 @@
 import type { CreationOptional, ForeignKey } from 'sequelize';
 import {
-  Model,
   CreatedAt,
   UpdatedAt,
   Table,
@@ -11,8 +10,9 @@ import {
 } from 'sequelize-typescript';
 
 import { nanoid } from '../common/id';
-import type { DBRevision } from '../types/db';
+import type { DBActivityType, DBRevision } from '../types/db';
 
+import ActivitableModel from './base/activitable';
 import type { Org } from './org';
 import type { Project } from './project';
 
@@ -29,7 +29,9 @@ type PropCreate = Partial<Pick<DBRevision, 'id'>> &
   >;
 
 @Table({ tableName: 'revisions', modelName: 'revision' })
-export class Revision extends Model<DBRevision, PropCreate> {
+export class Revision extends ActivitableModel<DBRevision, PropCreate> {
+  activityType: DBActivityType = 'Revision';
+
   @PrimaryKey
   @Column(DataType.STRING)
   declare id: CreationOptional<string>;

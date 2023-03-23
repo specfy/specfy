@@ -32,6 +32,7 @@ export async function seedPlaybook(p1: Project, [u1]: User[]) {
     },
     locked: false,
   });
+
   const d2 = await Document.create({
     id: 'd2grRPVYnx',
     orgId: 'company',
@@ -71,6 +72,7 @@ export async function seedPlaybook(p1: Project, [u1]: User[]) {
     },
     locked: false,
   });
+
   const d3 = await Document.create({
     id: 'd3grRPVYnx',
     orgId: 'company',
@@ -170,13 +172,14 @@ export async function seedPlaybook(p1: Project, [u1]: User[]) {
 
   // Document has user
   await Promise.all([
-    [d1.id, d2.id, d3.id].map((id) =>
-      TypeHasUser.create({
-        documentId: id,
+    [d1, d2, d3].map(async (d) => {
+      await d.onAfterCreate(u1);
+      return TypeHasUser.create({
+        documentId: d.id,
         userId: u1.id,
         role: 'author',
-      })
-    ),
+      });
+    }),
   ]);
 }
 
@@ -618,13 +621,14 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
 
   // Document has user
   await Promise.all([
-    [d1.id, d2.id, d3.id].map((id) =>
-      TypeHasUser.create({
-        documentId: id,
+    [d1, d2, d3].map(async (d) => {
+      await d.onAfterCreate(u1);
+      return TypeHasUser.create({
+        documentId: d.id,
         userId: u1.id,
         role: 'author',
-      })
-    ),
+      });
+    }),
     TypeHasUser.create({
       documentId: d2.id,
       userId: u2.id,

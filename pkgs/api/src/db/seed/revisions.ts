@@ -329,6 +329,7 @@ export async function seedRevisions(
       blob7.id,
     ],
   });
+  await rev.onAfterCreate(users[0]);
 
   await TypeHasUser.create({
     revisionId: rev.id,

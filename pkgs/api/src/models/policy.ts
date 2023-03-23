@@ -1,6 +1,5 @@
 import type { CreationOptional, ForeignKey } from 'sequelize';
 import {
-  Model,
   CreatedAt,
   UpdatedAt,
   Table,
@@ -11,16 +10,19 @@ import {
 } from 'sequelize-typescript';
 
 import { nanoid } from '../common/id';
-import type { DBPolicy } from '../types/db';
+import type { DBActivityType, DBPolicy } from '../types/db';
 
+import ActivitableModel from './base/activitable';
 import type { Org } from './org';
 
 @Table({ tableName: 'policies', modelName: 'policy' })
-export class Policy extends Model<
+export class Policy extends ActivitableModel<
   DBPolicy,
   Partial<Pick<DBPolicy, 'id'>> &
     Pick<DBPolicy, 'content' | 'name' | 'orgId' | 'tech' | 'type'>
 > {
+  activityType: DBActivityType = 'Policy';
+
   @PrimaryKey
   @Column({ type: DataType.STRING })
   declare id: CreationOptional<DBPolicy['id']>;
@@ -47,11 +49,6 @@ export class Policy extends Model<
   @UpdatedAt
   @Column({ field: 'updated_at' })
   declare updatedAt: Date;
-
-  // getJsonForBlob(): DBBlobPolicy['blob'] {
-  //   const { id, orgId, createdAt, updatedAt, ...simplified } = this.toJSON();
-  //   return simplified;
-  // }
 
   @BeforeCreate
   static async onBeforeCreate(model: Policy): Promise<void> {
