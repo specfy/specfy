@@ -67,6 +67,14 @@ export const Staging: React.FC<{ link: string }> = ({ link }) => {
 
       // Find deleted
       for (const item of originalStore.originalStore) {
+        // ignore others projects
+        if ('projectId' in item && item.projectId !== project!.id) {
+          continue;
+        }
+        // ignore project
+        if ('links' in item && item.id !== project!.id) {
+          continue;
+        }
         if (store.find((i) => i.id === item.id)) {
           continue;
         }

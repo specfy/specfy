@@ -45,15 +45,14 @@ export const UnifiedContent: React.FC<{ doc: BlockLevelZero; id: string }> = ({
       i++;
 
       // Done
-      if (!copy) {
-        break;
-      }
-      const diffMark = copy.marks?.find((mark) => mark.type === 'diffMark');
+      if (copy) {
+        const diffMark = copy.marks?.find((mark) => mark.type === 'diffMark');
 
-      // Unchanged
-      if (diffMark && diffMark.attrs.type !== 'unchanged' && !showUnchanged) {
-        acc.push(copy);
-        continue;
+        // Unchanged
+        if (diffMark && diffMark.attrs.type !== 'unchanged' && !showUnchanged) {
+          acc.push(copy);
+          continue;
+        }
       }
 
       // Dump accumulated diffs
@@ -62,8 +61,14 @@ export const UnifiedContent: React.FC<{ doc: BlockLevelZero; id: string }> = ({
         acc = [];
       }
 
-      tmp.push({ unchanged: false, blocks: [copy] });
+      if (copy) {
+        tmp.push({ unchanged: false, blocks: [copy] });
+      } else {
+        // Break after a full iteration to empty the acc
+        break;
+      }
     }
+
     return tmp;
   }, [doc]);
 

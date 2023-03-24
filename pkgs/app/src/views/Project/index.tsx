@@ -1,5 +1,5 @@
 import { Avatar, Divider, Skeleton } from 'antd';
-import type { ApiProject } from 'api/src/types/api';
+import type { ApiOrg, ApiProject } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
 import { Route, Routes, useParams } from 'react-router-dom';
 
@@ -10,6 +10,7 @@ import { useComponentsStore, useProjectStore } from '../../common/store';
 import { BigHeadingLoading } from '../../components/BigHeading';
 import { Card } from '../../components/Card';
 import { Container } from '../../components/Container';
+import { NotFound } from '../../components/NotFound';
 import { ProjectHeader } from '../../components/ProjectHeader';
 import type { RouteProject } from '../../types/routes';
 
@@ -36,9 +37,13 @@ export const Project: React.FC = () => {
 
   // Data fetch
   const getOrgs = useListOrgs();
-  const getProjects = useListProjects({ org_id: params.org_id });
-  const getProj = useGetProject(params);
+  const [org, setOrg] = useState<ApiOrg>();
+  const getProjects = useListProjects({ org_id: org?.id });
   const [proj, setProj] = useState<ApiProject>();
+  const getProj = useGetProject({
+    org_id: org?.id,
+    project_slug: params.project_slug,
+  });
   const [loading, setLoading] = useState<boolean>(true);
   const getComps = useListComponents(params.project_slug, {
     org_id: params.org_id,
@@ -46,29 +51,40 @@ export const Project: React.FC = () => {
   });
 
   useEffect(() => {
-    storeProject.fill(getProjects.data?.data || []);
-  }, [getProjects.isLoading]);
+    if (getOrgs.data) {
+      const tmp = getOrgs.data.find((o) => o.id === params.org_id);
+      setOrg(tmp);
+      if (!tmp) {
+        setLoading(false);
+      }
+    }
+  }, [getOrgs.data]);
 
   useEffect(() => {
-    setTimeout(() => {
-      setProj(getProj.data?.data);
-      if (getProj.data?.data) {
-        storeProject.update(getProj.data.data);
-      }
-    }, 200);
-  }, [getProj.isLoading]);
+    if (getProj.data) {
+      setProj(getProj.data.data);
+      storeProject.update(getProj.data.data);
+    } else if (getProj.error) {
+      setLoading(false);
+    }
+  }, [getProj.status]);
+
+  useEffect(() => {
+    storeProject.fill(getProjects.data?.data || []);
+  }, [getProjects.data]);
 
   useEffect(() => {
     if (getComps.data) {
       storeComponents.fill(getComps.data);
     }
-  }, [getComps.isFetched]);
+  }, [getComps.data]);
 
   useEffect(() => {
-    setLoading(
-      !proj || getComps.isLoading || getOrgs.isLoading || getProjects.isLoading
-    );
-  }, [proj, getComps]);
+    if (!loading || !proj) {
+      return;
+    }
+    setLoading(getComps.isLoading || getProjects.isLoading);
+  }, [loading, proj, getComps.data, getProjects.data]);
 
   if (loading) {
     return (
@@ -95,7 +111,7 @@ export const Project: React.FC = () => {
   }
 
   if (!proj) {
-    return <div>not found</div>;
+    return <NotFound />;
   }
 
   return (

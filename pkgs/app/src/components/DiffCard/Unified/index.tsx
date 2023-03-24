@@ -29,5 +29,5 @@ export const UnifiedDiff: React.FC<{
     });
   }, [diff]);
 
-  return <div className={classnames(cls.unified)}>{content}</div>;
+  return <div>{content}</div>;
 };

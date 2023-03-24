@@ -1,5 +1,8 @@
-import { IconGitPullRequestDraft } from '@tabler/icons-react';
-import { App, Button, Form, Typography } from 'antd';
+import {
+  IconGitPullRequest,
+  IconGitPullRequestDraft,
+} from '@tabler/icons-react';
+import { App, Button, Form, Result, Typography } from 'antd';
 import type {
   ApiBlobWithPrevious,
   ApiProject,
@@ -7,7 +10,7 @@ import type {
   ReqPostRevision,
 } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { createRevision } from '../../../../api/revisions';
 import { proposeTitle } from '../../../../common/diff';
@@ -22,7 +25,6 @@ import { Container } from '../../../../components/Container';
 import { DiffCard } from '../../../../components/DiffCard';
 import { Editor } from '../../../../components/Editor';
 import { FakeInput } from '../../../../components/Input';
-import { useEdit } from '../../../../hooks/useEdit';
 import type { RouteProject } from '../../../../types/routes';
 
 import cls from './index.module.scss';
@@ -36,7 +38,6 @@ export const ProjectRevisionCreate: React.FC<{
   const navigate = useNavigate();
 
   // Edition
-  const edit = useEdit();
   const storeProject = useProjectStore();
   const storeComponents = useComponentsStore();
   const storeDocuments = useDocumentsStore();
@@ -124,7 +125,19 @@ export const ProjectRevisionCreate: React.FC<{
   };
 
   if (staging.diffs.length === 0) {
-    return <>No changes to commit...</>;
+    return (
+      <Container className={cls.container}>
+        <Result
+          icon={<IconGitPullRequest size="1em" />}
+          title="No changes to commit..."
+          extra={
+            <Link to={to}>
+              <Button type="primary">Back to Overview</Button>
+            </Link>
+          }
+        />
+      </Container>
+    );
   }
 
   return (
@@ -180,7 +193,7 @@ export const ProjectRevisionCreate: React.FC<{
                 diff={diff}
                 url={to}
                 onRevert={() => null}
-              ></DiffCard>
+              />
             );
           })}
         </div>

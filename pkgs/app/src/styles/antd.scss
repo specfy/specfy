@@ -100,6 +100,10 @@ h4.ant-typography {
 
   }
 
+  p {
+    min-height: 22px;
+  }
+
   p>code {
     color: #eb5757;
   }
@@ -351,5 +355,12 @@ h4.ant-typography {
         border-bottom: none !important;
       }
     }
+  }
+}
+
+// Results
+.ant-result {
+  .ant-result-icon {
+    font-size: 52px;
   }
 }

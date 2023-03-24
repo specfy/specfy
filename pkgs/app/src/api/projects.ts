@@ -40,8 +40,9 @@ export async function deleteProject(opts: ReqProjectParams) {
   return json;
 }
 
-export function useListProjects(opts: ReqListProjects) {
+export function useListProjects(opts: Partial<ReqListProjects>) {
   return useQuery({
+    enabled: Boolean(opts.org_id),
     queryKey: ['listProjects', opts.org_id],
     queryFn: async (): Promise<ResListProjects> => {
       const { json } = await fetchApi<ResListProjects, ReqListProjects>(
@@ -56,15 +57,20 @@ export function useListProjects(opts: ReqListProjects) {
   });
 }
 
-export function useGetProject(opts: ReqProjectParams) {
+export function useGetProject(opts: Partial<ReqProjectParams>) {
   return useQuery({
+    enabled: Boolean(opts.org_id),
     queryKey: ['getProject', opts.org_id, opts.project_slug],
-    queryFn: async (): Promise<ResGetProject> => {
-      const { json } = await fetchApi<ResGetProject>(
+    queryFn: async (ctx): Promise<ResGetProject> => {
+      const { json, res } = await fetchApi<ResGetProject>(
         `/projects/${opts.org_id}/${opts.project_slug}`
       );
 
-      originalStore.add(json.data);
+      if (res.status === 200) {
+        originalStore.add(json.data);
+      } else {
+        throw new Error('err', { cause: res });
+      }
 
       return json;
     },

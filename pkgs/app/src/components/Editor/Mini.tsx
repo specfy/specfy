@@ -80,27 +80,6 @@ const Editor: React.FC<{
   );
 };
 
-// TODO: delete or improve
-// const ToolbarMini: React.FC<{
-//   isUpdated: boolean;
-//   onRevert: () => void;
-// }> = ({ isUpdated, onRevert }) => {
-//   return (
-//     <div className={cls.toolbar}>
-//       <div className={cls.hover}>
-//         <Tooltip title="Revert all changes">
-//           <Button
-//             icon={<IconHistory />}
-//             size="small"
-//             className={classnames(isUpdated && cls.isUpdated)}
-//             onClick={onRevert}
-//           />
-//         </Tooltip>
-//       </div>
-//     </div>
-//   );
-// };
-
 export const EditorMini: React.FC<{
   doc: BlockLevelZero;
   onUpdate: (content: BlockLevelZero) => void;
@@ -113,7 +92,6 @@ export const EditorMini: React.FC<{
   return (
     <div className={cls.mini}>
       <Editor content={content} onUpdate={onUpdate} />
-      {/* <ToolbarMini isUpdated={isUpdated} onRevert={handleRevert} /> */}
     </div>
   );
 };

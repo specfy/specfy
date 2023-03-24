@@ -69,7 +69,7 @@ export const ProjectRevisionsList: React.FC<{
     <Container className={cls.container}>
       <div className={cls.searchWrapper}>
         <div className={cls.search}>
-          <Input.Group compact className={cls.inputs}>
+          <div className={cls.inputs}>
             <Input
               size="large"
               prefix={<IconSearch />}
@@ -102,7 +102,7 @@ export const ProjectRevisionsList: React.FC<{
               }
               placeholder="Search..."
             />
-          </Input.Group>
+          </div>
           {loading && <LoadingOutlined size={32} />}
         </div>
       </div>
