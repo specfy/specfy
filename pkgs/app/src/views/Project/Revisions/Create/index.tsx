@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { createRevision } from '../../../../api/revisions';
 import { proposeTitle } from '../../../../common/diff';
-import {
+import originalStore, {
   useStagingStore,
   useProjectStore,
   useComponentsStore,
@@ -89,9 +89,22 @@ export const ProjectRevisionCreate: React.FC<{
     // TODO: possibility to undo revert
   };
 
+  const handleRevertAll = () => {
+    originalStore.revertAll(staging.diffs);
+  };
+
   const onSubmit = async () => {
     const blobs: ReqPostRevision['blobs'] = [];
-    for (const { diffs, createdAt, updatedAt, ...change } of staging.diffs) {
+    for (const {
+      id,
+      orgId,
+      projectId,
+      diffs,
+      createdAt,
+      updatedAt,
+      previous,
+      ...change
+    } of staging.diffs) {
       blobs.push(change);
     }
 
@@ -104,9 +117,7 @@ export const ProjectRevisionCreate: React.FC<{
     });
 
     // Discard local changes
-    edit.enable(false);
-    staging.update([]);
-    // TODO: clean models in all stores
+    originalStore.revertAll(staging.diffs);
 
     message.success('Revision created');
     navigate(`/${params.org_id}/${params.project_slug}/revisions/${id}`);
@@ -151,6 +162,15 @@ export const ProjectRevisionCreate: React.FC<{
         </Card>
       </div>
       <div className={cls.right}></div>
+
+      <div className={cls.reviewBar}>
+        <div>
+          {staging.diffs.length} pending{' '}
+          {staging.diffs.length > 1 ? 'changes' : 'change'}
+        </div>
+        <Button onClick={() => handleRevertAll()}>Revert all</Button>
+      </div>
+
       <div className={cls.staged}>
         <div className={cls.staged}>
           {staging.diffs.map((diff) => {

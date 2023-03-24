@@ -6,12 +6,17 @@ import {
   IconUsers,
   IconSchool,
 } from '@tabler/icons-react';
-import { Badge, Menu } from 'antd';
+import { Badge, Menu, Skeleton } from 'antd';
 import Title from 'antd/es/typography/Title';
+import type { ApiOrg } from 'api/src/types/api';
 import { useState, useMemo, useEffect } from 'react';
 import { Link, Route, Routes, useLocation, useParams } from 'react-router-dom';
 
+import { useListOrgs } from '../../api/orgs';
+import { BigHeadingLoading } from '../../components/BigHeading';
+import { Card } from '../../components/Card';
 import { Container } from '../../components/Container';
+import { NotFound } from '../../components/NotFound';
 import type { RouteOrg } from '../../types/routes';
 import { ProjectCreate } from '../Project/Create';
 
@@ -32,6 +37,20 @@ export const Org: React.FC = () => {
   const linkSelf = useMemo(() => {
     return `/${params.org_id}/_`;
   }, [params]);
+
+  // Data
+  const getOrgs = useListOrgs();
+  const [loading, setLoading] = useState<boolean>(true);
+  const [org, setOrg] = useState<ApiOrg>();
+
+  useEffect(() => {
+    if (getOrgs.data) {
+      setOrg(getOrgs.data.find((o) => o.id === params.org_id));
+      setLoading(false);
+    } else {
+      setLoading(getOrgs.isLoading);
+    }
+  }, [getOrgs.data]);
 
   const menu = useMemo(() => {
     return [
@@ -135,12 +154,34 @@ export const Org: React.FC = () => {
     }
   }, [location]);
 
+  if (loading) {
+    return (
+      <div>
+        <div className={cls.header}>
+          <BigHeadingLoading />
+        </div>
+
+        <Container>
+          <Container.Left>
+            <Card padded>
+              <Skeleton active paragraph={{ rows: 3 }}></Skeleton>
+            </Card>
+          </Container.Left>
+        </Container>
+      </div>
+    );
+  }
+
+  if (!org) {
+    return <NotFound />;
+  }
+
   return (
     <div className={cls.container}>
       <div className={cls.header}>
         <div className={cls.avatar}></div>
         <div className={cls.description}>
-          <Title level={1}>My Company</Title>
+          <Title level={1}>{org!.name}</Title>
 
           <Menu
             selectedKeys={[selected]}

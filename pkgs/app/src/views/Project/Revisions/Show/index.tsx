@@ -536,7 +536,7 @@ export const ProjectRevisionsShow: React.FC<{
                 diff={diff}
                 url={to}
                 onRevert={() => null}
-              ></DiffCard>
+              />
             );
           })}
         </div>

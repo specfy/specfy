@@ -1,8 +1,8 @@
 import type {
-  DBBlobComponent,
-  DBBlobDocument,
-  DBBlobProject,
   DBBlobBase,
+  DBBlobComponentBase,
+  DBBlobDocumentBase,
+  DBBlobProjectBase,
 } from '../db/blobs';
 import type { DBRevision } from '../db/revisions';
 
@@ -28,11 +28,11 @@ export type ResListRevisions = {
 };
 
 // ------ POST /
-type ApiBlobCreate = Pick<
+type ApiBlobCreate = Omit<
   DBBlobBase,
-  'created' | 'deleted' | 'parentId' | 'typeId'
+  'createdAt' | 'id' | 'orgId' | 'projectId' | 'updatedAt'
 > &
-  (DBBlobComponent | DBBlobDocument | DBBlobProject);
+  (DBBlobComponentBase | DBBlobDocumentBase | DBBlobProjectBase);
 
 export type ReqPostRevision = Pick<
   ApiRevision,

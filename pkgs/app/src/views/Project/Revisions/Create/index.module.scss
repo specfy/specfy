@@ -4,7 +4,8 @@
   display: grid;
   grid-template:
     "left right"
-    "staged staged" / 1fr;
+    "review empty"
+    "staged empty" / 1fr;
   row-gap: $p-2xl;
   column-gap: $p-xl;
 
@@ -21,12 +22,28 @@
     width: 250px;
   }
 
+  .reviewBar {
+    position: sticky;
+    z-index: 1;
+    top: 0;
+
+    display: flex;
+    grid-area: review;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+
+    height: 50px;
+    padding: $p-l $p-xl;
+
+    background-color: #fff;
+    box-shadow: $box-shadow2;
+  }
+
   .staged {
     display: flex;
     grid-area: staged;
     flex-direction: column;
     gap: $p-xl;
-
-    padding-top: $p-2xl;
   }
 }

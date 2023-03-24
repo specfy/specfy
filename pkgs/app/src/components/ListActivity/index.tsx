@@ -47,7 +47,7 @@ export const ListActivity: React.FC<{
       grouped[name].push(act);
     }
     setGroup(Object.entries(grouped));
-  }, [res]);
+  }, [res.data]);
 
   return (
     <div>

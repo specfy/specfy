@@ -18,18 +18,23 @@ export type DBBlobBase = {
   updatedAt: string;
 };
 
-export type DBBlobDocument = DBBlobBase & {
+export type DBBlobDocumentBase = {
   type: 'document';
   blob: DBDocument | null;
 };
-export type DBBlobComponent = DBBlobBase & {
+export type DBBlobDocument = DBBlobBase & DBBlobDocumentBase;
+
+export type DBBlobComponentBase = {
   type: 'component';
   blob: DBComponent | null;
 };
-export type DBBlobProject = DBBlobBase & {
+export type DBBlobComponent = DBBlobBase & DBBlobComponentBase;
+
+export type DBBlobProjectBase = {
   type: 'project';
   blob: DBProject | null;
 };
+export type DBBlobProject = DBBlobBase & DBBlobProjectBase;
 
 export type DBBlob = DBBlobComponent | DBBlobDocument | DBBlobProject;
 

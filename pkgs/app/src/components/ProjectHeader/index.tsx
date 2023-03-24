@@ -52,7 +52,7 @@ export const ProjectHeader: React.FC<{
 
   useEffect(() => {
     setOrg(getOrgs.data?.find((o) => o.id === params.org_id));
-  }, [getOrgs]);
+  }, [getOrgs.data]);
 
   // Edit mode
   const createItems = useMemo<MenuProps['items']>(() => {

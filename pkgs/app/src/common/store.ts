@@ -58,7 +58,25 @@ function allowedType(item: Allowed): ApiBlobWithPrevious['type'] {
   return 'component';
 }
 
-export default { add, find, allowedType, originalStore };
+function revertAll(diffs: BlobWithDiff[]) {
+  /* eslint-disable @typescript-eslint/no-use-before-define */
+  const project = useProjectStore.getState();
+  const components = useComponentsStore.getState();
+  const documents = useDocumentsStore.getState();
+  /* eslint-enable @typescript-eslint/no-use-before-define */
+
+  for (const diff of diffs) {
+    if (diff.type === 'project') {
+      project.update(find<ApiProject>(diff.typeId)!);
+    } else if (diff.type === 'component') {
+      components.revert(diff.typeId);
+    } else if (diff.type === 'document') {
+      documents.revert(diff.typeId);
+    }
+  }
+}
+
+export default { add, find, allowedType, revertAll, originalStore };
 
 // ------------------------------------------ Staging Store
 interface StagingState {
@@ -112,6 +130,7 @@ export interface ComponentsState {
     field: TKey,
     value: ApiComponent[TKey]
   ) => void;
+  revert: (id: string) => void;
   revertField: (id: string, field: keyof ApiComponent) => void;
   remove: (id: string) => void;
 }
@@ -158,6 +177,15 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
     set(
       produce((state: ComponentsState) => {
         state.components[id][field] = value;
+      })
+    );
+  },
+  revert: (id) => {
+    const item = originalStore.find((i): i is ApiComponent => id === i.id);
+    set(
+      produce((state: ComponentsState) => {
+        if (!item) delete state.components[id];
+        else state.components[id] = item;
       })
     );
   },
@@ -211,6 +239,7 @@ export interface DocumentsState {
     field: TKey,
     value: ApiDocument[TKey]
   ) => void;
+  revert: (id: string) => void;
   revertField: (id: string, field: keyof ApiDocument) => void;
 }
 export const useDocumentsStore = create<DocumentsState>()((set, get) => ({
@@ -261,6 +290,15 @@ export const useDocumentsStore = create<DocumentsState>()((set, get) => ({
     set(
       produce((state: DocumentsState) => {
         state.documents[id][field] = value;
+      })
+    );
+  },
+  revert: (id) => {
+    const item = originalStore.find((i): i is ApiDocument => id === i.id);
+    set(
+      produce((state: DocumentsState) => {
+        if (!item) delete state.documents[id];
+        else state.documents[id] = item;
       })
     );
   },
