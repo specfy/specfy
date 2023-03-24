@@ -9,6 +9,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     Reply: ResPostProject;
   }>('/', async function (req, res) {
     // TODO: validation
+    const pos = req.body.display.pos || { x: 0, y: 0 };
     const p = await Project.create({
       orgId: req.body.orgId,
       name: req.body.name,
@@ -17,7 +18,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         content: [],
       },
       links: [],
-      display: { pos: { x: 0, y: 0, width: 100, height: 32 } },
+      display: { pos: { ...pos, width: 100, height: 32 } },
       edges: [],
     });
 
