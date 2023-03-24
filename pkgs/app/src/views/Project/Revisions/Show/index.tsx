@@ -136,17 +136,6 @@ export const ProjectRevisionsShow: React.FC<{
     }
 
     return [
-      rev.status === 'draft'
-        ? {
-            key: 'waiting',
-            icon: <IconEyeCheck size={16} />,
-            label: 'Set ready for Review',
-          }
-        : {
-            key: 'draft',
-            icon: <IconEyeOff size={16} />,
-            label: 'Back to Draft',
-          },
       !rev.locked
         ? {
             key: 'lock',
@@ -516,6 +505,22 @@ export const ProjectRevisionsShow: React.FC<{
 
       {!edit && (
         <div className={cls.reviewBar}>
+          {!rev.merged &&
+            (rev.status === 'draft' ? (
+              <Button
+                onClick={() => onMenuClick({ key: 'waiting' })}
+                icon={<IconEyeCheck size={16} />}
+              >
+                Set ready for Review
+              </Button>
+            ) : (
+              <Button
+                onClick={() => onMenuClick({ key: 'draft' })}
+                icon={<IconEyeOff size={16} />}
+              >
+                Back to Draft
+              </Button>
+            ))}
           <Button
             type={'primary'}
             disabled={!canReview}
