@@ -5,32 +5,68 @@ import {
   IconHistory,
   IconHome,
   IconSettings,
+  IconCirclePlus,
+  IconEye,
+  IconEyeEdit,
 } from '@tabler/icons-react';
-import { Badge, Menu } from 'antd';
-import type { ApiProject } from 'api/src/types/api';
+import type { MenuProps } from 'antd';
+import { Badge, Menu, Tooltip, Button, Dropdown } from 'antd';
+import type { ApiProject, ApiOrg } from 'api/src/types/api';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
+import { useListOrgs } from '../../api/orgs';
 import { useListRevisions } from '../../api/revisions';
+import { useEdit } from '../../hooks/useEdit';
 import type { RouteProject } from '../../types/routes';
+import { BigHeading } from '../BigHeading';
 
+import { Staging } from './Staging';
 import cls from './index.module.scss';
 
-export const ProjectMenu: React.FC<{
+export const ProjectHeader: React.FC<{
   proj: ApiProject;
   params: RouteProject;
 }> = ({ proj, params }) => {
+  const edit = useEdit();
+  const isEditing = edit.isEnabled();
+
+  // State
+  const [org, setOrg] = useState<ApiOrg>();
+  const [open, setOpen] = useState<string>('');
+  const linkOrg = useMemo(() => {
+    return `/${params.org_id}`;
+  }, [params]);
   const linkSelf = useMemo(() => {
     return `/${params.org_id}/${params.project_slug}`;
   }, [params]);
+  const location = useLocation();
+
+  // Data
+  const getOrgs = useListOrgs();
   const revisions = useListRevisions({
     org_id: params.org_id,
     project_id: proj.id,
     status: 'opened',
   });
-  const location = useLocation();
 
-  const [open, setOpen] = useState<string>('');
+  useEffect(() => {
+    setOrg(getOrgs.data?.find((o) => o.id === params.org_id));
+  }, [getOrgs]);
+
+  // Edit mode
+  const createItems = useMemo<MenuProps['items']>(() => {
+    return [
+      {
+        key: '1',
+        label: <Link to={`${linkSelf}/content/new`}>New Content</Link>,
+      },
+      {
+        key: '2',
+        label: <Link to={`${linkSelf}/component/new`}>New Component</Link>,
+      },
+    ];
+  }, [linkSelf]);
 
   const menu = useMemo(() => {
     return [
@@ -127,12 +163,46 @@ export const ProjectMenu: React.FC<{
     }
   }, [location]);
 
+  if (!org) {
+    return null;
+  }
+
   return (
-    <Menu
-      selectedKeys={[open]}
-      mode="horizontal"
-      items={menu}
-      className={cls.menu}
-    />
+    <>
+      <BigHeading
+        parent={org!.name}
+        parentLink={linkOrg}
+        title={proj.name}
+        link={linkSelf}
+        subtitle={
+          <>
+            <div className={cls.editZone}>
+              <Dropdown menu={{ items: createItems }} placement="bottomRight">
+                <Button icon={<IconCirclePlus />} type="default" />
+              </Dropdown>
+              <Tooltip
+                title={
+                  isEditing ? 'Edition is active' : 'Click to enable edition'
+                }
+                placement="bottomLeft"
+              >
+                <Button
+                  icon={isEditing ? <IconEyeEdit /> : <IconEye />}
+                  type="default"
+                  onClick={() => edit.enable(!isEditing)}
+                />
+              </Tooltip>
+              <Staging link={linkSelf} />
+            </div>
+          </>
+        }
+      ></BigHeading>
+      <Menu
+        selectedKeys={[open]}
+        mode="horizontal"
+        items={menu}
+        className={cls.menu}
+      />
+    </>
   );
 };

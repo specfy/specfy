@@ -1,6 +1,5 @@
 @import "../../styles/theme";
 
-// ---- Grid zone
 .header {
   display: grid;
   grid-template-columns: 300px 1fr;
@@ -10,15 +9,6 @@
 
   border: 1px solid $gray-200;
 }
-
-// ---- Header
-.editZone {
-  display: flex;
-  gap: $p;
-  align-items: center;
-  justify-content: end;
-}
-
 
 .links {
   padding: $p-2xl 0;

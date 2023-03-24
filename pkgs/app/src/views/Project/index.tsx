@@ -1,19 +1,16 @@
-import { IconCirclePlus } from '@tabler/icons-react';
-import type { MenuProps } from 'antd';
-import { Avatar, Button, Divider, Dropdown, Skeleton } from 'antd';
-import type { ApiOrg, ApiProject } from 'api/src/types/api';
-import { useEffect, useMemo, useState } from 'react';
-import { Link, Route, Routes, useParams } from 'react-router-dom';
+import { Avatar, Divider, Skeleton } from 'antd';
+import type { ApiProject } from 'api/src/types/api';
+import { useEffect, useState } from 'react';
+import { Route, Routes, useParams } from 'react-router-dom';
 
 import { useListComponents } from '../../api/components';
 import { useListOrgs } from '../../api/orgs';
 import { useGetProject, useListProjects } from '../../api/projects';
 import { useComponentsStore, useProjectStore } from '../../common/store';
-import { BigHeading, BigHeadingLoading } from '../../components/BigHeading';
+import { BigHeadingLoading } from '../../components/BigHeading';
 import { Card } from '../../components/Card';
 import { Container } from '../../components/Container';
-import { ProjectMenu } from '../../components/ProjectMenu';
-import { Staging } from '../../components/ProjectMenu/Staging';
+import { ProjectHeader } from '../../components/ProjectHeader';
 import type { RouteProject } from '../../types/routes';
 
 import { ProjectActivity } from './Activity';
@@ -32,12 +29,6 @@ import cls from './index.module.scss';
 export const Project: React.FC = () => {
   const tmpParams = useParams<Partial<RouteProject>>();
   const params = tmpParams as RouteProject;
-  const linkOrg = useMemo(() => {
-    return `/${params.org_id}`;
-  }, [params]);
-  const linkSelf = useMemo(() => {
-    return `/${params.org_id}/${params.project_slug}`;
-  }, [params]);
 
   // Stores
   const storeProject = useProjectStore();
@@ -46,7 +37,6 @@ export const Project: React.FC = () => {
   // Data fetch
   const getOrgs = useListOrgs();
   const getProjects = useListProjects({ org_id: params.org_id });
-  const [org, setOrg] = useState<ApiOrg>();
   const getProj = useGetProject(params);
   const [proj, setProj] = useState<ApiProject>();
   const [loading, setLoading] = useState<boolean>(true);
@@ -55,26 +45,10 @@ export const Project: React.FC = () => {
     project_id: proj?.id,
   });
 
-  // Edit mode
-  const createItems = useMemo<MenuProps['items']>(() => {
-    return [
-      {
-        key: '1',
-        label: <Link to={`${linkSelf}/content/new`}>New Content</Link>,
-      },
-      {
-        key: '2',
-        label: <Link to={`${linkSelf}/component/new`}>New Component</Link>,
-      },
-    ];
-  }, [linkSelf]);
-
-  useEffect(() => {
-    setOrg(getOrgs.data?.find((o) => o.id === params.org_id));
-  }, [getOrgs.isFetched]);
   useEffect(() => {
     storeProject.fill(getProjects.data?.data || []);
   }, [getProjects.isLoading]);
+
   useEffect(() => {
     setTimeout(() => {
       setProj(getProj.data?.data);
@@ -83,13 +57,17 @@ export const Project: React.FC = () => {
       }
     }, 200);
   }, [getProj.isLoading]);
+
   useEffect(() => {
     if (getComps.data) {
       storeComponents.fill(getComps.data);
     }
   }, [getComps.isFetched]);
+
   useEffect(() => {
-    setLoading(!proj || getComps.isLoading);
+    setLoading(
+      !proj || getComps.isLoading || getOrgs.isLoading || getProjects.isLoading
+    );
   }, [proj, getComps]);
 
   if (loading) {
@@ -123,25 +101,8 @@ export const Project: React.FC = () => {
   return (
     <div>
       <div className={cls.header}>
-        <BigHeading
-          parent={org!.name}
-          parentLink={linkOrg}
-          title={proj.name}
-          link={linkSelf}
-          subtitle={
-            <>
-              <div className={cls.editZone}>
-                <Dropdown menu={{ items: createItems }} placement="bottomRight">
-                  <Button icon={<IconCirclePlus />} type="default" />
-                </Dropdown>
-                <Staging link={linkSelf} />
-              </div>
-            </>
-          }
-        ></BigHeading>
-        <ProjectMenu proj={proj} params={params} />
+        <ProjectHeader proj={proj} params={params} />
       </div>
-
       <Routes>
         <Route path="/" element={<ProjectOverview params={params} />} />
         <Route

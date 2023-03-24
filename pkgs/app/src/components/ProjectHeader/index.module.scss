@@ -1,5 +1,15 @@
 @import "../../styles/theme";
 
+
+
+.editZone {
+  display: flex;
+  gap: $p;
+  align-items: center;
+  justify-content: end;
+}
+
+
 .link {
   .badged {
     display: flex;
