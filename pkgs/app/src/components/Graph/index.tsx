@@ -106,29 +106,6 @@ export const Graph: React.FC<{
             endDirections: ['left', 'right'],
           },
         },
-        // // This one is good
-        // router: {
-        //   name: 'orth',
-        //   args: {
-        //     padding: 5,
-        //     endDirections: ['left', 'right'],
-        //   },
-        // },
-        // router: {
-        //   name: 'manhattan',
-        //   args: {
-        //     padding: 100,
-        //     startDirections: ['bottom'],
-        //     endDirections: ['top'],
-        //   },
-        // },
-        // router: {
-        //   name: 'metro',
-        //   args: {
-        //     padding: 1,
-        //     endDirections: ['left', 'right'],
-        //   },
-        // },
         connector: {
           name: 'smooth',
         },
@@ -191,7 +168,7 @@ export const Graph: React.FC<{
 
     const cancel = setTimeout(() => {
       graph.center();
-      graph.zoomToFit();
+      graph.zoomToFit({ padding: 40, maxScale: 2.6, minScale: 0.2 });
       graph.zoomTo(graph.zoom() - 0.15);
     }, 150);
 

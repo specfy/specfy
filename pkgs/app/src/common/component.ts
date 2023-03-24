@@ -193,6 +193,23 @@ export function createLocal(
 ) {
   const id = nanoid();
 
+  const size =
+    data.type === 'hosting'
+      ? { width: 200, height: 64 }
+      : { width: 100, height: 32 };
+
+  // Compute global bounding box
+  const global = { x: 0, y: 0, width: 0, height: 0 };
+  for (const component of Object.values(storeComponents.components)) {
+    global.x = Math.min(component.display.pos.x, global.x);
+    global.y = Math.min(component.display.pos.y, global.y);
+    global.width = Math.max(component.display.pos.width, global.width);
+    global.height = Math.max(component.display.pos.height, global.height);
+  }
+
+  // Simply add on top of it
+  const pos = { x: global.x, y: global.y - size.height };
+
   const add: ApiComponent = {
     id: id,
     orgId: storeProject.project!.id,
@@ -204,7 +221,7 @@ export function createLocal(
     slug: data.slug,
     description: getEmptyDoc(),
     tech: [],
-    display: { pos: { x: 0, y: 0, width: 100, height: 32 } },
+    display: { pos: { ...pos, ...size } },
     edges: [],
     blobId: '',
     inComponent: null,

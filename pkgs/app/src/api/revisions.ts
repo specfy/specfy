@@ -27,6 +27,7 @@ export async function createRevision(
   );
 
   queryClient.removeQueries(['listRevisions', data.orgId, data.projectId]);
+  queryClient.removeQueries(['listActivities', data.orgId]);
 
   return json;
 }

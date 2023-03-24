@@ -25,7 +25,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       ]).findAll({
         where,
         order: [['createdAt', 'DESC']],
-        limit: 100,
+        limit: 10,
         offset: 0,
       });
 

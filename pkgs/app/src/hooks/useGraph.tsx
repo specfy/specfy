@@ -38,7 +38,7 @@ export const GraphProvider: React.FC<{ children: React.ReactNode }> = ({
           return;
         }
 
-        graph.zoomToFit();
+        graph.zoomToFit({ padding: 40, maxScale: 2.6, minScale: 0.2 });
         graph.zoomTo(graph.zoom() - minus);
       },
       setHighlight(id) {

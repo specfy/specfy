@@ -31,6 +31,7 @@ export const ProjectCreate: React.FC<{ params: RouteOrg }> = ({ params }) => {
           placeholder="Project name..."
           className={cls.input}
           value={name}
+          autoFocus
           onChange={(e) => setName(e.target.value)}
         />
         <Button

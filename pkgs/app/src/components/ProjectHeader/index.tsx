@@ -5,13 +5,14 @@ import {
   IconHistory,
   IconHome,
   IconSettings,
-  IconCirclePlus,
   IconEye,
   IconEyeEdit,
+  IconPlus,
 } from '@tabler/icons-react';
 import type { MenuProps } from 'antd';
 import { Badge, Menu, Tooltip, Button, Dropdown } from 'antd';
 import type { ApiProject, ApiOrg } from 'api/src/types/api';
+import classnames from 'classnames';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -177,9 +178,6 @@ export const ProjectHeader: React.FC<{
         subtitle={
           <>
             <div className={cls.editZone}>
-              <Dropdown menu={{ items: createItems }} placement="bottomRight">
-                <Button icon={<IconCirclePlus />} type="default" />
-              </Dropdown>
               <Tooltip
                 title={
                   isEditing ? 'Edition is active' : 'Click to enable edition'
@@ -189,9 +187,14 @@ export const ProjectHeader: React.FC<{
                 <Button
                   icon={isEditing ? <IconEyeEdit /> : <IconEye />}
                   type="default"
+                  size="small"
+                  className={classnames(isEditing && cls.isEditing)}
                   onClick={() => edit.enable(!isEditing)}
                 />
               </Tooltip>
+              <Dropdown menu={{ items: createItems }} placement="bottomRight">
+                <Button icon={<IconPlus />} type="default" size="small" />
+              </Dropdown>
               <Staging link={linkSelf} />
             </div>
           </>

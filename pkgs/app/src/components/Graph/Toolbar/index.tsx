@@ -78,7 +78,7 @@ const ToolbarZoom: React.FC = () => {
 
     graph.center();
     // graph.zoomTo(1);
-    graph.zoomToFit({ padding: 40 });
+    graph.zoomToFit({ padding: 40, maxScale: 2.6, minScale: 0.2 });
   }
 
   return (

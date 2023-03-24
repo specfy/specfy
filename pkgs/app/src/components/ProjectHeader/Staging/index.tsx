@@ -109,7 +109,7 @@ export const Staging: React.FC<{ link: string }> = ({ link }) => {
     <div className={cls.staging}>
       {count > 0 ? (
         <Link to={`${link}/revisions/current`}>
-          <Button type="default">
+          <Button type="default" size="small">
             {count} pending {count > 1 ? 'changes' : 'change'}
           </Button>
         </Link>
