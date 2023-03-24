@@ -14,7 +14,13 @@ export async function fetchApi<
   url.pathname = `/0${path}`;
 
   if (opts?.qp) {
-    url.search = new URLSearchParams({ ...opts.qp }).toString();
+    const qp = { ...opts.qp };
+    for (const key in qp) {
+      if (typeof qp[key] === 'undefined') {
+        delete qp[key];
+      }
+    }
+    url.search = new URLSearchParams(qp).toString();
   }
 
   const headers: Record<string, string> = {};

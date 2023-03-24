@@ -2,10 +2,12 @@
 
 .wrapper {
   position: relative;
+
+  margin-bottom: $p-l;
   padding: $p-xl $p-2xl;
+
   background-color: $gray-50;
   border-radius: $border-radius-s;
-  margin-bottom: $p-l;
 
   .pre,
   .code {

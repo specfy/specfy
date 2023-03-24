@@ -112,7 +112,7 @@ export const ProjectOverview: React.FC<{
           </GraphContainer>
         </Card>
 
-        <ListActivity orgId={params.org_id} />
+        <ListActivity orgId={params.org_id} projectId={project.id} />
       </Container.Right>
     </Container>
   );

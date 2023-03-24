@@ -225,7 +225,7 @@ export async function seed() {
     edges: [],
     tech: [],
   });
-  await es.onAfterCreate(users[0]);
+  await es.onAfterCreate(users[5]);
   const rabbit = await Component.create({
     id: 'jZDC3Lsc10',
     name: 'RabbitMQ',
@@ -239,7 +239,7 @@ export async function seed() {
     edges: [],
     tech: [],
   });
-  await rabbit.onAfterCreate(users[0]);
+  await rabbit.onAfterCreate(users[2]);
   const analytics = await Component.create({
     id: 'jZDC3Lsc11',
     name: 'Dashboard',
@@ -253,7 +253,7 @@ export async function seed() {
     edges: [],
     tech: [],
   });
-  await analytics.onAfterCreate(users[0]);
+  await analytics.onAfterCreate(users[4]);
   const api = await Component.create({
     id: 'jZDC3Lsc12',
     name: 'API',
@@ -340,7 +340,7 @@ export async function seed() {
     ],
     tech: ['nodejs', 'typescript', 'bash', 'AtlasDB'],
   });
-  await api.onAfterCreate(users[0]);
+  await api.onAfterCreate(users[3]);
   const front = await Component.create({
     id: 'jZDC3Lsc13',
     name: 'Frontend',
@@ -378,7 +378,7 @@ export async function seed() {
     ],
     tech: ['react', 'typescript', 'webpack'],
   });
-  await front.onAfterCreate(users[0]);
+  await front.onAfterCreate(users[1]);
   const manager = await Component.create({
     id: 'jZDC3Lsc14',
     name: 'Manager',
@@ -454,7 +454,7 @@ export async function seed() {
     ],
     tech: ['nodejs', 'typescript'],
   });
-  await manager.onAfterCreate(users[0]);
+  await manager.onAfterCreate(users[2]);
   const worker = await Component.create({
     id: 'jZDC3Lsc15',
     name: 'Worker',
@@ -522,12 +522,12 @@ export async function seed() {
     ],
     tech: ['nodejs', 'typescript'],
   });
-  await worker.onAfterCreate(users[0]);
+  await worker.onAfterCreate(users[1]);
 
   // --- Others
   await seedRevisions(p1, users, rfcs, { api, pg, gce });
 
-  await seedPolicies([u1]);
+  await seedPolicies(users);
 }
 
 (async () => {

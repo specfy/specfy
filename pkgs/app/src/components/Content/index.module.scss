@@ -32,10 +32,12 @@ ul.taskList {
 
 .code {
   display: flex !important;
+
+  margin-bottom: $p-l;
   padding: $p-xl $p-2xl !important;
+
   background-color: $gray-50 !important;
   border: none !important;
-  margin-bottom: $p-l;
 
   code,
   code span {

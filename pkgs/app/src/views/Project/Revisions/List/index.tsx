@@ -133,7 +133,7 @@ export const ProjectRevisionsList: React.FC<{
                       relative="path"
                       className={cls.title}
                     >
-                      {item.title}
+                      {item.name}
                     </Link>
                     <div className={cls.subtitle}>
                       <StatusTag

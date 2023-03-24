@@ -33,8 +33,8 @@ import { User } from './user';
   withTargets: {
     include: [
       { model: User, attributes: ['id', 'name'], as: 'target_user' },
-      { model: Document, attributes: ['id', 'name'] },
-      { model: Component, attributes: ['id', 'name'] },
+      { model: Document, attributes: ['id', 'name', 'slug', 'type'] },
+      { model: Component, attributes: ['id', 'name', 'slug'] },
       { model: Revision, attributes: ['id', 'name'] },
       { model: Policy, attributes: ['id', 'name'] },
     ],

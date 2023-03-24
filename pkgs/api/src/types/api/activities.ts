@@ -20,8 +20,10 @@ export type ApiActivity = Omit<
   project?: Pick<ApiProject, 'id' | 'name' | 'slug'> | undefined;
   user: ApiUser;
   targetUser?: ApiUser | undefined;
-  targetComponent?: Pick<ApiComponent, 'id' | 'name'> | undefined;
-  targetDocument?: Pick<ApiDocument, 'id' | 'name'> | undefined;
+  targetComponent?: Pick<ApiComponent, 'id' | 'name' | 'slug'> | undefined;
+  targetDocument?:
+    | Pick<ApiDocument, 'id' | 'name' | 'slug' | 'type'>
+    | undefined;
   targetRevision?: Pick<ApiRevision, 'id' | 'name'> | undefined;
   targetPolicy?: Pick<ApiPolicy, 'id' | 'name'> | undefined;
 };

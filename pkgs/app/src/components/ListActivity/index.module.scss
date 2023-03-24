@@ -1,25 +1,16 @@
 @import "../../styles/theme";
 
+.list,
+.groups {
+  display: flex;
+  flex-direction: column;
+  gap: $p-3xl;
+}
+
+.groups {
+  gap: $p-5xl;
+}
+
 .list {
-  margin: 18px 8px 8px 4px;
-}
-
-.date {
-  font-size: $font-xs;
-  color: $gray-5;
-}
-
-.item {
-  overflow: hidden;
-
-  font-size: $font-s;
-  line-height: $line-height-s;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-
-  .linkUser {
-    color: $gray-8;
-
-    // font-weight: bold;
-  }
+  // padding-left: $p-s;
 }

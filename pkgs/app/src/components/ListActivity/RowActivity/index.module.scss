@@ -1,0 +1,51 @@
+@import "../../../styles/theme";
+
+.row {
+  position: relative;
+  // padding: $p $p-l;
+  // background-color: #fff;
+  border-radius: $border-radius;
+
+  &::after {
+    content: " ";
+
+    position: absolute;
+    bottom: -17px;
+    left: 15px;
+
+    display: block;
+
+    width: 2px;
+    height: 18px;
+
+    background-color: $gray-200;
+  }
+}
+
+.header {
+  display: flex;
+  gap: $p-l;
+  align-items: center;
+  color: $gray-500;
+
+  a {
+    color: $gray-800;
+  }
+}
+
+.firstRow {
+  display: flex;
+  gap: $p-s;
+}
+
+.user {
+  display: flex;
+  gap: $p-m;
+  align-items: center;
+}
+
+
+.date {
+  font-size: $font-s;
+  color: $gray-400;
+}

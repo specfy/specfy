@@ -40,9 +40,9 @@ table.diff {
 
       &.diff-gutter {
         padding: 0 $p-m;
-        color: $gray-500;
-        font-size: $font-s;
         padding-top: 4px;
+        font-size: $font-s;
+        color: $gray-500;
       }
 
       &.diff-code {
