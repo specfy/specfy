@@ -1,5 +1,4 @@
 import { Button } from 'antd';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDebounce } from 'react-use';
 
@@ -17,7 +16,6 @@ import { Time } from '../../Time';
 import cls from './index.module.scss';
 
 export const Staging: React.FC<{ link: string }> = ({ link }) => {
-  const [count, setCount] = useState(0);
   const { project } = useProjectStore();
   const { components } = useComponentsStore();
   const { documents } = useDocumentsStore();
@@ -25,10 +23,7 @@ export const Staging: React.FC<{ link: string }> = ({ link }) => {
 
   useDebounce(
     () => {
-      // TODO: this is too slow
-      // TODO: remove HTML diff it's broken
-
-      let tmp = 0;
+      let count = 0;
       const store: Allowed[] = [
         project!,
         ...Object.values(components),
@@ -61,7 +56,7 @@ export const Staging: React.FC<{ link: string }> = ({ link }) => {
         }
 
         // clean.push(diff.clean);
-        tmp += diff.diffs.length;
+        count += original ? diff.diffs.length : 1;
         diffs.push(diff);
       }
 
@@ -94,12 +89,11 @@ export const Staging: React.FC<{ link: string }> = ({ link }) => {
           updatedAt: '',
         });
 
-        tmp += 1;
+        count += 1;
         diffs.push(diff);
       }
 
-      setCount(tmp);
-      staging.update(diffs);
+      staging.update(diffs, count);
     },
     150,
     [project, components, documents]
@@ -107,10 +101,10 @@ export const Staging: React.FC<{ link: string }> = ({ link }) => {
 
   return (
     <div className={cls.staging}>
-      {count > 0 ? (
+      {staging.count > 0 ? (
         <Link to={`${link}/revisions/current`}>
           <Button type="default" size="small">
-            {count} pending {count > 1 ? 'changes' : 'change'}
+            {staging.count} pending {staging.count > 1 ? 'changes' : 'change'}
           </Button>
         </Link>
       ) : (

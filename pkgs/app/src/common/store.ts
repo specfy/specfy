@@ -80,14 +80,16 @@ export default { add, find, allowedType, revertAll, originalStore };
 
 // ------------------------------------------ Staging Store
 interface StagingState {
+  count: number;
   diffs: BlobWithDiff[];
-  update: (diffs: BlobWithDiff[]) => void;
+  update: (diffs: BlobWithDiff[], count: number) => void;
 }
 
 export const useStagingStore = create<StagingState>()((set) => ({
+  count: 0,
   diffs: [],
-  update: (diffs) => {
-    set({ diffs });
+  update: (diffs, count) => {
+    set({ diffs, count });
   },
 }));
 

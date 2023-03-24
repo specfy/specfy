@@ -178,8 +178,7 @@ export const ProjectRevisionCreate: React.FC<{
 
       <div className={cls.reviewBar}>
         <div>
-          {staging.diffs.length} pending{' '}
-          {staging.diffs.length > 1 ? 'changes' : 'change'}
+          {staging.count} pending {staging.count > 1 ? 'changes' : 'change'}
         </div>
         <Button onClick={() => handleRevertAll()}>Revert all</Button>
       </div>
