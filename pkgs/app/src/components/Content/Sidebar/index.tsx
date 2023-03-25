@@ -129,7 +129,7 @@ export const ContentSidebar: React.FC<{
 
   const selected = useMemo(() => {
     const split = location.pathname.split('/');
-    if (split.length <= 3) {
+    if (split.length <= 4) {
       return;
     }
 

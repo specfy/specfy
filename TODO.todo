@@ -54,23 +54,6 @@ API:
   - Unit test
 
 
-Content:
-  ✔ List other content on the left / right @done(23-03-25 23:23)
-  - Better home page
-
-
-Editor:
-  - Decisions / Vote
-  ✔ Code Block @done(23-03-25 23:24)
-    - Tab
-    - Un-tab
-    - Unit test
-  - Mention
-  - Link to other documents
-  - Media
-    - Upload
-
-
 Components:
   - Click to create + Click to add c'est vraiment chiant
   - Pouvoir editer le graph depuis n'importe où
@@ -88,19 +71,33 @@ Components:
 
 
 Documents:
+  ✔ List other content on the left / right @done(23-03-25 23:23)
+  - Better home page
   ✔ Creer @started(23-03-25 23:28) @done(23-03-25 23:28) @lasted(41s)
   ✔ editer @done(23-03-25 23:28)
   ✔ supprimer @done(23-03-25 23:28)
-  - Editeur de texte riche, au moins au niveau de confluence si possible Notion
+  - Draft document should be added to the list somehow
+    - RFC number computed?
+
+  Editeur de texte:
     - Block custom:
       - Ajout / Suppression Composant
       - Ajout / Suppression Tech
       - Vote / Décision
     - Commentaire
-      - Commentaire sur le code
       - Lister facilement tout les commentaires
       - Résoudre
       - Suggestion de texte
+    ✔ Code Block @done(23-03-25 23:24)
+      - Tab
+      - Un-tab
+      - Unit test
+    ✔ Document embed @done(23-03-25 23:42)
+    - Mention
+    - Link to other documents
+    - Media
+      - Upload
+
   ✔ Type: RFC @done(23-03-25 23:28)
   ✔ Type: Playbook @done(23-03-25 23:28)
   - Type: incident report

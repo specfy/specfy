@@ -2,13 +2,21 @@
 @import "../../styles/mixin";
 
 .fake {
+  flex-grow: 1;
   margin-bottom: $p-l;
 }
 
 .input {
   @include editable(4px $p-m);
 
-  font-size: $font-3xl;
   font-weight: $font-semi;
   line-height: 0;
+
+  &.h1 {
+    font-size: $font-3xl;
+  }
+
+  &.h2 {
+    font-size: $font-xl;
+  }
 }

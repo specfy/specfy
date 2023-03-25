@@ -1,6 +1,7 @@
 @import "../../../../styles/theme";
 
 .title {
+  display: flex;
   margin-bottom: 4px !important;
   font-size: $font-3xl !important;
 }

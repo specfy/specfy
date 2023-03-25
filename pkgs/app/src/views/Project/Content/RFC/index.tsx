@@ -45,15 +45,18 @@ export const RFC: React.FC<{
           </Title>
         )}
         {isEditing && (
-          <FakeInput.H1
-            size="large"
-            value={title}
-            placeholder="Title..."
-            onChange={(e) => {
-              setTitle(e.target.value);
-              documentsStore.updateField(doc.id, 'name', e.target.value);
-            }}
-          />
+          <div className={cls.title}>
+            <span className={cls.type}>[RFC-{doc.typeId}]</span>
+            <FakeInput.H1
+              size="large"
+              value={title}
+              placeholder="Title..."
+              onChange={(e) => {
+                setTitle(e.target.value);
+                documentsStore.updateField(doc.id, 'name', e.target.value);
+              }}
+            />
+          </div>
         )}
         <Space>
           <div className={cls.lastUpdate}>

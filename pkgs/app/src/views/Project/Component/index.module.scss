@@ -33,8 +33,13 @@
   justify-content: space-between;
 }
 
+.actions {
+  display: flex;
+  align-items: center;
+  margin-bottom: $p-l;
+}
+
 .tagType {
-  margin-top: -$p-l;
   background-color: #fff;
   border: 1px solid transparent !important;
 

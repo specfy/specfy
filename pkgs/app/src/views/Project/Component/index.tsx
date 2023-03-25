@@ -118,7 +118,7 @@ export const ComponentView: React.FC<{
               </Typography.Title>
             )}
             {isEditing && (
-              <FakeInput.H1
+              <FakeInput.H2
                 size="large"
                 value={comp.name}
                 placeholder="Title..."
@@ -127,13 +127,19 @@ export const ComponentView: React.FC<{
                 }}
               />
             )}
-            <div>
+            <div className={cls.actions}>
               <Tag className={classnames(cls.tagType, cls[comp.type])}>
                 {internalTypeToText[comp.type]}
               </Tag>
-              <Dropdown menu={{ items: menuItems, onClick: onClickMenu }}>
-                <Button icon={<IconDotsVertical />} type="ghost" />
-              </Dropdown>
+              <div>
+                <Dropdown menu={{ items: menuItems, onClick: onClickMenu }}>
+                  <Button
+                    icon={<IconDotsVertical />}
+                    type="ghost"
+                    size="small"
+                  />
+                </Dropdown>
+              </div>
             </div>
           </div>
 

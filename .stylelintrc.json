@@ -16,7 +16,7 @@
         ]
       }
     ],
-    "selector-class-pattern": "^(((tabler-|ant-|x6-)[a-z-]+)|([a-z]+([A-Z][a-z]+)*))$",
+    "selector-class-pattern": "^(((tabler-|ant-|x6-)[a-z-]+)|([a-z][a-z0-9]+([A-Z][a-z0-9]+)*))$",
     "no-descending-specificity": null
   }
 }
