@@ -98,14 +98,14 @@ export const ContentSidebar: React.FC<{
     for (const doc of res.data.data) {
       if (doc.type === 'pb') {
         playbook.push({
-          key: doc.slug,
+          key: doc.id,
           title: doc.name,
           isLeaf: true,
           icon: <IconFileCode />,
         });
       } else {
         rfc.push({
-          key: doc.slug,
+          key: doc.id,
           title: `RFC-${doc.typeId} - ${doc.name}`,
           isLeaf: true,
           icon: <IconFileText />,
@@ -133,7 +133,7 @@ export const ContentSidebar: React.FC<{
       return;
     }
 
-    return [split[4]];
+    return [split[4].split('-')[0]];
   }, [location]);
 
   const onSelect: DirectoryTreeProps['onSelect'] = (keys) => {
@@ -141,7 +141,7 @@ export const ContentSidebar: React.FC<{
       return;
     }
     for (const item of res.data!.data) {
-      if (item.slug === keys[0]) {
+      if (item.id === keys[0]) {
         navigate(`/${proj.orgId}/${proj.slug}/content/${item.id}-${item.slug}`);
       }
     }
@@ -257,8 +257,7 @@ export const ContentSidebar: React.FC<{
           switcherIcon={false}
           onSelect={onSelect}
           selectedKeys={selected}
-          // expandedKeys={expandedKeys}
-          // autoExpandParent={autoExpandParent}
+          autoExpandParent={true}
           treeData={tree}
         />
       )}

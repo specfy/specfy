@@ -35,15 +35,9 @@ export const DocumentShow: React.FC<{
   });
 
   useEffect(() => {
-    console.log(
-      reqParams.document_id,
-      documentsStore.documents[reqParams.document_id],
-      getDoc.data?.data
-    );
     if (documentsStore.documents[reqParams.document_id]) {
       setDoc(documentsStore.documents[reqParams.document_id]);
     } else if (getDoc.data?.data) {
-      console.log('on add ');
       documentsStore.add([getDoc.data.data]);
       setDoc(getDoc.data.data);
     }
