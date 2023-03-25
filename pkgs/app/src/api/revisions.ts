@@ -17,6 +17,8 @@ import { queryClient } from '../common/query';
 
 import { fetchApi } from './fetch';
 
+export type QueryParamsRev = ReqGetRevision & ReqRevisionParams;
+
 export async function createRevision(
   data: ReqPostRevision
 ): Promise<ResPostRevision> {
@@ -49,6 +51,12 @@ export async function updateRevision(
   queryClient.removeQueries(['listRevisions', org_id, project_id]);
   queryClient.removeQueries(['listBlobs', org_id, project_id, revision_id]);
   queryClient.removeQueries(['getRevision', org_id, project_id, revision_id]);
+  queryClient.removeQueries([
+    'getRevisionChecks',
+    org_id,
+    project_id,
+    revision_id,
+  ]);
 
   return json;
 }
@@ -111,9 +119,9 @@ export async function mergeRevision({
   if (res.status === 200) {
     queryClient.removeQueries(['listRevisions', org_id, project_id]);
     queryClient.removeQueries(['getRevision', org_id, project_id]);
-    queryClient.removeQueries(['getRevisionChecks', org_id, project_id]);
+    queryClient.refetchQueries(['getRevisionChecks', org_id, project_id]);
   } else {
-    queryClient.removeQueries([
+    queryClient.refetchQueries([
       'getRevisionChecks',
       org_id,
       project_id,

@@ -20,12 +20,17 @@ import { RevisionBlob } from './blob';
 import type { Org } from './org';
 import type { Project } from './project';
 
-type CreateProp = Partial<Pick<DBDocument, 'id'>> &
+type CreateProp = Partial<Pick<DBDocument, 'blobId' | 'id'>> &
   Pick<
     DBDocument,
     'content' | 'locked' | 'name' | 'orgId' | 'projectId' | 'tldr' | 'type'
   >;
-@Table({ tableName: 'documents', modelName: 'document' })
+@Table({
+  tableName: 'documents',
+  modelName: 'document',
+  timestamps: false,
+  paranoid: false,
+})
 export class Document extends ActivitableModel<DBDocument, CreateProp> {
   activityType: DBActivityType = 'Document';
 

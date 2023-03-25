@@ -19,18 +19,9 @@ export async function createComment(
     ReqPostCommentRevision
   >(`/revisions/${qp.revision_id}/comment`, { body: data, qp }, 'POST');
 
-  queryClient.removeQueries([
-    'getRevision',
-    qp.org_id,
-    qp.project_id,
-    qp.revision_id,
-  ]);
-  queryClient.removeQueries([
-    'getRevisionChecks',
-    qp.org_id,
-    qp.project_id,
-    qp.revision_id,
-  ]);
+  const keys = [qp.org_id, qp.project_id, qp.revision_id];
+  queryClient.refetchQueries(['getRevision', ...keys]);
+  queryClient.refetchQueries(['getRevisionChecks', ...keys]);
 
   return json;
 }

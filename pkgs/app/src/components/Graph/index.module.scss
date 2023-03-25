@@ -11,7 +11,7 @@
   font-weight: 300;
 
   &:hover {
-    .menu {
+    >div[data-toolbar] {
       opacity: 1;
     }
   }

@@ -22,6 +22,7 @@ const ToolbarContainer: React.FC<{
   return (
     <div
       className={classnames(cls.menu, cls[position], visible && cls.visible)}
+      data-toolbar
     >
       {children}
     </div>

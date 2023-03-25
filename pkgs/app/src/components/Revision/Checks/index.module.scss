@@ -1,0 +1,81 @@
+@import "../../../styles/theme";
+
+.merge {
+  background-color: #fff;
+  border-top: 1px solid $gray-100;
+}
+
+.checkLine {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: $p-xl $p-3xl;
+
+  color: $gray-500;
+
+  border-bottom: 1px solid $gray-100;
+
+  .label {
+    display: flex;
+    gap: $p-m;
+    align-items: center;
+
+    :global(> .tabler-icon) {
+      font-size: $font-l;
+      color: $gray-400;
+    }
+  }
+
+  &.success {
+    .label :global(> .tabler-icon) {
+      color: $green-600;
+    }
+  }
+
+  &.warning {
+    color: $orange-600;
+
+    .label :global(> .tabler-icon) {
+      color: $orange-600;
+    }
+  }
+
+  &.danger {
+    color: $red-600;
+
+    .label :global(> .tabler-icon) {
+      color: $red-600;
+    }
+  }
+
+  &:last-child {
+    padding: $p-xl $p-xl;
+    background-color: $gray-50;
+    border-bottom: none;
+
+    &.merged {
+      background-color: $purple-50;
+    }
+  }
+}
+
+.mergeAction {
+  display: flex;
+  gap: $p-m;
+  align-items: center;
+}
+
+.mergeButton {
+  &.success {
+    background-color: $green-600;
+
+    &:hover {
+      background-color: $green-500;
+    }
+  }
+
+  &.merged {
+    color: $purple-700;
+  }
+}

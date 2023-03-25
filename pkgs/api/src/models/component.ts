@@ -20,10 +20,15 @@ import { RevisionBlob } from './blob';
 import type { Org } from './org';
 import type { Project } from './project';
 
-@Table({ tableName: 'components', modelName: 'project' })
+@Table({
+  tableName: 'components',
+  modelName: 'project',
+  timestamps: false,
+  paranoid: false,
+})
 export class Component extends ActivitableModel<
   DBComponent,
-  Partial<Pick<DBComponent, 'id'>> &
+  Partial<Pick<DBComponent, 'blobId' | 'id'>> &
     Pick<
       DBComponent,
       | 'description'
@@ -101,18 +106,20 @@ export class Component extends ActivitableModel<
     model.type = model.type || 'component';
     model.id = model.id || nanoid();
 
-    const body: PropBlobCreate = {
-      orgId: model.orgId,
-      projectId: model.id,
-      parentId: null,
-      type: 'component',
-      typeId: model.id,
-      blob: model.getJsonForBlob(),
-      created: true,
-      deleted: false,
-    };
-    const blob = await RevisionBlob.create(body, { transaction });
-    model.blobId = blob.id;
+    if (!model.blobId) {
+      const body: PropBlobCreate = {
+        orgId: model.orgId,
+        projectId: model.id,
+        parentId: null,
+        type: 'component',
+        typeId: model.id,
+        blob: model.getJsonForBlob(),
+        created: true,
+        deleted: false,
+      };
+      const blob = await RevisionBlob.create(body, { transaction });
+      model.blobId = blob.id;
+    }
   }
 
   @BeforeUpdate

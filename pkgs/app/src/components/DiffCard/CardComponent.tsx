@@ -10,7 +10,10 @@ import { useMemo } from 'react';
 
 import { supportedIndexed } from '../../common/component';
 import type { ComputedForDiff, DiffObjectsArray } from '../../common/store';
-import { useRevisionStore, useComponentsStore } from '../../common/store';
+import originalStore, {
+  useRevisionStore,
+  useComponentsStore,
+} from '../../common/store';
 import { ComponentItem, ComponentLineTech } from '../ComponentLine';
 import { ContentDoc } from '../Content';
 
@@ -28,6 +31,21 @@ export const DiffCardComponent: React.FC<{
   const storeComponents = useComponentsStore();
   const storeRevision = useRevisionStore();
   const using = (diff.deleted ? diff.previous : diff.blob)!;
+
+  const getComponent = (id: string): ApiComponent => {
+    if (storeComponents.components[id]) {
+      return storeComponents.components[id];
+    }
+
+    const inRevision = storeRevision.blobs.find((blob) => blob.typeId === id);
+    if (inRevision) {
+      return inRevision.deleted
+        ? (inRevision.previous as ApiComponent)
+        : (inRevision.blob as ApiComponent);
+    }
+
+    return originalStore.find(id)!;
+  };
 
   const Title = useMemo(() => {
     const Icon =
@@ -75,7 +93,7 @@ export const DiffCardComponent: React.FC<{
             <Typography.Title level={4}>Data</Typography.Title>
             <div className={cls.techs}>
               {using.edges.map((edge) => {
-                const comp = storeComponents.components[edge.to] || {};
+                const comp = getComponent(edge.to);
                 return (
                   <div key={edge.to}>
                     Link to{' '}
@@ -91,7 +109,7 @@ export const DiffCardComponent: React.FC<{
         )}
         {using.inComponent &&
           (() => {
-            const comp = storeComponents.components[using.inComponent] || {};
+            const comp = getComponent(using.inComponent);
             return (
               <div className={classnames(cls.line)}>
                 <Typography.Title level={4}>Host</Typography.Title>
@@ -169,19 +187,6 @@ export const DiffCardComponent: React.FC<{
                   </div>
                 );
               })}
-              {/* {(
-                  d.diff as DiffObjectsArray<ApiComponent['tech'][0]>
-                ).unchanged.map((tech) => {
-                  const name =
-                    tech in supportedIndexed
-                      ? supportedIndexed[tech].name
-                      : tech;
-                  return (
-                    <ComponentItem className={cls.item}key={tech} techId={tech}>
-                      {name}
-                    </ComponentItem>
-                  );
-                })} */}
             </div>
           );
         }
@@ -192,10 +197,7 @@ export const DiffCardComponent: React.FC<{
             <div key={d.key} className={classnames(cls.line)}>
               <Typography.Title level={4}>Data</Typography.Title>
               {change.added.map((edge) => {
-                const comp =
-                  storeComponents.components[edge.to] ||
-                  storeRevision.blobs.find((blob) => blob.typeId === edge.to)
-                    ?.blob;
+                const comp = getComponent(edge.to);
                 return (
                   <div key={edge.to} className={cls.added}>
                     Link to{' '}
@@ -206,7 +208,7 @@ export const DiffCardComponent: React.FC<{
                 );
               })}
               {change.deleted.map((edge) => {
-                const comp = storeComponents.components[edge.to];
+                const comp = getComponent(edge.to);
 
                 return (
                   <div key={edge.to} className={cls.removed}>
@@ -218,7 +220,7 @@ export const DiffCardComponent: React.FC<{
                 );
               })}
               {change.modified.map((edge) => {
-                const comp = storeComponents.components[edge.to];
+                const comp = getComponent(edge.to);
 
                 return (
                   <div key={edge.to}>
@@ -229,32 +231,15 @@ export const DiffCardComponent: React.FC<{
                   </div>
                 );
               })}
-              {/* {change.unchanged.map((edge) => {
-                const comp = storeComponents.components[edge.to];
-
-                return (
-                  <div key={edge.to}>
-                    Link to{' '}
-                    <ComponentItem className={cls.item}techId={comp.techId}>
-                      {comp.name}
-                    </ComponentItem>
-                  </div>
-                );
-              })} */}
             </div>
           );
         }
 
         if (d.key === 'inComponent') {
-          const newComp =
-            (using.inComponent &&
-              storeComponents.components[using.inComponent]) ||
-            storeRevision.blobs.find(
-              (blob) => blob.typeId === using.inComponent
-            )?.blob;
+          const newComp = using.inComponent && getComponent(using.inComponent);
           const oldComp =
-            diff.previous!.inComponent &&
-            storeComponents.components[diff.previous!.inComponent];
+            diff.previous?.inComponent &&
+            getComponent(diff.previous.inComponent);
           return (
             <div key={d.key} className={classnames(cls.line)}>
               <Typography.Title level={4}>Host</Typography.Title>

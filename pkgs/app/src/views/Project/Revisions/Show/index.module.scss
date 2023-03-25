@@ -6,8 +6,8 @@
     "left right"
     "review empty"
     "staged empty" / 1fr;
-  row-gap: $p-2xl;
-  column-gap: $p-xl;
+  row-gap: $p-4xl;
+  column-gap: $p-2xl;
 
   min-width: $min-w;
   max-width: $max-w;
@@ -31,24 +31,6 @@
     padding-bottom: $p-2xl;
   }
 
-  .reviewBar {
-    position: sticky;
-    z-index: 1;
-    top: 0;
-
-    display: flex;
-    grid-area: review;
-    flex-direction: row;
-    gap: $p-m;
-    align-items: center;
-    justify-content: flex-end;
-
-    height: 50px;
-    padding: $p-l $p-l;
-
-    background-color: #fff;
-    box-shadow: $box-shadow2;
-  }
 }
 
 .mainTop {
@@ -59,6 +41,18 @@
 
 .editDropdown {
   min-width: 125px !important;
+}
+
+.editSave {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  padding: $p-xl $p-3xl;
+
+  color: $gray-500;
+
+  border-top: 1px solid $gray-100;
 }
 
 .title {
@@ -74,81 +68,6 @@
   padding: $p-2xl 0 0 0;
 }
 
-// Merge
-.merge {
-  background-color: #fff;
-  border-top: 1px solid $gray-100;
-}
-
-.checkLine {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-
-  padding: $p-xl $p-3xl;
-
-  color: $gray-500;
-
-  border-bottom: 1px solid $gray-100;
-
-  .label {
-    display: flex;
-    gap: $p-m;
-    align-items: center;
-
-    :global(> .tabler-icon) {
-      font-size: $font-l;
-      color: $gray-400;
-    }
-  }
-
-  &.success {
-    .label :global(> .tabler-icon) {
-      color: $green-600;
-    }
-  }
-
-  &.warning {
-    color: $orange-600;
-
-    .label :global(> .tabler-icon) {
-      color: $orange-600;
-    }
-  }
-
-  &.danger {
-    color: $red-600;
-
-    .label :global(> .tabler-icon) {
-      color: $red-600;
-    }
-  }
-
-  &:last-child {
-    padding: $p-xl $p-xl;
-    background-color: $gray-50;
-    border-bottom: none;
-
-    &.merged {
-      background-color: $purple-50;
-    }
-  }
-}
-
-.mergeButton,
-.reviewButton {
-  &.success {
-    background-color: $green-600;
-
-    &:hover {
-      background-color: $green-500;
-    }
-  }
-
-  &.merged {
-    color: $purple-700;
-  }
-}
 
 .addUserBtn {
   width: auto !important;

@@ -1,0 +1,43 @@
+@import "../../../styles/theme";
+
+.bar {
+  position: sticky;
+  z-index: 1;
+  top: 0;
+
+  grid-area: review;
+
+  background-color: #fff;
+  box-shadow: $box-shadow2;
+
+  &.opened {
+    box-shadow: $box-shadow3;
+  }
+}
+
+.inner,
+.actions {
+  display: flex;
+  flex-direction: row;
+  gap: $p-m;
+  align-items: center;
+  justify-content: flex-end;
+
+  height: 50px;
+  padding: $p-l $p-l;
+}
+
+.text {
+  padding: $p-4xl $p-2xl $p-2xl $p-2xl;
+  border-top: 1px solid $gray-200;
+}
+
+.reviewButton {
+  &.success {
+    background-color: $green-600;
+
+    &:hover {
+      background-color: $green-500;
+    }
+  }
+}

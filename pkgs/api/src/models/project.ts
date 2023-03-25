@@ -24,10 +24,15 @@ import type { PropBlobCreate } from './blob';
 import { RevisionBlob } from './blob';
 import type { Org } from './org';
 
-@Table({ tableName: 'projects', modelName: 'project' })
+@Table({
+  tableName: 'projects',
+  modelName: 'project',
+  timestamps: false,
+  paranoid: false,
+})
 export class Project extends ActivitableModel<
   DBProject,
-  Partial<Pick<DBProject, 'id'>> &
+  Partial<Pick<DBProject, 'blobId' | 'id'>> &
     Pick<
       DBProject,
       'description' | 'display' | 'edges' | 'links' | 'name' | 'orgId'

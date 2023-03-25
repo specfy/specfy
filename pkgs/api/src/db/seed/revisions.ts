@@ -23,7 +23,6 @@ export async function seedRevisions(
   // Update Project
   const projectRev = new Project({
     ...p1.toJSON(),
-    name: 'Analytics V2',
     description: {
       type: 'doc',
       content: [
@@ -73,7 +72,7 @@ export async function seedRevisions(
   const componentRev = new Component({
     id: 'jZDC3Lsc99',
     name: 'PubSub',
-    type: 'project',
+    type: 'component',
     typeId: p1.id,
     orgId: 'company',
     projectId: p1.id,
@@ -93,7 +92,7 @@ export async function seedRevisions(
         },
       ],
     },
-    display: { zIndex: 3, pos: { x: 450, y: 90, width: 100, height: 32 } },
+    display: { zIndex: 3, pos: { x: -10, y: 90, width: 100, height: 32 } },
     inComponent: components.gce.id,
     tech: [],
     edges: [
@@ -121,6 +120,7 @@ export async function seedRevisions(
   // Update component
   const edges: Component['edges'] = components.api.toJSON().edges;
   edges.shift(); // removes redis
+  edges.shift(); // removes pg
   edges.push({
     to: componentRev.id,
     read: true,
@@ -151,7 +151,7 @@ export async function seedRevisions(
       ],
     },
     inComponent: components.gce.id,
-    display: { zIndex: 3, pos: { x: 450, y: 90, width: 140, height: 42 } },
+    display: { zIndex: 3, pos: { x: 190, y: 110, width: 140, height: 42 } },
     edges: edges,
   });
   const blob3 = await RevisionBlob.create({

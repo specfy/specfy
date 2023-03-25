@@ -1,17 +1,18 @@
 import type { FastifyPluginCallback } from 'fastify';
 import type { Model } from 'sequelize';
-import { Transaction } from 'sequelize';
 
-import { iterate } from '../../../common/blobs';
+import { findAllBlobsWithParent } from '../../../common/blobs';
 import { notFound } from '../../../common/errors';
+import { checkReviews } from '../../../common/revision';
 import { db } from '../../../db';
-import { Revision, RevisionBlob } from '../../../models';
+import { Component, Project, Revision, Document } from '../../../models';
 import type {
   ReqGetRevision,
   ReqRevisionParams,
   ResMergeRevision,
   ResMergeRevisionError,
 } from '../../../types/api';
+import type { DBBlob } from '../../../types/db';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.post<{
@@ -35,33 +36,77 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
     let cantMerge: string | false = false;
     await db.transaction(async (transaction) => {
-      // TODO: check who can merge
-      // TODO: check if we are up to date
-      const list = await RevisionBlob.findAll({
-        where: {
-          id: rev.blobs,
-        },
-        order: [['createdAt', 'ASC']],
-        limit: 100,
-        offset: 0,
-        lock: Transaction.LOCK.UPDATE,
-        transaction,
-      });
+      // Check if we have reviews
+      const reviews = await checkReviews(rev, transaction);
+      if (!reviews.check) {
+        cantMerge = 'missing_checks';
+        throw new Error(cantMerge);
+      }
 
-      await iterate(
-        list,
-        async (blob, prev) => {
-          if (!prev) {
-            cantMerge = 'not_up_to_date';
-            throw new Error('cant merge');
-          }
-          await (prev as Model).update(
-            { ...blob.blob, blobId: blob.id },
+      // TODO: check who can merge
+
+      // Merge all blobs
+      const list = await findAllBlobsWithParent(rev.blobs, transaction, true);
+      for (const item of list) {
+        // If we can't find the prev, that means it's not longer in the main branch
+        if (!item.parent && item.blob.parentId) {
+          cantMerge = 'not_up_to_date';
+          throw new Error(cantMerge);
+        }
+
+        // Update a blob
+        if (item.parent && !item.blob.deleted) {
+          console.log('will update', item.blob.id);
+          await (item.parent as Model).update(
+            { ...item.blob.blob, blobId: item.blob.id },
             { transaction }
           );
-        },
-        transaction
-      );
+          continue;
+        }
+
+        console.log('will create/delete', item.blob.id);
+        const blob = item.blob as unknown as DBBlob;
+        if (blob.type === 'project') {
+          if (blob.deleted) {
+            await Project.destroy({ where: { id: blob.typeId }, transaction });
+            continue;
+          }
+
+          await Project.create(
+            { ...blob.blob!, blobId: blob.id },
+            {
+              transaction,
+            }
+          );
+        } else if (blob.type === 'component') {
+          if (item.blob.deleted) {
+            await Component.destroy({
+              where: { id: blob.typeId },
+              transaction,
+            });
+            continue;
+          }
+
+          await Component.create(
+            { ...blob.blob!, blobId: blob.id },
+            {
+              transaction,
+            }
+          );
+        } else if (blob.type === 'document') {
+          if (blob.deleted) {
+            await Document.destroy({ where: { id: blob.typeId }, transaction });
+            continue;
+          }
+
+          await Document.create(
+            { ...blob.blob!, blobId: blob.id },
+            {
+              transaction,
+            }
+          );
+        }
+      }
 
       // Update revision
       await rev.update(

@@ -1,7 +1,6 @@
 import type { FastifyPluginCallback } from 'fastify';
-import { Transaction } from 'sequelize';
 
-import { iterate } from '../../../common/blobs';
+import { findAllBlobsWithParent } from '../../../common/blobs';
 import { notFound } from '../../../common/errors';
 import { db } from '../../../db';
 import {
@@ -9,7 +8,6 @@ import {
   Document,
   Project,
   Revision,
-  RevisionBlob,
   RevisionReview,
 } from '../../../models';
 import type {
@@ -38,77 +36,60 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       return notFound(res);
     }
 
-    try {
-      await db.transaction(async (transaction) => {
-        const list = await RevisionBlob.findAll({
-          where: {
-            id: rev.blobs,
-          },
-          order: [['createdAt', 'ASC']],
-          limit: 100,
-          offset: 0,
-          lock: Transaction.LOCK.UPDATE,
-          transaction,
-        });
+    await db.transaction(async (transaction) => {
+      const list = await findAllBlobsWithParent(rev.blobs, transaction);
+      for (const item of list) {
+        // If we can find the prev that means it's up to date
+        if (item.parent) {
+          continue;
+        }
 
-        await iterate(
-          list,
-          async (blob, prev) => {
-            // If we can't find the prev, that means it's not longer in the main branch
-            if (prev) {
-              return;
-            }
+        // if there is no parent it's a brand new blob
+        if (!item.blob.parentId) {
+          continue;
+        }
 
-            if (blob.type === 'project') {
-              const parent = await Project.findOne({
-                where: { id: blob.typeId },
-                transaction,
-              });
-              await blob.update({ parentId: parent!.blobId }, { transaction });
-            } else if (blob.type === 'component') {
-              const parent = await Component.findOne({
-                where: { id: blob.typeId },
-                transaction,
-              });
-              await blob.update({ parentId: parent!.blobId }, { transaction });
-            } else if (blob.type === 'document') {
-              const parent = await Document.findOne({
-                where: { id: blob.typeId },
-                transaction,
-              });
-              await blob.update({ parentId: parent!.blobId }, { transaction });
-            }
-          },
-          transaction
-        );
+        // changes all parents id
+        if (item.blob.type === 'project') {
+          const parent = await Project.findOne({
+            where: { id: item.blob.typeId },
+            transaction,
+          });
+          await item.blob.update({ parentId: parent!.blobId }, { transaction });
+        } else if (item.blob.type === 'component') {
+          const parent = await Component.findOne({
+            where: { id: item.blob.typeId },
+            transaction,
+          });
+          await item.blob.update({ parentId: parent!.blobId }, { transaction });
+        } else if (item.blob.type === 'document') {
+          const parent = await Document.findOne({
+            where: { id: item.blob.typeId },
+            transaction,
+          });
+          await item.blob.update({ parentId: parent!.blobId }, { transaction });
+        }
+      }
 
-        // Destroy all previous reviews
-        await RevisionReview.scope('withUser').destroy({
-          where: {
-            orgId: req.query.org_id,
-            projectId: req.query.project_id,
-            revisionId: req.params.revision_id,
-          },
-          transaction,
-        });
-
-        rev.changed('updatedAt', true);
-        await rev.update(
-          {
-            status: rev.status === 'draft' ? 'draft' : 'waiting',
-            updatedAt: new Date().toISOString(),
-          },
-          { transaction }
-        );
-      });
-    } catch (e) {
-      res.status(200).send({
-        data: {
-          done: false,
+      // Destroy all previous reviews
+      await RevisionReview.scope('withUser').destroy({
+        where: {
+          orgId: req.query.org_id,
+          projectId: req.query.project_id,
+          revisionId: req.params.revision_id,
         },
+        transaction,
       });
-      return;
-    }
+
+      rev.changed('updatedAt', true);
+      await rev.update(
+        {
+          status: rev.status === 'draft' ? 'draft' : 'waiting',
+          updatedAt: new Date().toISOString(),
+        },
+        { transaction }
+      );
+    });
 
     res.status(200).send({
       data: {
