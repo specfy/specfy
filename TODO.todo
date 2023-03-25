@@ -1,0 +1,166 @@
+Global:
+  ✔ Update mode @done(23-03-25 23:23)
+
+Project:
+  ✔ Edit @done(23-03-25 23:23)
+    - Manage links
+  ✔ Rename @done(23-03-25 23:23)
+    - Unit test
+  ✔ Creation @done(23-03-25 23:30)
+  - archivage
+  - soft suppression
+  - Import Excalidraw
+  - Import Draw.io
+  ✔ Edition “inline” @done(23-03-25 23:26)
+  - Système de Revision
+    ✔ Diff visuel (pas juste code) @done(23-03-25 23:25)
+    - Edition
+    - Revert d’une revision publié
+    ✔ [x]  Draft @done(23-03-25 23:25)
+    ✔ [x]  Approval @done(23-03-25 23:25)
+    ✔ [x]  Merge @done(23-03-25 23:25)
+    ✔ [x]  Ask for review @done(23-03-25 23:25)
+      - Notification
+    - Comment
+    - Timeline of update
+    - Unit test
+  - Public ou Privé (pour pouvoir montrer une demo facilement)
+  - Connect: Github
+    - Import
+    - One way Sync (from specfy to confluence)
+    - Automatic languages detection
+    - Automatic “service” detection
+    - Pingback depuis une Pull Request
+        - Auto merge une revision quand la pull request est merge
+
+User:
+  - Auth.js (or similar)
+    - Github auth
+  - Invite
+  - Email validation
+  - User search API for team
+  - Invite new user from team
+  - Auth with Github
+  - Auth with Google
+  - Auth with password
+  - Invitation par email
+  - Suppression de compte
+      - Anonymisation
+  - Validation compte
+
+API:
+  ✔ Handle pagination correctly @done(23-03-25 23:23)
+  - Validation
+  - Unit test
+
+
+Content:
+  ✔ List other content on the left / right @done(23-03-25 23:23)
+  - Better home page
+
+
+Editor:
+  - Decisions / Vote
+  ✔ Code Block @done(23-03-25 23:24)
+    - Tab
+    - Un-tab
+    - Unit test
+  - Mention
+  - Link to other documents
+  - Media
+    - Upload
+
+
+Components:
+  - Click to create + Click to add c'est vraiment chiant
+  - Pouvoir editer le graph depuis n'importe où
+  - Autocomplete supported dans la page de creation de composant
+  - Changer les ports
+  - Quand on change l'host on devrait bouger le composant dans le graph pour fit la boudingBox
+  ✔  suppression @done(23-03-25 23:26)
+  - Base de données de reference (genre une liste avec toutes les tech connu)
+      - Hosting
+      - Tech
+      - Languages
+  - Ajout et suppression de liaison
+  - Ajout et suppression de languages
+  - Composant de type projet
+
+
+Documents:
+  ✔ Creer @started(23-03-25 23:28) @done(23-03-25 23:28) @lasted(41s)
+  ✔ editer @done(23-03-25 23:28)
+  ✔ supprimer @done(23-03-25 23:28)
+  - Editeur de texte riche, au moins au niveau de confluence si possible Notion
+    - Block custom:
+      - Ajout / Suppression Composant
+      - Ajout / Suppression Tech
+      - Vote / Décision
+    - Commentaire
+      - Commentaire sur le code
+      - Lister facilement tout les commentaires
+      - Résoudre
+      - Suggestion de texte
+  ✔ Type: RFC @done(23-03-25 23:28)
+  ✔ Type: Playbook @done(23-03-25 23:28)
+  - Type: incident report
+  ✔ [x]  Bloc réutilisable ou Page special qui peut importer d’autre doc (pour les procédures surtout) @done(23-03-25 23:27)
+  - Lock definitif
+  - Overload d’une RFC
+
+Revision:
+  - Commentaire
+  - Timeline
+
+
+Diff:
+  - Quand on ajoute un text au début ça diff (marked) tout le text suivant
+
+Activities:
+  - Une activité par actions
+  - Filtrable au niveau Org, Projet, Revision, Composant, RFC
+
+
+API:
+  - Ajout d’une swagger / API?
+    - Page de documentation automatique?
+  - Liaison de type API Endpoint
+
+-----
+
+
+Org:
+  - On peut pas editer le graph d'organisation
+
+
+Policies:
+  - Définir tech/language autorisé/interdite et pourquoi
+  - Template RFC
+  - Template Revision
+  - Minimum review for approval
+
+
+-----
+Long term
+
+Projects:
+  - Connect: Confluence
+      - Import
+      - One way Sync (from specfy to confluence)
+  - Connect: Datadog
+      - Import some stuff
+      - Pouvoir lié un monitoring à un composant
+  - Connect: Google Cloud
+      - Import services
+      - Monitoring
+  - Connect: AWS
+      - Import services
+      - Monitoring
+  - Connect: Slack
+      - Send updates in slack
+      - Review ask
+  - Connect: Pingdom
+      - Monitoring de composant
+  - Connect: PagerDuty
+      - Afficher les gens on-call
+      - Afficher quand il y a un outage et automatiquement trouvé les procédures liés

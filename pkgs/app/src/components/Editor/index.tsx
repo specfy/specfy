@@ -28,13 +28,14 @@ import { useEffect } from 'react';
 
 import { addUidToSchema, removeEmptyContent } from '../../common/content';
 
-import { BubbleMenu } from './BubbleMenu';
-import { FloatingMenu } from './FloatingMenu';
 import { Banner } from './extensions/Banner';
 import { BlockDocument } from './extensions/BlockDocument';
 import { BlockUid } from './extensions/BlockUid';
 import { CodeBlock } from './extensions/CodeBlock';
+import { BubbleMenu as BubbleMenuPlugin } from './extensions/CustomBubbleMenu';
+import { BubbleMenu } from './extensions/CustomBubbleMenu/BubbleMenu';
 import { CustomFloatingMenu } from './extensions/CustomFloatingMenu';
+import { FloatingMenu } from './extensions/CustomFloatingMenu/FloatingMenu';
 import { Step } from './extensions/Step';
 import { Vote } from './extensions/Vote';
 import { VoteItem } from './extensions/VoteItem';
@@ -91,6 +92,7 @@ export function createEditorSchema(props: Pick<Props, 'limit'>) {
       ListItem,
       Blockquote,
       CustomFloatingMenu,
+      BubbleMenuPlugin,
       HorizontalRule,
       TaskList,
       TaskItem.configure({

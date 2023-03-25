@@ -103,16 +103,31 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         ]);
 
         const { authors, reviewers, ...body } = req.body;
+        let action = 'update';
+
         // @ts-expect-error
         delete body.closedAt; // TODO: remove this after validation
         if (rev.closedAt && body.status !== 'closed') {
           rev.set('closedAt', null);
         } else if (!rev.closedAt && body.status === 'closed') {
           rev.closedAt = new Date();
+          action = 'closed';
+        }
+
+        if (!rev.locked && body.locked) {
+          action = 'locked';
         }
 
         rev.set(body);
         await rev.save({ transaction });
+
+        if (action === 'closed') {
+          await rev.onAfterClosed(req.user!, { transaction });
+        } else if (action === 'locked') {
+          await rev.onAfterLocked(req.user!, { transaction });
+        } else {
+          // handled by default
+        }
       });
     } catch (e) {
       res.status(500).send({

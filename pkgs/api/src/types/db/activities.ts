@@ -7,6 +7,50 @@ export type DBActivityType =
   | 'Revision'
   | 'User';
 
+export type ActionComponent =
+  | 'Component.created'
+  | 'Component.deleted'
+  | 'Component.updated';
+export type ActionDocument =
+  | 'Document.created'
+  | 'Document.deleted'
+  | 'Document.updated';
+
+export type ActionOrg =
+  | 'Org.created'
+  | 'Org.deleted'
+  | 'Org.renamed'
+  | 'Org.updated';
+
+export type ActionPolicy =
+  | 'Policy.created'
+  | 'Policy.deleted'
+  | 'Policy.updated';
+
+export type ActionProject =
+  | 'Project.created'
+  | 'Project.deleted'
+  | 'Project.renamed'
+  | 'Project.updated';
+
+export type ActionRevision =
+  | 'Revision.approved'
+  | 'Revision.closed'
+  | 'Revision.commented'
+  | 'Revision.created'
+  | 'Revision.deleted'
+  | 'Revision.locked'
+  | 'Revision.merged'
+  | 'Revision.rebased'
+  | 'Revision.updated';
+
+export type ActionUser =
+  | 'User.added'
+  | 'User.created'
+  | 'User.deleted'
+  | 'User.removed'
+  | 'User.updated';
+
 export interface DBActivity {
   id: string;
 
@@ -17,34 +61,13 @@ export interface DBActivity {
 
   activityGroupId: string;
   action:
-    | 'Component.created'
-    | 'Component.deleted'
-    | 'Component.updated'
-    | 'Document.created'
-    | 'Document.deleted'
-    | 'Document.updated'
-    | 'Org.created'
-    | 'Org.deleted'
-    | 'Org.renamed'
-    | 'Org.updated'
-    | 'Policy.created'
-    | 'Policy.deleted'
-    | 'Policy.updated'
-    | 'Project.created'
-    | 'Project.deleted'
-    | 'Project.renamed'
-    | 'Project.updated'
-    | 'Revision.approved'
-    | 'Revision.commented'
-    | 'Revision.created'
-    | 'Revision.deleted'
-    | 'Revision.merged'
-    | 'Revision.updated'
-    | 'User.added'
-    | 'User.created'
-    | 'User.deleted'
-    | 'User.removed'
-    | 'User.updated';
+    | ActionComponent
+    | ActionDocument
+    | ActionOrg
+    | ActionPolicy
+    | ActionProject
+    | ActionRevision
+    | ActionUser;
 
   targetUserId: string | null;
   targetComponentId: string | null;

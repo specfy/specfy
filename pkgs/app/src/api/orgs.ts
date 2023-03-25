@@ -1,5 +1,5 @@
+import { useQuery } from '@tanstack/react-query';
 import type { ApiOrg, ResListOrgs } from 'api/src/types/api';
-import { useQuery } from 'react-query';
 
 export async function listOrgs(): Promise<ApiOrg[]> {
   const res = await fetch('http://localhost:3000/0/orgs');

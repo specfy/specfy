@@ -163,7 +163,7 @@ export const CodeBlock = Node.create<CodeBlockOptions>({
       Tab: (p) => {
         const { $from } = p.editor.state.selection;
 
-        if ($from.parent.type !== this.type) {
+        if ($from.parent.type.name !== this.type.name) {
           return false;
         }
 

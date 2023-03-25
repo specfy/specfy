@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import type {
   ReqListProjects,
   ReqPostProject,
@@ -6,7 +7,6 @@ import type {
   ResListProjects,
   ResPostProject,
 } from 'api/src/types/api';
-import { useQuery } from 'react-query';
 
 import { queryClient } from '../common/query';
 import originalStore from '../common/store';

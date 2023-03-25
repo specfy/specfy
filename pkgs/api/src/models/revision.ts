@@ -1,4 +1,4 @@
-import type { CreationOptional, ForeignKey } from 'sequelize';
+import type { CreationOptional, ForeignKey, Transactionable } from 'sequelize';
 import {
   CreatedAt,
   UpdatedAt,
@@ -12,9 +12,11 @@ import {
 import { nanoid } from '../common/id';
 import type { DBActivityType, DBRevision } from '../types/db';
 
+import type { Activity } from './activity';
 import ActivitableModel from './base/activitable';
 import type { Org } from './org';
 import type { Project } from './project';
+import type { User } from './user';
 
 type PropCreate = Partial<Pick<DBRevision, 'id'>> &
   Pick<
@@ -77,5 +79,32 @@ export class Revision extends ActivitableModel<DBRevision, PropCreate> {
   @BeforeCreate
   static async onBeforeCreate(model: Revision): Promise<void> {
     model.id = model.id || nanoid();
+  }
+
+  async onAfterApproved(user: User, opts?: Transactionable): Promise<Activity> {
+    return this.onActivity(`Revision.approved`, user, opts);
+  }
+
+  async onAfterCommented(
+    user: User,
+    opts?: Transactionable
+  ): Promise<Activity> {
+    return this.onActivity(`Revision.commented`, user, opts);
+  }
+
+  async onAfterMerge(user: User, opts?: Transactionable): Promise<Activity> {
+    return this.onActivity(`Revision.merged`, user, opts);
+  }
+
+  async onAfterLocked(user: User, opts?: Transactionable): Promise<Activity> {
+    return this.onActivity(`Revision.locked`, user, opts);
+  }
+
+  async onAfterRebased(user: User, opts?: Transactionable): Promise<Activity> {
+    return this.onActivity(`Revision.rebased`, user, opts);
+  }
+
+  async onAfterClosed(user: User, opts?: Transactionable): Promise<Activity> {
+    return this.onActivity(`Revision.closed`, user, opts);
   }
 }

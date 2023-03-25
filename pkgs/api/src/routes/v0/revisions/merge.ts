@@ -56,7 +56,6 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
         // Update a blob
         if (item.parent && !item.blob.deleted) {
-          console.log('will update', item.blob.id);
           await (item.parent as Model).update(
             { ...item.blob.blob, blobId: item.blob.id },
             { transaction }
@@ -64,7 +63,6 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           continue;
         }
 
-        console.log('will create/delete', item.blob.id);
         const blob = item.blob as unknown as DBBlob;
         if (blob.type === 'project') {
           if (blob.deleted) {
@@ -116,6 +114,8 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         },
         { transaction }
       );
+
+      await rev.onAfterMerge(req.user!, { transaction });
     });
 
     if (cantMerge) {

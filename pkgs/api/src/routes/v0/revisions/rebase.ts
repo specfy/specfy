@@ -89,6 +89,8 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         },
         { transaction }
       );
+
+      await rev.onAfterRebased(req.user!, { transaction });
     });
 
     res.status(200).send({

@@ -168,7 +168,7 @@ export const Graph: React.FC<{
 
     const cancel = setTimeout(() => {
       graph.center();
-      graph.zoomToFit({ padding: 40, maxScale: 2.6, minScale: 0.2 });
+      graph.zoomToFit({ padding: 0, maxScale: 2.6, minScale: 0.2 });
       graph.zoomTo(graph.zoom() - 0.15);
     }, 150);
 

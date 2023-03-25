@@ -18,7 +18,7 @@ import cls from './index.module.scss';
 export const RFC: React.FC<{
   proj: ApiProject;
   doc: ApiDocument;
-}> = ({ proj, doc }) => {
+}> = ({ doc }) => {
   const documentsStore = useDocumentsStore();
 
   // Edition
@@ -65,6 +65,7 @@ export const RFC: React.FC<{
           {!isEditing && <ContentDoc doc={doc.content} />}
           {isEditing && (
             <Editor
+              key={doc.id}
               content={doc.content}
               minHeight="500px"
               onUpdate={(json) => {

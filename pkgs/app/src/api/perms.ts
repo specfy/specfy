@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import type {
   ReqDeletePerms,
   ReqListPerms,
@@ -6,7 +7,6 @@ import type {
   ResListPerms,
   ResPostPerms,
 } from 'api/src/types/api';
-import { useQuery } from 'react-query';
 
 import { queryClient } from '../common/query';
 

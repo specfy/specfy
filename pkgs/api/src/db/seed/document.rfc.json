@@ -1,0 +1,231 @@
+{
+  "type": "doc",
+  "content": [
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1,
+        "uid": "UidgrRPV001"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Introduction"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "attrs": {
+        "uid": "UidgrRPV002"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "This document outlines the design and implementation of a "
+        },
+        {
+          "type": "text",
+          "marks": [
+            {
+              "type": "bold"
+            }
+          ],
+          "text": "new REST API"
+        },
+        {
+          "type": "text",
+          "text": ". The purpose of this API is to provide a standardized interface for accessing and manipulating data related to a specific domain. The API will conform to the principles of Representational State Transfer (REST) architecture style."
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1,
+        "uid": "UidgrRPV003"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Design"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 2,
+        "uid": "UidgrRPV004"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Resource Design"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "attrs": {
+        "uid": "UidgrRPV005"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "The API will be designed around resources, each of which represents a domain entity. Resources will be identified using URIs (Uniform Resource Identifiers). The following URIs will be used for the API:"
+        }
+      ]
+    },
+    {
+      "type": "bulletList",
+      "attrs": {
+        "uid": "UidgrRPV006"
+      },
+      "content": [
+        {
+          "type": "listItem",
+          "attrs": {
+            "uid": "UidgrRPV007"
+          },
+          "content": [
+            {
+              "type": "paragraph",
+              "attrs": {
+                "uid": "UidgrRPV008"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ],
+                  "text": "/api/{version}/{resource}/{id}"
+                },
+                {
+                  "type": "text",
+                  "text": " – to retrieve, update, or delete a specific entity."
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "type": "listItem",
+          "attrs": {
+            "uid": "UidgrRPV009"
+          },
+          "content": [
+            {
+              "type": "paragraph",
+              "attrs": {
+                "uid": "UidgrRPV010"
+              },
+              "content": [
+                {
+                  "type": "text",
+                  "marks": [
+                    {
+                      "type": "code"
+                    }
+                  ],
+                  "text": "/api/{version}/{resource}"
+                },
+                {
+                  "type": "text",
+                  "text": " – to retrieve a list of entities or create a new entity."
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 2,
+        "uid": "UidgrRPV011"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Response Formats"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "attrs": {
+        "uid": "UidgrRPV012"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "The API will support both JSON and XML data formats for responses. The response format can be specified in the request headers."
+        }
+      ]
+    },
+    {
+      "type": "codeBlock",
+      "attrs": {
+        "language": "json",
+        "uid": "UidgrRPV013"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "{\n  \"data\": {\n    \"id\": 1234,\n    \"name\": \"Specfy\",\n    \"yc\": true,\n    \"tags\": [\"documentation\", \"developers\"]\n  }\n}"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "attrs": {
+        "level": 1,
+        "uid": "UidgrRPV014"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "Conclusion"
+        }
+      ]
+    },
+    {
+      "type": "banner",
+      "attrs": {
+        "type": "info",
+        "uid": "UidgrRPV043"
+      },
+      "content": [
+        {
+          "type": "paragraph",
+          "attrs": {
+            "uid": "UidgrRPV016"
+          },
+          "content": [
+            {
+              "type": "text",
+              "text": "Ut semper eros ipsum, eget rutrum nisi consequat vitae.",
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "attrs": {
+        "uid": "UidgrRPV015"
+      },
+      "content": [
+        {
+          "type": "text",
+          "text": "This document outlines the design and implementation of a new REST API. The API is designed to provide a standardized interface for accessing and manipulating data related to a specific domain. The API conforms to REST architecture style and supports secure access through an authentication and authorization mechanism."
+        }
+      ]
+    }
+  ]
+}

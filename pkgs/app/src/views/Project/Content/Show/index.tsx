@@ -4,7 +4,6 @@ import { useParams } from 'react-router-dom';
 
 import { useGetDocument } from '../../../../api/documents';
 import { useDocumentsStore } from '../../../../common/store';
-import { useEdit } from '../../../../hooks/useEdit';
 import type { RouteDocument } from '../../../../types/routes';
 import { Playbook } from '../Playbook';
 import { RFC } from '../RFC';
@@ -17,13 +16,16 @@ export const DocumentShow: React.FC<{
   const params = useParams<Partial<RouteDocument>>() as RouteDocument;
   const documentsStore = useDocumentsStore();
   const [doc, setDoc] = useState<ApiDocument>();
-  const edit = useEdit();
 
   // Parse params
   const reqParams = useMemo(() => {
     const split = params.document_slug.split('-');
     return { document_id: split[0] };
   }, [params]);
+
+  useEffect(() => {
+    window.scrollTo(0, doc ? 165 : 0);
+  }, [params.document_slug]);
 
   // Load document
   const getDoc = useGetDocument({
@@ -33,25 +35,19 @@ export const DocumentShow: React.FC<{
   });
 
   useEffect(() => {
-    if (getDoc.data?.data) {
+    console.log(
+      reqParams.document_id,
+      documentsStore.documents[reqParams.document_id],
+      getDoc.data?.data
+    );
+    if (documentsStore.documents[reqParams.document_id]) {
+      setDoc(documentsStore.documents[reqParams.document_id]);
+    } else if (getDoc.data?.data) {
+      console.log('on add ');
       documentsStore.add([getDoc.data.data]);
       setDoc(getDoc.data.data);
-    } else if (documentsStore.documents[reqParams.document_id]) {
-      setDoc(documentsStore.documents[reqParams.document_id]);
     }
-  }, [getDoc]);
-
-  useEffect(() => {
-    // Update doc only if we exit edit mode to avoid rerender the whole view at each keystroke
-    if (!edit.isEnabled() && edit.prev()) {
-      const [id] = params.document_slug.split('-');
-
-      if (documentsStore.documents[id]) {
-        setDoc(documentsStore.documents[id]);
-        return;
-      }
-    }
-  }, [edit, documentsStore.documents]);
+  }, [getDoc.data, reqParams]);
 
   if (!doc) {
     return <div>not found</div>;

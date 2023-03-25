@@ -1,6 +1,6 @@
+import { QueryClientProvider } from '@tanstack/react-query';
 import { App as AntdApp, ConfigProvider } from 'antd';
 import type React from 'react';
-import { QueryClientProvider } from 'react-query';
 // import { ReactQueryDevtools } from 'react-query/devtools';
 import { Navigate, Route, Routes } from 'react-router-dom';
 

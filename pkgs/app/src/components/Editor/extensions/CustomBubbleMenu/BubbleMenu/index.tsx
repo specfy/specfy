@@ -1,11 +1,35 @@
 import { IconBold, IconCode, IconItalic, IconLink } from '@tabler/icons-react';
 import type { Editor } from '@tiptap/core';
-import { BubbleMenu as BM } from '@tiptap/react';
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+
+import { BubbleMenuPlugin } from '..';
 
 import cls from './index.module.scss';
 
 export const BubbleMenu: React.FC<{ editor: Editor }> = ({ editor }) => {
+  const [element, setElement] = useState<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!element) {
+      return;
+    }
+
+    if (editor.isDestroyed) {
+      return;
+    }
+
+    const plugin = BubbleMenuPlugin({
+      editor,
+      element,
+      pluginKey: 'BubbleMenu',
+    });
+
+    editor.registerPlugin(plugin);
+    return () => {
+      editor.unregisterPlugin('BubbleMenu');
+    };
+  }, [editor, element]);
+
   const setLink = useCallback(() => {
     if (!editor || editor.isDestroyed) return;
 
@@ -29,11 +53,7 @@ export const BubbleMenu: React.FC<{ editor: Editor }> = ({ editor }) => {
   }, [editor]);
 
   return (
-    <BM
-      editor={editor}
-      tippyOptions={{ duration: 100, arrow: true, placement: 'bottom' }}
-      className={cls.menu}
-    >
+    <div className={cls.menu} ref={setElement}>
       <button
         onClick={() => editor.chain().focus().toggleBold().run()}
         className={editor.isActive('bold') ? cls.isActive : ''}
@@ -58,6 +78,6 @@ export const BubbleMenu: React.FC<{ editor: Editor }> = ({ editor }) => {
       >
         <IconCode size="1em" />
       </button>
-    </BM>
+    </div>
   );
 };

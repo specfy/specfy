@@ -155,6 +155,7 @@ export const ProjectRevisionCreate: React.FC<{
 
               <Typography>
                 <Editor
+                  key={'edit'}
                   content={description}
                   onUpdate={setDescription}
                   minHeight="100px"

@@ -288,6 +288,7 @@ export const ProjectRevisionsShow: React.FC<{
               {!edit && <ContentDoc doc={rev.description} />}
               {edit && (
                 <Editor
+                  key={rev.id}
                   content={description}
                   onUpdate={setDescription}
                   minHeight="100px"

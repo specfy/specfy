@@ -1,10 +1,3 @@
-import {
-  IconCircleCheck,
-  IconCirclePlus,
-  IconEdit,
-  IconMessage,
-  IconTrash,
-} from '@tabler/icons-react';
 import type { ApiActivity } from 'api/src/types/api';
 import type { DBActivityType } from 'api/src/types/db';
 import type { ReactNode } from 'react';
@@ -66,22 +59,9 @@ export const RowActivity: React.FC<{ act: ApiActivity; orgId: string }> = ({
   act,
   orgId,
 }) => {
-  let icon: ReactNode | undefined;
   const type = act.action.split('.')[0] as DBActivityType;
   let target: ReactNode | undefined;
   let text: string = '';
-
-  if (act.action.endsWith('created')) {
-    icon = <IconCirclePlus />;
-  } else if (act.action.endsWith('updated')) {
-    icon = <IconEdit />;
-  } else if (act.action.endsWith('deleted')) {
-    icon = <IconTrash />;
-  } else if (act.action.endsWith('commented')) {
-    icon = <IconMessage />;
-  } else if (act.action.endsWith('approved')) {
-    icon = <IconCircleCheck />;
-  }
 
   if (type === 'Document' && act.targetDocument) {
     target = (
@@ -103,7 +83,9 @@ export const RowActivity: React.FC<{ act: ApiActivity; orgId: string }> = ({
     text = mapping[act.action](act.targetComponent);
   } else if (type === 'Revision' && act.targetRevision) {
     target = (
-      <Link to={`/${orgId}/${act.project!.slug}/${act.targetRevision.id}`}>
+      <Link
+        to={`/${orgId}/${act.project!.slug}/revisions/${act.targetRevision.id}`}
+      >
         {act.targetRevision.name}
       </Link>
     );

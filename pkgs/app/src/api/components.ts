@@ -1,9 +1,9 @@
+import { useQuery } from '@tanstack/react-query';
 import type {
   ApiComponent,
   ReqListComponents,
   ResListComponents,
 } from 'api/src/types/api';
-import { useQuery } from 'react-query';
 
 import originalStore from '../common/store';
 

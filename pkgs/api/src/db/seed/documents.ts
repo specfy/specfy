@@ -1,5 +1,8 @@
 import type { Project, User } from '../../models';
 import { Document, TypeHasUser } from '../../models';
+import type { BlockLevelZero } from '../../types/api';
+
+import docRfc4Json from './document.rfc.json';
 
 /**
  * Seed playbook
@@ -618,10 +621,20 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
     content: { type: 'doc', content: [] },
     locked: false,
   });
+  const d4 = await Document.create({
+    id: 'r4grRPVYnx',
+    orgId: 'company',
+    projectId: p1.id,
+    type: 'rfc',
+    name: 'API Global Specification',
+    tldr: 'Donec eget porttitor nisi. Proin ac augue bibendum, posuere dui vel, volutpat ligula.',
+    content: docRfc4Json as BlockLevelZero,
+    locked: false,
+  });
 
   // Document has user
   await Promise.all([
-    [d1, d2, d3].map(async (d) => {
+    [d1, d2, d3, d4].map(async (d) => {
       await d.onAfterCreate(u1);
       return TypeHasUser.create({
         documentId: d.id,
@@ -641,5 +654,5 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
     role: 'reviewer',
   });
 
-  return { d1, d2, d3 };
+  return { d1, d2, d3, d4 };
 }

@@ -73,13 +73,13 @@ export const CodeBlockView: React.FC<NodeViewProps> = ({
         </EditorMenu>
         <div className={cls.edit} spellCheck="false">
           <pre className={cls.pre}>
-            <code className={classnames(cls.code)}>
+            <code className={classnames(cls.code)} spellCheck="false">
               <NodeViewContent />
             </code>
           </pre>
         </div>
         <div className={cls.display}>
-          <pre className={cls.pre}>
+          <pre className={cls.pre} spellCheck="false">
             <code
               className={classnames('hljs', `language-${type}`, cls.code)}
               dangerouslySetInnerHTML={{

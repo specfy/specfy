@@ -58,6 +58,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         },
         { transaction }
       );
+      await revision.onAfterCreate(req.user!, { transaction });
 
       await TypeHasUser.create({
         revisionId: revision.id,

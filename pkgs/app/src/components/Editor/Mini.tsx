@@ -15,8 +15,8 @@ import { useMemo, useEffect } from 'react';
 
 import { addUidToSchema, removeEmptyContent } from '../../common/content';
 
-import { BubbleMenu } from './BubbleMenu';
 import { BlockUid } from './extensions/BlockUid';
+import { BubbleMenu } from './extensions/CustomBubbleMenu/BubbleMenu';
 import cls from './mini.module.scss';
 
 const Editor: React.FC<{

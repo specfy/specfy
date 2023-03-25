@@ -64,6 +64,9 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           },
           { transaction }
         );
+        await rev.onAfterApproved(req.user!, { transaction });
+      } else {
+        await rev.onAfterCommented(req.user!, { transaction });
       }
 
       return created;

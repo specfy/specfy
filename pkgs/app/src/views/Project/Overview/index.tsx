@@ -61,7 +61,11 @@ export const ProjectOverview: React.FC<{
           <Typography>
             {!isEditing && <ContentDoc doc={project.description} />}
             {isEditing && (
-              <EditorMini doc={project.description} onUpdate={onUpdate} />
+              <EditorMini
+                key={project.id}
+                doc={project.description}
+                onUpdate={onUpdate}
+              />
             )}
           </Typography>
 

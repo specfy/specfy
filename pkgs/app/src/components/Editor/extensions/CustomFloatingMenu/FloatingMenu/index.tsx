@@ -13,7 +13,7 @@ import type { Plugin } from '@tiptap/pm/state';
 import classnames from 'classnames';
 import { useCallback, useEffect, useState } from 'react';
 
-import { FloatingMenuPlugin } from '../extensions/CustomFloatingMenu/plugin';
+import { FloatingMenuPlugin } from '../plugin';
 
 import cls from './index.module.scss';
 
@@ -39,7 +39,6 @@ export const FloatingMenu: React.FC<{ editor: Editor }> = ({ editor }) => {
       editor,
       element,
       tippyOptions: { duration: 250, offset: [5, -40] },
-      shouldShow: null,
       onBlur: () => {
         setShowSub(undefined);
         setSelected(false);
@@ -48,7 +47,9 @@ export const FloatingMenu: React.FC<{ editor: Editor }> = ({ editor }) => {
 
     setPlugin(tmp);
     editor.registerPlugin(tmp);
-    return () => editor.unregisterPlugin('floatingMenu');
+    return () => {
+      editor.unregisterPlugin('floatingMenu');
+    };
   }, [editor, element]);
 
   const select = useCallback(() => {

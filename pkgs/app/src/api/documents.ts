@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query';
 import type {
   ReqDocumentParams,
   ReqGetDocument,
@@ -5,7 +6,6 @@ import type {
   ResGetDocument,
   ResListDocuments,
 } from 'api/src/types/api';
-import { useQuery } from 'react-query';
 
 import originalStore from '../common/store';
 
