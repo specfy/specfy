@@ -192,7 +192,11 @@ export const ProjectHeader: React.FC<{
                   onClick={() => edit.enable(!isEditing)}
                 />
               </Tooltip>
-              <Dropdown menu={{ items: createItems }} placement="bottomRight">
+              <Dropdown
+                menu={{ items: createItems }}
+                placement="bottomRight"
+                trigger={['click']}
+              >
                 <Button icon={<IconPlus />} type="default" size="small" />
               </Dropdown>
               <Staging link={linkSelf} />

@@ -37,7 +37,7 @@ export const DiffCardDocument: React.FC<{
       <div className={cls.content}>
         {Title}
         <Typography>
-          <ContentDoc doc={using.content} id={diff.typeId} />
+          <ContentDoc doc={using.content} id={diff.typeId} noPlaceholder />
         </Typography>
       </div>
     );

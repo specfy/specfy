@@ -140,6 +140,12 @@ $border-width: 10px;
   gap: $p-m;
 }
 
+.data {
+  display: flex;
+  flex-direction: column;
+  gap: $p-m;
+}
+
 .icon {
   display: inline-flex;
 

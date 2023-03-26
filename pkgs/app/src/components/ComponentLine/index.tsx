@@ -31,6 +31,20 @@ export const ComponentItem: React.FC<{
   );
 };
 
+export const TechItem: React.FC<{ techId: string; params: RouteProject }> = ({
+  techId,
+  params,
+}) => {
+  const supp = techId in supportedIndexed ? supportedIndexed[techId] : null;
+  const slug = supp?.key || techId.toLocaleLowerCase();
+
+  return (
+    <Link to={`/${params.org_id}/${params.project_slug}/t/${slug}`}>
+      <ComponentItem techId={techId}>{supp?.name || techId}</ComponentItem>
+    </Link>
+  );
+};
+
 const InternalLine: React.FC<
   Line & {
     items?: React.ReactElement[];
@@ -80,20 +94,7 @@ export const ComponentLineTech: React.FC<
       {...rest}
       params={params}
       items={techs?.map((techId) => {
-        const supp =
-          techId in supportedIndexed ? supportedIndexed[techId] : null;
-        const slug = supp?.key || techId.toLocaleLowerCase();
-
-        return (
-          <Link
-            key={techId}
-            to={`/${params.org_id}/${params.project_slug}/t/${slug}`}
-          >
-            <ComponentItem techId={techId}>
-              {supp?.name || techId}
-            </ComponentItem>
-          </Link>
-        );
+        return <TechItem key={techId} techId={techId} params={params} />;
       })}
     />
   );

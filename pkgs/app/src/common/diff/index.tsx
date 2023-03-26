@@ -33,11 +33,14 @@ export function proposeTitle(computed: BlobWithDiff[]): string {
     const item = computed[0];
     const type = item.type === 'project' ? 'project' : item.blob?.name;
     if (item.deleted) {
-      return `fix(${type}): delete`;
+      return `fix(${item.type}): delete ${type}`;
+    }
+    if (item.created) {
+      return `feat(${item.type}): create ${type}`;
     }
 
     const keys = item.diffs.map((diff) => diff.key);
-    return `fix(${type}): update ${keys.join(', ')}`;
+    return `update(${type}): update ${keys.join(', ')}`;
   }
 
   const types = new Set<BlobWithDiff['type']>();

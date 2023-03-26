@@ -7,6 +7,7 @@ import type {
 import type { DBBlobComponent, DBComponent } from 'api/src/types/db';
 import classnames from 'classnames';
 import { useMemo } from 'react';
+import { useParams } from 'react-router-dom';
 
 import { supportedIndexed } from '../../common/component';
 import type { ComputedForDiff, DiffObjectsArray } from '../../common/store';
@@ -14,7 +15,8 @@ import originalStore, {
   useRevisionStore,
   useComponentsStore,
 } from '../../common/store';
-import { ComponentItem, ComponentLineTech } from '../ComponentLine';
+import type { RouteProject } from '../../types/routes';
+import { ComponentItem, TechItem } from '../ComponentLine';
 import { ContentDoc } from '../Content';
 
 import { Split } from './Split';
@@ -28,6 +30,7 @@ export type BlobWithDiff = ApiBlobPrevious<DBComponent> &
 export const DiffCardComponent: React.FC<{
   diff: BlobWithDiff;
 }> = ({ diff }) => {
+  const params = useParams<Partial<RouteProject>>() as RouteProject;
   const storeComponents = useComponentsStore();
   const storeRevision = useRevisionStore();
   const using = (diff.deleted ? diff.previous : diff.blob)!;
@@ -75,30 +78,31 @@ export const DiffCardComponent: React.FC<{
       <div className={cls.content}>
         {Title}
         <Typography>
-          <ContentDoc doc={using.description} id={diff.typeId} />
+          <ContentDoc doc={using.description} id={diff.typeId} noPlaceholder />
         </Typography>
         {using.tech.length > 0 && (
           <div className={cls.line}>
             <Typography.Title level={4}>Stack</Typography.Title>
-            <ComponentLineTech
-              techs={using.tech}
-              params={{ org_id: '', project_slug: '' }}
-              title="stack"
-            />
+            <div className={cls.techs}>
+              {using.tech?.map((techId) => {
+                return (
+                  <TechItem key={techId} techId={techId} params={params} />
+                );
+              })}
+            </div>
           </div>
         )}
 
         {using.edges.length > 0 && (
           <div className={classnames(cls.line)}>
             <Typography.Title level={4}>Data</Typography.Title>
-            <div className={cls.techs}>
+            <div className={classnames(cls.data)}>
               {using.edges.map((edge) => {
                 const comp = getComponent(edge.to);
                 return (
                   <div key={edge.to}>
                     Link to{' '}
                     <ComponentItem className={cls.item} techId={comp.techId}>
-                      {' '}
                       {comp.name}
                     </ComponentItem>
                   </div>
@@ -107,6 +111,7 @@ export const DiffCardComponent: React.FC<{
             </div>
           </div>
         )}
+
         {using.inComponent &&
           (() => {
             const comp = getComponent(using.inComponent);
