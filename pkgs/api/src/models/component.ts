@@ -22,8 +22,7 @@ import type { Project } from './project';
 
 @Table({
   tableName: 'components',
-  modelName: 'project',
-  timestamps: false,
+  modelName: 'component',
   paranoid: false,
 })
 export class Component extends ActivitableModel<

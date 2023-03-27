@@ -27,7 +27,6 @@ import type { Org } from './org';
 @Table({
   tableName: 'projects',
   modelName: 'project',
-  timestamps: false,
   paranoid: false,
 })
 export class Project extends ActivitableModel<

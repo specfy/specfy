@@ -3,7 +3,8 @@ import type { ApiProject } from 'api/src/types/api';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { deleteProject } from '../../../../api/projects';
+import { deleteProject, updateProject } from '../../../../api/projects';
+import { slugify } from '../../../../common/string';
 import { Card } from '../../../../components/Card';
 import type { RouteProject } from '../../../../types/routes';
 
@@ -21,8 +22,21 @@ export const SettingsGeneral: React.FC<{
 
   // Edit
   const [name, setName] = useState(() => proj.name);
+  const [slug, setSlug] = useState(() => proj.slug);
   const onName: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setName(e.target.value);
+    setSlug(slugify(e.target.value));
+  };
+  const nameChanged = name !== proj.name;
+
+  const handleRename = async () => {
+    const res = await updateProject(params, { name });
+    message.success('Project renamed');
+    navigate(`/${params.org_id}/${res.data.slug}/settings`);
+  };
+  const handleReset = () => {
+    setName(proj.name);
+    setSlug(proj.slug);
   };
 
   // Delete modal
@@ -52,29 +66,35 @@ export const SettingsGeneral: React.FC<{
         </div>
       </div>
       <Card>
-        <Card.Content>
-          <Form layout="vertical">
+        <Form layout="vertical" onFinish={handleRename}>
+          <Card.Content>
             <Form.Item
               label="Name"
               extra={
                 <div className={cls.desc}>
                   The project is accessible at{' '}
                   <em>
-                    https://specfy.com/
-                    {proj.orgId}/<strong>{proj.slug}</strong>
+                    https://specfy.io/
+                    {proj.orgId}/<strong>{slug}</strong>
                   </em>
                 </div>
               }
             >
               <Input value={name} onChange={onName} />
             </Form.Item>
-          </Form>
-        </Card.Content>
+          </Card.Content>
 
-        <Card.Actions>
-          <Button type="text">reset</Button>
-          <Button type="primary">Save</Button>
-        </Card.Actions>
+          <Card.Actions>
+            {nameChanged && (
+              <Button type="text" onClick={handleReset}>
+                reset
+              </Button>
+            )}
+            <Button type="primary" htmlType="submit" disabled={!nameChanged}>
+              Rename
+            </Button>
+          </Card.Actions>
+        </Form>
       </Card>
 
       <Card padded>

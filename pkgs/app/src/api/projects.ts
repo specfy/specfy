@@ -3,9 +3,11 @@ import type {
   ReqListProjects,
   ReqPostProject,
   ReqProjectParams,
+  ReqUpdateProject,
   ResGetProject,
   ResListProjects,
   ResPostProject,
+  ResUpdateProject,
 } from 'api/src/types/api';
 
 import { queryClient } from '../common/query';
@@ -23,6 +25,22 @@ export async function createProject(
   );
 
   queryClient.removeQueries(['listProjects', data.orgId]);
+
+  return json;
+}
+
+export async function updateProject(
+  opts: ReqProjectParams,
+  data: ReqUpdateProject
+) {
+  const { json } = await fetchApi<
+    ResUpdateProject,
+    undefined,
+    ReqUpdateProject
+  >(`/projects/${opts.org_id}/${opts.project_slug}`, { body: data }, 'POST');
+
+  queryClient.removeQueries(['listProjects', opts.org_id]);
+  queryClient.removeQueries(['getProject', opts.org_id, opts.project_slug]);
 
   return json;
 }
@@ -48,7 +66,7 @@ export function useListProjects(opts: Partial<ReqListProjects>) {
       const { json } = await fetchApi<ResListProjects, ReqListProjects>(
         '/projects',
         {
-          qp: opts,
+          qp: opts as ReqListProjects,
         }
       );
 

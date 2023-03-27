@@ -1,5 +1,9 @@
 import { Editor } from '@tiptap/react';
-import type { ApiBlobWithPrevious, ApiComponent } from 'api/src/types/api';
+import type {
+  ApiBlobWithPrevious,
+  ApiComponent,
+  ApiProject,
+} from 'api/src/types/api';
 import { diffJson, diffWordsWithSpace } from 'diff';
 
 import type { BlobWithDiff } from '../../components/DiffCard';
@@ -11,12 +15,14 @@ import { diffEditor } from './prosemirror';
 
 const IGNORED = [
   'id',
+  'slug',
   'createdAt',
   'updatedAt',
   'blobId',
   'orgId',
   'projectId',
 ];
+const IGNORED_PROJECT: Array<keyof ApiProject> = ['name'];
 const IGNORED_COMPONENT: Array<keyof ApiComponent> = [
   'orgId',
   'projectId',
@@ -88,6 +94,12 @@ export function diffTwoBlob(blob: ApiBlobWithPrevious): BlobWithDiff {
     if (
       blob.type === 'component' &&
       IGNORED_COMPONENT.includes(key as keyof ApiComponent)
+    ) {
+      continue;
+    }
+    if (
+      blob.type === 'project' &&
+      IGNORED_PROJECT.includes(key as keyof ApiProject)
     ) {
       continue;
     }

@@ -29,3 +29,7 @@ export interface ReqProjectParams {
 export interface ResGetProject {
   data: ApiProject;
 }
+
+// POST /:org_id/:project_slug
+export type ReqUpdateProject = Pick<ApiProject, 'name'>;
+export type ResUpdateProject = ResGetProject;

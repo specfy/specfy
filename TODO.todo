@@ -3,9 +3,11 @@ Global:
 
 Project:
   ✔ Edit @done(23-03-25 23:23)
-    - Manage links
+    ✔ Manage links @done(23-03-27 15:55)
+    - Unit Test
   ✔ Rename @done(23-03-25 23:23)
-    - Unit test
+    - Unit Test
+    - Specific activity
   ✔ Creation @done(23-03-25 23:30)
   - archivage
   - soft suppression

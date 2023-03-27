@@ -28,7 +28,6 @@ type CreateProp = Partial<Pick<DBDocument, 'blobId' | 'id'>> &
 @Table({
   tableName: 'documents',
   modelName: 'document',
-  timestamps: false,
   paranoid: false,
 })
 export class Document extends ActivitableModel<DBDocument, CreateProp> {

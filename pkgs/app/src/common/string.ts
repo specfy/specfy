@@ -1,8 +1,8 @@
+import slugifyOrigin from 'slugify';
 import stringHash from 'string-hash';
 
-export function slugify(title: string): string {
-  return title.replace(/[^a-zA-Z]/g, '').toLocaleLowerCase();
-}
+export const slugify = (str: string) =>
+  slugifyOrigin(str, { lower: true, trim: true });
 
 export function acronymize(name: string): string {
   const clean = name
