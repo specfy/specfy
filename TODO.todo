@@ -92,11 +92,14 @@ Documents:
       - Tab
       - Un-tab
       - Unit test
+      - Insert
+      - Markdown syntax
     ✔ Document embed @done(23-03-25 23:42)
     - Mention
     - Link to other documents
     - Media
       - Upload
+    - Drag and drop block
 
   ✔ Type: RFC @done(23-03-25 23:28)
   ✔ Type: Playbook @done(23-03-25 23:28)
@@ -116,6 +119,7 @@ Diff:
 Activities:
   - Une activité par actions
   - Filtrable au niveau Org, Projet, Revision, Composant, RFC
+  - Deleting / Renaming breaks the query, we should select blobId or store some info inside the activity
 
 
 API:

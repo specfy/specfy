@@ -23,7 +23,10 @@ export const BlockUid = Extension.create({
           if (transactions.some((transaction) => transaction.docChanged)) {
             // Adds a unique id to a node
             nextState.doc.descendants((node, pos) => {
-              if (!isNodeHasAttribute(node, attrName) && node.type !== text) {
+              if (node.type === text) {
+                return;
+              }
+              if (!isNodeHasAttribute(node, attrName)) {
                 tr.setNodeAttribute(pos, attrName, nanoid());
                 modified = true;
               }

@@ -1,23 +1,16 @@
-import { Bold } from '@tiptap/extension-bold';
 import { CharacterCount } from '@tiptap/extension-character-count';
-import { Code } from '@tiptap/extension-code';
-import { Document } from '@tiptap/extension-document';
-import { HardBreak } from '@tiptap/extension-hard-break';
-import { History } from '@tiptap/extension-history';
-import { Italic } from '@tiptap/extension-italic';
-import { Paragraph } from '@tiptap/extension-paragraph';
-import { Placeholder } from '@tiptap/extension-placeholder';
-import { Text } from '@tiptap/extension-text';
 import { useEditor, EditorContent } from '@tiptap/react';
 import type { BlockLevelZero } from 'api/src/types/api';
 import type React from 'react';
 import { useMemo, useEffect } from 'react';
 
-import { addUidToSchema, removeEmptyContent } from '../../common/content';
+import { removeEmptyContent } from '../../common/content';
 
-import { BlockUid } from './extensions/BlockUid';
+import { createMiniEditorSchema } from './extensions';
 import { BubbleMenu } from './extensions/CustomBubbleMenu/BubbleMenu';
 import cls from './mini.module.scss';
+
+const schema = createMiniEditorSchema();
 
 const Editor: React.FC<{
   content: BlockLevelZero;
@@ -27,28 +20,11 @@ const Editor: React.FC<{
 }> = ({ content, limit, minHeight, onUpdate }) => {
   const editor = useEditor({
     extensions: [
-      Document,
-      Paragraph,
-      Text,
-      Bold,
-      Italic,
-      HardBreak,
-      Code,
-      BlockUid,
-      Placeholder.configure({
-        placeholder: 'Write something …',
-      }),
-      History.configure({
-        depth: 100,
-      }),
+      ...schema.extensions,
       CharacterCount.configure({
         limit,
       }),
     ],
-
-    onBeforeCreate: (p) => {
-      addUidToSchema(p.editor);
-    },
 
     onUpdate: (e) => {
       onUpdate(removeEmptyContent(e.editor.getJSON() as any));

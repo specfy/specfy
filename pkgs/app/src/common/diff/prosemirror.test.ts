@@ -6,7 +6,7 @@ import type {
 } from 'api/src/types/api';
 import { describe, expect, it } from 'vitest';
 
-import { createEditorSchema } from '../../components/Editor';
+import { createEditorSchema } from '../../components/Editor/extensions';
 import { getEmptyDoc } from '../content';
 
 import { diffEditor, findTextNodes } from './prosemirror';

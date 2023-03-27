@@ -100,7 +100,9 @@ export const CodeBlock = Node.create<CodeBlockOptions>({
 
   addKeyboardShortcuts() {
     return {
-      'Mod-Alt-c': () => this.editor.commands.toggleCodeBlock(),
+      'Mod-Alt-c': () => {
+        return this.editor.commands.toggleCodeBlock();
+      },
 
       // remove code block when at start of document or code block is empty
       Backspace: () => {

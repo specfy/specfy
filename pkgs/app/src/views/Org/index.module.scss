@@ -12,10 +12,18 @@
 }
 
 .avatar {
+  overflow: hidden;
+
   width: 100px;
   height: 100px;
+
   background-color: $gray-200;
   border-radius: $border-radius;
+
+  img {
+    height: 100%;
+    object-fit: cover;
+  }
 }
 
 .description {

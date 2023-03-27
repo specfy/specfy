@@ -60,6 +60,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
             { ...item.blob.blob, blobId: item.blob.id },
             { transaction }
           );
+          await item.parent.onAfterUpdate(req.user!, { transaction });
           continue;
         }
 
@@ -67,42 +68,48 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         if (blob.type === 'project') {
           if (blob.deleted) {
             await Project.destroy({ where: { id: blob.typeId }, transaction });
+            await item.parent!.onAfterDelete(req.user!, { transaction });
             continue;
           }
 
-          await Project.create(
+          const created = await Project.create(
             { ...blob.blob!, blobId: blob.id },
             {
               transaction,
             }
           );
+          await created.onAfterCreate(req.user!, { transaction });
         } else if (blob.type === 'component') {
           if (item.blob.deleted) {
             await Component.destroy({
               where: { id: blob.typeId },
               transaction,
             });
+            await item.parent!.onAfterDelete(req.user!, { transaction });
             continue;
           }
 
-          await Component.create(
+          const created = await Component.create(
             { ...blob.blob!, blobId: blob.id },
             {
               transaction,
             }
           );
+          await created.onAfterCreate(req.user!, { transaction });
         } else if (blob.type === 'document') {
           if (blob.deleted) {
             await Document.destroy({ where: { id: blob.typeId }, transaction });
+            await item.parent!.onAfterDelete(req.user!, { transaction });
             continue;
           }
 
-          await Document.create(
+          const created = await Document.create(
             { ...blob.blob!, blobId: blob.id },
             {
               transaction,
             }
           );
+          await created.onAfterCreate(req.user!, { transaction });
         }
       }
 

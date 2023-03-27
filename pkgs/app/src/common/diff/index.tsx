@@ -3,7 +3,7 @@ import type { ApiBlobWithPrevious, ApiComponent } from 'api/src/types/api';
 import { diffJson, diffWordsWithSpace } from 'diff';
 
 import type { BlobWithDiff } from '../../components/DiffCard';
-import { createEditorSchema } from '../../components/Editor';
+import { createEditorSchema } from '../../components/Editor/extensions';
 import { getEmptyDoc } from '../content';
 
 import { diffObjectsArray, diffStringArray } from './array';
@@ -69,6 +69,8 @@ export function isDiffSimple(a: any, b: any): boolean {
   return JSON.stringify(a) !== JSON.stringify(b);
 }
 
+const editor = new Editor(createEditorSchema());
+
 export function diffTwoBlob(blob: ApiBlobWithPrevious): BlobWithDiff {
   const clean: BlobWithDiff = {
     ...blob,
@@ -78,8 +80,6 @@ export function diffTwoBlob(blob: ApiBlobWithPrevious): BlobWithDiff {
   if (blob.deleted || !blob.blob) {
     return clean;
   }
-
-  const editor = new Editor(createEditorSchema({}));
 
   for (const [key, value] of Object.entries(blob.blob)) {
     if (IGNORED.includes(key)) {
