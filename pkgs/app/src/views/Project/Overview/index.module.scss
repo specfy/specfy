@@ -15,25 +15,3 @@
 .block {
   margin-top: 32px;
 }
-
-.links {
-  display: flex;
-  gap: $p-m;
-  margin-top: $p-l;
-}
-
-.link {
-  display: inline-flex;
-  gap: $p-s;
-  align-items: center;
-
-  padding: $p-xs $p;
-
-  color: $gray-700;
-
-  border-radius: 10px;
-
-  &:hover {
-    color: $blue-700;
-  }
-}

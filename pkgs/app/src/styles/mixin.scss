@@ -1,9 +1,9 @@
 @import "./theme";
 
-@mixin editable($padding: $p $p-m) {
+@mixin editable($padding: $p $p-m, $margin: (-$p) (-$p-m)) {
   cursor: text;
 
-  margin: (-$p) (-$p-m);
+  margin: $margin;
   padding: $padding !important;
 
   border: none;

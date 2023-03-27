@@ -20,5 +20,5 @@ export interface DBProject {
 
 export interface DBProjectLink {
   title: string;
-  link: string;
+  url: string;
 }

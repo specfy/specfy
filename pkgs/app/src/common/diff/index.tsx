@@ -124,6 +124,13 @@ export function diffTwoBlob(blob: ApiBlobWithPrevious): BlobWithDiff {
       });
       continue;
     }
+    if (key === 'links') {
+      clean.diffs.push({
+        key,
+        diff: diffObjectsArray(prev || [], value || [], 'url'),
+      });
+      continue;
+    }
     if (key === 'tech') {
       clean.diffs.push({
         key,

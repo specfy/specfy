@@ -28,7 +28,7 @@ export interface DiffObjectsArray<T> {
   changes: number;
 }
 
-export interface ComputedForDiff<T = string> {
+export interface ComputedForDiff<T = unknown> {
   key: T;
   diff: BlockLevelZero | Change[] | DiffObjectsArray<any>;
 }
@@ -99,6 +99,10 @@ export interface ProjectState {
   project: ApiProject | null;
   fill: (value: ApiProject[]) => void;
   update: (value: ApiProject) => void;
+  updateField: <TKey extends keyof ApiProject>(
+    field: TKey,
+    value: ApiProject[TKey]
+  ) => void;
   revertField: (field: keyof ApiProject) => void;
 }
 
@@ -110,6 +114,13 @@ export const useProjectStore = create<ProjectState>()((set, get) => ({
   },
   update: (value) => {
     set({ project: value });
+  },
+  updateField: (field, value) => {
+    set(
+      produce((state: ProjectState) => {
+        state.project![field] = value;
+      })
+    );
   },
   revertField: (field) => {
     const proj = get().project!;

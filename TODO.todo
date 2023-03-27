@@ -72,6 +72,8 @@ Documents:
   ✔ [x]  Bloc réutilisable ou Page special qui peut importer d’autre doc (pour les procédures surtout) @done(23-03-25 23:27)
   - Lock definitif
   - Overload d’une RFC
+  - Diff
+    - diffObjectsArray should check inside the object too (links, edges)
 
   Editeur de texte:
     - Better floating menu

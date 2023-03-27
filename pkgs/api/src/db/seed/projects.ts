@@ -79,8 +79,8 @@ export async function seedProjects(users: User[]) {
       ],
     },
     links: [
-      { title: 'Github', link: 'https://github.com/bodinsamuel' },
-      { title: 'Slack', link: 'https://slack.com/foobar' },
+      { title: 'Github', url: 'https://github.com/bodinsamuel' },
+      { title: 'Slack', url: 'https://slack.com/foobar' },
     ],
     display: {
       zIndex: 1,

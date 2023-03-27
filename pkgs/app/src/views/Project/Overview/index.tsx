@@ -1,5 +1,3 @@
-import { LinkOutlined } from '@ant-design/icons';
-import { IconBrandGithub, IconBrandSlack } from '@tabler/icons-react';
 import { Typography } from 'antd';
 import type { ApiComponent, BlockLevelZero } from 'api/src/types/api';
 import { useCallback, useEffect, useState } from 'react';
@@ -13,6 +11,7 @@ import { Graph, GraphContainer } from '../../../components/Graph';
 import { Toolbar } from '../../../components/Graph/Toolbar';
 import { ListActivity } from '../../../components/ListActivity';
 import { ListRFCs } from '../../../components/ListRFCs';
+import { ProjectLinks } from '../../../components/Project/Links';
 import { useEdit } from '../../../hooks/useEdit';
 import { useGraph } from '../../../hooks/useGraph';
 import type { RouteProject } from '../../../types/routes';
@@ -69,27 +68,7 @@ export const ProjectOverview: React.FC<{
             )}
           </Typography>
 
-          {project.links.length > 0 && (
-            <div className={cls.links}>
-              {project.links.map((link) => {
-                let icon = <LinkOutlined />;
-                if (link.title === 'Github') icon = <IconBrandGithub />;
-                else if (link.title === 'Slack') icon = <IconBrandSlack />;
-
-                return (
-                  <a
-                    key={link.link}
-                    className={cls.link}
-                    href={link.link}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    {icon} {link.title}
-                  </a>
-                );
-              })}
-            </div>
-          )}
+          <ProjectLinks project={project} />
 
           <div className={cls.block}>
             <Typography.Title level={5}>Technical Aspect</Typography.Title>

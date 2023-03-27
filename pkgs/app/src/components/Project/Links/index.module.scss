@@ -1,0 +1,52 @@
+@import "../../../styles/theme";
+@import "../../../styles/mixin";
+
+.wrapper {
+  &.clickToEdit {
+    @include editable(0, 0);
+  }
+
+  &.opened {
+    padding: $p-m !important;
+    margin: (-$p-m) (-$p-m);
+  }
+}
+
+.links {
+  display: flex;
+  gap: $p-m;
+  margin-top: $p-l;
+}
+
+.link {
+  display: inline-flex;
+  gap: $p-s;
+  align-items: center;
+
+  padding: $p-xs $p;
+
+  color: $gray-700;
+
+  border-radius: 10px;
+
+  &:hover {
+    color: $blue-700;
+  }
+}
+
+.edits {
+  display: flex;
+  flex-direction: column;
+  gap: $p-l;
+  align-items: flex-start;
+}
+
+.edit {
+  display: flex;
+  gap: $p-m;
+  width: 100%;
+}
+
+.label {
+  width: 150px;
+}

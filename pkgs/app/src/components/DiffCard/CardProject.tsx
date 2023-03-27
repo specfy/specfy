@@ -1,15 +1,21 @@
 import { Typography } from 'antd';
-import type { ApiBlobPrevious, BlockLevelZero } from 'api/src/types/api';
+import type {
+  ApiBlobPrevious,
+  ApiProject,
+  BlockLevelZero,
+} from 'api/src/types/api';
 import type { DBBlobProject, DBProject } from 'api/src/types/db';
+import classnames from 'classnames';
 
-import type { ComputedForDiff } from '../../common/store';
+import type { ComputedForDiff, DiffObjectsArray } from '../../common/store';
+import { Link } from '../Project/Links';
 
 import { Split } from './Split';
 import { UnifiedContent } from './Unified/Content';
 import cls from './index.module.scss';
 
 export type BlobWithDiff = ApiBlobPrevious<DBProject> &
-  DBBlobProject & { diffs: ComputedForDiff[] };
+  DBBlobProject & { diffs: Array<ComputedForDiff<keyof ApiProject>> };
 
 export const DiffCardProject: React.FC<{
   diff: BlobWithDiff;
@@ -28,6 +34,41 @@ export const DiffCardProject: React.FC<{
               doc={d.diff as unknown as BlockLevelZero}
               id={diff.typeId}
             />
+          );
+        }
+        if (d.key === 'links') {
+          return (
+            <div key={d.key} className={classnames(cls.line)}>
+              <Typography.Title level={4}>Stack</Typography.Title>
+              {(d.diff as DiffObjectsArray<ApiProject['links'][0]>).added.map(
+                (link) => {
+                  return (
+                    <div key={link.url} className={cls.added}>
+                      <Link
+                        link={{
+                          title: `${link.title || 'Link'} => ${link.url}`,
+                          url: link.url,
+                        }}
+                      />
+                    </div>
+                  );
+                }
+              )}
+              {(d.diff as DiffObjectsArray<ApiProject['links'][0]>).deleted.map(
+                (link) => {
+                  return (
+                    <div key={link.url} className={cls.removed}>
+                      <Link
+                        link={{
+                          title: `${link.title || 'Link'} => ${link.url}`,
+                          url: link.url,
+                        }}
+                      />
+                    </div>
+                  );
+                }
+              )}
+            </div>
           );
         }
 
