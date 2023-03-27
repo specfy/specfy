@@ -2,7 +2,7 @@ import { QueryClientProvider } from '@tanstack/react-query';
 import { App as AntdApp, ConfigProvider } from 'antd';
 import type React from 'react';
 // import { ReactQueryDevtools } from 'react-query/devtools';
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import { queryClient } from '../../common/query';
 import { AuthLayout } from '../../components/AuthLayout';
@@ -10,13 +10,10 @@ import { NotFound } from '../../components/NotFound';
 import { AuthProvider } from '../../hooks/useAuth';
 import { EditProvider } from '../../hooks/useEdit';
 import { GraphProvider } from '../../hooks/useGraph';
+import { Homepage } from '../Homepage';
 import { Login } from '../Login';
 import { Org } from '../Org';
 import { Project } from '../Project';
-
-const HomeRedirect: React.FC = () => {
-  return <Navigate to={'/company'}></Navigate>;
-};
 
 const App: React.FC = () => {
   return (
@@ -55,7 +52,7 @@ const App: React.FC = () => {
               <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route element={<AuthLayout></AuthLayout>}>
-                  <Route path="/" element={<HomeRedirect />} />
+                  <Route path="/" element={<Homepage />} />
 
                   <Route path="/:org_id" element={<Org />} />
                   <Route path="/:org_id/_/*" element={<Org />} />

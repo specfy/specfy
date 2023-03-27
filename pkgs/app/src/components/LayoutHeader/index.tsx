@@ -44,34 +44,35 @@ export const LayoutHeader: React.FC = () => {
   const handleNavigate = (item: Exclude<MenuProps['items'], undefined>[0]) => {
     navigate(`/${item!.key}`);
   };
+
   const handleCreate = () => {
     navigate('/organizations/new');
   };
+
   useEffect(() => {
     if (!orgsQuery.data) {
       return;
     }
 
-    let curr: string | undefined;
     const data: MenuProps['items'] = orgsQuery.data.map((org) => {
-      if (org.id === params.org_id) {
-        curr = org.id;
-      }
       return {
         key: org.id,
         label: <Link to="/">{org.name}</Link>,
         onClick: handleNavigate,
       };
     });
-    data.push({
-      type: 'divider',
-    });
-    data.push({
-      label: 'Create organization',
-      key: '#create',
-      icon: <IconPlus size="1em" />,
-      onClick: handleCreate,
-    });
+
+    data.push(
+      {
+        type: 'divider',
+      },
+      {
+        label: 'Create organization',
+        key: '#create',
+        icon: <IconPlus size="1em" />,
+        onClick: handleCreate,
+      }
+    );
 
     setOrgs(data);
   }, [orgsQuery.data]);

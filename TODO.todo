@@ -1,6 +1,12 @@
 Global:
   ✔ Update mode @done(23-03-25 23:23)
 
+Homepage:
+  ✔ Redirect first item @done(23-03-27 17:51)
+  - Reopen last open
+  - Put something here?
+
+
 Project:
   ✔ Edit @done(23-03-25 23:23)
     ✔ Manage links @done(23-03-27 15:55)
@@ -11,6 +17,7 @@ Project:
     - Reserved name
     - Handle error
   ✔ Creation @done(23-03-25 23:30)
+    - Unit Test
   - archivage
   - soft suppression
   - Import Excalidraw
@@ -150,8 +157,7 @@ Org:
       - Reserved name
       - Handle error
     - Delete
-  - Switch in the UI
-  - Reopen last open
+  ✔ Switch in the UI @done(23-03-27 17:46)
   - On peut pas editer le graph d'organisation
 
   List Projects:
