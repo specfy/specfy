@@ -16,7 +16,7 @@ import { EditorMenu } from '../../Menu';
 
 import cls from './index.module.scss';
 
-const map = {
+export const displayMap = {
   javascript: 'Javascript',
   typescript: 'Typescript',
   css: 'CSS',
@@ -31,7 +31,7 @@ export const CodeBlockView: React.FC<NodeViewProps> = ({
   const ref = useRef(null);
   const [show, setShow] = useState(false);
   const [type, setType] = useState(() =>
-    node.attrs.language in map ? node.attrs.language : 'javascript'
+    node.attrs.language in displayMap ? node.attrs.language : 'javascript'
   );
 
   useClickAway(ref, (e) => {

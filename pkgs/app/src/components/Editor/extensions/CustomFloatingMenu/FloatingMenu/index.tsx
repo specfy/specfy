@@ -7,6 +7,7 @@ import {
   IconCaretRight,
   IconCheckbox,
   IconTable,
+  IconCode,
 } from '@tabler/icons-react';
 import type { Editor } from '@tiptap/core';
 import type { Plugin } from '@tiptap/pm/state';
@@ -121,6 +122,18 @@ export const FloatingMenu: React.FC<{ editor: Editor }> = ({ editor }) => {
             <IconQuote size="1em" />
           </div>
           <div>Quote</div>
+        </div>
+        <div
+          className={cls.item}
+          onClick={() => {
+            editor.chain().focus().setCodeBlock().run();
+            select();
+          }}
+        >
+          <div className={cls.icon}>
+            <IconCode size="1em" />
+          </div>
+          <div>Code Block</div>
         </div>
         <div
           className={cls.item}

@@ -2,6 +2,7 @@ import { mergeAttributes, Node, textblockTypeInputRule } from '@tiptap/core';
 import { Plugin, PluginKey, TextSelection } from '@tiptap/pm/state';
 import { ReactNodeViewRenderer } from '@tiptap/react';
 
+import type { displayMap } from './View';
 import { CodeBlockView } from './View';
 
 export interface CodeBlockOptions {
@@ -34,6 +35,18 @@ declare module '@tiptap/core' {
 
 export const backtickInputRegex = /^```([a-z]+)?[\s\n]$/;
 export const tildeInputRegex = /^~~~([a-z]+)?[\s\n]$/;
+
+type LangKey = keyof typeof displayMap;
+export const languages: Record<LangKey, LangKey> & Record<string, LangKey> = {
+  js: 'javascript',
+  javascript: 'javascript',
+  ts: 'typescript',
+  typescript: 'typescript',
+  sh: 'bash',
+  bash: 'bash',
+  css: 'css',
+  html: 'html',
+};
 
 export const CodeBlock = Node.create<CodeBlockOptions>({
   name: 'codeBlock',
@@ -183,16 +196,20 @@ export const CodeBlock = Node.create<CodeBlockOptions>({
       textblockTypeInputRule({
         find: backtickInputRegex,
         type: this.type,
-        getAttributes: (match) => ({
-          language: match[1],
-        }),
+        getAttributes: (match) => {
+          return {
+            language: match[1] in languages ? languages[match[1]] : match[1],
+          };
+        },
       }),
       textblockTypeInputRule({
         find: tildeInputRegex,
         type: this.type,
-        getAttributes: (match) => ({
-          language: match[1],
-        }),
+        getAttributes: (match) => {
+          return {
+            language: match[1] in languages ? languages[match[1]] : match[1],
+          };
+        },
       }),
     ];
   },

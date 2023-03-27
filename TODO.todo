@@ -12,18 +12,6 @@ Project:
   - Import Excalidraw
   - Import Draw.io
   ✔ Edition “inline” @done(23-03-25 23:26)
-  - Système de Revision
-    ✔ Diff visuel (pas juste code) @done(23-03-25 23:25)
-    - Edition
-    - Revert d’une revision publié
-    ✔ [x]  Draft @done(23-03-25 23:25)
-    ✔ [x]  Approval @done(23-03-25 23:25)
-    ✔ [x]  Merge @done(23-03-25 23:25)
-    ✔ [x]  Ask for review @done(23-03-25 23:25)
-      - Notification
-    - Comment
-    - Timeline of update
-    - Unit test
   - Public ou Privé (pour pouvoir montrer une demo facilement)
   - Connect: Github
     - Import
@@ -78,8 +66,15 @@ Documents:
   ✔ supprimer @done(23-03-25 23:28)
   - Draft document should be added to the list somehow
     - RFC number computed?
+  ✔ Type: RFC @done(23-03-25 23:28)
+  ✔ Type: Playbook @done(23-03-25 23:28)
+  - Type: incident report
+  ✔ [x]  Bloc réutilisable ou Page special qui peut importer d’autre doc (pour les procédures surtout) @done(23-03-25 23:27)
+  - Lock definitif
+  - Overload d’une RFC
 
   Editeur de texte:
+    - Better floating menu
     - Block custom:
       - Ajout / Suppression Composant
       - Ajout / Suppression Tech
@@ -89,28 +84,35 @@ Documents:
       - Résoudre
       - Suggestion de texte
     ✔ Code Block @done(23-03-25 23:24)
-      - Tab
+      ✔ Tab @done(23-03-27 11:54)
       - Un-tab
       - Unit test
-      - Insert
-      - Markdown syntax
+      ✔ Insert @done(23-03-27 12:08)
+      ✔ Markdown syntax @done(23-03-27 11:53)
+      - Remove hover on leave
+    ✔ Banner @done(23-03-27 12:05)
+      - Remove hover on leave
     ✔ Document embed @done(23-03-25 23:42)
     - Mention
     - Link to other documents
     - Media
       - Upload
     - Drag and drop block
+    - Table, use react-table instead ?
 
-  ✔ Type: RFC @done(23-03-25 23:28)
-  ✔ Type: Playbook @done(23-03-25 23:28)
-  - Type: incident report
-  ✔ [x]  Bloc réutilisable ou Page special qui peut importer d’autre doc (pour les procédures surtout) @done(23-03-25 23:27)
-  - Lock definitif
-  - Overload d’une RFC
 
 Revision:
   - Commentaire
   - Timeline
+  ✔ Diff visuel (pas juste code) @done(23-03-25 23:25)
+  ✔ Edition @done(23-03-27 12:24)
+  - Revert d’une revision publié
+  ✔ [x]  Draft @done(23-03-25 23:25)
+  ✔ [x]  Approval @done(23-03-25 23:25)
+  ✔ [x]  Merge @done(23-03-25 23:25)
+  ✔ [x]  Ask for review @done(23-03-25 23:25)
+    - Notification
+  - Unit test
 
 
 Diff:
