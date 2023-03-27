@@ -8,6 +8,8 @@ Project:
   ✔ Rename @done(23-03-25 23:23)
     - Unit Test
     - Specific activity
+    - Reserved name
+    - Handle error
   ✔ Creation @done(23-03-25 23:30)
   - archivage
   - soft suppression
@@ -34,9 +36,12 @@ User:
   - Auth with Google
   - Auth with password
   - Invitation par email
+  - Rename
   - Suppression de compte
       - Anonymisation
   - Validation compte
+  - Profil
+  - Hover card?
 
 API:
   ✔ Handle pagination correctly @done(23-03-25 23:23)
@@ -137,14 +142,33 @@ API:
 
 
 Org:
+  - Creér
+    - Unit test
+  - Settings
+    - Rename
+      - Unit test
+      - Reserved name
+      - Handle error
+    - Delete
+  - Switch in the UI
+  - Reopen last open
   - On peut pas editer le graph d'organisation
 
+  List Projects:
+    - Correct number of users
+    - Fav?
 
 Policies:
   - Définir tech/language autorisé/interdite et pourquoi
   - Template RFC
   - Template Revision
   - Minimum review for approval
+
+
+Global Search:
+  - Search in Projects
+  - Search in Components
+  - Search in Documents
 
 
 -----

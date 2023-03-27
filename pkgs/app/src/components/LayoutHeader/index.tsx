@@ -4,17 +4,19 @@ import {
   IconCaretDown,
   IconHelp,
   IconLogout,
+  IconPlus,
   IconSettings,
   IconUserCircle,
 } from '@tabler/icons-react';
 import type { MenuProps } from 'antd';
 import { Divider, Button, Menu, Dropdown, Badge, Layout } from 'antd';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { useListOrgs } from '../../api/orgs';
 import { useAuth } from '../../hooks/useAuth';
 import Logo1 from '../../static/logo2.svg';
+import type { RouteOrg } from '../../types/routes';
 
 import cls from './index.module.scss';
 
@@ -32,22 +34,60 @@ const menuItems: MenuProps['items'] = [
 const userItems: MenuProps['items'] = [];
 
 export const LayoutHeader: React.FC = () => {
+  const params = useParams<Partial<RouteOrg>>();
+  const navigate = useNavigate();
   const { user } = useAuth();
   const orgsQuery = useListOrgs();
-  const [orgs, setOrgs] = useState<MenuProps['items']>();
+  const [orgs, setOrgs] = useState<MenuProps['items']>([]);
+  const [current, setCurrent] = useState<string>();
+
+  const handleNavigate = (item: Exclude<MenuProps['items'], undefined>[0]) => {
+    navigate(`/${item!.key}`);
+  };
+  const handleCreate = () => {
+    navigate('/organizations/new');
+  };
+  useEffect(() => {
+    if (!orgsQuery.data) {
+      return;
+    }
+
+    let curr: string | undefined;
+    const data: MenuProps['items'] = orgsQuery.data.map((org) => {
+      if (org.id === params.org_id) {
+        curr = org.id;
+      }
+      return {
+        key: org.id,
+        label: <Link to="/">{org.name}</Link>,
+        onClick: handleNavigate,
+      };
+    });
+    data.push({
+      type: 'divider',
+    });
+    data.push({
+      label: 'Create organization',
+      key: '#create',
+      icon: <IconPlus size="1em" />,
+      onClick: handleCreate,
+    });
+
+    setOrgs(data);
+  }, [orgsQuery.data]);
 
   useEffect(() => {
-    if (orgsQuery.isLoading) return;
+    if (!orgsQuery.data) {
+      return;
+    }
 
-    setOrgs(
-      orgsQuery.data!.map((org) => {
-        return {
-          key: org.id,
-          label: <Link to="/">{org.name}</Link>,
-        };
-      })
-    );
-  }, [orgsQuery.isLoading]);
+    for (const org of orgsQuery.data!) {
+      if (org!.id === params.org_id) {
+        setCurrent(org.id);
+        return;
+      }
+    }
+  }, [orgsQuery.data, params.org_id]);
 
   return (
     <Layout.Header className={cls.header}>
@@ -57,7 +97,15 @@ export const LayoutHeader: React.FC = () => {
       </Link>
 
       <div>
-        <Dropdown menu={{ items: orgs }} placement="bottomRight">
+        <Dropdown
+          menu={{
+            items: orgs,
+            selectable: true,
+            selectedKeys: current ? [current] : [],
+          }}
+          placement="bottomRight"
+          trigger={['click']}
+        >
           <Button type="text" icon={<IconCaretDown />} />
         </Dropdown>
       </div>

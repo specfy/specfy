@@ -37,7 +37,7 @@ export const OrgOverview: React.FC<{ params: RouteOrg }> = ({ params }) => {
         };
       })
     );
-  }, [res.isLoading]);
+  }, [res.data]);
 
   if (res.isLoading || !components) {
     return (

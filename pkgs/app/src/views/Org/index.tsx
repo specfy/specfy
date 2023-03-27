@@ -50,7 +50,7 @@ export const Org: React.FC = () => {
     } else {
       setLoading(getOrgs.isLoading);
     }
-  }, [getOrgs.data]);
+  }, [getOrgs.data, params.org_id]);
 
   const menu = useMemo(() => {
     return [
