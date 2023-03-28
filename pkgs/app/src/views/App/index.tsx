@@ -13,6 +13,7 @@ import { GraphProvider } from '../../hooks/useGraph';
 import { Homepage } from '../Homepage';
 import { Login } from '../Login';
 import { Org } from '../Org';
+import { OrgCreate } from '../Org/Create';
 import { Project } from '../Project';
 
 const App: React.FC = () => {
@@ -54,6 +55,8 @@ const App: React.FC = () => {
                 <Route element={<AuthLayout></AuthLayout>}>
                   <Route path="/" element={<Homepage />} />
 
+                  <Route path="/organizations" element={<NotFound />} />
+                  <Route path="/organizations/*" element={<OrgCreate />} />
                   <Route path="/:org_id" element={<Org />} />
                   <Route path="/:org_id/_/*" element={<Org />} />
 

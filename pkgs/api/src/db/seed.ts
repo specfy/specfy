@@ -85,6 +85,26 @@ export async function seed() {
   });
   await o2.onAfterCreate(users[0]);
 
+  await Promise.all([
+    Perm.create({
+      orgId: 'samuelbodin',
+      projectId: null,
+      userId: users[0].id,
+      role: 'owner',
+    }),
+    ...users.map((u, i) => {
+      if (i === 0) {
+        return;
+      }
+      return Perm.create({
+        orgId: 'company',
+        projectId: null,
+        userId: u.id,
+        role: 'viewer',
+      });
+    }),
+  ]);
+
   const { p1, p3 } = await seedProjects(users);
 
   const rfcs = await seedRFC(p1, [u1, u2]);

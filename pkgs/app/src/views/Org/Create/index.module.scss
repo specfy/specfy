@@ -1,0 +1,33 @@
+@use "sass:math";
+
+@import "../../../styles/theme";
+
+$width: math.div($main-col-w, 1.5);
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: $p-m;
+  justify-content: center;
+
+  width: $width;
+  height: calc(100vh - $height-header-org-total - ($p-4xl * 2));
+  margin: 0 auto;
+}
+
+
+.title {
+  display: flex;
+  gap: $p-m;
+}
+
+.input {
+  padding: $p-l;
+  font-size: $font-l;
+}
+
+
+.button {
+  width: 48px !important;
+  height: 48px;
+}

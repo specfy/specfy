@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { Navigate } from 'react-router-dom';
 
 import { useListOrgs } from '../../api/orgs';

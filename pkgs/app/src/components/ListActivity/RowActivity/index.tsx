@@ -27,7 +27,7 @@ const mapping: Record<ApiActivity['action'], (target: any) => string> = {
   'Document.updated': (target: TargetDocument) =>
     `updated ${TYPE_TO_READABLE[target.type]}`,
 
-  'Org.created': () => ``,
+  'Org.created': () => `created this organization`,
   'Org.deleted': () => ``,
   'Org.renamed': () => ``,
   'Org.updated': () => ``,
@@ -63,7 +63,7 @@ export const RowActivity: React.FC<{ act: ApiActivity; orgId: string }> = ({
   orgId,
 }) => {
   const type = act.action.split('.')[0] as DBActivityType;
-  let target: ReactNode | undefined;
+  let target: ReactNode | null = null;
   let text: string = '';
 
   if (type === 'Document' && act.targetDocument) {
@@ -106,7 +106,6 @@ export const RowActivity: React.FC<{ act: ApiActivity; orgId: string }> = ({
     );
     text = mapping[act.action](act.project);
   } else if (type === 'Org') {
-    target = <Link to={`/${orgId}`}></Link>;
     text = mapping[act.action]('');
   }
 

@@ -190,23 +190,6 @@ export async function seedProjects(users: User[]) {
   // ---- Permissions
   await Promise.all([
     Perm.create({
-      orgId: 'samuelbodin',
-      projectId: null,
-      userId: users[0].id,
-      role: 'owner',
-    }),
-    ...users.map((u, i) => {
-      if (i === 0) {
-        return;
-      }
-      return Perm.create({
-        orgId: 'company',
-        projectId: null,
-        userId: u.id,
-        role: 'viewer',
-      });
-    }),
-    Perm.create({
       orgId: 'company',
       projectId: null,
       userId: users[0].id,
