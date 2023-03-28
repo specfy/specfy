@@ -180,9 +180,9 @@ export function highlightCell({
       // );
     });
 
-    container.querySelectorAll('.x6-cell').forEach((cel) => {
+    container.querySelectorAll<HTMLDivElement>('.x6-cell').forEach((cel) => {
       const id = cel.dataset.cellId;
-      if (cellsHighlighted.has(id)) {
+      if (!id || cellsHighlighted.has(id)) {
         return;
       }
 

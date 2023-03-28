@@ -5,33 +5,14 @@ import type {
   ApiDocument,
   ApiProject,
   ApiRevision,
-  BlockLevelZero,
 } from 'api/src/types/api';
-import type { Change } from 'diff';
 import { produce } from 'immer';
 import { create } from 'zustand';
 
-import type { BlobWithDiff } from '../components/DiffCard';
+import type { Allowed, BlobWithDiff } from '../types/blobs';
 
 import { getEmptyDoc } from './content';
 import { slugify } from './string';
-
-export type Allowed = ApiComponent | ApiDocument | ApiProject;
-
-export type TmpBlob = ApiBlobWithPrevious;
-
-export interface DiffObjectsArray<T> {
-  added: T[];
-  deleted: T[];
-  unchanged: T[];
-  modified: T[];
-  changes: number;
-}
-
-export interface ComputedForDiff<T = unknown> {
-  key: T;
-  diff: BlockLevelZero | Change[] | DiffObjectsArray<any>;
-}
 
 const originalStore: Allowed[] = [];
 

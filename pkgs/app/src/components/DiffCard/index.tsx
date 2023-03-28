@@ -9,15 +9,13 @@ import classnames from 'classnames';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import type { Allowed, ComputedForDiff } from '../../common/store';
+import type { Allowed, BlobWithDiff } from '../../types/blobs';
 import { Card } from '../Card';
 
 import { DiffCardComponent } from './CardComponent';
 import { DiffCardDocument } from './CardDocument';
 import { DiffCardProject } from './CardProject';
 import cls from './index.module.scss';
-
-export type BlobWithDiff = ApiBlobWithPrevious & { diffs: ComputedForDiff[] };
 
 export const DiffCard: React.FC<{
   diff: BlobWithDiff;

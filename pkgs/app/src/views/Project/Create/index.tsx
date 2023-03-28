@@ -16,7 +16,7 @@ export const ProjectCreate: React.FC<{ params: RouteOrg }> = ({ params }) => {
 
   const [name, setName] = useState<string>('');
 
-  const onFinish = async (e) => {
+  const onFinish: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
     // Compute global bounding box
@@ -57,7 +57,6 @@ export const ProjectCreate: React.FC<{ params: RouteOrg }> = ({ params }) => {
           type="primary"
           disabled={!name || name.length < 2}
           className={cls.button}
-          onClick={onFinish}
           htmlType="submit"
           icon={<IconCircleArrowRight />}
         ></Button>

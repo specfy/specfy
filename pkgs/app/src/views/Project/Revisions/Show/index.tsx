@@ -32,7 +32,6 @@ import { useRevisionStore } from '../../../../common/store';
 import { Card } from '../../../../components/Card';
 import { Container } from '../../../../components/Container';
 import { ContentDoc } from '../../../../components/Content';
-import type { BlobWithDiff } from '../../../../components/DiffCard';
 import { DiffCard } from '../../../../components/DiffCard';
 import { Editor } from '../../../../components/Editor';
 import { FakeInput } from '../../../../components/Input';
@@ -42,6 +41,7 @@ import { SidebarBlock } from '../../../../components/SidebarBlock';
 import { StatusTag } from '../../../../components/StatusTag';
 import { Time } from '../../../../components/Time';
 import { UserList } from '../../../../components/UserList';
+import type { BlobWithDiff } from '../../../../types/blobs';
 import type { RouteProject, RouteRevision } from '../../../../types/routes';
 
 import cls from './index.module.scss';

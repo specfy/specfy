@@ -15,7 +15,7 @@ export const OrgCreate: React.FC = () => {
   const [name, setName] = useState<string>('');
   const [id, setId] = useState<string>('');
 
-  const onFinish = async (e) => {
+  const onFinish: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
 
     const res = await createOrg({
@@ -49,7 +49,6 @@ export const OrgCreate: React.FC = () => {
           type="primary"
           disabled={!name || name.length < 4 || !id || id.length < 4}
           className={cls.button}
-          onClick={onFinish}
           htmlType="submit"
           icon={<IconCircleArrowRight />}
         ></Button>

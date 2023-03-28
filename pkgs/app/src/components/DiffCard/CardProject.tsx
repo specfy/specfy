@@ -1,24 +1,16 @@
 import { Typography } from 'antd';
-import type {
-  ApiBlobPrevious,
-  ApiProject,
-  BlockLevelZero,
-} from 'api/src/types/api';
-import type { DBBlobProject, DBProject } from 'api/src/types/db';
+import type { ApiProject, BlockLevelZero } from 'api/src/types/api';
 import classnames from 'classnames';
 
-import type { ComputedForDiff, DiffObjectsArray } from '../../common/store';
+import type { DiffObjectsArray, ProjectBlobWithDiff } from '../../types/blobs';
 import { Link } from '../Project/Links';
 
 import { Split } from './Split';
 import { UnifiedContent } from './Unified/Content';
 import cls from './index.module.scss';
 
-export type BlobWithDiff = ApiBlobPrevious<DBProject> &
-  DBBlobProject & { diffs: Array<ComputedForDiff<keyof ApiProject>> };
-
 export const DiffCardProject: React.FC<{
-  diff: BlobWithDiff;
+  diff: ProjectBlobWithDiff;
 }> = ({ diff }) => {
   return (
     <div className={cls.content}>

@@ -1,20 +1,18 @@
 import { Typography } from 'antd';
-import type {
-  ApiBlobPrevious,
-  ApiComponent,
-  BlockLevelZero,
-} from 'api/src/types/api';
-import type { DBBlobComponent, DBComponent } from 'api/src/types/db';
+import type { ApiComponent, BlockLevelZero } from 'api/src/types/api';
 import classnames from 'classnames';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { supportedIndexed } from '../../common/component';
-import type { ComputedForDiff, DiffObjectsArray } from '../../common/store';
 import originalStore, {
   useRevisionStore,
   useComponentsStore,
 } from '../../common/store';
+import type {
+  ComponentBlobWithDiff,
+  DiffObjectsArray,
+} from '../../types/blobs';
 import type { RouteProject } from '../../types/routes';
 import { ComponentItem, TechItem } from '../ComponentLine';
 import { ContentDoc } from '../Content';
@@ -24,11 +22,8 @@ import { UnifiedDiff } from './Unified';
 import { UnifiedContent } from './Unified/Content';
 import cls from './index.module.scss';
 
-export type BlobWithDiff = ApiBlobPrevious<DBComponent> &
-  DBBlobComponent & { diffs: Array<ComputedForDiff<keyof DBComponent>> };
-
 export const DiffCardComponent: React.FC<{
-  diff: BlobWithDiff;
+  diff: ComponentBlobWithDiff;
 }> = ({ diff }) => {
   const params = useParams<Partial<RouteProject>>() as RouteProject;
   const storeComponents = useComponentsStore();

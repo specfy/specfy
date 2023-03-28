@@ -1,7 +1,8 @@
 import classnames from 'classnames';
+import type { Change } from 'diff';
 import { useMemo } from 'react';
 
-import type { ComputedForDiff } from '../../../common/store';
+import type { ComputedForDiff } from '../../../types/blobs';
 
 import cls from './index.module.scss';
 
@@ -17,7 +18,7 @@ export const Split: React.FC<{
 }> = ({ diff, hideLabel, created }) => {
   // Compute diff
   const left = useMemo(() => {
-    return diff.diff
+    return (diff.diff as Change[])
       .map((d, i) => {
         if (d.added) return null;
         if (d.removed)
@@ -32,7 +33,7 @@ export const Split: React.FC<{
   }, [diff]);
 
   const right = useMemo(() => {
-    return diff.diff
+    return (diff.diff as Change[])
       .map((d, i) => {
         if (d.removed) return null;
         if (d.added)
@@ -45,6 +46,8 @@ export const Split: React.FC<{
       })
       .filter((e): e is string => !!e);
   }, [diff]);
+
+  const key = diff.key as string;
 
   return (
     <div>
@@ -60,7 +63,7 @@ export const Split: React.FC<{
             <>
               {!hideLabel && !created && (
                 <div className={cls.label}>
-                  {diff.key in LABEL_MAP ? LABEL_MAP[diff.key] : diff.key}
+                  {key in LABEL_MAP ? LABEL_MAP[key] : key}
                 </div>
               )}
               {!left.length ? (
@@ -74,7 +77,7 @@ export const Split: React.FC<{
         <div className={cls.right}>
           {!hideLabel && created && (
             <div className={cls.label}>
-              {diff.key in LABEL_MAP ? LABEL_MAP[diff.key] : diff.key}
+              {key in LABEL_MAP ? LABEL_MAP[key] : key}
             </div>
           )}
           {!right.length && left.length > 0 && (

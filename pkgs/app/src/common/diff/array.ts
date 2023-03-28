@@ -1,4 +1,4 @@
-import type { DiffObjectsArray } from '../store';
+import type { DiffObjectsArray } from '../../types/blobs';
 
 export function diffObjectsArray<T>(
   arrayA: T[],

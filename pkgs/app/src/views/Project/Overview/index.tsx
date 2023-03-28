@@ -68,7 +68,7 @@ export const ProjectOverview: React.FC<{
             )}
           </Typography>
 
-          <ProjectLinks project={project} />
+          <ProjectLinks />
 
           <div className={cls.block}>
             <Typography.Title level={5}>Technical Aspect</Typography.Title>

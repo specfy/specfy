@@ -13,7 +13,6 @@ import classnames from 'classnames';
 import { useCallback, useEffect, useState } from 'react';
 import { useDebounce } from 'react-use';
 
-import type { TmpBlobComponent } from '../../../common/store';
 import { useComponentsStore, useStagingStore } from '../../../common/store';
 import { useEdit } from '../../../hooks/useEdit';
 import { useGraph } from '../../../hooks/useGraph';
@@ -247,10 +246,10 @@ export const GraphEdit: React.FC<{
           continue;
         }
 
-        const has = storeStaging.clean.find(
+        const has = storeStaging.diffs.find(
           (clean) => clean.type === 'component' && clean.typeId === comp.id
         );
-        if (!has || Object.keys(has.blob).length <= 0) {
+        if (!has || has.deleted) {
           continue;
         }
 
@@ -296,9 +295,7 @@ export const GraphEdit: React.FC<{
       return;
     }
 
-    const find = storeStaging.clean.find<TmpBlobComponent>(
-      (comp): comp is TmpBlobComponent => comp.typeId === id
-    );
+    const find = storeStaging.diffs.find((comp) => comp.typeId === id);
     const cell = graph.getCellById(id);
     if (!find || !cell) {
       return;

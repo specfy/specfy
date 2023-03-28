@@ -12,7 +12,7 @@ import { getEmptyDoc } from '../content';
 import { diffEditor, findTextNodes } from './prosemirror';
 
 const editor = new Editor({
-  ...createEditorSchema({}),
+  ...createEditorSchema(),
   content: getEmptyDoc(),
 });
 

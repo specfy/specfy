@@ -6,8 +6,8 @@ import type {
 } from 'api/src/types/api';
 import { diffJson, diffWordsWithSpace } from 'diff';
 
-import type { BlobWithDiff } from '../../components/DiffCard';
 import { createEditorSchema } from '../../components/Editor/extensions';
+import type { BlobWithDiff } from '../../types/blobs';
 import { getEmptyDoc } from '../content';
 
 import { diffObjectsArray, diffStringArray } from './array';

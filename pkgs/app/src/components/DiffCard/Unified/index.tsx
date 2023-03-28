@@ -1,7 +1,8 @@
 import classnames from 'classnames';
+import type { Change } from 'diff';
 import { useMemo } from 'react';
 
-import type { ComputedForDiff } from '../../../common/store';
+import type { ComputedForDiff } from '../../../types/blobs';
 import cls from '../index.module.scss';
 
 export const UnifiedDiff: React.FC<{
@@ -9,7 +10,7 @@ export const UnifiedDiff: React.FC<{
 }> = ({ diff }) => {
   // Compute diff
   const content = useMemo(() => {
-    return diff.diff.map((d, i) => {
+    return (diff.diff as Change[]).map((d, i) => {
       if (d.added) {
         return (
           <span className={classnames(cls.added, cls.i)} key={i}>

@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { createRevision } from '../../../../api/revisions';
+import { getEmptyDoc } from '../../../../common/content';
 import { proposeTitle } from '../../../../common/diff';
 import originalStore, {
   useStagingStore,
@@ -50,10 +51,9 @@ export const ProjectRevisionCreate: React.FC<{
   const [canSubmit, setCanSubmit] = useState<boolean>(false);
   // TODO: keep those values in Edit Mode
   const [title, setTitle] = useState<string>('');
-  const [description, setDescription] = useState<BlockLevelZero>({
-    type: 'doc',
-    content: [{ type: 'paragraph' }],
-  });
+  const [description, setDescription] = useState<BlockLevelZero>(() =>
+    getEmptyDoc(true)
+  );
 
   // Compute changes
   useEffect(() => {

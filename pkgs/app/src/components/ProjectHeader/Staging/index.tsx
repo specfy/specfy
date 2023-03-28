@@ -3,14 +3,13 @@ import { Link } from 'react-router-dom';
 import { useDebounce } from 'react-use';
 
 import { diffTwoBlob } from '../../../common/diff';
-import type { Allowed } from '../../../common/store';
 import originalStore, {
   useStagingStore,
   useDocumentsStore,
   useComponentsStore,
   useProjectStore,
 } from '../../../common/store';
-import type { BlobWithDiff } from '../../DiffCard';
+import type { Allowed, BlobWithDiff } from '../../../types/blobs';
 import { Time } from '../../Time';
 
 import cls from './index.module.scss';

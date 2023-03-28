@@ -1,9 +1,8 @@
 import { Typography } from 'antd';
-import type { ApiBlobPrevious, BlockLevelZero } from 'api/src/types/api';
-import type { DBBlobDocument, DBDocument } from 'api/src/types/db';
+import type { BlockLevelZero } from 'api/src/types/api';
 import { useMemo } from 'react';
 
-import type { ComputedForDiff } from '../../common/store';
+import type { DocumentBlobWithDiff } from '../../types/blobs';
 import { ContentDoc } from '../Content';
 
 import { Split } from './Split';
@@ -11,11 +10,8 @@ import { UnifiedDiff } from './Unified';
 import { UnifiedContent } from './Unified/Content';
 import cls from './index.module.scss';
 
-export type BlobWithDiff = ApiBlobPrevious<DBDocument> &
-  DBBlobDocument & { diffs: ComputedForDiff[] };
-
 export const DiffCardDocument: React.FC<{
-  diff: BlobWithDiff;
+  diff: DocumentBlobWithDiff;
 }> = ({ diff }) => {
   const using = (diff.deleted ? diff.previous : diff.blob)!;
 
