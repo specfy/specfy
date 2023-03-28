@@ -16,6 +16,10 @@ $width: math.div($main-col-w, 1.5);
 }
 
 
+.wrap {
+  width: 100%;
+}
+
 .title {
   display: flex;
   gap: $p-m;

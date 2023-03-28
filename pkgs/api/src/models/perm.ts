@@ -26,7 +26,12 @@ type PropCreatePerm = Pick<DBPerm, 'orgId' | 'projectId' | 'role' | 'userId'>;
     include: [User],
   },
   withOrg: {
-    include: [Org],
+    include: [
+      {
+        model: Org,
+        required: true,
+      },
+    ],
   },
 }))
 @Table({ tableName: 'perms', modelName: 'perm' })

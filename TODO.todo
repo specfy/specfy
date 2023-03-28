@@ -156,7 +156,8 @@ API:
 
 Org:
   ✔ Creér @done(23-03-28 11:11)
-    - Enforce unique ID
+    ✔ Enforce unique ID @done(23-03-28 14:48)
+    ✔ Validation @done(23-03-28 14:49)
     - Unit test
   - Settings
     - Rename
