@@ -13,7 +13,7 @@ const OrgVal = z
       .min(4)
       .max(36)
       .regex(/^[a-z][a-z0-9-]+[a-z]$/, {
-        message: 'ID should be lowercase and starts/ends with a letter',
+        message: 'Should be lowercase and starts/ends with a letter',
       })
       .superRefine(async (val, ctx) => {
         const res = await Org.findOne({ where: { id: val } });
@@ -26,7 +26,7 @@ const OrgVal = z
           message: 'This id is already used',
         });
       }),
-    name: z.string().min(4).max(100),
+    name: z.string().min(4).max(36),
   })
   .strict();
 

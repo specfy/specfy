@@ -1,6 +1,6 @@
 import { customAlphabet } from 'nanoid/non-secure';
 
-export const nanoid = customAlphabet(
-  '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz',
-  10
-);
+export const alphabet =
+  '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+export const size = 10;
+export const nanoid = customAlphabet(alphabet, size);

@@ -31,7 +31,7 @@ import type { Org } from './org';
 })
 export class Project extends ActivitableModel<
   DBProject,
-  Partial<Pick<DBProject, 'blobId' | 'id'>> &
+  Partial<Pick<DBProject, 'blobId' | 'id' | 'slug'>> &
     Pick<
       DBProject,
       'description' | 'display' | 'edges' | 'links' | 'name' | 'orgId'
@@ -77,7 +77,7 @@ export class Project extends ActivitableModel<
 
   @BeforeCreate
   static async onBeforeCreate(model: Project, { transaction }): Promise<void> {
-    model.slug = slugify(model.name, { lower: true, trim: true });
+    model.slug = model.slug || slugify(model.name, { lower: true, trim: true });
     model.id = model.id || nanoid();
 
     await model.createBlob(transaction);

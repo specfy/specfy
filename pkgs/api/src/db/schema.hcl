@@ -46,7 +46,7 @@ table "orgs" {
     null = false
   }
   column "name" {
-    type = varchar(100)
+    type = varchar(36)
     null = false
   }
   column "created_at" {
@@ -82,7 +82,7 @@ table "projects" {
   }
 
   column "name" {
-    type = varchar(100)
+    type = varchar(36)
     null = false
   }
   column "slug" {

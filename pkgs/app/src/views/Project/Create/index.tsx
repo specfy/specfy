@@ -1,10 +1,12 @@
 import { IconCircleArrowRight } from '@tabler/icons-react';
-import { App, Button, Input, Typography } from 'antd';
+import { App, Button, Form, Input, Typography } from 'antd';
+import type { FieldsErrors } from 'api/src/types/api';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { createProject } from '../../../api/projects';
 import { useProjectStore } from '../../../common/store';
+import { slugify } from '../../../common/string';
 import type { RouteOrg } from '../../../types/routes';
 
 import cls from './index.module.scss';
@@ -15,6 +17,8 @@ export const ProjectCreate: React.FC<{ params: RouteOrg }> = ({ params }) => {
   const storeProjects = useProjectStore();
 
   const [name, setName] = useState<string>('');
+  const [slug, setSlug] = useState<string>('');
+  const [errors, setErrors] = useState<FieldsErrors>({});
 
   const onFinish: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
@@ -31,28 +35,46 @@ export const ProjectCreate: React.FC<{ params: RouteOrg }> = ({ params }) => {
     // Simply add on top of it
     const pos = { x: global.x, y: global.y - 32 };
 
-    const { slug } = await createProject({
+    const res = await createProject({
       name,
+      slug,
       orgId: params.org_id,
       display: { pos },
     });
+    if ('error' in res) {
+      setErrors(res.error.fields);
+      return;
+    }
+
     message.success('Project created');
 
-    navigate(`/${params.org_id}/${slug}`);
+    navigate(`/${params.org_id}/${res.slug}`);
   };
 
   return (
     <form onSubmit={onFinish} className={cls.form}>
       <Typography.Title level={4}>Create Project</Typography.Title>
       <div className={cls.title}>
-        <Input
-          size="large"
-          placeholder="Project name..."
-          className={cls.input}
-          value={name}
-          autoFocus
-          onChange={(e) => setName(e.target.value)}
-        />
+        <Form.Item
+          className={cls.wrap}
+          help={errors.name?.message}
+          validateStatus={errors.name && 'error'}
+        >
+          <Input
+            size="large"
+            placeholder="Project name..."
+            className={cls.input}
+            value={name}
+            autoFocus
+            onChange={(e) => {
+              setName(e.target.value);
+              const prev = slugify(name);
+              if (slug === prev) {
+                setSlug(slugify(e.target.value));
+              }
+            }}
+          />
+        </Form.Item>
         <Button
           type="primary"
           disabled={!name || name.length < 2}
@@ -61,6 +83,18 @@ export const ProjectCreate: React.FC<{ params: RouteOrg }> = ({ params }) => {
           icon={<IconCircleArrowRight />}
         ></Button>
       </div>
+      <Form.Item
+        className={cls.wrap}
+        help={errors.slug?.message}
+        validateStatus={errors.slug && 'error'}
+      >
+        <Input
+          placeholder="Unique ID"
+          value={slug}
+          addonBefore={`https://specify.io/${params.org_id}/`}
+          onChange={(e) => setSlug(slugify(e.target.value))}
+        />
+      </Form.Item>
     </form>
   );
 };

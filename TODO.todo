@@ -1,3 +1,9 @@
+Repo:
+  - Setup CI
+
+
+---
+
 Global:
   ✔ Update mode @done(23-03-25 23:23)
 
@@ -14,11 +20,12 @@ Project:
   ✔ Rename @done(23-03-25 23:23)
     - Unit Test
     - Specific activity
-    - Reserved name
     - Handle error
   ✔ Creation @done(23-03-25 23:30)
+    - Reserved name
     - Unit Test
-    - Enforce slug
+    ✔ Validation @done(23-03-28 16:11)
+    ✔ Enforce slug @done(23-03-28 16:11)
   - archivage
   - soft suppression
   - Import Excalidraw
@@ -53,8 +60,8 @@ User:
 
 API:
   ✔ Handle pagination correctly @done(23-03-25 23:23)
-  - Validation
-  - Unit test
+  - Middelware: Rate Limit
+  - Deploy
 
 
 Components:

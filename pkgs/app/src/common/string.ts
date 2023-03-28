@@ -2,7 +2,7 @@ import slugifyOrigin from 'slugify';
 import stringHash from 'string-hash';
 
 export const slugify = (str: string) =>
-  slugifyOrigin(str, { lower: true, trim: true });
+  slugifyOrigin(str, { lower: true, trim: true, strict: true });
 
 export function acronymize(name: string): string {
   const clean = name

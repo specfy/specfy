@@ -28,8 +28,8 @@ export const OrgCreate: React.FC = () => {
       setErrors(res.error.fields);
       return;
     }
-    message.success('Organization created');
 
+    message.success('Organization created');
     navigate(`/${res.id}`);
   };
 
