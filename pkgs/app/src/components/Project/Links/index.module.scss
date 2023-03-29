@@ -7,8 +7,8 @@
   }
 
   &.opened {
-    padding: $p-m !important;
     margin: (-$p-m) (-$p-m);
+    padding: $p-m !important;
   }
 }
 
