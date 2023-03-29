@@ -11,6 +11,7 @@ export type ActionComponent =
   | 'Component.created'
   | 'Component.deleted'
   | 'Component.updated';
+
 export type ActionDocument =
   | 'Document.created'
   | 'Document.deleted'

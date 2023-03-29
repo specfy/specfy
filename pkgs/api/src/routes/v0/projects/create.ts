@@ -34,8 +34,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
   }>('/', async function (req, res) {
     const val = await ProjectVal(req.perms!).safeParseAsync(req.body);
     if (!val.success) {
-      validationError(res, val.error);
-      return;
+      return validationError(res, val.error);
     }
 
     const data = val.data;

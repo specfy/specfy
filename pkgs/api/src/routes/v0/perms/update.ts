@@ -1,28 +1,63 @@
 import type { FastifyPluginCallback } from 'fastify';
+import { z } from 'zod';
 
+import { validationError } from '../../../common/errors';
+import { valOrgId, valId } from '../../../common/zod';
 import { db } from '../../../db';
+import { noQuery } from '../../../middlewares/noQuery';
 import { Perm } from '../../../models';
 import type { ReqPostPerms, ResPostPerms } from '../../../types/api';
+import type { DBPerm } from '../../../types/db';
+import { PermType } from '../../../types/db';
+
+function QueryVal(perms: Perm[]) {
+  return z
+    .object({
+      org_id: valOrgId(perms),
+      project_id: valId(),
+      userId: z.string().uuid(),
+      role: z.string().refine(
+        (val) => {
+          return val in PermType;
+        },
+        {
+          message: 'Invalid role',
+        }
+      ),
+    })
+    .strict()
+    .partial({ project_id: true });
+}
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.put<{
     Body: ReqPostPerms;
     Reply: ResPostPerms;
-  }>('/', async function (req, res) {
+  }>('/', { preHandler: noQuery }, async function (req, res) {
+    const val = QueryVal(req.perms!).safeParse(req.body);
+    if (!val.success) {
+      return validationError(res, val.error);
+    }
+
+    const data = val.data;
+    const body = {
+      orgId: data.org_id,
+      userId: data.userId,
+      projectId: data.project_id || null,
+    };
+
     await db.transaction(async (transaction) => {
-      // TODO: validation
       // TODO: invite email
+      // TODO: check that user exists
+      // TODO: check that user is part of the org
+      // TODO: check that user is not the sole owner
 
       const exist = await Perm.findOne({
-        where: {
-          orgId: req.body.org_id,
-          userId: req.body.userId,
-          projectId: req.body.project_id,
-        },
+        where: body,
         transaction,
       });
 
-      // // Set viewer if we add someone direclty from a project
+      // // Set viewer if we add someone directly from a project
       // const hasOrg = exist.find((perm) => perm.projectId === null);
       // if (!hasOrg) {
       //   await Perm.create(
@@ -38,24 +73,18 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       if (exist) {
         await Perm.update(
           {
-            role: req.body.role,
+            role: data.role as DBPerm['role'],
           },
           {
             transaction,
-            where: {
-              orgId: req.body.org_id,
-              projectId: req.body.project_id,
-              userId: req.body.userId,
-            },
+            where: body,
           }
         );
       } else {
         await Perm.create(
           {
-            orgId: req.body.org_id,
-            projectId: req.body.project_id,
-            userId: req.body.userId,
-            role: req.body.role,
+            ...body,
+            role: data.role as DBPerm['role'],
           },
           { transaction }
         );

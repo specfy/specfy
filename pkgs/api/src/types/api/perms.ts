@@ -1,5 +1,6 @@
 import type { DBPerm } from '../db/perms';
 
+import type { ResErrors } from './api';
 import type { ApiUser } from './users';
 
 export type ApiPerm = Omit<DBPerm, 'userId'> & { user: ApiUser };
@@ -33,6 +34,4 @@ export interface ReqDeletePerms {
   userId: string;
 }
 
-export interface ResDeletePerms {
-  data: { done: boolean };
-}
+export type ResDeletePerms = ResErrors | unknown;

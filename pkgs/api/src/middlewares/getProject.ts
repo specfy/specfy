@@ -27,8 +27,7 @@ export const getProject: PreHandler<{
 }> = async (req, res) => {
   const val = valQueryProject(req.perms!).safeParse(req.params);
   if (!val.success) {
-    validationError(res, val.error);
-    return;
+    return validationError(res, val.error);
   }
 
   const params = val.data;

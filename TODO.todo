@@ -26,6 +26,7 @@ Project:
     - Handle error
   ✔ Creation @done(23-03-25 23:30)
     - Reserved name
+    - Permission check
     - Unit Test
     ✔ Validation @done(23-03-28 16:11)
     ✔ Enforce slug @done(23-03-28 16:11)
@@ -36,8 +37,10 @@ Project:
     - Unit Test
     ✔ Validation @done(23-03-29 14:42)
   ✔ Update @done(23-03-29 14:42)
+    - Permission check
     ✔ Validation @done(23-03-29 14:42)
   ✔ Delete @done(23-03-29 14:42)
+    - Permission check
     - Unit test
     ✔ Validation @done(23-03-29 14:43)
   - archivage
@@ -55,6 +58,9 @@ Project:
         - Auto merge une revision quand la pull request est merge
 
 User:
+  ✔ getMe @done(23-03-29 15:56)
+    - remove hardcoded email
+    ✔ Validation @done(23-03-29 15:57)
   - Auth.js (or similar)
     - Github auth
   - Invite
@@ -71,6 +77,22 @@ User:
   - Validation compte
   - Profil
   - Hover card?
+
+Permissions:
+  ✔ List @done(23-03-29 15:54)
+    ✔ Validation @done(23-03-29 15:55)
+    - Unit Test
+  ✔ Update @done(23-03-29 15:55)
+    - Validation
+    - Unit Test
+    - Permission check
+    - Activity
+  ✔ Remove @done(23-03-29 15:55)
+    - Validation
+    - Unit Test
+    - Permission check
+    - Activity
+
 
 API:
   ✔ Handle pagination correctly @done(23-03-25 23:23)
@@ -104,11 +126,20 @@ Components:
 
 Documents:
   ✔ List documents @done(23-03-29 14:47)
+    ✔ Search @done(23-03-29 15:55)
+    ✔ Validation @done(23-03-29 15:55)
+    - Unit Test
+  ✔ Get @done(23-03-29 15:56)
+    ✔ Validation @done(23-03-29 15:56)
+    - Unit Test
   ✔ List other content on the left / right @done(23-03-25 23:23)
   - Better home page
   ✔ Creer @started(23-03-25 23:28) @done(23-03-25 23:28) @lasted(41s)
+    - Unit Test
   ✔ editer @done(23-03-25 23:28)
+    - Unit Test
   ✔ supprimer @done(23-03-25 23:28)
+    - Unit Test
   - Draft document should be added to the list somehow
     - RFC number computed?
   ✔ Type: RFC @done(23-03-25 23:28)

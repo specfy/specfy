@@ -31,8 +31,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
   }>('/:document_id', async function (req, res) {
     const val = QueryVal(req.perms!).safeParse({ ...req.query, ...req.params });
     if (!val.success) {
-      validationError(res, val.error);
-      return;
+      return validationError(res, val.error);
     }
 
     const query = val.data;

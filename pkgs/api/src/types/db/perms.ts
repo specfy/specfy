@@ -1,3 +1,10 @@
+export enum PermType {
+  'contributor' = 'contributor',
+  'owner' = 'owner',
+  'reviewer' = 'reviewer',
+  'viewer' = 'viewer',
+}
+
 export interface DBPerm {
   id: string;
   orgId: string;

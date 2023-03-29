@@ -1,25 +1,44 @@
 import type { FastifyPluginCallback } from 'fastify';
 import type { WhereOptions } from 'sequelize';
 import { Op } from 'sequelize';
+import { z } from 'zod';
 
+import { validationError } from '../../../common/errors';
 import { toApiUser } from '../../../common/formatters/user';
+import { valOrgId, valId } from '../../../common/zod';
 import { Perm } from '../../../models';
 import type { ResListPerms, ReqListPerms } from '../../../types/api';
 import type { DBPerm } from '../../../types/db';
+
+function QueryVal(perms: Perm[]) {
+  return z
+    .object({
+      org_id: valOrgId(perms),
+      project_id: valId(),
+    })
+    .strict()
+    .partial({ project_id: true });
+}
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{
     Querystring: ReqListPerms;
     Reply: ResListPerms;
   }>('/', async function (req, res) {
+    const val = QueryVal(req.perms!).safeParse(req.query);
+    if (!val.success) {
+      return validationError(res, val.error);
+    }
+
+    const query = val.data;
     const where: WhereOptions<DBPerm> = {
-      // TODO: validation
-      orgId: req.query.org_id,
-      projectId: req.query.project_id || { [Op.is]: null },
+      orgId: query.org_id,
+      projectId: query.project_id || { [Op.is]: null },
     };
 
     const perms = await Perm.scope('withUser').findAll({
       where,
+      // TODO: proper pagination?
       limit: 500,
       offset: 0,
     });
