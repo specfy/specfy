@@ -1,6 +1,11 @@
 import type { FastifyPluginCallback } from 'fastify';
 import type { WhereOptions } from 'sequelize';
+import { z } from 'zod';
 
+import { validationError } from '../../../common/errors';
+import { valOrgId } from '../../../common/zod';
+import { db } from '../../../db';
+import type { Perm } from '../../../models';
 import { Policy } from '../../../models';
 import type {
   Pagination,
@@ -9,11 +14,26 @@ import type {
 } from '../../../types/api';
 import type { DBPolicy } from '../../../types/db';
 
+function QueryVal(perms: Perm[]) {
+  return z
+    .object({
+      org_id: valOrgId(perms),
+    })
+    .strict();
+}
+
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{
     Querystring: ReqListPolicies;
     Reply: ResListPolicies;
   }>('/', async function (req, res) {
+    const val = QueryVal(req.perms!).safeParse(req.query);
+    if (!val.success) {
+      return validationError(res, val.error);
+    }
+
+    const query = val.data;
+
     // TODO validation
     const pagination: Pagination = {
       currentPage: 1,
@@ -21,24 +41,30 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     };
 
     const filter: WhereOptions<DBPolicy> = {
-      orgId: req.query.org_id,
+      orgId: query.org_id,
     };
 
-    const list = await Policy.findAll({
-      where: {
-        ...filter,
-      },
-      order: [['createdAt', 'ASC']],
-      // TODO: add limit/offset to qp
-      limit: 100,
-      offset: 0,
+    const list = await db.transaction(async (transaction) => {
+      const tmp = await Policy.findAll({
+        where: {
+          ...filter,
+        },
+        order: [['createdAt', 'ASC']],
+        // TODO: add limit/offset to qp
+        limit: 100,
+        offset: 0,
+        transaction,
+      });
+      const count = await Policy.count({
+        where: {
+          ...filter,
+        },
+        transaction,
+      });
+      pagination.totalItems = count;
+
+      return tmp;
     });
-    const count = await Policy.count({
-      where: {
-        ...filter,
-      },
-    });
-    pagination.totalItems = count;
 
     res.status(200).send({
       data: list.map((policy) => {

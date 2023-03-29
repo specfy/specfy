@@ -114,6 +114,8 @@ Components:
   - Autocomplete supported dans la page de creation de composant
   - Changer les ports
   - Quand on change l'host on devrait bouger le composant dans le graph pour fit la boudingBox
+  - Check policy on add language
+  - Check policy on add techId
   ✔  suppression @done(23-03-25 23:26)
   - Base de données de reference (genre une liste avec toutes les tech connu)
       - Hosting
@@ -268,6 +270,18 @@ Org:
     - Fav?
 
 Policies:
+  ✔ List @done(23-03-29 16:41)
+    ✔ Validation @done(23-03-29 16:42)
+    - Unit Test
+  - Create
+    ☐ Validation
+    - Unit Test
+  - Update
+    ☐ Validation
+    - Unit Test
+  - Delete
+    ☐ Validation
+    - Unit Test
   - Définir tech/language autorisé/interdite et pourquoi
   - Template RFC
   - Template Revision
