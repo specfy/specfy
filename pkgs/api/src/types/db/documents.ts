@@ -1,5 +1,9 @@
 import type { BlockLevelZero } from '../api';
 
+export enum DocumentType {
+  'pb' = 'pb',
+  'rfc' = 'rfc',
+}
 export interface DBDocument {
   id: string;
   orgId: string;

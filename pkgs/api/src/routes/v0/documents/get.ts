@@ -1,7 +1,10 @@
 import type { FastifyPluginCallback } from 'fastify';
+import { z } from 'zod';
 
-import { notFound } from '../../../common/errors';
+import { notFound, validationError } from '../../../common/errors';
 import { toApiUser } from '../../../common/formatters/user';
+import { valId, valOrgId } from '../../../common/zod';
+import type { Perm } from '../../../models';
 import { Document } from '../../../models';
 import { TypeHasUser } from '../../../models/typeHasUser';
 import type {
@@ -10,18 +13,34 @@ import type {
   ResGetDocument,
 } from '../../../types/api';
 
+function QueryVal(perms: Perm[]) {
+  return z
+    .object({
+      org_id: valOrgId(perms),
+      project_id: valId(),
+      document_id: valId(),
+    })
+    .strict();
+}
+
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{
     Querystring: ReqGetDocument;
     Params: ReqDocumentParams;
     Reply: ResGetDocument;
   }>('/:document_id', async function (req, res) {
+    const val = QueryVal(req.perms!).safeParse({ ...req.query, ...req.params });
+    if (!val.success) {
+      validationError(res, val.error);
+      return;
+    }
+
+    const query = val.data;
     const p = await Document.findOne({
       where: {
-        // TODO validation
-        orgId: req.query.org_id,
-        projectId: req.query.project_id,
-        id: req.params.document_id,
+        orgId: query.org_id,
+        projectId: query.project_id,
+        id: query.document_id,
       },
     });
 

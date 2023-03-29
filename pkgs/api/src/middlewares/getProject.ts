@@ -13,31 +13,29 @@ declare module 'fastify' {
   }
 }
 
-export function valQueryProject<
-  TQuery extends { org_id: string; project_slug: string }
->(perms: Perm[], query: TQuery) {
+export function valQueryProject(perms: Perm[]) {
   return z
     .object({
       org_id: valOrgId(perms),
       project_slug: z.string().min(2).max(36),
     })
-    .strict()
-    .safeParse(query);
+    .strict();
 }
 
 export const getProject: PreHandler<{
   Params: ReqProjectParams;
 }> = async (req, res) => {
-  const val = valQueryProject(req.perms!, req.params);
+  const val = valQueryProject(req.perms!).safeParse(req.params);
   if (!val.success) {
     validationError(res, val.error);
     return;
   }
 
+  const params = val.data;
   const proj = await Project.findOne({
     where: {
-      orgId: req.params.org_id,
-      slug: req.params.project_slug,
+      orgId: params.org_id,
+      slug: params.project_slug,
     },
   });
 
