@@ -1,5 +1,9 @@
 import type { FastifyPluginCallback } from 'fastify';
+import { z } from 'zod';
 
+import { validationError } from '../../../common/errors';
+import { valOrgId, valId } from '../../../common/zod';
+import type { Perm } from '../../../models';
 import { Component } from '../../../models';
 import type {
   Pagination,
@@ -7,10 +11,27 @@ import type {
   ResListComponents,
 } from '../../../types/api';
 
+function QueryVal(perms: Perm[]) {
+  return z
+    .object({
+      org_id: valOrgId(perms),
+      project_id: valId(),
+    })
+    .strict();
+}
+
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{ Querystring: ReqListComponents; Reply: ResListComponents }>(
     '/',
     async function (req, res) {
+      const val = QueryVal(req.perms!).safeParse(req.query);
+      if (!val.success) {
+        validationError(res, val.error);
+        return;
+      }
+
+      const query = val.data;
+
       // TODO: pagination or remove it
       const pagination: Pagination = {
         currentPage: 0,
@@ -19,9 +40,8 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
       const docs = await Component.findAll({
         where: {
-          // TODO: validation
-          orgId: req.query.org_id,
-          projectId: req.query.project_id,
+          orgId: query.org_id,
+          projectId: query.project_id,
         },
         order: [['name', 'ASC']],
         limit: 1000,

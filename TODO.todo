@@ -84,6 +84,9 @@ Components:
     - Unit Test
   ✔ Update @done(23-03-28 11:12)
     - Unit Test
+  ✔ List @done(23-03-29 15:15)
+    - Unit Test
+    ✔ Validation @done(23-03-29 15:15)
   - Click to create + Click to add c'est vraiment chiant
   - Pouvoir editer le graph depuis n'importe où
   - Autocomplete supported dans la page de creation de composant
