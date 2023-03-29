@@ -189,28 +189,20 @@ export async function seedProjects(users: User[]) {
 
   // ---- Permissions
   await Promise.all([
-    Perm.create({
-      orgId: 'company',
-      projectId: null,
-      userId: users[0].id,
-      role: 'owner',
+    ...[p1, p3, p4, p5].map((p) => {
+      return Perm.create({
+        orgId: 'company',
+        projectId: p.id,
+        userId: users[0].id,
+        role: 'owner',
+      });
     }),
-    Perm.create({
-      orgId: 'company',
-      projectId: p1.id,
-      userId: users[0].id,
-      role: 'owner',
-    }),
+
+    // Add one viewer
     Perm.create({
       orgId: 'company',
       projectId: p1.id,
       userId: users[1].id,
-      role: 'reviewer',
-    }),
-    Perm.create({
-      orgId: 'company',
-      projectId: p1.id,
-      userId: users[2].id,
       role: 'viewer',
     }),
 
@@ -224,5 +216,5 @@ export async function seedProjects(users: User[]) {
     }),
   ]);
 
-  return { p1, /*p2,*/ p3, p4, p5 };
+  return { p0, p1, /*p2,*/ p3, p4, p5 };
 }

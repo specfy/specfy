@@ -1,7 +1,11 @@
 import type { FastifyReply } from 'fastify';
 import type { ZodError } from 'zod';
 
-import type { ResNotFound, ResValidationError } from '../types/api';
+import type {
+  ResForbidden,
+  ResNotFound,
+  ResValidationError,
+} from '../types/api';
 
 export function notFound(res: FastifyReply): void {
   const err: ResNotFound = {
@@ -10,6 +14,15 @@ export function notFound(res: FastifyReply): void {
     },
   };
   res.status(404).send(err);
+}
+
+export function forbidden(res: FastifyReply): void {
+  const err: ResForbidden = {
+    error: {
+      code: '403_forbidden',
+    },
+  };
+  res.status(403).send(err);
 }
 
 export function validationError(res: FastifyReply, data: ZodError): void {

@@ -52,3 +52,35 @@ export function valOrgId(perms: Perm[]) {
       });
     });
 }
+
+export function valProjectSlug(perms: Perm[]) {
+  return z
+    .string()
+    .min(4)
+    .max(36)
+    .superRefine((val, ctx) => {
+      const res = perms.find((perm) => perm.orgId === val && !perm.projectId);
+      if (res) {
+        return;
+      }
+
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        params: { code: 'forbidden' },
+        message:
+          "The organization doesn't exists or you don't have the permissions",
+      });
+    });
+}
+
+export function valQueryOrgId<TQuery extends { org_id: string }>(
+  perms: Perm[],
+  query: TQuery
+) {
+  return z
+    .object({
+      org_id: valOrgId(perms),
+    })
+    .strict()
+    .safeParse(query);
+}

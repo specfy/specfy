@@ -25,3 +25,11 @@ export interface ResNotFound {
     code: '404_not_found';
   };
 }
+
+export interface ResForbidden {
+  error: {
+    code: '403_forbidden';
+  };
+}
+
+export type ResErrors = ResForbidden | ResNotFound | ResValidationError;

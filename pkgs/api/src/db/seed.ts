@@ -39,6 +39,7 @@ export async function seed() {
   // Users
   const [u1, u2, u3, u4, u5, u6, u7, u8] = await Promise.all([
     await User.create({
+      id: '00000000-b5a9-414a-992c-dd6eaeeba8ca',
       name: 'Samuel Bodin',
       email: 'bodin.samuel@gmail.com',
     }),
@@ -86,11 +87,13 @@ export async function seed() {
   await o2.onAfterCreate(users[0]);
 
   await Promise.all([
-    Perm.create({
-      orgId: 'samuelbodin',
-      projectId: null,
-      userId: users[0].id,
-      role: 'owner',
+    ...['company', 'samuelbodin'].map((id) => {
+      return Perm.create({
+        orgId: id,
+        projectId: null,
+        userId: users[0].id,
+        role: 'owner',
+      });
     }),
     ...users.map((u, i) => {
       if (i === 0) {

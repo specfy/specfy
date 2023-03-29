@@ -12,7 +12,8 @@ import {
 
 import type { DBUser } from '../types/db';
 
-type PropCreateUser = Pick<DBUser, 'email' | 'name'>;
+type PropCreateUser = Partial<Pick<DBUser, 'id'>> &
+  Pick<DBUser, 'email' | 'name'>;
 @Table({ tableName: 'users', modelName: 'user' })
 export class User extends Model<DBUser, PropCreateUser> {
   @PrimaryKey

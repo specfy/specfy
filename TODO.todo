@@ -32,6 +32,14 @@ Project:
   ✔ List @done(23-03-29 12:19)
     - Unit test
     ✔ Validation @done(23-03-29 12:19)
+  ✔ Get @done(23-03-29 12:20)
+    - Unit Test
+    ✔ Validation @done(23-03-29 14:42)
+  ✔ Update @done(23-03-29 14:42)
+    ✔ Validation @done(23-03-29 14:42)
+  ✔ Delete @done(23-03-29 14:42)
+    - Unit test
+    ✔ Validation @done(23-03-29 14:43)
   - archivage
   - soft suppression
   - Import Excalidraw
@@ -92,6 +100,7 @@ Components:
 
 
 Documents:
+  ✔ List documents @done(23-03-29 14:47)
   ✔ List other content on the left / right @done(23-03-25 23:23)
   - Better home page
   ✔ Creer @started(23-03-25 23:28) @done(23-03-25 23:28) @lasted(41s)
@@ -137,21 +146,27 @@ Documents:
 
 
 Revision:
+  ✔ List @done(23-03-29 14:47)
+    ✔ Search @done(23-03-29 14:47)
+    ✔ Filter @done(23-03-29 14:47)
+  ✔ Show one @done(23-03-29 14:47)
   - Commentaire
   - Timeline
   ✔ Diff visuel (pas juste code) @done(23-03-25 23:25)
   ✔ Edition @done(23-03-27 12:24)
   - Revert d’une revision publié
-  ✔ [x]  Draft @done(23-03-25 23:25)
-  ✔ [x]  Approval @done(23-03-25 23:25)
-  ✔ [x]  Merge @done(23-03-25 23:25)
-  ✔ [x]  Ask for review @done(23-03-25 23:25)
+  ✔ Draft @done(23-03-25 23:25)
+  ✔ Approval @done(23-03-25 23:25)
+  ✔ Merge @done(23-03-25 23:25)
+  ✔ Ask for review @done(23-03-25 23:25)
     - Notification
   - Unit test
 
 
 Diff:
   - Quand on ajoute un text au début ça diff (marked) tout le text suivant
+  - Diff Edges
+  - Diff Display
 
 Activities:
   - Une activité par actions
@@ -163,6 +178,26 @@ API:
   - Ajout d’une swagger / API?
     - Page de documentation automatique?
   - Liaison de type API Endpoint
+
+
+Graph:
+  ✔ Display components @done(23-03-29 14:43)
+  ✔ Group @done(23-03-29 14:43)
+  ✔ Edges @done(23-03-29 14:43)
+  ✔ Hover @done(23-03-29 14:44)
+    - Fix hover
+  - Try to use the react version for automatic update
+  - Modify the graph in every page?
+  - Group
+  - Ungroup
+  ✔ Modify size @done(23-03-29 14:45)
+  ✔ Modify vertices @done(23-03-29 14:45)
+  - Add component
+  - Remove component
+  - Modify links
+  - Modify ports
+  - Export PNG
+
 
 -----
 

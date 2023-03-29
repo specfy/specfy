@@ -1,9 +1,8 @@
 import type { FastifyPluginCallback } from 'fastify';
 
-import { notFound } from '../../../common/errors';
 import { toApiProject } from '../../../common/formatters/project';
 import { db } from '../../../db';
-import { Project } from '../../../models';
+import { getProject } from '../../../middlewares/getProject';
 import type {
   ReqProjectParams,
   ReqUpdateProject,
@@ -15,33 +14,23 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     Params: ReqProjectParams;
     Body: ReqUpdateProject;
     Reply: ResUpdateProject;
-  }>('/', async function (req, res) {
-    const proj = await Project.findOne({
-      where: {
-        // TODO validation
-        orgId: req.params.org_id,
-        slug: req.params.project_slug,
-      },
-    });
-
-    if (!proj) {
-      return notFound(res);
-    }
+  }>('/', { preHandler: getProject }, async function (req, res) {
+    const project = req.project!;
 
     if (req.body.name) {
       await db.transaction(async (transaction) => {
-        await proj.update(
+        await project.update(
           {
             name: req.body.name,
           },
           { transaction }
         );
-        await proj.onAfterUpdate(req.user!, { transaction });
+        await project.onAfterUpdate(req.user!, { transaction });
       });
     }
 
     res.status(200).send({
-      data: toApiProject(proj),
+      data: toApiProject(project),
     });
   });
 
