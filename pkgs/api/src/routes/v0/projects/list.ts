@@ -1,8 +1,10 @@
 import type { FastifyPluginCallback } from 'fastify';
+import { z } from 'zod';
 
 import { validationError } from '../../../common/errors';
 import { toApiProject } from '../../../common/formatters/project';
-import { valQueryOrgId } from '../../../common/zod';
+import { valOrgId } from '../../../common/zod';
+import type { Perm } from '../../../models';
 import { Project } from '../../../models';
 import type {
   Pagination,
@@ -10,11 +12,19 @@ import type {
   ResListProjects,
 } from '../../../types/api';
 
+function QueryVal(perms: Perm[]) {
+  return z
+    .object({
+      org_id: valOrgId(perms),
+    })
+    .strict();
+}
+
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{ Querystring: ReqListProjects; Reply: ResListProjects }>(
     '/',
     async function (req, res) {
-      const val = valQueryOrgId(req.perms!, req.query);
+      const val = QueryVal(req.perms!).safeParse(req.query);
       if (!val.success) {
         validationError(res, val.error);
         return;

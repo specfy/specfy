@@ -169,8 +169,16 @@ Diff:
   - Diff Display
 
 Activities:
+  ✔ List @done(23-03-29 15:08)
+    - Filtre:
+      ✔ Org @done(23-03-29 15:09)
+      - Projet
+      - Revision
+      - Composant
+      - Document
+    ✔ Validation @done(23-03-29 15:09)
+    - Unit Test
   - Une activité par actions
-  - Filtrable au niveau Org, Projet, Revision, Composant, RFC
   - Deleting / Renaming breaks the query, we should select blobId or store some info inside the activity
 
 
