@@ -14,7 +14,6 @@ import { useListUser } from '../../../../api/users';
 import { AvatarAuto } from '../../../../components/AvatarAuto';
 import { Card } from '../../../../components/Card';
 import { useAuth } from '../../../../hooks/useAuth';
-import type { RouteProject } from '../../../../types/routes';
 
 import cls from './index.module.scss';
 
@@ -120,8 +119,7 @@ const Row: React.FC<RowProps> = ({
 
 export const SettingsTeam: React.FC<{
   proj: ApiProject;
-  params: RouteProject;
-}> = ({ proj, params }) => {
+}> = ({ proj }) => {
   const { user } = useAuth();
 
   const p = { org_id: proj.orgId, project_id: proj.id };
@@ -157,7 +155,7 @@ export const SettingsTeam: React.FC<{
   const [options, setOptions] = useState<ApiUser[]>([]);
   const [search, setSearch] = useState<string>();
 
-  const res = useListUser({ ...params, search: searchDebounced });
+  const res = useListUser({ ...p, search: searchDebounced });
   useDebounce(
     () => {
       setSearchDebounced(search);

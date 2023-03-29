@@ -17,8 +17,6 @@ import { queryClient } from '../common/query';
 
 import { fetchApi } from './fetch';
 
-export type QueryParamsRev = ReqGetRevision & ReqRevisionParams;
-
 export async function createRevision(
   data: ReqPostRevision
 ): Promise<ResPostRevision> {

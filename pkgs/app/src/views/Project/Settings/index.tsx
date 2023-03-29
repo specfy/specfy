@@ -63,10 +63,7 @@ export const ProjectSettings: React.FC<{
             path="/"
             element={<SettingsGeneral proj={proj} params={params} />}
           />
-          <Route
-            path="/team"
-            element={<SettingsTeam proj={proj} params={params} />}
-          />
+          <Route path="/team" element={<SettingsTeam proj={proj} />} />
         </Routes>
       </div>
     </Container>

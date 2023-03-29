@@ -61,6 +61,10 @@ User:
   ✔ getMe @done(23-03-29 15:56)
     - remove hardcoded email
     ✔ Validation @done(23-03-29 15:57)
+    - Unit Test
+  ✔ List @done(23-03-29 16:59)
+    ✔ Validation @done(23-03-29 16:59)
+    - Unit Test
   - Auth.js (or similar)
     - Github auth
   - Invite

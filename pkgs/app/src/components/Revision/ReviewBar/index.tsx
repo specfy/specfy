@@ -1,12 +1,15 @@
 import { IconCircleCheck } from '@tabler/icons-react';
 import { Button, Typography, Space, App } from 'antd';
-import type { ApiRevision, BlockLevelZero } from 'api/src/types/api';
+import type {
+  ApiRevision,
+  BlockLevelZero,
+  ReqGetRevision,
+} from 'api/src/types/api';
 import classnames from 'classnames';
 import { useState, useEffect, useRef } from 'react';
 import { useClickAway } from 'react-use';
 
 import { createComment } from '../../../api/comments';
-import type { QueryParamsRev } from '../../../api/revisions';
 import { getEmptyDoc } from '../../../common/content';
 import { Editor } from '../../Editor';
 
@@ -14,7 +17,7 @@ import cls from './index.module.scss';
 
 export const ReviewBar: React.FC<{
   rev: ApiRevision;
-  qp: QueryParamsRev;
+  qp: ReqGetRevision;
 }> = ({ rev, qp }) => {
   const { message } = App.useApp();
 
@@ -45,10 +48,13 @@ export const ReviewBar: React.FC<{
     setOpen(is);
   };
   const onSubmitReview = async () => {
-    const resComment = await createComment(qp, {
-      approval: true,
-      content: review,
-    });
+    const resComment = await createComment(
+      { ...qp, revision_id: rev.id },
+      {
+        approval: true,
+        content: review,
+      }
+    );
 
     if (!resComment?.data?.id) {
       message.error('Revision could not be approved');

@@ -15,12 +15,12 @@ import type {
   ResGetRevision,
   ApiUser,
   ApiRevision,
+  ReqGetRevision,
 } from 'api/src/types/api';
 import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useListRevisionBlobs } from '../../../../api/blobs';
-import type { QueryParamsRev } from '../../../../api/revisions';
 import {
   updateRevision,
   useGetRevision,
@@ -59,10 +59,9 @@ export const ProjectRevisionsShow: React.FC<{
   const [blobs, setBlobs] = useState<ResListRevisionBlobs['data']>();
   const [checks, setChecks] = useState<ResCheckRevision['data']>();
   const [to] = useState(() => `/${params.org_id}/${params.project_slug}`);
-  const qp: QueryParamsRev = {
+  const qp: ReqGetRevision = {
     org_id: params.org_id,
     project_id: proj.id,
-    revision_id: more.revision_id!,
   };
 
   // diff
@@ -162,13 +161,16 @@ export const ProjectRevisionsShow: React.FC<{
 
     setSave(true);
 
-    const up = await updateRevision(qp, {
-      ...rev,
-      name: title,
-      description,
-      authors: authors!.map((u) => u.id),
-      reviewers: reviewers!.map((u) => u.id),
-    });
+    const up = await updateRevision(
+      { ...qp, revision_id: rev.id },
+      {
+        ...rev,
+        name: title,
+        description,
+        authors: authors!.map((u) => u.id),
+        reviewers: reviewers!.map((u) => u.id),
+      }
+    );
 
     setSave(false);
 
@@ -195,7 +197,10 @@ export const ProjectRevisionsShow: React.FC<{
     };
     const locked = typeof lock !== 'undefined' ? lock : body.locked;
 
-    await updateRevision(qp, { ...body, status, locked });
+    await updateRevision(
+      { ...qp, revision_id: rev.id },
+      { ...body, status, locked }
+    );
 
     message.success('Revision updated');
     setSave(false);

@@ -1,6 +1,6 @@
 import { AutoComplete, Space } from 'antd';
 import type { DefaultOptionType } from 'antd/es/select';
-import type { ApiUser } from 'api/src/types/api';
+import type { ApiUser, ReqListUsers } from 'api/src/types/api';
 import classnames from 'classnames';
 import { useEffect, useState } from 'react';
 import { useDebounce } from 'react-use';
@@ -23,7 +23,7 @@ export const UserCard: React.FC<{
 };
 
 export const UserCardAdd: React.FC<{
-  params: { org_id: string; project_id?: string };
+  params: ReqListUsers;
   onAdd: (user: ApiUser) => void;
   size?: 'default' | 'small';
   excludeIds?: string[];

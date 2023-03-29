@@ -6,11 +6,14 @@ import {
   IconEyeOff,
 } from '@tabler/icons-react';
 import { App, Button } from 'antd';
-import type { ApiRevision, ResCheckRevision } from 'api/src/types/api';
+import type {
+  ApiRevision,
+  ReqGetRevision,
+  ResCheckRevision,
+} from 'api/src/types/api';
 import classnames from 'classnames';
 import { useState } from 'react';
 
-import type { QueryParamsRev } from '../../../api/revisions';
 import { mergeRevision, rebaseRevision } from '../../../api/revisions';
 import { Time } from '../../Time';
 
@@ -19,7 +22,7 @@ import cls from './index.module.scss';
 export const Checks: React.FC<{
   rev: ApiRevision;
   checks: ResCheckRevision['data'];
-  qp: QueryParamsRev;
+  qp: ReqGetRevision;
   onClick: (status: ApiRevision['status']) => void;
 }> = ({ rev, checks, qp, onClick }) => {
   const { message } = App.useApp();
@@ -28,7 +31,7 @@ export const Checks: React.FC<{
 
   const onMerge = async () => {
     setMerging(true);
-    const resMerge = await mergeRevision(qp);
+    const resMerge = await mergeRevision({ ...qp, revision_id: rev.id });
 
     setMerging(false);
     if (resMerge?.data?.done) {
@@ -43,7 +46,7 @@ export const Checks: React.FC<{
 
   const onClickRebase = async () => {
     setRebasing(true);
-    const resRebase = await rebaseRevision(qp);
+    const resRebase = await rebaseRevision({ ...qp, revision_id: rev.id });
 
     setRebasing(false);
 
