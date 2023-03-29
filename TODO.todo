@@ -3,7 +3,7 @@ Repo:
 
 
 Marketing Site:
-  - Todo
+  ✔ POC @done(23-03-29 12:07)
 
 ---
 
@@ -29,6 +29,9 @@ Project:
     - Unit Test
     ✔ Validation @done(23-03-28 16:11)
     ✔ Enforce slug @done(23-03-28 16:11)
+  ✔ List @done(23-03-29 12:19)
+    - Unit test
+    ✔ Validation @done(23-03-29 12:19)
   - archivage
   - soft suppression
   - Import Excalidraw
