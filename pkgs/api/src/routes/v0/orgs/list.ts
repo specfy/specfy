@@ -1,14 +1,14 @@
 import type { FastifyPluginCallback } from 'fastify';
 
 import { noQuery } from '../../../middlewares/noQuery';
-import type { ResListOrgs } from '../../../types/api';
+import type { ResListOrgs, ResListOrgsSuccess } from '../../../types/api';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{ Reply: ResListOrgs }>(
     '/',
     { preHandler: noQuery },
     async function (req, res) {
-      const orgs: ResListOrgs['data'] = [];
+      const orgs: ResListOrgsSuccess['data'] = [];
 
       for (const perm of req.perms!) {
         if (perm.projectId) {

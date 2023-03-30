@@ -10,7 +10,6 @@ import type {
   ReqGetRevision,
   ReqRevisionParams,
   ResMergeRevision,
-  ResMergeRevisionError,
 } from '../../../types/api';
 import type { DBBlob } from '../../../types/db';
 
@@ -18,7 +17,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.post<{
     Params: ReqRevisionParams;
     Querystring: ReqGetRevision;
-    Reply: ResMergeRevision | ResMergeRevisionError;
+    Reply: ResMergeRevision;
   }>('/', { preHandler: getRevision }, async function (req, res) {
     const rev = req.revision!;
     let cantMerge: string | false = false;

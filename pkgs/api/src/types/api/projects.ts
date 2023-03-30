@@ -1,6 +1,6 @@
 import type { DBProject } from '../db/projects';
 
-import type { Pagination, ResValidationError } from './api';
+import type { Pagination, ResErrors, ResValidationError } from './api';
 
 export type ApiProject = DBProject;
 
@@ -34,4 +34,7 @@ export interface ResGetProject {
 
 // POST /:org_id/:project_slug
 export type ReqUpdateProject = Pick<ApiProject, 'name'>;
-export type ResUpdateProject = ResGetProject;
+export type ResUpdateProject = ResErrors | ResGetProject;
+
+// DELETE /:org_id/:project_slug
+export type ResDeleteProject = ResErrors | never;

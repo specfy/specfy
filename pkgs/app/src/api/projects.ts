@@ -37,7 +37,7 @@ export async function updateProject(
     ResUpdateProject,
     undefined,
     ReqUpdateProject
-  >(`/projects/${opts.org_id}/${opts.project_slug}`, { body: data }, 'POST');
+  >(`/projects/${opts.org_id}/${opts.project_slug}`, { body: data }, 'PUT');
 
   queryClient.removeQueries(['listProjects', opts.org_id]);
   queryClient.removeQueries(['getProject', opts.org_id, opts.project_slug]);

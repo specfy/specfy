@@ -22,7 +22,7 @@ function BodyVal() {
 }
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
-  fastify.post<{
+  fastify.put<{
     Params: ReqProjectParams;
     Body: ReqUpdateProject;
     Reply: ResUpdateProject;
