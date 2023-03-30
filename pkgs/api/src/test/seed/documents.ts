@@ -7,7 +7,7 @@ import docRfc4Json from './document.rfc.json';
 /**
  * Seed playbook
  */
-export async function seedPlaybook(p1: Project, [u1]: User[]) {
+export async function seedPlaybook({ p1 }: { p1: Project }, [u1]: User[]) {
   const d1 = await Document.create({
     id: 'd1grRPVYnx',
     orgId: 'company',
@@ -194,7 +194,7 @@ export async function seedPlaybook(p1: Project, [u1]: User[]) {
 /**
  * Seed RFC
  */
-export async function seedRFC(p1: Project, [u1, u2]: User[]) {
+export async function seedRFC({ p1 }: { p1: Project }, [u1, u2]: User[]) {
   // Contents
   const d1 = await Document.create({
     id: 'r1grRPVYnx',

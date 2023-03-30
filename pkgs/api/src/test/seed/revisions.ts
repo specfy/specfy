@@ -10,14 +10,16 @@ import {
 } from '../../models';
 import type { BlockBanner, BlockLevelOne } from '../../types/api';
 
+import type { ResSeedComponents } from './components';
+
 /**
  * Seed projects
  */
 export async function seedRevisions(
-  p1: Project,
+  { p1 }: { p1: Project },
   users: User[],
   rfcs: Record<string, Document>,
-  components: Record<string, Component>
+  components: ResSeedComponents
 ) {
   // --------------------------------------------------------
   // Update Project

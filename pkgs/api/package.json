@@ -8,7 +8,7 @@
     "dev": "fastify start --logging-module='build/logger.js' -o -w -P build/app.js",
     "build": "tsc -p tsconfig.json -w",
     "migrate": "cd src/db && atlas schema apply --env local_main",
-    "seed": "node ./build/db/seed.js",
+    "seed": "node ./build/test/seed/seed.js",
     "test": "jest"
   },
   "keywords": [],

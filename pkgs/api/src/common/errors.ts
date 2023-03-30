@@ -34,7 +34,7 @@ export function validationError(res: FastifyReply, data: ZodError): void {
         'params' in issue && issue.params.code ? issue.params.code : issue.code,
       message: issue.message,
       path: issue.path,
-      expected: 'expected' in issue ? (issue.expected as string) : null,
+      // expected: 'expected' in issue ? (issue.expected as string) : null,
     };
 
     if (issue.path.length <= 0) {

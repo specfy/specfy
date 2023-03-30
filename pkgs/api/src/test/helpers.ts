@@ -1,8 +1,8 @@
 import type { Dispatcher } from 'undici';
 import { Client } from 'undici';
 
-import type { ResErrors, ResValidationError } from '../../types/api';
-import type { API } from '../../types/api/endpoints';
+import type { ResErrors, ResValidationError } from '../types/api';
+import type { API } from '../types/api/endpoints';
 
 type GET<TPath extends keyof API> = API[TPath] extends { GET: any }
   ? API[TPath]['GET']

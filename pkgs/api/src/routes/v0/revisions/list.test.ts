@@ -3,11 +3,7 @@ import type { FastifyInstance } from 'fastify';
 import { fastify } from 'fastify';
 
 import buildApp from '../../../app';
-import {
-  ApiClient,
-  isError,
-  isValidationError,
-} from '../../../common/test/helpers';
+import { ApiClient, isError, isValidationError } from '../../../test/helpers';
 
 let app: FastifyInstance;
 let client: ApiClient;
@@ -44,14 +40,12 @@ describe('GET /revisions', () => {
     expect(res.json.error.fields).toStrictEqual({
       org_id: {
         code: 'forbidden',
-        expected: null,
         message:
           "The organization doesn't exists or you don't have the permissions",
         path: ['org_id'],
       },
       project_id: {
         code: 'forbidden',
-        expected: null,
         message: "The project doesn't exists or you don't have the permissions",
         path: ['project_id'],
       },

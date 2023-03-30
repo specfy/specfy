@@ -5,7 +5,7 @@ export interface Pagination {
 
 export interface ValidationError {
   code: string;
-  expected: string | null;
+  // expected: string | null;
   path: Array<number | string>;
   message: string;
 }
