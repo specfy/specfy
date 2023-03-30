@@ -5,7 +5,7 @@ import { schemaComponent } from './component';
 import { schemaDocument } from './document';
 import { schemaProject } from './project';
 
-export const schemaBlob = z
+export const schemaBlobs = z
   .array(
     z.discriminatedUnion('type', [
       z

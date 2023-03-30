@@ -1,9 +1,12 @@
 import type { FastifyPluginCallback } from 'fastify';
 
+import { validationError } from '../../../common/errors';
+import { schemaRevision } from '../../../common/validators/revision';
 import { db } from '../../../db';
 import { getRevision } from '../../../middlewares/getRevision';
 import { TypeHasUser } from '../../../models';
 import type {
+  ApiRevision,
   ReqGetRevision,
   ReqPutRevision,
   ReqRevisionParams,
@@ -26,6 +29,11 @@ function diffUsers(
   return { toAdd, toRemove };
 }
 
+function BodyVal() {
+  // TODO: val ids
+  return schemaRevision;
+}
+
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.put<{
     Params: ReqRevisionParams;
@@ -33,6 +41,12 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     Body: ReqPutRevision;
     Reply: ResPutRevision;
   }>('/', { preHandler: getRevision }, async function (req, res) {
+    const val = BodyVal().safeParse(req.body);
+    if (!val.success) {
+      return validationError(res, val.error);
+    }
+
+    const data = val.data;
     const rev = req.revision!;
 
     // TODO: validation
@@ -45,8 +59,8 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         });
 
         // We diff to know which user to add or remove
-        const diffAuthors = diffUsers(users, req.body.authors, 'author');
-        const diffReviewers = diffUsers(users, req.body.reviewers, 'reviewer');
+        const diffAuthors = diffUsers(users, data.authors, 'author');
+        const diffReviewers = diffUsers(users, data.reviewers, 'reviewer');
 
         // TODO: invalidate approval if we remove a reviewer that approved and they were the only one
 
@@ -91,7 +105,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           }),
         ]);
 
-        const { authors, reviewers, ...body } = req.body;
+        const { authors, reviewers, ...body } = data;
         let action = 'update';
 
         // @ts-expect-error
@@ -107,7 +121,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           action = 'locked';
         }
 
-        rev.set(body);
+        rev.set(body as ApiRevision);
         await rev.save({ transaction });
 
         if (action === 'closed') {

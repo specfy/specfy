@@ -55,8 +55,8 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       // if (!hasOrg) {
       //   await Perm.create(
       //     {
-      //       orgId: req.body.org_id,
-      //       userId: req.body.userId,
+      //       orgId: data.org_id,
+      //       userId: data.userId,
       //       role: 'viewer',
       //     },
       //     { transaction }

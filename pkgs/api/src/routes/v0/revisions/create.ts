@@ -2,7 +2,8 @@ import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors';
-import { schemaBlob, schemaProseMirror } from '../../../common/validators';
+import { schemaBlobs } from '../../../common/validators';
+import { schemaRevision } from '../../../common/validators/revision';
 import { valOrgId, valProjectId } from '../../../common/zod';
 import { db } from '../../../db';
 import { noQuery } from '../../../middlewares/noQuery';
@@ -28,9 +29,9 @@ function BodyVal(req: FastifyRequest) {
     .object({
       orgId: valOrgId(req),
       projectId: valProjectId(req),
-      name: z.string().min(2).max(75),
-      description: schemaProseMirror,
-      blobs: schemaBlob,
+      name: schemaRevision.shape.name,
+      description: schemaRevision.shape.description,
+      blobs: schemaBlobs,
     })
     .strict();
 }

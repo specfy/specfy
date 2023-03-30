@@ -56,10 +56,9 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       // Destroy all previous reviews
       await RevisionReview.scope('withUser').destroy({
         where: {
-          // Use validated
-          orgId: req.query.org_id,
-          projectId: req.query.project_id,
-          revisionId: req.params.revision_id,
+          orgId: rev.orgId,
+          projectId: rev.projectId,
+          revisionId: rev.id,
         },
         transaction,
       });

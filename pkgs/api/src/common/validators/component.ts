@@ -1,17 +1,8 @@
 import { z } from 'zod';
 
-// import type { DBComponent } from '../../types/db';
-
 import { schemaId, schemaSlug, schemaOrgId } from './common';
 import { schemaDisplay, schemaEdges } from './graph';
 import { schemaProseMirror } from './prosemirror';
-
-// const allowType: Array<DBComponent['type']> = [
-//   'component',
-//   'hosting',
-//   'project',
-//   'thirdparty',
-// ]; // TODO: enforce union
 
 export const schemaComponent = z
   .object({
@@ -21,9 +12,6 @@ export const schemaComponent = z
     blobId: z.string().uuid(),
     techId: z.string().nonempty().nullable(), // TODO: do something about that?
 
-    // type: z.string().refine((val) => {
-    //   return allowType.includes(val as any);
-    // }),
     type: z.enum(['component', 'hosting', 'project', 'thirdparty']),
     typeId: schemaId.nullable(),
 
