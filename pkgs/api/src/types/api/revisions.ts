@@ -6,7 +6,7 @@ import type {
 } from '../db/blobs';
 import type { DBRevision } from '../db/revisions';
 
-import type { Pagination } from './api';
+import type { Pagination, ResErrors } from './api';
 import type { BlockLevelZero } from './document';
 import type { ApiReview } from './reviews';
 import type { ApiUser } from './users';
@@ -28,7 +28,7 @@ export type ResListRevisions = {
 };
 
 // ------ POST /
-type ApiBlobCreate = Omit<
+export type ApiBlobCreate = Omit<
   DBBlobBase,
   'createdAt' | 'id' | 'orgId' | 'projectId' | 'updatedAt'
 > &
@@ -40,7 +40,7 @@ export type ReqPostRevision = Pick<
 > & {
   blobs: ApiBlobCreate[];
 };
-export type ResPostRevision = Pick<ApiRevision, 'id'>;
+export type ResPostRevision = Pick<ApiRevision, 'id'> | ResErrors;
 
 // ------ GET /:id
 export interface ReqRevisionParams {

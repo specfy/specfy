@@ -1,20 +1,20 @@
-import type { FastifyPluginCallback } from 'fastify';
+import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import type { WhereOptions } from 'sequelize';
 import { Op } from 'sequelize';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors';
 import { toApiUser } from '../../../common/formatters/user';
-import { valOrgId, valId } from '../../../common/zod';
+import { valOrgId, valProjectId } from '../../../common/zod';
 import { Perm } from '../../../models';
 import type { ResListPerms, ReqListPerms } from '../../../types/api';
 import type { DBPerm } from '../../../types/db';
 
-function QueryVal(perms: Perm[]) {
+function QueryVal(req: FastifyRequest) {
   return z
     .object({
-      org_id: valOrgId(perms),
-      project_id: valId(),
+      org_id: valOrgId(req),
+      project_id: valProjectId(req),
     })
     .strict()
     .partial({ project_id: true });
@@ -25,7 +25,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     Querystring: ReqListPerms;
     Reply: ResListPerms;
   }>('/', async function (req, res) {
-    const val = QueryVal(req.perms!).safeParse(req.query);
+    const val = QueryVal(req).safeParse(req.query);
     if (!val.success) {
       return validationError(res, val.error);
     }

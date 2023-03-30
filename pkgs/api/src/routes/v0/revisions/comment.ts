@@ -1,16 +1,28 @@
 import type { FastifyPluginCallback } from 'fastify';
+import { z } from 'zod';
 
-import { notFound } from '../../../common/errors';
+import { validationError } from '../../../common/errors';
+import { schemaProseMirror } from '../../../common/validators';
 import { db } from '../../../db';
-import { Revision } from '../../../models';
+import { getRevision } from '../../../middlewares/getRevision';
 import { RevisionComment } from '../../../models/comment';
 import { RevisionReview } from '../../../models/review';
 import type {
+  BlockLevelZero,
   ReqGetRevision,
   ReqPostCommentRevision,
   ReqRevisionParams,
   ResPostCommentRevision,
 } from '../../../types/api';
+
+function BodyVal() {
+  return z
+    .object({
+      content: schemaProseMirror,
+      approval: z.boolean(),
+    })
+    .strict();
+}
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.post<{
@@ -18,25 +30,20 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     Querystring: ReqGetRevision;
     Body: ReqPostCommentRevision;
     Reply: ResPostCommentRevision;
-  }>('/', async function (req, res) {
-    // Use /get
-    const rev = await Revision.findOne({
-      where: {
-        // TODO validation
-        orgId: req.query.org_id,
-        projectId: req.query.project_id,
-        id: req.params.revision_id,
-      },
-    });
-
-    if (!rev) {
-      return notFound(res);
+  }>('/', { preHandler: getRevision }, async function (req, res) {
+    const val = BodyVal().safeParse(req);
+    if (!val.success) {
+      return validationError(res, val.error);
     }
 
+    const data = val.data;
+    const rev = req.revision!;
+
+    // TODO: reuse validation
     const where = {
-      orgId: req.query.org_id,
-      projectId: req.query.project_id,
-      revisionId: req.params.revision_id,
+      orgId: rev.orgId,
+      projectId: rev.projectId,
+      revisionId: rev.id,
       userId: req.user!.id,
     };
 
@@ -44,12 +51,12 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       const created = await RevisionComment.create(
         {
           ...where,
-          content: req.body.content,
+          content: data.content as BlockLevelZero,
         },
         { transaction }
       );
 
-      if (req.body.approval) {
+      if (data.approval) {
         await RevisionReview.destroy({ where, transaction });
         await RevisionReview.create(
           {

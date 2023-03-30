@@ -22,6 +22,7 @@ export function useGetMe() {
     },
   });
 }
+
 export function useListUser(opts: ReqListUsers) {
   return useQuery({
     enabled: !!opts.search,

@@ -2,30 +2,25 @@ import type { FastifyPluginCallback } from 'fastify';
 import z from 'zod';
 
 import { validationError } from '../../../common/errors';
+import { schemaOrgId } from '../../../common/validators';
 import { db } from '../../../db';
 import { Org, Perm } from '../../../models';
 import type { ReqPostOrg, ResPostOrg } from '../../../types/api';
 
 const OrgVal = z
   .object({
-    id: z
-      .string()
-      .min(4)
-      .max(36)
-      .regex(/^[a-z][a-z0-9-]+[a-z]$/, {
-        message: 'Should be lowercase and starts/ends with a letter',
-      })
-      .superRefine(async (val, ctx) => {
-        const res = await Org.findOne({ where: { id: val } });
-        if (!res) {
-          return;
-        }
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          params: { code: 'exists' },
-          message: 'This id is already used',
-        });
-      }),
+    id: schemaOrgId.superRefine(async (val, ctx) => {
+      const res = await Org.findOne({ where: { id: val } });
+      if (!res) {
+        return;
+      }
+
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        params: { code: 'exists' },
+        message: 'This id is already used',
+      });
+    }),
     name: z.string().min(4).max(36),
   })
   .strict();

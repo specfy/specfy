@@ -16,7 +16,10 @@ export async function fetchApi<
   if (opts?.qp) {
     const qp = { ...opts.qp };
     for (const key in qp) {
-      if (typeof qp[key] === 'undefined') {
+      if (
+        typeof qp[key] === 'undefined' ||
+        (typeof qp[key] === 'string' && qp[key] === '')
+      ) {
         delete qp[key];
       }
     }

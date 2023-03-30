@@ -1,28 +1,22 @@
-import type { FastifyPluginCallback } from 'fastify';
+import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import z from 'zod';
 
 import { validationError } from '../../../common/errors';
+import { schemaProject } from '../../../common/validators';
 import { valOrgId, valUniqueColumn } from '../../../common/zod';
 import { db } from '../../../db';
 import { Perm, Project } from '../../../models';
 import type { ReqPostProject, ResPostProject } from '../../../types/api';
 
-function ProjectVal(perms: Perm[]) {
+function ProjectVal(req: FastifyRequest) {
   return z
     .object({
-      name: z.string().min(2).max(36),
-      slug: z
-        .string()
-        .min(2)
-        .max(36)
-        .superRefine(valUniqueColumn(Project, 'slug', 'slug')),
-      orgId: valOrgId(perms),
-      display: z.object({
-        pos: z.object({
-          x: z.number().min(-99999).max(99999),
-          y: z.number().min(-99999).max(99999),
-        }),
-      }),
+      name: schemaProject.shape.name,
+      slug: schemaProject.shape.slug.superRefine(
+        valUniqueColumn(Project, 'slug', 'slug')
+      ),
+      orgId: valOrgId(req),
+      display: schemaProject.shape.display,
     })
     .strict();
 }
@@ -32,7 +26,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     Body: ReqPostProject;
     Reply: ResPostProject;
   }>('/', async function (req, res) {
-    const val = await ProjectVal(req.perms!).safeParseAsync(req.body);
+    const val = await ProjectVal(req).safeParseAsync(req.body);
     if (!val.success) {
       return validationError(res, val.error);
     }

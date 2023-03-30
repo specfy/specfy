@@ -1,9 +1,9 @@
 import type { FastifyPluginCallback } from 'fastify';
 
-import { notFound } from '../../../common/errors';
 import { toApiRevision } from '../../../common/formatters/revision';
 import { toApiUser } from '../../../common/formatters/user';
-import { Revision, TypeHasUser } from '../../../models';
+import { getRevision } from '../../../middlewares/getRevision';
+import { TypeHasUser } from '../../../models';
 import type {
   ReqGetRevision,
   ReqRevisionParams,
@@ -15,19 +15,8 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     Params: ReqRevisionParams;
     Querystring: ReqGetRevision;
     Reply: ResGetRevision;
-  }>('/', async function (req, res) {
-    const rev = await Revision.findOne({
-      where: {
-        // TODO validation
-        orgId: req.query.org_id,
-        projectId: req.query.project_id,
-        id: req.params.revision_id,
-      },
-    });
-
-    if (!rev) {
-      return notFound(res);
-    }
+  }>('/', { preHandler: getRevision }, async function (req, res) {
+    const rev = req.revision!;
 
     const users = await TypeHasUser.scope('withUser').findAll({
       where: {

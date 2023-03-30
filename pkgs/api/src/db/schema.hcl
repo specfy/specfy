@@ -426,7 +426,7 @@ table "revisions" {
   }
 
   column "name" {
-    type = varchar(250)
+    type = varchar(75)
     null = false
   }
   column "description" {

@@ -1,8 +1,12 @@
-import type { FastifyPluginCallback } from 'fastify';
+import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import type { WhereOptions } from 'sequelize';
 import { Op } from 'sequelize';
+import { z } from 'zod';
 
+import { validationError } from '../../../common/errors';
 import { toApiRevision } from '../../../common/formatters/revision';
+import { valOrgId, valProjectId } from '../../../common/zod';
+import { db } from '../../../db';
 import { Revision } from '../../../models';
 import type {
   Pagination,
@@ -11,59 +15,88 @@ import type {
 } from '../../../types/api';
 import type { DBRevision } from '../../../types/db';
 
+function QueryVal(req: FastifyRequest) {
+  return z
+    .object({
+      org_id: valOrgId(req),
+      project_id: valProjectId(req),
+      search: z.string().min(1).max(50),
+      status: z.enum([
+        'all',
+        'approved',
+        'closed',
+        'draft',
+        'merged',
+        'opened',
+        'waiting',
+      ]),
+    })
+    .strict()
+    .partial({ project_id: true, search: true, status: true });
+}
+
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{
     Querystring: ReqListRevisions;
     Reply: ResListRevisions;
   }>('/', async function (req, res) {
+    const val = QueryVal(req).safeParse(req.query);
+    if (!val.success) {
+      return validationError(res, val.error);
+    }
+
+    const query = val.data;
     const pagination: Pagination = {
       currentPage: 1,
       totalItems: 0,
     };
 
-    const filter: WhereOptions<DBRevision> = {};
+    const filter: WhereOptions<DBRevision> = {
+      orgId: query.org_id,
+    };
+
+    if (query.project_id) {
+      filter.projectId = query.project_id;
+    }
 
     // Status filtering
-    if (req.query.status) {
-      if (req.query.status === 'merged') {
+    if (query.status) {
+      if (query.status === 'merged') {
         filter.merged = true;
-      } else if (req.query.status === 'opened') {
+      } else if (query.status === 'opened') {
         filter.mergedAt = null;
         filter.closedAt = null;
-      } else if (req.query.status !== 'all') {
-        filter.status = req.query.status;
+      } else if (query.status !== 'all') {
+        filter.status = query.status;
         filter.mergedAt = { [Op.is]: null };
       }
     }
 
     // Search
-    if (req.query.search) {
-      filter.name = { [Op.iLike]: `%${req.query.search}%` };
+    if (query.search) {
+      filter.name = { [Op.iLike]: `%${query.search}%` };
     }
     // TODO: search in content
 
     // TODO: return author
-    const list = await Revision.findAll({
-      where: {
-        // TODO validation
-        orgId: req.query.org_id,
-        projectId: req.query.project_id,
-        ...filter,
-      },
-      order: [['createdAt', 'DESC']],
-      // TODO: add limit/offset to qp
-      limit: 10,
-      offset: 0,
+    const list = await db.transaction(async (transaction) => {
+      const tmp = await Revision.findAll({
+        where: filter,
+        order: [['createdAt', 'DESC']],
+        // TODO: add limit/offset to qp
+        limit: 10,
+        offset: 0,
+        transaction,
+      });
+
+      const count = await Revision.count({
+        where: filter,
+        transaction,
+      });
+      pagination.totalItems = count;
+
+      return tmp;
     });
-    const count = await Revision.count({
-      where: {
-        // TODO validation
-        orgId: req.query.org_id,
-        projectId: req.query.project_id,
-        ...filter,
-      },
-    });
-    pagination.totalItems = count;
 
     res.status(200).send({
       data: list.map((rev) => {

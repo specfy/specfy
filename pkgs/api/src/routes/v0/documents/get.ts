@@ -1,10 +1,10 @@
-import type { FastifyPluginCallback } from 'fastify';
+import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
 import { notFound, validationError } from '../../../common/errors';
 import { toApiUser } from '../../../common/formatters/user';
-import { valId, valOrgId } from '../../../common/zod';
-import type { Perm } from '../../../models';
+import { schemaId } from '../../../common/validators';
+import { valOrgId, valProjectId } from '../../../common/zod';
 import { Document } from '../../../models';
 import { TypeHasUser } from '../../../models/typeHasUser';
 import type {
@@ -13,12 +13,12 @@ import type {
   ResGetDocument,
 } from '../../../types/api';
 
-function QueryVal(perms: Perm[]) {
+function QueryVal(req: FastifyRequest) {
   return z
     .object({
-      org_id: valOrgId(perms),
-      project_id: valId(),
-      document_id: valId(),
+      org_id: valOrgId(req),
+      project_id: valProjectId(req),
+      document_id: schemaId,
     })
     .strict();
 }
@@ -29,7 +29,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     Params: ReqDocumentParams;
     Reply: ResGetDocument;
   }>('/:document_id', async function (req, res) {
-    const val = QueryVal(req.perms!).safeParse({ ...req.query, ...req.params });
+    const val = QueryVal(req).safeParse({ ...req.query, ...req.params });
     if (!val.success) {
       return validationError(res, val.error);
     }

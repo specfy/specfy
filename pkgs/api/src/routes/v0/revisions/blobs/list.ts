@@ -1,7 +1,7 @@
 import type { FastifyPluginCallback } from 'fastify';
 
-import { notFound } from '../../../../common/errors';
-import { Revision, RevisionBlob } from '../../../../models';
+import { getRevision } from '../../../../middlewares/getRevision';
+import { RevisionBlob } from '../../../../models';
 import type {
   ReqGetRevision,
   ReqRevisionParams,
@@ -14,20 +14,8 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     Params: ReqRevisionParams;
     Querystring: ReqGetRevision;
     Reply: ResListRevisionBlobs;
-  }>('/', async function (req, res) {
-    // TODO: reuse this call from get
-    const rev = await Revision.findOne({
-      where: {
-        orgId: req.query.org_id,
-        projectId: req.query.project_id,
-        id: req.params.revision_id,
-      },
-    });
-
-    if (!rev) {
-      return notFound(res);
-    }
-
+  }>('/', { preHandler: getRevision }, async function (req, res) {
+    const rev = req.revision!;
     const list = await RevisionBlob.scope('withPrevious').findAll({
       where: {
         id: rev.blobs,

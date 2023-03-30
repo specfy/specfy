@@ -1,11 +1,10 @@
 import type { FastifyPluginCallback } from 'fastify';
 
 import { findAllBlobsWithParent } from '../../../common/blobs';
-import { notFound } from '../../../common/errors';
 import { toApiReview } from '../../../common/formatters/review';
 import { checkReviews } from '../../../common/revision';
 import { db } from '../../../db';
-import { Revision } from '../../../models';
+import { getRevision } from '../../../middlewares/getRevision';
 import type {
   ReqGetRevision,
   ReqRevisionParams,
@@ -17,21 +16,8 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     Params: ReqRevisionParams;
     Querystring: ReqGetRevision;
     Reply: ResCheckRevision;
-  }>('/', async function (req, res) {
-    // Use /get
-    const rev = await Revision.findOne({
-      where: {
-        // TODO validation
-        orgId: req.query.org_id,
-        projectId: req.query.project_id,
-        id: req.params.revision_id,
-      },
-    });
-
-    if (!rev) {
-      return notFound(res);
-    }
-
+  }>('/', { preHandler: getRevision }, async function (req, res) {
+    const rev = req.revision!;
     const outdatedBlobs: string[] = [];
 
     const checks = await db.transaction(async (transaction) => {

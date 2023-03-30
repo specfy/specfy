@@ -1,11 +1,14 @@
 import type { FastifyInstance } from 'fastify';
 
+import type { Project, Revision } from '../models';
 import { Perm, User } from '../models';
 
 declare module 'fastify' {
   interface FastifyRequest {
     user?: User;
     perms?: Perm[];
+    project?: Project;
+    revision?: Revision;
   }
 }
 

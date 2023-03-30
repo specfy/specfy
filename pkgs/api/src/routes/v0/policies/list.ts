@@ -1,11 +1,10 @@
-import type { FastifyPluginCallback } from 'fastify';
+import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import type { WhereOptions } from 'sequelize';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors';
 import { valOrgId } from '../../../common/zod';
 import { db } from '../../../db';
-import type { Perm } from '../../../models';
 import { Policy } from '../../../models';
 import type {
   Pagination,
@@ -14,10 +13,10 @@ import type {
 } from '../../../types/api';
 import type { DBPolicy } from '../../../types/db';
 
-function QueryVal(perms: Perm[]) {
+function QueryVal(req: FastifyRequest) {
   return z
     .object({
-      org_id: valOrgId(perms),
+      org_id: valOrgId(req),
     })
     .strict();
 }
@@ -27,7 +26,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     Querystring: ReqListPolicies;
     Reply: ResListPolicies;
   }>('/', async function (req, res) {
-    const val = QueryVal(req.perms!).safeParse(req.query);
+    const val = QueryVal(req).safeParse(req.query);
     if (!val.success) {
       return validationError(res, val.error);
     }

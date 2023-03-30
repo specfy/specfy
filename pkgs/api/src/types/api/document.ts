@@ -11,18 +11,24 @@ export interface MarkDiff {
 }
 export type Marks =
   | MarkDiff
+  | {
+      type: 'link';
+      attrs: { href: string; target: string; class: string | null };
+    }
   | { type: 'bold' }
   | { type: 'code' }
-  | { type: 'italic' }
-  | { type: 'link'; attrs: { href: string; target: string } };
+  | { type: 'italic' };
 
 // ----- Text
 export interface BlockText {
   type: 'text';
   text: string;
   marks?: Marks[];
-  link?: string;
 }
+
+/**
+ * @toExtract
+ */
 export interface BlockParagraph {
   type: 'paragraph';
   content?: Array<BlockHardBreak | BlockText>;
@@ -162,7 +168,7 @@ export interface BlockCodeBlock {
 export interface BlockStep {
   type: 'step';
   content: BlockLevelOne[];
-  attrs: BlockDefaultAttrs & { title?: string };
+  attrs: BlockDefaultAttrs & { title?: string; stepId?: number };
   marks?: MarkDiff[];
 }
 

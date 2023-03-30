@@ -1,9 +1,8 @@
+import type { FastifyRequest } from 'fastify';
 import type { ModelStatic } from 'sequelize';
 import z from 'zod';
 
-import type { Perm } from '../models';
-
-import { alphabet, size } from './id';
+import { schemaId, schemaOrgId } from './validators';
 
 export function valUniqueColumn(
   model: ModelStatic<any>,
@@ -24,46 +23,42 @@ export function valUniqueColumn(
   };
 }
 
-export function valId() {
-  return z
-    .string()
-    .min(size)
-    .max(size)
-    .regex(new RegExp(`^[${alphabet}]+$`));
-}
-
 export function valIdAvailable(model: ModelStatic<any>) {
-  return valId().superRefine(valUniqueColumn(model, 'id', 'ID'));
+  return schemaId.superRefine(valUniqueColumn(model, 'id', 'ID'));
 }
 
-export function valOrgId(perms: Perm[]) {
-  return z
-    .string()
-    .min(4)
-    .max(36)
-    .superRefine((val, ctx) => {
-      const res = perms.find((perm) => perm.orgId === val && !perm.projectId);
-      if (res) {
-        return;
-      }
+export function valOrgId(req: FastifyRequest) {
+  return schemaOrgId.superRefine((val, ctx) => {
+    const res = req.perms!.find(
+      (perm) =>
+        perm.userId === req.user!.id && perm.orgId === val && !perm.projectId
+    );
+    if (res) {
+      return;
+    }
 
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        params: { code: 'forbidden' },
-        message:
-          "The organization doesn't exists or you don't have the permissions",
-      });
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      params: { code: 'forbidden' },
+      message:
+        "The organization doesn't exists or you don't have the permissions",
     });
+  });
 }
 
-// export function valQueryOrgId<TQuery extends { org_id: string }>(
-//   perms: Perm[],
-//   query: TQuery
-// ) {
-//   return z
-//     .object({
-//       org_id: valOrgId(perms),
-//     })
-//     .strict()
-//     .safeParse(query);
-// }
+export function valProjectId(req: FastifyRequest) {
+  return schemaId.superRefine((val, ctx) => {
+    const res = req.perms!.find(
+      (perm) => perm.userId === req.user!.id && perm.projectId === val
+    );
+    if (res) {
+      return;
+    }
+
+    ctx.addIssue({
+      code: z.ZodIssueCode.custom,
+      params: { code: 'forbidden' },
+      message: "The project doesn't exists or you don't have the permissions",
+    });
+  });
+}

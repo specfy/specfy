@@ -3,7 +3,9 @@ import {
   IconGitPullRequestDraft,
 } from '@tabler/icons-react';
 import { App, Button, Form, Result, Typography } from 'antd';
+import { omit } from 'api/src/common/object';
 import type {
+  ApiBlobCreate,
   ApiBlobWithPrevious,
   ApiProject,
   BlockLevelZero,
@@ -96,20 +98,26 @@ export const ProjectRevisionCreate: React.FC<{
 
   const onSubmit = async () => {
     const blobs: ReqPostRevision['blobs'] = [];
-    for (const {
-      id,
-      orgId,
-      projectId,
-      diffs,
-      createdAt,
-      updatedAt,
-      previous,
-      ...change
-    } of staging.diffs) {
+    for (const diff of staging.diffs) {
+      const change: ApiBlobCreate = omit(diff, [
+        'id',
+        'orgId',
+        'projectId',
+        'diffs',
+        'createdAt',
+        'updatedAt',
+        'previous',
+      ]);
+
+      if (change.type === 'document' && change.blob) {
+        // TODO: automate this?
+        change.blob = omit(change.blob, ['authors', 'approvedBy', 'reviewers']);
+      }
+
       blobs.push(change);
     }
 
-    const { id } = await createRevision({
+    const res = await createRevision({
       orgId: params.org_id,
       projectId: proj.id,
       name: title,
@@ -117,11 +125,15 @@ export const ProjectRevisionCreate: React.FC<{
       blobs,
     });
 
+    if ('error' in res) {
+      return;
+    }
+
     // Discard local changes
     originalStore.revertAll(staging.diffs);
 
     message.success('Revision created');
-    navigate(`/${params.org_id}/${params.project_slug}/revisions/${id}`);
+    navigate(`/${params.org_id}/${params.project_slug}/revisions/${res.id}`);
   };
 
   if (staging.diffs.length === 0) {

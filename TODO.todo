@@ -87,12 +87,12 @@ Permissions:
     ✔ Validation @done(23-03-29 15:55)
     - Unit Test
   ✔ Update @done(23-03-29 15:55)
-    - Validation
+    ✔ Validation @done(23-03-30 12:06)
     - Unit Test
     - Permission check
     - Activity
   ✔ Remove @done(23-03-29 15:55)
-    - Validation
+    ✔ Validation @done(23-03-30 12:06)
     - Unit Test
     - Permission check
     - Activity
@@ -189,15 +189,39 @@ Revision:
   ✔ List @done(23-03-29 14:47)
     ✔ Search @done(23-03-29 14:47)
     ✔ Filter @done(23-03-29 14:47)
+    ✔ Validation @done(23-03-29 17:49)
+    - Unit Test
   ✔ Show one @done(23-03-29 14:47)
+    ✔ Validation @done(23-03-30 11:51)
+    - Unit Test
+  ✔ Edition @done(23-03-27 12:24)
+    ✔ Validation @done(23-03-30 11:51)
+    - Permission
+    - Unit Test
+  - Close
+    ✔ Validation @done(23-03-30 11:51)
+    - Permission
+    - Unit Test
+  - Lock
+    ✔ Validation @done(23-03-30 11:51)
+    - Permission
+    - Unit Test
+
   - Commentaire
   - Timeline
   ✔ Diff visuel (pas juste code) @done(23-03-25 23:25)
-  ✔ Edition @done(23-03-27 12:24)
+    ✔ Validation @done(23-03-30 11:52)
+    - Validation ids
   - Revert d’une revision publié
   ✔ Draft @done(23-03-25 23:25)
+    ✔ Validation @done(23-03-30 12:05)
+    - Unit Test
   ✔ Approval @done(23-03-25 23:25)
+    ✔ Validation @done(23-03-30 12:05)
+    - Unit Test
   ✔ Merge @done(23-03-25 23:25)
+    ✔ Validation @done(23-03-30 12:06)
+    - Unit Test
   ✔ Ask for review @done(23-03-25 23:25)
     - Notification
   - Unit test

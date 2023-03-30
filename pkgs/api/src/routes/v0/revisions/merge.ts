@@ -2,10 +2,10 @@ import type { FastifyPluginCallback } from 'fastify';
 import type { Model } from 'sequelize';
 
 import { findAllBlobsWithParent } from '../../../common/blobs';
-import { notFound } from '../../../common/errors';
 import { checkReviews } from '../../../common/revision';
 import { db } from '../../../db';
-import { Component, Project, Revision, Document } from '../../../models';
+import { getRevision } from '../../../middlewares/getRevision';
+import { Component, Project, Document } from '../../../models';
 import type {
   ReqGetRevision,
   ReqRevisionParams,
@@ -19,22 +19,10 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     Params: ReqRevisionParams;
     Querystring: ReqGetRevision;
     Reply: ResMergeRevision | ResMergeRevisionError;
-  }>('/', async function (req, res) {
-    // Use /get
-    const rev = await Revision.findOne({
-      where: {
-        // TODO validation
-        orgId: req.query.org_id,
-        projectId: req.query.project_id,
-        id: req.params.revision_id,
-      },
-    });
-
-    if (!rev) {
-      return notFound(res);
-    }
-
+  }>('/', { preHandler: getRevision }, async function (req, res) {
+    const rev = req.revision!;
     let cantMerge: string | false = false;
+
     await db.transaction(async (transaction) => {
       // Check if we have reviews
       const reviews = await checkReviews(rev, transaction);

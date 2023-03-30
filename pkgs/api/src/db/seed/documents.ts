@@ -101,6 +101,7 @@ export async function seedPlaybook(p1: Project, [u1]: User[]) {
           type: 'step',
           attrs: {
             uid: 'UidgrRPV005',
+            stepId: 1,
           },
           content: [
             {
@@ -111,7 +112,7 @@ export async function seedPlaybook(p1: Project, [u1]: User[]) {
         },
         {
           type: 'step',
-          attrs: { title: 'Build Docker', uid: 'UidgrRPV007' },
+          attrs: { title: 'Build Docker', uid: 'UidgrRPV007', stepId: 2 },
           content: [
             {
               type: 'codeBlock',
@@ -130,7 +131,11 @@ export async function seedPlaybook(p1: Project, [u1]: User[]) {
         },
         {
           type: 'step',
-          attrs: { title: 'Push built docker image', uid: 'UidgrRPV009' },
+          attrs: {
+            title: 'Push built docker image',
+            uid: 'UidgrRPV009',
+            stepId: 3,
+          },
           content: [
             {
               type: 'codeBlock',
@@ -149,7 +154,7 @@ export async function seedPlaybook(p1: Project, [u1]: User[]) {
         },
         {
           type: 'step',
-          attrs: { uid: 'UidgrRPV011' },
+          attrs: { uid: 'UidgrRPV011', stepId: 4 },
           content: [
             {
               type: 'blockDocument',
@@ -159,7 +164,7 @@ export async function seedPlaybook(p1: Project, [u1]: User[]) {
         },
         {
           type: 'step',
-          attrs: { uid: 'UidgrRPV013' },
+          attrs: { uid: 'UidgrRPV013', stepId: 5 },
           content: [
             {
               type: 'blockDocument',
@@ -222,6 +227,7 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
                   attrs: {
                     href: 'http://localhost:5173/algolia/crawler',
                     target: '_blank',
+                    class: null,
                   },
                   type: 'link',
                 },
@@ -402,11 +408,11 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
         },
         {
           type: 'vote',
-          attrs: { voteId: '', uid: 'UidgrRPV024' }, // TODO: fill this
+          attrs: { voteId: 'Swq9qqgFXDA0', uid: 'UidgrRPV024' }, // TODO: fill this
           content: [
             {
               type: 'voteItem',
-              attrs: { choiceId: '1', uid: 'UidgrRPV025' },
+              attrs: { choiceId: 'Swq9qqgFXDA1', uid: 'UidgrRPV025' },
               content: [
                 {
                   type: 'heading',
@@ -427,7 +433,7 @@ export async function seedRFC(p1: Project, [u1, u2]: User[]) {
             },
             {
               type: 'voteItem',
-              attrs: { choiceId: '2', uid: 'UidgrRPV028' },
+              attrs: { choiceId: 'Swq9qqgFXDA2', uid: 'UidgrRPV028' },
               content: [
                 {
                   type: 'heading',

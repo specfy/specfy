@@ -1,12 +1,11 @@
-import type { FastifyPluginCallback } from 'fastify';
+import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import type { WhereOptions } from 'sequelize';
 import { Op } from 'sequelize';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors';
-import { valOrgId, valId } from '../../../common/zod';
+import { valOrgId, valProjectId } from '../../../common/zod';
 import { db } from '../../../db';
-import type { Perm } from '../../../models';
 import { Document } from '../../../models';
 import type {
   ReqListDocuments,
@@ -16,20 +15,13 @@ import type {
 import type { DBDocument } from '../../../types/db';
 import { DocumentType } from '../../../types/db';
 
-function QueryVal(perms: Perm[]) {
+function QueryVal(req: FastifyRequest) {
   return z
     .object({
-      org_id: valOrgId(perms),
-      project_id: valId(),
+      org_id: valOrgId(req),
+      project_id: valProjectId(req),
       search: z.string().min(2).max(50),
-      type: z.string().refine(
-        (val) => {
-          return val in DocumentType;
-        },
-        {
-          message: 'Invalid document type',
-        }
-      ),
+      type: z.nativeEnum(DocumentType),
     })
     .strict()
     .partial({ project_id: true, search: true, type: true });
@@ -39,7 +31,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{ Querystring: ReqListDocuments; Reply: ResListDocuments }>(
     '/',
     async function (req, res) {
-      const val = QueryVal(req.perms!).safeParse(req.query);
+      const val = QueryVal(req).safeParse(req.query);
       if (!val.success) {
         return validationError(res, val.error);
       }

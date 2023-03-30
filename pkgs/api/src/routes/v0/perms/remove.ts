@@ -1,20 +1,20 @@
-import type { FastifyPluginCallback } from 'fastify';
+import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import type { WhereOptions } from 'sequelize';
 import { z } from 'zod';
 
 import { notFound, validationError } from '../../../common/errors';
-import { valOrgId, valId } from '../../../common/zod';
+import { valOrgId, valProjectId } from '../../../common/zod';
 import { db } from '../../../db';
 import { noQuery } from '../../../middlewares/noQuery';
 import { Perm } from '../../../models';
 import type { ReqDeletePerms, ResDeletePerms } from '../../../types/api';
 import type { DBPerm } from '../../../types/db';
 
-function QueryVal(perms: Perm[]) {
+function QueryVal(req: FastifyRequest) {
   return z
     .object({
-      org_id: valOrgId(perms),
-      project_id: valId(),
+      org_id: valOrgId(req),
+      project_id: valProjectId(req),
       userId: z.string().uuid(),
     })
     .strict()
@@ -26,7 +26,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     Body: ReqDeletePerms;
     Reply: ResDeletePerms;
   }>('/', { preHandler: noQuery }, async function (req, res) {
-    const val = QueryVal(req.perms!).safeParse(req.body);
+    const val = QueryVal(req).safeParse(req.body);
     if (!val.success) {
       return validationError(res, val.error);
     }

@@ -1,8 +1,8 @@
 import type { FastifyPluginCallback } from 'fastify';
 
-import { notFound } from '../../../common/errors';
 import { db } from '../../../db';
-import { Revision, TypeHasUser } from '../../../models';
+import { getRevision } from '../../../middlewares/getRevision';
+import { TypeHasUser } from '../../../models';
 import type {
   ReqGetRevision,
   ReqPutRevision,
@@ -32,19 +32,8 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     Querystring: ReqGetRevision;
     Body: ReqPutRevision;
     Reply: ResPutRevision;
-  }>('/', async function (req, res) {
-    // TODO: reuse GET
-    const rev = await Revision.findOne({
-      where: {
-        orgId: req.query.org_id,
-        projectId: req.query.project_id,
-        id: req.params.revision_id,
-      },
-    });
-
-    if (!rev) {
-      return notFound(res);
-    }
+  }>('/', { preHandler: getRevision }, async function (req, res) {
+    const rev = req.revision!;
 
     // TODO: validation
     try {
