@@ -2,22 +2,16 @@ import util from 'node:util';
 
 import type { Dispatcher } from 'undici';
 import { Client } from 'undici';
+import type { OmitByValue } from 'utility-types';
 
 import type { ResErrors, ResValidationError } from '../types/api';
 import type { API, APIPaths } from '../types/api/endpoints';
+import type { FilterObjObjWithKey } from '../types/utils';
 
-type GET<TPath extends APIPaths> = API[TPath] extends { GET: any }
-  ? API[TPath]['GET']
-  : never;
-type POST<TPath extends APIPaths> = API[TPath] extends { POST: any }
-  ? API[TPath]['POST']
-  : never;
-type PUT<TPath extends APIPaths> = API[TPath] extends { PUT: any }
-  ? API[TPath]['PUT']
-  : never;
-type DELETE<TPath extends APIPaths> = API[TPath] extends { DELETE: any }
-  ? API[TPath]['DELETE']
-  : never;
+type HasGet = { GET: any };
+type HasPost = { POST: any };
+type HasPut = { PUT: any };
+type HasDelete = { DELETE: any };
 
 export function isError(json: any): asserts json is ResErrors {
   if (!('error' in json)) {
@@ -55,65 +49,106 @@ export class ApiClient {
   }
 
   async get<TPath extends APIPaths>(
-    path: GET<TPath> extends never ? never : TPath,
-    token?: string,
-    qp?: GET<TPath> extends never ? never : API[TPath]['GET']['qp']
+    // path: GET<TPath> extends never ? never : TPath,
+    path: TPath extends keyof FilterObjObjWithKey<API, 'GET'>
+      ? TPath
+      : keyof FilterObjObjWithKey<API, 'GET'>,
+    // eslint-disable-next-line @typescript-eslint/sort-type-union-intersection-members
+    opts?: {
+      token?: string;
+    } & (API[TPath] extends HasGet
+      ? OmitByValue<Omit<API[TPath]['GET'], 'res'>, never>
+      : never)
   ): Promise<
     Dispatcher.ResponseData & {
-      json: API[TPath] extends { GET: any } ? API[TPath]['GET']['res'] : never;
+      json: API[TPath] extends HasGet ? API[TPath]['GET']['res'] : never;
     }
   > {
-    const res = await this.client.request({
-      method: 'GET',
-      path,
-      query: qp || {},
-      headers: {
-        authorization: `Bearer ${token}`,
-      },
-    });
-    const json = await res.body.json();
-    return { json, ...res };
+    return await this.query('GET', path, opts);
   }
 
   async post<TPath extends APIPaths>(
-    path: POST<TPath> extends never ? never : TPath
+    path: TPath extends keyof FilterObjObjWithKey<API, 'POST'>
+      ? TPath
+      : keyof FilterObjObjWithKey<API, 'POST'>,
+    // eslint-disable-next-line @typescript-eslint/sort-type-union-intersection-members
+    opts?: {
+      token?: string;
+    } & (API[TPath] extends HasPost
+      ? OmitByValue<Omit<API[TPath]['POST'], 'res'>, never>
+      : never)
   ): Promise<
     Dispatcher.ResponseData & {
-      json: POST<TPath>['res'];
+      json: API[TPath] extends HasPost ? API[TPath]['POST']['res'] : never;
     }
   > {
-    const res = await this.client.request({ method: 'POST', path });
-    const json = await res.body.json();
-    return { json, ...res };
+    return await this.query('POST', path, opts);
   }
 
   async put<TPath extends APIPaths>(
-    path: PUT<TPath> extends never ? never : TPath
+    path: TPath extends keyof FilterObjObjWithKey<API, 'PUT'>
+      ? TPath
+      : keyof FilterObjObjWithKey<API, 'PUT'>,
+    // eslint-disable-next-line @typescript-eslint/sort-type-union-intersection-members
+    opts?: {
+      token?: string;
+    } & (API[TPath] extends HasPut
+      ? OmitByValue<Omit<API[TPath]['PUT'], 'res'>, never>
+      : never)
   ): Promise<
     Dispatcher.ResponseData & {
-      json: PUT<TPath>['res'];
+      json: API[TPath] extends HasPut ? API[TPath]['PUT']['res'] : never;
     }
   > {
-    const res = await this.client.request({ method: 'PUT', path });
-    const json = await res.body.json();
-    return { json, ...res };
+    return await this.query('PUT', path, opts);
   }
 
   async delete<TPath extends APIPaths>(
-    // path: HasMethod<TPath, 'DELETE'>
-    path: DELETE<TPath> extends never ? never : TPath
+    path: TPath extends keyof FilterObjObjWithKey<API, 'DELETE'>
+      ? TPath
+      : keyof FilterObjObjWithKey<API, 'DELETE'>,
+    // eslint-disable-next-line @typescript-eslint/sort-type-union-intersection-members
+    opts?: {
+      token?: string;
+    } & (API[TPath] extends HasDelete
+      ? OmitByValue<Omit<API[TPath]['DELETE'], 'res'>, never>
+      : never)
   ): Promise<
     Dispatcher.ResponseData & {
-      json: DELETE<TPath>['res'];
+      json: API[TPath] extends HasDelete ? API[TPath]['DELETE']['res'] : never;
     }
   > {
-    const res = await this.client.request({ method: 'DELETE', path });
-    const json = await res.body.json();
-    return { json, ...res };
+    return await this.query('DELETE', path, opts);
   }
 
   close() {
     this.client.close();
+  }
+
+  private async query(
+    method: Dispatcher.HttpMethod,
+    path: string,
+    opts?: {
+      token?: string;
+      qp?: Record<string, any>;
+      body?: Record<string, any>;
+    }
+  ) {
+    const res = await this.client.request({
+      method,
+      path,
+      query: opts && 'qp' in opts ? opts.qp : {},
+      body: opts && 'body' in opts ? JSON.stringify(opts.body) : null,
+      headers: {
+        authorization: `Bearer ${opts?.token}`,
+        ...(opts && 'body' in opts
+          ? { 'content-type': 'application/json' }
+          : {}),
+      },
+    });
+    const json = await res.body.json();
+
+    return { json, ...res };
   }
 }
 

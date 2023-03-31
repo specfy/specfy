@@ -1,11 +1,17 @@
 import { expect } from '@jest/globals';
 
-import { isError } from './fetch';
+import type { API, APIPaths } from '../types/api/endpoints';
+
+import { isError, isValidationError } from './fetch';
 import type { ApiClient } from './fetch';
 import { seedSimpleUser } from './seed/seed';
 
-export async function shouldBeProtected(request: ReturnType<ApiClient['get']>) {
-  const res = await request;
+export async function shouldBeProtected<TPath extends APIPaths>(
+  client: ApiClient,
+  path: TPath,
+  method: keyof API[TPath]
+) {
+  const res = await client[(method as string).toLowerCase()](path as any);
 
   isError(res.json);
   expect(res.statusCode).toBe(401);
@@ -16,11 +22,16 @@ export async function shouldBeProtected(request: ReturnType<ApiClient['get']>) {
   });
 }
 
-export async function shouldBeForbidden(
-  cb: (token: string) => ReturnType<ApiClient['get']>
+export async function shouldBeForbidden<TPath extends APIPaths>(
+  client: ApiClient,
+  path: TPath,
+  method: keyof API[TPath]
 ) {
   const { token } = await seedSimpleUser();
-  const res = await cb(token);
+  const res = await client[(method as string).toLowerCase()](path as any, {
+    token,
+    qp: { random: 'world' } as any,
+  });
 
   isError(res.json);
   expect(res.statusCode).toBe(403);
@@ -29,4 +40,44 @@ export async function shouldBeForbidden(
       code: '403_forbidden',
     },
   });
+}
+
+export async function shouldNotAllowQueryParams<TPath extends APIPaths>(
+  client: ApiClient,
+  path: TPath,
+  method: keyof API[TPath]
+) {
+  const { token } = await seedSimpleUser();
+  const res = await client[(method as string).toLowerCase()](path as any, {
+    token,
+    qp: { random: 'world' } as any,
+  });
+
+  isValidationError(res.json);
+  expect(res.statusCode).toBe(400);
+  expect(res.json.error.form).toStrictEqual([
+    {
+      code: 'unrecognized_keys',
+      message: "Unrecognized key(s) in object: 'random'",
+      path: [],
+    },
+  ]);
+}
+export async function shouldEnforceQueryParams<TPath extends APIPaths>(
+  client: ApiClient,
+  path: TPath,
+  method: keyof API[TPath]
+) {
+  const { token } = await seedSimpleUser();
+  const res: Awaited<ReturnType<ApiClient['get']>> = await client[
+    (method as string).toLowerCase()
+  ](path as any, {
+    token,
+    qp: {},
+  });
+
+  isValidationError(res.json);
+  expect(res.statusCode).toBe(400);
+  expect(res.json.error.form).toStrictEqual([]);
+  expect(Object.keys(res.json.error.fields).length).toBeGreaterThan(0);
 }

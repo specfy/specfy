@@ -1,3 +1,4 @@
+import { nanoid } from '../../common/id';
 import { User } from '../../models';
 
 /**
@@ -44,12 +45,10 @@ export async function seedUsers(): Promise<User[]> {
   return [u1, u2, u3, u4, u5, u6, u7, u8];
 }
 
-let count = 0;
 export async function seedUser(): Promise<User> {
-  count += 1;
-
+  const id = nanoid();
   return await User.create({
-    name: `User ${count}`,
-    email: `user.${count}@gmail.com`,
+    name: `User ${id}`,
+    email: `user.${id}@gmail.com`,
   });
 }

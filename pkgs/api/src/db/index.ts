@@ -15,7 +15,9 @@ const url = env(
 
 export const db = new Sequelize(url, {
   logging: (sql) => {
-    logger.info(sql);
+    if (env('NODE_ENV') !== 'test') {
+      logger.info(sql);
+    }
   },
   dialectOptions: {
     ssl:

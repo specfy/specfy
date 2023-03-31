@@ -5,7 +5,10 @@ import { fastify } from 'fastify';
 import buildApp from '../../../app';
 import { db } from '../../../db';
 import { ApiClient, isSuccess, isValidationError } from '../../../test/fetch';
-import { shouldBeProtected } from '../../../test/helpers';
+import {
+  shouldBeProtected,
+  shouldNotAllowQueryParams,
+} from '../../../test/helpers';
 import { seedSimpleUser, seedWithOrg } from '../../../test/seed/seed';
 
 let app: FastifyInstance;
@@ -27,12 +30,16 @@ afterAll(async () => {
 
 describe('GET /orgs', () => {
   it('should be protected', async () => {
-    await shouldBeProtected(client.get('/0/orgs'));
+    await shouldBeProtected(client, '/0/orgs', 'GET');
+  });
+
+  it('should not allow query params', async () => {
+    await shouldNotAllowQueryParams(client, '/0/orgs', 'GET');
   });
 
   it('should return no orgs', async () => {
     const { token } = await seedSimpleUser();
-    const res = await client.get('/0/orgs', token);
+    const res = await client.get('/0/orgs', { token });
 
     isSuccess(res.json);
     expect(res.statusCode).toBe(200);
@@ -42,12 +49,11 @@ describe('GET /orgs', () => {
 
   it('should not allow query params', async () => {
     const { token } = await seedSimpleUser();
-    const res = await client.get(
-      '/0/orgs',
+    const res = await client.get('/0/orgs', {
       token,
       // @ts-expect-error
-      { search: ' ' }
-    );
+      qp: { search: ' ' },
+    });
 
     isValidationError(res.json);
     expect(res.statusCode).toBe(400);
@@ -62,7 +68,7 @@ describe('GET /orgs', () => {
 
   it('should list one org', async () => {
     const { token, org } = await seedWithOrg();
-    const res = await client.get('/0/orgs', token);
+    const res = await client.get('/0/orgs', { token });
 
     isSuccess(res.json);
     expect(res.statusCode).toBe(200);
@@ -78,7 +84,7 @@ describe('GET /orgs', () => {
   it('should not list the other orgs', async () => {
     const seed1 = await seedWithOrg();
     const seed2 = await seedWithOrg();
-    const res1 = await client.get('/0/orgs', seed1.token);
+    const res1 = await client.get('/0/orgs', { token: seed1.token });
 
     isSuccess(res1.json);
     expect(res1.statusCode).toBe(200);
@@ -90,7 +96,7 @@ describe('GET /orgs', () => {
       },
     ]);
 
-    const res2 = await client.get('/0/orgs', seed2.token);
+    const res2 = await client.get('/0/orgs', { token: seed2.token });
     isSuccess(res2.json);
     expect(res2.statusCode).toBe(200);
     expect(res2.json.data).toHaveLength(1);

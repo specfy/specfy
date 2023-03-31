@@ -1,4 +1,4 @@
-type Keys = 'DATABASE_URL' | 'DEFAULT_ACCOUNT' | 'ENVIRONMENT';
+type Keys = 'DATABASE_URL' | 'DEFAULT_ACCOUNT' | 'ENVIRONMENT' | 'NODE_ENV';
 
 export function env(key: Keys): string | undefined;
 export function env(key: Keys, def: string): string;
