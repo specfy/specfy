@@ -39,7 +39,7 @@ jobs:
         run: |
           curl -sSf https://atlasgo.sh | sh
       - run: |
-          cd ./pkgs/api/src/db && atlas migrate apply --env local_main -u 'postgres://postgres:postgres@postgres:5432/postgres?sslmode=disable'
+          cd ./pkgs/api/src/db && atlas schema apply --env local_main -u 'postgres://postgres:postgres@postgres:5432/postgres?sslmode=disable'
 
 
       - name: Run Test
