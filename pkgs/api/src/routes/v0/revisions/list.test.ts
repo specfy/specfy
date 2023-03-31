@@ -3,7 +3,9 @@ import type { FastifyInstance } from 'fastify';
 import { fastify } from 'fastify';
 
 import buildApp from '../../../app';
-import { ApiClient, isError, isValidationError } from '../../../test/helpers';
+import { ApiClient, isError, isValidationError } from '../../../test/fetch';
+import { shouldBeProtected } from '../../../test/helpers';
+import { seedSimpleUser } from '../../../test/seed/seed';
 
 let app: FastifyInstance;
 let client: ApiClient;
@@ -22,15 +24,21 @@ afterAll(() => {
 });
 
 describe('GET /revisions', () => {
+  it('should be protected', async () => {
+    await shouldBeProtected(client.get('/0/revisions'));
+  });
+
   it('should enforce query params', async () => {
-    const res = await client.get('/0/revisions');
+    const { token } = await seedSimpleUser();
+    const res = await client.get('/0/revisions', token);
 
     expect(res.statusCode).toBe(400);
     isError(res.json);
   });
 
   it('should fail on unknown org/project', async () => {
-    const res = await client.get('/0/revisions', {
+    const { token } = await seedSimpleUser();
+    const res = await client.get('/0/revisions', token, {
       org_id: 'e',
       project_id: 'a',
     });

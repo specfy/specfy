@@ -1,3 +1,4 @@
+export * from './accounts';
 export * from './activities';
 export * from './blobs';
 export * from './comments';
@@ -10,5 +11,7 @@ export * from './policies';
 export * from './projects';
 export * from './reviews';
 export * from './revisions';
+export * from './sessions';
 export * from './typeHasUsers';
 export * from './users';
+export * from './verificationToken';

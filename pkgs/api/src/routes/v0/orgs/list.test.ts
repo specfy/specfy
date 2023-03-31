@@ -4,7 +4,9 @@ import { fastify } from 'fastify';
 
 import buildApp from '../../../app';
 import { db } from '../../../db';
-import { ApiClient, isSuccess, isValidationError } from '../../../test/helpers';
+import { ApiClient, isSuccess, isValidationError } from '../../../test/fetch';
+import { shouldBeProtected } from '../../../test/helpers';
+import { seedSimpleUser, seedWithOrg } from '../../../test/seed/seed';
 
 let app: FastifyInstance;
 let client: ApiClient;
@@ -24,18 +26,25 @@ afterAll(async () => {
 });
 
 describe('GET /orgs', () => {
-  it('should return no orgs', async () => {
-    const res = await client.get('/0/orgs');
+  it('should be protected', async () => {
+    await shouldBeProtected(client.get('/0/orgs'));
+  });
 
-    expect(res.statusCode).toBe(200);
+  it('should return no orgs', async () => {
+    const { token } = await seedSimpleUser();
+    const res = await client.get('/0/orgs', token);
+
     isSuccess(res.json);
+    expect(res.statusCode).toBe(200);
 
     res.json.data;
   });
 
   it('should not allow query params', async () => {
+    const { token } = await seedSimpleUser();
     const res = await client.get(
       '/0/orgs',
+      token,
       // @ts-expect-error
       { search: ' ' }
     );
@@ -52,9 +61,44 @@ describe('GET /orgs', () => {
   });
 
   it('should list one org', async () => {
-    const res = await client.get('/0/orgs');
+    const { token, org } = await seedWithOrg();
+    const res = await client.get('/0/orgs', token);
 
     isSuccess(res.json);
     expect(res.statusCode).toBe(200);
+    expect(res.json.data).toHaveLength(1);
+    expect(res.json.data).toStrictEqual([
+      {
+        id: org.id,
+        name: org.name,
+      },
+    ]);
+  });
+
+  it('should not list the other orgs', async () => {
+    const seed1 = await seedWithOrg();
+    const seed2 = await seedWithOrg();
+    const res1 = await client.get('/0/orgs', seed1.token);
+
+    isSuccess(res1.json);
+    expect(res1.statusCode).toBe(200);
+    expect(res1.json.data).toHaveLength(1);
+    expect(res1.json.data).toStrictEqual([
+      {
+        id: seed1.org.id,
+        name: seed1.org.name,
+      },
+    ]);
+
+    const res2 = await client.get('/0/orgs', seed2.token);
+    isSuccess(res2.json);
+    expect(res2.statusCode).toBe(200);
+    expect(res2.json.data).toHaveLength(1);
+    expect(res2.json.data).toStrictEqual([
+      {
+        id: seed2.org.id,
+        name: seed2.org.name,
+      },
+    ]);
   });
 });

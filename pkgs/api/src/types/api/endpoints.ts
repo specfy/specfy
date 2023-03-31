@@ -129,3 +129,5 @@ export interface API {
 
   '/0/users': { GET: { res: ResListUsers; qp: ReqListUsers; body: never } };
 }
+
+export type APIPaths = keyof API;

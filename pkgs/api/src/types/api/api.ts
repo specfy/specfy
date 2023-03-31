@@ -32,4 +32,14 @@ export interface ResForbidden {
   };
 }
 
-export type ResErrors = ResForbidden | ResNotFound | ResValidationError;
+export interface ResUnauthorized {
+  error: {
+    code: '401_unauthorized';
+  };
+}
+
+export type ResErrors =
+  | ResForbidden
+  | ResNotFound
+  | ResUnauthorized
+  | ResValidationError;

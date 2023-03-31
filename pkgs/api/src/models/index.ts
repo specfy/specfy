@@ -1,3 +1,4 @@
+export { Account } from './Account';
 export { Activity } from './activity';
 export { Component } from './component';
 export { Document } from './document';
@@ -9,5 +10,7 @@ export { Revision } from './revision';
 export { RevisionBlob } from './blob';
 export { RevisionComment } from './comment';
 export { RevisionReview } from './review';
+export { Session } from './Session';
 export { TypeHasUser } from './typeHasUser';
 export { User } from './user';
+export { VerificationToken } from './VerificationToken';

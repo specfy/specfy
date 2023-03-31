@@ -4,6 +4,7 @@ import type { ZodError } from 'zod';
 import type {
   ResForbidden,
   ResNotFound,
+  ResUnauthorized,
   ResValidationError,
 } from '../types/api';
 
@@ -14,6 +15,15 @@ export function notFound(res: FastifyReply): void {
     },
   };
   res.status(404).send(err);
+}
+
+export function unauthorized(res: FastifyReply): void {
+  const err: ResUnauthorized = {
+    error: {
+      code: '401_unauthorized',
+    },
+  };
+  res.status(401).send(err);
 }
 
 export function forbidden(res: FastifyReply): void {

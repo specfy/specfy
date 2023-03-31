@@ -10,6 +10,13 @@ Marketing Site:
 Global:
   ✔ Update mode @done(23-03-25 23:23)
 
+Auth:
+  - JWT
+  - Google Oauth
+  - Github Oauth
+  - Gitlab Oauth
+  - Standard Email / Password
+
 Homepage:
   ✔ Redirect first item @done(23-03-27 17:51)
   - Reopen last open

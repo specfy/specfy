@@ -3,6 +3,8 @@ export interface DBUser {
   name: string;
   email: string;
 
+  emailVerified: string | null;
+
   createdAt: string;
   updatedAt: string;
 }

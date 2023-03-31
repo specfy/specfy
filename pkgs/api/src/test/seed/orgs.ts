@@ -1,3 +1,4 @@
+import { nanoid } from '../../common/id';
 import type { User } from '../../models';
 import { Perm, Org } from '../../models';
 
@@ -40,4 +41,15 @@ export async function seedOrgs(users: User[]): Promise<{ o1: Org; o2: Org }> {
     }),
   ]);
   return { o1, o2 };
+}
+
+export async function seedOrg(user: User) {
+  const id = nanoid();
+  const org = await Org.create({
+    id,
+    name: `Org ${id}`,
+  });
+  await org.onAfterCreate(user);
+
+  return org;
 }

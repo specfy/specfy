@@ -7,6 +7,7 @@ table "users" {
     type = uuid
     null = false
   }
+
   column "name" {
     type = varchar(100)
     null = false
@@ -14,6 +15,11 @@ table "users" {
   column "email" {
     type = varchar(250)
     null = false
+  }
+
+  column "email_verified_at" {
+    type = timestamp(6)
+    null = true
   }
   column "created_at" {
     type    = timestamp(6)
@@ -35,6 +41,125 @@ table "users" {
       column.email
     ]
     unique = true
+  }
+}
+
+// ------------------------ Accounts
+table "accounts" {
+  schema = schema.public
+  column "id" {
+    type = uuid
+    null = false
+  }
+
+  column "user_id" {
+    type = uuid
+    null = false
+  }
+
+  column "type" {
+    type = varchar(50)
+    null = false
+  }
+  column "provider" {
+    type = varchar(100)
+    null = false
+  }
+  column "provider_account_id" {
+    type = varchar(100)
+    null = false
+  }
+  column "refresh_token" {
+    type = varchar(100)
+    null = true
+  }
+  column "access_token" {
+    type = varchar(100)
+    null = true
+  }
+  column "token_type" {
+    type = varchar(100)
+    null = true
+  }
+  column "id_token" {
+    type = text
+    null = true
+  }
+  column "scope" {
+    type = text
+    null = false
+  }
+  column "session_state" {
+    type = text
+    null = true
+  }
+
+  column "expires_at" {
+    type = timestamp(6)
+    null = true
+  }
+  column "updated_at" {
+    type    = timestamp(6)
+    default = sql("now()")
+    null    = false
+  }
+
+  primary_key {
+    columns = [column.id]
+  }
+}
+
+// ------------------------ Session
+table "sessions" {
+  schema = schema.public
+  column "id" {
+    type = uuid
+    null = false
+  }
+
+  column "user_id" {
+    type = uuid
+    null = false
+  }
+  column "session_token" {
+    type    = varchar(100)
+    null    = false
+  }
+
+  column "expires_at" {
+    type    = timestamp(6)
+    null    = false
+  }
+
+  primary_key {
+    columns = [column.id]
+  }
+  index "idx_sessions_token" {
+    columns = [
+      column.session_token
+    ]
+    unique = true
+  }
+}
+
+// ------------------------ Verification Token
+table "verification_token" {
+  schema = schema.public
+  column "token" {
+    type = varchar(100)
+    null = false
+  }
+  column "identifier" {
+    type = varchar(100)
+    null = false
+  }
+  column "expires_at" {
+    type    = timestamp(6)
+    null    = false
+  }
+
+  primary_key {
+    columns = [column.token]
   }
 }
 

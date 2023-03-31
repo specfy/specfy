@@ -144,7 +144,7 @@ export default {
   // snapshotSerializers: [],
 
   // The test environment that will be used for testing
-  testEnvironment: './src/common/test/jestEnv.ts',
+  testEnvironment: './src/test/jestEnv.ts',
 
   // Options that will be passed to the testEnvironment
   // testEnvironmentOptions: {},

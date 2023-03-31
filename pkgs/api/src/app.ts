@@ -11,6 +11,7 @@ import type {
 import { logger } from './logger';
 import { routes } from './routes/routes';
 import './db';
+import './common/auth';
 
 export default async (f: FastifyInstance, opts: FastifyPluginOptions) => {
   // Place here your custom code!

@@ -1,4 +1,4 @@
-import { db } from '../../db';
+import '../../db';
 import {
   Activity,
   Component,
@@ -13,15 +13,36 @@ import {
   User,
 } from '../../models';
 
-import { seedComponents } from './components';
-import { seedPlaybook, seedRFC } from './documents';
-import { seedOrgs } from './orgs';
-import { seedPolicies } from './policies';
-import { seedProjects } from './projects';
-import { seedRevisions } from './revisions';
-import { seedUsers } from './users';
+import { seedOrg } from './orgs';
+import { seedUser } from './users';
 
-export async function clean() {
+export async function seedSimpleUser(): Promise<{ user: User; token: string }> {
+  const user = await seedUser();
+  const token = user.getJwtToken();
+
+  return { user, token };
+}
+
+export async function seedWithOrg(): Promise<{
+  user: User;
+  org: Org;
+  token: string;
+}> {
+  const user = await seedUser();
+  const org = await seedOrg(user);
+  await Perm.create({
+    orgId: org.id,
+    projectId: null,
+    userId: user.id,
+    role: 'owner',
+  });
+
+  const token = user.getJwtToken();
+
+  return { user, org, token };
+}
+
+export async function truncate() {
   await Promise.all([
     User.truncate(),
     Org.truncate(),
@@ -36,30 +57,3 @@ export async function clean() {
     Activity.truncate(),
   ]);
 }
-
-export async function seed() {
-  const users = await seedUsers();
-
-  const orgs = await seedOrgs(users);
-
-  const projects = await seedProjects(users);
-
-  const rfcs = await seedRFC(projects, users);
-  await seedPlaybook(projects, users);
-
-  const components = await seedComponents(orgs, projects, users);
-
-  await seedRevisions(projects, users, rfcs, components);
-
-  await seedPolicies(users);
-}
-
-(async () => {
-  console.log('Cleaning');
-  await clean();
-  console.log('Seeding');
-  await seed();
-  console.log('Seeding done');
-
-  await db.close();
-})();
