@@ -3,7 +3,6 @@ import type { FastifyInstance } from 'fastify';
 import { fastify } from 'fastify';
 
 import buildApp from '../../../app';
-import { nanoid } from '../../../common/id';
 import { db } from '../../../db';
 import { ApiClient, isSuccess } from '../../../test/fetch';
 import { shouldBeProtected } from '../../../test/helpers';
