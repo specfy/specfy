@@ -12,8 +12,6 @@ import { ListActivity } from '../../../components/ListActivity';
 import { ListProjects } from '../../../components/ListProjects';
 import type { RouteOrg } from '../../../types/routes';
 
-// import cls from './index.module.scss';
-
 export const OrgOverview: React.FC<{ params: RouteOrg }> = ({ params }) => {
   const storeProjects = useProjectStore();
   const res = useListProjects({ org_id: params.org_id });

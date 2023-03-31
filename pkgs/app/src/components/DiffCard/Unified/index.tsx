@@ -13,14 +13,14 @@ export const UnifiedDiff: React.FC<{
     return (diff.diff as Change[]).map((d, i) => {
       if (d.added) {
         return (
-          <span className={classnames(cls.added, cls.i)} key={i}>
+          <span className={classnames(cls.added, cls.line)} key={i}>
             {d.value}
           </span>
         );
       }
       if (d.removed) {
         return (
-          <span className={classnames(cls.removed, cls.i)} key={i}>
+          <span className={classnames(cls.removed, cls.line)} key={i}>
             {d.value}
           </span>
         );

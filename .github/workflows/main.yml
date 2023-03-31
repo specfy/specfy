@@ -1,5 +1,9 @@
 name: Main
-on: push
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    types: [opened, synchronize]
 
 jobs:
   ci:
@@ -20,13 +24,22 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v3
 
+      - name: Install Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: .nvmrc
+
       - name: Install dependencies
         run: npm ci
 
-      - uses: ariga/atlas-action@v0
+      - name: Lint
+        run: npm lint
+
+      - name: Migrate DB
+        uses: ariga/atlas-action@v0
         with:
-          dir: pkgs/api/src/db/
-          dir-format: atlas # Or: golang-migrate, liquibase, flyway, goose, dbmate
+          dir: pkgs/api/src/db/atlas.hcl
+          dir-format: atlas
           dev-url: "postgres://postgres:postgres@postgres:5432/postgres?sslmode=disable"
 
       - name: Run Test

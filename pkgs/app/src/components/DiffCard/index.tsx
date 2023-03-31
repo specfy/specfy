@@ -25,7 +25,7 @@ export const DiffCard: React.FC<{
     typeId: ApiBlobWithPrevious['typeId'],
     key: string
   ) => void;
-}> = ({ diff, url, onRevert }) => {
+}> = ({ diff, url }) => {
   const using = (diff.blob || diff.previous) as Allowed;
 
   const [type, to] = useMemo<[string, string]>(() => {

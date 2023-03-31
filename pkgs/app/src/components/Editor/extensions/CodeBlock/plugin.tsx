@@ -168,13 +168,14 @@ export const CodeBlock = Node.create<CodeBlockOptions>({
         return editor.commands.exitCode();
       },
 
-      'Shift-Tab': (p) => {
-        const { $from, $to } = p.editor.state.selection;
-        const { tr } = p.editor.state;
+      // TODO: remove tab
+      // 'Shift-Tab': (p) => {
+      //   const { $from, $to } = p.editor.state.selection;
+      //   const { tr } = p.editor.state;
 
-        // TODO: remove tab
-        return true;
-      },
+      //   return true;
+      // },
+
       Tab: (p) => {
         const { $from } = p.editor.state.selection;
 

@@ -79,7 +79,7 @@ export function useGetProject(opts: Partial<ReqProjectParams>) {
   return useQuery({
     enabled: Boolean(opts.org_id),
     queryKey: ['getProject', opts.org_id, opts.project_slug],
-    queryFn: async (ctx): Promise<ResGetProject> => {
+    queryFn: async (): Promise<ResGetProject> => {
       const { json, res } = await fetchApi<ResGetProject>(
         `/projects/${opts.org_id}/${opts.project_slug}`
       );

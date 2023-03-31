@@ -18,7 +18,9 @@ const useIcon = (link: DBProjectLink) => {
     let url: URL | undefined;
     try {
       url = new URL(link.url);
-    } catch {}
+    } catch {
+      // empty
+    }
 
     if (url) {
       for (const supp of supportedHostname) {

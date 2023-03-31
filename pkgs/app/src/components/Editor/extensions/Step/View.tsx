@@ -5,7 +5,7 @@ import classnames from 'classnames';
 
 import cls from '../../../Content/BlockStep/index.module.scss';
 
-export const StepView: React.FC<NodeViewProps> = ({ node }) => {
+export const StepView: React.FC<NodeViewProps> = () => {
   return (
     <NodeViewWrapper className={classnames(cls.block)}>
       <div

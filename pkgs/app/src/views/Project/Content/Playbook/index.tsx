@@ -15,7 +15,7 @@ import cls from './index.module.scss';
 export const Playbook: React.FC<{
   proj: ApiProject;
   doc: ApiDocument;
-}> = ({ proj, doc }) => {
+}> = ({ doc }) => {
   const documentsStore = useDocumentsStore();
 
   // Edition

@@ -5,7 +5,8 @@
   "author": "",
   "type": "module",
   "scripts": {
-    "lint": "eslint --ext .js,.ts,.tsx .",
+    "lint": "npm run lint:code && npm run lint:scss",
+    "lint:code": "eslint --ext .js,.ts,.tsx .",
     "lint:scss": "stylelint --config-basedir pkgs/app **/*.scss",
     "lint:fix": "npm run lint -- --fix"
   },

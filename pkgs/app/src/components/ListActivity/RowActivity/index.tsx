@@ -9,11 +9,11 @@ import { Time } from '../../Time';
 
 import cls from './index.module.scss';
 
-type TargetComponent = Exclude<ApiActivity['targetComponent'], undefined>;
+// type TargetComponent = Exclude<ApiActivity['targetComponent'], undefined>;
 type TargetDocument = Exclude<ApiActivity['targetDocument'], undefined>;
-type TargetPolicy = Exclude<ApiActivity['targetPolicy'], undefined>;
-type TargetRevision = Exclude<ApiActivity['targetRevision'], undefined>;
-type TargetUser = Exclude<ApiActivity['targetUser'], undefined>;
+// type TargetPolicy = Exclude<ApiActivity['targetPolicy'], undefined>;
+// type TargetRevision = Exclude<ApiActivity['targetRevision'], undefined>;
+// type TargetUser = Exclude<ApiActivity['targetUser'], undefined>;
 
 const mapping: Record<ApiActivity['action'], (target: any) => string> = {
   'Component.created': () => 'created a new component',

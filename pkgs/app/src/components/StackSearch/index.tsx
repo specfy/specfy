@@ -209,7 +209,8 @@ export const ComponentSelect: React.FC<{
       const proj = storeProject.projects.find(
         (p) => p.id === option.projectId
       )!;
-      const id = createLocal(
+      // TODO: use id to automatically add
+      createLocal(
         {
           name: proj.name,
           slug: proj.slug,
@@ -231,7 +232,8 @@ export const ComponentSelect: React.FC<{
       else if (supp.type === 'hosting') type = 'hosting';
     }
 
-    const id = createLocal(
+    // TODO: use id to automatically add
+    createLocal(
       {
         name: supp.name,
         slug: supp.key,

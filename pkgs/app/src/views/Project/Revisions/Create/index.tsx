@@ -6,7 +6,6 @@ import { App, Button, Form, Result, Typography } from 'antd';
 import { omit } from 'api/src/common/object';
 import type {
   ApiBlobCreate,
-  ApiBlobWithPrevious,
   ApiProject,
   BlockLevelZero,
   ReqPostRevision,
@@ -17,12 +16,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { createRevision } from '../../../../api/revisions';
 import { getEmptyDoc } from '../../../../common/content';
 import { proposeTitle } from '../../../../common/diff';
-import originalStore, {
-  useStagingStore,
-  useProjectStore,
-  useComponentsStore,
-  useDocumentsStore,
-} from '../../../../common/store';
+import originalStore, { useStagingStore } from '../../../../common/store';
 import { Card } from '../../../../components/Card';
 import { Container } from '../../../../components/Container';
 import { DiffCard } from '../../../../components/DiffCard';
@@ -41,9 +35,9 @@ export const ProjectRevisionCreate: React.FC<{
   const navigate = useNavigate();
 
   // Edition
-  const storeProject = useProjectStore();
-  const storeComponents = useComponentsStore();
-  const storeDocuments = useDocumentsStore();
+  // const storeProject = useProjectStore();
+  // const storeComponents = useComponentsStore();
+  // const storeDocuments = useDocumentsStore();
   const staging = useStagingStore();
 
   // Local
@@ -77,20 +71,21 @@ export const ProjectRevisionCreate: React.FC<{
     setCanSubmit(title !== '' && enoughContent);
   }, [title, description]);
 
-  const handleRevert = (
-    type: ApiBlobWithPrevious['type'],
-    typeId: string,
-    key: string
-  ) => {
-    if (type === 'project') {
-      storeProject.revertField(key as any);
-    } else if (type === 'component') {
-      storeComponents.revertField(typeId, key as any);
-    } else if (type === 'document') {
-      storeDocuments.revertField(typeId, key as any);
-    }
-    // TODO: possibility to undo revert
-  };
+  // TODO: reup this
+  // const handleRevert = (
+  //   type: ApiBlobWithPrevious['type'],
+  //   typeId: string,
+  //   key: string
+  // ) => {
+  //   if (type === 'project') {
+  //     storeProject.revertField(key as any);
+  //   } else if (type === 'component') {
+  //     storeComponents.revertField(typeId, key as any);
+  //   } else if (type === 'document') {
+  //     storeDocuments.revertField(typeId, key as any);
+  //   }
+  //   // TODO: possibility to undo revert
+  // };
 
   const handleRevertAll = () => {
     originalStore.revertAll(staging.diffs);
