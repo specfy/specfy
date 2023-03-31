@@ -33,7 +33,7 @@ jobs:
         run: npm ci
 
       - name: Lint
-        run: npm lint
+        run: npm run lint
 
       - name: Migrate DB
         uses: ariga/atlas-action@v0
