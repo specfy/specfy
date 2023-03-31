@@ -25,3 +25,5 @@ jobs:
 
       - name: Run Test
         run: cd pkgs/api/ && npm run test
+        env:
+          DATABASE_URL="postgres://postgres:postgres@postgres:5432/postgres"
