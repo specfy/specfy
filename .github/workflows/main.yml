@@ -27,9 +27,9 @@ jobs:
         with:
           dir: pkgs/api/db/
           dir-format: atlas # Or: golang-migrate, liquibase, flyway, goose, dbmate
-          dev-url: "postgres://postgres:postgres@postgres:5432/postgres"
+          dev-url: "postgres://postgres:postgres@postgres:5432/postgres?sslmode=disable"
 
       - name: Run Test
         run: cd pkgs/api/ && npm run test
         env:
-          DATABASE_URL: "postgres://postgres:postgres@postgres:5432/postgres"
+          DATABASE_URL: "postgres://postgres:postgres@postgres:5432/postgres?sslmode=disable"
