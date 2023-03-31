@@ -35,12 +35,12 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Migrate DB
-        uses: ariga/atlas-action@v0
-        with:
-          dir: pkgs/api/src/db/atlas.hcl
-          dir-format: atlas
-          dev-url: "postgres://postgres:postgres@postgres:5432/postgres?sslmode=disable"
+      - name: Install Atlas
+        run: |
+          curl -sSf https://atlasgo.sh | sh
+      - run: |
+          cd ./pkgs/api/src/db && atlas migrate apply --env local_main -u 'postgres://postgres:postgres@postgres:5432/postgres?sslmode=disable'
+
 
       - name: Run Test
         run: cd pkgs/api/ && npm run test
