@@ -25,7 +25,7 @@ jobs:
 
       - uses: ariga/atlas-action@v0
         with:
-          dir: pkgs/api/db/
+          dir: pkgs/api/src/db/
           dir-format: atlas # Or: golang-migrate, liquibase, flyway, goose, dbmate
           dev-url: "postgres://postgres:postgres@postgres:5432/postgres?sslmode=disable"
 
