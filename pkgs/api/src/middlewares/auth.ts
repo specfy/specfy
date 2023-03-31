@@ -6,6 +6,7 @@ import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 
 import type { JWT } from '../common/auth';
 import { JWT_SECRET } from '../common/auth';
+import { env } from '../common/env';
 import { unauthorized } from '../common/errors';
 import { Perm, User } from '../models';
 
@@ -42,7 +43,6 @@ export function registerAuth(f: FastifyInstance) {
 
   fastifyPassport.registerUserSerializer(async (user: User) => {
     console.log('on serialize');
-
     return user.id;
   });
 
@@ -57,8 +57,15 @@ export function registerAuth(f: FastifyInstance) {
     // @ts-expect-error
     fastifyPassport.authenticate('jwt', async (req, res, err, user?: User) => {
       if (!user || err) {
-        unauthorized(res);
-        return;
+        if (!user && !env('DEFAULT_ACCOUNT')) {
+          unauthorized(res);
+          return;
+        }
+
+        // In dev we can auto-load the default user
+        user = (await User.findOne({
+          where: { email: env('DEFAULT_ACCOUNT')! },
+        }))!;
       }
 
       const perms = await Perm.scope('withOrg').findAll({

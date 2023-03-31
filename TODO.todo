@@ -11,7 +11,8 @@ Global:
   ✔ Update mode @done(23-03-25 23:23)
 
 Auth:
-  - JWT
+  ✔ JWT @done(23-03-31 16:14)
+  ✔ Default in dev @done(23-03-31 16:33)
   - Google Oauth
   - Github Oauth
   - Gitlab Oauth
@@ -64,6 +65,7 @@ Project:
     - Pingback depuis une Pull Request
         - Auto merge une revision quand la pull request est merge
 
+
 User:
   ✔ getMe @done(23-03-29 15:56)
     - remove hardcoded email
@@ -72,15 +74,10 @@ User:
   ✔ List @done(23-03-29 16:59)
     ✔ Validation @done(23-03-29 16:59)
     - Unit Test
-  - Auth.js (or similar)
-    - Github auth
   - Invite
   - Email validation
   - User search API for team
   - Invite new user from team
-  - Auth with Github
-  - Auth with Google
-  - Auth with password
   - Invitation par email
   - Rename
   - Suppression de compte
@@ -286,6 +283,9 @@ Org:
     ✔ Enforce unique ID @done(23-03-28 14:48)
     ✔ Validation @done(23-03-28 14:49)
     - Unit test
+  ✔ List @done(23-03-31 16:14)
+    ✔ Unit test @done(23-03-31 16:14)
+    ✔ Validation @done(23-03-31 16:15)
   - Settings
     - Rename
       - Unit test
