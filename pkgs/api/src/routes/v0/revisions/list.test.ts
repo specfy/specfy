@@ -10,7 +10,7 @@ import {
 } from '../../../test/helpers';
 import { seedSimpleUser } from '../../../test/seed/seed';
 
-let app: FastifyInstance;
+let app: FastifyInstance | undefined;
 let client: ApiClient;
 
 beforeAll(async () => {
@@ -22,8 +22,10 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await app.close();
-  await client.close();
+  await app?.close();
+  if (client) {
+    await client.close();
+  }
 });
 
 describe('GET /revisions', () => {

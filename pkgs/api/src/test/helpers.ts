@@ -14,12 +14,12 @@ export async function shouldBeProtected<TPath extends APIPaths>(
   const res = await client[(method as string).toLowerCase()](path as any);
 
   isError(res.json);
-  expect(res.statusCode).toBe(401);
   expect(res.json).toStrictEqual({
     error: {
       code: '401_unauthorized',
     },
   });
+  expect(res.statusCode).toBe(401);
 }
 
 export async function shouldBeForbidden<TPath extends APIPaths>(
@@ -34,12 +34,12 @@ export async function shouldBeForbidden<TPath extends APIPaths>(
   });
 
   isError(res.json);
-  expect(res.statusCode).toBe(403);
   expect(res.json).toStrictEqual({
     error: {
       code: '403_forbidden',
     },
   });
+  expect(res.statusCode).toBe(403);
 }
 
 export async function shouldNotAllowQueryParams<TPath extends APIPaths>(
@@ -54,7 +54,6 @@ export async function shouldNotAllowQueryParams<TPath extends APIPaths>(
   });
 
   isValidationError(res.json);
-  expect(res.statusCode).toBe(400);
   expect(res.json.error.form).toStrictEqual([
     {
       code: 'unrecognized_keys',
@@ -62,6 +61,7 @@ export async function shouldNotAllowQueryParams<TPath extends APIPaths>(
       path: [],
     },
   ]);
+  expect(res.statusCode).toBe(400);
 }
 export async function shouldEnforceQueryParams<TPath extends APIPaths>(
   client: ApiClient,
@@ -77,7 +77,7 @@ export async function shouldEnforceQueryParams<TPath extends APIPaths>(
   });
 
   isValidationError(res.json);
-  expect(res.statusCode).toBe(400);
   expect(res.json.error.form).toStrictEqual([]);
   expect(Object.keys(res.json.error.fields).length).toBeGreaterThan(0);
+  expect(res.statusCode).toBe(400);
 }

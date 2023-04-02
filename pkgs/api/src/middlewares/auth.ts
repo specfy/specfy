@@ -66,9 +66,13 @@ export function registerAuth(f: FastifyInstance) {
         }
 
         // In dev we can auto-load the default user
-        user = (await prisma.users.findUnique({
-          where: { email: env('DEFAULT_ACCOUNT')! },
-        }))!;
+        user =
+          (await prisma.users.findUnique({
+            where: { email: env('DEFAULT_ACCOUNT')! },
+          })) || undefined;
+        if (!user) {
+          throw new Error('Missing default account');
+        }
       }
 
       const perms = await prisma.perms.findMany({

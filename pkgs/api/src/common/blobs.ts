@@ -20,6 +20,7 @@ export async function findAllBlobsWithParent(
 ): Promise<IterateBlob[]> {
   const list: IterateBlob[] = [];
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const lock = willUpdate ? 'UPDATE' : 'SHARE';
   const blobs = await tx.blobs.findMany({
     where: {

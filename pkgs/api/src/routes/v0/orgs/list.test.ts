@@ -23,7 +23,9 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await app.close();
-  await client.close();
+  if (client) {
+    await client.close();
+  }
 });
 
 describe('GET /orgs', () => {

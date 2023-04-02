@@ -1,5 +1,6 @@
 import type { Users } from '@prisma/client';
 
+import { env } from '../../common/env';
 import { nanoid } from '../../common/id';
 import { prisma } from '../../db';
 
@@ -9,13 +10,7 @@ import { prisma } from '../../db';
 export async function seedUsers(): Promise<Users[]> {
   // Users
   const [u1, u2, u3, u4, u5, u6, u7, u8] = await Promise.all([
-    await prisma.users.create({
-      data: {
-        id: nanoid(),
-        name: 'Samuel Bodin',
-        email: 'bodin.samuel@gmail.com',
-      },
-    }),
+    seedDefaultAccount(),
     await prisma.users.create({
       data: {
         id: nanoid(),
@@ -68,6 +63,16 @@ export async function seedUsers(): Promise<Users[]> {
   ]);
 
   return [u1, u2, u3, u4, u5, u6, u7, u8];
+}
+
+export async function seedDefaultAccount(): Promise<Users> {
+  return await prisma.users.create({
+    data: {
+      id: nanoid(),
+      name: 'Demo Account',
+      email: env('DEFAULT_ACCOUNT')!,
+    },
+  });
 }
 
 export async function seedUser(): Promise<Users> {

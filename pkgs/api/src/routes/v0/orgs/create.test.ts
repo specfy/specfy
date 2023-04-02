@@ -1,5 +1,6 @@
 import type { FastifyInstance } from 'fastify';
 import { fastify } from 'fastify';
+import { customAlphabet } from 'nanoid/non-secure';
 import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
 import buildApp from '../../../app';
@@ -7,8 +8,10 @@ import { ApiClient, isSuccess } from '../../../test/fetch';
 import { shouldBeProtected } from '../../../test/helpers';
 import { seedSimpleUser } from '../../../test/seed/seed';
 
-let app: FastifyInstance;
+let app: FastifyInstance | undefined;
 let client: ApiClient;
+
+const orgId = customAlphabet('abcdefghijklmnopqrstuvwxyz', 20);
 
 beforeAll(async () => {
   app = fastify();
@@ -19,8 +22,10 @@ beforeAll(async () => {
 });
 
 afterAll(async () => {
-  await app.close();
-  await client.close();
+  await app?.close();
+  if (client) {
+    await client.close();
+  }
 });
 
 describe('POST /orgs', () => {
@@ -34,7 +39,7 @@ describe('POST /orgs', () => {
 
   it('should create one org', async () => {
     const { token } = await seedSimpleUser();
-    const id = 'abd-ef';
+    const id = orgId();
     const res = await client.post('/0/orgs', {
       token,
       body: { id: id, name: `test ${id}` },

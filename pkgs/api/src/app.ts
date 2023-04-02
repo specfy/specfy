@@ -1,6 +1,6 @@
-import path from 'path';
+// import path from 'path';
 
-import { fastifyAutoload } from '@fastify/autoload';
+// import { fastifyAutoload } from '@fastify/autoload';
 import cors from '@fastify/cors';
 import type {
   FastifyInstance,
@@ -20,13 +20,14 @@ export default async (f: FastifyInstance, opts: FastifyPluginOptions) => {
 
   await start();
 
+  // Autoload breaks fastify
   // This loads all plugins defined in plugins
   // those should be support plugins that are reused
   // through your application
-  f.register(fastifyAutoload, {
-    dir: path.join(__dirname, 'plugins'),
-    options: Object.assign({}, opts),
-  });
+  // f.register(fastifyAutoload, {
+  //   dir: path.join(__dirname, 'plugins'),
+  //   options: Object.assign({}, opts),
+  // });
 
   await routes(f, opts);
 };
