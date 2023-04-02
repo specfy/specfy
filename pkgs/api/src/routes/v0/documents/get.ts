@@ -5,9 +5,9 @@ import { notFound, validationError } from '../../../common/errors';
 import { toApiUser } from '../../../common/formatters/user';
 import { schemaId } from '../../../common/validators';
 import { valOrgId, valProjectId } from '../../../common/zod';
-import { Document } from '../../../models';
-import { TypeHasUser } from '../../../models/typeHasUser';
+import { prisma } from '../../../db';
 import type {
+  ApiDocument,
   ReqDocumentParams,
   ReqGetDocument,
   ResGetDocument,
@@ -35,11 +35,11 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     }
 
     const query = val.data;
-    const p = await Document.findOne({
+    const p = await prisma.documents.findFirst({
       where: {
+        id: query.document_id,
         orgId: query.org_id,
         projectId: query.project_id,
-        id: query.document_id,
       },
     });
 
@@ -47,10 +47,11 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       return notFound(res);
     }
 
-    const users = await TypeHasUser.scope('withUser').findAll({
+    const users = await prisma.typeHasUsers.findMany({
       where: {
         documentId: p.id,
       },
+      include: { User: true },
     });
 
     res.status(200).send({
@@ -60,7 +61,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         projectId: p.projectId,
         blobId: p.blobId,
 
-        type: p.type,
+        type: p.type as ApiDocument['type'],
         typeId: p.typeId,
         name: p.name,
         slug: p.slug,
@@ -68,10 +69,10 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         content: p.content as any,
         authors: users
           .filter((user) => user.role === 'author')
-          .map((u) => toApiUser(u.user)),
+          .map((u) => toApiUser(u.User)),
         reviewers: users
           .filter((user) => user.role === 'reviewer')
-          .map((u) => toApiUser(u.user)),
+          .map((u) => toApiUser(u.User)),
         // TODO: fill this
         approvedBy: [],
         locked: p.locked,

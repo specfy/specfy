@@ -1,9 +1,8 @@
-import { describe, beforeAll, it, afterAll, expect } from '@jest/globals';
 import type { FastifyInstance } from 'fastify';
 import { fastify } from 'fastify';
+import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
 import buildApp from '../../../app';
-import { db } from '../../../db';
 import { ApiClient, isSuccess, isValidationError } from '../../../test/fetch';
 import {
   shouldBeProtected,
@@ -24,8 +23,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
   await app.close();
-  client.close();
-  await db.close();
+  await client.close();
 });
 
 describe('GET /orgs', () => {

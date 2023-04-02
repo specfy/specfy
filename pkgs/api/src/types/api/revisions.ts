@@ -89,7 +89,7 @@ export interface ReqPostCommentRevision {
 }
 export interface ResPostCommentRevision {
   data: {
-    id: number;
+    id: bigint;
   };
 }
 

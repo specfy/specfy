@@ -6,10 +6,11 @@
   "scripts": {
     "start": "node index.js",
     "dev": "fastify start --logging-module='build/logger.js' -o -w -P build/app.js",
-    "build": "tsc -p tsconfig.json -w",
-    "migrate": "cd src/db && atlas schema apply --env local_main",
+    "build": "prisma generate && tsc -p tsconfig.json -w",
     "seed": "node ./build/test/seed/index.js",
-    "test": "jest"
+    "test": "vitest",
+    "migrate": "prisma db push",
+    "migrate:create": "prisma migrate dev --create-only"
   },
   "keywords": [],
   "author": "",
@@ -21,14 +22,14 @@
     "@fastify/passport": "2.2.0",
     "@fastify/sensible": "5.0.0",
     "@fastify/session": "10.2.0",
+    "@prisma/client": "4.12.0",
     "fastify": "4.0.0",
     "fastify-plugin": "4.0.0",
     "jsonwebtoken": "9.0.0",
     "passport-jwt": "4.0.1",
     "pg": "8.8.0",
     "pino": "8.10.0",
-    "sequelize": "6.28.0",
-    "sequelize-typescript": "2.1.5",
+    "prisma": "4.12.0",
     "slugify": "1.6.5",
     "zod": "3.21.4"
   },
@@ -43,6 +44,7 @@
     "ts-node": "10.9.1",
     "typescript": "4.9.4",
     "undici": "5.21.0",
-    "utility-types": "3.10.0"
+    "utility-types": "3.10.0",
+    "vitest": "0.29.8"
   }
 }

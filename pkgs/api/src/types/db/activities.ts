@@ -1,3 +1,5 @@
+import type { Prisma } from '@prisma/client';
+
 export type DBActivityType =
   | 'Component'
   | 'Document'
@@ -55,7 +57,7 @@ export type ActionUser =
 export interface DBActivity {
   id: string;
 
-  orgId: string;
+  orgId: string | null;
   projectId: string | null;
 
   userId: string;
@@ -78,3 +80,7 @@ export interface DBActivity {
 
   createdAt: string;
 }
+
+export type ActivitiesList = Prisma.ActivitiesGetPayload<{
+  include: { User: true; Project: true };
+}>;

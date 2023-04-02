@@ -1,28 +1,16 @@
+import { Prisma } from '@prisma/client';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors';
+import { nanoid } from '../../../common/id';
 import { schemaBlobs } from '../../../common/validators';
 import { schemaRevision } from '../../../common/validators/revision';
 import { valOrgId, valProjectId } from '../../../common/zod';
-import { db } from '../../../db';
+import { prisma } from '../../../db';
 import { noQuery } from '../../../middlewares/noQuery';
-import {
-  Project,
-  Component,
-  Revision,
-  RevisionBlob,
-  Document,
-  TypeHasUser,
-} from '../../../models';
-import type {
-  ApiComponent,
-  ApiDocument,
-  ApiProject,
-  BlockLevelZero,
-  ReqPostRevision,
-  ResPostRevision,
-} from '../../../types/api';
+import { createRevisionActivity } from '../../../models/revision';
+import type { ReqPostRevision, ResPostRevision } from '../../../types/api';
 
 function BodyVal(req: FastifyRequest) {
   return z
@@ -49,57 +37,46 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     // TODO: validate all ids
     const data = val.data;
 
-    const rev = await db.transaction(async (transaction) => {
+    const rev = await prisma.$transaction(async (tx) => {
       const ids: string[] = [];
       const tmp = { orgId: data.orgId, projectId: data.projectId };
 
       for (const blob of data.blobs) {
-        let blobToModel: Component | Document | Project | null = null;
+        let blobToModel: any | typeof Prisma.DbNull = Prisma.DbNull;
 
         if (!blob.deleted && blob.blob) {
-          if (blob.type === 'document') {
-            blobToModel = new Document({ ...tmp, ...blob.blob } as ApiDocument);
-          } else if (blob.type === 'component') {
-            blobToModel = new Component({
-              ...tmp,
-              ...blob.blob,
-            } as ApiComponent);
-          } else {
-            blobToModel = new Project({ ...tmp, ...blob.blob } as ApiProject);
-          }
+          blobToModel = { ...tmp, ...blob.blob } as any;
         }
 
         // TODO: validation
-        const b = await RevisionBlob.create(
-          {
+        const b = await tx.blobs.create({
+          data: {
+            id: nanoid(),
             ...tmp,
             ...blob,
-            blob: blobToModel ? blobToModel.getJsonForBlob() : null,
+            blob: blobToModel,
           },
-          { transaction }
-        );
+        });
         ids.push(b.id);
       }
 
       // TODO: validation
-      const revision = await Revision.create(
-        {
+      const revision = await tx.revisions.create({
+        data: {
+          id: nanoid(),
           orgId: data.orgId,
           projectId: data.projectId,
           name: data.name,
-          description: data.description as BlockLevelZero,
+          description: data.description as any,
           status: 'draft',
           merged: false,
           blobs: ids,
         },
-        { transaction }
-      );
-      await revision.onAfterCreate(req.user!, { transaction });
+      });
+      await createRevisionActivity(req.user!, 'Revision.created', revision, tx);
 
-      await TypeHasUser.create({
-        revisionId: revision.id,
-        role: 'author',
-        userId: req.user!.id,
+      await tx.typeHasUsers.create({
+        data: { revisionId: revision.id, role: 'author', userId: req.user!.id },
       });
 
       return revision;

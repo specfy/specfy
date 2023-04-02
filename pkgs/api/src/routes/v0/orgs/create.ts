@@ -2,15 +2,16 @@ import type { FastifyPluginCallback } from 'fastify';
 import z from 'zod';
 
 import { validationError } from '../../../common/errors';
+import { nanoid } from '../../../common/id';
 import { schemaOrgId } from '../../../common/validators';
-import { db } from '../../../db';
-import { Org, Perm } from '../../../models';
+import { prisma } from '../../../db';
+import { createOrgActivity } from '../../../models/org';
 import type { ReqPostOrg, ResPostOrg } from '../../../types/api';
 
 const OrgVal = z
   .object({
     id: schemaOrgId.superRefine(async (val, ctx) => {
-      const res = await Org.findOne({ where: { id: val } });
+      const res = await prisma.orgs.findUnique({ where: { id: val } });
       if (!res) {
         return;
       }
@@ -37,25 +38,21 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
     const data = val.data;
 
-    const org = await db.transaction(async (transaction) => {
-      const tmp = await Org.create(
-        {
-          id: data.id,
-          name: data.name,
-        },
-        { transaction }
-      );
-      await tmp.onAfterCreate(req.user!, { transaction });
+    const org = await prisma.$transaction(async (tx) => {
+      const tmp = await tx.orgs.create({
+        data: { id: data.id, name: data.name },
+      });
+      await createOrgActivity(req.user!, 'Org.created', tmp, tx);
 
-      await Perm.create(
-        {
+      await tx.perms.create({
+        data: {
+          id: nanoid(),
           orgId: data.id,
           projectId: null,
           userId: req.user!.id,
           role: 'owner',
         },
-        { transaction }
-      );
+      });
 
       return tmp;
     });

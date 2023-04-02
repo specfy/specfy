@@ -2,8 +2,8 @@ import type { FastifyPluginCallback } from 'fastify';
 
 import { toApiRevision } from '../../../common/formatters/revision';
 import { toApiUser } from '../../../common/formatters/user';
+import { prisma } from '../../../db';
 import { getRevision } from '../../../middlewares/getRevision';
-import { TypeHasUser } from '../../../models';
 import type {
   ReqGetRevision,
   ReqRevisionParams,
@@ -18,10 +18,11 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
   }>('/', { preHandler: getRevision }, async function (req, res) {
     const rev = req.revision!;
 
-    const users = await TypeHasUser.scope('withUser').findAll({
+    const users = await prisma.typeHasUsers.findMany({
       where: {
         revisionId: rev.id,
       },
+      include: { User: true },
     });
 
     res.status(200).send({
@@ -29,7 +30,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         ...toApiRevision(rev, users),
         reviewers: users
           .filter((user) => user.role === 'reviewer')
-          .map((u) => toApiUser(u.user)),
+          .map((u) => toApiUser(u.User)),
       },
     });
   });

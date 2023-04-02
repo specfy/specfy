@@ -8,7 +8,7 @@ export const schemaProject = z
   .object({
     id: schemaId, // TODO: Val that it's the same as typeId
     orgId: schemaOrgId, // TODO: Val that it's the same as topLevel
-    blobId: z.string().uuid(), // TODO: Val that it's the same as topLevel
+    blobId: schemaId, // TODO: Val that it's the same as topLevel
     slug: schemaSlug,
     name: z.string().min(2).max(36),
     description: schemaProseMirror,

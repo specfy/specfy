@@ -1,17 +1,23 @@
-import type { Project } from '../../models';
-import type { ApiProject } from '../../types/api';
+import type { Projects } from '@prisma/client';
 
-export function toApiProject(proj: Project): ApiProject {
+import type { ApiProject, BlockLevelZero } from '../../types/api';
+import type {
+  DBProjectLink,
+  GraphEdge,
+  GraphItemDisplay,
+} from '../../types/db';
+
+export function toApiProject(proj: Projects): ApiProject {
   return {
     id: proj.id,
     orgId: proj.orgId,
     blobId: proj.blobId,
-    description: proj.description,
+    description: proj.description as unknown as BlockLevelZero,
     name: proj.name,
     slug: proj.slug,
-    links: proj.links, // TODO: remove this in /list
-    display: proj.display,
-    edges: proj.edges,
+    links: proj.links as unknown as DBProjectLink[], // TODO: remove this in /list
+    display: proj.display as unknown as GraphItemDisplay,
+    edges: proj.edges as unknown as GraphEdge[],
     createdAt: proj.createdAt.toISOString(),
     updatedAt: proj.updatedAt.toISOString(),
   };

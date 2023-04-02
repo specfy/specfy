@@ -1,20 +1,21 @@
-import { Transaction } from 'sequelize';
+import type { Revisions, Prisma } from '@prisma/client';
 
-import type { Revision } from '../../models';
-import { RevisionReview } from '../../models';
+import type { ReviewWithUser } from '../../types/db';
 
 export async function checkReviews(
-  rev: Revision,
-  transaction: Transaction
-): Promise<{ list: RevisionReview[]; check: boolean }> {
-  const list = await RevisionReview.scope('withUser').findAll({
+  rev: Revisions,
+  tx: Prisma.TransactionClient
+): Promise<{ list: ReviewWithUser[]; check: boolean }> {
+  const list = await tx.reviews.findMany({
     where: {
       orgId: rev.orgId,
       projectId: rev.projectId,
       revisionId: rev.id,
     },
-    lock: Transaction.LOCK.UPDATE,
-    transaction,
+    include: { User: true },
+
+    // TODO: add back lock?
+    // lock: Transaction.LOCK.UPDATE,
   });
 
   return { list, check: list.length > 0 };

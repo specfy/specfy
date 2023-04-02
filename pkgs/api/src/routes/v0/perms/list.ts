@@ -1,14 +1,12 @@
+import type { Prisma } from '@prisma/client';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
-import type { WhereOptions } from 'sequelize';
-import { Op } from 'sequelize';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors';
 import { toApiUser } from '../../../common/formatters/user';
 import { valOrgId, valProjectId } from '../../../common/zod';
-import { Perm } from '../../../models';
-import type { ResListPerms, ReqListPerms } from '../../../types/api';
-import type { DBPerm } from '../../../types/db';
+import { prisma } from '../../../db';
+import type { ResListPerms, ReqListPerms, ApiPerm } from '../../../types/api';
 
 function QueryVal(req: FastifyRequest) {
   return z
@@ -31,16 +29,17 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     }
 
     const query = val.data;
-    const where: WhereOptions<DBPerm> = {
+    const where: Prisma.PermsWhereInput = {
       orgId: query.org_id,
-      projectId: query.project_id || { [Op.is]: null },
+      projectId: query.project_id || null,
     };
 
-    const perms = await Perm.scope('withUser').findAll({
+    const perms = await prisma.perms.findMany({
       where,
+      include: { User: true },
       // TODO: proper pagination?
-      limit: 500,
-      offset: 0,
+      take: 500,
+      skip: 0,
     });
 
     res.status(200).send({
@@ -50,8 +49,8 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           id: p.id,
           orgId: p.orgId,
           projectId: p.projectId,
-          user: toApiUser(p.user),
-          role: p.role,
+          user: toApiUser(p.User),
+          role: p.role as ApiPerm['role'],
           createdAt: p.createdAt.toISOString(),
           updatedAt: p.updatedAt.toISOString(),
         };

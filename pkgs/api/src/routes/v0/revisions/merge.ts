@@ -1,11 +1,14 @@
+import type { Prisma } from '@prisma/client';
 import type { FastifyPluginCallback } from 'fastify';
-import type { Model } from 'sequelize';
 
 import { findAllBlobsWithParent } from '../../../common/blobs';
 import { checkReviews } from '../../../common/revision';
-import { db } from '../../../db';
+import { prisma } from '../../../db';
 import { getRevision } from '../../../middlewares/getRevision';
-import { Component, Project, Document } from '../../../models';
+import { createComponentActivity } from '../../../models/component';
+import { createDocumentActivity } from '../../../models/document';
+import { createProjectActivity } from '../../../models/project';
+import { createRevisionActivity } from '../../../models/revision';
 import type {
   ReqGetRevision,
   ReqRevisionParams,
@@ -21,10 +24,11 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
   }>('/', { preHandler: getRevision }, async function (req, res) {
     const rev = req.revision!;
     let cantMerge: string | false = false;
+    const user = req.user!;
 
-    await db.transaction(async (transaction) => {
+    await prisma.$transaction(async (tx) => {
       // Check if we have reviews
-      const reviews = await checkReviews(rev, transaction);
+      const reviews = await checkReviews(rev, tx);
       if (!reviews.check) {
         cantMerge = 'missing_checks';
         throw new Error(cantMerge);
@@ -33,7 +37,11 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       // TODO: check who can merge
 
       // Merge all blobs
-      const list = await findAllBlobsWithParent(rev.blobs, transaction, true);
+      const list = await findAllBlobsWithParent(
+        rev.blobs as string[],
+        tx,
+        true
+      );
       for (const item of list) {
         // If we can't find the prev, that means it's not longer in the main branch
         if (!item.parent && item.blob.parentId) {
@@ -42,74 +50,97 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         }
 
         // Update a blob
-        if (item.parent && !item.blob.deleted) {
-          await (item.parent as Model).update(
-            { ...item.blob.blob, blobId: item.blob.id },
-            { transaction }
-          );
-          await item.parent.onAfterUpdate(req.user!, { transaction });
+
+        const blob = item.blob as unknown as DBBlob;
+
+        // --- Projects
+        if (blob.type === 'project') {
+          if (blob.deleted) {
+            const del = await tx.projects.delete({
+              where: { id: blob.typeId },
+            });
+            await createProjectActivity(user, 'Project.deleted', del, tx);
+            continue;
+          } else if (item.parent) {
+            const up = await tx.projects.update({
+              data: { ...(item.blob.blob as any), blobId: item.blob.id },
+              where: { id: blob.typeId },
+            });
+            await createProjectActivity(user, 'Project.updated', up, tx);
+            continue;
+          }
+
+          const created = await tx.projects.create({
+            data: {
+              ...(blob.blob! as unknown as Prisma.ProjectsUncheckedCreateInput),
+              blobId: blob.id,
+            },
+          });
+          await createProjectActivity(user, 'Project.created', created, tx);
           continue;
         }
 
-        const blob = item.blob as unknown as DBBlob;
-        if (blob.type === 'project') {
-          if (blob.deleted) {
-            await Project.destroy({ where: { id: blob.typeId }, transaction });
-            await item.parent!.onAfterDelete(req.user!, { transaction });
-            continue;
-          }
-
-          const created = await Project.create(
-            { ...blob.blob!, blobId: blob.id },
-            {
-              transaction,
-            }
-          );
-          await created.onAfterCreate(req.user!, { transaction });
-        } else if (blob.type === 'component') {
+        // --- Components
+        if (blob.type === 'component') {
           if (item.blob.deleted) {
-            await Component.destroy({
+            const del = await tx.components.delete({
               where: { id: blob.typeId },
-              transaction,
             });
-            await item.parent!.onAfterDelete(req.user!, { transaction });
+            await createComponentActivity(user, 'Component.deleted', del, tx);
+            continue;
+          } else if (item.parent) {
+            const up = await tx.components.update({
+              data: { ...(item.blob.blob as any), blobId: item.blob.id },
+              where: { id: blob.typeId },
+            });
+            await createComponentActivity(user, 'Component.updated', up, tx);
             continue;
           }
 
-          const created = await Component.create(
-            { ...blob.blob!, blobId: blob.id },
-            {
-              transaction,
-            }
-          );
-          await created.onAfterCreate(req.user!, { transaction });
-        } else if (blob.type === 'document') {
+          const created = await tx.components.create({
+            data: {
+              ...(blob.blob! as unknown as Prisma.ComponentsUncheckedCreateInput),
+              blobId: blob.id,
+            },
+          });
+
+          await createComponentActivity(user, 'Component.created', created, tx);
+          continue;
+        }
+
+        // --- Documents
+        if (blob.type === 'document') {
           if (blob.deleted) {
-            await Document.destroy({ where: { id: blob.typeId }, transaction });
-            await item.parent!.onAfterDelete(req.user!, { transaction });
+            const del = await tx.documents.delete({
+              where: { id: blob.typeId },
+            });
+            await createDocumentActivity(user, 'Document.deleted', del, tx);
+            continue;
+          } else if (item.parent) {
+            const up = await tx.documents.update({
+              data: { ...(item.blob.blob as any), blobId: item.blob.id },
+              where: { id: blob.typeId },
+            });
+            await createDocumentActivity(user, 'Document.updated', up, tx);
             continue;
           }
 
-          const created = await Document.create(
-            { ...blob.blob!, blobId: blob.id },
-            {
-              transaction,
-            }
-          );
-          await created.onAfterCreate(req.user!, { transaction });
+          const created = await tx.documents.create({
+            data: {
+              ...(blob.blob! as unknown as Prisma.DocumentsUncheckedCreateInput),
+              blobId: blob.id,
+            },
+          });
+          await createDocumentActivity(user, 'Document.created', created, tx);
         }
       }
 
       // Update revision
-      await rev.update(
-        {
-          merged: true,
-          mergedAt: new Date().toISOString(),
-        },
-        { transaction }
-      );
-
-      await rev.onAfterMerge(req.user!, { transaction });
+      const updated = await tx.revisions.update({
+        data: { merged: true, mergedAt: new Date().toISOString() },
+        where: { id: rev.id },
+      });
+      await createRevisionActivity(user, 'Revision.merged', updated, tx);
     });
 
     if (cantMerge) {

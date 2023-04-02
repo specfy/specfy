@@ -2,19 +2,29 @@ import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import z from 'zod';
 
 import { validationError } from '../../../common/errors';
+import { nanoid } from '../../../common/id';
 import { schemaProject } from '../../../common/validators';
-import { valOrgId, valUniqueColumn } from '../../../common/zod';
-import { db } from '../../../db';
-import { Perm, Project } from '../../../models';
+import { valOrgId } from '../../../common/zod';
+import { prisma } from '../../../db';
+import { createProject } from '../../../models/project';
 import type { ReqPostProject, ResPostProject } from '../../../types/api';
 
 function ProjectVal(req: FastifyRequest) {
   return z
     .object({
       name: schemaProject.shape.name,
-      slug: schemaProject.shape.slug.superRefine(
-        valUniqueColumn(Project, 'slug', 'slug')
-      ),
+      slug: schemaProject.shape.slug.superRefine(async (val, ctx) => {
+        const res = await prisma.projects.findFirst({ where: { slug: val } });
+        if (!res) {
+          return;
+        }
+
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          params: { code: 'exists' },
+          message: `This slug is already used`,
+        });
+      }),
       orgId: valOrgId(req),
       display: schemaProject.shape.display,
     })
@@ -33,31 +43,34 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
     const data = val.data;
 
-    const project = await db.transaction(async (transaction) => {
+    const project = await prisma.$transaction(async (tx) => {
       const pos = data.display.pos || { x: 0, y: 0 };
-      const tmp = await Project.create({
-        orgId: data.orgId,
-        name: data.name,
-        slug: data.slug,
-        description: {
-          type: 'doc',
-          content: [],
+      const tmp = await createProject({
+        data: {
+          orgId: data.orgId,
+          name: data.name,
+          slug: data.slug,
+          description: {
+            type: 'doc',
+            content: [],
+          },
+          links: [],
+          display: { pos: { ...pos, width: 100, height: 32 } },
+          edges: [],
         },
-        links: [],
-        display: { pos: { ...pos, width: 100, height: 32 } },
-        edges: [],
+        user: req.user!,
+        tx,
       });
-      await tmp.onAfterCreate(req.user!, { transaction });
 
-      await Perm.create(
-        {
+      await tx.perms.create({
+        data: {
+          id: nanoid(),
           orgId: data.orgId,
           projectId: tmp.id,
           userId: req.user!.id,
           role: 'owner',
         },
-        { transaction }
-      );
+      });
 
       return tmp;
     });

@@ -1,24 +1,25 @@
-import type { Activity } from '../../models';
 import type { ApiActivity } from '../../types/api';
+import type { ActivitiesList } from '../../types/db';
 
 import { toApiUser } from './user';
 
-export function toApiActivity(act: Activity): ApiActivity {
+export function toApiActivity(act: ActivitiesList): ApiActivity {
   return {
     id: act.id,
     orgId: act.orgId,
 
-    project: act.project ? act.project : undefined,
-    user: toApiUser(act.user),
+    project: act.Project ? act.Project : undefined,
+    user: toApiUser(act.User),
 
     activityGroupId: act.activityGroupId,
-    action: act.action,
+    action: act.action as ApiActivity['action'],
 
-    targetUser: act.targetUser ? toApiUser(act.targetUser) : undefined,
-    targetComponent: act.targetComponent ? act.targetComponent : undefined,
-    targetDocument: act.targetDocument ? act.targetDocument : undefined,
-    targetRevision: act.targetRevision ? act.targetRevision : undefined,
-    targetPolicy: act.targetPolicy ? act.targetPolicy : undefined,
+    // TODO: reup this
+    // targetUser: act.targetUser ? toApiUser(act.targetUser) : undefined,
+    // targetComponent: act.targetComponent ? act.targetComponent : undefined,
+    // targetDocument: act.targetDocument ? act.targetDocument : undefined,
+    // targetRevision: act.targetRevision ? act.targetRevision : undefined,
+    // targetPolicy: act.targetPolicy ? act.targetPolicy : undefined,
 
     createdAt: act.createdAt.toISOString(),
   };

@@ -1,9 +1,10 @@
 import type { IncomingMessage, ServerResponse } from 'http';
 
+import type { Projects, Revisions, Users } from '@prisma/client';
 import type { preHandlerHookHandler, RawServerDefault } from 'fastify';
 import type { RouteGenericInterface } from 'fastify/types/route';
 
-import type { Perm, Project, Revision, User } from '../models';
+import type { PermsWithOrg } from './db';
 
 export type PreHandler<T extends RouteGenericInterface = any> =
   preHandlerHookHandler<
@@ -15,11 +16,11 @@ export type PreHandler<T extends RouteGenericInterface = any> =
 
 declare module 'fastify' {
   interface FastifyRequest {
-    perms?: Perm[];
-    project?: Project;
-    revision?: Revision;
+    perms?: PermsWithOrg[];
+    project?: Projects;
+    revision?: Revisions;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  interface PassportUser extends User {}
+  interface PassportUser extends Users {}
 }

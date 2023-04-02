@@ -3,8 +3,9 @@ import { z } from 'zod';
 
 import { validationError } from '../../../common/errors';
 import { valOrgId, valProjectId } from '../../../common/zod';
-import { Component } from '../../../models';
+import { prisma } from '../../../db';
 import type {
+  ApiComponent,
   Pagination,
   ReqListComponents,
   ResListComponents,
@@ -36,14 +37,14 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         totalItems: 0,
       };
 
-      const docs = await Component.findAll({
+      const docs = await prisma.components.findMany({
         where: {
           orgId: query.org_id,
           projectId: query.project_id,
         },
-        order: [['name', 'ASC']],
-        limit: 1000,
-        offset: 0,
+        orderBy: { name: 'asc' },
+        take: 1000,
+        skip: 0,
       });
 
       res.status(200).send({
@@ -56,15 +57,15 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
             blobId: p.blobId,
             techId: p.techId,
 
-            type: p.type,
+            type: p.type as ApiComponent['type'],
             typeId: p.typeId,
             name: p.name,
             slug: p.slug,
-            description: p.description,
-            tech: p.tech,
-            display: p.display,
+            description: p.description as any,
+            tech: p.tech as ApiComponent['tech'],
+            display: p.display as unknown as ApiComponent['display'],
             inComponent: p.inComponent,
-            edges: p.edges,
+            edges: p.edges as unknown as ApiComponent['edges'],
 
             createdAt: p.createdAt.toISOString(),
             updatedAt: p.updatedAt.toISOString(),

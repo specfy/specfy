@@ -1,7 +1,7 @@
 import type { FastifyPluginCallback } from 'fastify';
 
+import { prisma } from '../../../../db';
 import { getRevision } from '../../../../middlewares/getRevision';
-import { RevisionBlob } from '../../../../models';
 import type {
   ReqGetRevision,
   ReqRevisionParams,
@@ -16,13 +16,14 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     Reply: ResListRevisionBlobs;
   }>('/', { preHandler: getRevision }, async function (req, res) {
     const rev = req.revision!;
-    const list = await RevisionBlob.scope('withPrevious').findAll({
+    const list = await prisma.blobs.findMany({
       where: {
-        id: rev.blobs,
+        id: { in: rev.blobs as string[] },
       },
-      order: [['createdAt', 'ASC']],
-      limit: 100,
-      offset: 0,
+      include: { Previous: true },
+      orderBy: { createdAt: 'asc' },
+      take: 100,
+      skip: 0,
     });
 
     if (list.length <= 0) {
@@ -40,7 +41,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           type: blob.type as any,
           typeId: blob.typeId,
           blob: blob.blob as any,
-          previous: blob.previousBlob?.blob || null,
+          previous: (blob.Previous?.blob as any) || null,
           created: blob.created,
           deleted: blob.deleted,
           createdAt: blob.createdAt.toISOString(),

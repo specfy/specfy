@@ -121,8 +121,8 @@ export class ApiClient {
     return await this.query('DELETE', path, opts);
   }
 
-  close() {
-    this.client.close();
+  async close() {
+    await this.client.close();
   }
 
   private async query(

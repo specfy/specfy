@@ -1,0 +1,307 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["fullTextSearch", "clientExtensions"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Accounts {
+  id                String    @id @db.VarChar(15)
+  userId            String    @db.VarChar(15)
+  type              String    @db.VarChar(50)
+  provider          String    @db.VarChar(100)
+  providerAccountId String    @db.VarChar(100)
+  refreshToken      String?   @db.VarChar(100)
+  accessToken       String?   @db.VarChar(100)
+  tokenType         String?   @db.VarChar(100)
+  token             String?
+  scope             String
+  sessionState      String?
+  expiresAt         DateTime? @db.Timestamp(3)
+  updatedAt         DateTime  @updatedAt
+
+  User Users @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model Activities {
+  id                String   @id @db.VarChar(15)
+  orgId             String?  @db.VarChar(36)
+  projectId         String?  @db.VarChar(15)
+  userId            String   @db.VarChar(15)
+  activityGroupId   String   @db.VarChar(15)
+  action            String   @db.VarChar(25)
+  targetUserId      String?  @db.VarChar(15)
+  targetComponentId String?  @db.VarChar(15)
+  targetDocumentId  String?  @db.VarChar(15)
+  targetRevisionId  String?  @db.VarChar(15)
+  targetPolicyId    String?  @db.VarChar(15)
+  createdAt         DateTime @default(now()) @db.Timestamp(3)
+
+  Org     Orgs?     @relation(fields: [orgId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Project Projects? @relation(fields: [projectId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  User    Users     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([orgId, projectId, activityGroupId], map: "idx_activities_projectid_group")
+}
+
+model Blobs {
+  id        String   @id @db.VarChar(15)
+  orgId     String   @db.VarChar(36)
+  projectId String   @db.VarChar(15)
+  type      String   @db.VarChar(36)
+  typeId    String   @db.VarChar(36)
+  parentId  String?  @db.VarChar(15)
+  blob      Json?    @db.Json
+  created   Boolean  @default(false)
+  deleted   Boolean  @default(false)
+  createdAt DateTime @default(now()) @db.Timestamp(3)
+  updatedAt DateTime @updatedAt
+
+  Org      Orgs     @relation(fields: [orgId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Project  Projects @relation(fields: [projectId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Previous Blobs?   @relation(fields: [parentId], references: [id], name: "previous", onDelete: NoAction, onUpdate: NoAction)
+
+  Documents  Documents[]
+  Components Components[]
+  Projects   Projects[]   @relation("blob")
+  Blobs      Blobs[]      @relation("previous")
+}
+
+model Comments {
+  id         BigInt   @id @default(autoincrement())
+  orgId      String   @db.VarChar(36)
+  projectId  String   @db.VarChar(15)
+  revisionId String   @db.VarChar(15)
+  userId     String   @db.VarChar(15)
+  content    Json     @db.Json
+  createdAt  DateTime @default(now()) @db.Timestamp(3)
+  updatedAt  DateTime @updatedAt
+
+  Org      Orgs      @relation(fields: [orgId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Project  Projects  @relation(fields: [projectId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Revision Revisions @relation(fields: [revisionId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  User     Users     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([orgId, projectId, revisionId], map: "idx_comments_orgid_projectid_revisionid")
+}
+
+model Components {
+  id          String   @id @db.VarChar(15)
+  orgId       String   @db.VarChar(36)
+  projectId   String   @db.VarChar(15)
+  blobId      String?  @db.VarChar(15)
+  techId      String?  @db.VarChar(50)
+  type        String   @db.VarChar(25)
+  typeId      String?  @db.VarChar(36)
+  name        String   @db.VarChar(100)
+  slug        String   @db.VarChar(100)
+  description Json     @db.Json
+  tech        Json     @db.Json
+  display     Json     @db.Json
+  inComponent String?  @db.VarChar(15)
+  edges       Json     @db.Json
+  createdAt   DateTime @default(now()) @db.Timestamp(3)
+  updatedAt   DateTime @updatedAt
+
+  Org     Orgs     @relation(fields: [orgId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Project Projects @relation(fields: [projectId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Blob    Blobs?   @relation(fields: [blobId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model Documents {
+  id        String   @id @db.VarChar(15)
+  orgId     String   @db.VarChar(36)
+  projectId String   @db.VarChar(15)
+  blobId    String?  @db.VarChar(15)
+  type      String   @db.VarChar(25)
+  typeId    Int
+  name      String   @db.VarChar(100)
+  slug      String   @db.VarChar(100)
+  tldr      String   @db.VarChar(500)
+  content   Json     @db.Json
+  locked    Boolean  @default(false)
+  createdAt DateTime @default(now()) @db.Timestamp(3)
+  updatedAt DateTime @updatedAt
+
+  Org     Orgs     @relation(fields: [orgId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Project Projects @relation(fields: [projectId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Blob    Blobs?   @relation(fields: [blobId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  TypeHasUsers TypeHasUsers[]
+
+  @@unique([orgId, type, typeId], map: "idx_document_orgid_type_typeid")
+  @@index([orgId, projectId], map: "idx_document_orgid_projectid")
+}
+
+model Orgs {
+  id        String   @id @db.VarChar(36)
+  name      String   @db.VarChar(36)
+  createdAt DateTime @default(now()) @db.Timestamp(3)
+  updatedAt DateTime @updatedAt
+
+  Perms      Perms[]
+  Activities Activities[]
+  Comments   Comments[]
+  Blobs      Blobs[]
+  Components Components[]
+  Documents  Documents[]
+  Policies   Policies[]
+  Projects   Projects[]
+  Reviews    Reviews[]
+  Revisions  Revisions[]
+}
+
+model Perms {
+  id        String   @id @db.VarChar(15)
+  orgId     String   @db.VarChar(36)
+  projectId String?  @db.VarChar(15)
+  userId    String   @db.VarChar(15)
+  role      String   @db.VarChar(25)
+  createdAt DateTime @default(now()) @db.Timestamp(3)
+  updatedAt DateTime @updatedAt
+
+  Org     Orgs      @relation(fields: [orgId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Project Projects? @relation(fields: [projectId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  User    Users     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([orgId, userId, projectId], map: "idx_team_org_userid_projectid")
+}
+
+model Policies {
+  id        String   @id @db.VarChar(15)
+  orgId     String   @db.VarChar(36)
+  type      String   @db.VarChar(36)
+  name      String?  @db.VarChar(250)
+  tech      String?  @db.VarChar(36)
+  content   Json     @db.Json
+  createdAt DateTime @default(now()) @db.Timestamp(3)
+  updatedAt DateTime @updatedAt
+
+  Org Orgs @relation(fields: [orgId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  TypeHasUsers TypeHasUsers[]
+
+  @@index([orgId, type], map: "idx_policies_orgid_type")
+}
+
+model Projects {
+  id          String   @id @db.VarChar(15)
+  orgId       String   @db.VarChar(36)
+  blobId      String?  @db.VarChar(15)
+  name        String   @db.VarChar(36)
+  slug        String   @db.VarChar(100)
+  description Json     @db.Json
+  links       Json     @db.Json
+  display     Json     @db.Json
+  edges       Json     @db.Json
+  createdAt   DateTime @default(now()) @db.Timestamp(3)
+  updatedAt   DateTime @updatedAt
+
+  Org  Orgs   @relation(fields: [orgId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Blob Blobs? @relation(fields: [blobId], references: [id], name: "blob", onDelete: NoAction, onUpdate: NoAction)
+
+  Activities Activities[]
+  Comments   Comments[]
+  Blobs      Blobs[]
+  Components Components[]
+  Documents  Documents[]
+  Perms      Perms[]
+  Reviews    Reviews[]
+  Revisions  Revisions[]
+
+  @@unique([orgId, slug], map: "idx_projects_orgid_slug")
+}
+
+model Reviews {
+  id         BigInt   @id @default(autoincrement())
+  orgId      String   @db.VarChar(36)
+  projectId  String   @db.VarChar(15)
+  revisionId String   @db.VarChar(15)
+  userId     String   @db.VarChar(15)
+  commentId  BigInt?
+  createdAt  DateTime @default(now()) @db.Timestamp(3)
+
+  Org      Orgs      @relation(fields: [orgId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Project  Projects  @relation(fields: [projectId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  User     Users     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Revision Revisions @relation(fields: [revisionId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([orgId, projectId, revisionId], map: "idx_reviews_orgid_projectid_revisionid")
+}
+
+model Revisions {
+  id          String    @id @db.VarChar(15)
+  orgId       String    @db.VarChar(36)
+  projectId   String    @db.VarChar(15)
+  name        String    @db.VarChar(75)
+  description Json      @db.Json
+  blobs       Json      @db.Json
+  locked      Boolean   @default(false)
+  status      String    @default("draft") @db.VarChar(25)
+  merged      Boolean   @default(false)
+  createdAt   DateTime  @default(now()) @db.Timestamp(3)
+  updatedAt   DateTime  @updatedAt
+  mergedAt    DateTime? @db.Timestamp(3)
+  closedAt    DateTime? @db.Timestamp(3)
+
+  Org     Orgs     @relation(fields: [orgId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Project Projects @relation(fields: [projectId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  TypeHasUsers TypeHasUsers[]
+  Reviews      Reviews[]
+  Comments     Comments[]
+}
+
+model Sessions {
+  id           String   @id @db.VarChar(15)
+  userId       String   @db.VarChar(15)
+  sessionToken String   @unique(map: "idx_sessions_token") @db.VarChar(100)
+  expiresAt    DateTime @db.Timestamp(3)
+
+  User Users @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model TypeHasUsers {
+  id         BigInt   @id @default(autoincrement())
+  documentId String?  @db.VarChar(15)
+  revisionId String?  @db.VarChar(15)
+  policyId   String?  @db.VarChar(15)
+  userId     String   @db.VarChar(15)
+  role       String   @db.VarChar(25)
+  createdAt  DateTime @default(now()) @db.Timestamp(3)
+
+  User     Users      @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Revision Revisions? @relation(fields: [revisionId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Policy   Policies?  @relation(fields: [policyId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Document Documents? @relation(fields: [documentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@unique([documentId, userId], map: "idx_documentid_userid")
+  @@unique([policyId, userId], map: "idx_policyid_userid")
+  @@unique([revisionId, userId], map: "idx_revisionid_userid")
+}
+
+model Users {
+  id              String    @id @db.VarChar(15)
+  name            String    @db.VarChar(100)
+  email           String    @unique(map: "idx_users_email") @db.VarChar(250)
+  emailVerifiedAt DateTime? @db.Timestamp(3)
+  createdAt       DateTime  @default(now()) @db.Timestamp(3)
+  updatedAt       DateTime  @updatedAt
+
+  TypeHasUsers TypeHasUsers[]
+  Comments     Comments[]
+  Activities   Activities[]
+  Accounts     Accounts[]
+  Sessions     Sessions[]
+  Reviews      Reviews[]
+  Perms        Perms[]
+}
+
+model VerificationToken {
+  token      String   @id @db.VarChar(100)
+  identifier String   @db.VarChar(100)
+  expiresAt  DateTime @db.Timestamp(3)
+}

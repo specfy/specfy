@@ -8,15 +8,17 @@ import type {
   FastifyServerOptions,
 } from 'fastify';
 
+import { start } from './db';
 import { logger } from './logger';
 import { routes } from './routes/routes';
-import './db';
 import './common/auth';
 
 export default async (f: FastifyInstance, opts: FastifyPluginOptions) => {
   // Place here your custom code!
   await f.register(cors, {});
   // Do not touch the following lines
+
+  await start();
 
   // This loads all plugins defined in plugins
   // those should be support plugins that are reused

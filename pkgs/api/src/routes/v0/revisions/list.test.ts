@@ -1,6 +1,6 @@
-import { describe, beforeAll, it, afterAll, expect } from '@jest/globals';
 import type { FastifyInstance } from 'fastify';
 import { fastify } from 'fastify';
+import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
 import buildApp from '../../../app';
 import { ApiClient, isValidationError } from '../../../test/fetch';
@@ -21,9 +21,9 @@ beforeAll(async () => {
   client = new ApiClient((app.server.address() as any)?.port);
 });
 
-afterAll(() => {
-  app.close();
-  client.close();
+afterAll(async () => {
+  await app.close();
+  await client.close();
 });
 
 describe('GET /revisions', () => {

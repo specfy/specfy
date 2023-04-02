@@ -1,134 +1,85 @@
-import type { CreationOptional, ForeignKey } from 'sequelize';
-import {
-  CreatedAt,
-  UpdatedAt,
-  Table,
-  PrimaryKey,
-  Column,
-  DataType,
-  BeforeCreate,
-  BeforeUpdate,
-} from 'sequelize-typescript';
+import { Prisma } from '@prisma/client';
+import type { Activities, Components, Users } from '@prisma/client';
 import slugify from 'slugify';
 
 import { nanoid } from '../common/id';
-import type { DBActivityType, DBBlobComponent, DBComponent } from '../types/db';
+import type { ActionComponent } from '../types/db';
 
-import ActivitableModel from './base/activitable';
-import type { PropBlobCreate } from './blob';
-import { RevisionBlob } from './blob';
-import type { Org } from './org';
-import type { Project } from './project';
+export async function createComponentBlob({
+  data,
+  blob,
+  tx,
+}: {
+  data?: Partial<Pick<Prisma.BlobsCreateInput, 'created' | 'deleted'>>;
+  blob: Components | Prisma.ComponentsUncheckedCreateInput;
+  tx: Prisma.TransactionClient;
+}) {
+  return await tx.blobs.create({
+    data: {
+      id: nanoid(),
+      orgId: blob.orgId,
+      projectId: blob.projectId,
+      parentId: blob?.blobId || null,
+      type: 'component',
+      typeId: blob.id,
+      blob: data?.deleted ? Prisma.DbNull : (blob as any),
+      created: false,
+      deleted: false,
+      ...data,
+    },
+  });
+}
 
-@Table({
-  tableName: 'components',
-  modelName: 'component',
-  paranoid: false,
-})
-export class Component extends ActivitableModel<
-  DBComponent,
-  Partial<Pick<DBComponent, 'blobId' | 'id'>> &
-    Pick<
-      DBComponent,
-      | 'description'
-      | 'display'
-      | 'edges'
-      | 'inComponent'
-      | 'name'
-      | 'orgId'
-      | 'projectId'
-      | 'tech'
-      | 'techId'
-      | 'type'
-      | 'typeId'
-    >
-> {
-  activityType: DBActivityType = 'Component';
+export async function createComponent({
+  data,
+  user,
+  tx,
+}: {
+  data: Omit<Prisma.ComponentsUncheckedCreateInput, 'blobId' | 'slug'>;
+  user: Users;
+  tx: Prisma.TransactionClient;
+}) {
+  const body: Prisma.ComponentsUncheckedCreateInput = {
+    ...data,
+    slug: slugify(data.name, { lower: true, trim: true }),
+    id: data.id || nanoid(),
+    blobId: null,
+  };
+  const blob = await createComponentBlob({
+    data: { created: true },
+    blob: body,
+    tx,
+  });
+  const model: Prisma.ComponentsUncheckedCreateInput = {
+    ...body,
+    blobId: blob.id,
+  };
 
-  @PrimaryKey
-  @Column(DataType.STRING)
-  declare id: CreationOptional<string>;
+  const tmp = await tx.components.create({
+    data: model,
+  });
+  await createComponentActivity(user, 'Component.created', tmp, tx);
 
-  @Column({ field: 'org_id', type: DataType.STRING })
-  declare orgId: ForeignKey<Org['id']>;
+  return tmp;
+}
 
-  @Column({ field: 'project_id', type: DataType.STRING })
-  declare projectId: ForeignKey<Project['id']>;
+export async function createComponentActivity(
+  user: Users,
+  action: ActionComponent,
+  target: Components,
+  tx: Prisma.TransactionClient
+): Promise<Activities> {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  const activityGroupId = nanoid();
 
-  @Column({ field: 'blob_id', type: DataType.UUIDV4 })
-  declare blobId: ForeignKey<RevisionBlob['id']>;
-
-  @Column({ field: 'tech_id', type: DataType.STRING })
-  declare techId: DBComponent['techId'];
-
-  @Column({ type: DataType.STRING })
-  declare type: DBComponent['type'];
-
-  @Column({ field: 'type_id', type: DataType.STRING })
-  declare typeId: DBComponent['typeId'];
-
-  @Column
-  declare name: string;
-
-  @Column({ type: DataType.JSON })
-  declare description: DBComponent['description'];
-
-  @Column
-  declare slug: string;
-
-  @Column({ type: DataType.JSON })
-  declare tech: string[];
-
-  @Column({ type: DataType.JSON })
-  declare display: DBComponent['display'];
-
-  @Column({ field: 'in_component' })
-  declare inComponent: string;
-
-  @Column({ type: DataType.JSON })
-  declare edges: DBComponent['edges'];
-
-  @CreatedAt
-  @Column({ field: 'created_at' })
-  declare createdAt: Date;
-
-  @UpdatedAt
-  @Column({ field: 'updated_at' })
-  declare updatedAt: Date;
-
-  @BeforeCreate
-  static async onBeforeCreate(
-    model: Component,
-    { transaction }
-  ): Promise<void> {
-    model.slug = slugify(model.name, { lower: true, trim: true });
-    model.type = model.type || 'component';
-    model.id = model.id || nanoid();
-
-    if (!model.blobId) {
-      const body: PropBlobCreate = {
-        orgId: model.orgId,
-        projectId: model.id,
-        parentId: null,
-        type: 'component',
-        typeId: model.id,
-        blob: model.getJsonForBlob(),
-        created: true,
-        deleted: false,
-      };
-      const blob = await RevisionBlob.create(body, { transaction });
-      model.blobId = blob.id;
-    }
-  }
-
-  @BeforeUpdate
-  static async onBeforeUpdate(model: Component) {
-    if (model.name !== model.previous.name) {
-      model.slug = slugify(model.name, { lower: true, trim: true });
-    }
-  }
-
-  getJsonForBlob(): DBBlobComponent['blob'] {
-    return this.toJSON();
-  }
+  return await tx.activities.create({
+    data: {
+      id: nanoid(),
+      action,
+      userId: user.id,
+      orgId: target.orgId,
+      activityGroupId,
+      targetComponentId: target.id,
+    },
+  });
 }

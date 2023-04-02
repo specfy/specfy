@@ -1,19 +1,16 @@
+import type { Prisma } from '@prisma/client';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
-import type { WhereOptions } from 'sequelize';
-import { Op } from 'sequelize';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors';
 import { toApiRevision } from '../../../common/formatters/revision';
 import { valOrgId, valProjectId } from '../../../common/zod';
-import { db } from '../../../db';
-import { Revision } from '../../../models';
+import { prisma } from '../../../db';
 import type {
   Pagination,
   ReqListRevisions,
   ResListRevisions,
 } from '../../../types/api';
-import type { DBRevision } from '../../../types/db';
 
 function QueryVal(req: FastifyRequest) {
   return z
@@ -51,7 +48,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       totalItems: 0,
     };
 
-    const filter: WhereOptions<DBRevision> = {
+    const filter: Prisma.RevisionsWhereInput = {
       orgId: query.org_id,
     };
 
@@ -68,30 +65,28 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         filter.closedAt = null;
       } else if (query.status !== 'all') {
         filter.status = query.status;
-        filter.mergedAt = { [Op.is]: null };
+        filter.mergedAt = null;
       }
     }
 
     // Search
     if (query.search) {
-      filter.name = { [Op.iLike]: `%${query.search}%` };
+      filter.name = { contains: query.search };
     }
     // TODO: search in content
 
     // TODO: return author
-    const list = await db.transaction(async (transaction) => {
-      const tmp = await Revision.findAll({
+    const list = await prisma.$transaction(async (tx) => {
+      const tmp = await tx.revisions.findMany({
         where: filter,
-        order: [['createdAt', 'DESC']],
+        orderBy: { createdAt: 'desc' },
         // TODO: add limit/offset to qp
-        limit: 10,
-        offset: 0,
-        transaction,
+        take: 10,
+        skip: 0,
       });
 
-      const count = await Revision.count({
+      const count = await tx.revisions.count({
         where: filter,
-        transaction,
       });
       pagination.totalItems = count;
 

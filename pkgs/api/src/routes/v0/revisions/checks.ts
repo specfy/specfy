@@ -3,7 +3,7 @@ import type { FastifyPluginCallback } from 'fastify';
 import { findAllBlobsWithParent } from '../../../common/blobs';
 import { toApiReview } from '../../../common/formatters/review';
 import { checkReviews } from '../../../common/revision';
-import { db } from '../../../db';
+import { prisma } from '../../../db';
 import { getRevision } from '../../../middlewares/getRevision';
 import type {
   ReqGetRevision,
@@ -20,8 +20,8 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     const rev = req.revision!;
     const outdatedBlobs: string[] = [];
 
-    const checks = await db.transaction(async (transaction) => {
-      const list = await findAllBlobsWithParent(rev.blobs, transaction);
+    const checks = await prisma.$transaction(async (tx) => {
+      const list = await findAllBlobsWithParent(rev.blobs as string[], tx);
       for (const item of list) {
         // If we can't find the prev, that means it's not longer in the main branch
         if (!item.parent && item.blob.parentId) {
@@ -30,7 +30,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       }
 
       // Check if we have reviews
-      const reviews = await checkReviews(rev, transaction);
+      const reviews = await checkReviews(rev, tx);
 
       return { reviews };
     });

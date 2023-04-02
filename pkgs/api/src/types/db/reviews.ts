@@ -1,11 +1,17 @@
+import type { Prisma } from '@prisma/client';
+
 export type DBReview = {
-  id: number;
+  id: bigint;
 
   orgId: string;
   projectId: string;
   revisionId: string;
   userId: string;
-  commentId: number | null;
+  commentId: bigint | null;
 
   createdAt: string;
 };
+
+export type ReviewWithUser = Prisma.ReviewsGetPayload<{
+  include: { User: true };
+}>;

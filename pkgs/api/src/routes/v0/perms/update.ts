@@ -2,10 +2,11 @@ import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors';
+import { nanoid } from '../../../common/id';
+import { schemaId } from '../../../common/validators';
 import { valOrgId, valProjectId } from '../../../common/zod';
-import { db } from '../../../db';
+import { prisma } from '../../../db';
 import { noQuery } from '../../../middlewares/noQuery';
-import { Perm } from '../../../models';
 import type { ReqPostPerms, ResPostPerms } from '../../../types/api';
 import type { DBPerm } from '../../../types/db';
 import { PermType } from '../../../types/db';
@@ -15,7 +16,7 @@ function QueryVal(req: FastifyRequest) {
     .object({
       org_id: valOrgId(req),
       project_id: valProjectId(req),
-      userId: z.string().uuid(),
+      userId: schemaId,
       role: z.nativeEnum(PermType),
     })
     .strict()
@@ -39,15 +40,14 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       projectId: data.project_id || null,
     };
 
-    await db.transaction(async (transaction) => {
+    await prisma.$transaction(async (tx) => {
       // TODO: invite email
       // TODO: check that user exists
       // TODO: check that user is part of the org
       // TODO: check that user is not the sole owner
 
-      const exist = await Perm.findOne({
+      const exist = await tx.perms.findFirst({
         where: body,
-        transaction,
       });
 
       // // Set viewer if we add someone directly from a project
@@ -64,23 +64,14 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       // }
 
       if (exist) {
-        await Perm.update(
-          {
-            role: data.role as DBPerm['role'],
-          },
-          {
-            transaction,
-            where: body,
-          }
-        );
+        await tx.perms.update({
+          data: { role: data.role as DBPerm['role'] },
+          where: { id: exist.id },
+        });
       } else {
-        await Perm.create(
-          {
-            ...body,
-            role: data.role as DBPerm['role'],
-          },
-          { transaction }
-        );
+        await tx.perms.create({
+          data: { id: nanoid(), ...body, role: data.role as DBPerm['role'] },
+        });
       }
     });
 

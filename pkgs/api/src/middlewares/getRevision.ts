@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { notFound, validationError } from '../common/errors';
 import { schemaId } from '../common/validators';
 import { valOrgId, valProjectId } from '../common/zod';
-import { Revision } from '../models';
+import { prisma } from '../db';
 import type { ReqGetRevision, ReqRevisionParams } from '../types/api';
 import type { PreHandler } from '../types/fastify';
 
@@ -31,7 +31,7 @@ export const getRevision: PreHandler<{
   }
 
   const data = val.data;
-  const proj = await Revision.findOne({
+  const proj = await prisma.revisions.findFirst({
     where: {
       orgId: data.org_id,
       projectId: data.project_id,

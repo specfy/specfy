@@ -1,4 +1,4 @@
-import { expect } from '@jest/globals';
+import { expect } from 'vitest';
 
 import type { API, APIPaths } from '../types/api/endpoints';
 

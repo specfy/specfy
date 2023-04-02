@@ -1,17 +1,16 @@
+import type { Prisma } from '@prisma/client';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
-import type { WhereOptions } from 'sequelize';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors';
+import { toApiPolicy } from '../../../common/formatters/policy';
 import { valOrgId } from '../../../common/zod';
-import { db } from '../../../db';
-import { Policy } from '../../../models';
+import { prisma } from '../../../db';
 import type {
   Pagination,
   ReqListPolicies,
   ResListPolicies,
 } from '../../../types/api';
-import type { DBPolicy } from '../../../types/db';
 
 function QueryVal(req: FastifyRequest) {
   return z
@@ -39,26 +38,20 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       totalItems: 0,
     };
 
-    const filter: WhereOptions<DBPolicy> = {
+    const where: Prisma.PoliciesWhereInput = {
       orgId: query.org_id,
     };
 
-    const list = await db.transaction(async (transaction) => {
-      const tmp = await Policy.findAll({
-        where: {
-          ...filter,
-        },
-        order: [['createdAt', 'ASC']],
+    const list = await prisma.$transaction(async (tx) => {
+      const tmp = await tx.policies.findMany({
+        where,
+        orderBy: { createdAt: 'asc' },
         // TODO: add limit/offset to qp
-        limit: 100,
-        offset: 0,
-        transaction,
+        take: 100,
+        skip: 0,
       });
-      const count = await Policy.count({
-        where: {
-          ...filter,
-        },
-        transaction,
+      const count = await tx.policies.count({
+        where,
       });
       pagination.totalItems = count;
 
@@ -66,18 +59,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     });
 
     res.status(200).send({
-      data: list.map((policy) => {
-        return {
-          id: policy.id,
-          orgId: policy.orgId,
-          type: policy.type,
-          tech: policy.tech,
-          name: policy.name,
-          content: policy.content,
-          createdAt: policy.createdAt.toISOString(),
-          updatedAt: policy.updatedAt.toISOString(),
-        };
-      }),
+      data: list.map(toApiPolicy),
       pagination,
     });
   });

@@ -8,7 +8,7 @@ export interface DBDocument {
   id: string;
   orgId: string;
   projectId: string;
-  blobId: string;
+  blobId: string | null;
 
   type: 'pb' | 'rfc';
   typeId: number;

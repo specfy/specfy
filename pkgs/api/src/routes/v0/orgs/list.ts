@@ -16,8 +16,8 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         }
 
         orgs.push({
-          id: perm.org.id,
-          name: perm.org.name,
+          id: perm.Org.id,
+          name: perm.Org.name,
         });
       }
 

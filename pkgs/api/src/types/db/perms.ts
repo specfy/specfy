@@ -1,3 +1,5 @@
+import type { Prisma } from '@prisma/client';
+
 export enum PermType {
   'contributor' = 'contributor',
   'owner' = 'owner',
@@ -16,3 +18,7 @@ export interface DBPerm {
   createdAt: string;
   updatedAt: string;
 }
+
+export type PermsWithOrg = Prisma.PermsGetPayload<{
+  include: { Org: true };
+}>;

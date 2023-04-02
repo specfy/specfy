@@ -1,112 +1,110 @@
-import type { CreationOptional, ForeignKey } from 'sequelize';
-import {
-  CreatedAt,
-  UpdatedAt,
-  Table,
-  PrimaryKey,
-  Column,
-  DataType,
-  BeforeCreate,
-  BeforeUpdate,
-} from 'sequelize-typescript';
+import type { Projects, Prisma, Activities, Users } from '@prisma/client';
 import slugify from 'slugify';
 
 import { nanoid } from '../common/id';
-import type {
-  DBActivityType,
-  DBBlobProject,
-  DBProject,
-  DBProjectLink,
-} from '../types/db';
+import type { ActionProject } from '../types/db';
 
-import ActivitableModel from './base/activitable';
-import type { PropBlobCreate } from './blob';
-import { RevisionBlob } from './blob';
-import type { Org } from './org';
-
-@Table({
-  tableName: 'projects',
-  modelName: 'project',
-  paranoid: false,
-})
-export class Project extends ActivitableModel<
-  DBProject,
-  Partial<Pick<DBProject, 'blobId' | 'id' | 'slug'>> &
-    Pick<
-      DBProject,
-      'description' | 'display' | 'edges' | 'links' | 'name' | 'orgId'
-    >
-> {
-  activityType: DBActivityType = 'Project';
-
-  @PrimaryKey
-  @Column(DataType.STRING)
-  declare id: CreationOptional<string>;
-
-  @Column({ field: 'org_id', type: DataType.STRING })
-  declare orgId: ForeignKey<Org['id']>;
-
-  @Column({ field: 'blob_id', type: DataType.UUIDV4 })
-  declare blobId: ForeignKey<RevisionBlob['id']>;
-
-  @Column
-  declare name: string;
-
-  @Column({ type: DataType.JSON })
-  declare description: CreationOptional<DBProject['description']>;
-
-  @Column
-  declare slug: string;
-
-  @Column({ type: DataType.JSON })
-  declare links: CreationOptional<DBProjectLink[]>;
-
-  @Column({ type: DataType.JSON })
-  declare display: DBProject['display'];
-
-  @Column({ type: DataType.JSON })
-  declare edges: DBProject['edges'];
-
-  @CreatedAt
-  @Column({ field: 'created_at' })
-  declare createdAt: Date;
-
-  @UpdatedAt
-  @Column({ field: 'updated_at' })
-  declare updatedAt: Date;
-
-  @BeforeCreate
-  static async onBeforeCreate(model: Project, { transaction }): Promise<void> {
-    model.slug = model.slug || slugify(model.name, { lower: true, trim: true });
-    model.id = model.id || nanoid();
-
-    await model.createBlob(transaction);
-  }
-
-  @BeforeUpdate
-  static async onBeforeUpdate(model: Project) {
-    if (model.name !== model.previous.name) {
-      model.slug = slugify(model.name, { lower: true, trim: true });
-    }
-  }
-
-  getJsonForBlob(): DBBlobProject['blob'] {
-    return this.toJSON();
-  }
-
-  async createBlob(transaction?: any) {
-    const body: PropBlobCreate = {
-      orgId: this.orgId,
-      projectId: this.id,
-      parentId: null,
+export async function createProjectBlob({
+  data,
+  blob,
+  tx,
+}: {
+  data?: Partial<Omit<Prisma.BlobsUncheckedCreateInput, 'blob'>>;
+  blob: Prisma.ProjectsUncheckedCreateInput | Projects;
+  tx: Prisma.TransactionClient;
+}) {
+  return await tx.blobs.create({
+    data: {
+      id: nanoid(),
+      orgId: blob.orgId,
+      projectId: blob.id,
+      parentId: blob.blobId || null,
       type: 'project',
-      typeId: this.id,
-      blob: this.getJsonForBlob(),
-      created: true,
+      typeId: blob.id,
+      blob: blob as any,
+      created: false,
       deleted: false,
-    };
+      ...data,
+    },
+  });
+}
 
-    const blob = await RevisionBlob.create(body, { transaction });
-    this.blobId = blob.id;
+export async function createProject({
+  data,
+  user,
+  tx,
+}: {
+  data: Omit<Prisma.ProjectsUncheckedCreateInput, 'blobId' | 'id' | 'slug'> &
+    Partial<Pick<Prisma.ProjectsUncheckedCreateInput, 'id' | 'slug'>>;
+  user: Users;
+  tx: Prisma.TransactionClient;
+}) {
+  const body: Prisma.ProjectsUncheckedCreateInput = {
+    ...data,
+    slug: slugify(data.name, { lower: true, trim: true }),
+    id: data.id || nanoid(),
+    blobId: null,
+  };
+  const tmp = await tx.projects.create({
+    data: body,
+  });
+  const blob = await createProjectBlob({
+    blob: tmp,
+    data: { created: true },
+    tx,
+  });
+
+  const update = await tx.projects.update({
+    data: { blobId: blob.id },
+    where: { id: tmp.id },
+  });
+  await createProjectActivity(user, 'Project.created', update, tx);
+
+  return tmp;
+}
+
+export async function updateProject({
+  data,
+  original,
+  user,
+  tx,
+}: {
+  data: Partial<Projects>;
+  original: Projects;
+  user: Users;
+  tx: Prisma.TransactionClient;
+}) {
+  if (data.name && data.name !== original.name) {
+    data.slug = slugify(data.name, { lower: true, trim: true });
   }
+  const blob = await createProjectBlob({ blob: { ...original, ...data }, tx });
+
+  const tmp = await tx.projects.update({
+    data: { ...(data as Prisma.ProjectsUncheckedUpdateInput), blobId: blob.id },
+    where: { id: original.id },
+  });
+
+  await createProjectActivity(user, 'Project.updated', tmp, tx);
+
+  return tmp;
+}
+
+export async function createProjectActivity(
+  user: Users,
+  action: ActionProject,
+  target: Projects,
+  tx: Prisma.TransactionClient
+): Promise<Activities> {
+  const activityGroupId = nanoid();
+
+  return await tx.activities.create({
+    data: {
+      id: nanoid(),
+      action,
+      userId: user.id,
+      orgId: target.orgId,
+      activityGroupId,
+      targetComponentId: target.id,
+    },
+  });
 }

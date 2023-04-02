@@ -11,14 +11,14 @@ export const schemaRevision = z
 
     name: z.string().min(2).max(75),
     description: schemaProseMirror,
-    blobs: z.array(z.string().uuid()).max(100),
+    blobs: z.array(schemaId).max(100),
     locked: z.boolean(),
     merged: z.boolean(),
 
     status: z.enum(['approved', 'closed', 'draft', 'waiting']),
 
-    authors: z.array(z.string().uuid()).max(100),
-    reviewers: z.array(z.string().uuid()).max(100),
+    authors: z.array(schemaId).max(100),
+    reviewers: z.array(schemaId).max(100),
 
     createdAt: z.string().datetime(),
     updatedAt: z.string().datetime(),

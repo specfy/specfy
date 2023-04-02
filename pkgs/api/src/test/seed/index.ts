@@ -1,4 +1,4 @@
-import { db } from '../../db';
+import { prisma } from '../../db';
 
 import { seedComponents } from './components';
 import { seedPlaybook, seedRFC } from './documents';
@@ -16,8 +16,8 @@ export async function seed() {
 
   const projects = await seedProjects(users);
 
-  const rfcs = await seedRFC(projects, users);
-  await seedPlaybook(projects, users);
+  const rfcs = await seedRFC(orgs, projects, users);
+  await seedPlaybook(orgs, projects, users);
 
   const components = await seedComponents(orgs, projects, users);
 
@@ -33,5 +33,5 @@ export async function seed() {
   await seed();
   console.log('Seeding done');
 
-  await db.close();
+  await prisma.$disconnect();
 })();

@@ -1,13 +1,12 @@
+import type { Prisma } from '@prisma/client';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
-import type { WhereOptions } from 'sequelize';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors';
 import { toApiActivity } from '../../../common/formatters/activity';
 import { valOrgId, valProjectId } from '../../../common/zod';
-import { Activity } from '../../../models';
+import { prisma } from '../../../db';
 import type { ReqListActivities, ResListActivities } from '../../../types/api';
-import type { DBActivity } from '../../../types/db';
 
 function QueryVal(req: FastifyRequest) {
   return z
@@ -29,7 +28,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       }
 
       const query = val.data;
-      const where: WhereOptions<DBActivity> = {
+      const where: Prisma.ActivitiesWhereInput = {
         orgId: query.org_id,
       };
       if (query.project_id) {
@@ -37,15 +36,12 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       }
 
       // TODO: cursor pagination
-      const activities = await Activity.scope([
-        'withProject',
-        'withUser',
-        'withTargets',
-      ]).findAll({
+      const activities = await prisma.activities.findMany({
         where,
-        order: [['createdAt', 'DESC']],
-        limit: 10,
-        offset: 0,
+        include: { Project: true, User: true },
+        orderBy: { createdAt: 'asc' },
+        take: 10,
+        skip: 0,
       });
 
       res.status(200).send({

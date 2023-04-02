@@ -1,20 +1,14 @@
 import type { FastifyPluginCallback } from 'fastify';
 
 import { noQuery } from '../../../middlewares/noQuery';
-import { User } from '../../../models';
 import type { ResGetMe } from '../../../types/api';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{ Reply: ResGetMe }>(
     '/me',
     { preHandler: noQuery },
-    async function (_req, res) {
-      const user = (await User.findOne({
-        where: {
-          // TODO: actual user
-          email: 'bodin.samuel@gmail.com',
-        },
-      }))!;
+    async function (req, res) {
+      const user = req.user!;
 
       res.status(200).send({
         data: {

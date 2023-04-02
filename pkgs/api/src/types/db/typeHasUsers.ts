@@ -1,3 +1,5 @@
+import type { Prisma } from '@prisma/client';
+
 export interface DBTypeHasUser {
   documentId: string | null;
   revisionId: string | null;
@@ -8,3 +10,7 @@ export interface DBTypeHasUser {
 
   createdAt: string;
 }
+
+export type TypeHasUsersWithUser = Prisma.TypeHasUsersGetPayload<{
+  include: { User: true };
+}>;

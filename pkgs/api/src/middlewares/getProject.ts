@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { notFound, validationError, forbidden } from '../common/errors';
 import { schemaSlug } from '../common/validators';
 import { valOrgId } from '../common/zod';
-import { Project } from '../models/project';
+import { prisma } from '../db';
 import type { ReqProjectParams } from '../types/api';
 import type { PreHandler } from '../types/fastify';
 
@@ -26,10 +26,9 @@ export const getProject: PreHandler<{
   }
 
   const params = val.data;
-  const proj = await Project.findOne({
+  const proj = await prisma.projects.findUnique({
     where: {
-      orgId: params.org_id,
-      slug: params.project_slug,
+      orgId_slug: { orgId: params.org_id, slug: params.project_slug },
     },
   });
 

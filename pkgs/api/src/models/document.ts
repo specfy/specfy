@@ -1,117 +1,85 @@
-import type { CreationOptional, ForeignKey } from 'sequelize';
-import {
-  CreatedAt,
-  UpdatedAt,
-  Table,
-  PrimaryKey,
-  Column,
-  DataType,
-  BeforeCreate,
-  BeforeUpdate,
-} from 'sequelize-typescript';
+import { Prisma } from '@prisma/client';
+import type { Activities, Documents, Users } from '@prisma/client';
 import slugify from 'slugify';
 
 import { nanoid } from '../common/id';
-import type { DBActivityType, DBBlobDocument, DBDocument } from '../types/db';
+import type { ActionDocument } from '../types/db';
 
-import ActivitableModel from './base/activitable';
-import type { PropBlobCreate } from './blob';
-import { RevisionBlob } from './blob';
-import type { Org } from './org';
-import type { Project } from './project';
-
-type CreateProp = Partial<Pick<DBDocument, 'blobId' | 'id'>> &
-  Pick<
-    DBDocument,
-    'content' | 'locked' | 'name' | 'orgId' | 'projectId' | 'tldr' | 'type'
-  >;
-@Table({
-  tableName: 'documents',
-  modelName: 'document',
-  paranoid: false,
-})
-export class Document extends ActivitableModel<DBDocument, CreateProp> {
-  activityType: DBActivityType = 'Document';
-
-  @PrimaryKey
-  @Column(DataType.STRING)
-  declare id: CreationOptional<string>;
-
-  @Column({ field: 'org_id', type: DataType.STRING })
-  declare orgId: ForeignKey<Org['id']>;
-
-  @Column({ field: 'project_id', type: DataType.STRING })
-  declare projectId: ForeignKey<Project['id']>;
-
-  @Column({ field: 'blob_id', type: DataType.UUIDV4 })
-  declare blobId: ForeignKey<RevisionBlob['id']>;
-
-  @Column({ type: DataType.STRING })
-  declare type: DBDocument['type'];
-
-  @Column({ field: 'type_id', type: DataType.INTEGER })
-  declare typeId: DBDocument['typeId'];
-
-  @Column
-  declare name: string;
-
-  @Column
-  declare slug: string;
-
-  @Column
-  declare tldr: string;
-
-  @Column({ type: DataType.JSON })
-  declare content: CreationOptional<DBDocument['content']>;
-
-  @Column
-  declare locked: boolean;
-
-  @CreatedAt
-  @Column({ field: 'created_at' })
-  declare createdAt: Date;
-
-  @UpdatedAt
-  @Column({ field: 'updated_at' })
-  declare updatedAt: Date;
-
-  @BeforeCreate
-  static async onBeforeCreate(model: Document, { transaction }): Promise<void> {
-    model.typeId =
-      (await this.count({
-        where: {
-          orgId: model.orgId,
-          type: model.type,
-        },
-      })) + 1;
-    model.slug = slugify(model.name, {
-      lower: true,
-      trim: true,
-    });
-    model.id = model.id || nanoid();
-
-    const body: PropBlobCreate = {
-      orgId: model.orgId,
-      projectId: model.id,
-      parentId: null,
+export async function createDocumentBlob({
+  blob,
+  data,
+  tx,
+}: {
+  blob: Documents | Prisma.DocumentsUncheckedCreateInput;
+  data?: Partial<Pick<Prisma.BlobsCreateInput, 'created' | 'deleted'>>;
+  tx: Prisma.TransactionClient;
+}) {
+  return await tx.blobs.create({
+    data: {
+      id: nanoid(),
+      orgId: blob.orgId,
+      projectId: blob.projectId,
+      parentId: blob?.blobId || null,
       type: 'document',
-      typeId: model.id,
-      blob: model.getJsonForBlob(),
-      created: true,
+      typeId: blob.id,
+      blob: data?.deleted ? Prisma.DbNull : (blob as any),
+      created: false,
       deleted: false,
-    };
-    const blob = await RevisionBlob.create(body, { transaction });
-    model.blobId = blob.id;
-  }
+      ...data,
+    },
+  });
+}
 
-  @BeforeUpdate
-  static async onBeforeUpdate(model: Document) {
-    if (model.name !== model.previous.name) {
-      model.slug = slugify(model.name, { lower: true, trim: true });
-    }
-  }
+export async function createDocument({
+  data,
+  user,
+  tx,
+}: {
+  data: Omit<Prisma.DocumentsUncheckedCreateInput, 'blobId' | 'slug'>;
+  user: Users;
+  tx: Prisma.TransactionClient;
+}) {
+  const body: Prisma.DocumentsUncheckedCreateInput = {
+    ...data,
+    slug: slugify(data.name, { lower: true, trim: true }),
+    id: data.id || nanoid(),
+    blobId: null,
+  };
+  const blob = await createDocumentBlob({
+    blob: body,
+    data: { created: true },
+    tx,
+  });
+  const model: Prisma.DocumentsUncheckedCreateInput = {
+    ...body,
+    blobId: blob.id,
+  };
 
-  getJsonForBlob(): DBBlobDocument['blob'] {
-    return this.toJSON();
-  }
+  const tmp = await tx.documents.create({
+    data: model,
+  });
+  await createDocumentActivity(user, 'Document.created', tmp, tx);
+
+  return tmp;
+}
+
+export async function createDocumentActivity(
+  user: Users,
+  action: ActionDocument,
+  target: Documents,
+  tx: Prisma.TransactionClient
+): Promise<Activities> {
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  const activityGroupId = nanoid();
+
+  return await tx.activities.create({
+    data: {
+      id: nanoid(),
+      action,
+      userId: user.id,
+      orgId: target.orgId,
+      activityGroupId,
+      targetDocumentId: target.id,
+    },
+  });
 }

@@ -3,12 +3,10 @@ import { z } from 'zod';
 
 import { validationError } from '../../../common/errors';
 import { schemaProseMirror } from '../../../common/validators';
-import { db } from '../../../db';
+import { prisma } from '../../../db';
 import { getRevision } from '../../../middlewares/getRevision';
-import { RevisionComment } from '../../../models/comment';
-import { RevisionReview } from '../../../models/review';
+import { createRevisionActivity } from '../../../models/revision';
 import type {
-  BlockLevelZero,
   ReqGetRevision,
   ReqPostCommentRevision,
   ReqRevisionParams,
@@ -31,7 +29,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     Body: ReqPostCommentRevision;
     Reply: ResPostCommentRevision;
   }>('/', { preHandler: getRevision }, async function (req, res) {
-    const val = BodyVal().safeParse(req);
+    const val = BodyVal().safeParse(req.body);
     if (!val.success) {
       return validationError(res, val.error);
     }
@@ -47,33 +45,23 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       userId: req.user!.id,
     };
 
-    const com = await db.transaction(async (transaction) => {
-      const created = await RevisionComment.create(
-        {
-          ...where,
-          content: data.content as BlockLevelZero,
-        },
-        { transaction }
-      );
+    const com = await prisma.$transaction(async (tx) => {
+      const created = await tx.comments.create({
+        data: { ...where, content: data.content as any },
+      });
 
       if (data.approval) {
-        await RevisionReview.destroy({ where, transaction });
-        await RevisionReview.create(
-          {
-            ...where,
-            commentId: created.id,
-          },
-          { transaction }
-        );
-        await rev.update(
-          {
-            status: 'approved',
-          },
-          { transaction }
-        );
-        await rev.onAfterApproved(req.user!, { transaction });
+        await tx.reviews.deleteMany({ where }); //TODO: not sure it's correct
+        await tx.reviews.create({
+          data: { ...where, commentId: created.id },
+        });
+        await tx.revisions.update({
+          data: { status: 'approved' },
+          where: { id: rev.id },
+        });
+        await createRevisionActivity(req.user!, 'Revision.approved', rev, tx);
       } else {
-        await rev.onAfterCommented(req.user!, { transaction });
+        await createRevisionActivity(req.user!, 'Revision.commented', rev, tx);
       }
 
       return created;

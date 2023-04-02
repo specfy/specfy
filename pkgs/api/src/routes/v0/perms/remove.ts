@@ -1,21 +1,20 @@
+import type { Prisma } from '@prisma/client';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
-import type { WhereOptions } from 'sequelize';
 import { z } from 'zod';
 
 import { notFound, validationError } from '../../../common/errors';
+import { schemaId } from '../../../common/validators';
 import { valOrgId, valProjectId } from '../../../common/zod';
-import { db } from '../../../db';
+import { prisma } from '../../../db';
 import { noQuery } from '../../../middlewares/noQuery';
-import { Perm } from '../../../models';
 import type { ReqDeletePerms, ResDeletePerms } from '../../../types/api';
-import type { DBPerm } from '../../../types/db';
 
 function QueryVal(req: FastifyRequest) {
   return z
     .object({
       org_id: valOrgId(req),
       project_id: valProjectId(req),
-      userId: z.string().uuid(),
+      userId: schemaId,
     })
     .strict()
     .partial({ project_id: true });
@@ -32,7 +31,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     }
 
     const data = val.data;
-    const where: WhereOptions<DBPerm> = {
+    const where: Prisma.PermsWhereInput = {
       orgId: data.org_id,
       userId: data.userId,
     };
@@ -41,14 +40,14 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     }
 
     let error: string | undefined;
-    await db.transaction(async (transaction) => {
-      const perm = await Perm.findOne({ where, transaction });
+    await prisma.$transaction(async (tx) => {
+      const perm = await tx.perms.findFirst({ where });
       if (!perm) {
         error = 'not_found';
         return;
       }
 
-      await Perm.destroy({ where, transaction });
+      await tx.perms.delete({ where: { id: perm.id } });
     });
 
     if (error) {

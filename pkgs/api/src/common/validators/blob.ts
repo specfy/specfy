@@ -10,7 +10,7 @@ export const schemaBlobs = z
     z.discriminatedUnion('type', [
       z
         .object({
-          parentId: z.string().uuid().nullable(), // TODO: Val that it exists if not created
+          parentId: schemaId.nullable(), // TODO: Val that it exists if not created
           type: z.literal('project'),
           typeId: schemaId, // TODO: Val that it exists if not created
           deleted: z.boolean(),
@@ -20,7 +20,7 @@ export const schemaBlobs = z
         .strict(),
       z
         .object({
-          parentId: z.string().uuid().nullable(),
+          parentId: schemaId.nullable(),
           type: z.literal('component'),
           typeId: schemaId,
           deleted: z.boolean(),
@@ -30,7 +30,7 @@ export const schemaBlobs = z
         .strict(),
       z
         .object({
-          parentId: z.string().uuid().nullable(),
+          parentId: schemaId.nullable(),
           type: z.literal('document'),
           typeId: schemaId,
           deleted: z.boolean(),

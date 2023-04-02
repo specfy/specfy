@@ -1,30 +1,35 @@
+import type { Orgs, Users } from '@prisma/client';
+
 import { nanoid } from '../../common/id';
-import type { User } from '../../models';
-import { Perm, Org } from '../../models';
+import { prisma } from '../../db';
+import { createOrgActivity } from '../../models/org';
 
 /**
  * Seed organizations
  */
-export async function seedOrgs(users: User[]): Promise<{ o1: Org; o2: Org }> {
-  const o1 = await Org.create({
-    id: 'company',
-    name: 'My Company',
+export async function seedOrgs(
+  users: Users[]
+): Promise<{ o1: Orgs; o2: Orgs }> {
+  const o1 = await prisma.orgs.create({
+    data: { id: 'company', name: 'My Company' },
   });
-  await o1.onAfterCreate(users[0]);
+  await createOrgActivity(users[0], 'Org.created', o1, prisma);
 
-  const o2 = await Org.create({
-    id: 'samuelbodin',
-    name: "Samuel Bodin's org",
+  const o2 = await prisma.orgs.create({
+    data: { id: 'samuelbodin', name: "Samuel Bodin's org" },
   });
-  await o2.onAfterCreate(users[0]);
+  await createOrgActivity(users[0], 'Org.created', o2, prisma);
 
   await Promise.all([
     ...[o1.id, o2.id].map((id) => {
-      return Perm.create({
-        orgId: id,
-        projectId: null,
-        userId: users[0].id,
-        role: 'owner',
+      return prisma.perms.create({
+        data: {
+          id: nanoid(),
+          orgId: id,
+          projectId: null,
+          userId: users[0].id,
+          role: 'owner',
+        },
       });
     }),
 
@@ -32,24 +37,29 @@ export async function seedOrgs(users: User[]): Promise<{ o1: Org; o2: Org }> {
       if (i === 0) {
         return;
       }
-      return Perm.create({
-        orgId: o1.id,
-        projectId: null,
-        userId: u.id,
-        role: 'viewer',
+      return prisma.perms.create({
+        data: {
+          id: nanoid(),
+          orgId: o1.id,
+          projectId: null,
+          userId: u.id,
+          role: 'viewer',
+        },
       });
     }),
   ]);
   return { o1, o2 };
 }
 
-export async function seedOrg(user: User) {
+export async function seedOrg(user: Users) {
   const id = nanoid();
-  const org = await Org.create({
-    id,
-    name: `Org ${id}`,
+  const org = await prisma.orgs.create({
+    data: {
+      id,
+      name: `Org ${id}`,
+    },
   });
-  await org.onAfterCreate(user);
+  await createOrgActivity(user, 'Org.created', org, prisma);
 
   return org;
 }

@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { validationError } from '../../../common/errors';
 import { toApiProject } from '../../../common/formatters/project';
 import { valOrgId } from '../../../common/zod';
-import { Project } from '../../../models';
+import { prisma } from '../../../db';
 import type {
   Pagination,
   ReqListProjects,
@@ -37,13 +37,13 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       };
 
       // TODO: perms
-      const projects = await Project.findAll({
+      const projects = await prisma.projects.findMany({
         where: {
           orgId: query.org_id,
         },
-        order: [['name', 'ASC']],
-        limit: 20,
-        offset: 0,
+        orderBy: { name: 'asc' },
+        take: 20,
+        skip: 0,
       });
 
       res.status(200).send({

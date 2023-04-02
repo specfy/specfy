@@ -1,12 +1,12 @@
+import type { Prisma, TypeHasUsers } from '@prisma/client';
 import type { FastifyPluginCallback } from 'fastify';
 
 import { validationError } from '../../../common/errors';
 import { schemaRevision } from '../../../common/validators/revision';
-import { db } from '../../../db';
+import { prisma } from '../../../db';
 import { getRevision } from '../../../middlewares/getRevision';
-import { TypeHasUser } from '../../../models';
+import { createRevisionActivity } from '../../../models/revision';
 import type {
-  ApiRevision,
   ReqGetRevision,
   ReqPutRevision,
   ReqRevisionParams,
@@ -14,9 +14,9 @@ import type {
 } from '../../../types/api';
 
 function diffUsers(
-  origin: TypeHasUser[],
+  origin: TypeHasUsers[],
   newIds: string[],
-  role: TypeHasUser['role']
+  role: TypeHasUsers['role']
 ) {
   const oldIds: string[] = [];
   for (const user of origin) {
@@ -48,11 +48,12 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
     const data = val.data;
     const rev = req.revision!;
+    const user = req.user!;
 
     // TODO: validation
     try {
-      await db.transaction(async (transaction) => {
-        const users = await TypeHasUser.findAll({
+      await prisma.$transaction(async (tx) => {
+        const users = await tx.typeHasUsers.findMany({
           where: {
             revisionId: rev.id,
           },
@@ -66,54 +67,48 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
         await Promise.all([
           ...diffAuthors.toAdd.map((userId) => {
-            return TypeHasUser.create(
-              {
-                revisionId: rev.id,
-                userId,
-                role: 'author',
-              },
-              { transaction }
-            );
+            return tx.typeHasUsers.create({
+              data: { revisionId: rev.id, userId, role: 'author' },
+            });
           }),
           ...diffAuthors.toRemove.map((userId) => {
-            return TypeHasUser.destroy({
+            return tx.typeHasUsers.delete({
               where: {
-                revisionId: rev.id,
-                userId,
+                revisionId_userId: {
+                  revisionId: rev.id,
+                  userId,
+                },
               },
-              transaction,
             });
           }),
           ...diffReviewers.toAdd.map((userId) => {
-            return TypeHasUser.create(
-              {
-                revisionId: rev.id,
-                userId,
-                role: 'reviewer',
-              },
-              { transaction }
-            );
+            return tx.typeHasUsers.create({
+              data: { revisionId: rev.id, userId, role: 'reviewer' },
+            });
           }),
           ...diffReviewers.toRemove.map((userId) => {
-            return TypeHasUser.destroy({
+            return tx.typeHasUsers.delete({
               where: {
-                revisionId: rev.id,
-                userId,
+                revisionId_userId: {
+                  revisionId: rev.id,
+                  userId,
+                },
               },
-              transaction,
             });
           }),
         ]);
 
         const { authors, reviewers, ...body } = data;
         let action = 'update';
+        const updates: Prisma.RevisionsUpdateInput = { ...body };
 
         // @ts-expect-error
         delete body.closedAt; // TODO: remove this after validation
         if (rev.closedAt && body.status !== 'closed') {
-          rev.set('closedAt', null);
+          // rev.set('closedAt', null);
+          updates.closedAt = null;
         } else if (!rev.closedAt && body.status === 'closed') {
-          rev.closedAt = new Date();
+          updates.closedAt = new Date();
           action = 'closed';
         }
 
@@ -121,13 +116,16 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           action = 'locked';
         }
 
-        rev.set(body as ApiRevision);
-        await rev.save({ transaction });
+        // rev.set(body as ApiRevision);
+        // await rev.save({ transaction });
+        await tx.revisions.update({ data: updates, where: { id: rev.id } });
 
         if (action === 'closed') {
-          await rev.onAfterClosed(req.user!, { transaction });
+          // await rev.onAfterClosed(req.user!, { transaction });
+          await createRevisionActivity(user, 'Revision.closed', rev, tx);
         } else if (action === 'locked') {
-          await rev.onAfterLocked(req.user!, { transaction });
+          // await rev.onAfterLocked(req.user!, { transaction });
+          await createRevisionActivity(user, 'Revision.locked', rev, tx);
         } else {
           // handled by default
         }

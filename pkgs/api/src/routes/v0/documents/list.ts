@@ -1,18 +1,16 @@
+import type { Prisma } from '@prisma/client';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
-import type { WhereOptions } from 'sequelize';
-import { Op } from 'sequelize';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors';
 import { valOrgId, valProjectId } from '../../../common/zod';
-import { db } from '../../../db';
-import { Document } from '../../../models';
+import { prisma } from '../../../db';
 import type {
   ReqListDocuments,
   ResListDocuments,
   Pagination,
+  ApiDocument,
 } from '../../../types/api';
-import type { DBDocument } from '../../../types/db';
 import { DocumentType } from '../../../types/db';
 
 function QueryVal(req: FastifyRequest) {
@@ -44,7 +42,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         totalItems: 0,
       };
 
-      const filter: WhereOptions<DBDocument> = {
+      const filter: Prisma.DocumentsWhereInput = {
         orgId: query.org_id,
       };
 
@@ -53,7 +51,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         filter.projectId = query.project_id;
       }
       if (query.search) {
-        filter.name = { [Op.iLike]: `%${query.search}%` };
+        filter.name = { contains: query.search };
       }
       if (query.type) {
         filter.type = query.type;
@@ -61,21 +59,27 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
       // TODO: search in content
 
-      const docs = await db.transaction(async (transaction) => {
-        const tmp = await Document.findAll({
-          // prettier-ignore
-          attributes: [ 'id', 'type', 'typeId', 'name', 'slug', 'tldr', 'createdAt', 'updatedAt' ],
+      const docs = await prisma.$transaction(async (tx) => {
+        const tmp = await tx.documents.findMany({
+          select: {
+            id: true,
+            type: true,
+            typeId: true,
+            name: true,
+            slug: true,
+            tldr: true,
+            createdAt: true,
+            updatedAt: true,
+          },
           where: filter,
-          order: [['typeId', 'DESC']],
+          orderBy: { typeId: 'desc' },
           // TODO: add limit/offset to qp
-          limit: 200,
-          offset: 0,
-          transaction,
+          take: 200,
+          skip: 0,
         });
 
-        const count = await Document.count({
+        const count = await tx.documents.count({
           where: filter,
-          transaction,
         });
         pagination.totalItems = count;
 
@@ -88,7 +92,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           const tmp: ResListDocuments['data'][0] = {
             id: p.id,
 
-            type: p.type,
+            type: p.type as ApiDocument['type'],
             typeId: p.typeId,
             name: p.name,
             slug: p.slug,

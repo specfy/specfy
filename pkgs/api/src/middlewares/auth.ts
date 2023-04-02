@@ -1,6 +1,7 @@
 import fastifyCookie from '@fastify/cookie';
 import { Authenticator } from '@fastify/passport';
 import fastifySession from '@fastify/session';
+import type { Users } from '@prisma/client';
 import type { FastifyInstance } from 'fastify';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 
@@ -8,7 +9,7 @@ import type { JWT } from '../common/auth';
 import { JWT_SECRET } from '../common/auth';
 import { env } from '../common/env';
 import { unauthorized } from '../common/errors';
-import { Perm, User } from '../models';
+import { prisma } from '../db';
 
 export function registerAuth(f: FastifyInstance) {
   // f.decorateRequest('user', null);
@@ -30,7 +31,9 @@ export function registerAuth(f: FastifyInstance) {
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       },
       async (jwt_payload: JWT, done) => {
-        const user = await User.findOne({ where: { id: jwt_payload.id } });
+        const user = await prisma.users.findUnique({
+          where: { id: jwt_payload.id },
+        });
         if (user) {
           return done(null, user);
         }
@@ -41,7 +44,7 @@ export function registerAuth(f: FastifyInstance) {
     )
   );
 
-  fastifyPassport.registerUserSerializer(async (user: User) => {
+  fastifyPassport.registerUserSerializer(async (user: Users) => {
     console.log('on serialize');
     return user.id;
   });
@@ -49,13 +52,13 @@ export function registerAuth(f: FastifyInstance) {
   // Deserializer will fetch the user from the database when a request with an id in the session arrives
   fastifyPassport.registerUserDeserializer(async (id: string) => {
     console.log('on deserialise');
-    return await User.findOne({ where: { id } });
+    return await prisma.users.findUnique({ where: { id } });
   });
 
   f.addHook(
     'preHandler',
-    // @ts-expect-error
-    fastifyPassport.authenticate('jwt', async (req, res, err, user?: User) => {
+    //@ts-expect-error
+    fastifyPassport.authenticate('jwt', async (req, res, err, user?: Users) => {
       if (!user || err) {
         if (!user && !env('DEFAULT_ACCOUNT')) {
           unauthorized(res);
@@ -63,15 +66,16 @@ export function registerAuth(f: FastifyInstance) {
         }
 
         // In dev we can auto-load the default user
-        user = (await User.findOne({
+        user = (await prisma.users.findUnique({
           where: { email: env('DEFAULT_ACCOUNT')! },
         }))!;
       }
 
-      const perms = await Perm.scope('withOrg').findAll({
+      const perms = await prisma.perms.findMany({
         where: {
           userId: user.id,
         },
+        include: { Org: true },
       });
       req.user = user;
       req.perms = perms;

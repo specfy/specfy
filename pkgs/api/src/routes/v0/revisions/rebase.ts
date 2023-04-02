@@ -1,9 +1,9 @@
 import type { FastifyPluginCallback } from 'fastify';
 
 import { findAllBlobsWithParent } from '../../../common/blobs';
-import { db } from '../../../db';
+import { prisma } from '../../../db';
 import { getRevision } from '../../../middlewares/getRevision';
-import { Component, Document, Project, RevisionReview } from '../../../models';
+import { createRevisionActivity } from '../../../models/revision';
 import type {
   ReqGetRevision,
   ReqRevisionParams,
@@ -18,8 +18,9 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
   }>('/', { preHandler: getRevision }, async function (req, res) {
     const rev = req.revision!;
 
-    await db.transaction(async (transaction) => {
-      const list = await findAllBlobsWithParent(rev.blobs, transaction);
+    await prisma.$transaction(async (tx) => {
+      const list = await findAllBlobsWithParent(rev.blobs as string[], tx);
+
       for (const item of list) {
         // If we can find the prev that means it's up to date
         if (item.parent) {
@@ -33,46 +34,53 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
         // changes all parents id
         if (item.blob.type === 'project') {
-          const parent = await Project.findOne({
+          const parent = await tx.projects.findUnique({
             where: { id: item.blob.typeId },
-            transaction,
           });
-          await item.blob.update({ parentId: parent!.blobId }, { transaction });
+          await tx.blobs.update({
+            data: { parentId: parent!.blobId },
+            where: { id: item.blob.id },
+          });
         } else if (item.blob.type === 'component') {
-          const parent = await Component.findOne({
+          const parent = await tx.components.findUnique({
             where: { id: item.blob.typeId },
-            transaction,
           });
-          await item.blob.update({ parentId: parent!.blobId }, { transaction });
+          await tx.blobs.update({
+            data: { parentId: parent!.blobId },
+            where: { id: item.blob.id },
+          });
         } else if (item.blob.type === 'document') {
-          const parent = await Document.findOne({
+          const parent = await tx.documents.findUnique({
             where: { id: item.blob.typeId },
-            transaction,
           });
-          await item.blob.update({ parentId: parent!.blobId }, { transaction });
+          await tx.blobs.update({
+            data: { parentId: parent!.blobId },
+            where: { id: item.blob.id },
+          });
         }
       }
 
       // Destroy all previous reviews
-      await RevisionReview.scope('withUser').destroy({
+      await tx.reviews.deleteMany({
         where: {
           orgId: rev.orgId,
           projectId: rev.projectId,
           revisionId: rev.id,
         },
-        transaction,
       });
 
-      rev.changed('updatedAt', true);
-      await rev.update(
-        {
+      await tx.revisions.update({
+        data: {
           status: rev.status === 'draft' ? 'draft' : 'waiting',
-          updatedAt: new Date().toISOString(),
+          updatedAt: new Date(),
         },
-        { transaction }
-      );
+        where: {
+          id: rev.id,
+        },
+      });
 
-      await rev.onAfterRebased(req.user!, { transaction });
+      // await rev.onAfterRebased(req.user!, { transaction });
+      await createRevisionActivity(req.user!, 'Revision.rebased', rev, tx);
     });
 
     res.status(200).send({

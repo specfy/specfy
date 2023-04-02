@@ -1,54 +1,64 @@
-import { Transaction } from 'sequelize';
+import type {
+  Blobs,
+  Components,
+  Documents,
+  Prisma,
+  Projects,
+} from '@prisma/client';
 
-import { RevisionBlob, Project, Component, Document } from '../models';
 import { isDocumentBlob, isComponentBlob, isProjectBlob } from '../types/db';
 
 export type IterateBlob = {
-  blob: RevisionBlob;
-  parent: Component | Document | Project | null;
+  blob: Blobs;
+  parent: Components | Documents | Projects | null;
 };
 
 export async function findAllBlobsWithParent(
   blobIds: string[],
-  transaction: Transaction,
+  tx: Prisma.TransactionClient,
   willUpdate?: true
 ): Promise<IterateBlob[]> {
   const list: IterateBlob[] = [];
 
   const lock = willUpdate ? 'UPDATE' : 'SHARE';
-  const blobs = await RevisionBlob.findAll({
+  const blobs = await tx.blobs.findMany({
     where: {
-      id: blobIds,
+      id: { in: blobIds },
     },
-    order: [['createdAt', 'ASC']],
-    limit: 200,
-    lock: Transaction.LOCK.UPDATE,
-    transaction,
+    orderBy: { createdAt: 'asc' },
+    take: 200,
+    // TODO: add back lock?
+    // lock: Transaction.LOCK.UPDATE,
   });
 
   // Update all blobs
   for (const blob of blobs) {
+    if (!blob.parentId) {
+      list.push({ blob, parent: null });
+      continue;
+    }
+
     if (isDocumentBlob(blob)) {
-      const parent = await Document.findOne({
+      const parent = await tx.documents.findFirst({
         where: { blobId: blob.parentId },
-        lock: Transaction.LOCK[lock],
-        transaction,
+        // TODO: add back lock?
+        // lock: Transaction.LOCK[lock],
       });
 
       list.push({ blob, parent });
     } else if (isComponentBlob(blob)) {
-      const parent = await Component.findOne({
+      const parent = await tx.components.findFirst({
         where: { blobId: blob.parentId },
-        lock: Transaction.LOCK[lock],
-        transaction,
+        // TODO: add back lock?
+        // lock: Transaction.LOCK[lock],
       });
 
       list.push({ blob, parent });
     } else if (isProjectBlob(blob)) {
-      const parent = await Project.findOne({
+      const parent = await tx.projects.findFirst({
         where: { blobId: blob.parentId },
-        lock: Transaction.LOCK[lock],
-        transaction,
+        // TODO: add back lock?
+        // lock: Transaction.LOCK[lock],
       });
 
       list.push({ blob, parent });
