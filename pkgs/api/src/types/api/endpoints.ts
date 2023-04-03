@@ -83,13 +83,9 @@ export interface API {
     POST: { res: ResPostProject; qp: never; body: ReqPostProject };
   };
   [key: `/0/projects/${string}`]: {
-    GET: { res: ResGetProject; qp: ReqProjectParams; body: never };
-    PUT: {
-      res: ResUpdateProject;
-      qp: ReqProjectParams;
-      body: ReqUpdateProject;
-    };
-    DELETE: { res: ResDeleteProject; qp: ReqProjectParams; body: never };
+    GET: { res: ResGetProject; qp: never; body: never };
+    PUT: { res: ResUpdateProject; qp: never; body: ReqUpdateProject };
+    DELETE: { res: ResDeleteProject; qp: never; body: never };
   };
 
   '/0/revisions': {

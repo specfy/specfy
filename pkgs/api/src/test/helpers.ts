@@ -56,6 +56,20 @@ export async function shouldEnforceQueryParams<TPath extends APIPaths>(
   expect(res.statusCode).toBe(400);
 }
 
+export async function shouldBeNotFound(
+  res: Dispatcher.ResponseData & {
+    json: any;
+  }
+) {
+  isError(res.json);
+  expect(res.json).toStrictEqual({
+    error: {
+      code: '404_not_found',
+    },
+  });
+  expect(res.statusCode).toBe(404);
+}
+
 export async function shouldNotAllowBody<TPath extends APIPaths>(
   client: ApiClient,
   path: TPath,

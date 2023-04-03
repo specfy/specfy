@@ -5,6 +5,7 @@ import type { TestSetup } from '../../../test/each';
 import { setupAfterAll, setupBeforeAll } from '../../../test/each';
 import { isError, isSuccess } from '../../../test/fetch';
 import {
+  shouldBeNotFound,
   shouldBeProtected,
   shouldNotAllowQueryParams,
 } from '../../../test/helpers';
@@ -94,7 +95,6 @@ describe('GET /documents', () => {
       qp: { org_id: org.id, project_id: project.id },
     });
 
-    isError(res.json);
-    expect(res.statusCode).toBe(404);
+    shouldBeNotFound(res);
   });
 });
