@@ -165,7 +165,7 @@ model Perms {
 
   Org     Orgs      @relation(fields: [orgId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   Project Projects? @relation(fields: [projectId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  User    Users     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  User    Users?    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
   @@unique([orgId, userId, projectId], map: "idx_team_org_userid_projectid")
 }

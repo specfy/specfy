@@ -8,6 +8,7 @@ export const prisma = new PrismaClient({
       url: env('DATABASE_URL')!,
     },
   },
+  // log: ['query', 'info', 'warn', 'error'],
 });
 
 export async function start() {

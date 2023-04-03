@@ -73,7 +73,8 @@ User:
     ✔ Unit Test @done(23-04-03 11:52)
   ✔ List @done(23-03-29 16:59)
     ✔ Validation @done(23-03-29 16:59)
-    - Unit Test
+    ✔ Unit Test @done(23-04-03 17:53)
+    - Search in email
   - Invite
   - Email validation
   - User search API for team

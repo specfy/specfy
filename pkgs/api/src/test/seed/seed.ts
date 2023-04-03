@@ -8,12 +8,24 @@ import { seedOrg } from './orgs';
 import { seedProject } from './projects';
 import { seedUser } from './users';
 
-export async function seedSimpleUser(): Promise<{
+export async function seedSimpleUser(org?: Orgs): Promise<{
   user: Users;
   token: string;
 }> {
   const user = await seedUser();
   const token = getJwtToken(user);
+
+  if (org) {
+    await prisma.perms.create({
+      data: {
+        id: nanoid(),
+        orgId: org.id,
+        projectId: null,
+        userId: user.id,
+        role: 'owner',
+      },
+    });
+  }
 
   return { user, token };
 }

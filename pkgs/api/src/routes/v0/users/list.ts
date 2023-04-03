@@ -41,14 +41,15 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     };
 
     const where: Prisma.UsersWhereInput = {
-      // TODO: filter only for this org/project
-      // orgId: query.org_id,
+      Perms: {
+        some: { orgId: { equals: query.org_id } },
+      },
     };
 
     // Search
-    // if (query.project_id) {
-    //   filter.projectId = query.project_id;
-    // }
+    if (query.project_id) {
+      where.Perms!.some!.projectId = query.project_id;
+    }
     if (query.search) {
       where.name = { contains: query.search };
     }
