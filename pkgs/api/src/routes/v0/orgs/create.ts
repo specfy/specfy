@@ -5,6 +5,7 @@ import { validationError } from '../../../common/errors';
 import { nanoid } from '../../../common/id';
 import { schemaOrgId } from '../../../common/validators';
 import { prisma } from '../../../db';
+import { noQuery } from '../../../middlewares/noQuery';
 import { createOrgActivity } from '../../../models/org';
 import type { ReqPostOrg, ResPostOrg } from '../../../types/api';
 
@@ -30,7 +31,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.post<{
     Body: ReqPostOrg;
     Reply: ResPostOrg;
-  }>('/', async function (req, res) {
+  }>('/', { preHandler: noQuery }, async function (req, res) {
     const val = await OrgVal.safeParseAsync(req.body, {});
     if (!val.success) {
       return validationError(res, val.error);

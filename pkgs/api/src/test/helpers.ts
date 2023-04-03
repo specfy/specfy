@@ -45,12 +45,14 @@ export async function shouldBeForbidden<TPath extends APIPaths>(
 export async function shouldNotAllowQueryParams<TPath extends APIPaths>(
   client: ApiClient,
   path: TPath,
-  method: keyof API[TPath]
+  method: keyof API[TPath],
+  body?: true
 ) {
   const { token } = await seedSimpleUser();
   const res = await client[(method as string).toLowerCase()](path as any, {
     token,
     qp: { random: 'world' } as any,
+    body: body ? {} : undefined,
   });
 
   isValidationError(res.json);
@@ -63,6 +65,7 @@ export async function shouldNotAllowQueryParams<TPath extends APIPaths>(
   ]);
   expect(res.statusCode).toBe(400);
 }
+
 export async function shouldEnforceQueryParams<TPath extends APIPaths>(
   client: ApiClient,
   path: TPath,
@@ -81,3 +84,68 @@ export async function shouldEnforceQueryParams<TPath extends APIPaths>(
   expect(Object.keys(res.json.error.fields).length).toBeGreaterThan(0);
   expect(res.statusCode).toBe(400);
 }
+
+export async function shouldNotAllowBody<TPath extends APIPaths>(
+  client: ApiClient,
+  path: TPath,
+  method: keyof API[TPath]
+) {
+  const { token } = await seedSimpleUser();
+  const res: Awaited<ReturnType<ApiClient['get']>> = await client[
+    (method as string).toLowerCase()
+  ](path as any, {
+    token,
+    body: { wrong: 'body' },
+  });
+
+  console.log(res);
+  isValidationError(res.json);
+  expect(res.json.error.form).toStrictEqual([
+    {
+      code: 'unrecognized_keys',
+      message: "Unrecognized key(s) in object: 'wrong'",
+      path: [],
+    },
+  ]);
+  expect(Object.keys(res.json.error.fields).length).toBeGreaterThan(0);
+  expect(res.statusCode).toBe(400);
+}
+
+export async function shouldEnforceBody<TPath extends APIPaths>(
+  client: ApiClient,
+  path: TPath,
+  method: keyof API[TPath]
+) {
+  const { token } = await seedSimpleUser();
+  const res: Awaited<ReturnType<ApiClient['get']>> = await client[
+    (method as string).toLowerCase()
+  ](path as any, {
+    token,
+    body: { wrong: 'body' },
+  });
+
+  isValidationError(res.json);
+  expect(res.json.error.form).toStrictEqual([
+    {
+      code: 'unrecognized_keys',
+      message: "Unrecognized key(s) in object: 'wrong'",
+      path: [],
+    },
+  ]);
+  expect(Object.keys(res.json.error.fields).length).toBeGreaterThan(0);
+  expect(res.statusCode).toBe(400);
+}
+
+const dateReg = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
+
+expect.extend({
+  toBeIsoDate: (received) => {
+    if (!dateReg.test(received)) {
+      return {
+        message: () => `expected ${received} to be an ISO Date`,
+        pass: false,
+      };
+    }
+    return { pass: true, message: () => '' };
+  },
+});

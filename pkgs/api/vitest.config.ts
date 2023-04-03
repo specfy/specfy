@@ -7,7 +7,7 @@ export default defineConfig({
     // include: ['build/**/*.test.js'],
     include: ['src/**/*.test.ts'],
     globalSetup: 'src/test/vitest.global.ts',
-    setupFiles: 'src/test/vitest.each.ts',
+    // setupFiles: 'src/test/vitest.each.ts',
     clearMocks: true,
     deps: {
       inline: ['@fastify/autoload'],

@@ -1,45 +1,35 @@
-import type { FastifyInstance } from 'fastify';
-import { fastify } from 'fastify';
 import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
-import buildApp from '../../../app';
-import { ApiClient, isSuccess, isValidationError } from '../../../test/fetch';
+import type { TestSetup } from '../../../test/each';
+import { setupAfterAll, setupBeforeAll } from '../../../test/each';
+import { isSuccess, isValidationError } from '../../../test/fetch';
 import {
   shouldBeProtected,
   shouldNotAllowQueryParams,
 } from '../../../test/helpers';
 import { seedSimpleUser, seedWithOrg } from '../../../test/seed/seed';
 
-let app: FastifyInstance;
-let client: ApiClient;
-
+let t: TestSetup;
 beforeAll(async () => {
-  app = fastify();
-  await buildApp(app, {});
-  await app.listen();
-
-  client = new ApiClient((app.server.address() as any)?.port);
+  t = await setupBeforeAll();
 });
 
 afterAll(async () => {
-  await app.close();
-  if (client) {
-    await client.close();
-  }
+  await setupAfterAll(t);
 });
 
 describe('GET /orgs', () => {
   it('should be protected', async () => {
-    await shouldBeProtected(client, '/0/orgs', 'GET');
+    await shouldBeProtected(t.fetch, '/0/orgs', 'GET');
   });
 
   it('should not allow query params', async () => {
-    await shouldNotAllowQueryParams(client, '/0/orgs', 'GET');
+    await shouldNotAllowQueryParams(t.fetch, '/0/orgs', 'GET');
   });
 
   it('should return no orgs', async () => {
     const { token } = await seedSimpleUser();
-    const res = await client.get('/0/orgs', { token });
+    const res = await t.fetch.get('/0/orgs', { token });
 
     isSuccess(res.json);
     expect(res.statusCode).toBe(200);
@@ -49,7 +39,7 @@ describe('GET /orgs', () => {
 
   it('should not allow query params', async () => {
     const { token } = await seedSimpleUser();
-    const res = await client.get('/0/orgs', {
+    const res = await t.fetch.get('/0/orgs', {
       token,
       // @ts-expect-error
       qp: { search: ' ' },
@@ -68,7 +58,7 @@ describe('GET /orgs', () => {
 
   it('should list one org', async () => {
     const { token, org } = await seedWithOrg();
-    const res = await client.get('/0/orgs', { token });
+    const res = await t.fetch.get('/0/orgs', { token });
 
     isSuccess(res.json);
     expect(res.statusCode).toBe(200);
@@ -81,11 +71,12 @@ describe('GET /orgs', () => {
     ]);
   });
 
-  it('should not list the other orgs', async () => {
+  it('should not list the other user orgs', async () => {
     const seed1 = await seedWithOrg();
     const seed2 = await seedWithOrg();
-    const res1 = await client.get('/0/orgs', { token: seed1.token });
 
+    // First user receive only it's own org
+    const res1 = await t.fetch.get('/0/orgs', { token: seed1.token });
     isSuccess(res1.json);
     expect(res1.statusCode).toBe(200);
     expect(res1.json.data).toHaveLength(1);
@@ -96,7 +87,8 @@ describe('GET /orgs', () => {
       },
     ]);
 
-    const res2 = await client.get('/0/orgs', { token: seed2.token });
+    // Second user receive only it's own org
+    const res2 = await t.fetch.get('/0/orgs', { token: seed2.token });
     isSuccess(res2.json);
     expect(res2.statusCode).toBe(200);
     expect(res2.json.data).toHaveLength(1);

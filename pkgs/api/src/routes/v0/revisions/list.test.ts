@@ -1,45 +1,35 @@
-import type { FastifyInstance } from 'fastify';
-import { fastify } from 'fastify';
 import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
-import buildApp from '../../../app';
-import { ApiClient, isValidationError } from '../../../test/fetch';
+import type { TestSetup } from '../../../test/each';
+import { setupBeforeAll, setupAfterAll } from '../../../test/each';
+import { isValidationError } from '../../../test/fetch';
 import {
   shouldBeProtected,
   shouldEnforceQueryParams,
 } from '../../../test/helpers';
 import { seedSimpleUser } from '../../../test/seed/seed';
 
-let app: FastifyInstance | undefined;
-let client: ApiClient;
-
+let t: TestSetup;
 beforeAll(async () => {
-  app = fastify();
-  await buildApp(app, {});
-  await app.listen();
-
-  client = new ApiClient((app.server.address() as any)?.port);
+  t = await setupBeforeAll();
 });
 
 afterAll(async () => {
-  await app?.close();
-  if (client) {
-    await client.close();
-  }
+  await setupAfterAll(t);
 });
 
 describe('GET /revisions', () => {
   it('should be protected', async () => {
-    await shouldBeProtected(client, '/0/revisions', 'GET');
+    await shouldBeProtected(t.fetch, '/0/revisions', 'GET');
   });
 
   it('should enforce query params', async () => {
-    await shouldEnforceQueryParams(client, '/0/revisions', 'GET');
+    await shouldEnforceQueryParams(t.fetch, '/0/revisions', 'GET');
   });
 
   it('should fail on unknown org/project', async () => {
     const { token } = await seedSimpleUser();
-    const res = await client.get('/0/revisions', {
+    const res = await t.fetch.get('/0/revisions', {
       token,
       qp: {
         org_id: 'e',

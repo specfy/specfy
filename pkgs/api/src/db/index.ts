@@ -11,7 +11,7 @@ export const prisma = new PrismaClient({
 });
 
 export async function start() {
-  await prisma.$connect();
+  // await prisma.$connect();
 }
 
 export async function close() {

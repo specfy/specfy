@@ -6,7 +6,7 @@ import type { ResGetMe } from '../../../types/api';
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{ Reply: ResGetMe }>(
     '/me',
-    { preHandler: noQuery },
+    { preHandler: [noQuery] },
     async function (req, res) {
       const user = req.user!;
 
