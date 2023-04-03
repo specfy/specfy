@@ -1,4 +1,4 @@
-import type { Users } from '@prisma/client';
+import type { Orgs, Users } from '@prisma/client';
 
 import { nanoid } from '../../common/id';
 import { prisma } from '../../db';
@@ -273,4 +273,35 @@ export async function seedProjects(users: Users[]) {
   });
 
   return res;
+}
+
+export async function seedProject(user: Users, org: Orgs) {
+  const id = nanoid();
+  const project = await createProject({
+    data: {
+      id,
+      name: `Project ${id}`,
+      orgId: org.id,
+      links: [],
+      edges: [],
+      description: { type: 'doc', content: [] },
+      display: {
+        zIndex: 1,
+        pos: { x: 20, y: 10, width: 100, height: 32 },
+      },
+    },
+    tx: prisma,
+    user,
+  });
+  await prisma.perms.create({
+    data: {
+      id: nanoid(),
+      orgId: org.id,
+      projectId: project.id,
+      userId: user.id,
+      role: 'owner',
+    },
+  });
+
+  return project;
 }

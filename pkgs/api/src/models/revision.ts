@@ -17,6 +17,7 @@ export async function createRevisionActivity(
       action,
       userId: user.id,
       orgId: target.orgId,
+      projectId: target.projectId,
       activityGroupId,
       targetRevisionId: target.id,
     },

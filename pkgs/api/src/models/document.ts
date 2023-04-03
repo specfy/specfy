@@ -78,6 +78,7 @@ export async function createDocumentActivity(
       action,
       userId: user.id,
       orgId: target.orgId,
+      projectId: target.projectId,
       activityGroupId,
       targetDocumentId: target.id,
     },

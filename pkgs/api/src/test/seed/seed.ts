@@ -1,10 +1,11 @@
-import type { Orgs, Users } from '@prisma/client';
+import type { Orgs, Projects, Users } from '@prisma/client';
 
 import { nanoid } from '../../common/id';
 import { prisma } from '../../db';
 import { getJwtToken } from '../../models/user';
 
 import { seedOrg } from './orgs';
+import { seedProject } from './projects';
 import { seedUser } from './users';
 
 export async function seedSimpleUser(): Promise<{
@@ -38,6 +39,18 @@ export async function seedWithOrg(): Promise<{
   const token = getJwtToken(user);
 
   return { user, org, token };
+}
+
+export async function seedWithProject(): Promise<{
+  user: Users;
+  org: Orgs;
+  project: Projects;
+  token: string;
+}> {
+  const { user, org, token } = await seedWithOrg();
+  const project = await seedProject(user, org);
+
+  return { user, org, token, project };
 }
 
 export async function truncate() {

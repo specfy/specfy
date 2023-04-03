@@ -1,4 +1,3 @@
-import { customAlphabet } from 'nanoid/non-secure';
 import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
 import type { TestSetup } from '../../../test/each';
@@ -9,9 +8,8 @@ import {
   shouldEnforceBody,
   shouldNotAllowQueryParams,
 } from '../../../test/helpers';
+import { createOrgId } from '../../../test/seed/orgs';
 import { seedSimpleUser } from '../../../test/seed/seed';
-
-const orgId = customAlphabet('abcdefghijklmnopqrstuvwxyz', 20);
 
 let t: TestSetup;
 beforeAll(async () => {
@@ -37,7 +35,7 @@ describe('POST /orgs', () => {
 
   it('should create one org', async () => {
     const { token } = await seedSimpleUser();
-    const id = orgId();
+    const id = createOrgId();
     const res = await t.fetch.post('/0/orgs', {
       token,
       body: { id: id, name: `test ${id}` },
@@ -50,7 +48,7 @@ describe('POST /orgs', () => {
 
   it('should reject already used id', async () => {
     const { token } = await seedSimpleUser();
-    const id = orgId();
+    const id = createOrgId();
 
     // Insert one
     const res1 = await t.fetch.post('/0/orgs', {

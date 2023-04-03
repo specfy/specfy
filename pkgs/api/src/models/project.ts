@@ -103,6 +103,7 @@ export async function createProjectActivity(
       action,
       userId: user.id,
       orgId: target.orgId,
+      projectId: target.id,
       activityGroupId,
       targetComponentId: target.id,
     },

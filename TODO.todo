@@ -1,5 +1,5 @@
 Repo:
-  - Setup CI
+  ✔ Setup CI @done(23-04-03 11:52)
 
 
 Marketing Site:
@@ -68,9 +68,9 @@ Project:
 
 User:
   ✔ getMe @done(23-03-29 15:56)
-    - remove hardcoded email
+    ✔ remove hardcoded email @done(23-04-03 11:52)
     ✔ Validation @done(23-03-29 15:57)
-    - Unit Test
+    ✔ Unit Test @done(23-04-03 11:52)
   ✔ List @done(23-03-29 16:59)
     ✔ Validation @done(23-03-29 16:59)
     - Unit Test
@@ -240,12 +240,12 @@ Activities:
   ✔ List @done(23-03-29 15:08)
     - Filtre:
       ✔ Org @done(23-03-29 15:09)
-      - Projet
+      ✔ Projet @done(23-04-03 12:15)
       - Revision
       - Composant
       - Document
     ✔ Validation @done(23-03-29 15:09)
-    - Unit Test
+    ✔ Unit Test @done(23-04-03 12:15)
   - Une activité par actions
   - Deleting / Renaming breaks the query, we should select blobId or store some info inside the activity
 

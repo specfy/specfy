@@ -38,7 +38,10 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       // TODO: cursor pagination
       const activities = await prisma.activities.findMany({
         where,
-        include: { Project: true, User: true },
+        include: {
+          Project: { select: { id: true, name: true, slug: true } },
+          User: true,
+        },
         orderBy: { createdAt: 'asc' },
         take: 10,
         skip: 0,

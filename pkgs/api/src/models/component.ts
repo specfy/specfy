@@ -78,6 +78,7 @@ export async function createComponentActivity(
       action,
       userId: user.id,
       orgId: target.orgId,
+      projectId: target.projectId,
       activityGroupId,
       targetComponentId: target.id,
     },

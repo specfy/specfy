@@ -82,5 +82,8 @@ export interface DBActivity {
 }
 
 export type ActivitiesList = Prisma.ActivitiesGetPayload<{
-  include: { User: true; Project: true };
+  include: {
+    User: true;
+    Project: { select: { id: true; name: true; slug: true } };
+  };
 }>;

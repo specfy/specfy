@@ -1,8 +1,11 @@
 import type { Orgs, Users } from '@prisma/client';
+import { customAlphabet } from 'nanoid/non-secure';
 
 import { nanoid } from '../../common/id';
 import { prisma } from '../../db';
 import { createOrgActivity } from '../../models/org';
+
+export const createOrgId = customAlphabet('abcdefghijklmnopqrstuvwxyz', 20);
 
 /**
  * Seed organizations
@@ -52,7 +55,7 @@ export async function seedOrgs(
 }
 
 export async function seedOrg(user: Users) {
-  const id = nanoid();
+  const id = createOrgId();
   const org = await prisma.orgs.create({
     data: {
       id,
