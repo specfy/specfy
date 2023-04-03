@@ -9,7 +9,7 @@ import {
   shouldNotAllowQueryParams,
 } from '../../../test/helpers';
 import { seedComponent } from '../../../test/seed/components';
-import { seedWithProject } from '../../../test/seed/seed';
+import { seedSimpleUser, seedWithProject } from '../../../test/seed/seed';
 
 let t: TestSetup;
 beforeAll(async () => {
@@ -20,14 +20,16 @@ afterAll(async () => {
   await setupAfterAll(t);
 });
 
-describe('GET /me', () => {
+describe('GET /components', () => {
   it('should be protected', async () => {
     const res = await t.fetch.get('/0/components');
     await shouldBeProtected(res);
   });
 
   it('should not allow query params', async () => {
+    const { token } = await seedSimpleUser();
     const res = await t.fetch.get('/0/components', {
+      token,
       // @ts-expect-error
       qp: { random: 'world' },
     });

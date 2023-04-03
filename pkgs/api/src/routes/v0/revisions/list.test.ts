@@ -26,7 +26,9 @@ describe('GET /revisions', () => {
   });
 
   it('should not allow query params', async () => {
+    const { token } = await seedSimpleUser();
     const res = await t.fetch.get('/0/revisions', {
+      token,
       // @ts-expect-error
       qp: { random: 'world' },
     });

@@ -8,7 +8,7 @@ import {
   shouldNotAllowQueryParams,
 } from '../../../test/helpers';
 import { seedDocument } from '../../../test/seed/documents';
-import { seedWithProject } from '../../../test/seed/seed';
+import { seedSimpleUser, seedWithProject } from '../../../test/seed/seed';
 
 let t: TestSetup;
 beforeAll(async () => {
@@ -26,7 +26,9 @@ describe('GET /documents', () => {
   });
 
   it('should not allow query params', async () => {
+    const { token } = await seedSimpleUser();
     const res = await t.fetch.get('/0/documents', {
+      token,
       // @ts-expect-error
       qp: { random: 'world' },
     });

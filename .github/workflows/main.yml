@@ -41,5 +41,13 @@ jobs:
       - name: Migrate
         run: cd pkgs/api/ && npm run migrate
 
-      - name: Run Test
+      - name: Run Test API
         run: cd pkgs/api/ && npm run test
+
+      - name: Run Test APP
+        run: cd pkgs/app/ && npm run test
+
+      - name: Coverage
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./pkgs/api/coverage/clover.xml,./pkgs/app/coverage/clover.xml

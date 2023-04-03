@@ -27,7 +27,9 @@ describe('POST /orgs', () => {
   });
 
   it('should not allow query params', async () => {
+    const { token } = await seedSimpleUser();
     const res = await t.fetch.post('/0/orgs', {
+      token,
       // @ts-expect-error
       qp: { random: 'world' },
     });

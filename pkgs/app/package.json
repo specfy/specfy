@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "test": "vitest --config ../../vite.config.ts"
+    "test": "vitest"
   },
   "devDependencies": {
     "@ant-design/icons": "5.0.1",

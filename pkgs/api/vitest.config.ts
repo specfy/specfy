@@ -15,6 +15,10 @@ export default defineConfig({
     env: {
       DEFAULT_ACCOUNT: '',
     },
+    coverage: {
+      enabled: true,
+      reporter: ['clover'],
+    },
   },
   json: {
     // namedExports: true,
