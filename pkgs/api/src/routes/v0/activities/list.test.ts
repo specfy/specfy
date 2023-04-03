@@ -20,11 +20,11 @@ afterAll(async () => {
 
 describe('GET /me', () => {
   it('should be protected', async () => {
-    await shouldBeProtected(t.fetch, '/0/me', 'GET');
+    await shouldBeProtected(t.fetch, '/0/activities', 'GET');
   });
 
   it('should not allow query params', async () => {
-    await shouldNotAllowQueryParams(t.fetch, '/0/me', 'GET');
+    await shouldNotAllowQueryParams(t.fetch, '/0/activities', 'GET');
   });
 
   it('should list', async () => {

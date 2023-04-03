@@ -1,8 +1,8 @@
 import { Prisma } from '@prisma/client';
 import type { Activities, Components, Users } from '@prisma/client';
-import slugify from 'slugify';
 
 import { nanoid } from '../common/id';
+import { slugify } from '../common/string';
 import type { ActionComponent } from '../types/db';
 
 export async function createComponentBlob({
@@ -41,7 +41,7 @@ export async function createComponent({
 }) {
   const body: Prisma.ComponentsUncheckedCreateInput = {
     ...data,
-    slug: slugify(data.name, { lower: true, trim: true }),
+    slug: slugify(data.name),
     id: data.id || nanoid(),
     blobId: null,
   };

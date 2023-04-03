@@ -1,7 +1,7 @@
 import type { Projects, Prisma, Activities, Users } from '@prisma/client';
-import slugify from 'slugify';
 
 import { nanoid } from '../common/id';
+import { slugify } from '../common/string';
 import type { ActionProject } from '../types/db';
 
 export async function createProjectBlob({
@@ -41,7 +41,7 @@ export async function createProject({
 }) {
   const body: Prisma.ProjectsUncheckedCreateInput = {
     ...data,
-    slug: slugify(data.name, { lower: true, trim: true }),
+    slug: slugify(data.name),
     id: data.id || nanoid(),
     blobId: null,
   };
@@ -75,7 +75,7 @@ export async function updateProject({
   tx: Prisma.TransactionClient;
 }) {
   if (data.name && data.name !== original.name) {
-    data.slug = slugify(data.name, { lower: true, trim: true });
+    data.slug = slugify(data.name);
   }
   const blob = await createProjectBlob({ blob: { ...original, ...data }, tx });
 

@@ -520,3 +520,28 @@ export async function seedComponents(
 
   return res;
 }
+
+export async function seedComponent(user: Users, org: Orgs, project: Projects) {
+  const id = nanoid();
+  const component = await createComponent({
+    data: {
+      id,
+      name: `Component ${id}`,
+      orgId: org.id,
+      projectId: project.id,
+      type: 'component',
+      techId: null,
+      edges: [],
+      description: { type: 'doc', content: [] },
+      display: {
+        zIndex: 1,
+        pos: { x: 20, y: 10, width: 100, height: 32 },
+      },
+      tech: [],
+    },
+    tx: prisma,
+    user,
+  });
+
+  return component;
+}
