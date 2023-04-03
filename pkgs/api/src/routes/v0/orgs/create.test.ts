@@ -1,5 +1,6 @@
 import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
+import { prisma } from '../../../db';
 import type { TestSetup } from '../../../test/each';
 import { setupBeforeAll, setupAfterAll } from '../../../test/each';
 import { isSuccess, isValidationError } from '../../../test/fetch';
@@ -51,6 +52,12 @@ describe('POST /orgs', () => {
     isSuccess(res.json);
     expect(res.statusCode).toBe(200);
     expect(res.json).toStrictEqual({ id: id, name: `test ${id}` });
+
+    // Should also create a permission
+    const hasPerms = await prisma.perms.count({
+      where: { orgId: res.json.id },
+    });
+    expect(hasPerms).toBe(1);
   });
 
   it('should reject already used id', async () => {

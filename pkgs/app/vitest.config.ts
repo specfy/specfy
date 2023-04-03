@@ -6,7 +6,7 @@ export default defineConfig({
     environment: 'jsdom',
     coverage: {
       enabled: true,
-      reporter: ['clover'],
+      reporter: ['cobertura'],
     },
   },
 });

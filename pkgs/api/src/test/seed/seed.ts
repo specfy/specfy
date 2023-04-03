@@ -77,9 +77,9 @@ export async function truncate() {
     prisma.$executeRawUnsafe(`TRUNCATE TABLE "Revisions" CASCADE`),
     prisma.$executeRawUnsafe(`TRUNCATE TABLE "TypeHasUsers" CASCADE`),
     prisma.$executeRawUnsafe(`TRUNCATE TABLE "Perms" CASCADE`),
-    prisma.$executeRawUnsafe(`TRUNCATE TABLE "Users" CASCADE`),
   ]);
   // Split in two because those table are referenced everywhere and it deadlocks
+  await prisma.$executeRawUnsafe(`TRUNCATE TABLE "Users" CASCADE`);
   await prisma.$executeRawUnsafe(`TRUNCATE TABLE "Projects" CASCADE`);
   await prisma.$executeRawUnsafe(`TRUNCATE TABLE "Orgs" CASCADE`);
 

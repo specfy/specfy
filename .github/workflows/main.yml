@@ -57,4 +57,4 @@ jobs:
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./pkgs/api/coverage/clover.xml,./pkgs/app/coverage/clover.xml
+          files: ./pkgs/api/coverage/cobertura-coverage.xml,./pkgs/app/coverage/cobertura-coverage.xml

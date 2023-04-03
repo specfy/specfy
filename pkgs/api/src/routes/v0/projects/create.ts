@@ -6,6 +6,7 @@ import { nanoid } from '../../../common/id';
 import { schemaProject } from '../../../common/validators';
 import { valOrgId } from '../../../common/zod';
 import { prisma } from '../../../db';
+import { noQuery } from '../../../middlewares/noQuery';
 import { createProject } from '../../../models/project';
 import type { ReqPostProject, ResPostProject } from '../../../types/api';
 
@@ -35,7 +36,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.post<{
     Body: ReqPostProject;
     Reply: ResPostProject;
-  }>('/', async function (req, res) {
+  }>('/', { preHandler: noQuery }, async function (req, res) {
     const val = await ProjectVal(req).safeParseAsync(req.body);
     if (!val.success) {
       return validationError(res, val.error);
@@ -44,7 +45,6 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     const data = val.data;
 
     const project = await prisma.$transaction(async (tx) => {
-      const pos = data.display.pos || { x: 0, y: 0 };
       const tmp = await createProject({
         data: {
           orgId: data.orgId,
@@ -55,7 +55,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
             content: [],
           },
           links: [],
-          display: { pos: { ...pos, width: 100, height: 32 } },
+          display: data.display,
           edges: [],
         },
         user: req.user!,
