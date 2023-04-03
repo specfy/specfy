@@ -32,7 +32,7 @@ export function isValidationError(
 export function isSuccess<TType extends Record<any, any>>(
   json: TType
 ): asserts json is Exclude<TType, { error: any }> {
-  if ('error' in json) {
+  if (json && 'error' in json) {
     console.log(util.inspect(json, true, 100));
     throw new Error('Response is not a success');
   }
@@ -146,7 +146,11 @@ export class ApiClient {
           : {}),
       },
     });
-    const json = await res.body.json();
+
+    let json: any = null;
+    if (res.statusCode !== 204) {
+      json = await res.body.json();
+    }
 
     return { json, ...res };
   }

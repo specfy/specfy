@@ -8,10 +8,10 @@ import type { ReqPostOrg, ResListOrgs, ResPostOrg } from './orgs';
 import type {
   ReqDeletePerms,
   ReqListPerms,
-  ReqPostPerms,
+  ReqPutPerms,
   ResDeletePerms,
   ResListPerms,
-  ResPostPerms,
+  ResPutPerms,
 } from './perms';
 import type { ReqListPolicies, ResListPolicies } from './policies';
 import type {
@@ -70,7 +70,7 @@ export interface API {
 
   '/0/perms': {
     GET: { res: ResListPerms; qp: ReqListPerms; body: never };
-    POST: { res: ResPostPerms; qp: never; body: ReqPostPerms };
+    PUT: { res: ResPutPerms; qp: never; body: ReqPutPerms };
     DELETE: { res: ResDeletePerms; qp: never; body: ReqDeletePerms };
   };
 

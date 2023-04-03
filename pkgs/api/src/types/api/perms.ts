@@ -16,14 +16,14 @@ export interface ResListPerms {
 }
 
 // POST /
-export interface ReqPostPerms {
+export interface ReqPutPerms {
   org_id: string;
-  project_id: string;
+  project_id?: string;
   userId: string;
   role: ApiPerm['role'];
 }
 
-export interface ResPostPerms {
+export interface ResPutPerms {
   data: { done: boolean };
 }
 

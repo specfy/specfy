@@ -18,15 +18,15 @@ afterAll(async () => {
   await setupAfterAll(t);
 });
 
-describe('GET /orgs', () => {
+describe('GET /perms', () => {
   it('should be protected', async () => {
-    const res = await t.fetch.get('/0/orgs');
+    const res = await t.fetch.get('/0/perms');
     await shouldBeProtected(res);
   });
 
   it('should not allow query params', async () => {
     const { token } = await seedSimpleUser();
-    const res = await t.fetch.get('/0/orgs', {
+    const res = await t.fetch.get('/0/perms', {
       token,
       // @ts-expect-error
       qp: { random: 'world' },
@@ -34,26 +34,31 @@ describe('GET /orgs', () => {
     await shouldNotAllowQueryParams(res);
   });
 
-  it('should return no orgs', async () => {
-    const { token } = await seedSimpleUser();
-    const res = await t.fetch.get('/0/orgs', { token });
-
-    isSuccess(res.json);
-    expect(res.statusCode).toBe(200);
-    expect(res.json.data).toHaveLength(0);
-  });
-
-  it('should list one org', async () => {
-    const { token, org } = await seedWithOrg();
-    const res = await t.fetch.get('/0/orgs', { token });
+  it('should return one perm', async () => {
+    const { token, user, org } = await seedWithOrg();
+    const res = await t.fetch.get('/0/perms', {
+      token,
+      qp: {
+        org_id: org.id,
+      },
+    });
 
     isSuccess(res.json);
     expect(res.statusCode).toBe(200);
     expect(res.json.data).toHaveLength(1);
     expect(res.json.data).toStrictEqual([
       {
-        id: org.id,
-        name: org.name,
+        createdAt: expect.toBeIsoDate(),
+        id: expect.any(String),
+        orgId: org.id,
+        projectId: null,
+        role: 'owner',
+        updatedAt: expect.toBeIsoDate(),
+        user: {
+          email: user.email,
+          id: user.id,
+          name: user.name,
+        },
       },
     ]);
   });
@@ -63,27 +68,27 @@ describe('GET /orgs', () => {
     const seed2 = await seedWithOrg();
 
     // First user receive only it's own org
-    const res1 = await t.fetch.get('/0/orgs', { token: seed1.token });
+    const res1 = await t.fetch.get('/0/perms', {
+      token: seed1.token,
+      qp: {
+        org_id: seed1.org.id,
+      },
+    });
     isSuccess(res1.json);
     expect(res1.statusCode).toBe(200);
     expect(res1.json.data).toHaveLength(1);
-    expect(res1.json.data).toStrictEqual([
-      {
-        id: seed1.org.id,
-        name: seed1.org.name,
-      },
-    ]);
+    expect(res1.json.data[0].user.id).toStrictEqual(seed1.user.id);
 
     // Second user receive only it's own org
-    const res2 = await t.fetch.get('/0/orgs', { token: seed2.token });
+    const res2 = await t.fetch.get('/0/perms', {
+      token: seed2.token,
+      qp: {
+        org_id: seed2.org.id,
+      },
+    });
     isSuccess(res2.json);
     expect(res2.statusCode).toBe(200);
     expect(res2.json.data).toHaveLength(1);
-    expect(res2.json.data).toStrictEqual([
-      {
-        id: seed2.org.id,
-        name: seed2.org.name,
-      },
-    ]);
+    expect(res2.json.data[0].user.id).toStrictEqual(seed2.user.id);
   });
 });

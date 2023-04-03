@@ -44,8 +44,7 @@ describe('GET /documents', () => {
 
     isSuccess(res.json);
     expect(res.statusCode).toBe(200);
-
-    res.json.data;
+    expect(res.json.data).toHaveLength(0);
   });
 
   it('should list one document', async () => {

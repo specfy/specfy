@@ -37,6 +37,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     const perms = await prisma.perms.findMany({
       where,
       include: { User: true },
+      orderBy: { createdAt: 'asc' },
       // TODO: proper pagination?
       take: 500,
       skip: 0,
