@@ -10,11 +10,3 @@ export const prisma = new PrismaClient({
   },
   // log: ['query', 'info', 'warn', 'error'],
 });
-
-export async function start() {
-  // await prisma.$connect();
-}
-
-export async function close() {
-  await prisma.$disconnect();
-}

@@ -8,7 +8,6 @@ import type {
   FastifyServerOptions,
 } from 'fastify';
 
-import { start } from './db';
 import { logger } from './logger';
 import { routes } from './routes/routes';
 import './common/auth';
@@ -18,7 +17,7 @@ export default async (f: FastifyInstance, opts: FastifyPluginOptions) => {
   await f.register(cors, {});
   // Do not touch the following lines
 
-  await start();
+  // await start();
 
   // Autoload breaks fastify
   // This loads all plugins defined in plugins

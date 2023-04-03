@@ -18,6 +18,7 @@ export default defineConfig({
     coverage: {
       enabled: true,
       reporter: ['clover'],
+      exclude: ['src/test/seed/**.ts'],
     },
   },
   json: {
