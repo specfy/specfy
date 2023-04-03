@@ -2,7 +2,7 @@ import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
 import type { TestSetup } from '../../../test/each';
 import { setupAfterAll, setupBeforeAll } from '../../../test/each';
-import { isSuccess, isValidationError } from '../../../test/fetch';
+import { isSuccess } from '../../../test/fetch';
 import {
   shouldBeProtected,
   shouldNotAllowQueryParams,
@@ -20,11 +20,16 @@ afterAll(async () => {
 
 describe('GET /orgs', () => {
   it('should be protected', async () => {
-    await shouldBeProtected(t.fetch, '/0/orgs', 'GET');
+    const res = await t.fetch.get('/0/orgs');
+    await shouldBeProtected(res);
   });
 
   it('should not allow query params', async () => {
-    await shouldNotAllowQueryParams(t.fetch, '/0/orgs', 'GET');
+    const res = await t.fetch.get('/0/orgs', {
+      // @ts-expect-error
+      qp: { random: 'world' },
+    });
+    await shouldNotAllowQueryParams(res);
   });
 
   it('should return no orgs', async () => {
@@ -35,25 +40,6 @@ describe('GET /orgs', () => {
     expect(res.statusCode).toBe(200);
 
     res.json.data;
-  });
-
-  it('should not allow query params', async () => {
-    const { token } = await seedSimpleUser();
-    const res = await t.fetch.get('/0/orgs', {
-      token,
-      // @ts-expect-error
-      qp: { search: ' ' },
-    });
-
-    isValidationError(res.json);
-    expect(res.statusCode).toBe(400);
-    expect(res.json.error.form).toStrictEqual([
-      {
-        code: 'unrecognized_keys',
-        message: "Unrecognized key(s) in object: 'search'",
-        path: [],
-      },
-    ]);
   });
 
   it('should list one org', async () => {

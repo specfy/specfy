@@ -138,10 +138,10 @@ Documents:
   ✔ List documents @done(23-03-29 14:47)
     ✔ Search @done(23-03-29 15:55)
     ✔ Validation @done(23-03-29 15:55)
-    - Unit Test
+    ✔ Unit Test @done(23-04-03 15:01)
   ✔ Get @done(23-03-29 15:56)
     ✔ Validation @done(23-03-29 15:56)
-    - Unit Test
+    ✔ Unit Test @done(23-04-03 15:01)
   ✔ List other content on the left / right @done(23-03-25 23:23)
   - Better home page
   ✔ Creer @started(23-03-25 23:28) @done(23-03-25 23:28) @lasted(41s)

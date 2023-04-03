@@ -16,4 +16,8 @@ export default defineConfig({
       DEFAULT_ACCOUNT: '',
     },
   },
+  json: {
+    // namedExports: true,
+    // stringify: true,
+  },
 });

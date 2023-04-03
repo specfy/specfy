@@ -22,11 +22,16 @@ afterAll(async () => {
 
 describe('POST /orgs', () => {
   it('should be protected', async () => {
-    await shouldBeProtected(t.fetch, '/0/orgs', 'POST');
+    const res = await t.fetch.post('/0/orgs');
+    await shouldBeProtected(res);
   });
 
   it('should not allow query params', async () => {
-    await shouldNotAllowQueryParams(t.fetch, '/0/orgs', 'POST', true);
+    const res = await t.fetch.post('/0/orgs', {
+      // @ts-expect-error
+      qp: { random: 'world' },
+    });
+    await shouldNotAllowQueryParams(res);
   });
 
   it('should enforce body validation', async () => {

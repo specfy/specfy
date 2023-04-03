@@ -1,9 +1,9 @@
 import type { Orgs, Projects, Users } from '@prisma/client';
 
+import { nanoid } from '../../common/id';
 import { prisma } from '../../db';
-import { createDocument } from '../../models/document';
-
-import docRfc4Json from './document.rfc.json';
+import { createDocument, getTypeId } from '../../models/document';
+import type { ApiDocument } from '../../types/api';
 
 /**
  * Seed playbook
@@ -220,6 +220,9 @@ export async function seedRFC(
   { p1 }: { p1: Projects },
   [u1, u2]: Users[]
 ) {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const docRfc4Json = require('./document.rfc.json'); // Breaks vitest somehow
+
   const res = await prisma.$transaction(async (tx) => {
     const d1 = await createDocument({
       user: u1,
@@ -708,4 +711,34 @@ export async function seedRFC(
   });
 
   return res;
+}
+
+export async function seedDocument(
+  user: Users,
+  org: Orgs,
+  project: Projects,
+  docType?: ApiDocument['type']
+) {
+  const type: ApiDocument['type'] = docType || 'rfc';
+  const id = nanoid();
+  const document = await createDocument({
+    user: user,
+    tx: prisma,
+    data: {
+      id: id,
+      orgId: org.id,
+      projectId: project.id,
+      type,
+      typeId: await getTypeId({
+        data: { orgId: org.id, projectId: project.id, type },
+        tx: prisma,
+      }),
+      name: `Document ${id}`,
+      tldr: '',
+      content: { type: 'doc', content: [] },
+      locked: false,
+    },
+  });
+
+  return document;
 }

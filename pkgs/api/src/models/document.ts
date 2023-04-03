@@ -5,6 +5,19 @@ import { nanoid } from '../common/id';
 import { slugify } from '../common/string';
 import type { ActionDocument } from '../types/db';
 
+export async function getTypeId({
+  data,
+  tx,
+}: {
+  data: Pick<Documents, 'orgId' | 'projectId' | 'type'>;
+  tx: Prisma.TransactionClient;
+}) {
+  const count = await tx.documents.count({
+    where: { orgId: data.orgId, projectId: data.projectId, type: data.type },
+  });
+  return count + 1;
+}
+
 export async function createDocumentBlob({
   blob,
   data,

@@ -6,6 +6,7 @@ import { isValidationError } from '../../../test/fetch';
 import {
   shouldBeProtected,
   shouldEnforceQueryParams,
+  shouldNotAllowQueryParams,
 } from '../../../test/helpers';
 import { seedSimpleUser } from '../../../test/seed/seed';
 
@@ -20,7 +21,16 @@ afterAll(async () => {
 
 describe('GET /revisions', () => {
   it('should be protected', async () => {
-    await shouldBeProtected(t.fetch, '/0/revisions', 'GET');
+    const res = await t.fetch.get('/0/revisions');
+    await shouldBeProtected(res);
+  });
+
+  it('should not allow query params', async () => {
+    const res = await t.fetch.get('/0/revisions', {
+      // @ts-expect-error
+      qp: { random: 'world' },
+    });
+    await shouldNotAllowQueryParams(res);
   });
 
   it('should enforce query params', async () => {

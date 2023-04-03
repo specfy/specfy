@@ -20,11 +20,16 @@ afterAll(async () => {
 
 describe('GET /me', () => {
   it('should be protected', async () => {
-    await shouldBeProtected(t.fetch, '/0/activities', 'GET');
+    const res = await t.fetch.get('/0/activities');
+    await shouldBeProtected(res);
   });
 
   it('should not allow query params', async () => {
-    await shouldNotAllowQueryParams(t.fetch, '/0/activities', 'GET');
+    const res = await t.fetch.get('/0/activities', {
+      // @ts-expect-error
+      qp: { random: 'world' },
+    });
+    await shouldNotAllowQueryParams(res);
   });
 
   it('should list', async () => {
