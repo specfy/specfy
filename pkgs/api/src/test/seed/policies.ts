@@ -1,4 +1,4 @@
-import type { Users } from '@prisma/client';
+import type { Orgs, Users } from '@prisma/client';
 
 import { nanoid } from '../../common/id';
 import { prisma } from '../../db';
@@ -204,4 +204,19 @@ export async function seedPolicies([u1]: Users[]) {
       })
     );
   });
+}
+
+export async function seedPolicy(user: Users, org: Orgs) {
+  const policy = await prisma.policies.create({
+    data: {
+      id: nanoid(),
+      orgId: org.id,
+      type: 'ban',
+      tech: 'php',
+      content: { type: 'doc', content: [] },
+    },
+  });
+  await createPoliciesActivity(user, 'Policy.created', policy, prisma);
+
+  return policy;
 }
