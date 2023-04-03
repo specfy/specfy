@@ -662,7 +662,7 @@ describe('diff formatting', () => {
     );
   });
 
-  it.only('has diff with split lines + new mark', () => {
+  it('has diff with split lines + new mark', () => {
     const diff = diffEditor(
       editor.schema,
       p([{ type: 'text', text: 'Lorem ipsum dolor sit amet.' }]),
