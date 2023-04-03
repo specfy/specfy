@@ -1,6 +1,5 @@
 import { beforeAll, afterAll, describe, it, expect } from 'vitest';
 
-import { slugify } from '../../../common/string';
 import type { TestSetup } from '../../../test/each';
 import { setupBeforeAll, setupAfterAll } from '../../../test/each';
 import { isSuccess, isValidationError } from '../../../test/fetch';
@@ -50,8 +49,8 @@ describe('GET /components', () => {
         id: expect.any(String),
         orgId: org.id,
         projectId: project.id,
-        name: `Component ${component.id}`,
-        slug: `component-${slugify(component.id)}`,
+        name: component.name,
+        slug: component.slug,
         inComponent: null,
         tech: [],
         techId: null,
