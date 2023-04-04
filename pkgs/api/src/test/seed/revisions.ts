@@ -338,7 +338,7 @@ export async function seedRevision(
       orgId: org.id,
       projectId: project.id,
       name: `fix: tests ${id}`,
-      description: { type: 'doc', content: [{}] },
+      description: { type: 'doc', content: [] },
       status: status || 'draft',
       merged: merged || false,
       blobs: [],

@@ -57,7 +57,7 @@ describe('PUT /projects/:org_id/:project_slug', () => {
     const res2 = await t.fetch.get(`/0/projects/${org.id}/${project.slug}`, {
       token,
     });
-    await shouldBeNotFound(res2);
+    shouldBeNotFound(res2);
 
     // We check if new slug is accessible
     const res3 = await t.fetch.get(

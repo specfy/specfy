@@ -33,9 +33,7 @@ export async function shouldNotAllowQueryParams(
   expect(res.statusCode).toBe(400);
 }
 
-export async function shouldBeNotFound(
-  res: Dispatcher.ResponseData & { json: any }
-) {
+export function shouldBeNotFound(res: Dispatcher.ResponseData & { json: any }) {
   isError(res.json);
   expect(res.json).toStrictEqual({
     error: {
