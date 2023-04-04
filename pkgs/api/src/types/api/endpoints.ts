@@ -30,7 +30,7 @@ import type {
   ReqListRevisions,
   ReqPostCommentRevision,
   ReqPostRevision,
-  ReqPutRevision,
+  ReqPatchRevision,
   ResCheckRevision,
   ResDeleteRevision,
   ResGetRevision,
@@ -38,7 +38,7 @@ import type {
   ResMergeRevision,
   ResPostCommentRevision,
   ResPostRevision,
-  ResPutRevision,
+  ResPatchRevision,
   ResRebaseRevision,
 } from './revisions';
 import type { ReqListUsers, ResListUsers } from './users';
@@ -94,7 +94,11 @@ export interface API {
   };
   [key: `/0/revisions/${string}`]: {
     GET: { res: ResGetRevision; qp: ReqGetRevision; body: never };
-    PUT: { res: ResPutRevision; qp: ReqGetRevision; body: ReqPutRevision };
+    PATCH: {
+      res: ResPatchRevision;
+      qp: ReqGetRevision;
+      body: ReqPatchRevision;
+    };
     DELETE: { res: ResDeleteRevision; qp: ReqProjectParams; body: never };
   };
 

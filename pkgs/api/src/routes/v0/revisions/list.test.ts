@@ -21,11 +21,20 @@ afterAll(async () => {
 });
 
 async function seedAllStates(user: Users, org: Orgs, project: Projects) {
-  const revision1 = await seedRevision(user, org, project, 'draft');
-  const revision2 = await seedRevision(user, org, project, 'approved');
-  const revision3 = await seedRevision(user, org, project, 'waiting');
-  const revision4 = await seedRevision(user, org, project, 'closed');
-  const revision5 = await seedRevision(user, org, project, 'approved', true);
+  const revision1 = await seedRevision(user, org, project, { status: 'draft' });
+  const revision2 = await seedRevision(user, org, project, {
+    status: 'approved',
+  });
+  const revision3 = await seedRevision(user, org, project, {
+    status: 'waiting',
+  });
+  const revision4 = await seedRevision(user, org, project, {
+    status: 'closed',
+  });
+  const revision5 = await seedRevision(user, org, project, {
+    status: 'approved',
+    merged: true,
+  });
 
   return { revision1, revision2, revision3, revision4, revision5 };
 }
@@ -72,8 +81,10 @@ describe('GET /revisions', () => {
 
   it('should list', async () => {
     const { token, org, project, user } = await seedWithProject();
-    const revision = await seedRevision(user, org, project, 'waiting');
-    await seedRevision(user, org, project, 'waiting');
+    const revision = await seedRevision(user, org, project, {
+      status: 'waiting',
+    });
+    await seedRevision(user, org, project, { status: 'waiting' });
 
     const res = await t.fetch.get('/0/revisions', {
       token,

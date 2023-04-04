@@ -11,6 +11,7 @@ import type { FilterObjObjWithKey } from '../types/utils';
 type HasGet = { GET: any };
 type HasPost = { POST: any };
 type HasPut = { PUT: any };
+type HasPatch = { PATCH: any };
 type HasDelete = { DELETE: any };
 
 export function isError(json: any): asserts json is ResErrors {
@@ -101,6 +102,24 @@ export class ApiClient {
     }
   > {
     return await this.query('PUT', path, opts);
+  }
+
+  async patch<TPath extends APIPaths>(
+    path: TPath extends keyof FilterObjObjWithKey<API, 'PATCH'>
+      ? TPath
+      : keyof FilterObjObjWithKey<API, 'PATCH'>,
+    // eslint-disable-next-line @typescript-eslint/sort-type-union-intersection-members
+    opts?: {
+      token?: string;
+    } & (API[TPath] extends HasPatch
+      ? OmitByValue<Omit<API[TPath]['PATCH'], 'res'>, never>
+      : never)
+  ): Promise<
+    Dispatcher.ResponseData & {
+      json: API[TPath] extends HasPatch ? API[TPath]['PATCH']['res'] : never;
+    }
+  > {
+    return await this.query('PATCH', path, opts);
   }
 
   async delete<TPath extends APIPaths>(

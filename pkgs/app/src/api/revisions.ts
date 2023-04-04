@@ -9,8 +9,8 @@ import type {
   ReqRevisionParams,
   ResMergeRevision,
   ResCheckRevision,
-  ReqPutRevision,
-  ResPutRevision,
+  ReqPatchRevision,
+  ResPatchRevision,
 } from 'api/src/types/api';
 
 import { queryClient } from '../common/query';
@@ -34,16 +34,16 @@ export async function createRevision(
 
 export async function updateRevision(
   { org_id, project_id, revision_id }: ReqGetRevision & ReqRevisionParams,
-  data: ReqPutRevision
-): Promise<ResPutRevision> {
+  data: ReqPatchRevision
+): Promise<ResPatchRevision> {
   const { json } = await fetchApi<
-    ResPutRevision,
+    ResPatchRevision,
     ReqGetRevision,
-    ReqPutRevision
+    ReqPatchRevision
   >(
     `/revisions/${revision_id}`,
     { body: data, qp: { org_id, project_id } },
-    'PUT'
+    'PATCH'
   );
 
   queryClient.removeQueries(['listRevisions', org_id, project_id]);

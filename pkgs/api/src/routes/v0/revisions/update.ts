@@ -1,5 +1,6 @@
 import type { Prisma, TypeHasUsers } from '@prisma/client';
 import type { FastifyPluginCallback } from 'fastify';
+import { z } from 'zod';
 
 import { validationError } from '../../../common/errors';
 import { schemaRevision } from '../../../common/validators/revision';
@@ -8,9 +9,9 @@ import { getRevision } from '../../../middlewares/getRevision';
 import { createRevisionActivity } from '../../../models/revision';
 import type {
   ReqGetRevision,
-  ReqPutRevision,
+  ReqPatchRevision,
   ReqRevisionParams,
-  ResPutRevision,
+  ResPatchRevision,
 } from '../../../types/api';
 
 function diffUsers(
@@ -20,7 +21,9 @@ function diffUsers(
 ) {
   const oldIds: string[] = [];
   for (const user of origin) {
-    if (user.role === role) oldIds.push(user.userId);
+    if (user.role === role) {
+      oldIds.push(user.userId);
+    }
   }
 
   const toAdd = newIds.filter((x) => !oldIds.includes(x));
@@ -31,15 +34,62 @@ function diffUsers(
 
 function BodyVal() {
   // TODO: val ids
-  return schemaRevision;
+  return schemaRevision
+    .pick({
+      name: true,
+      description: true,
+      authors: true,
+      reviewers: true,
+      status: true,
+      locked: true,
+    })
+    .partial()
+    .superRefine((val, ctx) => {
+      if ((val.authors && !val.reviewers) || (val.reviewers && !val.authors)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          params: { code: 'presence' },
+          message: 'Authors and Reviewers should be submitted together',
+        });
+      }
+      if (val.status && Object.keys(val).length > 1) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          params: { code: 'presence' },
+          message: "Status can't be changed with other fields",
+          path: ['status'],
+        });
+      }
+      if (val.locked && Object.keys(val).length > 1) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          params: { code: 'presence' },
+          message: "Locked can't be changed with other fields",
+          path: ['locked'],
+        });
+      }
+      if (val.authors && val.reviewers) {
+        const exists = val.authors.filter((id) =>
+          val.reviewers!.find((rid) => rid === id)
+        );
+        if (exists.length > 0) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            params: { code: 'presence' },
+            message: "Authors can't be Reviewers too",
+            path: ['authors'],
+          });
+        }
+      }
+    });
 }
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
-  fastify.put<{
+  fastify.patch<{
     Params: ReqRevisionParams;
     Querystring: ReqGetRevision;
-    Body: ReqPutRevision;
-    Reply: ResPutRevision;
+    Body: ReqPatchRevision;
+    Reply: ResPatchRevision;
   }>('/', { preHandler: getRevision }, async function (req, res) {
     const val = BodyVal().safeParse(req.body);
     if (!val.success) {
@@ -59,48 +109,63 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           },
         });
 
-        // We diff to know which user to add or remove
-        const diffAuthors = diffUsers(users, data.authors, 'author');
-        const diffReviewers = diffUsers(users, data.reviewers, 'reviewer');
+        if (data.authors && data.reviewers) {
+          // We diff to know which user to add or remove
+          const diffAuthors = diffUsers(users, data.authors, 'author');
+          const diffReviewers = diffUsers(users, data.reviewers, 'reviewer');
 
-        // TODO: invalidate approval if we remove a reviewer that approved and they were the only one
+          // TODO: invalidate approval if we remove a reviewer that approved and they were the only one
 
-        await Promise.all([
-          ...diffAuthors.toAdd.map((userId) => {
-            return tx.typeHasUsers.create({
-              data: { revisionId: rev.id, userId, role: 'author' },
-            });
-          }),
-          ...diffAuthors.toRemove.map((userId) => {
-            return tx.typeHasUsers.delete({
-              where: {
-                revisionId_userId: {
-                  revisionId: rev.id,
-                  userId,
+          await Promise.all([
+            ...diffAuthors.toAdd.map((userId) => {
+              return tx.typeHasUsers.create({
+                data: { revisionId: rev.id, userId, role: 'author' },
+              });
+            }),
+            ...diffAuthors.toRemove.map((userId) => {
+              return tx.typeHasUsers.delete({
+                where: {
+                  revisionId_userId: {
+                    revisionId: rev.id,
+                    userId,
+                  },
                 },
-              },
-            });
-          }),
-          ...diffReviewers.toAdd.map((userId) => {
-            return tx.typeHasUsers.create({
-              data: { revisionId: rev.id, userId, role: 'reviewer' },
-            });
-          }),
-          ...diffReviewers.toRemove.map((userId) => {
-            return tx.typeHasUsers.delete({
-              where: {
-                revisionId_userId: {
-                  revisionId: rev.id,
-                  userId,
+              });
+            }),
+            ...diffReviewers.toAdd.map((userId) => {
+              return tx.typeHasUsers.create({
+                data: { revisionId: rev.id, userId, role: 'reviewer' },
+              });
+            }),
+            ...diffReviewers.toRemove.map((userId) => {
+              return tx.typeHasUsers.delete({
+                where: {
+                  revisionId_userId: {
+                    revisionId: rev.id,
+                    userId,
+                  },
                 },
-              },
-            });
-          }),
-        ]);
+              });
+            }),
+          ]);
+        }
 
         const { authors, reviewers, ...body } = data;
         let action = 'update';
-        const updates: Prisma.RevisionsUpdateInput = { ...body };
+        const updates: Prisma.RevisionsUpdateInput = {};
+
+        if (body.name) {
+          updates.name = body.name;
+        }
+        if (body.description) {
+          updates.description = body.description;
+        }
+        if (typeof body.locked === 'boolean') {
+          updates.locked = body.locked;
+        }
+        if (body.status) {
+          updates.status = body.status;
+        }
 
         // @ts-expect-error
         delete body.closedAt; // TODO: remove this after validation
@@ -127,7 +192,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           // await rev.onAfterLocked(req.user!, { transaction });
           await createRevisionActivity(user, 'Revision.locked', rev, tx);
         } else {
-          // handled by default
+          await createRevisionActivity(user, 'Revision.updated', rev, tx);
         }
       });
     } catch (e) {

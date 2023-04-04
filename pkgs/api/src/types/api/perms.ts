@@ -23,9 +23,11 @@ export interface ReqPutPerms {
   role: ApiPerm['role'];
 }
 
-export interface ResPutPerms {
-  data: { done: boolean };
-}
+export type ResPutPerms =
+  | ResErrors
+  | {
+      data: { done: boolean };
+    };
 
 // DELETE /
 export interface ReqDeletePerms {

@@ -10,7 +10,6 @@ import { App, Button, Dropdown, Skeleton, Space, Typography } from 'antd';
 import type {
   ApiProject,
   ResListRevisionBlobs,
-  ReqPutRevision,
   ResCheckRevision,
   ResGetRevision,
   ApiUser,
@@ -164,7 +163,6 @@ export const ProjectRevisionsShow: React.FC<{
     const up = await updateRevision(
       { ...qp, revision_id: rev.id },
       {
-        ...rev,
         name: title,
         description,
         authors: authors!.map((u) => u.id),
@@ -183,38 +181,36 @@ export const ProjectRevisionsShow: React.FC<{
     setEdit(false);
   };
 
-  const onClick = async (status: ApiRevision['status'], lock?: boolean) => {
+  const patchStatus = async (status: ApiRevision['status']) => {
     if (!rev) {
       return;
     }
 
     setSave(true);
+    await updateRevision({ ...qp, revision_id: rev.id }, { status });
+    message.success('Revision updated');
+    setSave(false);
+  };
+  const patchLocked = async (locked: boolean) => {
+    if (!rev) {
+      return;
+    }
 
-    const body: ReqPutRevision = {
-      ...rev,
-      authors: rev.authors.map((u) => u.id),
-      reviewers: rev.reviewers.map((u) => u.id),
-    };
-    const locked = typeof lock !== 'undefined' ? lock : body.locked;
-
-    await updateRevision(
-      { ...qp, revision_id: rev.id },
-      { ...body, status, locked }
-    );
-
+    setSave(true);
+    await updateRevision({ ...qp, revision_id: rev.id }, { locked });
     message.success('Revision updated');
     setSave(false);
   };
 
   const onMenuClick: MenuProps['onClick'] = async (e) => {
     if (e.key === 'lock') {
-      await onClick(rev!.status, true);
+      await patchLocked(true);
     } else if (e.key === 'unlock') {
-      await onClick(rev!.status, false);
+      await patchLocked(false);
     } else if (e.key === 'close') {
-      await onClick('closed');
+      await patchStatus('closed');
     } else if (e.key === 'reopen') {
-      await onClick('draft');
+      await patchStatus('draft');
     }
   };
 
@@ -316,7 +312,7 @@ export const ProjectRevisionsShow: React.FC<{
           )}
 
           {checks && !edit && (
-            <Checks rev={rev} checks={checks} qp={qp} onClick={onClick} />
+            <Checks rev={rev} checks={checks} qp={qp} onClick={patchStatus} />
           )}
         </Card>
       </div>

@@ -328,8 +328,7 @@ export async function seedRevision(
   user: Users,
   org: Orgs,
   project: Projects,
-  status?: ApiRevision['status'],
-  merged?: ApiRevision['merged']
+  data?: Partial<ApiRevision>
 ) {
   const id = nanoid();
   const revision = await prisma.revisions.create({
@@ -339,11 +338,12 @@ export async function seedRevision(
       projectId: project.id,
       name: `fix: tests ${id}`,
       description: { type: 'doc', content: [] },
-      status: status || 'draft',
-      merged: merged || false,
+      status: data?.status || 'draft',
+      merged: data?.merged || false,
       blobs: [],
-      closedAt: status === 'closed' ? new Date() : null,
-      mergedAt: merged ? new Date() : null,
+      closedAt: data?.status === 'closed' ? new Date() : null,
+      mergedAt: data?.merged ? new Date() : null,
+      locked: data?.locked || false,
     },
   });
   await createRevisionActivity(user, 'Revision.created', revision, prisma);

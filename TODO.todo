@@ -27,25 +27,31 @@ Homepage:
 Project:
   ✔ Edit @done(23-03-25 23:23)
     ✔ Manage links @done(23-03-27 15:55)
-    - Unit Test
+    ✔ Unit Test @done(23-04-04 17:26)
+    - Unit Test activity
   ✔ Rename @done(23-03-25 23:23)
-    - Unit Test
+    ✔ Unit Test @done(23-04-04 17:26)
     - Specific activity
+    - Unit Test activity
     - Handle error
   ✔ Creation @done(23-03-25 23:30)
     - Reserved name
     - Permission check
-    - Unit Test
+    ✔ Unit Test @done(23-04-04 17:26)
     ✔ Validation @done(23-03-28 16:11)
+    - Unit Test activity
     ✔ Enforce slug @done(23-03-28 16:11)
   ✔ List @done(23-03-29 12:19)
-    - Unit test
+    ✔ Unit test @done(23-04-04 17:26)
+    - Unit Test activity
     ✔ Validation @done(23-03-29 12:19)
   ✔ Get @done(23-03-29 12:20)
-    - Unit Test
+    ✔ Unit Test @done(23-04-04 17:26)
+    - Unit Test activity
     ✔ Validation @done(23-03-29 14:42)
   ✔ Update @done(23-03-29 14:42)
     - Permission check
+    - Unit Test activity
     ✔ Validation @done(23-03-29 14:42)
   ✔ Delete @done(23-03-29 14:42)
     - Permission check
@@ -93,6 +99,7 @@ Permissions:
     ✔ Unit Test @done(23-04-03 16:02)
   ✔ Update @done(23-03-29 15:55)
     ✔ Validation @done(23-03-30 12:06)
+    - Unit Test activity
     ✔ Unit Test @done(23-04-03 16:02)
     - Permission check
     - Activity
@@ -195,22 +202,25 @@ Revision:
     ✔ Search @done(23-03-29 14:47)
     ✔ Filter @done(23-03-29 14:47)
     ✔ Validation @done(23-03-29 17:49)
-    - Unit Test
+    ✔ Unit Test @done(23-04-04 17:10)
   ✔ Show one @done(23-03-29 14:47)
     ✔ Validation @done(23-03-30 11:51)
-    - Unit Test
+    ✔ Unit Test @done(23-04-04 17:10)
   ✔ Edition @done(23-03-27 12:24)
     ✔ Validation @done(23-03-30 11:51)
     - Permission
-    - Unit Test
+    - Unit Test activity
+    ✔ Unit Test @done(23-04-04 17:10)
   - Close
     ✔ Validation @done(23-03-30 11:51)
     - Permission
-    - Unit Test
+    - Unit Test activity
+    ✔ Unit Test @done(23-04-04 17:10)
   - Lock
     ✔ Validation @done(23-03-30 11:51)
     - Permission
-    - Unit Test
+    - Unit Test activity
+    ✔ Unit Test @done(23-04-04 17:10)
 
   - Commentaire
   - Timeline
@@ -220,14 +230,18 @@ Revision:
   - Revert d’une revision publié
   ✔ Draft @done(23-03-25 23:25)
     ✔ Validation @done(23-03-30 12:05)
+    - Unit Test activity
     - Unit Test
   ✔ Approval @done(23-03-25 23:25)
+    - Unit Test activity
     ✔ Validation @done(23-03-30 12:05)
     - Unit Test
   ✔ Merge @done(23-03-25 23:25)
+    - Unit Test activity
     ✔ Validation @done(23-03-30 12:06)
     - Unit Test
   ✔ Ask for review @done(23-03-25 23:25)
+    - Unit Test activity
     - Notification
   - Unit test
 

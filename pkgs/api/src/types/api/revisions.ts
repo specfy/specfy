@@ -56,14 +56,16 @@ export interface ResGetRevision {
 }
 
 // ------ POST /:id
-export type ReqPutRevision = Pick<
-  ResGetRevision['data'],
-  'blobs' | 'description' | 'locked' | 'name' | 'status'
-> & { authors: string[]; reviewers: string[] };
-export interface ResPutRevisionSuccess {
+export type ReqPatchRevision = Partial<
+  Pick<ResGetRevision['data'], 'description' | 'locked' | 'name' | 'status'> & {
+    authors: string[];
+    reviewers: string[];
+  }
+>;
+export interface ResPatchRevisionSuccess {
   data: { done: boolean };
 }
-export type ResPutRevision = ResErrors | ResPutRevisionSuccess;
+export type ResPatchRevision = ResErrors | ResPatchRevisionSuccess;
 
 // ------ POST /:id/merge
 export interface ResMergeRevisionSuccess {
