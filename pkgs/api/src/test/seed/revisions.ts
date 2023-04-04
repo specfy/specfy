@@ -1,4 +1,4 @@
-import type { Documents, Projects, Users } from '@prisma/client';
+import type { Documents, Orgs, Projects, Users } from '@prisma/client';
 
 import { nanoid } from '../../common/id';
 import { prisma } from '../../db';
@@ -7,6 +7,7 @@ import { createDocumentBlob } from '../../models/document';
 import { createProjectBlob } from '../../models/project';
 import { createRevisionActivity } from '../../models/revision';
 import type {
+  ApiRevision,
   BlockBanner,
   BlockLevelOne,
   BlockLevelZero,
@@ -331,4 +332,34 @@ export async function seedRevisions(
   });
 
   return res;
+}
+
+export async function seedRevision(
+  user: Users,
+  org: Orgs,
+  project: Projects,
+  status?: ApiRevision['status'],
+  merged?: ApiRevision['merged']
+) {
+  const id = nanoid();
+  const revision = await prisma.revisions.create({
+    data: {
+      id,
+      orgId: org.id,
+      projectId: project.id,
+      name: `fix: tests ${id}`,
+      description: { type: 'doc', content: [{}] },
+      status: status || 'draft',
+      merged: merged || false,
+      blobs: [],
+      closedAt: status === 'closed' ? new Date() : null,
+      mergedAt: merged ? new Date() : null,
+    },
+  });
+  await createRevisionActivity(user, 'Revision.created', revision, prisma);
+  await prisma.typeHasUsers.create({
+    data: { revisionId: revision.id, userId: user.id, role: 'author' },
+  });
+
+  return revision;
 }

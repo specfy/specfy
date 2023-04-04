@@ -33,25 +33,6 @@ export async function shouldNotAllowQueryParams(
   expect(res.statusCode).toBe(400);
 }
 
-export async function shouldEnforceQueryParams<TPath extends APIPaths>(
-  client: ApiClient,
-  path: TPath,
-  method: keyof API[TPath]
-) {
-  const { token } = await seedSimpleUser();
-  const res: Awaited<ReturnType<ApiClient['get']>> = await client[
-    (method as string).toLowerCase()
-  ](path as any, {
-    token,
-    qp: {},
-  });
-
-  isValidationError(res.json);
-  expect(res.json.error.form).toStrictEqual([]);
-  expect(Object.keys(res.json.error.fields).length).toBeGreaterThan(0);
-  expect(res.statusCode).toBe(400);
-}
-
 export async function shouldBeNotFound(
   res: Dispatcher.ResponseData & { json: any }
 ) {

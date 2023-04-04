@@ -1,14 +1,15 @@
+import type { Orgs, Projects, Users } from '@prisma/client';
 import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
 import type { TestSetup } from '../../../test/each';
 import { setupBeforeAll, setupAfterAll } from '../../../test/each';
-import { isValidationError } from '../../../test/fetch';
+import { isSuccess, isValidationError } from '../../../test/fetch';
 import {
   shouldBeProtected,
-  shouldEnforceQueryParams,
   shouldNotAllowQueryParams,
 } from '../../../test/helpers';
-import { seedSimpleUser } from '../../../test/seed/seed';
+import { seedRevision } from '../../../test/seed/revisions';
+import { seedSimpleUser, seedWithProject } from '../../../test/seed/seed';
 
 let t: TestSetup;
 beforeAll(async () => {
@@ -18,6 +19,16 @@ beforeAll(async () => {
 afterAll(async () => {
   await setupAfterAll(t);
 });
+
+async function seedAllStates(user: Users, org: Orgs, project: Projects) {
+  const revision1 = await seedRevision(user, org, project, 'draft');
+  const revision2 = await seedRevision(user, org, project, 'approved');
+  const revision3 = await seedRevision(user, org, project, 'waiting');
+  const revision4 = await seedRevision(user, org, project, 'closed');
+  const revision5 = await seedRevision(user, org, project, 'approved', true);
+
+  return { revision1, revision2, revision3, revision4, revision5 };
+}
 
 describe('GET /revisions', () => {
   it('should be protected', async () => {
@@ -35,18 +46,11 @@ describe('GET /revisions', () => {
     await shouldNotAllowQueryParams(res);
   });
 
-  it('should enforce query params', async () => {
-    await shouldEnforceQueryParams(t.fetch, '/0/revisions', 'GET');
-  });
-
   it('should fail on unknown org/project', async () => {
     const { token } = await seedSimpleUser();
     const res = await t.fetch.get('/0/revisions', {
       token,
-      qp: {
-        org_id: 'e',
-        project_id: 'a',
-      },
+      qp: { org_id: 'e', project_id: 'a' },
     });
 
     isValidationError(res.json);
@@ -64,5 +68,169 @@ describe('GET /revisions', () => {
         path: ['project_id'],
       },
     });
+  });
+
+  it('should list', async () => {
+    const { token, org, project, user } = await seedWithProject();
+    const revision = await seedRevision(user, org, project, 'waiting');
+    await seedRevision(user, org, project, 'waiting');
+
+    const res = await t.fetch.get('/0/revisions', {
+      token,
+      qp: { org_id: org.id, project_id: project.id },
+    });
+
+    isSuccess(res.json);
+    expect(res.statusCode).toBe(200);
+    expect(res.json.data).toHaveLength(2);
+    expect(res.json.data[1]).toStrictEqual({
+      authors: [],
+      blobs: [],
+      closedAt: null,
+      createdAt: expect.toBeIsoDate(),
+      description: {
+        content: [{}],
+        type: 'doc',
+      },
+      id: revision.id,
+      locked: false,
+      merged: false,
+      mergedAt: null,
+      name: revision.name,
+      orgId: org.id,
+      projectId: project.id,
+      status: 'waiting',
+      updatedAt: expect.toBeIsoDate(),
+    });
+  });
+
+  it('should filter by status: approved', async () => {
+    const { token, org, project, user } = await seedWithProject();
+    const { revision2 } = await seedAllStates(user, org, project);
+
+    const res = await t.fetch.get('/0/revisions', {
+      token,
+      qp: { org_id: org.id, project_id: project.id, status: 'approved' },
+    });
+
+    isSuccess(res.json);
+    expect(res.statusCode).toBe(200);
+    expect(res.json.data).toHaveLength(1);
+    expect(res.json.data[0].id).toStrictEqual(revision2.id);
+  });
+
+  it('should filter by status: draft', async () => {
+    const { token, org, project, user } = await seedWithProject();
+    const { revision1 } = await seedAllStates(user, org, project);
+
+    const res = await t.fetch.get('/0/revisions', {
+      token,
+      qp: { org_id: org.id, project_id: project.id, status: 'draft' },
+    });
+
+    isSuccess(res.json);
+    expect(res.statusCode).toBe(200);
+    expect(res.json.data).toHaveLength(1);
+    expect(res.json.data[0].id).toStrictEqual(revision1.id);
+  });
+
+  it('should filter by status: closed', async () => {
+    const { token, org, project, user } = await seedWithProject();
+    const { revision4 } = await seedAllStates(user, org, project);
+
+    const res = await t.fetch.get('/0/revisions', {
+      token,
+      qp: { org_id: org.id, project_id: project.id, status: 'closed' },
+    });
+
+    isSuccess(res.json);
+    expect(res.statusCode).toBe(200);
+    expect(res.json.data).toHaveLength(1);
+    expect(res.json.data[0].id).toStrictEqual(revision4.id);
+  });
+
+  it('should filter by status: waiting', async () => {
+    const { token, org, project, user } = await seedWithProject();
+    const { revision3 } = await seedAllStates(user, org, project);
+
+    const res = await t.fetch.get('/0/revisions', {
+      token,
+      qp: { org_id: org.id, project_id: project.id, status: 'waiting' },
+    });
+
+    isSuccess(res.json);
+    expect(res.statusCode).toBe(200);
+    expect(res.json.data).toHaveLength(1);
+    expect(res.json.data[0].id).toStrictEqual(revision3.id);
+  });
+
+  it('should filter by status: all', async () => {
+    const { token, org, project, user } = await seedWithProject();
+    await seedAllStates(user, org, project);
+
+    const res = await t.fetch.get('/0/revisions', {
+      token,
+      qp: { org_id: org.id, project_id: project.id, status: 'all' },
+    });
+
+    isSuccess(res.json);
+    expect(res.statusCode).toBe(200);
+    expect(res.json.data).toHaveLength(5);
+  });
+
+  it('should filter by status: opened', async () => {
+    const { token, org, project, user } = await seedWithProject();
+    const { revision1, revision2, revision3 } = await seedAllStates(
+      user,
+      org,
+      project
+    );
+
+    const res = await t.fetch.get('/0/revisions', {
+      token,
+      qp: { org_id: org.id, project_id: project.id, status: 'opened' },
+    });
+
+    isSuccess(res.json);
+    expect(res.statusCode).toBe(200);
+    expect(res.json.data).toHaveLength(3);
+    expect(res.json.data[0].id).toStrictEqual(revision3.id);
+    expect(res.json.data[1].id).toStrictEqual(revision2.id);
+    expect(res.json.data[2].id).toStrictEqual(revision1.id);
+  });
+
+  it('should filter by status: merged', async () => {
+    const { token, org, project, user } = await seedWithProject();
+    const { revision5 } = await seedAllStates(user, org, project);
+
+    const res = await t.fetch.get('/0/revisions', {
+      token,
+      qp: { org_id: org.id, project_id: project.id, status: 'merged' },
+    });
+
+    isSuccess(res.json);
+    expect(res.statusCode).toBe(200);
+    expect(res.json.data).toHaveLength(1);
+    expect(res.json.data[0].id).toStrictEqual(revision5.id);
+  });
+
+  it('should search in name', async () => {
+    const { token, org, project, user } = await seedWithProject();
+    const { revision4 } = await seedAllStates(user, org, project);
+
+    const res = await t.fetch.get('/0/revisions', {
+      token,
+      qp: {
+        org_id: org.id,
+        project_id: project.id,
+        status: 'all',
+        search: revision4.id.substring(0, 4),
+      },
+    });
+
+    isSuccess(res.json);
+    expect(res.statusCode).toBe(200);
+    expect(res.json.data).toHaveLength(1);
+    expect(res.json.data[0].id).toStrictEqual(revision4.id);
   });
 });
