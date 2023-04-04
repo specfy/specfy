@@ -35,8 +35,6 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       data: list.map((blob) => {
         const ex: ApiBlobWithPrevious = {
           id: blob.id,
-          orgId: blob.orgId,
-          projectId: blob.projectId,
           parentId: blob.parentId,
           type: blob.type as any,
           typeId: blob.typeId,

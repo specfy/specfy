@@ -63,16 +63,6 @@ export async function seedRevisions(
           ],
         },
       },
-      data: {
-        id: nanoid(),
-        orgId: 'company',
-        projectId: p1.id,
-        created: false,
-        deleted: false,
-        type: 'project',
-        typeId: p1.id,
-        parentId: p1.blobId,
-      },
       tx,
     });
 

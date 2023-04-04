@@ -6,9 +6,6 @@ export type DBBlobAll = DBComponent | DBDocument | DBProject;
 export type DBBlobBase = {
   id: string;
 
-  orgId: string;
-  projectId: string;
-
   typeId: string;
   parentId: string | null;
   created: boolean;

@@ -63,19 +63,19 @@ export const ContentBlock: React.FC<{
         if (mark.type === 'diffMark') {
           if (mark.attrs.type === 'added') {
             text = (
-              <span className={classnames(clsDiff.added, clsDiff.i)}>
+              <span className={classnames(clsDiff.added, clsDiff.line)}>
                 {text}
               </span>
             );
           } else if (mark.attrs.type === 'formatting') {
             text = (
-              <span className={classnames(clsDiff.formatting, clsDiff.i)}>
+              <span className={classnames(clsDiff.formatting, clsDiff.line)}>
                 {text}
               </span>
             );
           } else {
             text = (
-              <span className={classnames(clsDiff.removed, clsDiff.i)}>
+              <span className={classnames(clsDiff.removed, clsDiff.line)}>
                 {text}
               </span>
             );
@@ -96,13 +96,12 @@ export const ContentBlock: React.FC<{
           );
       }
     }
-    if (block.link) text = <Link to={block.link}>{text}</Link>;
     return text;
   } else if (block.type === 'hardBreak') {
     return (
       <>
         {stl && (
-          <span className={classnames(stl, clsDiff.i)}>
+          <span className={classnames(stl, clsDiff.line)}>
             <IconArrowBack />
           </span>
         )}

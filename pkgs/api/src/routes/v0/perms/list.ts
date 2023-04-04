@@ -50,7 +50,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           id: p.id,
           orgId: p.orgId,
           projectId: p.projectId,
-          user: toApiUser(p.User),
+          user: toApiUser(p.User!),
           role: p.role as ApiPerm['role'],
           createdAt: p.createdAt.toISOString(),
           updatedAt: p.updatedAt.toISOString(),

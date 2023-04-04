@@ -37,8 +37,6 @@ export const Staging: React.FC<{ link: string }> = ({ link }) => {
 
         const diff = diffTwoBlob({
           id: '',
-          orgId: item.orgId || original.orgId,
-          projectId: 'links' in item ? item.id : item.projectId,
           created: !original,
           deleted: false,
           parentId: original ? original.blobId : null,
@@ -75,8 +73,6 @@ export const Staging: React.FC<{ link: string }> = ({ link }) => {
 
         const diff = diffTwoBlob({
           id: '',
-          orgId: item.orgId,
-          projectId: 'links' in item ? item.id : item.projectId,
           created: false,
           deleted: true,
           parentId: item.blobId,

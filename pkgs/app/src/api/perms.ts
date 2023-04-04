@@ -2,10 +2,10 @@ import { useQuery } from '@tanstack/react-query';
 import type {
   ReqDeletePerms,
   ReqListPerms,
-  ReqPostPerms,
+  ReqPutPerms,
   ResDeletePerms,
   ResListPerms,
-  ResPostPerms,
+  ResPutPerms,
 } from 'api/src/types/api';
 
 import { queryClient } from '../common/query';
@@ -38,8 +38,8 @@ export function useListPermsProject(opts: Required<ReqListPerms>) {
   });
 }
 
-export async function updatePerm(opts: ReqPostPerms) {
-  const { json } = await fetchApi<ResPostPerms, undefined, ReqPostPerms>(
+export async function updatePerm(opts: ReqPutPerms) {
+  const { json } = await fetchApi<ResPutPerms, undefined, ReqPutPerms>(
     '/perms',
     { body: opts },
     'PUT'

@@ -17,8 +17,6 @@ export async function createComponentBlob({
   return await tx.blobs.create({
     data: {
       id: nanoid(),
-      orgId: blob.orgId,
-      projectId: blob.projectId,
       parentId: blob?.blobId || null,
       type: 'component',
       typeId: blob.id,

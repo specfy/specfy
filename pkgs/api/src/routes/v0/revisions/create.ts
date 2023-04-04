@@ -78,20 +78,18 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
     const rev = await prisma.$transaction(async (tx) => {
       const ids: string[] = [];
-      const tmp = { orgId: data.orgId, projectId: data.projectId };
 
       for (const blob of data.blobs) {
         let blobToModel: any | typeof Prisma.DbNull = Prisma.DbNull;
 
         if (!blob.deleted && blob.blob) {
-          blobToModel = { ...tmp, ...blob.blob } as any;
+          blobToModel = blob.blob as any;
         }
 
         // TODO: validation
         const b = await tx.blobs.create({
           data: {
             id: nanoid(),
-            ...tmp,
             ...blob,
             blob: blobToModel,
           },

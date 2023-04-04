@@ -49,8 +49,6 @@ model Activities {
 
 model Blobs {
   id        String   @id @db.VarChar(15)
-  orgId     String   @db.VarChar(36)
-  projectId String   @db.VarChar(15)
   type      String   @db.VarChar(36)
   typeId    String   @db.VarChar(36)
   parentId  String?  @db.VarChar(15)
@@ -60,9 +58,7 @@ model Blobs {
   createdAt DateTime @default(now()) @db.Timestamp(3)
   updatedAt DateTime @updatedAt
 
-  Org      Orgs     @relation(fields: [orgId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  Project  Projects @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  Previous Blobs?   @relation(fields: [parentId], references: [id], name: "previous", onDelete: Cascade, onUpdate: NoAction)
+  Previous Blobs? @relation(fields: [parentId], references: [id], name: "previous", onDelete: Cascade, onUpdate: NoAction)
 
   Documents  Documents[]
   Components Components[]
@@ -145,7 +141,6 @@ model Orgs {
   Perms      Perms[]
   Activities Activities[]
   Comments   Comments[]
-  Blobs      Blobs[]
   Components Components[]
   Documents  Documents[]
   Policies   Policies[]
@@ -205,7 +200,6 @@ model Projects {
 
   Activities Activities[]
   Comments   Comments[]
-  Blobs      Blobs[]
   Components Components[]
   Documents  Documents[]
   Perms      Perms[]

@@ -1,3 +1,6 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+
 import type { Orgs, Projects, Users } from '@prisma/client';
 
 import { nanoid } from '../../common/id';
@@ -220,8 +223,14 @@ export async function seedRFC(
   { p1 }: { p1: Projects },
   [u1, u2]: Users[]
 ) {
-  // eslint-disable-next-line @typescript-eslint/no-var-requires
-  const docRfc4Json = require('./document.rfc.json'); // Breaks vitest somehow
+  // to avoid import it in tests too
+  const docRfc4Json = JSON.parse(
+    (
+      await fs.readFile(
+        path.join(__dirname, '../../../', 'src/test/seed/document.rfc.json')
+      )
+    ).toString()
+  );
 
   const res = await prisma.$transaction(async (tx) => {
     const d1 = await createDocument({

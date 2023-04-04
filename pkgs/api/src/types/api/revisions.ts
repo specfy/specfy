@@ -29,10 +29,7 @@ export type ResListRevisionsSuccess = {
 export type ResListRevisions = ResErrors | ResListRevisionsSuccess;
 
 // ------ POST /
-export type ApiBlobCreate = Omit<
-  DBBlobBase,
-  'createdAt' | 'id' | 'orgId' | 'projectId' | 'updatedAt'
-> &
+export type ApiBlobCreate = Omit<DBBlobBase, 'createdAt' | 'id' | 'updatedAt'> &
   (DBBlobComponentBase | DBBlobDocumentBase | DBBlobProjectBase);
 
 export type ReqPostRevision = Pick<

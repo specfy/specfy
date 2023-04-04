@@ -30,8 +30,6 @@ export async function createDocumentBlob({
   return await tx.blobs.create({
     data: {
       id: nanoid(),
-      orgId: blob.orgId,
-      projectId: blob.projectId,
       parentId: blob?.blobId || null,
       type: 'document',
       typeId: blob.id,

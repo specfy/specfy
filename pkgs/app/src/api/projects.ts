@@ -3,11 +3,11 @@ import type {
   ReqListProjects,
   ReqPostProject,
   ReqProjectParams,
-  ReqUpdateProject,
+  ReqPutProject,
   ResGetProject,
   ResListProjects,
   ResPostProject,
-  ResUpdateProject,
+  ResPutProject,
 } from 'api/src/types/api';
 
 import { queryClient } from '../common/query';
@@ -31,13 +31,13 @@ export async function createProject(
 
 export async function updateProject(
   opts: ReqProjectParams,
-  data: ReqUpdateProject
+  data: ReqPutProject
 ) {
-  const { json } = await fetchApi<
-    ResUpdateProject,
-    undefined,
-    ReqUpdateProject
-  >(`/projects/${opts.org_id}/${opts.project_slug}`, { body: data }, 'PUT');
+  const { json } = await fetchApi<ResPutProject, undefined, ReqPutProject>(
+    `/projects/${opts.org_id}/${opts.project_slug}`,
+    { body: data },
+    'PUT'
+  );
 
   queryClient.removeQueries(['listProjects', opts.org_id]);
   queryClient.removeQueries(['getProject', opts.org_id, opts.project_slug]);
