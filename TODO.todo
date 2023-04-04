@@ -49,10 +49,10 @@ Project:
     ✔ Validation @done(23-03-29 14:42)
   ✔ Delete @done(23-03-29 14:42)
     - Permission check
-    - Unit test
+    ✔ Unit test @done(23-04-04 11:20)
     ✔ Validation @done(23-03-29 14:43)
   - archivage
-  - soft suppression
+  - soft suppression !!
   - Import Excalidraw
   - Import Draw.io
   ✔ Edition “inline” @done(23-03-25 23:26)

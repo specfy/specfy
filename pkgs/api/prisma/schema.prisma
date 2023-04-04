@@ -23,7 +23,7 @@ model Accounts {
   expiresAt         DateTime? @db.Timestamp(3)
   updatedAt         DateTime  @updatedAt
 
-  User Users @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  User Users @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model Activities {
@@ -40,9 +40,9 @@ model Activities {
   targetPolicyId    String?  @db.VarChar(15)
   createdAt         DateTime @default(now()) @db.Timestamp(3)
 
-  Org     Orgs?     @relation(fields: [orgId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Project Projects? @relation(fields: [projectId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  User    Users     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Org     Orgs?     @relation(fields: [orgId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  Project Projects? @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  User    Users     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@index([orgId, projectId, activityGroupId], map: "idx_activities_projectid_group")
 }
@@ -60,9 +60,9 @@ model Blobs {
   createdAt DateTime @default(now()) @db.Timestamp(3)
   updatedAt DateTime @updatedAt
 
-  Org      Orgs     @relation(fields: [orgId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Project  Projects @relation(fields: [projectId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Previous Blobs?   @relation(fields: [parentId], references: [id], name: "previous", onDelete: NoAction, onUpdate: NoAction)
+  Org      Orgs     @relation(fields: [orgId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  Project  Projects @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  Previous Blobs?   @relation(fields: [parentId], references: [id], name: "previous", onDelete: Cascade, onUpdate: NoAction)
 
   Documents  Documents[]
   Components Components[]
@@ -80,10 +80,10 @@ model Comments {
   createdAt  DateTime @default(now()) @db.Timestamp(3)
   updatedAt  DateTime @updatedAt
 
-  Org      Orgs      @relation(fields: [orgId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Project  Projects  @relation(fields: [projectId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Revision Revisions @relation(fields: [revisionId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  User     Users     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Org      Orgs      @relation(fields: [orgId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  Project  Projects  @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  Revision Revisions @relation(fields: [revisionId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  User     Users     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@index([orgId, projectId, revisionId], map: "idx_comments_orgid_projectid_revisionid")
 }
@@ -106,9 +106,9 @@ model Components {
   createdAt   DateTime @default(now()) @db.Timestamp(3)
   updatedAt   DateTime @updatedAt
 
-  Org     Orgs     @relation(fields: [orgId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Project Projects @relation(fields: [projectId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Blob    Blobs?   @relation(fields: [blobId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Org     Orgs     @relation(fields: [orgId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  Project Projects @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  Blob    Blobs?   @relation(fields: [blobId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model Documents {
@@ -126,9 +126,9 @@ model Documents {
   createdAt DateTime @default(now()) @db.Timestamp(3)
   updatedAt DateTime @updatedAt
 
-  Org     Orgs     @relation(fields: [orgId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Project Projects @relation(fields: [projectId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Blob    Blobs?   @relation(fields: [blobId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Org     Orgs     @relation(fields: [orgId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  Project Projects @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  Blob    Blobs?   @relation(fields: [blobId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   TypeHasUsers TypeHasUsers[]
 
@@ -163,9 +163,9 @@ model Perms {
   createdAt DateTime @default(now()) @db.Timestamp(3)
   updatedAt DateTime @updatedAt
 
-  Org     Orgs      @relation(fields: [orgId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Project Projects? @relation(fields: [projectId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  User    Users?    @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Org     Orgs      @relation(fields: [orgId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  Project Projects? @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  User    Users?    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@unique([orgId, userId, projectId], map: "idx_team_org_userid_projectid")
 }
@@ -180,7 +180,7 @@ model Policies {
   createdAt DateTime @default(now()) @db.Timestamp(3)
   updatedAt DateTime @updatedAt
 
-  Org Orgs @relation(fields: [orgId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Org Orgs @relation(fields: [orgId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   TypeHasUsers TypeHasUsers[]
 
@@ -200,8 +200,8 @@ model Projects {
   createdAt   DateTime @default(now()) @db.Timestamp(3)
   updatedAt   DateTime @updatedAt
 
-  Org  Orgs   @relation(fields: [orgId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Blob Blobs? @relation(fields: [blobId], references: [id], name: "blob", onDelete: NoAction, onUpdate: NoAction)
+  Org  Orgs   @relation(fields: [orgId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  Blob Blobs? @relation(fields: [blobId], references: [id], name: "blob", onDelete: Cascade, onUpdate: NoAction)
 
   Activities Activities[]
   Comments   Comments[]
@@ -224,10 +224,10 @@ model Reviews {
   commentId  BigInt?
   createdAt  DateTime @default(now()) @db.Timestamp(3)
 
-  Org      Orgs      @relation(fields: [orgId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Project  Projects  @relation(fields: [projectId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  User     Users     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Revision Revisions @relation(fields: [revisionId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Org      Orgs      @relation(fields: [orgId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  Project  Projects  @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  User     Users     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  Revision Revisions @relation(fields: [revisionId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@index([orgId, projectId, revisionId], map: "idx_reviews_orgid_projectid_revisionid")
 }
@@ -247,8 +247,8 @@ model Revisions {
   mergedAt    DateTime? @db.Timestamp(3)
   closedAt    DateTime? @db.Timestamp(3)
 
-  Org     Orgs     @relation(fields: [orgId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Project Projects @relation(fields: [projectId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  Org     Orgs     @relation(fields: [orgId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  Project Projects @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   TypeHasUsers TypeHasUsers[]
   Reviews      Reviews[]
@@ -261,7 +261,7 @@ model Sessions {
   sessionToken String   @unique(map: "idx_sessions_token") @db.VarChar(100)
   expiresAt    DateTime @db.Timestamp(3)
 
-  User Users @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  User Users @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model TypeHasUsers {
@@ -273,10 +273,10 @@ model TypeHasUsers {
   role       String   @db.VarChar(25)
   createdAt  DateTime @default(now()) @db.Timestamp(3)
 
-  User     Users      @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Revision Revisions? @relation(fields: [revisionId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Policy   Policies?  @relation(fields: [policyId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-  Document Documents? @relation(fields: [documentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  User     Users      @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  Revision Revisions? @relation(fields: [revisionId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  Policy   Policies?  @relation(fields: [policyId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  Document Documents? @relation(fields: [documentId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@unique([documentId, userId], map: "idx_documentid_userid")
   @@unique([policyId, userId], map: "idx_policyid_userid")

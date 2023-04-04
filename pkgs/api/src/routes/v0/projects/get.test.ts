@@ -21,13 +21,13 @@ afterAll(async () => {
 
 describe('GET /projects/:org_id/:project_slug', () => {
   it('should be protected', async () => {
-    const res = await t.fetch.get('/0/projects');
+    const res = await t.fetch.get('/0/projects/foo/bar');
     await shouldBeProtected(res);
   });
 
   it('should not allow query params', async () => {
     const { token } = await seedSimpleUser();
-    const res = await t.fetch.get('/0/projects', {
+    const res = await t.fetch.get('/0/projects/foo/bar', {
       token,
       // @ts-expect-error
       qp: { random: 'world' },

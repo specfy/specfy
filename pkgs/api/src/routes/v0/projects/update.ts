@@ -6,6 +6,7 @@ import { toApiProject } from '../../../common/formatters/project';
 import { schemaProject } from '../../../common/validators';
 import { prisma } from '../../../db';
 import { getProject } from '../../../middlewares/getProject';
+import { noQuery } from '../../../middlewares/noQuery';
 import { createProjectActivity } from '../../../models/project';
 import type {
   ReqProjectParams,
@@ -27,7 +28,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     Params: ReqProjectParams;
     Body: ReqUpdateProject;
     Reply: ResUpdateProject;
-  }>('/', { preHandler: getProject }, async function (req, res) {
+  }>('/', { preHandler: [noQuery, getProject] }, async function (req, res) {
     const val = BodyVal().safeParse(req.body);
     if (!val.success) {
       return validationError(res, val.error);

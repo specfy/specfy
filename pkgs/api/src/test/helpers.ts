@@ -8,9 +8,7 @@ import type { ApiClient } from './fetch';
 import { seedSimpleUser } from './seed/seed';
 
 export async function shouldBeProtected(
-  res: Dispatcher.ResponseData & {
-    json: any;
-  }
+  res: Dispatcher.ResponseData & { json: any }
 ) {
   isError(res.json);
   expect(res.json).toStrictEqual({
@@ -22,9 +20,7 @@ export async function shouldBeProtected(
 }
 
 export async function shouldNotAllowQueryParams(
-  res: Dispatcher.ResponseData & {
-    json: any;
-  }
+  res: Dispatcher.ResponseData & { json: any }
 ) {
   isValidationError(res.json);
   expect(res.json.error.form).toStrictEqual([
@@ -57,9 +53,7 @@ export async function shouldEnforceQueryParams<TPath extends APIPaths>(
 }
 
 export async function shouldBeNotFound(
-  res: Dispatcher.ResponseData & {
-    json: any;
-  }
+  res: Dispatcher.ResponseData & { json: any }
 ) {
   isError(res.json);
   expect(res.json).toStrictEqual({
@@ -70,29 +64,17 @@ export async function shouldBeNotFound(
   expect(res.statusCode).toBe(404);
 }
 
-export async function shouldNotAllowBody<TPath extends APIPaths>(
-  client: ApiClient,
-  path: TPath,
-  method: keyof API[TPath]
+export async function shouldNotAllowBody(
+  res: Dispatcher.ResponseData & { json: any }
 ) {
-  const { token } = await seedSimpleUser();
-  const res: Awaited<ReturnType<ApiClient['get']>> = await client[
-    (method as string).toLowerCase()
-  ](path as any, {
-    token,
-    body: { wrong: 'body' },
-  });
-
-  console.log(res);
   isValidationError(res.json);
   expect(res.json.error.form).toStrictEqual([
     {
       code: 'unrecognized_keys',
-      message: "Unrecognized key(s) in object: 'wrong'",
+      message: "Unrecognized key(s) in object: 'random'",
       path: [],
     },
   ]);
-  expect(Object.keys(res.json.error.fields).length).toBeGreaterThan(0);
   expect(res.statusCode).toBe(400);
 }
 
