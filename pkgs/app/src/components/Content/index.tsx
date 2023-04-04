@@ -4,7 +4,6 @@ import type { BlockLevelZero, Blocks, MarkDiff } from 'api/src/types/api';
 import classnames from 'classnames';
 import { useMemo, useState } from 'react';
 import { Diff, Hunk, tokenize, markEdits } from 'react-diff-view';
-import { Link } from 'react-router-dom';
 import { PrismAsyncLight } from 'react-syntax-highlighter';
 import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import 'react-diff-view/style/index.css';
