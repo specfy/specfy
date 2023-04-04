@@ -18,12 +18,12 @@ import type {
   ReqListProjects,
   ReqPostProject,
   ReqProjectParams,
-  ReqUpdateProject,
+  ReqPutProject,
   ResDeleteProject,
   ResGetProject,
   ResListProjects,
   ResPostProject,
-  ResUpdateProject,
+  ResPutProject,
 } from './projects';
 import type {
   ReqGetRevision,
@@ -84,7 +84,7 @@ export interface API {
   };
   [key: `/0/projects/${string}`]: {
     GET: { res: ResGetProject; qp: never; body: never };
-    PUT: { res: ResUpdateProject; qp: never; body: ReqUpdateProject };
+    PUT: { res: ResPutProject; qp: never; body: ReqPutProject };
     DELETE: { res: ResDeleteProject; qp: never; body: never };
   };
 

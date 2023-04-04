@@ -1,6 +1,6 @@
 import type { DBPolicy } from '../db/policies';
 
-import type { Pagination } from './api';
+import type { Pagination, ResErrors } from './api';
 
 export type ApiPolicy = DBPolicy;
 
@@ -8,7 +8,9 @@ export type ApiPolicy = DBPolicy;
 export type ReqListPolicies = {
   org_id: string;
 };
-export type ResListPolicies = {
-  data: ApiPolicy[];
-  pagination: Pagination;
-};
+export type ResListPolicies =
+  | ResErrors
+  | {
+      data: ApiPolicy[];
+      pagination: Pagination;
+    };

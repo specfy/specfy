@@ -192,7 +192,7 @@ model Projects {
   orgId       String   @db.VarChar(36)
   blobId      String?  @db.VarChar(15)
   name        String   @db.VarChar(36)
-  slug        String   @db.VarChar(100)
+  slug        String   @unique @db.VarChar(100)
   description Json     @db.Json
   links       Json     @db.Json
   display     Json     @db.Json

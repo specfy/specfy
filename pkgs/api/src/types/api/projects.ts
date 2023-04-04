@@ -1,6 +1,6 @@
 import type { DBProject } from '../db/projects';
 
-import type { Pagination, ResErrors, ResValidationError } from './api';
+import type { Pagination, ResErrors } from './api';
 
 export type ApiProject = DBProject;
 
@@ -18,9 +18,7 @@ export interface ResListProjects {
 export type ReqPostProject = Pick<ApiProject, 'name' | 'orgId' | 'slug'> & {
   display: { pos: Pick<ApiProject['display']['pos'], 'x' | 'y'> };
 };
-export type ResPostProject =
-  | Pick<ApiProject, 'id' | 'slug'>
-  | ResValidationError;
+export type ResPostProject = Pick<ApiProject, 'id' | 'slug'> | ResErrors;
 
 // GET /:org_id/:project_slug
 export interface ReqProjectParams {
@@ -33,8 +31,8 @@ export interface ResGetProject {
 }
 
 // POST /:org_id/:project_slug
-export type ReqUpdateProject = Pick<ApiProject, 'name'>;
-export type ResUpdateProject = ResErrors | ResGetProject;
+export type ReqPutProject = Pick<ApiProject, 'name'>;
+export type ResPutProject = ResErrors | { data: ApiProject };
 
 // DELETE /:org_id/:project_slug
 export type ResDeleteProject = ResErrors | never;

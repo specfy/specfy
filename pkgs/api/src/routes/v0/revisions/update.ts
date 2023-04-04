@@ -140,9 +140,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     }
 
     res.status(200).send({
-      data: {
-        done: true,
-      },
+      data: { done: true },
     });
   });
 
