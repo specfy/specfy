@@ -45,7 +45,7 @@ describe('DELETE /projects/:org_id/:project_slug', () => {
     await shouldNotAllowBody(res);
   });
 
-  it.only('should delete a project', async () => {
+  it('should delete a project', async () => {
     const { token, org, project } = await seedWithProject();
     const res = await t.fetch.delete(`/0/projects/${org.id}/${project.slug}`, {
       token,
