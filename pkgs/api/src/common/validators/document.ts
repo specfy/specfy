@@ -12,7 +12,7 @@ export const schemaDocument = z
     id: schemaId,
     orgId: schemaOrgId,
     projectId: schemaId,
-    blobId: schemaId,
+    blobId: schemaId.nullable(),
 
     // type: z.string().refine((val) => {
     //   return allowed.includes(val as any);

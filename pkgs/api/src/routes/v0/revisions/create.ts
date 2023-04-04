@@ -21,7 +21,46 @@ function BodyVal(req: FastifyRequest) {
       description: schemaRevision.shape.description,
       blobs: schemaBlobs,
     })
-    .strict();
+    .strict()
+    .superRefine((val, ctx) => {
+      const orgId = val.orgId;
+      const projectId = val.projectId;
+      for (let index = 0; index < val.blobs.length; index++) {
+        const blob = val.blobs[index];
+
+        // Check belongs to same org
+        if (blob.blob.orgId !== orgId) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            params: { code: 'incompatible_fields' },
+            message:
+              "Blob's content should be in the same org as the blob definition",
+            path: ['blobs', index, 'orgId'],
+          });
+        }
+
+        // Check belongs to same project
+        if ('projectId' in blob.blob && blob.blob.projectId !== projectId) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            params: { code: 'incompatible_fields' },
+            message:
+              "Blob's content should be in the same project as the blob definition",
+            path: ['blobs', index, 'projectId'],
+          });
+        }
+
+        // Check not edit an other project
+        if (blob.type === 'project' && blob.blob.id !== projectId) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            params: { code: 'incompatible_fields' },
+            message: 'Project blob can not be an other project',
+            path: ['blobs', index, 'id'],
+          });
+        }
+      }
+    });
 }
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {

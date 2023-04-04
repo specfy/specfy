@@ -9,7 +9,7 @@ export const schemaComponent = z
     id: schemaId,
     orgId: schemaOrgId,
     projectId: schemaId,
-    blobId: schemaId,
+    blobId: schemaId.nullable(),
     techId: z.string().nonempty().nullable(), // TODO: do something about that?
 
     type: z.enum(['component', 'hosting', 'project', 'thirdparty']),

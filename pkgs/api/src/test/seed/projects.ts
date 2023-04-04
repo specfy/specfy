@@ -47,10 +47,7 @@ export async function seedProjects(users: Users[]) {
         orgId: 'company',
         links: [],
         edges: [],
-        description: {
-          type: 'doc',
-          content: [],
-        },
+        description: { type: 'doc', content: [] },
         display: {
           zIndex: 1,
           pos: { x: 220, y: -20, width: 100, height: 32 },
@@ -106,10 +103,7 @@ export async function seedProjects(users: Users[]) {
         orgId: 'company',
         links: [],
         edges: [],
-        description: {
-          type: 'doc',
-          content: [],
-        },
+        description: { type: 'doc', content: [] },
         display: {
           zIndex: 1,
           pos: { x: -150, y: 40, width: 100, height: 32 },
@@ -126,10 +120,7 @@ export async function seedProjects(users: Users[]) {
         orgId: 'company',
         links: [],
         edges: [],
-        description: {
-          type: 'doc',
-          content: [],
-        },
+        description: { type: 'doc', content: [] },
         display: {
           zIndex: 1,
           pos: { x: 20, y: 120, width: 100, height: 32 },
