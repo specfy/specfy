@@ -3,7 +3,7 @@ import type { Components, Orgs, Projects, Users } from '@prisma/client';
 import { nanoid } from '../../common/id';
 import { slugify } from '../../common/string';
 import { prisma } from '../../db';
-import { createComponent } from '../../models/component';
+import { createComponent } from '../../models';
 import type { DBComponent } from '../../types/db';
 
 export type ResSeedComponents = {

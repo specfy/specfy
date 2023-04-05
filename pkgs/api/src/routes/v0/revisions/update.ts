@@ -6,7 +6,7 @@ import { validationError } from '../../../common/errors';
 import { schemaRevision } from '../../../common/validators/revision';
 import { prisma } from '../../../db';
 import { getRevision } from '../../../middlewares/getRevision';
-import { createRevisionActivity } from '../../../models/revision';
+import { createRevisionActivity } from '../../../models';
 import type {
   ReqGetRevision,
   ReqPatchRevision,

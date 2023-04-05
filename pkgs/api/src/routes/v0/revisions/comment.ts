@@ -6,7 +6,7 @@ import { nanoid } from '../../../common/id';
 import { schemaProseMirror } from '../../../common/validators';
 import { prisma } from '../../../db';
 import { getRevision } from '../../../middlewares/getRevision';
-import { createRevisionActivity } from '../../../models/revision';
+import { createRevisionActivity } from '../../../models';
 import type {
   ReqGetRevision,
   ReqPostCommentRevision,

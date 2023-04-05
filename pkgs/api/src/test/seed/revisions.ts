@@ -2,10 +2,13 @@ import type { Documents, Orgs, Projects, Users } from '@prisma/client';
 
 import { nanoid } from '../../common/id';
 import { prisma } from '../../db';
-import { createComponentBlob } from '../../models/component';
-import { createDocumentBlob } from '../../models/document';
-import { createProjectBlob } from '../../models/project';
-import { createBlobs, createRevisionActivity } from '../../models/revision';
+import {
+  createComponentBlob,
+  createDocumentBlob,
+  createProjectBlob,
+  createBlobs,
+  createRevisionActivity,
+} from '../../models';
 import type {
   ApiBlobCreate,
   ApiRevision,

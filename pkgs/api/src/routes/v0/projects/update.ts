@@ -8,7 +8,7 @@ import { schemaProject } from '../../../common/validators';
 import { prisma } from '../../../db';
 import { getProject } from '../../../middlewares/getProject';
 import { noQuery } from '../../../middlewares/noQuery';
-import { createProjectActivity } from '../../../models/project';
+import { createProjectActivity } from '../../../models';
 import type {
   ReqProjectParams,
   ReqPutProject,

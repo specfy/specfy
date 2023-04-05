@@ -5,7 +5,7 @@ import type { Orgs, Projects, Users } from '@prisma/client';
 
 import { nanoid } from '../../common/id';
 import { prisma } from '../../db';
-import { createDocument, getTypeId } from '../../models/document';
+import { createDocument, getTypeId } from '../../models';
 import type { ApiDocument } from '../../types/api';
 
 /**

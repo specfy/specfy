@@ -4,7 +4,7 @@ import { findAllBlobsWithParent } from '../../../common/blobs';
 import { prisma } from '../../../db';
 import { getRevision } from '../../../middlewares/getRevision';
 import { noBody } from '../../../middlewares/noBody';
-import { createRevisionActivity } from '../../../models/revision';
+import { createRevisionActivity } from '../../../models';
 import type {
   ReqGetRevision,
   ReqRevisionParams,

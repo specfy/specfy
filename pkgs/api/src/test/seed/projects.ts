@@ -3,7 +3,7 @@ import type { Orgs, Users } from '@prisma/client';
 import { nanoid } from '../../common/id';
 import { slugify } from '../../common/string';
 import { prisma } from '../../db';
-import { createProject, updateProject } from '../../models/project';
+import { createProject, updateProject } from '../../models';
 import type { DBProject } from '../../types/db';
 
 /**

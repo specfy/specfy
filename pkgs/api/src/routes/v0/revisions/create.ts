@@ -8,7 +8,7 @@ import { schemaRevision } from '../../../common/validators/revision';
 import { valOrgId, valProjectId } from '../../../common/zod';
 import { prisma } from '../../../db';
 import { noQuery } from '../../../middlewares/noQuery';
-import { createBlobs, createRevisionActivity } from '../../../models/revision';
+import { createBlobs, createRevisionActivity } from '../../../models';
 import type {
   ApiBlobCreate,
   ReqPostRevision,

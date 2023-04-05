@@ -3,7 +3,7 @@ import { customAlphabet } from 'nanoid/non-secure';
 
 import { nanoid } from '../../common/id';
 import { prisma } from '../../db';
-import { createOrgActivity } from '../../models/org';
+import { createOrgActivity } from '../../models';
 
 export const createOrgId = customAlphabet('abcdefghijklmnopqrstuvwxyz', 20);
 

@@ -2,7 +2,7 @@ import type { Orgs, Projects, Users } from '@prisma/client';
 
 import { nanoid } from '../../common/id';
 import { prisma } from '../../db';
-import { getJwtToken } from '../../models/user';
+import { getJwtToken } from '../../models';
 
 import { seedOrg } from './orgs';
 import { seedProject } from './projects';

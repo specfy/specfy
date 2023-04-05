@@ -7,7 +7,7 @@ import { schemaProject } from '../../../common/validators';
 import { valOrgId } from '../../../common/zod';
 import { prisma } from '../../../db';
 import { noQuery } from '../../../middlewares/noQuery';
-import { createProject } from '../../../models/project';
+import { createProject } from '../../../models';
 import type { ReqPostProject, ResPostProject } from '../../../types/api';
 
 function ProjectVal(req: FastifyRequest) {

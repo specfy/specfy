@@ -2,7 +2,7 @@ import type { Orgs, Projects, Users } from '@prisma/client';
 import { beforeAll, afterAll, describe, it, expect } from 'vitest';
 
 import { prisma } from '../../../db';
-import { createComponentBlob } from '../../../models/component';
+import { createComponentBlob } from '../../../models';
 import type { TestSetup } from '../../../test/each';
 import { setupBeforeAll, setupAfterAll } from '../../../test/each';
 import { isError, isSuccess } from '../../../test/fetch';

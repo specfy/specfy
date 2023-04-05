@@ -75,6 +75,7 @@ export async function updateProject({
   if (data.name && data.name !== original.name) {
     data.slug = slugify(data.name);
   }
+
   const blob = await createProjectBlob({ blob: { ...original, ...data }, tx });
 
   const tmp = await tx.projects.update({

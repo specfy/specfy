@@ -6,7 +6,7 @@ import { nanoid } from '../../../common/id';
 import { schemaOrgId } from '../../../common/validators';
 import { prisma } from '../../../db';
 import { noQuery } from '../../../middlewares/noQuery';
-import { createOrgActivity } from '../../../models/org';
+import { createOrgActivity } from '../../../models';
 import type { ReqPostOrg, ResPostOrg } from '../../../types/api';
 
 const OrgVal = z

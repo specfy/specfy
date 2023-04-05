@@ -2,7 +2,7 @@ import type { Orgs, Users } from '@prisma/client';
 
 import { nanoid } from '../../common/id';
 import { prisma } from '../../db';
-import { createPoliciesActivity } from '../../models/policy';
+import { createPoliciesActivity } from '../../models';
 
 /**
  * Seed playbook

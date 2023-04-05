@@ -6,10 +6,12 @@ import { checkReviews } from '../../../common/revision';
 import { prisma } from '../../../db';
 import { getRevision } from '../../../middlewares/getRevision';
 import { noBody } from '../../../middlewares/noBody';
-import { createComponentActivity } from '../../../models/component';
-import { createDocumentActivity } from '../../../models/document';
-import { createProjectActivity } from '../../../models/project';
-import { createRevisionActivity } from '../../../models/revision';
+import {
+  createComponentActivity,
+  createDocumentActivity,
+  createProjectActivity,
+  createRevisionActivity,
+} from '../../../models';
 import type {
   ReqGetRevision,
   ReqRevisionParams,
