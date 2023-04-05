@@ -12,10 +12,7 @@ import {
 import { getBlobComponent, seedComponent } from '../../../test/seed/components';
 import { seedRevision } from '../../../test/seed/revisions';
 import { seedSimpleUser, seedWithProject } from '../../../test/seed/seed';
-import type {
-  ApiBlobWithPrevious,
-  ResListRevisionBlobs,
-} from '../../../types/api';
+import type { ApiBlobWithPrevious } from '../../../types/api';
 
 let t: TestSetup;
 beforeAll(async () => {
