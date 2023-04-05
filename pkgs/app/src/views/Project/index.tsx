@@ -3,9 +3,12 @@ import type { ApiOrg, ApiProject } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
 import { Route, Routes, useParams } from 'react-router-dom';
 
-import { useListComponents } from '../../api/components';
-import { useListOrgs } from '../../api/orgs';
-import { useGetProject, useListProjects } from '../../api/projects';
+import {
+  useListComponents,
+  useListOrgs,
+  useGetProject,
+  useListProjects,
+} from '../../api';
 import { useComponentsStore, useProjectStore } from '../../common/store';
 import { BigHeadingLoading } from '../../components/BigHeading';
 import { Card } from '../../components/Card';

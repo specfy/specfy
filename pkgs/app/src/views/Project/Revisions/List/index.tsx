@@ -1,17 +1,19 @@
 import { LoadingOutlined } from '@ant-design/icons';
 import { IconCircleX, IconHistory, IconSearch } from '@tabler/icons-react';
-import { Button, Input, Select, Table } from 'antd';
+import { App, Button, Input, Select, Table } from 'antd';
 import type {
   ApiProject,
   ApiRevision,
   ReqListRevisions,
-  ResListRevisions,
+  ResListRevisionsSuccess,
 } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useDebounce } from 'react-use';
 
-import { useListRevisions } from '../../../../api/revisions';
+import { useListRevisions } from '../../../../api';
+import { isError } from '../../../../api/helpers';
+import { i18n } from '../../../../common/i18n';
 import { Card } from '../../../../components/Card';
 import { Container } from '../../../../components/Container';
 import { StatusTag } from '../../../../components/StatusTag';
@@ -24,11 +26,13 @@ export const ProjectRevisionsList: React.FC<{
   proj: ApiProject;
   params: RouteProject;
 }> = ({ proj, params }) => {
+  const { message } = App.useApp();
+
   const [filterStatus, setFilterStatus] =
     useState<ReqListRevisions['status']>('opened');
   const [loading, setLoading] = useState<boolean>(true);
   const [search, setSearch] = useState<string>('');
-  const [list, setList] = useState<ResListRevisions>();
+  const [list, setList] = useState<ResListRevisionsSuccess>();
   const [searchDebounced, setSearchDebounced] = useState<string>('');
   useDebounce(
     () => {
@@ -50,6 +54,9 @@ export const ProjectRevisionsList: React.FC<{
     setLoading(res.isLoading);
     if (!res.data) {
       return;
+    }
+    if (isError(res.data)) {
+      return message.error(i18n.errorOccurred);
     }
 
     setList(res.data);

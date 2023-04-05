@@ -13,7 +13,7 @@ import { Divider, Button, Menu, Dropdown, Badge, Layout } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
-import { useListOrgs } from '../../api/orgs';
+import { useListOrgs } from '../../api';
 import { useAuth } from '../../hooks/useAuth';
 import Logo1 from '../../static/logo2.svg';
 import type { RouteOrg } from '../../types/routes';

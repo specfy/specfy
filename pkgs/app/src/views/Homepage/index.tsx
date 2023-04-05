@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { Navigate } from 'react-router-dom';
 
-import { useListOrgs } from '../../api/orgs';
+import { useListOrgs } from '../../api';
 
 export const Homepage: React.FC = () => {
   const orgsQuery = useListOrgs();

@@ -13,7 +13,7 @@ import type {
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { createRevision } from '../../../../api/revisions';
+import { createRevision } from '../../../../api';
 import { getEmptyDoc } from '../../../../common/content';
 import { proposeTitle } from '../../../../common/diff';
 import originalStore, { useStagingStore } from '../../../../common/store';

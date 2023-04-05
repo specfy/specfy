@@ -2,7 +2,7 @@ import { Avatar, Skeleton, Typography } from 'antd';
 import type { ApiPerm, ReqListPerms } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
 
-import { useListPermsProject } from '../../../api/perms';
+import { useListPermsProject } from '../../../api';
 import { AvatarAuto } from '../../../components/AvatarAuto';
 
 import cls from './index.module.scss';

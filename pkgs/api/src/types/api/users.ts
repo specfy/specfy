@@ -10,9 +10,8 @@ export type ReqListUsers = {
   project_id?: string;
   search?: string;
 };
-export type ResListUsers =
-  | ResErrors
-  | {
-      data: ApiUser[];
-      pagination: Pagination;
-    };
+export interface ResListUsersSuccess {
+  data: ApiUser[];
+  pagination: Pagination;
+}
+export type ResListUsers = ResErrors | ResListUsersSuccess;

@@ -4,7 +4,7 @@ import type { FieldsErrors } from 'api/src/types/api';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { createProject } from '../../../api/projects';
+import { createProject } from '../../../api';
 import { useProjectStore } from '../../../common/store';
 import { slugify } from '../../../common/string';
 import type { RouteOrg } from '../../../types/routes';

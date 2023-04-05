@@ -3,7 +3,7 @@ import type { ApiMe } from 'api/src/types/api';
 import { useMemo, useState, createContext, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-import { getMe } from '../api/users';
+import { getMe } from '../api';
 
 interface AuthContextInterface {
   user: ApiMe | null;

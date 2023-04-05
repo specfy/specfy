@@ -4,6 +4,7 @@ import type {
   ReqPostProject,
   ReqProjectParams,
   ReqPutProject,
+  ResDeleteProject,
   ResGetProject,
   ResListProjects,
   ResPostProject,
@@ -32,7 +33,7 @@ export async function createProject(
 export async function updateProject(
   opts: ReqProjectParams,
   data: ReqPutProject
-) {
+): Promise<ResPutProject> {
   const { json } = await fetchApi<ResPutProject, undefined, ReqPutProject>(
     `/projects/${opts.org_id}/${opts.project_slug}`,
     { body: data },
@@ -45,8 +46,10 @@ export async function updateProject(
   return json;
 }
 
-export async function deleteProject(opts: ReqProjectParams) {
-  const { json } = await fetchApi<ResPostProject>(
+export async function deleteProject(
+  opts: ReqProjectParams
+): Promise<ResDeleteProject> {
+  const { json } = await fetchApi<ResDeleteProject>(
     `/projects/${opts.org_id}/${opts.project_slug}`,
     undefined,
     'DELETE'

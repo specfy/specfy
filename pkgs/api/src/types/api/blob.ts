@@ -9,8 +9,7 @@ export type ApiBlobPrevious<T = DBBlob['blob']> = {
 export type ApiBlobWithPrevious = ApiBlob & ApiBlobPrevious;
 
 // GET /
-export type ResListRevisionBlobs =
-  | ResErrors
-  | {
-      data: ApiBlobWithPrevious[];
-    };
+export interface ResListRevisionBlobsSuccess {
+  data: ApiBlobWithPrevious[];
+}
+export type ResListRevisionBlobs = ResErrors | ResListRevisionBlobsSuccess;

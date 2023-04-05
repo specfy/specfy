@@ -9,7 +9,7 @@ import classnames from 'classnames';
 import { useState, useEffect, useRef } from 'react';
 import { useClickAway } from 'react-use';
 
-import { createComment } from '../../../api/comments';
+import { createComment } from '../../../api';
 import { getEmptyDoc } from '../../../common/content';
 import { Editor } from '../../Editor';
 

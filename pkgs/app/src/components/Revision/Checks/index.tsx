@@ -14,7 +14,7 @@ import type {
 import classnames from 'classnames';
 import { useState } from 'react';
 
-import { mergeRevision, rebaseRevision } from '../../../api/revisions';
+import { mergeRevision, rebaseRevision } from '../../../api';
 import { Time } from '../../Time';
 
 import cls from './index.module.scss';

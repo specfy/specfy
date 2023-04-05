@@ -16,8 +16,7 @@ import classnames from 'classnames';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-import { useListOrgs } from '../../api/orgs';
-import { useListRevisions } from '../../api/revisions';
+import { useListOrgs, useListRevisions } from '../../api';
 import { useEdit } from '../../hooks/useEdit';
 import type { RouteProject } from '../../types/routes';
 import { BigHeading } from '../BigHeading';

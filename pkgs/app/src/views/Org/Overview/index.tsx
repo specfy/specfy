@@ -1,7 +1,7 @@
 import { Skeleton } from 'antd';
 import { useEffect, useState } from 'react';
 
-import { useListProjects } from '../../../api/projects';
+import { useListProjects } from '../../../api';
 import { useProjectStore } from '../../../common/store';
 import { Card } from '../../../components/Card';
 import { Container } from '../../../components/Container';

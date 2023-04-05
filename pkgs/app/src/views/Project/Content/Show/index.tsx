@@ -2,7 +2,7 @@ import type { ApiDocument, ApiProject } from 'api/src/types/api';
 import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useGetDocument } from '../../../../api/documents';
+import { useGetDocument } from '../../../../api';
 import { useDocumentsStore } from '../../../../common/store';
 import type { RouteDocument } from '../../../../types/routes';
 import { Playbook } from '../Playbook';

@@ -4,7 +4,7 @@ import type { ApiDocument, BlockDocument } from 'api/src/types/api';
 import { useMemo } from 'react';
 
 import { ContentDoc } from '..';
-import { useGetDocument } from '../../../api/documents';
+import { useGetDocument } from '../../../api';
 import type { Payload } from '../../../common/content';
 import { useDocumentsStore, useProjectStore } from '../../../common/store';
 

@@ -3,7 +3,9 @@ import type { ApiProject } from 'api/src/types/api';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { deleteProject, updateProject } from '../../../../api/projects';
+import { deleteProject, updateProject } from '../../../../api';
+import { isError } from '../../../../api/helpers';
+import { i18n } from '../../../../common/i18n';
 import { slugify } from '../../../../common/string';
 import { Card } from '../../../../components/Card';
 import type { RouteProject } from '../../../../types/routes';
@@ -31,6 +33,11 @@ export const SettingsGeneral: React.FC<{
 
   const handleRename = async () => {
     const res = await updateProject(params, { name });
+    if (isError(res)) {
+      message.error(i18n.errorOccurred);
+      return;
+    }
+
     message.success('Project renamed');
     navigate(`/${params.org_id}/${res.data.slug}/settings`);
   };

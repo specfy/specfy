@@ -9,24 +9,26 @@ import type { MenuProps } from 'antd';
 import { App, Button, Dropdown, Skeleton, Space, Typography } from 'antd';
 import type {
   ApiProject,
-  ResListRevisionBlobs,
-  ResCheckRevision,
-  ResGetRevision,
   ApiUser,
   ApiRevision,
   ReqGetRevision,
+  ResGetRevisionSuccess,
+  ResCheckRevisionSuccess,
+  ResListRevisionBlobsSuccess,
 } from 'api/src/types/api';
 import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { useListRevisionBlobs } from '../../../../api/blobs';
 import {
+  useListRevisionBlobs,
   updateRevision,
   useGetRevision,
   useGetRevisionChecks,
-} from '../../../../api/revisions';
+} from '../../../../api';
+import { isError } from '../../../../api/helpers';
 import { getEmptyDoc } from '../../../../common/content';
 import { diffTwoBlob } from '../../../../common/diff';
+import { i18n } from '../../../../common/i18n';
 import { useRevisionStore } from '../../../../common/store';
 import { Card } from '../../../../components/Card';
 import { Container } from '../../../../components/Container';
@@ -54,9 +56,9 @@ export const ProjectRevisionsShow: React.FC<{
   const storeRevision = useRevisionStore();
 
   const more = useParams<Partial<RouteRevision>>();
-  const [rev, setRev] = useState<ResGetRevision['data']>();
-  const [blobs, setBlobs] = useState<ResListRevisionBlobs['data']>();
-  const [checks, setChecks] = useState<ResCheckRevision['data']>();
+  const [rev, setRev] = useState<ResGetRevisionSuccess['data']>();
+  const [blobs, setBlobs] = useState<ResListRevisionBlobsSuccess['data']>();
+  const [checks, setChecks] = useState<ResCheckRevisionSuccess['data']>();
   const [to] = useState(() => `/${params.org_id}/${params.project_slug}`);
   const qp: ReqGetRevision = {
     org_id: params.org_id,
@@ -82,16 +84,28 @@ export const ProjectRevisionsShow: React.FC<{
 
   useEffect(() => {
     if (!res.data) return;
+    if (isError(res.data)) {
+      return message.error(i18n.errorOccurred);
+    }
+
     setRev(res.data.data);
     storeRevision.setCurrent(res.data.data);
   }, [res.data]);
   useEffect(() => {
     if (!resBlobs.data) return;
+    if (isError(resBlobs.data)) {
+      return message.error(i18n.errorOccurred);
+    }
+
     setBlobs(resBlobs.data.data);
     storeRevision.setBlobs(resBlobs.data.data);
   }, [resBlobs.data]);
   useEffect(() => {
     if (!resChecks.data) return;
+    if (isError(resChecks.data)) {
+      return message.error(i18n.errorOccurred);
+    }
+
     setChecks(resChecks.data?.data);
   }, [resChecks.data]);
 
@@ -169,8 +183,12 @@ export const ProjectRevisionsShow: React.FC<{
         reviewers: reviewers!.map((u) => u.id),
       }
     );
-
     setSave(false);
+
+    if (isError(up)) {
+      message.error(i18n.errorOccurred);
+      return;
+    }
 
     if (!up?.data?.done) {
       message.error('Revision could not saved');

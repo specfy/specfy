@@ -208,6 +208,19 @@ module.exports = {
     '@typescript-eslint/unified-signatures': ['error'],
     '@typescript-eslint/no-redeclare': ['error'],
     '@typescript-eslint/no-shadow': ['error'],
+    '@typescript-eslint/no-empty-function': 'error',
+    '@typescript-eslint/no-explicit-any': ['warn'],
+    '@typescript-eslint/no-loss-of-precision': 'error',
+    '@typescript-eslint/ban-tslint-comment': ['error'],
+    '@typescript-eslint/consistent-generic-constructors': 'error',
+    '@typescript-eslint/dot-notation': 'error',
+    '@typescript-eslint/no-duplicate-enum-values': 'error',
+    '@typescript-eslint/no-meaningless-void-operator': 'error',
+    '@typescript-eslint/no-mixed-enums': 'error',
+    '@typescript-eslint/no-non-null-asserted-nullish-coalescing': 'error',
+    '@typescript-eslint/no-throw-literal': 'error',
+    '@typescript-eslint/no-unsafe-declaration-merging': 'error',
+    // '@typescript-eslint/no-unsafe-enum-comparison': 'error',
 
     // Disable rules superset by @typescript-eslint
     'no-redeclare': ['off'],
@@ -218,6 +231,10 @@ module.exports = {
     camelcase: ['off'],
     'no-array-constructor': ['off'],
     'no-useless-constructor': ['off'],
+    'no-empty-function': 'off',
+    'no-loss-of-precision': 'off',
+    'dot-notation': 'off',
+    'no-throw-literal': 'off',
 
     // Handled by prettier
     '@typescript-eslint/brace-style': ['off'],
@@ -231,14 +248,12 @@ module.exports = {
     '@typescript-eslint/semi': ['off'],
     '@typescript-eslint/space-before-function-paren': ['off'],
     '@typescript-eslint/space-infix-ops': ['off'],
-    '@typescript-eslint/ban-tslint-comment': ['off'],
     '@typescript-eslint/class-literal-property-style': ['off'], // useless
     '@typescript-eslint/consistent-indexed-object-style': ['off'], // Also modify type and interface
     '@typescript-eslint/method-signature-style': ['error'],
 
     // disabled => because will warn to every explicit "any"
     '@typescript-eslint/explicit-module-boundary-types': ['off'],
-    '@typescript-eslint/no-explicit-any': ['off'],
 
     // disabled => because will warn for every not typed but correctly infered type var
     '@typescript-eslint/typedef': [
@@ -257,7 +272,7 @@ module.exports = {
 
     // To decide
     '@typescript-eslint/no-for-in-array': ['off'],
-    '@typescript-eslint/prefer-for-of': ['off'],
+    '@typescript-eslint/prefer-for-of': ['warn'],
 
     // Disabled => Require slow parser. Requires parserOptions.project above to enable them
     // '@typescript-eslint/no-throw-literal': ['off'],
@@ -294,7 +309,7 @@ module.exports = {
     '@typescript-eslint/switch-exhaustiveness-check': ['off'],
     '@typescript-eslint/unbound-method': ['off'],
 
-    // Disabled
+    // Disabled On purpose
     '@typescript-eslint/ban-ts-comment': ['off'],
     '@typescript-eslint/consistent-type-definitions': ['off'], // unecessary
     '@typescript-eslint/no-dynamic-delete': ['off'], // to complicated for the small benefits

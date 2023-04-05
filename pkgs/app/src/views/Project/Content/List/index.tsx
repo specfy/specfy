@@ -8,7 +8,7 @@ import type {
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { useListDocuments } from '../../../../api/documents';
+import { useListDocuments } from '../../../../api';
 import { TYPE_TO_TEXT } from '../../../../common/document';
 import { Card } from '../../../../components/Card';
 import { Time } from '../../../../components/Time';

@@ -49,15 +49,19 @@ export interface ReqGetRevision {
   project_id: string;
 }
 
-export interface ResGetRevision {
+export interface ResGetRevisionSuccess {
   data: ApiRevision & {
     reviewers: ApiUser[];
   };
 }
+export type ResGetRevision = ResErrors | ResGetRevisionSuccess;
 
 // ------ POST /:id
 export type ReqPatchRevision = Partial<
-  Pick<ResGetRevision['data'], 'description' | 'locked' | 'name' | 'status'> & {
+  Pick<
+    ResGetRevisionSuccess['data'],
+    'description' | 'locked' | 'name' | 'status'
+  > & {
     authors: string[];
     reviewers: string[];
   }
@@ -89,20 +93,22 @@ export interface ReqPostCommentRevision {
   content: BlockLevelZero;
   approval: boolean;
 }
-export interface ResPostCommentRevision {
+export interface ResPostCommentRevisionSuccess {
   data: {
     id: string;
   };
 }
+export type ResPostCommentRevision = ResErrors | ResPostCommentRevisionSuccess;
 
 // ------ POST /:id/checks
-export interface ResCheckRevision {
+export interface ResCheckRevisionSuccess {
   data: {
     canMerge: boolean;
     reviews: ApiReview[];
     outdatedBlobs: string[];
   };
 }
+export type ResCheckRevision = ResCheckRevisionSuccess | ResErrors;
 
 // ------ POST /:id/rebase
 export interface ResRebaseRevisionSuccess {

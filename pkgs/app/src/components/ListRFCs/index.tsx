@@ -4,7 +4,7 @@ import Title from 'antd/es/typography/Title';
 import type { ApiDocument, ApiProject } from 'api/src/types/api';
 import { Link } from 'react-router-dom';
 
-import { useListDocuments } from '../../api/documents';
+import { useListDocuments } from '../../api';
 import { TYPE_TO_TEXT } from '../../common/document';
 
 import cls from './index.module.scss';

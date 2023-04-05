@@ -4,7 +4,7 @@ import type { Duration } from 'luxon';
 import { DateTime } from 'luxon';
 import { useEffect, useState } from 'react';
 
-import { useListActivities } from '../../api/activities';
+import { useListActivities } from '../../api';
 
 import { RowActivity } from './RowActivity';
 import cls from './index.module.scss';

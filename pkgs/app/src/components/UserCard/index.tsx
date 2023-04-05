@@ -1,11 +1,17 @@
-import { AutoComplete, Space } from 'antd';
+import { App, AutoComplete, Space } from 'antd';
 import type { DefaultOptionType } from 'antd/es/select';
-import type { ApiUser, ReqListUsers } from 'api/src/types/api';
+import type {
+  ApiUser,
+  ReqListUsers,
+  ResListUsersSuccess,
+} from 'api/src/types/api';
 import classnames from 'classnames';
 import { useEffect, useState } from 'react';
 import { useDebounce } from 'react-use';
 
-import { useListUser } from '../../api/users';
+import { useListUser } from '../../api';
+import { isError } from '../../api/helpers';
+import { i18n } from '../../common/i18n';
 import { AvatarAuto } from '../AvatarAuto';
 
 import cls from './index.module.scss';
@@ -28,9 +34,12 @@ export const UserCardAdd: React.FC<{
   size?: 'default' | 'small';
   excludeIds?: string[];
 }> = ({ onAdd, params, size, excludeIds }) => {
+  const { message } = App.useApp();
+
   const [options, setOptions] = useState<DefaultOptionType[]>([]);
   const [search, setSearch] = useState<string>();
   const [searchDebounced, setSearchDebounced] = useState<string>();
+  const [list, setList] = useState<ResListUsersSuccess['data']>();
 
   const res = useListUser({ ...params, search: searchDebounced });
   useDebounce(
@@ -49,19 +58,30 @@ export const UserCardAdd: React.FC<{
     if (res.isLoading) {
       return;
     }
+    if (isError(res.data)) {
+      return message.error(i18n.errorOccurred);
+    }
+
+    setList(res.data?.data);
+  }, [res.isLoading, searchDebounced]);
+
+  useEffect(() => {
+    if (!list) {
+      return;
+    }
 
     let tmp =
-      res.data?.data.map((user) => {
+      list.map((user) => {
         return { label: user.name, value: user.id };
       }) || [];
     if (excludeIds) {
       tmp = tmp.filter((user) => !excludeIds.includes(user.value));
     }
     setOptions(tmp);
-  }, [res.isLoading, searchDebounced]);
+  }, [list]);
 
   const onSelect = (id: string) => {
-    onAdd(res.data!.data.find((user) => user.id === id)!);
+    onAdd(list!.find((user) => user.id === id)!);
     setSearch('');
     setOptions([]);
   };

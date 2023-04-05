@@ -10,7 +10,7 @@ import type { ApiPolicy } from 'api/src/types/api';
 import classnames from 'classnames';
 import { useMemo, useState } from 'react';
 
-import { useListPolicies } from '../../../api/policies';
+import { useListPolicies } from '../../../api';
 import { supportedIndexed } from '../../../common/component';
 import { AvatarAuto } from '../../../components/AvatarAuto';
 import { Card } from '../../../components/Card';

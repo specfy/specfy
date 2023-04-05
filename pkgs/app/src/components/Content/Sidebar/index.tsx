@@ -16,7 +16,7 @@ import { useMemo, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDebounce } from 'react-use';
 
-import { useListDocuments } from '../../../api/documents';
+import { useListDocuments } from '../../../api';
 import { TYPE_TO_TEXT } from '../../../common/document';
 import type { RouteProject } from '../../../types/routes';
 

@@ -12,7 +12,7 @@ import type { ApiOrg } from 'api/src/types/api';
 import { useState, useMemo, useEffect } from 'react';
 import { Link, Route, Routes, useLocation, useParams } from 'react-router-dom';
 
-import { useListOrgs } from '../../api/orgs';
+import { useListOrgs } from '../../api';
 import { BigHeadingLoading } from '../../components/BigHeading';
 import { Card } from '../../components/Card';
 import { Container } from '../../components/Container';
