@@ -5,7 +5,7 @@ import { prisma } from '../../../db';
 import { createComponentBlob } from '../../../models/component';
 import type { TestSetup } from '../../../test/each';
 import { setupBeforeAll, setupAfterAll } from '../../../test/each';
-import { isError, isSuccess, isValidationError } from '../../../test/fetch';
+import { isError, isSuccess } from '../../../test/fetch';
 import {
   shouldBeProtected,
   shouldNotAllowBody,
@@ -14,7 +14,6 @@ import {
 import { getBlobComponent, seedComponent } from '../../../test/seed/components';
 import { seedRevision } from '../../../test/seed/revisions';
 import { seedSimpleUser, seedWithProject } from '../../../test/seed/seed';
-import type { ApiBlobWithPrevious } from '../../../types/api';
 
 let t: TestSetup;
 beforeAll(async () => {
