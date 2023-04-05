@@ -5,6 +5,7 @@ import { findAllBlobsWithParent } from '../../../common/blobs';
 import { checkReviews } from '../../../common/revision';
 import { prisma } from '../../../db';
 import { getRevision } from '../../../middlewares/getRevision';
+import { noBody } from '../../../middlewares/noBody';
 import { createComponentActivity } from '../../../models/component';
 import { createDocumentActivity } from '../../../models/document';
 import { createProjectActivity } from '../../../models/project';
@@ -13,6 +14,7 @@ import type {
   ReqGetRevision,
   ReqRevisionParams,
   ResMergeRevision,
+  ResMergeRevisionError,
 } from '../../../types/api';
 import type { DBBlob } from '../../../types/db';
 
@@ -21,17 +23,27 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     Params: ReqRevisionParams;
     Querystring: ReqGetRevision;
     Reply: ResMergeRevision;
-  }>('/', { preHandler: getRevision }, async function (req, res) {
+  }>('/', { preHandler: [noBody, getRevision] }, async function (req, res) {
     const rev = req.revision!;
-    let cantMerge: string | false = false;
+    let reason: ResMergeRevisionError['error']['reason'] | false = false;
     const user = req.user!;
 
     await prisma.$transaction(async (tx) => {
       // Check if we have reviews
       const reviews = await checkReviews(rev, tx);
-      if (!reviews.check) {
-        cantMerge = 'missing_checks';
-        throw new Error(cantMerge);
+      if (!reviews.check || rev.status !== 'approved') {
+        reason = 'no_reviews';
+        return;
+      }
+
+      if (rev.merged) {
+        reason = 'already_merged';
+        return;
+      }
+
+      if ((rev.blobs as string[]).length === 0) {
+        reason = 'empty';
+        return;
       }
 
       // TODO: check who can merge
@@ -45,12 +57,11 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       for (const item of list) {
         // If we can't find the prev, that means it's not longer in the main branch
         if (!item.parent && item.blob.parentId) {
-          cantMerge = 'not_up_to_date';
-          throw new Error(cantMerge);
+          reason = 'outdated';
+          return;
         }
 
         // Update a blob
-
         const blob = item.blob as unknown as DBBlob;
 
         // --- Projects
@@ -143,9 +154,12 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       await createRevisionActivity(user, 'Revision.merged', updated, tx);
     });
 
-    if (cantMerge) {
+    if (reason) {
       res.status(400).send({
-        cantMerge,
+        error: {
+          code: 'cant_merge',
+          reason,
+        },
       });
       return;
     }

@@ -74,7 +74,10 @@ export interface ResMergeRevisionSuccess {
   };
 }
 export interface ResMergeRevisionError {
-  cantMerge: string;
+  error: {
+    code: 'cant_merge';
+    reason: 'already_merged' | 'empty' | 'no_reviews' | 'outdated';
+  };
 }
 export type ResMergeRevision =
   | ResErrors

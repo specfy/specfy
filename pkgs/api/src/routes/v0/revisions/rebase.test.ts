@@ -7,6 +7,7 @@ import { setupBeforeAll, setupAfterAll } from '../../../test/each';
 import { isSuccess } from '../../../test/fetch';
 import {
   shouldBeProtected,
+  shouldNotAllowBody,
   shouldNotAllowQueryParams,
 } from '../../../test/helpers';
 import { getBlobComponent, seedComponent } from '../../../test/seed/components';
@@ -37,6 +38,18 @@ describe('GET /revisions/:revision_id/rebase', () => {
       qp: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
+  });
+
+  it('should not allow body', async () => {
+    const { token, org, project, user } = await seedWithProject();
+    const revision = await seedRevision(user, org, project);
+    const res = await t.fetch.post(`/0/revisions/${revision.id}/merge`, {
+      token,
+      qp: { org_id: org.id, project_id: project.id },
+      // @ts-expect-error
+      body: { random: 'world' },
+    });
+    await shouldNotAllowBody(res);
   });
 
   it('should rebase nothing', async () => {

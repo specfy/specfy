@@ -3,6 +3,7 @@ import type { FastifyPluginCallback } from 'fastify';
 import { findAllBlobsWithParent } from '../../../common/blobs';
 import { prisma } from '../../../db';
 import { getRevision } from '../../../middlewares/getRevision';
+import { noBody } from '../../../middlewares/noBody';
 import { createRevisionActivity } from '../../../models/revision';
 import type {
   ReqGetRevision,
@@ -15,7 +16,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     Params: ReqRevisionParams;
     Querystring: ReqGetRevision;
     Reply: ResRebaseRevision;
-  }>('/', { preHandler: getRevision }, async function (req, res) {
+  }>('/', { preHandler: [noBody, getRevision] }, async function (req, res) {
     const rev = req.revision!;
 
     await prisma.$transaction(async (tx) => {
