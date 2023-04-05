@@ -48,7 +48,7 @@ $border-width: 10px;
   background-color: $color-added;
   border-left: $border-width solid $color-added-hi;
 
-  &.line {
+  &.inline {
     margin: 0;
     padding-left: 0;
     background-color: $color-added-hi;
@@ -70,7 +70,7 @@ $border-width: 10px;
   background-color: $color-removed;
   border-left: $border-width solid $color-removed-hi;
 
-  &.line {
+  &.inline {
     margin: 0;
     padding-left: 0;
     background-color: $color-removed-hi;

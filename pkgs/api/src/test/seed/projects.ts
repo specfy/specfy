@@ -1,8 +1,10 @@
 import type { Orgs, Users } from '@prisma/client';
 
 import { nanoid } from '../../common/id';
+import { slugify } from '../../common/string';
 import { prisma } from '../../db';
 import { createProject, updateProject } from '../../models/project';
+import type { DBProject } from '../../types/db';
 
 /**
  * Seed projects
@@ -295,4 +297,25 @@ export async function seedProject(user: Users, org: Orgs) {
   });
 
   return project;
+}
+
+export function getBlobProject(org: Orgs): DBProject {
+  const id = nanoid();
+  const name = `test ${id}`;
+  return {
+    id,
+    name,
+    slug: slugify(name),
+    blobId: null,
+    orgId: org.id,
+    links: [],
+    edges: [],
+    description: { type: 'doc', content: [] },
+    display: {
+      zIndex: 1,
+      pos: { x: 220, y: -20, width: 100, height: 32 },
+    },
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
 }

@@ -1,13 +1,13 @@
 import type { Prisma } from '@prisma/client';
 
 export type DBReview = {
-  id: bigint;
+  id: string;
 
   orgId: string;
   projectId: string;
   revisionId: string;
   userId: string;
-  commentId: bigint | null;
+  commentId: string | null;
 
   createdAt: string;
 };

@@ -67,7 +67,7 @@ model Blobs {
 }
 
 model Comments {
-  id         BigInt   @id @default(autoincrement())
+  id         String   @id @db.VarChar(15)
   orgId      String   @db.VarChar(36)
   projectId  String   @db.VarChar(15)
   revisionId String   @db.VarChar(15)
@@ -210,12 +210,12 @@ model Projects {
 }
 
 model Reviews {
-  id         BigInt   @id @default(autoincrement())
+  id         String   @id @db.VarChar(15)
   orgId      String   @db.VarChar(36)
   projectId  String   @db.VarChar(15)
   revisionId String   @db.VarChar(15)
   userId     String   @db.VarChar(15)
-  commentId  BigInt?
+  commentId  String?  @db.VarChar(15)
   createdAt  DateTime @default(now()) @db.Timestamp(3)
 
   Org      Orgs      @relation(fields: [orgId], references: [id], onDelete: Cascade, onUpdate: NoAction)

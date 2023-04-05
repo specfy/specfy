@@ -41,7 +41,7 @@ describe('GET /projects/:org_id/:project_slug', () => {
       token,
     });
 
-    isSuccess(res);
+    isSuccess(res.json);
     expect(res.statusCode).toBe(200);
     expect(res.json.data).toStrictEqual({
       id: project.id,

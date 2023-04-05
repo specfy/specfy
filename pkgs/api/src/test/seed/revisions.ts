@@ -5,8 +5,9 @@ import { prisma } from '../../db';
 import { createComponentBlob } from '../../models/component';
 import { createDocumentBlob } from '../../models/document';
 import { createProjectBlob } from '../../models/project';
-import { createRevisionActivity } from '../../models/revision';
+import { createBlobs, createRevisionActivity } from '../../models/revision';
 import type {
+  ApiBlobCreate,
   ApiRevision,
   BlockBanner,
   BlockLevelOne,
@@ -328,9 +329,15 @@ export async function seedRevision(
   user: Users,
   org: Orgs,
   project: Projects,
-  data?: Partial<ApiRevision>
+  data?: Partial<ApiRevision>,
+  blobs?: ApiBlobCreate[]
 ) {
   const id = nanoid();
+  let blobIds: string[] = [];
+  if (blobs) {
+    blobIds = await createBlobs(blobs, prisma);
+  }
+
   const revision = await prisma.revisions.create({
     data: {
       id,
@@ -340,7 +347,7 @@ export async function seedRevision(
       description: { type: 'doc', content: [] },
       status: data?.status || 'draft',
       merged: data?.merged || false,
-      blobs: [],
+      blobs: blobIds,
       closedAt: data?.status === 'closed' ? new Date() : null,
       mergedAt: data?.merged ? new Date() : null,
       locked: data?.locked || false,

@@ -1,8 +1,10 @@
 import type { Components, Orgs, Projects, Users } from '@prisma/client';
 
 import { nanoid } from '../../common/id';
+import { slugify } from '../../common/string';
 import { prisma } from '../../db';
 import { createComponent } from '../../models/component';
+import type { DBComponent } from '../../types/db';
 
 export type ResSeedComponents = {
   gcp: Components;
@@ -544,4 +546,30 @@ export async function seedComponent(user: Users, org: Orgs, project: Projects) {
   });
 
   return component;
+}
+
+export function getBlobComponent(org: Orgs, project: Projects): DBComponent {
+  const id = nanoid();
+  const name = `test ${id}`;
+  return {
+    id,
+    name,
+    slug: slugify(name),
+    type: 'component',
+    typeId: null,
+    orgId: org.id,
+    projectId: project.id,
+    blobId: null,
+    techId: null,
+    description: { type: 'doc', content: [] },
+    display: {
+      zIndex: 1,
+      pos: { x: -80, y: 20, width: 490, height: 370 },
+    },
+    tech: [],
+    inComponent: null,
+    edges: [],
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
 }

@@ -2,6 +2,7 @@ import type { FastifyPluginCallback } from 'fastify';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors';
+import { nanoid } from '../../../common/id';
 import { schemaProseMirror } from '../../../common/validators';
 import { prisma } from '../../../db';
 import { getRevision } from '../../../middlewares/getRevision';
@@ -47,13 +48,13 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
     const com = await prisma.$transaction(async (tx) => {
       const created = await tx.comments.create({
-        data: { ...where, content: data.content as any },
+        data: { ...where, id: nanoid(), content: data.content as any },
       });
 
       if (data.approval) {
         await tx.reviews.deleteMany({ where }); //TODO: not sure it's correct
         await tx.reviews.create({
-          data: { ...where, commentId: created.id },
+          data: { ...where, id: nanoid(), commentId: created.id },
         });
         await tx.revisions.update({
           data: { status: 'approved' },

@@ -38,8 +38,6 @@ CREATE TABLE "Activities" (
 -- CreateTable
 CREATE TABLE "Blobs" (
     "id" VARCHAR(15) NOT NULL,
-    "orgId" VARCHAR(36) NOT NULL,
-    "projectId" VARCHAR(15) NOT NULL,
     "type" VARCHAR(36) NOT NULL,
     "typeId" VARCHAR(36) NOT NULL,
     "parentId" VARCHAR(15),
@@ -54,7 +52,7 @@ CREATE TABLE "Blobs" (
 
 -- CreateTable
 CREATE TABLE "Comments" (
-    "id" BIGSERIAL NOT NULL,
+    "id" VARCHAR(15) NOT NULL,
     "orgId" VARCHAR(36) NOT NULL,
     "projectId" VARCHAR(15) NOT NULL,
     "revisionId" VARCHAR(15) NOT NULL,
@@ -163,12 +161,12 @@ CREATE TABLE "Projects" (
 
 -- CreateTable
 CREATE TABLE "Reviews" (
-    "id" BIGSERIAL NOT NULL,
+    "id" VARCHAR(15) NOT NULL,
     "orgId" VARCHAR(36) NOT NULL,
     "projectId" VARCHAR(15) NOT NULL,
     "revisionId" VARCHAR(15) NOT NULL,
     "userId" VARCHAR(15) NOT NULL,
-    "commentId" BIGINT,
+    "commentId" VARCHAR(15),
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
 
     CONSTRAINT "Reviews_pkey" PRIMARY KEY ("id")
@@ -256,6 +254,9 @@ CREATE UNIQUE INDEX "idx_team_org_userid_projectid" ON "Perms"("orgId", "userId"
 CREATE INDEX "idx_policies_orgid_type" ON "Policies"("orgId", "type");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Projects_slug_key" ON "Projects"("slug");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "idx_projects_orgid_slug" ON "Projects"("orgId", "slug");
 
 -- CreateIndex
@@ -277,103 +278,97 @@ CREATE UNIQUE INDEX "idx_revisionid_userid" ON "TypeHasUsers"("revisionId", "use
 CREATE UNIQUE INDEX "idx_users_email" ON "Users"("email");
 
 -- AddForeignKey
-ALTER TABLE "Accounts" ADD CONSTRAINT "Accounts_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Accounts" ADD CONSTRAINT "Accounts_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Activities" ADD CONSTRAINT "Activities_orgId_fkey" FOREIGN KEY ("orgId") REFERENCES "Orgs"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Activities" ADD CONSTRAINT "Activities_orgId_fkey" FOREIGN KEY ("orgId") REFERENCES "Orgs"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Activities" ADD CONSTRAINT "Activities_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Projects"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Activities" ADD CONSTRAINT "Activities_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Projects"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Activities" ADD CONSTRAINT "Activities_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Activities" ADD CONSTRAINT "Activities_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Blobs" ADD CONSTRAINT "Blobs_orgId_fkey" FOREIGN KEY ("orgId") REFERENCES "Orgs"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Blobs" ADD CONSTRAINT "Blobs_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "Blobs"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Blobs" ADD CONSTRAINT "Blobs_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Projects"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Comments" ADD CONSTRAINT "Comments_orgId_fkey" FOREIGN KEY ("orgId") REFERENCES "Orgs"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Blobs" ADD CONSTRAINT "Blobs_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "Blobs"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Comments" ADD CONSTRAINT "Comments_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Projects"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Comments" ADD CONSTRAINT "Comments_orgId_fkey" FOREIGN KEY ("orgId") REFERENCES "Orgs"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Comments" ADD CONSTRAINT "Comments_revisionId_fkey" FOREIGN KEY ("revisionId") REFERENCES "Revisions"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Comments" ADD CONSTRAINT "Comments_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Projects"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Comments" ADD CONSTRAINT "Comments_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Comments" ADD CONSTRAINT "Comments_revisionId_fkey" FOREIGN KEY ("revisionId") REFERENCES "Revisions"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Components" ADD CONSTRAINT "Components_orgId_fkey" FOREIGN KEY ("orgId") REFERENCES "Orgs"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Comments" ADD CONSTRAINT "Comments_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Components" ADD CONSTRAINT "Components_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Projects"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Components" ADD CONSTRAINT "Components_orgId_fkey" FOREIGN KEY ("orgId") REFERENCES "Orgs"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Components" ADD CONSTRAINT "Components_blobId_fkey" FOREIGN KEY ("blobId") REFERENCES "Blobs"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Components" ADD CONSTRAINT "Components_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Projects"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Documents" ADD CONSTRAINT "Documents_orgId_fkey" FOREIGN KEY ("orgId") REFERENCES "Orgs"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Components" ADD CONSTRAINT "Components_blobId_fkey" FOREIGN KEY ("blobId") REFERENCES "Blobs"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Documents" ADD CONSTRAINT "Documents_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Projects"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Documents" ADD CONSTRAINT "Documents_orgId_fkey" FOREIGN KEY ("orgId") REFERENCES "Orgs"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Documents" ADD CONSTRAINT "Documents_blobId_fkey" FOREIGN KEY ("blobId") REFERENCES "Blobs"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Documents" ADD CONSTRAINT "Documents_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Projects"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Perms" ADD CONSTRAINT "Perms_orgId_fkey" FOREIGN KEY ("orgId") REFERENCES "Orgs"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Documents" ADD CONSTRAINT "Documents_blobId_fkey" FOREIGN KEY ("blobId") REFERENCES "Blobs"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Perms" ADD CONSTRAINT "Perms_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Projects"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Perms" ADD CONSTRAINT "Perms_orgId_fkey" FOREIGN KEY ("orgId") REFERENCES "Orgs"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Perms" ADD CONSTRAINT "Perms_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Perms" ADD CONSTRAINT "Perms_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Projects"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Policies" ADD CONSTRAINT "Policies_orgId_fkey" FOREIGN KEY ("orgId") REFERENCES "Orgs"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Perms" ADD CONSTRAINT "Perms_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Projects" ADD CONSTRAINT "Projects_orgId_fkey" FOREIGN KEY ("orgId") REFERENCES "Orgs"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Policies" ADD CONSTRAINT "Policies_orgId_fkey" FOREIGN KEY ("orgId") REFERENCES "Orgs"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Projects" ADD CONSTRAINT "Projects_blobId_fkey" FOREIGN KEY ("blobId") REFERENCES "Blobs"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Projects" ADD CONSTRAINT "Projects_orgId_fkey" FOREIGN KEY ("orgId") REFERENCES "Orgs"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Reviews" ADD CONSTRAINT "Reviews_orgId_fkey" FOREIGN KEY ("orgId") REFERENCES "Orgs"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Projects" ADD CONSTRAINT "Projects_blobId_fkey" FOREIGN KEY ("blobId") REFERENCES "Blobs"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Reviews" ADD CONSTRAINT "Reviews_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Projects"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Reviews" ADD CONSTRAINT "Reviews_orgId_fkey" FOREIGN KEY ("orgId") REFERENCES "Orgs"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Reviews" ADD CONSTRAINT "Reviews_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Reviews" ADD CONSTRAINT "Reviews_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Projects"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Reviews" ADD CONSTRAINT "Reviews_revisionId_fkey" FOREIGN KEY ("revisionId") REFERENCES "Revisions"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Reviews" ADD CONSTRAINT "Reviews_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Revisions" ADD CONSTRAINT "Revisions_orgId_fkey" FOREIGN KEY ("orgId") REFERENCES "Orgs"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Reviews" ADD CONSTRAINT "Reviews_revisionId_fkey" FOREIGN KEY ("revisionId") REFERENCES "Revisions"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Revisions" ADD CONSTRAINT "Revisions_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Projects"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Revisions" ADD CONSTRAINT "Revisions_orgId_fkey" FOREIGN KEY ("orgId") REFERENCES "Orgs"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "Sessions" ADD CONSTRAINT "Sessions_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Revisions" ADD CONSTRAINT "Revisions_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Projects"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "TypeHasUsers" ADD CONSTRAINT "TypeHasUsers_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "Sessions" ADD CONSTRAINT "Sessions_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "TypeHasUsers" ADD CONSTRAINT "TypeHasUsers_revisionId_fkey" FOREIGN KEY ("revisionId") REFERENCES "Revisions"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "TypeHasUsers" ADD CONSTRAINT "TypeHasUsers_userId_fkey" FOREIGN KEY ("userId") REFERENCES "Users"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "TypeHasUsers" ADD CONSTRAINT "TypeHasUsers_policyId_fkey" FOREIGN KEY ("policyId") REFERENCES "Policies"("id") ON DELETE CASCADE ON UPDATE NO ACTION;
 
 -- AddForeignKey
-ALTER TABLE "TypeHasUsers" ADD CONSTRAINT "TypeHasUsers_revisionId_fkey" FOREIGN KEY ("revisionId") REFERENCES "Revisions"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- AddForeignKey
-ALTER TABLE "TypeHasUsers" ADD CONSTRAINT "TypeHasUsers_policyId_fkey" FOREIGN KEY ("policyId") REFERENCES "Policies"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
-
--- AddForeignKey
-ALTER TABLE "TypeHasUsers" ADD CONSTRAINT "TypeHasUsers_documentId_fkey" FOREIGN KEY ("documentId") REFERENCES "Documents"("id") ON DELETE NO ACTION ON UPDATE NO ACTION;
+ALTER TABLE "TypeHasUsers" ADD CONSTRAINT "TypeHasUsers_documentId_fkey" FOREIGN KEY ("documentId") REFERENCES "Documents"("id") ON DELETE CASCADE ON UPDATE NO ACTION;

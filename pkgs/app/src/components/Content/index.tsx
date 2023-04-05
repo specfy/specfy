@@ -62,19 +62,19 @@ export const ContentBlock: React.FC<{
         if (mark.type === 'diffMark') {
           if (mark.attrs.type === 'added') {
             text = (
-              <span className={classnames(clsDiff.added, clsDiff.line)}>
+              <span className={classnames(clsDiff.added, clsDiff.inline)}>
                 {text}
               </span>
             );
           } else if (mark.attrs.type === 'formatting') {
             text = (
-              <span className={classnames(clsDiff.formatting, clsDiff.line)}>
+              <span className={classnames(clsDiff.formatting, clsDiff.inline)}>
                 {text}
               </span>
             );
           } else {
             text = (
-              <span className={classnames(clsDiff.removed, clsDiff.line)}>
+              <span className={classnames(clsDiff.removed, clsDiff.inline)}>
                 {text}
               </span>
             );
@@ -100,7 +100,7 @@ export const ContentBlock: React.FC<{
     return (
       <>
         {stl && (
-          <span className={classnames(stl, clsDiff.line)}>
+          <span className={classnames(stl, clsDiff.inline)}>
             <IconArrowBack />
           </span>
         )}

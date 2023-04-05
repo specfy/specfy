@@ -18,6 +18,7 @@ Auth:
   - Gitlab Oauth
   - Standard Email / Password
 
+
 Homepage:
   ✔ Redirect first item @done(23-03-27 17:51)
   - Reopen last open
@@ -368,3 +369,7 @@ Projects:
   - Connect: PagerDuty
       - Afficher les gens on-call
       - Afficher quand il y a un outage et automatiquement trouvé les procédures liés
+  - Integrate Grammarly
+
+
+---

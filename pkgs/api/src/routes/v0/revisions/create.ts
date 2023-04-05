@@ -1,4 +1,3 @@
-import { Prisma } from '@prisma/client';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
@@ -9,8 +8,12 @@ import { schemaRevision } from '../../../common/validators/revision';
 import { valOrgId, valProjectId } from '../../../common/zod';
 import { prisma } from '../../../db';
 import { noQuery } from '../../../middlewares/noQuery';
-import { createRevisionActivity } from '../../../models/revision';
-import type { ReqPostRevision, ResPostRevision } from '../../../types/api';
+import { createBlobs, createRevisionActivity } from '../../../models/revision';
+import type {
+  ApiBlobCreate,
+  ReqPostRevision,
+  ResPostRevision,
+} from '../../../types/api';
 
 function BodyVal(req: FastifyRequest) {
   return z
@@ -77,25 +80,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     const data = val.data;
 
     const rev = await prisma.$transaction(async (tx) => {
-      const ids: string[] = [];
-
-      for (const blob of data.blobs) {
-        let blobToModel: any | typeof Prisma.DbNull = Prisma.DbNull;
-
-        if (!blob.deleted && blob.blob) {
-          blobToModel = blob.blob as any;
-        }
-
-        // TODO: validation
-        const b = await tx.blobs.create({
-          data: {
-            id: nanoid(),
-            ...blob,
-            blob: blobToModel,
-          },
-        });
-        ids.push(b.id);
-      }
+      const ids = await createBlobs(data.blobs as ApiBlobCreate[], tx);
 
       // TODO: validation
       const revision = await tx.revisions.create({

@@ -46,7 +46,7 @@ describe('GET /revisions/:revision_id', () => {
       qp: { org_id: org.id, project_id: project.id },
     });
 
-    isSuccess(res);
+    isSuccess(res.json);
     expect(res.statusCode).toBe(200);
     expect(res.json.data).toStrictEqual({
       authors: [
