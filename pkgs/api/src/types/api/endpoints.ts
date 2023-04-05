@@ -92,19 +92,10 @@ export interface API {
     GET: { res: ResListRevisions; qp: ReqListRevisions; body: never };
     POST: { res: ResPostRevision; qp: never; body: ReqPostRevision };
   };
-  [key: `/0/revisions/${string}`]: {
-    GET: { res: ResGetRevision; qp: ReqGetRevision; body: never };
-    PATCH: {
-      res: ResPatchRevision;
-      qp: ReqGetRevision;
-      body: ReqPatchRevision;
-    };
-    DELETE: { res: ResDeleteRevision; qp: ReqProjectParams; body: never };
-  };
 
   // @ts-expect-error
   [key: `/0/revisions/${string}/blobs`]: {
-    POST: { res: ResListRevisionBlobs; qp: ReqGetRevision; body: never };
+    GET: { res: ResListRevisionBlobs; qp: ReqGetRevision; body: never };
   };
   // @ts-expect-error
   [key: `/0/revisions/${string}/checks`]: {
@@ -125,6 +116,15 @@ export interface API {
   // @ts-expect-error
   [key: `/0/revisions/${string}/rebase`]: {
     POST: { res: ResRebaseRevision; qp: ReqGetRevision; body: never };
+  };
+  [key: `/0/revisions/${string}`]: {
+    GET: { res: ResGetRevision; qp: ReqGetRevision; body: never };
+    PATCH: {
+      res: ResPatchRevision;
+      qp: ReqGetRevision;
+      body: ReqPatchRevision;
+    };
+    DELETE: { res: ResDeleteRevision; qp: ReqProjectParams; body: never };
   };
 
   '/0/users': { GET: { res: ResListUsers; qp: ReqListUsers; body: never } };
