@@ -7,6 +7,7 @@ import { getEmptyDoc } from '../content';
 
 import { diffObjectsArray, diffStringArray } from './array';
 import { IGNORED_COMPONENT_KEYS } from './constants';
+import { isDiffSimple } from './helpers';
 import { diffEditor } from './prosemirror';
 
 export function diffComponent(
@@ -28,6 +29,18 @@ export function diffComponent(
       keyof Exclude<ApiBlobComponent['current'], null>,
       (typeof IGNORED_COMPONENT_KEYS)[number]
     >;
+
+    // no prev and no value
+    if (!blob.previous?.[key] && !blob.current[key]) {
+      continue;
+    }
+    // no diff between prev and value
+    if (
+      blob.previous?.[key] &&
+      !isDiffSimple(blob.previous[key], blob.current[key])
+    ) {
+      continue;
+    }
 
     if (key === 'description') {
       const prev = blob.previous?.[key] ? blob.previous[key] : {};

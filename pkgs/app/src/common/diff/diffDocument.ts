@@ -6,6 +6,7 @@ import type { DocumentBlobWithDiff } from '../../types/blobs';
 import { getEmptyDoc } from '../content';
 
 import { IGNORED_DOCUMENT_KEYS } from './constants';
+import { isDiffSimple } from './helpers';
 import { diffEditor } from './prosemirror';
 
 export function diffDocument(
@@ -27,6 +28,18 @@ export function diffDocument(
       keyof Exclude<ApiBlobDocument['current'], null>,
       (typeof IGNORED_DOCUMENT_KEYS)[number]
     >;
+
+    // no prev and no value
+    if (!blob.previous?.[key] && !blob.current[key]) {
+      continue;
+    }
+    // no diff between prev and value
+    if (
+      blob.previous?.[key] &&
+      !isDiffSimple(blob.previous[key], blob.current[key])
+    ) {
+      continue;
+    }
 
     if (key === 'content') {
       const prev = blob.previous?.[key] ? blob.previous[key] : {};

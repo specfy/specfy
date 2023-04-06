@@ -49,10 +49,6 @@ export function proposeTitle(computed: BlobAndDiffs[]): string {
   return '';
 }
 
-export function isDiffSimple(a: any, b: any): boolean {
-  return JSON.stringify(a) !== JSON.stringify(b);
-}
-
 const editor = new Editor(createEditorSchema());
 
 export function diffTwoBlob(blob: ApiBlobWithPrevious): BlobAndDiffs['diffs'] {
@@ -63,84 +59,4 @@ export function diffTwoBlob(blob: ApiBlobWithPrevious): BlobAndDiffs['diffs'] {
   } else {
     return diffProject(editor, blob);
   }
-
-  // for (const [key, value] of Object.entries(blob.current)) {
-  //   if (IGNORED.includes(key)) {
-  //     continue;
-  //   }
-  //   if (
-  //     blob.type === 'component' &&
-  //     IGNORED_COMPONENT.includes(key as keyof ApiComponent)
-  //   ) {
-  //     continue;
-  //   }
-  //   if (
-  //     blob.type === 'project' &&
-  //     IGNORED_PROJECT.includes(key as keyof ApiProject)
-  //   ) {
-  //     continue;
-  //   }
-
-  //   const prev = blob.previous?.[key] ? blob.previous[key] : '';
-  //   if (prev) {
-  //     if (!prev && !value) {
-  //       continue;
-  //     }
-  //     if (!isDiffSimple(prev, value)) {
-  //       continue;
-  //     }
-  //   }
-
-  //   if (!prev && !value) {
-  //     continue;
-  //   }
-
-  //   if (key === 'description' || key === 'content') {
-  //     clean.diffs.push({
-  //       key,
-  //       diff: diffEditor(
-  //         editor.schema,
-  //         prev ? JSON.parse(JSON.stringify(prev)) : getEmptyDoc(true),
-  //         value ? JSON.parse(JSON.stringify(value)) : getEmptyDoc(true)
-  //       ),
-  //     });
-  //     continue;
-  //   }
-  //   if (key === 'edges') {
-  //     clean.diffs.push({
-  //       key,
-  //       diff: diffObjectsArray(prev || [], value || [], 'to'),
-  //     });
-  //     continue;
-  //   }
-  //   if (key === 'links') {
-  //     clean.diffs.push({
-  //       key,
-  //       diff: diffObjectsArray(prev || [], value || [], 'url'),
-  //     });
-  //     continue;
-  //   }
-  //   if (key === 'tech') {
-  //     clean.diffs.push({
-  //       key,
-  //       diff: diffStringArray(prev || [], value || []),
-  //     });
-  //     continue;
-  //   }
-
-  //   if ((value != null && typeof value == 'object') || Array.isArray(value)) {
-  //     clean.diffs.push({
-  //       key,
-  //       diff: diffJson(prev, value),
-  //     });
-  //     continue;
-  //   }
-
-  //   clean.diffs.push({
-  //     key,
-  //     diff: diffWordsWithSpace(prev, `${value}`),
-  //   });
-  // }
-
-  // return clean;
 }

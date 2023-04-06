@@ -7,6 +7,7 @@ import { getEmptyDoc } from '../content';
 
 import { diffObjectsArray } from './array';
 import { IGNORED_PROJECT_KEYS } from './constants';
+import { isDiffSimple } from './helpers';
 import { diffEditor } from './prosemirror';
 
 export function diffProject(
@@ -28,6 +29,18 @@ export function diffProject(
       keyof Exclude<ApiBlobProject['current'], null>,
       (typeof IGNORED_PROJECT_KEYS)[number]
     >;
+
+    // no prev and no value
+    if (!blob.previous?.[key] && !blob.current[key]) {
+      continue;
+    }
+    // no diff between prev and value
+    if (
+      blob.previous?.[key] &&
+      !isDiffSimple(blob.previous[key], blob.current[key])
+    ) {
+      continue;
+    }
 
     if (key === 'description') {
       const prev = blob.previous?.[key] ? blob.previous[key] : {};
@@ -69,7 +82,7 @@ export function diffProject(
     const prev = blob.previous?.[key] ? blob.previous[key] : '';
     diffs.push({
       key,
-      diff: diffWordsWithSpace(prev || '', `${value}`),
+      diff: diffWordsWithSpace(prev, `${value}`),
     });
   }
 
