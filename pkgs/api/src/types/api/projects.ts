@@ -8,11 +8,11 @@ export type ApiProject = DBProject;
 export interface ReqListProjects {
   org_id: string;
 }
-
-export interface ResListProjects {
+export interface ResListProjectsSuccess {
   data: ApiProject[];
   pagination: Pagination;
 }
+export type ResListProjects = ResErrors | ResListProjectsSuccess;
 
 // POST /
 export type ReqPostProject = Pick<ApiProject, 'name' | 'orgId' | 'slug'> & {
@@ -26,9 +26,10 @@ export interface ReqProjectParams {
   project_slug: string;
 }
 
-export interface ResGetProject {
+export interface ResGetProjectSuccess {
   data: ApiProject;
 }
+export type ResGetProject = ResErrors | ResGetProjectSuccess;
 
 // POST /:org_id/:project_slug
 export type ReqPutProject = Pick<ApiProject, 'name'>;

@@ -9,19 +9,21 @@ import { App, Button } from 'antd';
 import type {
   ApiRevision,
   ReqGetRevision,
-  ResCheckRevision,
+  ResCheckRevisionSuccess,
 } from 'api/src/types/api';
 import classnames from 'classnames';
 import { useState } from 'react';
 
 import { mergeRevision, rebaseRevision } from '../../../api';
+import { isError } from '../../../api/helpers';
+import { i18n } from '../../../common/i18n';
 import { Time } from '../../Time';
 
 import cls from './index.module.scss';
 
 export const Checks: React.FC<{
   rev: ApiRevision;
-  checks: ResCheckRevision['data'];
+  checks: ResCheckRevisionSuccess['data'];
   qp: ReqGetRevision;
   onClick: (status: ApiRevision['status']) => void;
 }> = ({ rev, checks, qp, onClick }) => {
@@ -32,13 +34,16 @@ export const Checks: React.FC<{
   const onMerge = async () => {
     setMerging(true);
     const resMerge = await mergeRevision({ ...qp, revision_id: rev.id });
+    if (isError(resMerge)) {
+      return message.error(i18n.errorOccurred);
+    }
 
     setMerging(false);
-    if (resMerge?.data?.done) {
-      message.success('Revision merged');
-    } else {
-      message.error('Revision could not be merged');
+    if ('error' in resMerge) {
+      return message.error(i18n.errorOccurred);
     }
+
+    message.success('Revision merged');
   };
 
   // --------- Rebase
@@ -50,9 +55,12 @@ export const Checks: React.FC<{
 
     setRebasing(false);
 
-    if (!resRebase?.data?.done) {
-      message.error('Revision could not be rebased');
-      return;
+    if (isError(resRebase)) {
+      return message.error(i18n.errorOccurred);
+    }
+
+    if (!resRebase.data.done) {
+      return message.error('Revision could not be rebased');
     }
 
     message.success('Revision rebased');

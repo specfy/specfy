@@ -1,3 +1,5 @@
+import type { ResErrors } from './api';
+
 export interface ApiMe {
   id: string;
   name: string;
@@ -6,6 +8,7 @@ export interface ApiMe {
   updatedAt: string;
 }
 
-export interface ResGetMe {
+export interface ResGetMeSuccess {
   data: ApiMe;
 }
+export type ResGetMe = ResErrors | ResGetMeSuccess;

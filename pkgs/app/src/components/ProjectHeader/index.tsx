@@ -51,7 +51,11 @@ export const ProjectHeader: React.FC<{
   });
 
   useEffect(() => {
-    setOrg(getOrgs.data?.find((o) => o.id === params.org_id));
+    if (!getOrgs.data) {
+      return;
+    }
+
+    setOrg(getOrgs.data.data.find((o) => o.id === params.org_id));
   }, [getOrgs.data]);
 
   // Edit mode

@@ -8,6 +8,7 @@ import type {
 import originalStore from '../common/store';
 
 import { fetchApi } from './fetch';
+import { APIError, isError } from './helpers';
 
 export function useListComponents(
   slug: string,
@@ -17,12 +18,16 @@ export function useListComponents(
     enabled: !!(opts.org_id && opts.project_id),
     queryKey: ['listComponents', opts.org_id, slug],
     queryFn: async (): Promise<ApiComponent[]> => {
-      const { json } = await fetchApi<
+      const { json, res } = await fetchApi<
         ResListComponents,
         Partial<ReqListComponents>
       >('/components', {
         qp: opts,
       });
+
+      if (res.status !== 200 || isError(json)) {
+        throw new APIError({ res, json });
+      }
 
       return json.data.map((component) => {
         originalStore.add(component);

@@ -59,5 +59,8 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./pkgs/api/coverage/cobertura-coverage.xml,./pkgs/app/coverage/cobertura-coverage.xml
 
+      - name: Build API
+        run: cd pkgs/api/ && npm run build
+
       - name: Build APP
         run: cd pkgs/app/ && npm run build

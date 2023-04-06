@@ -40,7 +40,7 @@ export const Staging: React.FC<{ link: string }> = ({ link }) => {
           created: !original,
           deleted: false,
           parentId: original ? original.blobId : null,
-          previous: original || null,
+          previous: (original as any) || null,
           type: originalStore.allowedType(item),
           typeId: item.id,
           blob: item as any, // Can't fix this
@@ -59,11 +59,11 @@ export const Staging: React.FC<{ link: string }> = ({ link }) => {
 
       // Find deleted
       for (const item of originalStore.originalStore) {
-        // ignore others projects
+        // ignore others item
         if ('projectId' in item && item.projectId !== project!.id) {
           continue;
         }
-        // ignore project
+        // ignore other projects
         if ('links' in item && item.id !== project!.id) {
           continue;
         }
@@ -79,7 +79,7 @@ export const Staging: React.FC<{ link: string }> = ({ link }) => {
           type: originalStore.allowedType(item),
           typeId: item.id,
           blob: null,
-          previous: item || null,
+          previous: (item as any) || null,
           createdAt: '',
           updatedAt: '',
         });

@@ -5,20 +5,29 @@ import type {
   ReqPutPerms,
   ResDeletePerms,
   ResListPerms,
+  ResListPermsSuccess,
   ResPutPerms,
 } from 'api/src/types/api';
 
 import { queryClient } from '../common/query';
 
 import { fetchApi } from './fetch';
+import { APIError, isError } from './helpers';
 
 export function useListPerms(opts: Pick<ReqListPerms, 'org_id'>) {
   return useQuery({
     queryKey: ['listPerms', opts.org_id],
-    queryFn: async (): Promise<ResListPerms> => {
-      const { json } = await fetchApi<ResListPerms, ReqListPerms>('/perms', {
-        qp: { org_id: opts.org_id },
-      });
+    queryFn: async (): Promise<ResListPermsSuccess> => {
+      const { json, res } = await fetchApi<ResListPerms, ReqListPerms>(
+        '/perms',
+        {
+          qp: { org_id: opts.org_id },
+        }
+      );
+
+      if (res.status !== 200 || isError(json)) {
+        throw new APIError({ res, json });
+      }
 
       return json;
     },
@@ -28,10 +37,17 @@ export function useListPerms(opts: Pick<ReqListPerms, 'org_id'>) {
 export function useListPermsProject(opts: Required<ReqListPerms>) {
   return useQuery({
     queryKey: ['listPerms', opts.org_id, opts.project_id],
-    queryFn: async (): Promise<ResListPerms> => {
-      const { json } = await fetchApi<ResListPerms, ReqListPerms>(`/perms`, {
-        qp: { org_id: opts.org_id, project_id: opts.project_id },
-      });
+    queryFn: async (): Promise<ResListPermsSuccess> => {
+      const { json, res } = await fetchApi<ResListPerms, ReqListPerms>(
+        `/perms`,
+        {
+          qp: { org_id: opts.org_id, project_id: opts.project_id },
+        }
+      );
+
+      if (res.status !== 200 || isError(json)) {
+        throw new APIError({ res, json });
+      }
 
       return json;
     },

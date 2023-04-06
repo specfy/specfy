@@ -6,7 +6,9 @@ import type {
   ReqPutProject,
   ResDeleteProject,
   ResGetProject,
+  ResGetProjectSuccess,
   ResListProjects,
+  ResListProjectsSuccess,
   ResPostProject,
   ResPutProject,
 } from 'api/src/types/api';
@@ -15,6 +17,7 @@ import { queryClient } from '../common/query';
 import originalStore from '../common/store';
 
 import { fetchApi } from './fetch';
+import { APIError, isError } from './helpers';
 
 export async function createProject(
   data: ReqPostProject
@@ -65,13 +68,16 @@ export function useListProjects(opts: Partial<ReqListProjects>) {
   return useQuery({
     enabled: Boolean(opts.org_id),
     queryKey: ['listProjects', opts.org_id],
-    queryFn: async (): Promise<ResListProjects> => {
-      const { json } = await fetchApi<ResListProjects, ReqListProjects>(
+    queryFn: async (): Promise<ResListProjectsSuccess> => {
+      const { json, res } = await fetchApi<ResListProjects, ReqListProjects>(
         '/projects',
         {
           qp: opts as ReqListProjects,
         }
       );
+      if (res.status !== 200 || isError(json)) {
+        throw new APIError({ res, json });
+      }
 
       return json;
     },
@@ -82,15 +88,15 @@ export function useGetProject(opts: Partial<ReqProjectParams>) {
   return useQuery({
     enabled: Boolean(opts.org_id),
     queryKey: ['getProject', opts.org_id, opts.project_slug],
-    queryFn: async (): Promise<ResGetProject> => {
+    queryFn: async (): Promise<ResGetProjectSuccess> => {
       const { json, res } = await fetchApi<ResGetProject>(
         `/projects/${opts.org_id}/${opts.project_slug}`
       );
 
-      if (res.status === 200) {
-        originalStore.add(json.data);
+      if (res.status !== 200 || isError(json)) {
+        throw new APIError({ res, json });
       } else {
-        throw new Error('err', { cause: res });
+        originalStore.add(json.data);
       }
 
       return json;

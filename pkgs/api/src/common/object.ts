@@ -9,6 +9,7 @@ export function omit<
       continue;
     }
 
+    // @ts-expect-error (VScode report no error but tsc yes)
     copy[key] = value;
   }
 

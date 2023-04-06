@@ -8,9 +8,8 @@ export type ApiPolicy = DBPolicy;
 export type ReqListPolicies = {
   org_id: string;
 };
-export type ResListPolicies =
-  | ResErrors
-  | {
-      data: ApiPolicy[];
-      pagination: Pagination;
-    };
+export interface ResListPoliciesSuccess {
+  data: ApiPolicy[];
+  pagination: Pagination;
+}
+export type ResListPolicies = ResErrors | ResListPoliciesSuccess;

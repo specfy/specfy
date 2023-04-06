@@ -11,8 +11,6 @@ import {
   useListPermsProject,
   useListUser,
 } from '../../../../api';
-import { isError } from '../../../../api/helpers';
-import { i18n } from '../../../../common/i18n';
 import { AvatarAuto } from '../../../../components/AvatarAuto';
 import { Card } from '../../../../components/Card';
 import { useAuth } from '../../../../hooks/useAuth';
@@ -123,7 +121,6 @@ export const SettingsTeam: React.FC<{
   proj: ApiProject;
 }> = ({ proj }) => {
   const { user } = useAuth();
-  const { message } = App.useApp();
 
   const p = { org_id: proj.orgId, project_id: proj.id };
   const team = useListPermsProject(p);
@@ -173,10 +170,6 @@ export const SettingsTeam: React.FC<{
       return;
     }
     if (res.isLoading) {
-      return;
-    }
-    if (isError(res.data)) {
-      message.error(i18n.errorOccurred);
       return;
     }
 

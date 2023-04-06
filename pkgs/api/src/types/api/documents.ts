@@ -1,6 +1,6 @@
 import type { DBDocument } from '../db/documents';
 
-import type { Pagination } from './api';
+import type { Pagination, ResErrors } from './api';
 import type { ApiUser } from './users';
 
 export type ApiDocument = DBDocument & {
@@ -16,11 +16,6 @@ export interface ReqListDocuments {
   search?: string;
   type?: ApiDocument['type'];
 }
-
-export interface ResListDocuments {
-  data: DocumentSimple[];
-  pagination: Pagination;
-}
 export type DocumentSimple = Pick<
   ApiDocument,
   | 'createdAt'
@@ -33,6 +28,12 @@ export type DocumentSimple = Pick<
   | 'updatedAt'
 >;
 
+export interface ResListDocumentsSuccess {
+  data: DocumentSimple[];
+  pagination: Pagination;
+}
+export type ResListDocuments = ResErrors | ResListDocumentsSuccess;
+
 // GET /:id
 export interface ReqDocumentParams {
   document_id: ApiDocument['id'];
@@ -42,6 +43,7 @@ export interface ReqGetDocument {
   project_id: string;
 }
 
-export interface ResGetDocument {
+export interface ResGetDocumentSuccess {
   data: ApiDocument;
 }
+export type ResGetDocument = ResErrors | ResGetDocumentSuccess;

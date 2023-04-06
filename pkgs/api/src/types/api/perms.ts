@@ -11,9 +11,10 @@ export interface ReqListPerms {
   project_id?: string;
 }
 
-export interface ResListPerms {
+export interface ResListPermsSuccess {
   data: ApiPerm[];
 }
+export type ResListPerms = ResErrors | ResListPermsSuccess;
 
 // POST /
 export interface ReqPutPerms {
@@ -22,12 +23,10 @@ export interface ReqPutPerms {
   userId: string;
   role: ApiPerm['role'];
 }
-
-export type ResPutPerms =
-  | ResErrors
-  | {
-      data: { done: boolean };
-    };
+export interface ResPutPermsSuccess {
+  data: { done: boolean };
+}
+export type ResPutPerms = ResErrors | ResPutPermsSuccess;
 
 // DELETE /
 export interface ReqDeletePerms {

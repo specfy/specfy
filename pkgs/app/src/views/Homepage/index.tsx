@@ -11,7 +11,7 @@ export const Homepage: React.FC = () => {
       return;
     }
 
-    return orgsQuery.data.length > 0 ? orgsQuery.data[0] : null;
+    return orgsQuery.data.data.length > 0 ? orgsQuery.data.data[0] : null;
   }, [orgsQuery.data]);
 
   if (!redirect) {

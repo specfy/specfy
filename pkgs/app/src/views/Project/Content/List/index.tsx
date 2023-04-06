@@ -3,7 +3,7 @@ import { Table } from 'antd';
 import type {
   ApiDocument,
   ApiProject,
-  ResListDocuments,
+  ResListDocumentsSuccess,
 } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -20,7 +20,7 @@ export const ProjectContentList: React.FC<{
   proj: ApiProject;
   params: RouteProject;
 }> = ({ proj, params }) => {
-  const [list, setList] = useState<ResListDocuments>();
+  const [list, setList] = useState<ResListDocumentsSuccess>();
   const res = useListDocuments({
     org_id: params.org_id,
     project_id: proj.id,

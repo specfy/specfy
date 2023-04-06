@@ -1,27 +1,27 @@
 import { useQuery } from '@tanstack/react-query';
 import type {
-  ApiOrg,
   ReqPostOrg,
   ResListOrgs,
+  ResListOrgsSuccess,
   ResPostOrg,
 } from 'api/src/types/api';
 
 import { queryClient } from '../common/query';
 
 import { fetchApi } from './fetch';
-
-export async function listOrgs(): Promise<ApiOrg[]> {
-  const res = await fetch('http://localhost:3000/0/orgs');
-  const json = (await res.json()) as ResListOrgs;
-
-  return json.data;
-}
+import { APIError, isError } from './helpers';
 
 export function useListOrgs() {
   return useQuery({
     queryKey: ['listOrgs'],
-    queryFn: async (): Promise<ApiOrg[]> => {
-      return await listOrgs();
+    queryFn: async (): Promise<ResListOrgsSuccess> => {
+      const { json, res } = await fetchApi<ResListOrgs>('/orgs');
+
+      if (res.status !== 200 || isError(json)) {
+        throw new APIError({ res, json });
+      }
+
+      return json;
     },
   });
 }

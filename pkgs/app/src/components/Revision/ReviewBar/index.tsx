@@ -10,7 +10,9 @@ import { useState, useEffect, useRef } from 'react';
 import { useClickAway } from 'react-use';
 
 import { createComment } from '../../../api';
+import { isError } from '../../../api/helpers';
 import { getEmptyDoc } from '../../../common/content';
+import { i18n } from '../../../common/i18n';
 import { Editor } from '../../Editor';
 
 import cls from './index.module.scss';
@@ -55,10 +57,8 @@ export const ReviewBar: React.FC<{
         content: review,
       }
     );
-
-    if (!resComment?.data?.id) {
-      message.error('Revision could not be approved');
-      return;
+    if (isError(resComment)) {
+      return message.error(i18n.errorOccurred);
     }
 
     message.success('Revision approved');

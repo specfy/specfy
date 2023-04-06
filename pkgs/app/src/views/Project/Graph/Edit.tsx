@@ -303,6 +303,10 @@ export const GraphEdit: React.FC<{
 
     if (cell.isNode()) {
       graph.batchUpdate(() => {
+        if (!find.previous || find.type === 'document') {
+          return;
+        }
+
         cell.setSize({ ...find.previous.display.pos });
         cell.setPosition({ ...find.previous.display.pos });
         const outgoing = graph.getOutgoingEdges(cell);
@@ -310,7 +314,12 @@ export const GraphEdit: React.FC<{
         if (!outgoing) {
           return;
         }
+
         outgoing.forEach((edge) => {
+          if (!find.previous) {
+            return;
+          }
+
           const old = find.previous.edges.find(
             (prev) => prev.to === edge.getTargetCellId()
           );

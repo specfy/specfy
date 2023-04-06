@@ -34,8 +34,7 @@ export const SettingsGeneral: React.FC<{
   const handleRename = async () => {
     const res = await updateProject(params, { name });
     if (isError(res)) {
-      message.error(i18n.errorOccurred);
-      return;
+      return message.error(i18n.errorOccurred);
     }
 
     message.success('Project renamed');

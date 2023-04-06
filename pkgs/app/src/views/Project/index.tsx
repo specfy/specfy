@@ -54,12 +54,14 @@ export const Project: React.FC = () => {
   });
 
   useEffect(() => {
-    if (getOrgs.data) {
-      const tmp = getOrgs.data.find((o) => o.id === params.org_id);
-      setOrg(tmp);
-      if (!tmp) {
-        setLoading(false);
-      }
+    if (!getOrgs.data) {
+      return;
+    }
+
+    const tmp = getOrgs.data.data.find((o) => o.id === params.org_id);
+    setOrg(tmp);
+    if (!tmp) {
+      setLoading(false);
     }
   }, [getOrgs.data]);
 

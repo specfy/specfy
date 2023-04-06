@@ -1,4 +1,4 @@
-import { App, AutoComplete, Space } from 'antd';
+import { AutoComplete, Space } from 'antd';
 import type { DefaultOptionType } from 'antd/es/select';
 import type {
   ApiUser,
@@ -10,8 +10,6 @@ import { useEffect, useState } from 'react';
 import { useDebounce } from 'react-use';
 
 import { useListUser } from '../../api';
-import { isError } from '../../api/helpers';
-import { i18n } from '../../common/i18n';
 import { AvatarAuto } from '../AvatarAuto';
 
 import cls from './index.module.scss';
@@ -34,8 +32,6 @@ export const UserCardAdd: React.FC<{
   size?: 'default' | 'small';
   excludeIds?: string[];
 }> = ({ onAdd, params, size, excludeIds }) => {
-  const { message } = App.useApp();
-
   const [options, setOptions] = useState<DefaultOptionType[]>([]);
   const [search, setSearch] = useState<string>();
   const [searchDebounced, setSearchDebounced] = useState<string>();
@@ -57,9 +53,6 @@ export const UserCardAdd: React.FC<{
     }
     if (res.isLoading) {
       return;
-    }
-    if (isError(res.data)) {
-      return message.error(i18n.errorOccurred);
     }
 
     setList(res.data?.data);

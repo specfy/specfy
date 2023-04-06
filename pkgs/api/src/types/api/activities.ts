@@ -1,5 +1,6 @@
 import type { DBActivity } from '../db';
 
+import type { ResErrors } from './api';
 import type { ApiComponent } from './components';
 import type { ApiDocument } from './documents';
 import type { ApiPolicy } from './policies';
@@ -33,7 +34,7 @@ export interface ReqListActivities {
   org_id: string;
   project_id?: string;
 }
-
-export interface ResListActivities {
+export interface ResListActivitiesSuccess {
   data: ApiActivity[];
 }
+export type ResListActivities = ResErrors | ResListActivitiesSuccess;

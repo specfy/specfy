@@ -45,7 +45,7 @@ export const Org: React.FC = () => {
 
   useEffect(() => {
     if (getOrgs.data) {
-      setOrg(getOrgs.data.find((o) => o.id === params.org_id));
+      setOrg(getOrgs.data.data.find((o) => o.id === params.org_id));
       setLoading(false);
     } else {
       setLoading(getOrgs.isLoading);

@@ -83,27 +83,26 @@ export const ProjectRevisionsShow: React.FC<{
   });
 
   useEffect(() => {
-    if (!res.data) return;
-    if (isError(res.data)) {
-      return message.error(i18n.errorOccurred);
+    if (!res.data) {
+      return;
     }
 
     setRev(res.data.data);
     storeRevision.setCurrent(res.data.data);
   }, [res.data]);
+
   useEffect(() => {
-    if (!resBlobs.data) return;
-    if (isError(resBlobs.data)) {
-      return message.error(i18n.errorOccurred);
+    if (!resBlobs.data) {
+      return;
     }
 
     setBlobs(resBlobs.data.data);
     storeRevision.setBlobs(resBlobs.data.data);
   }, [resBlobs.data]);
+
   useEffect(() => {
-    if (!resChecks.data) return;
-    if (isError(resChecks.data)) {
-      return message.error(i18n.errorOccurred);
+    if (!resChecks.data) {
+      return;
     }
 
     setChecks(resChecks.data?.data);
@@ -186,13 +185,11 @@ export const ProjectRevisionsShow: React.FC<{
     setSave(false);
 
     if (isError(up)) {
-      message.error(i18n.errorOccurred);
-      return;
+      return message.error(i18n.errorOccurred);
     }
 
-    if (!up?.data?.done) {
-      message.error('Revision could not saved');
-      return;
+    if (!up.data.done) {
+      return message.error('Revision could not saved');
     }
 
     message.success('Revision updated');

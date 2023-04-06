@@ -5,6 +5,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { createProject } from '../../../api';
+import { isError, isValidationError } from '../../../api/helpers';
+import { i18n } from '../../../common/i18n';
 import { useProjectStore } from '../../../common/store';
 import { slugify } from '../../../common/string';
 import type { RouteOrg } from '../../../types/routes';
@@ -41,8 +43,12 @@ export const ProjectCreate: React.FC<{ params: RouteOrg }> = ({ params }) => {
       orgId: params.org_id,
       display: { pos },
     });
-    if ('error' in res) {
-      setErrors(res.error.fields);
+    if (isError(res)) {
+      if (isValidationError(res)) {
+        setErrors(res.error.fields);
+      } else {
+        message.error(i18n.errorOccurred);
+      }
       return;
     }
 

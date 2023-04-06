@@ -5,6 +5,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { createOrg } from '../../../api';
+import { isError, isValidationError } from '../../../api/helpers';
+import { i18n } from '../../../common/i18n';
 import { slugify } from '../../../common/string';
 
 import cls from './index.module.scss';
@@ -24,8 +26,12 @@ export const OrgCreate: React.FC = () => {
       id,
       name,
     });
-    if ('error' in res) {
-      setErrors(res.error.fields);
+    if (isError(res)) {
+      if (isValidationError(res)) {
+        setErrors(res.error.fields);
+      } else {
+        message.error(i18n.errorOccurred);
+      }
       return;
     }
 

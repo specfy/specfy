@@ -14,6 +14,7 @@ import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { useListOrgs } from '../../api';
+import { isError } from '../../api/helpers';
 import { useAuth } from '../../hooks/useAuth';
 import Logo1 from '../../static/logo2.svg';
 import type { RouteOrg } from '../../types/routes';
@@ -54,7 +55,7 @@ export const LayoutHeader: React.FC = () => {
       return;
     }
 
-    const data: MenuProps['items'] = orgsQuery.data.map((org) => {
+    const data: MenuProps['items'] = orgsQuery.data.data.map((org) => {
       return {
         key: org.id,
         label: <Link to="/">{org.name}</Link>,
@@ -78,12 +79,12 @@ export const LayoutHeader: React.FC = () => {
   }, [orgsQuery.data]);
 
   useEffect(() => {
-    if (!orgsQuery.data) {
+    if (!orgsQuery.data || isError(orgsQuery.data)) {
       return;
     }
 
-    for (const org of orgsQuery.data!) {
-      if (org!.id === params.org_id) {
+    for (const org of orgsQuery.data.data) {
+      if (org.id === params.org_id) {
         setCurrent(org.id);
         return;
       }
