@@ -84,7 +84,7 @@ describe('POST /revisions', () => {
             created: false,
             parentId: null,
             // @ts-expect-error
-            blob: {},
+            current: {},
           },
         ],
         description: { content: [], type: 'doc' },
@@ -98,7 +98,7 @@ describe('POST /revisions', () => {
     expect(res.statusCode).toBe(400);
     expect(Object.keys(res.json.error.fields).length).toBeGreaterThan(10);
     expect(res.json.error.fields).toHaveProperty('blobs.0.deleted');
-    expect(res.json.error.fields).toHaveProperty('blobs.0.blob.blobId');
+    expect(res.json.error.fields).toHaveProperty('blobs.0.current.blobId');
   });
 
   it('should allow with new blob', async () => {
@@ -200,7 +200,7 @@ describe('POST /revisions', () => {
     expect(res.json.error.fields).toStrictEqual({
       'blobs.0': {
         code: 'incompatible_fields',
-        message: 'Deleted and Created can not be both true',
+        message: "Can't specify a blob when deleting",
         path: ['blobs', 0],
       },
     });

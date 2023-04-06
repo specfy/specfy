@@ -47,6 +47,20 @@ export const schemaBlobs = z
             params: { code: 'incompatible_fields' },
             message: 'Deleted and Created can not be both true',
           });
+        } else if (val.deleted && val.current) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            params: { code: 'incompatible_fields' },
+            message: "Can't specify a blob when deleting",
+          });
+        }
+
+        if (!val.deleted && !val.current) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            params: { code: 'incompatible_fields' },
+            message: 'Missing current',
+          });
         }
         if (!val.created && !val.parentId) {
           ctx.addIssue({
@@ -60,13 +74,6 @@ export const schemaBlobs = z
             code: z.ZodIssueCode.custom,
             params: { code: 'incompatible_fields' },
             message: "Blob's id and blob definition should be the same",
-          });
-        }
-        if (val.deleted && !val.current) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            params: { code: 'incompatible_fields' },
-            message: "Can't specify a blob when deleting",
           });
         }
       })
