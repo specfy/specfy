@@ -140,6 +140,7 @@ export const GraphEdit: React.FC<{
           if (type.key === 'attrs' || type.key === 'tools') {
             return false;
           }
+          return true;
         },
       })
     );

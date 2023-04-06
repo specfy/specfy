@@ -35,12 +35,14 @@ export const Checks: React.FC<{
     setMerging(true);
     const resMerge = await mergeRevision({ ...qp, revision_id: rev.id });
     if (isError(resMerge)) {
-      return message.error(i18n.errorOccurred);
+      message.error(i18n.errorOccurred);
+      return;
     }
 
     setMerging(false);
     if ('error' in resMerge) {
-      return message.error(i18n.errorOccurred);
+      message.error(i18n.errorOccurred);
+      return;
     }
 
     message.success('Revision merged');
@@ -56,11 +58,13 @@ export const Checks: React.FC<{
     setRebasing(false);
 
     if (isError(resRebase)) {
-      return message.error(i18n.errorOccurred);
+      message.error(i18n.errorOccurred);
+      return;
     }
 
     if (!resRebase.data.done) {
-      return message.error('Revision could not be rebased');
+      message.error('Revision could not be rebased');
+      return;
     }
 
     message.success('Revision rebased');

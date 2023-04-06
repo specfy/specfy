@@ -107,7 +107,7 @@ export const ProjectLinks: React.FC = () => {
       // Delete
       updateField(
         'links',
-        project!.links.filter((l, i) => i !== pos)
+        project!.links.filter((_l, i) => i !== pos)
       );
       return;
     }

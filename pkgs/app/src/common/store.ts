@@ -159,6 +159,7 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
         return comp;
       }
     }
+    return undefined;
   },
   update: (value) => {
     set(

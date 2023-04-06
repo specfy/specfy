@@ -118,7 +118,7 @@ export function findTextNodes(
  * This method take a new text and mark, and apply old marks on top of it.
  */
 function applyTextNodeAttrsMarks(
-  schema: Schema,
+  _schema: Schema,
   text: string,
   mark: Mark | null,
   base: number,

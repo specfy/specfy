@@ -88,7 +88,7 @@ const Row: React.FC<RowProps> = ({
               onUpdate(user.id, 'update', v);
             }
           }}
-          disabled={perm && user.id === me}
+          disabled={perm && user.id === me ? true : false}
         >
           <Select.Option key="owner">Owner</Select.Option>
           <Select.Option key="reviewer">Reviewer</Select.Option>

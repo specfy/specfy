@@ -58,7 +58,8 @@ export const ReviewBar: React.FC<{
       }
     );
     if (isError(resComment)) {
-      return message.error(i18n.errorOccurred);
+      message.error(i18n.errorOccurred);
+      return;
     }
 
     message.success('Revision approved');

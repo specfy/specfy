@@ -16,7 +16,7 @@ export const BlockUid = Extension.create({
     return [
       new Plugin({
         key: new PluginKey('blockUid'),
-        appendTransaction: (transactions, prevState, nextState) => {
+        appendTransaction: (transactions, _prevState, nextState) => {
           const tr = nextState.tr;
           const { text } = nextState.schema.nodes;
           let modified = false;

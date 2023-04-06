@@ -185,11 +185,13 @@ export const ProjectRevisionsShow: React.FC<{
     setSave(false);
 
     if (isError(up)) {
-      return message.error(i18n.errorOccurred);
+      message.error(i18n.errorOccurred);
+      return;
     }
 
     if (!up.data.done) {
-      return message.error('Revision could not saved');
+      message.error('Revision could not saved');
+      return;
     }
 
     message.success('Revision updated');
