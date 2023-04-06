@@ -7,6 +7,7 @@
     "start": "node index.js",
     "dev": "fastify start --logging-module='build/logger.js' -o -w -P build/app.js",
     "build": "prisma generate && tsc -p tsconfig.json -w",
+    "test:build": "tsc -p tsconfig.json",
     "seed": "node ./build/test/seed/index.js",
     "test": "vitest",
     "migrate": "prisma db push",

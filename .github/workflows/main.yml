@@ -60,7 +60,7 @@ jobs:
           files: ./pkgs/api/coverage/cobertura-coverage.xml,./pkgs/app/coverage/cobertura-coverage.xml
 
       - name: Build API
-        run: cd pkgs/api/ && npm run build
+        run: cd pkgs/api/ && npm run test:build
 
       - name: Build APP
         run: cd pkgs/app/ && npm run build
