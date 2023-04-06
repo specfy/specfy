@@ -9,7 +9,13 @@ import classnames from 'classnames';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import type { Allowed, BlobWithDiff } from '../../types/blobs';
+import type {
+  Allowed,
+  BlobAndDiffs,
+  ComponentBlobWithDiff,
+  DocumentBlobWithDiff,
+  ProjectBlobWithDiff,
+} from '../../types/blobs';
 import { Card } from '../Card';
 
 import { DiffCardComponent } from './CardComponent';
@@ -18,7 +24,7 @@ import { DiffCardProject } from './CardProject';
 import cls from './index.module.scss';
 
 export const DiffCard: React.FC<{
-  diff: BlobWithDiff;
+  diff: BlobAndDiffs;
   url: string;
   onRevert: (
     type: ApiBlobWithPrevious['type'],
@@ -26,18 +32,18 @@ export const DiffCard: React.FC<{
     key: string
   ) => void;
 }> = ({ diff, url }) => {
-  const using = (diff.blob || diff.previous) as Allowed;
+  const using = (diff.blob.current || diff.blob.previous) as Allowed;
 
   const [type, to] = useMemo<[string, string]>(() => {
-    if (diff.type === 'project') {
+    if (diff.blob.type === 'project') {
       return ['Project', url];
     }
 
-    if (diff.type === 'document') {
-      return ['Document', `${url}/content/${diff.typeId}-${using.slug}`];
+    if (diff.blob.type === 'document') {
+      return ['Document', `${url}/content/${diff.blob.typeId}-${using.slug}`];
     }
 
-    return ['Component', `${url}/c/${diff.typeId}-${using.slug}`];
+    return ['Component', `${url}/c/${diff.blob.typeId}-${using.slug}`];
   }, [diff]);
 
   // Actions
@@ -69,17 +75,23 @@ export const DiffCard: React.FC<{
         className={classnames(
           cls.diff,
           hide && cls.hide,
-          diff.deleted && cls.removed,
-          diff.created && cls.added
+          diff.blob.deleted && cls.removed,
+          diff.blob.created && cls.added
         )}
       >
         <div className={cls.diffContent}>
-          {diff.deleted && (
+          {diff.blob.deleted && (
             <div className={cls.fileDeleted}>{type} deleted</div>
           )}
-          {diff.type === 'component' && <DiffCardComponent diff={diff} />}
-          {diff.type === 'document' && <DiffCardDocument diff={diff} />}
-          {diff.type === 'project' && <DiffCardProject diff={diff} />}
+          {diff.blob.type === 'component' && (
+            <DiffCardComponent diff={diff as ComponentBlobWithDiff} />
+          )}
+          {diff.blob.type === 'document' && (
+            <DiffCardDocument diff={diff as DocumentBlobWithDiff} />
+          )}
+          {diff.blob.type === 'project' && (
+            <DiffCardProject diff={diff as ProjectBlobWithDiff} />
+          )}
         </div>
       </div>
     </Card>

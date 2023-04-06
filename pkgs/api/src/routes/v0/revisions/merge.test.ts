@@ -37,7 +37,7 @@ async function revisionWithBlob(user: Users, org: Orgs, project: Projects) {
       typeId: component.id,
       created: false,
       deleted: false,
-      blob,
+      current: blob,
     },
   ]);
 

@@ -19,7 +19,7 @@ export async function createProjectBlob({
       parentId: blob.blobId || null,
       type: 'project',
       typeId: blob.id,
-      blob: blob as any,
+      current: blob as any,
       created: false,
       deleted: false,
       ...data,

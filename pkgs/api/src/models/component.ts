@@ -20,7 +20,7 @@ export async function createComponentBlob({
       parentId: blob?.blobId || null,
       type: 'component',
       typeId: blob.id,
-      blob: data?.deleted ? Prisma.DbNull : (blob as any),
+      current: data?.deleted ? Prisma.DbNull : (blob as any),
       created: false,
       deleted: false,
       ...data,

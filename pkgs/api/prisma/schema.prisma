@@ -52,7 +52,7 @@ model Blobs {
   type      String   @db.VarChar(36)
   typeId    String   @db.VarChar(36)
   parentId  String?  @db.VarChar(15)
-  blob      Json?    @db.Json
+  current   Json?    @db.Json
   created   Boolean  @default(false)
   deleted   Boolean  @default(false)
   createdAt DateTime @default(now()) @db.Timestamp(3)

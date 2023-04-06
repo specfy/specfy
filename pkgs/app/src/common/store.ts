@@ -9,7 +9,7 @@ import type {
 import { produce } from 'immer';
 import { create } from 'zustand';
 
-import type { Allowed, BlobWithDiff } from '../types/blobs';
+import type { Allowed, BlobAndDiffs } from '../types/blobs';
 
 import { getEmptyDoc } from './content';
 import { slugify } from './string';
@@ -39,7 +39,7 @@ function allowedType(item: Allowed): ApiBlobWithPrevious['type'] {
   return 'component';
 }
 
-function revertAll(diffs: BlobWithDiff[]) {
+function revertAll(diffs: BlobAndDiffs[]) {
   /* eslint-disable @typescript-eslint/no-use-before-define */
   const project = useProjectStore.getState();
   const components = useComponentsStore.getState();
@@ -47,12 +47,12 @@ function revertAll(diffs: BlobWithDiff[]) {
   /* eslint-enable @typescript-eslint/no-use-before-define */
 
   for (const diff of diffs) {
-    if (diff.type === 'project') {
-      project.update(find<ApiProject>(diff.typeId)!);
-    } else if (diff.type === 'component') {
-      components.revert(diff.typeId);
-    } else if (diff.type === 'document') {
-      documents.revert(diff.typeId);
+    if (diff.blob.type === 'project') {
+      project.update(find<ApiProject>(diff.blob.typeId)!);
+    } else if (diff.blob.type === 'component') {
+      components.revert(diff.blob.typeId);
+    } else if (diff.blob.type === 'document') {
+      documents.revert(diff.blob.typeId);
     }
   }
 }
@@ -62,8 +62,8 @@ export default { add, find, allowedType, revertAll, originalStore };
 // ------------------------------------------ Staging Store
 interface StagingState {
   count: number;
-  diffs: BlobWithDiff[];
-  update: (diffs: BlobWithDiff[], count: number) => void;
+  diffs: BlobAndDiffs[];
+  update: (diffs: BlobAndDiffs[], count: number) => void;
 }
 
 export const useStagingStore = create<StagingState>()((set) => ({

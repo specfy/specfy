@@ -94,7 +94,7 @@ export const ProjectRevisionCreate: React.FC<{
   const onSubmit = async () => {
     const blobs: ReqPostRevision['blobs'] = [];
     for (const diff of staging.diffs) {
-      const change: ApiBlobCreate = omit(diff, [
+      const change: ApiBlobCreate = omit(diff.blob, [
         'id',
         'orgId',
         'projectId',
@@ -104,9 +104,13 @@ export const ProjectRevisionCreate: React.FC<{
         'previous',
       ]);
 
-      if (change.type === 'document' && change.blob) {
+      if (change.type === 'document' && change.current) {
         // TODO: automate this?
-        change.blob = omit(change.blob, ['authors', 'approvedBy', 'reviewers']);
+        change.current = omit(change.current, [
+          'authors',
+          'approvedBy',
+          'reviewers',
+        ]);
       }
 
       blobs.push(change);
@@ -196,7 +200,7 @@ export const ProjectRevisionCreate: React.FC<{
           {staging.diffs.map((diff) => {
             return (
               <DiffCard
-                key={diff.typeId}
+                key={diff.blob.typeId}
                 diff={diff}
                 url={to}
                 onRevert={() => null}

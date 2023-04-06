@@ -14,7 +14,7 @@ export const DiffCardProject: React.FC<{
 }> = ({ diff }) => {
   return (
     <div className={cls.content}>
-      <Typography.Title level={3}>{diff.blob!.name}</Typography.Title>
+      <Typography.Title level={3}>{diff.blob.current!.name}</Typography.Title>
       {diff.diffs.map((d) => {
         if (d.key === 'name') {
           return null;
@@ -24,7 +24,7 @@ export const DiffCardProject: React.FC<{
             <UnifiedContent
               key={d.key}
               doc={d.diff as unknown as BlockLevelZero}
-              id={diff.typeId}
+              id={diff.blob.typeId}
             />
           );
         }
@@ -64,7 +64,7 @@ export const DiffCardProject: React.FC<{
           );
         }
 
-        return <Split key={d.key} diff={d} created={!diff.previous} />;
+        return <Split key={d.key} diff={d} created={!diff.blob.previous} />;
       })}
     </div>
   );

@@ -65,7 +65,7 @@ describe('GET /revisions/:revision_id/checks', () => {
       qp: { org_id: org.id, project_id: project.id },
       body: { approval: true, content: { content: [], type: 'doc' } },
     });
-    isSuccess(comment);
+    isSuccess(comment.json);
 
     const res = await t.fetch.get(`/0/revisions/${revision.id}/checks`, {
       token,
@@ -131,7 +131,7 @@ describe('GET /revisions/:revision_id/checks', () => {
         typeId: component.id,
         created: false,
         deleted: false,
-        blob,
+        current: blob,
       },
     ]);
 
@@ -176,7 +176,7 @@ describe('GET /revisions/:revision_id/checks', () => {
         typeId: component.id,
         created: false,
         deleted: false,
-        blob,
+        current: blob,
       },
     ]);
 

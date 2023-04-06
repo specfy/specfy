@@ -6,7 +6,12 @@ import { validationError } from '../../../common/errors';
 import { toApiUser } from '../../../common/formatters/user';
 import { valOrgId, valProjectId } from '../../../common/zod';
 import { prisma } from '../../../db';
-import type { ResListPerms, ReqListPerms, ApiPerm } from '../../../types/api';
+import type {
+  ResListPerms,
+  ReqListPerms,
+  ApiPerm,
+  ResListPermsSuccess,
+} from '../../../types/api';
 
 function QueryVal(req: FastifyRequest) {
   return z
@@ -46,7 +51,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     res.status(200).send({
       data: perms.map((p) => {
         // For excess property check
-        const tmp: ResListPerms['data'][0] = {
+        const tmp: ResListPermsSuccess['data'][0] = {
           id: p.id,
           orgId: p.orgId,
           projectId: p.projectId,

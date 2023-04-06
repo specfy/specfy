@@ -10,6 +10,7 @@ import type {
   ResListDocuments,
   Pagination,
   ApiDocument,
+  ResListDocumentsSuccess,
 } from '../../../types/api';
 import { DocumentType } from '../../../types/db';
 
@@ -89,7 +90,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       res.status(200).send({
         data: docs.map((p) => {
           // For excess property check
-          const tmp: ResListDocuments['data'][0] = {
+          const tmp: ResListDocumentsSuccess['data'][0] = {
             id: p.id,
 
             type: p.type as ApiDocument['type'],

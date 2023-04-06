@@ -9,7 +9,7 @@ import originalStore, {
   useComponentsStore,
   useProjectStore,
 } from '../../../common/store';
-import type { Allowed, BlobWithDiff } from '../../../types/blobs';
+import type { Allowed, BlobAndDiffs } from '../../../types/blobs';
 import { Time } from '../../Time';
 
 import cls from './index.module.scss';
@@ -29,32 +29,37 @@ export const Staging: React.FC<{ link: string }> = ({ link }) => {
         ...Object.values(documents),
       ];
 
-      const diffs: BlobWithDiff[] = [];
+      const bds: BlobAndDiffs[] = [];
 
       // Find added and modified
       for (const item of store) {
         const original = originalStore.find(item.id) as typeof item;
 
-        const diff = diffTwoBlob({
-          id: '',
-          created: !original,
-          deleted: false,
-          parentId: original ? original.blobId : null,
-          previous: (original as any) || null,
-          type: originalStore.allowedType(item),
-          typeId: item.id,
-          blob: item as any, // Can't fix this
-          createdAt: '',
-          updatedAt: '',
-        });
+        const bd: BlobAndDiffs = {
+          blob: {
+            id: '',
+            created: !original,
+            deleted: false,
+            parentId: original ? original.blobId : null,
+            previous: (original as any) || null,
+            type: originalStore.allowedType(item) as any,
+            typeId: item.id,
+            current: item as any, // Can't fix this
+            createdAt: '',
+            updatedAt: '',
+          },
+          diffs: [],
+        };
+        const diffs = diffTwoBlob(bd.blob);
 
-        if (diff.diffs.length <= 0) {
+        if (diffs.length <= 0) {
           continue;
         }
 
         // clean.push(diff.clean);
-        count += original ? diff.diffs.length : 1;
-        diffs.push(diff);
+        count += original ? diffs.length : 1;
+        bd.diffs = diffs;
+        bds.push(bd);
       }
 
       // Find deleted
@@ -71,24 +76,29 @@ export const Staging: React.FC<{ link: string }> = ({ link }) => {
           continue;
         }
 
-        const diff = diffTwoBlob({
-          id: '',
-          created: false,
-          deleted: true,
-          parentId: item.blobId,
-          type: originalStore.allowedType(item),
-          typeId: item.id,
-          blob: null,
-          previous: (item as any) || null,
-          createdAt: '',
-          updatedAt: '',
-        });
+        const bd: BlobAndDiffs = {
+          blob: {
+            id: '',
+            created: false,
+            deleted: true,
+            parentId: item.blobId,
+            type: originalStore.allowedType(item) as any,
+            typeId: item.id,
+            current: null,
+            previous: (item as any) || null,
+            createdAt: '',
+            updatedAt: '',
+          },
+          diffs: [],
+        };
+        const diffs = diffTwoBlob(bd.blob);
 
         count += 1;
-        diffs.push(diff);
+        bd.diffs = diffs;
+        bds.push(bd);
       }
 
-      staging.update(diffs, count);
+      staging.update(bds, count);
     },
     150,
     [project, components, documents]

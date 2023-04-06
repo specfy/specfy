@@ -9,13 +9,17 @@ import type {
 import type { ResErrors } from './api';
 
 export type ApiBlob = DBBlob;
-export type ApiBlobPrevious<T = DBBlob['blob']> = {
+export type ApiBlobPrevious<T = DBBlob['current']> = {
   previous: T | null;
 };
+
+export type ApiBlobComponent = ApiBlobPrevious<DBComponent> & DBBlobComponent;
+export type ApiBlobDocument = ApiBlobPrevious<DBDocument> & DBBlobDocument;
+export type ApiBlobProject = ApiBlobPrevious<DBProject> & DBBlobProject;
 export type ApiBlobWithPrevious =
-  | (ApiBlobPrevious<DBComponent> & DBBlobComponent)
-  | (ApiBlobPrevious<DBDocument> & DBBlobDocument)
-  | (ApiBlobPrevious<DBProject> & DBBlobProject);
+  | ApiBlobComponent
+  | ApiBlobDocument
+  | ApiBlobProject;
 
 // GET /
 export interface ResListRevisionBlobsSuccess {

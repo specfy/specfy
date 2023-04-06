@@ -12,7 +12,7 @@ const blobProject = z
     typeId: schemaId, // TODO: Val that it exists if not created
     deleted: z.boolean(),
     created: z.boolean(),
-    blob: schemaProject,
+    current: schemaProject.nullable(),
   })
   .strict();
 const blobComponent = z
@@ -22,7 +22,7 @@ const blobComponent = z
     typeId: schemaId,
     deleted: z.boolean(),
     created: z.boolean(),
-    blob: schemaComponent,
+    current: schemaComponent.nullable(),
   })
   .strict();
 const blobDocument = z
@@ -32,7 +32,7 @@ const blobDocument = z
     typeId: schemaId,
     deleted: z.boolean(),
     created: z.boolean(),
-    blob: schemaDocument,
+    current: schemaDocument.nullable(),
   })
   .strict();
 
@@ -55,11 +55,18 @@ export const schemaBlobs = z
             message: 'Updated blob should come with a parentId',
           });
         }
-        if (val.typeId !== val.blob.id) {
+        if (val.current && val.typeId !== val.current.id) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
             params: { code: 'incompatible_fields' },
             message: "Blob's id and blob definition should be the same",
+          });
+        }
+        if (val.deleted && !val.current) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            params: { code: 'incompatible_fields' },
+            message: "Can't specify a blob when deleting",
           });
         }
       })

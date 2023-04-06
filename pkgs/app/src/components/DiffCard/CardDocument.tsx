@@ -13,13 +13,13 @@ import cls from './index.module.scss';
 export const DiffCardDocument: React.FC<{
   diff: DocumentBlobWithDiff;
 }> = ({ diff }) => {
-  const using = (diff.deleted ? diff.previous : diff.blob)!;
+  const using = (diff.blob.deleted ? diff.blob.previous : diff.blob.current)!;
 
   const Title = useMemo(() => {
     const hasName = diff.diffs.find((d) => d.key === 'name');
     return (
       <Typography.Title level={3}>
-        {hasName && !diff.created ? (
+        {hasName && !diff.blob.created ? (
           <UnifiedDiff key={hasName.key} diff={hasName} />
         ) : (
           using.name || ''
@@ -28,12 +28,12 @@ export const DiffCardDocument: React.FC<{
     );
   }, [diff]);
 
-  if (diff.deleted || diff.created) {
+  if (diff.blob.deleted || diff.blob.created) {
     return (
       <div className={cls.content}>
         {Title}
         <Typography>
-          <ContentDoc doc={using.content} id={diff.typeId} noPlaceholder />
+          <ContentDoc doc={using.content} id={diff.blob.typeId} noPlaceholder />
         </Typography>
       </div>
     );
@@ -51,12 +51,12 @@ export const DiffCardDocument: React.FC<{
             <UnifiedContent
               key={d.key}
               doc={d.diff as unknown as BlockLevelZero}
-              id={diff.typeId}
+              id={diff.blob.typeId}
             />
           );
         }
 
-        return <Split key={d.key} diff={d} created={!diff.previous} />;
+        return <Split key={d.key} diff={d} created={!diff.blob.previous} />;
       })}
     </div>
   );

@@ -1,60 +1,38 @@
 import { Editor } from '@tiptap/react';
-import type {
-  ApiBlobWithPrevious,
-  ApiComponent,
-  ApiProject,
-} from 'api/src/types/api';
-import { diffJson, diffWordsWithSpace } from 'diff';
+import type { ApiBlobWithPrevious } from 'api/src/types/api';
 
 import { createEditorSchema } from '../../components/Editor/extensions';
-import type { BlobWithDiff } from '../../types/blobs';
-import { getEmptyDoc } from '../content';
+import type { BlobAndDiffs } from '../../types/blobs';
 
-import { diffObjectsArray, diffStringArray } from './array';
-import { diffEditor } from './prosemirror';
+import { diffComponent } from './diffComponent';
+import { diffDocument } from './diffDocument';
+import { diffProject } from './diffProject';
 
-const IGNORED = [
-  'id',
-  'slug',
-  'createdAt',
-  'updatedAt',
-  'blobId',
-  'orgId',
-  'projectId',
-];
-const IGNORED_PROJECT: Array<keyof ApiProject> = ['name'];
-const IGNORED_COMPONENT: Array<keyof ApiComponent> = [
-  'orgId',
-  'projectId',
-  'type',
-  'typeId',
-];
-
-export function proposeTitle(computed: BlobWithDiff[]): string {
+export function proposeTitle(computed: BlobAndDiffs[]): string {
   if (computed.length === 0) {
     return '';
   }
 
   if (computed.length === 1) {
-    const item = computed[0];
-    const type = item.type === 'project' ? 'project' : item.blob?.name;
-    if (item.deleted) {
-      return `fix(${item.type}): delete ${type}`;
+    const { blob, diffs } = computed[0];
+    const type = blob.type === 'project' ? 'project' : blob.current?.name;
+    if (blob.deleted) {
+      return `fix(${blob.type}): delete ${type}`;
     }
-    if (item.created) {
-      return `feat(${item.type}): create ${type}`;
+    if (blob.created) {
+      return `feat(${blob.type}): create ${type}`;
     }
 
-    const keys = item.diffs.map((diff) => diff.key);
+    const keys = diffs.map((diff) => diff.key);
     return `update(${type}): update ${keys.join(', ')}`;
   }
 
-  const types = new Set<BlobWithDiff['type']>();
+  const types = new Set<BlobAndDiffs['blob']['type']>();
   const names = new Set<string>();
   for (const change of computed) {
-    types.add(change.type);
-    if (change.previous) {
-      names.add(change.previous.name);
+    types.add(change.blob.type);
+    if (change.blob.previous) {
+      names.add(change.blob.previous.name);
     }
   }
 
@@ -77,93 +55,92 @@ export function isDiffSimple(a: any, b: any): boolean {
 
 const editor = new Editor(createEditorSchema());
 
-export function diffTwoBlob(blob: ApiBlobWithPrevious): BlobWithDiff {
-  const clean: BlobWithDiff = {
-    ...blob,
-    diffs: [],
-  };
-
-  if (blob.deleted || !blob.blob) {
-    return clean;
+export function diffTwoBlob(blob: ApiBlobWithPrevious): BlobAndDiffs['diffs'] {
+  if (blob.type === 'component') {
+    return diffComponent(editor, blob);
+  } else if (blob.type === 'document') {
+    return diffDocument(editor, blob);
+  } else {
+    return diffProject(editor, blob);
   }
 
-  for (const [key, value] of Object.entries(blob.blob)) {
-    if (IGNORED.includes(key)) {
-      continue;
-    }
-    if (
-      blob.type === 'component' &&
-      IGNORED_COMPONENT.includes(key as keyof ApiComponent)
-    ) {
-      continue;
-    }
-    if (
-      blob.type === 'project' &&
-      IGNORED_PROJECT.includes(key as keyof ApiProject)
-    ) {
-      continue;
-    }
+  // for (const [key, value] of Object.entries(blob.current)) {
+  //   if (IGNORED.includes(key)) {
+  //     continue;
+  //   }
+  //   if (
+  //     blob.type === 'component' &&
+  //     IGNORED_COMPONENT.includes(key as keyof ApiComponent)
+  //   ) {
+  //     continue;
+  //   }
+  //   if (
+  //     blob.type === 'project' &&
+  //     IGNORED_PROJECT.includes(key as keyof ApiProject)
+  //   ) {
+  //     continue;
+  //   }
 
-    const prev = clean.previous?.[key] ? clean.previous[key] : '';
-    if (prev) {
-      if (!prev && !value) {
-        continue;
-      }
-      if (!isDiffSimple(prev, value)) {
-        continue;
-      }
-    }
+  //   const prev = blob.previous?.[key] ? blob.previous[key] : '';
+  //   if (prev) {
+  //     if (!prev && !value) {
+  //       continue;
+  //     }
+  //     if (!isDiffSimple(prev, value)) {
+  //       continue;
+  //     }
+  //   }
 
-    if (!prev && !value) {
-      continue;
-    }
+  //   if (!prev && !value) {
+  //     continue;
+  //   }
 
-    if (key === 'description' || key === 'content') {
-      clean.diffs.push({
-        key,
-        diff: diffEditor(
-          editor.schema,
-          prev ? JSON.parse(JSON.stringify(prev)) : getEmptyDoc(true),
-          value ? JSON.parse(JSON.stringify(value)) : getEmptyDoc(true)
-        ),
-      });
-      continue;
-    }
-    if (key === 'edges') {
-      clean.diffs.push({
-        key,
-        diff: diffObjectsArray(prev || [], value || [], 'to'),
-      });
-      continue;
-    }
-    if (key === 'links') {
-      clean.diffs.push({
-        key,
-        diff: diffObjectsArray(prev || [], value || [], 'url'),
-      });
-      continue;
-    }
-    if (key === 'tech') {
-      clean.diffs.push({
-        key,
-        diff: diffStringArray(prev || [], value || []),
-      });
-      continue;
-    }
+  //   if (key === 'description' || key === 'content') {
+  //     clean.diffs.push({
+  //       key,
+  //       diff: diffEditor(
+  //         editor.schema,
+  //         prev ? JSON.parse(JSON.stringify(prev)) : getEmptyDoc(true),
+  //         value ? JSON.parse(JSON.stringify(value)) : getEmptyDoc(true)
+  //       ),
+  //     });
+  //     continue;
+  //   }
+  //   if (key === 'edges') {
+  //     clean.diffs.push({
+  //       key,
+  //       diff: diffObjectsArray(prev || [], value || [], 'to'),
+  //     });
+  //     continue;
+  //   }
+  //   if (key === 'links') {
+  //     clean.diffs.push({
+  //       key,
+  //       diff: diffObjectsArray(prev || [], value || [], 'url'),
+  //     });
+  //     continue;
+  //   }
+  //   if (key === 'tech') {
+  //     clean.diffs.push({
+  //       key,
+  //       diff: diffStringArray(prev || [], value || []),
+  //     });
+  //     continue;
+  //   }
 
-    if ((value != null && typeof value == 'object') || Array.isArray(value)) {
-      clean.diffs.push({
-        key,
-        diff: diffJson(prev, value),
-      });
-      continue;
-    }
+  //   if ((value != null && typeof value == 'object') || Array.isArray(value)) {
+  //     clean.diffs.push({
+  //       key,
+  //       diff: diffJson(prev, value),
+  //     });
+  //     continue;
+  //   }
 
-    clean.diffs.push({
-      key,
-      diff: diffWordsWithSpace(prev, `${value}`),
-    });
-  }
+  //   clean.diffs.push({
+  //     key,
+  //     diff: diffWordsWithSpace(prev, `${value}`),
+  //   });
+  // }
 
-  return clean;
+  // return clean;
 }

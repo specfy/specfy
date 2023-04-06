@@ -63,12 +63,14 @@ export async function shouldEnforceBody<TPath extends APIPaths>(
   method: keyof API[TPath]
 ) {
   const { token } = await seedSimpleUser();
-  const res: Awaited<ReturnType<ApiClient['get']>> = await client[
-    (method as string).toLowerCase()
-  ](path as any, {
-    token,
-    body: { wrong: 'body' },
-  });
+  const res = await client[(method as string).toLowerCase() as 'post'](
+    path as any,
+    {
+      token,
+      // @ts-expect-error
+      body: { wrong: 'body' },
+    }
+  );
 
   isValidationError(res.json);
   expect(res.json.error.form).toStrictEqual([

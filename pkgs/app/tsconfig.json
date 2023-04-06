@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
+    "target": "ES2020",
     "useDefineForClassFields": true,
     "lib": [
       "DOM",
@@ -19,7 +19,12 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "noImplicitAny": true
+    "noImplicitAny": true,
+    "noImplicitReturns": true,
+    "exactOptionalPropertyTypes": true,
+    "noUnusedParameters": true,
+    "experimentalDecorators": true, /* Enable experimental support for TC39 stage 2 draft decorators. */
+    "emitDecoratorMetadata": true, /* Emit design-type metadata for decorated declarations in source files. */
   },
   "include": [
     "src"

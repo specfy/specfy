@@ -33,7 +33,7 @@ export async function createDocumentBlob({
       parentId: blob?.blobId || null,
       type: 'document',
       typeId: blob.id,
-      blob: data?.deleted ? Prisma.DbNull : (blob as any),
+      current: data?.deleted ? Prisma.DbNull : (blob as any),
       created: false,
       deleted: false,
       ...data,

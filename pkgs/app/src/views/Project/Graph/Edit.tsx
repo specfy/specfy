@@ -247,9 +247,10 @@ export const GraphEdit: React.FC<{
         }
 
         const has = storeStaging.diffs.find(
-          (clean) => clean.type === 'component' && clean.typeId === comp.id
+          (clean) =>
+            clean.blob.type === 'component' && clean.blob.typeId === comp.id
         );
-        if (!has || has.deleted) {
+        if (!has || has.blob.deleted) {
           continue;
         }
 
@@ -295,7 +296,7 @@ export const GraphEdit: React.FC<{
       return;
     }
 
-    const find = storeStaging.diffs.find((comp) => comp.typeId === id);
+    const find = storeStaging.diffs.find((comp) => comp.blob.typeId === id);
     const cell = graph.getCellById(id);
     if (!find || !cell) {
       return;
@@ -303,12 +304,12 @@ export const GraphEdit: React.FC<{
 
     if (cell.isNode()) {
       graph.batchUpdate(() => {
-        if (!find.previous || find.type === 'document') {
+        if (!find.blob.previous || find.blob.type === 'document') {
           return;
         }
 
-        cell.setSize({ ...find.previous.display.pos });
-        cell.setPosition({ ...find.previous.display.pos });
+        cell.setSize({ ...find.blob.previous.display.pos });
+        cell.setPosition({ ...find.blob.previous.display.pos });
         const outgoing = graph.getOutgoingEdges(cell);
 
         if (!outgoing) {
@@ -316,11 +317,11 @@ export const GraphEdit: React.FC<{
         }
 
         outgoing.forEach((edge) => {
-          if (!find.previous) {
+          if (!find.blob.previous || find.blob.type === 'document') {
             return;
           }
 
-          const old = find.previous.edges.find(
+          const old = find.blob.previous.edges.find(
             (prev) => prev.to === edge.getTargetCellId()
           );
           edge.setVertices(old!.vertices);

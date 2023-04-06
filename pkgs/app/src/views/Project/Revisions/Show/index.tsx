@@ -42,7 +42,7 @@ import { SidebarBlock } from '../../../../components/SidebarBlock';
 import { StatusTag } from '../../../../components/StatusTag';
 import { Time } from '../../../../components/Time';
 import { UserList } from '../../../../components/UserList';
-import type { BlobWithDiff } from '../../../../types/blobs';
+import type { BlobAndDiffs } from '../../../../types/blobs';
 import type { RouteProject, RouteRevision } from '../../../../types/routes';
 
 import cls from './index.module.scss';
@@ -66,7 +66,7 @@ export const ProjectRevisionsShow: React.FC<{
   };
 
   // diff
-  const [diffs, setDiffs] = useState<BlobWithDiff[]>([]);
+  const [diffs, setDiffs] = useState<BlobAndDiffs[]>([]);
 
   // --------- Data fetching
   const res = useGetRevision({
@@ -234,12 +234,14 @@ export const ProjectRevisionsShow: React.FC<{
       return;
     }
 
-    const _diffs: BlobWithDiff[] = [];
+    const _diffs: BlobAndDiffs[] = [];
 
     // Remove non modified fields
     for (const blob of blobs) {
-      const diff = diffTwoBlob(blob);
-      _diffs.push(diff);
+      diffs.push({
+        blob: blob as any,
+        diffs: diffTwoBlob(blob) as any,
+      });
     }
 
     setDiffs(_diffs);
@@ -366,7 +368,7 @@ export const ProjectRevisionsShow: React.FC<{
           {diffs.map((diff) => {
             return (
               <DiffCard
-                key={diff.typeId}
+                key={diff.blob.typeId}
                 diff={diff}
                 url={to}
                 onRevert={() => null}

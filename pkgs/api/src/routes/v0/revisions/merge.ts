@@ -76,7 +76,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
             continue;
           } else if (item.parent) {
             const up = await tx.projects.update({
-              data: { ...(item.blob.blob as any), blobId: item.blob.id },
+              data: { ...(item.blob.current as any), blobId: item.blob.id },
               where: { id: blob.typeId },
             });
             await createProjectActivity(user, 'Project.updated', up, tx);
@@ -85,7 +85,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
           const created = await tx.projects.create({
             data: {
-              ...(blob.blob! as unknown as Prisma.ProjectsUncheckedCreateInput),
+              ...(blob.current! as unknown as Prisma.ProjectsUncheckedCreateInput),
               blobId: blob.id,
             },
           });
@@ -103,7 +103,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
             continue;
           } else if (item.parent) {
             const up = await tx.components.update({
-              data: { ...(item.blob.blob as any), blobId: item.blob.id },
+              data: { ...(item.blob.current as any), blobId: item.blob.id },
               where: { id: blob.typeId },
             });
             await createComponentActivity(user, 'Component.updated', up, tx);
@@ -112,7 +112,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
           const created = await tx.components.create({
             data: {
-              ...(blob.blob! as unknown as Prisma.ComponentsUncheckedCreateInput),
+              ...(blob.current! as unknown as Prisma.ComponentsUncheckedCreateInput),
               blobId: blob.id,
             },
           });
@@ -131,7 +131,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
             continue;
           } else if (item.parent) {
             const up = await tx.documents.update({
-              data: { ...(item.blob.blob as any), blobId: item.blob.id },
+              data: { ...(item.blob.current as any), blobId: item.blob.id },
               where: { id: blob.typeId },
             });
             await createDocumentActivity(user, 'Document.updated', up, tx);
@@ -140,7 +140,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
           const created = await tx.documents.create({
             data: {
-              ...(blob.blob! as unknown as Prisma.DocumentsUncheckedCreateInput),
+              ...(blob.current! as unknown as Prisma.DocumentsUncheckedCreateInput),
               blobId: blob.id,
             },
           });

@@ -28,7 +28,7 @@ export const DiffCardComponent: React.FC<{
   const params = useParams<Partial<RouteProject>>() as RouteProject;
   const storeComponents = useComponentsStore();
   const storeRevision = useRevisionStore();
-  const using = (diff.deleted ? diff.previous : diff.blob)!;
+  const using = (diff.blob.deleted ? diff.blob.previous : diff.blob.current)!;
 
   const getComponent = (id: string): ApiComponent => {
     if (storeComponents.components[id]) {
@@ -39,7 +39,7 @@ export const DiffCardComponent: React.FC<{
     if (inRevision) {
       return inRevision.deleted
         ? (inRevision.previous as ApiComponent)
-        : (inRevision.blob as ApiComponent);
+        : (inRevision.current as ApiComponent);
     }
 
     return originalStore.find(id)!;
@@ -59,7 +59,7 @@ export const DiffCardComponent: React.FC<{
             <Icon />
           </div>
         )}
-        {hasName && !diff.created ? (
+        {hasName && !diff.blob.created ? (
           <UnifiedDiff key={hasName.key} diff={hasName} />
         ) : (
           using.name || ''
@@ -68,12 +68,16 @@ export const DiffCardComponent: React.FC<{
     );
   }, [diff]);
 
-  if (diff.deleted || diff.created) {
+  if (diff.blob.deleted || diff.blob.created) {
     return (
       <div className={cls.content}>
         {Title}
         <Typography>
-          <ContentDoc doc={using.description} id={diff.typeId} noPlaceholder />
+          <ContentDoc
+            doc={using.description}
+            id={diff.blob.typeId}
+            noPlaceholder
+          />
         </Typography>
         {using.tech.length > 0 && (
           <div className={cls.line}>
@@ -138,7 +142,7 @@ export const DiffCardComponent: React.FC<{
             <UnifiedContent
               key={d.key}
               doc={d.diff as unknown as BlockLevelZero}
-              id={diff.typeId}
+              id={diff.blob.typeId}
             />
           );
         }
@@ -238,8 +242,8 @@ export const DiffCardComponent: React.FC<{
         if (d.key === 'inComponent') {
           const newComp = using.inComponent && getComponent(using.inComponent);
           const oldComp =
-            diff.previous?.inComponent &&
-            getComponent(diff.previous.inComponent);
+            diff.blob.previous?.inComponent &&
+            getComponent(diff.blob.previous.inComponent);
           return (
             <div key={d.key} className={classnames(cls.line)}>
               <Typography.Title level={4}>Host</Typography.Title>
@@ -261,7 +265,7 @@ export const DiffCardComponent: React.FC<{
           );
         }
 
-        return <Split key={d.key} diff={d} created={!diff.previous} />;
+        return <Split key={d.key} diff={d} created={!diff.blob.previous} />;
       })}
     </div>
   );

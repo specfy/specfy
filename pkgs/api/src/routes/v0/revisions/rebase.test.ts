@@ -110,7 +110,7 @@ describe('GET /revisions/:revision_id/rebase', () => {
         typeId: component.id,
         created: false,
         deleted: false,
-        blob,
+        current: blob,
       },
     ]);
 
@@ -140,7 +140,7 @@ describe('GET /revisions/:revision_id/rebase', () => {
     });
     isSuccess(get.json);
     const data = get.json.data as unknown as ApiBlobWithPrevious[];
-    expect(data[0].id).toBe(revision.blobs![0]);
+    expect(data[0].id).toBe((revision.blobs as string[])[0]);
     expect(data[0].typeId).toBe(blob.id);
     expect(data[0].parentId).toBe(newBlob.id);
   });

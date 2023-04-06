@@ -32,7 +32,7 @@ function BodyVal(req: FastifyRequest) {
         const blob = val.blobs[index];
 
         // Check belongs to same org
-        if (blob.blob.orgId !== orgId) {
+        if (blob.current?.orgId !== orgId) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
             params: { code: 'incompatible_fields' },
@@ -43,7 +43,11 @@ function BodyVal(req: FastifyRequest) {
         }
 
         // Check belongs to same project
-        if ('projectId' in blob.blob && blob.blob.projectId !== projectId) {
+        if (
+          blob.current &&
+          'projectId' in blob.current &&
+          blob.current.projectId !== projectId
+        ) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
             params: { code: 'incompatible_fields' },
@@ -54,7 +58,7 @@ function BodyVal(req: FastifyRequest) {
         }
 
         // Check not edit an other project
-        if (blob.type === 'project' && blob.blob.id !== projectId) {
+        if (blob.type === 'project' && blob.current?.id !== projectId) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
             params: { code: 'incompatible_fields' },

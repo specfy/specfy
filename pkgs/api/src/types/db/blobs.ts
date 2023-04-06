@@ -17,32 +17,30 @@ export type DBBlobBase = {
 
 export type DBBlobDocumentBase = {
   type: 'document';
-  blob: DBDocument | null;
+  current: DBDocument | null;
 };
 export type DBBlobDocument = DBBlobBase & DBBlobDocumentBase;
 
 export type DBBlobComponentBase = {
   type: 'component';
-  blob: DBComponent | null;
+  current: DBComponent | null;
 };
 export type DBBlobComponent = DBBlobBase & DBBlobComponentBase;
 
 export type DBBlobProjectBase = {
   type: 'project';
-  blob: DBProject | null;
+  current: DBProject | null;
 };
 export type DBBlobProject = DBBlobBase & DBBlobProjectBase;
 
 export type DBBlob = DBBlobComponent | DBBlobDocument | DBBlobProject;
 
-export function isDocumentBlob(blob: any): blob is DBBlobBase & DBBlobDocument {
+export function isDocumentBlob(blob: any): blob is DBBlobDocument {
   return blob.type === 'document';
 }
-export function isComponentBlob(
-  blob: any
-): blob is DBBlobBase & DBBlobComponent {
+export function isComponentBlob(blob: any): blob is DBBlobComponent {
   return blob.type === 'component';
 }
-export function isProjectBlob(blob: any): blob is DBBlobBase & DBBlobProject {
+export function isProjectBlob(blob: any): blob is DBBlobProject {
   return blob.type === 'project';
 }

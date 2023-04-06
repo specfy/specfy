@@ -9,7 +9,7 @@ import {
   shouldEnforceBody,
   shouldNotAllowQueryParams,
 } from '../../../test/helpers';
-import { getBlobComponent } from '../../../test/seed/components';
+import { getBlobComponent, seedComponent } from '../../../test/seed/components';
 import { getBlobProject } from '../../../test/seed/projects';
 import { seedWithProject } from '../../../test/seed/seed';
 
@@ -116,7 +116,7 @@ describe('POST /revisions', () => {
             created: true,
             deleted: false,
             parentId: null,
-            blob,
+            current: blob,
           },
         ],
         description: { content: [], type: 'doc' },
@@ -145,7 +145,47 @@ describe('POST /revisions', () => {
             created: true,
             deleted: true,
             parentId: null,
-            blob,
+            current: blob,
+          },
+        ],
+        description: { content: [], type: 'doc' },
+        name: name,
+        orgId: org.id,
+        projectId: project.id,
+      },
+    });
+
+    isValidationError(res.json);
+    expect(res.statusCode).toBe(400);
+    expect(res.json.error.fields).toStrictEqual({
+      'blobs.0': {
+        code: 'incompatible_fields',
+        message: 'Deleted and Created can not be both true',
+        path: ['blobs', 0],
+      },
+    });
+  });
+
+  it('should disallow deleted with a blob', async () => {
+    const { token, org, project, user } = await seedWithProject();
+
+    // Create a component
+    const component = await seedComponent(user, org, project);
+    const blob = { ...getBlobComponent(org, project), id: component.id };
+
+    const name = `test ${nanoid()}`;
+
+    const res = await t.fetch.post('/0/revisions', {
+      token,
+      body: {
+        blobs: [
+          {
+            type: 'component',
+            typeId: blob.id,
+            created: false,
+            deleted: true,
+            parentId: component.blobId,
+            current: blob,
           },
         ],
         description: { content: [], type: 'doc' },
@@ -181,7 +221,7 @@ describe('POST /revisions', () => {
             created: true,
             deleted: false,
             parentId: null,
-            blob: {
+            current: {
               ...blob,
               orgId: 'zriuzioruzo',
               projectId: 'zriuzioruzo',
@@ -228,7 +268,7 @@ describe('POST /revisions', () => {
             created: true,
             deleted: false,
             parentId: null,
-            blob,
+            current: blob,
           },
         ],
         description: { content: [], type: 'doc' },
@@ -248,6 +288,4 @@ describe('POST /revisions', () => {
       },
     });
   });
-
-  // TODO:
 });
