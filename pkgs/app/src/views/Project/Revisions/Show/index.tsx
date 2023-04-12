@@ -240,7 +240,7 @@ export const ProjectRevisionsShow: React.FC<{
 
     // Remove non modified fields
     for (const blob of blobs) {
-      diffs.push({
+      _diffs.push({
         blob: blob as any,
         diffs: diffTwoBlob(blob) as any,
       });
@@ -365,9 +365,9 @@ export const ProjectRevisionsShow: React.FC<{
 
       {!edit && <ReviewBar rev={rev} qp={qp} />}
 
-      {diffs && (
-        <div className={cls.staged}>
-          {diffs.map((diff) => {
+      <div className={cls.staged}>
+        {diffs.length > 0 ? (
+          diffs.map((diff) => {
             return (
               <DiffCard
                 key={diff.blob.typeId}
@@ -376,9 +376,11 @@ export const ProjectRevisionsShow: React.FC<{
                 onRevert={() => null}
               />
             );
-          })}
-        </div>
-      )}
+          })
+        ) : (
+          <div className={cls.noDiff}>Empty diff...</div>
+        )}
+      </div>
     </Container>
   );
 };
