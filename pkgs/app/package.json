@@ -61,7 +61,7 @@
     "@types/refractor": "3.0.2",
     "@types/string-hash": "1.1.1",
     "@vitejs/plugin-react-swc": "3.0.0",
-    "antd": "5.3.1",
+    "antd": "5.4.0",
     "classnames": "2.3.2",
     "diff": "5.1.0",
     "immer": "9.0.19",
