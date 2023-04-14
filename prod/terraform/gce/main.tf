@@ -1,7 +1,4 @@
-resource "google_service_account" "default" {
-  account_id   = "gce-main"
-  display_name = "GCE Main"
-}
+
 
 resource "google_compute_instance" "main" {
   name         = "main"
