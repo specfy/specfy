@@ -70,8 +70,9 @@ FROM node:18.13.0-bullseye-slim as web
 # Bash is just to be able to log inside the image and have a decent shell
 # OpenSSL is here to handle HTTPS requests correctly
 RUN true \
-  && apt update \
-  && apt-get install -y bash curl openssl
+  && apt update && apt-get install -y bash curl openssl \
+  && rm -rf /var/lib/apt/lists/* \
+  && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false
 
 # Do not use root to run the app
 USER node
