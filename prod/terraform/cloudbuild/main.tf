@@ -13,7 +13,7 @@ resource "google_cloudbuild_trigger" "filename-trigger" {
   build {
     step {
       name = "gcr.io/cloud-builders/docker"
-      args = ["build", "-t", "gcr.io/${var.envs.project}/main", "-f", "prod/Dockerfile"]
+      args = ["build", "-t", "gcr.io/${var.envs.project}/main", "-f", "prod/Dockerfile", "."]
     }
 
     images = [ "gcr.io/${var.envs.project}/api" ]
