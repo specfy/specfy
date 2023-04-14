@@ -31,6 +31,14 @@ resource "google_project" "specfy" {
 }
 
 
+module "cloudbuild" {
+  source     = "./cloudbuild"
+  depends_on = []
+
+  envs = var.envs
+}
+
+
 module "google" {
   source = "./google"
   depends_on = [
@@ -39,7 +47,6 @@ module "google" {
 
   envs = var.envs
 }
-
 
 module "gcs" {
   source = "./gcs"
@@ -59,7 +66,6 @@ module "network" {
   envs = var.envs
 }
 
-
 module "sql" {
   source = "./sql"
   depends_on = [
@@ -68,14 +74,17 @@ module "sql" {
   ]
 
   envs    = var.envs
-  network = module.network.id
+  network = module.network.network
 }
 
-module "cloudbuild" {
-  source = "./cloudbuild"
+module "gce" {
+  source = "./gce"
   depends_on = [
+    data.google_billing_account.specfy,
+    module.network,
+    module.sql
   ]
 
   envs    = var.envs
+  network = module.network.network
 }
-

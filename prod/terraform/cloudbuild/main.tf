@@ -4,7 +4,7 @@ resource "google_cloudbuild_trigger" "filename-trigger" {
   # Require manual intervention in cloud build UI
   github {
     owner = "bodinsamuel"
-    name = "specfy"
+    name  = "specfy"
     push {
       branch = "^main$"
     }
@@ -16,6 +16,6 @@ resource "google_cloudbuild_trigger" "filename-trigger" {
       args = ["build", "-t", "gcr.io/${var.envs.project}/main", "-f", "prod/Dockerfile", "."]
     }
 
-    images = [ "gcr.io/${var.envs.project}/main" ]
+    images = ["gcr.io/${var.envs.project}/main"]
   }
 }

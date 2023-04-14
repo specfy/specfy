@@ -8,7 +8,7 @@ resource "google_sql_database_instance" "specfy" {
     tier = "db-f1-micro"
     ip_configuration {
       ipv4_enabled                                  = false
-      private_network                               = var.network
+      private_network                               = var.network.id
       enable_private_path_for_google_cloud_services = true
     }
   }
