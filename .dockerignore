@@ -54,3 +54,5 @@ renovate.json
 .vscode
 **/.storybook/
 **/tsconfig.tsbuildinfo
+**/.terraform
+**/terraform

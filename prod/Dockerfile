@@ -9,9 +9,7 @@ RUN apk add --no-cache bash curl wget jq
 COPY prod/clean_package_json.sh /tmp
 
 COPY package.json /tmp
-
 RUN /tmp/clean_package_json.sh /tmp/package.json
-RUN cat /tmp/package.json
 
 COPY pkgs/api/package.json /tmp/api_package.json
 RUN /tmp/clean_package_json.sh /tmp/api_package.json
@@ -66,12 +64,14 @@ RUN true \
 # ---- Web ----
 # Resulting new, minimal image
 # This image must have the minimum amount of layers
-FROM node:18.13.0-bullseye as web
+FROM node:18.13.0-bullseye-slim as web
 
 
 # Bash is just to be able to log inside the image and have a decent shell
 # OpenSSL is here to handle HTTPS requests correctly
-RUN apt-get -y install bash curl openssl
+RUN true \
+  && apt update \
+  && apt-get install -y bash curl openssl
 
 # Do not use root to run the app
 USER node

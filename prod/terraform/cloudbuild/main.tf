@@ -16,6 +16,6 @@ resource "google_cloudbuild_trigger" "filename-trigger" {
       args = ["build", "-t", "gcr.io/${var.envs.project}/main", "-f", "prod/Dockerfile", "."]
     }
 
-    images = [ "gcr.io/${var.envs.project}/api" ]
+    images = [ "gcr.io/${var.envs.project}/main" ]
   }
 }
