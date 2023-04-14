@@ -10,6 +10,9 @@ Marketing Site:
 Global:
   ✔ Update mode @done(23-03-25 23:23)
 
+Infrastructure:
+  - Terraform setup
+
 Auth:
   ✔ JWT @done(23-03-31 16:14)
   ✔ Default in dev @done(23-03-31 16:33)
@@ -119,7 +122,7 @@ API:
 
 Components:
   ✔ Create @done(23-03-28 11:12)
-    - Enforce slug
+    ✘ Enforce slug @cancelled(23-04-12 11:33)
     - Unit Test
   ✔ Update @done(23-03-28 11:12)
     - Unit Test

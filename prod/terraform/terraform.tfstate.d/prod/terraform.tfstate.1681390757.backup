@@ -1,0 +1,254 @@
+{
+  "version": 4,
+  "terraform_version": "1.4.4",
+  "serial": 39,
+  "lineage": "a5911137-0b99-df88-3dc5-e63903cb8f26",
+  "outputs": {},
+  "resources": [
+    {
+      "mode": "data",
+      "type": "google_billing_account",
+      "name": "specfy",
+      "provider": "provider[\"registry.terraform.io/hashicorp/google\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "billing_account": null,
+            "display_name": "Specfy",
+            "id": "01349C-3FD9D8-2299B2",
+            "name": "billingAccounts/01349C-3FD9D8-2299B2",
+            "open": true,
+            "project_ids": [
+              "specfy"
+            ]
+          },
+          "sensitive_attributes": []
+        }
+      ]
+    },
+    {
+      "mode": "managed",
+      "type": "google_project",
+      "name": "specfy",
+      "provider": "provider[\"registry.terraform.io/hashicorp/google\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "auto_create_network": false,
+            "billing_account": "01349C-3FD9D8-2299B2",
+            "folder_id": null,
+            "id": "projects/specfy",
+            "labels": {},
+            "name": "specfy",
+            "number": "933880433989",
+            "org_id": null,
+            "project_id": "specfy",
+            "skip_delete": null,
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6NjAwMDAwMDAwMDAwLCJyZWFkIjo2MDAwMDAwMDAwMDAsInVwZGF0ZSI6NjAwMDAwMDAwMDAwfSwic2NoZW1hX3ZlcnNpb24iOiIxIn0=",
+          "dependencies": [
+            "data.google_billing_account.specfy"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.gcs",
+      "mode": "managed",
+      "type": "google_storage_bucket",
+      "name": "specfy_app",
+      "provider": "provider[\"registry.terraform.io/hashicorp/google\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "autoclass": [],
+            "cors": [
+              {
+                "max_age_seconds": 3600,
+                "method": [
+                  "GET",
+                  "HEAD",
+                  "PUT",
+                  "POST",
+                  "DELETE"
+                ],
+                "origin": [
+                  "https://app.specfy.io"
+                ],
+                "response_header": [
+                  "*"
+                ]
+              }
+            ],
+            "custom_placement_config": [],
+            "default_event_based_hold": false,
+            "encryption": [],
+            "force_destroy": false,
+            "id": "specfy-app-storage",
+            "labels": {},
+            "lifecycle_rule": [],
+            "location": "US-CENTRAL1",
+            "logging": [],
+            "name": "specfy-app-storage",
+            "project": "specfy",
+            "public_access_prevention": "inherited",
+            "requester_pays": false,
+            "retention_policy": [],
+            "self_link": "https://www.googleapis.com/storage/v1/b/specfy-app-storage",
+            "storage_class": "STANDARD",
+            "timeouts": null,
+            "uniform_bucket_level_access": true,
+            "url": "gs://specfy-app-storage",
+            "versioning": [],
+            "website": [
+              {
+                "main_page_suffix": "index.html",
+                "not_found_page": "404.html"
+              }
+            ]
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsInJlYWQiOjI0MDAwMDAwMDAwMCwidXBkYXRlIjoyNDAwMDAwMDAwMDB9fQ==",
+          "dependencies": [
+            "data.google_billing_account.specfy",
+            "google_project.specfy"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.gcs",
+      "mode": "managed",
+      "type": "google_storage_bucket",
+      "name": "specfy_front",
+      "provider": "provider[\"registry.terraform.io/hashicorp/google\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "autoclass": [],
+            "cors": [
+              {
+                "max_age_seconds": 3600,
+                "method": [
+                  "GET",
+                  "HEAD",
+                  "PUT",
+                  "POST",
+                  "DELETE"
+                ],
+                "origin": [
+                  "https://www.specfy.io"
+                ],
+                "response_header": [
+                  "*"
+                ]
+              }
+            ],
+            "custom_placement_config": [],
+            "default_event_based_hold": false,
+            "encryption": [],
+            "force_destroy": false,
+            "id": "specfy-front-storage",
+            "labels": {},
+            "lifecycle_rule": [],
+            "location": "US-CENTRAL1",
+            "logging": [],
+            "name": "specfy-front-storage",
+            "project": "specfy",
+            "public_access_prevention": "inherited",
+            "requester_pays": false,
+            "retention_policy": [],
+            "self_link": "https://www.googleapis.com/storage/v1/b/specfy-front-storage",
+            "storage_class": "STANDARD",
+            "timeouts": null,
+            "uniform_bucket_level_access": true,
+            "url": "gs://specfy-front-storage",
+            "versioning": [],
+            "website": [
+              {
+                "main_page_suffix": "index.html",
+                "not_found_page": "404.html"
+              }
+            ]
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsInJlYWQiOjI0MDAwMDAwMDAwMCwidXBkYXRlIjoyNDAwMDAwMDAwMDB9fQ==",
+          "dependencies": [
+            "data.google_billing_account.specfy",
+            "google_project.specfy"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.step1",
+      "mode": "managed",
+      "type": "google_project_service",
+      "name": "service",
+      "provider": "provider[\"registry.terraform.io/hashicorp/google\"]",
+      "instances": [
+        {
+          "index_key": "compute.googleapis.com",
+          "schema_version": 0,
+          "attributes": {
+            "disable_dependent_services": null,
+            "disable_on_destroy": true,
+            "id": "specfy/compute.googleapis.com",
+            "project": "specfy",
+            "service": "compute.googleapis.com",
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjEyMDAwMDAwMDAwMDAsInJlYWQiOjYwMDAwMDAwMDAwMCwidXBkYXRlIjoxMjAwMDAwMDAwMDAwfX0=",
+          "dependencies": [
+            "data.google_billing_account.specfy",
+            "google_project.specfy"
+          ]
+        },
+        {
+          "index_key": "container.googleapis.com",
+          "schema_version": 0,
+          "attributes": {
+            "disable_dependent_services": null,
+            "disable_on_destroy": true,
+            "id": "specfy/container.googleapis.com",
+            "project": "specfy",
+            "service": "container.googleapis.com",
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjEyMDAwMDAwMDAwMDAsInJlYWQiOjYwMDAwMDAwMDAwMCwidXBkYXRlIjoxMjAwMDAwMDAwMDAwfX0=",
+          "dependencies": [
+            "data.google_billing_account.specfy",
+            "google_project.specfy"
+          ]
+        },
+        {
+          "index_key": "sql-component.googleapis.com",
+          "schema_version": 0,
+          "attributes": {
+            "disable_dependent_services": null,
+            "disable_on_destroy": true,
+            "id": "specfy/sql-component.googleapis.com",
+            "project": "specfy",
+            "service": "sql-component.googleapis.com",
+            "timeouts": null
+          },
+          "sensitive_attributes": [],
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjoxMjAwMDAwMDAwMDAwLCJkZWxldGUiOjEyMDAwMDAwMDAwMDAsInJlYWQiOjYwMDAwMDAwMDAwMCwidXBkYXRlIjoxMjAwMDAwMDAwMDAwfX0=",
+          "dependencies": [
+            "data.google_billing_account.specfy",
+            "google_project.specfy"
+          ]
+        }
+      ]
+    }
+  ],
+  "check_results": null
+}

@@ -1,0 +1,13 @@
+{
+  "name": "rfc-editor",
+  "dependencies": null,
+  "devDependencies": {
+    "typescript": "4.9.5"
+  },
+  "packageManager": null,
+  "workspaces": [
+    "pkgs/app",
+    "pkgs/api",
+    "pkgs/website"
+  ]
+}

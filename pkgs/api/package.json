@@ -4,9 +4,9 @@
   "description": "",
   "main": "src/app.js",
   "scripts": {
-    "start": "node index.js",
     "dev": "fastify start --logging-module='build/logger.js' -o -w -P build/app.js",
     "build": "prisma generate && tsc -p tsconfig.json -w",
+    "prod:build": "prisma generate && tsc -p tsconfig.json",
     "test:build": "tsc -p tsconfig.json",
     "seed": "node ./build/test/seed/index.js",
     "test": "vitest",
