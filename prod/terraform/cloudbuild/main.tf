@@ -1,15 +1,15 @@
 resource "google_cloudbuild_trigger" "filename-trigger" {
   location = var.envs.region
 
+  # Require manual intervention in cloud build UI
   github {
     owner = "bodinsamuel"
     name = "specfy"
     push {
-      branch = "main"
+      branch = "^main$"
     }
   }
 
-  # filename = "cloudbuild.yaml"
   build {
     step {
       name = "gcr.io/cloud-builders/docker"
