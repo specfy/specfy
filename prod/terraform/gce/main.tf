@@ -14,7 +14,7 @@ resource "google_compute_instance" "main" {
     "container-vm" = "cos-101-17162-127-57"
     "ec-src"       = "vm_add-tf"
   }
-  tags = ["allow-tcp-8080"]
+  tags = ["allow-http"]
 
   boot_disk {
     mode = "READ_WRITE"

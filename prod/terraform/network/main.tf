@@ -60,5 +60,5 @@ resource "google_compute_firewall" "allow-http" {
 
   # Range of the IAP proxies https://cloud.google.com/iap/docs/using-tcp-forwarding
   source_ranges = ["0.0.0.0/0"]
-  target_tags = ["allow-tcp-8080"]
+  target_tags = ["allow-http"]
 }
