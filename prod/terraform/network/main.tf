@@ -55,7 +55,7 @@ resource "google_compute_firewall" "allow-http" {
 
   allow {
     protocol = "tcp"
-    ports    = ["8080"]
+    ports    = ["80", "443"]
   }
 
   # Range of the IAP proxies https://cloud.google.com/iap/docs/using-tcp-forwarding

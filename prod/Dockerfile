@@ -66,6 +66,7 @@ RUN true \
 # This image must have the minimum amount of layers
 FROM node:18.13.0-bullseye-slim as web
 
+ENV PORT=80
 
 # Bash is just to be able to log inside the image and have a decent shell
 # OpenSSL is here to handle HTTPS requests correctly
@@ -81,4 +82,4 @@ WORKDIR /app/specfy
 
 COPY --from=tmp --chown=node:node /app/tmp /app/specfy
 
-EXPOSE 3000
+EXPOSE 80

@@ -2,6 +2,7 @@ import closeWithGrace from 'close-with-grace';
 import Fastify from 'fastify';
 
 import appService, { options } from './app';
+import { env } from './common/env';
 // Require library to exit fastify process, gracefully (if possible)
 
 // Instantiate Fastify with some config
@@ -27,7 +28,7 @@ app.addHook('onClose', (_, done) => {
 });
 
 // Start listening.
-app.listen({ port: 3000 }, (err) => {
+app.listen({ port: parseInt(env('PORT', '3000'), 10) }, (err) => {
   if (err) {
     app.log.error(err);
     process.exit(1);
