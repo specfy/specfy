@@ -28,7 +28,7 @@
     "fastify": "4.0.0",
     "fastify-plugin": "4.0.0",
     "jsonwebtoken": "9.0.0",
-    "nanoid": "4.0.2",
+    "nanoid": "3.3.6",
     "passport-jwt": "4.0.1",
     "pg": "8.8.0",
     "pino": "8.10.0",
