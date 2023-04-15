@@ -60,6 +60,9 @@ export function registerAuth(f: FastifyInstance) {
     //@ts-expect-error
     fastifyPassport.authenticate('jwt', async (req, res, err, user?: Users) => {
       if (!user || err) {
+        if (req.routerPath === '/') {
+          return;
+        }
         if (!user && !env('DEFAULT_ACCOUNT')) {
           unauthorized(res);
           return;

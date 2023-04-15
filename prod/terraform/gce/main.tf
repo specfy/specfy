@@ -1,4 +1,8 @@
-
+resource "google_compute_address" "main" {
+  name         = "main-static-ip-vm"
+  address_type = "EXTERNAL"
+  region       = var.envs.region
+}
 
 resource "google_compute_instance" "main" {
   name         = "main"
@@ -29,6 +33,7 @@ resource "google_compute_instance" "main" {
   network_interface {
     access_config {
       network_tier = "PREMIUM"
+      nat_ip = google_compute_address.main.address
     }
 
     subnetwork = var.network.subId
@@ -73,5 +78,59 @@ resource "google_compute_instance" "main" {
     enable_integrity_monitoring = true
     enable_secure_boot          = false
     enable_vtpm                 = true
+  }
+}
+
+# # to register web-server's ip address in DNS
+# resource "google_dns_record_set" "default" {
+#   name         = "specfy.io."
+#   managed_zone = "specfy-io"
+#   type         = "A"
+#   ttl          = 300
+#   rrdatas = [
+#     google_compute_address.main.address
+#   ]
+# }
+
+resource "google_compute_instance_group" "main" {
+  name        = "main-vm"
+  description = "Instance group"
+  zone = "${var.envs.region}-a"
+
+  instances = [
+    google_compute_instance.main.id,
+  ]
+
+  named_port {
+    name = "http"
+    port = "8080"
+  }
+}
+
+resource "google_compute_health_check" "main" {
+  name         = "main-health"
+  check_interval_sec = 5
+  healthy_threshold  = 2
+
+
+  http_health_check {
+    port               = 80
+    port_specification = "USE_FIXED_PORT"
+    proxy_header       = "NONE"
+    request_path       = "/0/"
+  }
+}
+
+resource "google_compute_backend_service" "main" {
+  name      = "main"
+  port_name = "http"
+  protocol  = "HTTP"
+
+  health_checks = [
+    google_compute_https_health_check.staging_health.id,
+  ]
+
+  backend {
+    group = google_compute_instance_group.main.id
   }
 }

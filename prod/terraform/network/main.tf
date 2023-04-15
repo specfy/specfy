@@ -62,3 +62,12 @@ resource "google_compute_firewall" "allow-http" {
   source_ranges = ["0.0.0.0/0"]
   target_tags = ["allow-http"]
 }
+
+# Domain
+# to create a DNS zone
+resource "google_dns_managed_zone" "specfy-io" {
+  name          = "specfy-io"
+  dns_name      = "specfy.io."
+  description   = "DNS zone"
+  force_destroy = "false"
+}

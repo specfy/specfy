@@ -10,7 +10,8 @@ resource "google_project_service" "service" {
     "containerregistry.googleapis.com",
     "storage-api.googleapis.com",
     "sql-component.googleapis.com",
-    "storage-component.googleapis.com"
+    "storage-component.googleapis.com",
+    "dns.googleapis.com"
   ])
 
   service = each.key
