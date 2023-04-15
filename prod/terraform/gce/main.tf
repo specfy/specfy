@@ -14,6 +14,7 @@ resource "google_compute_instance" "main" {
     "container-vm" = "cos-101-17162-127-57"
     "ec-src"       = "vm_add-tf"
   }
+  tags = ["allow-tcp-8080"]
 
   boot_disk {
     mode = "READ_WRITE"
@@ -50,6 +51,9 @@ resource "google_compute_instance" "main" {
           - node
           args:
           - pkgs/api/build/index.js
+          env:
+          - name: "DATABASE_URL"
+            value: "${var.sql.url}"
           stdin: false
           tty: false
         restartPolicy: Always

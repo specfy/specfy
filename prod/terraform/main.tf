@@ -87,4 +87,5 @@ module "gce" {
 
   envs    = var.envs
   network = module.network.network
+  sql = module.sql.sql
 }

@@ -4,3 +4,8 @@ variable "network" {
     subId = string
   })
 }
+variable "sql" {
+  type = object({
+    url    = string
+  })
+}

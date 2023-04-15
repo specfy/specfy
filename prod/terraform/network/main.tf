@@ -47,3 +47,18 @@ resource "google_compute_firewall" "allow-ssh-from-iap" {
   # Range of the IAP proxies https://cloud.google.com/iap/docs/using-tcp-forwarding
   source_ranges = ["35.235.240.0/20"]
 }
+
+# Firewall to enable SSH through IAP
+resource "google_compute_firewall" "allow-http" {
+  name    = "${var.envs.project}-allow-http"
+  network = google_compute_network.private_net.name
+
+  allow {
+    protocol = "tcp"
+    ports    = ["8080"]
+  }
+
+  # Range of the IAP proxies https://cloud.google.com/iap/docs/using-tcp-forwarding
+  source_ranges = ["0.0.0.0/0"]
+  target_tags = ["allow-tcp-8080"]
+}

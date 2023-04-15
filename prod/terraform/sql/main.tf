@@ -6,6 +6,8 @@ resource "google_sql_database_instance" "specfy" {
 
   settings {
     tier = "db-f1-micro"
+    activation_policy = "ALWAYS"
+
     ip_configuration {
       ipv4_enabled                                  = false
       private_network                               = var.network.id
@@ -14,4 +16,12 @@ resource "google_sql_database_instance" "specfy" {
   }
 
   deletion_protection = "true"
+}
+
+resource "google_sql_user" "main" {
+  instance = google_sql_database_instance.specfy.name
+  type     = "BUILT_IN"
+
+  name     = "main"
+  password = "foobarfoobar" // TODO: use vault
 }
