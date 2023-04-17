@@ -11,7 +11,8 @@
     "seed": "node ./build/test/seed/index.js",
     "test": "vitest",
     "migrate": "prisma db push",
-    "migrate:create": "prisma migrate dev --create-only"
+    "migrate:create": "prisma migrate dev --create-only",
+    "prod:migrate": "prisma migrate deploy"
   },
   "keywords": [],
   "author": "",

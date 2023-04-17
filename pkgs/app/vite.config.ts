@@ -26,5 +26,5 @@ export default defineConfig({
         replacement: 'src/color.safe.ts',
       },
     ]
-  }
+  },
 });

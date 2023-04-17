@@ -41,7 +41,7 @@ CREATE TABLE "Blobs" (
     "type" VARCHAR(36) NOT NULL,
     "typeId" VARCHAR(36) NOT NULL,
     "parentId" VARCHAR(15),
-    "blob" JSON,
+    "current" JSON,
     "created" BOOLEAN NOT NULL DEFAULT false,
     "deleted" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
