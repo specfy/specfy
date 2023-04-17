@@ -15,5 +15,16 @@ export default defineConfig({
     // process: { env: {}, argv: '' },
     'process.env': {},
     'process.argv': '""',
+    'process.stderr': {},
+    'process.stdout': {},
+    'process.platform': ''
   },
+  resolve: {
+    alias: [
+      {
+        find: /colors\/safe/,
+        replacement: 'src/color.safe.ts',
+      },
+    ]
+  }
 });

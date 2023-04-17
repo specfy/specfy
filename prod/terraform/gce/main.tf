@@ -121,16 +121,40 @@ resource "google_compute_health_check" "main" {
   }
 }
 
+resource "google_compute_global_address" "main" {
+  name       = "lb-ipv4-1"
+  ip_version = "IPV4"
+}
+
 resource "google_compute_backend_service" "main" {
   name      = "main"
   port_name = "http"
   protocol  = "HTTP"
 
   health_checks = [
-    google_compute_https_health_check.staging_health.id,
+    google_compute_health_check.main.id,
   ]
 
   backend {
     group = google_compute_instance_group.main.id
   }
+}
+
+resource "google_compute_url_map" "main" {
+  name            = "web-map-http"
+  default_service = google_compute_backend_service.main.id
+}
+
+resource "google_compute_target_http_proxy" "main" {
+  name    = "http-lb-proxy"
+  url_map = google_compute_url_map.main.id
+}
+
+resource "google_compute_global_forwarding_rule" "main" {
+  name                  = "http-content-rule"
+  ip_protocol           = "TCP"
+  load_balancing_scheme = "EXTERNAL_MANAGED"
+  port_range            = "80-80"
+  target                = google_compute_target_http_proxy.main.id
+  ip_address            = google_compute_global_address.main.id
 }

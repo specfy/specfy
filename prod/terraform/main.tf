@@ -77,15 +77,15 @@ module "sql" {
   network = module.network.network
 }
 
-module "gce" {
-  source = "./gce"
-  depends_on = [
-    data.google_billing_account.specfy,
-    module.network,
-    module.sql
-  ]
+# module "gce" {
+#   source = "./gce"
+#   depends_on = [
+#     data.google_billing_account.specfy,
+#     module.network,
+#     module.sql
+#   ]
 
-  envs    = var.envs
-  network = module.network.network
-  sql = module.sql.sql
-}
+#   envs    = var.envs
+#   network = module.network.network
+#   sql = module.sql.sql
+# }

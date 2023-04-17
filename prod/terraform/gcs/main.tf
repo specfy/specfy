@@ -21,6 +21,12 @@ resource "google_storage_bucket" "specfy_front" {
   }
 }
 
+resource "google_storage_bucket_access_control" "front" {
+  bucket = google_storage_bucket.specfy_front.id
+  role   = "READER"
+  entity = "allUsers"
+}
+
 resource "google_storage_bucket" "specfy_app" {
   project       = var.envs.project
   name          = "${var.envs.project}-app-storage"
@@ -42,4 +48,11 @@ resource "google_storage_bucket" "specfy_app" {
     response_header = ["*"]
     max_age_seconds = 3600
   }
+}
+
+
+resource "google_storage_bucket_access_control" "app" {
+  bucket = google_storage_bucket.specfy_app.id
+  role   = "READER"
+  entity = "allUsers"
 }
