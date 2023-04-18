@@ -40,14 +40,14 @@ module "google" {
 }
 
 module "secrets" {
-  source     = "./secrets"
+  source = "./secrets"
   depends_on = [
     module.google
   ]
 }
 
 module "cloudbuild" {
-  source     = "./cloudbuild"
+  source = "./cloudbuild"
   depends_on = [
     module.google,
     module.secrets
@@ -100,3 +100,16 @@ module "sql" {
 #   network = module.network.network
 #   sql = module.sql.sql
 # }
+
+
+module "run" {
+  source = "./run"
+  depends_on = [
+    module.cloudbuild,
+    module.sql
+  ]
+
+  envs       = var.envs
+  sql        = module.sql.sql
+  cloudbuild = module.cloudbuild.cloudbuild
+}

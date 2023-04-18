@@ -33,7 +33,7 @@ resource "google_compute_instance" "main" {
   network_interface {
     access_config {
       network_tier = "PREMIUM"
-      nat_ip = google_compute_address.main.address
+      nat_ip       = google_compute_address.main.address
     }
 
     subnetwork = var.network.subId
@@ -95,7 +95,7 @@ resource "google_compute_instance" "main" {
 resource "google_compute_instance_group" "main" {
   name        = "main-vm"
   description = "Instance group"
-  zone = "${var.envs.region}-a"
+  zone        = "${var.envs.region}-a"
 
   instances = [
     google_compute_instance.main.id,
@@ -108,7 +108,7 @@ resource "google_compute_instance_group" "main" {
 }
 
 resource "google_compute_health_check" "main" {
-  name         = "main-health"
+  name               = "main-health"
   check_interval_sec = 5
   healthy_threshold  = 2
 

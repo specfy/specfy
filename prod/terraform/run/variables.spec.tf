@@ -1,9 +1,9 @@
-variable "network" {
+variable "cloudbuild" {
   type = object({
-    id    = string
-    subId = string
+    mainImage = string
   })
 }
+
 variable "sql" {
   type = object({
     url      = string
