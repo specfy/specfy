@@ -51,8 +51,12 @@ RUN true \
 # At this point nothing can be cached anymore
 COPY . /app/tmp
 
+ARG GOOGLE_APPLICATION_CREDENTIALS
+ARG git_hash
 ENV GIT_HASH ${git_hash:-dev}
 ENV NODE_ENV=production
+
+RUN echo $GOOGLE_APPLICATION_CREDENTIALS
 
 # Build API
 RUN true \

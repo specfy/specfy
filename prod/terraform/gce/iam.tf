@@ -14,7 +14,6 @@ resource "google_service_account" "default" {
 resource "google_project_iam_member" "default" {
   count = length(local.roles)
 
-  project = var.envs.project
-  role    = local.roles[count.index]
-  member  = "serviceAccount:${google_service_account.default.email}"
+  role   = local.roles[count.index]
+  member = "serviceAccount:${google_service_account.default.email}"
 }
