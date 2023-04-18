@@ -11,6 +11,7 @@ import { Storage } from '@google-cloud/storage';
 
 const DIR = process.env.DIR;
 const BUCKET_NAME = process.env.BUCKET_NAME;
+const BASE = process.env.BASE;
 
 (async function main() {
   // Creates a client
@@ -22,7 +23,7 @@ const BUCKET_NAME = process.env.BUCKET_NAME;
   async function upload() {
     return await Promise.all(
       fileList.map((filePath) => {
-        const destination = join(relative(DIR, filePath));
+        const destination = join(BASE, relative(DIR, filePath));
         console.log('-> ', destination);
 
         return storage

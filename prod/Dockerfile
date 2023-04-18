@@ -52,28 +52,33 @@ RUN true \
 COPY . /app/tmp
 
 ENV GIT_HASH ${git_hash:-dev}
+ENV NODE_ENV=production
 
 # Build API
 RUN true \
   && cd pkgs/api \
-  && npm run prod:build \
-  && rm -rf src/
+  && npm run prod:build
 
 # Build APP
 RUN true \
   && cd pkgs/app \
-  && npm run build -- --assetsDir=${GIT_HASH} \
-  && BUCKET_NAME=specfy-app-storage DIR=./dist/ node ../../prod/upload_source_gcs.js \
-  && rm -rf src/ \
-  && rm -rf dist/
+  && npm run build -- --base=${GIT_HASH} \
+  && BUCKET_NAME=specfy-app-storage DIR=./dist/ BASE=${GIT_HASH} node ../../prod/upload_source_gcs.js
 
 # Build WEBSITE
 RUN true \
   && cd pkgs/website \
-  && npm run build -- --assetsDir=${GIT_HASH} \
-  && BUCKET_NAME=specfy-front-storage DIR=./dist/ node ../../prod/upload_source_gcs.js \
-  && rm -rf src/ \
-  && rm -rf dist/
+  && npm run build -- --base=${GIT_HASH} \
+  && BUCKET_NAME=specfy-front-storage DIR=./dist/ BASE=${GIT_HASH} node ../../prod/upload_source_gcs.js
+
+
+# Clean src
+RUN true \
+  && rm -rf pkgs/api/src \
+  && rm -rf pkgs/app/src/ \
+  && rm -rf pkgs/app/dist/ \
+  && rm -rf pkgs/website/src/ \
+  && rm -rf pkgs/website/dist/
 
 # Clean dev dependencies
 RUN true \
