@@ -38,16 +38,20 @@ resource "google_cloudbuild_trigger" "filename-trigger" {
 
     // Pull cache
     step {
+      id         = "cache"
       name       = "gcr.io/cloud-builders/docker"
       entrypoint = "bash"
       args       = ["-c", "docker pull ${local.image} || exit 0"]
     }
 
     step {
-      name = "gcr.io/cloud-builders/docker"
+      id       = "compilation"
+      wait_for = ["cache"]
+      name     = "gcr.io/cloud-builders/docker"
       args = [
         "build",
         "--build-arg=git_hash=$SHORT_SHA",
+        "--network=cloudbuild",
         "-t", local.image,
         "--cache-from", "${local.image}:latest",
         "-f", "prod/Dockerfile",
