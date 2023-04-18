@@ -28,9 +28,12 @@ app.addHook('onClose', (_, done) => {
 });
 
 // Start listening.
-app.listen({ host: "0.0.0.0", port: parseInt(env('PORT', '3000'), 10) }, (err) => {
-  if (err) {
-    app.log.error(err);
-    process.exit(1);
+app.listen(
+  { host: '0.0.0.0', port: parseInt(env('PORT', '3000'), 10) },
+  (err) => {
+    if (err) {
+      app.log.error(err);
+      process.exit(1);
+    }
   }
-});
+);

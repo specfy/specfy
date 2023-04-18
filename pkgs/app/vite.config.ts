@@ -17,7 +17,7 @@ export default defineConfig({
     'process.argv': '""',
     'process.stderr': {},
     'process.stdout': {},
-    'process.platform': ''
+    'process.platform': '',
   },
   resolve: {
     alias: [
@@ -25,6 +25,6 @@ export default defineConfig({
         find: /colors\/safe/,
         replacement: 'src/color.safe.ts',
       },
-    ]
+    ],
   },
 });
