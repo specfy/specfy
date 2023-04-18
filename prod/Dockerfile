@@ -51,11 +51,29 @@ RUN true \
 # At this point nothing can be cached anymore
 COPY . /app/tmp
 
-# Build everything
+ENV GIT_HASH ${git_hash:-dev}
+
+# Build API
 RUN true \
   && cd pkgs/api \
   && npm run prod:build \
   && rm -rf src/
+
+# Build APP
+RUN true \
+  && cd pkgs/app \
+  && npm run build -- --assetsDir=${GIT_HASH} \
+  && BUCKET_NAME=specfy-app-storage DIR=./dist/ node ../../prod/upload_source_gcs.js \
+  && rm -rf src/ \
+  && rm -rf dist/
+
+# Build WEBSITE
+RUN true \
+  && cd pkgs/website \
+  && npm run build -- --assetsDir=${GIT_HASH} \
+  && BUCKET_NAME=specfy-front-storage DIR=./dist/ node ../../prod/upload_source_gcs.js \
+  && rm -rf src/ \
+  && rm -rf dist/
 
 # Clean dev dependencies
 RUN true \
@@ -67,6 +85,7 @@ RUN true \
 FROM node:18.13.0-bullseye-slim as web
 
 ENV PORT=8080
+ENV NODE_ENV=production
 
 # Bash is just to be able to log inside the image and have a decent shell
 # OpenSSL is here to handle HTTPS requests correctly

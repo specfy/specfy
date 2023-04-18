@@ -95,6 +95,7 @@
   "include": [
     "pkgs/",
     "vite.config.ts",
-    ".eslintrc.cjs"
+    ".eslintrc.cjs",
+    "prod/"
   ]
 }
