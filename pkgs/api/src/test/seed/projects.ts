@@ -3,7 +3,7 @@ import type { Orgs, Users } from '@prisma/client';
 import { nanoid } from '../../common/id';
 import { slugify } from '../../common/string';
 import { prisma } from '../../db';
-import { createProject, updateProject } from '../../models';
+import { createProject, updateProject } from '../../models/project';
 import type { DBProject } from '../../types/db';
 
 /**
@@ -226,7 +226,7 @@ export async function seedProjects(users: Users[]) {
 
     // ---- Permissions
     await Promise.all([
-      ...[p1, p3, p4, p5].map((p) => {
+      ...[p0, p1, p3, p4, p5].map((p) => {
         return tx.perms.create({
           data: {
             id: nanoid(),
@@ -263,7 +263,7 @@ export async function seedProjects(users: Users[]) {
     ]);
 
     return { p0, p1, /*p2,*/ p3, p4, p5 };
-  });
+  }, { timeout: 20000 });
 
   return res;
 }

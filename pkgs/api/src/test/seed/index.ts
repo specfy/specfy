@@ -10,19 +10,26 @@ import { truncate } from './seed';
 import { seedUsers } from './users';
 
 export async function seed() {
+  console.log(' - Users...');
   const users = await seedUsers();
 
+  console.log(' - Orgs...');
   const orgs = await seedOrgs(users);
 
+  console.log(' - Projects...');
   const projects = await seedProjects(users);
 
+  console.log(' - Documents...');
   const rfcs = await seedRFC(orgs, projects, users);
   await seedPlaybook(orgs, projects, users);
 
+  console.log(' - Components...');
   const components = await seedComponents(orgs, projects, users);
 
+  console.log(' - Revisions...');
   await seedRevisions(projects, users, rfcs, components);
 
+  console.log(' - Policies...');
   await seedPolicies(users);
 }
 

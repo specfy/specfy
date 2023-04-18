@@ -9,6 +9,7 @@ resource "google_storage_bucket" "specfy_front" {
 
   uniform_bucket_level_access = true
 
+
   website {
     main_page_suffix = "index.html"
     not_found_page   = "404.html"
@@ -19,12 +20,6 @@ resource "google_storage_bucket" "specfy_front" {
     response_header = ["*"]
     max_age_seconds = 3600
   }
-}
-
-resource "google_storage_bucket_access_control" "front" {
-  bucket = google_storage_bucket.specfy_front.id
-  role   = "READER"
-  entity = "allUsers"
 }
 
 resource "google_storage_bucket" "specfy_app" {
@@ -48,11 +43,4 @@ resource "google_storage_bucket" "specfy_app" {
     response_header = ["*"]
     max_age_seconds = 3600
   }
-}
-
-
-resource "google_storage_bucket_access_control" "app" {
-  bucket = google_storage_bucket.specfy_app.id
-  role   = "READER"
-  entity = "allUsers"
 }

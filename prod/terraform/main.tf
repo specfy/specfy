@@ -30,15 +30,6 @@ resource "google_project" "specfy" {
   auto_create_network = false
 }
 
-
-module "cloudbuild" {
-  source     = "./cloudbuild"
-  depends_on = []
-
-  envs = var.envs
-}
-
-
 module "google" {
   source = "./google"
   depends_on = [
@@ -48,10 +39,29 @@ module "google" {
   envs = var.envs
 }
 
+module "secrets" {
+  source     = "./secrets"
+  depends_on = [
+    module.google
+  ]
+}
+
+module "cloudbuild" {
+  source     = "./cloudbuild"
+  depends_on = [
+    module.google,
+    module.secrets
+  ]
+
+  envs = var.envs
+}
+
+
 module "gcs" {
   source = "./gcs"
   depends_on = [
-    google_project.specfy
+    google_project.specfy,
+    module.google
   ]
 
   envs = var.envs
@@ -60,7 +70,8 @@ module "gcs" {
 module "network" {
   source = "./network"
   depends_on = [
-    google_project.specfy
+    google_project.specfy,
+    module.google
   ]
 
   envs = var.envs

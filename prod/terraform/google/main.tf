@@ -11,7 +11,11 @@ resource "google_project_service" "service" {
     "storage-api.googleapis.com",
     "sql-component.googleapis.com",
     "storage-component.googleapis.com",
-    "dns.googleapis.com"
+    "dns.googleapis.com",
+    "secretmanager.googleapis.com",
+    "run.googleapis.com",
+    "vpcaccess.googleapis.com",
+    "sqladmin.googleapis.com"
   ])
 
   service = each.key

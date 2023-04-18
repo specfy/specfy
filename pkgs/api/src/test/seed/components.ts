@@ -518,7 +518,7 @@ export async function seedComponents(
     });
 
     return { api, gcp, worker, manager, pg, gce };
-  });
+  }, { timeout: 20000 });
 
   return res;
 }
