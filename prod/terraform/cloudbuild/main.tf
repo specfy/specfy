@@ -53,6 +53,7 @@ resource "google_cloudbuild_trigger" "filename-trigger" {
         "--build-arg=git_hash=$SHORT_SHA",
         "--network=cloudbuild",
         "-t", local.image,
+        "-t", "${local.image}:$COMMIT_SHA",
         "--cache-from", "${local.image}:latest",
         "-f", "prod/Dockerfile",
         "."
