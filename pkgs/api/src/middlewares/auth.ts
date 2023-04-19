@@ -1,6 +1,3 @@
-import fs from 'fs';
-import path from 'path';
-
 import { Authenticator } from '@fastify/passport';
 import fastifySession from '@fastify/secure-session';
 import type { Users } from '@prisma/client';
@@ -18,6 +15,8 @@ import type { GithubAuth } from '../types/github';
 
 const GITHUB_SCOPES = ['user:email'];
 const ALLOW_GUEST = ['/', '/0/oauth/github', '/0/oauth/github/cb'];
+const COOKIE_SECRET = Buffer.from(env('COOKIE_SECRET')!, 'hex');
+
 export const fastifyPassport = new Authenticator();
 
 export function registerAuth(f: FastifyInstance) {
@@ -32,9 +31,8 @@ export function registerAuth(f: FastifyInstance) {
       secure: true,
       sameSite: 'none',
       expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-      // options for setCookie, see https://github.com/fastify/fastify-cookie
     },
-    key: fs.readFileSync(path.join(__dirname, '..', '..', 'secret-key')),
+    key: COOKIE_SECRET,
   });
   f.register(fastifyPassport.initialize());
   f.register(fastifyPassport.secureSession());
@@ -134,7 +132,6 @@ export function registerAuth(f: FastifyInstance) {
   f.addHook('preValidation', async (req) => {
     let id = req.session.id;
     if (!id && env('DEFAULT_ACCOUNT')) {
-      console.log('bon', env('DEFAULT_ACCOUNT'));
       // In dev we can auto-load the default user
       const tmp = await prisma.users.findUnique({
         where: { email: env('DEFAULT_ACCOUNT')! },

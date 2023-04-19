@@ -23,6 +23,7 @@ jobs:
 
     env:
       DATABASE_URL: "postgres://postgres:postgres@postgres:5432/postgres?sslmode=disable"
+      COOKIE_SECRET: "00d0ab4f7738a83feb37f661526512063c41e49278b7c32cba87314269a5788b"
 
     steps:
       - name: Check out repository code

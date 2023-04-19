@@ -1,4 +1,5 @@
 type Keys =
+  | 'COOKIE_SECRET'
   | 'DATABASE_URL'
   | 'DEFAULT_ACCOUNT'
   | 'ENVIRONMENT'
