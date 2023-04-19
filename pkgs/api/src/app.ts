@@ -13,8 +13,16 @@ import { routes } from './routes/routes';
 import './common/auth';
 
 export default async (f: FastifyInstance, opts: FastifyPluginOptions) => {
-  // Place here your custom code!
-  await f.register(cors, {});
+  await f.register(cors, {
+    // Important for cookies to work
+    origin: [
+      'http://localhost:3000',
+      'https://localhost:5173',
+      'https://app.specfy.io',
+    ],
+    credentials: true,
+    exposedHeaders: ['set-cookie'],
+  });
   // Do not touch the following lines
 
   // await start();

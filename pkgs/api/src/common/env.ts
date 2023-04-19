@@ -2,6 +2,8 @@ type Keys =
   | 'DATABASE_URL'
   | 'DEFAULT_ACCOUNT'
   | 'ENVIRONMENT'
+  | 'GITHUB_CLIENT_ID'
+  | 'GITHUB_CLIENT_SECRET'
   | 'NODE_ENV'
   | 'PORT';
 

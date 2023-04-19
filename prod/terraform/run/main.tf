@@ -29,7 +29,7 @@ resource "google_cloud_run_v2_service" "main" {
       // TODO: remove this
       env {
         name  = "DEFAULT_ACCOUNT"
-        value = "bodin.samuel@gmail.com"
+        value = "demo@specfy.com"
       }
 
       volume_mounts {

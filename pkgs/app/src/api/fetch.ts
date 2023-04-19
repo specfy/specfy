@@ -37,6 +37,7 @@ export async function fetchApi<
     method: method || 'GET',
     body: opts?.body && JSON.stringify(opts.body),
     headers,
+    credentials: 'include', // for cookies
   });
 
   let json: T;

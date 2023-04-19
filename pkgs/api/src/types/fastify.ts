@@ -22,5 +22,13 @@ declare module 'fastify' {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
-  interface PassportUser extends Users {}
+  interface PassportUser extends Users {
+    //
+  }
+}
+
+declare module '@fastify/secure-session' {
+  interface SessionData {
+    id: string;
+  }
 }

@@ -29,7 +29,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
   const tryLogin = async () => {
     const data = await getMe();
-    if (!data) return false;
+    if (!data) {
+      return false;
+    }
+
     setUser(data);
     return true;
   };
@@ -37,7 +40,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const handleLogin = async () => {
     const success = await tryLogin();
 
-    if (!success) return;
+    if (!success) {
+      return;
+    }
     const origin = location.state?.from?.pathname || '/';
     navigate(origin);
   };
@@ -47,15 +52,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     navigate('/login', { replace: true });
   };
 
-  const value = useMemo(
-    () => ({
+  const value = useMemo(() => {
+    return {
       user,
       tryLogin: tryLogin,
       login: handleLogin,
       logout: handleLogout,
-    }),
-    [user]
-  );
+    };
+  }, [user]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

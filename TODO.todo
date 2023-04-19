@@ -11,7 +11,12 @@ Global:
   ✔ Update mode @done(23-03-25 23:23)
 
 Infrastructure:
-  - Terraform setup
+  ✔ Terraform setup @done(23-04-19 11:10)
+  ✔ Deploy GCP @done(23-04-19 11:10)
+  ✔ custom domain @done(23-04-19 11:10)
+  ✔ cloud build @done(23-04-19 11:10)
+  ✔ cloud storage @done(23-04-19 11:10)
+  ✔ CDN @done(23-04-19 11:10)
 
 Auth:
   ✔ JWT @done(23-03-31 16:14)
