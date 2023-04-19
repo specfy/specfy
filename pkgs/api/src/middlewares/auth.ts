@@ -60,62 +60,64 @@ export function registerAuth(f: FastifyInstance) {
   );
 
   // GITHUB OAUTH
-  fastifyPassport.use(
-    'github',
-    new GithubStrategy(
-      {
-        clientID: env('GITHUB_CLIENT_ID')!,
-        clientSecret: env('GITHUB_CLIENT_SECRET')!,
-        callbackURL: 'http://127.0.0.1:3000/0/oauth/github/cb',
-        scope: GITHUB_SCOPES,
-        passReqToCallback: true,
-      },
-      async function (
-        _req: any,
-        accessToken: string,
-        _refreshToken: string,
-        profile: GithubAuth,
-        done: any
-      ) {
-        const emails = profile.emails;
-        if (!emails || emails.length < 0) {
-          done('no_email');
-          return;
-        }
+  if (env('GITHUB_CLIENT_ID')) {
+    fastifyPassport.use(
+      'github',
+      new GithubStrategy(
+        {
+          clientID: env('GITHUB_CLIENT_ID')!,
+          clientSecret: env('GITHUB_CLIENT_SECRET')!,
+          callbackURL: 'http://127.0.0.1:3000/0/oauth/github/cb',
+          scope: GITHUB_SCOPES,
+          passReqToCallback: true,
+        },
+        async function (
+          _req: any,
+          accessToken: string,
+          _refreshToken: string,
+          profile: GithubAuth,
+          done: any
+        ) {
+          const emails = profile.emails;
+          if (!emails || emails.length < 0) {
+            done('no_email');
+            return;
+          }
 
-        const email = emails[0].value;
+          const email = emails[0].value;
 
-        let user = await prisma.users.findUnique({
-          where: { email },
-        });
-        if (user) {
-          done(null, user);
-          return;
-        }
+          let user = await prisma.users.findUnique({
+            where: { email },
+          });
+          if (user) {
+            done(null, user);
+            return;
+          }
 
-        user = await prisma.users.create({
-          data: {
-            id: nanoid(),
-            name: profile.displayName,
-            email,
-            emailVerifiedAt: new Date(),
-            Accounts: {
-              create: {
-                id: nanoid(),
-                type: 'oauth',
-                provider: 'github',
-                providerAccountId: profile.id,
-                scope: GITHUB_SCOPES.join(','),
-                accessToken: accessToken,
+          user = await prisma.users.create({
+            data: {
+              id: nanoid(),
+              name: profile.displayName,
+              email,
+              emailVerifiedAt: new Date(),
+              Accounts: {
+                create: {
+                  id: nanoid(),
+                  type: 'oauth',
+                  provider: 'github',
+                  providerAccountId: profile.id,
+                  scope: GITHUB_SCOPES.join(','),
+                  accessToken: accessToken,
+                },
               },
             },
-          },
-        });
+          });
 
-        done(null, user);
-      }
-    )
-  );
+          done(null, user);
+        }
+      )
+    );
+  }
 
   fastifyPassport.registerUserSerializer(async (user: Users) => {
     console.log('on serialize');
