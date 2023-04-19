@@ -1,5 +1,6 @@
 import { LoadingOutlined } from '@ant-design/icons';
 import { Layout } from 'antd';
+import classNames from 'classnames';
 import { useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { useMount } from 'react-use';
@@ -22,7 +23,11 @@ export const AuthLayout: React.FC<{ children?: React.ReactNode }> = ({
   });
 
   if (wait) {
-    return <LoadingOutlined />;
+    return (
+      <div className={classNames(cls.app, cls.loading)}>
+        <LoadingOutlined />
+      </div>
+    );
   }
 
   if (!auth.user) {
