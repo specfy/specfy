@@ -19,6 +19,7 @@ export default async (f: FastifyInstance, opts: FastifyPluginOptions) => {
       'http://localhost:5173',
       'https://localhost:5173',
       'https://app.specfy.io',
+      '*.specfy.io',
     ],
     credentials: true,
     exposedHeaders: ['set-cookie'],
