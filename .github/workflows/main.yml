@@ -25,7 +25,6 @@ jobs:
       DATABASE_URL: "postgres://postgres:postgres@postgres:5432/postgres?sslmode=disable"
       COOKIE_SECRET: "00d0ab4f7738a83feb37f661526512063c41e49278b7c32cba87314269a5788b"
       PASSWORD_SALT: "erejlksfjgfsd"
-      COOKIE_SECRET: "4fe91796c30bd989d95b62dc46c7c3ba0b6aa2df2187400586a4121c54c53b85"
 
     steps:
       - name: Check out repository code
