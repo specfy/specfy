@@ -72,14 +72,23 @@ export async function seedDefaultAccount(): Promise<Users> {
       id: nanoid(),
       name: 'Demo Account',
       email: env('DEFAULT_ACCOUNT')!,
-      password: pbkdf2('foobar').toString('hex'),
+      password: pbkdf2('defaultpassword').toString('hex'),
     },
   });
 }
 
-export async function seedUser(): Promise<Users> {
+export async function seedUser(): Promise<{ user: Users; pwd: string }> {
   const id = nanoid();
-  return await prisma.users.create({
-    data: { id, name: `User ${id}`, email: `user.${id}@gmail.com` },
-  });
+  const pwd = nanoid();
+  return {
+    user: await prisma.users.create({
+      data: {
+        id,
+        name: `User ${id}`,
+        email: `user.${id}@gmail.com`,
+        password: pbkdf2(pwd).toString('hex'),
+      },
+    }),
+    pwd,
+  };
 }

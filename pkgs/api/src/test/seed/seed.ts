@@ -10,9 +10,10 @@ import { seedUser } from './users';
 
 export async function seedSimpleUser(org?: Orgs): Promise<{
   user: Users;
+  pwd: string;
   token: string;
 }> {
-  const user = await seedUser();
+  const { user, pwd } = await seedUser();
   const token = getJwtToken(user);
 
   if (org) {
@@ -27,7 +28,7 @@ export async function seedSimpleUser(org?: Orgs): Promise<{
     });
   }
 
-  return { user, token };
+  return { user, token, pwd };
 }
 
 export async function seedWithOrg(): Promise<{
@@ -35,7 +36,7 @@ export async function seedWithOrg(): Promise<{
   org: Orgs;
   token: string;
 }> {
-  const user = await seedUser();
+  const { user } = await seedUser();
   const org = await seedOrg(user);
 
   await prisma.perms.create({

@@ -13,7 +13,7 @@ import type { PreHandler } from '../../../types/fastify';
 const obj = z
   .object({
     email: z.string().max(50),
-    password: z.string().max(100),
+    password: z.string().min(8).max(100),
   })
   .strict();
 
