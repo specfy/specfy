@@ -1,5 +1,5 @@
 # Private keys can be in there
-**/.env*
+**/.env
 **/personal-service-account.json
 
 # Dependencies
