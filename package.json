@@ -10,7 +10,8 @@
     "lint:scss": "stylelint --config-basedir pkgs/app **/*.scss",
     "lint:fix": "npm run lint -- --fix",
     "test": "vitest",
-    "docker:build": "docker build -t test -f prod/Dockerfile ."
+    "docker:build": "docker build -t test -f prod/Dockerfile .",
+    "docker:run": "docker run --env-file ./pkgs/api/.env test node pkgs/api/build/index.js"
   },
   "repository": {
     "type": "git",

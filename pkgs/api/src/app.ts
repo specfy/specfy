@@ -5,8 +5,8 @@ import type {
   FastifyServerOptions,
 } from 'fastify';
 
-// import { logger } from './logger';
 import { notFound, serverError } from './common/errors';
+import { logger } from './logger';
 import { AuthError } from './middlewares/auth/errors';
 import { routes } from './routes/routes';
 import './common/auth';
@@ -55,5 +55,5 @@ export default async (f: FastifyInstance, opts: FastifyPluginOptions) => {
 };
 
 export const options: FastifyServerOptions = {
-  // logger,
+  logger,
 };

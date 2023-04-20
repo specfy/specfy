@@ -26,18 +26,18 @@ resource "google_cloud_run_v2_service" "main" {
       }
 
 
-      # env {
-      #   name  = "PASSWORD_SALT"
-      # }
-      # env {
-      #   name  = "COOKIE_SECRET"
-      # }
-      # env {
-      #   name  = "GITHUB_CLIENT_ID"
-      # }
-      # env {
-      #   name  = "GITHUB_CLIENT_SECRET"
-      # }
+      env {
+        name  = "PASSWORD_SALT"
+      }
+      env {
+        name  = "COOKIE_SECRET"
+      }
+      env {
+        name  = "GITHUB_CLIENT_ID"
+      }
+      env {
+        name  = "GITHUB_CLIENT_SECRET"
+      }
 
       // TODO: remove this
       env {
