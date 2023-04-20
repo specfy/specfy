@@ -1,5 +1,4 @@
 import {
-  IconApps,
   IconBell,
   IconCaretDown,
   IconHelp,
@@ -16,8 +15,8 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useListOrgs } from '../../api';
 import { isError } from '../../api/helpers';
 import { useAuth } from '../../hooks/useAuth';
-import Logo1 from '../../static/logo2.svg';
 import type { RouteOrg } from '../../types/routes';
+import { Logo } from '../Logo';
 
 import cls from './index.module.scss';
 
@@ -93,9 +92,8 @@ export const LayoutHeader: React.FC = () => {
 
   return (
     <Layout.Header className={cls.header}>
-      <Link className={cls.logo} to="/">
-        <IconApps />
-        <img src={Logo1} />
+      <Link to="/">
+        <Logo color="white" />
       </Link>
 
       <div>

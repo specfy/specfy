@@ -1,3 +1,5 @@
+import { Logo } from '../Logo';
+
 export const Home: React.FC = () => {
   return (
     <div className="bg-white">
@@ -19,7 +21,7 @@ export const Home: React.FC = () => {
           <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
             <div className="text-left">
               <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-                Specfy
+                <Logo />
               </h1>
               <p className="mt-6 text-lg leading-8 text-gray-800">
                 Next-gen documentation platform for engineers.

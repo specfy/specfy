@@ -1,0 +1,20 @@
+$height: 52px;
+
+.logo {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+
+  width: 202px;
+  height: 100%;
+
+  >svg {
+    height: $height;
+  }
+}
+
+.icon {
+  width: 40px;
+  font-size: 40px;
+  color: #4f46e5;
+}

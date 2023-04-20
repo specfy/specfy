@@ -40,21 +40,7 @@
   }
 }
 
-.logo {
-  display: flex;
-  gap: $p-l;
-  align-items: center;
-  padding: 0 0 0 $p-l;
 
-  svg {
-    font-size: $font-2xl;
-  }
-
-  img {
-    height: 35px;
-    filter: invert(1);
-  }
-}
 
 .right {
   display: flex;

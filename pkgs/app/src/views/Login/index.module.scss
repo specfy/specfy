@@ -1,3 +1,5 @@
+@import "../../styles/theme";
+
 .container {
   display: flex;
   align-items: center;
@@ -6,7 +8,13 @@
   width: 100vw;
   height: 100vh;
 
-  > div {
+  >div {
     width: 450px;
   }
+}
+
+
+.logo {
+  display: flex;
+  margin-bottom: $p-2xl;
 }

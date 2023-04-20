@@ -1,0 +1,22 @@
+@import "../../styles/theme";
+
+$height: 32px;
+
+.logo {
+  display: flex;
+  gap: $p-m;
+  align-items: center;
+
+  width: 132px;
+  height: 100%;
+
+  >svg {
+    height: $height;
+  }
+}
+
+.icon {
+  width: 40px;
+  font-size: 40px;
+  color: $primary;
+}

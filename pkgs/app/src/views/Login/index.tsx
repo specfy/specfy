@@ -1,4 +1,3 @@
-import { IconApps } from '@tabler/icons-react';
 import { App, Button, Form, Input } from 'antd';
 import type { FieldsErrors } from 'api/src/types/api';
 import { useState } from 'react';
@@ -8,7 +7,7 @@ import { authLocal } from '../../api/auth';
 import { isError, isValidationError } from '../../api/helpers';
 import { i18n } from '../../common/i18n';
 import { Card } from '../../components/Card';
-import Logo1 from '../../static/logo2.svg';
+import { Logo } from '../../components/Logo';
 
 import cls from './index.module.scss';
 
@@ -35,11 +34,8 @@ export const Login: React.FC = () => {
   return (
     <div className={cls.container}>
       <div>
-        <Link className={''} to="/" style={{ fontSize: '35px' }}>
-          <span>
-            <IconApps />
-          </span>
-          <img src={Logo1} />
+        <Link className={cls.logo} to="/">
+          <Logo />
         </Link>
         <Card padded>
           <Form layout="vertical" onFinish={onFinish} requiredMark={false}>
