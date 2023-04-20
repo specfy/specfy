@@ -68,10 +68,10 @@ jobs:
       - name: Build APP
         run: cd pkgs/app/ && npm run build
 
-      - name: Firebase
-        uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_SPECFY }}'
-          channelId: live
-          projectId: specfy
+      # - name: Firebase
+      #   uses: FirebaseExtended/action-hosting-deploy@v0
+      #   with:
+      #     repoToken: '${{ secrets.GITHUB_TOKEN }}'
+      #     firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_SPECFY }}'
+      #     channelId: live
+      #     projectId: specfy
