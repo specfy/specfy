@@ -11,6 +11,7 @@
     "test:build": "tsc -p tsconfig.json",
     "seed": "node ./build/test/seed/index.js",
     "test": "vitest",
+    "prisma:gen": "prisma generate",
     "migrate": "prisma db push",
     "migrate:create": "prisma migrate dev --create-only",
     "prod:migrate": "prisma migrate deploy"

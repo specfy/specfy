@@ -114,3 +114,5 @@ build/
 **/.terraform/*
 *.tfstate
 *.tfstate.*
+
+.firebase

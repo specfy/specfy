@@ -21,6 +21,7 @@ cypress/
 .github/
 .githooks/
 .circleci/
+.firebase/
 .nodemon.json
 .editorconfig
 .gitattributes
