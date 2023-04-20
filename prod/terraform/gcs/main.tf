@@ -11,8 +11,8 @@ resource "google_storage_bucket" "specfy_front" {
 
 
   website {
-    main_page_suffix = "index.html"
-    not_found_page   = "404.html"
+    main_page_suffix = "f3f912a/index.html"
+    not_found_page   = "f3f912a/404.html"
   }
   cors {
     origin          = ["https://www.specfy.io"]
@@ -34,8 +34,8 @@ resource "google_storage_bucket" "specfy_app" {
   uniform_bucket_level_access = true
 
   website {
-    main_page_suffix = "b8a4fbc/index.html"
-    not_found_page   = "b8a4fbc/index.html"
+    main_page_suffix = "f3f912a/index.html"
+    not_found_page   = "f3f912a/index.html"
   }
   cors {
     origin          = ["https://app.specfy.io"]

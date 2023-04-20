@@ -14,3 +14,5 @@ export function env(key: Keys, def: string): string;
 export function env(key: Keys, def?: string): string | undefined {
   return process.env[key] || def;
 }
+
+console.log(process.env);
