@@ -1,10 +1,10 @@
 import type { FastifyPluginCallback } from 'fastify';
 
 import { noQuery } from '../../../middlewares/noQuery';
-import type { ResGetMe } from '../../../types/api';
+import type { ResGetMeSuccess } from '../../../types/api';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
-  fastify.get<{ Reply: ResGetMe }>(
+  fastify.get<{ Reply: ResGetMeSuccess }>(
     '/me',
     { preHandler: [noQuery] },
     async function (req, res) {

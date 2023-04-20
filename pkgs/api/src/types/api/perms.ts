@@ -34,5 +34,5 @@ export interface ReqDeletePerms {
   project_id?: string;
   userId: string;
 }
-
-export type ResDeletePerms = ResErrors | never;
+export type ResDeletePermsSuccess = never;
+export type ResDeletePerms = ResDeletePermsSuccess | ResErrors;

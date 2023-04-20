@@ -21,10 +21,11 @@ Infrastructure:
 Auth:
   ✔ JWT @done(23-03-31 16:14)
   ✔ Default in dev @done(23-03-31 16:33)
-  - Google Oauth
   - Github Oauth
+  - Google Oauth
   - Gitlab Oauth
   - Standard Email / Password
+  - Logout
 
 
 Homepage:

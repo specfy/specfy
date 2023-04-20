@@ -9,7 +9,7 @@ import { prisma } from '../../../db';
 import type {
   Pagination,
   ReqListRevisions,
-  ResListRevisions,
+  ResListRevisionsSuccess,
 } from '../../../types/api';
 
 function QueryVal(req: FastifyRequest) {
@@ -35,7 +35,7 @@ function QueryVal(req: FastifyRequest) {
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{
     Querystring: ReqListRevisions;
-    Reply: ResListRevisions;
+    Reply: ResListRevisionsSuccess;
   }>('/', async function (req, res) {
     const val = QueryVal(req).safeParse(req.query);
     if (!val.success) {

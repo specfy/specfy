@@ -19,6 +19,8 @@ export const logger = pino({
           final.msg += m;
         } else if (typeof m === 'object' && m instanceof Error) {
           final.err = m;
+        } else if (!m) {
+          final.msg = m;
         } else if (m.err || m.error) {
           final.err = m.err || m.error;
         } else if (m.req) {

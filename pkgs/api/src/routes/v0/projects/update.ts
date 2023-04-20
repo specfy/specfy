@@ -12,7 +12,7 @@ import { createProjectActivity } from '../../../models';
 import type {
   ReqProjectParams,
   ReqPutProject,
-  ResPutProject,
+  ResPutProjectSuccess,
 } from '../../../types/api';
 
 function BodyVal() {
@@ -40,7 +40,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.put<{
     Params: ReqProjectParams;
     Body: ReqPutProject;
-    Reply: ResPutProject;
+    Reply: ResPutProjectSuccess;
   }>('/', { preHandler: [noQuery, getProject] }, async function (req, res) {
     const val = await BodyVal().safeParseAsync(req.body);
     if (!val.success) {

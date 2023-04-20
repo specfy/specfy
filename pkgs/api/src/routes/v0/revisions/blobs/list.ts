@@ -6,14 +6,14 @@ import type {
   ReqGetRevision,
   ReqRevisionParams,
   ApiBlobWithPrevious,
-  ResListRevisionBlobs,
+  ResListRevisionBlobsSuccess,
 } from '../../../../types/api';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{
     Params: ReqRevisionParams;
     Querystring: ReqGetRevision;
-    Reply: ResListRevisionBlobs;
+    Reply: ResListRevisionBlobsSuccess;
   }>('/', { preHandler: getRevision }, async function (req, res) {
     const rev = req.revision!;
     const list = await prisma.blobs.findMany({

@@ -282,6 +282,7 @@ model Users {
   name            String    @db.VarChar(100)
   email           String    @unique(map: "idx_users_email") @db.VarChar(250)
   emailVerifiedAt DateTime? @db.Timestamp(3)
+  password        String?   @db.VarChar(100)
   createdAt       DateTime  @default(now()) @db.Timestamp(3)
   updatedAt       DateTime  @updatedAt
 

@@ -10,7 +10,7 @@ import type {
   ApiDocument,
   ReqDocumentParams,
   ReqGetDocument,
-  ResGetDocument,
+  ResGetDocumentSuccess,
 } from '../../../types/api';
 
 function QueryVal(req: FastifyRequest) {
@@ -27,7 +27,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{
     Querystring: ReqGetDocument;
     Params: ReqDocumentParams;
-    Reply: ResGetDocument;
+    Reply: ResGetDocumentSuccess;
   }>('/:document_id', async function (req, res) {
     const val = QueryVal(req).safeParse({ ...req.query, ...req.params });
     if (!val.success) {

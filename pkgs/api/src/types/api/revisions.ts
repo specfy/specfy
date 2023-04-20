@@ -38,7 +38,8 @@ export type ReqPostRevision = Pick<
 > & {
   blobs: ApiBlobCreate[];
 };
-export type ResPostRevision = Pick<ApiRevision, 'id'> | ResErrors;
+export type ResPostRevisionSuccess = Pick<ApiRevision, 'id'>;
+export type ResPostRevision = ResErrors | ResPostRevisionSuccess;
 
 // ------ GET /:id
 export interface ReqRevisionParams {

@@ -1,6 +1,6 @@
 import type { DBComponent } from '../db/components';
 
-import type { Pagination } from './api';
+import type { Pagination, ResErrors } from './api';
 
 export type ApiComponent = DBComponent;
 
@@ -10,7 +10,9 @@ export interface ReqListComponents {
   project_id: string;
 }
 
-export interface ResListComponents {
+export interface ResListComponentsSuccess {
   data: ApiComponent[];
   pagination: Pagination;
 }
+
+export type ResListComponents = ResErrors | ResListComponentsSuccess;

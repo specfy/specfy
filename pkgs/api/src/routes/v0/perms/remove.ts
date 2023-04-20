@@ -7,7 +7,7 @@ import { schemaId } from '../../../common/validators';
 import { valOrgId, valProjectId } from '../../../common/zod';
 import { prisma } from '../../../db';
 import { noQuery } from '../../../middlewares/noQuery';
-import type { ReqDeletePerms, ResDeletePerms } from '../../../types/api';
+import type { ReqDeletePerms, ResDeletePermsSuccess } from '../../../types/api';
 
 function QueryVal(req: FastifyRequest) {
   return z
@@ -23,7 +23,7 @@ function QueryVal(req: FastifyRequest) {
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.delete<{
     Body: ReqDeletePerms;
-    Reply: ResDeletePerms;
+    Reply: ResDeletePermsSuccess;
   }>('/', { preHandler: noQuery }, async function (req, res) {
     const val = QueryVal(req).safeParse(req.body);
     if (!val.success) {

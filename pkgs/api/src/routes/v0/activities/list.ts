@@ -6,7 +6,10 @@ import { validationError } from '../../../common/errors';
 import { toApiActivity } from '../../../common/formatters/activity';
 import { valOrgId, valProjectId } from '../../../common/zod';
 import { prisma } from '../../../db';
-import type { ReqListActivities, ResListActivities } from '../../../types/api';
+import type {
+  ReqListActivities,
+  ResListActivitiesSuccess,
+} from '../../../types/api';
 
 function QueryVal(req: FastifyRequest) {
   return z
@@ -19,39 +22,39 @@ function QueryVal(req: FastifyRequest) {
 }
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
-  fastify.get<{ Querystring: ReqListActivities; Reply: ResListActivities }>(
-    '/',
-    async function (req, res) {
-      const val = QueryVal(req).safeParse(req.query);
-      if (!val.success) {
-        return validationError(res, val.error);
-      }
-
-      const query = val.data;
-      const where: Prisma.ActivitiesWhereInput = {
-        orgId: query.org_id,
-      };
-      if (query.project_id) {
-        where.projectId = query.project_id;
-      }
-
-      // TODO: cursor pagination
-      const activities = await prisma.activities.findMany({
-        where,
-        include: {
-          Project: { select: { id: true, name: true, slug: true } },
-          User: true,
-        },
-        orderBy: { createdAt: 'asc' },
-        take: 10,
-        skip: 0,
-      });
-
-      res.status(200).send({
-        data: activities.map(toApiActivity),
-      });
+  fastify.get<{
+    Querystring: ReqListActivities;
+    Reply: ResListActivitiesSuccess;
+  }>('/', async function (req, res) {
+    const val = QueryVal(req).safeParse(req.query);
+    if (!val.success) {
+      return validationError(res, val.error);
     }
-  );
+
+    const query = val.data;
+    const where: Prisma.ActivitiesWhereInput = {
+      orgId: query.org_id,
+    };
+    if (query.project_id) {
+      where.projectId = query.project_id;
+    }
+
+    // TODO: cursor pagination
+    const activities = await prisma.activities.findMany({
+      where,
+      include: {
+        Project: { select: { id: true, name: true, slug: true } },
+        User: true,
+      },
+      orderBy: { createdAt: 'asc' },
+      take: 10,
+      skip: 0,
+    });
+
+    res.status(200).send({
+      data: activities.map(toApiActivity),
+    });
+  });
 
   done();
 };

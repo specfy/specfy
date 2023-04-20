@@ -7,14 +7,14 @@ import { getRevision } from '../../../middlewares/getRevision';
 import type {
   ReqGetRevision,
   ReqRevisionParams,
-  ResGetRevision,
+  ResGetRevisionSuccess,
 } from '../../../types/api';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{
     Params: ReqRevisionParams;
     Querystring: ReqGetRevision;
-    Reply: ResGetRevision;
+    Reply: ResGetRevisionSuccess;
   }>('/', { preHandler: getRevision }, async function (req, res) {
     const rev = req.revision!;
 

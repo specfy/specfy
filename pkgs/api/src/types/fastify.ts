@@ -19,6 +19,7 @@ declare module 'fastify' {
     perms?: PermsWithOrg[];
     project?: Projects;
     revision?: Revisions;
+    user?: Users;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-interface
@@ -29,6 +30,6 @@ declare module 'fastify' {
 
 declare module '@fastify/secure-session' {
   interface SessionData {
-    id: string;
+    passport: { id: string };
   }
 }

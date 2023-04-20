@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 import type { ReqListActivities, ResListActivities } from './activities';
+import type { ReqPostAuthLocal, ResPostAuthLocal } from './auth';
 import type { ResListRevisionBlobs } from './blob';
 import type { ReqListComponents, ResListComponents } from './components';
 import type { ReqListDocuments, ResListDocuments } from './documents';
@@ -48,6 +49,10 @@ export interface API {
 
   '/0/activities': {
     GET: { res: ResListActivities; qp: ReqListActivities; body: never };
+  };
+
+  '/0/auth/local': {
+    POST: { res: ResPostAuthLocal; qp: never; body: ReqPostAuthLocal };
   };
 
   '/0/components': {

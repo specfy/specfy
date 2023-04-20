@@ -3,6 +3,7 @@ import type { Users } from '@prisma/client';
 import { env } from '../../common/env';
 import { nanoid } from '../../common/id';
 import { prisma } from '../../db';
+import { pbkdf2 } from '../../middlewares/auth/local';
 
 /**
  * Seed users
@@ -71,6 +72,7 @@ export async function seedDefaultAccount(): Promise<Users> {
       id: nanoid(),
       name: 'Demo Account',
       email: env('DEFAULT_ACCOUNT')!,
+      password: pbkdf2('foobar').toString('hex'),
     },
   });
 }

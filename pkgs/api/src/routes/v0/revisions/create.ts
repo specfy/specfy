@@ -12,7 +12,7 @@ import { createBlobs, createRevisionActivity } from '../../../models';
 import type {
   ApiBlobCreate,
   ReqPostRevision,
-  ResPostRevision,
+  ResPostRevisionSuccess,
 } from '../../../types/api';
 
 function BodyVal(req: FastifyRequest) {
@@ -73,7 +73,7 @@ function BodyVal(req: FastifyRequest) {
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.post<{
     Body: ReqPostRevision;
-    Reply: ResPostRevision;
+    Reply: ResPostRevisionSuccess;
   }>('/', { preHandler: noQuery }, async function (req, res) {
     const val = BodyVal(req).safeParse(req.body);
     if (!val.success) {

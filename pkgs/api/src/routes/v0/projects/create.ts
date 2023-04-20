@@ -8,7 +8,7 @@ import { valOrgId } from '../../../common/zod';
 import { prisma } from '../../../db';
 import { noQuery } from '../../../middlewares/noQuery';
 import { createProject } from '../../../models';
-import type { ReqPostProject, ResPostProject } from '../../../types/api';
+import type { ReqPostProject, ResPostProjectSuccess } from '../../../types/api';
 
 function ProjectVal(req: FastifyRequest) {
   return z
@@ -35,7 +35,7 @@ function ProjectVal(req: FastifyRequest) {
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.post<{
     Body: ReqPostProject;
-    Reply: ResPostProject;
+    Reply: ResPostProjectSuccess;
   }>('/', { preHandler: noQuery }, async function (req, res) {
     const val = await ProjectVal(req).safeParseAsync(req.body);
     if (!val.success) {

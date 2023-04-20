@@ -11,7 +11,7 @@ import type {
   ReqGetRevision,
   ReqPostCommentRevision,
   ReqRevisionParams,
-  ResPostCommentRevision,
+  ResPostCommentRevisionSuccess,
 } from '../../../types/api';
 
 function BodyVal() {
@@ -28,7 +28,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     Params: ReqRevisionParams;
     Querystring: ReqGetRevision;
     Body: ReqPostCommentRevision;
-    Reply: ResPostCommentRevision;
+    Reply: ResPostCommentRevisionSuccess;
   }>('/', { preHandler: getRevision }, async function (req, res) {
     const val = BodyVal().safeParse(req.body);
     if (!val.success) {

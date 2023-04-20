@@ -1,6 +1,3 @@
-// import path from 'path';
-
-// import { fastifyAutoload } from '@fastify/autoload';
 import cors from '@fastify/cors';
 import type {
   FastifyInstance,
@@ -8,21 +5,40 @@ import type {
   FastifyServerOptions,
 } from 'fastify';
 
-import { logger } from './logger';
+// import { logger } from './logger';
+import { notFound, serverError } from './common/errors';
 import { routes } from './routes/routes';
 import './common/auth';
+import { AuthError } from './middlewares/auth/errors';
+import type { ResValidationError } from './types/api';
 
 export default async (f: FastifyInstance, opts: FastifyPluginOptions) => {
   await f.register(cors, {
     // Important for cookies to work
     origin: [
       'http://localhost:3000',
+      'http://localhost:5173',
       'https://localhost:5173',
       'https://app.specfy.io',
     ],
     credentials: true,
     exposedHeaders: ['set-cookie'],
   });
+
+  f.setErrorHandler(function (error, _req, res) {
+    if (error instanceof AuthError) {
+      res.status(400).send(error.err);
+      return;
+    } else {
+      // fastify will use parent error handler to handle this
+      serverError(res);
+    }
+  });
+
+  f.setNotFoundHandler(function (req, res) {
+    notFound(res, `${req.method} ${req.url}`);
+  });
+
   // Do not touch the following lines
 
   // await start();
@@ -40,5 +56,5 @@ export default async (f: FastifyInstance, opts: FastifyPluginOptions) => {
 };
 
 export const options: FastifyServerOptions = {
-  logger,
+  // logger,
 };

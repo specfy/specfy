@@ -18,7 +18,8 @@ export type ResListProjects = ResErrors | ResListProjectsSuccess;
 export type ReqPostProject = Pick<ApiProject, 'name' | 'orgId' | 'slug'> & {
   display: { pos: Pick<ApiProject['display']['pos'], 'x' | 'y'> };
 };
-export type ResPostProject = Pick<ApiProject, 'id' | 'slug'> | ResErrors;
+export type ResPostProjectSuccess = Pick<ApiProject, 'id' | 'slug'>;
+export type ResPostProject = ResErrors | ResPostProjectSuccess;
 
 // GET /:org_id/:project_slug
 export interface ReqProjectParams {
@@ -33,7 +34,8 @@ export type ResGetProject = ResErrors | ResGetProjectSuccess;
 
 // POST /:org_id/:project_slug
 export type ReqPutProject = Pick<ApiProject, 'name'>;
-export type ResPutProject = ResErrors | { data: ApiProject };
+export type ResPutProjectSuccess = { data: ApiProject };
+export type ResPutProject = ResErrors | ResPutProjectSuccess;
 
 // DELETE /:org_id/:project_slug
 export type ResDeleteProject = ResErrors | never;

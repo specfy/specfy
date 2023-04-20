@@ -11,7 +11,7 @@ import type {
   ReqGetRevision,
   ReqPatchRevision,
   ReqRevisionParams,
-  ResPatchRevision,
+  ResPatchRevisionSuccess,
 } from '../../../types/api';
 
 function diffUsers(
@@ -89,7 +89,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     Params: ReqRevisionParams;
     Querystring: ReqGetRevision;
     Body: ReqPatchRevision;
-    Reply: ResPatchRevision;
+    Reply: ResPatchRevisionSuccess;
   }>('/', { preHandler: getRevision }, async function (req, res) {
     const val = BodyVal().safeParse(req.body);
     if (!val.success) {

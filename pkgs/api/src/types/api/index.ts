@@ -12,3 +12,4 @@ export * from './projects';
 export * from './reviews';
 export * from './revisions';
 export * from './users';
+export * from './auth';

@@ -7,7 +7,6 @@ import { toApiUser } from '../../../common/formatters/user';
 import { valOrgId, valProjectId } from '../../../common/zod';
 import { prisma } from '../../../db';
 import type {
-  ResListPerms,
   ReqListPerms,
   ApiPerm,
   ResListPermsSuccess,
@@ -26,7 +25,7 @@ function QueryVal(req: FastifyRequest) {
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{
     Querystring: ReqListPerms;
-    Reply: ResListPerms;
+    Reply: ResListPermsSuccess;
   }>('/', async function (req, res) {
     const val = QueryVal(req).safeParse(req.query);
     if (!val.success) {

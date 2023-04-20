@@ -7,7 +7,7 @@ import { schemaId } from '../../../common/validators';
 import { valOrgId, valProjectId } from '../../../common/zod';
 import { prisma } from '../../../db';
 import { noQuery } from '../../../middlewares/noQuery';
-import type { ReqPutPerms, ResPutPerms } from '../../../types/api';
+import type { ReqPutPerms, ResPutPermsSuccess } from '../../../types/api';
 import type { DBPerm } from '../../../types/db';
 import { PermType } from '../../../types/db';
 
@@ -26,7 +26,7 @@ function QueryVal(req: FastifyRequest) {
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.put<{
     Body: ReqPutPerms;
-    Reply: ResPutPerms;
+    Reply: ResPutPermsSuccess;
   }>('/', { preHandler: noQuery }, async function (req, res) {
     const val = QueryVal(req).safeParse(req.body);
     if (!val.success) {

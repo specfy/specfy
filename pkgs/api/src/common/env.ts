@@ -6,6 +6,7 @@ type Keys =
   | 'GITHUB_CLIENT_ID'
   | 'GITHUB_CLIENT_SECRET'
   | 'NODE_ENV'
+  | 'PASSWORD_SALT'
   | 'PORT';
 
 export function env(key: Keys): string | undefined;

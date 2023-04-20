@@ -10,9 +10,7 @@ export async function fetchApi<
     (TQuery extends Record<string, any> ? { qp: TQuery } : { qp?: undefined }),
   method?: RequestInit['method']
 ): Promise<{ res: Response; json: T }> {
-  const url = new URL(
-    import.meta.env.VITE_API_HOSTNAME || 'http://localhost:3000'
-  );
+  const url = new URL('http://localhost:3000');
   url.pathname = `/0${path}`;
 
   if (opts?.qp) {

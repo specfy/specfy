@@ -8,14 +8,14 @@ import { createRevisionActivity } from '../../../models';
 import type {
   ReqGetRevision,
   ReqRevisionParams,
-  ResRebaseRevision,
+  ResRebaseRevisionSuccess,
 } from '../../../types/api';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.post<{
     Params: ReqRevisionParams;
     Querystring: ReqGetRevision;
-    Reply: ResRebaseRevision;
+    Reply: ResRebaseRevisionSuccess;
   }>('/', { preHandler: [noBody, getRevision] }, async function (req, res) {
     const rev = req.revision!;
 

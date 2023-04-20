@@ -23,6 +23,7 @@ export interface ResValidationError {
 export interface ResNotFound {
   error: {
     code: '404_not_found';
+    message?: string | undefined;
   };
 }
 
@@ -35,6 +36,12 @@ export interface ResForbidden {
 export interface ResUnauthorized {
   error: {
     code: '401_unauthorized';
+  };
+}
+
+export interface ResServerError {
+  error: {
+    code: '500_server_error';
   };
 }
 

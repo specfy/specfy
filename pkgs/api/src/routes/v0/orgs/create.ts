@@ -7,7 +7,7 @@ import { schemaOrgId } from '../../../common/validators';
 import { prisma } from '../../../db';
 import { noQuery } from '../../../middlewares/noQuery';
 import { createOrgActivity } from '../../../models';
-import type { ReqPostOrg, ResPostOrg } from '../../../types/api';
+import type { ReqPostOrg, ResPostOrgSuccess } from '../../../types/api';
 
 const OrgVal = z
   .object({
@@ -30,7 +30,7 @@ const OrgVal = z
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.post<{
     Body: ReqPostOrg;
-    Reply: ResPostOrg;
+    Reply: ResPostOrgSuccess;
   }>('/', { preHandler: noQuery }, async function (req, res) {
     const val = await OrgVal.safeParseAsync(req.body, {});
     if (!val.success) {

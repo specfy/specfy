@@ -4,14 +4,16 @@ import type { ZodError } from 'zod';
 import type {
   ResForbidden,
   ResNotFound,
+  ResServerError,
   ResUnauthorized,
   ResValidationError,
 } from '../types/api';
 
-export function notFound(res: FastifyReply): void {
+export function notFound(res: FastifyReply, message?: string): void {
   const err: ResNotFound = {
     error: {
       code: '404_not_found',
+      message,
     },
   };
   res.status(404).send(err);
@@ -33,6 +35,15 @@ export function forbidden(res: FastifyReply): void {
     },
   };
   res.status(403).send(err);
+}
+
+export function serverError(res: FastifyReply): void {
+  const err: ResServerError = {
+    error: {
+      code: '500_server_error',
+    },
+  };
+  res.status(500).send(err);
 }
 
 export function validationError(res: FastifyReply, data: ZodError): void {
