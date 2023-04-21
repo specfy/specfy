@@ -8,12 +8,14 @@ import {
   IconUserCircle,
 } from '@tabler/icons-react';
 import type { MenuProps } from 'antd';
-import { Divider, Button, Menu, Dropdown, Badge, Layout } from 'antd';
+import { App, Divider, Button, Menu, Dropdown, Badge, Layout } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { useListOrgs } from '../../api';
+import { logout } from '../../api/auth';
 import { isError } from '../../api/helpers';
+import { i18n } from '../../common/i18n';
 import { useAuth } from '../../hooks/useAuth';
 import type { RouteOrg } from '../../types/routes';
 import { Logo } from '../Logo';
@@ -34,8 +36,10 @@ const menuItems: MenuProps['items'] = [
 const userItems: MenuProps['items'] = [];
 
 export const LayoutHeader: React.FC = () => {
-  const params = useParams<Partial<RouteOrg>>();
+  const { message } = App.useApp();
   const navigate = useNavigate();
+
+  const params = useParams<Partial<RouteOrg>>();
   const { user } = useAuth();
   const orgsQuery = useListOrgs();
   const [orgs, setOrgs] = useState<MenuProps['items']>([]);
@@ -47,6 +51,16 @@ export const LayoutHeader: React.FC = () => {
 
   const handleCreate = () => {
     navigate('/organizations/new');
+  };
+
+  const handleLogout = async () => {
+    const res = await logout();
+    if (isError(res)) {
+      message.error(i18n.errorOccurred);
+      return;
+    }
+
+    navigate(`/login`);
   };
 
   useEffect(() => {
@@ -146,10 +160,10 @@ export const LayoutHeader: React.FC = () => {
                   Support
                 </Link>
                 <Divider />
-                <Link to="/logout/" className={cls.userDropdownItem}>
+                <a onClick={handleLogout} className={cls.userDropdownItem}>
                   <IconLogout />
                   Logout
-                </Link>
+                </a>
               </div>
             )}
             placement="bottomRight"
