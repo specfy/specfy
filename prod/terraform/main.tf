@@ -57,15 +57,15 @@ module "cloudbuild" {
 }
 
 
-module "gcs" {
-  source = "./gcs"
-  depends_on = [
-    google_project.specfy,
-    module.google
-  ]
+# module "gcs" {
+#   source = "./gcs"
+#   depends_on = [
+#     google_project.specfy,
+#     module.google
+#   ]
 
-  envs = var.envs
-}
+#   envs = var.envs
+# }
 
 module "network" {
   source = "./network"

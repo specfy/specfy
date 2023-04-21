@@ -25,11 +25,12 @@ Infrastructure:
 Auth:
   ✔ JWT @done(23-03-31 16:14)
   ✔ Default in dev @done(23-03-31 16:33)
-  - Github Oauth
-    - Github oauth prod app
+  ✔ Github Oauth @done(23-04-21 19:19)
+    ✔ Github oauth prod app @done(23-04-21 19:22)
   - Google Oauth
   - Gitlab Oauth
-  - Standard Email / Password
+  ✔ Standard Email / Password @done(23-04-21 19:21)
+  - Register
   - Logout
 
 

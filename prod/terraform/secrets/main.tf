@@ -13,10 +13,9 @@ resource "google_secret_manager_secret" "main" {
 }
 
 
-resource "google_secret_manager_secret_version" "main" {
-  for_each = local.secrets
+# resource "google_secret_manager_secret_version" "main" {
+#   for_each = local.secrets
 
-
-  secret = google_secret_manager_secret.main[each.value].id
-  secret_data = "-" // empty data because
-}
+#   secret = google_secret_manager_secret.main[each.value].id
+#   secret_data = "-" // empty data because
+# }
