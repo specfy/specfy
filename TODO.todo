@@ -16,12 +16,17 @@ Infrastructure:
   ✔ custom domain @done(23-04-19 11:10)
   ✔ cloud build @done(23-04-19 11:10)
   ✔ cloud storage @done(23-04-19 11:10)
+    - Remove
   ✔ CDN @done(23-04-19 11:10)
+  - Remove load balancer
+  ✔ Secret management ? @done(23-04-21 11:55)
+  ✔ Vercel @done(23-04-21 11:56)
 
 Auth:
   ✔ JWT @done(23-03-31 16:14)
   ✔ Default in dev @done(23-03-31 16:33)
   - Github Oauth
+    - Github oauth prod app
   - Google Oauth
   - Gitlab Oauth
   - Standard Email / Password

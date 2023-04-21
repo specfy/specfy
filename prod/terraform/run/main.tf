@@ -1,3 +1,16 @@
+data "google_secret_manager_secret_version" "PASSWORD_SALT" {
+  secret   = "PASSWORD_SALT"
+}
+data "google_secret_manager_secret_version" "COOKIE_SECRET" {
+  secret   = "COOKIE_SECRET"
+}
+data "google_secret_manager_secret_version" "GITHUB_CLIENT_ID" {
+  secret   = "GITHUB_CLIENT_ID"
+}
+data "google_secret_manager_secret_version" "GITHUB_CLIENT_SECRET" {
+  secret   = "GITHUB_CLIENT_SECRET"
+}
+
 resource "google_cloud_run_v2_service" "main" {
   name     = "main"
   location = var.envs.region
@@ -28,15 +41,19 @@ resource "google_cloud_run_v2_service" "main" {
 
       env {
         name  = "PASSWORD_SALT"
+        value = data.google_secret_manager_secret_version.PASSWORD_SALT.secret_data
       }
       env {
         name  = "COOKIE_SECRET"
+        value = data.google_secret_manager_secret_version.COOKIE_SECRET.secret_data
       }
       env {
         name  = "GITHUB_CLIENT_ID"
+        value = data.google_secret_manager_secret_version.GITHUB_CLIENT_ID.secret_data
       }
       env {
         name  = "GITHUB_CLIENT_SECRET"
+        value = data.google_secret_manager_secret_version.GITHUB_CLIENT_SECRET.secret_data
       }
 
       // TODO: remove this
