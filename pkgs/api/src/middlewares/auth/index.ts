@@ -13,8 +13,8 @@ import { registerLocal } from './local';
 
 const ALLOW_GUEST = [
   '/',
-  '/0/oauth/github',
-  '/0/oauth/github/cb',
+  '/0/auth/github',
+  '/0/auth/github/cb',
   '/0/auth/local',
 ];
 const COOKIE_SECRET = Buffer.from(env('COOKIE_SECRET')!, 'hex');

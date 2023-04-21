@@ -1,3 +1,4 @@
+import { GithubOutlined } from '@ant-design/icons';
 import { App, Button, Form, Input } from 'antd';
 import type { FieldsErrors } from 'api/src/types/api';
 import { useState } from 'react';
@@ -31,12 +32,28 @@ export const Login: React.FC = () => {
     navigate(`/`);
   };
 
+  const handleGithub = () => {
+    window.location.replace('http://localhost:3000/0/auth/github');
+  };
+
   return (
     <div className={cls.container}>
       <div>
         <Link className={cls.logo} to="/">
           <Logo />
         </Link>
+
+        <div className={cls.oauth}>
+          <Button
+            onClick={handleGithub}
+            icon={<GithubOutlined />}
+            size="large"
+            block
+          >
+            Sign in with Github
+          </Button>
+        </div>
+
         <Card padded>
           <Form layout="vertical" onFinish={onFinish} requiredMark={false}>
             <Form.Item

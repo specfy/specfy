@@ -13,7 +13,7 @@ export function registerGithub(passport: Authenticator) {
     {
       clientID: env('GITHUB_CLIENT_ID')!,
       clientSecret: env('GITHUB_CLIENT_SECRET')!,
-      callbackURL: 'http://127.0.0.1:3000/0/oauth/github/cb',
+      callbackURL: `${env('APP_HOSTNAME')}/0/auth/github/cb`,
       scope: GITHUB_SCOPES,
       passReqToCallback: true,
     },
@@ -62,5 +62,6 @@ export function registerGithub(passport: Authenticator) {
       done(null, user);
     }
   );
+
   passport.use('github', reg);
 }

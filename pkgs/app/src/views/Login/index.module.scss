@@ -9,7 +9,7 @@
   height: 100vh;
 
   >div {
-    width: 450px;
+    width: 400px;
   }
 }
 
@@ -17,4 +17,10 @@
 .logo {
   display: flex;
   margin-bottom: $p-2xl;
+}
+
+.oauth {
+  margin-bottom: $p-3xl;
+  padding: $p-3xl 0;
+  border-bottom: 1px solid $gray-100;
 }

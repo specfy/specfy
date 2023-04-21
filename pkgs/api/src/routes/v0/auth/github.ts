@@ -1,8 +1,8 @@
 import type { FastifyPluginCallback } from 'fastify';
 
+import { env } from '../../../common/env';
 import { fastifyPassport } from '../../../middlewares/auth';
 import { noQuery } from '../../../middlewares/noQuery';
-import { getJwtToken } from '../../../models';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get(
@@ -22,10 +22,8 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{ Reply: any }>(
     '/github/cb',
     { preValidation: [fastifyPassport.authenticate('github')] },
-    function (req, res) {
-      res.status(200).send({
-        token: getJwtToken(req.user!),
-      });
+    function (_req, res) {
+      res.redirect(env('APP_HOSTNAME')!);
     }
   );
 
