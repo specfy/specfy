@@ -42,7 +42,6 @@ export const Login: React.FC = () => {
         <Link className={cls.logo} to="/">
           <Logo />
         </Link>
-
         <div className={cls.oauth}>
           <Button
             onClick={handleGithub}
@@ -53,7 +52,6 @@ export const Login: React.FC = () => {
             Sign in with Github
           </Button>
         </div>
-
         <Card padded>
           <Form layout="vertical" onFinish={onFinish} requiredMark={false}>
             <Form.Item

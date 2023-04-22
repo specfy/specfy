@@ -15,3 +15,12 @@ export function omit<
 
   return copy;
 }
+
+export function pick<T extends Record<string, any>, K extends keyof T>(
+  obj: T,
+  keys: K[]
+): Pick<T, K> {
+  return Object.fromEntries(
+    keys.filter((key) => key in obj).map((key) => [key, obj[key]])
+  ) as Pick<T, K>;
+}

@@ -45,6 +45,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       include: {
         Project: { select: { id: true, name: true, slug: true } },
         User: true,
+        Blob: true,
       },
       orderBy: { createdAt: 'asc' },
       take: 10,

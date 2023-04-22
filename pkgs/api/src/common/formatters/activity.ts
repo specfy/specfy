@@ -1,5 +1,6 @@
 import type { ApiActivity } from '../../types/api';
-import type { ActivitiesList } from '../../types/db';
+import type { ActivitiesList, DBComponent, DBDocument } from '../../types/db';
+import { pick } from '../object';
 
 import { toApiUser } from './user';
 
@@ -16,8 +17,23 @@ export function toApiActivity(act: ActivitiesList): ApiActivity {
 
     // TODO: reup this
     // targetUser: act.targetUser ? toApiUser(act.targetUser) : undefined,
-    // targetComponent: act.targetComponent ? act.targetComponent : undefined,
-    // targetDocument: act.targetDocument ? act.targetDocument : undefined,
+    targetComponent:
+      act.Blob?.type === 'component'
+        ? pick(act.Blob.current as unknown as DBComponent, [
+            'id',
+            'name',
+            'slug',
+          ])
+        : undefined,
+    targetDocument:
+      act.Blob?.type === 'document'
+        ? pick(act.Blob.current as unknown as DBDocument, [
+            'id',
+            'name',
+            'slug',
+            'type',
+          ])
+        : undefined,
     // targetRevision: act.targetRevision ? act.targetRevision : undefined,
     // targetPolicy: act.targetPolicy ? act.targetPolicy : undefined,
 

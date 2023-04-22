@@ -85,5 +85,6 @@ export type ActivitiesList = Prisma.ActivitiesGetPayload<{
   include: {
     User: true;
     Project: { select: { id: true; name: true; slug: true } };
+    Blob: true;
   };
 }>;

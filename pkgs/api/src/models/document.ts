@@ -91,7 +91,7 @@ export async function createDocumentActivity(
       orgId: target.orgId,
       projectId: target.projectId,
       activityGroupId,
-      targetDocumentId: target.id,
+      targetBlobId: target.blobId,
     },
   });
 }

@@ -104,7 +104,7 @@ export async function createProjectActivity(
       orgId: target.orgId,
       projectId: target.id,
       activityGroupId,
-      targetComponentId: target.id,
+      targetBlobId: target.blobId,
     },
   });
 }

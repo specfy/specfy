@@ -78,7 +78,7 @@ export async function createComponentActivity(
       orgId: target.orgId,
       projectId: target.projectId,
       activityGroupId,
-      targetComponentId: target.id,
+      targetBlobId: target.blobId,
     },
   });
 }
