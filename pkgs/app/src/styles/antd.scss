@@ -66,6 +66,18 @@ h4.ant-typography {
   }
 }
 
+.ant-menu.ant-menu-root.ant-menu-light.ant-menu-vertical {
+  .ant-menu-item:not(.ant-menu-item-selected) {
+    &:hover {
+      background-color: transparent;
+    }
+  }
+
+  .ant-menu-item-selected {
+    background-color: transparent;
+  }
+}
+
 // User Content
 .ant-typography {
   hr {

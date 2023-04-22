@@ -9,7 +9,11 @@ import {
   shouldBeProtected,
   shouldNotAllowQueryParams,
 } from '../../../test/helpers';
-import { seedSimpleUser, seedWithOrg } from '../../../test/seed/seed';
+import {
+  seedSimpleUser,
+  seedWithOrg,
+  seedWithProject,
+} from '../../../test/seed/seed';
 
 let t: TestSetup;
 beforeAll(async () => {
@@ -100,6 +104,64 @@ describe('DELETE /perms', () => {
       token,
       qp: {
         org_id: org.id,
+      },
+    });
+    isSuccess(resGet2.json);
+    expect(resGet2.json.data).toHaveLength(1);
+  });
+
+  it('should remove project perm when removing org perm', async () => {
+    const { token, org, project } = await seedWithProject();
+    const user1 = await seedSimpleUser();
+
+    // Insert a permissions for the simple user
+    await prisma.perms.create({
+      data: {
+        id: nanoid(),
+        role: 'viewer',
+        userId: user1.user.id,
+        orgId: org.id,
+      },
+    });
+    await prisma.perms.create({
+      data: {
+        id: nanoid(),
+        role: 'viewer',
+        userId: user1.user.id,
+        orgId: org.id,
+        projectId: project.id,
+      },
+    });
+
+    // GET to check that we have permissions for project
+    const resGet1 = await t.fetch.get('/0/perms', {
+      token,
+      qp: {
+        org_id: org.id,
+        project_id: project.id,
+      },
+    });
+    isSuccess(resGet1.json);
+    expect(resGet1.json.data).toHaveLength(2);
+
+    // Delete simple user permissions
+    const resDel = await t.fetch.delete('/0/perms', {
+      token,
+      body: {
+        org_id: org.id,
+        userId: user1.user.id,
+      },
+    });
+
+    isSuccess(resDel.json);
+    expect(resDel.statusCode).toBe(204);
+
+    // GET to check that we have no permissions
+    const resGet2 = await t.fetch.get('/0/perms', {
+      token,
+      qp: {
+        org_id: org.id,
+        project_id: project.id,
       },
     });
     isSuccess(resGet2.json);

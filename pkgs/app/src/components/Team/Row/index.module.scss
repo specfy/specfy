@@ -1,0 +1,41 @@
+@import "../../../styles/theme";
+
+.line {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: $p-l $p-2xl;
+
+  border-top: 1px solid $gray-100;
+
+  &:last-child {
+    border-bottom: 1px solid $gray-100;
+  }
+
+  &:hover {
+    background-color: rgba($gray-50, 50%);
+  }
+}
+
+.left {
+  display: flex;
+  gap: $p-l;
+}
+
+.right {
+  display: flex;
+  gap: $p-m;
+  align-items: center;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+}
+
+.sub {
+  font-size: $font-s;
+  line-height: $line-height-s;
+  color: $gray-400;
+}

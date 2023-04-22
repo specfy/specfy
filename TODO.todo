@@ -31,7 +31,8 @@ Auth:
   - Gitlab Oauth
   ✔ Standard Email / Password @done(23-04-21 19:21)
   - Register
-  - Logout
+    - Should create a default org
+  ✔ Logout @done(23-04-22 15:19)
 
 
 Homepage:
@@ -328,7 +329,9 @@ Org:
   - Hide everything when no projects
   - Graph Page
   - Policies Page
-  - Team Page
+  ✔ Team Page @done(23-04-22 16:12)
+    ✔ Display correct count @done(23-04-22 16:12)
+    - Invite memmber
   - Activty page ?
 
   List Projects:

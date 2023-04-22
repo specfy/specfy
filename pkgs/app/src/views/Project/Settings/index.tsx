@@ -1,9 +1,10 @@
 import { IconSettings, IconUsers } from '@tabler/icons-react';
-import { Menu } from 'antd';
+import { Badge, Menu } from 'antd';
 import type { ApiProject } from 'api/src/types/api';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 
+import { useCountPerms } from '../../../api';
 import { Container } from '../../../components/Container';
 import type { RouteProject } from '../../../types/routes';
 
@@ -22,6 +23,10 @@ export const ProjectSettings: React.FC<{
     return `/${params.org_id}/${params.project_slug}/settings`;
   }, [params]);
   const [open, setOpen] = useState<string>('');
+  const resCount = useCountPerms({
+    org_id: params.org_id,
+    project_id: proj.id,
+  });
 
   const menu = useMemo(() => {
     return [
@@ -40,11 +45,13 @@ export const ProjectSettings: React.FC<{
           <Link to={`${linkSelf}/team`} className={cls.link}>
             <IconUsers />
             Team
+            <Badge count={resCount.data?.data} showZero={false} />
           </Link>
         ),
       },
     ];
-  }, [linkSelf]);
+  }, [linkSelf, resCount]);
+
   useEffect(() => {
     if (location.pathname.match(/team/)) {
       setOpen('team');

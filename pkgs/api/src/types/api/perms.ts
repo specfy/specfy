@@ -16,6 +16,12 @@ export interface ResListPermsSuccess {
 }
 export type ResListPerms = ResErrors | ResListPermsSuccess;
 
+// GET /count
+export interface ResCountPermsSuccess {
+  data: number;
+}
+export type ResCountPerms = ResCountPermsSuccess | ResErrors;
+
 // POST /
 export interface ReqPutPerms {
   org_id: string;

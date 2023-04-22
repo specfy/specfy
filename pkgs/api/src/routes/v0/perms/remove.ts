@@ -41,13 +41,19 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
     let error: string | undefined;
     await prisma.$transaction(async (tx) => {
-      const perm = await tx.perms.findFirst({ where });
-      if (!perm) {
+      const perms = await tx.perms.findMany({ where });
+      if (!perms) {
         error = 'not_found';
         return;
       }
 
-      await tx.perms.delete({ where: { id: perm.id } });
+      await tx.perms.deleteMany({
+        where: {
+          id: {
+            in: perms.map(({ id }) => id),
+          },
+        },
+      });
     });
 
     if (error) {

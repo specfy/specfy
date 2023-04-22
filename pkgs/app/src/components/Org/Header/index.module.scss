@@ -1,0 +1,32 @@
+@import "../../../styles/theme";
+
+.header {
+  display: flex;
+  gap: $p-2xl;
+  padding: $p-3xl $p-3xl $p-xl $p-3xl;
+  border: 1px solid $gray-200;
+}
+
+.avatar {
+  overflow: hidden;
+
+  width: 100px;
+  height: 100px;
+
+  background-color: $gray-200;
+  border-radius: $border-radius;
+
+  img {
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.description {
+  width: 100%;
+  padding: $p-4xl 0;
+}
+
+.menu {
+  margin: ($p-l - 2px) 0 0 (-$p);
+}

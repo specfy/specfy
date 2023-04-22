@@ -10,6 +10,7 @@ import type {
   ReqDeletePerms,
   ReqListPerms,
   ReqPutPerms,
+  ResCountPerms,
   ResDeletePerms,
   ResListPerms,
   ResPutPerms,
@@ -80,6 +81,9 @@ export interface API {
     GET: { res: ResListPerms; qp: ReqListPerms; body: never };
     PUT: { res: ResPutPerms; qp: never; body: ReqPutPerms };
     DELETE: { res: ResDeletePerms; qp: never; body: ReqDeletePerms };
+  };
+  '/0/perms/count': {
+    GET: { res: ResCountPerms; qp: ReqListPerms; body: never };
   };
 
   '/0/policies': {
