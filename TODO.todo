@@ -319,20 +319,28 @@ Org:
     ✔ Unit test @done(23-03-31 16:14)
     ✔ Validation @done(23-03-31 16:15)
   - Settings
-    - Rename
-      - Unit test
+    ✔ Rename @done(23-04-24 15:10)
+      ✔ Unit test @done(23-04-24 15:10)
       - Reserved name
-      - Handle error
-    - Delete
+      ✔ Handle error @done(23-04-24 15:10)
+      - Permissions
+    - Change id
+    ✔ Delete @done(23-04-24 14:17)
+      ✔ Unit Test @done(23-04-24 14:17)
+      - Permissions
   ✔ Switch in the UI @done(23-03-27 17:46)
   - Editer le graph d'organisation
   - Hide everything when no projects
   - Graph Page
   - Policies Page
+  - Visibility Public
   ✔ Team Page @done(23-04-22 16:12)
     ✔ Display correct count @done(23-04-22 16:12)
-    - Invite memmber
+    - Invite member
   - Activty page ?
+  - Limit max number of org
+   ✔ 1 personal @done(23-04-24 15:10)
+   - 10 company ?
 
   List Projects:
     - Correct number of users

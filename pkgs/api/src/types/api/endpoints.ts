@@ -5,7 +5,14 @@ import type { ResListRevisionBlobs } from './blob';
 import type { ReqListComponents, ResListComponents } from './components';
 import type { ReqListDocuments, ResListDocuments } from './documents';
 import type { ResGetMe } from './me';
-import type { ReqPostOrg, ResListOrgs, ResPostOrg } from './orgs';
+import type {
+  ReqPostOrg,
+  ReqPutOrg,
+  ResDeleteOrg,
+  ResListOrgs,
+  ResPostOrg,
+  ResPutOrg,
+} from './orgs';
 import type {
   ReqDeletePerms,
   ReqListPerms,
@@ -75,6 +82,10 @@ export interface API {
   '/0/orgs': {
     GET: { res: ResListOrgs; qp: never; body: never };
     POST: { res: ResPostOrg; qp: never; body: ReqPostOrg };
+  };
+  [key: `/0/orgs/${string}`]: {
+    PUT: { res: ResPutOrg; qp: never; body: ReqPutOrg };
+    DELETE: { res: ResDeleteOrg; qp: never; body: never };
   };
 
   '/0/perms': {

@@ -19,7 +19,7 @@ export async function seedOrgs(
   await createOrgActivity(users[0], 'Org.created', o1, prisma);
 
   const o2 = await prisma.orgs.create({
-    data: { id: 'samuelbodin', name: "Samuel Bodin's org" },
+    data: { id: 'samuelbodin', name: "Samuel Bodin's org", isPersonal: true },
   });
   await createOrgActivity(users[0], 'Org.created', o2, prisma);
 

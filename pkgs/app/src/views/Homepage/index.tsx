@@ -1,7 +1,11 @@
+import { IconPlus } from '@tabler/icons-react';
+import { Button } from 'antd';
 import { useMemo } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 
 import { useListOrgs } from '../../api';
+
+import cls from './index.module.scss';
 
 export const Homepage: React.FC = () => {
   const orgsQuery = useListOrgs();
@@ -15,7 +19,15 @@ export const Homepage: React.FC = () => {
   }, [orgsQuery.data]);
 
   if (!redirect) {
-    return null;
+    return (
+      <div className={cls.empty}>
+        <Link to="/organizations/new">
+          <Button type="default" icon={<IconPlus />}>
+            Create an organization
+          </Button>
+        </Link>
+      </div>
+    );
   }
 
   return <Navigate to={`/${redirect.id}`}></Navigate>;

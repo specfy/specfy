@@ -1,21 +1,20 @@
 import { Typography, Input, Button, Modal, App, Form } from 'antd';
-import type { ApiProject } from 'api/src/types/api';
+import type { ApiOrg } from 'api/src/types/api';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { deleteProject, updateProject } from '../../../../api';
+import { deleteOrg, updateOrg } from '../../../../api';
 import { isError } from '../../../../api/helpers';
 import { i18n } from '../../../../common/i18n';
-import { slugify } from '../../../../common/string';
 import { Card } from '../../../../components/Card';
-import type { RouteProject } from '../../../../types/routes';
+import type { RouteOrg } from '../../../../types/routes';
 
 import cls from './index.module.scss';
 
 export const SettingsGeneral: React.FC<{
-  proj: ApiProject;
-  params: RouteProject;
-}> = ({ proj, params }) => {
+  org: ApiOrg;
+  params: RouteOrg;
+}> = ({ org, params }) => {
   const { message } = App.useApp();
   const navigate = useNavigate();
 
@@ -23,27 +22,23 @@ export const SettingsGeneral: React.FC<{
   const [waitToRead, setWaitToRead] = useState(true);
 
   // Edit
-  const [name, setName] = useState(() => proj.name);
-  const [slug, setSlug] = useState(() => proj.slug);
+  const [name, setName] = useState(() => org.name);
   const onName: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setName(e.target.value);
-    setSlug(slugify(e.target.value));
   };
-  const nameChanged = name !== proj.name;
+  const nameChanged = name !== org.name;
 
   const handleRename = async () => {
-    const res = await updateProject(params, { name });
+    const res = await updateOrg(params, { name });
     if (isError(res)) {
       message.error(i18n.errorOccurred);
       return;
     }
 
-    message.success('Project renamed');
-    navigate(`/${params.org_id}/${res.data.slug}/settings`);
+    message.success('Organization renamed');
   };
   const handleReset = () => {
-    setName(proj.name);
-    setSlug(proj.slug);
+    setName(org.name);
   };
 
   // Delete modal
@@ -55,11 +50,16 @@ export const SettingsGeneral: React.FC<{
     setIsModalOpen(false);
     setWaitToRead(true);
   };
-  const confirmDelete = async () => {
-    await deleteProject(params);
-    message.success('Project deleted');
 
-    navigate(`/${params.org_id}`);
+  const confirmDelete = async () => {
+    const res = await deleteOrg(params);
+    if (res !== 204) {
+      message.error(i18n.errorOccurred);
+      return;
+    }
+
+    message.success('Organization deleted');
+    navigate(`/`);
   };
 
   return (
@@ -68,10 +68,11 @@ export const SettingsGeneral: React.FC<{
         <div>
           <Typography.Title level={2}>General Settings</Typography.Title>
           <Typography.Text type="secondary">
-            Manage your project general&apos;s settings
+            Manage your organization general&apos;s settings
           </Typography.Text>
         </div>
       </div>
+
       <Card>
         <Form layout="vertical" onFinish={handleRename}>
           <Card.Content>
@@ -79,47 +80,52 @@ export const SettingsGeneral: React.FC<{
               label="Name"
               extra={
                 <div className={cls.desc}>
-                  The project is accessible at{' '}
+                  The organization is accessible at{' '}
                   <em>
-                    https://specfy.io/
-                    {proj.orgId}/<strong>{slug}</strong>
+                    https://specfy.io/<strong>{org.id}</strong>
                   </em>
                 </div>
               }
             >
-              <Input value={name} onChange={onName} />
+              <Input value={name} onChange={onName} disabled={org.isPersonal} />
             </Form.Item>
           </Card.Content>
 
-          <Card.Actions>
-            {nameChanged && (
-              <Button type="text" onClick={handleReset}>
-                reset
+          {!org.isPersonal && (
+            <Card.Actions>
+              {nameChanged && (
+                <Button type="text" onClick={handleReset}>
+                  reset
+                </Button>
+              )}
+              <Button type="primary" htmlType="submit" disabled={!nameChanged}>
+                Rename
               </Button>
-            )}
-            <Button type="primary" htmlType="submit" disabled={!nameChanged}>
-              Rename
-            </Button>
-          </Card.Actions>
+            </Card.Actions>
+          )}
         </Form>
       </Card>
 
-      <Card padded>
-        <div className={cls.actions}>
-          <div>
-            <Typography.Title level={4}>Delete this project</Typography.Title>
-            <Typography.Text type="secondary">
-              Deleting a project can&apos;t be undone.
-            </Typography.Text>
+      {!org.isPersonal && (
+        <Card padded>
+          <div className={cls.actions}>
+            <div>
+              <Typography.Title level={4}>
+                Delete this organization
+              </Typography.Title>
+              <Typography.Text type="secondary">
+                Deleting an organization can&apos;t be undone.
+              </Typography.Text>
+            </div>
+            <Button danger type="primary" onClick={showModal}>
+              Delete Organization
+            </Button>
           </div>
-          <Button danger type="primary" onClick={showModal}>
-            Delete Project
-          </Button>
-        </div>
-      </Card>
+        </Card>
+      )}
 
       <Modal
-        title="Delete this project?"
+        title="Delete this organization?"
         open={isModalOpen}
         onOk={confirmDelete}
         onCancel={cancelDelete}
@@ -135,13 +141,13 @@ export const SettingsGeneral: React.FC<{
             onClick={confirmDelete}
             loading={waitToRead}
           >
-            Delete Project
+            Delete Organization
           </Button>,
         ]}
       >
         <p>
-          Are you sure to delete this project? <br></br>This action can&apos;t
-          be undone.
+          Are you sure to delete this organization? <br></br>This action
+          can&apos;t be undone.
         </p>
       </Modal>
     </>

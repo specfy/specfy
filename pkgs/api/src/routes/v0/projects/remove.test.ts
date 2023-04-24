@@ -2,7 +2,7 @@ import { beforeAll, afterAll, describe, it, expect } from 'vitest';
 
 import type { TestSetup } from '../../../test/each';
 import { setupBeforeAll, setupAfterAll } from '../../../test/each';
-import { isSuccess } from '../../../test/fetch';
+import { isError, isSuccess } from '../../../test/fetch';
 import {
   shouldBeProtected,
   shouldNotAllowBody,
@@ -53,5 +53,12 @@ describe('DELETE /projects/:org_id/:project_slug', () => {
 
     isSuccess(res.json);
     expect(res.statusCode).toBe(204);
+
+    // Check that it's indeed deleted
+    const resGet = await t.fetch.get(`/0/projects/${org.id}/${project.slug}`, {
+      token,
+    });
+    isError(resGet.json);
+    expect(resGet.statusCode).toBe(404);
   });
 });

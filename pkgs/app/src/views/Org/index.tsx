@@ -72,7 +72,10 @@ export const Org: React.FC = () => {
           <Route path="/graph" element={<OrgGraph params={params} />} />
           <Route path="/team" element={<OrgTeam params={params} />} />
           <Route path="/activity" element={<OrgActivity params={params} />} />
-          <Route path="/settings/*" element={<OrgSettings params={params} />} />
+          <Route
+            path="/settings/*"
+            element={<OrgSettings params={params} org={org} />}
+          />
           <Route
             path="/project/new"
             element={<ProjectCreate params={params} />}

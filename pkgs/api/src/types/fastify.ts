@@ -1,6 +1,6 @@
 import type { IncomingMessage, ServerResponse } from 'http';
 
-import type { Projects, Revisions, Users } from '@prisma/client';
+import type { Orgs, Projects, Revisions, Users } from '@prisma/client';
 import type { preHandlerHookHandler, RawServerDefault } from 'fastify';
 import type { RouteGenericInterface } from 'fastify/types/route';
 
@@ -20,6 +20,7 @@ declare module 'fastify' {
     project?: Projects;
     revision?: Revisions;
     user?: Users;
+    org?: Orgs;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-interface

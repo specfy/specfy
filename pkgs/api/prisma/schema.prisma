@@ -134,10 +134,11 @@ model Documents {
 }
 
 model Orgs {
-  id        String   @id @db.VarChar(36)
-  name      String   @db.VarChar(36)
-  createdAt DateTime @default(now()) @db.Timestamp(3)
-  updatedAt DateTime @updatedAt
+  id         String   @id @db.VarChar(36)
+  name       String   @db.VarChar(36)
+  isPersonal Boolean  @default(false)
+  createdAt  DateTime @default(now()) @db.Timestamp(3)
+  updatedAt  DateTime @updatedAt
 
   Perms      Perms[]
   Activities Activities[]

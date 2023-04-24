@@ -65,6 +65,7 @@ export function registerGithub(passport: Authenticator) {
         await createOrg(tx, user, {
           id: slugify(`${profile.displayName} ${nanoid().substring(0, 5)}`),
           name: `${profile.displayName} org`,
+          isPersonal: true,
         });
       });
 

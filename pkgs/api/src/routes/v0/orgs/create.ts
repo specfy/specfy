@@ -45,6 +45,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     res.status(200).send({
       id: org.id,
       name: org.name,
+      isPersonal: false,
     });
   });
 

@@ -1,5 +1,61 @@
+import { IconSettings } from '@tabler/icons-react';
+import { Menu } from 'antd';
+import type { ApiOrg } from 'api/src/types/api';
+import { useEffect, useMemo, useState } from 'react';
+import { Link, Route, Routes, useLocation } from 'react-router-dom';
+
+import { Container } from '../../../components/Container';
 import type { RouteOrg } from '../../../types/routes';
 
-export const OrgSettings: React.FC<{ params: RouteOrg }> = () => {
-  return <></>;
+import { SettingsGeneral } from './General';
+import cls from './index.module.scss';
+
+export const OrgSettings: React.FC<{ params: RouteOrg; org: ApiOrg }> = ({
+  params,
+  org,
+}) => {
+  const location = useLocation();
+
+  // Menu
+  const linkSelf = useMemo(() => {
+    return `/${params.org_id}/settings`;
+  }, [params]);
+  const [open, setOpen] = useState<string>('');
+
+  const menu = useMemo(() => {
+    return [
+      {
+        key: 'general',
+        label: (
+          <Link to={linkSelf} className={cls.link}>
+            <IconSettings />
+            General
+          </Link>
+        ),
+      },
+    ];
+  }, [linkSelf]);
+
+  useEffect(() => {
+    if (location.pathname.match(/team/)) {
+      setOpen('team');
+    } else {
+      setOpen('general');
+    }
+  }, [location]);
+
+  return (
+    <Container className={cls.container}>
+      <Menu selectedKeys={[open]} mode="vertical" items={menu} />
+
+      <div className={cls.flex}>
+        <Routes>
+          <Route
+            path="/"
+            element={<SettingsGeneral params={params} org={org} />}
+          />
+        </Routes>
+      </div>
+    </Container>
+  );
 };
