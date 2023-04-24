@@ -33,7 +33,11 @@ export const Login: React.FC = () => {
   };
 
   const handleGithub = () => {
-    window.location.replace('http://localhost:3000/0/auth/github');
+    window.location.replace(
+      `${
+        import.meta.env.VITE_API_HOSTNAME || 'http://localhost:3000'
+      }/0/auth/github`
+    );
   };
 
   return (
