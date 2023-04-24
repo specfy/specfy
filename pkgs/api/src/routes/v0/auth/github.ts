@@ -8,10 +8,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get(
     '/github',
     {
-      preHandler: [
-        noQuery,
-        fastifyPassport.authenticate('github', { scope: ['user:email'] }),
-      ],
+      preHandler: [noQuery, fastifyPassport.authenticate('github')],
     },
     function (_req, res) {
       // nothing todo

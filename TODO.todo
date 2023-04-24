@@ -31,7 +31,7 @@ Auth:
   - Gitlab Oauth
   ✔ Standard Email / Password @done(23-04-21 19:21)
   - Register
-    - Should create a default org
+    ✔ Should create a default org @done(23-04-24 11:47)
   ✔ Logout @done(23-04-22 15:19)
 
 

@@ -1,4 +1,5 @@
 type Keys =
+  | 'API_HOSTNAME'
   | 'APP_HOSTNAME'
   | 'COOKIE_SECRET'
   | 'DATABASE_URL'
@@ -15,5 +16,6 @@ export function env(key: Keys, def: string): string;
 export function env(key: Keys, def?: string): string | undefined {
   if (!(key in process.env) && !def)
     throw new Error(`cant find "${key}" in process.env`);
+
   return process.env[key] || def;
 }

@@ -60,6 +60,10 @@ resource "google_cloud_run_v2_service" "main" {
         name ="APP_HOSTNAME"
         value = "https://app.specfy.io"
       }
+      env {
+        name = "API_HOSTNAME"
+        value = "https://api.specfy.io"
+      }
 
       // TODO: remove this
       env {
