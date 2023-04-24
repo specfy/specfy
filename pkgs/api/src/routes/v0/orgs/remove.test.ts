@@ -24,7 +24,7 @@ afterAll(async () => {
   await setupAfterAll(t);
 });
 
-describe('GET /orgs', () => {
+describe('DELETE /orgs/:id', () => {
   it('should be protected', async () => {
     const res = await t.fetch.delete('/0/orgs/foobar');
     await shouldBeProtected(res);

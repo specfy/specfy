@@ -8,7 +8,7 @@ import {
   shouldBeProtected,
   shouldNotAllowQueryParams,
 } from '../../../test/helpers';
-import { seedSimpleUser, seedWithOrg } from '../../../test/seed/seed';
+import { seedSimpleUser } from '../../../test/seed/seed';
 
 let t: TestSetup;
 beforeAll(async () => {
@@ -19,15 +19,15 @@ afterAll(async () => {
   await setupAfterAll(t);
 });
 
-describe('PUT /orgs/:id', () => {
+describe('PUT /me', () => {
   it('should be protected', async () => {
-    const res = await t.fetch.put('/0/orgs/foobar');
+    const res = await t.fetch.put('/0/me');
     await shouldBeProtected(res);
   });
 
   it('should not allow query params', async () => {
     const { token } = await seedSimpleUser();
-    const res = await t.fetch.put('/0/orgs/foobar', {
+    const res = await t.fetch.put('/0/me', {
       token,
       // @ts-expect-error
       qp: { random: 'world' },
@@ -35,11 +35,11 @@ describe('PUT /orgs/:id', () => {
     await shouldNotAllowQueryParams(res);
   });
 
-  it('should rename', async () => {
-    const { token, org } = await seedWithOrg();
+  it('should change display name', async () => {
+    const { token } = await seedSimpleUser();
 
     const name = `New Name ${nanoid()}`;
-    const res = await t.fetch.put(`/0/orgs/${org.id}`, {
+    const res = await t.fetch.put(`/0/me`, {
       token,
       body: {
         name,
@@ -52,13 +52,13 @@ describe('PUT /orgs/:id', () => {
   });
 
   it('should forbid other changes', async () => {
-    const { token, org } = await seedWithOrg();
+    const { token } = await seedSimpleUser();
 
-    const res = await t.fetch.put(`/0/orgs/${org.id}`, {
+    const res = await t.fetch.put(`/0/me`, {
       token,
       body: {
         // @ts-expect-error
-        id: 'dfdfdfsdfsfdsf',
+        email: 'dfdfd',
       },
     });
 

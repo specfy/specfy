@@ -8,7 +8,19 @@ export interface ApiMe {
   updatedAt: string;
 }
 
+// GET /me
 export interface ResGetMeSuccess {
   data: ApiMe;
 }
 export type ResGetMe = ResErrors | ResGetMeSuccess;
+
+// PUT /me
+export type ReqPutMe = {
+  name: string;
+};
+export type ResPutMeSuccess = { data: ApiMe };
+export type ResPutMe = ResErrors | ResPutMeSuccess;
+
+// DELETE /me
+export type ResDeleteMeSuccess = never;
+export type ResDeleteMe = ResDeleteMeSuccess | ResErrors;

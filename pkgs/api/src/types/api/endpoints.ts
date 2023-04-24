@@ -4,7 +4,7 @@ import type { ReqPostAuthLocal, ResPostAuthLocal, ResPostLogout } from './auth';
 import type { ResListRevisionBlobs } from './blob';
 import type { ReqListComponents, ResListComponents } from './components';
 import type { ReqListDocuments, ResListDocuments } from './documents';
-import type { ResGetMe } from './me';
+import type { ReqPutMe, ResDeleteMe, ResGetMe, ResPutMe } from './me';
 import type {
   ReqPostOrg,
   ReqPutOrg,
@@ -77,7 +77,11 @@ export interface API {
     GET: { res: ResListDocuments; qp: ReqListDocuments; body: never };
   };
 
-  '/0/me': { GET: { res: ResGetMe; qp: never; body: never } };
+  '/0/me': {
+    GET: { res: ResGetMe; qp: never; body: never };
+    PUT: { res: ResPutMe; qp: never; body: ReqPutMe };
+    DELETE: { res: ResDeleteMe; qp: never; body: never };
+  };
 
   '/0/orgs': {
     GET: { res: ResListOrgs; qp: never; body: never };

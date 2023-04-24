@@ -21,7 +21,7 @@ afterAll(async () => {
   await setupAfterAll(t);
 });
 
-describe('GET /documents', () => {
+describe('GET /documents/:id', () => {
   it('should be protected', async () => {
     const { project, org, user } = await seedWithProject();
     const document = await seedDocument(user, org, project);

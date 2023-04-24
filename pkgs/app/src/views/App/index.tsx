@@ -10,6 +10,7 @@ import { NotFound } from '../../components/NotFound';
 import { AuthProvider } from '../../hooks/useAuth';
 import { EditProvider } from '../../hooks/useEdit';
 import { GraphProvider } from '../../hooks/useGraph';
+import { Account } from '../Account';
 import { Homepage } from '../Homepage';
 import { Login } from '../Login';
 import { Org } from '../Org';
@@ -55,6 +56,7 @@ const App: React.FC = () => {
                 <Route element={<AuthLayout></AuthLayout>}>
                   <Route path="/" element={<Homepage />} />
 
+                  <Route path="/account" element={<Account />} />
                   <Route path="/organizations" element={<NotFound />} />
                   <Route path="/organizations/*" element={<OrgCreate />} />
                   <Route path="/:org_id/_/*" element={<Org />} />

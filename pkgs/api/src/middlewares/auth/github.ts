@@ -5,7 +5,7 @@ import { env } from '../../common/env';
 import { nanoid } from '../../common/id';
 import { slugify } from '../../common/string';
 import { prisma } from '../../db';
-import { createOrg } from '../../models';
+import { createOrg, createUserActivity } from '../../models';
 import type { GithubAuth } from '../../types/github';
 
 const GITHUB_SCOPES = ['user:email'];
@@ -61,6 +61,8 @@ export function registerGithub(passport: Authenticator) {
             },
           },
         });
+
+        await createUserActivity(user, 'User.created', user, tx);
 
         await createOrg(tx, user, {
           id: slugify(`${profile.displayName} ${nanoid().substring(0, 5)}`),

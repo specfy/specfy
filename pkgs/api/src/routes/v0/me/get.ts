@@ -1,23 +1,18 @@
 import type { FastifyPluginCallback } from 'fastify';
 
+import { toApiMe } from '../../../common/formatters/user';
 import { noQuery } from '../../../middlewares/noQuery';
 import type { ResGetMeSuccess } from '../../../types/api';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{ Reply: ResGetMeSuccess }>(
-    '/me',
+    '/',
     { preHandler: [noQuery] },
     async function (req, res) {
       const user = req.user!;
 
       res.status(200).send({
-        data: {
-          id: user.id,
-          name: user.name,
-          email: user.email,
-          createdAt: user.createdAt.toISOString(),
-          updatedAt: user.updatedAt.toISOString(),
-        },
+        data: toApiMe(user),
       });
     }
   );

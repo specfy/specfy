@@ -103,11 +103,12 @@ User:
   - User search API for team
   - Invite new user from team
   - Invitation par email
-  - Rename
-  - Suppression de compte
-      - Anonymisation
+  ✔ Rename @done(23-04-24 17:01)
+    ✔ Unit test @done(23-04-24 17:01)
+  ✔ Suppression de compte @done(23-04-24 17:01)
+      ✔ Anonymisation @done(23-04-24 17:01)
   - Validation compte
-  - Profil
+  - Profil ?
   - Hover card?
 
 Permissions:

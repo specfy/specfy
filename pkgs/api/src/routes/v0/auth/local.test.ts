@@ -15,7 +15,7 @@ afterAll(async () => {
   await setupAfterAll(t);
 });
 
-describe('GET /components', () => {
+describe('GET /auth/local', () => {
   it('should not be protected', async () => {
     const res = await t.fetch.post('/0/auth/local', {
       // @ts-expect-error
