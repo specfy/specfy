@@ -55,14 +55,16 @@ export const OrgOverview: React.FC<{ params: RouteOrg }> = ({ params }) => {
         </Card>
       </Container.Left>
       <Container.Right>
-        <Card>
-          <GraphContainer style={{ minHeight: '300px' }}>
-            <Graph readonly={true} components={components} />
-            <Toolbar position="bottom">
-              <Toolbar.Zoom />
-            </Toolbar>
-          </GraphContainer>
-        </Card>
+        {storeProjects.projects.length > 0 && (
+          <Card>
+            <GraphContainer style={{ minHeight: '300px' }}>
+              <Graph readonly={true} components={components} />
+              <Toolbar position="bottom">
+                <Toolbar.Zoom />
+              </Toolbar>
+            </GraphContainer>
+          </Card>
+        )}
         <ListActivity orgId={params.org_id}></ListActivity>
       </Container.Right>
     </>

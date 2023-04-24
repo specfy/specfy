@@ -331,7 +331,7 @@ Org:
       - Permissions
   ✔ Switch in the UI @done(23-03-27 17:46)
   - Editer le graph d'organisation
-  - Hide everything when no projects
+  ✔ Hide everything when no projects @done(23-04-24 21:40)
   - Graph Page
   - Policies Page
   - Visibility Public
