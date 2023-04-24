@@ -2,6 +2,7 @@ import { Skeleton } from 'antd';
 import type { ApiOrg } from 'api/src/types/api';
 import { useState, useEffect } from 'react';
 import { Route, Routes, useParams } from 'react-router-dom';
+import { useLocalStorage } from 'react-use';
 
 import { useListOrgs } from '../../api';
 import { BigHeadingLoading } from '../../components/BigHeading';
@@ -29,6 +30,8 @@ export const Org: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [org, setOrg] = useState<ApiOrg>();
 
+  const [, setLastOrg] = useLocalStorage('lastOrg');
+
   useEffect(() => {
     if (getOrgs.data) {
       setOrg(getOrgs.data.data.find((o) => o.id === params.org_id));
@@ -37,6 +40,12 @@ export const Org: React.FC = () => {
       setLoading(getOrgs.isLoading);
     }
   }, [getOrgs.data, params.org_id]);
+
+  useEffect(() => {
+    if (org) {
+      setLastOrg(org.id);
+    }
+  }, [org]);
 
   if (loading) {
     return (

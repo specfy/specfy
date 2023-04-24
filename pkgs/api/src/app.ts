@@ -31,6 +31,7 @@ export default async (f: FastifyInstance, opts: FastifyPluginOptions) => {
       res.status(400).send(error.err);
       return;
     } else {
+      console.error(error);
       // fastify will use parent error handler to handle this
       serverError(res);
     }

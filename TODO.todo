@@ -16,9 +16,9 @@ Infrastructure:
   ✔ custom domain @done(23-04-19 11:10)
   ✔ cloud build @done(23-04-19 11:10)
   ✔ cloud storage @done(23-04-19 11:10)
-    - Remove
+    ✔ Remove @done(23-04-24 21:33)
   ✔ CDN @done(23-04-19 11:10)
-  - Remove load balancer
+  ✔ Remove load balancer @done(23-04-24 21:33)
   ✔ Secret management ? @done(23-04-21 11:55)
   ✔ Vercel @done(23-04-21 11:56)
 
@@ -37,7 +37,7 @@ Auth:
 
 Homepage:
   ✔ Redirect first item @done(23-03-27 17:51)
-  - Reopen last open
+  ✔ Reopen last open @done(23-04-24 21:33)
   - Put something here?
 
 
@@ -79,7 +79,7 @@ Project:
   - Import Excalidraw
   - Import Draw.io
   ✔ Edition “inline” @done(23-03-25 23:26)
-  - Public ou Privé (pour pouvoir montrer une demo facilement)
+  - Visibility: Public ou Privé (pour pouvoir montrer une demo facilement)
   - Connect: Github
     - Import
     - One way Sync (from specfy to confluence)
