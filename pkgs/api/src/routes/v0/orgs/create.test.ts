@@ -51,7 +51,11 @@ describe('POST /orgs', () => {
 
     isSuccess(res.json);
     expect(res.statusCode).toBe(200);
-    expect(res.json).toStrictEqual({ id: id, name: `test ${id}` });
+    expect(res.json).toStrictEqual({
+      id: id,
+      name: `test ${id}`,
+      isPersonal: false,
+    });
 
     // Should also create a permission
     const hasPerms = await prisma.perms.count({

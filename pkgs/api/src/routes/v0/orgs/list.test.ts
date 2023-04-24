@@ -54,6 +54,7 @@ describe('GET /orgs', () => {
       {
         id: org.id,
         name: org.name,
+        isPersonal: false,
       },
     ]);
   });
@@ -71,6 +72,7 @@ describe('GET /orgs', () => {
       {
         id: seed1.org.id,
         name: seed1.org.name,
+        isPersonal: false,
       },
     ]);
 
@@ -83,6 +85,7 @@ describe('GET /orgs', () => {
       {
         id: seed2.org.id,
         name: seed2.org.name,
+        isPersonal: false,
       },
     ]);
   });
