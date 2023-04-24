@@ -15,7 +15,10 @@ export function proposeTitle(computed: BlobAndDiffs[]): string {
 
   if (computed.length === 1) {
     const { blob, diffs } = computed[0];
-    const type = blob.type === 'project' ? 'project' : blob.current?.name;
+    const type =
+      blob.type === 'project'
+        ? 'project'
+        : blob.current?.name || blob.previous?.name;
     if (blob.deleted) {
       return `fix(${blob.type}): delete ${type}`;
     }

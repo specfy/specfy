@@ -236,6 +236,7 @@ export interface DocumentsState {
   ) => void;
   revert: (id: string) => void;
   revertField: (id: string, field: keyof ApiDocument) => void;
+  remove: (id: string) => void;
 }
 export const useDocumentsStore = create<DocumentsState>()((set, get) => ({
   documents: {},
@@ -301,6 +302,14 @@ export const useDocumentsStore = create<DocumentsState>()((set, get) => ({
     const comp = get().documents[id];
     const item = originalStore.find((i): i is ApiDocument => comp.id === i.id)!;
     get().updateField(id, field, item[field]);
+  },
+  remove: (id) => {
+    set(
+      produce((state: DocumentsState) => {
+        delete state.documents[id];
+        // return { documents: state.documents };
+      })
+    );
   },
 }));
 

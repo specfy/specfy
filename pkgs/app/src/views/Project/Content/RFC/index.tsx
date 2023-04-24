@@ -1,7 +1,11 @@
-import { Typography, Space } from 'antd';
+import { IconDotsVertical } from '@tabler/icons-react';
+import type { MenuProps } from 'antd';
+import { App, Typography, Dropdown, Button } from 'antd';
 import Title from 'antd/es/typography/Title';
 import type { ApiDocument, ApiProject } from 'api/src/types/api';
-import { useEffect, useState } from 'react';
+import type { MenuClickEventHandler } from 'rc-menu/lib/interface';
+import { useEffect, useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { useDocumentsStore } from '../../../../common/store';
 import { ContentDoc } from '../../../../components/Content';
@@ -18,8 +22,10 @@ import cls from './index.module.scss';
 export const RFC: React.FC<{
   proj: ApiProject;
   doc: ApiDocument;
-}> = ({ doc }) => {
+}> = ({ doc, proj }) => {
   const documentsStore = useDocumentsStore();
+  const { message } = App.useApp();
+  const navigate = useNavigate();
 
   // Edition
   const edit = useEdit();
@@ -30,6 +36,19 @@ export const RFC: React.FC<{
     setTitle(doc.name);
   }, [edit, doc]);
 
+  const menuItems = useMemo<MenuProps['items']>(() => {
+    return [{ key: 'delete', label: 'Delete', danger: true }];
+  }, []);
+
+  const onClickMenu: MenuClickEventHandler = (e) => {
+    if (e.key === 'delete') {
+      edit.enable(true);
+      documentsStore.remove(doc!.id);
+      message.success('Document deleted');
+      navigate(`/${proj.orgId}/${proj.slug}/content`);
+    }
+  };
+
   return (
     <>
       <div>
@@ -38,31 +57,36 @@ export const RFC: React.FC<{
         </div>
       </div>
       <div>
-        {!isEditing && (
-          <Title level={1} className={cls.title} id={doc.slug}>
-            <span className={cls.type}>[RFC-{doc.typeId}]</span>
-            {title}
-          </Title>
-        )}
-        {isEditing && (
-          <div className={cls.title}>
-            <span className={cls.type}>[RFC-{doc.typeId}]</span>
-            <FakeInput.H1
-              size="large"
-              value={title}
-              placeholder="Title..."
-              onChange={(e) => {
-                setTitle(e.target.value);
-                documentsStore.updateField(doc.id, 'name', e.target.value);
-              }}
-            />
+        <div className={cls.header}>
+          {!isEditing && (
+            <Title level={1} className={cls.title} id={doc.slug}>
+              <span className={cls.type}>[RFC-{doc.typeId}]</span>
+              {title}
+            </Title>
+          )}
+          {isEditing && (
+            <div className={cls.title}>
+              <span className={cls.type}>[RFC-{doc.typeId}]</span>
+              <FakeInput.H1
+                size="large"
+                value={title}
+                placeholder="Title..."
+                onChange={(e) => {
+                  setTitle(e.target.value);
+                  documentsStore.updateField(doc.id, 'name', e.target.value);
+                }}
+              />
+            </div>
+          )}
+          <div>
+            <Dropdown menu={{ items: menuItems, onClick: onClickMenu }}>
+              <Button icon={<IconDotsVertical />} type="ghost" />
+            </Dropdown>
           </div>
-        )}
-        <Space>
-          <div className={cls.lastUpdate}>
-            Updated <Time time={doc.updatedAt} />
-          </div>
-        </Space>
+        </div>
+        <div className={cls.lastUpdate}>
+          Updated <Time time={doc.updatedAt} />
+        </div>
 
         <Typography className={cls.content}>
           {!isEditing && <ContentDoc doc={doc.content} />}
