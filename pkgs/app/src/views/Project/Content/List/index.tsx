@@ -41,7 +41,7 @@ export const ProjectContentList: React.FC<{
   }, [res.data]);
 
   if (!list || !pagination) {
-    return;
+    return null;
   }
 
   return (
