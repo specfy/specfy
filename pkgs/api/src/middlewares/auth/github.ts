@@ -1,4 +1,5 @@
 import type { Authenticator } from '@fastify/passport';
+import type { Users } from '@prisma/client';
 import { Strategy as GithubStrategy } from 'passport-github2';
 
 import { env } from '../../common/env';
@@ -7,6 +8,8 @@ import { slugify } from '../../common/string';
 import { prisma } from '../../db';
 import { createOrg, createUserActivity } from '../../models';
 import type { GithubAuth } from '../../types/github';
+
+import { AuthError } from './errors';
 
 const GITHUB_SCOPES = ['user:email'];
 
@@ -20,15 +23,15 @@ export function registerGithub(passport: Authenticator) {
       passReqToCallback: true,
     },
     async function (
-      _req: any,
+      _req: unknown,
       accessToken: string,
       _refreshToken: string,
       profile: GithubAuth,
-      done: any
+      done: (err: Error | null, user?: Users | null) => void
     ) {
       const emails = profile.emails;
       if (!emails || emails.length < 0) {
-        done('no_email');
+        done(new AuthError('email', 'no_email', 'Account has no valid email'));
         return;
       }
 

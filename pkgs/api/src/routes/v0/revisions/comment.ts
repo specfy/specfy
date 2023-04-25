@@ -48,7 +48,11 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
     const com = await prisma.$transaction(async (tx) => {
       const created = await tx.comments.create({
-        data: { ...where, id: nanoid(), content: data.content as any },
+        data: {
+          ...where,
+          id: nanoid(),
+          content: data.content as Record<string, any>,
+        },
       });
 
       if (data.approval) {

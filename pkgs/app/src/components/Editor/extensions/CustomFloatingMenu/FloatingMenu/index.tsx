@@ -18,13 +18,15 @@ import { FloatingMenuPlugin } from '../plugin';
 
 import cls from './index.module.scss';
 
+const HEADING_LEVEL = [1, 2, 3, 4] as const;
+
 export const FloatingMenu: React.FC<{ editor: Editor }> = ({ editor }) => {
   const [element, setElement] = useState<HTMLDivElement | null>(null);
 
   // Menu logic
   const [showSub, setShowSub] = useState<string | undefined>();
   const [, setSelected] = useState<boolean>(false);
-  const [plugin, setPlugin] = useState<Plugin<any>>();
+  const [plugin, setPlugin] = useState<Plugin<unknown>>();
 
   useEffect(() => {
     if (!element) {
@@ -171,7 +173,7 @@ export const FloatingMenu: React.FC<{ editor: Editor }> = ({ editor }) => {
           showSub === 'headings' && cls.show
         )}
       >
-        {[1, 2, 3, 4].map((level: any) => {
+        {HEADING_LEVEL.map((level) => {
           return (
             <div
               key={`heading-lvl-${level}`}

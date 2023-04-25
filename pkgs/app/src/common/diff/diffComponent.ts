@@ -21,7 +21,7 @@ export function diffComponent(
   }
 
   for (const k of Object.keys(blob.current)) {
-    if (IGNORED_COMPONENT_KEYS.includes(k as any)) {
+    if ((IGNORED_COMPONENT_KEYS as readonly string[]).includes(k)) {
       continue;
     }
 

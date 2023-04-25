@@ -209,7 +209,6 @@ module.exports = {
     '@typescript-eslint/no-redeclare': ['error'],
     '@typescript-eslint/no-shadow': ['error'],
     '@typescript-eslint/no-empty-function': 'error',
-    '@typescript-eslint/no-explicit-any': ['warn'],
     '@typescript-eslint/no-loss-of-precision': 'error',
     '@typescript-eslint/ban-tslint-comment': ['error'],
     '@typescript-eslint/consistent-generic-constructors': 'error',
@@ -253,6 +252,7 @@ module.exports = {
     '@typescript-eslint/method-signature-style': ['error'],
 
     // disabled => because will warn to every explicit "any"
+    '@typescript-eslint/no-explicit-any': ['off'],
     '@typescript-eslint/explicit-module-boundary-types': ['off'],
 
     // disabled => because will warn for every not typed but correctly infered type var

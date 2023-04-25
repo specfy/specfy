@@ -8,11 +8,11 @@ import type { ResErrors, ResValidationError } from '../types/api';
 import type { API, APIPaths } from '../types/api/endpoints';
 import type { FilterObjObjWithKey } from '../types/utils';
 
-type HasGet = { GET: any };
-type HasPost = { POST: any };
-type HasPut = { PUT: any };
-type HasPatch = { PATCH: any };
-type HasDelete = { DELETE: any };
+type HasGet = { GET: Record<string, unknown> };
+type HasPost = { POST: Record<string, unknown> };
+type HasPut = { PUT: Record<string, unknown> };
+type HasPatch = { PATCH: Record<string, unknown> };
+type HasDelete = { DELETE: Record<string, unknown> };
 
 export function isError(json: any): asserts json is ResErrors {
   if (!('error' in json)) {
@@ -30,7 +30,7 @@ export function isValidationError(
   }
 }
 
-export function isSuccess<TType extends Record<any, any>>(
+export function isSuccess<TType extends Record<string, any>>(
   json: TType
 ): asserts json is Exclude<TType, { error: any }> {
   if (json && 'error' in json) {
@@ -152,7 +152,7 @@ export class ApiClient {
       qp?: Record<string, any>;
       body?: Record<string, any>;
     }
-  ) {
+  ): Promise<Dispatcher.ResponseData & { json: any }> {
     const res = await this.client.request({
       method,
       path,

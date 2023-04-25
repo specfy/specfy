@@ -24,7 +24,7 @@ function add(value: Allowed) {
   originalStore.push(JSON.parse(JSON.stringify(value)));
 }
 
-function find<T extends Allowed>(id: any): T | undefined {
+function find<T extends Allowed>(id: string): T | undefined {
   return originalStore.find<T>((val): val is T => {
     return val.id === id;
   });

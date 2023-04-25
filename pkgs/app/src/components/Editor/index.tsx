@@ -28,7 +28,7 @@ export const Editor: React.FC<Props> = (props) => {
       }),
     ],
     onUpdate: (p) => {
-      props.onUpdate(removeEmptyContent(p.editor.getJSON() as any));
+      props.onUpdate(removeEmptyContent(p.editor.getJSON() as BlockLevelZero));
     },
     content:
       props.content.content.length === 0

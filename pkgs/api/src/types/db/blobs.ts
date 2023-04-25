@@ -35,12 +35,18 @@ export type DBBlobProject = DBBlobBase & DBBlobProjectBase;
 
 export type DBBlob = DBBlobComponent | DBBlobDocument | DBBlobProject;
 
-export function isDocumentBlob(blob: any): blob is DBBlobDocument {
+export function isDocumentBlob(
+  blob: Record<string, unknown>
+): blob is DBBlobDocument {
   return blob.type === 'document';
 }
-export function isComponentBlob(blob: any): blob is DBBlobComponent {
+export function isComponentBlob(
+  blob: Record<string, unknown>
+): blob is DBBlobComponent {
   return blob.type === 'component';
 }
-export function isProjectBlob(blob: any): blob is DBBlobProject {
+export function isProjectBlob(
+  blob: Record<string, unknown>
+): blob is DBBlobProject {
   return blob.type === 'project';
 }

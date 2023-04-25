@@ -192,9 +192,9 @@ export const Graph: React.FC<{
     });
     setDrawed(true);
 
-    let cancel: any;
+    let cancel: number;
     if (gref.highlight) {
-      cancel = setTimeout(
+      cancel = window.setTimeout(
         () => {
           highlightCell({
             cell: g.getCellById(gref.highlight!)!,

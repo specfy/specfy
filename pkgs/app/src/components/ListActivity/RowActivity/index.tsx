@@ -1,5 +1,14 @@
 import type { ApiActivity } from 'api/src/types/api';
-import type { DBActivityType } from 'api/src/types/db';
+import type {
+  ActionComponent,
+  ActionDocument,
+  ActionOrg,
+  ActionPolicy,
+  ActionProject,
+  ActionRevision,
+  ActionUser,
+  DBActivityType,
+} from 'api/src/types/db';
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -9,48 +18,65 @@ import { Time } from '../../Time';
 
 import cls from './index.module.scss';
 
-// type TargetComponent = Exclude<ApiActivity['targetComponent'], undefined>;
+type TargetComponent = Exclude<ApiActivity['targetComponent'], undefined>;
 type TargetDocument = Exclude<ApiActivity['targetDocument'], undefined>;
-// type TargetPolicy = Exclude<ApiActivity['targetPolicy'], undefined>;
-// type TargetRevision = Exclude<ApiActivity['targetRevision'], undefined>;
-// type TargetUser = Exclude<ApiActivity['targetUser'], undefined>;
+type TargetPolicy = Exclude<ApiActivity['targetPolicy'], undefined>;
+type TargetRevision = Exclude<ApiActivity['targetRevision'], undefined>;
+type TargetUser = Exclude<ApiActivity['targetUser'], undefined>;
 
-const mapping: Record<ApiActivity['action'], (target: any) => string> = {
+const mapDocument: Record<ActionDocument, (target: TargetDocument) => string> =
+  {
+    'Document.created': (target: TargetDocument) =>
+      `created a new ${TYPE_TO_READABLE[target.type]}`,
+    'Document.deleted': (target: TargetDocument) =>
+      `deleted ${TYPE_TO_READABLE[target.type]}`,
+    'Document.updated': (target: TargetDocument) =>
+      `updated ${TYPE_TO_READABLE[target.type]}`,
+  };
+
+const mapComponent: Record<
+  ActionComponent,
+  (target: TargetComponent) => string
+> = {
   'Component.created': () => 'created a new component',
   'Component.deleted': () => 'deleted a component',
   'Component.updated': () => 'updated a component',
+};
 
-  'Document.created': (target: TargetDocument) =>
-    `created a new ${TYPE_TO_READABLE[target.type]}`,
-  'Document.deleted': (target: TargetDocument) =>
-    `deleted ${TYPE_TO_READABLE[target.type]}`,
-  'Document.updated': (target: TargetDocument) =>
-    `updated ${TYPE_TO_READABLE[target.type]}`,
-
+const mapOrg: Record<ActionOrg, () => string> = {
   'Org.created': () => `created this organization`,
   'Org.deleted': () => ``,
   'Org.renamed': () => ``,
   'Org.updated': () => ``,
+};
 
+const mapPolicy: Record<ActionPolicy, (target: TargetPolicy) => string> = {
   'Policy.created': () => `created a new policy`,
   'Policy.deleted': () => `deleted policy`,
   'Policy.updated': () => `updated policy`,
+};
 
+const mapProject: Record<ActionProject, () => string> = {
   'Project.created': () => `created a new project`,
   'Project.deleted': () => `deleted project`,
   'Project.renamed': () => `renamed project`,
   'Project.updated': () => `updated project`,
+};
 
-  'Revision.approved': () => `approved revision`,
-  'Revision.commented': () => `commented on revision`,
-  'Revision.created': () => `created a new revision`,
-  'Revision.deleted': () => `deleted revision`,
-  'Revision.merged': () => `merged revision`,
-  'Revision.updated': () => `updated revision`,
-  'Revision.closed': () => `closed revision`,
-  'Revision.locked': () => `locked revision`,
-  'Revision.rebased': () => `rebased revision`,
+const mapRevision: Record<ActionRevision, (target: TargetRevision) => string> =
+  {
+    'Revision.approved': () => `approved revision`,
+    'Revision.commented': () => `commented on revision`,
+    'Revision.created': () => `created a new revision`,
+    'Revision.deleted': () => `deleted revision`,
+    'Revision.merged': () => `merged revision`,
+    'Revision.updated': () => `updated revision`,
+    'Revision.closed': () => `closed revision`,
+    'Revision.locked': () => `locked revision`,
+    'Revision.rebased': () => `rebased revision`,
+  };
 
+const mapUser: Record<ActionUser, (target: TargetUser) => string> = {
   'User.added': () => ``,
   'User.created': () => ``,
   'User.deleted': () => ``,
@@ -76,14 +102,14 @@ export const RowActivity: React.FC<{ act: ApiActivity; orgId: string }> = ({
         {act.targetDocument.name}
       </Link>
     );
-    text = mapping[act.action](act.targetDocument);
+    text = mapDocument[act.action as ActionDocument](act.targetDocument);
   } else if (type === 'Component' && act.targetComponent) {
     target = (
       <Link to={`/${orgId}/${act.project!.slug}/c/${act.targetComponent.slug}`}>
         {act.targetComponent.name}
       </Link>
     );
-    text = mapping[act.action](act.targetComponent);
+    text = mapComponent[act.action as ActionComponent](act.targetComponent);
   } else if (type === 'Revision' && act.targetRevision) {
     target = (
       <Link
@@ -92,21 +118,25 @@ export const RowActivity: React.FC<{ act: ApiActivity; orgId: string }> = ({
         {act.targetRevision.name}
       </Link>
     );
-    text = mapping[act.action](act.targetComponent);
+    text = mapRevision[act.action as ActionRevision](act.targetRevision);
   } else if (type === 'Project' && act.project) {
     target = (
       <Link to={`/${orgId}/${act.project.slug}`}>{act.project.name}</Link>
     );
-    text = mapping[act.action](act.project);
+    text = mapProject[act.action as ActionProject]();
   } else if (type === 'Policy' && act.targetPolicy) {
     target = (
       <Link to={`/${orgId}/_/policies/${act.targetPolicy.id}`}>
         {act.targetPolicy.name}
       </Link>
     );
-    text = mapping[act.action](act.project);
+    text = mapPolicy[act.action as ActionPolicy](act.targetPolicy);
   } else if (type === 'Org') {
-    text = mapping[act.action]('');
+    text = mapOrg[act.action as ActionOrg]();
+  } else if (type === 'User' && act.targetUser) {
+    text = mapUser[act.action as ActionUser](act.targetUser);
+  } else {
+    text = 'error';
   }
 
   return (

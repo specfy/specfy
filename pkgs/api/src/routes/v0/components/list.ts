@@ -6,6 +6,7 @@ import { valOrgId, valProjectId } from '../../../common/zod';
 import { prisma } from '../../../db';
 import type {
   ApiComponent,
+  BlockLevelZero,
   Pagination,
   ReqListComponents,
   ResListComponentsSuccess,
@@ -62,7 +63,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           typeId: p.typeId,
           name: p.name,
           slug: p.slug,
-          description: p.description as any,
+          description: p.description as unknown as BlockLevelZero,
           tech: p.tech as ApiComponent['tech'],
           display: p.display as unknown as ApiComponent['display'],
           inComponent: p.inComponent,

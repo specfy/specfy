@@ -22,7 +22,7 @@ export interface DiffObjectsArray<T> {
 
 export interface ComputedForDiff<T = unknown> {
   key: T;
-  diff: BlockLevelZero | Change[] | DiffObjectsArray<any>;
+  diff: BlockLevelZero | Change[] | DiffObjectsArray<unknown>;
 }
 
 export type ComponentBlobWithDiff = {
