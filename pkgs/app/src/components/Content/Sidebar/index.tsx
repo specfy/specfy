@@ -18,6 +18,7 @@ import { useDebounce } from 'react-use';
 
 import { useListDocuments } from '../../../api';
 import { TYPE_TO_TEXT } from '../../../common/document';
+import { useDocumentsStore } from '../../../common/store';
 import type { RouteProject } from '../../../types/routes';
 
 import cls from './index.module.scss';
@@ -28,6 +29,7 @@ export const ContentSidebar: React.FC<{
 }> = ({ params, proj }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { deleted } = useDocumentsStore();
   const [collapsed, setCollapsed] = useState<boolean>(false);
 
   // Data fetch
@@ -96,6 +98,10 @@ export const ContentSidebar: React.FC<{
     const rfc = [];
     const playbook = [];
     for (const doc of res.data.data) {
+      if (deleted.includes(doc.id)) {
+        continue;
+      }
+
       if (doc.type === 'pb') {
         playbook.push({
           key: doc.id,
@@ -125,7 +131,7 @@ export const ContentSidebar: React.FC<{
         children: playbook,
       },
     ];
-  }, [res.isLoading]);
+  }, [res.isLoading, deleted]);
 
   const selected = useMemo(() => {
     const split = location.pathname.split('/');

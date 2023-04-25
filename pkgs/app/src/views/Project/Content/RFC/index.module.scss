@@ -3,15 +3,15 @@
 .header {
   display: flex;
   grid-template-columns: 1fr 40px;
-  height: 50px;
   align-items: center;
+  height: 50px;
 }
 
 .title {
   display: flex;
-  font-size: $font-3xl !important;
-  margin-bottom: 0 !important;
   flex-grow: 1;
+  margin-bottom: 0 !important;
+  font-size: $font-3xl !important;
 
   >div {
     margin-bottom: 0 !important;

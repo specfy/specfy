@@ -175,7 +175,7 @@ Documents:
   ✔ editer @done(23-03-25 23:28)
     - Unit Test
   ✔ supprimer @done(23-03-25 23:28)
-    - Delete in UI should clean store but not really, and should not fetch document again from api
+    ✔ Delete in UI should clean store but not really, and should not fetch document again from api @done(23-04-25 10:40)
     - Unit Test
   - Draft document should be added to the list somehow
     - RFC number computed?

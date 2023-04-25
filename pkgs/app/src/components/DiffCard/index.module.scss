@@ -91,8 +91,8 @@ $border-width: 10px;
   top: 0;
 
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-start;
+  justify-content: flex-end;
 
   width: 100%;
   height: 100%;
@@ -101,6 +101,10 @@ $border-width: 10px;
   font-size: $font-s;
   font-weight: 600;
   color: $red-900;
+
+  span {
+    background-color: $red-300;
+  }
 }
 
 .line {

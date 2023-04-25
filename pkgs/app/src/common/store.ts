@@ -224,6 +224,7 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
 // ------------------------------------------ Document Store
 export interface DocumentsState {
   documents: Record<string, ApiDocument>;
+  deleted: string[];
   add: (values: ApiDocument[]) => void;
   create: (
     data: Pick<ApiDocument, 'name' | 'orgId' | 'projectId' | 'type'>
@@ -240,6 +241,7 @@ export interface DocumentsState {
 }
 export const useDocumentsStore = create<DocumentsState>()((set, get) => ({
   documents: {},
+  deleted: [],
   add: (values) => {
     set(
       produce((state: DocumentsState) => {
@@ -307,7 +309,7 @@ export const useDocumentsStore = create<DocumentsState>()((set, get) => ({
     set(
       produce((state: DocumentsState) => {
         delete state.documents[id];
-        // return { documents: state.documents };
+        state.deleted.push(id);
       })
     );
   },

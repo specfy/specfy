@@ -81,7 +81,9 @@ export const DiffCard: React.FC<{
       >
         <div className={cls.diffContent}>
           {diff.blob.deleted && (
-            <div className={cls.fileDeleted}>{type} deleted</div>
+            <div className={cls.fileDeleted}>
+              <span>{type} deleted</span>
+            </div>
           )}
           {diff.blob.type === 'component' && (
             <DiffCardComponent diff={diff as ComponentBlobWithDiff} />

@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 
 import { useListDocuments } from '../../../../api';
 import { TYPE_TO_TEXT } from '../../../../common/document';
+import { useDocumentsStore } from '../../../../common/store';
 import { Card } from '../../../../components/Card';
 import { Time } from '../../../../components/Time';
 import type { RouteProject } from '../../../../types/routes';
@@ -20,7 +21,11 @@ export const ProjectContentList: React.FC<{
   proj: ApiProject;
   params: RouteProject;
 }> = ({ proj, params }) => {
-  const [list, setList] = useState<ResListDocumentsSuccess>();
+  const { deleted } = useDocumentsStore();
+
+  const [pagination, setPagination] =
+    useState<ResListDocumentsSuccess['pagination']>();
+  const [list, setList] = useState<ResListDocumentsSuccess['data']>();
   const res = useListDocuments({
     org_id: params.org_id,
     project_id: proj.id,
@@ -31,8 +36,13 @@ export const ProjectContentList: React.FC<{
       return;
     }
 
-    setList(res.data);
+    setList(res.data.data.filter((item) => !deleted.includes(item.id)));
+    setPagination(res.data.pagination);
   }, [res.data]);
+
+  if (!list || !pagination) {
+    return;
+  }
 
   return (
     <div className={cls.list}>
@@ -40,7 +50,7 @@ export const ProjectContentList: React.FC<{
         {list && (
           <Table
             rowKey="id"
-            dataSource={list.data}
+            dataSource={list}
             size="small"
             pagination={{ position: ['bottomCenter'] }}
           >
@@ -50,7 +60,7 @@ export const ProjectContentList: React.FC<{
                   <span>
                     <IconBook />
                   </span>{' '}
-                  {list.pagination.totalItems} Documents
+                  {pagination.totalItems} Documents
                 </div>
               }
               dataIndex="name"
