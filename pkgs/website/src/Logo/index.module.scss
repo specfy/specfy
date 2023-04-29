@@ -1,4 +1,4 @@
-$height: 52px;
+$height: 50px;
 
 .logo {
   display: flex;
@@ -8,13 +8,16 @@ $height: 52px;
   width: 202px;
   height: 100%;
 
-  >svg {
-    height: $height;
-  }
 }
 
 .icon {
-  width: 40px;
+  width: $height;
+  height: $height;
   font-size: 40px;
   color: #4f46e5;
+}
+
+.name {
+  height: $height;
+  width: 90%;
 }

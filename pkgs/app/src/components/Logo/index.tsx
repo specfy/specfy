@@ -7,7 +7,72 @@ export const Logo: React.FC<{ color?: 'white' }> = ({ color }) => {
 
   return (
     <div className={cls.logo}>
-      <IconApps className={cls.icon} />
+      {/* <IconApps className={cls.icon} /> */}
+
+      {/* <svg
+        width="200"
+        height="200"
+        viewBox="0 0 200 200"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className={cls.icon}
+      >
+        <rect width="200" height="200" rx="40" fill="#4F46E5" />
+        <mask id="path-2-inside-1_1_18" fill="white">
+          <rect x="82" y="81" width="80" height="81" rx="8" />
+        </mask>
+        <rect
+          x="82"
+          y="81"
+          width="80"
+          height="81"
+          rx="8"
+          stroke="white"
+          strokeWidth="24"
+          mask="url(#path-2-inside-1_1_18)"
+        />
+        <mask id="path-3-inside-2_1_18" fill="white">
+          <rect x="46.7662" y="46" width="71.6418" height="72" rx="8" />
+        </mask>
+        <rect
+          x="46.7662"
+          y="46"
+          width="71.6418"
+          height="72"
+          rx="8"
+          stroke="white"
+          strokeWidth="24"
+          mask="url(#path-3-inside-2_1_18)"
+        />
+      </svg> */}
+
+      <svg
+        width="200"
+        height="200"
+        viewBox="0 0 200 200"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+        className={cls.icon}
+      >
+        <rect
+          x="20"
+          y="20"
+          width="160"
+          height="160"
+          rx="6"
+          stroke="white"
+          strokeWidth="12"
+        />
+        <line
+          x1="60.8944"
+          y1="52.861"
+          x2="135.835"
+          y2="150.395"
+          stroke="white"
+          strokeWidth="30"
+        />
+      </svg>
+
       <svg
         width="150"
         height="40"
@@ -38,10 +103,6 @@ export const Logo: React.FC<{ color?: 'white' }> = ({ color }) => {
         <path
           d="M120.146 40H126.934L130.507 31.766L140.242 9.23077H133.186L127.291 23.8787L121.397 9.23077H114.341L123.987 31.506L120.146 40Z"
           fill={fill}
-        />
-        <path
-          d="M146.07 32.1993C148.169 32.1993 150 30.6826 150 28.3857C150 26.0888 148.169 24.572 146.07 24.572C143.971 24.572 142.14 26.0888 142.14 28.3857C142.14 30.6826 143.971 32.1993 146.07 32.1993Z"
-          fill="#4f46e5"
         />
       </svg>
     </div>
