@@ -1,5 +1,3 @@
-import { IconApps } from '@tabler/icons-react';
-
 import cls from './index.module.scss';
 
 export const Logo: React.FC<{ color?: 'white' }> = ({ color }) => {
