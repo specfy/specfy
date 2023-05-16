@@ -1,4 +1,4 @@
-import { Tag, Typography } from 'antd';
+import { Skeleton, Tag, Typography } from 'antd';
 import Title from 'antd/es/typography/Title';
 import type { ApiComponent, ApiProject } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
@@ -10,9 +10,10 @@ import { useComponentsStore } from '../../../common/store';
 import { Card } from '../../../components/Card';
 import { ComponentLine } from '../../../components/ComponentLine';
 import { Container } from '../../../components/Container';
-import { Graph, GraphContainer } from '../../../components/Graph';
-import { Toolbar } from '../../../components/Graph/Toolbar';
-import { useGraph } from '../../../hooks/useGraph';
+import { Flow, FlowWrapper } from '../../../components/Flow';
+import { Toolbar } from '../../../components/Flow/Toolbar';
+import type { ComputedFlow } from '../../../components/Flow/helpers';
+import { componentsToFlow } from '../../../components/Flow/helpers';
 import type { RouteProject, RouteTech } from '../../../types/routes';
 
 import cls from './index.module.scss';
@@ -21,11 +22,11 @@ export const Tech: React.FC<{
   proj: ApiProject;
   params: RouteProject;
 }> = ({ params }) => {
-  const gref = useGraph();
   const route = useParams<Partial<RouteTech>>();
   const storeComponents = useComponentsStore();
 
   const [components, setComponents] = useState<ApiComponent[]>();
+  const [flow, setFlow] = useState<ComputedFlow>();
   const [techname, setTechName] = useState<string>();
   const [usedBy, setUsedBy] = useState<ApiComponent[]>([]);
   const [info, setInfo] = useState<TechInfo>();
@@ -34,17 +35,6 @@ export const Tech: React.FC<{
   useEffect(() => {
     setComponents(Object.values(storeComponents.components));
   }, [storeComponents]);
-
-  useEffect(() => {
-    if (!gref) {
-      return;
-    }
-
-    setTimeout(() => {
-      gref.recenter();
-      gref.unsetHighlight();
-    }, 500);
-  }, []);
 
   useEffect(() => {
     if (!components) {
@@ -78,6 +68,14 @@ export const Tech: React.FC<{
     setUsedBy(tmp);
   }, [components]);
 
+  useEffect(() => {
+    if (!components) {
+      return;
+    }
+
+    setFlow(componentsToFlow(components));
+  }, [components]);
+
   if (!techname) {
     return <div>not found</div>;
   }
@@ -102,14 +100,18 @@ export const Tech: React.FC<{
         </Card>
       </Container.Left>
       <Container.Right>
-        <Card>
-          <GraphContainer>
-            <Graph readonly={true} components={components!} />
-            <Toolbar position="bottom">
-              <Toolbar.Zoom />
-            </Toolbar>
-          </GraphContainer>
-        </Card>
+        <div>
+          {!flow ? (
+            <Skeleton.Image active></Skeleton.Image>
+          ) : (
+            <FlowWrapper>
+              <Flow flow={flow} />
+              <Toolbar position="bottom">
+                <Toolbar.Zoom />
+              </Toolbar>
+            </FlowWrapper>
+          )}
+        </div>
       </Container.Right>
     </Container>
   );

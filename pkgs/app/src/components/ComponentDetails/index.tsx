@@ -1,6 +1,6 @@
 import { Typography } from 'antd';
 import type { ApiComponent, ApiProject } from 'api/src/types/api';
-import type { GraphEdge } from 'api/src/types/db';
+import type { FlowEdge } from 'api/src/types/db';
 import type React from 'react';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -160,7 +160,7 @@ export const ComponentDetails: React.FC<{
 
       // Remove from this component to other
       if (isFrom) {
-        const tmp: GraphEdge[] = [];
+        const tmp: FlowEdge[] = [];
         for (const edge of component.edges) {
           if (edge.to === diff.id) {
             continue;
@@ -173,7 +173,7 @@ export const ComponentDetails: React.FC<{
       }
 
       // Remove from this other to this component
-      const tmp: GraphEdge[] = [];
+      const tmp: FlowEdge[] = [];
       for (const edge of diff.edges) {
         if (component.id === edge.to) {
           continue;
@@ -189,8 +189,8 @@ export const ComponentDetails: React.FC<{
     const add = components.find((c) => c.id === diff)!;
 
     if (isFrom) {
-      const tmp: GraphEdge[] = [];
-      let exists: GraphEdge | false = false;
+      const tmp: FlowEdge[] = [];
+      let exists: FlowEdge | false = false;
       for (const edge of component.edges) {
         if (edge.to === diff) {
           exists = JSON.parse(JSON.stringify(edge));
@@ -202,7 +202,7 @@ export const ComponentDetails: React.FC<{
 
       const { source, target } = positionEdge(component, add);
 
-      const edge: GraphEdge =
+      const edge: FlowEdge =
         exists !== false
           ? exists
           : {
@@ -223,8 +223,8 @@ export const ComponentDetails: React.FC<{
       return;
     }
 
-    const tmp: GraphEdge[] = [];
-    let exists: GraphEdge | false = false;
+    const tmp: FlowEdge[] = [];
+    let exists: FlowEdge | false = false;
     for (const edge of add.edges) {
       if (edge.to === component.id) {
         exists = JSON.parse(JSON.stringify(edge));
@@ -236,7 +236,7 @@ export const ComponentDetails: React.FC<{
 
     const { source, target } = positionEdge(component, add);
 
-    const edge: GraphEdge =
+    const edge: FlowEdge =
       exists !== false
         ? exists
         : {

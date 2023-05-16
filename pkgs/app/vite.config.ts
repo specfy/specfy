@@ -5,19 +5,19 @@ import sassDts from 'vite-plugin-sass-dts';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [react(), sassDts(), mkcert()],
+  plugins: [react(), sassDts()],
   css: {
     modules: {
       localsConvention: 'camelCase',
     },
   },
-  server: {
-    https: true,
-    cors: {
-      origin: '*',
-      credentials: true,
-    },
-  },
+  // server: {
+  //   https: true,
+  //   cors: {
+  //     origin: '*',
+  //     credentials: true,
+  //   },
+  // },
   // ...
   define: {
     // process: { env: {}, argv: '' },

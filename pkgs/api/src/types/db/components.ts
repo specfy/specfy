@@ -1,6 +1,6 @@
 import type { BlockLevelZero } from '../api';
 
-import type { GraphEdge, GraphItemDisplay } from './graph';
+import type { FlowEdge, FlowItemDisplay } from './flow';
 
 export interface DBComponent {
   id: string;
@@ -17,8 +17,8 @@ export interface DBComponent {
   description: BlockLevelZero;
   tech: string[];
 
-  display: GraphItemDisplay;
-  edges: GraphEdge[];
+  display: FlowItemDisplay;
+  edges: FlowEdge[];
 
   inComponent: string | null;
 

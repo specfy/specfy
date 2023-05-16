@@ -11,9 +11,9 @@ import { componentsToFlow } from '../../../components/Flow/helpers';
 import { useEdit } from '../../../hooks/useEdit';
 import type { RouteProject } from '../../../types/routes';
 
-import { GraphEdit } from './Edit';
+// import { GraphEdit } from './Edit';
 
-export const ProjectGraph: React.FC<{
+export const ProjectFlow: React.FC<{
   proj: ApiProject;
   params: RouteProject;
 }> = ({ proj }) => {
@@ -21,7 +21,7 @@ export const ProjectGraph: React.FC<{
   const storeComponents = useComponentsStore();
   const [flow, setFlow] = useState<ComputedFlow>();
 
-  const isEditing = edit.isEnabled();
+  // const isEditing = edit.isEnabled();
   const [loading, setLoading] = useState<boolean>(true);
   const [components, setComponents] = useState<ApiComponent[]>();
 
@@ -53,7 +53,7 @@ export const ProjectGraph: React.FC<{
         <Skeleton.Image active></Skeleton.Image>
       ) : (
         <>
-          <GraphEdit comps={components!} proj={proj} />
+          {/* <GraphEdit comps={components!} proj={proj} /> */}
           <FlowWrapper>
             <Flow flow={flow} />
             <Toolbar position="top" visible>

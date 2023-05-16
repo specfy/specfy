@@ -50,7 +50,7 @@ import {
 } from '@icons-pack/react-simple-icons';
 import { nanoid } from 'api/src/common/id';
 import type { ApiComponent } from 'api/src/types/api';
-import type { GraphEdge } from 'api/src/types/db';
+import type { FlowEdge } from 'api/src/types/db';
 
 import { getEmptyDoc } from './content';
 import type { ComponentsState, ProjectState } from './store';
@@ -147,7 +147,7 @@ export const internalTypeToText: Record<ApiComponent['type'], string> = {
 export function positionEdge(
   a: ApiComponent,
   b: ApiComponent
-): { source: GraphEdge['portSource']; target: GraphEdge['portTarget'] } {
+): { source: FlowEdge['portSource']; target: FlowEdge['portTarget'] } {
   const isCurrentAbove =
     a.display.pos.y + a.display.size.height < b.display.pos.y;
   const isCurrentBelow =
@@ -156,8 +156,8 @@ export function positionEdge(
     a.display.pos.x > b.display.pos.x + b.display.size.width;
   const isCurrentLeft = a.display.pos.x + a.display.pos.x < b.display.pos.x;
 
-  let source: GraphEdge['portSource'] = 'left';
-  let target: GraphEdge['portTarget'] = 'right';
+  let source: FlowEdge['portSource'] = 'left';
+  let target: FlowEdge['portTarget'] = 'right';
   if (isCurrentLeft) {
     source = 'right';
     target = 'left';

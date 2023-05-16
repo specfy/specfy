@@ -4,7 +4,7 @@ export * from './blobs';
 export * from './comments';
 export * from './components';
 export * from './documents';
-export * from './graph';
+export * from './flow';
 export * from './orgs';
 export * from './perms';
 export * from './policies';

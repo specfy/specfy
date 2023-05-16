@@ -45,13 +45,13 @@ export const OrgHeader: React.FC<{ org: ApiOrg }> = ({ org }) => {
       //   ),
       // },
       // {
-      //   key: 'graph',
+      //   key: 'flow',
       //   label: (
-      //     <Link to={`${linkSelf}/graph`}>
+      //     <Link to={`${linkSelf}/flow`}>
       //       <span>
       //         <IconApps />
       //       </span>
-      //       Graph
+      //       Flow
       //     </Link>
       //   ),
       // },

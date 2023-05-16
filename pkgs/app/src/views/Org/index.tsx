@@ -15,7 +15,7 @@ import { ProjectCreate } from '../Project/Create';
 
 import { OrgActivity } from './Activity';
 import { OrgContent } from './Content';
-import { OrgGraph } from './Graph';
+import { OrgFlow } from './Flow';
 import { OrgOverview } from './Overview';
 import { OrgPolicies } from './Policies';
 import { OrgSettings } from './Settings';
@@ -78,7 +78,7 @@ export const Org: React.FC = () => {
           <Route path="/" element={<OrgOverview params={params} />} />
           <Route path="/content" element={<OrgContent params={params} />} />
           <Route path="/policies" element={<OrgPolicies params={params} />} />
-          <Route path="/graph" element={<OrgGraph params={params} />} />
+          <Route path="/flow" element={<OrgFlow params={params} />} />
           <Route path="/team" element={<OrgTeam params={params} />} />
           <Route path="/activity" element={<OrgActivity params={params} />} />
           <Route

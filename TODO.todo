@@ -214,7 +214,7 @@ Documents:
       - Upload
     - Drag and drop block
     - Table, use react-table instead ?
-    - Graph Snapshot
+    - Flow Snapshot
 
 
 Revision:
@@ -291,7 +291,7 @@ API:
   - Liaison de type API Endpoint
 
 
-Graph:
+Flow:
   ✔ Display components @done(23-03-29 14:43)
   ✔ Group @done(23-03-29 14:43)
   ✔ Edges @done(23-03-29 14:43)
@@ -334,7 +334,7 @@ Org:
   ✔ Switch in the UI @done(23-03-27 17:46)
   - Editer le graph d'organisation
   ✔ Hide everything when no projects @done(23-04-24 21:40)
-  - Graph Page
+  - Flow Page
   - Policies Page
   - Visibility Public
   ✔ Team Page @done(23-04-22 16:12)

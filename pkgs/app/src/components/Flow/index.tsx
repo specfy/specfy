@@ -44,6 +44,28 @@ export const Flow: React.FC<{
     setNodes(updates.nodes);
   }, [highlight]);
 
+  useEffect(() => {
+    setEdges((prev) => {
+      return flow.edges.map((edge) => {
+        const id = `${edge.source}->${edge.target}`;
+        const f = prev.find((n) => n.id === id);
+        if (!f) {
+          return edge;
+        }
+        return { ...edge, className: f.className };
+      });
+    });
+    setNodes((prev) => {
+      return flow.nodes.map((node) => {
+        const f = prev.find((n) => n.id === node.id);
+        if (!f) {
+          return node;
+        }
+        return { ...node, className: f.className };
+      });
+    });
+  }, [flow]);
+
   const onNodeEnter: ReactFlowProps['onNodeMouseEnter'] = (_, node) => {
     const updates = highlightNode(node.id, nodes, edges);
     setEdges(updates.edges);

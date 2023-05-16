@@ -1,11 +1,7 @@
 import type { Projects } from '@prisma/client';
 
 import type { ApiProject, BlockLevelZero } from '../../types/api';
-import type {
-  DBProjectLink,
-  GraphEdge,
-  GraphItemDisplay,
-} from '../../types/db';
+import type { DBProjectLink, FlowEdge, FlowItemDisplay } from '../../types/db';
 
 export function toApiProject(proj: Projects): ApiProject {
   return {
@@ -16,8 +12,8 @@ export function toApiProject(proj: Projects): ApiProject {
     name: proj.name,
     slug: proj.slug,
     links: proj.links as unknown as DBProjectLink[], // TODO: remove this in /list
-    display: proj.display as unknown as GraphItemDisplay,
-    edges: proj.edges as unknown as GraphEdge[],
+    display: proj.display as unknown as FlowItemDisplay,
+    edges: proj.edges as unknown as FlowEdge[],
     createdAt: proj.createdAt.toISOString(),
     updatedAt: proj.updatedAt.toISOString(),
   };

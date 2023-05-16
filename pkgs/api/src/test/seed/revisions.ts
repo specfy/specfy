@@ -16,7 +16,7 @@ import type {
   BlockLevelOne,
   BlockLevelZero,
 } from '../../types/api';
-import type { GraphEdge } from '../../types/db';
+import type { FlowEdge } from '../../types/db';
 
 import type { ResSeedComponents } from './components';
 
@@ -123,7 +123,7 @@ export async function seedRevisions(
     });
 
     // Update component
-    const edges = components.api.edges as unknown as GraphEdge[];
+    const edges = components.api.edges as unknown as FlowEdge[];
     edges.shift(); // removes redis
     edges.shift(); // removes pg
     edges.push({

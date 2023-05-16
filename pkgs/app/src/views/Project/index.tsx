@@ -21,7 +21,7 @@ import { ProjectActivity } from './Activity';
 import { ComponentView } from './Component';
 import { ProjectComponentCreate } from './Component/Create';
 import { ProjectContentIndex } from './Content';
-import { ProjectGraph } from './Graph';
+import { ProjectFlow } from './Flow';
 import { ProjectOverview } from './Overview';
 import { ProjectRevisionCreate } from './Revisions/Create';
 import { ProjectRevisionsList } from './Revisions/List';
@@ -131,8 +131,8 @@ export const Project: React.FC = () => {
           element={<ProjectContentIndex proj={proj} params={params} />}
         />
         <Route
-          path="/graph"
-          element={<ProjectGraph proj={proj} params={params} />}
+          path="/flow"
+          element={<ProjectFlow proj={proj} params={params} />}
         />
         <Route
           path="/activity"

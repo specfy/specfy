@@ -15,7 +15,6 @@ import { useDebounce } from 'react-use';
 
 import { useComponentsStore, useStagingStore } from '../../../common/store';
 import { useEdit } from '../../../hooks/useEdit';
-import { useGraph } from '../../../hooks/useGraph';
 
 import cls from './edit.module.scss';
 

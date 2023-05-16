@@ -1,6 +1,6 @@
 import type { BlockLevelZero } from '../api';
 
-import type { GraphEdge, GraphItemDisplay } from './graph';
+import type { FlowEdge, FlowItemDisplay } from './flow';
 
 export interface DBProject {
   id: string;
@@ -11,8 +11,8 @@ export interface DBProject {
   description: BlockLevelZero;
   links: DBProjectLink[];
 
-  display: GraphItemDisplay;
-  edges: GraphEdge[];
+  display: FlowItemDisplay;
+  edges: FlowEdge[];
 
   createdAt: string;
   updatedAt: string;

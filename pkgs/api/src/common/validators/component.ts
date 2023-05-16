@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import { schemaId, schemaSlug, schemaOrgId } from './common';
-import { schemaDisplay, schemaEdges } from './graph';
+import { schemaDisplay, schemaEdges } from './flow';
 import { schemaProseMirror } from './prosemirror';
 
 export const schemaComponent = z

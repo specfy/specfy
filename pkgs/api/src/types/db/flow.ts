@@ -1,4 +1,4 @@
-export interface GraphItemDisplay {
+export interface FlowItemDisplay {
   zIndex?: number;
   color?: string;
   backgroundColor?: string;
@@ -6,7 +6,7 @@ export interface GraphItemDisplay {
   size: { width: number; height: number };
 }
 
-export interface GraphEdge {
+export interface FlowEdge {
   to: string;
   read: boolean;
   write: boolean;

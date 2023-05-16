@@ -97,13 +97,13 @@ export const ProjectHeader: React.FC<{
         ),
       },
       {
-        key: 'graph',
+        key: 'flow',
         label: (
-          <Link to={`${linkSelf}/graph`} className={cls.link}>
+          <Link to={`${linkSelf}/flow`} className={cls.link}>
             <span>
               <IconApps />
             </span>
-            Graph
+            Flow
           </Link>
         ),
       },
@@ -156,8 +156,8 @@ export const ProjectHeader: React.FC<{
       setOpen('revisions');
     } else if (location.pathname.match(/\/c\/|\/t\//)) {
       setOpen('overview');
-    } else if (location.pathname.match(/graph/)) {
-      setOpen('graph');
+    } else if (location.pathname.match(/flow/)) {
+      setOpen('flow');
     } else if (location.pathname.match(/activity/)) {
       setOpen('activity');
     } else if (location.pathname.match(/settings/)) {
