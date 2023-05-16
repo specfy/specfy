@@ -99,7 +99,11 @@ export async function seedRevisions(
             },
           ],
         },
-        display: { zIndex: 3, pos: { x: -10, y: 90, width: 100, height: 32 } },
+        display: {
+          zIndex: 3,
+          pos: { x: -10, y: 90 },
+          size: { width: 100, height: 32 },
+        },
         inComponent: components.gce.id,
         tech: [],
         edges: [
@@ -154,7 +158,11 @@ export async function seedRevisions(
           ],
         },
         inComponent: components.gce.id,
-        display: { zIndex: 3, pos: { x: 190, y: 110, width: 140, height: 42 } },
+        display: {
+          zIndex: 3,
+          pos: { x: 190, y: 110 },
+          size: { width: 140, height: 42 },
+        },
         edges: edges as any,
       },
       tx,

@@ -1,0 +1,31 @@
+/* stylelint-disable selector-class-pattern */
+@import "../../styles/theme";
+
+.container {
+  position: relative;
+
+  display: grid;
+
+  height: 100%;
+  min-height: 450px;
+
+  font-weight: 300;
+
+  background-color: #fafafa;
+
+  &:hover {
+    >div[data-toolbar] {
+      opacity: 1;
+    }
+  }
+}
+
+:global {
+  .react-flow__edges.react-flow__container {
+    z-index: 199999 !important;
+  }
+
+  .react-flow__edge-path {
+    stroke: $neutral-300;
+  }
+}

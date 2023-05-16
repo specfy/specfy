@@ -21,6 +21,7 @@ Infrastructure:
   ✔ Remove load balancer @done(23-04-24 21:33)
   ✔ Secret management ? @done(23-04-21 11:55)
   ✔ Vercel @done(23-04-21 11:56)
+    - Declare it in terraform
 
 Auth:
   ✔ JWT @done(23-03-31 16:14)

@@ -2,7 +2,8 @@ export interface GraphItemDisplay {
   zIndex?: number;
   color?: string;
   backgroundColor?: string;
-  pos: { x: number; y: number; width: number; height: number };
+  pos: { x: number; y: number };
+  size: { width: number; height: number };
 }
 
 export interface GraphEdge {

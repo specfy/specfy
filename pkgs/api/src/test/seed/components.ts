@@ -37,7 +37,8 @@ export async function seedComponents(
           description: { type: 'doc', content: [] },
           display: {
             zIndex: 1,
-            pos: { x: -80, y: 20, width: 490, height: 370 },
+            pos: { x: -80, y: 20 },
+            size: { width: 490, height: 370 },
           },
           tech: [],
           inComponent: null,
@@ -58,7 +59,8 @@ export async function seedComponents(
           description: { type: 'doc', content: [] },
           display: {
             zIndex: 2,
-            pos: { x: -60, y: 320, width: 150, height: 55 },
+            pos: { x: 20, y: 250 },
+            size: { width: 150, height: 55 },
           },
           tech: [],
           inComponent: gcp.id,
@@ -79,7 +81,8 @@ export async function seedComponents(
           description: { type: 'doc', content: [] },
           display: {
             zIndex: 2,
-            pos: { x: 150, y: 50, width: 240, height: 300 },
+            pos: { x: 200, y: 30 },
+            size: { width: 240, height: 300 },
           },
           tech: [],
           inComponent: gcp.id,
@@ -100,7 +103,8 @@ export async function seedComponents(
           description: { type: 'doc', content: [] },
           display: {
             zIndex: 3,
-            pos: { x: -10, y: 190, width: 100, height: 32 },
+            pos: { x: 20, y: 130 },
+            size: { width: 100, height: 32 },
           },
           inComponent: gcp.id,
           edges: [],
@@ -121,7 +125,8 @@ export async function seedComponents(
           description: { type: 'doc', content: [] },
           display: {
             zIndex: 3,
-            pos: { x: 450, y: 190, width: 100, height: 32 },
+            pos: { x: 450, y: 190 },
+            size: { width: 100, height: 32 },
           },
           inComponent: null,
           edges: [],
@@ -142,7 +147,8 @@ export async function seedComponents(
           description: { type: 'doc', content: [] },
           display: {
             zIndex: 3,
-            pos: { x: 450, y: 250, width: 100, height: 32 },
+            pos: { x: 450, y: 250 },
+            size: { width: 100, height: 32 },
           },
           inComponent: null,
           edges: [],
@@ -163,7 +169,8 @@ export async function seedComponents(
           description: { type: 'doc', content: [] },
           display: {
             zIndex: 3,
-            pos: { x: 450, y: 310, width: 100, height: 32 },
+            pos: { x: 450, y: 310 },
+            size: { width: 100, height: 32 },
           },
           inComponent: null,
           edges: [],
@@ -184,7 +191,8 @@ export async function seedComponents(
           description: { type: 'doc', content: [] },
           display: {
             zIndex: 3,
-            pos: { x: -10, y: 120, width: 100, height: 32 },
+            pos: { x: 20, y: 60 },
+            size: { width: 100, height: 32 },
           },
           inComponent: gcp.id,
           edges: [],
@@ -205,7 +213,8 @@ export async function seedComponents(
           description: { type: 'doc', content: [] },
           display: {
             zIndex: 3,
-            pos: { x: -40, y: 330, width: 100, height: 32 },
+            pos: { x: 20, y: 10 },
+            size: { width: 100, height: 32 },
           },
           inComponent: gce.id,
           edges: [],
@@ -226,7 +235,8 @@ export async function seedComponents(
           description: { type: 'doc', content: [] },
           display: {
             zIndex: 3,
-            pos: { x: 210, y: 240, width: 100, height: 32 },
+            pos: { x: 100, y: 190 },
+            size: { width: 100, height: 32 },
           },
           inComponent: kube.id,
           edges: [],
@@ -247,7 +257,8 @@ export async function seedComponents(
           description: { type: 'doc', content: [] },
           display: {
             zIndex: 3,
-            pos: { x: 450, y: 90, width: 100, height: 32 },
+            pos: { x: 450, y: 90 },
+            size: { width: 100, height: 32 },
           },
           inComponent: null,
           edges: [],
@@ -281,7 +292,8 @@ export async function seedComponents(
           },
           display: {
             zIndex: 3,
-            pos: { x: 210, y: 120, width: 100, height: 32 },
+            pos: { x: 40, y: 70 },
+            size: { width: 100, height: 32 },
           },
           inComponent: kube.id,
           edges: [
@@ -361,7 +373,8 @@ export async function seedComponents(
           description: { type: 'doc', content: [] },
           display: {
             zIndex: 4,
-            pos: { x: 210, y: 60, width: 100, height: 32 },
+            pos: { x: 70, y: 10 },
+            size: { width: 100, height: 32 },
           },
           inComponent: kube.id,
           edges: [
@@ -420,7 +433,8 @@ export async function seedComponents(
           },
           display: {
             zIndex: 3,
-            pos: { x: 210, y: 180, width: 100, height: 32 },
+            pos: { x: 100, y: 130 },
+            size: { width: 100, height: 32 },
           },
           inComponent: kube.id,
           edges: [
@@ -503,7 +517,8 @@ export async function seedComponents(
           },
           display: {
             zIndex: 3,
-            pos: { x: 210, y: 300, width: 100, height: 32 },
+            pos: { x: 100, y: 250 },
+            size: { width: 100, height: 32 },
           },
           inComponent: kube.id,
           edges: [
@@ -576,7 +591,8 @@ export async function seedComponent(user: Users, org: Orgs, project: Projects) {
       description: { type: 'doc', content: [] },
       display: {
         zIndex: 1,
-        pos: { x: 20, y: 10, width: 100, height: 32 },
+        pos: { x: 20, y: 10 },
+        size: { width: 100, height: 32 },
       },
       tech: [],
     },
@@ -603,7 +619,8 @@ export function getBlobComponent(org: Orgs, project: Projects): DBComponent {
     description: { type: 'doc', content: [] },
     display: {
       zIndex: 1,
-      pos: { x: -80, y: 20, width: 490, height: 370 },
+      pos: { x: -80, y: 20 },
+      size: { width: 490, height: 370 },
     },
     tech: [],
     inComponent: null,

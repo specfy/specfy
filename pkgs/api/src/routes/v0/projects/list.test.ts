@@ -56,7 +56,8 @@ describe('GET /projects', () => {
         description: { content: [], type: 'doc' },
         display: {
           zIndex: 1,
-          pos: { height: 32, width: 100, x: 20, y: 10 },
+          size: { height: 32, width: 100 },
+          pos: { x: 20, y: 10 },
         },
         createdAt: expect.toBeIsoDate(),
         updatedAt: expect.toBeIsoDate(),

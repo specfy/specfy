@@ -22,7 +22,11 @@ afterAll(async () => {
   await setupAfterAll(t);
 });
 
-const display = { zIndex: 1, pos: { x: 0, y: 0, width: 50, height: 32 } };
+const display = {
+  zIndex: 1,
+  pos: { x: 0, y: 0 },
+  size: { width: 50, height: 32 },
+};
 describe('POST /projects', () => {
   it('should be protected', async () => {
     const res = await t.fetch.post('/0/projects');

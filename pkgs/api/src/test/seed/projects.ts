@@ -36,7 +36,8 @@ export async function seedProjects(users: Users[]) {
           },
           display: {
             zIndex: 1,
-            pos: { x: 20, y: 10, width: 100, height: 32 },
+            pos: { x: 20, y: 10 },
+            size: { width: 100, height: 32 },
           },
         },
         user: users[0],
@@ -53,7 +54,8 @@ export async function seedProjects(users: Users[]) {
           description: { type: 'doc', content: [] },
           display: {
             zIndex: 1,
-            pos: { x: 220, y: -20, width: 100, height: 32 },
+            pos: { x: 220, y: -20 },
+            size: { width: 100, height: 32 },
           },
         },
         user: users[0],
@@ -92,7 +94,8 @@ export async function seedProjects(users: Users[]) {
           ],
           display: {
             zIndex: 1,
-            pos: { x: 200, y: 70, width: 100, height: 32 },
+            pos: { x: 200, y: 70 },
+            size: { width: 100, height: 32 },
           },
         },
         user: users[0],
@@ -109,7 +112,8 @@ export async function seedProjects(users: Users[]) {
           description: { type: 'doc', content: [] },
           display: {
             zIndex: 1,
-            pos: { x: -150, y: 40, width: 100, height: 32 },
+            pos: { x: -150, y: 40 },
+            size: { width: 100, height: 32 },
           },
         },
         user: users[0],
@@ -126,7 +130,8 @@ export async function seedProjects(users: Users[]) {
           description: { type: 'doc', content: [] },
           display: {
             zIndex: 1,
-            pos: { x: 20, y: 120, width: 100, height: 32 },
+            pos: { x: 0, y: 120 },
+            size: { width: 100, height: 32 },
           },
         },
         user: users[0],
@@ -283,7 +288,8 @@ export async function seedProject(user: Users, org: Orgs) {
       description: { type: 'doc', content: [] },
       display: {
         zIndex: 1,
-        pos: { x: 20, y: 10, width: 100, height: 32 },
+        pos: { x: 20, y: 10 },
+        size: { width: 100, height: 32 },
       },
     },
     tx: prisma,
@@ -316,7 +322,8 @@ export function getBlobProject(org: Orgs): DBProject {
     description: { type: 'doc', content: [] },
     display: {
       zIndex: 1,
-      pos: { x: 220, y: -20, width: 100, height: 32 },
+      pos: { x: 220, y: -20 },
+      size: { width: 100, height: 32 },
     },
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),

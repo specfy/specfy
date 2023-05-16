@@ -94,7 +94,8 @@ export const GraphEdit: React.FC<{
 
       storeComponents.updateField(id, 'display', {
         ...comp.display,
-        pos: { ...e.cell.position(), ...e.cell.size() },
+        pos: { ...e.cell.position() },
+        size: { ...e.cell.size() },
       });
       return;
     },
@@ -181,7 +182,8 @@ export const GraphEdit: React.FC<{
 
       setInfo({
         zIndex: e.cell.zIndex || 1,
-        pos: { ...e.node.position(), ...e.current! },
+        pos: { ...e.node.position() },
+        size: { ...e.current! },
       });
     });
 
@@ -192,7 +194,8 @@ export const GraphEdit: React.FC<{
 
       setInfo({
         zIndex: e.cell.zIndex || 1,
-        pos: { ...e.node.size(), ...e.current! },
+        size: { ...e.node.size() },
+        pos: { ...e.current! },
       });
     });
 
@@ -281,7 +284,7 @@ export const GraphEdit: React.FC<{
     };
 
     if (cell.isNode()) {
-      cell.setSize({ height: replace.pos.height, width: replace.pos.width });
+      cell.setSize({ height: replace.size.height, width: replace.size.width });
     }
 
     setInfo(replace);
@@ -309,7 +312,7 @@ export const GraphEdit: React.FC<{
           return;
         }
 
-        cell.setSize({ ...find.blob.previous.display.pos });
+        cell.setSize({ ...find.blob.previous.display.size });
         cell.setPosition({ ...find.blob.previous.display.pos });
         const outgoing = graph.getOutgoingEdges(cell);
 
@@ -347,7 +350,7 @@ export const GraphEdit: React.FC<{
                 Width
                 <input
                   className={cls.input}
-                  value={info.pos.width}
+                  value={info.size.width}
                   onChange={(e) => {
                     handleSize('width', e.target.value);
                   }}
@@ -355,7 +358,7 @@ export const GraphEdit: React.FC<{
                 Height
                 <input
                   className={cls.input}
-                  value={info.pos.height}
+                  value={info.size.height}
                   onChange={(e) => {
                     handleSize('height', e.target.value);
                   }}

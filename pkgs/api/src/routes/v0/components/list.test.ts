@@ -61,7 +61,8 @@ describe('GET /components', () => {
         createdAt: expect.toBeIsoDate(),
         description: { content: [], type: 'doc' },
         display: {
-          pos: { height: 32, width: 100, x: 20, y: 10 },
+          size: { height: 32, width: 100 },
+          pos: { x: 20, y: 10 },
           zIndex: 1,
         },
         edges: [],

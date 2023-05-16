@@ -1,0 +1,175 @@
+@import "../../../styles/theme";
+
+.node {
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  height: 100%;
+  padding: 0 $p;
+
+  font-size: 11px;
+  font-weight: 400;
+
+  background-color: #fff;
+  border: 1px solid $gray-100;
+
+  // border-left: 4px solid transparent;
+  border-radius: $border-radius;
+  box-shadow: 0 2px 5px 1px rgb(0 0 0 / 6%);
+
+  transition: box-shadow 0.2s ease-in;
+
+  &.thirdparty {
+    &:hover {
+      box-shadow: 0 0 0 4px $purple-50;
+    }
+  }
+
+  &.project {
+    &:hover {
+      box-shadow: 0 0 0 4px $yellow-50;
+    }
+  }
+
+  &.hosting {
+    align-items: flex-start;
+
+    background-color: rgba($indigo-50, 0.2);
+
+    // background-color: transparent;
+    border-color: $indigo-100;
+    border-width: 1px;
+    border-radius: $border-radius-s;
+    box-shadow: none;
+
+    &:hover {
+      box-shadow: 0 0 0 4px $gray-100;
+    }
+
+    .title {
+      gap: $p-s;
+      margin: -$p-xl - $p-s 0 0 -4px;
+      font-weight: 600;
+      color: $gray-400;
+    }
+  }
+
+  &.component {
+    &:hover {
+      box-shadow: 0 0 0 4px $blue-50;
+    }
+
+    &:not(.isTech) {
+      .label {
+        // padding-left: 24px;
+      }
+    }
+  }
+
+  .title {
+    display: flex;
+    gap: $p-m;
+    align-items: center;
+
+    >span {
+      width: $p-xl;
+      height: $p-xl;
+      font-size: $font-l;
+      line-height: $p-xl - 2px;
+    }
+
+    .icon {
+      width: $p-xl ;
+      height: $p-xl;
+      padding-top: 1px;
+      padding-left: 4px;
+
+      font-size: 11px;
+      color: $gray-600;
+
+      &.service {
+        padding: 0 0 0 2px;
+        color: white;
+        background-color: $indigo-400;
+        border-radius: 4px;
+      }
+    }
+  }
+
+  .label {
+    overflow: hidden;
+    display: inline-block;
+    flex-shrink: 0;
+
+    width: inherit;
+
+    font-size: $font-s - 1px;
+    line-height: $line-height-s;
+    color: $gray-600;
+    text-overflow: ellipsis;
+    white-space: pre-wrap;
+  }
+
+
+  // Resizer
+  .resizerLine {
+    border-color: $indigo-400;
+  }
+
+  .resizerHandle {}
+
+  // Handlers
+  .handle {
+    width: 5px;
+    height: 5px;
+
+    opacity: 0;
+    background-color: #fff;
+    border: 1px solid $gray-300;
+
+    transition: opacity 0.25s;
+
+    &.source {
+      &.top {
+        left: calc(50% - 7px);
+      }
+
+      &.right {
+        top: calc(50% - 7px);
+      }
+
+      &.bottom {
+        left: calc(50% - 7px);
+      }
+
+      &.left {
+        top: calc(50% - 7px);
+      }
+    }
+
+    &.target {
+      &.top {
+        left: calc(50% + 7px);
+      }
+
+      &.right {
+        top: calc(50% + 7px);
+      }
+
+      &.bottom {
+        left: calc(50% + 7px);
+      }
+
+      &.left {
+        top: calc(50% + 7px);
+      }
+    }
+  }
+
+  &:hover {
+    .handle {
+      opacity: 1;
+    }
+  }
+}

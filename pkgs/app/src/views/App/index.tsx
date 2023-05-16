@@ -3,6 +3,7 @@ import { App as AntdApp, ConfigProvider } from 'antd';
 import type React from 'react';
 // import { ReactQueryDevtools } from 'react-query/devtools';
 import { Route, Routes } from 'react-router-dom';
+import { ReactFlowProvider } from 'reactflow';
 
 import { queryClient } from '../../common/query';
 import { AuthLayout } from '../../components/AuthLayout';
@@ -51,28 +52,30 @@ const App: React.FC = () => {
 
           <GraphProvider>
             <AuthProvider>
-              <Routes>
-                <Route path="/login" element={<Login />} />
-                <Route element={<AuthLayout></AuthLayout>}>
-                  <Route path="/" element={<Homepage />} />
+              <ReactFlowProvider>
+                <Routes>
+                  <Route path="/login" element={<Login />} />
+                  <Route element={<AuthLayout></AuthLayout>}>
+                    <Route path="/" element={<Homepage />} />
 
-                  <Route path="/account" element={<Account />} />
-                  <Route path="/organizations" element={<NotFound />} />
-                  <Route path="/organizations/*" element={<OrgCreate />} />
-                  <Route path="/:org_id/_/*" element={<Org />} />
-                  <Route path="/:org_id" element={<Org />} />
+                    <Route path="/account" element={<Account />} />
+                    <Route path="/organizations" element={<NotFound />} />
+                    <Route path="/organizations/*" element={<OrgCreate />} />
+                    <Route path="/:org_id/_/*" element={<Org />} />
+                    <Route path="/:org_id" element={<Org />} />
 
-                  <Route
-                    path="/:org_id/:project_slug/*"
-                    element={
-                      <EditProvider>
-                        <Project />
-                      </EditProvider>
-                    }
-                  />
-                </Route>
-                <Route path="*" element={<NotFound />} />
-              </Routes>
+                    <Route
+                      path="/:org_id/:project_slug/*"
+                      element={
+                        <EditProvider>
+                          <Project />
+                        </EditProvider>
+                      }
+                    />
+                  </Route>
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </ReactFlowProvider>
             </AuthProvider>
           </GraphProvider>
         </QueryClientProvider>

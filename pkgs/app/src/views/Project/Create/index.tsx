@@ -30,8 +30,8 @@ export const ProjectCreate: React.FC<{ params: RouteOrg }> = ({ params }) => {
     for (const proj of Object.values(storeProjects.projects)) {
       global.x = Math.min(proj.display.pos.x, global.x);
       global.y = Math.min(proj.display.pos.y, global.y);
-      global.width = Math.max(proj.display.pos.width, global.width);
-      global.height = Math.max(proj.display.pos.height, global.height);
+      global.width = Math.max(proj.display.size.width, global.width);
+      global.height = Math.max(proj.display.size.height, global.height);
     }
 
     // Simply add on top of it

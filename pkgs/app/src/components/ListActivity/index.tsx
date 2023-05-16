@@ -15,7 +15,7 @@ function diffToGroup(diff: Duration): string {
   else if (days > -2) return 'Yesterday';
   else if (days > -7) return 'Last 7 days';
   else if (days > -28) return 'Last month';
-  else return `Last ${diff.as('month')} month`;
+  else return `Last ${Math.ceil(diff.as('month'))} month`;
 }
 
 export const ListActivity: React.FC<{

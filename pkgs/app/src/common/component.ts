@@ -75,7 +75,7 @@ export const supportedArray: TechInfo[] = [
   { key: 'csharp', name: 'C#', type: 'language' },
   { key: 'css', name: 'CSS', type: 'language', Icon: CssThree },
   { key: 'dart', name: 'Dart', type: 'language', Icon: Dart },
-  { key: 'datadog', name: 'Datadog', type: 'sass', Icon: Datadog, regHostname:/^(www.)?datadog.com$/ },
+  { key: 'datadog', name: 'Datadog', type: 'sass', Icon: Datadog, regHostname: /^(www.)?datadog.com$/ },
   { key: 'digitalocean', name: 'Digital Ocean', type: 'hosting', Icon: Digitalocean },
   { key: 'elasticloud', name: 'Elastic Cloud', type: 'sass', Icon: Elasticcloud },
   { key: 'elasticsearch', name: 'Elasticsearch', type: 'db', Icon: Elasticsearch },
@@ -83,22 +83,22 @@ export const supportedArray: TechInfo[] = [
   { key: 'eslint', name: 'Eslint', type: 'tool', Icon: Eslint },
   { key: 'gce', name: 'GCE', type: 'hosting', Icon: Googlecloud },
   { key: 'gcp', name: 'GCP', type: 'hosting', Icon: Googlecloud },
-  { key: 'github', name: 'Github', type: 'sass', Icon: Github, regHostname:/^(www.)?github.com$/ },
+  { key: 'github', name: 'Github', type: 'sass', Icon: Github, regHostname: /^(www.)?github.com$/ },
   { key: 'golang', name: 'Go', type: 'language', Icon: Go },
   { key: 'html', name: 'HTML', type: 'language', Icon: Html5 },
   { key: 'java', name: 'Java', type: 'language' },
-  { key: 'jira', name: 'Jira', type: 'sass', Icon: Jirasoftware, regHostname:/.atlassian.net$/  },
+  { key: 'jira', name: 'Jira', type: 'sass', Icon: Jirasoftware, regHostname: /.atlassian.net$/ },
   { key: 'kotlin', name: 'Kotlin', type: 'language', Icon: Kotlin },
   { key: 'kubernetes', name: 'Kubernetes', type: 'hosting', Icon: Kubernetes },
   { key: 'mailchimp', name: 'Mailchimp', type: 'sass', Icon: Mailchimp },
   { key: 'mongodb', name: 'MongoDB', type: 'db', Icon: Mongodb },
-  { key: 'netlify', name: 'Netlify', type: 'hosting', Icon: Netlify, regHostname:/^(www.)?netlify.com$/ },
+  { key: 'netlify', name: 'Netlify', type: 'hosting', Icon: Netlify, regHostname: /^(www.)?netlify.com$/ },
   { key: 'newrelic', name: 'New Relic', type: 'sass', Icon: Newrelic },
   { key: 'nodejs', name: 'NodeJS', type: 'language', Icon: Nodedotjs },
   { key: 'oraclecloud', name: 'Oracle Cloud', type: 'hosting', Icon: Oracle },
   { key: 'ovh', name: 'OVH', type: 'hosting', Icon: Ovh },
   { key: 'php', name: 'PHP', type: 'language', Icon: Php },
-  { key: 'pingdom', name: 'Pingdom', type: 'sass', Icon: Pingdom, regHostname:/^(www.)?pingdom.com$/ },
+  { key: 'pingdom', name: 'Pingdom', type: 'sass', Icon: Pingdom, regHostname: /^(www.)?pingdom.com$/ },
   { key: 'postgresql', name: 'Postgresql', type: 'db', Icon: Postgresql },
   { key: 'powershell', name: 'Powershell', type: 'language', Icon: Powershell },
   { key: 'pubsub', name: 'PubSub', type: 'messaging', Icon: Googlecloud },
@@ -108,13 +108,13 @@ export const supportedArray: TechInfo[] = [
   { key: 'redis', name: 'Redis', type: 'db', Icon: Redis },
   { key: 'ruby', name: 'Ruby', type: 'language', Icon: Ruby },
   { key: 'rust', name: 'Rust', type: 'language', Icon: Rust },
-  { key: 'sentry', name: 'Sentry', type: 'sass', Icon: Sentry, regHostname:/^(www.)?sentry.com$/ },
-  { key: 'slack', name: 'Slack', type: 'sass', Icon: Slack, regHostname: /^(www.)?slack.com$/},
+  { key: 'sentry', name: 'Sentry', type: 'sass', Icon: Sentry, regHostname: /^(www.)?sentry.com$/ },
+  { key: 'slack', name: 'Slack', type: 'sass', Icon: Slack, regHostname: /^(www.)?slack.com$/ },
   { key: 'swift', name: 'Swift', type: 'language', Icon: Swift },
   { key: 'typescript', name: 'Typescript', type: 'language', Icon: Typescript },
   { key: 'vercel', name: 'Vercel', type: 'hosting', Icon: Vercel },
   { key: 'webpack', name: 'Webpack', type: 'tool', Icon: Webpack },
-  { key: 'zapier', name: 'Zapier', type: 'sass', Icon: Zapier, regHostname:/^(www.)?zapier.com$/ },
+  { key: 'zapier', name: 'Zapier', type: 'sass', Icon: Zapier, regHostname: /^(www.)?zapier.com$/ },
   { key: 'zoom', name: 'Zoom', type: 'sass', Icon: Zoom },
 ];
 
@@ -149,11 +149,11 @@ export function positionEdge(
   b: ApiComponent
 ): { source: GraphEdge['portSource']; target: GraphEdge['portTarget'] } {
   const isCurrentAbove =
-    a.display.pos.y + a.display.pos.height < b.display.pos.y;
+    a.display.pos.y + a.display.size.height < b.display.pos.y;
   const isCurrentBelow =
-    a.display.pos.y > b.display.pos.y + b.display.pos.height;
+    a.display.pos.y > b.display.pos.y + b.display.size.height;
   const isCurrentRight =
-    a.display.pos.x > b.display.pos.x + b.display.pos.width;
+    a.display.pos.x > b.display.pos.x + b.display.size.width;
   const isCurrentLeft = a.display.pos.x + a.display.pos.x < b.display.pos.x;
 
   let source: GraphEdge['portSource'] = 'left';
@@ -204,8 +204,8 @@ export function createLocal(
   for (const component of Object.values(storeComponents.components)) {
     global.x = Math.min(component.display.pos.x, global.x);
     global.y = Math.min(component.display.pos.y, global.y);
-    global.width = Math.max(component.display.pos.width, global.width);
-    global.height = Math.max(component.display.pos.height, global.height);
+    global.width = Math.max(component.display.size.width, global.width);
+    global.height = Math.max(component.display.size.height, global.height);
   }
 
   // Simply add on top of it
@@ -222,7 +222,7 @@ export function createLocal(
     slug: data.slug,
     description: getEmptyDoc(),
     tech: [],
-    display: { pos: { ...pos, ...size } },
+    display: { pos: pos, size },
     edges: [],
     blobId: '',
     inComponent: null,

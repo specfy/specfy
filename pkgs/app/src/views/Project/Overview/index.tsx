@@ -1,4 +1,4 @@
-import { Typography } from 'antd';
+import { Skeleton, Typography } from 'antd';
 import type { ApiComponent, BlockLevelZero } from 'api/src/types/api';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -7,6 +7,9 @@ import { Card } from '../../../components/Card';
 import { Container } from '../../../components/Container';
 import { ContentDoc } from '../../../components/Content';
 import { EditorMini } from '../../../components/Editor/Mini';
+import { Flow, FlowWrapper } from '../../../components/Flow';
+import type { ComputedFlow } from '../../../components/Flow/helpers';
+import { componentsToFlow } from '../../../components/Flow/helpers';
 import { Graph, GraphContainer } from '../../../components/Graph';
 import { Toolbar } from '../../../components/Graph/Toolbar';
 import { ListActivity } from '../../../components/ListActivity';
@@ -29,6 +32,7 @@ export const ProjectOverview: React.FC<{
   const { update, project } = useProjectStore();
 
   const [components, setComponents] = useState<ApiComponent[]>();
+  const [flow, setFlow] = useState<ComputedFlow>();
   const isEditing = edit.isEnabled();
 
   useEffect(() => {
@@ -44,6 +48,14 @@ export const ProjectOverview: React.FC<{
   useEffect(() => {
     setComponents(Object.values(storeComponents.components));
   }, [storeComponents]);
+
+  useEffect(() => {
+    if (!components) {
+      return;
+    }
+
+    setFlow(componentsToFlow(components));
+  }, [components]);
 
   const onUpdate = useCallback((doc: BlockLevelZero) => {
     update({ ...project!, description: doc });
@@ -86,14 +98,25 @@ export const ProjectOverview: React.FC<{
         </Card>
       </Container.Left>
       <Container.Right>
-        <Card>
-          <GraphContainer>
+        <div>
+          {/* <GraphContainer>
             <Graph readonly={true} components={components!} />
             <Toolbar position="bottom">
               <Toolbar.Zoom />
             </Toolbar>
-          </GraphContainer>
-        </Card>
+          </GraphContainer> */}
+
+          {!flow ? (
+            <Skeleton.Image active></Skeleton.Image>
+          ) : (
+            <FlowWrapper>
+              <Flow flow={flow} />
+              <Toolbar position="bottom">
+                <Toolbar.Zoom />
+              </Toolbar>
+            </FlowWrapper>
+          )}
+        </div>
 
         <ListActivity orgId={params.org_id} projectId={project.id} />
       </Container.Right>
