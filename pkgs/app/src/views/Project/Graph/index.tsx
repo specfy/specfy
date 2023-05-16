@@ -1,12 +1,13 @@
 import { LoadingOutlined } from '@ant-design/icons';
+import { Skeleton } from 'antd';
 import type { ApiProject, ApiComponent } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
 
 import { useComponentsStore } from '../../../common/store';
-import { Card } from '../../../components/Card';
-import { Container } from '../../../components/Container';
-import { Graph, GraphContainer } from '../../../components/Graph';
-import { Toolbar } from '../../../components/Graph/Toolbar';
+import { Flow, FlowWrapper } from '../../../components/Flow';
+import { Toolbar } from '../../../components/Flow/Toolbar';
+import type { ComputedFlow } from '../../../components/Flow/helpers';
+import { componentsToFlow } from '../../../components/Flow/helpers';
 import { useEdit } from '../../../hooks/useEdit';
 import type { RouteProject } from '../../../types/routes';
 
@@ -18,6 +19,7 @@ export const ProjectGraph: React.FC<{
 }> = ({ proj }) => {
   const edit = useEdit();
   const storeComponents = useComponentsStore();
+  const [flow, setFlow] = useState<ComputedFlow>();
 
   const isEditing = edit.isEnabled();
   const [loading, setLoading] = useState<boolean>(true);
@@ -32,6 +34,7 @@ export const ProjectGraph: React.FC<{
       return;
     }
 
+    setFlow(componentsToFlow(components));
     setLoading(false);
   }, [components]);
 
@@ -40,27 +43,29 @@ export const ProjectGraph: React.FC<{
   }
 
   return (
-    <Container>
-      <Card>
-        <GraphEdit comps={components!} proj={proj} />
-        <GraphContainer>
-          <div
-            style={{
-              width: 'calc(100vw - 24px * 2)',
-              height: 'calc(100vh - 200px)',
-            }}
-          >
-            <Graph readonly={!isEditing} components={components!} memoize />
-          </div>
-          <Toolbar position="top" visible>
-            <Toolbar.Main />
-          </Toolbar>
-          <Toolbar position="bottom" visible>
-            <Toolbar.Zoom />
-            <Toolbar.History />
-          </Toolbar>
-        </GraphContainer>
-      </Card>
-    </Container>
+    <div
+      style={{
+        width: 'calc(100vw - 24px * 2)',
+        height: 'calc(100vh - 180px)',
+      }}
+    >
+      {!flow ? (
+        <Skeleton.Image active></Skeleton.Image>
+      ) : (
+        <>
+          <GraphEdit comps={components!} proj={proj} />
+          <FlowWrapper>
+            <Flow flow={flow} />
+            <Toolbar position="top" visible>
+              <Toolbar.Main />
+            </Toolbar>
+            <Toolbar position="bottom" visible>
+              <Toolbar.Zoom />
+              {/* <Toolbar.History /> */}
+            </Toolbar>
+          </FlowWrapper>
+        </>
+      )}
+    </div>
   );
 };

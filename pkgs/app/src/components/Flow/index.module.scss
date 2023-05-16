@@ -18,14 +18,58 @@
       opacity: 1;
     }
   }
+
+  .hasHighlight {
+    :global {
+      .react-flow__node:not(:local(.show)) {
+        opacity: 0.3;
+      }
+
+      .react-flow__edge:not(:local(.show)) {
+        opacity: 0.7;
+      }
+
+      .react-flow__edge {
+        &:local(.show) {
+          .react-flow__edge-path {
+            stroke: $indigo-400;
+            stroke-dasharray: 5;
+          }
+        }
+      }
+    }
+  }
 }
 
 :global {
+  .react-flow__edge {
+    transition: opacity 0.2s ease-in;
+  }
+
+  .react-flow__node {
+    transition: opacity 0.2s ease-in;
+  }
+
   .react-flow__edges.react-flow__container {
     z-index: 199999 !important;
   }
 
   .react-flow__edge-path {
     stroke: $neutral-300;
+  }
+}
+
+// Graph
+.animateReadLine {
+  animation: running-line 30s reverse infinite linear;
+}
+
+.animateWriteLine {
+  animation: running-line 30s infinite linear;
+}
+
+@keyframes running-line {
+  to {
+    stroke-dashoffset: -1000;
   }
 }

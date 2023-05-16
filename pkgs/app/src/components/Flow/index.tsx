@@ -1,5 +1,7 @@
+import classNames from 'classnames';
 import type { CSSProperties } from 'react';
-import type { NodeTypes } from 'reactflow';
+import { useState, useEffect } from 'react';
+import type { NodeTypes, ReactFlowProps } from 'reactflow';
 import {
   BackgroundVariant,
   useNodesState,
@@ -12,6 +14,7 @@ import {
 import 'reactflow/dist/style.css';
 import CustomNode from './CustomNode';
 import type { ComputedFlow } from './helpers';
+import { highlightNode } from './helpers';
 import cls from './index.module.scss';
 
 const nodeTypes: NodeTypes = {
@@ -21,15 +24,44 @@ const nodeTypes: NodeTypes = {
 //   floating: SimpleFloatingEdge,
 // };
 
-export const Flow: React.FC<{ flow: ComputedFlow; readonly?: true }> = ({
-  flow,
-  readonly,
-}) => {
+export const Flow: React.FC<{
+  flow: ComputedFlow;
+  highlight?: string;
+  readonly?: true;
+}> = ({ flow, highlight, readonly }) => {
+  const [hasHighlight, setHasHighlight] = useState(!!highlight);
   const [nodes, setNodes, onNodesChange] = useNodesState(flow.nodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(flow.edges);
 
+  useEffect(() => {
+    if (!highlight) {
+      return;
+    }
+
+    const updates = highlightNode(highlight, nodes, edges);
+
+    setEdges(updates.edges);
+    setNodes(updates.nodes);
+  }, [highlight]);
+
+  const onNodeEnter: ReactFlowProps['onNodeMouseEnter'] = (_, node) => {
+    const updates = highlightNode(node.id, nodes, edges);
+    setEdges(updates.edges);
+    setNodes(updates.nodes);
+    setHasHighlight(true);
+  };
+  const onNodeLeave: ReactFlowProps['onNodeMouseLeave'] = () => {
+    const updates = highlightNode(highlight || 'no', nodes, edges);
+    setEdges(updates.edges);
+    setNodes(updates.nodes);
+    setHasHighlight(!!highlight);
+  };
+
   return (
-    <div style={{ width: '100%', height: `100%` }}>
+    <div
+      style={{ width: '100%', height: `100%` }}
+      className={classNames(hasHighlight && cls.hasHighlight)}
+    >
       <ReactFlow
         nodes={nodes}
         onNodesChange={onNodesChange}
@@ -37,6 +69,8 @@ export const Flow: React.FC<{ flow: ComputedFlow; readonly?: true }> = ({
         onEdgesChange={onEdgesChange}
         minZoom={0.2}
         maxZoom={3}
+        onNodeMouseEnter={onNodeEnter}
+        onNodeMouseLeave={onNodeLeave}
         // onConnect={onConnect}
         nodeTypes={nodeTypes}
         // edgeTypes={edgeTypes}

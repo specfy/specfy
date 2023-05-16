@@ -1,12 +1,13 @@
 import { IconDotsVertical } from '@tabler/icons-react';
 import type { MenuProps } from 'antd';
-import { App, Button, Dropdown, Tag, Typography } from 'antd';
+import { Skeleton, App, Button, Dropdown, Tag, Typography } from 'antd';
 import type { ApiComponent, ApiProject } from 'api/src/types/api';
 import classnames from 'classnames';
 import type { MenuClickEventHandler } from 'rc-menu/lib/interface';
 import type React from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useReactFlow } from 'reactflow';
 
 import type { TechInfo } from '../../../common/component';
 import {
@@ -19,12 +20,13 @@ import { ComponentDetails } from '../../../components/ComponentDetails';
 import { Container } from '../../../components/Container';
 import { ContentDoc } from '../../../components/Content';
 import { EditorMini } from '../../../components/Editor/Mini';
-import { Graph, GraphContainer } from '../../../components/Graph';
+import { Flow, FlowWrapper } from '../../../components/Flow';
+import type { ComputedFlow } from '../../../components/Flow/helpers';
+import { componentsToFlow } from '../../../components/Flow/helpers';
 import { Toolbar } from '../../../components/Graph/Toolbar';
 import { FakeInput } from '../../../components/Input';
 import { ListRFCs } from '../../../components/ListRFCs';
 import { useEdit } from '../../../hooks/useEdit';
-import { useGraph } from '../../../hooks/useGraph';
 import type { RouteComponent } from '../../../types/routes';
 
 import cls from './index.module.scss';
@@ -32,8 +34,8 @@ import cls from './index.module.scss';
 export const ComponentView: React.FC<{
   proj: ApiProject;
 }> = ({ proj }) => {
-  const gref = useGraph();
   const { message } = App.useApp();
+  const { getNodes, viewportInitialized } = useReactFlow();
   const navigate = useNavigate();
 
   // TODO: filter RFC
@@ -43,6 +45,7 @@ export const ComponentView: React.FC<{
 
   // Components
   const [components, setComponents] = useState<ApiComponent[]>();
+  const [flow, setFlow] = useState<ComputedFlow>();
 
   // Edition
   const edit = useEdit();
@@ -74,16 +77,24 @@ export const ComponentView: React.FC<{
   }, [comp?.techId]);
 
   useEffect(() => {
-    if (!gref || !comp) {
+    const nodes = getNodes();
+    if (nodes.length <= 0) {
       return;
     }
 
-    setTimeout(() => {
-      gref.recenter();
-      gref.unsetHighlight();
-      gref.setHighlight(comp!.id);
-    }, 500);
-  }, [comp?.id]);
+    const node = nodes.find((n) => n.id === comp?.id);
+    if (!node) {
+      return;
+    }
+  }, [viewportInitialized]);
+
+  useEffect(() => {
+    if (!components) {
+      return;
+    }
+
+    setFlow(componentsToFlow(components));
+  }, [components]);
 
   const menuItems = useMemo<MenuProps['items']>(() => {
     return [{ key: 'delete', label: 'Delete', danger: true }];
@@ -170,14 +181,18 @@ export const ComponentView: React.FC<{
         </Card>
       </Container.Left>
       <Container.Right>
-        <Card>
-          <GraphContainer>
-            <Graph readonly={true} components={components!} />
-            <Toolbar position="bottom">
-              <Toolbar.Zoom />
-            </Toolbar>
-          </GraphContainer>
-        </Card>
+        <div>
+          {!flow ? (
+            <Skeleton.Image active></Skeleton.Image>
+          ) : (
+            <FlowWrapper>
+              <Flow flow={flow} highlight={comp.id} />
+              <Toolbar position="bottom">
+                <Toolbar.Zoom />
+              </Toolbar>
+            </FlowWrapper>
+          )}
+        </div>
       </Container.Right>
     </Container>
   );

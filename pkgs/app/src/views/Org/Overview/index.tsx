@@ -7,9 +7,11 @@ import { Card } from '../../../components/Card';
 import { Container } from '../../../components/Container';
 import { Flow, FlowWrapper } from '../../../components/Flow';
 import { Toolbar } from '../../../components/Flow/Toolbar';
-import type { ComputedFlow } from '../../../components/Flow/helpers';
+import type {
+  ComponentForFlow,
+  ComputedFlow,
+} from '../../../components/Flow/helpers';
 import { componentsToFlow } from '../../../components/Flow/helpers';
-import type { ComponentForGraph } from '../../../components/Graph/helpers';
 import { ListActivity } from '../../../components/ListActivity';
 import { ListProjects } from '../../../components/ListProjects';
 import type { RouteOrg } from '../../../types/routes';
@@ -17,7 +19,7 @@ import type { RouteOrg } from '../../../types/routes';
 export const OrgOverview: React.FC<{ params: RouteOrg }> = ({ params }) => {
   const storeProjects = useProjectStore();
   const res = useListProjects({ org_id: params.org_id });
-  const [components, setComponents] = useState<ComponentForGraph[]>([]);
+  const [components, setComponents] = useState<ComponentForFlow[]>([]);
   const [flow, setFlow] = useState<ComputedFlow>();
 
   useEffect(() => {
@@ -35,6 +37,7 @@ export const OrgOverview: React.FC<{ params: RouteOrg }> = ({ params }) => {
           display: project.display,
           edges: project.edges,
           inComponent: null,
+          techId: null,
         };
       })
     );
@@ -68,12 +71,6 @@ export const OrgOverview: React.FC<{ params: RouteOrg }> = ({ params }) => {
       <Container.Right>
         {storeProjects.projects.length > 0 && (
           <div>
-            {/* <GraphContainer style={{ minHeight: '300px' }}>
-              <Graph readonly={true} components={components} />
-              <Toolbar position="bottom">
-                <Toolbar.Zoom />
-              </Toolbar>
-            </GraphContainer> */}
             {!flow ? (
               <Skeleton active title={false} paragraph={{ rows: 3 }}></Skeleton>
             ) : (

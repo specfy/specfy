@@ -10,13 +10,11 @@ import { EditorMini } from '../../../components/Editor/Mini';
 import { Flow, FlowWrapper } from '../../../components/Flow';
 import type { ComputedFlow } from '../../../components/Flow/helpers';
 import { componentsToFlow } from '../../../components/Flow/helpers';
-import { Graph, GraphContainer } from '../../../components/Graph';
 import { Toolbar } from '../../../components/Graph/Toolbar';
 import { ListActivity } from '../../../components/ListActivity';
 import { ListRFCs } from '../../../components/ListRFCs';
 import { ProjectLinks } from '../../../components/Project/Links';
 import { useEdit } from '../../../hooks/useEdit';
-import { useGraph } from '../../../hooks/useGraph';
 import type { RouteProject } from '../../../types/routes';
 
 import { Team } from './Team';
@@ -26,7 +24,6 @@ import cls from './index.module.scss';
 export const ProjectOverview: React.FC<{
   params: RouteProject;
 }> = ({ params }) => {
-  const gref = useGraph();
   const edit = useEdit();
   const storeComponents = useComponentsStore();
   const { update, project } = useProjectStore();
@@ -35,16 +32,6 @@ export const ProjectOverview: React.FC<{
   const [flow, setFlow] = useState<ComputedFlow>();
   const isEditing = edit.isEnabled();
 
-  useEffect(() => {
-    if (!gref) {
-      return;
-    }
-
-    setTimeout(() => {
-      gref.recenter();
-      gref.unsetHighlight(true);
-    }, 500);
-  }, []);
   useEffect(() => {
     setComponents(Object.values(storeComponents.components));
   }, [storeComponents]);
@@ -99,13 +86,6 @@ export const ProjectOverview: React.FC<{
       </Container.Left>
       <Container.Right>
         <div>
-          {/* <GraphContainer>
-            <Graph readonly={true} components={components!} />
-            <Toolbar position="bottom">
-              <Toolbar.Zoom />
-            </Toolbar>
-          </GraphContainer> */}
-
           {!flow ? (
             <Skeleton.Image active></Skeleton.Image>
           ) : (

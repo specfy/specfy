@@ -20,17 +20,15 @@
 
   transition: box-shadow 0.2s ease-in;
 
-  &.thirdparty {
-    &:hover {
-      box-shadow: 0 0 0 4px $purple-50;
+  &:hover {
+    box-shadow: 0 0 0 4px $purple-50;
+
+    .handle {
+      opacity: 1;
     }
   }
 
-  &.project {
-    &:hover {
-      box-shadow: 0 0 0 4px $yellow-50;
-    }
-  }
+
 
   &.hosting {
     align-items: flex-start;
@@ -43,27 +41,11 @@
     border-radius: $border-radius-s;
     box-shadow: none;
 
-    &:hover {
-      box-shadow: 0 0 0 4px $gray-100;
-    }
-
     .title {
       gap: $p-s;
       margin: -$p-xl - $p-s 0 0 -4px;
       font-weight: 600;
       color: $gray-400;
-    }
-  }
-
-  &.component {
-    &:hover {
-      box-shadow: 0 0 0 4px $blue-50;
-    }
-
-    &:not(.isTech) {
-      .label {
-        // padding-left: 24px;
-      }
     }
   }
 
@@ -164,12 +146,6 @@
       &.left {
         top: calc(50% + 7px);
       }
-    }
-  }
-
-  &:hover {
-    .handle {
-      opacity: 1;
     }
   }
 }

@@ -17,13 +17,7 @@ const CustomNode: React.FC<NodeProps<NodeData>> = ({ data, selected }) => {
     data.techId in supportedIndexed &&
     supportedIndexed[data.techId].Icon;
   return (
-    <div
-      className={classNames(
-        cls.node,
-        cls[data.type],
-        data.techId && cls.isTech
-      )}
-    >
+    <div className={classNames(cls.node, cls[data.type])}>
       <NodeResizer
         lineClassName={cls.resizerLine}
         handleClassName={cls.resizerHandle}
