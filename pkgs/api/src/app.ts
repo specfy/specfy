@@ -58,6 +58,6 @@ export default async (f: FastifyInstance, opts: FastifyPluginOptions) => {
 };
 
 export const options: FastifyServerOptions = {
-  // logger,
-  logger: true,
+  logger,
+  // logger: true,
 };
