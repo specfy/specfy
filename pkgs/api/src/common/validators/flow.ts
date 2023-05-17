@@ -17,6 +17,10 @@ export const schemaDisplay = z
       .object({
         x: z.number().min(min).max(max),
         y: z.number().min(min).max(max),
+      })
+      .strict(),
+    size: z
+      .object({
         width: z.number().min(wMin).max(wMax),
         height: z.number().min(hMin).max(hMax),
       })

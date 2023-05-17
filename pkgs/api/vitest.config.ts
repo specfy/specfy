@@ -6,6 +6,7 @@ export default defineConfig({
     environment: 'node',
     // include: ['build/**/*.test.js'],
     include: ['src/**/*.test.ts'],
+    exclude: ['build/**'],
     globalSetup: 'src/test/vitest.global.ts',
     // setupFiles: 'src/test/vitest.each.ts',
     clearMocks: true,
