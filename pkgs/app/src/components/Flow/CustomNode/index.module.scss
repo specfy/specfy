@@ -11,7 +11,6 @@
   font-size: 11px;
   font-weight: 400;
 
-  background-color: #fff;
   border: 1px solid $gray-100;
 
   // border-left: 4px solid transparent;
@@ -47,6 +46,12 @@
       font-weight: 600;
       color: $gray-400;
     }
+  }
+
+  &.component,
+  &.thirdparty,
+  &.project {
+    background-color: #fff;
   }
 
   .title {
@@ -99,7 +104,9 @@
     border-color: $indigo-400;
   }
 
-  .resizerHandle {}
+  .resizerHandle {
+    // no empty
+  }
 
   // Handlers
   .handle {

@@ -1,6 +1,5 @@
 import react from '@vitejs/plugin-react-swc';
 import { defineConfig } from 'vite';
-import mkcert from 'vite-plugin-mkcert';
 import sassDts from 'vite-plugin-sass-dts';
 
 // https://vitejs.dev/config/
