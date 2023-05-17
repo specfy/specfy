@@ -15,17 +15,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bodinsamuel/rfc-editor.git"
+    "url": "git+https://github.com/specfy/specfy.git"
   },
   "bugs": {
-    "url": "https://github.com/bodinsamuel/rfc-editor/issues"
+    "url": "https://github.com/specfy/specfy/issues"
   },
   "workspaces": [
     "pkgs/app",
     "pkgs/api",
     "pkgs/website"
   ],
-  "homepage": "https://github.com/bodinsamuel/rfc-editor#readme",
+  "homepage": "https://github.com/specfy/specfy#readme",
   "devDependencies": {
     "@google-cloud/storage": "6.9.5",
     "@typescript-eslint/eslint-plugin": "5.57.1",

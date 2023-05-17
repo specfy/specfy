@@ -22,7 +22,7 @@ resource "google_cloudbuild_trigger" "filename-trigger" {
 
   # Require manual intervention in cloud build UI
   github {
-    owner = "bodinsamuel"
+    owner = "specfy"
     name  = "specfy"
     push {
       branch = "^main$"

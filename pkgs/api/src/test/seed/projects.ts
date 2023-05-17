@@ -89,7 +89,7 @@ export async function seedProjects(users: Users[]) {
             ],
           },
           links: [
-            { title: 'Github', url: 'https://github.com/bodinsamuel' },
+            { title: 'Github', url: 'https://github.com/specfy' },
             { title: 'Slack', url: 'https://slack.com/foobar' },
           ],
           display: {
