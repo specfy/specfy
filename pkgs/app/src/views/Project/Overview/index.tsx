@@ -1,4 +1,4 @@
-import { Skeleton, Typography } from 'antd';
+import { Typography } from 'antd';
 import type { ApiComponent, BlockLevelZero } from 'api/src/types/api';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -86,9 +86,7 @@ export const ProjectOverview: React.FC<{
       </Container.Left>
       <Container.Right>
         <div>
-          {!flow ? (
-            <Skeleton.Image active></Skeleton.Image>
-          ) : (
+          {flow && (
             <FlowWrapper>
               <Flow flow={flow} />
               <Toolbar position="bottom">

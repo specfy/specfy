@@ -1,5 +1,4 @@
 import { LoadingOutlined } from '@ant-design/icons';
-import { Skeleton } from 'antd';
 import type { ApiProject, ApiComponent } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
 
@@ -49,9 +48,7 @@ export const ProjectFlow: React.FC<{
         height: 'calc(100vh - 180px)',
       }}
     >
-      {!flow ? (
-        <Skeleton.Image active></Skeleton.Image>
-      ) : (
+      {flow && (
         <>
           {/* <GraphEdit comps={components!} proj={proj} /> */}
           <FlowWrapper>

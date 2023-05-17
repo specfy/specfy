@@ -1,6 +1,6 @@
 import { IconDotsVertical } from '@tabler/icons-react';
 import type { MenuProps } from 'antd';
-import { Skeleton, App, Button, Dropdown, Tag, Typography } from 'antd';
+import { App, Button, Dropdown, Tag, Typography } from 'antd';
 import type { ApiComponent, ApiProject } from 'api/src/types/api';
 import classnames from 'classnames';
 import type { MenuClickEventHandler } from 'rc-menu/lib/interface';
@@ -182,9 +182,7 @@ export const ComponentView: React.FC<{
       </Container.Left>
       <Container.Right>
         <div>
-          {!flow ? (
-            <Skeleton.Image active></Skeleton.Image>
-          ) : (
+          {flow && (
             <FlowWrapper>
               <Flow flow={flow} highlight={comp.id} />
               <Toolbar position="bottom">

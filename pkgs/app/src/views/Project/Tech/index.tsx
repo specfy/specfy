@@ -1,4 +1,4 @@
-import { Skeleton, Tag, Typography } from 'antd';
+import { Tag, Typography } from 'antd';
 import Title from 'antd/es/typography/Title';
 import type { ApiComponent, ApiProject } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
@@ -101,9 +101,7 @@ export const Tech: React.FC<{
       </Container.Left>
       <Container.Right>
         <div>
-          {!flow ? (
-            <Skeleton.Image active></Skeleton.Image>
-          ) : (
+          {flow && (
             <FlowWrapper>
               <Flow flow={flow} />
               <Toolbar position="bottom">
