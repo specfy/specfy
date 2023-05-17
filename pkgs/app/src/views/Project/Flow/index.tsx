@@ -7,7 +7,6 @@ import { Flow, FlowWrapper } from '../../../components/Flow';
 import { Toolbar } from '../../../components/Flow/Toolbar';
 import type { ComputedFlow } from '../../../components/Flow/helpers';
 import { componentsToFlow } from '../../../components/Flow/helpers';
-import { useEdit } from '../../../hooks/useEdit';
 import type { RouteProject } from '../../../types/routes';
 
 // import { GraphEdit } from './Edit';
@@ -15,8 +14,7 @@ import type { RouteProject } from '../../../types/routes';
 export const ProjectFlow: React.FC<{
   proj: ApiProject;
   params: RouteProject;
-}> = ({ proj }) => {
-  const edit = useEdit();
+}> = () => {
   const storeComponents = useComponentsStore();
   const [flow, setFlow] = useState<ComputedFlow>();
 
