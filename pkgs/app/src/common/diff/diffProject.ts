@@ -66,7 +66,17 @@ export function diffProject(
       });
       continue;
     }
-    if (key === 'display' || key === 'links') {
+    if (key === 'links') {
+      const prev = blob.previous?.[key] ? blob.previous[key] : [];
+      const value = blob.current[key];
+
+      diffs.push({
+        key,
+        diff: diffObjectsArray(prev, value, 'url'),
+      });
+      continue;
+    }
+    if (key === 'display') {
       const value = blob.current[key];
       const prev = blob.previous?.[key] ? blob.previous[key] : {};
 

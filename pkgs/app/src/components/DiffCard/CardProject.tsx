@@ -31,7 +31,7 @@ export const DiffCardProject: React.FC<{
         if (d.key === 'links') {
           return (
             <div key={d.key} className={classnames(cls.line)}>
-              <Typography.Title level={4}>Stack</Typography.Title>
+              <Typography.Title level={4}>Links</Typography.Title>
               {(d.diff as DiffObjectsArray<ApiProject['links'][0]>).added.map(
                 (link) => {
                   return (
