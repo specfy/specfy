@@ -19,23 +19,45 @@
     }
   }
 
-  .hasHighlight {
+  .flow {
     :global {
-      .react-flow__node:not(:local(.show)) {
-        opacity: 0.3;
-      }
-
-      .react-flow__edge:not(:local(.show)) {
-        opacity: 0.7;
-      }
-
       .react-flow__edge {
-        &:local(.show) {
+        &:local(.focus) {
           .react-flow__edge-path {
             stroke: $indigo-400;
-            stroke-dasharray: 5;
           }
         }
+      }
+    }
+
+    &.hasHighlight {
+      &.downlightOther {
+        :global {
+          .react-flow__node:not(:local(.show)) {
+            opacity: 0.3;
+          }
+
+          .react-flow__edge:not(:local(.show)) {
+            opacity: 0.7;
+          }
+        }
+      }
+
+      :global {
+        .react-flow__edge {
+          &:local(.show) {
+            .react-flow__edge-path {
+              stroke: $indigo-400;
+              stroke-dasharray: 5;
+            }
+          }
+        }
+      }
+    }
+
+    &.readonly {
+      :global(.react-flow__handle) {
+        opacity: 0;
       }
     }
   }

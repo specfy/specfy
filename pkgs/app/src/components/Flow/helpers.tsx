@@ -88,6 +88,7 @@ export function componentsToFlow(components: ComponentForFlow[]): ComputedFlow {
         target: edge.to,
         sourceHandle: edge.portSource,
         targetHandle: edge.portTarget,
+        data: { read: edge.read, write: edge.write },
         markerStart: edge.read
           ? {
               type: MarkerType.ArrowClosed,
@@ -112,11 +113,15 @@ export function componentsToFlow(components: ComponentForFlow[]): ComputedFlow {
   return { edges, nodes };
 }
 
-export function highlightNode(
-  id: string,
-  nodes: Node[],
-  edges: Edge[]
-): { nodes: Node[]; edges: Edge[] } {
+export function highlightNode({
+  id,
+  nodes,
+  edges,
+}: {
+  id: string;
+  nodes: Node[];
+  edges: Edge[];
+}): { nodes: Node[]; edges: Edge[] } {
   const related = new Set<string>();
 
   // Update edges and find related nodes
@@ -132,9 +137,9 @@ export function highlightNode(
     }
 
     let anim: string = cls.animateReadLine;
-    if (isSource && edge.markerEnd) {
+    if (isSource && edge.data.write) {
       anim = cls.animateWriteLine;
-    } else if (isTarget && edge.markerEnd) {
+    } else if (isTarget && edge.data.write) {
       anim = cls.animateWriteLine;
     }
 

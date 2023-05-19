@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import type { CSSProperties } from 'react';
-import { useState, useEffect } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import type { NodeTypes, ReactFlowProps } from 'reactflow';
 import {
   BackgroundVariant,
@@ -26,19 +26,22 @@ const nodeTypes: NodeTypes = {
 
 export const Flow: React.FC<{
   flow: ComputedFlow;
-  highlight?: string;
   readonly?: true;
-}> = ({ flow, highlight, readonly }) => {
+  highlight?: string;
+  downlightOther?: boolean;
+  keepHighlightOnSelect?: boolean;
+}> = ({ flow, highlight, readonly, downlightOther, keepHighlightOnSelect }) => {
   const [hasHighlight, setHasHighlight] = useState(!!highlight);
   const [nodes, setNodes, onNodesChange] = useNodesState(flow.nodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(flow.edges);
+  const [select, setSelect] = useState<string | null>(null);
 
   useEffect(() => {
     if (!highlight) {
       return;
     }
 
-    const updates = highlightNode(highlight, nodes, edges);
+    const updates = highlightNode({ id: highlight, nodes, edges });
 
     setEdges(updates.edges);
     setNodes(updates.nodes);
@@ -66,23 +69,61 @@ export const Flow: React.FC<{
     });
   }, [flow]);
 
-  const onNodeEnter: ReactFlowProps['onNodeMouseEnter'] = (_, node) => {
-    const updates = highlightNode(node.id, nodes, edges);
+  const setHighlightNode = (id: string) => {
+    const updates = highlightNode({ id, nodes, edges });
     setEdges(updates.edges);
     setNodes(updates.nodes);
     setHasHighlight(true);
   };
-  const onNodeLeave: ReactFlowProps['onNodeMouseLeave'] = () => {
-    const updates = highlightNode(highlight || 'no', nodes, edges);
+  const unsetHighlightNode = () => {
+    const updates = highlightNode({ id: highlight || 'no', nodes, edges });
     setEdges(updates.edges);
     setNodes(updates.nodes);
     setHasHighlight(!!highlight);
   };
 
+  const onNodeEnter: ReactFlowProps['onNodeMouseEnter'] = (_, node) => {
+    if (keepHighlightOnSelect && select && node.id !== select) {
+      return;
+    }
+
+    setHighlightNode(node.id);
+  };
+
+  const onNodeLeave: ReactFlowProps['onNodeMouseLeave'] = () => {
+    if (keepHighlightOnSelect && select) {
+      return;
+    }
+
+    unsetHighlightNode();
+  };
+
+  const onEdgesDelete: ReactFlowProps['onEdgesDelete'] = (del) => {
+    console.log('edge deleted', del);
+  };
+
+  const onSelect: ReactFlowProps['onSelectionChange'] = (opts) => {
+    if (opts.nodes.length <= 0 || opts.nodes.length > 1) {
+      if (select) {
+        unsetHighlightNode();
+      }
+      setSelect(null);
+      return;
+    }
+
+    setSelect(opts.nodes[0].id);
+    setHighlightNode(opts.nodes[0].id);
+  };
+
   return (
     <div
       style={{ width: '100%', height: `100%` }}
-      className={classNames(hasHighlight && cls.hasHighlight)}
+      className={classNames(
+        cls.flow,
+        hasHighlight && cls.hasHighlight,
+        downlightOther !== false && cls.downlightOther,
+        readonly && cls.readonly
+      )}
     >
       <ReactFlow
         nodes={nodes}
@@ -93,10 +134,12 @@ export const Flow: React.FC<{
         maxZoom={3}
         onNodeMouseEnter={onNodeEnter}
         onNodeMouseLeave={onNodeLeave}
+        onSelectionChange={onSelect}
         // onConnect={onConnect}
         nodeTypes={nodeTypes}
         // edgeTypes={edgeTypes}
         fitView
+        fitViewOptions={{ maxZoom: 1.2 }}
         connectionMode={ConnectionMode.Loose}
         // isValidConnection={isValidConnection}
         // onNodeDrag={onNodeDrag}
@@ -107,6 +150,8 @@ export const Flow: React.FC<{
         nodesConnectable={!readonly}
         elementsSelectable={!readonly}
         proOptions={{ hideAttribution: true }}
+        onEdgesDelete={onEdgesDelete}
+        elevateEdgesOnSelect={true}
       >
         <Background id="1" gap={10} color="#d1d5db" />
         <Background

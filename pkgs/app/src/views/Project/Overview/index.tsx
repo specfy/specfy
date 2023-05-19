@@ -88,7 +88,7 @@ export const ProjectOverview: React.FC<{
         <div>
           {flow && (
             <FlowWrapper>
-              <Flow flow={flow} />
+              <Flow flow={flow} readonly />
               <Toolbar position="bottom">
                 <Toolbar.Zoom />
               </Toolbar>

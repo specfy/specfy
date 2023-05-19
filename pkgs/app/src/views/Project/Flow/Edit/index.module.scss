@@ -1,0 +1,157 @@
+@import "../../../../styles/theme";
+
+.composition {
+  position: absolute;
+  z-index: 1;
+  right: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  // gap: $p-xl;
+
+  height: calc(100vh - $height-header-project-total);
+
+  background-color: #fff;
+  box-shadow: $box-shadow2;
+}
+
+.block {
+  overflow: hidden;
+
+  width: 250px;
+  max-height: 500px;
+
+  font-family: $font-text;
+
+  border-bottom: 1px solid $gray-200;
+
+  // border-radius: $border-radius;
+  // box-shadow: $box-shadow3;
+}
+
+.title {
+  display: flex;
+  justify-content: space-between;
+
+  padding: $p-m $p-l;
+
+  font-size: $font;
+  font-weight: 600;
+  color: $gray-700;
+
+  background-color: $neutral-100;
+  border-bottom: 1px solid $neutral-200;
+
+  .titleLeft {
+    display: flex;
+    gap: $p-s;
+    align-items: center;
+  }
+
+  &.toggle {
+    cursor: pointer;
+    padding-left: $p-m;
+  }
+}
+
+.inside {
+  overflow: scroll;
+  display: flex;
+  flex-direction: column;
+  gap: $p-l;
+
+  max-height: 500px;
+  padding: $p-l $p-l;
+
+  font-size: $font-s;
+}
+
+.label {
+  font-size: $font-s;
+  font-weight: 600;
+  color: $gray-700;
+}
+
+.empty {
+  font-size: $font-s;
+  color: $gray-400;
+}
+
+// ---- BLOCK
+// Changeset
+.change {
+  gap: $p-s;
+  font-size: $font-s;
+
+  >div {
+    display: flex;
+    justify-content: space-between;
+
+    :global(.ant-btn) {
+      width: 18px;
+      height: 18px;
+      font-size: $font-s;
+    }
+  }
+}
+
+// ---- BLOCK
+// Main node
+.xy {
+  display: flex;
+  gap: $p-s;
+  font-size: $font-s;
+  color: $gray-400;
+}
+
+.inputs {
+  display: flex;
+  gap: $p-s;
+  align-items: flex-end;
+
+  font-size: $font-s;
+  line-height: 20px;
+  color: $gray-400;
+}
+
+.input {
+  width: 50px;
+  height: 20px;
+  padding: 0 $p-m;
+
+  color: $gray-800;
+
+  border: 1px solid $gray-300;
+  border-radius: $border-radius-s;
+}
+
+
+// ---- BLOCK
+// Relation
+.relations {}
+
+.relation {
+  position: relative;
+
+  display: grid;
+  grid-template-columns: 100px 30px 100px;
+  align-items: center;
+
+  height: 28px;
+
+  text-align: center;
+
+  .direction {
+    display: flex;
+    justify-content: center;
+    margin-top: -5px;
+  }
+
+  .english {
+    position: absolute;
+    top: 16px;
+    font-size: 8px;
+    color: $indigo-300;
+  }
+}

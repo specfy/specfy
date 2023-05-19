@@ -184,7 +184,7 @@ export const ComponentView: React.FC<{
         <div>
           {flow && (
             <FlowWrapper>
-              <Flow flow={flow} highlight={comp.id} />
+              <Flow flow={flow} highlight={comp.id} readonly />
               <Toolbar position="bottom">
                 <Toolbar.Zoom />
               </Toolbar>

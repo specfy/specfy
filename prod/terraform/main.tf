@@ -1,4 +1,6 @@
 terraform {
+  required_version = ">= 1.4.0"
+
   required_providers {
     google = {
       source  = "hashicorp/google"
@@ -6,14 +8,18 @@ terraform {
     }
   }
 
-  required_version = ">= 1.4.0"
+  required_providers {
+    vercel = {
+      source  = "vercel/vercel"
+      version = "~> 0.4"
+    }
+  }
 }
 
 provider "google" {
   project = var.envs.project
   region  = var.envs.region
 }
-
 
 data "google_billing_account" "specfy" {
   display_name = "Specfy"

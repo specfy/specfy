@@ -69,7 +69,7 @@
     "react-router-dom": "6.9.0",
     "react-syntax-highlighter": "15.5.0",
     "react-use": "17.4.0",
-    "reactflow": "11.7.0",
+    "reactflow": "11.7.2",
     "refractor": "3.6.0",
     "sass": "1.59.3",
     "slugify": "1.6.6",

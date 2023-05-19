@@ -9,12 +9,14 @@ import type { ComputedFlow } from '../../../components/Flow/helpers';
 import { componentsToFlow } from '../../../components/Flow/helpers';
 import type { RouteProject } from '../../../types/routes';
 
+import { FlowEdit } from './Edit';
+
 // import { GraphEdit } from './Edit';
 
 export const ProjectFlow: React.FC<{
   proj: ApiProject;
   params: RouteProject;
-}> = () => {
+}> = ({ proj }) => {
   const storeComponents = useComponentsStore();
   const [flow, setFlow] = useState<ComputedFlow>();
 
@@ -46,11 +48,15 @@ export const ProjectFlow: React.FC<{
         height: 'calc(100vh - 180px)',
       }}
     >
+      <FlowEdit components={components!} proj={proj} />
       {flow && (
         <>
-          {/* <GraphEdit comps={components!} proj={proj} /> */}
           <FlowWrapper>
-            <Flow flow={flow} />
+            <Flow
+              flow={flow}
+              downlightOther={false}
+              keepHighlightOnSelect={true}
+            />
             <Toolbar position="top" visible>
               <Toolbar.Main />
             </Toolbar>

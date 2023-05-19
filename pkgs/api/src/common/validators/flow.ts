@@ -1,14 +1,9 @@
 import { z } from 'zod';
 
 import { schemaId } from './common';
+import { min, max, wMax, wMin, hMax, hMin } from './flow.constants';
 
 // const portPosition = ['bottom', 'left', 'right', 'top']; // TODO: enforce union
-const min = -99999;
-const max = 99999;
-const wMin = 50;
-const wMax = 2000;
-const hMin = 32;
-const hMax = 2000;
 
 export const schemaDisplay = z
   .object({
