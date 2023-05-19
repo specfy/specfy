@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import type { CSSProperties } from 'react';
-import { useCallback, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import type { NodeTypes, ReactFlowProps } from 'reactflow';
 import {
   BackgroundVariant,

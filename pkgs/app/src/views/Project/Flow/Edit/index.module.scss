@@ -8,12 +8,12 @@
   display: flex;
   flex-direction: column;
 
-  // gap: $p-xl;
-
   height: calc(100vh - $height-header-project-total);
 
   background-color: #fff;
-  box-shadow: $box-shadow2;
+
+  // box-shadow: $box-shadow2;
+  border-left: 1px solid $color-border;
 }
 
 .block {
@@ -24,10 +24,7 @@
 
   font-family: $font-text;
 
-  border-bottom: 1px solid $gray-200;
-
-  // border-radius: $border-radius;
-  // box-shadow: $box-shadow3;
+  border-bottom: 1px solid $color-border;
 }
 
 .title {
@@ -122,7 +119,7 @@
 
   color: $gray-800;
 
-  border: 1px solid $gray-300;
+  border: 1px solid $color-border;
   border-radius: $border-radius-s;
 }
 

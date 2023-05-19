@@ -33,8 +33,6 @@ import {
   useOnSelectionChange,
 } from 'reactflow';
 
-import { ComputedFlow } from '../../../../components/Flow/helpers';
-
 import cls from './index.module.scss';
 
 /**
@@ -92,160 +90,6 @@ import cls from './index.module.scss';
 //     [edit]
 //   );
 
-//   const updateNode = useCallback(
-//     (e: Cell.EventArgs['change:*']) => {
-//       //     if (!e.cell.isNode()) {
-//       //       return;
-//       //     }
-//       //     const id = e.cell.id;
-//       //     // Find related component
-//       //     const comp = comps.find((c) => c.id === id);
-//       //     if (!comp) {
-//       //       return;
-//       //     }
-//       //     storeComponents.updateField(id, 'display', {
-//       //       ...comp.display,
-//       //       pos: { ...e.cell.position() },
-//       //       size: { ...e.cell.size() },
-//       //     });
-//       //     return;
-//     },
-//     [edit]
-//   );
-
-//   // useEffect(() => {
-//   //   if (!g) {
-//   //     return;
-//   //   }
-
-//   //   g.unsetHighlight();
-//   //   const graph = g.getRef();
-//   //   if (!graph) {
-//   //     return;
-//   //   }
-
-//   //   const cancel = setTimeout(() => {
-//   //     g.recenter(0.4);
-//   //   }, 250);
-
-//   //   if (!isEditing) {
-//   //     return;
-//   //   }
-
-//   //   // ---- PLUGIN
-//   //   graph.use(
-//   //     new Transform({
-//   //       resizing: {
-//   //         enabled: true,
-//   //         minHeight: 30,
-//   //         minWidth: 60,
-//   //       },
-//   //       rotating: false,
-//   //     })
-//   //   );
-//   //   graph.use(
-//   //     new History({
-//   //       enabled: true,
-//   //       beforeAddCommand: (args, event) => {
-//   //         // not sure why sometimes args is correct and sometimes it's event
-//   //         const type = (event || args) as any;
-//   //         if (type.key === 'attrs' || type.key === 'tools') {
-//   //           return false;
-//   //         }
-//   //         return true;
-//   //       },
-//   //     })
-//   //   );
-//   //   graph.use(
-//   //     new Selection({
-//   //       enabled: true,
-//   //       multiple: true,
-//   //       rubberband: true,
-//   //       movable: true,
-//   //       showNodeSelectionBox: true,
-//   //     })
-//   //   );
-
-//   //   // TODO: fix this
-//   //   let localSelected: ApiComponent;
-
-//   //   graph.on('cell:change:*', (e) => {
-//   //     if (
-//   //       e.key !== 'size' &&
-//   //       e.key !== 'position' &&
-//   //       e.key !== 'vertices' &&
-//   //       e.key !== 'size'
-//   //     ) {
-//   //       return;
-//   //     }
-
-//   //     if (e.key === 'vertices') {
-//   //       updateEdge(e);
-//   //     } else {
-//   //       updateNode(e);
-//   //     }
-//   //   });
-
-//   //   graph.on('node:change:size', (e) => {
-//   //     if (!localSelected || localSelected.id !== e.cell.id) {
-//   //       return;
-//   //     }
-
-//   //     setInfo({
-//   //       zIndex: e.cell.zIndex || 1,
-//   //       pos: { ...e.node.position() },
-//   //       size: { ...e.current! },
-//   //     });
-//   //   });
-
-//   //   graph.on('node:change:position', (e) => {
-//   //     if (!localSelected || localSelected.id !== e.cell.id) {
-//   //       return;
-//   //     }
-
-//   //     setInfo({
-//   //       zIndex: e.cell.zIndex || 1,
-//   //       size: { ...e.node.size() },
-//   //       pos: { ...e.current! },
-//   //     });
-//   //   });
-
-//   //   graph.on('node:mousedown', (e) => {
-//   //     const found = comps.find((comp) => comp.id === e.cell.id);
-//   //     if (!found) {
-//   //       return;
-//   //     }
-
-//   //     setSelected(found);
-//   //     localSelected = found;
-//   //     setInfo({
-//   //       zIndex: e.cell.zIndex || 1,
-//   //       pos: { ...e.cell.position(), ...e.cell.size() },
-//   //     });
-//   //   });
-
-//   //   graph.on('edge:mouseenter', ({ cell }) => {
-//   //     cell.setTools([
-//   //       {
-//   //         name: 'vertices',
-//   //         args: {
-//   //           snapRadius: 1,
-//   //           removeRedundancies: false,
-//   //           attrs: { fill: '#7dd3fc', r: 4, 'stroke-width': 1 },
-//   //         },
-//   //       },
-//   //     ]);
-//   //   });
-
-//   //   graph.on('edge:mouseleave', ({ cell }) => {
-//   //     cell.removeTools();
-//   //   });
-
-//   //   return () => {
-//   //     clearTimeout(cancel);
-//   //   };
-//   // }, [g, isEditing]);
-
 //   // // Debounce change registry
 //   // useDebounce(
 //   //   () => {
@@ -277,29 +121,6 @@ import cls from './index.module.scss';
 //   //   200,
 //   //   [storeStaging]
 //   // );
-
-//   // // Size change
-//   const handleSize = (type: 'height' | 'width', value: string) => {
-//     //   if (!selected || !info) {
-//     //     return;
-//     //   }
-//     //   const cell = g.getRef()?.getCellById(selected!.id);
-//     //   if (!cell) {
-//     //     return;
-//     //   }
-//     //   const replace = {
-//     //     ...info,
-//     //     pos: { ...info.pos, [type]: parseInt(value) || 0 },
-//     //   };
-//     //   if (cell.isNode()) {
-//     //     cell.setSize({ height: replace.size.height, width: replace.size.width });
-//     //   }
-//     //   setInfo(replace);
-//   };
-
-//   const handleHideShow = () => {
-//     //   setHide(!hide);
-//   };
 
 //   const handleRevert = (id: string) => {
 //     //   const graph = g.getRef();
@@ -598,7 +419,7 @@ export const FlowEdit: React.FC<{
             </div>
             <div>
               <div className={cls.label}>Relations</div>
-              <div className={cls.relations}>
+              <div>
                 {relation.map((rel) => {
                   return <EdgeRelation key={rel.edge.id} {...rel} />;
                 })}
