@@ -34,15 +34,26 @@
   }
 }
 
-.firstRow {
+.right {
+  min-width: 0;
+}
+
+.desc {
   display: flex;
   gap: $p-s;
+}
+
+.text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: pre;
 }
 
 .user {
   display: flex;
   gap: $p-m;
   align-items: center;
+  white-space: nowrap;
 }
 
 
