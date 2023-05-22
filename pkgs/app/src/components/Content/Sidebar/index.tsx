@@ -4,8 +4,8 @@ import {
   IconCircleX,
   IconSearch,
   IconFileCode,
-  IconLayoutSidebarLeftCollapse,
-  IconPlus,
+  // IconLayoutSidebarLeftCollapse,
+  // IconPlus,
   IconLayoutSidebarLeftExpand,
 } from '@tabler/icons-react';
 import { Button, Input, Tree } from 'antd';
@@ -200,7 +200,7 @@ export const ContentSidebar: React.FC<{
 
   return (
     <div className={classnames(cls.tree, collapsed && cls.collapsed)}>
-      <div className={cls.treeHeader}>
+      <div className={cls.treeHeader} style={{ display: 'none' }}>
         <div className={cls.search}>
           <Input
             prefix={<IconSearch />}
@@ -225,13 +225,13 @@ export const ContentSidebar: React.FC<{
             onKeyDown={handleKeyPress}
           />
         </div>
-        <Link to={'new'}>
+        {/* <Link to={`/${proj.orgId}/${proj.slug}/content/new`}>
           <Button icon={<IconPlus />} />
-        </Link>
-        <Button
+        </Link> */}
+        {/* <Button
           icon={<IconLayoutSidebarLeftCollapse />}
           onClick={handleCollapse}
-        />
+        /> */}
       </div>
       {list && (
         <div className={cls.results} ref={refList}>

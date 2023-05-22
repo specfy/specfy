@@ -12,9 +12,10 @@ import {
 import { useComponentsStore, useProjectStore } from '../../common/store';
 import { Card } from '../../components/Card';
 import { Container } from '../../components/Container';
+import { ContentSidebar } from '../../components/Content/Sidebar';
 import { NotFound } from '../../components/NotFound';
 import { ProjectHeader } from '../../components/ProjectHeader';
-import { Sidebar } from '../../components/Sidebar';
+import { Group, Sidebar } from '../../components/Sidebar';
 import type { RouteProject } from '../../types/routes';
 
 import { ProjectActivity } from './Activity';
@@ -123,7 +124,11 @@ export const Project: React.FC = () => {
   return (
     <div className={cls.project}>
       <div>
-        <Sidebar org={org} project={proj} />
+        <Sidebar org={org} project={proj}>
+          <Group name="Content">
+            <ContentSidebar proj={proj} params={params} />
+          </Group>
+        </Sidebar>
       </div>
       <div className={cls.main}>
         <div>

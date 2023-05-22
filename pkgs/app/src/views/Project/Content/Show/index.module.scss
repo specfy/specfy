@@ -2,18 +2,26 @@
 
 .wrapper {
   display: flex;
-  justify-content: center;
   width: 100%;
 }
 
 .container {
   position: relative;
-
   display: grid;
   grid-template-columns: 200px ($main-col-w) 200px;
-  gap: $p-xl;
-
   min-height: 100vh;
-  margin: 0 auto;
-  padding: $p-3xl;
+
+  // TODO: Fix this
+  >div:nth-child(1) {
+    background-color: #fff;
+  }
+
+  >div:nth-child(2) {
+    padding: $p-2xl $p-3xl;
+    background-color: #fff;
+  }
+
+  >div:nth-child(3) {
+    padding: $p-2xl $p-3xl;
+  }
 }

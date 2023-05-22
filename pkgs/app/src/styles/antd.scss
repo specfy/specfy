@@ -303,7 +303,7 @@ h4.ant-typography {
 
 // Tree
 .ant-tree {
-  padding-left: $p-m;
+  padding-left: 2px;
 
   .ant-tree-switcher {
     display: none;
@@ -314,6 +314,12 @@ h4.ant-typography {
   }
 
   .ant-tree-treenode {
+    padding-bottom: 0 !important;
+
+    &::before {
+      bottom: 0 !important;
+    }
+
     .ant-tree-indent-unit {
       width: 16px;
     }
@@ -326,13 +332,13 @@ h4.ant-typography {
     &:hover::before,
     &.ant-tree-treenode-selected::before {
       margin: 0 $p;
-      background-color: $gray-100 !important;
+      background-color: $primary-low !important;
       border-radius: $border-radius;
     }
 
     &.ant-tree-treenode-selected {
       .ant-tree-node-content-wrapper.ant-tree-node-selected {
-        color: $primary;
+        color: $gray-800;
       }
 
     }
@@ -340,7 +346,7 @@ h4.ant-typography {
 
   .ant-tree-node-content-wrapper {
     overflow: hidden;
-    padding: $p-s;
+    padding: 3px $p 3px $p;
     text-overflow: ellipsis;
     white-space: pre;
   }
@@ -380,4 +386,10 @@ h4.ant-typography {
   .ant-result-icon {
     font-size: 52px;
   }
+}
+
+
+.ant-anchor-wrapper:not(.ant-anchor-wrapper-horizontal) .ant-anchor::before {
+  right: 0;
+  left: initial;
 }

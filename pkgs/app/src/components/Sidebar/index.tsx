@@ -14,10 +14,10 @@ import { AvatarAuto } from '../AvatarAuto';
 
 import cls from './index.module.scss';
 
-const Group: React.FC<{ children: React.ReactElement[]; name: string }> = ({
-  children,
-  name,
-}) => {
+export const Group: React.FC<{
+  children: React.ReactElement | React.ReactElement[];
+  name: string;
+}> = ({ children, name }) => {
   const [open, setOpen] = useState(true);
   const onClick = () => {
     setOpen(!open);
@@ -37,7 +37,8 @@ const Group: React.FC<{ children: React.ReactElement[]; name: string }> = ({
 export const Sidebar: React.FC<{
   org: ApiOrg;
   project?: ApiProject;
-}> = ({ org, project }) => {
+  children?: React.ReactElement;
+}> = ({ org, project, children }) => {
   const location = useLocation();
 
   const linkOrg = useMemo(() => {
@@ -105,7 +106,7 @@ export const Sidebar: React.FC<{
           </Link>
         </Group>
       ) : (
-        <div className={cls.group}>
+        <div className={classNames(cls.group, cls.small)}>
           <Link className={cls.head} to={linkOrg}>
             <IconChevronLeft />
             Back to org
@@ -138,6 +139,8 @@ export const Sidebar: React.FC<{
           </Link>
         </Group>
       )}
+
+      {children}
     </div>
   );
 };
