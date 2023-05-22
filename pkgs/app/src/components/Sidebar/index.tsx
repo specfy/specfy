@@ -60,19 +60,21 @@ export const Sidebar: React.FC<{
 
   return (
     <div className={cls.sidebar}>
-      <div className={classNames(cls.header, !project && cls.org)}>
-        <AvatarAuto
-          name={org.name}
-          size="default"
-          shape="square"
-          src={org.logo}
-        />
+      <div className={classNames(cls.header)}>
+        <Link to={linkOrg}>
+          <AvatarAuto
+            name={org.name}
+            size="default"
+            shape="square"
+            src={org.logo}
+          />
+        </Link>
         <div className={cls.label}>
-          <Link to={`/${org.id}`}>{org.name}</Link>
+          {!project && <Link to={`/${org.id}`}>{org.name}</Link>}
           {project && (
             <>
               <span className={cls.slash}>/</span>
-              <Link to={linkProject}>{project.slug}</Link>
+              <Link to={linkProject}>{project.name}</Link>
             </>
           )}
         </div>

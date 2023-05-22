@@ -19,11 +19,9 @@
   height: $height-header-project;
   padding: $p-2xl $p-l;
 
-  border-bottom: 1px solid $color-border;
+  font-size: $font-l;
 
-  &.org {
-    font-size: $font-l;
-  }
+  border-bottom: 1px solid $color-border;
 
 
   .label {
