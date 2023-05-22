@@ -12,7 +12,6 @@ import { Toolbar } from '../../../components/Flow/Toolbar';
 import type { ComputedFlow } from '../../../components/Flow/helpers';
 import { componentsToFlow } from '../../../components/Flow/helpers';
 import { ListActivity } from '../../../components/ListActivity';
-import { ListRFCs } from '../../../components/ListRFCs';
 import { ProjectLinks } from '../../../components/Project/Links';
 import { useEdit } from '../../../hooks/useEdit';
 import type { RouteProject } from '../../../types/routes';
@@ -78,10 +77,6 @@ export const ProjectOverview: React.FC<{
             <Typography.Title level={5}>Team</Typography.Title>
             <Team org_id={params.org_id} project_id={project.id} />
           </div>
-        </Card>
-
-        <Card padded seamless large>
-          <ListRFCs project={project}></ListRFCs>
         </Card>
       </Container.Left2Third>
       <Container.Right1Third>
