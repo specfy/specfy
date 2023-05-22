@@ -93,8 +93,8 @@ export const OrgHeader: React.FC<{ org: ApiOrg }> = () => {
     const path = location.pathname.split('/');
     if (path[3] === 'content') {
       setOpen('content');
-    } else if (path[3] === 'graph') {
-      setOpen('graph');
+    } else if (path[3] === 'flow') {
+      setOpen('flow');
     } else if (path[3] === 'activity') {
       setOpen('activity');
     } else if (path[3] === 'settings') {
