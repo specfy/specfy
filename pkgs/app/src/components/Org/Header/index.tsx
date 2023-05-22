@@ -1,5 +1,5 @@
-import { IconHome, IconSettings, IconUsers } from '@tabler/icons-react';
-import { Badge, Menu, Typography } from 'antd';
+import { IconHome, IconUsers } from '@tabler/icons-react';
+import { Badge, Menu } from 'antd';
 import type { ApiOrg } from 'api/src/types/api';
 import { useState, useMemo, useEffect } from 'react';
 import { useLocation, Link, useParams } from 'react-router-dom';
@@ -9,7 +9,7 @@ import type { RouteOrg } from '../../../types/routes';
 
 import cls from './index.module.scss';
 
-export const OrgHeader: React.FC<{ org: ApiOrg }> = ({ org }) => {
+export const OrgHeader: React.FC<{ org: ApiOrg }> = () => {
   const params = useParams<Partial<RouteOrg>>() as RouteOrg;
   const location = useLocation();
 
@@ -89,17 +89,6 @@ export const OrgHeader: React.FC<{ org: ApiOrg }> = ({ org }) => {
       //     </Link>
       //   ),
       // },
-      {
-        key: 'settings',
-        label: (
-          <Link to={`${linkSelf}/settings`}>
-            <span>
-              <IconSettings />
-            </span>
-            Settings
-          </Link>
-        ),
-      },
     ];
   }, [linkSelf, resCount]);
 
@@ -124,17 +113,7 @@ export const OrgHeader: React.FC<{ org: ApiOrg }> = ({ org }) => {
 
   return (
     <div className={cls.header}>
-      <div className={cls.avatar}></div>
-      <div className={cls.description}>
-        <Typography.Title level={1}>{org!.name}</Typography.Title>
-
-        <Menu
-          selectedKeys={[selected]}
-          mode="horizontal"
-          items={menu}
-          className={cls.menu}
-        />
-      </div>
+      <Menu selectedKeys={[selected]} mode="horizontal" items={menu} />
     </div>
   );
 };

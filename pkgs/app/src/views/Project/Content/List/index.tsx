@@ -46,7 +46,7 @@ export const ProjectContentList: React.FC<{
 
   return (
     <div className={cls.list}>
-      <Card>
+      <Card seamless>
         {list && (
           <Table
             rowKey="id"

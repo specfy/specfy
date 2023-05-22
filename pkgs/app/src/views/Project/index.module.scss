@@ -1,14 +1,17 @@
 @import "../../styles/theme";
 
+.project {
+  display: flex;
+}
+
+.main {
+  width: 100%;
+}
+
 .header {
-  display: grid;
-  grid-template-columns: 300px 1fr;
-  align-content: normal;
-
   padding: $p-3xl $p-2xl $p-xl $p-3xl;
-
   background-color: #fff;
-  border: 1px solid $color-border;
+  border-bottom: 1px solid $color-border;
 }
 
 .links {

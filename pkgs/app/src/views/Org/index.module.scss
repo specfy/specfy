@@ -1,15 +1,16 @@
 @import "../../styles/theme";
 
-.container {
-  display: grid;
+.org {
+  display: flex;
 }
 
-.header {
+.main {
   display: flex;
-  gap: $p-2xl;
+  flex-direction: column;
+  width: 100%;
+}
 
-  padding: $p-3xl $p-3xl $p-xl $p-3xl;
-
-  background-color: #fff;
-  border: 1px solid $color-border;
+.container {
+  display: flex;
+  width: 100%;
 }

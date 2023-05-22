@@ -40,6 +40,7 @@ const App: React.FC = () => {
             colorError: '#dc2626',
             colorErrorBg: '#fee2e2',
             colorBgBase: '#fff',
+            colorText: '#27272a',
             colorTextSecondary: '#9ca3af',
             colorTextDescription: '#6b7280',
             colorBgContainerDisabled: '#f9fafb',

@@ -8,7 +8,7 @@ import {
   IconUserCircle,
 } from '@tabler/icons-react';
 import type { MenuProps } from 'antd';
-import { App, Divider, Button, Menu, Dropdown, Badge, Layout } from 'antd';
+import { App, Divider, Button, Menu, Dropdown, Badge } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
@@ -105,8 +105,8 @@ export const LayoutHeader: React.FC = () => {
   }, [orgsQuery.data, params.org_id]);
 
   return (
-    <Layout.Header className={cls.header}>
-      <Link to="/">
+    <div className={cls.header}>
+      <Link to="/" className={cls.logo}>
         <Logo color="white" />
       </Link>
 
@@ -176,6 +176,6 @@ export const LayoutHeader: React.FC = () => {
           </Dropdown>
         </div>
       </div>
-    </Layout.Header>
+    </div>
   );
 };

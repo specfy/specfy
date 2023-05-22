@@ -81,9 +81,9 @@ export const Tech: React.FC<{
   }
 
   return (
-    <Container>
-      <Container.Left>
-        <Card padded>
+    <Container noPadding>
+      <Container.Left2Third>
+        <Card padded seamless large>
           <Typography.Title level={2}>
             {Icon && (
               <div className={cls.icon}>
@@ -98,11 +98,11 @@ export const Tech: React.FC<{
 
           <ComponentLine title="Components" comps={usedBy} params={params} />
         </Card>
-      </Container.Left>
-      <Container.Right>
+      </Container.Left2Third>
+      <Container.Right1Third>
         <div>
           {flow && (
-            <FlowWrapper>
+            <FlowWrapper style={{ height: '350px' }}>
               <Flow flow={flow} readonly />
               <Toolbar position="bottom">
                 <Toolbar.Zoom />
@@ -110,7 +110,7 @@ export const Tech: React.FC<{
             </FlowWrapper>
           )}
         </div>
-      </Container.Right>
+      </Container.Right1Third>
     </Container>
   );
 };

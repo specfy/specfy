@@ -10,8 +10,7 @@ import { componentsToFlow } from '../../../components/Flow/helpers';
 import type { RouteProject } from '../../../types/routes';
 
 import { FlowEdit } from './Edit';
-
-// import { GraphEdit } from './Edit';
+import cls from './index.module.scss';
 
 export const ProjectFlow: React.FC<{
   proj: ApiProject;
@@ -42,12 +41,7 @@ export const ProjectFlow: React.FC<{
   }
 
   return (
-    <div
-      style={{
-        width: 'calc(100vw - 24px * 2)',
-        height: 'calc(100vh - 180px)',
-      }}
-    >
+    <div className={cls.flow}>
       <FlowEdit components={components!} proj={proj} />
       {flow && (
         <>

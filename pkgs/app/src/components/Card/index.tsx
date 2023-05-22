@@ -2,12 +2,25 @@ import classnames from 'classnames';
 
 import cls from './index.module.scss';
 
-const OriginCard: React.FC<{ children: React.ReactNode; padded?: boolean }> = ({
-  children,
-  padded,
-}) => {
+const OriginCard: React.FC<{
+  children: React.ReactNode;
+  padded?: boolean;
+  seamless?: boolean;
+  transparent?: boolean;
+  large?: boolean;
+}> = ({ children, padded, seamless, transparent, large }) => {
   return (
-    <div className={classnames(cls.card, padded && cls.padded)}>{children}</div>
+    <div
+      className={classnames(
+        cls.card,
+        padded && cls.padded,
+        seamless && cls.seamless,
+        transparent && cls.transparent,
+        large && cls.large
+      )}
+    >
+      {children}
+    </div>
   );
 };
 

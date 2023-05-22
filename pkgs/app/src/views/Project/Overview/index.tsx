@@ -53,9 +53,9 @@ export const ProjectOverview: React.FC<{
   }
 
   return (
-    <Container>
-      <Container.Left>
-        <Card padded>
+    <Container noPadding>
+      <Container.Left2Third>
+        <Card padded large seamless>
           <Typography>
             {!isEditing && <ContentDoc doc={project.description} />}
             {isEditing && (
@@ -80,14 +80,14 @@ export const ProjectOverview: React.FC<{
           </div>
         </Card>
 
-        <Card padded>
+        <Card padded seamless large>
           <ListRFCs project={project}></ListRFCs>
         </Card>
-      </Container.Left>
-      <Container.Right>
+      </Container.Left2Third>
+      <Container.Right1Third>
         <div>
           {flow && (
-            <FlowWrapper>
+            <FlowWrapper style={{ height: '350px' }}>
               <Flow flow={flow} readonly />
               <Toolbar position="bottom">
                 <Toolbar.Zoom />
@@ -96,8 +96,10 @@ export const ProjectOverview: React.FC<{
           )}
         </div>
 
-        <ListActivity orgId={params.org_id} projectId={project.id} />
-      </Container.Right>
+        <Card padded seamless transparent>
+          <ListActivity orgId={params.org_id} projectId={project.id} />
+        </Card>
+      </Container.Right1Third>
     </Container>
   );
 };

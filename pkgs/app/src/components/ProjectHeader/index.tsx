@@ -19,7 +19,6 @@ import { Link, useLocation } from 'react-router-dom';
 import { useListOrgs, useListRevisions } from '../../api';
 import { useEdit } from '../../hooks/useEdit';
 import type { RouteProject } from '../../types/routes';
-import { BigHeading } from '../BigHeading';
 
 import { Staging } from './Staging';
 import cls from './index.module.scss';
@@ -79,7 +78,7 @@ export const ProjectHeader: React.FC<{
         label: (
           <Link to={linkSelf} className={cls.link}>
             <span>
-              <IconHome />
+              <IconEye />
             </span>
             Overview
           </Link>
@@ -173,7 +172,7 @@ export const ProjectHeader: React.FC<{
 
   return (
     <>
-      <BigHeading
+      {/* <BigHeading
         parent={org!.name}
         parentLink={linkOrg}
         title={proj.name}
@@ -206,7 +205,7 @@ export const ProjectHeader: React.FC<{
             </div>
           </>
         }
-      ></BigHeading>
+      ></BigHeading> */}
       <Menu
         selectedKeys={[open]}
         mode="horizontal"

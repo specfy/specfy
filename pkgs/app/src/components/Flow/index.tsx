@@ -153,7 +153,7 @@ export const Flow: React.FC<{
         onEdgesDelete={onEdgesDelete}
         elevateEdgesOnSelect={true}
       >
-        <Background id="1" gap={10} color="#d1d5db" />
+        <Background id="1" gap={10} color="#c5c7ca" />
         <Background
           id="2"
           gap={200}

@@ -1,17 +1,18 @@
 @import "../../styles/theme";
 
 .header {
-  display: grid !important;
-  grid-template-columns: 140px 50px 1fr 200px;
+  display: grid;
+  grid-template-columns: 120px 50px 1fr 200px;
+  align-items: center;
 
-  height: 53px !important;
-  padding: 0 8px !important;
+  height: $height-header;
+  padding: 0 $p-l;
 
   // border-bottom: 1px solid $gray-4;
-  line-height: 53px !important;
+  line-height: $height-header;
   color: white;
 
-  background: $slate-800 !important;
+  background: $slate-800;
 
   :global {
     .ant-btn {
@@ -29,6 +30,10 @@
       border-inline-start: 1px solid rgb(255 255 255 / 20%);
     }
   }
+}
+
+.logo {
+  height: 22px;
 }
 
 .avatar {

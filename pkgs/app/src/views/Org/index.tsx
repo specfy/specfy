@@ -5,11 +5,11 @@ import { Route, Routes, useParams } from 'react-router-dom';
 import { useLocalStorage } from 'react-use';
 
 import { useListOrgs } from '../../api';
-import { BigHeadingLoading } from '../../components/BigHeading';
 import { Card } from '../../components/Card';
 import { Container } from '../../components/Container';
 import { NotFound } from '../../components/NotFound';
 import { OrgHeader } from '../../components/Org/Header';
+import { Sidebar } from '../../components/Sidebar';
 import type { RouteOrg } from '../../types/routes';
 import { ProjectCreate } from '../Project/Create';
 
@@ -49,18 +49,20 @@ export const Org: React.FC = () => {
 
   if (loading) {
     return (
-      <div>
-        <div className={cls.header}>
-          <BigHeadingLoading />
-        </div>
+      <div className={cls.org}>
+        <div></div>
 
-        <Container>
-          <Container.Left>
-            <Card padded>
-              <Skeleton active paragraph={{ rows: 3 }}></Skeleton>
-            </Card>
-          </Container.Left>
-        </Container>
+        <div className={cls.main}>
+          <div></div>
+
+          <Container>
+            <Container.Left>
+              <Card padded large seamless>
+                <Skeleton active paragraph={{ rows: 3 }}></Skeleton>
+              </Card>
+            </Container.Left>
+          </Container>
+        </div>
       </div>
     );
   }
@@ -70,27 +72,34 @@ export const Org: React.FC = () => {
   }
 
   return (
-    <div className={cls.container}>
-      <OrgHeader org={org} />
+    <div className={cls.org}>
+      <div>
+        <Sidebar org={org} />
+      </div>
 
-      <Container>
-        <Routes>
-          <Route path="/" element={<OrgOverview params={params} />} />
-          <Route path="/content" element={<OrgContent params={params} />} />
-          <Route path="/policies" element={<OrgPolicies params={params} />} />
-          <Route path="/flow" element={<OrgFlow params={params} />} />
-          <Route path="/team" element={<OrgTeam params={params} />} />
-          <Route path="/activity" element={<OrgActivity params={params} />} />
-          <Route
-            path="/settings/*"
-            element={<OrgSettings params={params} org={org} />}
-          />
-          <Route
-            path="/project/new"
-            element={<ProjectCreate params={params} />}
-          />
-        </Routes>
-      </Container>
+      <div className={cls.main}>
+        <div>
+          <OrgHeader org={org} />
+        </div>
+        <Container noPadding className={cls.container}>
+          <Routes>
+            <Route path="/" element={<OrgOverview params={params} />} />
+            <Route path="/content" element={<OrgContent params={params} />} />
+            <Route path="/policies" element={<OrgPolicies params={params} />} />
+            <Route path="/flow" element={<OrgFlow params={params} />} />
+            <Route path="/team" element={<OrgTeam params={params} />} />
+            <Route path="/activity" element={<OrgActivity params={params} />} />
+            <Route
+              path="/settings/*"
+              element={<OrgSettings params={params} org={org} />}
+            />
+            <Route
+              path="/project/new"
+              element={<ProjectCreate params={params} />}
+            />
+          </Routes>
+        </Container>
+      </div>
     </div>
   );
 };

@@ -1,20 +1,21 @@
 @import "../../../styles/theme";
 
 .header {
-  display: flex;
-  gap: $p-2xl;
-
-  padding: $p-3xl $p-3xl $p-xl $p-3xl;
-
+  height: $height-header-project;
+  padding: $p-3xl $p-2xl $p-xl $p-3xl;
   background-color: #fff;
-  border: 1px solid $color-border;
+  border-bottom: 1px solid $color-border;
 }
 
 .avatar {
   overflow: hidden;
+  display: flex;
+  align-items: center;
 
-  width: 100px;
-  height: 100px;
+  width: 70px;
+  height: 70px;
+
+  font-size: 32px;
 
   background-color: $gray-200;
   border-radius: $border-radius;
@@ -23,13 +24,4 @@
     height: 100%;
     object-fit: cover;
   }
-}
-
-.description {
-  width: 100%;
-  padding: $p-4xl 0;
-}
-
-.menu {
-  margin: ($p-l - 2px) 0 0 (-$p);
 }

@@ -9,7 +9,11 @@ export const AvatarAuto: React.FC<
   const acr = acronymize(name);
   const style = stringToColor(acr);
   return (
-    <Avatar className={className} style={style} {...rest}>
+    <Avatar
+      className={className}
+      style={{ ...style, border: 'none' }}
+      {...rest}
+    >
       {acr}
     </Avatar>
   );

@@ -63,12 +63,12 @@ export const OrgOverview: React.FC<{ params: RouteOrg }> = ({ params }) => {
 
   return (
     <>
-      <Container.Left>
-        <Card padded>
+      <Container.Left2Third>
+        <Card large seamless>
           <ListProjects orgId={params.org_id}></ListProjects>
         </Card>
-      </Container.Left>
-      <Container.Right>
+      </Container.Left2Third>
+      <Container.Right1Third>
         {storeProjects.projects.length > 0 && (
           <div>
             {!flow ? (
@@ -83,8 +83,11 @@ export const OrgOverview: React.FC<{ params: RouteOrg }> = ({ params }) => {
             )}
           </div>
         )}
-        <ListActivity orgId={params.org_id}></ListActivity>
-      </Container.Right>
+
+        <Card large seamless transparent>
+          <ListActivity orgId={params.org_id}></ListActivity>
+        </Card>
+      </Container.Right1Third>
     </>
   );
 };

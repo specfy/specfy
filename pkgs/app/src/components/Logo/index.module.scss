@@ -1,9 +1,10 @@
 @import "../../styles/theme";
 
-$height: 32px;
+
 
 .logo {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr 4fr;
   gap: $p-m;
   align-items: center;
 
@@ -11,12 +12,11 @@ $height: 32px;
   height: 100%;
 
   >svg {
-    height: $height;
+    height: inherit;
   }
 }
 
 .icon {
-  width: 40px;
-  font-size: 40px;
+  font-size: inherit;
   color: $primary;
 }

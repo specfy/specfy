@@ -10,11 +10,11 @@ import {
   useListProjects,
 } from '../../api';
 import { useComponentsStore, useProjectStore } from '../../common/store';
-import { BigHeadingLoading } from '../../components/BigHeading';
 import { Card } from '../../components/Card';
 import { Container } from '../../components/Container';
 import { NotFound } from '../../components/NotFound';
 import { ProjectHeader } from '../../components/ProjectHeader';
+import { Sidebar } from '../../components/Sidebar';
 import type { RouteProject } from '../../types/routes';
 
 import { ProjectActivity } from './Activity';
@@ -93,80 +93,86 @@ export const Project: React.FC = () => {
 
   if (loading) {
     return (
-      <div>
-        <div className={cls.header}>
-          <BigHeadingLoading />
-        </div>
+      <div className={cls.project}>
+        <div></div>
+        <div className={cls.main}>
+          <div className={cls.header}></div>
 
-        <Container>
-          <Container.Left>
-            <Card padded>
-              <Skeleton active paragraph={{ rows: 3 }}></Skeleton>
-              <Divider />
-              <Avatar.Group>
-                <Skeleton.Avatar active />
-                <Skeleton.Avatar active />
-                <Skeleton.Avatar active />
-              </Avatar.Group>
-            </Card>
-          </Container.Left>
-        </Container>
+          <Container>
+            <Container.Left>
+              <Card padded large seamless>
+                <Skeleton active paragraph={{ rows: 3 }}></Skeleton>
+                <Divider />
+                <Avatar.Group>
+                  <Skeleton.Avatar active />
+                  <Skeleton.Avatar active />
+                  <Skeleton.Avatar active />
+                </Avatar.Group>
+              </Card>
+            </Container.Left>
+          </Container>
+        </div>
       </div>
     );
   }
 
-  if (!proj) {
+  if (!org || !proj) {
     return <NotFound />;
   }
 
   return (
-    <div>
-      <div className={cls.header}>
-        <ProjectHeader proj={proj} params={params} />
+    <div className={cls.project}>
+      <div>
+        <Sidebar org={org} project={proj} />
       </div>
-      <Routes>
-        <Route path="/" element={<ProjectOverview params={params} />} />
-        <Route
-          path="/content/*"
-          element={<ProjectContentIndex proj={proj} params={params} />}
-        />
-        <Route
-          path="/flow"
-          element={<ProjectFlow proj={proj} params={params} />}
-        />
-        <Route
-          path="/activity"
-          element={<ProjectActivity proj={proj} params={params} />}
-        />
-        <Route
-          path="/t/:tech_slug"
-          element={<Tech proj={proj} params={params} />}
-        />
-        <Route
-          path="/component/new"
-          element={<ProjectComponentCreate params={params} />}
-        />
-        <Route
-          path="/c/:component_slug"
-          element={<ComponentView proj={proj} />}
-        />
-        <Route
-          path="/settings/*"
-          element={<ProjectSettings proj={proj} params={params} />}
-        />
-        <Route
-          path="/revisions"
-          element={<ProjectRevisionsList proj={proj} params={params} />}
-        />
-        <Route
-          path="/revisions/current"
-          element={<ProjectRevisionCreate proj={proj} params={params} />}
-        />
-        <Route
-          path="/revisions/:revision_id"
-          element={<ProjectRevisionsShow proj={proj} params={params} />}
-        />
-      </Routes>
+      <div className={cls.main}>
+        <div className={cls.header}>
+          <ProjectHeader proj={proj} params={params} />
+        </div>
+        <Routes>
+          <Route path="/" element={<ProjectOverview params={params} />} />
+          <Route
+            path="/content/*"
+            element={<ProjectContentIndex proj={proj} params={params} />}
+          />
+          <Route
+            path="/flow"
+            element={<ProjectFlow proj={proj} params={params} />}
+          />
+          <Route
+            path="/activity"
+            element={<ProjectActivity proj={proj} params={params} />}
+          />
+          <Route
+            path="/t/:tech_slug"
+            element={<Tech proj={proj} params={params} />}
+          />
+          <Route
+            path="/component/new"
+            element={<ProjectComponentCreate params={params} />}
+          />
+          <Route
+            path="/c/:component_slug"
+            element={<ComponentView proj={proj} />}
+          />
+          <Route
+            path="/settings/*"
+            element={<ProjectSettings proj={proj} params={params} />}
+          />
+          <Route
+            path="/revisions"
+            element={<ProjectRevisionsList proj={proj} params={params} />}
+          />
+          <Route
+            path="/revisions/current"
+            element={<ProjectRevisionCreate proj={proj} params={params} />}
+          />
+          <Route
+            path="/revisions/:revision_id"
+            element={<ProjectRevisionsShow proj={proj} params={params} />}
+          />
+        </Routes>
+      </div>
     </div>
   );
 };

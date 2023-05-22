@@ -72,7 +72,7 @@ export const ListProjects: React.FC<{ orgId: string }> = ({ orgId }) => {
             render={(_, item: ApiProject) => {
               return (
                 <Link to={`/${item.orgId}/${item.slug}`} relative="path">
-                  <AvatarAuto name={item.name} size="large" />
+                  <AvatarAuto name={item.name} size="large" shape="square" />
                 </Link>
               );
             }}

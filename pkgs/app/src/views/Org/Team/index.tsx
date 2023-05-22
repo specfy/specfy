@@ -5,6 +5,7 @@ import { useDebounce } from 'react-use';
 
 import { useListPerms, useListUser } from '../../../api';
 import { Card } from '../../../components/Card';
+import { Container } from '../../../components/Container';
 import { Row } from '../../../components/Team/Row';
 import { useAuth } from '../../../hooks/useAuth';
 import type { RouteOrg } from '../../../types/routes';
@@ -75,129 +76,131 @@ export const OrgTeam: React.FC<{ params: RouteOrg }> = ({ params }) => {
   };
 
   return (
-    <div className={cls.team}>
-      <div className={cls.header}>
-        <div>
-          <Typography.Title level={2}>Team members</Typography.Title>
-          <Typography.Text type="secondary">
-            Invite or manage your project&apos;s members.
-          </Typography.Text>
-        </div>
-
-        <Input
-          placeholder="Search or add user..."
-          className={cls.search}
-          onChange={(e) => setSearch(e.target.value)}
-        ></Input>
-      </div>
-      <Card>
-        {!searchDebounced && (
-          <div className={cls.lines}>
-            <div>
-              <Typography.Title level={5} className={cls.title}>
-                Owners
-              </Typography.Title>
-              {owners.map((perm) => {
-                return (
-                  <Row
-                    key={perm.id}
-                    params={p}
-                    user={perm.user}
-                    perm={perm}
-                    me={user!.id}
-                    onUpdated={onUpdate}
-                  />
-                );
-              })}
-              {owners.length <= 0 && (
-                <div className={cls.empty}>No match...</div>
-              )}
-            </div>
-
-            <div>
-              <Typography.Title level={5} className={cls.title}>
-                Reviewers
-              </Typography.Title>
-              {reviewers.map((perm) => {
-                return (
-                  <Row
-                    key={perm.id}
-                    params={p}
-                    user={perm.user}
-                    perm={perm}
-                    me={user!.id}
-                    onUpdated={onUpdate}
-                  />
-                );
-              })}
-              {reviewers.length <= 0 && (
-                <div className={cls.empty}>Nothing to show...</div>
-              )}
-            </div>
-
-            <div>
-              <Typography.Title level={5} className={cls.title}>
-                Contributors
-              </Typography.Title>
-              {contributors.map((perm) => {
-                return (
-                  <Row
-                    key={perm.id}
-                    params={p}
-                    user={perm.user}
-                    perm={perm}
-                    me={user!.id}
-                    onUpdated={onUpdate}
-                  />
-                );
-              })}
-              {contributors.length <= 0 && (
-                <div className={cls.empty}>No match...</div>
-              )}
-            </div>
-
-            <div>
-              <Typography.Title level={5} className={cls.title}>
-                Viewers
-              </Typography.Title>
-              {viewers.map((perm) => {
-                return (
-                  <Row
-                    key={perm.id}
-                    params={p}
-                    user={perm.user}
-                    perm={perm}
-                    me={user!.id}
-                    onUpdated={onUpdate}
-                  />
-                );
-              })}
-              {viewers.length <= 0 && (
-                <div className={cls.empty}>No match...</div>
-              )}
-            </div>
-          </div>
-        )}
-
-        {searchDebounced && (
+    <Container.Left2Third padded>
+      <div className={cls.team}>
+        <div className={cls.header}>
           <div>
-            {options.map((u) => {
-              const perm = team.data?.data.find((i) => i.user.id === u.id);
-              return (
-                <Row
-                  key={u.id}
-                  params={p}
-                  user={u}
-                  perm={perm}
-                  me={user!.id}
-                  fromSearch={true}
-                  onUpdated={onUpdate}
-                />
-              );
-            })}
+            <Typography.Title level={2}>Team members</Typography.Title>
+            <Typography.Text type="secondary">
+              Invite or manage your project&apos;s members.
+            </Typography.Text>
           </div>
-        )}
-      </Card>
-    </div>
+
+          <Input
+            placeholder="Search or add user..."
+            className={cls.search}
+            onChange={(e) => setSearch(e.target.value)}
+          ></Input>
+        </div>
+        <Card seamless>
+          {!searchDebounced && (
+            <div className={cls.lines}>
+              <div>
+                <Typography.Title level={5} className={cls.title}>
+                  Owners
+                </Typography.Title>
+                {owners.map((perm) => {
+                  return (
+                    <Row
+                      key={perm.id}
+                      params={p}
+                      user={perm.user}
+                      perm={perm}
+                      me={user!.id}
+                      onUpdated={onUpdate}
+                    />
+                  );
+                })}
+                {owners.length <= 0 && (
+                  <div className={cls.empty}>No match...</div>
+                )}
+              </div>
+
+              <div>
+                <Typography.Title level={5} className={cls.title}>
+                  Reviewers
+                </Typography.Title>
+                {reviewers.map((perm) => {
+                  return (
+                    <Row
+                      key={perm.id}
+                      params={p}
+                      user={perm.user}
+                      perm={perm}
+                      me={user!.id}
+                      onUpdated={onUpdate}
+                    />
+                  );
+                })}
+                {reviewers.length <= 0 && (
+                  <div className={cls.empty}>Nothing to show...</div>
+                )}
+              </div>
+
+              <div>
+                <Typography.Title level={5} className={cls.title}>
+                  Contributors
+                </Typography.Title>
+                {contributors.map((perm) => {
+                  return (
+                    <Row
+                      key={perm.id}
+                      params={p}
+                      user={perm.user}
+                      perm={perm}
+                      me={user!.id}
+                      onUpdated={onUpdate}
+                    />
+                  );
+                })}
+                {contributors.length <= 0 && (
+                  <div className={cls.empty}>No match...</div>
+                )}
+              </div>
+
+              <div>
+                <Typography.Title level={5} className={cls.title}>
+                  Viewers
+                </Typography.Title>
+                {viewers.map((perm) => {
+                  return (
+                    <Row
+                      key={perm.id}
+                      params={p}
+                      user={perm.user}
+                      perm={perm}
+                      me={user!.id}
+                      onUpdated={onUpdate}
+                    />
+                  );
+                })}
+                {viewers.length <= 0 && (
+                  <div className={cls.empty}>No match...</div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {searchDebounced && (
+            <div>
+              {options.map((u) => {
+                const perm = team.data?.data.find((i) => i.user.id === u.id);
+                return (
+                  <Row
+                    key={u.id}
+                    params={p}
+                    user={u}
+                    perm={perm}
+                    me={user!.id}
+                    fromSearch={true}
+                    onUpdated={onUpdate}
+                  />
+                );
+              })}
+            </div>
+          )}
+        </Card>
+      </div>
+    </Container.Left2Third>
   );
 };

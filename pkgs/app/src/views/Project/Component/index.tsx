@@ -114,9 +114,9 @@ export const ComponentView: React.FC<{
   }
 
   return (
-    <Container>
-      <Container.Left>
-        <Card padded>
+    <Container noPadding>
+      <Container.Left2Third>
+        <Card padded seamless large>
           <div className={cls.titleEdit}>
             {!isEditing && (
               <Typography.Title level={1}>
@@ -179,11 +179,11 @@ export const ComponentView: React.FC<{
         <Card padded>
           <ListRFCs project={proj}></ListRFCs>
         </Card>
-      </Container.Left>
-      <Container.Right>
+      </Container.Left2Third>
+      <Container.Right1Third>
         <div>
           {flow && (
-            <FlowWrapper>
+            <FlowWrapper style={{ height: '350px' }}>
               <Flow flow={flow} highlight={comp.id} readonly />
               <Toolbar position="bottom">
                 <Toolbar.Zoom />
@@ -191,7 +191,7 @@ export const ComponentView: React.FC<{
             </FlowWrapper>
           )}
         </div>
-      </Container.Right>
+      </Container.Right1Third>
     </Container>
   );
 };

@@ -7,6 +7,12 @@
   padding: $p-3xl;
 
   // margin: 0 auto; // this trigger a weird animation
+  &.noPadding {
+    position: relative;
+    gap: 0;
+    min-height: calc(100vh - $height-header-project-total);
+    padding: 0;
+  }
 }
 
 .right,
@@ -31,4 +37,19 @@
   justify-content: space-around;
   min-width: $min-w;
   max-width: $max-w;
+}
+
+.left2third {
+  width: 66%;
+  background-color: #fff;
+
+  &.padded {
+    padding: $p-2xl $p-4xl;
+  }
+}
+
+.right1third {
+  width: calc(100% - 66%);
+  background-color: $zinc-50;
+  border-left: 1px solid $color-border;
 }

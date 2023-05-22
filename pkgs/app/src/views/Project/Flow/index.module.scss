@@ -1,0 +1,7 @@
+@import "../../../styles/theme";
+
+
+.flow {
+  width: 100%;
+  height: calc(100vh - $height-header-project-total);
+}

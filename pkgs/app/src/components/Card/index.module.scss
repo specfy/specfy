@@ -11,6 +11,19 @@
   &.padded {
     padding: $p-2xl;
   }
+
+  &.large {
+    padding: $p-3xl $p-4xl;
+  }
+
+  &.seamless {
+    border-color: transparent;
+    box-shadow: none;
+  }
+
+  &.transparent {
+    background-color: transparent;
+  }
 }
 
 .actions {
