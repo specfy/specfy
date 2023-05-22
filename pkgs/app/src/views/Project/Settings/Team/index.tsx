@@ -111,7 +111,7 @@ export const SettingsTeam: React.FC<{
                 );
               })}
               {owners.length <= 0 && (
-                <div className={cls.empty}>No match...</div>
+                <div className={cls.empty}>Nothing to show...</div>
               )}
             </div>
 
@@ -153,7 +153,7 @@ export const SettingsTeam: React.FC<{
                 );
               })}
               {contributors.length <= 0 && (
-                <div className={cls.empty}>No match...</div>
+                <div className={cls.empty}>Nothing to show...</div>
               )}
             </div>
 
@@ -174,7 +174,7 @@ export const SettingsTeam: React.FC<{
                 );
               })}
               {viewers.length <= 0 && (
-                <div className={cls.empty}>No match...</div>
+                <div className={cls.empty}>Nothing to show...</div>
               )}
             </div>
           </div>

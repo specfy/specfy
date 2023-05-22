@@ -44,8 +44,40 @@
 
 
 .group {
-  padding: $p-l 0 $p-xl 0;
+  // padding: $p-l 0 $p-xl 0;
   border-bottom: 1px solid $color-border;
+
+  .head {
+    cursor: pointer;
+
+    display: flex;
+    gap: $p-m;
+    align-items: center;
+
+    padding: $p-xl $p-xl;
+
+    font-weight: 600;
+
+    &:hover {
+      background-color: $gray-50;
+    }
+  }
+
+  a.head {
+    font-weight: normal;
+    color: $gray-500;
+  }
+
+  .sub {
+    overflow: hidden;
+    transition: height 0.25s ease-in-out;
+  }
+
+  &.hide {
+    .sub {
+      height: 0;
+    }
+  }
 
   .link {
     display: flex;
@@ -59,12 +91,12 @@
 
     &:hover {
       color: 1;
-      background-color: $gray-50
+      background-color: $gray-50;
     }
 
     &.selected {
       background-color: $primary-low;
-      border-left-color: $primary
+      border-left-color: $primary;
     }
 
   }

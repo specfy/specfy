@@ -1,10 +1,9 @@
-import { IconHome, IconUsers } from '@tabler/icons-react';
-import { Badge, Menu } from 'antd';
+import { IconApps, IconHome } from '@tabler/icons-react';
+import { Menu } from 'antd';
 import type { ApiOrg } from 'api/src/types/api';
 import { useState, useMemo, useEffect } from 'react';
 import { useLocation, Link, useParams } from 'react-router-dom';
 
-import { useCountPerms } from '../../../api';
 import type { RouteOrg } from '../../../types/routes';
 
 import cls from './index.module.scss';
@@ -13,12 +12,10 @@ export const OrgHeader: React.FC<{ org: ApiOrg }> = () => {
   const params = useParams<Partial<RouteOrg>>() as RouteOrg;
   const location = useLocation();
 
-  const [selected, setSelected] = useState<string>('');
+  const [open, setOpen] = useState<string>('');
   const linkSelf = useMemo(() => {
     return `/${params.org_id}/_`;
   }, [params]);
-
-  const resCount = useCountPerms({ org_id: params.org_id });
 
   const menu = useMemo(() => {
     return [
@@ -44,17 +41,17 @@ export const OrgHeader: React.FC<{ org: ApiOrg }> = () => {
       //     </Link>
       //   ),
       // },
-      // {
-      //   key: 'flow',
-      //   label: (
-      //     <Link to={`${linkSelf}/flow`}>
-      //       <span>
-      //         <IconApps />
-      //       </span>
-      //       Flow
-      //     </Link>
-      //   ),
-      // },
+      {
+        key: 'flow',
+        label: (
+          <Link to={`${linkSelf}/flow`}>
+            <span>
+              <IconApps />
+            </span>
+            Flow
+          </Link>
+        ),
+      },
       // {
       //   key: 'policies',
       //   label: (
@@ -66,18 +63,18 @@ export const OrgHeader: React.FC<{ org: ApiOrg }> = () => {
       //     </Link>
       //   ),
       // },
-      {
-        key: 'team',
-        label: (
-          <Link to={`${linkSelf}/team`}>
-            <span>
-              <IconUsers />
-            </span>
-            Team
-            <Badge count={resCount.data?.data} showZero={false} />
-          </Link>
-        ),
-      },
+      // {
+      //   key: 'team',
+      //   label: (
+      //     <Link to={`${linkSelf}/team`}>
+      //       <span>
+      //         <IconUsers />
+      //       </span>
+      //       Team
+      //       <Badge count={resCount.data?.data} showZero={false} />
+      //     </Link>
+      //   ),
+      // },
       // {
       //   key: 'activity',
       //   label: (
@@ -90,30 +87,34 @@ export const OrgHeader: React.FC<{ org: ApiOrg }> = () => {
       //   ),
       // },
     ];
-  }, [linkSelf, resCount]);
+  }, [linkSelf]);
 
   useEffect(() => {
     const path = location.pathname.split('/');
     if (path[3] === 'content') {
-      setSelected('content');
+      setOpen('content');
     } else if (path[3] === 'graph') {
-      setSelected('graph');
+      setOpen('graph');
     } else if (path[3] === 'activity') {
-      setSelected('activity');
+      setOpen('activity');
     } else if (path[3] === 'settings') {
-      setSelected('settings');
+      setOpen('settings');
     } else if (path[3] === 'team') {
-      setSelected('team');
+      setOpen('team');
     } else if (path[3] === 'policies') {
-      setSelected('policies');
+      setOpen('policies');
     } else {
-      setSelected('home');
+      setOpen('home');
     }
   }, [location]);
 
+  if (open === 'settings') {
+    return null;
+  }
+
   return (
     <div className={cls.header}>
-      <Menu selectedKeys={[selected]} mode="horizontal" items={menu} />
+      <Menu selectedKeys={[open]} mode="horizontal" items={menu} />
     </div>
   );
 };

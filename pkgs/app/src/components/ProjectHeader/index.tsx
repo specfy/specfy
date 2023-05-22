@@ -3,7 +3,6 @@ import {
   IconBolt,
   IconBook,
   IconHistory,
-  IconSettings,
   IconEye,
 } from '@tabler/icons-react';
 // import type { MenuProps } from 'antd';
@@ -129,17 +128,6 @@ export const ProjectHeader: React.FC<{
           </Link>
         ),
       },
-      {
-        key: 'settings',
-        label: (
-          <Link to={`${linkSelf}/settings`} className={cls.link}>
-            <span>
-              <IconSettings />
-            </span>
-            Settings
-          </Link>
-        ),
-      },
     ];
   }, [linkSelf, revisions]);
 
@@ -165,8 +153,12 @@ export const ProjectHeader: React.FC<{
     return null;
   }
 
+  if (open === 'settings') {
+    return null;
+  }
+
   return (
-    <>
+    <div className={cls.header}>
       {/* <BigHeading
         parent={org!.name}
         parentLink={linkOrg}
@@ -207,6 +199,6 @@ export const ProjectHeader: React.FC<{
         items={menu}
         className={cls.menu}
       />
-    </>
+    </div>
   );
 };

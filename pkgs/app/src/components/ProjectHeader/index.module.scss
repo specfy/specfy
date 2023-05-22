@@ -1,11 +1,12 @@
 @import "../../styles/theme";
 
-.editZone {
-  display: flex;
-  gap: $p;
-  align-items: center;
-  justify-content: end;
+
+.header {
+  padding: $p-3xl $p-2xl $p-xl $p-3xl;
+  background-color: #fff;
+  border-bottom: 1px solid $color-border;
 }
+
 
 .link {
   .badged {
@@ -18,8 +19,4 @@
 .menu {
   height: 35px;
   background-color: transparent;
-}
-
-.isEditing {
-  color: $primary;
 }

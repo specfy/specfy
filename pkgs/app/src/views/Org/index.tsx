@@ -19,7 +19,6 @@ import { OrgFlow } from './Flow';
 import { OrgOverview } from './Overview';
 import { OrgPolicies } from './Policies';
 import { OrgSettings } from './Settings';
-import { OrgTeam } from './Team';
 import cls from './index.module.scss';
 
 export const Org: React.FC = () => {
@@ -87,7 +86,6 @@ export const Org: React.FC = () => {
             <Route path="/content" element={<OrgContent params={params} />} />
             <Route path="/policies" element={<OrgPolicies params={params} />} />
             <Route path="/flow" element={<OrgFlow params={params} />} />
-            <Route path="/team" element={<OrgTeam params={params} />} />
             <Route path="/activity" element={<OrgActivity params={params} />} />
             <Route
               path="/settings/*"

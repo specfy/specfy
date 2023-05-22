@@ -3,16 +3,16 @@ import type { ApiPerm, ApiUser } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
 import { useDebounce } from 'react-use';
 
-import { useListPerms, useListUser } from '../../../api';
-import { Card } from '../../../components/Card';
-import { Container } from '../../../components/Container';
-import { Row } from '../../../components/Team/Row';
-import { useAuth } from '../../../hooks/useAuth';
-import type { RouteOrg } from '../../../types/routes';
+import { useListPerms, useListUser } from '../../../../api';
+import { Card } from '../../../../components/Card';
+import { Container } from '../../../../components/Container';
+import { Row } from '../../../../components/Team/Row';
+import { useAuth } from '../../../../hooks/useAuth';
+import type { RouteOrg } from '../../../../types/routes';
 
 import cls from './index.module.scss';
 
-export const OrgTeam: React.FC<{ params: RouteOrg }> = ({ params }) => {
+export const SettingsTeam: React.FC<{ params: RouteOrg }> = ({ params }) => {
   const { user } = useAuth();
   const p = { org_id: params.org_id };
 
@@ -76,7 +76,7 @@ export const OrgTeam: React.FC<{ params: RouteOrg }> = ({ params }) => {
   };
 
   return (
-    <Container.Left2Third padded>
+    <Container noPadding>
       <div className={cls.team}>
         <div className={cls.header}>
           <div>
@@ -92,7 +92,7 @@ export const OrgTeam: React.FC<{ params: RouteOrg }> = ({ params }) => {
             onChange={(e) => setSearch(e.target.value)}
           ></Input>
         </div>
-        <Card seamless>
+        <Card>
           {!searchDebounced && (
             <div className={cls.lines}>
               <div>
@@ -112,7 +112,7 @@ export const OrgTeam: React.FC<{ params: RouteOrg }> = ({ params }) => {
                   );
                 })}
                 {owners.length <= 0 && (
-                  <div className={cls.empty}>No match...</div>
+                  <div className={cls.empty}>Nothing to show...</div>
                 )}
               </div>
 
@@ -154,7 +154,7 @@ export const OrgTeam: React.FC<{ params: RouteOrg }> = ({ params }) => {
                   );
                 })}
                 {contributors.length <= 0 && (
-                  <div className={cls.empty}>No match...</div>
+                  <div className={cls.empty}>Nothing to show...</div>
                 )}
               </div>
 
@@ -175,7 +175,7 @@ export const OrgTeam: React.FC<{ params: RouteOrg }> = ({ params }) => {
                   );
                 })}
                 {viewers.length <= 0 && (
-                  <div className={cls.empty}>No match...</div>
+                  <div className={cls.empty}>Nothing to show...</div>
                 )}
               </div>
             </div>
@@ -201,6 +201,6 @@ export const OrgTeam: React.FC<{ params: RouteOrg }> = ({ params }) => {
           )}
         </Card>
       </div>
-    </Container.Left2Third>
+    </Container>
   );
 };

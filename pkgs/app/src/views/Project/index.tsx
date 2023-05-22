@@ -96,7 +96,7 @@ export const Project: React.FC = () => {
       <div className={cls.project}>
         <div></div>
         <div className={cls.main}>
-          <div className={cls.header}></div>
+          <div></div>
 
           <Container>
             <Container.Left>
@@ -126,7 +126,7 @@ export const Project: React.FC = () => {
         <Sidebar org={org} project={proj} />
       </div>
       <div className={cls.main}>
-        <div className={cls.header}>
+        <div>
           <ProjectHeader proj={proj} params={params} />
         </div>
         <Routes>
