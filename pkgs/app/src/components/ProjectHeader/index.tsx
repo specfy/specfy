@@ -3,39 +3,34 @@ import {
   IconBolt,
   IconBook,
   IconHistory,
-  IconHome,
   IconSettings,
   IconEye,
-  IconEyeEdit,
-  IconPlus,
 } from '@tabler/icons-react';
-import type { MenuProps } from 'antd';
-import { Badge, Menu, Tooltip, Button, Dropdown } from 'antd';
+// import type { MenuProps } from 'antd';
+import { Badge, Menu } from 'antd';
 import type { ApiProject, ApiOrg } from 'api/src/types/api';
-import classnames from 'classnames';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import { useListOrgs, useListRevisions } from '../../api';
-import { useEdit } from '../../hooks/useEdit';
+// import { useEdit } from '../../hooks/useEdit';
 import type { RouteProject } from '../../types/routes';
 
-import { Staging } from './Staging';
 import cls from './index.module.scss';
 
 export const ProjectHeader: React.FC<{
   proj: ApiProject;
   params: RouteProject;
 }> = ({ proj, params }) => {
-  const edit = useEdit();
-  const isEditing = edit.isEnabled();
+  // const edit = useEdit();
+  // const isEditing = edit.isEnabled();
 
   // State
   const [org, setOrg] = useState<ApiOrg>();
   const [open, setOpen] = useState<string>('');
-  const linkOrg = useMemo(() => {
-    return `/${params.org_id}`;
-  }, [params]);
+  // const linkOrg = useMemo(() => {
+  //   return `/${params.org_id}`;
+  // }, [params]);
   const linkSelf = useMemo(() => {
     return `/${params.org_id}/${params.project_slug}`;
   }, [params]);
@@ -58,18 +53,18 @@ export const ProjectHeader: React.FC<{
   }, [getOrgs.data]);
 
   // Edit mode
-  const createItems = useMemo<MenuProps['items']>(() => {
-    return [
-      {
-        key: '1',
-        label: <Link to={`${linkSelf}/content/new`}>New Content</Link>,
-      },
-      {
-        key: '2',
-        label: <Link to={`${linkSelf}/component/new`}>New Component</Link>,
-      },
-    ];
-  }, [linkSelf]);
+  // const createItems = useMemo<MenuProps['items']>(() => {
+  //   return [
+  //     {
+  //       key: '1',
+  //       label: <Link to={`${linkSelf}/content/new`}>New Content</Link>,
+  //     },
+  //     {
+  //       key: '2',
+  //       label: <Link to={`${linkSelf}/component/new`}>New Component</Link>,
+  //     },
+  //   ];
+  // }, [linkSelf]);
 
   const menu = useMemo(() => {
     return [
