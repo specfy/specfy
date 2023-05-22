@@ -2,6 +2,7 @@ import type { FastifyPluginCallback } from 'fastify';
 import z from 'zod';
 
 import { validationError } from '../../../common/errors';
+import { toApiOrg } from '../../../common/formatters/org';
 import { schemaOrgId } from '../../../common/validators';
 import { prisma } from '../../../db';
 import { noQuery } from '../../../middlewares/noQuery';
@@ -42,11 +43,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       return createOrg(tx, req.user!, data);
     });
 
-    res.status(200).send({
-      id: org.id,
-      name: org.name,
-      isPersonal: false,
-    });
+    res.status(200).send(toApiOrg(org));
   });
 
   done();
