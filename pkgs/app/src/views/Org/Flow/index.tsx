@@ -1,5 +1,4 @@
 import { LoadingOutlined } from '@ant-design/icons';
-import type { ApiOrg } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
 
 import { useListProjects } from '../../../api';
@@ -11,12 +10,12 @@ import type {
   ComputedFlow,
 } from '../../../components/Flow/helpers';
 import { componentsToFlow } from '../../../components/Flow/helpers';
-import type { RouteProject } from '../../../types/routes';
+import type { RouteOrg } from '../../../types/routes';
 
 import cls from './index.module.scss';
 
 export const OrgFlow: React.FC<{
-  params: RouteProject;
+  params: RouteOrg;
 }> = ({ params }) => {
   const storeProjects = useProjectStore();
   const res = useListProjects({ org_id: params.org_id });

@@ -40,7 +40,7 @@
 }
 
 .left2third {
-  width: 66%;
+  width: 60%;
   background-color: #fff;
 
   &.padded {
@@ -49,7 +49,7 @@
 }
 
 .right1third {
-  width: calc(100% - 66%);
+  width: calc(100% - 60%);
   background-color: $zinc-50;
   border-left: 1px solid $color-border;
 }
