@@ -113,3 +113,6 @@ $height-header-org: 76px;
 $height-header-org-total: $height-header + $height-header-org;
 $height-header-project: 76px;
 $height-header-project-total: $height-header + $height-header-project;
+
+// Transition
+$trst-smooth: cubic-bezier(0.2, 0, 0, 1);

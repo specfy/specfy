@@ -5,6 +5,7 @@ import {
   IconHome,
   IconSettings,
 } from '@tabler/icons-react';
+import { Button } from 'antd';
 import type { ApiOrg, ApiProject } from 'api/src/types/api';
 import classNames from 'classnames';
 import { useEffect, useMemo, useState } from 'react';
@@ -17,7 +18,8 @@ import cls from './index.module.scss';
 export const Group: React.FC<{
   children: React.ReactElement | React.ReactElement[];
   name: string;
-}> = ({ children, name }) => {
+  actions?: React.ReactElement;
+}> = ({ children, name, actions }) => {
   const [open, setOpen] = useState(true);
   const onClick = () => {
     setOpen(!open);
@@ -30,6 +32,7 @@ export const Group: React.FC<{
           {open ? <IconChevronDown /> : <IconChevronRight />}
         </div>
         {name}
+        {actions && <div className={cls.actions}>{actions}</div>}
       </div>
       <div className={cls.sub}>{children}</div>
     </div>
@@ -51,6 +54,7 @@ export const Sidebar: React.FC<{
   }, [org]);
 
   const [open, setOpen] = useState<string>('home');
+  const [collapse, setCollapse] = useState<boolean>(false);
 
   useEffect(() => {
     const path = location.pathname.split('/');
@@ -61,88 +65,112 @@ export const Sidebar: React.FC<{
     }
   }, [location]);
 
-  return (
-    <div className={cls.sidebar}>
-      <div className={classNames(cls.header)}>
-        <Link to={linkOrg}>
-          <AvatarAuto
-            name={org.name}
-            size="default"
-            shape="square"
-            src={org.logo}
-          />
-        </Link>
-        <div className={cls.label}>
-          {!project && <Link to={`/${org.id}`}>{org.name}</Link>}
-          {project && (
-            <>
-              <span className={cls.slash}>/</span>
-              <Link to={linkProject}>{project.name}</Link>
-            </>
-          )}
-        </div>
-      </div>
+  const onCollapse = () => {
+    setCollapse(!collapse);
+  };
 
-      {!project ? (
-        <Group name="Organisation">
-          <Link
-            className={classNames(cls.link, open === 'home' && cls.selected)}
-            to={`/${org.id}`}
-          >
-            <span>
-              <IconHome />
-            </span>
-            Home
+  return (
+    <div className={classNames(cls.sidebar, collapse && cls.collapsed)}>
+      <div className={cls.inner}>
+        <div className={classNames(cls.header)}>
+          <Link to={linkOrg}>
+            <AvatarAuto
+              name={org.name}
+              size="default"
+              shape="square"
+              src={org.logo}
+            />
           </Link>
-          <Link
-            className={classNames(
-              cls.link,
-              open === 'settings' && cls.selected
+          <div className={cls.label}>
+            {!project && <Link to={`/${org.id}`}>{org.name}</Link>}
+            {project && (
+              <>
+                <span className={cls.slash}>/</span>
+                <Link to={linkProject}>{project.name}</Link>
+              </>
             )}
-            to={`${linkOrg}/settings`}
-          >
-            <span>
-              <IconSettings />
-            </span>
-            Settings
-          </Link>
-        </Group>
-      ) : (
+          </div>
+        </div>
+
+        <div className={classNames(cls.collapser)}>
+          <Button
+            size="small"
+            icon={collapse ? <IconChevronRight /> : <IconChevronLeft />}
+            type="ghost"
+            onClick={onCollapse}
+          />
+        </div>
+
+        <div className={classNames(cls.content)}>
+          {!project && (
+            <Group name="Organisation">
+              <Link
+                className={classNames(
+                  cls.link,
+                  open === 'home' && cls.selected
+                )}
+                to={`/${org.id}`}
+              >
+                <span>
+                  <IconHome />
+                </span>
+                Home
+              </Link>
+              <Link
+                className={classNames(
+                  cls.link,
+                  open === 'settings' && cls.selected
+                )}
+                to={`${linkOrg}/settings`}
+              >
+                <span>
+                  <IconSettings />
+                </span>
+                Settings
+              </Link>
+            </Group>
+          )}
+          {/* {project && (
         <div className={classNames(cls.group, cls.small)}>
           <Link className={cls.head} to={linkOrg}>
             <IconChevronLeft />
             Back to org
           </Link>
         </div>
-      )}
+      )} */}
 
-      {project && (
-        <Group name="Project">
-          <Link
-            className={classNames(cls.link, open === 'home' && cls.selected)}
-            to={linkProject}
-          >
-            <span>
-              <IconHome />
-            </span>
-            Home
-          </Link>
-          <Link
-            className={classNames(
-              cls.link,
-              open === 'settings' && cls.selected
-            )}
-            to={`${linkProject}/settings`}
-          >
-            <span>
-              <IconSettings />
-            </span>
-            Settings
-          </Link>
-        </Group>
-      )}
+          {project && (
+            <Group name="Project">
+              <Link
+                className={classNames(
+                  cls.link,
+                  open === 'home' && cls.selected
+                )}
+                to={linkProject}
+              >
+                <span>
+                  <IconHome />
+                </span>
+                Home
+              </Link>
+              <Link
+                className={classNames(
+                  cls.link,
+                  open === 'settings' && cls.selected
+                )}
+                to={`${linkProject}/settings`}
+              >
+                <span>
+                  <IconSettings />
+                </span>
+                Settings
+              </Link>
+            </Group>
+          )}
 
-      {children}
+          {children}
+        </div>
+      </div>
     </div>
   );
 };
