@@ -1,4 +1,5 @@
-import { Button } from 'antd';
+import { IconEye, IconEyeEdit } from '@tabler/icons-react';
+import { Button, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
 import { useDebounce } from 'react-use';
 
@@ -9,16 +10,19 @@ import originalStore, {
   useComponentsStore,
   useProjectStore,
 } from '../../../common/store';
+import { useEdit } from '../../../hooks/useEdit';
 import type { Allowed, BlobAndDiffs } from '../../../types/blobs';
 import { Time } from '../../Time';
 
 import cls from './index.module.scss';
 
-export const Staging: React.FC<{ link: string }> = ({ link }) => {
+export const Staging: React.FC = () => {
+  const edit = useEdit();
   const { project } = useProjectStore();
   const { components } = useComponentsStore();
   const { documents } = useDocumentsStore();
   const staging = useStagingStore();
+  const isEditing = edit.isEnabled();
 
   useDebounce(
     () => {
@@ -106,14 +110,38 @@ export const Staging: React.FC<{ link: string }> = ({ link }) => {
 
   return (
     <div className={cls.staging}>
+      <Tooltip
+        title={isEditing ? 'Edition is active' : 'Click to enable edition'}
+        placement="bottomLeft"
+      >
+        {isEditing ? (
+          <div
+            className={cls.edit}
+            role="button"
+            tabIndex={0}
+            onClick={() => edit.enable(false)}
+          >
+            <IconEyeEdit />
+          </div>
+        ) : (
+          <div
+            className={cls.edit}
+            role="button"
+            tabIndex={0}
+            onClick={() => edit.enable(true)}
+          >
+            <IconEye />
+          </div>
+        )}
+      </Tooltip>
       {staging.count > 0 ? (
-        <Link to={`${link}/revisions/current`}>
-          <Button type="default" size="small">
+        <Link to={`/${project!.orgId}/${project!.slug}/revisions/current`}>
+          <Button type="default">
             {staging.count} pending {staging.count > 1 ? 'changes' : 'change'}
           </Button>
         </Link>
       ) : (
-        <div className={cls.updated}>
+        <div>
           Updated <Time time={project!.updatedAt} />
         </div>
       )}

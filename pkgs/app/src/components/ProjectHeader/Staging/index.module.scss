@@ -2,8 +2,19 @@
 
 .staging {
   display: flex;
+  gap: $p-m;
+  align-items: center;
 
-  .updated {
-    padding: 0 $p-l;
-  }
+  padding: $p-xl;
+
+  font-size: $font-s;
+
+  border-bottom: 1px solid $color-border;
+
+}
+
+.edit {
+  cursor: pointer;
+  width: 34px;
+  font-size: $font-l;
 }

@@ -3,16 +3,14 @@ import {
   IconBolt,
   IconBook,
   IconHistory,
-  IconEye,
+  IconLayoutDashboard,
 } from '@tabler/icons-react';
-// import type { MenuProps } from 'antd';
 import { Badge, Menu } from 'antd';
 import type { ApiProject, ApiOrg } from 'api/src/types/api';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import { useListOrgs, useListRevisions } from '../../api';
-// import { useEdit } from '../../hooks/useEdit';
 import type { RouteProject } from '../../types/routes';
 
 import cls from './index.module.scss';
@@ -21,15 +19,9 @@ export const ProjectHeader: React.FC<{
   proj: ApiProject;
   params: RouteProject;
 }> = ({ proj, params }) => {
-  // const edit = useEdit();
-  // const isEditing = edit.isEnabled();
-
   // State
   const [org, setOrg] = useState<ApiOrg>();
   const [open, setOpen] = useState<string>('');
-  // const linkOrg = useMemo(() => {
-  //   return `/${params.org_id}`;
-  // }, [params]);
   const linkSelf = useMemo(() => {
     return `/${params.org_id}/${params.project_slug}`;
   }, [params]);
@@ -72,7 +64,7 @@ export const ProjectHeader: React.FC<{
         label: (
           <Link to={linkSelf} className={cls.link}>
             <span>
-              <IconEye />
+              <IconLayoutDashboard />
             </span>
             Overview
           </Link>
@@ -159,40 +151,6 @@ export const ProjectHeader: React.FC<{
 
   return (
     <div className={cls.header}>
-      {/* <BigHeading
-        parent={org!.name}
-        parentLink={linkOrg}
-        title={proj.name}
-        link={linkSelf}
-        subtitle={
-          <>
-            <div className={cls.editZone}>
-              <Tooltip
-                title={
-                  isEditing ? 'Edition is active' : 'Click to enable edition'
-                }
-                placement="bottomLeft"
-              >
-                <Button
-                  icon={isEditing ? <IconEyeEdit /> : <IconEye />}
-                  type="default"
-                  size="small"
-                  className={classnames(isEditing && cls.isEditing)}
-                  onClick={() => edit.enable(!isEditing)}
-                />
-              </Tooltip>
-              <Dropdown
-                menu={{ items: createItems }}
-                placement="bottomRight"
-                trigger={['click']}
-              >
-                <Button icon={<IconPlus />} type="default" size="small" />
-              </Dropdown>
-              <Staging link={linkSelf} />
-            </div>
-          </>
-        }
-      ></BigHeading> */}
       <Menu
         selectedKeys={[open]}
         mode="horizontal"
