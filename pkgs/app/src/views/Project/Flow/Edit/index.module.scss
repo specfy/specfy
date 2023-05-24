@@ -24,7 +24,7 @@
 
   font-family: $font-text;
 
-  border-bottom: 1px solid $color-border;
+  border-bottom: 1px solid $color-border-light;
 }
 
 .title {
@@ -34,7 +34,7 @@
   padding: $p-m $p-l;
 
   font-size: $font;
-  font-weight: 600;
+  font-weight: 500;
   color: $gray-700;
 
   background-color: $neutral-100;
@@ -66,7 +66,7 @@
 
 .label {
   font-size: $font-s;
-  font-weight: 600;
+  font-weight: 500;
   color: $gray-700;
 }
 

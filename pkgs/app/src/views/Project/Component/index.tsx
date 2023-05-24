@@ -186,6 +186,7 @@ export const ComponentView: React.FC<{
             <FlowWrapper style={{ height: '350px' }}>
               <Flow flow={flow} highlight={comp.id} readonly />
               <Toolbar position="bottom">
+                <Toolbar.Fullscreen project={proj} />
                 <Toolbar.Zoom />
               </Toolbar>
             </FlowWrapper>

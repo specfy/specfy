@@ -139,7 +139,7 @@ export const Flow: React.FC<{
         nodeTypes={nodeTypes}
         // edgeTypes={edgeTypes}
         fitView
-        fitViewOptions={{ maxZoom: 1.2 }}
+        fitViewOptions={{ maxZoom: 1.3 }}
         connectionMode={ConnectionMode.Loose}
         // isValidConnection={isValidConnection}
         // onNodeDrag={onNodeDrag}

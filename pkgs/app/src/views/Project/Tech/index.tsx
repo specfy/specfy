@@ -21,7 +21,7 @@ import cls from './index.module.scss';
 export const Tech: React.FC<{
   proj: ApiProject;
   params: RouteProject;
-}> = ({ params }) => {
+}> = ({ params, proj }) => {
   const route = useParams<Partial<RouteTech>>();
   const storeComponents = useComponentsStore();
 
@@ -105,6 +105,7 @@ export const Tech: React.FC<{
             <FlowWrapper style={{ height: '350px' }}>
               <Flow flow={flow} readonly />
               <Toolbar position="bottom">
+                <Toolbar.Fullscreen project={proj} />
                 <Toolbar.Zoom />
               </Toolbar>
             </FlowWrapper>

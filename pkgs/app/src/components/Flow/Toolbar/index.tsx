@@ -1,6 +1,8 @@
-import { IconZoomIn, IconZoomOut } from '@tabler/icons-react';
+import { IconMaximize, IconZoomIn, IconZoomOut } from '@tabler/icons-react';
 import { Button, Tooltip } from 'antd';
+import type { ApiProject } from 'api/src/types/api';
 import classnames from 'classnames';
+import { Link } from 'react-router-dom';
 import { useReactFlow, useViewport } from 'reactflow';
 
 import cls from './index.module.scss';
@@ -54,12 +56,25 @@ const ToolbarZoom: React.FC = () => {
     </div>
   );
 };
+const ToolbarFullscreen: React.FC<{ project: ApiProject }> = ({ project }) => {
+  return (
+    <div className={cls.toolbar}>
+      <Tooltip title="Fullscreen" placement="bottom">
+        <Link to={`/${project.orgId}/${project.slug}/flow`}>
+          <Button icon={<IconMaximize />} type="text" />
+        </Link>
+      </Tooltip>
+    </div>
+  );
+};
 
 export type ToolbarProps = typeof ToolbarContainer & {
   Zoom: typeof ToolbarZoom;
+  Fullscreen: typeof ToolbarFullscreen;
   Main: typeof ToolbarMain;
 };
 
 export const Toolbar = ToolbarContainer as ToolbarProps;
 Toolbar.Zoom = ToolbarZoom;
+Toolbar.Fullscreen = ToolbarFullscreen;
 Toolbar.Main = ToolbarMain;
