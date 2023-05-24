@@ -44,12 +44,11 @@ export const UserList: React.FC<{
       {list.map((user) => {
         return (
           <li key={user.id} className={cls.user}>
-            <UserCard name={user.name} size="small" />
+            <UserCard name={user.name} />
             {edit && (
               <Button
                 className={cls.remove}
                 type="text"
-                size="small"
                 onClick={() => onRemove(user.id)}
                 icon={<IconX size={16} />}
               />
@@ -61,12 +60,7 @@ export const UserList: React.FC<{
         <Typography.Text type="secondary">No one assigned</Typography.Text>
       )}
       {edit && params && (
-        <UserCardAdd
-          size="small"
-          params={params}
-          onAdd={onAdd}
-          excludeIds={excludeIds}
-        />
+        <UserCardAdd params={params} onAdd={onAdd} excludeIds={excludeIds} />
       )}
     </ul>
   );

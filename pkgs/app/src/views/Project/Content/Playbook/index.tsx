@@ -9,6 +9,7 @@ import { Editor } from '../../../../components/Editor';
 import { FakeInput } from '../../../../components/Input';
 import { Time } from '../../../../components/Time';
 import { useEdit } from '../../../../hooks/useEdit';
+import clsLayout from '../Show/index.module.scss';
 
 import cls from './index.module.scss';
 
@@ -29,8 +30,8 @@ export const Playbook: React.FC<{
 
   return (
     <>
-      <div></div>
-      <div>
+      <div className={clsLayout.col1}></div>
+      <div className={clsLayout.col2}>
         {!isEditing && (
           <Title level={1} className={cls.title} id={doc.slug}>
             <span className={cls.type}>[RFC-{doc.typeId}]</span>
@@ -70,6 +71,7 @@ export const Playbook: React.FC<{
           )}
         </Typography>
       </div>
+      <div className={clsLayout.col3}></div>
     </>
   );
 };

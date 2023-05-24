@@ -54,10 +54,14 @@
 
     padding: $p-xl $p-xl;
 
-    font-weight: 600;
+    font-weight: 500;
 
     &:hover {
       background-color: $gray-50;
+    }
+
+    .chevron {
+      padding-top: 1px;
     }
   }
 

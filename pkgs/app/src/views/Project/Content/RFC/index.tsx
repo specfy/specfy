@@ -16,6 +16,7 @@ import { SidebarBlock } from '../../../../components/SidebarBlock';
 import { Time } from '../../../../components/Time';
 import { UserList } from '../../../../components/UserList';
 import { useEdit } from '../../../../hooks/useEdit';
+import clsLayout from '../Show/index.module.scss';
 
 import cls from './index.module.scss';
 
@@ -51,12 +52,12 @@ export const RFC: React.FC<{
 
   return (
     <>
-      <div>
+      <div className={clsLayout.col1}>
         <div className={cls.headings}>
           <HeadingTree blocks={doc.content.content}></HeadingTree>
         </div>
       </div>
-      <div>
+      <div className={clsLayout.col2}>
         <div className={cls.header}>
           {!isEditing && (
             <Title level={1} className={cls.title} id={doc.slug}>
@@ -103,7 +104,7 @@ export const RFC: React.FC<{
         </Typography>
       </div>
 
-      <div>
+      <div className={clsLayout.col3}>
         <SidebarBlock title="Authors">
           <UserList list={doc.authors} />
         </SidebarBlock>

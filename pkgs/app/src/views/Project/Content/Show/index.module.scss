@@ -7,21 +7,28 @@
 
 .container {
   position: relative;
+
   display: grid;
-  grid-template-columns: 200px ($main-col-w) 200px;
+  grid-template-columns: 200px ($main-col-w) minmax(200px, 1fr);
+
+  width: 100%;
   min-height: 100vh;
 
-  // TODO: Fix this
-  >div:nth-child(1) {
-    background-color: #fff;
-  }
 
-  >div:nth-child(2) {
-    padding: $p-2xl $p-3xl;
-    background-color: #fff;
-  }
+}
 
-  >div:nth-child(3) {
-    padding: $p-2xl $p-3xl;
-  }
+.col1 {
+  background-color: #fff;
+}
+
+.col2 {
+  padding: $p-2xl $p-3xl;
+  background-color: #fff;
+}
+
+.col3 {
+  display: flex;
+  flex-direction: column;
+  gap: $p-5xl;
+  padding: $p-2xl $p-5xl;
 }

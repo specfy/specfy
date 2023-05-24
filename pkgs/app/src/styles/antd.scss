@@ -250,7 +250,7 @@ h4.ant-typography {
       gap: $p-m;
       align-items: center;
 
-      padding: $p-xs $p-l;
+      padding: $p-s $p-l;
 
       font-size: $font;
       line-height: $line-height-m;
@@ -261,13 +261,13 @@ h4.ant-typography {
 
       &:hover {
         text-decoration: none;
-        background-color: rgba($gray-200, 50%) !important;
+        background-color: $primary-gray !important;
       }
     }
 
     &.ant-menu-item-selected {
       a {
-        background-color: rgba($gray-200, 50%) !important;
+        background-color: $primary-gray !important;
       }
     }
 
