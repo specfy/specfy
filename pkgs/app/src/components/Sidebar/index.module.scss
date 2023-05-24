@@ -30,7 +30,6 @@
 
     .collapser {
       transform: translateX(228px);
-      opacity: 1;
     }
 
     .header {
@@ -45,6 +44,8 @@
 
 .inner {
   width: 250px;
+  height: 100%;
+  border-right: 1px solid $color-border;
 }
 
 .header {
@@ -57,9 +58,7 @@
 
   font-size: $font-l;
 
-  border-right: 1px solid $color-border;
   border-bottom: 1px solid $color-border;
-
 
   .label {
     display: flex;
@@ -79,9 +78,9 @@
 
 .collapser {
   position: absolute;
+  z-index: 1;
   top: 27px;
   right: -13px;
-  z-index: 1;
 
   opacity: 0;
   background-color: #fff;
@@ -94,12 +93,9 @@
   &:hover {
     opacity: 1;
   }
-
 }
 
 .content {
-  border-right: 1px solid $color-border;
-
   transition: opacity 0.25s $trst-smooth;
 }
 
