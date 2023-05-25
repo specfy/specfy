@@ -75,6 +75,7 @@ export const Sidebar: React.FC<{
                 size="default"
                 shape="square"
                 src={org.logo}
+                className={cls.logo}
               />
             </Link>
 
@@ -89,7 +90,6 @@ export const Sidebar: React.FC<{
                   {org.name}
                 </Link>
                 <div className={cls.label}>
-                  <span className={cls.slash}>/</span>
                   <Link to={linkProject}>{project.name}</Link>
                 </div>
               </div>
