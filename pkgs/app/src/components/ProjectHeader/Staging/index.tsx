@@ -1,5 +1,5 @@
-import { IconEye, IconEyeEdit } from '@tabler/icons-react';
-import { Button, Tooltip } from 'antd';
+import { IconEdit, IconEye } from '@tabler/icons-react';
+import { Badge, Button, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
 import { useDebounce } from 'react-use';
 
@@ -16,7 +16,7 @@ import { Time } from '../../Time';
 
 import cls from './index.module.scss';
 
-export const Staging: React.FC = () => {
+export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
   const edit = useEdit();
   const { project } = useProjectStore();
   const { components } = useComponentsStore();
@@ -115,14 +115,21 @@ export const Staging: React.FC = () => {
         placement="bottomLeft"
       >
         {isEditing ? (
-          <div
-            className={cls.edit}
-            role="button"
-            tabIndex={0}
-            onClick={() => edit.enable(false)}
+          <Badge
+            className={cls.badge}
+            count={showBadge ? staging.count : 0}
+            size="small"
+            color="#677AF2"
           >
-            <IconEyeEdit />
-          </div>
+            <div
+              className={cls.edit}
+              role="button"
+              tabIndex={0}
+              onClick={() => edit.enable(false)}
+            >
+              <IconEdit />
+            </div>
+          </Badge>
         ) : (
           <div
             className={cls.edit}

@@ -12,7 +12,7 @@ import { Button, Input, Tree } from 'antd';
 import type { DirectoryTreeProps } from 'antd/es/tree';
 import type { ApiProject, DocumentSimple } from 'api/src/types/api';
 import classnames from 'classnames';
-import { useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDebounce } from 'react-use';
 
@@ -50,6 +50,8 @@ export const ContentSidebar: React.FC<{
   >();
   const [search, setSearch] = useState<string>('');
   const [focus, setFocus] = useState<number>(0);
+  const [expanded, setExpanded] = useState(['rfc']);
+  const [selected, setSelected] = useState<string[]>([]);
   const refList = useRef<HTMLDivElement>(null);
 
   useDebounce(
@@ -133,13 +135,15 @@ export const ContentSidebar: React.FC<{
     ];
   }, [res.isLoading, deleted]);
 
-  const selected = useMemo(() => {
+  useEffect(() => {
     const split = location.pathname.split('/');
     if (split.length <= 4) {
+      setSelected([]);
       return;
     }
 
-    return [split[4].split('-')[0]];
+    setSelected([split[4].split('-')[0]]);
+    setExpanded(['rfc', 'pb']);
   }, [location]);
 
   const onSelect: DirectoryTreeProps['onSelect'] = (keys) => {
@@ -259,12 +263,13 @@ export const ContentSidebar: React.FC<{
       {!list && (
         <Tree.DirectoryTree
           showIcon
-          defaultExpandAll
+          expandedKeys={expanded}
           switcherIcon={false}
           onSelect={onSelect}
           selectedKeys={selected}
           autoExpandParent={true}
           treeData={tree}
+          onExpand={(keys) => setExpanded(keys as string[])}
         />
       )}
     </div>

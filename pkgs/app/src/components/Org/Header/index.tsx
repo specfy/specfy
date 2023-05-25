@@ -1,4 +1,4 @@
-import { IconApps, IconHome } from '@tabler/icons-react';
+import { IconApps, IconHome, IconSettings } from '@tabler/icons-react';
 import { Menu } from 'antd';
 import type { ApiOrg } from 'api/src/types/api';
 import { useState, useMemo, useEffect } from 'react';
@@ -86,6 +86,17 @@ export const OrgHeader: React.FC<{ org: ApiOrg }> = () => {
       //     </Link>
       //   ),
       // },
+      {
+        key: 'settings',
+        label: (
+          <Link to={`${linkSelf}/settings`}>
+            <span>
+              <IconSettings />
+            </span>
+            Settings
+          </Link>
+        ),
+      },
     ];
   }, [linkSelf]);
 
@@ -107,10 +118,6 @@ export const OrgHeader: React.FC<{ org: ApiOrg }> = () => {
       setOpen('home');
     }
   }, [location]);
-
-  if (open === 'settings') {
-    return null;
-  }
 
   return (
     <div className={cls.header}>

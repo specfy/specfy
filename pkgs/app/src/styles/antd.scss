@@ -195,6 +195,10 @@ h4.ant-typography {
   .ant-badge-count {
     box-shadow: none;
   }
+
+  .ant-badge-count-sm {
+    font-size: $font-xs;
+  }
 }
 
 // Input

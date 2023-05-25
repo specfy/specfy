@@ -2,14 +2,12 @@ import {
   IconChevronDown,
   IconChevronLeft,
   IconChevronRight,
-  IconHome,
-  IconSettings,
 } from '@tabler/icons-react';
 import { Button } from 'antd';
 import type { ApiOrg, ApiProject } from 'api/src/types/api';
 import classNames from 'classnames';
-import { useEffect, useMemo, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useMemo, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 import { AvatarAuto } from '../AvatarAuto';
 import { Staging } from '../ProjectHeader/Staging';
@@ -45,8 +43,6 @@ export const Sidebar: React.FC<{
   project?: ApiProject;
   children?: React.ReactElement;
 }> = ({ org, project, children }) => {
-  const location = useLocation();
-
   const linkOrg = useMemo(() => {
     return `/${org.id}/_`;
   }, [org]);
@@ -54,17 +50,7 @@ export const Sidebar: React.FC<{
     return `/${org.id}/${project ? project.slug : ''}`;
   }, [org]);
 
-  const [open, setOpen] = useState<string>('home');
   const [collapse, setCollapse] = useState<boolean>(false);
-
-  useEffect(() => {
-    const path = location.pathname.split('/');
-    if (path[3] === 'settings') {
-      setOpen('settings');
-    } else {
-      setOpen('home');
-    }
-  }, [location]);
 
   const onCollapse = () => {
     setCollapse(!collapse);
@@ -91,46 +77,26 @@ export const Sidebar: React.FC<{
                 src={org.logo}
               />
             </Link>
-            <div className={cls.label}>
-              {!project && <Link to={`/${org.id}`}>{org.name}</Link>}
-              {project && (
-                <>
+
+            {!project && (
+              <div className={cls.label}>
+                <Link to={`/${org.id}`}>{org.name}</Link>
+              </div>
+            )}
+            {project && (
+              <div className={cls.project}>
+                <Link className={cls.smallOrg} to={`/${org.id}`}>
+                  {org.name}
+                </Link>
+                <div className={cls.label}>
                   <span className={cls.slash}>/</span>
                   <Link to={linkProject}>{project.name}</Link>
-                </>
-              )}
-            </div>
+                </div>
+              </div>
+            )}
           </div>
 
           <div className={classNames(cls.content)}>
-            {!project && (
-              <Group name="Organisation">
-                <Link
-                  className={classNames(
-                    cls.link,
-                    open === 'home' && cls.selected
-                  )}
-                  to={`/${org.id}`}
-                >
-                  <span>
-                    <IconHome />
-                  </span>
-                  Home
-                </Link>
-                <Link
-                  className={classNames(
-                    cls.link,
-                    open === 'settings' && cls.selected
-                  )}
-                  to={`${linkOrg}/settings`}
-                >
-                  <span>
-                    <IconSettings />
-                  </span>
-                  Settings
-                </Link>
-              </Group>
-            )}
             {/* {project && (
               <div className={classNames(cls.group, cls.small)}>
                 <Link className={cls.head} to={linkOrg}>
@@ -140,36 +106,7 @@ export const Sidebar: React.FC<{
               </div>
             )} */}
 
-            {project && <Staging />}
-
-            {/* {project && (
-              <Group name="Project">
-                <Link
-                  className={classNames(
-                    cls.link,
-                    open === 'home' && cls.selected
-                  )}
-                  to={linkProject}
-                >
-                  <span>
-                    <IconHome />
-                  </span>
-                  Home
-                </Link>
-                <Link
-                  className={classNames(
-                    cls.link,
-                    open === 'settings' && cls.selected
-                  )}
-                  to={`${linkProject}/settings`}
-                >
-                  <span>
-                    <IconSettings />
-                  </span>
-                  Settings
-                </Link>
-              </Group>
-            )} */}
+            {project && <Staging showBadge={collapse} />}
 
             {children}
           </div>

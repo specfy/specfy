@@ -5,16 +5,23 @@
   gap: $p-m;
   align-items: center;
 
+  height: 72px;
   padding: $p-xl;
 
   font-size: $font-s;
 
   border-bottom: 1px solid $color-border;
-
 }
 
 .edit {
   cursor: pointer;
   width: 34px;
   font-size: $font-l;
+}
+
+.badge {
+  :global(.ant-badge-count) {
+    top: 16px;
+    right: 7px;
+  }
 }
