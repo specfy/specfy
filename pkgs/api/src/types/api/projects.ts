@@ -16,7 +16,7 @@ export type ResListProjects = ResErrors | ResListProjectsSuccess;
 
 // POST /
 export type ReqPostProject = Pick<ApiProject, 'name' | 'orgId' | 'slug'> & {
-  display: { pos: Pick<ApiProject['display']['pos'], 'x' | 'y'> };
+  display: ApiProject['display'];
 };
 export type ResPostProjectSuccess = Pick<ApiProject, 'id' | 'slug'>;
 export type ResPostProject = ResErrors | ResPostProjectSuccess;

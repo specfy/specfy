@@ -41,7 +41,7 @@ export const ProjectCreate: React.FC<{ params: RouteOrg }> = ({ params }) => {
       name,
       slug,
       orgId: params.org_id,
-      display: { pos },
+      display: { pos, zIndex: 1, size: { width: 100, height: 32 } },
     });
     if (isError(res)) {
       if (isValidationError(res)) {

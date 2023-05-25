@@ -6,9 +6,6 @@ terraform {
       source  = "hashicorp/google"
       version = "4.61.0"
     }
-  }
-
-  required_providers {
     vercel = {
       source  = "vercel/vercel"
       version = "~> 0.4"
