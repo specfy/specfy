@@ -13,7 +13,7 @@ import { Editor } from '../../../../components/Editor';
 import { HeadingTree } from '../../../../components/HeadingTree';
 import { FakeInput } from '../../../../components/Input';
 import { SidebarBlock } from '../../../../components/SidebarBlock';
-import { Time } from '../../../../components/Time';
+import { UpdatedAt } from '../../../../components/UpdatedAt';
 import { UserList } from '../../../../components/UserList';
 import { useEdit } from '../../../../hooks/useEdit';
 import clsLayout from '../Show/index.module.scss';
@@ -85,9 +85,7 @@ export const RFC: React.FC<{
             </Dropdown>
           </div>
         </div>
-        <div className={cls.lastUpdate}>
-          Updated <Time time={doc.updatedAt} />
-        </div>
+        <UpdatedAt time={doc.updatedAt} />
 
         <Typography className={cls.content}>
           {!isEditing && <ContentDoc doc={doc.content} />}

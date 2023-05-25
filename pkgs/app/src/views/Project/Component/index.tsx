@@ -26,6 +26,7 @@ import type { ComputedFlow } from '../../../components/Flow/helpers';
 import { componentsToFlow } from '../../../components/Flow/helpers';
 import { FakeInput } from '../../../components/Input';
 import { ListRFCs } from '../../../components/ListRFCs';
+import { UpdatedAt } from '../../../components/UpdatedAt';
 import { useEdit } from '../../../hooks/useEdit';
 import type { RouteComponent } from '../../../types/routes';
 
@@ -119,7 +120,7 @@ export const ComponentView: React.FC<{
         <Card padded seamless large>
           <div className={cls.titleEdit}>
             {!isEditing && (
-              <Typography.Title level={1}>
+              <Typography.Title level={2}>
                 {Icon && (
                   <div className={cls.icon}>
                     <Icon size="1em" />
@@ -153,10 +154,11 @@ export const ComponentView: React.FC<{
               </div>
             </div>
           </div>
+          <UpdatedAt time={comp.updatedAt} />
 
           <Typography>
             {!isEditing && comp.description && (
-              <ContentDoc doc={comp.description} />
+              <ContentDoc doc={comp.description} noPlaceholder />
             )}
             {isEditing && (
               <EditorMini

@@ -29,7 +29,7 @@ const CustomNode: React.FC<NodeProps<NodeData>> = ({ data, selected }) => {
       />
       <div className={cls.title}>
         {data.type === 'project' && (
-          <AvatarAuto name={data.label} size="small" />
+          <AvatarAuto name={data.label} size="small" shape="square" />
         )}
         {Icon && (
           <div className={cls.icon}>

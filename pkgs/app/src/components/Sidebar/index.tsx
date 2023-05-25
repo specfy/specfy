@@ -132,17 +132,17 @@ export const Sidebar: React.FC<{
               </Group>
             )}
             {/* {project && (
-        <div className={classNames(cls.group, cls.small)}>
-          <Link className={cls.head} to={linkOrg}>
-            <IconChevronLeft />
-            Back to org
-          </Link>
-        </div>
-      )} */}
+              <div className={classNames(cls.group, cls.small)}>
+                <Link className={cls.head} to={linkOrg}>
+                  <IconChevronLeft />
+                  Back to org
+                </Link>
+              </div>
+            )} */}
 
             {project && <Staging />}
 
-            {project && (
+            {/* {project && (
               <Group name="Project">
                 <Link
                   className={classNames(
@@ -169,7 +169,7 @@ export const Sidebar: React.FC<{
                   Settings
                 </Link>
               </Group>
-            )}
+            )} */}
 
             {children}
           </div>

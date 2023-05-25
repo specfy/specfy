@@ -13,6 +13,7 @@ import type { ComputedFlow } from '../../../components/Flow/helpers';
 import { componentsToFlow } from '../../../components/Flow/helpers';
 import { ListActivity } from '../../../components/ListActivity';
 import { ProjectLinks } from '../../../components/Project/Links';
+import { UpdatedAt } from '../../../components/UpdatedAt';
 import { useEdit } from '../../../hooks/useEdit';
 import type { RouteProject } from '../../../types/routes';
 
@@ -55,6 +56,8 @@ export const ProjectOverview: React.FC<{
     <Container noPadding>
       <Container.Left2Third>
         <Card padded large seamless>
+          <h2>{project.name}</h2>
+          <UpdatedAt time={project.updatedAt} />
           <Typography>
             {!isEditing && <ContentDoc doc={project.description} />}
             {isEditing && (

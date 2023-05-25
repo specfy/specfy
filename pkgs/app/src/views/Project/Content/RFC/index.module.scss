@@ -4,7 +4,9 @@
   display: flex;
   grid-template-columns: 1fr 40px;
   align-items: center;
+
   height: 50px;
+  margin-bottom: $p-l;
 }
 
 .title {
@@ -22,11 +24,6 @@
   padding: 0 $p-l 0 0;
   font-weight: 600;
   color: $gray-600
-}
-
-.lastUpdate {
-  font-size: $font-s;
-  color: $gray-6;
 }
 
 .headings {

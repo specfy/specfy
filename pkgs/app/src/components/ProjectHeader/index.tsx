@@ -4,6 +4,7 @@ import {
   IconBook,
   IconHistory,
   IconLayoutDashboard,
+  IconSettings,
 } from '@tabler/icons-react';
 import { Badge, Menu } from 'antd';
 import type { ApiProject, ApiOrg } from 'api/src/types/api';
@@ -120,6 +121,17 @@ export const ProjectHeader: React.FC<{
           </Link>
         ),
       },
+      {
+        key: 'settings',
+        label: (
+          <Link to={`${linkSelf}/settings`} className={cls.link}>
+            <span>
+              <IconSettings />
+            </span>
+            Settings
+          </Link>
+        ),
+      },
     ];
   }, [linkSelf, revisions]);
 
@@ -142,10 +154,6 @@ export const ProjectHeader: React.FC<{
   }, [location]);
 
   if (!org) {
-    return null;
-  }
-
-  if (open === 'settings') {
     return null;
   }
 
