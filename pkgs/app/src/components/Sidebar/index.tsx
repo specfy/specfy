@@ -27,10 +27,10 @@ export const Group: React.FC<{
   return (
     <div className={classNames(cls.group, !open && cls.hide)}>
       <div className={cls.head} role="button" tabIndex={0} onClick={onClick}>
+        {name}
         <div className={cls.chevron}>
           {open ? <IconChevronDown /> : <IconChevronRight />}
         </div>
-        {name}
         {actions && <div className={cls.actions}>{actions}</div>}
       </div>
       <div className={cls.sub}>{children}</div>

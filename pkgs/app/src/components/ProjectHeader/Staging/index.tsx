@@ -108,6 +108,10 @@ export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
     [project, components, documents]
   );
 
+  if (!edit.can) {
+    return null;
+  }
+
   return (
     <div className={cls.staging}>
       <Tooltip

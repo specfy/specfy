@@ -66,6 +66,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           id: true,
           type: true,
           typeId: true,
+          parentId: true,
           name: true,
           slug: true,
           tldr: true,
@@ -73,7 +74,11 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           updatedAt: true,
         },
         where: filter,
-        orderBy: { typeId: 'desc' },
+        orderBy: [
+          { typeId: 'desc' },
+          { name: 'asc' },
+          { parentId: { sort: 'asc', nulls: 'first' } },
+        ],
         // TODO: add limit/offset to qp
         take: 200,
         skip: 0,
@@ -95,6 +100,9 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
           type: p.type as ApiDocument['type'],
           typeId: p.typeId,
+
+          parentId: p.parentId,
+
           name: p.name,
           slug: p.slug,
           tldr: p.tldr,

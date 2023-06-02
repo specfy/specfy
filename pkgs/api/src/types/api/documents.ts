@@ -21,6 +21,7 @@ export type DocumentSimple = Pick<
   | 'createdAt'
   | 'id'
   | 'name'
+  | 'parentId'
   | 'slug'
   | 'tldr'
   | 'type'

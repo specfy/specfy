@@ -1,6 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["fullTextSearch", "clientExtensions"]
+  previewFeatures = ["fullTextSearch", "clientExtensions", "orderByNulls"]
 }
 
 datasource db {
@@ -109,25 +109,30 @@ model Components {
 }
 
 model Documents {
-  id        String   @id @db.VarChar(15)
-  orgId     String   @db.VarChar(36)
-  projectId String   @db.VarChar(15)
-  blobId    String?  @db.VarChar(15)
-  type      String   @db.VarChar(25)
-  typeId    Int
-  name      String   @db.VarChar(100)
-  slug      String   @db.VarChar(100)
-  tldr      String   @db.VarChar(500)
-  content   Json     @db.Json
-  locked    Boolean  @default(false)
-  createdAt DateTime @default(now()) @db.Timestamp(3)
-  updatedAt DateTime @updatedAt
+  id         String   @id @db.VarChar(15)
+  orgId      String   @db.VarChar(36)
+  projectId  String   @db.VarChar(15)
+  blobId     String?  @db.VarChar(15)
+  source     String?  @db.VarChar(15)
+  sourcePath String?  @db.VarChar(255)
+  parentId   String?  @db.VarChar(15)
+  type       String   @db.VarChar(25)
+  typeId     Int?
+  name       String   @db.VarChar(100)
+  slug       String   @db.VarChar(100)
+  tldr       String   @db.VarChar(500)
+  content    Json     @db.Json
+  locked     Boolean  @default(false)
+  createdAt  DateTime @default(now()) @db.Timestamp(3)
+  updatedAt  DateTime @updatedAt
 
-  Org     Orgs     @relation(fields: [orgId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  Project Projects @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  Blob    Blobs?   @relation(fields: [blobId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  Org      Orgs       @relation(fields: [orgId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  Project  Projects   @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  Blob     Blobs?     @relation(fields: [blobId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  Document Documents? @relation(fields: [parentId], references: [id], onDelete: SetNull, onUpdate: NoAction, name: "parent")
 
   TypeHasUsers TypeHasUsers[]
+  Documents    Documents[]    @relation("parent")
 
   @@unique([orgId, type, typeId], map: "idx_document_orgid_type_typeid")
   @@index([orgId, projectId], map: "idx_document_orgid_projectid")

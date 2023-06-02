@@ -722,6 +722,117 @@ export async function seedRFC(
   return res;
 }
 
+/**
+ * Seed playbook
+ */
+export async function seedDocs(
+  { o1 }: { o1: Orgs },
+  { p1 }: { p1: Projects },
+  [u1]: Users[]
+) {
+  const res = await prisma.$transaction(async (tx) => {
+    const d1 = await createDocument({
+      user: u1,
+      data: {
+        id: 'z1grRPVYnx',
+        orgId: o1.id,
+        projectId: p1.id,
+        source: 'github',
+        sourcePath: '/docs/README.md',
+        type: 'doc',
+        typeId: null,
+        tldr: '',
+        name: 'README',
+        content: {
+          content: [
+            {
+              type: 'paragraph',
+              attrs: { uid: 'UidgrRPV001' },
+              content: [
+                {
+                  type: 'text',
+                  text: 'Ut semper eros ipsum, eget rutrum nisi consequat vitae.',
+                },
+              ],
+            },
+          ],
+          type: 'doc',
+        },
+        locked: false,
+      },
+      tx,
+    });
+    const d2 = await createDocument({
+      user: u1,
+      data: {
+        id: 'z2grRPVYnx',
+        orgId: o1.id,
+        projectId: p1.id,
+        source: 'github',
+        sourcePath: '/docs/decisions/README.md',
+        parentId: null,
+        type: 'doc',
+        typeId: null,
+        tldr: '',
+        name: 'Decisions',
+        content: {
+          content: [
+            {
+              type: 'paragraph',
+              attrs: { uid: 'UidgrRPV001' },
+              content: [
+                {
+                  type: 'text',
+                  text: 'Consequat vitae.',
+                },
+              ],
+            },
+          ],
+          type: 'doc',
+        },
+        locked: false,
+      },
+      tx,
+    });
+    const d3 = await createDocument({
+      user: u1,
+      data: {
+        id: 'z3grRPVYnx',
+        orgId: o1.id,
+        projectId: p1.id,
+        source: 'github',
+        sourcePath: '/docs/deicisions/Nested.md',
+        parentId: d2.id,
+        type: 'doc',
+        typeId: null,
+        tldr: '',
+        name: 'Using Specfy to host our Documentation',
+        content: {
+          content: [
+            {
+              type: 'paragraph',
+              attrs: { uid: 'UidgrRPV001' },
+              content: [
+                {
+                  type: 'text',
+                  text: 'Consequat vitae.',
+                },
+              ],
+            },
+          ],
+          type: 'doc',
+        },
+        locked: false,
+      },
+      tx,
+    });
+
+    return { d1, d2, d3 };
+  });
+
+  return res;
+}
+
 export async function seedDocument(
   user: Users,
   org: Orgs,

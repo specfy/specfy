@@ -63,6 +63,11 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
         type: p.type as ApiDocument['type'],
         typeId: p.typeId,
+
+        source: p.source,
+        sourcePath: p.sourcePath,
+        parentId: p.parentId,
+
         name: p.name,
         slug: p.slug,
         tldr: p.tldr,

@@ -7,9 +7,10 @@ import {
   // IconLayoutSidebarLeftCollapse,
   // IconPlus,
   IconLayoutSidebarLeftExpand,
+  IconChevronDown,
 } from '@tabler/icons-react';
 import { Button, Input, Tree } from 'antd';
-import type { DirectoryTreeProps } from 'antd/es/tree';
+import type { DataNode, DirectoryTreeProps } from 'antd/es/tree';
 import type { ApiProject, DocumentSimple } from 'api/src/types/api';
 import classnames from 'classnames';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -22,6 +23,28 @@ import { useDocumentsStore } from '../../../common/store';
 import type { RouteProject } from '../../../types/routes';
 
 import cls from './index.module.scss';
+
+function buildDocHierarchy(
+  docs: DocumentSimple[],
+  parentId: string | null
+): DataNode[] {
+  const node: DataNode[] = [];
+
+  for (const doc of docs) {
+    if (doc.parentId !== parentId) {
+      continue;
+    }
+
+    node.push({
+      key: doc.id,
+      title: doc.name,
+      icon: <IconFileText />,
+      children: buildDocHierarchy(docs, doc.id),
+    });
+  }
+
+  return node;
+}
 
 export const ContentSidebar: React.FC<{
   proj: ApiProject;
@@ -50,7 +73,7 @@ export const ContentSidebar: React.FC<{
   >();
   const [search, setSearch] = useState<string>('');
   const [focus, setFocus] = useState<number>(0);
-  const [expanded, setExpanded] = useState(['rfc']);
+  const [expanded, setExpanded] = useState(['doc', 'rfc']);
   const [selected, setSelected] = useState<string[]>([]);
   const refList = useRef<HTMLDivElement>(null);
 
@@ -92,47 +115,61 @@ export const ContentSidebar: React.FC<{
     [search]
   );
 
-  const tree = useMemo(() => {
+  const tree: DataNode[] = useMemo(() => {
     if (!res.data?.data) {
-      return;
+      return [];
     }
 
-    const rfc = [];
-    const playbook = [];
-    for (const doc of res.data.data) {
-      if (deleted.includes(doc.id)) {
-        continue;
-      }
+    // const rfc: DataNode[] = [];
+    // const playbook: DataNode[] = [];
 
-      if (doc.type === 'pb') {
-        playbook.push({
-          key: doc.id,
-          title: doc.name,
-          isLeaf: true,
-          icon: <IconFileCode />,
-        });
-      } else {
-        rfc.push({
-          key: doc.id,
-          title: `RFC-${doc.typeId} - ${doc.name}`,
-          isLeaf: true,
-          icon: <IconFileText />,
-        });
-      }
-    }
+    const tmp = res.data.data.filter((d) => d.type === 'doc');
+    const docs: DataNode[] = buildDocHierarchy(tmp, null);
 
-    return [
-      {
-        title: 'RFC',
-        key: 'rfc',
-        children: rfc,
-      },
-      {
-        title: 'Playbook',
-        key: 'pb',
-        children: playbook,
-      },
-    ];
+    // for (const doc of res.data.data) {
+    //   if (deleted.includes(doc.id)) {
+    //     continue;
+    //   }
+    //   if (doc.type === 'docs') {
+    //     continue;
+    //   }
+
+    //   if (doc.type === 'pb') {
+    //     playbook.push({
+    //       key: doc.id,
+    //       title: doc.name,
+    //       isLeaf: true,
+    //       icon: <IconFileCode />,
+    //     });
+    //   } else {
+    //     rfc.push({
+    //       key: doc.id,
+    //       title: `RFC-${doc.typeId} - ${doc.name}`,
+    //       isLeaf: true,
+    //       icon: <IconFileText />,
+    //     });
+    //   }
+    // }
+
+    // return [
+    //   {
+    //     title: 'Docs',
+    //     key: 'docs',
+    //     children: docs,
+    //   },
+    //   {
+    //     title: 'RFC',
+    //     key: 'rfc',
+    //     children: rfc,
+    //   },
+    //   {
+    //     title: 'Playbook',
+    //     key: 'pb',
+    //     children: playbook,
+    //   },
+    // ];
+
+    return docs;
   }, [res.isLoading, deleted]);
 
   useEffect(() => {
@@ -143,7 +180,7 @@ export const ContentSidebar: React.FC<{
     }
 
     setSelected([split[4].split('-')[0]]);
-    setExpanded(['rfc', 'pb']);
+    // setExpanded(['docs', 'rfc', 'pb']);
   }, [location]);
 
   const onSelect: DirectoryTreeProps['onSelect'] = (keys) => {
@@ -263,13 +300,17 @@ export const ContentSidebar: React.FC<{
       {!list && (
         <Tree.DirectoryTree
           showIcon
-          expandedKeys={expanded}
-          switcherIcon={false}
+          defaultExpandAll
+          // expandedKeys={expanded}
+          switcherIcon={<IconChevronDown />}
           onSelect={onSelect}
           selectedKeys={selected}
-          autoExpandParent={true}
+          // autoExpandParent={true}
           treeData={tree}
-          onExpand={(keys) => setExpanded(keys as string[])}
+          // onExpand={(keys) => {
+          //   console.log(keys);
+          //   setExpanded(keys as string[]);
+          // }}
         />
       )}
     </div>

@@ -1,7 +1,7 @@
 import { prisma } from '../../db';
 
 import { seedComponents } from './components';
-import { seedPlaybook, seedRFC } from './documents';
+import { seedDocs, seedPlaybook, seedRFC } from './documents';
 import { seedOrgs } from './orgs';
 import { seedPolicies } from './policies';
 import { seedProjects } from './projects';
@@ -22,6 +22,7 @@ export async function seed() {
   console.log(' - Documents...');
   const rfcs = await seedRFC(orgs, projects, users);
   await seedPlaybook(orgs, projects, users);
+  await seedDocs(orgs, projects, users);
 
   console.log(' - Components...');
   const components = await seedComponents(orgs, projects, users);

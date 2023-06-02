@@ -73,7 +73,9 @@ export const ProjectContentList: React.FC<{
                       relative="path"
                       className={cls.title}
                     >
-                      {TYPE_TO_TEXT[item.type]}-{item.typeId} - {item.name}
+                      {item.type !== 'doc' &&
+                        `${TYPE_TO_TEXT[item.type]}-${item.typeId} - `}
+                      {item.name}
                     </Link>
                     <div className={cls.subtitle}>
                       Updated <Time time={item.updatedAt} />

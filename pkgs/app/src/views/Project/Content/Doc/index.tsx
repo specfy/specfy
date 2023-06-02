@@ -12,15 +12,13 @@ import { ContentDoc } from '../../../../components/Content';
 import { Editor } from '../../../../components/Editor';
 import { HeadingTree } from '../../../../components/HeadingTree';
 import { FakeInput } from '../../../../components/Input';
-import { SidebarBlock } from '../../../../components/SidebarBlock';
 import { UpdatedAt } from '../../../../components/UpdatedAt';
-import { UserList } from '../../../../components/UserList';
 import { useEdit } from '../../../../hooks/useEdit';
 import clsLayout from '../Show/index.module.scss';
 
 import cls from './index.module.scss';
 
-export const RFC: React.FC<{
+export const Doc: React.FC<{
   proj: ApiProject;
   doc: ApiDocument;
 }> = ({ doc, proj }) => {
@@ -61,13 +59,11 @@ export const RFC: React.FC<{
         <div className={cls.header}>
           {!isEditing && (
             <Title level={1} className={cls.title} id={doc.slug}>
-              <span className={cls.type}>[RFC-{doc.typeId}]</span>
               {title}
             </Title>
           )}
           {isEditing && (
             <div className={cls.title}>
-              <span className={cls.type}>[RFC-{doc.typeId}]</span>
               <FakeInput.H1
                 size="large"
                 value={title}
@@ -79,6 +75,7 @@ export const RFC: React.FC<{
               />
             </div>
           )}
+
           {edit.can && (
             <div>
               <Dropdown menu={{ items: menuItems, onClick: onClickMenu }}>
@@ -104,14 +101,7 @@ export const RFC: React.FC<{
         </Typography>
       </div>
 
-      <div className={clsLayout.col3}>
-        <SidebarBlock title="Authors">
-          <UserList list={doc.authors} />
-        </SidebarBlock>
-        <SidebarBlock title="Reviewers">
-          <UserList list={doc.reviewers} />
-        </SidebarBlock>
-      </div>
+      <div className={clsLayout.col3}></div>
     </>
   );
 };

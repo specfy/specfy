@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import { useGetDocument } from '../../../../api';
 import { useDocumentsStore } from '../../../../common/store';
 import type { RouteDocument } from '../../../../types/routes';
+import { Doc } from '../Doc';
 import { Playbook } from '../Playbook';
 import { RFC } from '../RFC';
 
@@ -52,6 +53,14 @@ export const DocumentShow: React.FC<{
       <div className={cls.wrapper}>
         <div className={cls.container}>
           <RFC proj={proj} doc={doc} />
+        </div>
+      </div>
+    );
+  } else if (doc.type === 'doc') {
+    return (
+      <div className={cls.wrapper}>
+        <div className={cls.container}>
+          <Doc proj={proj} doc={doc} />
         </div>
       </div>
     );

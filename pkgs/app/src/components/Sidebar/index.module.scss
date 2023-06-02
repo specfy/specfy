@@ -130,7 +130,7 @@
     cursor: pointer;
 
     display: grid;
-    grid-template-columns: 20px 5fr 1fr;
+    grid-template-columns: 5fr 20px 0;
     gap: $p-m;
     align-items: center;
     justify-content: space-between;

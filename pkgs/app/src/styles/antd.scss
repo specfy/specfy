@@ -1,3 +1,4 @@
+/* stylelint-disable selector-class-pattern */
 @import "./theme";
 
 .ant-layout {
@@ -310,11 +311,41 @@ h4.ant-typography {
   padding-left: 2px;
 
   .ant-tree-switcher {
-    display: none;
+    width: 20px;
+
+    svg {
+      width: 16px;
+      height: 16px;
+      margin-top: 7px;
+      transition: transform 0.3s;
+    }
+
+    &.ant-tree-switcher_close {
+      svg {
+        transform: rotate(-90deg);
+      }
+    }
+  }
+
+  &.ant-tree-directory .ant-tree-treenode-selected .ant-tree-switcher {
+    color: $zinc-800;
+  }
+
+  .ant-tree-node-content-wrapper {
+    overflow: hidden;
+    padding: 3px $p 3px 0;
+    text-overflow: ellipsis;
+    white-space: pre;
+
+    .ant-tree-iconEle {
+      width: 16px;
+      padding-right: 20px;
+    }
   }
 
   span.ant-tree-switcher-noop {
-    display: none;
+    // display: none;
+    width: 20px;
   }
 
   .ant-tree-treenode {
@@ -346,13 +377,6 @@ h4.ant-typography {
       }
 
     }
-  }
-
-  .ant-tree-node-content-wrapper {
-    overflow: hidden;
-    padding: 3px $p 3px $p;
-    text-overflow: ellipsis;
-    white-space: pre;
   }
 }
 

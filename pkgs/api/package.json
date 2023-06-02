@@ -44,7 +44,6 @@
     "zod": "3.21.4"
   },
   "devDependencies": {
-    "@jest/globals": "29.5.0",
     "@types/node": "18.11.18",
     "@types/passport-github2": "1.2.5",
     "@types/passport-jwt": "3.0.8",
