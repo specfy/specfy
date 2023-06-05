@@ -75,3 +75,5 @@ export function validationError(res: FastifyReply, data: ZodError): void {
   };
   res.status(400).send(err);
 }
+
+export class TransactionError extends Error {}

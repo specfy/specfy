@@ -15,7 +15,7 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [enabled, setEnabled] = useState<boolean>(false);
-  const [can, setCan] = useState<boolean>(false);
+  const [can] = useState<boolean>(true);
   const [prev, setPrev] = useState<boolean>(false);
 
   const memoized = useMemo<EditContextInterface>(() => {

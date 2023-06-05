@@ -3,7 +3,7 @@ import {
   IconFileText,
   IconCircleX,
   IconSearch,
-  IconFileCode,
+  // IconFileCode,
   // IconLayoutSidebarLeftCollapse,
   // IconPlus,
   IconLayoutSidebarLeftExpand,
@@ -73,7 +73,7 @@ export const ContentSidebar: React.FC<{
   >();
   const [search, setSearch] = useState<string>('');
   const [focus, setFocus] = useState<number>(0);
-  const [expanded, setExpanded] = useState(['doc', 'rfc']);
+  // const [expanded, setExpanded] = useState(['doc', 'rfc']);
   const [selected, setSelected] = useState<string[]>([]);
   const refList = useRef<HTMLDivElement>(null);
 

@@ -9,8 +9,7 @@
   row-gap: $p-4xl;
   column-gap: $p-2xl;
 
-  min-width: $min-w;
-  max-width: $max-w;
+  width: $min-w;
   margin: 0 auto;
 
   .left {
@@ -28,6 +27,7 @@
     flex-direction: column;
     gap: $p-3xl;
 
+    width: calc($min-w - 250px);
     padding-bottom: $p-2xl;
   }
 

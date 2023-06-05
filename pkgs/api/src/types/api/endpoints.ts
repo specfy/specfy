@@ -49,6 +49,8 @@ import type {
   ResPostRevision,
   ResPatchRevision,
   ResRebaseRevision,
+  ResPostUploadRevision,
+  ReqPostUploadRevision,
 } from './revisions';
 import type { ReqListUsers, ResListUsers } from './users';
 
@@ -118,6 +120,14 @@ export interface API {
   '/0/revisions': {
     GET: { res: ResListRevisions; qp: ReqListRevisions; body: never };
     POST: { res: ResPostRevision; qp: never; body: ReqPostRevision };
+  };
+  // @ts-expect-error
+  [key: `/0/revisions/upload`]: {
+    POST: {
+      res: ResPostUploadRevision;
+      qp: never;
+      body: ReqPostUploadRevision;
+    };
   };
 
   // @ts-expect-error

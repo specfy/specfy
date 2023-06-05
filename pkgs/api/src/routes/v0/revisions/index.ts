@@ -9,10 +9,12 @@ import list from './list';
 import merge from './merge';
 import rebase from './rebase';
 import update from './update';
+import upload from './upload';
 
 const fn: FastifyPluginCallback = async (f, _, done) => {
   f.register(create, { prefix: '/revisions' });
   f.register(list, { prefix: '/revisions' });
+  f.register(upload, { prefix: '/revisions/upload' });
   f.register(get, { prefix: '/revisions/:revision_id' });
   f.register(update, { prefix: '/revisions/:revision_id' });
   f.register(blobsList, { prefix: '/revisions/:revision_id/blobs' });

@@ -159,6 +159,10 @@ export const ContentBlock: React.FC<{
   else if (block.type === 'bulletList') {
     return <ul className={stl}>{map(block, pl)}</ul>;
   }
+  // Ordered list
+  else if (block.type === 'orderedList') {
+    return <ol className={stl}>{map(block, pl)}</ol>;
+  }
 
   // Blockquote
   else if (block.type === 'blockquote') {

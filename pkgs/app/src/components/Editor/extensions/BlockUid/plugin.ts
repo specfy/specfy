@@ -3,9 +3,9 @@ import type { Node } from '@tiptap/pm/model';
 import { Plugin, PluginKey } from '@tiptap/pm/state';
 import { nanoid } from 'api/src/common/id';
 
-const isNodeHasAttribute = (node: Node, attrName: string) => {
+function isNodeHasAttribute(node: Node, attrName: string) {
   return Boolean(node.attrs?.[attrName]);
-};
+}
 
 const attrName = 'uid';
 

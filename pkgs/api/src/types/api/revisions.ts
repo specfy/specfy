@@ -31,6 +31,8 @@ export type ResListRevisions = ResErrors | ResListRevisionsSuccess;
 // ------ POST /
 export type ApiBlobCreate = Omit<DBBlobBase, 'createdAt' | 'id' | 'updatedAt'> &
   (DBBlobComponentBase | DBBlobDocumentBase | DBBlobProjectBase);
+export type ApiBlobCreateDocument = DBBlobDocumentBase &
+  Omit<DBBlobBase, 'createdAt' | 'id' | 'updatedAt'>;
 
 export type ReqPostRevision = Pick<
   ApiRevision,
@@ -40,6 +42,17 @@ export type ReqPostRevision = Pick<
 };
 export type ResPostRevisionSuccess = Pick<ApiRevision, 'id'>;
 export type ResPostRevision = ResErrors | ResPostRevisionSuccess;
+
+// ------ POST /upload
+export type ReqPostUploadRevision = Pick<
+  ApiRevision,
+  'description' | 'name' | 'orgId' | 'projectId'
+> & {
+  source: string;
+  blobs: Array<{ path: string; content: string }>;
+};
+export type ResPostUploadRevisionSuccess = Pick<ApiRevision, 'id'>;
+export type ResPostUploadRevision = ResErrors | ResPostUploadRevisionSuccess;
 
 // ------ GET /:id
 export interface ReqRevisionParams {

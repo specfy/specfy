@@ -62,6 +62,14 @@ export interface BlockBulletList {
   marks?: MarkDiff[];
 }
 
+// ----- Ordered List
+export interface BlockOrderedList {
+  type: 'orderedList';
+  content: BlockParagraph[];
+  attrs: BlockDefaultAttrs;
+  marks?: MarkDiff[];
+}
+
 // ----- Task List
 export interface BlockTaskItem {
   type: 'taskItem';
@@ -194,6 +202,7 @@ export type BlockLevelOne =
   | BlockHeading
   | BlockHorizontalRule
   | BlockImage
+  | BlockOrderedList
   | BlockParagraph
   | BlockQuote
   | BlockStep
@@ -210,6 +219,7 @@ export type Blocks =
   | BlockHorizontalRule
   | BlockImage
   | BlockListItem
+  | BlockOrderedList
   | BlockParagraph
   | BlockQuote
   | BlockStep
@@ -228,6 +238,7 @@ export type BlocksWithContent =
   | BlockCodeBlock
   | BlockHeading
   | BlockListItem
+  | BlockOrderedList
   | BlockParagraph
   | BlockQuote
   | BlockStep

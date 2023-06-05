@@ -12,6 +12,7 @@ import { Image } from '@tiptap/extension-image';
 import { Italic } from '@tiptap/extension-italic';
 import { Link } from '@tiptap/extension-link';
 import { ListItem } from '@tiptap/extension-list-item';
+import { OrderedList } from '@tiptap/extension-ordered-list';
 import { Paragraph } from '@tiptap/extension-paragraph';
 import { Placeholder } from '@tiptap/extension-placeholder';
 import { Table } from '@tiptap/extension-table';
@@ -88,6 +89,9 @@ export function createEditorSchema() {
       }),
       BulletList,
       ListItem,
+      OrderedList.configure({
+        itemTypeName: 'orderedList',
+      }),
       Blockquote,
       CustomFloatingMenu,
       BubbleMenuPlugin,
