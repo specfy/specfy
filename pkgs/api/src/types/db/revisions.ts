@@ -1,3 +1,5 @@
+import type { Prisma } from '@prisma/client';
+
 import type { BlockLevelZero } from '../api';
 
 export interface DBRevision {
@@ -18,3 +20,7 @@ export interface DBRevision {
   mergedAt: string | null;
   closedAt: string | null;
 }
+
+export type RevisionWithProject = Prisma.RevisionsGetPayload<{
+  include: { Project: true };
+}>;

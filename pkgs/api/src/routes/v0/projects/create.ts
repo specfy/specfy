@@ -2,7 +2,6 @@ import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import z from 'zod';
 
 import { validationError } from '../../../common/errors';
-import { nanoid } from '../../../common/id';
 import { schemaProject } from '../../../common/validators';
 import { valOrgId } from '../../../common/zod';
 import { prisma } from '../../../db';
@@ -60,16 +59,6 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         },
         user: req.user!,
         tx,
-      });
-
-      await tx.perms.create({
-        data: {
-          id: nanoid(),
-          orgId: data.orgId,
-          projectId: tmp.id,
-          userId: req.user!.id,
-          role: 'owner',
-        },
       });
 
       return tmp;

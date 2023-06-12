@@ -37,6 +37,9 @@ export const getRevision: PreHandler<{
       projectId: data.project_id,
       id: data.revision_id,
     },
+    include: {
+      Project: true,
+    },
   });
 
   if (!proj) {

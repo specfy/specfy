@@ -67,11 +67,17 @@ export async function seedUsers(): Promise<Users[]> {
 }
 
 export async function seedDefaultAccount(): Promise<Users> {
+  let email = env('DEFAULT_ACCOUNT');
+  if (!email) {
+    console.warn('⚠️  No DEFAULT_ACCOUNT');
+    email = `${nanoid()}@default.com`;
+  }
+
   return await prisma.users.create({
     data: {
       id: nanoid(),
       name: 'Demo Account',
-      email: env('DEFAULT_ACCOUNT')!,
+      email,
       password: pbkdf2('defaultpassword').toString('hex'),
     },
   });

@@ -3,6 +3,8 @@ import type { Activities, Orgs, Prisma, Users } from '@prisma/client';
 import { nanoid } from '../common/id';
 import type { ActionOrg } from '../types/db';
 
+import { createKey } from './key';
+
 export async function createOrg(
   tx: Prisma.TransactionClient,
   user: Users,
@@ -11,8 +13,6 @@ export async function createOrg(
   const tmp = await tx.orgs.create({
     data,
   });
-  await createOrgActivity(user, 'Org.created', tmp, tx);
-
   await tx.perms.create({
     data: {
       id: nanoid(),
@@ -22,6 +22,10 @@ export async function createOrg(
       role: 'owner',
     },
   });
+
+  await createOrgActivity(user, 'Org.created', tmp, tx);
+
+  await createKey(tx, user, { orgId: tmp.id });
 
   return tmp;
 }

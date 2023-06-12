@@ -1,12 +1,11 @@
-import type { Revisions } from '@prisma/client';
-
 import type { ApiRevision, BlockLevelZero } from '../../types/api';
-import type { TypeHasUsersWithUser } from '../../types/db';
+import type { RevisionWithProject, TypeHasUsersWithUser } from '../../types/db';
+import { env } from '../env';
 
 import { toApiUser } from './user';
 
 export function toApiRevision(
-  rev: Revisions,
+  rev: RevisionWithProject,
   users: TypeHasUsersWithUser[]
 ): ApiRevision {
   return {
@@ -22,6 +21,9 @@ export function toApiRevision(
     authors: users
       .filter((user) => user.role === 'author')
       .map((u) => toApiUser(u.User)),
+    url: `${env('APP_HOSTNAME')}/${rev.orgId}/${rev.Project.slug}/revisions/${
+      rev.id
+    }`,
     createdAt: rev.createdAt.toISOString(),
     updatedAt: rev.updatedAt.toISOString(),
     mergedAt: rev.mergedAt ? rev.mergedAt.toISOString() : null,

@@ -30,6 +30,7 @@ function BodyVal(req: FastifyRequest) {
       name: schemaRevision.shape.name,
       description: schemaRevision.shape.description,
       source: z.literal('github'),
+      stack: z.object({}).nullable(), // TODO: validate this
       blobs: z
         .array(
           z

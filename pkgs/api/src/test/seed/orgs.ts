@@ -3,7 +3,7 @@ import { customAlphabet } from 'nanoid/non-secure';
 
 import { nanoid } from '../../common/id';
 import { prisma } from '../../db';
-import { createOrgActivity } from '../../models';
+import { createOrg } from '../../models';
 
 export const createOrgId = customAlphabet('abcdefghijklmnopqrstuvwxyz', 20);
 
@@ -13,29 +13,19 @@ export const createOrgId = customAlphabet('abcdefghijklmnopqrstuvwxyz', 20);
 export async function seedOrgs(
   users: Users[]
 ): Promise<{ o1: Orgs; o2: Orgs }> {
-  const o1 = await prisma.orgs.create({
-    data: { id: 'company', name: 'My Company' },
+  const o1 = await createOrg(prisma, users[0], {
+    id: 'company',
+    name: 'My Company',
+    isPersonal: false,
   });
-  await createOrgActivity(users[0], 'Org.created', o1, prisma);
 
-  const o2 = await prisma.orgs.create({
-    data: { id: 'samuelbodin', name: "Samuel Bodin's org", isPersonal: true },
+  const o2 = await createOrg(prisma, users[0], {
+    id: 'samuelbodin',
+    name: "Samuel Bodin's org",
+    isPersonal: false,
   });
-  await createOrgActivity(users[0], 'Org.created', o2, prisma);
 
   await Promise.all([
-    ...[o1.id, o2.id].map((id) => {
-      return prisma.perms.create({
-        data: {
-          id: nanoid(),
-          orgId: id,
-          projectId: null,
-          userId: users[0].id,
-          role: 'owner',
-        },
-      });
-    }),
-
     ...users.map((u, i) => {
       if (i === 0) {
         return;
@@ -51,18 +41,17 @@ export async function seedOrgs(
       });
     }),
   ]);
+
   return { o1, o2 };
 }
 
 export async function seedOrg(user: Users) {
   const id = createOrgId();
-  const org = await prisma.orgs.create({
-    data: {
-      id,
-      name: `Org ${id}`,
-    },
+  const org = await createOrg(prisma, user, {
+    id,
+    name: `Org ${id}`,
+    isPersonal: false,
   });
-  await createOrgActivity(user, 'Org.created', org, prisma);
 
   return org;
 }

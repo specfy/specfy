@@ -83,6 +83,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         // TODO: add limit/offset to qp
         take: 10,
         skip: 0,
+        include: { Project: true },
       });
 
       const count = await tx.revisions.count({

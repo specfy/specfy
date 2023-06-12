@@ -1,10 +1,10 @@
 import type { IncomingMessage, ServerResponse } from 'http';
 
-import type { Orgs, Projects, Revisions, Users } from '@prisma/client';
+import type { Keys, Orgs, Projects, Users } from '@prisma/client';
 import type { preHandlerHookHandler, RawServerDefault } from 'fastify';
 import type { RouteGenericInterface } from 'fastify/types/route';
 
-import type { PermsWithOrg } from './db';
+import type { PermsWithOrg, RevisionWithProject } from './db';
 
 export type PreHandler<T extends RouteGenericInterface = any> =
   preHandlerHookHandler<
@@ -18,8 +18,9 @@ declare module 'fastify' {
   interface FastifyRequest {
     perms?: PermsWithOrg[];
     project?: Projects;
-    revision?: Revisions;
+    revision?: RevisionWithProject;
     user?: Users;
+    key?: Keys;
     org?: Orgs;
   }
 

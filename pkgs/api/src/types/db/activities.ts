@@ -54,6 +54,8 @@ export type ActionUser =
   | 'User.removed'
   | 'User.updated';
 
+export type ActionKey = 'Key.created' | 'Key.deleted';
+
 export interface DBActivity {
   id: string;
 
@@ -66,6 +68,7 @@ export interface DBActivity {
   action:
     | ActionComponent
     | ActionDocument
+    | ActionKey
     | ActionOrg
     | ActionPolicy
     | ActionProject

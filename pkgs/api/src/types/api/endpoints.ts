@@ -122,7 +122,7 @@ export interface API {
     POST: { res: ResPostRevision; qp: never; body: ReqPostRevision };
   };
   // @ts-expect-error
-  [key: `/0/revisions/upload`]: {
+  '/0/revisions/upload': {
     POST: {
       res: ResPostUploadRevision;
       qp: never;

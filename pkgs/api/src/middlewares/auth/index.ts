@@ -9,6 +9,7 @@ import { prisma } from '../../db';
 
 import { registerGithub } from './github';
 import { registerJwt } from './jwt';
+import { registerKey } from './key';
 import { registerLocal } from './local';
 
 const ALLOW_GUEST = [
@@ -68,6 +69,9 @@ export function registerAuth(f: FastifyInstance) {
     req.user = user!;
     req.perms = perms;
   });
+
+  // JSON WEB TOKEN
+  registerKey(f, fastifyPassport);
 
   // JSON WEB TOKEN
   registerJwt(f, fastifyPassport);

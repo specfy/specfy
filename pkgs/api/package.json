@@ -35,6 +35,7 @@
     "nanoid": "3.3.6",
     "octokit": "2.0.14",
     "passport-github2": "0.1.12",
+    "passport-http-bearer": "1.0.1",
     "passport-jwt": "4.0.1",
     "passport-local": "1.0.0",
     "pino": "8.11.0",
@@ -47,6 +48,7 @@
   "devDependencies": {
     "@types/node": "18.11.18",
     "@types/passport-github2": "1.2.5",
+    "@types/passport-http-bearer": "1.0.37",
     "@types/passport-jwt": "3.0.8",
     "@types/passport-local": "1.0.35",
     "@types/validator": "13.7.11",

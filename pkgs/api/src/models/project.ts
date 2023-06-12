@@ -4,6 +4,8 @@ import { nanoid } from '../common/id';
 import { slugify } from '../common/string';
 import type { ActionProject } from '../types/db';
 
+import { createKey } from './key';
+
 export async function createProjectBlob({
   data,
   blob,
@@ -56,7 +58,20 @@ export async function createProject({
     data: { blobId: blob.id },
     where: { id: tmp.id },
   });
+
+  await tx.perms.create({
+    data: {
+      id: nanoid(),
+      orgId: data.orgId,
+      projectId: tmp.id,
+      userId: user.id,
+      role: 'owner',
+    },
+  });
+
   await createProjectActivity(user, 'Project.created', update, tx);
+
+  await createKey(tx, user, { orgId: body.orgId, projectId: tmp.id });
 
   return tmp;
 }

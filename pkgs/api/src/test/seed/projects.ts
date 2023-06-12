@@ -232,18 +232,6 @@ export async function seedProjects(users: Users[]) {
 
       // ---- Permissions
       await Promise.all([
-        ...[p0, p1, p3, p4, p5].map((p) => {
-          return tx.perms.create({
-            data: {
-              id: nanoid(),
-              orgId: 'company',
-              projectId: p.id,
-              userId: users[0].id,
-              role: 'owner',
-            },
-          });
-        }),
-
         // Add one viewer
         tx.perms.create({
           data: {
@@ -294,15 +282,6 @@ export async function seedProject(user: Users, org: Orgs) {
     },
     tx: prisma,
     user,
-  });
-  await prisma.perms.create({
-    data: {
-      id: nanoid(),
-      orgId: org.id,
-      projectId: project.id,
-      userId: user.id,
-      role: 'owner',
-    },
   });
 
   return project;

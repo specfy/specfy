@@ -13,6 +13,7 @@ import type { ApiUser } from './users';
 
 export type ApiRevision = DBRevision & {
   authors: ApiUser[];
+  url: string;
 };
 
 // ------ GET /
