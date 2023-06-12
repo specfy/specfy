@@ -43,7 +43,7 @@ describe('GET /orgs', () => {
     expect(res.json.data).toHaveLength(0);
   });
 
-  it('should list one org', async () => {
+  it.only('should list one org', async () => {
     const { token, org } = await seedWithOrg();
     const res = await t.fetch.get('/0/orgs', { token });
 

@@ -39,16 +39,6 @@ export async function seedWithOrg(): Promise<{
   const { user } = await seedUser();
   const org = await seedOrg(user);
 
-  await prisma.perms.create({
-    data: {
-      id: nanoid(),
-      orgId: org.id,
-      projectId: null,
-      userId: user.id,
-      role: 'owner',
-    },
-  });
-
   const token = getJwtToken(user);
 
   return { user, org, token };
