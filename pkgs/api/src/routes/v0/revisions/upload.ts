@@ -148,41 +148,6 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       checked.push({ ...blob, folder });
       checkedFolder.add(folder);
     }
-    // for (const blob of data.blobs) {
-    //   const folder = path.join(path.dirname(blob.path), '/');
-    //   if (checkedFolder.has(folder)) {
-    //     if (folder !== blob.path) {
-    //       checked.push({ ...blob, folder });
-    //     }
-    //     continue;
-    //   }
-
-    //   checked.push({ ...blob, folder });
-
-    //   // Exact match, unlikely with regular file upload but since it's an API it can be manually setup
-    //   const parent = data.blobs.find((b) => b.path === folder);
-    //   if (parent) {
-    //     checked.push({ ...parent, folder });
-    //     checkedFolder.add(folder);
-    //     continue;
-    //   }
-
-    //   // There is an index.md which is good enough source
-    //   const index = path.join(folder, 'index.md');
-    //   const dup = data.blobs.find((b) => b.path.toLowerCase() === index);
-    //   if (dup) {
-    //     checked.push({ ...dup, path: folder, folder });
-    //     checkedFolder.add(folder);
-
-    //     continue;
-    //   }
-
-    //   // No match, we create an empty folder
-    //   checked.push({ content: '', path: folder, folder });
-    //   checkedFolder.add(folder);
-    // }
-
-    console.log(checked);
 
     // ---- Sort
     // We also sort:

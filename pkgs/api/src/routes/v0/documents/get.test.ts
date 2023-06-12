@@ -69,6 +69,9 @@ describe('GET /documents/:id', () => {
       tldr: '',
       type: 'rfc',
       typeId: document.typeId,
+      parentId: null,
+      source: null,
+      sourcePath: null,
       createdAt: expect.toBeIsoDate(),
       updatedAt: expect.toBeIsoDate(),
     });

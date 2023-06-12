@@ -109,6 +109,7 @@ describe('GET /revisions', () => {
       projectId: project.id,
       status: 'waiting',
       updatedAt: expect.toBeIsoDate(),
+      url: expect.any(String),
     });
   });
 

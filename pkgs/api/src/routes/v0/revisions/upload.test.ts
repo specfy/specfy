@@ -58,6 +58,7 @@ describe('PATCH /revisions/:revision_id', () => {
         orgId: org.id,
         projectId: project.id,
         source: 'github',
+        stack: null,
       },
     });
 
@@ -141,6 +142,7 @@ describe('PATCH /revisions/:revision_id', () => {
         orgId: org.id,
         projectId: project.id,
         source: 'github',
+        stack: null,
       },
     });
 
@@ -189,6 +191,7 @@ describe('PATCH /revisions/:revision_id', () => {
         orgId: org.id,
         projectId: project.id,
         source: 'github',
+        stack: null,
       },
     });
 
@@ -237,6 +240,7 @@ describe('PATCH /revisions/:revision_id', () => {
         orgId: org.id,
         projectId: project.id,
         source: 'github',
+        stack: null,
       },
     });
 

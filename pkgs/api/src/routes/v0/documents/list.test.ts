@@ -63,6 +63,7 @@ describe('GET /documents', () => {
         id: document.id,
         name: document.name,
         slug: document.slug,
+        parentId: null,
         tldr: '',
         type: document.type,
         typeId: document.typeId,

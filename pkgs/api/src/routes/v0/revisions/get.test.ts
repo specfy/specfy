@@ -70,6 +70,7 @@ describe('GET /revisions/:revision_id', () => {
       status: 'draft',
       createdAt: expect.toBeIsoDate(),
       updatedAt: expect.toBeIsoDate(),
+      url: expect.any(String),
     });
   });
 

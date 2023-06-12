@@ -51,6 +51,7 @@ export type ReqPostUploadRevision = Pick<
 > & {
   source: string;
   blobs: Array<{ path: string; content: string }>;
+  stack: Record<any, any> | null;
 };
 export type ResPostUploadRevisionSuccess = Pick<ApiRevision, 'id'>;
 export type ResPostUploadRevision = ResErrors | ResPostUploadRevisionSuccess;
