@@ -252,7 +252,7 @@ export const useDocumentsStore = create<DocumentsState>()((set, get) => ({
     );
   },
   create: (data) => {
-    const doc = {
+    const doc: ApiDocument = {
       id: nanoid(),
       orgId: data.orgId,
       projectId: data.projectId,
@@ -267,6 +267,9 @@ export const useDocumentsStore = create<DocumentsState>()((set, get) => ({
       reviewers: [],
       tldr: '',
       locked: false,
+      parentId: null,
+      source: null,
+      sourcePath: null,
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     };
