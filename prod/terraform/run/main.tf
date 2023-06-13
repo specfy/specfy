@@ -4,11 +4,17 @@ data "google_secret_manager_secret_version" "PASSWORD_SALT" {
 data "google_secret_manager_secret_version" "COOKIE_SECRET" {
   secret   = "COOKIE_SECRET"
 }
+data "google_secret_manager_secret_version" "GITHUB_CLIENT_APPID" {
+  secret   = "GITHUB_CLIENT_APPID"
+}
 data "google_secret_manager_secret_version" "GITHUB_CLIENT_ID" {
   secret   = "GITHUB_CLIENT_ID"
 }
 data "google_secret_manager_secret_version" "GITHUB_CLIENT_SECRET" {
   secret   = "GITHUB_CLIENT_SECRET"
+}
+data "google_secret_manager_secret_version" "GITHUB_CLIENT_PKEY" {
+  secret   = "GITHUB_CLIENT_PKEY"
 }
 
 resource "google_cloud_run_v2_service" "main" {
@@ -48,12 +54,20 @@ resource "google_cloud_run_v2_service" "main" {
         value = data.google_secret_manager_secret_version.COOKIE_SECRET.secret_data
       }
       env {
+        name  = "GITHUB_CLIENT_APPID"
+        value = data.google_secret_manager_secret_version.GITHUB_CLIENT_APPID.secret_data
+      }
+      env {
         name  = "GITHUB_CLIENT_ID"
         value = data.google_secret_manager_secret_version.GITHUB_CLIENT_ID.secret_data
       }
       env {
         name  = "GITHUB_CLIENT_SECRET"
         value = data.google_secret_manager_secret_version.GITHUB_CLIENT_SECRET.secret_data
+      }
+      env {
+        name  = "GITHUB_CLIENT_PKEY"
+        value = data.google_secret_manager_secret_version.GITHUB_CLIENT_PKEY.secret_data
       }
 
       env {

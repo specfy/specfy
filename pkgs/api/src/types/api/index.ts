@@ -1,9 +1,11 @@
 export * from './activities';
 export * from './api';
+export * from './auth';
 export * from './blob';
 export * from './components';
 export * from './document';
 export * from './documents';
+export * from './github';
 export * from './me';
 export * from './orgs';
 export * from './perms';
@@ -12,4 +14,3 @@ export * from './projects';
 export * from './reviews';
 export * from './revisions';
 export * from './users';
-export * from './auth';

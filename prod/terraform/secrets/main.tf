@@ -1,5 +1,13 @@
 locals {
-  secrets = toset([ "DB_PASSWORD", "PASSWORD_SALT", "COOKIE_SECRET", "GITHUB_CLIENT_ID", "GITHUB_CLIENT_SECRET" ])
+  secrets = toset([
+    "DB_PASSWORD",
+    "PASSWORD_SALT",
+    "COOKIE_SECRET",
+    "GITHUB_CLIENT_APPID",
+    "GITHUB_CLIENT_ID",
+    "GITHUB_CLIENT_SECRET",
+    "GITHUB_CLIENT_PKEY"
+  ])
 }
 
 resource "google_secret_manager_secret" "main" {

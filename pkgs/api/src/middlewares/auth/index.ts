@@ -85,13 +85,11 @@ export function registerAuth(f: FastifyInstance) {
   }
 
   fastifyPassport.registerUserSerializer(async (user: Users) => {
-    console.log('on serialize');
     return { id: user.id };
   });
 
   // Deserializer will fetch the user from the database when a request with an id in the session arrives
   fastifyPassport.registerUserDeserializer(async (user: unknown) => {
-    console.log('on deserialise');
     return user;
   });
 

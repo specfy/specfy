@@ -11,7 +11,7 @@ import type { GithubAuth } from '../../types/github';
 
 import { AuthError } from './errors';
 
-const GITHUB_SCOPES = ['user:email'];
+const GITHUB_SCOPES = ['user:email', 'repo'];
 
 export function registerGithub(passport: Authenticator) {
   const reg = new GithubStrategy(
@@ -41,6 +41,14 @@ export function registerGithub(passport: Authenticator) {
         where: { email },
       });
       if (user) {
+        await prisma.accounts.updateMany({
+          data: {
+            accessToken,
+            providerAccountId: profile.id,
+            scope: GITHUB_SCOPES.join(','),
+          },
+          where: { userId: user.id, provider: 'github' },
+        });
         done(null, user);
         return;
       }
