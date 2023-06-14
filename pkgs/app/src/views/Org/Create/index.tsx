@@ -1,5 +1,5 @@
 import { IconCircleArrowRight } from '@tabler/icons-react';
-import { App, Button, Form, Input, Typography } from 'antd';
+import { App, Button, Form, Input } from 'antd';
 import type { FieldsErrors } from 'api/src/types/api';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -41,7 +41,13 @@ export const OrgCreate: React.FC = () => {
 
   return (
     <form onSubmit={onFinish} className={cls.form}>
-      <Typography.Title level={4}>Create Organization</Typography.Title>
+      <header>
+        <h1>Create an Organization</h1>
+        <p>
+          To hold all your projects and documentation. The unique id can&apos;t
+          be changed later.
+        </p>
+      </header>
       <div className={cls.title}>
         <Form.Item
           className={cls.wrap}
@@ -79,7 +85,7 @@ export const OrgCreate: React.FC = () => {
         <Input
           placeholder="Unique ID"
           value={id}
-          addonBefore="https://specify.io/"
+          addonBefore="https://app.specify.io/"
           onChange={(e) => setId(e.target.value)}
         />
       </Form.Item>

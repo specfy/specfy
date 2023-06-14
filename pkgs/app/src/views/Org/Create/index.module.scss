@@ -2,7 +2,7 @@
 
 @import "../../../styles/theme";
 
-$width: math.div($main-col-w, 1.5);
+$width: math.div($main-col-w, 1.4);
 
 .form {
   display: flex;
@@ -22,6 +22,7 @@ $width: math.div($main-col-w, 1.5);
 }
 
 .title {
+  margin-top: $p-2xl;
   display: flex;
   gap: $p-m;
 }

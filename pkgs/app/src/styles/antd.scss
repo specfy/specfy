@@ -16,24 +16,42 @@
 }
 
 // Global typo
+h1, h2, h3, h4, h5, h6 {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-weight: 500;
+}
+h1 {
+  font-size: $font-2xl;
+}
+
+h2 {
+  font-size: $font-xl;
+}
+
+h3 {
+  font-size: $font-l;
+}
+
+h4 {
+  font-size: $font-m;
+}
+
+// Global typo
 h1.ant-typography {
   margin-bottom: $p-l;
-  font-size: $font-2xl;
 }
 
 h2.ant-typography {
   margin-bottom: $p-m;
-  font-size: $font-xl;
 }
 
 h3.ant-typography {
   margin-bottom: $p-s;
-  font-size: $font-l;
 }
 
 h4.ant-typography {
   margin-bottom: $p-s;
-  font-size: $font-m;
 }
 
 // ----- Menu Inline

@@ -2,18 +2,24 @@
 
 @import "../../../styles/theme";
 
-$width: math.div($main-col-w, 1.5);
+$width: math.div($main-col-w, 1.4);
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
 
 .form {
   display: flex;
   flex-direction: column;
   gap: $p-m;
-  justify-content: center;
 
   width: $width;
-  height: calc(100vh - $height-header-org-total - ($p-2xl * 2));
-  min-height: 200px;
-  margin: 0 auto;
+
+  // height: calc(100vh - $height-header-org-total - ($p-2xl * 2));
+  margin: $p-5xl;
 }
 
 .wrap {
@@ -23,6 +29,7 @@ $width: math.div($main-col-w, 1.5);
 .title {
   display: flex;
   gap: $p-m;
+  margin-top: $p-2xl;
 }
 
 .input {
@@ -33,4 +40,55 @@ $width: math.div($main-col-w, 1.5);
 .button {
   width: 48px !important;
   height: 48px;
+}
+
+
+// Github
+.github {
+  width: $width;
+  padding: $p-5xl 0 $p-5xl 0;
+  border-top: 1px solid $color-border;
+}
+
+.select {
+  width: 250px;
+  margin: $p-2xl 0 $p-xl;
+}
+
+.install {
+  margin-top: $p-s;
+  padding-top:$p-s;
+  border-top: 1px solid $color-border;
+}
+
+.option {
+  display: flex;
+  gap: $p-m;
+  align-items: center;
+  margin-top: 2px;
+
+  .label {
+    margin-top: -$p-s;
+  }
+}
+
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-top: -1px;
+  padding: $p-l;
+
+  background-color: #fff;
+  border: 1px solid $color-border;
+
+  &:first-child {
+    border-radius: $border-radius-s $border-radius-s 0 0;
+  }
+
+  &:last-child {
+    border-radius: 0 0 $border-radius-s $border-radius-s;
+  }
 }

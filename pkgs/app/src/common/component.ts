@@ -49,6 +49,12 @@ import {
   CssThree,
 } from '@icons-pack/react-simple-icons';
 import { nanoid } from 'api/src/common/id';
+import {
+  hDef,
+  hDefHost,
+  wDef,
+  wDefHost,
+} from 'api/src/common/validators/flow.constants';
 import type { ApiComponent } from 'api/src/types/api';
 import type { FlowEdge } from 'api/src/types/db';
 
@@ -196,8 +202,8 @@ export function createLocal(
 
   const size =
     data.type === 'hosting'
-      ? { width: 200, height: 64 }
-      : { width: 100, height: 32 };
+      ? { width: wDefHost, height: hDefHost }
+      : { width: wDef, height: hDef };
 
   // Compute global bounding box
   const global = { x: 0, y: 0, width: 0, height: 0 };

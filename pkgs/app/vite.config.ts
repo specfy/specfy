@@ -10,13 +10,21 @@ export default defineConfig({
       localsConvention: 'camelCase',
     },
   },
-  // server: {
-  //   https: true,
-  //   cors: {
-  //     origin: '*',
-  //     credentials: true,
-  //   },
-  // },
+  server: {
+    headers: {
+      // To sync with vercel.json
+      'Content-Security-Policy': [
+        "default-src 'self' app.specfy.io specfy.io vercel.com *.vercel.com *.github.com localhost:*",
+        "script-src 'unsafe-eval' 'unsafe-inline' app.specfy.io *.vercel.com www.google.com www.googletagmanager.com www.google-analytics.com www.gstatic.com *.googleapis.com *.github.com localhost:*",
+        "style-src 'self' 'unsafe-inline' *.googleapis.com *.github.com localhost:*",
+        "connect-src data: 'self' *",
+        "font-src 'self' *.specfy.io *.gstatic.com",
+        "img-src 'self' blob: data: *.specfy.io *.githubusercontent.com",
+        'child-src  *.github.com github.com localhost:*',
+        "media-src 'self' *.github.com",
+      ].join(';'),
+    },
+  },
   // ...
   define: {
     // process: { env: {}, argv: '' },

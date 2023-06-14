@@ -3,6 +3,7 @@ import type { Prisma } from '@prisma/client';
 export type DBActivityType =
   | 'Component'
   | 'Document'
+  | 'Key'
   | 'Org'
   | 'Policy'
   | 'Project'

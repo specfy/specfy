@@ -19,7 +19,6 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         },
       });
       const list = await octokit.rest.apps.listInstallations();
-      console.log(JSON.stringify(list.data));
 
       const data: ResGetGithubInstallationsSuccess['data'] = [];
       for (const inst of list.data) {

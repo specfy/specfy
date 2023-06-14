@@ -2,6 +2,7 @@ import type { ApiActivity } from 'api/src/types/api';
 import type {
   ActionComponent,
   ActionDocument,
+  ActionKey,
   ActionOrg,
   ActionPolicy,
   ActionProject,
@@ -84,6 +85,11 @@ const mapUser: Record<ActionUser, (target: TargetUser) => string> = {
   'User.updated': () => ``,
 };
 
+const mapKey: Record<ActionKey, () => string> = {
+  'Key.created': () => `api key created`,
+  'Key.deleted': () => `api key deleted`,
+};
+
 export const RowActivity: React.FC<{ act: ApiActivity; orgId: string }> = ({
   act,
   orgId,
@@ -135,6 +141,8 @@ export const RowActivity: React.FC<{ act: ApiActivity; orgId: string }> = ({
     text = mapOrg[act.action as ActionOrg]();
   } else if (type === 'User' && act.targetUser) {
     text = mapUser[act.action as ActionUser](act.targetUser);
+  } else if (type === 'Key') {
+    text = mapKey[act.action as ActionKey]();
   } else {
     text = 'error';
   }

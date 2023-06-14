@@ -4,6 +4,11 @@ import type { ReqPostAuthLocal, ResPostAuthLocal, ResPostLogout } from './auth';
 import type { ResListRevisionBlobs } from './blob';
 import type { ReqListComponents, ResListComponents } from './components';
 import type { ReqListDocuments, ResListDocuments } from './documents';
+import type {
+  ReqGetGithubRepos,
+  ResGetGithubInstallations,
+  ResGetGithubRepos,
+} from './github';
 import type { ReqPutMe, ResDeleteMe, ResGetMe, ResPutMe } from './me';
 import type {
   ReqPostOrg,
@@ -165,6 +170,13 @@ export interface API {
   };
 
   '/0/users': { GET: { res: ResListUsers; qp: ReqListUsers; body: never } };
+
+  '/0/github/installations': {
+    GET: { res: ResGetGithubInstallations; qp: never; body: never };
+  };
+  '/0/github/repos': {
+    GET: { res: ResGetGithubRepos; qp: ReqGetGithubRepos; body: never };
+  };
 }
 
 export type APIPaths = keyof API;

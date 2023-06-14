@@ -47,7 +47,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         User: true,
         Blob: true,
       },
-      orderBy: { createdAt: 'asc' },
+      orderBy: { createdAt: 'desc' },
       take: 10,
       skip: 0,
     });

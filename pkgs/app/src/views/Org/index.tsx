@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react';
 import { Route, Routes, useParams } from 'react-router-dom';
 import { useLocalStorage } from 'react-use';
 
-import { useListOrgs } from '../../api';
+import { useListOrgs, useListProjects } from '../../api';
+import { useProjectStore } from '../../common/store';
 import { Card } from '../../components/Card';
 import { Container } from '../../components/Container';
 import { NotFound } from '../../components/NotFound';
@@ -23,20 +24,19 @@ import cls from './index.module.scss';
 
 export const Org: React.FC = () => {
   const params = useParams<Partial<RouteOrg>>() as RouteOrg;
+  const storeProject = useProjectStore();
 
   // Data
   const getOrgs = useListOrgs();
-  const [loading, setLoading] = useState<boolean>(true);
   const [org, setOrg] = useState<ApiOrg>();
+  const getProjects = useListProjects({ org_id: org?.id });
+  const [loading, setLoading] = useState<boolean>(true);
 
   const [, setLastOrg] = useLocalStorage('lastOrg');
 
   useEffect(() => {
     if (getOrgs.data) {
       setOrg(getOrgs.data.data.find((o) => o.id === params.org_id));
-      setLoading(false);
-    } else {
-      setLoading(getOrgs.isLoading);
     }
   }, [getOrgs.data, params.org_id]);
 
@@ -45,6 +45,18 @@ export const Org: React.FC = () => {
       setLastOrg(org.id);
     }
   }, [org]);
+
+  useEffect(() => {
+    storeProject.fill(getProjects.data?.data || []);
+  }, [getProjects.data]);
+
+  useEffect(() => {
+    if (!loading || !org) {
+      return;
+    }
+
+    setLoading(getOrgs.isLoading || getProjects.isLoading);
+  }, [loading, org, getOrgs.data, getProjects.data]);
 
   if (loading) {
     return (

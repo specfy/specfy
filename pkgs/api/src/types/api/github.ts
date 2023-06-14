@@ -7,6 +7,9 @@ export interface ApiGithubRepo {
   url: string;
   private: boolean;
 }
+export interface ReqGetGithubRepos {
+  installation_id?: number;
+}
 export interface ResGetGithubReposSuccess {
   data: ApiGithubRepo[];
 }

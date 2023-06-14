@@ -16,10 +16,15 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     }
   );
 
-  fastify.get<{ Reply: any }>(
+  fastify.get<{ Reply: any; Querystring: { installation_id: number } }>(
     '/github/cb',
     { preValidation: [fastifyPassport.authenticate('github')] },
-    function (_req, res) {
+    function (req, res) {
+      if (req.query.installation_id) {
+        res.status(200).send('Redirecting...');
+        return;
+      }
+
       res.redirect(env('APP_HOSTNAME')!);
     }
   );
