@@ -2,8 +2,6 @@
 @import "../../../styles/mixin";
 
 .tree {
-  height: 100vh;
-  max-height: 100vh;
   background-color: #fff;
 
   .treeHeader {
@@ -46,4 +44,9 @@
       outline-offset: 1px;
     }
   }
+}
+
+.empty {
+  padding: $p-xl;
+  color: $gray-600;
 }

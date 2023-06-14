@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 
 import { useProjectStore } from '../../common/store';
 import { AvatarAuto } from '../AvatarAuto';
+import { Empty } from '../Empty';
 import { Time } from '../Time';
 
 import cls from './index.module.scss';
@@ -46,6 +47,7 @@ export const ListProjects: React.FC<{ orgId: string }> = ({ orgId }) => {
             prefix={<IconSearch />}
             style={{ width: '200px' }}
             onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search..."
           />
         </div>
       </div>
@@ -55,24 +57,21 @@ export const ListProjects: React.FC<{ orgId: string }> = ({ orgId }) => {
       ) : (
         <>
           {!search && (!list || list.length <= 0) && (
-            <div className={cls.empty}>
-              <h2>No projects, yet!</h2>
-              <p>Create a project manually or from Github.</p>
-              <Link to={`/${orgId}/_/project/new`}>
-                <Button type="default" icon={<IconPlus />}>
-                  Create a New Project
-                </Button>
-              </Link>
-            </div>
+            <Empty
+              title="No projects, yet!"
+              desc="Create a project manually or from Github."
+              action={
+                <Link to={`/${orgId}/_/project/new`}>
+                  <Button type="default" icon={<IconPlus />}>
+                    Create a New Project
+                  </Button>
+                </Link>
+              }
+            />
           )}
 
           {search != '' && (!list || list.length <= 0) && (
-            <div className={cls.empty}>
-              <h4>No Results Found</h4>
-              <p>
-                Your search for &quot;{search}&quot; did not return any results
-              </p>
-            </div>
+            <Empty search={search} />
           )}
 
           {list && list.length > 0 && (

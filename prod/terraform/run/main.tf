@@ -82,7 +82,7 @@ resource "google_cloud_run_v2_service" "main" {
       // TODO: remove this
       env {
         name  = "DEFAULT_ACCOUNT"
-        value = "demo@specfy.io"
+        value = ""
       }
 
       volume_mounts {

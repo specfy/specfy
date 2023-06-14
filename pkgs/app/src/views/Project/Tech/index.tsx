@@ -14,6 +14,7 @@ import { Flow, FlowWrapper } from '../../../components/Flow';
 import { Toolbar } from '../../../components/Flow/Toolbar';
 import type { ComputedFlow } from '../../../components/Flow/helpers';
 import { componentsToFlow } from '../../../components/Flow/helpers';
+import { NotFound } from '../../../components/NotFound';
 import type { RouteProject, RouteTech } from '../../../types/routes';
 
 import cls from './index.module.scss';
@@ -77,7 +78,7 @@ export const Tech: React.FC<{
   }, [components]);
 
   if (!techname) {
-    return <div>not found</div>;
+    return <NotFound />;
   }
 
   return (

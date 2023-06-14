@@ -1,0 +1,60 @@
+@import "../../../../styles/theme";
+
+.github {
+  width: 500px;
+  padding: $p-5xl 0 $p-5xl 0;
+  border-top: 1px solid $color-border;
+}
+
+.header {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.main {
+  margin: $p-2xl 0 0 0;
+}
+
+.select {
+  width: 250px;
+  margin-bottom: $p-xl;
+}
+
+.install {
+  margin-top: $p-s;
+  padding-top:$p-s;
+  border-top: 1px solid $color-border;
+}
+
+.option {
+  display: flex;
+  gap: $p-m;
+  align-items: center;
+  margin-top: 2px;
+
+  .label {
+    margin-top: -$p-s;
+  }
+}
+
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-top: -1px;
+  padding: $p-l;
+
+  background-color: #fff;
+  border: 1px solid $color-border;
+
+  &:first-child {
+    border-radius: $border-radius-s $border-radius-s 0 0;
+  }
+
+  &:last-child {
+    border-radius: 0 0 $border-radius-s $border-radius-s;
+  }
+}

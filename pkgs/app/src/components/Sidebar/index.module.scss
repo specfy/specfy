@@ -63,12 +63,14 @@
   border-bottom: 1px solid $color-border;
 
   .label {
+    overflow: hidden;
     display: flex;
     gap: $p-s;
     margin-left: 7px;
 
-    .slash {
-      color: $gray-500;
+    a {
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
   }
 
@@ -82,6 +84,8 @@
 .logo {
   width: 42px;
   height: 42px;
+  font-size: $font-l;
+  line-height: $line-height-3xl;
 }
 
 .collapser {
@@ -104,16 +108,16 @@
 }
 
 .project {
-  margin-top: -4px;
+  overflow: hidden;
 
   .smallOrg {
-    margin-left: 7px;
+    margin: 2px 0 -6px 7px;
     font-size: $font-xs;
     color: $gray-500;
   }
 
   .label {
-    line-height: 20px;
+    line-height: 28px;
   }
 }
 

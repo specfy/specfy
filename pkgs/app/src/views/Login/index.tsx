@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { authLocal } from '../../api/auth';
 import { isError, isValidationError } from '../../api/helpers';
+import { API_HOSTNAME } from '../../common/envs';
 import { i18n } from '../../common/i18n';
 import { Card } from '../../components/Card';
 import { Logo } from '../../components/Logo';
@@ -33,11 +34,7 @@ export const Login: React.FC = () => {
   };
 
   const handleGithub = () => {
-    window.location.replace(
-      `${
-        import.meta.env.VITE_API_HOSTNAME || 'http://localhost:3000'
-      }/0/auth/github`
-    );
+    window.location.replace(`${API_HOSTNAME}/0/auth/github`);
   };
 
   return (

@@ -79,13 +79,16 @@ Project:
   - soft suppression !!
   - Import Excalidraw
   - Import Draw.io
+  - Perms
+    - Perms should inherit org if none (e.g: you have been added to an already existing org or new project is created not by you)
   ✔ Edition “inline” @done(23-03-25 23:26)
   - Visibility: Public ou Privé (pour pouvoir montrer une demo facilement)
-  - Connect: Github
-    - Import
+  ✔ Connect: Github @done(23-06-14 15:18)
+    ✔ Import @done(23-06-14 15:18)
+      - Import from UI
     - One way Sync (from specfy to confluence)
-    - Automatic languages detection
-    - Automatic “service” detection
+    ✔ Automatic languages detection @done(23-06-14 15:18)
+    ✔ Automatic “service” detection @done(23-06-14 15:18)
     - Pingback depuis une Pull Request
         - Auto merge une revision quand la pull request est merge
 
@@ -132,7 +135,7 @@ Permissions:
 API:
   ✔ Handle pagination correctly @done(23-03-25 23:23)
   - Middelware: Rate Limit
-  - Deploy
+  ✔ Deploy @done(23-06-14 15:19)
 
 
 Components:
@@ -281,7 +284,7 @@ Activities:
       - Document
     ✔ Validation @done(23-03-29 15:09)
     ✔ Unit Test @done(23-04-03 12:15)
-  - Une activité par actions
+  ✔ Une activité par actions @done(23-06-14 15:19)
   - Deleting / Renaming breaks the query, we should select blobId or store some info inside the activity
 
 
@@ -332,9 +335,9 @@ Org:
       ✔ Unit Test @done(23-04-24 14:17)
       - Permissions
   ✔ Switch in the UI @done(23-03-27 17:46)
-  - Editer le graph d'organisation
+  - Editer le graph d'organization
   ✔ Hide everything when no projects @done(23-04-24 21:40)
-  - Flow Page
+  ✔ Flow Page @done(23-06-14 15:20)
   - Policies Page
   - Visibility Public
   ✔ Team Page @done(23-04-22 16:12)

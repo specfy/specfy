@@ -274,6 +274,9 @@ export const ContentSidebar: React.FC<{
           onClick={handleCollapse}
         /> */}
       </div>
+      {tree.length <= 0 && (
+        <div className={cls.empty}>Content will appear here...</div>
+      )}
       {list && (
         <div className={cls.results} ref={refList}>
           {list.map((item, i) => {

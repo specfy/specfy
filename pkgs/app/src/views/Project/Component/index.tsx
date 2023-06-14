@@ -26,6 +26,7 @@ import type { ComputedFlow } from '../../../components/Flow/helpers';
 import { componentsToFlow } from '../../../components/Flow/helpers';
 import { FakeInput } from '../../../components/Input';
 import { ListRFCs } from '../../../components/ListRFCs';
+import { NotFound } from '../../../components/NotFound';
 import { UpdatedAt } from '../../../components/UpdatedAt';
 import { useEdit } from '../../../hooks/useEdit';
 import type { RouteComponent } from '../../../types/routes';
@@ -111,7 +112,7 @@ export const ComponentView: React.FC<{
   };
 
   if (!comp) {
-    return <div>not found</div>;
+    return <NotFound />;
   }
 
   return (

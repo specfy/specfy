@@ -36,6 +36,7 @@ import { ContentDoc } from '../../../../components/Content';
 import { DiffCard } from '../../../../components/DiffCard';
 import { Editor } from '../../../../components/Editor';
 import { FakeInput } from '../../../../components/Input';
+import { NotFound } from '../../../../components/NotFound';
 import { Checks } from '../../../../components/Revision/Checks';
 import { ReviewBar } from '../../../../components/Revision/ReviewBar';
 import { SidebarBlock } from '../../../../components/SidebarBlock';
@@ -259,7 +260,7 @@ export const ProjectRevisionsShow: React.FC<{
   }
 
   if (!rev) {
-    return <>Not found</>;
+    return <NotFound />;
   }
 
   return (

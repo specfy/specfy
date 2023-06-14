@@ -82,7 +82,7 @@ export const SettingsGeneral: React.FC<{
                 <div className={cls.desc}>
                   The organization is accessible at{' '}
                   <em>
-                    https://specfy.io/<strong>{org.id}</strong>
+                    https://app.specfy.io/<strong>{org.id}</strong>
                   </em>
                 </div>
               }

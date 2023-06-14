@@ -86,8 +86,8 @@ const mapUser: Record<ActionUser, (target: TargetUser) => string> = {
 };
 
 const mapKey: Record<ActionKey, () => string> = {
-  'Key.created': () => `api key created`,
-  'Key.deleted': () => `api key deleted`,
+  'Key.created': () => `created an api key`,
+  'Key.deleted': () => `deleted an api key`,
 };
 
 export const RowActivity: React.FC<{ act: ApiActivity; orgId: string }> = ({

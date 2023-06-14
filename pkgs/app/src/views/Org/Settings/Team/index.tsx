@@ -6,6 +6,7 @@ import { useDebounce } from 'react-use';
 import { useListPerms, useListUser } from '../../../../api';
 import { Card } from '../../../../components/Card';
 import { Container } from '../../../../components/Container';
+import { Empty } from '../../../../components/Empty';
 import { Row } from '../../../../components/Team/Row';
 import { useAuth } from '../../../../hooks/useAuth';
 import type { RouteOrg } from '../../../../types/routes';
@@ -197,6 +198,7 @@ export const SettingsTeam: React.FC<{ params: RouteOrg }> = ({ params }) => {
                   />
                 );
               })}
+              {options.length <= 0 && <Empty search={search!} />}
             </div>
           )}
         </Card>

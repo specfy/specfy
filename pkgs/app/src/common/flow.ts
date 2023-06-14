@@ -19,5 +19,5 @@ export function computeProjectPosition(projects: ApiProject[]): {
 }
 
 export function computeWidth(name: string, min: number, max: number) {
-  return Math.min(max, Math.max(min, name.length * 6 + 15));
+  return Math.min(max, Math.max(min, name.length * 6 + 16 + 8)); // icon + gap
 }

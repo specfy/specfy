@@ -81,7 +81,7 @@ export const SettingsGeneral: React.FC<{
                 <div className={cls.desc}>
                   The project is accessible at{' '}
                   <em>
-                    https://specfy.io/
+                    https://app.specfy.io/
                     {proj.orgId}/<strong>{slug}</strong>
                   </em>
                 </div>

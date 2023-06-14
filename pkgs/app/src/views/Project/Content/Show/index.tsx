@@ -1,9 +1,11 @@
+import { Skeleton } from 'antd';
 import type { ApiDocument, ApiProject } from 'api/src/types/api';
 import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { useGetDocument } from '../../../../api';
 import { useDocumentsStore } from '../../../../common/store';
+import { NotFound } from '../../../../components/NotFound';
 import type { RouteDocument } from '../../../../types/routes';
 import { Doc } from '../Doc';
 import { Playbook } from '../Playbook';
@@ -44,8 +46,27 @@ export const DocumentShow: React.FC<{
     }
   }, [getDoc.data, reqParams]);
 
+  if (getDoc.isLoading && !doc) {
+    return (
+      <div className={cls.wrapper}>
+        <div className={cls.container}>
+          <div></div>
+          <Skeleton active title={true} paragraph={{ rows: 3 }}></Skeleton>
+        </div>
+      </div>
+    );
+  }
+
   if (!doc) {
-    return <div>not found</div>;
+    return (
+      <div className={cls.wrapper}>
+        <div className={cls.container}>
+          <div></div>
+
+          <NotFound />
+        </div>
+      </div>
+    );
   }
 
   if (doc.type === 'rfc') {

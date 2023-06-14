@@ -59,21 +59,19 @@
     gap: $p-m;
     align-items: center;
 
-    >span {
+    .icon {
       width: $p-xl;
       height: $p-xl;
-      font-size: $font-l;
-      line-height: $p-xl - 2px;
-    }
-
-    .icon {
-      width: $p-xl ;
-      height: $p-xl;
-      padding-top: 1px;
-      padding-left: 4px;
+      margin-top: -4px;
 
       font-size: 11px;
       color: $gray-600;
+
+      > span {
+        width: $p-xl;
+        height: $p-xl;
+        line-height: $line-height-s;
+      }
 
       &.service {
         padding: 0 0 0 2px;
