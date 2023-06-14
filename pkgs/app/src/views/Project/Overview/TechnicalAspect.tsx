@@ -65,7 +65,7 @@ export const TechnicalAspects: React.FC<{
         components.length <= 0 &&
         tp.length <= 0 &&
         projects.length <= 0 && (
-          <Typography.Text type="secondary">Nothing to show.</Typography.Text>
+          <Typography.Text type="secondary">Nothing to show</Typography.Text>
         )}
 
       {techs.length > 0 && (

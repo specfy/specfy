@@ -53,7 +53,13 @@ export const Team: React.FC<Required<ReqListPerms>> = (opts) => {
           <div>Admin</div>
           <Avatar.Group>
             {owners.map((perm) => {
-              return <AvatarAuto key={perm.id} name={perm.user.name} />;
+              return (
+                <AvatarAuto
+                  key={perm.id}
+                  name={perm.user.name}
+                  src={perm.user.avatarUrl}
+                />
+              );
             })}
           </Avatar.Group>
         </div>
@@ -62,7 +68,13 @@ export const Team: React.FC<Required<ReqListPerms>> = (opts) => {
             <div>Reviewers</div>
             <Avatar.Group>
               {reviewers.map((perm) => {
-                return <AvatarAuto key={perm.id} name={perm.user.name} />;
+                return (
+                  <AvatarAuto
+                    key={perm.id}
+                    name={perm.user.name}
+                    src={perm.user.avatarUrl}
+                  />
+                );
               })}
             </Avatar.Group>
           </div>
@@ -72,7 +84,13 @@ export const Team: React.FC<Required<ReqListPerms>> = (opts) => {
             <div>Contributors</div>
             <Avatar.Group>
               {contributors.map((perm) => {
-                return <AvatarAuto key={perm.id} name={perm.user.name} />;
+                return (
+                  <AvatarAuto
+                    key={perm.id}
+                    name={perm.user.name}
+                    src={perm.user.avatarUrl}
+                  />
+                );
               })}
             </Avatar.Group>
           </div>
@@ -82,7 +100,13 @@ export const Team: React.FC<Required<ReqListPerms>> = (opts) => {
             <div>Viewers</div>
             <Avatar.Group>
               {viewers.map((perm) => {
-                return <AvatarAuto key={perm.id} name={perm.user.name} />;
+                return (
+                  <AvatarAuto
+                    key={perm.id}
+                    name={perm.user.name}
+                    src={perm.user.avatarUrl}
+                  />
+                );
               })}
             </Avatar.Group>
           </div>

@@ -15,13 +15,13 @@ import { AvatarAuto } from '../AvatarAuto';
 import cls from './index.module.scss';
 
 export const UserCard: React.FC<{
-  name: string;
+  user: ApiUser;
   size?: 'default' | 'small';
-}> = ({ name, size }) => {
+}> = ({ user, size }) => {
   return (
     <Space className={classnames(cls.userCard, size && cls[size])}>
-      <AvatarAuto name={name} size={size} />
-      {name}
+      <AvatarAuto name={user.name} size={size} src={user.avatarUrl} />
+      {user.name}
     </Space>
   );
 };

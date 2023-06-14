@@ -151,7 +151,7 @@ export const RowActivity: React.FC<{ act: ApiActivity; orgId: string }> = ({
     <div className={cls.row} data-action={act.action}>
       <div className={cls.header}>
         <Link to={`/_/user/${act.user.id}`} className={cls.user}>
-          <AvatarAuto name={act.user.name} />
+          <AvatarAuto name={act.user.name} src={act.user.avatarUrl} />
         </Link>
         <div className={cls.right}>
           <div className={cls.desc}>

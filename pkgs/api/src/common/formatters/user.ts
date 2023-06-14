@@ -7,6 +7,7 @@ export function toApiUser(user: Users): ApiUser {
     id: user.id,
     name: user.name,
     email: user.email,
+    avatarUrl: user.avatarUrl,
   };
 }
 
@@ -15,6 +16,7 @@ export function toApiMe(user: Users): ApiMe {
     id: user.id,
     name: user.name,
     email: user.email,
+    avatarUrl: user.avatarUrl,
     createdAt: user.createdAt.toISOString(),
     updatedAt: user.updatedAt.toISOString(),
   };

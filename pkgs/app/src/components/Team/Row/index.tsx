@@ -65,7 +65,7 @@ export const Row: React.FC<RowProps> = ({
   return (
     <div className={cls.line}>
       <div className={cls.left}>
-        <AvatarAuto name={user.name} size="large" />
+        <AvatarAuto name={user.name} size="large" src={user.avatarUrl} />
         <div className={cls.info}>
           <div>{user.name}</div>
           <div className={cls.sub}>{user.email}</div>

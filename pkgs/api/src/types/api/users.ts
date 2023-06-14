@@ -2,7 +2,7 @@ import type { DBUser } from '../db/users';
 
 import type { Pagination, ResErrors } from './api';
 
-export type ApiUser = Pick<DBUser, 'email' | 'id' | 'name'>;
+export type ApiUser = Pick<DBUser, 'avatarUrl' | 'email' | 'id' | 'name'>;
 
 // ------ GET /
 export type ReqListUsers = {

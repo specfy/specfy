@@ -4,6 +4,7 @@ export interface DBUser {
   email: string;
 
   emailVerified: string | null;
+  avatarUrl: string | null;
 
   createdAt: string;
   updatedAt: string;

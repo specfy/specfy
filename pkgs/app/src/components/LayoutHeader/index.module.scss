@@ -6,13 +6,13 @@
   align-items: center;
 
   height: $height-header;
-  padding: 0 $p-l;
+  padding: 0 $p-xl 0 13px;
 
   // border-bottom: 1px solid $gray-4;
   line-height: $height-header;
   color: white;
 
-  background: $slate-800;
+  background: #242d3c;
 
   :global {
     .ant-btn {
@@ -37,10 +37,10 @@
 }
 
 .avatar {
-  margin-left: $p-l;
   color: $gray-8;
 
   >span {
+    margin-top: -2px;
     background-color: transparent;
   }
 }
@@ -53,9 +53,15 @@
   justify-content: flex-end;
 
   margin-top: -2px;
-  padding-right: 8px;
+
+  // padding-right: 8px;
 
   color: inherit;
+
+  button {
+    background-color: rgb(255 255 255 / 5%);
+
+  }
 }
 
 .menu {

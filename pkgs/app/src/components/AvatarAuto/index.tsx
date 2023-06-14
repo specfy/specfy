@@ -7,7 +7,7 @@ export const AvatarAuto: React.FC<
   AvatarProps & { className?: string; name: string }
 > = ({ className, name, ...rest }) => {
   const acr = acronymize(name);
-  const style = stringToColor(acr);
+  const style = stringToColor(name);
   return (
     <Avatar
       className={className}

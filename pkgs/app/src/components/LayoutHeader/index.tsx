@@ -8,7 +8,7 @@ import {
   IconUserCircle,
 } from '@tabler/icons-react';
 import type { MenuProps } from 'antd';
-import { App, Divider, Button, Menu, Dropdown, Badge } from 'antd';
+import { Avatar, App, Divider, Button, Menu, Dropdown, Badge } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
@@ -140,7 +140,6 @@ export const LayoutHeader: React.FC = () => {
           </Badge>
         </div>
         <div>
-          <Divider type="vertical" />
           <Dropdown
             menu={{ items: userItems }}
             trigger={['click']}
@@ -171,7 +170,13 @@ export const LayoutHeader: React.FC = () => {
             <Button
               type="text"
               className={cls.avatar}
-              icon={<IconUserCircle />}
+              icon={
+                <Avatar
+                  src={user?.avatarUrl}
+                  icon={<IconUserCircle />}
+                  size="small"
+                />
+              }
             ></Button>
           </Dropdown>
         </div>

@@ -5,6 +5,7 @@ import { useDebounce } from 'react-use';
 
 import { useListPermsProject, useListUser } from '../../../../api';
 import { Card } from '../../../../components/Card';
+import { Empty } from '../../../../components/Empty';
 import { Row } from '../../../../components/Team/Row';
 import { useAuth } from '../../../../hooks/useAuth';
 
@@ -196,6 +197,7 @@ export const SettingsTeam: React.FC<{
                 />
               );
             })}
+            {options.length <= 0 && <Empty search={search!} />}
           </div>
         )}
       </Card>

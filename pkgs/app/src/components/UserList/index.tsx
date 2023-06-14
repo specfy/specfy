@@ -44,7 +44,7 @@ export const UserList: React.FC<{
       {list.map((user) => {
         return (
           <li key={user.id} className={cls.user}>
-            <UserCard name={user.name} />
+            <UserCard user={user} />
             {edit && (
               <Button
                 className={cls.remove}

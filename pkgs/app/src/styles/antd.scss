@@ -20,7 +20,12 @@
 }
 
 // Global typo
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin-top: 0;
   margin-bottom: 0;
   font-weight: 500;
@@ -281,7 +286,9 @@ h4.ant-typography {
   .ant-menu-item {
     padding-inline: $p-s;
 
+
     &::after {
+      bottom: -19px !important;
       display: none;
     }
 
@@ -301,13 +308,17 @@ h4.ant-typography {
 
       &:hover {
         text-decoration: none;
-        background-color: $primary-gray !important;
+        background-color: $gray-100 !important;
       }
     }
 
     &.ant-menu-item-selected {
+      &::after {
+        display: initial;
+      }
+
       a {
-        background-color: $primary-gray !important;
+        background-color: transparent !important;
       }
     }
 

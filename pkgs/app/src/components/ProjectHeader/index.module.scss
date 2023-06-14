@@ -2,6 +2,7 @@
 
 
 .header {
+  height: $height-header-project;
   padding: $p-3xl $p-2xl $p-xl $p-3xl;
   background-color: #fff;
   border-bottom: 1px solid $color-border;
@@ -14,9 +15,4 @@
     gap: $p-m;
     align-items: center;
   }
-}
-
-.menu {
-  height: 35px;
-  background-color: transparent;
 }

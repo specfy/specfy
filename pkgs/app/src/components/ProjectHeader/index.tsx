@@ -159,12 +159,7 @@ export const ProjectHeader: React.FC<{
 
   return (
     <div className={cls.header}>
-      <Menu
-        selectedKeys={[open]}
-        mode="horizontal"
-        items={menu}
-        className={cls.menu}
-      />
+      <Menu selectedKeys={[open]} mode="horizontal" items={menu} />
     </div>
   );
 };

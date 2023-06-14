@@ -36,11 +36,20 @@ export function registerGithub(passport: Authenticator) {
       }
 
       const email = emails[0].value;
+      const avatarUrl = profile.photos?.[0].value || null;
 
       let user = await prisma.users.findUnique({
         where: { email },
       });
+
+      // We found the user
       if (user) {
+        if (user.avatarUrl !== avatarUrl) {
+          await prisma.users.update({
+            data: { avatarUrl },
+            where: { id: user.id },
+          });
+        }
         await prisma.accounts.updateMany({
           data: {
             accessToken,
@@ -49,10 +58,12 @@ export function registerGithub(passport: Authenticator) {
           },
           where: { userId: user.id, provider: 'github' },
         });
+
         done(null, user);
         return;
       }
 
+      // New user
       await prisma.$transaction(async (tx) => {
         user = await tx.users.create({
           data: {
@@ -60,6 +71,7 @@ export function registerGithub(passport: Authenticator) {
             name: profile.displayName,
             email,
             emailVerifiedAt: new Date(),
+            avatarUrl,
             Accounts: {
               create: {
                 id: nanoid(),
