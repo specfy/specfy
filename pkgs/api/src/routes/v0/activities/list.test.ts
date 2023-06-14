@@ -48,7 +48,7 @@ describe('GET /activities', () => {
     isSuccess(res.json);
     expect(res.json.data).toStrictEqual([
       {
-        action: 'Org.created',
+        action: 'Key.created',
         activityGroupId: expect.any(String),
         createdAt: expect.toBeIsoDate(),
         id: expect.any(String),
@@ -60,7 +60,7 @@ describe('GET /activities', () => {
         },
       },
       {
-        action: 'Key.created',
+        action: 'Org.created',
         activityGroupId: expect.any(String),
         createdAt: expect.toBeIsoDate(),
         id: expect.any(String),
@@ -99,7 +99,7 @@ describe('GET /activities', () => {
     isSuccess(res.json);
     expect(res.json.data).toStrictEqual([
       {
-        action: 'Project.created',
+        action: 'Key.created',
         activityGroupId: expect.any(String),
         createdAt: expect.toBeIsoDate(),
         id: expect.any(String),
@@ -116,7 +116,7 @@ describe('GET /activities', () => {
         },
       },
       {
-        action: 'Key.created',
+        action: 'Project.created',
         activityGroupId: expect.any(String),
         createdAt: expect.toBeIsoDate(),
         id: expect.any(String),
