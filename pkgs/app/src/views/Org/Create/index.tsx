@@ -44,8 +44,8 @@ export const OrgCreate: React.FC = () => {
       <header>
         <h1>Create an Organization</h1>
         <p>
-          To hold all your projects and documentation. The unique id can&apos;t
-          be changed later.
+          Host all your projects and documentation. The unique id can&apos;t be
+          changed later.
         </p>
       </header>
       <div className={cls.title}>
@@ -63,7 +63,7 @@ export const OrgCreate: React.FC = () => {
             onChange={(e) => {
               setName(e.target.value);
               const prevId = slugify(name);
-              if (id === prevId) {
+              if (id === prevId || id === '') {
                 setId(slugify(e.target.value));
               }
             }}

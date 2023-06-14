@@ -1,25 +1,20 @@
-@use "sass:math";
-
 @import "../../../styles/theme";
-
-$width: math.div($main-col-w, 1.4);
 
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
+
   width: 100%;
+  padding: $p-4xl;
 }
 
 .form {
   display: flex;
   flex-direction: column;
   gap: $p-m;
+  width: 600px;
 
-  width: $width;
-
-  // height: calc(100vh - $height-header-org-total - ($p-2xl * 2));
-  margin: $p-5xl;
 }
 
 .wrap {

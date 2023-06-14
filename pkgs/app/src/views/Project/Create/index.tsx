@@ -11,6 +11,7 @@ import { computeProjectPosition, computeWidth } from '../../../common/flow';
 import { i18n } from '../../../common/i18n';
 import { useProjectStore } from '../../../common/store';
 import { slugify } from '../../../common/string';
+import { Card } from '../../../components/Card';
 import type { RouteOrg } from '../../../types/routes';
 
 import { CreateFromGithub } from './CreateFromGithub';
@@ -63,56 +64,58 @@ export const ProjectCreate: React.FC<{ params: RouteOrg }> = ({ params }) => {
 
   return (
     <div className={cls.container}>
-      <form onSubmit={onFinish} className={cls.form}>
-        <header>
-          <h1>Create a Project</h1>
-          <p>
-            Contains your documentation and technical stack about a product in
-            your organization.
-          </p>
-        </header>
-        <div className={cls.title}>
+      <Card padded large>
+        <form onSubmit={onFinish} className={cls.form}>
+          <header>
+            <h1>Create a Project</h1>
+            <p>
+              Contains your documentation and technical stack about a product in
+              your organization.
+            </p>
+          </header>
+          <div className={cls.title}>
+            <Form.Item
+              className={cls.wrap}
+              help={errors.name?.message}
+              validateStatus={errors.name && 'error'}
+            >
+              <Input
+                size="large"
+                placeholder="Project name..."
+                className={cls.input}
+                value={name}
+                autoFocus
+                onChange={(e) => {
+                  setName(e.target.value);
+                  const prev = slugify(name);
+                  if (slug === prev || slug === '') {
+                    setSlug(slugify(e.target.value));
+                  }
+                }}
+              />
+            </Form.Item>
+            <Button
+              type="primary"
+              disabled={!name || name.length < 2}
+              className={cls.button}
+              htmlType="submit"
+              icon={<IconCircleArrowRight />}
+            ></Button>
+          </div>
           <Form.Item
             className={cls.wrap}
-            help={errors.name?.message}
-            validateStatus={errors.name && 'error'}
+            help={errors.slug?.message}
+            validateStatus={errors.slug && 'error'}
           >
             <Input
-              size="large"
-              placeholder="Project name..."
-              className={cls.input}
-              value={name}
-              autoFocus
-              onChange={(e) => {
-                setName(e.target.value);
-                const prev = slugify(name);
-                if (slug === prev) {
-                  setSlug(slugify(e.target.value));
-                }
-              }}
+              placeholder="Unique ID"
+              value={slug}
+              addonBefore={`https://app.specify.io/${params.org_id}/`}
+              onChange={(e) => setSlug(slugify(e.target.value))}
             />
           </Form.Item>
-          <Button
-            type="primary"
-            disabled={!name || name.length < 2}
-            className={cls.button}
-            htmlType="submit"
-            icon={<IconCircleArrowRight />}
-          ></Button>
-        </div>
-        <Form.Item
-          className={cls.wrap}
-          help={errors.slug?.message}
-          validateStatus={errors.slug && 'error'}
-        >
-          <Input
-            placeholder="Unique ID"
-            value={slug}
-            addonBefore={`https://app.specify.io/${params.org_id}/`}
-            onChange={(e) => setSlug(slugify(e.target.value))}
-          />
-        </Form.Item>
-      </form>
+        </form>
+      </Card>
 
       <CreateFromGithub params={params} onError={onError} />
     </div>

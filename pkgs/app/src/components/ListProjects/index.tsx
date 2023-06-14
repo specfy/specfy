@@ -117,7 +117,7 @@ export const ListProjects: React.FC<{ orgId: string }> = ({ orgId }) => {
                           <IconUsers /> 12
                         </div>
                         <div>
-                          Updated <Time time={item.updatedAt} />
+                          · <Time time={item.updatedAt} />
                         </div>
                       </div>
                     </>

@@ -232,6 +232,7 @@ h4.ant-typography {
 
 .ant-input {
   padding: $p-m $p-l;
+  border-color: $gray-200;
 
   &.ant-input-sm {
     padding: $p-s;
@@ -242,7 +243,9 @@ h4.ant-typography {
 
 .ant-input-group {
   .ant-input-group-addon {
-    background-color: $gray-100;
+    padding: 0 $p-xl;
+    color: $gray-400;
+    background-color: $gray-50;
     border-color: $gray-200;
   }
 
@@ -257,6 +260,15 @@ h4.ant-typography {
       align-self: center;
       height: 22px;
     }
+  }
+}
+
+.ant-input-affix-wrapper {
+  border-color: $gray-200;
+
+  .ant-input-prefix {
+    margin-inline-end: $p-m;
+    color: $gray-400;
   }
 }
 

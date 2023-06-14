@@ -12,6 +12,7 @@ import {
   useGetGithubRepos,
 } from '../../../../api/github';
 import { isError, isValidationError } from '../../../../api/helpers';
+import { GITHUB_APP } from '../../../../common/envs';
 import { computeProjectPosition, computeWidth } from '../../../../common/flow';
 import { i18n } from '../../../../common/i18n';
 import { Popup } from '../../../../common/popup';
@@ -103,7 +104,7 @@ export const CreateFromGithub: React.FC<{
   const triggerInstall = () => {
     ref.current = new Popup({
       id: 'github-install',
-      url: 'https://github.com/apps/specfy-local/installations/new',
+      url: `https://github.com/apps/${GITHUB_APP}/installations/new`,
       callbacks: {
         onBlocked: () => {
           ref.current = null;
