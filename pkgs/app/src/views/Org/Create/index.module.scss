@@ -2,7 +2,16 @@
 
 @import "../../../styles/theme";
 
-$width: math.div($main-col-w, 1.4);
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  padding: $p-4xl;
+}
 
 .form {
   display: flex;
@@ -10,9 +19,7 @@ $width: math.div($main-col-w, 1.4);
   gap: $p-m;
   justify-content: center;
 
-  width: $width;
-  height: calc(100vh - $height-header-org-total - ($p-2xl * 2));
-  min-height: 200px;
+  width: 600px;
   margin: 0 auto;
 }
 

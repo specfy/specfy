@@ -16,7 +16,6 @@ import { GITHUB_APP } from '../../../../common/envs';
 import { computeProjectPosition, computeWidth } from '../../../../common/flow';
 import { i18n } from '../../../../common/i18n';
 import { Popup } from '../../../../common/popup';
-import { queryClient } from '../../../../common/query';
 import { useProjectStore } from '../../../../common/store';
 import { slugify } from '../../../../common/string';
 import type { RouteOrg } from '../../../../types/routes';
@@ -83,7 +82,7 @@ export const CreateFromGithub: React.FC<{
   );
 
   useEffect(() => {
-    if (!resInstall.data) {
+    if (!resInstall.data || resInstall.isFetching) {
       return;
     }
 
@@ -95,11 +94,11 @@ export const CreateFromGithub: React.FC<{
     }
 
     setInstallReady(true);
-  }, [resInstall.data]);
+  }, [resInstall]);
 
   useEffect(() => {
-    setReposReady(resRepos.data || !resRepos.isLoading ? true : false);
-  }, [resRepos.data]);
+    setReposReady(resRepos.data && !resRepos.isFetching ? true : false);
+  }, [resRepos]);
 
   const triggerInstall = () => {
     ref.current = new Popup({
@@ -112,44 +111,15 @@ export const CreateFromGithub: React.FC<{
             'The popup to install the GitHub App could not be opened.'
           );
         },
-        onAbort: () => {
-          ref.current = null;
-          console.log('on abort');
-        },
         onClose: () => {
           ref.current = null;
-          queryClient.refetchQueries(['getGithubInstallations'], {
-            exact: false,
-          });
-          queryClient.refetchQueries(['getGithubRepos'], {
-            exact: false,
-          });
-          console.log('on clear');
-        },
-        onPoll: async (popup) => {
-          // TODO: fails locally because of CSP that are not sent
-          try {
-            const url = new URL(popup.location.href);
 
-            if (
-              url.origin !== window.location.origin ||
-              url.pathname !== '/0/auth/github/cb'
-            ) {
-              return;
-            }
+          setSelected('public');
+          setInstallReady(false);
+          setReposReady(false);
 
-            if (ref.current) {
-              ref.current.close();
-            }
-
-            const tmp = Number(url.searchParams.get('installation_id'));
-            setSelected(tmp);
-          } catch (e) {
-            console.error(e);
-            // do nothing
-          }
-
-          // TODO: do something here
+          resInstall.refetch();
+          resRepos.refetch();
         },
       },
     });

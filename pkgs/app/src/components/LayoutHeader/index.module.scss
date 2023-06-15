@@ -25,10 +25,6 @@
         }
       }
     }
-
-    .ant-divider {
-      border-inline-start: 1px solid rgb(255 255 255 / 20%);
-    }
   }
 }
 
@@ -36,13 +32,11 @@
   height: 22px;
 }
 
-.avatar {
-  color: $gray-8;
-
-  >span {
-    margin-top: -2px;
-    background-color: transparent;
-  }
+.org {
+  display: flex;
+  gap: $p-l;
+  align-items: center;
+  min-width: 200px;
 }
 
 
@@ -54,13 +48,25 @@
 
   margin-top: -2px;
 
-  // padding-right: 8px;
-
   color: inherit;
 
   button {
-    background-color: rgb(255 255 255 / 5%);
+    border: 1px solid rgb(255 255 255 / 5%);
+    border-radius: 20px;
+  }
+}
 
+.avatar {
+  background-color: rgb(255 255 255 / 5%);
+
+  img {
+    transform: scale(1.2);
+
+    width: 100%;
+    margin-top: -3px;
+    padding: 2px;
+
+    border-radius: 20px;
   }
 }
 
@@ -107,8 +113,8 @@
 
     color: $gray-8;
 
-    span {
-      padding-right: 16px;
+    svg {
+      margin-top: 2px;
     }
 
     &:hover {

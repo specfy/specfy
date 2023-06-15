@@ -1,12 +1,12 @@
+import { API_HOSTNAME } from './envs';
+
 export interface Params {
   id: string;
   url: string;
   width?: number;
   height?: number;
   callbacks?: {
-    onPoll?: (popup: Window) => void;
     onOpen?: () => void;
-    onAbort?: () => void;
     onClose?: () => void;
     onBlocked?: () => void;
   };
@@ -20,6 +20,7 @@ export class Popup {
   callbacks;
   interval: NodeJS.Timeout | null = null;
   popup: Window | null = null;
+  private cb: (event: MessageEvent<any>) => void;
 
   constructor({ id, url, width, height, callbacks }: Params) {
     this.id = id;
@@ -27,6 +28,7 @@ export class Popup {
     this.width = width || 800;
     this.height = height || 600;
     this.callbacks = callbacks || {};
+    this.cb = (evt) => this.receiveMessage(evt);
   }
 
   open() {
@@ -80,18 +82,16 @@ export class Popup {
   }
 
   poll() {
+    window.addEventListener('message', this.cb, false);
+
     this.interval = setInterval(() => {
       try {
         if (!this.popup || this.popup.closed) {
           this.cancelPolling();
-          if (this.callbacks.onAbort) {
-            this.callbacks.onAbort();
+          if (this.callbacks.onClose) {
+            this.callbacks.onClose();
           }
           return;
-        }
-
-        if (this.callbacks.onPoll) {
-          this.callbacks.onPoll(this.popup);
         }
       } catch (t) {
         // do nothing
@@ -106,5 +106,19 @@ export class Popup {
 
     clearInterval(this.interval);
     this.interval = null;
+    window.removeEventListener('message', this.cb, false);
+  }
+
+  receiveMessage(event: MessageEvent<any>) {
+    console.log(event, event.origin, window.location.origin, API_HOSTNAME);
+    if (event.origin !== API_HOSTNAME) {
+      return;
+    }
+
+    this.close();
+
+    if (this.callbacks.onClose) {
+      this.callbacks.onClose();
+    }
   }
 }

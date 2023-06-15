@@ -8,6 +8,7 @@ import { createOrg } from '../../../api';
 import { isError, isValidationError } from '../../../api/helpers';
 import { i18n } from '../../../common/i18n';
 import { slugify } from '../../../common/string';
+import { Card } from '../../../components/Card';
 
 import cls from './index.module.scss';
 
@@ -40,55 +41,59 @@ export const OrgCreate: React.FC = () => {
   };
 
   return (
-    <form onSubmit={onFinish} className={cls.form}>
-      <header>
-        <h1>Create an Organization</h1>
-        <p>
-          Host all your projects and documentation. The unique id can&apos;t be
-          changed later.
-        </p>
-      </header>
-      <div className={cls.title}>
-        <Form.Item
-          className={cls.wrap}
-          help={errors.name?.message}
-          validateStatus={errors.name && 'error'}
-        >
-          <Input
-            size="large"
-            placeholder="Name"
-            value={name}
-            className={cls.input}
-            autoFocus
-            onChange={(e) => {
-              setName(e.target.value);
-              const prevId = slugify(name);
-              if (id === prevId || id === '') {
-                setId(slugify(e.target.value));
-              }
-            }}
-          />
-        </Form.Item>
-        <Button
-          type="primary"
-          disabled={!name || name.length < 4 || !id || id.length < 4}
-          className={cls.button}
-          htmlType="submit"
-          icon={<IconCircleArrowRight />}
-        ></Button>
-      </div>
-      <Form.Item
-        className={cls.wrap}
-        help={errors.id?.message}
-        validateStatus={errors.id && 'error'}
-      >
-        <Input
-          placeholder="Unique ID"
-          value={id}
-          addonBefore="https://app.specify.io/"
-          onChange={(e) => setId(e.target.value)}
-        />
-      </Form.Item>
-    </form>
+    <div className={cls.container}>
+      <Card large padded>
+        <form onSubmit={onFinish} className={cls.form}>
+          <header>
+            <h1>Create an Organization</h1>
+            <p>
+              Host all your projects and documentation. The unique id can&apos;t
+              be changed later.
+            </p>
+          </header>
+          <div className={cls.title}>
+            <Form.Item
+              className={cls.wrap}
+              help={errors.name?.message}
+              validateStatus={errors.name && 'error'}
+            >
+              <Input
+                size="large"
+                placeholder="Name"
+                value={name}
+                className={cls.input}
+                autoFocus
+                onChange={(e) => {
+                  setName(e.target.value);
+                  const prevId = slugify(name);
+                  if (id === prevId || id === '') {
+                    setId(slugify(e.target.value));
+                  }
+                }}
+              />
+            </Form.Item>
+            <Button
+              type="primary"
+              disabled={!name || name.length < 4 || !id || id.length < 4}
+              className={cls.button}
+              htmlType="submit"
+              icon={<IconCircleArrowRight />}
+            ></Button>
+          </div>
+          <Form.Item
+            className={cls.wrap}
+            help={errors.id?.message}
+            validateStatus={errors.id && 'error'}
+          >
+            <Input
+              placeholder="Unique ID"
+              value={id}
+              addonBefore="https://app.specify.io/"
+              onChange={(e) => setId(e.target.value)}
+            />
+          </Form.Item>
+        </form>
+      </Card>
+    </div>
   );
 };

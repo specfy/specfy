@@ -5,10 +5,10 @@ import {
   IconLogout,
   IconPlus,
   IconSettings,
-  IconUserCircle,
+  IconUser,
 } from '@tabler/icons-react';
 import type { MenuProps } from 'antd';
-import { Avatar, App, Divider, Button, Menu, Dropdown, Badge } from 'antd';
+import { App, Divider, Button, Menu, Dropdown, Badge } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
@@ -18,6 +18,7 @@ import { isError } from '../../api/helpers';
 import { i18n } from '../../common/i18n';
 import { useAuth } from '../../hooks/useAuth';
 import type { RouteOrg } from '../../types/routes';
+import { AvatarAuto } from '../AvatarAuto';
 import { Logo } from '../Logo';
 
 import cls from './index.module.scss';
@@ -71,7 +72,11 @@ export const LayoutHeader: React.FC = () => {
     const data: MenuProps['items'] = orgsQuery.data.data.map((org) => {
       return {
         key: org.id,
-        label: <Link to="/">{org.name}</Link>,
+        label: (
+          <Link to="/" className={cls.org}>
+            <AvatarAuto name={org.name} shape="square" /> {org.name}
+          </Link>
+        ),
         onClick: handleNavigate,
       };
     });
@@ -152,16 +157,16 @@ export const LayoutHeader: React.FC = () => {
                 <Divider />
                 <Link to="/account/" className={cls.userDropdownItem}>
                   <IconSettings />
-                  Settings
+                  <div>Settings</div>
                 </Link>
                 <Link to="/account/" className={cls.userDropdownItem}>
                   <IconHelp />
-                  Support
+                  <div>Support</div>
                 </Link>
                 <Divider />
                 <a onClick={handleLogout} className={cls.userDropdownItem}>
                   <IconLogout />
-                  Logout
+                  <div>Logout</div>
                 </a>
               </div>
             )}
@@ -171,11 +176,7 @@ export const LayoutHeader: React.FC = () => {
               type="text"
               className={cls.avatar}
               icon={
-                <Avatar
-                  src={user?.avatarUrl}
-                  icon={<IconUserCircle />}
-                  size="small"
-                />
+                user?.avatarUrl ? <img src={user?.avatarUrl} /> : <IconUser />
               }
             ></Button>
           </Dropdown>

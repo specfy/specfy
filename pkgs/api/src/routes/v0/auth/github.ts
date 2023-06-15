@@ -21,7 +21,17 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     { preValidation: [fastifyPassport.authenticate('github')] },
     function (req, res) {
       if (req.query.installation_id) {
-        res.status(200).send('Redirecting...');
+        res.status(200).type('text/html').send(`<html><body>
+        Redirecting...
+        <script>
+          document.addEventListener("DOMContentLoaded", function() {
+            //JSON data for message
+            window.opener.postMessage("installation.done", "${env(
+              'APP_HOSTNAME'
+            )}");
+          });
+        </script>
+      </body>`);
         return;
       }
 
