@@ -10,11 +10,19 @@ import type {
   ResListPermsSuccess,
   ResPutPerms,
 } from 'api/src/types/api';
+import type { PermType } from 'api/src/types/db';
 
 import { queryClient } from '../common/query';
 
 import { fetchApi } from './fetch';
 import { APIError, isError } from './helpers';
+
+export const roleReadable: Record<PermType, string> = {
+  contributor: 'Contributor',
+  owner: 'Owner',
+  reviewer: 'Reviewer',
+  viewer: 'Viewer',
+};
 
 export function useCountPerms(opts: ReqListPerms) {
   return useQuery({

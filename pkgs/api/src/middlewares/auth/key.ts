@@ -44,6 +44,8 @@ export function registerKey(fastify: FastifyInstance, passport: Authenticator) {
         name: `API [...${last}]`,
         email: 'support@specfy.io',
         password: null,
+        avatarUrl: null,
+        githubLogin: null,
         createdAt: key.createdAt,
         emailVerifiedAt: key.createdAt,
         updatedAt: key.createdAt,

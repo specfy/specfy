@@ -19,7 +19,7 @@ export type ResGetGithubRepos = ResErrors | ResGetGithubReposSuccess;
 export interface ApiGithubInstallation {
   id: number;
   name: string;
-  avatar: string;
+  avatarUrl: string;
   url: string;
 }
 export interface ResGetGithubInstallationsSuccess {
@@ -28,3 +28,18 @@ export interface ResGetGithubInstallationsSuccess {
 export type ResGetGithubInstallations =
   | ResErrors
   | ResGetGithubInstallationsSuccess;
+
+// GET /github/members
+export interface ApiGithubMember {
+  id: number;
+  name: string;
+  avatarUrl: string;
+  url: string;
+}
+export interface ReqGetGithubMembers {
+  org: string;
+}
+export interface ResGetGithubMembersSuccess {
+  data: ApiGithubMember[];
+}
+export type ResGetGithubMembers = ResErrors | ResGetGithubMembersSuccess;

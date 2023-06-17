@@ -9,6 +9,16 @@ import type {
   ResGetGithubInstallations,
   ResGetGithubRepos,
 } from './github';
+import type {
+  ReqGetInvitation,
+  ReqListInvitations,
+  ReqPostInvitations,
+  ResAcceptInvitation,
+  ResDeleteInvitation,
+  ResGetInvitation,
+  ResListInvitations,
+  ResPostInvitations,
+} from './invitations';
 import type { ReqPutMe, ResDeleteMe, ResGetMe, ResPutMe } from './me';
 import type {
   ReqPostOrg,
@@ -176,6 +186,28 @@ export interface API {
   };
   '/0/github/repos': {
     GET: { res: ResGetGithubRepos; qp: ReqGetGithubRepos; body: never };
+  };
+
+  '/0/invitations': {
+    GET: { res: ResListInvitations; qp: ReqListInvitations; body: never };
+    POST: { res: ResPostInvitations; qp: never; body: ReqPostInvitations };
+  };
+  [key: `/0/invitations/${string}`]: {
+    GET: {
+      res: ResGetInvitation;
+      qp: ReqGetInvitation;
+      body: never;
+    };
+    POST: {
+      res: ResAcceptInvitation;
+      qp: ReqGetInvitation;
+      body: never;
+    };
+    DELETE: {
+      res: ResDeleteInvitation;
+      qp: ReqGetInvitation;
+      body: never;
+    };
   };
 }
 

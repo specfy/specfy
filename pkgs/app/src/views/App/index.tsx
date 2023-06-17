@@ -12,6 +12,7 @@ import { AuthProvider } from '../../hooks/useAuth';
 import { EditProvider } from '../../hooks/useEdit';
 import { Account } from '../Account';
 import { Homepage } from '../Homepage';
+import { Invite } from '../Invite';
 import { Login } from '../Login';
 import { Org } from '../Org';
 import { OrgCreate } from '../Org/Create';
@@ -24,7 +25,7 @@ const App: React.FC = () => {
         theme={{
           token: {
             borderRadius: 4,
-            colorPrimary: '#677AF2',
+            colorPrimary: '#3e63dd',
             colorLink: '#1d4ed8',
             colorLinkHover: '#3b82f6',
             // linkHoverDecoration: 'underline',
@@ -45,6 +46,14 @@ const App: React.FC = () => {
             colorTextDescription: '#6b7280',
             colorBgContainerDisabled: '#f9fafb',
           },
+          components: {
+            Table: {
+              controlItemBgHover: 'white',
+              controlItemBgActive: 'white',
+              controlItemBgActiveHover: 'white',
+              colorFillAlter: 'white',
+            },
+          },
         }}
       >
         <QueryClientProvider client={queryClient}>
@@ -57,6 +66,7 @@ const App: React.FC = () => {
                 <Route element={<AuthLayout></AuthLayout>}>
                   <Route path="/" element={<Homepage />} />
 
+                  <Route path="/invite" element={<Invite />} />
                   <Route path="/account" element={<Account />} />
                   <Route path="/organizations" element={<NotFound />} />
                   <Route path="/organizations/*" element={<OrgCreate />} />

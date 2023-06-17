@@ -204,7 +204,7 @@ export const CreateFromGithub: React.FC<{
                   <Select.Option key={install.id} value={install.id}>
                     <div className={cls.option}>
                       <Avatar
-                        src={install.avatar}
+                        src={install.avatarUrl}
                         shape="square"
                         size="small"
                       />

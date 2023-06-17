@@ -347,15 +347,17 @@ export const ProjectRevisionsShow: React.FC<{
             exclude={reviewers || rev.reviewers}
           />
         </SidebarBlock>
-        <SidebarBlock title="Reviewers">
-          <UserList
-            list={reviewers || rev.reviewers}
-            params={qp}
-            edit={edit}
-            onChange={onChangeReviewer}
-            exclude={authors || rev.authors}
-          />
-        </SidebarBlock>
+        {false && (
+          <SidebarBlock title="Reviewers">
+            <UserList
+              list={reviewers || rev!.reviewers}
+              params={qp}
+              edit={edit}
+              onChange={onChangeReviewer}
+              exclude={authors || rev!.authors}
+            />
+          </SidebarBlock>
+        )}
       </div>
 
       {resBlobs.isLoading && (

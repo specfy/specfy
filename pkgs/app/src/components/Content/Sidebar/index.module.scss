@@ -28,9 +28,6 @@
   .result {
     @include button;
 
-    display: flex;
-    padding: $p $p-l;
-
     mark {
       padding: 0;
       font-weight: 600;

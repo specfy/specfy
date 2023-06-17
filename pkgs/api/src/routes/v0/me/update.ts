@@ -37,7 +37,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
             data: { name: data.name },
             where: { id: user.id },
           });
-          await createUserActivity(req.user!, 'User.updated', tmp, tx);
+          await createUserActivity(req.user!, 'User.updated', tmp, null, tx);
 
           return tmp;
         });

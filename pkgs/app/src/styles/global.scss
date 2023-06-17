@@ -1,4 +1,7 @@
 @import "./theme";
+@import '@radix-ui/colors/mauve.css';
+@import '@radix-ui/colors/indigo.css';
+@import '@radix-ui/colors/mauveDark.css';
 
 .tabler-icon {
   width: 1.2em;
@@ -17,10 +20,28 @@
 }
 
 
+:root {
+  // TEXT
+  --text: var(--mauve12);
+  --textLight: var(--mauve11);
+  --textDisabled: var(--mauve9);
+
+  // BG
+  --bgLight: var(--mauve2);
+  --bgHover: var(--mauve3);
+  --bgDark: var(--mauve5);
+
+  // OTHER
+  --border: var(--mauve5);
+  --accent: var(--indigo9);
+}
+
+
 // ----- Layout
 body {
   // font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Noto Sans", sans-serif, BlinkMacSystemFont, Oxygen, "Open Sans", "Helvetica Neue";
-  font-family: $font-text;
+  font: $font $font-text;
+  color: var(--text);
   background-color: $gray-2;
 }
 

@@ -6,6 +6,7 @@ export * from './components';
 export * from './document';
 export * from './documents';
 export * from './github';
+export * from './invitations';
 export * from './me';
 export * from './orgs';
 export * from './perms';

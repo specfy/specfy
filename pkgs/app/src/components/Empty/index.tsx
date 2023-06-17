@@ -7,7 +7,7 @@ export const Empty: React.FC<{
 }> = ({ search, title, desc, action }) => {
   return (
     <div className={cls.empty}>
-      <h3>{title || 'No Results Found'}</h3>
+      <h4>{title || 'No Results Found'}</h4>
       {search && (
         <p>Your search for &quot;{search}&quot; did not return any results</p>
       )}

@@ -41,9 +41,11 @@
 @mixin button() {
   cursor: pointer;
 
-  display: inline-flex;
+  display: flex;
   gap: $p-s;
   align-items: center;
+
+  padding: $p $p-l;
 
   color: $gray-700;
 
@@ -51,6 +53,6 @@
 
   &:hover {
     color: $blue-700;
-    background: $gray-100;
+    background: $color-hover;
   }
 }

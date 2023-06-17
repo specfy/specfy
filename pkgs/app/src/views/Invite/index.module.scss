@@ -1,0 +1,13 @@
+@import "../../styles/theme";
+
+.container {
+  width: 100vw;
+
+  >div {
+    width: 500px;
+  }
+}
+
+.content {
+  margin: $p-5xl 0 $p-3xl 0;
+}

@@ -6,7 +6,7 @@
   background-color: #fff;
   border: 1px solid $gray-100;
   border-radius: $border-radius-s;
-  box-shadow: $box-shadow2;
+  box-shadow: $box-shadow;
 
   &.padded {
     padding: $p-2xl;
@@ -31,14 +31,23 @@
   align-items: center;
   justify-content: end;
 
-  padding: $p-xl $p-xl;
+  padding: $p-l $p-xl;
 
   color: $gray-500;
 
   background-color: $gray-50;
   border-top: 1px solid $gray-100;
+
+  &.transparent {
+    background-color: transparent;
+    border-color: transparent;
+  }
 }
 
 .content {
   padding: $p-2xl;
+
+  &.large {
+    padding: $p-3xl $p-5xl;
+  }
 }

@@ -154,19 +154,24 @@ model Orgs {
   id         String   @id @db.VarChar(36)
   name       String   @db.VarChar(36)
   isPersonal Boolean  @default(false)
+  githubOrg  String?  @db.VarChar(100)
+  avatarUrl  String?  @db.VarChar(1000)
+  color      String   @db.VarChar(7)
+  acronym    String   @db.VarChar(3)
   createdAt  DateTime @default(now()) @db.Timestamp(3)
   updatedAt  DateTime @updatedAt
 
-  Perms      Perms[]
-  Activities Activities[]
-  Comments   Comments[]
-  Components Components[]
-  Documents  Documents[]
-  Policies   Policies[]
-  Projects   Projects[]
-  Reviews    Reviews[]
-  Revisions  Revisions[]
-  Keys       Keys[]
+  Perms       Perms[]
+  Activities  Activities[]
+  Comments    Comments[]
+  Components  Components[]
+  Documents   Documents[]
+  Policies    Policies[]
+  Projects    Projects[]
+  Reviews     Reviews[]
+  Revisions   Revisions[]
+  Keys        Keys[]
+  Invitations Invitations[]
 }
 
 model Perms {
@@ -295,6 +300,7 @@ model Users {
   email           String    @unique(map: "idx_users_email") @db.VarChar(250)
   emailVerifiedAt DateTime? @db.Timestamp(3)
   password        String?   @db.VarChar(100)
+  githubLogin     String?   @db.VarChar(100)
   avatarUrl       String?   @db.VarChar(1000)
   createdAt       DateTime  @default(now()) @db.Timestamp(3)
   updatedAt       DateTime  @updatedAt
@@ -306,10 +312,20 @@ model Users {
   Reviews      Reviews[]
   Perms        Perms[]
   Keys         Keys[]
+  Invitations  Invitations[]
 }
 
-model VerificationToken {
-  token      String   @id @db.VarChar(100)
-  identifier String   @db.VarChar(100)
-  expiresAt  DateTime @db.Timestamp(3)
+model Invitations {
+  id        String   @id @db.VarChar(15)
+  token     String   @db.VarChar(100)
+  userId    String   @db.VarChar(15)
+  orgId     String   @db.VarChar(36)
+  email     String   @db.VarChar(250)
+  role      String   @db.VarChar(25)
+  expiresAt DateTime @db.Timestamp(3)
+
+  Org  Orgs  @relation(fields: [orgId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  User Users @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([orgId, expiresAt], map: "idx_invitations_orgid_expiresat")
 }

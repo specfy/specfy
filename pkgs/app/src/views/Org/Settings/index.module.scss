@@ -1,15 +1,10 @@
 @import "../../../styles/theme";
+@import "../../../styles/mixin";
 
 .container {
   display: grid;
   grid-template-columns: 200px 750px;
   gap: $p-2xl;
-}
-
-.link {
-  display: flex;
-  gap: $p-m;
-  align-items: center;
 }
 
 .flex {

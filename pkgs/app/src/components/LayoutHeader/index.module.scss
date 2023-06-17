@@ -8,7 +8,6 @@
   height: $height-header;
   padding: 0 $p-xl 0 13px;
 
-  // border-bottom: 1px solid $gray-4;
   line-height: $height-header;
   color: white;
 
@@ -38,7 +37,6 @@
   align-items: center;
   min-width: 200px;
 }
-
 
 
 .right {
@@ -95,12 +93,6 @@
       font-size: $font-s;
       font-weight: normal;
       color: $gray-7;
-    }
-  }
-
-  :global {
-    .ant-divider {
-      margin: 4px 0;
     }
   }
 

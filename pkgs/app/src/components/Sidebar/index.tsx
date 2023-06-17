@@ -70,13 +70,7 @@ export const Sidebar: React.FC<{
         <div className={cls.inner}>
           <div className={classNames(cls.header)}>
             <Link to={linkOrg}>
-              <AvatarAuto
-                name={org.name}
-                size="default"
-                shape="square"
-                src={org.logo}
-                className={cls.logo}
-              />
+              <AvatarAuto size="large" org={org} className={cls.logo} />
             </Link>
 
             {!project && (

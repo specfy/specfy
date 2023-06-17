@@ -1,20 +1,60 @@
-import type { AvatarProps } from 'antd';
-import { Avatar } from 'antd';
+import * as Avatar from '@radix-ui/react-avatar';
+import { acronymize, stringToColor } from 'api/src/common/avatar';
+import type { ApiOrg } from 'api/src/types/api';
+import classNames from 'classnames';
 
-import { acronymize, stringToColor } from '../../common/string';
+import cls from './index.module.scss';
 
-export const AvatarAuto: React.FC<
-  AvatarProps & { className?: string; name: string }
-> = ({ className, name, ...rest }) => {
-  const acr = acronymize(name);
-  const style = stringToColor(name);
+interface PropsOrg {
+  org: ApiOrg;
+}
+interface PropsBase {
+  name: string;
+  shape?: 'square';
+  src?: string | null;
+}
+type Props = {
+  className?: string;
+  size?: 'default' | 'large' | 'small' | 'xl';
+} & (PropsBase | PropsOrg);
+
+export const AvatarAuto: React.FC<Props> = ({
+  className,
+  size = 'default',
+  ...props
+}) => {
+  let name: string;
+  let acr: string;
+  let style;
+  let shape: PropsBase['shape'];
+  let src: PropsBase['src'];
+
+  if ('org' in props) {
+    name = props.org.name;
+    acr = props.org.acronym;
+    shape = 'square';
+    style = { backgroundColor: props.org.color, color: 'white' };
+    src = props.org.avatarUrl;
+  } else {
+    name = props.name;
+    acr = acronymize(props.name);
+    style = stringToColor(props.name);
+    src = props.src;
+  }
+
   return (
-    <Avatar
-      className={className}
-      style={{ ...style, border: 'none' }}
-      {...rest}
+    <Avatar.Root
+      className={classNames(
+        cls.avatar,
+        className,
+        size && cls[size],
+        shape && cls[shape]
+      )}
     >
-      {acr}
-    </Avatar>
+      <Avatar.Image className={cls.image} src={src!} alt={name} />
+      <Avatar.Fallback className={cls.fallback} delayMs={0} style={style}>
+        {acr}
+      </Avatar.Fallback>
+    </Avatar.Root>
   );
 };

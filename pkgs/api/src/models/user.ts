@@ -20,6 +20,7 @@ export async function createUserActivity(
   user: Users,
   action: ActionUser,
   target: Users,
+  orgId: string | null,
   tx: Prisma.TransactionClient
 ): Promise<Activities> {
   const activityGroupId = nanoid();
@@ -29,7 +30,7 @@ export async function createUserActivity(
       id: nanoid(),
       action,
       userId: user.id,
-      orgId: null,
+      orgId: orgId,
       projectId: null,
       activityGroupId,
       targetUserId: target.id,

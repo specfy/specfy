@@ -1,5 +1,6 @@
 import type { Activities, Orgs, Prisma, Users } from '@prisma/client';
 
+import { acronymize, stringToColor } from '../common/avatar';
 import { nanoid } from '../common/id';
 import type { ActionOrg } from '../types/db';
 
@@ -8,10 +9,16 @@ import { createKey } from './key';
 export async function createOrg(
   tx: Prisma.TransactionClient,
   user: Users,
-  data: Prisma.OrgsUncheckedCreateInput
+  data: Omit<Prisma.OrgsUncheckedCreateInput, 'acronym' | 'color'>
 ): Promise<Orgs> {
+  const acronym = acronymize(data.name);
+  const colors = stringToColor(data.name);
   const tmp = await tx.orgs.create({
-    data,
+    data: {
+      ...data,
+      acronym,
+      color: colors.backgroundColor,
+    },
   });
   await tx.perms.create({
     data: {

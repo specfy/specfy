@@ -63,7 +63,7 @@ export const Team: React.FC<Required<ReqListPerms>> = (opts) => {
             })}
           </Avatar.Group>
         </div>
-        {reviewers.length > 0 && (
+        {false && reviewers.length > 0 && (
           <div>
             <div>Reviewers</div>
             <Avatar.Group>

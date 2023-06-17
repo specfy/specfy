@@ -1,6 +1,7 @@
 import type { FastifyPluginCallback } from 'fastify';
 import { z } from 'zod';
 
+import { acronymize, stringToColor } from '../../../common/avatar';
 import { validationError } from '../../../common/errors';
 import { toApiOrg } from '../../../common/formatters/org';
 import { schemaOrg } from '../../../common/validators/org';
@@ -39,8 +40,10 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
     if (data.name) {
       org = await prisma.$transaction(async (tx) => {
+        const acronym = acronymize(data.name);
+        const colors = stringToColor(data.name);
         const tmp = await tx.orgs.update({
-          data: { name: data.name },
+          data: { name: data.name, acronym, color: colors.backgroundColor },
           where: { id: org.id },
         });
         await createOrgActivity(req.user!, 'Org.updated', tmp, tx);

@@ -1,10 +1,8 @@
-import { createAppAuth } from '@octokit/auth-app';
 import { RequestError } from '@octokit/request-error';
 import type { FastifyPluginCallback } from 'fastify';
 import { Octokit } from 'octokit';
 import { z } from 'zod';
 
-import { env } from '../../../common/env';
 import { notFound, serverError, validationError } from '../../../common/errors';
 import { prisma } from '../../../db';
 import type {
@@ -55,21 +53,20 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       });
       repos = list.data;
     } else {
-      // ----- App repos
+      const octokit = new Octokit({
+        auth: accounts!.accessToken,
+      });
+
       try {
-        // Check that install id is correct
-        const octokit = new Octokit({
-          authStrategy: createAppAuth,
-          auth: {
-            appId: env('GITHUB_CLIENT_APPID')!,
-            privateKey: env('GITHUB_CLIENT_PKEY'),
-          },
-        });
-        await octokit.rest.apps.getInstallation({
-          installation_id: query.installation_id,
-        });
+        const list =
+          await octokit.rest.apps.listInstallationReposForAuthenticatedUser({
+            installation_id: query.installation_id,
+            per_page: 50,
+          });
+        repos = list.data.repositories;
       } catch (e: unknown) {
         if (e instanceof RequestError) {
+          console.log(e);
           notFound(res);
           return;
         }
@@ -77,20 +74,6 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         serverError(res);
         return;
       }
-
-      // List repos
-      const octokit = new Octokit({
-        authStrategy: createAppAuth,
-        auth: {
-          appId: env('GITHUB_CLIENT_APPID')!,
-          privateKey: env('GITHUB_CLIENT_PKEY'),
-          installationId: query.installation_id,
-        },
-      });
-      const list = await octokit.rest.apps.listReposAccessibleToInstallation({
-        per_page: 50,
-      });
-      repos = list.data.repositories;
     }
 
     // Output

@@ -116,26 +116,28 @@ export const SettingsTeam: React.FC<{
               )}
             </div>
 
-            <div>
-              <Typography.Title level={5} className={cls.title}>
-                Reviewers
-              </Typography.Title>
-              {reviewers.map((perm) => {
-                return (
-                  <Row
-                    key={perm.id}
-                    params={p}
-                    user={perm.user}
-                    perm={perm}
-                    me={user!.id}
-                    onUpdated={onUpdate}
-                  />
-                );
-              })}
-              {reviewers.length <= 0 && (
-                <div className={cls.empty}>Nothing to show...</div>
-              )}
-            </div>
+            {false && (
+              <div>
+                <Typography.Title level={5} className={cls.title}>
+                  Reviewers
+                </Typography.Title>
+                {reviewers.map((perm) => {
+                  return (
+                    <Row
+                      key={perm.id}
+                      params={p}
+                      user={perm.user}
+                      perm={perm}
+                      me={user!.id}
+                      onUpdated={onUpdate}
+                    />
+                  );
+                })}
+                {reviewers.length <= 0 && (
+                  <div className={cls.empty}>Nothing to show...</div>
+                )}
+              </div>
+            )}
 
             <div>
               <Typography.Title level={5} className={cls.title}>

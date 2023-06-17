@@ -76,8 +76,9 @@ export const SettingsGeneral: React.FC<{
       <Card>
         <Form layout="vertical" onFinish={handleRename}>
           <Card.Content>
+            <Typography.Title level={3}>Organization Name</Typography.Title>
+            <br />
             <Form.Item
-              label="Name"
               extra={
                 <div className={cls.desc}>
                   The organization is accessible at{' '}

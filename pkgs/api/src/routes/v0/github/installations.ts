@@ -1,8 +1,7 @@
-import { createAppAuth } from '@octokit/auth-app';
 import type { FastifyPluginCallback } from 'fastify';
 import { Octokit } from 'octokit';
 
-import { env } from '../../../common/env';
+import { prisma } from '../../../db';
 import { noQuery } from '../../../middlewares/noQuery';
 import type { ResGetGithubInstallationsSuccess } from '../../../types/api';
 
@@ -10,18 +9,22 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<{ Reply: ResGetGithubInstallationsSuccess }>(
     '/',
     { preHandler: [noQuery] },
-    async function (_req, res) {
-      const octokit = new Octokit({
-        authStrategy: createAppAuth,
-        auth: {
-          appId: env('GITHUB_CLIENT_APPID')!,
-          privateKey: env('GITHUB_CLIENT_PKEY')!,
-        },
+    async function (req, res) {
+      const user = req.user!;
+
+      const accounts = await prisma.accounts.findFirst({
+        where: { userId: user.id },
       });
-      const list = await octokit.rest.apps.listInstallations();
+      const octokit = new Octokit({
+        auth: accounts!.accessToken,
+      });
+      const list =
+        await octokit.rest.apps.listInstallationsForAuthenticatedUser({
+          per_page: 50,
+        });
 
       const data: ResGetGithubInstallationsSuccess['data'] = [];
-      for (const inst of list.data) {
+      for (const inst of list.data.installations) {
         if (!inst.account) {
           continue;
         }
@@ -29,7 +32,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         data.push({
           id: inst.id,
           name: inst.account.login!,
-          avatar: inst.account.avatar_url!,
+          avatarUrl: inst.account.avatar_url!,
           url: inst.account.html_url!,
         });
       }

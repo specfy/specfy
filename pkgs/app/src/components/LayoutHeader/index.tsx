@@ -74,7 +74,7 @@ export const LayoutHeader: React.FC = () => {
         key: org.id,
         label: (
           <Link to="/" className={cls.org}>
-            <AvatarAuto name={org.name} shape="square" /> {org.name}
+            <AvatarAuto org={org} /> {org.name}
           </Link>
         ),
         onClick: handleNavigate,

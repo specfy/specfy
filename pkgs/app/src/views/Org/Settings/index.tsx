@@ -1,10 +1,8 @@
-import { IconSettings, IconUsers } from '@tabler/icons-react';
-import { Badge, Menu } from 'antd';
+import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import type { ApiOrg } from 'api/src/types/api';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 
-import { useCountPerms } from '../../../api';
 import { Container } from '../../../components/Container';
 import type { RouteOrg } from '../../../types/routes';
 
@@ -18,37 +16,11 @@ export const OrgSettings: React.FC<{ params: RouteOrg; org: ApiOrg }> = ({
 }) => {
   const location = useLocation();
 
-  const resCount = useCountPerms({ org_id: params.org_id });
-
   // Menu
   const linkSelf = useMemo(() => {
     return `/${params.org_id}/_/settings`;
   }, [params]);
   const [open, setOpen] = useState<string>('');
-
-  const menu = useMemo(() => {
-    return [
-      {
-        key: 'general',
-        label: (
-          <Link to={linkSelf} className={cls.link}>
-            <IconSettings />
-            General
-          </Link>
-        ),
-      },
-      {
-        key: 'team',
-        label: (
-          <Link to={`${linkSelf}/team`} className={cls.link}>
-            <IconUsers />
-            Team
-            <Badge count={resCount.data?.data} showZero={false} />
-          </Link>
-        ),
-      },
-    ];
-  }, [linkSelf]);
 
   useEffect(() => {
     if (location.pathname.match(/team/)) {
@@ -60,7 +32,28 @@ export const OrgSettings: React.FC<{ params: RouteOrg; org: ApiOrg }> = ({
 
   return (
     <Container className={cls.container}>
-      <Menu selectedKeys={[open]} mode="vertical" items={menu} />
+      <NavigationMenu.Root orientation="vertical" className="rx_navMenuRoot">
+        <NavigationMenu.List className="rx_navMenuList">
+          <NavigationMenu.Item className="rx_navMenuItem">
+            <NavigationMenu.Link
+              className="rx_navMenuLink"
+              active={open === 'general'}
+              asChild
+            >
+              <Link to={linkSelf}>General</Link>
+            </NavigationMenu.Link>
+          </NavigationMenu.Item>
+          <NavigationMenu.Item className="rx_navMenuItem">
+            <NavigationMenu.Link
+              className="rx_navMenuLink"
+              active={open === 'team'}
+              asChild
+            >
+              <Link to={`${linkSelf}/team`}>Team</Link>
+            </NavigationMenu.Link>
+          </NavigationMenu.Item>
+        </NavigationMenu.List>
+      </NavigationMenu.Root>
 
       <div className={cls.flex}>
         <Routes>

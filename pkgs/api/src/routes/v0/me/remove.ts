@@ -26,7 +26,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           id: user.id,
         },
       });
-      await createUserActivity(user, 'User.deleted', user, tx);
+      await createUserActivity(user, 'User.deleted', user, null, tx);
 
       // TODO: maybe delete permissions too?
     });

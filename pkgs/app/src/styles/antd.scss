@@ -308,16 +308,19 @@ h4.ant-typography {
 
       &:hover {
         text-decoration: none;
-        background-color: $gray-100 !important;
+        background-color: $color-hover !important;
       }
     }
 
     &.ant-menu-item-selected {
       &::after {
         display: initial;
+        border-bottom-width: 1px;
       }
 
       a {
+        font-weight: 500;
+        color: $gray-900;
         background-color: transparent !important;
       }
     }
@@ -430,7 +433,8 @@ h4.ant-typography {
 // Table
 .ant-table {
   thead {
-    th {
+    th,
+    td {
       background: #fff !important;
 
       >div {
@@ -451,6 +455,20 @@ h4.ant-typography {
       td {
         border-bottom: none !important;
       }
+    }
+  }
+}
+
+.ant-table-wrapper {
+  .ant-table {
+    .ant-table-title {
+      display: flex;
+      align-items: center;
+
+      height: 50px;
+      padding: $p-l $p-2xl;
+
+      border-bottom: 1px solid var(--border);
     }
   }
 }

@@ -68,7 +68,7 @@ export function registerGithub(passport: Authenticator) {
         user = await tx.users.create({
           data: {
             id: nanoid(),
-            name: profile.displayName,
+            name: profile.displayName || profile.username,
             email,
             emailVerifiedAt: new Date(),
             avatarUrl,
@@ -85,7 +85,7 @@ export function registerGithub(passport: Authenticator) {
           },
         });
 
-        await createUserActivity(user, 'User.created', user, tx);
+        await createUserActivity(user, 'User.created', user, null, tx);
 
         await createOrg(tx, user, {
           id: slugify(`${profile.displayName} ${nanoid().substring(0, 5)}`),

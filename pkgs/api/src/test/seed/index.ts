@@ -2,6 +2,7 @@ import { prisma } from '../../db';
 
 import { seedComponents } from './components';
 import { seedDocs, seedPlaybook, seedRFC } from './documents';
+import { seedInvitations } from './invitations';
 import { seedOrgs } from './orgs';
 import { seedPolicies } from './policies';
 import { seedProjects } from './projects';
@@ -32,6 +33,9 @@ export async function seed() {
 
   console.log(' - Policies...');
   await seedPolicies(users);
+
+  console.log(' - Invitations');
+  await seedInvitations(users, orgs);
 }
 
 (async () => {

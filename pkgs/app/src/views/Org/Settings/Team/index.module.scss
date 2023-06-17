@@ -1,35 +1,12 @@
 @import "../../../../styles/theme";
 
-.team {
-  display: flex;
-  flex-direction: column;
-  gap: $p-5xl;
-  width: $main-col-w;
-}
-
 .header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: $p-2xl;
 }
 
-.lines {
-  display: flex;
-  flex-direction: column;
-  gap: $p-3xl;
-}
-
-.title {
-  margin-bottom: 0 !important;
-  padding: $p-m $p-2xl $p-m $p-2xl;
-  border-bottom: 1px solid $color-border;
-}
-
-.search {
-  width: 250px;
-}
-
-.empty {
-  padding: $p-2xl;
-  color: $gray-400;
+.team {
+  flex-grow: 1;
 }

@@ -7,6 +7,8 @@ export function toApiOrg(org: Orgs): ApiOrg {
     id: org.id,
     isPersonal: org.isPersonal,
     name: org.name,
-    logo: 'https://www.ycombinator.com/packs/static/ycdc/ycombinator-logo-ee6c80faf1d1ce2491d8.png',
+    avatarUrl: org.avatarUrl,
+    acronym: org.acronym,
+    color: org.color,
   };
 }

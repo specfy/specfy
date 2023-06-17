@@ -22,7 +22,6 @@ import { APIError, isError } from './helpers';
 export async function createProject(
   data: ReqPostProject
 ): Promise<ResPostProject> {
-  console.log('creating', data);
   const { json } = await fetchApi<ResPostProject, undefined, ReqPostProject>(
     '/projects',
     { body: data },

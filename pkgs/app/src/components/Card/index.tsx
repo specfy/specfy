@@ -24,12 +24,27 @@ const OriginCard: React.FC<{
   );
 };
 
-const Actions: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  return <div className={cls.actions}>{children}</div>;
+const Actions: React.FC<{
+  children: React.ReactNode;
+  transparent?: boolean;
+}> = ({ children, transparent }) => {
+  return (
+    <div className={classnames(cls.actions, transparent && cls.transparent)}>
+      {children}
+    </div>
+  );
 };
 
-const Content: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  return <div className={cls.content}>{children}</div>;
+const Content: React.FC<{
+  children: React.ReactNode;
+  className?: string;
+  large?: boolean;
+}> = ({ children, className, large }) => {
+  return (
+    <div className={classnames(cls.content, className, large && cls.large)}>
+      {children}
+    </div>
+  );
 };
 
 export type CardProps = typeof OriginCard & {

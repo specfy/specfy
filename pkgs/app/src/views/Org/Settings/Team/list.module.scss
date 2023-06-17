@@ -1,0 +1,27 @@
+@import "../../../../styles/theme";
+
+
+.header {
+  padding: 0 0 $p-l 0;
+}
+
+.lines {
+  display: flex;
+  flex-direction: column;
+  gap: $p-3xl;
+}
+
+.title {
+  margin-bottom: 0 !important;
+  padding: $p-m $p-2xl $p-m $p-2xl;
+  border-bottom: 1px solid $color-border;
+}
+
+.search {
+  width: 250px;
+}
+
+.empty {
+  padding: $p-2xl;
+  color: $gray-400;
+}

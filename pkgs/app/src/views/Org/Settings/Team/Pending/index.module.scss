@@ -1,0 +1,14 @@
+@import "../../../../../styles/theme";
+
+.invite {
+  display: flex;
+  flex-direction: column;
+  gap: $p-2xl;
+}
+
+.form {
+  display: grid;
+  grid-template-columns: 1fr 200px;
+  gap: $p-m;
+  margin: $p-l 0 0 0;
+}
