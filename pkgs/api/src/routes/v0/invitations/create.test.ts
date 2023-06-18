@@ -49,6 +49,7 @@ describe('POST /invitations', () => {
     isSuccess(res.json);
     expect(res.statusCode).toBe(200);
     expect(res.json.data).toStrictEqual({
+      id: expect.any(String),
       token: expect.any(String),
     });
   });

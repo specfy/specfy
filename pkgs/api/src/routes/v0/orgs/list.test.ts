@@ -55,7 +55,9 @@ describe('GET /orgs', () => {
         id: org.id,
         name: org.name,
         isPersonal: false,
-        logo: 'https://www.ycombinator.com/packs/static/ycdc/ycombinator-logo-ee6c80faf1d1ce2491d8.png',
+        avatarUrl: null,
+        color: expect.any(String),
+        acronym: expect.any(String),
       },
     ]);
   });
@@ -74,7 +76,9 @@ describe('GET /orgs', () => {
         id: seed1.org.id,
         name: seed1.org.name,
         isPersonal: false,
-        logo: 'https://www.ycombinator.com/packs/static/ycdc/ycombinator-logo-ee6c80faf1d1ce2491d8.png',
+        avatarUrl: null,
+        color: expect.any(String),
+        acronym: expect.any(String),
       },
     ]);
 
@@ -88,7 +92,9 @@ describe('GET /orgs', () => {
         id: seed2.org.id,
         name: seed2.org.name,
         isPersonal: false,
-        logo: 'https://www.ycombinator.com/packs/static/ycdc/ycombinator-logo-ee6c80faf1d1ce2491d8.png',
+        avatarUrl: null,
+        color: expect.any(String),
+        acronym: expect.any(String),
       },
     ]);
   });

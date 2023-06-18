@@ -51,6 +51,7 @@ describe('GET /revisions/:revision_id', () => {
     expect(res.json.data).toStrictEqual({
       authors: [
         {
+          avatarUrl: null,
           email: user.email,
           id: user.id,
           name: user.name,

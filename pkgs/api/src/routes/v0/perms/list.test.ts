@@ -55,6 +55,7 @@ describe('GET /perms', () => {
         role: 'owner',
         updatedAt: expect.toBeIsoDate(),
         user: {
+          avatarUrl: null,
           email: user.email,
           id: user.id,
           name: user.name,

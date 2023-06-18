@@ -55,7 +55,9 @@ describe('POST /orgs', () => {
       id: id,
       name: `test ${id}`,
       isPersonal: false,
-      logo: 'https://www.ycombinator.com/packs/static/ycdc/ycombinator-logo-ee6c80faf1d1ce2491d8.png',
+      avatarUrl: null,
+      acronym: 'TE',
+      color: expect.any(String),
     });
 
     // Should also create a permission

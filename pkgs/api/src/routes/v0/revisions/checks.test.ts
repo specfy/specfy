@@ -82,6 +82,7 @@ describe('GET /revisions/:revision_id/checks', () => {
           commentId: comment.json.data.id,
           id: expect.any(String),
           user: {
+            avatarUrl: null,
             email: user.email,
             id: user.id,
             name: user.name,

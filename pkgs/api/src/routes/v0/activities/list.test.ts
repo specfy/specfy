@@ -54,6 +54,7 @@ describe('GET /activities', () => {
         id: expect.any(String),
         orgId: org.id,
         user: {
+          avatarUrl: null,
           email: user.email,
           id: user.id,
           name: user.name,
@@ -66,6 +67,7 @@ describe('GET /activities', () => {
         id: expect.any(String),
         orgId: org.id,
         user: {
+          avatarUrl: null,
           email: user.email,
           id: user.id,
           name: user.name,
@@ -105,6 +107,7 @@ describe('GET /activities', () => {
         id: expect.any(String),
         orgId: org.id,
         user: {
+          avatarUrl: null,
           email: user.email,
           id: user.id,
           name: user.name,
@@ -122,6 +125,7 @@ describe('GET /activities', () => {
         id: expect.any(String),
         orgId: org.id,
         user: {
+          avatarUrl: null,
           email: user.email,
           id: user.id,
           name: user.name,

@@ -44,6 +44,7 @@ describe('GET /me', () => {
       email: user.email,
       id: user.id,
       name: user.name,
+      avatarUrl: null,
       updatedAt: expect.toBeIsoDate(),
     });
   });

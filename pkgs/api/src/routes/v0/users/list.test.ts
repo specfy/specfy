@@ -63,6 +63,7 @@ describe('GET /users', () => {
     isSuccess(res.json);
     expect(res.json.data).toStrictEqual([
       {
+        avatarUrl: null,
         email: user.email,
         id: user.id,
         name: user.name,

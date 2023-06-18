@@ -65,10 +65,12 @@ describe('GET /invitations', () => {
     expect(res.json.data).toHaveLength(1);
     expect(res.json.data).toStrictEqual([
       {
+        id: expect.any(String),
         email: 'foobar@example.com',
         expiresAt: expect.toBeIsoDate(),
         role: 'viewer',
         userId: user.id,
+        orgId: org.id,
       },
     ]);
 
