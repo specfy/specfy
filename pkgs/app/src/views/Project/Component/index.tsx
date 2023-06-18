@@ -6,6 +6,7 @@ import classnames from 'classnames';
 import type { MenuClickEventHandler } from 'rc-menu/lib/interface';
 import type React from 'react';
 import { useEffect, useMemo, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useReactFlow } from 'reactflow';
 
@@ -15,6 +16,7 @@ import {
   supportedIndexed,
 } from '../../../common/component';
 import { useComponentsStore } from '../../../common/store';
+import { titleSuffix } from '../../../common/string';
 import { Card } from '../../../components/Card';
 import { ComponentDetails } from '../../../components/ComponentDetails';
 import { Container } from '../../../components/Container';
@@ -117,6 +119,8 @@ export const ComponentView: React.FC<{
 
   return (
     <Container noPadding>
+      <Helmet title={`${comp.name} - ${proj.name} ${titleSuffix}`} />
+
       <Container.Left2Third>
         <Card padded seamless large>
           <div className={cls.titleEdit}>

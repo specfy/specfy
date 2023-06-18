@@ -1,6 +1,7 @@
 import { QueryClientProvider } from '@tanstack/react-query';
 import { App as AntdApp, ConfigProvider } from 'antd';
 import type React from 'react';
+import { HelmetProvider } from 'react-helmet-async';
 // import { ReactQueryDevtools } from 'react-query/devtools';
 import { Route, Routes } from 'react-router-dom';
 import { ReactFlowProvider } from 'reactflow';
@@ -61,29 +62,31 @@ const App: React.FC = () => {
 
           <AuthProvider>
             <ReactFlowProvider>
-              <Routes>
-                <Route path="/login" element={<Login />} />
-                <Route element={<AuthLayout></AuthLayout>}>
-                  <Route path="/" element={<Homepage />} />
+              <HelmetProvider>
+                <Routes>
+                  <Route path="/login" element={<Login />} />
+                  <Route element={<AuthLayout></AuthLayout>}>
+                    <Route path="/" element={<Homepage />} />
 
-                  <Route path="/invite" element={<Invite />} />
-                  <Route path="/account" element={<Account />} />
-                  <Route path="/organizations" element={<NotFound />} />
-                  <Route path="/organizations/*" element={<OrgCreate />} />
-                  <Route path="/:org_id/_/*" element={<Org />} />
-                  <Route path="/:org_id" element={<Org />} />
+                    <Route path="/invite" element={<Invite />} />
+                    <Route path="/account" element={<Account />} />
+                    <Route path="/organizations" element={<NotFound />} />
+                    <Route path="/organizations/*" element={<OrgCreate />} />
+                    <Route path="/:org_id/_/*" element={<Org />} />
+                    <Route path="/:org_id" element={<Org />} />
 
-                  <Route
-                    path="/:org_id/:project_slug/*"
-                    element={
-                      <EditProvider>
-                        <Project />
-                      </EditProvider>
-                    }
-                  />
-                </Route>
-                <Route path="*" element={<NotFound />} />
-              </Routes>
+                    <Route
+                      path="/:org_id/:project_slug/*"
+                      element={
+                        <EditProvider>
+                          <Project />
+                        </EditProvider>
+                      }
+                    />
+                  </Route>
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </HelmetProvider>
             </ReactFlowProvider>
           </AuthProvider>
         </QueryClientProvider>

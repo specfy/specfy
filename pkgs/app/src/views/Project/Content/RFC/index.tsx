@@ -5,9 +5,11 @@ import Title from 'antd/es/typography/Title';
 import type { ApiDocument, ApiProject } from 'api/src/types/api';
 import type { MenuClickEventHandler } from 'rc-menu/lib/interface';
 import { useEffect, useMemo, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 
 import { useDocumentsStore } from '../../../../common/store';
+import { titleSuffix } from '../../../../common/string';
 import { ContentDoc } from '../../../../components/Content';
 import { Editor } from '../../../../components/Editor';
 import { HeadingTree } from '../../../../components/HeadingTree';
@@ -52,6 +54,7 @@ export const RFC: React.FC<{
 
   return (
     <>
+      <Helmet title={`${doc.name} - ${proj.name} ${titleSuffix}`} />
       <div className={clsLayout.col1}>
         <div className={cls.headings}>
           <HeadingTree blocks={doc.content.content}></HeadingTree>

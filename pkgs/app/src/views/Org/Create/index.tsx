@@ -2,12 +2,13 @@ import { IconCircleArrowRight } from '@tabler/icons-react';
 import { App, Button, Form, Input } from 'antd';
 import type { FieldsErrors } from 'api/src/types/api';
 import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 
 import { createOrg } from '../../../api';
 import { isError, isValidationError } from '../../../api/helpers';
 import { i18n } from '../../../common/i18n';
-import { slugify } from '../../../common/string';
+import { slugify, titleSuffix } from '../../../common/string';
 import { Card } from '../../../components/Card';
 
 import cls from './index.module.scss';
@@ -42,6 +43,7 @@ export const OrgCreate: React.FC = () => {
 
   return (
     <div className={cls.container}>
+      <Helmet title={`Create Organization ${titleSuffix}`} />
       <Card large padded>
         <form onSubmit={onFinish} className={cls.form}>
           <header>

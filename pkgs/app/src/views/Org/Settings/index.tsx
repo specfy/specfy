@@ -61,7 +61,10 @@ export const OrgSettings: React.FC<{ params: RouteOrg; org: ApiOrg }> = ({
             path="/"
             element={<SettingsGeneral params={params} org={org} />}
           />
-          <Route path="/team" element={<SettingsTeam params={params} />} />
+          <Route
+            path="/team"
+            element={<SettingsTeam org={org} params={params} />}
+          />
         </Routes>
       </div>
     </Container>

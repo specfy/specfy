@@ -17,6 +17,7 @@ import type {
   ResListRevisionBlobsSuccess,
 } from 'api/src/types/api';
 import { useEffect, useMemo, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 
 import {
@@ -30,6 +31,7 @@ import { getEmptyDoc } from '../../../../common/content';
 import { diffTwoBlob } from '../../../../common/diff';
 import { i18n } from '../../../../common/i18n';
 import { useRevisionStore } from '../../../../common/store';
+import { titleSuffix } from '../../../../common/string';
 import { Card } from '../../../../components/Card';
 import { Container } from '../../../../components/Container';
 import { ContentDoc } from '../../../../components/Content';
@@ -265,6 +267,8 @@ export const ProjectRevisionsShow: React.FC<{
 
   return (
     <Container className={cls.container}>
+      <Helmet title={`${rev.name} - ${proj.name} ${titleSuffix}`} />
+
       <div className={cls.left}>
         <Card>
           <Card.Content>

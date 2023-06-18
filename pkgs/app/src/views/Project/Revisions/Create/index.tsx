@@ -11,12 +11,14 @@ import type {
   ReqPostRevision,
 } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { createRevision } from '../../../../api';
 import { getEmptyDoc } from '../../../../common/content';
 import { proposeTitle } from '../../../../common/diff';
 import originalStore, { useStagingStore } from '../../../../common/store';
+import { titleSuffix } from '../../../../common/string';
 import { Card } from '../../../../components/Card';
 import { Container } from '../../../../components/Container';
 import { DiffCard } from '../../../../components/DiffCard';
@@ -138,6 +140,7 @@ export const ProjectRevisionCreate: React.FC<{
   if (staging.diffs.length === 0) {
     return (
       <Container className={cls.container}>
+        <Helmet title={`Create Revision - ${proj.name} ${titleSuffix}`} />
         <Result
           icon={<IconGitPullRequest size="1em" />}
           title="No changes to commit..."
@@ -153,6 +156,7 @@ export const ProjectRevisionCreate: React.FC<{
 
   return (
     <Container className={cls.container}>
+      <Helmet title={`Create Revision - ${proj.name} ${titleSuffix}`} />
       <div className={cls.left}>
         <Card>
           <Form onFinish={onSubmit}>

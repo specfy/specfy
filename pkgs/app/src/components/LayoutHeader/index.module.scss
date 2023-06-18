@@ -115,3 +115,10 @@
     }
   }
 }
+
+:global {
+  // In the dropdown
+  .ant-divider {
+    margin: 4px 0;
+  }
+}

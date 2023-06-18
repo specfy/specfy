@@ -2,12 +2,14 @@ import { GithubOutlined } from '@ant-design/icons';
 import { App, Button, Form, Input } from 'antd';
 import type { FieldsErrors } from 'api/src/types/api';
 import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { authLocal } from '../../api/auth';
 import { isError, isValidationError } from '../../api/helpers';
 import { API_HOSTNAME } from '../../common/envs';
 import { i18n } from '../../common/i18n';
+import { titleSuffix } from '../../common/string';
 import { Card } from '../../components/Card';
 import { Logo } from '../../components/Logo';
 
@@ -39,6 +41,7 @@ export const Login: React.FC = () => {
 
   return (
     <div className={cls.container}>
+      <Helmet title={`Login ${titleSuffix}`} />
       <div>
         <Link className={cls.logo} to="/">
           <Logo />

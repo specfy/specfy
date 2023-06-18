@@ -3,6 +3,7 @@ import { App, Button, Form, Input } from 'antd';
 import { hDef, wDef, wMax } from 'api/src/common/validators/flow.constants';
 import type { FieldsErrors } from 'api/src/types/api';
 import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 
 import { createProject } from '../../../api';
@@ -10,7 +11,7 @@ import { isError, isValidationError } from '../../../api/helpers';
 import { computeProjectPosition, computeWidth } from '../../../common/flow';
 import { i18n } from '../../../common/i18n';
 import { useProjectStore } from '../../../common/store';
-import { slugify } from '../../../common/string';
+import { slugify, titleSuffix } from '../../../common/string';
 import { Card } from '../../../components/Card';
 import type { RouteOrg } from '../../../types/routes';
 
@@ -64,6 +65,7 @@ export const ProjectCreate: React.FC<{ params: RouteOrg }> = ({ params }) => {
 
   return (
     <div className={cls.container}>
+      <Helmet title={`Create Project ${titleSuffix}`} />
       <Card padded large>
         <form onSubmit={onFinish} className={cls.form}>
           <header>

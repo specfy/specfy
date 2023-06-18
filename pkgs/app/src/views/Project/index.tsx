@@ -1,6 +1,7 @@
 import { Avatar, Divider, Skeleton } from 'antd';
 import type { ApiOrg, ApiProject } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Route, Routes, useParams } from 'react-router-dom';
 
 import {
@@ -10,6 +11,7 @@ import {
   useListProjects,
 } from '../../api';
 import { useComponentsStore, useProjectStore } from '../../common/store';
+import { titleSuffix } from '../../common/string';
 import { Card } from '../../components/Card';
 import { Container } from '../../components/Container';
 import { ContentSidebar } from '../../components/Content/Sidebar';
@@ -123,6 +125,8 @@ export const Project: React.FC = () => {
 
   return (
     <div className={cls.project}>
+      <Helmet title={`${proj.name} ${titleSuffix}`} />
+
       <div>
         <Sidebar org={org} project={proj}>
           <Group name="Content">

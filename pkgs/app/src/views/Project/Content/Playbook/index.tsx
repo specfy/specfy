@@ -2,8 +2,10 @@ import { Typography, Space } from 'antd';
 import Title from 'antd/es/typography/Title';
 import type { ApiDocument, ApiProject } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 
 import { useDocumentsStore } from '../../../../common/store';
+import { titleSuffix } from '../../../../common/string';
 import { ContentDoc } from '../../../../components/Content';
 import { Editor } from '../../../../components/Editor';
 import { FakeInput } from '../../../../components/Input';
@@ -16,7 +18,7 @@ import cls from './index.module.scss';
 export const Playbook: React.FC<{
   proj: ApiProject;
   doc: ApiDocument;
-}> = ({ doc }) => {
+}> = ({ proj, doc }) => {
   const documentsStore = useDocumentsStore();
 
   // Edition
@@ -30,6 +32,7 @@ export const Playbook: React.FC<{
 
   return (
     <>
+      <Helmet title={`${doc.name} - ${proj.name} ${titleSuffix}`} />
       <div className={clsLayout.col1}></div>
       <div className={clsLayout.col2}>
         {!isEditing && (
