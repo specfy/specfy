@@ -1,11 +1,7 @@
 @import "./theme";
-
-button,
-a {
-  all: unset;
-}
-
 @import "./radix/dropdown";
+
+
 
 // ---- TABS
 .rx_tabsRoot {

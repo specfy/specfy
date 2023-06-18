@@ -81,14 +81,14 @@
 
 
 .animateReadLine {
-  animation: running-line 30s reverse infinite linear;
+  animation: runningLine 30s reverse infinite linear;
 }
 
 .animateWriteLine {
-  animation: running-line 30s infinite linear;
+  animation: runningLine 30s infinite linear;
 }
 
-@keyframes running-line {
+@keyframes runningLine {
   to {
     stroke-dashoffset: -1000;
   }

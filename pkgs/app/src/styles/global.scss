@@ -3,6 +3,11 @@
 @import '@radix-ui/colors/indigo.css';
 @import '@radix-ui/colors/mauveDark.css';
 
+button,
+a {
+  all: unset;
+}
+
 .tabler-icon {
   width: 1.2em;
   height: 1.2em;

@@ -86,11 +86,11 @@ Project:
   ✔ Connect: Github @done(23-06-14 15:18)
     ✔ Import @done(23-06-14 15:18)
       - Import from UI
-    - One way Sync (from specfy to confluence)
-    ✔ Automatic languages detection @done(23-06-14 15:18)
-    ✔ Automatic “service” detection @done(23-06-14 15:18)
-    - Pingback depuis une Pull Request
-        - Auto merge une revision quand la pull request est merge
+  - One way Sync (from specfy to confluence)
+  ✔ Automatic languages detection @done(23-06-14 15:18)
+  ✔ Automatic “service” detection @done(23-06-14 15:18)
+  - Pingback depuis une Pull Request
+      - Auto merge une revision quand la pull request est merge
 
 
 User:
@@ -102,16 +102,16 @@ User:
     ✔ Validation @done(23-03-29 16:59)
     ✔ Unit Test @done(23-04-03 17:53)
     - Search in email
+    - Email validation
+    - User search API for team
   - Invite
-  - Email validation
-  - User search API for team
-  - Invite new user from team
-  - Invitation par email
+    ✔ Invite new user from team @done(23-06-18 14:40)
+    ✔ Invitation par email @done(23-06-18 14:40)
+    - Send email
   ✔ Rename @done(23-04-24 17:01)
     ✔ Unit test @done(23-04-24 17:01)
   ✔ Suppression de compte @done(23-04-24 17:01)
       ✔ Anonymisation @done(23-04-24 17:01)
-  - Validation compte
   - Profil ?
   - Hover card?
 
