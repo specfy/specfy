@@ -19,15 +19,15 @@ afterAll(async () => {
   await setupAfterAll(t);
 });
 
-describe('DELETE /invitations/:id', () => {
+describe('POST /invitations/:id/decline', () => {
   it('should be protected', async () => {
-    const res = await t.fetch.delete('/0/invitations/foobar');
+    const res = await t.fetch.post('/0/invitations/foobar/decline');
     await shouldBeProtected(res);
   });
 
   it('should not allow query params', async () => {
     const { token } = await seedSimpleUser();
-    const res = await t.fetch.delete('/0/invitations/foobar', {
+    const res = await t.fetch.post('/0/invitations/foobar/decline', {
       token,
       // @ts-expect-error
       qp: { random: 'world' },
@@ -35,12 +35,14 @@ describe('DELETE /invitations/:id', () => {
     await shouldNotAllowQueryParams(res);
   });
 
-  it('should delete one invitation', async () => {
+  it('should decline one invitation', async () => {
     const { token, org } = await seedWithOrg();
+    const seed2 = await seedSimpleUser();
+
     // Create
     const post = await t.fetch.post('/0/invitations', {
       token,
-      body: { orgId: org.id, email: 'foobar@example.com', role: 'viewer' },
+      body: { orgId: org.id, email: seed2.user.email, role: 'viewer' },
     });
     isSuccess(post.json);
 
@@ -54,11 +56,16 @@ describe('DELETE /invitations/:id', () => {
     expect(get.json.data).toHaveLength(1);
 
     // Delete
-    const del = await t.fetch.delete(`/0/invitations/${post.json.data.id}`, {
-      token,
-    });
-    isSuccess(del.json);
-    expect(del.statusCode).toBe(204);
+    const decline = await t.fetch.post(
+      `/0/invitations/${post.json.data.id}/decline`,
+      {
+        token: seed2.token,
+        qp: { token: post.json.data.token },
+      }
+    );
+    isSuccess(decline.json);
+    expect(decline.statusCode).toBe(200);
+    expect(decline.json).toStrictEqual({ done: true });
 
     // List again
     const get2 = await t.fetch.get('/0/invitations', {
@@ -73,15 +80,16 @@ describe('DELETE /invitations/:id', () => {
   it('should reject not found invitations', async () => {
     const { token } = await seedWithOrg();
     const fakeid = nanoid();
-    const res = await t.fetch.delete(`/0/invitations/${fakeid}`, {
+    const res = await t.fetch.post(`/0/invitations/${fakeid}/decline`, {
       token,
+      qp: { token: nanoid(32) },
     });
 
     isError(res.json);
     expect(res.statusCode).toBe(404);
   });
 
-  it('should reject deleting an other org invitation', async () => {
+  it('should reject declining an other org invitation', async () => {
     const { token, org } = await seedWithOrg();
 
     // Create
@@ -91,11 +99,15 @@ describe('DELETE /invitations/:id', () => {
     });
     isSuccess(post.json);
 
-    // Del
+    // decline
     const seed2 = await seedWithOrg();
-    const res = await t.fetch.delete(`/0/invitations/${post.json.data.id}`, {
-      token: seed2.token,
-    });
+    const res = await t.fetch.post(
+      `/0/invitations/${post.json.data.id}/decline`,
+      {
+        token: seed2.token,
+        qp: { token: post.json.data.token },
+      }
+    );
     isError(res.json);
     expect(res.statusCode).toBe(403);
   });

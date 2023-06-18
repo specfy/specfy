@@ -6,7 +6,7 @@ import { useSearchParam } from 'react-use';
 import { isError } from '../../api/helpers';
 import {
   acceptInvitations,
-  deleteInvitations,
+  declineInvitations,
   useGetInvitation,
 } from '../../api/invitations';
 import { i18n } from '../../common/i18n';
@@ -65,7 +65,7 @@ export const Invite: React.FC = () => {
   };
 
   const onDecline = async () => {
-    const del = await deleteInvitations({
+    const del = await declineInvitations({
       invitation_id: invitationId,
       token,
     });
@@ -74,7 +74,7 @@ export const Invite: React.FC = () => {
       return;
     }
 
-    message.error('Invitation declined');
+    message.info('Invitation declined');
     navigate(`/`);
   };
 

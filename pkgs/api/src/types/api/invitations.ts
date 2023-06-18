@@ -48,5 +48,8 @@ export type ResGetInvitation = ResErrors | ResGetInvitationSuccess;
 // DELETE /:id
 export type ResDeleteInvitation = ResErrors | never;
 
-// POST /:id
+// POST /:id/accept
 export type ResAcceptInvitation = ResErrors | { done: true };
+
+// POST /:id/decline
+export type ResDeclineInvitation = ResErrors | { done: true };

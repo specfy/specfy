@@ -1,11 +1,10 @@
 import type { FastifyPluginCallback } from 'fastify';
 
-import { forbidden } from '../../../common/errors';
+import { forbidden, notFound } from '../../../common/errors';
 import { prisma } from '../../../db';
-import { getInvitation } from '../../../middlewares/getInvitation';
 import { noBody } from '../../../middlewares/noBody';
+import { noQuery } from '../../../middlewares/noQuery';
 import type {
-  ReqGetInvitation,
   ReqInvitationParams,
   ResDeleteInvitation,
 } from '../../../types/api';
@@ -13,25 +12,31 @@ import type {
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.delete<{
     Params: ReqInvitationParams;
-    Querystring: ReqGetInvitation;
     Reply: ResDeleteInvitation;
-  }>('/', { preHandler: [noBody, getInvitation] }, async function (req, res) {
-    const inv = req.invitation!;
-    const user = req.user!;
+  }>('/', { preHandler: [noBody, noQuery] }, async function (req, res) {
+    const invitation = await prisma.invitations.findFirst({
+      where: { id: req.params.invitation_id },
+      include: {
+        Org: true,
+        User: true,
+      },
+    });
 
-    if (user.email !== inv.email) {
-      // Check that we have the permissions to delete on this org
-      if (
-        !req.perms!.find(
-          (perm) => perm.orgId === inv.orgId && perm.projectId === null
-        )
-      ) {
-        return forbidden(res);
-      }
+    if (!invitation) {
+      return notFound(res);
+    }
+
+    // Check that we have the permissions to delete on this org
+    if (
+      !req.perms!.find(
+        (perm) => perm.orgId === invitation.orgId && perm.projectId === null
+      )
+    ) {
+      return forbidden(res);
     }
 
     await prisma.invitations.delete({
-      where: { id: inv.id },
+      where: { id: invitation.id },
     });
 
     res.status(204).send();
