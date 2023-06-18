@@ -66,9 +66,9 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         email: body.email,
         orgId: body.orgId,
         role: body.role,
-        expiresAt: new Date(Date.now() + EXPIRES),
         token: nanoid(32),
         userId: req.user!.id,
+        expiresAt: new Date(Date.now() + EXPIRES),
       },
     });
 
