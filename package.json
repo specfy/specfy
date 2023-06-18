@@ -23,7 +23,8 @@
   "workspaces": [
     "pkgs/app",
     "pkgs/api",
-    "pkgs/website"
+    "pkgs/website",
+    "pkgs/emails"
   ],
   "homepage": "https://github.com/specfy/specfy#readme",
   "devDependencies": {
