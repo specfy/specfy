@@ -41,7 +41,7 @@
     "@tiptap/pm": "2.0.0",
     "@tiptap/react": "2.0.0",
     "@tiptap/starter-kit": "2.0.0",
-    "@types/diff": "5.0.2",
+    "@types/diff": "5.0.3",
     "@types/diff-match-patch": "1.0.32",
     "@types/json-diff": "0.9.1",
     "@types/lodash.debounce": "4.0.7",
