@@ -9,6 +9,7 @@ type Keys =
   | 'GITHUB_CLIENT_ID'
   | 'GITHUB_CLIENT_PKEY'
   | 'GITHUB_CLIENT_SECRET'
+  | 'GITHUB_WEBHOOKS_SECRET'
   | 'NODE_ENV'
   | 'PASSWORD_SALT'
   | 'PORT';
@@ -21,3 +22,5 @@ export function env(key: Keys, def?: string): string | undefined {
 
   return process.env[key] || def;
 }
+
+export const isProd = env('NODE_ENV', 'dev') === 'production';

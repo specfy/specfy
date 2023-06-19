@@ -31,10 +31,11 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         email: inv.email,
         userId: inv.userId,
         orgId: inv.orgId,
-        expiresAt: inv.expiresAt,
         role: inv.role as PermType,
         by: toApiUser(inv.User),
         org: toApiOrg(inv.Org),
+        createdAt: inv.createdAt,
+        expiresAt: inv.expiresAt,
       },
     });
   });

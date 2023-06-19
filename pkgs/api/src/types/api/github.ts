@@ -43,3 +43,15 @@ export interface ResGetGithubMembersSuccess {
   data: ApiGithubMember[];
 }
 export type ResGetGithubMembers = ResErrors | ResGetGithubMembersSuccess;
+
+// POST /github/link_org
+export interface PostLinkToGithubOrg {
+  body: {
+    orgId: string;
+    installationId: number | null;
+  };
+  success: {
+    done: true;
+  };
+  res: PostLinkToGithubOrg['success'] | ResErrors;
+}

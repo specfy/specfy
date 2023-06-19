@@ -16,29 +16,6 @@
   margin: $p-2xl 0 0 0;
 }
 
-.select {
-  width: 250px;
-  margin-bottom: $p-xl;
-}
-
-.install {
-  margin-top: $p-s;
-  padding-top: $p-s;
-  border-top: 1px solid $color-border;
-}
-
-.option {
-  display: flex;
-  gap: $p-m;
-  align-items: center;
-  margin-top: 2px;
-
-  .label {
-    margin-top: -$p-s;
-  }
-}
-
-
 .item {
   display: flex;
   align-items: center;

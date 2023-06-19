@@ -1,3 +1,4 @@
+import { IconCirclesRelation } from '@tabler/icons-react';
 import { Typography, Input, Button, Modal, App, Form } from 'antd';
 import type { ApiOrg } from 'api/src/types/api';
 import { useState } from 'react';
@@ -5,10 +6,12 @@ import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 
 import { deleteOrg, updateOrg } from '../../../../api';
+import { linkToGithubOrg } from '../../../../api/github';
 import { isError } from '../../../../api/helpers';
 import { i18n } from '../../../../common/i18n';
 import { titleSuffix } from '../../../../common/string';
 import { Card } from '../../../../components/Card';
+import { GithubOrgSelect } from '../../../../components/Github/OrgSelect';
 import type { RouteOrg } from '../../../../types/routes';
 
 import cls from './index.module.scss';
@@ -64,6 +67,34 @@ export const SettingsGeneral: React.FC<{
     navigate(`/`);
   };
 
+  // Github
+  const [installId, setInstallId] = useState(org.githubInstallationId);
+
+  const onLink = async () => {
+    const res = await linkToGithubOrg({
+      installationId: installId!,
+      orgId: org.id,
+    });
+    if (isError(res)) {
+      message.error(i18n.errorOccurred);
+      return;
+    }
+
+    message.success('Linked successfully');
+  };
+  const onUnlink = async () => {
+    const res = await linkToGithubOrg({
+      installationId: null,
+      orgId: org.id,
+    });
+    if (isError(res)) {
+      message.error(i18n.errorOccurred);
+      return;
+    }
+
+    message.success('Unlinked successfully');
+  };
+
   return (
     <>
       <Helmet title={`Settings - ${org.name} ${titleSuffix}`} />
@@ -109,6 +140,46 @@ export const SettingsGeneral: React.FC<{
           )}
         </Form>
       </Card>
+
+      {!org.isPersonal && (
+        <Card>
+          <Form layout="vertical" onFinish={handleRename}>
+            <Card.Content>
+              <Typography.Title level={3}>Link to Github</Typography.Title>
+              <p>
+                Linking to a Github organization will sync the avatar and enable
+                automatic repository discovery.
+              </p>
+
+              <GithubOrgSelect
+                key={org.githubInstallationId}
+                emptyOption={true}
+                defaultSelected={org.githubInstallationId}
+                onChange={(sel) => {
+                  console.log(sel);
+                  if (sel !== 'public') setInstallId(sel);
+                }}
+                publicRepos={false}
+              />
+            </Card.Content>
+            <Card.Actions>
+              {org.githubInstallationId === installId ? (
+                <Button type="default" onClick={onUnlink} danger>
+                  Unlink
+                </Button>
+              ) : (
+                <Button
+                  type="primary"
+                  disabled={org.githubInstallationId === installId}
+                  onClick={onLink}
+                >
+                  <IconCirclesRelation /> Link
+                </Button>
+              )}
+            </Card.Actions>
+          </Form>
+        </Card>
+      )}
 
       {!org.isPersonal && (
         <Card padded>

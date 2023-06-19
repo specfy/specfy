@@ -37,7 +37,13 @@ describe('POST /projects', () => {
     const { token } = await seedSimpleUser();
     const res = await t.fetch.post('/0/projects', {
       token,
-      body: { name: '', display, orgId: '', slug: '' },
+      body: {
+        name: '',
+        display,
+        orgId: '',
+        slug: '',
+        githubRepositoryId: null,
+      },
       // @ts-expect-error
       qp: { random: 'world' },
     });
@@ -54,7 +60,7 @@ describe('POST /projects', () => {
     const slug = slugify(name);
     const res = await t.fetch.post('/0/projects', {
       token,
-      body: { name, slug, display, orgId: org.id },
+      body: { name, slug, display, orgId: org.id, githubRepositoryId: null },
     });
 
     isSuccess(res.json);
@@ -78,14 +84,26 @@ describe('POST /projects', () => {
     // Insert one
     const res1 = await t.fetch.post('/0/projects', {
       token,
-      body: { name, slug: slugify(name), display, orgId: org.id },
+      body: {
+        name,
+        slug: slugify(name),
+        display,
+        orgId: org.id,
+        githubRepositoryId: null,
+      },
     });
     isSuccess(res1.json);
 
     // Insert the same
     const res2 = await t.fetch.post('/0/projects', {
       token,
-      body: { name, slug: slugify(name), display, orgId: org.id },
+      body: {
+        name,
+        slug: slugify(name),
+        display,
+        orgId: org.id,
+        githubRepositoryId: null,
+      },
     });
     isValidationError(res2.json);
     expect(res2.json.error.fields).toStrictEqual({

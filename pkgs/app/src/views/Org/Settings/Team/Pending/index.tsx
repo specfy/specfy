@@ -152,7 +152,7 @@ export const SettingsTeamPending: React.FC<{ params: RouteOrg }> = ({
             </Select.Root>
           </div>
         </Card.Content>
-        <Card.Actions transparent>
+        <Card.Actions>
           <Button onClick={onInvite} type="primary">
             Invite
           </Button>

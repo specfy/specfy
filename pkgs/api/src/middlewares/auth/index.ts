@@ -13,10 +13,12 @@ import { registerKey } from './key';
 import { registerLocal } from './local';
 
 const ALLOW_GUEST = [
-  '/',
+  '/*',
+  '/favicon.ico',
   '/0/auth/github',
   '/0/auth/github/cb',
   '/0/auth/local',
+  '/0/github/webhooks',
 ];
 const COOKIE_SECRET = Buffer.from(env('COOKIE_SECRET')!, 'hex');
 

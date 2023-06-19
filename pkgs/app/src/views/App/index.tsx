@@ -26,7 +26,7 @@ const App: React.FC = () => {
         theme={{
           token: {
             borderRadius: 4,
-            colorPrimary: '#3e63dd',
+            colorPrimary: '#242d3c',
             colorLink: '#1d4ed8',
             colorLinkHover: '#3b82f6',
             // linkHoverDecoration: 'underline',

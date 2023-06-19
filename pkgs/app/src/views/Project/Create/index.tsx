@@ -1,7 +1,7 @@
 import { IconCircleArrowRight } from '@tabler/icons-react';
 import { App, Button, Form, Input } from 'antd';
 import { hDef, wDef, wMax } from 'api/src/common/validators/flow.constants';
-import type { FieldsErrors } from 'api/src/types/api';
+import type { ApiOrg, FieldsErrors } from 'api/src/types/api';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
@@ -18,7 +18,10 @@ import type { RouteOrg } from '../../../types/routes';
 import { CreateFromGithub } from './CreateFromGithub';
 import cls from './index.module.scss';
 
-export const ProjectCreate: React.FC<{ params: RouteOrg }> = ({ params }) => {
+export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
+  org,
+  params,
+}) => {
   const { message } = App.useApp();
   const navigate = useNavigate();
   const storeProjects = useProjectStore();
@@ -39,6 +42,7 @@ export const ProjectCreate: React.FC<{ params: RouteOrg }> = ({ params }) => {
         zIndex: 1,
         size: { width: computeWidth(name, wDef, wMax), height: hDef },
       },
+      githubRepositoryId: null,
     });
     if (isError(res)) {
       if (isValidationError(res)) {
@@ -119,7 +123,7 @@ export const ProjectCreate: React.FC<{ params: RouteOrg }> = ({ params }) => {
         </form>
       </Card>
 
-      <CreateFromGithub params={params} onError={onError} />
+      <CreateFromGithub org={org} onError={onError} />
     </div>
   );
 };

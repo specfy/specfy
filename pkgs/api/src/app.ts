@@ -1,4 +1,7 @@
+import path from 'node:path';
+
 import cors from '@fastify/cors';
+import staticFiles from '@fastify/static';
 import type {
   FastifyInstance,
   FastifyPluginOptions,
@@ -40,6 +43,11 @@ export default async (f: FastifyInstance, opts: FastifyPluginOptions) => {
 
   f.setNotFoundHandler(function (req, res) {
     notFound(res, `${req.method} ${req.url}`);
+  });
+
+  await f.register(staticFiles, {
+    root: path.join(__dirname, '..', 'public'),
+    prefix: '/',
   });
 
   // Do not touch the following lines

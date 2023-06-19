@@ -1,5 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import type {
+  PostLinkToGithubOrg,
   ReqGetGithubRepos,
   ResGetGithubInstallations,
   ResGetGithubInstallationsSuccess,
@@ -7,8 +8,24 @@ import type {
   ResGetGithubReposSuccess,
 } from 'api/src/types/api';
 
+import { queryClient } from '../common/query';
+
 import { fetchApi } from './fetch';
 import { APIError, isError } from './helpers';
+
+export async function linkToGithubOrg(
+  data: PostLinkToGithubOrg['body']
+): Promise<PostLinkToGithubOrg['res']> {
+  const { json } = await fetchApi<
+    PostLinkToGithubOrg['res'],
+    undefined,
+    PostLinkToGithubOrg['body']
+  >('/github/link_org', { body: data }, 'POST');
+
+  queryClient.invalidateQueries(['listOrgs']);
+
+  return json;
+}
 
 export function useGetGithubInstallations() {
   return useQuery({

@@ -16,6 +16,9 @@ data "google_secret_manager_secret_version" "GITHUB_CLIENT_SECRET" {
 data "google_secret_manager_secret_version" "GITHUB_CLIENT_PKEY" {
   secret   = "GITHUB_CLIENT_PKEY"
 }
+data "google_secret_manager_secret_version" "GITHUB_WEBHOOKS_SECRET" {
+  secret   = "GITHUB_WEBHOOKS_SECRET"
+}
 
 resource "google_cloud_run_v2_service" "main" {
   name     = "main"
@@ -69,6 +72,11 @@ resource "google_cloud_run_v2_service" "main" {
         name  = "GITHUB_CLIENT_PKEY"
         value = data.google_secret_manager_secret_version.GITHUB_CLIENT_PKEY.secret_data
       }
+      env {
+        name  = "GITHUB_WEBHOOKS_SECRET"
+        value = data.google_secret_manager_secret_version.GITHUB_WEBHOOKS_SECRET.secret_data
+      }
+
 
       env {
         name ="APP_HOSTNAME"

@@ -49,9 +49,10 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           id: inv.id,
           orgId: inv.orgId,
           email: inv.email,
-          expiresAt: inv.expiresAt,
           userId: inv.userId,
           role: inv.role as PermType,
+          createdAt: inv.createdAt,
+          expiresAt: inv.expiresAt,
         };
       }),
     });

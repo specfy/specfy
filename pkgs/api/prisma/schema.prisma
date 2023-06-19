@@ -151,15 +151,15 @@ model Documents {
 }
 
 model Orgs {
-  id         String   @id @db.VarChar(36)
-  name       String   @db.VarChar(36)
-  isPersonal Boolean  @default(false)
-  githubOrg  String?  @db.VarChar(100)
-  avatarUrl  String?  @db.VarChar(1000)
-  color      String   @db.VarChar(7)
-  acronym    String   @db.VarChar(3)
-  createdAt  DateTime @default(now()) @db.Timestamp(3)
-  updatedAt  DateTime @updatedAt
+  id                   String   @id @db.VarChar(36)
+  name                 String   @db.VarChar(36)
+  isPersonal           Boolean  @default(false)
+  avatarUrl            String?  @db.VarChar(1000)
+  color                String   @db.VarChar(7)
+  acronym              String   @db.VarChar(3)
+  githubInstallationId Int?
+  createdAt            DateTime @default(now()) @db.Timestamp(3)
+  updatedAt            DateTime @updatedAt
 
   Perms       Perms[]
   Activities  Activities[]
@@ -208,17 +208,18 @@ model Policies {
 }
 
 model Projects {
-  id          String   @id @db.VarChar(15)
-  orgId       String   @db.VarChar(36)
-  blobId      String?  @db.VarChar(15)
-  name        String   @db.VarChar(36)
-  slug        String   @db.VarChar(100)
-  description Json     @db.Json
-  links       Json     @db.Json
-  display     Json     @db.Json
-  edges       Json     @db.Json
-  createdAt   DateTime @default(now()) @db.Timestamp(3)
-  updatedAt   DateTime @updatedAt
+  id                 String   @id @db.VarChar(15)
+  orgId              String   @db.VarChar(36)
+  blobId             String?  @db.VarChar(15)
+  name               String   @db.VarChar(36)
+  slug               String   @db.VarChar(100)
+  description        Json     @db.Json
+  links              Json     @db.Json
+  display            Json     @db.Json
+  edges              Json     @db.Json
+  githubRepositoryId Int?
+  createdAt          DateTime @default(now()) @db.Timestamp(3)
+  updatedAt          DateTime @updatedAt
 
   Org  Orgs   @relation(fields: [orgId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   Blob Blobs? @relation(fields: [blobId], references: [id], name: "blob", onDelete: Cascade, onUpdate: NoAction)

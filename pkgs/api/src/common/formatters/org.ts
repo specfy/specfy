@@ -10,5 +10,6 @@ export function toApiOrg(org: Orgs): ApiOrg {
     avatarUrl: org.avatarUrl,
     acronym: org.acronym,
     color: org.color,
+    githubInstallationId: org.githubInstallationId,
   };
 }

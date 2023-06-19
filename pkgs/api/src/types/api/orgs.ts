@@ -2,7 +2,9 @@ import type { DBOrg } from '../db/orgs';
 
 import type { ResErrors } from './api';
 
-export type ApiOrg = Omit<DBOrg, 'createdAt' | 'updatedAt'>;
+export type ApiOrg = Omit<DBOrg, 'createdAt' | 'updatedAt'> & {
+  githubInstallationId: number | null;
+};
 
 export interface ResListOrgsSuccess {
   data: ApiOrg[];

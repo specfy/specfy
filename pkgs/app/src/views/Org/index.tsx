@@ -110,11 +110,11 @@ export const Org: React.FC = () => {
             />
             <Route
               path="/settings/*"
-              element={<OrgSettings params={params} org={org} />}
+              element={<OrgSettings org={org} params={params} />}
             />
             <Route
               path="/project/new"
-              element={<ProjectCreate params={params} />}
+              element={<ProjectCreate org={org} params={params} />}
             />
           </Routes>
         </Container>

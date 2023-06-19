@@ -27,6 +27,7 @@ function ProjectVal(req: FastifyRequest) {
       }),
       orgId: valOrgId(req),
       display: schemaProject.shape.display,
+      githubRepositoryId: z.number().int().positive().nullable(),
     })
     .strict();
 }
@@ -56,6 +57,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           links: [],
           display: data.display,
           edges: [],
+          githubRepositoryId: data.githubRepositoryId,
         },
         user: req.user!,
         tx,

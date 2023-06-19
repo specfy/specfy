@@ -66,7 +66,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         repos = list.data.repositories;
       } catch (e: unknown) {
         if (e instanceof RequestError) {
-          console.log(e);
+          console.error(e);
           notFound(res);
           return;
         }
