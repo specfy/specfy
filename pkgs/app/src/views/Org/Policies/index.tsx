@@ -6,7 +6,7 @@ import {
 } from '@tabler/icons-react';
 import { Button, Skeleton, Table, Typography } from 'antd';
 import type { TitleProps } from 'antd/es/typography/Title';
-import type { ApiPolicy } from 'api/src/types/api';
+import type { ApiOrg, ApiPolicy } from 'api/src/types/api';
 import classnames from 'classnames';
 import { useMemo, useState } from 'react';
 
@@ -65,7 +65,9 @@ const Title: React.FC<{ item: ApiPolicy; level: TitleProps['level'] }> = ({
   return null;
 };
 
-export const OrgPolicies: React.FC<{ params: RouteOrg }> = ({ params }) => {
+export const OrgPolicies: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
+  params,
+}) => {
   const res = useListPolicies({
     org_id: params.org_id!,
   });

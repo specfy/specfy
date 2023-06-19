@@ -1,15 +1,17 @@
 import { IconArrowRight } from '@tabler/icons-react';
 import { App, Button, Typography } from 'antd';
+import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import { useSearchParam } from 'react-use';
 
 import { isError } from '../../api/helpers';
 import {
   acceptInvitations,
-  deleteInvitations,
+  declineInvitations,
   useGetInvitation,
 } from '../../api/invitations';
 import { i18n } from '../../common/i18n';
+import { titleSuffix } from '../../common/string';
 import { AvatarAuto } from '../../components/AvatarAuto';
 import { Card } from '../../components/Card';
 import { Flex } from '../../components/Flex';
@@ -65,7 +67,7 @@ export const Invite: React.FC = () => {
   };
 
   const onDecline = async () => {
-    const del = await deleteInvitations({
+    const del = await declineInvitations({
       invitation_id: invitationId,
       token,
     });
@@ -74,7 +76,7 @@ export const Invite: React.FC = () => {
       return;
     }
 
-    message.error('Invitation declined');
+    message.info('Invitation declined');
     navigate(`/`);
   };
 
@@ -85,13 +87,15 @@ export const Invite: React.FC = () => {
       className={cls.container}
       direction="column"
     >
+      <Helmet title={`Join ${inv.org.name} ${titleSuffix}`} />
+
       <div>
         <Card>
           <Card.Content large>
             <Typography.Title level={2}>Join an organization</Typography.Title>
             <p>
               <strong>{inv.by.name}</strong> ({inv.by.email}) invited you to
-              join the organization <strong>Company</strong>.
+              join the organization <strong>{inv.org.name}</strong>.
             </p>
 
             <Flex

@@ -1,8 +1,10 @@
 import { LoadingOutlined } from '@ant-design/icons';
 import type { ApiProject, ApiComponent } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 
 import { useComponentsStore } from '../../../common/store';
+import { titleSuffix } from '../../../common/string';
 import { Flow, FlowWrapper } from '../../../components/Flow';
 import { Toolbar } from '../../../components/Flow/Toolbar';
 import type { ComputedFlow } from '../../../components/Flow/helpers';
@@ -42,6 +44,8 @@ export const ProjectFlow: React.FC<{
 
   return (
     <div className={cls.flow}>
+      <Helmet title={`Flow - ${proj.name} ${titleSuffix}`} />
+
       <FlowEdit components={components!} proj={proj} />
       {flow && (
         <>

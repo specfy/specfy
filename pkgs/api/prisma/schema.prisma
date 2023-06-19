@@ -322,6 +322,7 @@ model Invitations {
   orgId     String   @db.VarChar(36)
   email     String   @db.VarChar(250)
   role      String   @db.VarChar(25)
+  createdAt DateTime @default(now()) @db.Timestamp(3)
   expiresAt DateTime @db.Timestamp(3)
 
   Org  Orgs  @relation(fields: [orgId], references: [id], onDelete: Cascade, onUpdate: NoAction)

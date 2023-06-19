@@ -8,10 +8,12 @@ import type {
   ResListRevisionsSuccess,
 } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 import { useDebounce } from 'react-use';
 
 import { useListRevisions } from '../../../../api';
+import { titleSuffix } from '../../../../common/string';
 import { Card } from '../../../../components/Card';
 import { Container } from '../../../../components/Container';
 import { StatusTag } from '../../../../components/StatusTag';
@@ -67,6 +69,7 @@ export const ProjectRevisionsList: React.FC<{
 
   return (
     <Container className={cls.container}>
+      <Helmet title={`Revisions - ${proj.name} ${titleSuffix}`} />
       <div className={cls.searchWrapper}>
         <div className={cls.search}>
           <div className={cls.inputs}>

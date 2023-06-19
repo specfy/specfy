@@ -19,15 +19,15 @@ afterAll(async () => {
   await setupAfterAll(t);
 });
 
-describe('POST /invitations/:id', () => {
+describe('POST /invitations/:id/accept', () => {
   it('should be protected', async () => {
-    const res = await t.fetch.post('/0/invitations/foobar');
+    const res = await t.fetch.post('/0/invitations/foobar/accept');
     await shouldBeProtected(res);
   });
 
   it('should not allow query params', async () => {
     const { token } = await seedSimpleUser();
-    const res = await t.fetch.post('/0/invitations/foobar', {
+    const res = await t.fetch.post('/0/invitations/foobar/accept', {
       token,
       // @ts-expect-error
       qp: { random: 'world' },
@@ -56,10 +56,13 @@ describe('POST /invitations/:id', () => {
     expect(get.json.data).toHaveLength(1);
 
     // Accept
-    const accept = await t.fetch.post(`/0/invitations/${post.json.data.id}`, {
-      token: seed2.token,
-      qp: { token: post.json.data.token },
-    });
+    const accept = await t.fetch.post(
+      `/0/invitations/${post.json.data.id}/accept`,
+      {
+        token: seed2.token,
+        qp: { token: post.json.data.token },
+      }
+    );
     isSuccess(accept.json);
     expect(accept.statusCode).toBe(200);
     expect(accept.json).toStrictEqual({ done: true });
@@ -77,7 +80,7 @@ describe('POST /invitations/:id', () => {
   it('should reject not found invitations', async () => {
     const { token } = await seedWithOrg();
     const fakeid = nanoid();
-    const res = await t.fetch.post(`/0/invitations/${fakeid}`, {
+    const res = await t.fetch.post(`/0/invitations/${fakeid}/accept`, {
       token,
       qp: { token: nanoid(32) },
     });
@@ -116,10 +119,13 @@ describe('POST /invitations/:id', () => {
 
     // Del
     const seed2 = await seedWithOrg();
-    const res = await t.fetch.post(`/0/invitations/${post.json.data.id}`, {
-      token: seed2.token,
-      qp: { token: post.json.data.token },
-    });
+    const res = await t.fetch.post(
+      `/0/invitations/${post.json.data.id}/accept`,
+      {
+        token: seed2.token,
+        qp: { token: post.json.data.token },
+      }
+    );
     isError(res.json);
     expect(res.statusCode).toBe(403);
   });

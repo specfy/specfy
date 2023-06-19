@@ -1,12 +1,13 @@
 import { Typography, Input, Button, Modal, App, Form } from 'antd';
 import type { ApiProject } from 'api/src/types/api';
 import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 
 import { deleteProject, updateProject } from '../../../../api';
 import { isError } from '../../../../api/helpers';
 import { i18n } from '../../../../common/i18n';
-import { slugify } from '../../../../common/string';
+import { slugify, titleSuffix } from '../../../../common/string';
 import { Card } from '../../../../components/Card';
 import type { RouteProject } from '../../../../types/routes';
 
@@ -64,6 +65,8 @@ export const SettingsGeneral: React.FC<{
 
   return (
     <>
+      <Helmet title={`Settings - ${proj.name} ${titleSuffix}`} />
+
       <div>
         <div>
           <Typography.Title level={2}>General Settings</Typography.Title>

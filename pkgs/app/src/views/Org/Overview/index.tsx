@@ -1,8 +1,11 @@
 import { Skeleton } from 'antd';
+import type { ApiOrg } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 
 import { useListProjects } from '../../../api';
 import { useProjectStore } from '../../../common/store';
+import { titleSuffix } from '../../../common/string';
 import { Card } from '../../../components/Card';
 import { Container } from '../../../components/Container';
 import { Flow, FlowWrapper } from '../../../components/Flow';
@@ -16,7 +19,10 @@ import { ListActivity } from '../../../components/ListActivity';
 import { ListProjects } from '../../../components/ListProjects';
 import type { RouteOrg } from '../../../types/routes';
 
-export const OrgOverview: React.FC<{ params: RouteOrg }> = ({ params }) => {
+export const OrgOverview: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
+  org,
+  params,
+}) => {
   const storeProjects = useProjectStore();
   const res = useListProjects({ org_id: params.org_id });
   const [components, setComponents] = useState<ComponentForFlow[]>([]);
@@ -63,6 +69,7 @@ export const OrgOverview: React.FC<{ params: RouteOrg }> = ({ params }) => {
 
   return (
     <>
+      <Helmet title={`${org.name} ${titleSuffix}`} />
       <Container.Left2Third>
         <Card large seamless>
           <ListProjects orgId={params.org_id}></ListProjects>

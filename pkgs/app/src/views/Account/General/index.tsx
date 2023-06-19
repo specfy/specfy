@@ -1,10 +1,12 @@
 import { Typography, Input, Button, Modal, App, Form } from 'antd';
 import { useMemo, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 
 import { isError } from '../../../api/helpers';
 import { deleteMe, updateMe } from '../../../api/me';
 import { i18n } from '../../../common/i18n';
+import { titleSuffix } from '../../../common/string';
 import { Card } from '../../../components/Card';
 import { useAuth } from '../../../hooks/useAuth';
 
@@ -67,6 +69,7 @@ export const SettingsGeneral: React.FC = () => {
 
   return (
     <>
+      <Helmet title={`Account ${titleSuffix}`} />
       <div>
         <div>
           <Typography.Title level={2}>General Settings</Typography.Title>

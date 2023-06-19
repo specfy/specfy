@@ -1,8 +1,11 @@
 import { LoadingOutlined } from '@ant-design/icons';
+import type { ApiOrg } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 
 import { useListProjects } from '../../../api';
 import { useProjectStore } from '../../../common/store';
+import { titleSuffix } from '../../../common/string';
 import { Flow, FlowWrapper } from '../../../components/Flow';
 import { Toolbar } from '../../../components/Flow/Toolbar';
 import type {
@@ -14,9 +17,10 @@ import type { RouteOrg } from '../../../types/routes';
 
 import cls from './index.module.scss';
 
-export const OrgFlow: React.FC<{
-  params: RouteOrg;
-}> = ({ params }) => {
+export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
+  org,
+  params,
+}) => {
   const storeProjects = useProjectStore();
   const res = useListProjects({ org_id: params.org_id });
 
@@ -68,6 +72,7 @@ export const OrgFlow: React.FC<{
 
   return (
     <div className={cls.flow}>
+      <Helmet title={`Flow - ${org.name} ${titleSuffix}`} />
       {flow && (
         <>
           <FlowWrapper>

@@ -2,11 +2,12 @@ import { IconCircleArrowRight } from '@tabler/icons-react';
 import { Button, Input, Select, Typography } from 'antd';
 import type { ApiComponent } from 'api/src/types/api';
 import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 
 import { createLocal, internalTypeToText } from '../../../../common/component';
 import { useComponentsStore, useProjectStore } from '../../../../common/store';
-import { slugify } from '../../../../common/string';
+import { slugify, titleSuffix } from '../../../../common/string';
 import type { RouteProject } from '../../../../types/routes';
 
 import cls from './index.module.scss';
@@ -46,6 +47,11 @@ export const ProjectComponentCreate: React.FC<{ params: RouteProject }> = ({
       }}
       className={cls.form}
     >
+      <Helmet
+        title={`Create Component - ${
+          storeProject.project!.name
+        } ${titleSuffix}`}
+      />
       <Typography.Title level={4}>Create Component</Typography.Title>
       <Select
         options={options}

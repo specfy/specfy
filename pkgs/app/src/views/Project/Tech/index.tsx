@@ -2,11 +2,13 @@ import { Tag, Typography } from 'antd';
 import Title from 'antd/es/typography/Title';
 import type { ApiComponent, ApiProject } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 
 import type { TechInfo } from '../../../common/component';
 import { supportedIndexed } from '../../../common/component';
 import { useComponentsStore } from '../../../common/store';
+import { titleSuffix } from '../../../common/string';
 import { Card } from '../../../components/Card';
 import { ComponentLine } from '../../../components/ComponentLine';
 import { Container } from '../../../components/Container';
@@ -83,6 +85,7 @@ export const Tech: React.FC<{
 
   return (
     <Container noPadding>
+      <Helmet title={`${techname} - ${proj.name} ${titleSuffix}`} />
       <Container.Left2Third>
         <Card padded seamless large>
           <Typography.Title level={2}>

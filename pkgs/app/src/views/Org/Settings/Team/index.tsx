@@ -1,6 +1,9 @@
 import * as Tabs from '@radix-ui/react-tabs';
 import { Typography } from 'antd';
+import type { ApiOrg } from 'api/src/types/api';
+import { Helmet } from 'react-helmet-async';
 
+import { titleSuffix } from '../../../../common/string';
 import { Container } from '../../../../components/Container';
 import type { RouteOrg } from '../../../../types/routes';
 
@@ -8,9 +11,14 @@ import { SettingsTeamList } from './List';
 import { SettingsTeamPending } from './Pending';
 import cls from './index.module.scss';
 
-export const SettingsTeam: React.FC<{ params: RouteOrg }> = ({ params }) => {
+export const SettingsTeam: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
+  org,
+  params,
+}) => {
   return (
     <Container noPadding>
+      <Helmet title={`Team - ${org.name} ${titleSuffix}`} />
+
       <div className={cls.team}>
         <div className={cls.header}>
           <div>

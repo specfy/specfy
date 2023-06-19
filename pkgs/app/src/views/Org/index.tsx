@@ -1,11 +1,13 @@
 import { Skeleton } from 'antd';
 import type { ApiOrg } from 'api/src/types/api';
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Route, Routes, useParams } from 'react-router-dom';
 import { useLocalStorage } from 'react-use';
 
 import { useListOrgs, useListProjects } from '../../api';
 import { useProjectStore } from '../../common/store';
+import { titleSuffix } from '../../common/string';
 import { Card } from '../../components/Card';
 import { Container } from '../../components/Container';
 import { NotFound } from '../../components/NotFound';
@@ -30,7 +32,6 @@ export const Org: React.FC = () => {
   const getOrgs = useListOrgs();
   const [org, setOrg] = useState<ApiOrg>();
   const getProjects = useListProjects({ org_id: org?.id });
-  const [loading, setLoading] = useState<boolean>(true);
 
   const [, setLastOrg] = useLocalStorage('lastOrg');
 
@@ -50,15 +51,7 @@ export const Org: React.FC = () => {
     storeProject.fill(getProjects.data?.data || []);
   }, [getProjects.data]);
 
-  useEffect(() => {
-    if (!loading || !org) {
-      return;
-    }
-
-    setLoading(getOrgs.isLoading || getProjects.isLoading);
-  }, [loading, org, getOrgs.data, getProjects.data]);
-
-  if (loading) {
+  if (getOrgs.isFetching || getProjects.isFetching) {
     return (
       <div className={cls.org}>
         <div></div>
@@ -84,6 +77,7 @@ export const Org: React.FC = () => {
 
   return (
     <div className={cls.org}>
+      <Helmet title={`${org.name} ${titleSuffix}`} />
       <div>
         <Sidebar org={org} />
       </div>
@@ -94,11 +88,26 @@ export const Org: React.FC = () => {
         </div>
         <Container noPadding className={cls.container}>
           <Routes>
-            <Route path="/" element={<OrgOverview params={params} />} />
-            <Route path="/content" element={<OrgContent params={params} />} />
-            <Route path="/policies" element={<OrgPolicies params={params} />} />
-            <Route path="/flow" element={<OrgFlow params={params} />} />
-            <Route path="/activity" element={<OrgActivity params={params} />} />
+            <Route
+              path="/"
+              element={<OrgOverview org={org} params={params} />}
+            />
+            <Route
+              path="/content"
+              element={<OrgContent org={org} params={params} />}
+            />
+            <Route
+              path="/policies"
+              element={<OrgPolicies org={org} params={params} />}
+            />
+            <Route
+              path="/flow"
+              element={<OrgFlow org={org} params={params} />}
+            />
+            <Route
+              path="/activity"
+              element={<OrgActivity org={org} params={params} />}
+            />
             <Route
               path="/settings/*"
               element={<OrgSettings params={params} org={org} />}

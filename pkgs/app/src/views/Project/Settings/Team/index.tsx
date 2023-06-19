@@ -1,9 +1,11 @@
 import { Typography, Input } from 'antd';
 import type { ApiProject, ApiPerm, ApiUser } from 'api/src/types/api';
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { useDebounce } from 'react-use';
 
 import { useListPermsProject, useListUser } from '../../../../api';
+import { titleSuffix } from '../../../../common/string';
 import { Card } from '../../../../components/Card';
 import { Empty } from '../../../../components/Empty';
 import { Row } from '../../../../components/Team/Row';
@@ -78,6 +80,7 @@ export const SettingsTeam: React.FC<{
 
   return (
     <>
+      <Helmet title={`Team - ${proj.name} ${titleSuffix}`} />
       <div className={cls.header}>
         <div>
           <Typography.Title level={2}>Team members</Typography.Title>

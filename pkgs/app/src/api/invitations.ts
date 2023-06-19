@@ -5,6 +5,7 @@ import type {
   ReqListInvitations,
   ReqPostInvitations,
   ResAcceptInvitation,
+  ResDeclineInvitation,
   ResDeleteInvitation,
   ResGetInvitation,
   ResGetInvitationSuccess,
@@ -36,7 +37,7 @@ export async function acceptInvitations(
   opts: ReqGetInvitation & ReqInvitationParams
 ): Promise<ResAcceptInvitation> {
   const { json } = await fetchApi<ResAcceptInvitation, ReqGetInvitation>(
-    `/invitations/${opts.invitation_id}`,
+    `/invitations/${opts.invitation_id}/accept`,
     { qp: { token: opts.token } },
     'POST'
   );
@@ -48,12 +49,26 @@ export async function acceptInvitations(
   return json;
 }
 
-export async function deleteInvitations(
+export async function declineInvitations(
   opts: ReqGetInvitation & ReqInvitationParams
+): Promise<ResDeclineInvitation> {
+  const { json } = await fetchApi<ResDeclineInvitation, ReqGetInvitation>(
+    `/invitations/${opts.invitation_id}/decline`,
+    { qp: { token: opts.token } },
+    'POST'
+  );
+
+  queryClient.invalidateQueries(['listInvitations']);
+
+  return json;
+}
+
+export async function deleteInvitations(
+  opts: ReqInvitationParams
 ): Promise<ResDeleteInvitation> {
   const { json } = await fetchApi<ResDeleteInvitation, ReqGetInvitation>(
     `/invitations/${opts.invitation_id}`,
-    { qp: { token: opts.token } },
+    undefined,
     'DELETE'
   );
 

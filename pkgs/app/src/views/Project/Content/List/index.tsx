@@ -6,11 +6,13 @@ import type {
   ResListDocumentsSuccess,
 } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
 import { useListDocuments } from '../../../../api';
 import { TYPE_TO_TEXT } from '../../../../common/document';
 import { useDocumentsStore } from '../../../../common/store';
+import { titleSuffix } from '../../../../common/string';
 import { Card } from '../../../../components/Card';
 import { Time } from '../../../../components/Time';
 import type { RouteProject } from '../../../../types/routes';
@@ -46,6 +48,7 @@ export const ProjectContentList: React.FC<{
 
   return (
     <div className={cls.list}>
+      <Helmet title={`Content - ${proj.name} ${titleSuffix}`} />
       <Card seamless>
         {list && (
           <Table

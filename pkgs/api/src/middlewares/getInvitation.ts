@@ -26,7 +26,10 @@ export const getInvitation: PreHandler<{
 
   const data = val.data;
   const invitation = await prisma.invitations.findFirst({
-    where: { id: data.invitation_id },
+    where: {
+      id: data.invitation_id,
+      expiresAt: { gte: new Date() },
+    },
     include: {
       Org: true,
       User: true,

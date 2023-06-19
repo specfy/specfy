@@ -14,6 +14,7 @@ import type {
   ReqListInvitations,
   ReqPostInvitations,
   ResAcceptInvitation,
+  ResDeclineInvitation,
   ResDeleteInvitation,
   ResGetInvitation,
   ResListInvitations,
@@ -192,20 +193,32 @@ export interface API {
     GET: { res: ResListInvitations; qp: ReqListInvitations; body: never };
     POST: { res: ResPostInvitations; qp: never; body: ReqPostInvitations };
   };
+
+  // @ts-expect-error
+  [key: `/0/invitations/${string}/accept`]: {
+    POST: {
+      res: ResAcceptInvitation;
+      qp: ReqGetInvitation;
+      body: never;
+    };
+  };
+  // @ts-expect-error
+  [key: `/0/invitations/${string}/decline`]: {
+    POST: {
+      res: ResDeclineInvitation;
+      qp: ReqGetInvitation;
+      body: never;
+    };
+  };
   [key: `/0/invitations/${string}`]: {
     GET: {
       res: ResGetInvitation;
       qp: ReqGetInvitation;
       body: never;
     };
-    POST: {
-      res: ResAcceptInvitation;
-      qp: ReqGetInvitation;
-      body: never;
-    };
     DELETE: {
       res: ResDeleteInvitation;
-      qp: ReqGetInvitation;
+      qp: never;
       body: never;
     };
   };
