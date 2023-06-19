@@ -27,6 +27,9 @@ jobs:
       PASSWORD_SALT: "erejlksfjgfsd"
       GITHUB_CLIENT_ID: ""
       GITHUB_CLIENT_SECRET: ""
+      GITHUB_CLIENT_SECRET: ""
+      GITHUB_CLIENT_PKEY: ""
+      GITHUB_WEBHOOKS_SECRET: ""
       APP_HOSTNAME: "localhost:3000"
 
 

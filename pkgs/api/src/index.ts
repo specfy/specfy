@@ -18,6 +18,7 @@ const closeListeners = closeWithGrace(
     if (err) {
       app.log.error(err);
     }
+
     await app.close();
   }
 );
