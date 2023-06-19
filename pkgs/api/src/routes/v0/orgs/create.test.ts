@@ -58,6 +58,7 @@ describe('POST /orgs', () => {
       avatarUrl: null,
       acronym: 'TE',
       color: expect.any(String),
+      githubInstallationId: null,
     });
 
     // Should also create a permission

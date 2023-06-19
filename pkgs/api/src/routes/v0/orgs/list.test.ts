@@ -58,6 +58,7 @@ describe('GET /orgs', () => {
         avatarUrl: null,
         color: expect.any(String),
         acronym: expect.any(String),
+        githubInstallationId: null,
       },
     ]);
   });
@@ -79,6 +80,7 @@ describe('GET /orgs', () => {
         avatarUrl: null,
         color: expect.any(String),
         acronym: expect.any(String),
+        githubInstallationId: null,
       },
     ]);
 
@@ -95,6 +97,7 @@ describe('GET /orgs', () => {
         avatarUrl: null,
         color: expect.any(String),
         acronym: expect.any(String),
+        githubInstallationId: null,
       },
     ]);
   });

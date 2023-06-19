@@ -72,11 +72,12 @@ describe('GET /invitations/:id', () => {
     expect(get.statusCode).toBe(200);
     expect(get.json.data).toStrictEqual({
       email: seed2.user.email,
-      expiresAt: expect.toBeIsoDate(),
       id: expect.any(String),
       orgId: org.id,
       role: 'viewer',
       userId: user.id,
+      createdAt: expect.toBeIsoDate(),
+      expiresAt: expect.toBeIsoDate(),
       by: {
         avatarUrl: null,
         email: expect.any(String),
@@ -90,6 +91,7 @@ describe('GET /invitations/:id', () => {
         color: expect.any(String),
         isPersonal: false,
         name: expect.any(String),
+        githubInstallationId: null,
       },
     });
   });
