@@ -51,37 +51,13 @@ export const ListActivity: React.FC<{
         res.data.data[index + 1] === undefined ||
         res.data.data[index + 1].activityGroupId !== act.activityGroupId
       ) {
-        console.log('on group', act);
         const copy: ApiActivityGrouped = { ...act, childrens: [...acc] };
         groups.push(copy);
         acc = [];
       } else {
-        console.log('on acc');
         acc.push(act);
       }
     }
-    // for (const act of res.data.data) {
-    //   if (
-    //     act.activityGroupId &&
-    //     ((acc.length > 0 &&
-    //       acc[acc.length - 1].activityGroupId === act.activityGroupId) ||
-    //       acc.length === 0)
-    //   ) {
-    //     console.log('on group', act);
-    //     acc.push(act);
-    //     continue;
-    //   } else if (acc.length > 0) {
-    //     const last = acc.pop() as ApiActivityGrouped;
-    //     console.log('on ungroup', last);
-    //     last.childrens = [...acc];
-    //     groups.push(last);
-    //     acc = [];
-    //   }
-
-    //   groups.push(act);
-    // }
-
-    console.log('eyoo');
 
     // Group by period
     const period: Record<string, ApiActivity[]> = {};

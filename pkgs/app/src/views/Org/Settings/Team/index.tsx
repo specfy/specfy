@@ -5,6 +5,8 @@ import { Helmet } from 'react-helmet-async';
 
 import { titleSuffix } from '../../../../common/string';
 import { Container } from '../../../../components/Container';
+import { Flex } from '../../../../components/Flex';
+import { TeamInvite } from '../../../../components/Team/Invite';
 import type { RouteOrg } from '../../../../types/routes';
 
 import { SettingsTeamList } from './List';
@@ -19,7 +21,7 @@ export const SettingsTeam: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
     <Container noPadding>
       <Helmet title={`Team - ${org.name} ${titleSuffix}`} />
 
-      <div className={cls.team}>
+      <Flex className={cls.team} gap="xl" direction="column">
         <div className={cls.header}>
           <div>
             <Typography.Title level={2}>Team members</Typography.Title>
@@ -28,6 +30,8 @@ export const SettingsTeam: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
             </Typography.Text>
           </div>
         </div>
+
+        <TeamInvite params={params} />
 
         <Tabs.Root className="rx_tabsRoot" defaultValue="tab1">
           <Tabs.List className="rx_tabsList" aria-label="Manage your account">
@@ -45,7 +49,7 @@ export const SettingsTeam: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
             <SettingsTeamPending params={params} />
           </Tabs.Content>
         </Tabs.Root>
-      </div>
+      </Flex>
     </Container>
   );
 };

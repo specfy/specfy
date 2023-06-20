@@ -108,10 +108,10 @@ export const SettingsGeneral: React.FC = () => {
           <div>
             <Typography.Title level={4}>Delete your account</Typography.Title>
             <Typography.Text type="secondary">
-              Deleting an account can&apos;t be undone.
+              This operation can&apos;t be undone.
             </Typography.Text>
           </div>
-          <Button danger type="primary" onClick={showModal}>
+          <Button danger type="default" onClick={showModal}>
             Delete Account
           </Button>
         </div>
@@ -139,8 +139,8 @@ export const SettingsGeneral: React.FC = () => {
         ]}
       >
         <p>
-          Are you sure to delete your account? <br></br>This action can&apos;t
-          be undone.
+          Are you sure to delete your account? <br></br>This operation
+          can&apos;t be undone.
         </p>
       </Modal>
     </>

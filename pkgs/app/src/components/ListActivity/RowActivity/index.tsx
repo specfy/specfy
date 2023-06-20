@@ -177,6 +177,7 @@ export const RowActivity: React.FC<{
               src={act.user.avatarUrl}
               single={true}
               size="small"
+              colored={false}
             />
           </Link>
         ) : (

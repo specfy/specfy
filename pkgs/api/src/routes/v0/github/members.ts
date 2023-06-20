@@ -44,8 +44,6 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         org: query.org,
       });
 
-      console.log(list);
-
       res.status(200).send({
         data: list.data.map((u) => {
           return {
@@ -57,7 +55,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         }),
       });
     } catch (e: unknown) {
-      console.log(e);
+      console.error(e);
       if (e instanceof RequestError) {
         notFound(res);
         return;

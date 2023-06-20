@@ -1,5 +1,5 @@
+import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import { IconApps, IconHome, IconSettings } from '@tabler/icons-react';
-import { Menu } from 'antd';
 import type { ApiOrg } from 'api/src/types/api';
 import { useState, useMemo, useEffect } from 'react';
 import { useLocation, Link, useParams } from 'react-router-dom';
@@ -16,89 +16,6 @@ export const OrgHeader: React.FC<{ org: ApiOrg }> = () => {
   const linkSelf = useMemo(() => {
     return `/${params.org_id}/_`;
   }, [params]);
-
-  const menu = useMemo(() => {
-    return [
-      {
-        key: 'home',
-        label: (
-          <Link to={linkSelf}>
-            <span>
-              <IconHome />
-            </span>
-            Home
-          </Link>
-        ),
-      },
-      // {
-      //   key: 'content',
-      //   label: (
-      //     <Link to={`${linkSelf}/content`}>
-      //       <span>
-      //         <IconBook />
-      //       </span>
-      //       Content
-      //     </Link>
-      //   ),
-      // },
-      {
-        key: 'flow',
-        label: (
-          <Link to={`${linkSelf}/flow`}>
-            <span>
-              <IconApps />
-            </span>
-            Flow
-          </Link>
-        ),
-      },
-      // {
-      //   key: 'policies',
-      //   label: (
-      //     <Link to={`${linkSelf}/policies`}>
-      //       <span>
-      //         <IconSchool />
-      //       </span>
-      //       Policies
-      //     </Link>
-      //   ),
-      // },
-      // {
-      //   key: 'team',
-      //   label: (
-      //     <Link to={`${linkSelf}/team`}>
-      //       <span>
-      //         <IconUsers />
-      //       </span>
-      //       Team
-      //       <Badge count={resCount.data?.data} showZero={false} />
-      //     </Link>
-      //   ),
-      // },
-      // {
-      //   key: 'activity',
-      //   label: (
-      //     <Link to={`${linkSelf}/activity`}>
-      //       <span>
-      //         <IconBolt />
-      //       </span>
-      //       Activity
-      //     </Link>
-      //   ),
-      // },
-      {
-        key: 'settings',
-        label: (
-          <Link to={`${linkSelf}/settings`}>
-            <span>
-              <IconSettings />
-            </span>
-            Settings
-          </Link>
-        ),
-      },
-    ];
-  }, [linkSelf]);
 
   useEffect(() => {
     const path = location.pathname.split('/');
@@ -121,7 +38,54 @@ export const OrgHeader: React.FC<{ org: ApiOrg }> = () => {
 
   return (
     <div className={cls.header}>
-      <Menu selectedKeys={[open]} mode="horizontal" items={menu} />
+      <NavigationMenu.Root className="rx_navMenuRoot">
+        <NavigationMenu.List className="rx_navMenuList">
+          <NavigationMenu.Item className="rx_navMenuItem">
+            <NavigationMenu.Link
+              asChild
+              className="rx_navMenuLink"
+              active={open === 'home'}
+            >
+              <Link to={linkSelf}>
+                <span>
+                  <IconHome />
+                </span>
+                Home
+              </Link>
+            </NavigationMenu.Link>
+          </NavigationMenu.Item>
+
+          <NavigationMenu.Item className="rx_navMenuItem">
+            <NavigationMenu.Link
+              asChild
+              className="rx_navMenuLink"
+              active={open === 'flow'}
+            >
+              <Link to={`${linkSelf}/flow`}>
+                <span>
+                  <IconApps />
+                </span>
+                Flow
+              </Link>
+            </NavigationMenu.Link>
+          </NavigationMenu.Item>
+
+          <NavigationMenu.Item className="rx_navMenuItem">
+            <NavigationMenu.Link
+              asChild
+              className="rx_navMenuLink"
+              active={open === 'settings'}
+            >
+              <Link to={`${linkSelf}/settings`}>
+                <span>
+                  <IconSettings />
+                </span>
+                Settings
+              </Link>
+            </NavigationMenu.Link>
+          </NavigationMenu.Item>
+        </NavigationMenu.List>
+      </NavigationMenu.Root>
     </div>
   );
 };

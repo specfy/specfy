@@ -1,5 +1,6 @@
 @import "./theme";
 @import "./radix/dropdown";
+@import "./radix/navigation";
 
 
 
@@ -58,60 +59,7 @@
 }
 
 
-// ---- Nav
-.rx_navMenuRoot {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  justify-content: center;
-}
 
-.rx_navMenuList {
-  display: flex;
-  justify-content: center;
-
-  margin: 0;
-  padding: 4px;
-
-  list-style: none;
-
-  border-radius: 6px;
-
-  &[data-orientation='vertical'] {
-    flex-direction: column;
-    width: 200px;
-
-    .rx_navMenuTrigger,
-    .rx_navMenuLink {
-      width: 100%;
-    }
-  }
-}
-
-.rx_navMenuTrigger,
-.rx_navMenuLink {
-  cursor: pointer;
-  user-select: none;
-
-  display: flex;
-
-  padding: $p-m $p-l;
-
-  color: var(--textLight);
-
-  border-radius: $border-radius;
-  outline: none;
-
-  &:hover {
-    color: var(--text);
-    background-color: var(--bgHover);
-  }
-
-  &[data-active] {
-    color: var(--text);
-    background-color: var(--bgHover);
-  }
-}
 
 
 // --- Select

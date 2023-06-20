@@ -161,7 +161,6 @@ export const SettingsGeneral: React.FC<{
                 emptyOption={true}
                 defaultSelected={org.githubInstallationId}
                 onChange={(sel) => {
-                  console.log(sel);
                   if (sel !== 'public') setInstallId(sel);
                 }}
                 publicRepos={false}

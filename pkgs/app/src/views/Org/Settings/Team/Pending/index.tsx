@@ -1,23 +1,12 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import * as Select from '@radix-ui/react-select';
-import { IconChevronDown, IconDotsVertical } from '@tabler/icons-react';
-import {
-  App,
-  Button,
-  Checkbox,
-  Form,
-  Input,
-  Skeleton,
-  Table,
-  Typography,
-} from 'antd';
-import type { ApiInvitation, ApiPerm, FieldsErrors } from 'api/src/types/api';
+import { IconDotsVertical } from '@tabler/icons-react';
+import { App, Button, Checkbox, Skeleton, Table } from 'antd';
+import type { ApiInvitation } from 'api/src/types/api';
 import { useState } from 'react';
 
 import { roleReadable } from '../../../../../api';
-import { isError, isValidationError } from '../../../../../api/helpers';
+import { isError } from '../../../../../api/helpers';
 import {
-  createInvitation,
   deleteInvitations,
   useListInvitations,
 } from '../../../../../api/invitations';
@@ -34,35 +23,8 @@ export const SettingsTeamPending: React.FC<{ params: RouteOrg }> = ({
   params,
 }) => {
   const { message } = App.useApp();
-
-  const [email, setEmail] = useState<string>('');
-  const [role, setRole] = useState<ApiPerm['role']>('viewer');
-  const [errors, setErrors] = useState<FieldsErrors>({});
   const [selected, setSelected] = useState<string[]>([]);
-
   const list = useListInvitations({ org_id: params.org_id });
-
-  const onInvite = async (e: any) => {
-    e.preventDefault();
-
-    const res = await createInvitation({
-      email,
-      role,
-      orgId: params.org_id,
-    });
-    if (isError(res)) {
-      if (isValidationError(res)) {
-        setErrors(res.error.fields);
-      } else {
-        message.error(i18n.errorOccurred);
-      }
-      return;
-    }
-
-    message.success('User invited');
-    setErrors({});
-    setEmail('');
-  };
 
   const checked =
     selected.length > 0 && list.data?.data.length === selected.length;
@@ -83,7 +45,6 @@ export const SettingsTeamPending: React.FC<{ params: RouteOrg }> = ({
 
   const onRemoveSelected = async () => {
     for (const sel of selected) {
-      console.log(sel);
       const res = await deleteInvitations({ invitation_id: sel });
       if (isError(res)) {
         message.error(i18n.errorOccurred);
@@ -108,59 +69,6 @@ export const SettingsTeamPending: React.FC<{ params: RouteOrg }> = ({
 
   return (
     <div className={cls.invite}>
-      <Card>
-        <Card.Content>
-          <Typography.Title level={3}>Add team members</Typography.Title>
-          <form className={cls.form} onSubmit={onInvite}>
-            <Form.Item
-              help={errors.email?.message}
-              validateStatus={errors.email && 'error'}
-            >
-              <Input
-                type="email"
-                placeholder="jane@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </Form.Item>
-
-            <Select.Root
-              value={role}
-              defaultValue="viewer"
-              onValueChange={(val) => setRole(val as any)}
-            >
-              <Select.Trigger className="rx_selectTrigger" aria-label="Food">
-                <Select.Value placeholder="Select a role" />
-                <Select.Icon className="rx_selectIcon">
-                  <IconChevronDown />
-                </Select.Icon>
-              </Select.Trigger>
-
-              <Select.Portal>
-                <Select.Content className="rx_selectContent">
-                  <Select.Viewport>
-                    <Select.Item className="rx_selectItem" value="owner">
-                      <Select.ItemText>Owner</Select.ItemText>
-                    </Select.Item>
-                    <Select.Item className="rx_selectItem" value="contributor">
-                      <Select.ItemText>Contributor</Select.ItemText>
-                    </Select.Item>
-                    <Select.Item className="rx_selectItem" value="viewer">
-                      <Select.ItemText>Viewer</Select.ItemText>
-                    </Select.Item>
-                  </Select.Viewport>
-                </Select.Content>
-              </Select.Portal>
-            </Select.Root>
-          </form>
-        </Card.Content>
-        <Card.Actions>
-          <Button onClick={onInvite} type="primary">
-            Invite
-          </Button>
-        </Card.Actions>
-      </Card>
-
       <Card>
         {list.isFetching && <Skeleton title={false} paragraph={{ rows: 3 }} />}
         {!list.isFetching && (!list.data || list.data.data.length <= 0) ? (

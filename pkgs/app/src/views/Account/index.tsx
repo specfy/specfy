@@ -1,5 +1,5 @@
+import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import { IconSettings } from '@tabler/icons-react';
-import { Menu } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 
@@ -38,7 +38,23 @@ export const Account: React.FC = () => {
 
   return (
     <Container className={cls.container}>
-      <Menu selectedKeys={[open]} mode="vertical" items={menu} />
+      <NavigationMenu.Root orientation="vertical" className="rx_navMenuRoot">
+        <NavigationMenu.List className="rx_navMenuList">
+          {menu.map((item) => {
+            return (
+              <NavigationMenu.Item className="rx_navMenuItem" key={item.key}>
+                <NavigationMenu.Link
+                  asChild
+                  className="rx_navMenuLink"
+                  active={open === item.key}
+                >
+                  {item.label}
+                </NavigationMenu.Link>
+              </NavigationMenu.Item>
+            );
+          })}
+        </NavigationMenu.List>
+      </NavigationMenu.Root>
 
       <div className={cls.flex}>
         <Routes>

@@ -110,7 +110,6 @@ export class Popup {
   }
 
   receiveMessage(event: MessageEvent<any>) {
-    console.log(event, event.origin, window.location.origin, API_HOSTNAME);
     if (event.origin !== API_HOSTNAME) {
       return;
     }

@@ -1,3 +1,4 @@
+import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import {
   IconApps,
   IconBolt,
@@ -6,13 +7,13 @@ import {
   IconLayoutDashboard,
   IconSettings,
 } from '@tabler/icons-react';
-import { Badge, Menu } from 'antd';
 import type { ApiProject, ApiOrg } from 'api/src/types/api';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import { useListOrgs, useListRevisions } from '../../api';
 import type { RouteProject } from '../../types/routes';
+import { Badge } from '../Badge';
 
 import cls from './index.module.scss';
 
@@ -43,20 +44,6 @@ export const ProjectHeader: React.FC<{
 
     setOrg(getOrgs.data.data.find((o) => o.id === params.org_id));
   }, [getOrgs.data]);
-
-  // Edit mode
-  // const createItems = useMemo<MenuProps['items']>(() => {
-  //   return [
-  //     {
-  //       key: '1',
-  //       label: <Link to={`${linkSelf}/content/new`}>New Content</Link>,
-  //     },
-  //     {
-  //       key: '2',
-  //       label: <Link to={`${linkSelf}/component/new`}>New Component</Link>,
-  //     },
-  //   ];
-  // }, [linkSelf]);
 
   const menu = useMemo(() => {
     return [
@@ -159,7 +146,23 @@ export const ProjectHeader: React.FC<{
 
   return (
     <div className={cls.header}>
-      <Menu selectedKeys={[open]} mode="horizontal" items={menu} />
+      <NavigationMenu.Root className="rx_navMenuRoot">
+        <NavigationMenu.List className="rx_navMenuList">
+          {menu.map((item) => {
+            return (
+              <NavigationMenu.Item className="rx_navMenuItem" key={item.key}>
+                <NavigationMenu.Link
+                  asChild
+                  className="rx_navMenuLink"
+                  active={open === item.key}
+                >
+                  {item.label}
+                </NavigationMenu.Link>
+              </NavigationMenu.Item>
+            );
+          })}
+        </NavigationMenu.List>
+      </NavigationMenu.Root>
     </div>
   );
 };
