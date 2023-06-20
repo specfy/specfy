@@ -1,0 +1,16 @@
+@import "../../styles/theme";
+
+.badge {
+  min-width: 20px;
+  padding: 0 $p-m;
+
+  font-size: $font-s;
+  font-weight: 500;
+  line-height: $line-height;
+  color: var(--textLight);
+  text-align: center;
+
+  background-color: #fff;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+}

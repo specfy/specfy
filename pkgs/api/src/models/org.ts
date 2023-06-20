@@ -30,9 +30,16 @@ export async function createOrg(
     },
   });
 
-  await createOrgActivity({ user, action: 'Org.created', target: tmp, tx });
+  const activityGroupId = nanoid();
+  await createOrgActivity({
+    user,
+    action: 'Org.created',
+    target: tmp,
+    tx,
+    activityGroupId,
+  });
 
-  await createKey({ tx, user, data: { orgId: tmp.id } });
+  await createKey({ tx, user, data: { orgId: tmp.id }, activityGroupId });
 
   return tmp;
 }
