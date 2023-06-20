@@ -64,9 +64,19 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           data: { status: 'approved' },
           where: { id: rev.id },
         });
-        await createRevisionActivity(req.user!, 'Revision.approved', rev, tx);
+        await createRevisionActivity({
+          user: req.user!,
+          action: 'Revision.approved',
+          target: rev,
+          tx,
+        });
       } else {
-        await createRevisionActivity(req.user!, 'Revision.commented', rev, tx);
+        await createRevisionActivity({
+          user: req.user!,
+          action: 'Revision.commented',
+          target: rev,
+          tx,
+        });
       }
 
       return created;

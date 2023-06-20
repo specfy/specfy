@@ -69,20 +69,29 @@ export async function createDocument({
   const tmp = await tx.documents.create({
     data: model,
   });
-  await createDocumentActivity(user, 'Document.created', tmp, tx);
+  await createDocumentActivity({
+    user,
+    action: 'Document.created',
+    target: tmp,
+    tx,
+  });
 
   return tmp;
 }
 
-export async function createDocumentActivity(
-  user: Users,
-  action: ActionDocument,
-  target: Documents,
-  tx: Prisma.TransactionClient
-): Promise<Activities> {
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  const activityGroupId = nanoid();
-
+export async function createDocumentActivity({
+  user,
+  action,
+  target,
+  tx,
+  activityGroupId = null,
+}: {
+  user: Users;
+  action: ActionDocument;
+  target: Documents;
+  tx: Prisma.TransactionClient;
+  activityGroupId?: string | null;
+}): Promise<Activities> {
   return await tx.activities.create({
     data: {
       id: nanoid(),
@@ -92,6 +101,7 @@ export async function createDocumentActivity(
       projectId: target.projectId,
       activityGroupId,
       targetBlobId: target.blobId,
+      createdAt: new Date(),
     },
   });
 }

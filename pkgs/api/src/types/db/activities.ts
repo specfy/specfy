@@ -65,7 +65,7 @@ export interface DBActivity {
 
   userId: string;
 
-  activityGroupId: string;
+  activityGroupId: string | null;
   action:
     | ActionComponent
     | ActionDocument

@@ -197,7 +197,12 @@ export async function seedPolicies([u1]: Users[]) {
 
     await Promise.all(
       [p1, p2, p4, p5].map(async (p) => {
-        await createPoliciesActivity(u1, 'Policy.created', p, tx);
+        await createPoliciesActivity({
+          user: u1,
+          action: 'Policy.created',
+          target: p,
+          tx,
+        });
         return await tx.typeHasUsers.create({
           data: { role: 'author', userId: u1.id, policyId: p.id },
         });
@@ -216,7 +221,12 @@ export async function seedPolicy(user: Users, org: Orgs) {
       content: { type: 'doc', content: [] },
     },
   });
-  await createPoliciesActivity(user, 'Policy.created', policy, prisma);
+  await createPoliciesActivity({
+    user,
+    action: 'Policy.created',
+    target: policy,
+    tx: prisma,
+  });
 
   return policy;
 }

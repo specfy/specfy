@@ -42,7 +42,9 @@ export const SettingsTeamPending: React.FC<{ params: RouteOrg }> = ({
 
   const list = useListInvitations({ org_id: params.org_id });
 
-  const onInvite = async () => {
+  const onInvite = async (e: any) => {
+    e.preventDefault();
+
     const res = await createInvitation({
       email,
       role,
@@ -108,8 +110,8 @@ export const SettingsTeamPending: React.FC<{ params: RouteOrg }> = ({
     <div className={cls.invite}>
       <Card>
         <Card.Content>
-          <Typography.Title level={3}>Invite new people</Typography.Title>
-          <div className={cls.form}>
+          <Typography.Title level={3}>Add team members</Typography.Title>
+          <form className={cls.form} onSubmit={onInvite}>
             <Form.Item
               help={errors.email?.message}
               validateStatus={errors.email && 'error'}
@@ -150,7 +152,7 @@ export const SettingsTeamPending: React.FC<{ params: RouteOrg }> = ({
                 </Select.Content>
               </Select.Portal>
             </Select.Root>
-          </div>
+          </form>
         </Card.Content>
         <Card.Actions>
           <Button onClick={onInvite} type="primary">

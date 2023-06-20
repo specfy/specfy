@@ -2,6 +2,7 @@
 
 .select {
   width: 250px;
+  height: 40px;
   margin-bottom: $p-xl;
 }
 
@@ -15,9 +16,4 @@
   display: flex;
   gap: $p-m;
   align-items: center;
-  margin-top: 2px;
-
-  .label {
-    margin-top: -$p-s;
-  }
 }

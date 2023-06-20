@@ -8,6 +8,8 @@ a {
   all: unset;
 }
 
+
+
 .tabler-icon {
   width: 1.2em;
   height: 1.2em;
@@ -20,6 +22,8 @@ a {
   text-transform: none;
   text-rendering: optimizelegibility;
   vertical-align: -0.225em;
+
+  stroke-width: 1.5;
 
   -webkit-font-smoothing: antialiased;
 }
@@ -50,7 +54,13 @@ body {
   background-color: $gray-2;
 }
 
+button {
+  cursor: pointer;
+}
+
 a {
+  cursor: pointer;
+
   &:hover {
     color: $blue-700;
   }

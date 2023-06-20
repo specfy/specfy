@@ -1,0 +1,83 @@
+@import "../../../styles/theme";
+
+.onboarding {
+  margin-bottom: $p-4xl;
+  padding: $p-4xl;
+
+}
+
+.header {
+  margin-bottom: $p-3xl;
+}
+
+.item {
+  position: relative;
+
+  display: flex;
+  gap: $p-xl;
+  align-items: center;
+
+  padding: $p-l 0;
+
+  // border-bottom: 1px solid var(--border);
+}
+
+.check {
+  position: relative;
+  z-index: 2;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 42px;
+  height: 42px;
+
+  font-size: $font-2xl;
+  color: white;
+
+  background-color: var(--accent);
+  border-radius: 50%;
+  outline: 2px solid white;
+
+  &.pending {
+    width: 22px;
+    height: 22px;
+    margin: 0 9px;
+
+    background-color: white;
+    border: 2px solid var(--accent);
+  }
+
+  .donut {
+    width: 6px;
+    height: 6px;
+    background-color: var(--accent);
+    border-radius: 50%;
+  }
+}
+
+.line {
+  position: absolute;
+  z-index: 1;
+  top: 45px;
+  left: 19px;
+
+  width: 1px;
+  height: 60px;
+
+  border-left: 2px solid var(--border);
+}
+
+
+.desc {
+  flex-grow: 1;
+}
+
+.sub {
+  color: var(--textLight);
+}
+
+.action {
+  flex-grow: 0;
+}

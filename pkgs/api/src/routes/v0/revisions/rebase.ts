@@ -81,7 +81,12 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       });
 
       // await rev.onAfterRebased(req.user!, { transaction });
-      await createRevisionActivity(req.user!, 'Revision.rebased', rev, tx);
+      await createRevisionActivity({
+        user: req.user!,
+        action: 'Revision.rebased',
+        target: rev,
+        tx,
+      });
     });
 
     res.status(200).send({

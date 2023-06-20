@@ -219,6 +219,11 @@ h4.ant-typography {
   &.ant-btn-sm {
     font-size: $font-s;
   }
+
+  >span+.tabler-icon {
+    margin-inline-start: $p-m;
+
+  }
 }
 
 // Badge

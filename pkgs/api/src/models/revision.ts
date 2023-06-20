@@ -4,14 +4,19 @@ import { nanoid } from '../common/id';
 import type { ApiBlobCreate } from '../types/api';
 import type { ActionRevision } from '../types/db';
 
-export async function createRevisionActivity(
-  user: Users,
-  action: ActionRevision,
-  target: Revisions,
-  tx: Prisma.TransactionClient
-): Promise<Activities> {
-  const activityGroupId = nanoid();
-
+export async function createRevisionActivity({
+  user,
+  action,
+  target,
+  tx,
+  activityGroupId = null,
+}: {
+  user: Users;
+  action: ActionRevision;
+  target: Revisions;
+  tx: Prisma.TransactionClient;
+  activityGroupId?: string | null;
+}): Promise<Activities> {
   return await tx.activities.create({
     data: {
       id: nanoid(),
@@ -21,6 +26,7 @@ export async function createRevisionActivity(
       projectId: target.projectId,
       activityGroupId,
       targetRevisionId: target.id,
+      createdAt: new Date(),
     },
   });
 }

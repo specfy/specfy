@@ -38,7 +38,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     const data = val.data;
     let org = req.org!;
 
-    if (data.name) {
+    if (data.name && org.name !== data.name) {
       org = await prisma.$transaction(async (tx) => {
         const acronym = acronymize(data.name);
         const colors = stringToColor(data.name);
@@ -46,7 +46,12 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           data: { name: data.name, acronym, color: colors.backgroundColor },
           where: { id: org.id },
         });
-        await createOrgActivity(req.user!, 'Org.updated', tmp, tx);
+        await createOrgActivity({
+          user: req.user!,
+          action: 'Org.renamed',
+          target: tmp,
+          tx,
+        });
 
         return tmp;
       });

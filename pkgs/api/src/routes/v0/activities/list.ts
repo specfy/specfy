@@ -37,13 +37,18 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     };
     if (query.project_id) {
       where.projectId = query.project_id;
+    } else {
+      // where.projectId = null;
+      where.OR = [{ projectId: null }, { action: 'Project.created' }];
     }
 
     // TODO: cursor pagination
     const activities = await prisma.activities.findMany({
       where,
       include: {
-        Project: { select: { id: true, name: true, slug: true } },
+        Project: {
+          select: { id: true, name: true, slug: true },
+        },
         User: true,
         Blob: true,
       },

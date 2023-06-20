@@ -1,15 +1,15 @@
 import { LoadingOutlined } from '@ant-design/icons';
 import { IconPlus, IconSearch, IconUsers } from '@tabler/icons-react';
-import { Button, Input, Table } from 'antd';
+import { Button, Input } from 'antd';
 import Title from 'antd/es/typography/Title';
 import type { ApiProject } from 'api/src/types/api';
-import classnames from 'classnames';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { useProjectStore } from '../../common/store';
 import { AvatarAuto } from '../AvatarAuto';
 import { Empty } from '../Empty';
+import { Flex } from '../Flex';
 import { Time } from '../Time';
 
 import cls from './index.module.scss';
@@ -33,30 +33,34 @@ export const ListProjects: React.FC<{ orgId: string }> = ({ orgId }) => {
     setList(storeProjects.projects.filter((proj) => proj.name.match(reg)));
   }, [search]);
 
+  const empty = !list || list.length <= 0;
+  const brandNew = !search && empty;
+
   return (
     <div>
       <div className={cls.header}>
         <Title level={3}>Projects</Title>
-        <div className={cls.actions}>
-          <Link to={`/${orgId}/_/project/new`}>
-            <Button type="default" icon={<IconPlus />}>
-              New
-            </Button>
-          </Link>
-          <Input
-            prefix={<IconSearch />}
-            style={{ width: '200px' }}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search..."
-          />
-        </div>
+        {!brandNew && (
+          <div className={cls.actions}>
+            <Link to={`/${orgId}/_/project/new`}>
+              <Button type="default" icon={<IconPlus />}>
+                New
+              </Button>
+            </Link>
+            <Input
+              prefix={<IconSearch />}
+              style={{ width: '200px' }}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search..."
+            />
+          </div>
+        )}
       </div>
 
-      {!list ? (
-        <LoadingOutlined />
-      ) : (
+      {!list && <LoadingOutlined />}
+      {list && (
         <>
-          {!search && (!list || list.length <= 0) && (
+          {brandNew && (
             <Empty
               title="No projects, yet!"
               desc="Create a project manually or from Github."
@@ -70,62 +74,36 @@ export const ListProjects: React.FC<{ orgId: string }> = ({ orgId }) => {
             />
           )}
 
-          {search != '' && (!list || list.length <= 0) && (
-            <Empty search={search} />
-          )}
+          {search != '' && empty && <Empty search={search} />}
 
-          {list && list.length > 0 && (
-            <Table
-              rowKey="id"
-              dataSource={list}
-              showHeader={false}
-              pagination={false}
-            >
-              <Table.Column
-                dataIndex="slug"
-                key="slug"
-                className={classnames(cls.item, cls.tdAvatar)}
-                render={(_, item: ApiProject) => {
-                  return (
-                    <Link to={`/${item.orgId}/${item.slug}`} relative="path">
-                      <AvatarAuto
-                        name={item.name}
-                        size="large"
-                        shape="square"
-                      />
+          {!empty &&
+            list.map((item) => {
+              return (
+                <Flex gap="xl" key={item.id} className={cls.item}>
+                  <Link to={`/${item.orgId}/${item.slug}`} relative="path">
+                    <AvatarAuto name={item.name} size="medium" shape="square" />
+                  </Link>
+                  <div>
+                    <Link
+                      to={`/${item.orgId}/${item.slug}`}
+                      relative="path"
+                      className={cls.title}
+                    >
+                      {item.name}
                     </Link>
-                  );
-                }}
-              />
-              <Table.Column
-                dataIndex="name"
-                key="name"
-                className={cls.item}
-                render={(_, item: ApiProject) => {
-                  return (
-                    <>
-                      <Link
-                        to={`/${item.orgId}/${item.slug}`}
-                        relative="path"
-                        className={cls.title}
-                      >
-                        {item.name}
-                      </Link>
 
-                      <div className={cls.info}>
-                        <div>
-                          <IconUsers /> 12
-                        </div>
-                        <div>
-                          · <Time time={item.updatedAt} />
-                        </div>
+                    <div className={cls.info}>
+                      <div>
+                        <IconUsers /> 12
                       </div>
-                    </>
-                  );
-                }}
-              />
-            </Table>
-          )}
+                      <div>
+                        · <Time time={item.updatedAt} />
+                      </div>
+                    </div>
+                  </div>
+                </Flex>
+              );
+            })}
         </>
       )}
     </div>

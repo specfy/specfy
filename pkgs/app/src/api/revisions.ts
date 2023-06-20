@@ -25,14 +25,16 @@ import { APIError, isError } from './helpers';
 export async function createRevision(
   data: ReqPostRevision
 ): Promise<ResPostRevision> {
-  const { json } = await fetchApi<ResPostRevision, undefined, ReqPostRevision>(
-    '/revisions',
-    { body: data },
-    'POST'
-  );
+  const { res, json } = await fetchApi<
+    ResPostRevision,
+    undefined,
+    ReqPostRevision
+  >('/revisions', { body: data }, 'POST');
 
-  queryClient.removeQueries(['listRevisions', data.orgId, data.projectId]);
-  queryClient.removeQueries(['listActivities', data.orgId]);
+  if (res.status === 200) {
+    queryClient.removeQueries(['listRevisions', data.orgId, data.projectId]);
+    queryClient.removeQueries(['listActivities', data.orgId]);
+  }
 
   return json;
 }
@@ -41,7 +43,7 @@ export async function updateRevision(
   { org_id, project_id, revision_id }: ReqGetRevision & ReqRevisionParams,
   data: ReqPatchRevision
 ): Promise<ResPatchRevision> {
-  const { json } = await fetchApi<
+  const { res, json } = await fetchApi<
     ResPatchRevision,
     ReqGetRevision,
     ReqPatchRevision
@@ -51,15 +53,17 @@ export async function updateRevision(
     'PATCH'
   );
 
-  queryClient.removeQueries(['listRevisions', org_id, project_id]);
-  queryClient.removeQueries(['listBlobs', org_id, project_id, revision_id]);
-  queryClient.removeQueries(['getRevision', org_id, project_id, revision_id]);
-  queryClient.removeQueries([
-    'getRevisionChecks',
-    org_id,
-    project_id,
-    revision_id,
-  ]);
+  if (res.status === 200) {
+    queryClient.removeQueries(['listRevisions', org_id, project_id]);
+    queryClient.removeQueries(['listBlobs', org_id, project_id, revision_id]);
+    queryClient.removeQueries(['getRevision', org_id, project_id, revision_id]);
+    queryClient.removeQueries([
+      'getRevisionChecks',
+      org_id,
+      project_id,
+      revision_id,
+    ]);
+  }
 
   return json;
 }

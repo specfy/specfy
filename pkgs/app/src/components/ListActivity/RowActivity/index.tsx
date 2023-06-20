@@ -1,4 +1,4 @@
-import type { ApiActivity } from 'api/src/types/api';
+import type { ApiActivity, ApiActivityGrouped, ApiMe } from 'api/src/types/api';
 import type {
   ActionComponent,
   ActionDocument,
@@ -10,11 +10,13 @@ import type {
   ActionUser,
   DBActivityType,
 } from 'api/src/types/db';
+import classNames from 'classnames';
 import type { ReactNode } from 'react';
 import { Link } from 'react-router-dom';
 
 import { TYPE_TO_READABLE } from '../../../common/document';
 import { AvatarAuto } from '../../AvatarAuto';
+import { Flex } from '../../Flex';
 import { Time } from '../../Time';
 
 import cls from './index.module.scss';
@@ -46,9 +48,9 @@ const mapComponent: Record<
 
 const mapOrg: Record<ActionOrg, () => string> = {
   'Org.created': () => `created this organization`,
-  'Org.deleted': () => ``,
-  'Org.renamed': () => ``,
-  'Org.updated': () => ``,
+  'Org.deleted': () => `deleted this organization`,
+  'Org.renamed': () => `renamed this organization`,
+  'Org.updated': () => `updated this organization`,
 };
 
 const mapPolicy: Record<ActionPolicy, (target: TargetPolicy) => string> = {
@@ -90,10 +92,13 @@ const mapKey: Record<ActionKey, () => string> = {
   'Key.deleted': () => `deleted an api key`,
 };
 
-export const RowActivity: React.FC<{ act: ApiActivity; orgId: string }> = ({
-  act,
-  orgId,
-}) => {
+export const RowActivity: React.FC<{
+  me: ApiMe['id'];
+  act: ApiActivityGrouped;
+  orgId: string;
+  projectId?: string;
+  isChild?: boolean;
+}> = ({ me, act, orgId, projectId, isChild }) => {
   const type = act.action.split('.')[0] as DBActivityType;
   let target: ReactNode | null = null;
   let text: string = '';
@@ -104,6 +109,7 @@ export const RowActivity: React.FC<{ act: ApiActivity; orgId: string }> = ({
         to={`/${orgId}/${act.project!.slug}/content/${act.targetDocument.id}-${
           act.targetDocument.slug
         }`}
+        className={cls.target}
       >
         {act.targetDocument.name}
       </Link>
@@ -111,7 +117,10 @@ export const RowActivity: React.FC<{ act: ApiActivity; orgId: string }> = ({
     text = mapDocument[act.action as ActionDocument](act.targetDocument);
   } else if (type === 'Component' && act.targetComponent) {
     target = (
-      <Link to={`/${orgId}/${act.project!.slug}/c/${act.targetComponent.slug}`}>
+      <Link
+        to={`/${orgId}/${act.project!.slug}/c/${act.targetComponent.slug}`}
+        className={cls.target}
+      >
         {act.targetComponent.name}
       </Link>
     );
@@ -120,19 +129,27 @@ export const RowActivity: React.FC<{ act: ApiActivity; orgId: string }> = ({
     target = (
       <Link
         to={`/${orgId}/${act.project!.slug}/revisions/${act.targetRevision.id}`}
+        className={cls.target}
       >
         {act.targetRevision.name}
       </Link>
     );
     text = mapRevision[act.action as ActionRevision](act.targetRevision);
   } else if (type === 'Project' && act.project) {
-    target = (
-      <Link to={`/${orgId}/${act.project.slug}`}>{act.project.name}</Link>
-    );
+    if (act.action !== 'Project.created') {
+      target = (
+        <Link to={`/${orgId}/${act.project.slug}`} className={cls.target}>
+          {act.project.name}
+        </Link>
+      );
+    }
     text = mapProject[act.action as ActionProject]();
   } else if (type === 'Policy' && act.targetPolicy) {
     target = (
-      <Link to={`/${orgId}/_/policies/${act.targetPolicy.id}`}>
+      <Link
+        to={`/${orgId}/_/policies/${act.targetPolicy.id}`}
+        className={cls.target}
+      >
         {act.targetPolicy.name}
       </Link>
     );
@@ -148,25 +165,67 @@ export const RowActivity: React.FC<{ act: ApiActivity; orgId: string }> = ({
   }
 
   return (
-    <div className={cls.row} data-action={act.action}>
-      <div className={cls.header}>
-        <Link to={`/_/user/${act.user.id}`} className={cls.user}>
-          <AvatarAuto name={act.user.name} src={act.user.avatarUrl} />
-        </Link>
-        <div className={cls.right}>
-          <div className={cls.desc}>
-            <Link to={`/_/user/${act.user.id}`} className={cls.user}>
-              {act.user.name}
-            </Link>
-            <div className={cls.text}>
-              {text} {target}
-            </div>
-          </div>
-          <div className={cls.date}>
-            <Time time={act.createdAt} />
-          </div>
+    <div
+      className={classNames(cls.row, isChild && cls.isChild)}
+      data-action={act.action}
+    >
+      <div className={cls.main}>
+        {!isChild ? (
+          <Link to={`/_/user/${act.user.id}`}>
+            <AvatarAuto
+              name={act.user.name}
+              src={act.user.avatarUrl}
+              single={true}
+              size="small"
+            />
+          </Link>
+        ) : (
+          <div className={cls.dot}></div>
+        )}
+        <div className={cls.desc}>
+          {isChild ? (
+            'and'
+          ) : (
+            <Link to={`/_/user/${act.user.id}`}>{act.user.name}</Link>
+          )}
+          <span>
+            {' '}
+            {text} {target}
+          </span>
+        </div>
+        <div className={cls.date}>
+          {!isChild && <Time time={act.createdAt} />}
         </div>
       </div>
+      {act.childrens && (
+        <div>
+          {act.childrens.map((child) => {
+            return (
+              <RowActivity
+                key={child.id}
+                act={child}
+                me={me}
+                orgId={orgId}
+                projectId={projectId}
+                isChild={true}
+              />
+            );
+          })}
+        </div>
+      )}
+      {act.action === 'Project.created' && act.project && (
+        <Flex
+          className={cls.details}
+          direction="column"
+          alignItems="flex-start"
+          gap="l"
+        >
+          <Flex gap="l">
+            <AvatarAuto name={act.project.name} />
+            {act.project.name}
+          </Flex>
+        </Flex>
+      )}
     </div>
   );
 };

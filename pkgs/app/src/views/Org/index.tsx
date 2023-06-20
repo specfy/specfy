@@ -51,7 +51,7 @@ export const Org: React.FC = () => {
     storeProject.fill(getProjects.data?.data || []);
   }, [getProjects.data]);
 
-  if (getOrgs.isFetching || getProjects.isFetching) {
+  if (getOrgs.isLoading || getProjects.isLoading) {
     return (
       <div className={cls.org}>
         <div></div>

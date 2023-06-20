@@ -17,6 +17,7 @@ import type {
 import { componentsToFlow } from '../../../components/Flow/helpers';
 import { ListActivity } from '../../../components/ListActivity';
 import { ListProjects } from '../../../components/ListProjects';
+import { OrgOnboarding } from '../../../components/Org/Onboarding';
 import type { RouteOrg } from '../../../types/routes';
 
 export const OrgOverview: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
@@ -71,6 +72,7 @@ export const OrgOverview: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
     <>
       <Helmet title={`${org.name} ${titleSuffix}`} />
       <Container.Left2Third>
+        <OrgOnboarding org={org} />
         <Card large seamless>
           <ListProjects orgId={params.org_id}></ListProjects>
         </Card>

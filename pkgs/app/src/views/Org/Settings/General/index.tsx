@@ -1,7 +1,7 @@
 import { IconCirclesRelation } from '@tabler/icons-react';
 import { Typography, Input, Button, Modal, App, Form } from 'antd';
 import type { ApiOrg } from 'api/src/types/api';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 
@@ -27,14 +27,14 @@ export const SettingsGeneral: React.FC<{
   const [waitToRead, setWaitToRead] = useState(true);
 
   // Edit
-  const [name, setName] = useState(() => org.name);
+  const [name, setName] = useState<string>();
   const onName: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setName(e.target.value);
   };
   const nameChanged = name !== org.name;
 
   const handleRename = async () => {
-    const res = await updateOrg(params, { name });
+    const res = await updateOrg(params, { name: name! });
     if (isError(res)) {
       message.error(i18n.errorOccurred);
       return;
@@ -45,6 +45,11 @@ export const SettingsGeneral: React.FC<{
   const handleReset = () => {
     setName(org.name);
   };
+  useEffect(() => {
+    if (name !== org.name) {
+      setName(org.name);
+    }
+  }, [org.name]);
 
   // Delete modal
   const showModal = () => {
@@ -163,7 +168,7 @@ export const SettingsGeneral: React.FC<{
               />
             </Card.Content>
             <Card.Actions>
-              {org.githubInstallationId === installId ? (
+              {org.githubInstallationId === installId && installId !== null ? (
                 <Button type="default" onClick={onUnlink} danger>
                   Unlink
                 </Button>
@@ -189,10 +194,10 @@ export const SettingsGeneral: React.FC<{
                 Delete this organization
               </Typography.Title>
               <Typography.Text type="secondary">
-                Deleting an organization can&apos;t be undone.
+                This operation can&apos;t be undone.
               </Typography.Text>
             </div>
-            <Button danger type="primary" onClick={showModal}>
+            <Button danger type="default" onClick={showModal}>
               Delete Organization
             </Button>
           </div>
@@ -221,7 +226,7 @@ export const SettingsGeneral: React.FC<{
         ]}
       >
         <p>
-          Are you sure to delete this organization? <br></br>This action
+          Are you sure to delete this organization? <br></br>This operation
           can&apos;t be undone.
         </p>
       </Modal>

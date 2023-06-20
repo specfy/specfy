@@ -28,6 +28,7 @@ export type ApiActivity = Omit<
   targetRevision?: Pick<ApiRevision, 'id' | 'name'> | undefined;
   targetPolicy?: Pick<ApiPolicy, 'id' | 'name'> | undefined;
 };
+export type ApiActivityGrouped = ApiActivity & { childrens?: ApiActivity[] };
 
 // GET /
 export interface ReqListActivities {

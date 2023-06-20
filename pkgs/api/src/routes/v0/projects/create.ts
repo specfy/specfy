@@ -13,23 +13,27 @@ function ProjectVal(req: FastifyRequest) {
   return z
     .object({
       name: schemaProject.shape.name,
-      slug: schemaProject.shape.slug.superRefine(async (val, ctx) => {
-        const res = await prisma.projects.findFirst({ where: { slug: val } });
-        if (!res) {
-          return;
-        }
-
-        ctx.addIssue({
-          code: z.ZodIssueCode.custom,
-          params: { code: 'exists' },
-          message: `This slug is already used`,
-        });
-      }),
+      slug: schemaProject.shape.slug,
       orgId: valOrgId(req),
       display: schemaProject.shape.display,
       githubRepositoryId: z.number().int().positive().nullable(),
     })
-    .strict();
+    .strict()
+    .superRefine(async (val, ctx) => {
+      const res = await prisma.projects.findFirst({
+        where: { slug: val.slug, orgId: val.orgId },
+      });
+      if (!res) {
+        return;
+      }
+
+      ctx.addIssue({
+        path: ['slug'],
+        code: z.ZodIssueCode.custom,
+        params: { code: 'exists' },
+        message: `This slug is already used`,
+      });
+    });
 }
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {

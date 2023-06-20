@@ -36,7 +36,13 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         },
       });
 
-      await createUserActivity(inv.User, 'User.added', user, inv.orgId, tx);
+      await createUserActivity({
+        user: inv.User,
+        action: 'User.added',
+        target: user,
+        orgId: inv.orgId,
+        tx,
+      });
       await tx.invitations.delete({
         where: { id: inv.id },
       });

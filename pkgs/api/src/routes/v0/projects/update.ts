@@ -56,7 +56,12 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           data: { name: data.name, slug: slugify(data.name) },
           where: { id: project.id },
         });
-        await createProjectActivity(req.user!, 'Project.updated', tmp, tx);
+        await createProjectActivity({
+          user: req.user!,
+          action: 'Project.updated',
+          target: tmp,
+          tx,
+        });
 
         return tmp;
       });

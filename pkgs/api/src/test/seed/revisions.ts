@@ -318,7 +318,12 @@ export async function seedRevisions(
         ],
       },
     });
-    await createRevisionActivity(users[0], 'Revision.created', rev, tx);
+    await createRevisionActivity({
+      user: users[0],
+      action: 'Revision.created',
+      target: rev,
+      tx,
+    });
 
     await tx.typeHasUsers.create({
       data: { revisionId: rev.id, userId: users[0].id, role: 'author' },
@@ -364,7 +369,12 @@ export async function seedRevision(
       locked: data?.locked || false,
     },
   });
-  await createRevisionActivity(user, 'Revision.created', revision, prisma);
+  await createRevisionActivity({
+    user,
+    action: 'Revision.created',
+    target: revision,
+    tx: prisma,
+  });
   await prisma.typeHasUsers.create({
     data: { revisionId: revision.id, userId: user.id, role: 'author' },
   });

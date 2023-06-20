@@ -28,6 +28,9 @@ export const GithubOrgSelect: React.FC<{
     if (!resInstall.data || resInstall.isFetching) {
       return;
     }
+    if (selected === 'public') {
+      return;
+    }
 
     // If nothing selected yet (first load)
     // Or the currently selected has been removed
@@ -68,11 +71,7 @@ export const GithubOrgSelect: React.FC<{
   };
 
   if (!ready) {
-    return (
-      <div className={cls.select}>
-        <Skeleton.Input active />
-      </div>
-    );
+    return <Skeleton.Input active style={{ width: '250px', height: '40px' }} />;
   }
 
   return (
@@ -96,11 +95,13 @@ export const GithubOrgSelect: React.FC<{
         );
       }}
     >
-      {emptyOption && <Select.Option>Select an organization</Select.Option>}
+      {emptyOption && !selected && (
+        <Select.Option>Select an organization</Select.Option>
+      )}
       {publicRepos && (
         <Select.Option value="public">
           <div> </div>
-          <div className={cls.label}>Public Repositories</div>
+          <div>Public Repositories</div>
         </Select.Option>
       )}
       {resInstall.data!.map((install) => {
@@ -113,7 +114,7 @@ export const GithubOrgSelect: React.FC<{
                 shape="square"
                 size="small"
               />
-              <div className={cls.label}>{install.name}</div>
+              <div>{install.name}</div>
             </div>
           </Select.Option>
         );

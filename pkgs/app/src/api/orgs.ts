@@ -55,7 +55,7 @@ export async function updateOrg(
   );
 
   if (res.status === 200) {
-    queryClient.removeQueries(['listOrgs']);
+    queryClient.invalidateQueries(['listOrgs']);
   }
 
   return json;

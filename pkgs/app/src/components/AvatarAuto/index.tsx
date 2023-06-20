@@ -15,7 +15,9 @@ interface PropsBase {
 }
 type Props = {
   className?: string;
-  size?: 'default' | 'large' | 'small' | 'xl';
+  size?: 'default' | 'large' | 'medium' | 'small' | 'xl';
+  colored?: boolean;
+  single?: boolean;
 } & (PropsBase | PropsOrg);
 
 export const AvatarAuto: React.FC<Props> = ({
@@ -38,8 +40,14 @@ export const AvatarAuto: React.FC<Props> = ({
   } else {
     name = props.name;
     acr = acronymize(props.name);
-    style = stringToColor(props.name);
+    style =
+      props.colored === false
+        ? { backgroundColor: 'white', color: 'var(--accent)' }
+        : stringToColor(props.name);
     src = props.src;
+    if (props.single) {
+      acr = acr[0];
+    }
   }
 
   return (

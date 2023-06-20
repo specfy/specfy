@@ -30,21 +30,26 @@ export async function createOrg(
     },
   });
 
-  await createOrgActivity(user, 'Org.created', tmp, tx);
+  await createOrgActivity({ user, action: 'Org.created', target: tmp, tx });
 
-  await createKey(tx, user, { orgId: tmp.id });
+  await createKey({ tx, user, data: { orgId: tmp.id } });
 
   return tmp;
 }
 
-export async function createOrgActivity(
-  user: Users,
-  action: ActionOrg,
-  target: Orgs,
-  tx: Prisma.TransactionClient
-): Promise<Activities> {
-  const activityGroupId = nanoid();
-
+export async function createOrgActivity({
+  user,
+  action,
+  target,
+  tx,
+  activityGroupId = null,
+}: {
+  user: Users;
+  action: ActionOrg;
+  target: Orgs;
+  tx: Prisma.TransactionClient;
+  activityGroupId?: string | null;
+}): Promise<Activities> {
   return await tx.activities.create({
     data: {
       id: nanoid(),
@@ -52,6 +57,7 @@ export async function createOrgActivity(
       userId: user.id,
       orgId: target.id,
       activityGroupId,
+      createdAt: new Date(),
     },
   });
 }

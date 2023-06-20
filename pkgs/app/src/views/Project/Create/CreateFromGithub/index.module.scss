@@ -2,7 +2,8 @@
 
 .github {
   width: 600px;
-  padding: $p-5xl 0 $p-5xl 0;
+  padding: $p-5xl;
+  background-color: #fff;
   border-top: 1px solid $color-border;
 }
 
@@ -21,11 +22,11 @@
   align-items: center;
   justify-content: space-between;
 
-  margin-top: -1px;
+  // margin-top: -1px;
   padding: $p-xl;
 
   background-color: #fff;
-  border: 1px solid $color-border;
+  border-bottom: 1px solid $color-border;
 
   &:first-child {
     border-radius: $border-radius-s $border-radius-s 0 0;

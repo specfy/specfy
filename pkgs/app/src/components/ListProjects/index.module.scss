@@ -17,11 +17,11 @@
 }
 
 .item {
-  padding: $p-xl $p $p-xl $p-m !important;
+  padding: $p-xl $p $p-2xl $p-m !important;
+  border-bottom: 1px solid var(--border);
 
   &.tdAvatar {
-    width: 40px;
-    padding: $p 0 0 !important;
+    width: 42px;
   }
 }
 
@@ -29,4 +29,5 @@
   display: flex;
   gap: $p;
   font-size: $font-s;
+  color: var(--textLight)
 }

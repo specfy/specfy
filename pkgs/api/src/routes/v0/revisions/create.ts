@@ -99,7 +99,12 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           blobs: ids,
         },
       });
-      await createRevisionActivity(req.user!, 'Revision.created', revision, tx);
+      await createRevisionActivity({
+        user: req.user!,
+        action: 'Revision.created',
+        target: revision,
+        tx,
+      });
 
       await tx.typeHasUsers.create({
         data: { revisionId: revision.id, role: 'author', userId: req.user!.id },

@@ -85,7 +85,13 @@ export function registerGithub(passport: Authenticator) {
           },
         });
 
-        await createUserActivity(user, 'User.created', user, null, tx);
+        await createUserActivity({
+          user,
+          action: 'User.created',
+          target: user,
+          orgId: null,
+          tx,
+        });
 
         await createOrg(tx, user, {
           id: slugify(`${profile.displayName} ${nanoid().substring(0, 5)}`),

@@ -36,7 +36,7 @@ const App: React.FC = () => {
             fontSizeHeading4: 18,
             fontSizeHeading5: 16,
             fontSize: 14,
-            fontFamily: `"Sarabun", system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Noto Sans", sans-serif, BlinkMacSystemFont, Oxygen, "Open Sans", "Helvetica Neue"`,
+            fontFamily: `"Nunito", system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Noto Sans", sans-serif, BlinkMacSystemFont, Oxygen, "Open Sans", "Helvetica Neue"`,
             colorSuccess: '#059669', // emerald
             colorSuccessBg: '#d1fae5', // emerald
             colorError: '#dc2626',

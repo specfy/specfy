@@ -69,9 +69,21 @@ export async function createProject({
     },
   });
 
-  await createProjectActivity(user, 'Project.created', update, tx);
+  const activityGroupId = nanoid();
+  await createProjectActivity({
+    user,
+    action: 'Project.created',
+    target: update,
+    tx,
+    activityGroupId,
+  });
 
-  await createKey(tx, user, { orgId: body.orgId, projectId: tmp.id });
+  await createKey({
+    tx,
+    user,
+    data: { orgId: body.orgId, projectId: tmp.id },
+    activityGroupId,
+  });
 
   return tmp;
 }
@@ -98,19 +110,29 @@ export async function updateProject({
     where: { id: original.id },
   });
 
-  await createProjectActivity(user, 'Project.updated', tmp, tx);
+  await createProjectActivity({
+    user,
+    action: 'Project.updated',
+    target: tmp,
+    tx,
+  });
 
   return tmp;
 }
 
-export async function createProjectActivity(
-  user: Users,
-  action: ActionProject,
-  target: Projects,
-  tx: Prisma.TransactionClient
-): Promise<Activities> {
-  const activityGroupId = nanoid();
-
+export async function createProjectActivity({
+  user,
+  action,
+  target,
+  tx,
+  activityGroupId = null,
+}: {
+  user: Users;
+  action: ActionProject;
+  target: Projects;
+  tx: Prisma.TransactionClient;
+  activityGroupId?: string | null;
+}): Promise<Activities> {
   return await tx.activities.create({
     data: {
       id: nanoid(),
@@ -120,6 +142,7 @@ export async function createProjectActivity(
       projectId: target.id,
       activityGroupId,
       targetBlobId: target.blobId,
+      createdAt: new Date(),
     },
   });
 }

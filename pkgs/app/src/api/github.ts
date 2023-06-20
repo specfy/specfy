@@ -16,13 +16,15 @@ import { APIError, isError } from './helpers';
 export async function linkToGithubOrg(
   data: PostLinkToGithubOrg['body']
 ): Promise<PostLinkToGithubOrg['res']> {
-  const { json } = await fetchApi<
+  const { res, json } = await fetchApi<
     PostLinkToGithubOrg['res'],
     undefined,
     PostLinkToGithubOrg['body']
   >('/github/link_org', { body: data }, 'POST');
 
-  queryClient.invalidateQueries(['listOrgs']);
+  if (res.status === 200) {
+    queryClient.invalidateQueries(['listOrgs']);
+  }
 
   return json;
 }

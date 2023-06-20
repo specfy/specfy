@@ -22,13 +22,15 @@ import { APIError, isError } from './helpers';
 export async function createProject(
   data: ReqPostProject
 ): Promise<ResPostProject> {
-  const { json } = await fetchApi<ResPostProject, undefined, ReqPostProject>(
-    '/projects',
-    { body: data },
-    'POST'
-  );
+  const { res, json } = await fetchApi<
+    ResPostProject,
+    undefined,
+    ReqPostProject
+  >('/projects', { body: data }, 'POST');
 
-  queryClient.invalidateQueries(['listProjects', data.orgId]);
+  if (res.status === 200) {
+    queryClient.refetchQueries(['listProjects', data.orgId]);
+  }
 
   return json;
 }
@@ -37,14 +39,16 @@ export async function updateProject(
   opts: ReqProjectParams,
   data: ReqPutProject
 ): Promise<ResPutProject> {
-  const { json } = await fetchApi<ResPutProject, undefined, ReqPutProject>(
+  const { res, json } = await fetchApi<ResPutProject, undefined, ReqPutProject>(
     `/projects/${opts.org_id}/${opts.project_slug}`,
     { body: data },
     'PUT'
   );
 
-  queryClient.removeQueries(['listProjects', opts.org_id]);
-  queryClient.removeQueries(['getProject', opts.org_id, opts.project_slug]);
+  if (res.status === 200) {
+    queryClient.removeQueries(['listProjects', opts.org_id]);
+    queryClient.removeQueries(['getProject', opts.org_id, opts.project_slug]);
+  }
 
   return json;
 }
@@ -52,14 +56,16 @@ export async function updateProject(
 export async function deleteProject(
   opts: ReqProjectParams
 ): Promise<ResDeleteProject> {
-  const { json } = await fetchApi<ResDeleteProject>(
+  const { res, json } = await fetchApi<ResDeleteProject>(
     `/projects/${opts.org_id}/${opts.project_slug}`,
     undefined,
     'DELETE'
   );
 
-  queryClient.removeQueries(['listProjects', opts.org_id]);
-  queryClient.removeQueries(['getProject', opts.org_id, opts.project_slug]);
+  if (res.status === 200) {
+    queryClient.removeQueries(['listProjects', opts.org_id]);
+    queryClient.removeQueries(['getProject', opts.org_id, opts.project_slug]);
+  }
 
   return json;
 }

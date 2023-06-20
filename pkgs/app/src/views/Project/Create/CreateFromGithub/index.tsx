@@ -20,6 +20,7 @@ import { computeProjectPosition, computeWidth } from '../../../../common/flow';
 import { i18n } from '../../../../common/i18n';
 import { useProjectStore } from '../../../../common/store';
 import { slugify } from '../../../../common/string';
+import { Flex } from '../../../../components/Flex';
 import { GithubOrgSelect } from '../../../../components/Github/OrgSelect';
 
 import cls from './index.module.scss';
@@ -48,12 +49,12 @@ export const Repo: React.FC<{
           }}
           loading={loading}
         >
-          Quick create
+          Import
         </Button>
       )}
       {link && (
         <div>
-          <Button disabled>created</Button>
+          <Button disabled>imported</Button>
           <Link to={link} target="_blank" title="Go to project...">
             <Button type="link" icon={<IconArrowRight />} />
           </Link>
@@ -126,12 +127,12 @@ export const CreateFromGithub: React.FC<{
     <div className={cls.github}>
       <header>
         <h3 className={cls.header}>
-          <Github /> Create from Github
+          <Github /> Import from Github
         </h3>
       </header>
 
       <div className={cls.main}>
-        <div>
+        <Flex gap="m" alignItems="initial">
           <GithubOrgSelect
             publicRepos={true}
             defaultSelected={org.githubInstallationId}
@@ -140,7 +141,7 @@ export const CreateFromGithub: React.FC<{
               if (sel) setSelected(sel);
             }}
           />
-        </div>
+        </Flex>
 
         {!reposReady ? (
           <Skeleton title={false} paragraph={{ rows: 3 }} active />

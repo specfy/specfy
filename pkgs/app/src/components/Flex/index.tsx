@@ -21,7 +21,7 @@ interface FlexProps {
     | 'inherit'
     | 'initial'
     | 'stretch';
-  gap?: 'l' | 'm' | 's';
+  gap?: 'l' | 'm' | 's' | 'xl';
   /****** Child Props ********/
   grow?: number;
   shrink?: number;
@@ -29,7 +29,7 @@ interface FlexProps {
   flex?: string;
 }
 
-const gap = { s: '4px', m: '8px', l: '12px' };
+const gap = { s: '4px', m: '8px', l: '12px', xl: '16px' };
 
 export const Flex: React.FC<FlexProps> = (props) => {
   return (

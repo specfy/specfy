@@ -56,20 +56,29 @@ export async function createComponent({
   const tmp = await tx.components.create({
     data: model,
   });
-  await createComponentActivity(user, 'Component.created', tmp, tx);
+  await createComponentActivity({
+    user,
+    action: 'Component.created',
+    target: tmp,
+    tx,
+  });
 
   return tmp;
 }
 
-export async function createComponentActivity(
-  user: Users,
-  action: ActionComponent,
-  target: Components,
-  tx: Prisma.TransactionClient
-): Promise<Activities> {
-  // eslint-disable-next-line @typescript-eslint/naming-convention
-  const activityGroupId = nanoid();
-
+export async function createComponentActivity({
+  user,
+  action,
+  target,
+  tx,
+  activityGroupId = null,
+}: {
+  user: Users;
+  action: ActionComponent;
+  target: Components;
+  tx: Prisma.TransactionClient;
+  activityGroupId?: string | null;
+}): Promise<Activities> {
   return await tx.activities.create({
     data: {
       id: nanoid(),
@@ -79,6 +88,7 @@ export async function createComponentActivity(
       projectId: target.projectId,
       activityGroupId,
       targetBlobId: target.blobId,
+      createdAt: new Date(),
     },
   });
 }

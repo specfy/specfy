@@ -187,12 +187,27 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
         if (action === 'closed') {
           // await rev.onAfterClosed(req.user!, { transaction });
-          await createRevisionActivity(user, 'Revision.closed', rev, tx);
+          await createRevisionActivity({
+            user,
+            action: 'Revision.closed',
+            target: rev,
+            tx,
+          });
         } else if (action === 'locked') {
           // await rev.onAfterLocked(req.user!, { transaction });
-          await createRevisionActivity(user, 'Revision.locked', rev, tx);
+          await createRevisionActivity({
+            user,
+            action: 'Revision.locked',
+            target: rev,
+            tx,
+          });
         } else {
-          await createRevisionActivity(user, 'Revision.updated', rev, tx);
+          await createRevisionActivity({
+            user,
+            action: 'Revision.updated',
+            target: rev,
+            tx,
+          });
         }
       });
     } catch (e) {

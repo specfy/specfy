@@ -31,7 +31,7 @@ model Activities {
   orgId            String?  @db.VarChar(36)
   projectId        String?  @db.VarChar(15)
   userId           String   @db.VarChar(15)
-  activityGroupId  String   @db.VarChar(15)
+  activityGroupId  String?  @db.VarChar(15)
   action           String   @db.VarChar(25)
   targetUserId     String?  @db.VarChar(15)
   targetRevisionId String?  @db.VarChar(15)

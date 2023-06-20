@@ -16,15 +16,21 @@ export function getJwtToken(user: Users, expiresAt?: Date): string {
   );
 }
 
-export async function createUserActivity(
-  user: Users,
-  action: ActionUser,
-  target: Users,
-  orgId: string | null,
-  tx: Prisma.TransactionClient
-): Promise<Activities> {
-  const activityGroupId = nanoid();
-
+export async function createUserActivity({
+  user,
+  action,
+  target,
+  orgId,
+  tx,
+  activityGroupId = null,
+}: {
+  user: Users;
+  action: ActionUser;
+  target: Users;
+  orgId: string | null;
+  tx: Prisma.TransactionClient;
+  activityGroupId?: string | null;
+}): Promise<Activities> {
   return await tx.activities.create({
     data: {
       id: nanoid(),
@@ -34,6 +40,7 @@ export async function createUserActivity(
       projectId: null,
       activityGroupId,
       targetUserId: target.id,
+      createdAt: new Date(),
     },
   });
 }

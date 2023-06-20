@@ -72,14 +72,24 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
             const del = await tx.projects.delete({
               where: { id: blob.typeId },
             });
-            await createProjectActivity(user, 'Project.deleted', del, tx);
+            await createProjectActivity({
+              user,
+              action: 'Project.deleted',
+              target: del,
+              tx,
+            });
             continue;
           } else if (item.parent) {
             const up = await tx.projects.update({
               data: { ...(item.blob.current as any), blobId: item.blob.id },
               where: { id: blob.typeId },
             });
-            await createProjectActivity(user, 'Project.updated', up, tx);
+            await createProjectActivity({
+              user,
+              action: 'Project.updated',
+              target: up,
+              tx,
+            });
             continue;
           }
 
@@ -89,7 +99,12 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
               blobId: blob.id,
             },
           });
-          await createProjectActivity(user, 'Project.created', created, tx);
+          await createProjectActivity({
+            user,
+            action: 'Project.created',
+            target: created,
+            tx,
+          });
           continue;
         }
 
@@ -99,14 +114,24 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
             const del = await tx.components.delete({
               where: { id: blob.typeId },
             });
-            await createComponentActivity(user, 'Component.deleted', del, tx);
+            await createComponentActivity({
+              user,
+              action: 'Component.deleted',
+              target: del,
+              tx,
+            });
             continue;
           } else if (item.parent) {
             const up = await tx.components.update({
               data: { ...(item.blob.current as any), blobId: item.blob.id },
               where: { id: blob.typeId },
             });
-            await createComponentActivity(user, 'Component.updated', up, tx);
+            await createComponentActivity({
+              user,
+              action: 'Component.updated',
+              target: up,
+              tx,
+            });
             continue;
           }
 
@@ -117,7 +142,12 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
             },
           });
 
-          await createComponentActivity(user, 'Component.created', created, tx);
+          await createComponentActivity({
+            user,
+            action: 'Component.created',
+            target: created,
+            tx,
+          });
           continue;
         }
 
@@ -127,14 +157,24 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
             const del = await tx.documents.delete({
               where: { id: blob.typeId },
             });
-            await createDocumentActivity(user, 'Document.deleted', del, tx);
+            await createDocumentActivity({
+              user,
+              action: 'Document.deleted',
+              target: del,
+              tx,
+            });
             continue;
           } else if (item.parent) {
             const up = await tx.documents.update({
               data: { ...(item.blob.current as any), blobId: item.blob.id },
               where: { id: blob.typeId },
             });
-            await createDocumentActivity(user, 'Document.updated', up, tx);
+            await createDocumentActivity({
+              user,
+              action: 'Document.updated',
+              target: up,
+              tx,
+            });
             continue;
           }
 
@@ -144,7 +184,12 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
               blobId: blob.id,
             },
           });
-          await createDocumentActivity(user, 'Document.created', created, tx);
+          await createDocumentActivity({
+            user,
+            action: 'Document.created',
+            target: created,
+            tx,
+          });
         }
       }
 
@@ -153,7 +198,12 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         data: { merged: true, mergedAt: new Date().toISOString() },
         where: { id: rev.id },
       });
-      await createRevisionActivity(user, 'Revision.merged', updated, tx);
+      await createRevisionActivity({
+        user,
+        action: 'Revision.merged',
+        target: updated,
+        tx,
+      });
     });
 
     if (reason) {
