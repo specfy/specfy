@@ -1,11 +1,13 @@
+import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import { IconSettings, IconUsers } from '@tabler/icons-react';
-import { Badge, Menu } from 'antd';
 import type { ApiProject } from 'api/src/types/api';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 
 import { useCountPerms } from '../../../api';
+import { Badge } from '../../../components/Badge';
 import { Container } from '../../../components/Container';
+import { Flex } from '../../../components/Flex';
 import type { RouteProject } from '../../../types/routes';
 
 import { SettingsGeneral } from './General';
@@ -34,8 +36,10 @@ export const ProjectSettings: React.FC<{
         key: 'general',
         label: (
           <Link to={linkSelf} className={cls.link}>
-            <IconSettings />
-            General
+            <Flex gap="l">
+              <IconSettings />
+              General
+            </Flex>
           </Link>
         ),
       },
@@ -43,8 +47,10 @@ export const ProjectSettings: React.FC<{
         key: 'team',
         label: (
           <Link to={`${linkSelf}/team`} className={cls.link}>
-            <IconUsers />
-            Team
+            <Flex gap="l">
+              <IconUsers />
+              Team
+            </Flex>
             <Badge count={resCount.data?.data} showZero={false} />
           </Link>
         ),
@@ -62,7 +68,23 @@ export const ProjectSettings: React.FC<{
 
   return (
     <Container className={cls.container}>
-      <Menu selectedKeys={[open]} mode="vertical" items={menu} />
+      <NavigationMenu.Root orientation="vertical" className="rx_navMenuRoot">
+        <NavigationMenu.List className="rx_navMenuList">
+          {menu.map((item) => {
+            return (
+              <NavigationMenu.Item className="rx_navMenuItem" key={item.key}>
+                <NavigationMenu.Link
+                  asChild
+                  className="rx_navMenuLink"
+                  active={open === item.key}
+                >
+                  {item.label}
+                </NavigationMenu.Link>
+              </NavigationMenu.Item>
+            );
+          })}
+        </NavigationMenu.List>
+      </NavigationMenu.Root>
 
       <div className={cls.flex}>
         <Routes>
