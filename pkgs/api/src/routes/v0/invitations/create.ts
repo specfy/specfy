@@ -1,11 +1,14 @@
+import { Prisma } from '@prisma/client';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors';
 import { nanoid } from '../../../common/id';
+import { getOrgFromRequest } from '../../../common/perms';
 import { valOrgId } from '../../../common/zod';
 import { prisma } from '../../../db';
 import { noQuery } from '../../../middlewares/noQuery';
+import { v1 } from '../../../models/billing';
 import { EXPIRES } from '../../../models/invitations';
 import type { PostInvitation } from '../../../types/api';
 import { PermType } from '../../../types/db';
@@ -31,6 +34,24 @@ function QueryVal(req: FastifyRequest) {
           code: z.ZodIssueCode.custom,
           params: { code: 'exists' },
           message: 'User is already part of this organization',
+          path: ['email'],
+        });
+      }
+
+      const org = getOrgFromRequest(req, val.orgId);
+      const max = org.isPersonal ? v1.free.org.maxUser : v1.paid.org.maxUser;
+
+      const check = await prisma.$queryRaw<[{ total: number }]>(
+        Prisma.sql`SELECT (SELECT COUNT(*) FROM "Perms" WHERE "orgId" = ${val.orgId} AND "projectId" IS NULL)
+         + (SELECT COUNT(*) FROM "Invitations" WHERE "orgId" = ${val.orgId}) as total LIMIT 1`
+      );
+
+      if (check[0].total > max) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          params: { code: 'max' },
+          message:
+            "You can't have more people in your team, contact us if you need more",
           path: ['email'],
         });
       }

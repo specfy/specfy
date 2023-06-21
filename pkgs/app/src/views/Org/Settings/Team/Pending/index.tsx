@@ -70,8 +70,8 @@ export const SettingsTeamPending: React.FC<{ params: RouteOrg }> = ({
   return (
     <div className={cls.invite}>
       <Card>
-        {list.isFetching && <Skeleton title={false} paragraph={{ rows: 3 }} />}
-        {!list.isFetching && (!list.data || list.data.data.length <= 0) ? (
+        {list.isLoading && <Skeleton title={false} paragraph={{ rows: 3 }} />}
+        {!list.isLoading && (!list.data || list.data.data.length <= 0) ? (
           <Empty title="No pending invitations found" />
         ) : (
           <Table

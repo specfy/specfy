@@ -15,13 +15,17 @@ import { APIError, isError } from './helpers';
 export async function createInvitation(
   data: PostInvitation['Body']
 ): Promise<PostInvitation['Reply']> {
-  const { json } = await fetchApi<PostInvitation>(
+  const { res, json } = await fetchApi<PostInvitation>(
     '/invitations',
     { body: data },
     'POST'
   );
 
-  queryClient.invalidateQueries(['listInvitations', data.orgId]);
+  console.log('yo?');
+  if (res.status === 200) {
+    console.log('invalidated');
+    queryClient.invalidateQueries(['listInvitations'], { exact: false });
+  }
 
   return json;
 }
@@ -29,15 +33,17 @@ export async function createInvitation(
 export async function acceptInvitations(
   opts: AcceptInvitation['QP']
 ): Promise<AcceptInvitation['Reply']> {
-  const { json } = await fetchApi<AcceptInvitation>(
+  const { res, json } = await fetchApi<AcceptInvitation>(
     `/invitations/${opts.invitation_id}/accept`,
     { qp: { token: opts.token } },
     'POST'
   );
 
-  queryClient.invalidateQueries(['listInvitations']);
-  queryClient.invalidateQueries(['listOrgs']);
-  queryClient.invalidateQueries(['listProjects']);
+  if (res.status === 200) {
+    queryClient.invalidateQueries(['listInvitations']);
+    queryClient.invalidateQueries(['listOrgs']);
+    queryClient.invalidateQueries(['listProjects']);
+  }
 
   return json;
 }
@@ -45,13 +51,15 @@ export async function acceptInvitations(
 export async function declineInvitations(
   opts: DeclineInvitation['QP']
 ): Promise<DeclineInvitation['Reply']> {
-  const { json } = await fetchApi<DeclineInvitation>(
+  const { res, json } = await fetchApi<DeclineInvitation>(
     `/invitations/${opts.invitation_id}/decline`,
     { qp: { token: opts.token } },
     'POST'
   );
 
-  queryClient.invalidateQueries(['listInvitations']);
+  if (res.status === 200) {
+    queryClient.invalidateQueries(['listInvitations']);
+  }
 
   return json;
 }
@@ -59,13 +67,15 @@ export async function declineInvitations(
 export async function deleteInvitations(
   opts: DeclineInvitation['Params']
 ): Promise<DeclineInvitation['Reply']> {
-  const { json } = await fetchApi<DeclineInvitation>(
+  const { res, json } = await fetchApi<DeclineInvitation>(
     `/invitations/${opts.invitation_id}`,
     undefined,
     'DELETE'
   );
 
-  queryClient.invalidateQueries(['listInvitations']);
+  if (res.status === 204) {
+    queryClient.invalidateQueries(['listInvitations']);
+  }
 
   return json;
 }

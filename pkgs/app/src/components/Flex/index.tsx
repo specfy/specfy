@@ -29,7 +29,7 @@ interface FlexProps {
   flex?: string;
 }
 
-const gap = { s: '4px', m: '8px', l: '12px', xl: '16px' };
+const gap = { s: '4px', m: '8px', l: '12px', xl: '24px' };
 
 export const Flex: React.FC<FlexProps> = (props) => {
   return (

@@ -1,31 +1,33 @@
 import * as Select from '@radix-ui/react-select';
 import { IconChevronDown } from '@tabler/icons-react';
 import { App, Button, Form, Input, Typography } from 'antd';
-import type { ApiPerm, FieldsErrors } from 'api/src/types/api';
+import type { ApiOrg, ApiPerm, FieldsErrors } from 'api/src/types/api';
 import { useState } from 'react';
 
 import { isError, isValidationError } from '../../../api/helpers';
 import { createInvitation } from '../../../api/invitations';
 import { i18n } from '../../../common/i18n';
 import { Card } from '../../../components/Card';
-import type { RouteOrg } from '../../../types/routes';
 
 import cls from './index.module.scss';
 
-export const TeamInvite: React.FC<{ params: RouteOrg }> = ({ params }) => {
+export const TeamInvite: React.FC<{
+  org: ApiOrg;
+  onInvite?: () => void;
+}> = ({ org, onInvite }) => {
   const { message } = App.useApp();
 
   const [email, setEmail] = useState<string>('');
   const [role, setRole] = useState<ApiPerm['role']>('viewer');
   const [errors, setErrors] = useState<FieldsErrors>({});
 
-  const onInvite = async (e: any) => {
+  const handleInvite = async (e: any) => {
     e.preventDefault();
 
     const res = await createInvitation({
       email,
       role,
-      orgId: params.org_id,
+      orgId: org.id,
     });
     if (isError(res)) {
       if (isValidationError(res)) {
@@ -39,13 +41,17 @@ export const TeamInvite: React.FC<{ params: RouteOrg }> = ({ params }) => {
     message.success('User invited');
     setErrors({});
     setEmail('');
+
+    if (onInvite) {
+      onInvite();
+    }
   };
 
   return (
     <Card>
       <Card.Content>
         <Typography.Title level={3}>Add team members</Typography.Title>
-        <form className={cls.form} onSubmit={onInvite}>
+        <form className={cls.form} onSubmit={handleInvite}>
           <Form.Item
             help={errors.email?.message}
             validateStatus={errors.email && 'error'}
@@ -73,7 +79,11 @@ export const TeamInvite: React.FC<{ params: RouteOrg }> = ({ params }) => {
             <Select.Portal>
               <Select.Content className="rx_selectContent">
                 <Select.Viewport>
-                  <Select.Item className="rx_selectItem" value="owner">
+                  <Select.Item
+                    className="rx_selectItem"
+                    value="owner"
+                    disabled={org.isPersonal}
+                  >
                     <Select.ItemText>Owner</Select.ItemText>
                   </Select.Item>
                   <Select.Item className="rx_selectItem" value="contributor">
@@ -89,7 +99,7 @@ export const TeamInvite: React.FC<{ params: RouteOrg }> = ({ params }) => {
         </form>
       </Card.Content>
       <Card.Actions>
-        <Button onClick={onInvite} type="primary">
+        <Button onClick={handleInvite} type="primary">
           Invite
         </Button>
       </Card.Actions>

@@ -2,11 +2,13 @@ import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import z from 'zod';
 
 import { validationError } from '../../../common/errors';
+import { getOrgFromRequest } from '../../../common/perms';
 import { schemaProject } from '../../../common/validators';
 import { valOrgId } from '../../../common/zod';
 import { prisma } from '../../../db';
 import { noQuery } from '../../../middlewares/noQuery';
 import { createProject } from '../../../models';
+import { v1 } from '../../../models/billing';
 import type { PostProject } from '../../../types/api';
 
 function ProjectVal(req: FastifyRequest) {
@@ -23,16 +25,33 @@ function ProjectVal(req: FastifyRequest) {
       const res = await prisma.projects.findFirst({
         where: { slug: val.slug, orgId: val.orgId },
       });
-      if (!res) {
+      if (res) {
+        ctx.addIssue({
+          path: ['slug'],
+          code: z.ZodIssueCode.custom,
+          params: { code: 'exists' },
+          message: `This slug is already used`,
+        });
         return;
       }
 
-      ctx.addIssue({
-        path: ['slug'],
-        code: z.ZodIssueCode.custom,
-        params: { code: 'exists' },
-        message: `This slug is already used`,
+      const count = await prisma.projects.count({
+        where: {
+          orgId: val.orgId,
+        },
       });
+      const org = getOrgFromRequest(req, val.orgId);
+      const max = org.isPersonal ? v1.free.project.max : v1.paid.project.max;
+      if (count >= max) {
+        ctx.addIssue({
+          path: ['name'],
+          code: z.ZodIssueCode.custom,
+          params: { code: 'max' },
+          message:
+            "You can't have more projects in your organization, contact us if you need more",
+        });
+        return;
+      }
     });
 }
 

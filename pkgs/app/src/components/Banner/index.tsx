@@ -8,7 +8,7 @@ import classnames from 'classnames';
 import cls from './index.module.scss';
 
 export const Banner: React.FC<{
-  children: React.ReactElement | React.ReactElement[];
+  children: React.ReactNode;
   type: 'error' | 'info' | 'success' | 'warning';
 }> = ({ children, type }) => {
   return (

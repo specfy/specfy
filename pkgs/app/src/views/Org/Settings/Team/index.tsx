@@ -1,6 +1,7 @@
 import * as Tabs from '@radix-ui/react-tabs';
 import { Typography } from 'antd';
 import type { ApiOrg } from 'api/src/types/api';
+import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
 import { titleSuffix } from '../../../../common/string';
@@ -17,6 +18,11 @@ export const SettingsTeam: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   org,
   params,
 }) => {
+  const [tab, setTab] = useState('tab1');
+  const onInvite = () => {
+    setTab('tab2');
+  };
+
   return (
     <Container noPadding>
       <Helmet title={`Team - ${org.name} ${titleSuffix}`} />
@@ -31,9 +37,14 @@ export const SettingsTeam: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
           </div>
         </div>
 
-        <TeamInvite params={params} />
+        <TeamInvite org={org} onInvite={onInvite} />
 
-        <Tabs.Root className="rx_tabsRoot" defaultValue="tab1">
+        <Tabs.Root
+          className="rx_tabsRoot"
+          defaultValue="tab1"
+          value={tab}
+          onValueChange={setTab}
+        >
           <Tabs.List className="rx_tabsList" aria-label="Manage your account">
             <Tabs.Trigger className="rx_tabsTrigger" value="tab1">
               Members

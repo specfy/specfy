@@ -32,7 +32,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     // TODO: pagination
     const list = await prisma.invitations.findMany({
       where,
-      orderBy: { email: 'asc' },
+      orderBy: [{ createdAt: 'desc' }, { email: 'asc' }],
       take: 50,
       skip: 0,
     });

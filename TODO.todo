@@ -53,7 +53,7 @@ Project:
     ✔ Unit Test @done(23-04-04 17:26)
     - Specific activity
     - Unit Test activity
-    - Handle error
+    ✔ Handle error @done(23-06-21 17:05)
   ✔ Creation @done(23-03-25 23:30)
     - Reserved name
     - Permission check
@@ -322,7 +322,7 @@ Org:
   ✔ Creér @done(23-03-28 11:11)
     ✔ Enforce unique ID @done(23-03-28 14:48)
     ✔ Validation @done(23-03-28 14:49)
-    - Unit test
+    ✔ Unit test @done(23-06-21 17:06)
   ✔ List @done(23-03-31 16:14)
     ✔ Unit test @done(23-03-31 16:14)
     ✔ Validation @done(23-03-31 16:15)
@@ -344,11 +344,9 @@ Org:
   - Visibility Public
   ✔ Team Page @done(23-04-22 16:12)
     ✔ Display correct count @done(23-04-22 16:12)
-    - Invite member
+    ✔ Invite member @done(23-06-21 17:06)
   - Activty page ?
-  - Limit max number of org
-   ✔ 1 personal @done(23-04-24 15:10)
-   - 10 company ?
+  ✔ 1 personal @done(23-04-24 15:10)
 
   List Projects:
     - Correct number of users
