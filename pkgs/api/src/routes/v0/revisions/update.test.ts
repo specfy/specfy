@@ -31,7 +31,7 @@ describe('PATCH /revisions/:revision_id', () => {
     const res = await t.fetch.patch('/0/revisions/foo', {
       token,
       // @ts-expect-error
-      qp: { random: 'world' },
+      Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
   });
@@ -43,8 +43,8 @@ describe('PATCH /revisions/:revision_id', () => {
     // Updates
     const res = await t.fetch.patch(`/0/revisions/${revision.id}`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
-      body: { status: 'closed', name: 'hello' },
+      Querystring: { org_id: org.id, project_id: project.id },
+      Body: { status: 'closed', name: 'hello' },
     });
     isValidationError(res.json);
   });
@@ -56,8 +56,8 @@ describe('PATCH /revisions/:revision_id', () => {
     // Updates
     const res = await t.fetch.patch(`/0/revisions/${revision.id}`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
-      body: { status: 'closed' },
+      Querystring: { org_id: org.id, project_id: project.id },
+      Body: { status: 'closed' },
     });
     isSuccess(res.json);
     expect(res.json.data).toStrictEqual({ done: true });
@@ -65,7 +65,7 @@ describe('PATCH /revisions/:revision_id', () => {
     // Get changes
     const get = await t.fetch.get(`/0/revisions/${revision.id}`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
     isSuccess(get.json);
     expect(get.json.data.status).toStrictEqual('closed');
@@ -79,8 +79,8 @@ describe('PATCH /revisions/:revision_id', () => {
     // Updates
     const res = await t.fetch.patch(`/0/revisions/${revision.id}`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
-      body: { locked: true },
+      Querystring: { org_id: org.id, project_id: project.id },
+      Body: { locked: true },
     });
     isSuccess(res.json);
     expect(res.json.data).toStrictEqual({ done: true });
@@ -88,7 +88,7 @@ describe('PATCH /revisions/:revision_id', () => {
     // Get changes
     const get = await t.fetch.get(`/0/revisions/${revision.id}`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
     isSuccess(get.json);
     expect(get.json.data.locked).toStrictEqual(true);
@@ -103,8 +103,8 @@ describe('PATCH /revisions/:revision_id', () => {
     // Updates
     const res = await t.fetch.patch(`/0/revisions/${revision.id}`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
-      body: { status: 'draft' },
+      Querystring: { org_id: org.id, project_id: project.id },
+      Body: { status: 'draft' },
     });
     isSuccess(res.json);
     expect(res.json.data).toStrictEqual({ done: true });
@@ -112,7 +112,7 @@ describe('PATCH /revisions/:revision_id', () => {
     // Get changes
     const get = await t.fetch.get(`/0/revisions/${revision.id}`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
     isSuccess(get.json);
     expect(get.json.data.status).toStrictEqual('draft');
@@ -126,8 +126,8 @@ describe('PATCH /revisions/:revision_id', () => {
     // Updates
     const res = await t.fetch.patch(`/0/revisions/${revision.id}`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
-      body: {
+      Querystring: { org_id: org.id, project_id: project.id },
+      Body: {
         name: 'hello',
         description: {
           content: [{ type: 'horizontalRule', attrs: { uid: nanoid() } }],
@@ -141,7 +141,7 @@ describe('PATCH /revisions/:revision_id', () => {
     // Get changes
     const get = await t.fetch.get(`/0/revisions/${revision.id}`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
     isSuccess(get.json);
     expect(get.json.data.name).toStrictEqual('hello');
@@ -155,8 +155,8 @@ describe('PATCH /revisions/:revision_id', () => {
     // Updates
     const res = await t.fetch.patch(`/0/revisions/${revision.id}`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
-      body: {
+      Querystring: { org_id: org.id, project_id: project.id },
+      Body: {
         authors: [user.id],
         reviewers: [user.id],
       },
@@ -179,8 +179,8 @@ describe('PATCH /revisions/:revision_id', () => {
     // Updates
     const res = await t.fetch.patch(`/0/revisions/${revision.id}`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
-      body: {
+      Querystring: { org_id: org.id, project_id: project.id },
+      Body: {
         authors: [user.id],
         reviewers: [user2.user.id],
       },
@@ -190,7 +190,7 @@ describe('PATCH /revisions/:revision_id', () => {
     // Get changes
     const get = await t.fetch.get(`/0/revisions/${revision.id}`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
     isSuccess(get.json);
     expect(get.json.data.authors).toHaveLength(1);
@@ -207,8 +207,8 @@ describe('PATCH /revisions/:revision_id', () => {
     // Updates
     const res = await t.fetch.patch(`/0/revisions/${revision.id}`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
-      body: {
+      Querystring: { org_id: org.id, project_id: project.id },
+      Body: {
         authors: [user.id],
         reviewers: [user2.user.id],
       },
@@ -218,8 +218,8 @@ describe('PATCH /revisions/:revision_id', () => {
     // Removes
     const res2 = await t.fetch.patch(`/0/revisions/${revision.id}`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
-      body: {
+      Querystring: { org_id: org.id, project_id: project.id },
+      Body: {
         authors: [],
         reviewers: [],
       },
@@ -229,7 +229,7 @@ describe('PATCH /revisions/:revision_id', () => {
     // Get changes
     const get = await t.fetch.get(`/0/revisions/${revision.id}`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
     isSuccess(get.json);
     expect(get.json.data.authors).toHaveLength(0);

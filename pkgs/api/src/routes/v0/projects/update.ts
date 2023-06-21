@@ -9,11 +9,7 @@ import { prisma } from '../../../db';
 import { getProject } from '../../../middlewares/getProject';
 import { noQuery } from '../../../middlewares/noQuery';
 import { createProjectActivity } from '../../../models';
-import type {
-  ReqProjectParams,
-  ReqPutProject,
-  ResPutProjectSuccess,
-} from '../../../types/api';
+import type { PutProject } from '../../../types/api';
 
 function BodyVal() {
   return z
@@ -37,40 +33,40 @@ function BodyVal() {
 }
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
-  fastify.put<{
-    Params: ReqProjectParams;
-    Body: ReqPutProject;
-    Reply: ResPutProjectSuccess;
-  }>('/', { preHandler: [noQuery, getProject] }, async function (req, res) {
-    const val = await BodyVal().safeParseAsync(req.body);
-    if (!val.success) {
-      return validationError(res, val.error);
-    }
+  fastify.put<PutProject>(
+    '/',
+    { preHandler: [noQuery, getProject] },
+    async function (req, res) {
+      const val = await BodyVal().safeParseAsync(req.body);
+      if (!val.success) {
+        return validationError(res, val.error);
+      }
 
-    const data = val.data;
-    let project = req.project!;
+      const data = val.data;
+      let project = req.project!;
 
-    if (data.name) {
-      project = await prisma.$transaction(async (tx) => {
-        const tmp = await tx.projects.update({
-          data: { name: data.name, slug: slugify(data.name) },
-          where: { id: project.id },
+      if (data.name) {
+        project = await prisma.$transaction(async (tx) => {
+          const tmp = await tx.projects.update({
+            data: { name: data.name, slug: slugify(data.name) },
+            where: { id: project.id },
+          });
+          await createProjectActivity({
+            user: req.user!,
+            action: 'Project.updated',
+            target: tmp,
+            tx,
+          });
+
+          return tmp;
         });
-        await createProjectActivity({
-          user: req.user!,
-          action: 'Project.updated',
-          target: tmp,
-          tx,
-        });
+      }
 
-        return tmp;
+      res.status(200).send({
+        data: toApiProject(project),
       });
     }
-
-    res.status(200).send({
-      data: toApiProject(project),
-    });
-  });
+  );
 
   done();
 };

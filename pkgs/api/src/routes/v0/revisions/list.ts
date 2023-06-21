@@ -6,11 +6,7 @@ import { validationError } from '../../../common/errors';
 import { toApiRevision } from '../../../common/formatters/revision';
 import { valOrgId, valProjectId } from '../../../common/zod';
 import { prisma } from '../../../db';
-import type {
-  Pagination,
-  ReqListRevisions,
-  ResListRevisionsSuccess,
-} from '../../../types/api';
+import type { ListRevisions, Pagination } from '../../../types/api';
 
 function QueryVal(req: FastifyRequest) {
   return z
@@ -33,10 +29,7 @@ function QueryVal(req: FastifyRequest) {
 }
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
-  fastify.get<{
-    Querystring: ReqListRevisions;
-    Reply: ResListRevisionsSuccess;
-  }>('/', async function (req, res) {
+  fastify.get<ListRevisions>('/', async function (req, res) {
     const val = QueryVal(req).safeParse(req.query);
     if (!val.success) {
       return validationError(res, val.error);

@@ -7,7 +7,7 @@ import { schemaOrgId } from '../../../common/validators';
 import { prisma } from '../../../db';
 import { noQuery } from '../../../middlewares/noQuery';
 import { createOrg } from '../../../models';
-import type { ReqPostOrg, ResPostOrgSuccess } from '../../../types/api';
+import type { PostOrg } from '../../../types/api';
 
 const OrgVal = z
   .object({
@@ -28,23 +28,24 @@ const OrgVal = z
   .strict();
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
-  fastify.post<{
-    Body: ReqPostOrg;
-    Reply: ResPostOrgSuccess;
-  }>('/', { preHandler: noQuery }, async function (req, res) {
-    const val = await OrgVal.safeParseAsync(req.body, {});
-    if (!val.success) {
-      return validationError(res, val.error);
+  fastify.post<PostOrg>(
+    '/',
+    { preHandler: noQuery },
+    async function (req, res) {
+      const val = await OrgVal.safeParseAsync(req.body, {});
+      if (!val.success) {
+        return validationError(res, val.error);
+      }
+
+      const data = val.data;
+
+      const org = await prisma.$transaction(async (tx) => {
+        return createOrg(tx, req.user!, data);
+      });
+
+      res.status(200).send(toApiOrg(org));
     }
-
-    const data = val.data;
-
-    const org = await prisma.$transaction(async (tx) => {
-      return createOrg(tx, req.user!, data);
-    });
-
-    res.status(200).send(toApiOrg(org));
-  });
+  );
 
   done();
 };

@@ -33,7 +33,7 @@ describe('GET /activities', () => {
     const res = await t.fetch.get('/0/activities', {
       token,
       // @ts-expect-error
-      qp: { random: 'world' },
+      Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
   });
@@ -42,7 +42,7 @@ describe('GET /activities', () => {
     const { token, user, org } = await seedWithOrg();
     const res = await t.fetch.get('/0/activities', {
       token,
-      qp: { org_id: org.id },
+      Querystring: { org_id: org.id },
     });
 
     isSuccess(res.json);
@@ -84,7 +84,7 @@ describe('GET /activities', () => {
     const { token } = await seedWithOrg();
     const res = await t.fetch.get('/0/activities', {
       token,
-      qp: { org_id: seed1.org.id },
+      Querystring: { org_id: seed1.org.id },
     });
 
     isValidationError(res.json);
@@ -95,7 +95,7 @@ describe('GET /activities', () => {
     const { user, token, org, project } = await seedWithProject();
     const res = await t.fetch.get('/0/activities', {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
 
     isSuccess(res.json);

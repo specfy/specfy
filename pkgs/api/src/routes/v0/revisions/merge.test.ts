@@ -55,7 +55,7 @@ describe('POST /revisions/:revision_id/merge', () => {
     const res = await t.fetch.post('/0/revisions/foo/merge', {
       token,
       // @ts-expect-error
-      qp: { random: 'world' },
+      Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
   });
@@ -65,9 +65,9 @@ describe('POST /revisions/:revision_id/merge', () => {
     const revision = await seedRevision(user, org, project);
     const res = await t.fetch.post(`/0/revisions/${revision.id}/merge`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
       // @ts-expect-error
-      body: { random: 'world' },
+      Body: { random: 'world' },
     });
     await shouldNotAllowBody(res);
   });
@@ -81,22 +81,22 @@ describe('POST /revisions/:revision_id/merge', () => {
     // Approved
     const comment = await t.fetch.post(`/0/revisions/${revision.id}/comment`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
-      body: { approval: true, content: { content: [], type: 'doc' } },
+      Querystring: { org_id: org.id, project_id: project.id },
+      Body: { approval: true, content: { content: [], type: 'doc' } },
     });
     isSuccess(comment.json);
 
     // Merge
     const res = await t.fetch.post(`/0/revisions/${revision.id}/merge`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
     isSuccess(res.json);
 
     // Get new component
     const list = await t.fetch.get(`/0/components`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
     isSuccess(list.json);
     expect(list.json.data).toHaveLength(1);
@@ -110,15 +110,15 @@ describe('POST /revisions/:revision_id/merge', () => {
     // Approved
     const comment = await t.fetch.post(`/0/revisions/${revision.id}/comment`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
-      body: { approval: true, content: { content: [], type: 'doc' } },
+      Querystring: { org_id: org.id, project_id: project.id },
+      Body: { approval: true, content: { content: [], type: 'doc' } },
     });
     isSuccess(comment.json);
 
     // Merge
     const res = await t.fetch.post(`/0/revisions/${revision.id}/merge`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
     isError(res.json);
     expect(res.statusCode).toBe(400);
@@ -135,7 +135,7 @@ describe('POST /revisions/:revision_id/merge', () => {
     // Merge
     const res = await t.fetch.post(`/0/revisions/${revision.id}/merge`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
     isError(res.json);
     expect(res.statusCode).toBe(400);
@@ -165,15 +165,15 @@ describe('POST /revisions/:revision_id/merge', () => {
     // Approved
     const comment = await t.fetch.post(`/0/revisions/${revision.id}/comment`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
-      body: { approval: true, content: { content: [], type: 'doc' } },
+      Querystring: { org_id: org.id, project_id: project.id },
+      Body: { approval: true, content: { content: [], type: 'doc' } },
     });
     isSuccess(comment.json);
 
     // Merge
     const res = await t.fetch.post(`/0/revisions/${revision.id}/merge`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
     isError(res.json);
     expect(res.statusCode).toBe(400);
@@ -192,22 +192,22 @@ describe('POST /revisions/:revision_id/merge', () => {
     // Approved
     const comment = await t.fetch.post(`/0/revisions/${revision.id}/comment`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
-      body: { approval: true, content: { content: [], type: 'doc' } },
+      Querystring: { org_id: org.id, project_id: project.id },
+      Body: { approval: true, content: { content: [], type: 'doc' } },
     });
     isSuccess(comment.json);
 
     // Merge
     const res = await t.fetch.post(`/0/revisions/${revision.id}/merge`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
     isSuccess(res.json);
 
     // Merge Again
     const res2 = await t.fetch.post(`/0/revisions/${revision.id}/merge`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
     isError(res2.json);
     expect(res2.statusCode).toBe(400);

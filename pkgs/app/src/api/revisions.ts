@@ -1,20 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
 import type {
-  ReqPostRevision,
-  ReqGetRevision,
-  ResGetRevision,
-  ResPostRevision,
-  ReqListRevisions,
-  ResListRevisions,
-  ReqRevisionParams,
-  ResMergeRevision,
-  ResCheckRevision,
-  ReqPatchRevision,
-  ResPatchRevision,
-  ResListRevisionsSuccess,
-  ResGetRevisionSuccess,
-  ResCheckRevisionSuccess,
-  ResRebaseRevision,
+  GetRevision,
+  ListRevisionChecks,
+  ListRevisions,
+  MergeRevision,
+  PatchRevision,
+  PostRevision,
+  RebaseRevision,
 } from 'api/src/types/api';
 
 import { queryClient } from '../common/query';
@@ -23,13 +15,13 @@ import { fetchApi } from './fetch';
 import { APIError, isError } from './helpers';
 
 export async function createRevision(
-  data: ReqPostRevision
-): Promise<ResPostRevision> {
-  const { res, json } = await fetchApi<
-    ResPostRevision,
-    undefined,
-    ReqPostRevision
-  >('/revisions', { body: data }, 'POST');
+  data: PostRevision['Body']
+): Promise<PostRevision['Reply']> {
+  const { res, json } = await fetchApi<PostRevision>(
+    '/revisions',
+    { body: data },
+    'POST'
+  );
 
   if (res.status === 200) {
     queryClient.removeQueries(['listRevisions', data.orgId, data.projectId]);
@@ -40,14 +32,10 @@ export async function createRevision(
 }
 
 export async function updateRevision(
-  { org_id, project_id, revision_id }: ReqGetRevision & ReqRevisionParams,
-  data: ReqPatchRevision
-): Promise<ResPatchRevision> {
-  const { res, json } = await fetchApi<
-    ResPatchRevision,
-    ReqGetRevision,
-    ReqPatchRevision
-  >(
+  { org_id, project_id, revision_id }: PatchRevision['QP'],
+  data: PatchRevision['Body']
+): Promise<PatchRevision['Reply']> {
+  const { res, json } = await fetchApi<PatchRevision>(
     `/revisions/${revision_id}`,
     { body: data, qp: { org_id, project_id } },
     'PATCH'
@@ -68,7 +56,7 @@ export async function updateRevision(
   return json;
 }
 
-export function useListRevisions(opts: ReqListRevisions) {
+export function useListRevisions(opts: ListRevisions['Querystring']) {
   return useQuery({
     queryKey: [
       'listRevisions',
@@ -77,13 +65,10 @@ export function useListRevisions(opts: ReqListRevisions) {
       opts.status,
       opts.search,
     ],
-    queryFn: async (): Promise<ResListRevisionsSuccess> => {
-      const { json, res } = await fetchApi<ResListRevisions, ReqListRevisions>(
-        '/revisions',
-        {
-          qp: opts,
-        }
-      );
+    queryFn: async (): Promise<ListRevisions['Success']> => {
+      const { json, res } = await fetchApi<ListRevisions>('/revisions', {
+        qp: opts,
+      });
 
       if (res.status !== 200 || isError(json)) {
         throw new APIError({ res, json });
@@ -98,11 +83,11 @@ export function useGetRevision({
   org_id,
   project_id,
   revision_id,
-}: ReqGetRevision & ReqRevisionParams) {
+}: GetRevision['QP']) {
   return useQuery({
     queryKey: ['getRevision', org_id, project_id, revision_id],
-    queryFn: async (): Promise<ResGetRevisionSuccess> => {
-      const { json, res } = await fetchApi<ResGetRevision, ReqGetRevision>(
+    queryFn: async (): Promise<GetRevision['Success']> => {
+      const { json, res } = await fetchApi<GetRevision>(
         `/revisions/${revision_id}`,
         {
           qp: { org_id, project_id },
@@ -122,8 +107,8 @@ export async function mergeRevision({
   org_id,
   project_id,
   revision_id,
-}: ReqGetRevision & ReqRevisionParams): Promise<ResMergeRevision> {
-  const { json, res } = await fetchApi<ResMergeRevision, ReqGetRevision>(
+}: MergeRevision['QP']): Promise<MergeRevision['Reply']> {
+  const { json, res } = await fetchApi<MergeRevision>(
     `/revisions/${revision_id}/merge`,
     {
       qp: { org_id, project_id },
@@ -151,12 +136,12 @@ export function useGetRevisionChecks({
   org_id,
   project_id,
   revision_id,
-}: Partial<ReqRevisionParams> & ReqGetRevision) {
+}: ListRevisionChecks['Querystring'] & Partial<ListRevisionChecks['Params']>) {
   return useQuery({
     enabled: !!revision_id,
     queryKey: ['getRevisionChecks', org_id, project_id, revision_id],
-    queryFn: async (): Promise<ResCheckRevisionSuccess> => {
-      const { json, res } = await fetchApi<ResCheckRevision, ReqGetRevision>(
+    queryFn: async (): Promise<ListRevisionChecks['Success']> => {
+      const { json, res } = await fetchApi<ListRevisionChecks>(
         `/revisions/${revision_id}/checks`,
         {
           qp: { org_id, project_id },
@@ -176,8 +161,8 @@ export async function rebaseRevision({
   org_id,
   project_id,
   revision_id,
-}: ReqGetRevision & ReqRevisionParams): Promise<ResRebaseRevision> {
-  const { json, res } = await fetchApi<ResRebaseRevision, ReqGetRevision>(
+}: RebaseRevision['QP']): Promise<RebaseRevision['Reply']> {
+  const { json, res } = await fetchApi<RebaseRevision>(
     `/revisions/${revision_id}/rebase`,
     {
       qp: { org_id, project_id },

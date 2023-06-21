@@ -1,20 +1,12 @@
 import { useQuery } from '@tanstack/react-query';
-import type {
-  ReqDocumentParams,
-  ReqGetDocument,
-  ReqListDocuments,
-  ResGetDocument,
-  ResGetDocumentSuccess,
-  ResListDocuments,
-  ResListDocumentsSuccess,
-} from 'api/src/types/api';
+import type { GetDocument, ListDocuments } from 'api/src/types/api';
 
 import originalStore from '../common/store';
 
 import { fetchApi } from './fetch';
 import { APIError, isError } from './helpers';
 
-export function useListDocuments(opts: ReqListDocuments) {
+export function useListDocuments(opts: ListDocuments['Querystring']) {
   return useQuery({
     queryKey: [
       'listDocuments',
@@ -23,13 +15,10 @@ export function useListDocuments(opts: ReqListDocuments) {
       opts.search,
       opts.type,
     ],
-    queryFn: async (): Promise<ResListDocumentsSuccess> => {
-      const { json, res } = await fetchApi<ResListDocuments, ReqListDocuments>(
-        '/documents',
-        {
-          qp: opts,
-        }
-      );
+    queryFn: async (): Promise<ListDocuments['Success']> => {
+      const { json, res } = await fetchApi<ListDocuments>('/documents', {
+        qp: opts,
+      });
 
       if (res.status !== 200 || isError(json)) {
         throw new APIError({ res, json });
@@ -41,13 +30,13 @@ export function useListDocuments(opts: ReqListDocuments) {
 }
 
 export function useGetDocument(
-  opts: Partial<ReqDocumentParams> & ReqGetDocument
+  opts: GetDocument['Querystring'] & Partial<GetDocument['Params']>
 ) {
   return useQuery({
     enabled: Boolean(opts.document_id),
     queryKey: ['getDocument', opts.org_id, opts.project_id, opts.document_id],
-    queryFn: async (): Promise<ResGetDocumentSuccess> => {
-      const { json, res } = await fetchApi<ResGetDocument, ReqGetDocument>(
+    queryFn: async (): Promise<GetDocument['Success']> => {
+      const { json, res } = await fetchApi<GetDocument>(
         `/documents/${opts.document_id}`,
         {
           qp: { org_id: opts.org_id, project_id: opts.project_id },

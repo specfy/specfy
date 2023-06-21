@@ -1,5 +1,5 @@
 import { Avatar, Skeleton, Typography } from 'antd';
-import type { ApiPerm, ReqListPerms } from 'api/src/types/api';
+import type { ApiPerm, ListPerms } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
 
 import { useListPermsProject } from '../../../api';
@@ -7,7 +7,7 @@ import { AvatarAuto } from '../../../components/AvatarAuto';
 
 import cls from './index.module.scss';
 
-export const Team: React.FC<Required<ReqListPerms>> = (opts) => {
+export const Team: React.FC<Required<ListPerms['Querystring']>> = (opts) => {
   const team = useListPermsProject(opts);
   const [owners, setOwners] = useState<ApiPerm[]>([]);
   const [reviewers, setReviewers] = useState<ApiPerm[]>([]);

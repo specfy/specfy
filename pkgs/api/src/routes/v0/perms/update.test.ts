@@ -29,7 +29,7 @@ describe('PUT /perms', () => {
     const res = await t.fetch.put('/0/perms', {
       token,
       // @ts-expect-error
-      qp: { random: 'world' },
+      Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
   });
@@ -41,7 +41,7 @@ describe('PUT /perms', () => {
     // Create permission
     const res = await t.fetch.put('/0/perms', {
       token,
-      body: {
+      Body: {
         org_id: org.id,
         userId: user1.user.id,
         role: 'contributor',
@@ -55,7 +55,7 @@ describe('PUT /perms', () => {
     // We check if creation applied
     const resGet2 = await t.fetch.get('/0/perms', {
       token,
-      qp: {
+      Querystring: {
         org_id: org.id,
       },
     });
@@ -72,7 +72,7 @@ describe('PUT /perms', () => {
     // Initial get
     const resGet1 = await t.fetch.get('/0/perms', {
       token,
-      qp: {
+      Querystring: {
         org_id: org.id,
       },
     });
@@ -85,7 +85,7 @@ describe('PUT /perms', () => {
     // Update our permission
     const res = await t.fetch.put('/0/perms', {
       token,
-      body: {
+      Body: {
         org_id: org.id,
         userId: user.id,
         role: 'contributor',
@@ -99,7 +99,7 @@ describe('PUT /perms', () => {
     // We check if update applied
     const resGet2 = await t.fetch.get('/0/perms', {
       token,
-      qp: {
+      Querystring: {
         org_id: org.id,
       },
     });

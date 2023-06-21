@@ -17,8 +17,7 @@ import type {
   ApiBlobCreateDocument,
   BlockLevelZero,
   Blocks,
-  ReqPostUploadRevision,
-  ResPostUploadRevision,
+  PostUploadRevision,
 } from '../../../types/api';
 import type { DBDocument } from '../../../types/db';
 
@@ -81,238 +80,242 @@ function iterNode(node: Blocks) {
 }
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
-  fastify.post<{
-    Body: ReqPostUploadRevision;
-    Reply: ResPostUploadRevision;
-  }>('/', { preHandler: noQuery }, async function (req, res) {
-    const val = BodyVal(req).safeParse(req.body);
-    if (!val.success) {
-      return validationError(res, val.error);
-    }
-
-    // TODO: validate all ids
-    const data = val.data;
-
-    // ---- Check if every path has a parent folder
-    const checkedFolder = new Set<string>('/');
-    const copy = [...data.blobs];
-    const checked: Array<
-      ReqPostUploadRevision['blobs'][0] & { folder: string }
-    > = [];
-    while (copy.length > 0) {
-      const blob = copy.shift()!;
-      if (typeof blob === 'undefined') {
-        continue;
+  fastify.post<PostUploadRevision>(
+    '/',
+    { preHandler: noQuery },
+    async function (req, res) {
+      const val = BodyVal(req).safeParse(req.body);
+      if (!val.success) {
+        return validationError(res, val.error);
       }
 
-      // The specified path is already a folder
-      if (blob.path.endsWith('/')) {
-        checked.push({ ...blob, folder: blob.path });
-        checkedFolder.add(blob.path);
+      // TODO: validate all ids
+      const data = val.data;
 
-        continue;
-      }
-
-      const folder = path.join(path.dirname(blob.path), '/');
-      if (checkedFolder.has(folder)) {
-        checked.push({ ...blob, folder });
-
-        continue;
-      }
-
-      // Exact match, unlikely with regular file upload but since it's an API it can be manually setup
-      const parent = copy.findIndex((b) => b.path === folder);
-      if (parent > -1) {
-        checked.push({ ...copy[parent], folder });
-        checked.push({ ...blob, folder });
-        checkedFolder.add(folder);
-        delete copy[parent];
-
-        continue;
-      }
-
-      // There is an index.md which is good enough source
-      const index = path.join(folder, 'index.md');
-      const dup = copy.findIndex((b) => b.path.toLowerCase() === index);
-      if (dup > -1) {
-        checked.push({ ...copy[dup], path: folder, folder });
-        checked.push({ ...blob, folder });
-        checkedFolder.add(folder);
-        delete copy[dup];
-
-        continue;
-      }
-
-      // No match, we create an empty folder
-      checked.push({ content: '', path: folder, folder });
-      checked.push({ ...blob, folder });
-      checkedFolder.add(folder);
-    }
-
-    // ---- Sort
-    // We also sort:
-    // 1. Because Prisma does not support Deferrable fk check  https://github.com/prisma/prisma/issues/8807
-    // 2. And it creates better Revisions
-    const sorted = checked.sort((a, b) => (a.path > b.path ? 1 : -1));
-
-    // ---- Transform content into a ProseMirror object
-    const parsed: Array<{ path: string; content: BlockLevelZero }> = [];
-    for (const blob of sorted) {
-      const parse: BlockLevelZero = defaultMarkdownParser
-        .parse(blob.content)
-        ?.toJSON();
-      parse.content.forEach(iterNode);
-
-      parsed.push({
-        path: blob.path,
-        content: parse,
-      });
-    }
-
-    const rev = await prisma.$transaction(async (tx) => {
-      const prevs = await tx.documents.findMany({
-        where: {
-          orgId: data.orgId,
-          projectId: data.projectId,
-          type: 'doc',
-        },
-        take: 1000,
-        skip: 0,
-      });
-
-      // ---- Prepare blobs for create or update
-      const now = new Date().toISOString();
-      const blobs: ApiBlobCreateDocument[] = parsed.map((doc) => {
-        const prev = prevs.find((p) => p.sourcePath === doc.path);
-
-        let name = prev
-          ? prev.name
-          : path.basename(doc.path).replace('.md', '');
-
-        if (
-          doc.content.content.length > 0 &&
-          doc.content.content[0].type === 'heading'
-        ) {
-          name = doc.content.content[0].content[0].text;
-          doc.content.content.shift();
+      // ---- Check if every path has a parent folder
+      const checkedFolder = new Set<string>('/');
+      const copy = [...data.blobs];
+      const checked: Array<
+        PostUploadRevision['Body']['blobs'][0] & { folder: string }
+      > = [];
+      while (copy.length > 0) {
+        const blob = copy.shift()!;
+        if (typeof blob === 'undefined') {
+          continue;
         }
 
-        const current: DBDocument = prev
-          ? {
-              ...(prev as unknown as DBDocument),
-              content: doc.content,
-              source: data.source,
-              sourcePath: doc.path,
-            }
-          : {
-              id: nanoid(),
-              blobId: null,
-              content: doc.content,
-              locked: false,
-              name,
-              orgId: data.orgId,
-              projectId: data.projectId,
-              parentId: null,
-              source: data.source,
-              sourcePath: doc.path,
-              slug: slugify(name),
-              tldr: '',
-              type: 'doc',
-              typeId: null,
-              createdAt: now,
-              updatedAt: now,
-            };
-        return {
-          created: !prev,
-          deleted: false,
-          parentId: prev ? prev.blobId : null,
-          type: 'document',
-          typeId: prev ? prev.id : nanoid(),
-          current,
-        };
-      });
+        // The specified path is already a folder
+        if (blob.path.endsWith('/')) {
+          checked.push({ ...blob, folder: blob.path });
+          checkedFolder.add(blob.path);
 
-      // ---- Find blobs parents to construct hierarchy
-      blobs.forEach((blob) => {
-        const folder = path.join(path.dirname(blob.current!.sourcePath!), '/');
-        const parent = blobs.find(
-          (b) => b.current!.sourcePath === folder && b.typeId !== blob.typeId
-        );
-        if (!parent) {
-          return;
+          continue;
         }
 
-        blob.current!.parentId = parent!.current!.id;
-      });
+        const folder = path.join(path.dirname(blob.path), '/');
+        if (checkedFolder.has(folder)) {
+          checked.push({ ...blob, folder });
 
-      // ---- Create Deleted blobs
-      const deleted: ApiBlobCreate[] = prevs
-        .filter((p) => !parsed.find((d) => d.path === p.sourcePath))
-        .map((prev) => {
+          continue;
+        }
+
+        // Exact match, unlikely with regular file upload but since it's an API it can be manually setup
+        const parent = copy.findIndex((b) => b.path === folder);
+        if (parent > -1) {
+          checked.push({ ...copy[parent], folder });
+          checked.push({ ...blob, folder });
+          checkedFolder.add(folder);
+          delete copy[parent];
+
+          continue;
+        }
+
+        // There is an index.md which is good enough source
+        const index = path.join(folder, 'index.md');
+        const dup = copy.findIndex((b) => b.path.toLowerCase() === index);
+        if (dup > -1) {
+          checked.push({ ...copy[dup], path: folder, folder });
+          checked.push({ ...blob, folder });
+          checkedFolder.add(folder);
+          delete copy[dup];
+
+          continue;
+        }
+
+        // No match, we create an empty folder
+        checked.push({ content: '', path: folder, folder });
+        checked.push({ ...blob, folder });
+        checkedFolder.add(folder);
+      }
+
+      // ---- Sort
+      // We also sort:
+      // 1. Because Prisma does not support Deferrable fk check  https://github.com/prisma/prisma/issues/8807
+      // 2. And it creates better Revisions
+      const sorted = checked.sort((a, b) => (a.path > b.path ? 1 : -1));
+
+      // ---- Transform content into a ProseMirror object
+      const parsed: Array<{ path: string; content: BlockLevelZero }> = [];
+      for (const blob of sorted) {
+        const parse: BlockLevelZero = defaultMarkdownParser
+          .parse(blob.content)
+          ?.toJSON();
+        parse.content.forEach(iterNode);
+
+        parsed.push({
+          path: blob.path,
+          content: parse,
+        });
+      }
+
+      const rev = await prisma.$transaction(async (tx) => {
+        const prevs = await tx.documents.findMany({
+          where: {
+            orgId: data.orgId,
+            projectId: data.projectId,
+            type: 'doc',
+          },
+          take: 1000,
+          skip: 0,
+        });
+
+        // ---- Prepare blobs for create or update
+        const now = new Date().toISOString();
+        const blobs: ApiBlobCreateDocument[] = parsed.map((doc) => {
+          const prev = prevs.find((p) => p.sourcePath === doc.path);
+
+          let name = prev
+            ? prev.name
+            : path.basename(doc.path).replace('.md', '');
+
+          if (
+            doc.content.content.length > 0 &&
+            doc.content.content[0].type === 'heading'
+          ) {
+            name = doc.content.content[0].content[0].text;
+            doc.content.content.shift();
+          }
+
+          const current: DBDocument = prev
+            ? {
+                ...(prev as unknown as DBDocument),
+                content: doc.content,
+                source: data.source,
+                sourcePath: doc.path,
+              }
+            : {
+                id: nanoid(),
+                blobId: null,
+                content: doc.content,
+                locked: false,
+                name,
+                orgId: data.orgId,
+                projectId: data.projectId,
+                parentId: null,
+                source: data.source,
+                sourcePath: doc.path,
+                slug: slugify(name),
+                tldr: '',
+                type: 'doc',
+                typeId: null,
+                createdAt: now,
+                updatedAt: now,
+              };
           return {
-            created: false,
-            deleted: true,
-            parentId: prev.blobId,
+            created: !prev,
+            deleted: false,
+            parentId: prev ? prev.blobId : null,
             type: 'document',
-            typeId: prev.id,
-            current: undefined as unknown as null,
+            typeId: prev ? prev.id : nanoid(),
+            current,
           };
         });
 
-      const ids = await createBlobs([...blobs, ...deleted], tx);
+        // ---- Find blobs parents to construct hierarchy
+        blobs.forEach((blob) => {
+          const folder = path.join(
+            path.dirname(blob.current!.sourcePath!),
+            '/'
+          );
+          const parent = blobs.find(
+            (b) => b.current!.sourcePath === folder && b.typeId !== blob.typeId
+          );
+          if (!parent) {
+            return;
+          }
 
-      // TODO: validation
-      const revision = await tx.revisions.create({
-        data: {
-          id: nanoid(),
-          orgId: data.orgId,
-          projectId: data.projectId,
-          name: data.name,
-          description: data.description as any,
-          status: 'approved',
-          merged: false,
-          blobs: ids,
-        },
-      });
-      await createRevisionActivity({
-        user: req.user!,
-        action: 'Revision.created',
-        target: revision,
-        tx,
+          blob.current!.parentId = parent!.current!.id;
+        });
+
+        // ---- Create Deleted blobs
+        const deleted: ApiBlobCreate[] = prevs
+          .filter((p) => !parsed.find((d) => d.path === p.sourcePath))
+          .map((prev) => {
+            return {
+              created: false,
+              deleted: true,
+              parentId: prev.blobId,
+              type: 'document',
+              typeId: prev.id,
+              current: undefined as unknown as null,
+            };
+          });
+
+        const ids = await createBlobs([...blobs, ...deleted], tx);
+
+        // TODO: validation
+        const revision = await tx.revisions.create({
+          data: {
+            id: nanoid(),
+            orgId: data.orgId,
+            projectId: data.projectId,
+            name: data.name,
+            description: data.description as any,
+            status: 'approved',
+            merged: false,
+            blobs: ids,
+          },
+        });
+        await createRevisionActivity({
+          user: req.user!,
+          action: 'Revision.created',
+          target: revision,
+          tx,
+        });
+
+        await tx.reviews.create({
+          data: {
+            id: nanoid(),
+            orgId: data.orgId,
+            projectId: data.projectId,
+            revisionId: revision.id,
+            userId: req.user!.id,
+            commentId: null,
+          },
+        });
+        await createRevisionActivity({
+          user: req.user!,
+          action: 'Revision.approved',
+          target: revision,
+          tx,
+        });
+
+        await tx.typeHasUsers.create({
+          data: {
+            revisionId: revision.id,
+            role: 'author',
+            userId: req.user!.id,
+          },
+        });
+
+        return revision;
       });
 
-      await tx.reviews.create({
-        data: {
-          id: nanoid(),
-          orgId: data.orgId,
-          projectId: data.projectId,
-          revisionId: revision.id,
-          userId: req.user!.id,
-          commentId: null,
-        },
+      res.status(200).send({
+        id: rev.id,
       });
-      await createRevisionActivity({
-        user: req.user!,
-        action: 'Revision.approved',
-        target: revision,
-        tx,
-      });
-
-      await tx.typeHasUsers.create({
-        data: {
-          revisionId: revision.id,
-          role: 'author',
-          userId: req.user!.id,
-        },
-      });
-
-      return revision;
-    });
-
-    res.status(200).send({
-      id: rev.id,
-    });
-  });
+    }
+  );
 
   done();
 };

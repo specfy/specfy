@@ -3,7 +3,7 @@ import { Button, Typography, Space, App } from 'antd';
 import type {
   ApiRevision,
   BlockLevelZero,
-  ReqGetRevision,
+  GetRevision,
 } from 'api/src/types/api';
 import classnames from 'classnames';
 import { useState, useEffect, useRef } from 'react';
@@ -19,7 +19,7 @@ import cls from './index.module.scss';
 
 export const ReviewBar: React.FC<{
   rev: ApiRevision;
-  qp: ReqGetRevision;
+  qp: GetRevision['Querystring'];
 }> = ({ rev, qp }) => {
   const { message } = App.useApp();
 

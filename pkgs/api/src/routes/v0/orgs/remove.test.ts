@@ -35,7 +35,7 @@ describe('DELETE /orgs/:id', () => {
     const res = await t.fetch.delete('/0/orgs/foobar', {
       token,
       // @ts-expect-error
-      qp: { random: 'world' },
+      Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
   });
@@ -45,7 +45,7 @@ describe('DELETE /orgs/:id', () => {
     const res = await t.fetch.delete('/0/orgs/foobar', {
       token,
       // @ts-expect-error
-      body: { random: 'world' },
+      Body: { random: 'world' },
     });
     await shouldNotAllowBody(res);
   });

@@ -1,12 +1,7 @@
 import { LoadingOutlined } from '@ant-design/icons';
 import { IconCircleX, IconHistory, IconSearch } from '@tabler/icons-react';
 import { Button, Input, Select, Table } from 'antd';
-import type {
-  ApiProject,
-  ApiRevision,
-  ReqListRevisions,
-  ResListRevisionsSuccess,
-} from 'api/src/types/api';
+import type { ApiProject, ApiRevision, ListRevisions } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
@@ -27,10 +22,10 @@ export const ProjectRevisionsList: React.FC<{
   params: RouteProject;
 }> = ({ proj, params }) => {
   const [filterStatus, setFilterStatus] =
-    useState<ReqListRevisions['status']>('opened');
+    useState<ListRevisions['Querystring']['status']>('opened');
   const [loading, setLoading] = useState<boolean>(true);
   const [search, setSearch] = useState<string>('');
-  const [list, setList] = useState<ResListRevisionsSuccess>();
+  const [list, setList] = useState<ListRevisions['Success']>();
   const [searchDebounced, setSearchDebounced] = useState<string>('');
   useDebounce(
     () => {

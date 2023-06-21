@@ -4,10 +4,7 @@ import { z } from 'zod';
 import { validationError } from '../../../common/errors';
 import { fastifyPassport } from '../../../middlewares/auth';
 import { noQuery } from '../../../middlewares/noQuery';
-import type {
-  ReqPostAuthLocal,
-  ResPostAuthLocalSuccess,
-} from '../../../types/api/auth';
+import type { PostAuthLocal } from '../../../types/api/auth';
 import type { PreHandler } from '../../../types/fastify';
 
 const obj = z
@@ -27,10 +24,7 @@ export const validation: PreHandler = (req, res, done) => {
 };
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
-  fastify.post<{
-    Body: ReqPostAuthLocal;
-    Reply: ResPostAuthLocalSuccess;
-  }>(
+  fastify.post<PostAuthLocal>(
     '/local',
     {
       preHandler: [noQuery, validation, fastifyPassport.authenticate('local')],

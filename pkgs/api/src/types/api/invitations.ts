@@ -2,7 +2,7 @@ import type { Invitations, Prisma } from '@prisma/client';
 
 import type { PermType } from '../db';
 
-import type { ResErrors } from './api';
+import type { Res } from './api';
 import type { ApiOrg } from './orgs';
 import type { ApiUser } from './users';
 
@@ -15,41 +15,60 @@ export type InvitationsWithOrgAndUser = Prisma.InvitationsGetPayload<{
 }>;
 
 // GET /
-export interface ReqListInvitations {
-  org_id: string;
-}
-export interface ResListInvitationsSuccess {
-  data: ApiInvitation[];
-}
-export type ResListInvitations = ResErrors | ResListInvitationsSuccess;
+export type ListInvitations = Res<{
+  Querystring: {
+    org_id: string;
+  };
+  Success: {
+    data: ApiInvitation[];
+  };
+}>;
 
 // POST /
-export type ReqPostInvitations = Pick<Invitations, 'email' | 'orgId' | 'role'>;
-export interface ResPostInvitationsSuccess {
-  data: { id: string; token: string };
-}
-export type ResPostInvitations = ResErrors | ResPostInvitationsSuccess;
+export type PostInvitation = Res<{
+  Body: Pick<Invitations, 'email' | 'orgId' | 'role'>;
+  Success: {
+    data: { id: string; token: string };
+  };
+}>;
 
 // GET /:id
-export interface ReqInvitationParams {
+export interface ParamsInvitation {
   invitation_id: string;
 }
-export interface ReqGetInvitation {
-  token: string;
-}
-export interface ResGetInvitationSuccess {
-  data: ApiInvitation & {
-    by: ApiUser;
-    org: ApiOrg;
+export type GetInvitation = Res<{
+  Params: ParamsInvitation;
+  Querystring: {
+    token: string;
   };
-}
-export type ResGetInvitation = ResErrors | ResGetInvitationSuccess;
+  Success: {
+    data: ApiInvitation & {
+      by: ApiUser;
+      org: ApiOrg;
+    };
+  };
+}>;
 
 // DELETE /:id
-export type ResDeleteInvitation = ResErrors | never;
+export type DeleteInvitation = Res<{
+  Params: ParamsInvitation;
+  Success: never;
+}>;
 
 // POST /:id/accept
-export type ResAcceptInvitation = ResErrors | { done: true };
+export type AcceptInvitation = Res<{
+  Params: ParamsInvitation;
+  Querystring: {
+    token: string;
+  };
+  Success: { done: true };
+}>;
 
 // POST /:id/decline
-export type ResDeclineInvitation = ResErrors | { done: true };
+export type DeclineInvitation = Res<{
+  Params: ParamsInvitation;
+  Querystring: {
+    token: string;
+  };
+  Success: { done: true };
+}>;

@@ -4,13 +4,10 @@ import { prisma } from '../../../db';
 import { getProject } from '../../../middlewares/getProject';
 import { noBody } from '../../../middlewares/noBody';
 import { noQuery } from '../../../middlewares/noQuery';
-import type { ReqProjectParams, ResDeleteProject } from '../../../types/api';
+import type { DeleteProject } from '../../../types/api';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
-  fastify.delete<{
-    Params: ReqProjectParams;
-    Reply: ResDeleteProject;
-  }>(
+  fastify.delete<DeleteProject>(
     '/',
     { preHandler: [noQuery, noBody, getProject] },
     async function (req, res) {

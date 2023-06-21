@@ -34,7 +34,7 @@ describe('GET /revisions/:revision_id/blobs', () => {
     const res = await t.fetch.get('/0/revisions/foo/blobs', {
       token,
       // @ts-expect-error
-      qp: { random: 'world' },
+      Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
   });
@@ -46,7 +46,7 @@ describe('GET /revisions/:revision_id/blobs', () => {
     // Get blobs
     const res = await t.fetch.get(`/0/revisions/${revision.id}/blobs`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
 
     isSuccess(res.json);
@@ -72,7 +72,7 @@ describe('GET /revisions/:revision_id/blobs', () => {
     // Get blobs
     const res = await t.fetch.get(`/0/revisions/${revision.id}/blobs`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
 
     isSuccess(res.json);
@@ -115,7 +115,7 @@ describe('GET /revisions/:revision_id/blobs', () => {
     // Get blobs
     const res = await t.fetch.get(`/0/revisions/${revision.id}/blobs`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
 
     isSuccess(res.json);

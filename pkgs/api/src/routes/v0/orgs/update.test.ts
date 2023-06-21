@@ -30,7 +30,7 @@ describe('PUT /orgs/:id', () => {
     const res = await t.fetch.put('/0/orgs/foobar', {
       token,
       // @ts-expect-error
-      qp: { random: 'world' },
+      Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
   });
@@ -41,7 +41,7 @@ describe('PUT /orgs/:id', () => {
     const name = `New Name ${nanoid()}`;
     const res = await t.fetch.put(`/0/orgs/${org.id}`, {
       token,
-      body: {
+      Body: {
         name,
       },
     });
@@ -56,7 +56,7 @@ describe('PUT /orgs/:id', () => {
 
     const res = await t.fetch.put(`/0/orgs/${org.id}`, {
       token,
-      body: {
+      Body: {
         // @ts-expect-error
         id: 'dfdfdfsdfsfdsf',
       },

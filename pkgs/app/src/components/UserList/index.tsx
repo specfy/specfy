@@ -1,6 +1,6 @@
 import { IconX } from '@tabler/icons-react';
 import { Button, Typography } from 'antd';
-import type { ApiUser, ReqListUsers } from 'api/src/types/api';
+import type { ApiUser, ListUsers } from 'api/src/types/api';
 import { useEffect, useMemo, useState } from 'react';
 
 import { UserCard, UserCardAdd } from '../UserCard';
@@ -10,7 +10,7 @@ import cls from './index.module.scss';
 export const UserList: React.FC<{
   list: ApiUser[];
   edit?: boolean;
-  params?: ReqListUsers;
+  params?: ListUsers['Querystring'];
   exclude?: ApiUser[];
   onChange?: (list: ApiUser[]) => void;
 }> = ({ list, edit, params, exclude, onChange }) => {

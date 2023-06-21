@@ -1,4 +1,4 @@
-import type { ResErrors } from './api';
+import type { Res } from './api';
 
 export interface ApiMe {
   id: string;
@@ -10,18 +10,21 @@ export interface ApiMe {
 }
 
 // GET /me
-export interface ResGetMeSuccess {
-  data: ApiMe;
-}
-export type ResGetMe = ResErrors | ResGetMeSuccess;
+export type GetMe = Res<{
+  Success: {
+    data: ApiMe;
+  };
+}>;
 
 // PUT /me
-export type ReqPutMe = {
-  name: string;
-};
-export type ResPutMeSuccess = { data: ApiMe };
-export type ResPutMe = ResErrors | ResPutMeSuccess;
+export type PutMe = Res<{
+  Body: {
+    name: string;
+  };
+  Success: { data: ApiMe };
+}>;
 
 // DELETE /me
-export type ResDeleteMeSuccess = never;
-export type ResDeleteMe = ResDeleteMeSuccess | ResErrors;
+export type DeleteMe = Res<{
+  Success: never;
+}>;

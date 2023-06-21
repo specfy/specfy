@@ -36,7 +36,7 @@ describe('GET /documents/:id', () => {
     const res = await t.fetch.get(`/0/documents/${document.id}`, {
       token,
       // @ts-expect-error
-      qp: { random: 'world' },
+      Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
   });
@@ -46,7 +46,7 @@ describe('GET /documents/:id', () => {
     const document = await seedDocument(user, org, project);
     const res = await t.fetch.get(`/0/documents/${document.id}`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
 
     isSuccess(res.json);
@@ -83,7 +83,7 @@ describe('GET /documents/:id', () => {
     const document = await seedDocument(user, org, project);
     const res = await t.fetch.get(`/0/documents/${document.id}`, {
       token,
-      qp: { org_id: seed1.org.id, project_id: seed1.project.id },
+      Querystring: { org_id: seed1.org.id, project_id: seed1.project.id },
     });
 
     isError(res.json);
@@ -95,7 +95,7 @@ describe('GET /documents/:id', () => {
     await seedDocument(user, org, project);
     const res = await t.fetch.get(`/0/documents/${nanoid()}`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
 
     shouldBeNotFound(res);

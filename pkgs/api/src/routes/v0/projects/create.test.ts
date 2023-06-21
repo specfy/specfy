@@ -37,7 +37,7 @@ describe('POST /projects', () => {
     const { token } = await seedSimpleUser();
     const res = await t.fetch.post('/0/projects', {
       token,
-      body: {
+      Body: {
         name: '',
         display,
         orgId: '',
@@ -45,7 +45,7 @@ describe('POST /projects', () => {
         githubRepositoryId: null,
       },
       // @ts-expect-error
-      qp: { random: 'world' },
+      Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
   });
@@ -60,7 +60,7 @@ describe('POST /projects', () => {
     const slug = slugify(name);
     const res = await t.fetch.post('/0/projects', {
       token,
-      body: { name, slug, display, orgId: org.id, githubRepositoryId: null },
+      Body: { name, slug, display, orgId: org.id, githubRepositoryId: null },
     });
 
     isSuccess(res.json);
@@ -84,7 +84,7 @@ describe('POST /projects', () => {
     // Insert one
     const res1 = await t.fetch.post('/0/projects', {
       token,
-      body: {
+      Body: {
         name,
         slug: slugify(name),
         display,
@@ -97,7 +97,7 @@ describe('POST /projects', () => {
     // Insert the same
     const res2 = await t.fetch.post('/0/projects', {
       token,
-      body: {
+      Body: {
         name,
         slug: slugify(name),
         display,

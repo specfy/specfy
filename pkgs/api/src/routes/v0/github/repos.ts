@@ -5,10 +5,7 @@ import { z } from 'zod';
 
 import { notFound, serverError, validationError } from '../../../common/errors';
 import { prisma } from '../../../db';
-import type {
-  ReqGetGithubRepos,
-  ResGetGithubReposSuccess,
-} from '../../../types/api';
+import type { ListGithubRepos } from '../../../types/api';
 
 function QueryVal() {
   return z
@@ -20,10 +17,7 @@ function QueryVal() {
 }
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
-  fastify.get<{
-    Querystring: ReqGetGithubRepos;
-    Reply: ResGetGithubReposSuccess;
-  }>('/', async function (req, res) {
+  fastify.get<ListGithubRepos>('/', async function (req, res) {
     const val = QueryVal().safeParse(req.query);
     if (!val.success) {
       return validationError(res, val.error);
@@ -35,7 +29,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     let repos: Awaited<
       ReturnType<Octokit['rest']['repos']['listForAuthenticatedUser']>
     >['data'] = [];
-    const data: ResGetGithubReposSuccess['data'] = [];
+    const data: ListGithubRepos['Success']['data'] = [];
     const accounts = await prisma.accounts.findFirst({
       where: { userId: user.id },
     });

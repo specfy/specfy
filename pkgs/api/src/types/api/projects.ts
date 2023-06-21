@@ -1,42 +1,48 @@
 import type { DBProject } from '../db/projects';
 
-import type { Pagination, ResErrors } from './api';
+import type { Pagination, Res } from './api';
 
 export type ApiProject = DBProject;
-
-// GET /
-export interface ReqListProjects {
-  org_id: string;
-}
-export interface ResListProjectsSuccess {
-  data: ApiProject[];
-  pagination: Pagination;
-}
-export type ResListProjects = ResErrors | ResListProjectsSuccess;
-
-// POST /
-export type ReqPostProject = Pick<ApiProject, 'name' | 'orgId' | 'slug'> & {
-  display: ApiProject['display'];
-  githubRepositoryId: number | null;
-};
-export type ResPostProjectSuccess = Pick<ApiProject, 'id' | 'slug'>;
-export type ResPostProject = ResErrors | ResPostProjectSuccess;
-
-// GET /:org_id/:project_slug
 export interface ReqProjectParams {
   org_id: string;
   project_slug: string;
 }
 
-export interface ResGetProjectSuccess {
-  data: ApiProject;
-}
-export type ResGetProject = ResErrors | ResGetProjectSuccess;
+// GET /
+export type ListProjects = Res<{
+  Querystring: {
+    org_id: string;
+  };
+  Success: {
+    data: ApiProject[];
+    pagination: Pagination;
+  };
+}>;
+
+// POST /
+export type PostProject = Res<{
+  Body: Pick<ApiProject, 'name' | 'orgId' | 'slug'> & {
+    display: ApiProject['display'];
+    githubRepositoryId: number | null;
+  };
+  Success: Pick<ApiProject, 'id' | 'slug'>;
+}>;
+
+// GET /:org_id/:project_slug
+export type GetProject = Res<{
+  Params: ReqProjectParams;
+  Success: { data: ApiProject };
+}>;
 
 // POST /:org_id/:project_slug
-export type ReqPutProject = Pick<ApiProject, 'name'>;
-export type ResPutProjectSuccess = { data: ApiProject };
-export type ResPutProject = ResErrors | ResPutProjectSuccess;
+export type PutProject = Res<{
+  Params: ReqProjectParams;
+  Body: Pick<ApiProject, 'name'>;
+  Success: { data: ApiProject };
+}>;
 
 // DELETE /:org_id/:project_slug
-export type ResDeleteProject = ResErrors | never;
+export type DeleteProject = Res<{
+  Params: ReqProjectParams;
+  Success: never;
+}>;

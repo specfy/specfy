@@ -1,10 +1,6 @@
 import { AutoComplete, Space } from 'antd';
 import type { DefaultOptionType } from 'antd/es/select';
-import type {
-  ApiUser,
-  ReqListUsers,
-  ResListUsersSuccess,
-} from 'api/src/types/api';
+import type { ApiUser, ListUsers } from 'api/src/types/api';
 import classnames from 'classnames';
 import { useEffect, useState } from 'react';
 import { useDebounce } from 'react-use';
@@ -27,7 +23,7 @@ export const UserCard: React.FC<{
 };
 
 export const UserCardAdd: React.FC<{
-  params: ReqListUsers;
+  params: ListUsers['Querystring'];
   onAdd: (user: ApiUser) => void;
   size?: 'default' | 'small';
   excludeIds?: string[];
@@ -35,7 +31,7 @@ export const UserCardAdd: React.FC<{
   const [options, setOptions] = useState<DefaultOptionType[]>([]);
   const [search, setSearch] = useState<string>();
   const [searchDebounced, setSearchDebounced] = useState<string>();
-  const [list, setList] = useState<ResListUsersSuccess['data']>();
+  const [list, setList] = useState<ListUsers['Success']['data']>();
 
   const res = useListUser({ ...params, search: searchDebounced });
   useDebounce(

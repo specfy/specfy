@@ -30,7 +30,7 @@ describe('DELETE /invitations/:id', () => {
     const res = await t.fetch.delete('/0/invitations/foobar', {
       token,
       // @ts-expect-error
-      qp: { random: 'world' },
+      Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
   });
@@ -40,14 +40,14 @@ describe('DELETE /invitations/:id', () => {
     // Create
     const post = await t.fetch.post('/0/invitations', {
       token,
-      body: { orgId: org.id, email: 'foobar@example.com', role: 'viewer' },
+      Body: { orgId: org.id, email: 'foobar@example.com', role: 'viewer' },
     });
     isSuccess(post.json);
 
     // List
     const get = await t.fetch.get('/0/invitations', {
       token,
-      qp: { org_id: org.id },
+      Querystring: { org_id: org.id },
     });
     isSuccess(get.json);
     expect(get.statusCode).toBe(200);
@@ -63,7 +63,7 @@ describe('DELETE /invitations/:id', () => {
     // List again
     const get2 = await t.fetch.get('/0/invitations', {
       token,
-      qp: { org_id: org.id },
+      Querystring: { org_id: org.id },
     });
     isSuccess(get2.json);
     expect(get2.statusCode).toBe(200);
@@ -87,7 +87,7 @@ describe('DELETE /invitations/:id', () => {
     // Create
     const post = await t.fetch.post('/0/invitations', {
       token,
-      body: { orgId: org.id, email: 'foobar@example.com', role: 'viewer' },
+      Body: { orgId: org.id, email: 'foobar@example.com', role: 'viewer' },
     });
     isSuccess(post.json);
 

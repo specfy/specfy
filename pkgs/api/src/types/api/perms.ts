@@ -1,44 +1,48 @@
 import type { DBPerm } from '../db/perms';
 
-import type { ResErrors } from './api';
+import type { Res } from './api';
 import type { ApiUser } from './users';
 
 export type ApiPerm = Omit<DBPerm, 'userId'> & { user: ApiUser };
 
 // GET /
-export interface ReqListPerms {
-  org_id: string;
-  project_id?: string;
-}
-
-export interface ResListPermsSuccess {
-  data: ApiPerm[];
-}
-export type ResListPerms = ResErrors | ResListPermsSuccess;
+export type ListPerms = Res<{
+  Querystring: {
+    org_id: string;
+    project_id?: string;
+  };
+  Success: {
+    data: ApiPerm[];
+  };
+}>;
 
 // GET /count
-export interface ResCountPermsSuccess {
-  data: number;
-}
-export type ResCountPerms = ResCountPermsSuccess | ResErrors;
+export type GetCountPerms = Res<{
+  Querystring: ListPerms['Querystring'];
+  Success: {
+    data: number;
+  };
+}>;
 
 // POST /
-export interface ReqPutPerms {
-  org_id: string;
-  project_id?: string;
-  userId: string;
-  role: ApiPerm['role'];
-}
-export interface ResPutPermsSuccess {
-  data: { done: boolean };
-}
-export type ResPutPerms = ResErrors | ResPutPermsSuccess;
+export type PutPerm = Res<{
+  Body: {
+    org_id: string;
+    project_id?: string;
+    userId: string;
+    role: ApiPerm['role'];
+  };
+  Success: {
+    data: { done: boolean };
+  };
+}>;
 
 // DELETE /
-export interface ReqDeletePerms {
-  org_id: string;
-  project_id?: string;
-  userId: string;
-}
-export type ResDeletePermsSuccess = never;
-export type ResDeletePerms = ResDeletePermsSuccess | ResErrors;
+export type DeletePerm = Res<{
+  Body: {
+    org_id: string;
+    project_id?: string;
+    userId: string;
+  };
+  Success: never;
+}>;

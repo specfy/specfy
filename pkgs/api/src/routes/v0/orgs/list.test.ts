@@ -29,7 +29,7 @@ describe('GET /orgs', () => {
     const res = await t.fetch.get('/0/orgs', {
       token,
       // @ts-expect-error
-      qp: { random: 'world' },
+      Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
   });

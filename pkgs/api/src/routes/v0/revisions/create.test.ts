@@ -32,7 +32,7 @@ describe('POST /revisions', () => {
     const { token } = await seedWithProject();
     const res = await t.fetch.post('/0/revisions', {
       token,
-      body: {
+      Body: {
         blobs: [],
         description: { content: [], type: 'doc' },
         name: '',
@@ -40,7 +40,7 @@ describe('POST /revisions', () => {
         projectId: '',
       },
       // @ts-expect-error
-      qp: { random: 'world' },
+      Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
   });
@@ -54,7 +54,7 @@ describe('POST /revisions', () => {
     const name = `test ${nanoid()}`;
     const res = await t.fetch.post('/0/revisions', {
       token,
-      body: {
+      Body: {
         blobs: [],
         description: { content: [], type: 'doc' },
         name: name,
@@ -76,7 +76,7 @@ describe('POST /revisions', () => {
 
     const res = await t.fetch.post('/0/revisions', {
       token,
-      body: {
+      Body: {
         blobs: [
           {
             type: 'component',
@@ -108,7 +108,7 @@ describe('POST /revisions', () => {
 
     const res = await t.fetch.post('/0/revisions', {
       token,
-      body: {
+      Body: {
         blobs: [
           {
             type: 'component',
@@ -137,7 +137,7 @@ describe('POST /revisions', () => {
 
     const res = await t.fetch.post('/0/revisions', {
       token,
-      body: {
+      Body: {
         blobs: [
           {
             type: 'component',
@@ -177,7 +177,7 @@ describe('POST /revisions', () => {
 
     const res = await t.fetch.post('/0/revisions', {
       token,
-      body: {
+      Body: {
         blobs: [
           {
             type: 'component',
@@ -213,7 +213,7 @@ describe('POST /revisions', () => {
 
     const res = await t.fetch.post('/0/revisions', {
       token,
-      body: {
+      Body: {
         blobs: [
           {
             type: 'component',
@@ -260,7 +260,7 @@ describe('POST /revisions', () => {
 
     const res = await t.fetch.post('/0/revisions', {
       token,
-      body: {
+      Body: {
         blobs: [
           {
             type: 'project',

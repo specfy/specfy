@@ -35,7 +35,7 @@ describe('DELETE /perms', () => {
     const res = await t.fetch.delete('/0/perms', {
       token,
       // @ts-expect-error
-      qp: { random: 'world' },
+      Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
   });
@@ -44,7 +44,7 @@ describe('DELETE /perms', () => {
     const { token, user, org } = await seedWithOrg();
     const res = await t.fetch.delete('/0/perms', {
       token,
-      body: {
+      Body: {
         org_id: org.id,
         userId: user.id,
       },
@@ -56,7 +56,7 @@ describe('DELETE /perms', () => {
     // We delete our own permissions so everything else will fail
     const resGet = await t.fetch.get('/0/perms', {
       token,
-      qp: {
+      Querystring: {
         org_id: org.id,
       },
     });
@@ -80,7 +80,7 @@ describe('DELETE /perms', () => {
     // GET to check that we have two permissions
     const resGet1 = await t.fetch.get('/0/perms', {
       token,
-      qp: {
+      Querystring: {
         org_id: org.id,
       },
     });
@@ -90,7 +90,7 @@ describe('DELETE /perms', () => {
     // Delete simple user permissions
     const res = await t.fetch.delete('/0/perms', {
       token,
-      body: {
+      Body: {
         org_id: org.id,
         userId: user1.user.id,
       },
@@ -102,7 +102,7 @@ describe('DELETE /perms', () => {
     // GET to check that we have one permissions (our own)
     const resGet2 = await t.fetch.get('/0/perms', {
       token,
-      qp: {
+      Querystring: {
         org_id: org.id,
       },
     });
@@ -136,7 +136,7 @@ describe('DELETE /perms', () => {
     // GET to check that we have permissions for project
     const resGet1 = await t.fetch.get('/0/perms', {
       token,
-      qp: {
+      Querystring: {
         org_id: org.id,
         project_id: project.id,
       },
@@ -147,7 +147,7 @@ describe('DELETE /perms', () => {
     // Delete simple user permissions
     const resDel = await t.fetch.delete('/0/perms', {
       token,
-      body: {
+      Body: {
         org_id: org.id,
         userId: user1.user.id,
       },
@@ -159,7 +159,7 @@ describe('DELETE /perms', () => {
     // GET to check that we have no permissions
     const resGet2 = await t.fetch.get('/0/perms', {
       token,
-      qp: {
+      Querystring: {
         org_id: org.id,
         project_id: project.id,
       },

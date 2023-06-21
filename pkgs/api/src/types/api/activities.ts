@@ -1,6 +1,6 @@
 import type { DBActivity } from '../db';
 
-import type { ResErrors } from './api';
+import type { Res } from './api';
 import type { ApiComponent } from './components';
 import type { ApiDocument } from './documents';
 import type { ApiPolicy } from './policies';
@@ -31,11 +31,12 @@ export type ApiActivity = Omit<
 export type ApiActivityGrouped = ApiActivity & { childrens?: ApiActivity[] };
 
 // GET /
-export interface ReqListActivities {
-  org_id: string;
-  project_id?: string;
-}
-export interface ResListActivitiesSuccess {
-  data: ApiActivity[];
-}
-export type ResListActivities = ResErrors | ResListActivitiesSuccess;
+export type ListActivities = Res<{
+  Querystring: {
+    org_id: string;
+    project_id?: string;
+  };
+  Success: {
+    data: ApiActivity[];
+  };
+}>;

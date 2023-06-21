@@ -1,5 +1,5 @@
 output "cloudbuild" {
   value = {
-    mainImage = "${local.image}:20191ad505243850530271b2def778f769011719"
+    mainImage = "${local.image}:fb2f6d062a0ae0968073af7405b3fbd222dad0dd"
   }
 }

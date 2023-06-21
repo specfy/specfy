@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { notFound, validationError } from '../common/errors';
 import { schemaId, schemaToken } from '../common/validators';
 import { prisma } from '../db';
-import type { ReqGetInvitation, ReqInvitationParams } from '../types/api';
+import type { GetInvitation } from '../types/api';
 import type { PreHandler } from '../types/fastify';
 
 export function QueryVal() {
@@ -16,8 +16,8 @@ export function QueryVal() {
 }
 
 export const getInvitation: PreHandler<{
-  Params: ReqInvitationParams;
-  Querystring: ReqGetInvitation;
+  Params: GetInvitation['Params'];
+  Querystring: GetInvitation['Querystring'];
 }> = async (req, res) => {
   const val = QueryVal().safeParse({ ...req.params, ...req.query });
   if (!val.success) {

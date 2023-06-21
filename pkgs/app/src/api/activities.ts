@@ -1,21 +1,14 @@
 import { useQuery } from '@tanstack/react-query';
-import type {
-  ReqListActivities,
-  ResListActivities,
-  ResListActivitiesSuccess,
-} from 'api/src/types/api';
+import type { ListActivities } from 'api/src/types/api';
 
 import { fetchApi } from './fetch';
 import { APIError, isError } from './helpers';
 
-export function useListActivities(opts: ReqListActivities) {
+export function useListActivities(opts: ListActivities['Querystring']) {
   return useQuery({
     queryKey: ['listActivities', opts.org_id, opts.project_id],
-    queryFn: async (): Promise<ResListActivitiesSuccess> => {
-      const { json, res } = await fetchApi<
-        ResListActivities,
-        ReqListActivities
-      >('/activities', {
+    queryFn: async (): Promise<ListActivities['Success']> => {
+      const { json, res } = await fetchApi<ListActivities>('/activities', {
         qp: opts,
       });
 

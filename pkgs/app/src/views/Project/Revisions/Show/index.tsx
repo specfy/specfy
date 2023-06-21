@@ -11,10 +11,9 @@ import type {
   ApiProject,
   ApiUser,
   ApiRevision,
-  ReqGetRevision,
-  ResGetRevisionSuccess,
-  ResCheckRevisionSuccess,
-  ResListRevisionBlobsSuccess,
+  GetRevision,
+  ListRevisionBlobs,
+  ListRevisionChecks,
 } from 'api/src/types/api';
 import { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
@@ -59,11 +58,11 @@ export const ProjectRevisionsShow: React.FC<{
   const storeRevision = useRevisionStore();
 
   const more = useParams<Partial<RouteRevision>>();
-  const [rev, setRev] = useState<ResGetRevisionSuccess['data']>();
-  const [blobs, setBlobs] = useState<ResListRevisionBlobsSuccess['data']>();
-  const [checks, setChecks] = useState<ResCheckRevisionSuccess['data']>();
+  const [rev, setRev] = useState<GetRevision['Success']['data']>();
+  const [blobs, setBlobs] = useState<ListRevisionBlobs['Success']['data']>();
+  const [checks, setChecks] = useState<ListRevisionChecks['Success']['data']>();
   const [to] = useState(() => `/${params.org_id}/${params.project_slug}`);
-  const qp: ReqGetRevision = {
+  const qp: GetRevision['Querystring'] = {
     org_id: params.org_id,
     project_id: proj.id,
   };

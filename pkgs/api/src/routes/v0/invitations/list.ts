@@ -5,10 +5,7 @@ import { z } from 'zod';
 import { validationError } from '../../../common/errors';
 import { valOrgId } from '../../../common/zod';
 import { prisma } from '../../../db';
-import type {
-  ReqListInvitations,
-  ResListInvitations,
-} from '../../../types/api';
+import type { ListInvitations } from '../../../types/api';
 import type { PermType } from '../../../types/db';
 
 function QueryVal(req: FastifyRequest) {
@@ -20,10 +17,7 @@ function QueryVal(req: FastifyRequest) {
 }
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
-  fastify.get<{
-    Querystring: ReqListInvitations;
-    Reply: ResListInvitations;
-  }>('/', async function (req, res) {
+  fastify.get<ListInvitations>('/', async function (req, res) {
     const val = QueryVal(req).safeParse(req.query);
     if (!val.success) {
       return validationError(res, val.error);

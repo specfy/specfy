@@ -6,7 +6,8 @@ import type {
   DBBlobProject,
 } from '../db/blobs';
 
-import type { ResErrors } from './api';
+import type { QuerystringOrgProject, Res } from './api';
+import type { ParamsRevision } from './revisions';
 
 export type ApiBlob = DBBlob;
 export type ApiBlobPrevious<T = DBBlob['current']> = {
@@ -22,7 +23,10 @@ export type ApiBlobWithPrevious =
   | ApiBlobProject;
 
 // GET /
-export interface ResListRevisionBlobsSuccess {
-  data: ApiBlobWithPrevious[];
-}
-export type ResListRevisionBlobs = ResErrors | ResListRevisionBlobsSuccess;
+export type ListRevisionBlobs = Res<{
+  Querystring: QuerystringOrgProject;
+  Params: ParamsRevision;
+  Success: {
+    data: ApiBlobWithPrevious[];
+  };
+}>;

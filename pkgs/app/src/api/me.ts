@@ -1,12 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import type {
-  ApiMe,
-  ReqPutMe,
-  ResDeleteMe,
-  ResGetMe,
-  ResGetMeSuccess,
-  ResPutMe,
-} from 'api/src/types/api';
+import type { ApiMe, DeleteMe, GetMe, PutMe } from 'api/src/types/api';
 
 import { queryClient } from '../common/query';
 
@@ -14,7 +7,7 @@ import { fetchApi } from './fetch';
 import { APIError, isError } from './helpers';
 
 export async function getMe(): Promise<ApiMe | null> {
-  const { json, res } = await fetchApi<ResGetMe>('/me');
+  const { json, res } = await fetchApi<GetMe>('/me');
 
   return res.status !== 200 || isError(json) ? null : json.data;
 }
@@ -22,8 +15,8 @@ export async function getMe(): Promise<ApiMe | null> {
 export function useGetMe() {
   return useQuery({
     queryKey: ['getMe'],
-    queryFn: async (): Promise<ResGetMeSuccess['data']> => {
-      const { json, res } = await fetchApi<ResGetMe>('/me');
+    queryFn: async (): Promise<GetMe['Success']['data']> => {
+      const { json, res } = await fetchApi<GetMe>('/me');
 
       if (res.status !== 200 || isError(json)) {
         throw new APIError({ res, json });
@@ -34,12 +27,8 @@ export function useGetMe() {
   });
 }
 
-export async function updateMe(data: ReqPutMe): Promise<ResPutMe> {
-  const { json, res } = await fetchApi<ResPutMe, undefined, ReqPutMe>(
-    `/me`,
-    { body: data },
-    'PUT'
-  );
+export async function updateMe(data: PutMe['Body']): Promise<PutMe['Reply']> {
+  const { json, res } = await fetchApi<PutMe>(`/me`, { body: data }, 'PUT');
 
   if (res.status === 200) {
     queryClient.removeQueries(['listOrgs']);
@@ -49,7 +38,7 @@ export async function updateMe(data: ReqPutMe): Promise<ResPutMe> {
 }
 
 export async function deleteMe(): Promise<number> {
-  const { res } = await fetchApi<ResDeleteMe>(`/me`, undefined, 'DELETE');
+  const { res } = await fetchApi<DeleteMe>(`/me`, undefined, 'DELETE');
 
   return res.status;
 }

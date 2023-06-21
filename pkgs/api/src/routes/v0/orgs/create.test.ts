@@ -32,7 +32,7 @@ describe('POST /orgs', () => {
     const res = await t.fetch.post('/0/orgs', {
       token,
       // @ts-expect-error
-      qp: { random: 'world' },
+      Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
   });
@@ -46,7 +46,7 @@ describe('POST /orgs', () => {
     const id = createOrgId();
     const res = await t.fetch.post('/0/orgs', {
       token,
-      body: { id: id, name: `test ${id}` },
+      Body: { id: id, name: `test ${id}` },
     });
 
     isSuccess(res.json);
@@ -75,14 +75,14 @@ describe('POST /orgs', () => {
     // Insert one
     const res1 = await t.fetch.post('/0/orgs', {
       token,
-      body: { id: id, name: `test ${id}` },
+      Body: { id: id, name: `test ${id}` },
     });
     isSuccess(res1.json);
 
     // Insert the same
     const res2 = await t.fetch.post('/0/orgs', {
       token,
-      body: { id: id, name: `test ${id}` },
+      Body: { id: id, name: `test ${id}` },
     });
     isValidationError(res2.json);
     expect(res2.json.error.fields).toStrictEqual({

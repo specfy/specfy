@@ -29,7 +29,7 @@ describe('GET /invitations', () => {
     const res = await t.fetch.get('/0/invitations', {
       token,
       // @ts-expect-error
-      qp: { random: 'world' },
+      Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
   });
@@ -38,7 +38,7 @@ describe('GET /invitations', () => {
     const { token, org } = await seedWithOrg();
     const res = await t.fetch.get('/0/invitations', {
       token,
-      qp: { org_id: org.id },
+      Querystring: { org_id: org.id },
     });
 
     isSuccess(res.json);
@@ -51,13 +51,13 @@ describe('GET /invitations', () => {
 
     const post = await t.fetch.post('/0/invitations', {
       token,
-      body: { email: 'foobar@example.com', orgId: org.id, role: 'viewer' },
+      Body: { email: 'foobar@example.com', orgId: org.id, role: 'viewer' },
     });
     isSuccess(post.json);
 
     const res = await t.fetch.get('/0/invitations', {
       token,
-      qp: { org_id: org.id },
+      Querystring: { org_id: org.id },
     });
 
     isSuccess(res.json);
@@ -86,7 +86,7 @@ describe('GET /invitations', () => {
 
     const post1 = await t.fetch.post('/0/invitations', {
       token: seed1.token,
-      body: {
+      Body: {
         email: 'foobar1@example.com',
         orgId: seed1.org.id,
         role: 'viewer',
@@ -96,7 +96,7 @@ describe('GET /invitations', () => {
 
     const post2 = await t.fetch.post('/0/invitations', {
       token: seed2.token,
-      body: {
+      Body: {
         email: 'foobar2@example.com',
         orgId: seed2.org.id,
         role: 'viewer',
@@ -107,7 +107,7 @@ describe('GET /invitations', () => {
     // First user receive only it's own org
     const res1 = await t.fetch.get('/0/invitations', {
       token: seed1.token,
-      qp: { org_id: seed1.org.id },
+      Querystring: { org_id: seed1.org.id },
     });
     isSuccess(res1.json);
     expect(res1.statusCode).toBe(200);
@@ -117,7 +117,7 @@ describe('GET /invitations', () => {
     // Second user receive only it's own org
     const res2 = await t.fetch.get('/0/invitations', {
       token: seed2.token,
-      qp: { org_id: seed2.org.id },
+      Querystring: { org_id: seed2.org.id },
     });
     isSuccess(res2.json);
     expect(res2.statusCode).toBe(200);
@@ -131,7 +131,7 @@ describe('GET /invitations', () => {
 
     const post = await t.fetch.post('/0/invitations', {
       token,
-      body: {
+      Body: {
         email: 'foobar@example.com',
         orgId: seed2.org.id,
         role: 'viewer',

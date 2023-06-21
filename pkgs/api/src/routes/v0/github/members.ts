@@ -5,10 +5,7 @@ import { z } from 'zod';
 
 import { notFound, serverError, validationError } from '../../../common/errors';
 import { prisma } from '../../../db';
-import type {
-  ReqGetGithubMembers,
-  ResGetGithubMembersSuccess,
-} from '../../../types/api';
+import type { GetGithubMembers } from '../../../types/api';
 
 function QueryVal() {
   return z
@@ -19,10 +16,7 @@ function QueryVal() {
 }
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
-  fastify.get<{
-    Querystring: ReqGetGithubMembers;
-    Reply: ResGetGithubMembersSuccess;
-  }>('/', async function (req, res) {
+  fastify.get<GetGithubMembers>('/', async function (req, res) {
     const val = QueryVal().safeParse(req.query);
     if (!val.success) {
       return validationError(res, val.error);

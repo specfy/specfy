@@ -58,11 +58,11 @@ export class ApiClient {
     opts?: {
       token?: string;
     } & (API[TPath] extends HasGet
-      ? OmitByValue<Omit<API[TPath]['GET'], 'res'>, never>
+      ? OmitByValue<Pick<API[TPath]['GET'], 'Body' | 'Querystring'>, never>
       : never)
   ): Promise<
     Dispatcher.ResponseData & {
-      json: API[TPath] extends HasGet ? API[TPath]['GET']['res'] : never;
+      json: API[TPath] extends HasGet ? API[TPath]['GET']['Reply'] : never;
     }
   > {
     return await this.query('GET', path, opts);
@@ -76,11 +76,11 @@ export class ApiClient {
     opts?: {
       token?: string;
     } & (API[TPath] extends HasPost
-      ? OmitByValue<Omit<API[TPath]['POST'], 'res'>, never>
+      ? OmitByValue<Pick<API[TPath]['POST'], 'Body' | 'Querystring'>, never>
       : never)
   ): Promise<
     Dispatcher.ResponseData & {
-      json: API[TPath] extends HasPost ? API[TPath]['POST']['res'] : never;
+      json: API[TPath] extends HasPost ? API[TPath]['POST']['Reply'] : never;
     }
   > {
     return await this.query('POST', path, opts);
@@ -94,11 +94,11 @@ export class ApiClient {
     opts?: {
       token?: string;
     } & (API[TPath] extends HasPut
-      ? OmitByValue<Omit<API[TPath]['PUT'], 'res'>, never>
+      ? OmitByValue<Pick<API[TPath]['PUT'], 'Body' | 'Querystring'>, never>
       : never)
   ): Promise<
     Dispatcher.ResponseData & {
-      json: API[TPath] extends HasPut ? API[TPath]['PUT']['res'] : never;
+      json: API[TPath] extends HasPut ? API[TPath]['PUT']['Reply'] : never;
     }
   > {
     return await this.query('PUT', path, opts);
@@ -112,11 +112,11 @@ export class ApiClient {
     opts?: {
       token?: string;
     } & (API[TPath] extends HasPatch
-      ? OmitByValue<Omit<API[TPath]['PATCH'], 'res'>, never>
+      ? OmitByValue<Pick<API[TPath]['PATCH'], 'Body' | 'Querystring'>, never>
       : never)
   ): Promise<
     Dispatcher.ResponseData & {
-      json: API[TPath] extends HasPatch ? API[TPath]['PATCH']['res'] : never;
+      json: API[TPath] extends HasPatch ? API[TPath]['PATCH']['Reply'] : never;
     }
   > {
     return await this.query('PATCH', path, opts);
@@ -130,11 +130,13 @@ export class ApiClient {
     opts?: {
       token?: string;
     } & (API[TPath] extends HasDelete
-      ? OmitByValue<Omit<API[TPath]['DELETE'], 'res'>, never>
+      ? OmitByValue<Pick<API[TPath]['DELETE'], 'Body' | 'Querystring'>, never>
       : never)
   ): Promise<
     Dispatcher.ResponseData & {
-      json: API[TPath] extends HasDelete ? API[TPath]['DELETE']['res'] : never;
+      json: API[TPath] extends HasDelete
+        ? API[TPath]['DELETE']['Reply']
+        : never;
     }
   > {
     return await this.query('DELETE', path, opts);
@@ -149,18 +151,18 @@ export class ApiClient {
     path: string,
     opts?: {
       token?: string;
-      qp?: Record<string, any>;
-      body?: Record<string, any>;
+      Querystring?: Record<string, any>;
+      Body?: Record<string, any>;
     }
   ): Promise<Dispatcher.ResponseData & { json: any }> {
     const res = await this.client.request({
       method,
       path,
-      query: opts && 'qp' in opts ? opts.qp : {},
-      body: opts && 'body' in opts ? JSON.stringify(opts.body) : null,
+      query: opts && 'Querystring' in opts ? opts.Querystring : {},
+      body: opts && 'Body' in opts ? JSON.stringify(opts.Body) : null,
       headers: {
         authorization: `Bearer ${opts?.token}`,
-        ...(opts && 'body' in opts
+        ...(opts && 'Body' in opts
           ? { 'content-type': 'application/json' }
           : {}),
       },

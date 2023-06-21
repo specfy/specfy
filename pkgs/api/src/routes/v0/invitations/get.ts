@@ -5,40 +5,36 @@ import { toApiOrg } from '../../../common/formatters/org';
 import { toApiUser } from '../../../common/formatters/user';
 import { getInvitation } from '../../../middlewares/getInvitation';
 import { noBody } from '../../../middlewares/noBody';
-import type {
-  ReqGetInvitation,
-  ReqInvitationParams,
-  ResGetInvitation,
-} from '../../../types/api';
+import type { GetInvitation } from '../../../types/api';
 import type { PermType } from '../../../types/db';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
-  fastify.get<{
-    Params: ReqInvitationParams;
-    Querystring: ReqGetInvitation;
-    Reply: ResGetInvitation;
-  }>('/', { preHandler: [noBody, getInvitation] }, async function (req, res) {
-    const inv = req.invitation!;
-    const user = req.user!;
+  fastify.get<GetInvitation>(
+    '/',
+    { preHandler: [noBody, getInvitation] },
+    async function (req, res) {
+      const inv = req.invitation!;
+      const user = req.user!;
 
-    if (user.email !== inv.email) {
-      return forbidden(res);
+      if (user.email !== inv.email) {
+        return forbidden(res);
+      }
+
+      res.status(200).send({
+        data: {
+          id: inv.id,
+          email: inv.email,
+          userId: inv.userId,
+          orgId: inv.orgId,
+          role: inv.role as PermType,
+          by: toApiUser(inv.User),
+          org: toApiOrg(inv.Org),
+          createdAt: inv.createdAt,
+          expiresAt: inv.expiresAt,
+        },
+      });
     }
-
-    res.status(200).send({
-      data: {
-        id: inv.id,
-        email: inv.email,
-        userId: inv.userId,
-        orgId: inv.orgId,
-        role: inv.role as PermType,
-        by: toApiUser(inv.User),
-        org: toApiOrg(inv.Org),
-        createdAt: inv.createdAt,
-        expiresAt: inv.expiresAt,
-      },
-    });
-  });
+  );
 
   done();
 };

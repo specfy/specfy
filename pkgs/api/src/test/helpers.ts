@@ -68,7 +68,7 @@ export async function shouldEnforceBody<TPath extends APIPaths>(
     {
       token,
       // @ts-expect-error
-      body: { wrong: 'body' },
+      Body: { wrong: 'body' },
     }
   );
 

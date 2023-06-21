@@ -32,7 +32,7 @@ describe('PATCH /revisions/:revision_id', () => {
     const res = await t.fetch.post('/0/revisions/upload', {
       token,
       // @ts-expect-error
-      qp: { random: 'world' },
+      Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
   });
@@ -46,7 +46,7 @@ describe('PATCH /revisions/:revision_id', () => {
     const name = `test ${nanoid()}`;
     const res = await t.fetch.post('/0/revisions/upload', {
       token,
-      body: {
+      Body: {
         blobs: [
           {
             path: '/',
@@ -71,7 +71,7 @@ describe('PATCH /revisions/:revision_id', () => {
     // Get blobs
     const resBlobs = await t.fetch.get(`/0/revisions/${res.json.id}/blobs`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
 
     isSuccess(resBlobs.json);
@@ -130,7 +130,7 @@ describe('PATCH /revisions/:revision_id', () => {
     const name = `test ${nanoid()}`;
     const res = await t.fetch.post('/0/revisions/upload', {
       token,
-      body: {
+      Body: {
         blobs: [
           {
             path: '/folder/foobar.md',
@@ -155,7 +155,7 @@ describe('PATCH /revisions/:revision_id', () => {
     // Get blobs
     const resBlobs = await t.fetch.get(`/0/revisions/${res.json.id}/blobs`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
 
     isSuccess(resBlobs.json);
@@ -175,7 +175,7 @@ describe('PATCH /revisions/:revision_id', () => {
     const name = `test ${nanoid()}`;
     const res = await t.fetch.post('/0/revisions/upload', {
       token,
-      body: {
+      Body: {
         blobs: [
           {
             path: '/folder/foobar.md',
@@ -204,7 +204,7 @@ describe('PATCH /revisions/:revision_id', () => {
     // Get blobs
     const resBlobs = await t.fetch.get(`/0/revisions/${res.json.id}/blobs`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
 
     isSuccess(resBlobs.json);
@@ -224,7 +224,7 @@ describe('PATCH /revisions/:revision_id', () => {
     const name = `test ${nanoid()}`;
     const res = await t.fetch.post('/0/revisions/upload', {
       token,
-      body: {
+      Body: {
         blobs: [
           {
             path: '/folder/',
@@ -253,7 +253,7 @@ describe('PATCH /revisions/:revision_id', () => {
     // Get blobs
     const resBlobs = await t.fetch.get(`/0/revisions/${res.json.id}/blobs`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
 
     isSuccess(resBlobs.json);

@@ -1,33 +1,45 @@
 import type { DBOrg } from '../db/orgs';
 
-import type { ResErrors } from './api';
+import type { Res } from './api';
 
 export type ApiOrg = Omit<DBOrg, 'createdAt' | 'updatedAt'> & {
   githubInstallationId: number | null;
 };
-
-export interface ResListOrgsSuccess {
-  data: ApiOrg[];
-}
-export type ResListOrgs = ResErrors | ResListOrgsSuccess;
-
-// POST /
-export type ReqPostOrg = Pick<ApiOrg, 'id' | 'name'>;
-export type ResPostOrgSuccess = ApiOrg;
-export type ResPostOrg = ResErrors | ResPostOrgSuccess;
-
-// GET /:org_id
 export interface ReqOrgParams {
   org_id: string;
 }
 
+// GET /
+export type ListOrgs = Res<{
+  Success: {
+    data: ApiOrg[];
+  };
+}>;
+
+// POST /
+export type PostOrg = Res<{
+  Body: Pick<ApiOrg, 'id' | 'name'>;
+  Success: ApiOrg;
+}>;
+
 // PUT /:org_id
-export type ReqPutOrg = {
-  name: string;
-};
-export type ResPutOrgSuccess = { data: ApiOrg };
-export type ResPutOrg = ResErrors | ResPutOrgSuccess;
+export type PutOrg = Res<{
+  Params: ReqOrgParams;
+  Body: {
+    name: string;
+  };
+  Success: { data: ApiOrg };
+}>;
 
 // DELETE /:org_id
-export type ResDeleteOrgSuccess = never;
-export type ResDeleteOrg = ResDeleteOrgSuccess | ResErrors;
+export type DeleteOrg = Res<{
+  Params: ReqOrgParams;
+  Success:
+    | never
+    | {
+        error: {
+          code: 'cant_delete';
+          reason: 'is_personal';
+        };
+      };
+}>;

@@ -30,7 +30,7 @@ describe('POST /invitations/:id/decline', () => {
     const res = await t.fetch.post('/0/invitations/foobar/decline', {
       token,
       // @ts-expect-error
-      qp: { random: 'world' },
+      Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
   });
@@ -42,14 +42,14 @@ describe('POST /invitations/:id/decline', () => {
     // Create
     const post = await t.fetch.post('/0/invitations', {
       token,
-      body: { orgId: org.id, email: seed2.user.email, role: 'viewer' },
+      Body: { orgId: org.id, email: seed2.user.email, role: 'viewer' },
     });
     isSuccess(post.json);
 
     // List
     const get = await t.fetch.get('/0/invitations', {
       token,
-      qp: { org_id: org.id },
+      Querystring: { org_id: org.id },
     });
     isSuccess(get.json);
     expect(get.statusCode).toBe(200);
@@ -60,7 +60,7 @@ describe('POST /invitations/:id/decline', () => {
       `/0/invitations/${post.json.data.id}/decline`,
       {
         token: seed2.token,
-        qp: { token: post.json.data.token },
+        Querystring: { token: post.json.data.token },
       }
     );
     isSuccess(decline.json);
@@ -70,7 +70,7 @@ describe('POST /invitations/:id/decline', () => {
     // List again
     const get2 = await t.fetch.get('/0/invitations', {
       token,
-      qp: { org_id: org.id },
+      Querystring: { org_id: org.id },
     });
     isSuccess(get2.json);
     expect(get2.statusCode).toBe(200);
@@ -82,7 +82,7 @@ describe('POST /invitations/:id/decline', () => {
     const fakeid = nanoid();
     const res = await t.fetch.post(`/0/invitations/${fakeid}/decline`, {
       token,
-      qp: { token: nanoid(32) },
+      Querystring: { token: nanoid(32) },
     });
 
     isError(res.json);
@@ -95,7 +95,7 @@ describe('POST /invitations/:id/decline', () => {
     // Create
     const post = await t.fetch.post('/0/invitations', {
       token,
-      body: { orgId: org.id, email: 'foobar@example.com', role: 'viewer' },
+      Body: { orgId: org.id, email: 'foobar@example.com', role: 'viewer' },
     });
     isSuccess(post.json);
 
@@ -105,7 +105,7 @@ describe('POST /invitations/:id/decline', () => {
       `/0/invitations/${post.json.data.id}/decline`,
       {
         token: seed2.token,
-        qp: { token: post.json.data.token },
+        Querystring: { token: post.json.data.token },
       }
     );
     isError(res.json);

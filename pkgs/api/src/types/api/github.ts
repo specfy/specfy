@@ -1,4 +1,4 @@
-import type { ResErrors } from './api';
+import type { Res } from './api';
 
 // GET /github/repos
 export interface ApiGithubRepo {
@@ -7,13 +7,14 @@ export interface ApiGithubRepo {
   url: string;
   private: boolean;
 }
-export interface ReqGetGithubRepos {
-  installation_id?: number;
-}
-export interface ResGetGithubReposSuccess {
-  data: ApiGithubRepo[];
-}
-export type ResGetGithubRepos = ResErrors | ResGetGithubReposSuccess;
+export type ListGithubRepos = Res<{
+  Querystring: {
+    installation_id?: number;
+  };
+  Success: {
+    data: ApiGithubRepo[];
+  };
+}>;
 
 // GET /github/installations
 export interface ApiGithubInstallation {
@@ -22,12 +23,11 @@ export interface ApiGithubInstallation {
   avatarUrl: string;
   url: string;
 }
-export interface ResGetGithubInstallationsSuccess {
-  data: ApiGithubInstallation[];
-}
-export type ResGetGithubInstallations =
-  | ResErrors
-  | ResGetGithubInstallationsSuccess;
+export type ListGithubInstallations = Res<{
+  Success: {
+    data: ApiGithubInstallation[];
+  };
+}>;
 
 // GET /github/members
 export interface ApiGithubMember {
@@ -36,22 +36,22 @@ export interface ApiGithubMember {
   avatarUrl: string;
   url: string;
 }
-export interface ReqGetGithubMembers {
-  org: string;
-}
-export interface ResGetGithubMembersSuccess {
-  data: ApiGithubMember[];
-}
-export type ResGetGithubMembers = ResErrors | ResGetGithubMembersSuccess;
+export type GetGithubMembers = Res<{
+  Querystring: {
+    org: string;
+  };
+  Success: {
+    data: ApiGithubMember[];
+  };
+}>;
 
 // POST /github/link_org
-export interface PostLinkToGithubOrg {
-  body: {
+export type PostLinkToGithubOrg = Res<{
+  Body: {
     orgId: string;
     installationId: number | null;
   };
-  success: {
+  Success: {
     done: true;
   };
-  res: PostLinkToGithubOrg['success'] | ResErrors;
-}
+}>;

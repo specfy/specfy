@@ -9,11 +9,7 @@ import { valOrgId, valProjectId } from '../../../common/zod';
 import { prisma } from '../../../db';
 import { noQuery } from '../../../middlewares/noQuery';
 import { createBlobs, createRevisionActivity } from '../../../models';
-import type {
-  ApiBlobCreate,
-  ReqPostRevision,
-  ResPostRevisionSuccess,
-} from '../../../types/api';
+import type { ApiBlobCreate, PostRevision } from '../../../types/api';
 
 function BodyVal(req: FastifyRequest) {
   return z
@@ -71,52 +67,57 @@ function BodyVal(req: FastifyRequest) {
 }
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
-  fastify.post<{
-    Body: ReqPostRevision;
-    Reply: ResPostRevisionSuccess;
-  }>('/', { preHandler: noQuery }, async function (req, res) {
-    const val = BodyVal(req).safeParse(req.body);
-    if (!val.success) {
-      return validationError(res, val.error);
+  fastify.post<PostRevision>(
+    '/',
+    { preHandler: noQuery },
+    async function (req, res) {
+      const val = BodyVal(req).safeParse(req.body);
+      if (!val.success) {
+        return validationError(res, val.error);
+      }
+
+      // TODO: validate all ids
+      const data = val.data;
+
+      const rev = await prisma.$transaction(async (tx) => {
+        const ids = await createBlobs(data.blobs as ApiBlobCreate[], tx);
+
+        // TODO: validation
+        const revision = await tx.revisions.create({
+          data: {
+            id: nanoid(),
+            orgId: data.orgId,
+            projectId: data.projectId,
+            name: data.name,
+            description: data.description as any,
+            status: 'draft',
+            merged: false,
+            blobs: ids,
+          },
+        });
+        await createRevisionActivity({
+          user: req.user!,
+          action: 'Revision.created',
+          target: revision,
+          tx,
+        });
+
+        await tx.typeHasUsers.create({
+          data: {
+            revisionId: revision.id,
+            role: 'author',
+            userId: req.user!.id,
+          },
+        });
+
+        return revision;
+      });
+
+      res.status(200).send({
+        id: rev.id,
+      });
     }
-
-    // TODO: validate all ids
-    const data = val.data;
-
-    const rev = await prisma.$transaction(async (tx) => {
-      const ids = await createBlobs(data.blobs as ApiBlobCreate[], tx);
-
-      // TODO: validation
-      const revision = await tx.revisions.create({
-        data: {
-          id: nanoid(),
-          orgId: data.orgId,
-          projectId: data.projectId,
-          name: data.name,
-          description: data.description as any,
-          status: 'draft',
-          merged: false,
-          blobs: ids,
-        },
-      });
-      await createRevisionActivity({
-        user: req.user!,
-        action: 'Revision.created',
-        target: revision,
-        tx,
-      });
-
-      await tx.typeHasUsers.create({
-        data: { revisionId: revision.id, role: 'author', userId: req.user!.id },
-      });
-
-      return revision;
-    });
-
-    res.status(200).send({
-      id: rev.id,
-    });
-  });
+  );
 
   done();
 };

@@ -6,11 +6,7 @@ import { validationError } from '../../../common/errors';
 import { toApiUser } from '../../../common/formatters/user';
 import { valOrgId, valProjectId } from '../../../common/zod';
 import { prisma } from '../../../db';
-import type {
-  Pagination,
-  ReqListUsers,
-  ResListUsersSuccess,
-} from '../../../types/api';
+import type { ListUsers, Pagination } from '../../../types/api';
 
 function QueryVal(req: FastifyRequest) {
   return z
@@ -24,10 +20,7 @@ function QueryVal(req: FastifyRequest) {
 }
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
-  fastify.get<{
-    Querystring: ReqListUsers;
-    Reply: ResListUsersSuccess;
-  }>('/', async function (req, res) {
+  fastify.get<ListUsers>('/', async function (req, res) {
     const val = QueryVal(req).safeParse(req.query);
     if (!val.success) {
       return validationError(res, val.error);

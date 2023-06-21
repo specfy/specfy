@@ -30,7 +30,7 @@ describe('GET /documents', () => {
     const res = await t.fetch.get('/0/documents', {
       token,
       // @ts-expect-error
-      qp: { random: 'world' },
+      Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
   });
@@ -39,7 +39,7 @@ describe('GET /documents', () => {
     const { token, project, org } = await seedWithProject();
     const res = await t.fetch.get('/0/documents', {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
 
     isSuccess(res.json);
@@ -52,7 +52,7 @@ describe('GET /documents', () => {
     const document = await seedDocument(user, org, project);
     const res = await t.fetch.get('/0/documents', {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
 
     isSuccess(res.json);
@@ -82,7 +82,7 @@ describe('GET /documents', () => {
     // First user receive only it's own org
     const res1 = await t.fetch.get('/0/documents', {
       token: seed1.token,
-      qp: { org_id: seed1.org.id, project_id: seed1.project.id },
+      Querystring: { org_id: seed1.org.id, project_id: seed1.project.id },
     });
     isSuccess(res1.json);
     expect(res1.statusCode).toBe(200);
@@ -92,7 +92,7 @@ describe('GET /documents', () => {
     // Second user receive only it's own org
     const res2 = await t.fetch.get('/0/documents', {
       token: seed2.token,
-      qp: { org_id: seed2.org.id, project_id: seed2.project.id },
+      Querystring: { org_id: seed2.org.id, project_id: seed2.project.id },
     });
     isSuccess(res2.json);
     expect(res2.statusCode).toBe(200);
@@ -108,7 +108,7 @@ describe('GET /documents', () => {
     const { token, project } = await seedWithProject();
     const res = await t.fetch.get('/0/documents', {
       token,
-      qp: { org_id: seed1.org.id, project_id: project.id },
+      Querystring: { org_id: seed1.org.id, project_id: project.id },
     });
 
     isValidationError(res.json);
@@ -121,7 +121,7 @@ describe('GET /documents', () => {
     await seedDocument(user, org, project, 'pb');
     const res = await t.fetch.get('/0/documents', {
       token,
-      qp: { org_id: org.id, project_id: project.id, type: 'rfc' },
+      Querystring: { org_id: org.id, project_id: project.id, type: 'rfc' },
     });
 
     isSuccess(res.json);
@@ -135,7 +135,7 @@ describe('GET /documents', () => {
     const document2 = await seedDocument(user, org, project, 'pb');
     const res = await t.fetch.get('/0/documents', {
       token,
-      qp: { org_id: org.id, project_id: project.id, type: 'pb' },
+      Querystring: { org_id: org.id, project_id: project.id, type: 'pb' },
     });
 
     isSuccess(res.json);
@@ -149,7 +149,7 @@ describe('GET /documents', () => {
     const document2 = await seedDocument(user, org, project, 'rfc');
     const res = await t.fetch.get('/0/documents', {
       token,
-      qp: {
+      Querystring: {
         org_id: org.id,
         project_id: project.id,
         search: document2.id.substring(0, 4),

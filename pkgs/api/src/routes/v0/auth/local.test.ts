@@ -19,7 +19,7 @@ describe('GET /auth/local', () => {
   it('should not be protected', async () => {
     const res = await t.fetch.post('/0/auth/local', {
       // @ts-expect-error
-      body: {},
+      Body: {},
     });
     expect(res.statusCode).toBe(400);
   });
@@ -27,7 +27,7 @@ describe('GET /auth/local', () => {
   it('should not allow query params', async () => {
     const res = await t.fetch.post('/0/auth/local', {
       // @ts-expect-error
-      qp: { random: 'world' },
+      Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
   });
@@ -35,7 +35,7 @@ describe('GET /auth/local', () => {
   it('should login with proper credentials', async () => {
     const { user, pwd } = await seedSimpleUser();
     const res = await t.fetch.post('/0/auth/local', {
-      body: { email: user.email, password: pwd },
+      Body: { email: user.email, password: pwd },
     });
 
     isSuccess(res.json);
@@ -46,7 +46,7 @@ describe('GET /auth/local', () => {
 
   it('should disallow unknown account', async () => {
     const res = await t.fetch.post('/0/auth/local', {
-      body: { email: 'foo@bar.com', password: 'dkjfdkfjdkfj' },
+      Body: { email: 'foo@bar.com', password: 'dkjfdkfjdkfj' },
     });
 
     isValidationError(res.json);
@@ -62,7 +62,7 @@ describe('GET /auth/local', () => {
   it('should disallow bad password', async () => {
     const { user } = await seedSimpleUser();
     const res = await t.fetch.post('/0/auth/local', {
-      body: { email: user.email, password: 'sdfdfkdjfksjfk' },
+      Body: { email: user.email, password: 'sdfdfkdjfksjfk' },
     });
 
     isValidationError(res.json);
@@ -78,7 +78,7 @@ describe('GET /auth/local', () => {
   it('should disallow short password', async () => {
     const { user } = await seedSimpleUser();
     const res = await t.fetch.post('/0/auth/local', {
-      body: { email: user.email, password: 'sdf' },
+      Body: { email: user.email, password: 'sdf' },
     });
 
     isValidationError(res.json);
@@ -95,7 +95,7 @@ describe('GET /auth/local', () => {
     const user1 = await seedSimpleUser();
     const user2 = await seedSimpleUser();
     const res = await t.fetch.post('/0/auth/local', {
-      body: { email: user1.user.email, password: user2.pwd },
+      Body: { email: user1.user.email, password: user2.pwd },
     });
 
     isValidationError(res.json);

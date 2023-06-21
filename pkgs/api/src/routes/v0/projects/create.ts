@@ -7,7 +7,7 @@ import { valOrgId } from '../../../common/zod';
 import { prisma } from '../../../db';
 import { noQuery } from '../../../middlewares/noQuery';
 import { createProject } from '../../../models';
-import type { ReqPostProject, ResPostProjectSuccess } from '../../../types/api';
+import type { PostProject } from '../../../types/api';
 
 function ProjectVal(req: FastifyRequest) {
   return z
@@ -37,44 +37,45 @@ function ProjectVal(req: FastifyRequest) {
 }
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
-  fastify.post<{
-    Body: ReqPostProject;
-    Reply: ResPostProjectSuccess;
-  }>('/', { preHandler: noQuery }, async function (req, res) {
-    const val = await ProjectVal(req).safeParseAsync(req.body);
-    if (!val.success) {
-      return validationError(res, val.error);
-    }
+  fastify.post<PostProject>(
+    '/',
+    { preHandler: noQuery },
+    async function (req, res) {
+      const val = await ProjectVal(req).safeParseAsync(req.body);
+      if (!val.success) {
+        return validationError(res, val.error);
+      }
 
-    const data = val.data;
+      const data = val.data;
 
-    const project = await prisma.$transaction(async (tx) => {
-      const tmp = await createProject({
-        data: {
-          orgId: data.orgId,
-          name: data.name,
-          slug: data.slug,
-          description: {
-            type: 'doc',
-            content: [],
+      const project = await prisma.$transaction(async (tx) => {
+        const tmp = await createProject({
+          data: {
+            orgId: data.orgId,
+            name: data.name,
+            slug: data.slug,
+            description: {
+              type: 'doc',
+              content: [],
+            },
+            links: [],
+            display: data.display,
+            edges: [],
+            githubRepositoryId: data.githubRepositoryId,
           },
-          links: [],
-          display: data.display,
-          edges: [],
-          githubRepositoryId: data.githubRepositoryId,
-        },
-        user: req.user!,
-        tx,
+          user: req.user!,
+          tx,
+        });
+
+        return tmp;
       });
 
-      return tmp;
-    });
-
-    res.status(200).send({
-      id: project.id,
-      slug: project.slug,
-    });
-  });
+      res.status(200).send({
+        id: project.id,
+        slug: project.slug,
+      });
+    }
+  );
 
   done();
 };

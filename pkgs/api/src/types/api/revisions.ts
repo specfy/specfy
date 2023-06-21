@@ -6,7 +6,7 @@ import type {
 } from '../db/blobs';
 import type { DBRevision } from '../db/revisions';
 
-import type { Pagination, ResErrors } from './api';
+import type { Pagination, QuerystringOrgProject, Res } from './api';
 import type { BlockLevelZero } from './document';
 import type { ApiReview } from './reviews';
 import type { ApiUser } from './users';
@@ -15,19 +15,23 @@ export type ApiRevision = DBRevision & {
   authors: ApiUser[];
   url: string;
 };
+export interface ParamsRevision {
+  revision_id: string;
+}
 
 // ------ GET /
-export type ReqListRevisions = {
-  org_id: string;
-  project_id: string;
-  status?: ApiRevision['status'] | 'all' | 'merged' | 'opened';
-  search?: string;
-};
-export type ResListRevisionsSuccess = {
-  data: ApiRevision[];
-  pagination: Pagination;
-};
-export type ResListRevisions = ResErrors | ResListRevisionsSuccess;
+export type ListRevisions = Res<{
+  Querystring: {
+    org_id: string;
+    project_id: string;
+    status?: ApiRevision['status'] | 'all' | 'merged' | 'opened';
+    search?: string;
+  };
+  Success: {
+    data: ApiRevision[];
+    pagination: Pagination;
+  };
+}>;
 
 // ------ POST /
 export type ApiBlobCreate = Omit<DBBlobBase, 'createdAt' | 'id' | 'updatedAt'> &
@@ -35,104 +39,111 @@ export type ApiBlobCreate = Omit<DBBlobBase, 'createdAt' | 'id' | 'updatedAt'> &
 export type ApiBlobCreateDocument = DBBlobDocumentBase &
   Omit<DBBlobBase, 'createdAt' | 'id' | 'updatedAt'>;
 
-export type ReqPostRevision = Pick<
-  ApiRevision,
-  'description' | 'name' | 'orgId' | 'projectId'
-> & {
-  blobs: ApiBlobCreate[];
-};
-export type ResPostRevisionSuccess = Pick<ApiRevision, 'id'>;
-export type ResPostRevision = ResErrors | ResPostRevisionSuccess;
+export type PostRevision = Res<{
+  Body: Pick<ApiRevision, 'description' | 'name' | 'orgId' | 'projectId'> & {
+    blobs: ApiBlobCreate[];
+  };
+  Success: Pick<ApiRevision, 'id'>;
+}>;
 
 // ------ POST /upload
-export type ReqPostUploadRevision = Pick<
-  ApiRevision,
-  'description' | 'name' | 'orgId' | 'projectId'
-> & {
-  source: string;
-  blobs: Array<{ path: string; content: string }>;
-  stack: Record<any, any> | null;
-};
-export type ResPostUploadRevisionSuccess = Pick<ApiRevision, 'id'>;
-export type ResPostUploadRevision = ResErrors | ResPostUploadRevisionSuccess;
+export type PostUploadRevision = Res<{
+  Body: Pick<ApiRevision, 'description' | 'name' | 'orgId' | 'projectId'> & {
+    source: string;
+    blobs: Array<{ path: string; content: string }>;
+    stack: Record<any, any> | null;
+  };
+  Success: Pick<ApiRevision, 'id'>;
+}>;
 
 // ------ GET /:id
-export interface ReqRevisionParams {
-  revision_id: string;
-}
-export interface ReqGetRevision {
-  org_id: string;
-  project_id: string;
-}
-
-export interface ResGetRevisionSuccess {
-  data: ApiRevision & {
-    reviewers: ApiUser[];
+export type GetRevision = Res<{
+  Params: ParamsRevision;
+  Querystring: QuerystringOrgProject;
+  Success: {
+    data: ApiRevision & {
+      reviewers: ApiUser[];
+    };
   };
-}
-export type ResGetRevision = ResErrors | ResGetRevisionSuccess;
+}>;
 
 // ------ POST /:id
-export type ReqPatchRevision = Partial<
-  Pick<
-    ResGetRevisionSuccess['data'],
-    'description' | 'locked' | 'name' | 'status'
-  > & {
-    authors: string[];
-    reviewers: string[];
-  }
->;
-export interface ResPatchRevisionSuccess {
-  data: { done: boolean };
-}
-export type ResPatchRevision = ResErrors | ResPatchRevisionSuccess;
+export type PatchRevision = Res<{
+  Params: ParamsRevision;
+  Querystring: QuerystringOrgProject;
+  Body: Partial<
+    Pick<
+      GetRevision['Success']['data'],
+      'description' | 'locked' | 'name' | 'status'
+    > & {
+      authors: string[];
+      reviewers: string[];
+    }
+  >;
+  Success: { data: { done: boolean } };
+}>;
 
 // ------ POST /:id/merge
-export interface ResMergeRevisionSuccess {
-  data: {
-    done: true;
-  };
-}
-export interface ResMergeRevisionError {
+export type MergeRevisionError = {
   error: {
     code: 'cant_merge';
     reason: 'already_merged' | 'empty' | 'no_reviews' | 'outdated';
   };
-}
-export type ResMergeRevision =
-  | ResErrors
-  | ResMergeRevisionError
-  | ResMergeRevisionSuccess;
+};
+export type MergeRevision = Res<{
+  Params: ParamsRevision;
+  Querystring: QuerystringOrgProject;
+  Success:
+    | MergeRevisionError
+    | {
+        data: {
+          done: true;
+        };
+      };
+}>;
 
 // ------ POST /:id/comment
-export interface ReqPostCommentRevision {
-  content: BlockLevelZero;
-  approval: boolean;
-}
-export interface ResPostCommentRevisionSuccess {
-  data: {
-    id: string;
+export type CommentRevision = Res<{
+  Params: ParamsRevision;
+  Querystring: QuerystringOrgProject;
+  Body: {
+    content: BlockLevelZero;
+    approval: boolean;
   };
-}
-export type ResPostCommentRevision = ResErrors | ResPostCommentRevisionSuccess;
+  Success: {
+    data: {
+      id: string;
+    };
+  };
+}>;
 
 // ------ POST /:id/checks
-export interface ResCheckRevisionSuccess {
-  data: {
-    canMerge: boolean;
-    reviews: ApiReview[];
-    outdatedBlobs: string[];
+export type ListRevisionChecks = Res<{
+  Params: ParamsRevision;
+  Querystring: QuerystringOrgProject;
+  Success: {
+    data: {
+      canMerge: boolean;
+      reviews: ApiReview[];
+      outdatedBlobs: string[];
+    };
   };
-}
-export type ResCheckRevision = ResCheckRevisionSuccess | ResErrors;
+}>;
 
 // ------ POST /:id/rebase
-export interface ResRebaseRevisionSuccess {
-  data: {
-    done: boolean;
+export type RebaseRevision = Res<{
+  Params: ParamsRevision;
+  Querystring: QuerystringOrgProject;
+  Success: {
+    data: {
+      done: boolean;
+    };
   };
-}
-export type ResRebaseRevision = ResErrors | ResRebaseRevisionSuccess;
+}>;
 
 // ------ DELETE /:id
-export type ResDeleteRevision = ResErrors | never;
+export type DeleteRevision = Res<{
+  Params: ParamsRevision;
+  Querystring: QuerystringOrgProject;
+  Success: never;
+}>;

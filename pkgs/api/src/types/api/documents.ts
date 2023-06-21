@@ -1,6 +1,6 @@
 import type { DBDocument } from '../db/documents';
 
-import type { Pagination, ResErrors } from './api';
+import type { Pagination, QuerystringOrgProject, Res } from './api';
 import type { ApiUser } from './users';
 
 export type ApiDocument = DBDocument & {
@@ -10,12 +10,6 @@ export type ApiDocument = DBDocument & {
 };
 
 // GET /
-export interface ReqListDocuments {
-  org_id: string;
-  project_id: string;
-  search?: string;
-  type?: ApiDocument['type'];
-}
 export type DocumentSimple = Pick<
   ApiDocument,
   | 'createdAt'
@@ -28,23 +22,26 @@ export type DocumentSimple = Pick<
   | 'typeId'
   | 'updatedAt'
 >;
-
-export interface ResListDocumentsSuccess {
-  data: DocumentSimple[];
-  pagination: Pagination;
-}
-export type ResListDocuments = ResErrors | ResListDocumentsSuccess;
+export type ListDocuments = Res<{
+  Querystring: {
+    org_id: string;
+    project_id: string;
+    search?: string;
+    type?: ApiDocument['type'];
+  };
+  Success: {
+    data: DocumentSimple[];
+    pagination: Pagination;
+  };
+}>;
 
 // GET /:id
-export interface ReqDocumentParams {
-  document_id: ApiDocument['id'];
-}
-export interface ReqGetDocument {
-  org_id: string;
-  project_id: string;
-}
-
-export interface ResGetDocumentSuccess {
-  data: ApiDocument;
-}
-export type ResGetDocument = ResErrors | ResGetDocumentSuccess;
+export type GetDocument = Res<{
+  Params: {
+    document_id: ApiDocument['id'];
+  };
+  Querystring: QuerystringOrgProject;
+  Success: {
+    data: ApiDocument;
+  };
+}>;

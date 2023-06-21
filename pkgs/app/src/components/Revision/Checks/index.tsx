@@ -6,11 +6,7 @@ import {
   IconEyeOff,
 } from '@tabler/icons-react';
 import { App, Button } from 'antd';
-import type {
-  ApiRevision,
-  ReqGetRevision,
-  ResCheckRevisionSuccess,
-} from 'api/src/types/api';
+import type { ApiRevision, ListRevisionChecks } from 'api/src/types/api';
 import classnames from 'classnames';
 import { useState } from 'react';
 
@@ -23,8 +19,8 @@ import cls from './index.module.scss';
 
 export const Checks: React.FC<{
   rev: ApiRevision;
-  checks: ResCheckRevisionSuccess['data'];
-  qp: ReqGetRevision;
+  checks: ListRevisionChecks['Success']['data'];
+  qp: ListRevisionChecks['Querystring'];
   onClick: (status: ApiRevision['status']) => void;
 }> = ({ rev, checks, qp, onClick }) => {
   const { message } = App.useApp();

@@ -30,7 +30,7 @@ describe('PUT /me', () => {
     const res = await t.fetch.put('/0/me', {
       token,
       // @ts-expect-error
-      qp: { random: 'world' },
+      Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
   });
@@ -41,7 +41,7 @@ describe('PUT /me', () => {
     const name = `New Name ${nanoid()}`;
     const res = await t.fetch.put(`/0/me`, {
       token,
-      body: {
+      Body: {
         name,
       },
     });
@@ -56,7 +56,7 @@ describe('PUT /me', () => {
 
     const res = await t.fetch.put(`/0/me`, {
       token,
-      body: {
+      Body: {
         // @ts-expect-error
         email: 'dfdfd',
       },

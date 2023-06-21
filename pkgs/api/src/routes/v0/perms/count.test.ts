@@ -29,7 +29,7 @@ describe('GET /perms/count', () => {
     const res = await t.fetch.get('/0/perms/count', {
       token,
       // @ts-expect-error
-      qp: { random: 'world' },
+      Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
   });
@@ -38,7 +38,7 @@ describe('GET /perms/count', () => {
     const { token, org } = await seedWithOrg();
     const res = await t.fetch.get('/0/perms/count', {
       token,
-      qp: {
+      Querystring: {
         org_id: org.id,
       },
     });

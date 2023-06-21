@@ -30,7 +30,7 @@ describe('POST /invitations', () => {
     const res = await t.fetch.post('/0/invitations', {
       token,
       // @ts-expect-error
-      qp: { random: 'world' },
+      Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
   });
@@ -43,7 +43,7 @@ describe('POST /invitations', () => {
     const { token, org } = await seedWithOrg();
     const res = await t.fetch.post('/0/invitations', {
       token,
-      body: { orgId: org.id, email: 'foobar@example.com', role: 'viewer' },
+      Body: { orgId: org.id, email: 'foobar@example.com', role: 'viewer' },
     });
 
     isSuccess(res.json);
@@ -59,7 +59,7 @@ describe('POST /invitations', () => {
     const user2 = await seedSimpleUser(org);
     const res = await t.fetch.post('/0/invitations', {
       token,
-      body: { orgId: org.id, email: user2.user.email, role: 'viewer' },
+      Body: { orgId: org.id, email: user2.user.email, role: 'viewer' },
     });
 
     isValidationError(res.json);

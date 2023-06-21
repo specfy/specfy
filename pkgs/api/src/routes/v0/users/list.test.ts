@@ -33,7 +33,7 @@ describe('GET /users', () => {
     const res = await t.fetch.get('/0/users', {
       token,
       // @ts-expect-error
-      qp: { random: 'world' },
+      Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
   });
@@ -46,7 +46,7 @@ describe('GET /users', () => {
     const { token, project } = await seedWithProject();
     const res = await t.fetch.get('/0/users', {
       token,
-      qp: { org_id: seed1.org.id, project_id: project.id },
+      Querystring: { org_id: seed1.org.id, project_id: project.id },
     });
 
     isValidationError(res.json);
@@ -57,7 +57,7 @@ describe('GET /users', () => {
     const { token, user, org } = await seedWithOrg();
     const res = await t.fetch.get('/0/users', {
       token,
-      qp: { org_id: org.id },
+      Querystring: { org_id: org.id },
     });
 
     isSuccess(res.json);
@@ -78,7 +78,7 @@ describe('GET /users', () => {
     // GET 1
     const res1 = await t.fetch.get('/0/users', {
       token: seed1.token,
-      qp: { org_id: seed1.org.id },
+      Querystring: { org_id: seed1.org.id },
     });
 
     isSuccess(res1.json);
@@ -88,7 +88,7 @@ describe('GET /users', () => {
     // GET 2
     const res2 = await t.fetch.get('/0/users', {
       token: seed2.token,
-      qp: { org_id: seed2.org.id },
+      Querystring: { org_id: seed2.org.id },
     });
 
     isSuccess(res2.json);
@@ -103,7 +103,7 @@ describe('GET /users', () => {
 
     const res = await t.fetch.get('/0/users', {
       token,
-      qp: {
+      Querystring: {
         org_id: org.id,
         search: user3.user.id.substring(0, 4),
       },
@@ -121,7 +121,7 @@ describe('GET /users', () => {
     // GET 1
     const res1 = await t.fetch.get('/0/users', {
       token: seed1.token,
-      qp: {
+      Querystring: {
         org_id: seed1.org.id,
         project_id: seed1.project.id,
       },
@@ -134,7 +134,7 @@ describe('GET /users', () => {
     // GET 1
     const res2 = await t.fetch.get('/0/users', {
       token: seed2.token,
-      qp: {
+      Querystring: {
         org_id: seed2.org.id,
         project_id: seed2.project.id,
       },

@@ -1,10 +1,6 @@
 import { IconBook } from '@tabler/icons-react';
 import { Table } from 'antd';
-import type {
-  ApiDocument,
-  ApiProject,
-  ResListDocumentsSuccess,
-} from 'api/src/types/api';
+import type { ApiDocument, ApiProject, ListDocuments } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
@@ -26,8 +22,8 @@ export const ProjectContentList: React.FC<{
   const { deleted } = useDocumentsStore();
 
   const [pagination, setPagination] =
-    useState<ResListDocumentsSuccess['pagination']>();
-  const [list, setList] = useState<ResListDocumentsSuccess['data']>();
+    useState<ListDocuments['Success']['pagination']>();
+  const [list, setList] = useState<ListDocuments['Success']['data']>();
   const res = useListDocuments({
     org_id: params.org_id,
     project_id: proj.id,

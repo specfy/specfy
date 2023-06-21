@@ -1,17 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import type {
-  ReqGetInvitation,
-  ReqInvitationParams,
-  ReqListInvitations,
-  ReqPostInvitations,
-  ResAcceptInvitation,
-  ResDeclineInvitation,
-  ResDeleteInvitation,
-  ResGetInvitation,
-  ResGetInvitationSuccess,
-  ResListInvitations,
-  ResListInvitationsSuccess,
-  ResPostInvitations,
+  AcceptInvitation,
+  DeclineInvitation,
+  GetInvitation,
+  ListInvitations,
+  PostInvitation,
 } from 'api/src/types/api';
 
 import { queryClient } from '../common/query';
@@ -20,13 +13,13 @@ import { fetchApi } from './fetch';
 import { APIError, isError } from './helpers';
 
 export async function createInvitation(
-  data: ReqPostInvitations
-): Promise<ResPostInvitations> {
-  const { json } = await fetchApi<
-    ResPostInvitations,
-    undefined,
-    ReqPostInvitations
-  >('/invitations', { body: data }, 'POST');
+  data: PostInvitation['Body']
+): Promise<PostInvitation['Reply']> {
+  const { json } = await fetchApi<PostInvitation>(
+    '/invitations',
+    { body: data },
+    'POST'
+  );
 
   queryClient.invalidateQueries(['listInvitations', data.orgId]);
 
@@ -34,9 +27,9 @@ export async function createInvitation(
 }
 
 export async function acceptInvitations(
-  opts: ReqGetInvitation & ReqInvitationParams
-): Promise<ResAcceptInvitation> {
-  const { json } = await fetchApi<ResAcceptInvitation, ReqGetInvitation>(
+  opts: AcceptInvitation['QP']
+): Promise<AcceptInvitation['Reply']> {
+  const { json } = await fetchApi<AcceptInvitation>(
     `/invitations/${opts.invitation_id}/accept`,
     { qp: { token: opts.token } },
     'POST'
@@ -50,9 +43,9 @@ export async function acceptInvitations(
 }
 
 export async function declineInvitations(
-  opts: ReqGetInvitation & ReqInvitationParams
-): Promise<ResDeclineInvitation> {
-  const { json } = await fetchApi<ResDeclineInvitation, ReqGetInvitation>(
+  opts: DeclineInvitation['QP']
+): Promise<DeclineInvitation['Reply']> {
+  const { json } = await fetchApi<DeclineInvitation>(
     `/invitations/${opts.invitation_id}/decline`,
     { qp: { token: opts.token } },
     'POST'
@@ -64,9 +57,9 @@ export async function declineInvitations(
 }
 
 export async function deleteInvitations(
-  opts: ReqInvitationParams
-): Promise<ResDeleteInvitation> {
-  const { json } = await fetchApi<ResDeleteInvitation, ReqGetInvitation>(
+  opts: DeclineInvitation['Params']
+): Promise<DeclineInvitation['Reply']> {
+  const { json } = await fetchApi<DeclineInvitation>(
     `/invitations/${opts.invitation_id}`,
     undefined,
     'DELETE'
@@ -77,16 +70,15 @@ export async function deleteInvitations(
   return json;
 }
 
-export function useListInvitations(opts: Partial<ReqListInvitations>) {
+export function useListInvitations(
+  opts: Partial<ListInvitations['Querystring']>
+) {
   return useQuery({
     enabled: Boolean(opts.org_id),
     queryKey: ['listInvitations', opts.org_id],
-    queryFn: async (): Promise<ResListInvitationsSuccess> => {
-      const { json, res } = await fetchApi<
-        ResListInvitations,
-        ReqListInvitations
-      >('/invitations', {
-        qp: opts as ReqListInvitations,
+    queryFn: async (): Promise<ListInvitations['Success']> => {
+      const { json, res } = await fetchApi<ListInvitations>('/invitations', {
+        qp: { org_id: opts.org_id! },
       });
       if (res.status !== 200 || isError(json)) {
         throw new APIError({ res, json });
@@ -97,14 +89,12 @@ export function useListInvitations(opts: Partial<ReqListInvitations>) {
   });
 }
 
-export function useGetInvitation(
-  opts: Partial<ReqGetInvitation & ReqInvitationParams>
-) {
+export function useGetInvitation(opts: Partial<GetInvitation['QP']>) {
   return useQuery({
     enabled: Boolean(opts.invitation_id && opts.token),
     queryKey: ['getInvitation', opts.invitation_id],
-    queryFn: async (): Promise<ResGetInvitationSuccess> => {
-      const { json, res } = await fetchApi<ResGetInvitation, ReqGetInvitation>(
+    queryFn: async (): Promise<GetInvitation['Success']> => {
+      const { json, res } = await fetchApi<GetInvitation>(
         `/invitations/${opts.invitation_id}`,
         {
           qp: { token: opts.token! },

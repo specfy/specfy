@@ -50,3 +50,28 @@ export type ResErrors =
   | ResNotFound
   | ResUnauthorized
   | ResValidationError;
+
+export type Res<
+  T extends {
+    Params?: Record<string, any>;
+    Body?: Record<string, any>;
+    Querystring?: Record<string, any>;
+    Success: Record<string, any> | never;
+  }
+> = {
+  Params: T['Params'] extends Record<string, any> ? T['Params'] : never;
+  Success: T['Success'];
+  Reply: ResErrors | T['Success'];
+  Body: T['Body'] extends Record<string, any> ? T['Body'] : never;
+  Querystring: T['Querystring'] extends Record<string, any>
+    ? T['Querystring']
+    : never;
+  // Querystring + Params
+  QP: (T['Params'] extends Record<string, any> ? T['Params'] : never) &
+    (T['Querystring'] extends Record<string, any> ? T['Querystring'] : never);
+};
+
+export interface QuerystringOrgProject {
+  org_id: string;
+  project_id: string;
+}

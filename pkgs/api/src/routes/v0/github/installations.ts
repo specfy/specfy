@@ -3,10 +3,10 @@ import { Octokit } from 'octokit';
 
 import { prisma } from '../../../db';
 import { noQuery } from '../../../middlewares/noQuery';
-import type { ResGetGithubInstallationsSuccess } from '../../../types/api';
+import type { ListGithubInstallations } from '../../../types/api';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
-  fastify.get<{ Reply: ResGetGithubInstallationsSuccess }>(
+  fastify.get<ListGithubInstallations>(
     '/',
     { preHandler: [noQuery] },
     async function (req, res) {
@@ -23,7 +23,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           per_page: 50,
         });
 
-      const data: ResGetGithubInstallationsSuccess['data'] = [];
+      const data: ListGithubInstallations['Success']['data'] = [];
       for (const inst of list.data.installations) {
         if (!inst.account) {
           continue;

@@ -1,16 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 import type {
-  ReqListProjects,
-  ReqPostProject,
-  ReqProjectParams,
-  ReqPutProject,
-  ResDeleteProject,
-  ResGetProject,
-  ResGetProjectSuccess,
-  ResListProjects,
-  ResListProjectsSuccess,
-  ResPostProject,
-  ResPutProject,
+  DeleteProject,
+  GetProject,
+  ListProjects,
+  PostProject,
+  PutProject,
 } from 'api/src/types/api';
 
 import { queryClient } from '../common/query';
@@ -20,13 +14,13 @@ import { fetchApi } from './fetch';
 import { APIError, isError } from './helpers';
 
 export async function createProject(
-  data: ReqPostProject
-): Promise<ResPostProject> {
-  const { res, json } = await fetchApi<
-    ResPostProject,
-    undefined,
-    ReqPostProject
-  >('/projects', { body: data }, 'POST');
+  data: PostProject['Body']
+): Promise<PostProject['Reply']> {
+  const { res, json } = await fetchApi<PostProject>(
+    '/projects',
+    { body: data },
+    'POST'
+  );
 
   if (res.status === 200) {
     queryClient.refetchQueries(['listProjects', data.orgId]);
@@ -36,10 +30,10 @@ export async function createProject(
 }
 
 export async function updateProject(
-  opts: ReqProjectParams,
-  data: ReqPutProject
-): Promise<ResPutProject> {
-  const { res, json } = await fetchApi<ResPutProject, undefined, ReqPutProject>(
+  opts: PutProject['Params'],
+  data: PutProject['Body']
+): Promise<PutProject['Reply']> {
+  const { res, json } = await fetchApi<PutProject>(
     `/projects/${opts.org_id}/${opts.project_slug}`,
     { body: data },
     'PUT'
@@ -54,9 +48,9 @@ export async function updateProject(
 }
 
 export async function deleteProject(
-  opts: ReqProjectParams
-): Promise<ResDeleteProject> {
-  const { res, json } = await fetchApi<ResDeleteProject>(
+  opts: DeleteProject['Params']
+): Promise<DeleteProject['Reply']> {
+  const { res, json } = await fetchApi<DeleteProject>(
     `/projects/${opts.org_id}/${opts.project_slug}`,
     undefined,
     'DELETE'
@@ -70,17 +64,14 @@ export async function deleteProject(
   return json;
 }
 
-export function useListProjects(opts: Partial<ReqListProjects>) {
+export function useListProjects(opts: Partial<ListProjects['Querystring']>) {
   return useQuery({
     enabled: Boolean(opts.org_id),
     queryKey: ['listProjects', opts.org_id],
-    queryFn: async (): Promise<ResListProjectsSuccess> => {
-      const { json, res } = await fetchApi<ResListProjects, ReqListProjects>(
-        '/projects',
-        {
-          qp: opts as ReqListProjects,
-        }
-      );
+    queryFn: async (): Promise<ListProjects['Success']> => {
+      const { json, res } = await fetchApi<ListProjects>('/projects', {
+        qp: { org_id: opts.org_id! },
+      });
       if (res.status !== 200 || isError(json)) {
         throw new APIError({ res, json });
       }
@@ -90,12 +81,12 @@ export function useListProjects(opts: Partial<ReqListProjects>) {
   });
 }
 
-export function useGetProject(opts: Partial<ReqProjectParams>) {
+export function useGetProject(opts: Partial<GetProject['Params']>) {
   return useQuery({
     enabled: Boolean(opts.org_id),
     queryKey: ['getProject', opts.org_id, opts.project_slug],
-    queryFn: async (): Promise<ResGetProjectSuccess> => {
-      const { json, res } = await fetchApi<ResGetProject>(
+    queryFn: async (): Promise<GetProject['Success']> => {
+      const { json, res } = await fetchApi<GetProject>(
         `/projects/${opts.org_id}/${opts.project_slug}`
       );
 

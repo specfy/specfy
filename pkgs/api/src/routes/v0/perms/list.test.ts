@@ -29,7 +29,7 @@ describe('GET /perms', () => {
     const res = await t.fetch.get('/0/perms', {
       token,
       // @ts-expect-error
-      qp: { random: 'world' },
+      Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
   });
@@ -38,7 +38,7 @@ describe('GET /perms', () => {
     const { token, user, org } = await seedWithOrg();
     const res = await t.fetch.get('/0/perms', {
       token,
-      qp: {
+      Querystring: {
         org_id: org.id,
       },
     });
@@ -71,7 +71,7 @@ describe('GET /perms', () => {
     // First user receive only it's own org
     const res1 = await t.fetch.get('/0/perms', {
       token: seed1.token,
-      qp: {
+      Querystring: {
         org_id: seed1.org.id,
       },
     });
@@ -83,7 +83,7 @@ describe('GET /perms', () => {
     // Second user receive only it's own org
     const res2 = await t.fetch.get('/0/perms', {
       token: seed2.token,
-      qp: {
+      Querystring: {
         org_id: seed2.org.id,
       },
     });

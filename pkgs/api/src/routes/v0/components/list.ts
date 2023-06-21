@@ -7,9 +7,8 @@ import { prisma } from '../../../db';
 import type {
   ApiComponent,
   BlockLevelZero,
+  ListComponents,
   Pagination,
-  ReqListComponents,
-  ResListComponentsSuccess,
 } from '../../../types/api';
 
 function QueryVal(req: FastifyRequest) {
@@ -22,10 +21,7 @@ function QueryVal(req: FastifyRequest) {
 }
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
-  fastify.get<{
-    Querystring: ReqListComponents;
-    Reply: ResListComponentsSuccess;
-  }>('/', async function (req, res) {
+  fastify.get<ListComponents>('/', async function (req, res) {
     const val = QueryVal(req).safeParse(req.query);
     if (!val.success) {
       return validationError(res, val.error);
@@ -52,7 +48,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     res.status(200).send({
       data: docs.map((p) => {
         // For excess property check
-        const tmp: ResListComponentsSuccess['data'][0] = {
+        const tmp: ListComponents['Success']['data'][0] = {
           id: p.id,
           orgId: p.orgId,
           projectId: p.projectId,

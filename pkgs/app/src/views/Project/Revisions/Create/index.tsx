@@ -8,7 +8,7 @@ import type {
   ApiBlobCreate,
   ApiProject,
   BlockLevelZero,
-  ReqPostRevision,
+  PostRevision,
 } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
@@ -94,7 +94,7 @@ export const ProjectRevisionCreate: React.FC<{
   };
 
   const onSubmit = async () => {
-    const blobs: ReqPostRevision['blobs'] = [];
+    const blobs: PostRevision['Body']['blobs'] = [];
     for (const diff of staging.diffs) {
       const change: ApiBlobCreate = omit(diff.blob, [
         'id',

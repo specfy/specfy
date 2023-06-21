@@ -5,7 +5,7 @@ import { notFound, validationError } from '../common/errors';
 import { schemaId } from '../common/validators';
 import { valOrgId, valProjectId } from '../common/zod';
 import { prisma } from '../db';
-import type { ReqGetRevision, ReqRevisionParams } from '../types/api';
+import type { GetRevision } from '../types/api';
 import type { PreHandler } from '../types/fastify';
 
 export function QueryVal(req: FastifyRequest) {
@@ -19,8 +19,8 @@ export function QueryVal(req: FastifyRequest) {
 }
 
 export const getRevision: PreHandler<{
-  Querystring: ReqGetRevision;
-  Params: ReqRevisionParams;
+  Querystring: GetRevision['Querystring'];
+  Params: GetRevision['Params'];
 }> = async (req, res) => {
   const val = QueryVal(req).safeParse({
     ...req.params,

@@ -6,10 +6,9 @@ import { validationError } from '../../../common/errors';
 import { valOrgId, valProjectId } from '../../../common/zod';
 import { prisma } from '../../../db';
 import type {
-  ReqListDocuments,
-  ResListDocumentsSuccess,
   Pagination,
   ApiDocument,
+  ListDocuments,
 } from '../../../types/api';
 import { DocumentType } from '../../../types/db';
 
@@ -26,10 +25,7 @@ function QueryVal(req: FastifyRequest) {
 }
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
-  fastify.get<{
-    Querystring: ReqListDocuments;
-    Reply: ResListDocumentsSuccess;
-  }>('/', async function (req, res) {
+  fastify.get<ListDocuments>('/', async function (req, res) {
     const val = QueryVal(req).safeParse(req.query);
     if (!val.success) {
       return validationError(res, val.error);
@@ -95,7 +91,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     res.status(200).send({
       data: docs.map((p) => {
         // For excess property check
-        const tmp: ResListDocumentsSuccess['data'][0] = {
+        const tmp: ListDocuments['Success']['data'][0] = {
           id: p.id,
 
           type: p.type as ApiDocument['type'],

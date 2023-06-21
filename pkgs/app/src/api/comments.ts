@@ -1,23 +1,18 @@
-import type {
-  ReqGetRevision,
-  ReqPostCommentRevision,
-  ReqRevisionParams,
-  ResPostCommentRevision,
-} from 'api/src/types/api';
+import type { CommentRevision } from 'api/src/types/api';
 
 import { queryClient } from '../common/query';
 
 import { fetchApi } from './fetch';
 
 export async function createComment(
-  qp: ReqGetRevision & ReqRevisionParams,
-  data: ReqPostCommentRevision
-): Promise<ResPostCommentRevision> {
-  const { res, json } = await fetchApi<
-    ResPostCommentRevision,
-    ReqGetRevision,
-    ReqPostCommentRevision
-  >(`/revisions/${qp.revision_id}/comment`, { body: data, qp }, 'POST');
+  qp: CommentRevision['QP'],
+  data: CommentRevision['Body']
+): Promise<CommentRevision['Reply']> {
+  const { res, json } = await fetchApi<CommentRevision>(
+    `/revisions/${qp.revision_id}/comment`,
+    { body: data, qp },
+    'POST'
+  );
 
   const keys = [qp.org_id, qp.project_id, qp.revision_id];
 

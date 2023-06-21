@@ -4,10 +4,10 @@ import { prisma } from '../../../db';
 import { getOrg } from '../../../middlewares/getOrg';
 import { noBody } from '../../../middlewares/noBody';
 import { noQuery } from '../../../middlewares/noQuery';
-import type { ReqOrgParams, ResDeleteOrgSuccess } from '../../../types/api';
+import type { DeleteOrg } from '../../../types/api';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
-  fastify.delete<{ Reply: ResDeleteOrgSuccess; Params: ReqOrgParams }>(
+  fastify.delete<DeleteOrg>(
     '/',
     { preHandler: [noQuery, noBody, getOrg] },
     async function (req, res) {

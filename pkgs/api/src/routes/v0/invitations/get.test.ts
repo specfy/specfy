@@ -30,7 +30,7 @@ describe('GET /invitations/:id', () => {
     const res = await t.fetch.get('/0/invitations/foobar', {
       token,
       // @ts-expect-error
-      qp: { random: 'world', token: 'top' },
+      Querystring: { random: 'world', token: 'top' },
     });
     await shouldNotAllowQueryParams(res);
   });
@@ -40,14 +40,14 @@ describe('GET /invitations/:id', () => {
     // Create
     const post = await t.fetch.post('/0/invitations', {
       token,
-      body: { orgId: org.id, email: 'foobar@example.com', role: 'viewer' },
+      Body: { orgId: org.id, email: 'foobar@example.com', role: 'viewer' },
     });
     isSuccess(post.json);
 
     // Get
     const get = await t.fetch.get(`/0/invitations/${post.json.data.id}`, {
       token,
-      qp: { token: post.json.data.token },
+      Querystring: { token: post.json.data.token },
     });
     isError(get.json);
     expect(get.statusCode).toBe(403);
@@ -59,14 +59,14 @@ describe('GET /invitations/:id', () => {
     // Create
     const post = await t.fetch.post('/0/invitations', {
       token,
-      body: { orgId: org.id, email: seed2.user.email, role: 'viewer' },
+      Body: { orgId: org.id, email: seed2.user.email, role: 'viewer' },
     });
     isSuccess(post.json);
 
     // Get
     const get = await t.fetch.get(`/0/invitations/${post.json.data.id}`, {
       token: seed2.token,
-      qp: { token: post.json.data.token },
+      Querystring: { token: post.json.data.token },
     });
     isSuccess(get.json);
     expect(get.statusCode).toBe(200);
@@ -101,7 +101,7 @@ describe('GET /invitations/:id', () => {
     const fakeid = nanoid();
     const res = await t.fetch.get(`/0/invitations/${fakeid}`, {
       token,
-      qp: { token: nanoid(32) },
+      Querystring: { token: nanoid(32) },
     });
 
     isError(res.json);

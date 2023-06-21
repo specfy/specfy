@@ -7,10 +7,7 @@ import { valOrgId } from '../../../common/zod';
 import { prisma } from '../../../db';
 import { noQuery } from '../../../middlewares/noQuery';
 import { EXPIRES } from '../../../models/invitations';
-import type {
-  ReqPostInvitations,
-  ResPostInvitations,
-} from '../../../types/api';
+import type { PostInvitation } from '../../../types/api';
 import { PermType } from '../../../types/db';
 
 function QueryVal(req: FastifyRequest) {
@@ -41,41 +38,42 @@ function QueryVal(req: FastifyRequest) {
 }
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
-  fastify.post<{
-    Body: ReqPostInvitations;
-    Reply: ResPostInvitations;
-  }>('/', { preHandler: noQuery }, async function (req, res) {
-    const val = await QueryVal(req).safeParseAsync(req.body);
-    if (!val.success) {
-      return validationError(res, val.error);
+  fastify.post<PostInvitation>(
+    '/',
+    { preHandler: noQuery },
+    async function (req, res) {
+      const val = await QueryVal(req).safeParseAsync(req.body);
+      if (!val.success) {
+        return validationError(res, val.error);
+      }
+
+      const body = val.data;
+
+      // Dedup and invalidate old invites
+      await prisma.invitations.deleteMany({
+        where: {
+          email: body.email,
+          orgId: body.orgId,
+        },
+      });
+
+      const created = await prisma.invitations.create({
+        data: {
+          id: nanoid(),
+          email: body.email,
+          orgId: body.orgId,
+          role: body.role,
+          token: nanoid(32),
+          userId: req.user!.id,
+          expiresAt: new Date(Date.now() + EXPIRES),
+        },
+      });
+
+      res.status(200).send({
+        data: { token: created.token, id: created.id },
+      });
     }
-
-    const body = val.data;
-
-    // Dedup and invalidate old invites
-    await prisma.invitations.deleteMany({
-      where: {
-        email: body.email,
-        orgId: body.orgId,
-      },
-    });
-
-    const created = await prisma.invitations.create({
-      data: {
-        id: nanoid(),
-        email: body.email,
-        orgId: body.orgId,
-        role: body.role,
-        token: nanoid(32),
-        userId: req.user!.id,
-        expiresAt: new Date(Date.now() + EXPIRES),
-      },
-    });
-
-    res.status(200).send({
-      data: { token: created.token, id: created.id },
-    });
-  });
+  );
 
   done();
 };

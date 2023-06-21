@@ -33,7 +33,7 @@ describe('GET /revisions/:revision_id/checks', () => {
     const res = await t.fetch.get('/0/revisions/foo/checks', {
       token,
       // @ts-expect-error
-      qp: { random: 'world' },
+      Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
   });
@@ -44,7 +44,7 @@ describe('GET /revisions/:revision_id/checks', () => {
 
     const res = await t.fetch.get(`/0/revisions/${revision.id}/checks`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
 
     isSuccess(res.json);
@@ -62,14 +62,14 @@ describe('GET /revisions/:revision_id/checks', () => {
 
     const comment = await t.fetch.post(`/0/revisions/${revision.id}/comment`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
-      body: { approval: true, content: { content: [], type: 'doc' } },
+      Querystring: { org_id: org.id, project_id: project.id },
+      Body: { approval: true, content: { content: [], type: 'doc' } },
     });
     isSuccess(comment.json);
 
     const res = await t.fetch.get(`/0/revisions/${revision.id}/checks`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
 
     isSuccess(res.json);
@@ -98,14 +98,14 @@ describe('GET /revisions/:revision_id/checks', () => {
 
     const comment = await t.fetch.post(`/0/revisions/${revision.id}/comment`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
-      body: { approval: false, content: { content: [], type: 'doc' } },
+      Querystring: { org_id: org.id, project_id: project.id },
+      Body: { approval: false, content: { content: [], type: 'doc' } },
     });
     isSuccess(comment);
 
     const res = await t.fetch.get(`/0/revisions/${revision.id}/checks`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
 
     isSuccess(res.json);
@@ -150,7 +150,7 @@ describe('GET /revisions/:revision_id/checks', () => {
     // Checks
     const res = await t.fetch.get(`/0/revisions/${revision.id}/checks`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
 
     isSuccess(res.json);
@@ -195,7 +195,7 @@ describe('GET /revisions/:revision_id/checks', () => {
     // Checks
     const res = await t.fetch.get(`/0/revisions/${revision.id}/checks`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
 
     isSuccess(res.json);

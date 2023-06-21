@@ -6,12 +6,7 @@ import { toApiUser } from '../../../common/formatters/user';
 import { schemaId } from '../../../common/validators';
 import { valOrgId, valProjectId } from '../../../common/zod';
 import { prisma } from '../../../db';
-import type {
-  ApiDocument,
-  ReqDocumentParams,
-  ReqGetDocument,
-  ResGetDocumentSuccess,
-} from '../../../types/api';
+import type { ApiDocument, GetDocument } from '../../../types/api';
 
 function QueryVal(req: FastifyRequest) {
   return z
@@ -24,11 +19,7 @@ function QueryVal(req: FastifyRequest) {
 }
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
-  fastify.get<{
-    Querystring: ReqGetDocument;
-    Params: ReqDocumentParams;
-    Reply: ResGetDocumentSuccess;
-  }>('/:document_id', async function (req, res) {
+  fastify.get<GetDocument>('/:document_id', async function (req, res) {
     const val = QueryVal(req).safeParse({ ...req.query, ...req.params });
     if (!val.success) {
       return validationError(res, val.error);

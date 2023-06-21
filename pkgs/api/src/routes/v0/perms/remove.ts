@@ -7,7 +7,7 @@ import { schemaId } from '../../../common/validators';
 import { valOrgId, valProjectId } from '../../../common/zod';
 import { prisma } from '../../../db';
 import { noQuery } from '../../../middlewares/noQuery';
-import type { ReqDeletePerms, ResDeletePermsSuccess } from '../../../types/api';
+import type { DeletePerm } from '../../../types/api';
 
 function QueryVal(req: FastifyRequest) {
   return z
@@ -21,47 +21,48 @@ function QueryVal(req: FastifyRequest) {
 }
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
-  fastify.delete<{
-    Body: ReqDeletePerms;
-    Reply: ResDeletePermsSuccess;
-  }>('/', { preHandler: noQuery }, async function (req, res) {
-    const val = QueryVal(req).safeParse(req.body);
-    if (!val.success) {
-      return validationError(res, val.error);
-    }
-
-    const data = val.data;
-    const where: Prisma.PermsWhereInput = {
-      orgId: data.org_id,
-      userId: data.userId,
-    };
-    if (data.project_id) {
-      where.projectId = data.project_id;
-    }
-
-    let error: string | undefined;
-    await prisma.$transaction(async (tx) => {
-      const perms = await tx.perms.findMany({ where });
-      if (!perms) {
-        error = 'not_found';
-        return;
+  fastify.delete<DeletePerm>(
+    '/',
+    { preHandler: noQuery },
+    async function (req, res) {
+      const val = QueryVal(req).safeParse(req.body);
+      if (!val.success) {
+        return validationError(res, val.error);
       }
 
-      await tx.perms.deleteMany({
-        where: {
-          id: {
-            in: perms.map(({ id }) => id),
+      const data = val.data;
+      const where: Prisma.PermsWhereInput = {
+        orgId: data.org_id,
+        userId: data.userId,
+      };
+      if (data.project_id) {
+        where.projectId = data.project_id;
+      }
+
+      let error: string | undefined;
+      await prisma.$transaction(async (tx) => {
+        const perms = await tx.perms.findMany({ where });
+        if (!perms) {
+          error = 'not_found';
+          return;
+        }
+
+        await tx.perms.deleteMany({
+          where: {
+            id: {
+              in: perms.map(({ id }) => id),
+            },
           },
-        },
+        });
       });
-    });
 
-    if (error) {
-      return notFound(res);
+      if (error) {
+        return notFound(res);
+      }
+
+      res.status(204).send();
     }
-
-    res.status(204).send();
-  });
+  );
 
   done();
 };

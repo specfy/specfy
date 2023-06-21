@@ -30,7 +30,7 @@ describe('GET /projects/:org_id/:project_slug', () => {
     const res = await t.fetch.get('/0/projects/foo/bar', {
       token,
       // @ts-expect-error
-      qp: { random: 'world' },
+      Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
   });

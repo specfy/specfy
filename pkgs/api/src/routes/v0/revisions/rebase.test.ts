@@ -35,7 +35,7 @@ describe('GET /revisions/:revision_id/rebase', () => {
     const res = await t.fetch.post('/0/revisions/foo/rebase', {
       token,
       // @ts-expect-error
-      qp: { random: 'world' },
+      Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
   });
@@ -45,9 +45,9 @@ describe('GET /revisions/:revision_id/rebase', () => {
     const revision = await seedRevision(user, org, project);
     const res = await t.fetch.post(`/0/revisions/${revision.id}/merge`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
       // @ts-expect-error
-      body: { random: 'world' },
+      Body: { random: 'world' },
     });
     await shouldNotAllowBody(res);
   });
@@ -58,7 +58,7 @@ describe('GET /revisions/:revision_id/rebase', () => {
 
     const res = await t.fetch.post(`/0/revisions/${revision.id}/rebase`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
 
     isSuccess(res.json);
@@ -73,15 +73,15 @@ describe('GET /revisions/:revision_id/rebase', () => {
     // Approve
     const comment = await t.fetch.post(`/0/revisions/${revision.id}/comment`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
-      body: { approval: true, content: { content: [], type: 'doc' } },
+      Querystring: { org_id: org.id, project_id: project.id },
+      Body: { approval: true, content: { content: [], type: 'doc' } },
     });
     isSuccess(comment);
 
     // Rebase
     const res = await t.fetch.post(`/0/revisions/${revision.id}/rebase`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
     isSuccess(res.json);
     expect(res.statusCode).toBe(200);
@@ -89,7 +89,7 @@ describe('GET /revisions/:revision_id/rebase', () => {
     // Get
     const get = await t.fetch.get(`/0/revisions/${revision.id}`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
     isSuccess(get.json);
     expect(get.json.data.status).toBe('waiting');
@@ -128,7 +128,7 @@ describe('GET /revisions/:revision_id/rebase', () => {
     // Rebase
     const res = await t.fetch.post(`/0/revisions/${revision.id}/rebase`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
     isSuccess(res.json);
     expect(res.statusCode).toBe(200);
@@ -136,7 +136,7 @@ describe('GET /revisions/:revision_id/rebase', () => {
     // Get
     const get = await t.fetch.get(`/0/revisions/${revision.id}/blobs`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
     isSuccess(get.json);
     const data = get.json.data as unknown as ApiBlobWithPrevious[];

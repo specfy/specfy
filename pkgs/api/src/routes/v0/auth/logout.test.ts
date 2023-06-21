@@ -28,7 +28,7 @@ describe('POST /logout', () => {
     const res = await t.fetch.post('/0/auth/logout', {
       token,
       // @ts-expect-error
-      qp: { random: 'world' },
+      Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
   });
@@ -38,7 +38,7 @@ describe('POST /logout', () => {
     const res = await t.fetch.post('/0/auth/logout', {
       token,
       // @ts-expect-error
-      body: { random: 'world' },
+      Body: { random: 'world' },
     });
     await shouldNotAllowBody(res);
   });

@@ -1,14 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import type {
-  ReqOrgParams,
-  ReqPostOrg,
-  ReqPutOrg,
-  ResDeleteOrg,
-  ResListOrgs,
-  ResListOrgsSuccess,
-  ResPostOrg,
-  ResPutOrg,
-} from 'api/src/types/api';
+import type { DeleteOrg, ListOrgs, PostOrg, PutOrg } from 'api/src/types/api';
 
 import { queryClient } from '../common/query';
 
@@ -18,8 +9,8 @@ import { APIError, isError } from './helpers';
 export function useListOrgs() {
   return useQuery({
     queryKey: ['listOrgs'],
-    queryFn: async (): Promise<ResListOrgsSuccess> => {
-      const { json, res } = await fetchApi<ResListOrgs>('/orgs');
+    queryFn: async (): Promise<ListOrgs['Success']> => {
+      const { json, res } = await fetchApi<ListOrgs>('/orgs');
 
       if (res.status !== 200 || isError(json)) {
         throw new APIError({ res, json });
@@ -30,8 +21,10 @@ export function useListOrgs() {
   });
 }
 
-export async function createOrg(data: ReqPostOrg): Promise<ResPostOrg> {
-  const { json, res } = await fetchApi<ResPostOrg, undefined, ReqPostOrg>(
+export async function createOrg(
+  data: PostOrg['Body']
+): Promise<PostOrg['Reply']> {
+  const { json, res } = await fetchApi<PostOrg>(
     '/orgs',
     { body: data },
     'POST'
@@ -45,10 +38,10 @@ export async function createOrg(data: ReqPostOrg): Promise<ResPostOrg> {
 }
 
 export async function updateOrg(
-  opts: ReqOrgParams,
-  data: ReqPutOrg
-): Promise<ResPutOrg> {
-  const { json, res } = await fetchApi<ResPutOrg, undefined, ReqPutOrg>(
+  opts: PutOrg['Params'],
+  data: PutOrg['Body']
+): Promise<PutOrg['Reply']> {
+  const { json, res } = await fetchApi<PutOrg>(
     `/orgs/${opts.org_id}`,
     { body: data },
     'PUT'
@@ -61,8 +54,8 @@ export async function updateOrg(
   return json;
 }
 
-export async function deleteOrg(opts: ReqOrgParams): Promise<number> {
-  const { res } = await fetchApi<ResDeleteOrg>(
+export async function deleteOrg(opts: DeleteOrg['Params']): Promise<number> {
+  const { res } = await fetchApi<DeleteOrg>(
     `/orgs/${opts.org_id}`,
     undefined,
     'DELETE'

@@ -33,7 +33,7 @@ describe('GET /revisions/:revision_id', () => {
     const res = await t.fetch.get('/0/revisions/foo', {
       token,
       // @ts-expect-error
-      qp: { random: 'world' },
+      Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
   });
@@ -43,7 +43,7 @@ describe('GET /revisions/:revision_id', () => {
     const revision = await seedRevision(user, org, project);
     const res = await t.fetch.get(`/0/revisions/${revision.id}`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
 
     isSuccess(res.json);
@@ -80,7 +80,7 @@ describe('GET /revisions/:revision_id', () => {
     const revision = await seedRevision(user, org, project);
     const res = await t.fetch.get(`/0/revisions/${revision.id}`, {
       token,
-      qp: { org_id: createOrgId(), project_id: project.id },
+      Querystring: { org_id: createOrgId(), project_id: project.id },
     });
 
     isValidationError(res.json);
@@ -99,7 +99,7 @@ describe('GET /revisions/:revision_id', () => {
     const revision = await seedRevision(user, org, project);
     const res = await t.fetch.get(`/0/revisions/${revision.id}`, {
       token,
-      qp: { org_id: org.id, project_id: nanoid() },
+      Querystring: { org_id: org.id, project_id: nanoid() },
     });
 
     isValidationError(res.json);
@@ -116,7 +116,7 @@ describe('GET /revisions/:revision_id', () => {
     const { token, org, project } = await seedWithProject();
     const res = await t.fetch.get(`/0/revisions/-foI0bardfdk9834982`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
 
     isValidationError(res.json);
@@ -134,7 +134,7 @@ describe('GET /revisions/:revision_id', () => {
     const id = nanoid();
     const res = await t.fetch.get(`/0/revisions/${id}`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
 
     shouldBeNotFound(res);

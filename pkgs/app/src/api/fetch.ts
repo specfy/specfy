@@ -1,17 +1,21 @@
 import { API_HOSTNAME } from '../common/envs';
 
 export async function fetchApi<
-  T extends Record<string, any>,
-  TQuery = undefined,
-  TBody = undefined
+  T extends {
+    Body: Record<string, any> | never;
+    Querystring: Record<string, any> | never;
+    Reply: Record<string, any> | never;
+  }
 >(
   path: string,
-  opts?: (TBody extends Record<string, any>
-    ? { body: TBody }
-    : { body?: undefined }) &
-    (TQuery extends Record<string, any> ? { qp: TQuery } : { qp?: undefined }),
+  opts?: (T['Body'] extends never
+    ? { body?: undefined }
+    : { body: T['Body'] }) &
+    (T['Querystring'] extends never
+      ? { qp?: undefined }
+      : { qp: T['Querystring'] }),
   method?: RequestInit['method']
-): Promise<{ res: Response; json: T }> {
+): Promise<{ res: Response; json: T['Reply'] }> {
   const url = new URL(API_HOSTNAME);
   url.pathname = `/0${path}`;
 

@@ -6,11 +6,7 @@ import { validationError } from '../../../common/errors';
 import { toApiPolicy } from '../../../common/formatters/policy';
 import { valOrgId } from '../../../common/zod';
 import { prisma } from '../../../db';
-import type {
-  Pagination,
-  ReqListPolicies,
-  ResListPoliciesSuccess,
-} from '../../../types/api';
+import type { ListPolicies, Pagination } from '../../../types/api';
 
 function QueryVal(req: FastifyRequest) {
   return z
@@ -21,10 +17,7 @@ function QueryVal(req: FastifyRequest) {
 }
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
-  fastify.get<{
-    Querystring: ReqListPolicies;
-    Reply: ResListPoliciesSuccess;
-  }>('/', async function (req, res) {
+  fastify.get<ListPolicies>('/', async function (req, res) {
     const val = QueryVal(req).safeParse(req.query);
     if (!val.success) {
       return validationError(res, val.error);

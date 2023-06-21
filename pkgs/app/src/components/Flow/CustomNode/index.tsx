@@ -20,7 +20,6 @@ const CustomNode: React.FC<NodeProps<NodeData>> = ({ data, selected }) => {
     <div className={classNames(cls.node, cls[data.type])}>
       <NodeResizer
         lineClassName={cls.resizerLine}
-        handleClassName={cls.resizerHandle}
         isVisible={selected}
         minWidth={100}
         minHeight={30}

@@ -30,7 +30,7 @@ describe('GET /components', () => {
     const res = await t.fetch.get('/0/components', {
       token,
       // @ts-expect-error
-      qp: { random: 'world' },
+      Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
   });
@@ -40,7 +40,7 @@ describe('GET /components', () => {
     const component = await seedComponent(user, org, project);
     const res = await t.fetch.get('/0/components', {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
     });
 
     isSuccess(res.json);
@@ -78,7 +78,7 @@ describe('GET /components', () => {
     const { token, project } = await seedWithProject();
     const res = await t.fetch.get('/0/components', {
       token,
-      qp: { org_id: seed1.org.id, project_id: project.id },
+      Querystring: { org_id: seed1.org.id, project_id: project.id },
     });
 
     isValidationError(res.json);
@@ -93,7 +93,7 @@ describe('GET /components', () => {
     const { token, org } = await seedWithProject();
     const res = await t.fetch.get('/0/components', {
       token,
-      qp: { org_id: org.id, project_id: seed1.project.id },
+      Querystring: { org_id: org.id, project_id: seed1.project.id },
     });
 
     isValidationError(res.json);

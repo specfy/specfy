@@ -30,7 +30,7 @@ describe('GET /policies', () => {
     const res = await t.fetch.get('/0/policies', {
       token,
       // @ts-expect-error
-      qp: { random: 'world' },
+      Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
   });
@@ -40,7 +40,7 @@ describe('GET /policies', () => {
     const policy = await seedPolicy(user, org);
     const res = await t.fetch.get('/0/policies', {
       token,
-      qp: { org_id: org.id },
+      Querystring: { org_id: org.id },
     });
 
     isSuccess(res.json);
@@ -69,7 +69,7 @@ describe('GET /policies', () => {
     const { token } = await seedWithOrg();
     const res = await t.fetch.get('/0/policies', {
       token,
-      qp: { org_id: seed1.org.id },
+      Querystring: { org_id: seed1.org.id },
     });
 
     isValidationError(res.json);

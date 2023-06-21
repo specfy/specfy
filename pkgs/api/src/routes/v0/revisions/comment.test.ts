@@ -30,7 +30,7 @@ describe('GET /revisions/:revision_id/comment', () => {
     const res = await t.fetch.post('/0/revisions/foo/comment', {
       token,
       // @ts-expect-error
-      qp: { random: 'world' },
+      Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
   });
@@ -41,9 +41,9 @@ describe('GET /revisions/:revision_id/comment', () => {
 
     const res = await t.fetch.post(`/0/revisions/${revision.id}/comment`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
+      Querystring: { org_id: org.id, project_id: project.id },
       // @ts-expect-error
-      body: {},
+      Body: {},
     });
     isValidationError(res.json);
     expect(res.statusCode).toBe(400);
@@ -55,8 +55,8 @@ describe('GET /revisions/:revision_id/comment', () => {
 
     const comment = await t.fetch.post(`/0/revisions/${revision.id}/comment`, {
       token,
-      qp: { org_id: org.id, project_id: project.id },
-      body: { approval: false, content: { content: [], type: 'doc' } },
+      Querystring: { org_id: org.id, project_id: project.id },
+      Body: { approval: false, content: { content: [], type: 'doc' } },
     });
     isSuccess(comment);
   });

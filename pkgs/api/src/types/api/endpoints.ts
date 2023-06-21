@@ -1,226 +1,143 @@
 /* eslint-disable @typescript-eslint/member-ordering */
-import type { ReqListActivities, ResListActivities } from './activities';
-import type { ReqPostAuthLocal, ResPostAuthLocal, ResPostLogout } from './auth';
-import type { ResListRevisionBlobs } from './blob';
-import type { ReqListComponents, ResListComponents } from './components';
-import type { ReqListDocuments, ResListDocuments } from './documents';
+import type { ListActivities } from './activities';
+import type { PostAuthLocal, PostLogout } from './auth';
+import type { ListRevisionBlobs } from './blob';
+import type { ListComponents } from './components';
+import type { GetDocument, ListDocuments } from './documents';
 import type {
-  ReqGetGithubRepos,
-  ResGetGithubInstallations,
-  ResGetGithubRepos,
+  ListGithubInstallations,
+  ListGithubRepos,
+  PostLinkToGithubOrg,
 } from './github';
 import type {
-  ReqGetInvitation,
-  ReqListInvitations,
-  ReqPostInvitations,
-  ResAcceptInvitation,
-  ResDeclineInvitation,
-  ResDeleteInvitation,
-  ResGetInvitation,
-  ResListInvitations,
-  ResPostInvitations,
+  AcceptInvitation,
+  DeclineInvitation,
+  DeleteInvitation,
+  GetInvitation,
+  ListInvitations,
+  PostInvitation,
 } from './invitations';
-import type { ReqPutMe, ResDeleteMe, ResGetMe, ResPutMe } from './me';
+import type { DeleteMe, GetMe, PutMe } from './me';
+import type { DeleteOrg, ListOrgs, PostOrg, PutOrg } from './orgs';
+import type { DeletePerm, GetCountPerms, ListPerms, PutPerm } from './perms';
+import type { ListPolicies } from './policies';
 import type {
-  ReqPostOrg,
-  ReqPutOrg,
-  ResDeleteOrg,
-  ResListOrgs,
-  ResPostOrg,
-  ResPutOrg,
-} from './orgs';
-import type {
-  ReqDeletePerms,
-  ReqListPerms,
-  ReqPutPerms,
-  ResCountPerms,
-  ResDeletePerms,
-  ResListPerms,
-  ResPutPerms,
-} from './perms';
-import type { ReqListPolicies, ResListPolicies } from './policies';
-import type {
-  ReqListProjects,
-  ReqPostProject,
-  ReqProjectParams,
-  ReqPutProject,
-  ResDeleteProject,
-  ResGetProject,
-  ResListProjects,
-  ResPostProject,
-  ResPutProject,
+  DeleteProject,
+  GetProject,
+  ListProjects,
+  PostProject,
+  PutProject,
 } from './projects';
 import type {
-  ReqGetRevision,
-  ReqListRevisions,
-  ReqPostCommentRevision,
-  ReqPostRevision,
-  ReqPatchRevision,
-  ResCheckRevision,
-  ResDeleteRevision,
-  ResGetRevision,
-  ResListRevisions,
-  ResMergeRevision,
-  ResPostCommentRevision,
-  ResPostRevision,
-  ResPatchRevision,
-  ResRebaseRevision,
-  ResPostUploadRevision,
-  ReqPostUploadRevision,
+  CommentRevision,
+  GetRevision,
+  ListRevisionChecks,
+  ListRevisions,
+  MergeRevision,
+  PatchRevision,
+  PostRevision,
+  PostUploadRevision,
+  RebaseRevision,
 } from './revisions';
-import type { ReqListUsers, ResListUsers } from './users';
+import type { GetRoot } from './root';
+import type { ListUsers } from './users';
 
 export interface API {
-  '/0/': { GET: { res: { root: true }; qp: never; body: never } };
+  '/0/': { GET: GetRoot };
 
-  '/0/activities': {
-    GET: { res: ResListActivities; qp: ReqListActivities; body: never };
-  };
+  '/0/activities': { GET: ListActivities };
 
-  '/0/auth/local': {
-    POST: { res: ResPostAuthLocal; qp: never; body: ReqPostAuthLocal };
-  };
-  '/0/auth/logout': {
-    POST: { res: ResPostLogout; qp: never; body: never };
-  };
+  '/0/auth/local': { POST: PostAuthLocal };
+  '/0/auth/logout': { POST: PostLogout };
 
-  '/0/components': {
-    GET: { res: ResListComponents; qp: ReqListComponents; body: never };
-  };
+  '/0/components': { GET: ListComponents };
 
-  '/0/documents': {
-    GET: { res: ResListDocuments; qp: ReqListDocuments; body: never };
-  };
-  [key: `/0/documents/${string}`]: {
-    GET: { res: ResListDocuments; qp: ReqListDocuments; body: never };
-  };
+  '/0/documents': { GET: ListDocuments };
+  [key: `/0/documents/${string}`]: { GET: GetDocument };
 
   '/0/me': {
-    GET: { res: ResGetMe; qp: never; body: never };
-    PUT: { res: ResPutMe; qp: never; body: ReqPutMe };
-    DELETE: { res: ResDeleteMe; qp: never; body: never };
+    GET: GetMe;
+    PUT: PutMe;
+    DELETE: DeleteMe;
   };
 
   '/0/orgs': {
-    GET: { res: ResListOrgs; qp: never; body: never };
-    POST: { res: ResPostOrg; qp: never; body: ReqPostOrg };
+    GET: ListOrgs;
+    POST: PostOrg;
   };
   [key: `/0/orgs/${string}`]: {
-    PUT: { res: ResPutOrg; qp: never; body: ReqPutOrg };
-    DELETE: { res: ResDeleteOrg; qp: never; body: never };
+    PUT: PutOrg;
+    DELETE: DeleteOrg;
   };
 
   '/0/perms': {
-    GET: { res: ResListPerms; qp: ReqListPerms; body: never };
-    PUT: { res: ResPutPerms; qp: never; body: ReqPutPerms };
-    DELETE: { res: ResDeletePerms; qp: never; body: ReqDeletePerms };
+    GET: ListPerms;
+    PUT: PutPerm;
+    DELETE: DeletePerm;
   };
-  '/0/perms/count': {
-    GET: { res: ResCountPerms; qp: ReqListPerms; body: never };
-  };
+  '/0/perms/count': { GET: GetCountPerms };
 
-  '/0/policies': {
-    GET: { res: ResListPolicies; qp: ReqListPolicies; body: never };
-  };
+  '/0/policies': { GET: ListPolicies };
 
   '/0/projects': {
-    GET: { res: ResListProjects; qp: ReqListProjects; body: never };
-    POST: { res: ResPostProject; qp: never; body: ReqPostProject };
+    GET: ListProjects;
+    POST: PostProject;
   };
   [key: `/0/projects/${string}`]: {
-    GET: { res: ResGetProject; qp: never; body: never };
-    PUT: { res: ResPutProject; qp: never; body: ReqPutProject };
-    DELETE: { res: ResDeleteProject; qp: never; body: never };
+    GET: GetProject;
+    PUT: PutProject;
+    DELETE: DeleteProject;
   };
 
   '/0/revisions': {
-    GET: { res: ResListRevisions; qp: ReqListRevisions; body: never };
-    POST: { res: ResPostRevision; qp: never; body: ReqPostRevision };
+    GET: ListRevisions;
+    POST: PostRevision;
   };
   // @ts-expect-error
-  '/0/revisions/upload': {
-    POST: {
-      res: ResPostUploadRevision;
-      qp: never;
-      body: ReqPostUploadRevision;
-    };
-  };
+  '/0/revisions/upload': { POST: PostUploadRevision };
 
   // @ts-expect-error
-  [key: `/0/revisions/${string}/blobs`]: {
-    GET: { res: ResListRevisionBlobs; qp: ReqGetRevision; body: never };
-  };
+  [key: `/0/revisions/${string}/blobs`]: { GET: ListRevisionBlobs };
   // @ts-expect-error
   [key: `/0/revisions/${string}/checks`]: {
-    GET: { res: ResCheckRevision; qp: ReqGetRevision; body: never };
+    GET: ListRevisionChecks;
   };
   // @ts-expect-error
   [key: `/0/revisions/${string}/comment`]: {
-    POST: {
-      res: ResPostCommentRevision;
-      qp: ReqGetRevision;
-      body: ReqPostCommentRevision;
-    };
+    POST: CommentRevision;
   };
   // @ts-expect-error
   [key: `/0/revisions/${string}/merge`]: {
-    POST: { res: ResMergeRevision; qp: ReqGetRevision; body: never };
+    POST: MergeRevision;
   };
   // @ts-expect-error
   [key: `/0/revisions/${string}/rebase`]: {
-    POST: { res: ResRebaseRevision; qp: ReqGetRevision; body: never };
+    POST: RebaseRevision;
   };
   [key: `/0/revisions/${string}`]: {
-    GET: { res: ResGetRevision; qp: ReqGetRevision; body: never };
-    PATCH: {
-      res: ResPatchRevision;
-      qp: ReqGetRevision;
-      body: ReqPatchRevision;
-    };
-    DELETE: { res: ResDeleteRevision; qp: ReqProjectParams; body: never };
+    GET: GetRevision;
+    PATCH: PatchRevision;
+    DELETE: DeleteInvitation;
   };
 
-  '/0/users': { GET: { res: ResListUsers; qp: ReqListUsers; body: never } };
+  '/0/users': { GET: ListUsers };
 
-  '/0/github/installations': {
-    GET: { res: ResGetGithubInstallations; qp: never; body: never };
-  };
-  '/0/github/repos': {
-    GET: { res: ResGetGithubRepos; qp: ReqGetGithubRepos; body: never };
-  };
+  '/0/github/installations': { GET: ListGithubInstallations };
+  '/0/github/repos': { GET: ListGithubRepos };
+  '/0/github/link_org': { POST: PostLinkToGithubOrg };
 
   '/0/invitations': {
-    GET: { res: ResListInvitations; qp: ReqListInvitations; body: never };
-    POST: { res: ResPostInvitations; qp: never; body: ReqPostInvitations };
+    GET: ListInvitations;
+    POST: PostInvitation;
   };
 
   // @ts-expect-error
-  [key: `/0/invitations/${string}/accept`]: {
-    POST: {
-      res: ResAcceptInvitation;
-      qp: ReqGetInvitation;
-      body: never;
-    };
-  };
+  [key: `/0/invitations/${string}/accept`]: { POST: AcceptInvitation };
   // @ts-expect-error
-  [key: `/0/invitations/${string}/decline`]: {
-    POST: {
-      res: ResDeclineInvitation;
-      qp: ReqGetInvitation;
-      body: never;
-    };
-  };
+  [key: `/0/invitations/${string}/decline`]: { POST: DeclineInvitation };
   [key: `/0/invitations/${string}`]: {
-    GET: {
-      res: ResGetInvitation;
-      qp: ReqGetInvitation;
-      body: never;
-    };
-    DELETE: {
-      res: ResDeleteInvitation;
-      qp: never;
-      body: never;
-    };
+    GET: GetInvitation;
+    DELETE: DeleteInvitation;
   };
 }
 
