@@ -1,36 +1,20 @@
 @import "../../../../styles/theme";
 
-.container {
-  display: grid;
-  grid-template:
-    "left right"
-    "review empty"
-    "staged empty" / 1fr;
-  row-gap: $p-4xl;
-  column-gap: $p-2xl;
+.left {
+  width: calc(100% - 300px);
+}
 
-  width: $min-w;
-  margin: 0 auto;
+.right {
+  width: 300px;
+}
 
-  .left {
-    grid-area: left;
-  }
+.main {
+  margin-bottom: $p-4xl;
+  border-bottom: 1px solid var(--border);
+}
 
-  .right {
-    grid-area: right;
-    width: 250px;
-  }
-
-  .staged {
-    display: flex;
-    grid-area: staged;
-    flex-direction: column;
-    gap: $p-3xl;
-
-    width: calc($min-w - 250px);
-    padding-bottom: $p-2xl;
-  }
-
+.card {
+  padding: $p-4xl $p-5xl;
 }
 
 .mainTop {
@@ -84,4 +68,19 @@
   align-items: center;
   justify-content: center;
   height: 200px;
+}
+
+.sidebar {
+  padding: $p-l $p-4xl;
+}
+
+.staged {
+  display: flex;
+  grid-area: staged;
+  flex-direction: column;
+  gap: $p-3xl;
+
+  width: calc($min-w - 250px);
+  margin: 0 auto;
+  padding: $p-4xl 0;
 }

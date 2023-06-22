@@ -60,14 +60,18 @@
     align-items: center;
 
     .icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
       width: $p-xl;
       height: $p-xl;
-      margin-top: -4px;
 
       font-size: 11px;
+      line-height: 14px;
       color: $gray-600;
 
-      > span {
+      >span {
         width: $p-xl;
         height: $p-xl;
         line-height: $line-height-s;
@@ -75,7 +79,10 @@
 
       &.service {
         padding: 0 0 0 2px;
+
+        line-height: 16px;
         color: white;
+
         background-color: $indigo-400;
         border-radius: 4px;
       }
@@ -102,10 +109,6 @@
     border-color: $indigo-400;
   }
 
-  .resizerHandle {
-    // no empty
-  }
-
   // Handlers
   .handle {
     width: 5px;
@@ -113,7 +116,7 @@
 
     opacity: 0;
     background-color: #fff;
-    border: 1px solid $color-border;
+    border: 1px solid var(--border);
 
     transition: opacity 0.25s;
 

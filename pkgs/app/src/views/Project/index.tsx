@@ -17,7 +17,7 @@ import { Container } from '../../components/Container';
 import { ContentSidebar } from '../../components/Content/Sidebar';
 import { NotFound } from '../../components/NotFound';
 import { ProjectHeader } from '../../components/ProjectHeader';
-import { Group, Sidebar } from '../../components/Sidebar';
+import { Sidebar } from '../../components/Sidebar';
 import type { RouteProject } from '../../types/routes';
 
 import { ProjectActivity } from './Activity';
@@ -129,9 +129,9 @@ export const Project: React.FC = () => {
 
       <div>
         <Sidebar org={org} project={proj}>
-          <Group name="Content">
+          <div className={cls.content}>
             <ContentSidebar proj={proj} params={params} />
-          </Group>
+          </div>
         </Sidebar>
       </div>
       <div className={cls.main}>

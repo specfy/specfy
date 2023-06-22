@@ -1,16 +1,14 @@
 @import "../../../../styles/theme";
 
-.container {
-  flex-direction: column;
-  min-width: $min-w;
-  max-width: $max-w;
-  margin: 0 auto;
-}
+
 
 .searchWrapper {
   display: flex;
   gap: $p-l;
   align-items: center;
+  justify-content: center;
+
+  padding: $p-3xl;
 }
 
 .search {

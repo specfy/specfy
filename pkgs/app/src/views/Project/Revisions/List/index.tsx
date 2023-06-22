@@ -9,7 +9,6 @@ import { useDebounce } from 'react-use';
 
 import { useListRevisions } from '../../../../api';
 import { titleSuffix } from '../../../../common/string';
-import { Card } from '../../../../components/Card';
 import { Container } from '../../../../components/Container';
 import { StatusTag } from '../../../../components/StatusTag';
 import { Time } from '../../../../components/Time';
@@ -63,49 +62,49 @@ export const ProjectRevisionsList: React.FC<{
   };
 
   return (
-    <Container className={cls.container}>
-      <Helmet title={`Revisions - ${proj.name} ${titleSuffix}`} />
-      <div className={cls.searchWrapper}>
-        <div className={cls.search}>
-          <div className={cls.inputs}>
-            <Input
-              size="large"
-              prefix={<IconSearch />}
-              onChange={handleInput}
-              value={search}
-              addonBefore={
-                <Select
-                  defaultValue={filterStatus}
-                  value={filterStatus}
-                  style={{ width: 'calc(100px)' }}
-                  onChange={setFilterStatus}
-                >
-                  <Select.Option value="opened">Opened</Select.Option>
-                  <Select.Option value="waiting">Waiting</Select.Option>
-                  <Select.Option value="approved">Approved</Select.Option>
-                  <Select.Option value="merged">Merged</Select.Option>
-                  <Select.Option value="all">All</Select.Option>
-                </Select>
-              }
-              suffix={
-                (search || filterStatus !== 'opened') && (
-                  <Button
-                    onClick={handleReset}
-                    title="Reset search filters..."
-                    type="text"
-                    size="small"
-                    icon={<IconCircleX />}
-                  />
-                )
-              }
-              placeholder="Search..."
-            />
+    <Container noPadding>
+      <Container.Left2Third>
+        <Helmet title={`Revisions - ${proj.name} ${titleSuffix}`} />
+        <div className={cls.searchWrapper}>
+          <div className={cls.search}>
+            <div className={cls.inputs}>
+              <Input
+                size="large"
+                prefix={<IconSearch />}
+                onChange={handleInput}
+                value={search}
+                addonBefore={
+                  <Select
+                    defaultValue={filterStatus}
+                    value={filterStatus}
+                    style={{ width: 'calc(100px)' }}
+                    onChange={setFilterStatus}
+                  >
+                    <Select.Option value="opened">Opened</Select.Option>
+                    <Select.Option value="waiting">Waiting</Select.Option>
+                    <Select.Option value="approved">Approved</Select.Option>
+                    <Select.Option value="merged">Merged</Select.Option>
+                    <Select.Option value="all">All</Select.Option>
+                  </Select>
+                }
+                suffix={
+                  (search || filterStatus !== 'opened') && (
+                    <Button
+                      onClick={handleReset}
+                      title="Reset search filters..."
+                      type="text"
+                      size="small"
+                      icon={<IconCircleX />}
+                    />
+                  )
+                }
+                placeholder="Search..."
+              />
+            </div>
+            {loading && <LoadingOutlined size={32} />}
           </div>
-          {loading && <LoadingOutlined size={32} />}
         </div>
-      </div>
 
-      <Card>
         {list && (
           <Table
             rowKey="id"
@@ -147,7 +146,7 @@ export const ProjectRevisionsList: React.FC<{
             />
           </Table>
         )}
-      </Card>
+      </Container.Left2Third>
     </Container>
   );
 };

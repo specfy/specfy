@@ -4,7 +4,7 @@
   display: flex;
   gap: $p-3xl;
   max-width: $main-col-w * 2;
-  padding: $p-3xl;
+  padding: $p-4xl $p-5xl;
 
   // margin: 0 auto; // this trigger a weird animation
   &.noPadding {
@@ -41,6 +41,7 @@
 
 .left2third {
   width: 60%;
+  min-width: $main-col-w + $p-xl * 2;
   background-color: #fff;
 
   &.padded {
@@ -50,6 +51,6 @@
 
 .right1third {
   width: calc(100% - 60%);
-  background-color: $zinc-50;
-  border-left: 1px solid $color-border;
+  background-color: var(--bgLight);
+  border-left: 1px solid var(--border);
 }

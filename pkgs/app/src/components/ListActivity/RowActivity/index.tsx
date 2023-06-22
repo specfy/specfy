@@ -171,7 +171,7 @@ export const RowActivity: React.FC<{
     >
       <div className={cls.main}>
         {!isChild ? (
-          <Link to={`/_/user/${act.user.id}`}>
+          <Link to={`/_/user/${act.user.id}`} className={cls.avatar}>
             <AvatarAuto
               name={act.user.name}
               src={act.user.avatarUrl}
@@ -187,7 +187,9 @@ export const RowActivity: React.FC<{
           {isChild ? (
             'and'
           ) : (
-            <Link to={`/_/user/${act.user.id}`}>{act.user.name}</Link>
+            <Link to={`/_/user/${act.user.id}`} className={cls.username}>
+              {act.user.name}
+            </Link>
           )}
           <span>
             {' '}

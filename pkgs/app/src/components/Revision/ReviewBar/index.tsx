@@ -71,9 +71,9 @@ export const ReviewBar: React.FC<{
     <div className={classnames(cls.bar, open && cls.opened)} ref={ref}>
       <div className={cls.inner}>
         <Button
-          type={'primary'}
+          type="default"
           disabled={!canReview}
-          className={classnames(cls.reviewButton, canReview && cls.success)}
+          className={classnames(cls.reviewButton)}
           onClick={() => onClickReview(true)}
         >
           {rev.merged ? 'Reviewed' : 'Add Review'}

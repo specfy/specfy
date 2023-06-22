@@ -1,6 +1,9 @@
-import { IconBook } from '@tabler/icons-react';
-import { Table } from 'antd';
-import type { ApiDocument, ApiProject, ListDocuments } from 'api/src/types/api';
+import {
+  IconBooks,
+  IconClipboardList,
+  IconNotebook,
+} from '@tabler/icons-react';
+import type { ApiProject, ListDocuments } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
@@ -9,7 +12,8 @@ import { useListDocuments } from '../../../../api';
 import { TYPE_TO_TEXT } from '../../../../common/document';
 import { useDocumentsStore } from '../../../../common/store';
 import { titleSuffix } from '../../../../common/string';
-import { Card } from '../../../../components/Card';
+import { Container } from '../../../../components/Container';
+import { Flex } from '../../../../components/Flex';
 import { Time } from '../../../../components/Time';
 import type { RouteProject } from '../../../../types/routes';
 
@@ -43,49 +47,52 @@ export const ProjectContentList: React.FC<{
   }
 
   return (
-    <div className={cls.list}>
-      <Helmet title={`Content - ${proj.name} ${titleSuffix}`} />
-      <Card seamless>
-        {list && (
-          <Table
-            rowKey="id"
-            dataSource={list}
-            size="small"
-            pagination={{ position: ['bottomCenter'] }}
-          >
-            <Table.Column
-              title={
-                <div>
-                  <span>
-                    <IconBook />
-                  </span>{' '}
-                  {pagination.totalItems} Documents
+    <Container noPadding>
+      <Container.Left2Third>
+        <Helmet title={`Content - ${proj.name} ${titleSuffix}`} />
+
+        <Flex gap="xl" className={cls.categories}>
+          <div className={cls.category}>
+            <div className={cls.icon}>
+              <IconNotebook />
+            </div>
+            <h3>Documentation</h3>
+          </div>
+          <div className={cls.category}>
+            <div className={cls.icon}>
+              <IconClipboardList />
+            </div>
+            <h3>RFCs</h3>
+          </div>
+          <div className={cls.category}>
+            <div className={cls.icon}>
+              <IconBooks />
+            </div>
+            <h3>Playbooks</h3>
+          </div>
+        </Flex>
+
+        <div className={cls.list}>
+          {list.map((item) => {
+            return (
+              <div key={item.id} className={cls.item}>
+                <Link
+                  to={`/${params.org_id}/${params.project_slug}/content/${item.id}-${item.slug}`}
+                  relative="path"
+                  className={cls.title}
+                >
+                  {item.type !== 'doc' &&
+                    `${TYPE_TO_TEXT[item.type]}-${item.typeId} - `}
+                  {item.name}
+                </Link>
+                <div className={cls.subtitle}>
+                  Updated <Time time={item.updatedAt} />
                 </div>
-              }
-              dataIndex="name"
-              key="name"
-              render={(_, item: ApiDocument) => {
-                return (
-                  <>
-                    <Link
-                      to={`/${params.org_id}/${params.project_slug}/content/${item.id}-${item.slug}`}
-                      relative="path"
-                      className={cls.title}
-                    >
-                      {item.type !== 'doc' &&
-                        `${TYPE_TO_TEXT[item.type]}-${item.typeId} - `}
-                      {item.name}
-                    </Link>
-                    <div className={cls.subtitle}>
-                      Updated <Time time={item.updatedAt} />
-                    </div>
-                  </>
-                );
-              }}
-            />
-          </Table>
-        )}
-      </Card>
-    </div>
+              </div>
+            );
+          })}
+        </div>
+      </Container.Left2Third>
+    </Container>
   );
 };

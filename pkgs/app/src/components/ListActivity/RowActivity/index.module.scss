@@ -8,13 +8,13 @@
       content: " ";
 
       position: absolute;
-      bottom: -21px;
-      left: 15px;
+      bottom: -25px;
+      left: 11px;
 
       display: block;
 
       width: 1px;
-      height: 18px;
+      height: 100%;
 
       background-color: var(--bgDark);
     }
@@ -29,23 +29,18 @@
   position: relative;
   display: flex;
   gap: $p-m;
-  align-items: center;
 }
 
 .desc {
   flex-grow: 1;
   align-items: center;
   color: var(--textLight);
-
-  a {
-    color: var(--text);
-  }
 }
 
 .date {
   flex-grow: 0;
 
-  width: 55px;
+  width: 65px;
 
   font-size: $font-s;
   color: $gray-400;
@@ -69,12 +64,19 @@
 
   background-color: var(--bgDark);
   border-radius: 50%;
-  outline: 2px solid var(--bg);
+  outline: 2px solid var(--bgLight);
+}
+
+.avatar {
+  outline: 2px solid var(--bgLight);
+}
+
+.username {
+  color: var(--text);
 }
 
 .target {
-  padding: 0 $p;
-  border: 1px solid var(--border);
+  color: var(--colorLink);
   border-radius: $border-radius-s;
 }
 
@@ -83,8 +85,6 @@
   padding: $p-l $p-2xl;
 
   background-color: white;
-
-  // border: 1px solid var(--border);
   border-radius: $border-radius-s;
   box-shadow: $box-shadow2;
 }

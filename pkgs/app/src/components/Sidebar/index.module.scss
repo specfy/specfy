@@ -47,7 +47,7 @@
 .inner {
   width: 250px;
   height: 100%;
-  border-right: 1px solid $color-border;
+  border-right: 1px solid var(--border);
 }
 
 .header {
@@ -60,7 +60,7 @@
 
   font-size: $font-l;
 
-  border-bottom: 1px solid $color-border;
+  border-bottom: 1px solid var(--border);
 
   .label {
     overflow: hidden;
@@ -96,7 +96,7 @@
 
   opacity: 0;
   background-color: #fff;
-  border: 1px solid $color-border;
+  border: 1px solid var(--border);
   border-radius: 10px;
   box-shadow: $box-shadow;
 
@@ -124,82 +124,4 @@
 
 .content {
   transition: opacity 0.25s $trst-smooth;
-}
-
-.group {
-  padding: 0 0 $p-xl 0;
-  border-bottom: 1px solid $color-border;
-
-  .head {
-    cursor: pointer;
-
-    display: grid;
-    grid-template-columns: 5fr 20px 0;
-    gap: $p-m;
-    align-items: center;
-    justify-content: space-between;
-
-    padding: $p-xl $p-xl;
-
-    font-weight: 500;
-
-    &:hover {
-      background-color: $gray-50;
-    }
-
-    .chevron {
-      padding-top: 1px;
-    }
-
-    .actions {
-      display: flex;
-      align-items: end;
-    }
-  }
-
-
-  &.small {
-    padding-bottom: 0;
-
-    .head {
-      padding: $p-m $p-xl;
-      font-weight: normal;
-      color: $gray-500;
-    }
-  }
-
-  .sub {
-    overflow: hidden;
-    transition: height 0.25s ease-in-out;
-  }
-
-  &.hide {
-    padding-bottom: 0;
-
-    .sub {
-      height: 0;
-    }
-  }
-
-  .link {
-    display: flex;
-    gap: $p-m;
-
-    padding: $p $p-xl;
-
-    color: $gray-700;
-
-    border-left: 4px solid transparent;
-
-    &:hover {
-      color: 1;
-      background-color: $gray-50;
-    }
-
-    &.selected {
-      background-color: $primary-low;
-      border-left-color: $primary;
-    }
-
-  }
 }

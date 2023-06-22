@@ -112,7 +112,7 @@ h4.ant-typography {
   hr {
     margin: $p-3xl 10%;
     border: none;
-    border-top: 1px solid $color-border;
+    border-top: 1px solid var(--border);
   }
 
   h1 {

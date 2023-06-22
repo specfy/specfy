@@ -14,7 +14,7 @@ import { ContentDoc } from '../../../../components/Content';
 import { Editor } from '../../../../components/Editor';
 import { HeadingTree } from '../../../../components/HeadingTree';
 import { FakeInput } from '../../../../components/Input';
-import { SidebarBlock } from '../../../../components/SidebarBlock';
+import { SidebarBlock } from '../../../../components/Sidebar/Block';
 import { UpdatedAt } from '../../../../components/UpdatedAt';
 import { UserList } from '../../../../components/UserList';
 import { useEdit } from '../../../../hooks/useEdit';

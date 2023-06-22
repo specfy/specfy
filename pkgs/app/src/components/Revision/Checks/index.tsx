@@ -138,6 +138,7 @@ export const Checks: React.FC<{
               </Button>
             ) : (
               <Button
+                type="text"
                 onClick={() => onClick('draft')}
                 icon={<IconEyeOff size={16} />}
               >

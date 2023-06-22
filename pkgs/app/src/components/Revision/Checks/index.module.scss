@@ -10,11 +10,11 @@
   align-items: center;
   justify-content: space-between;
 
-  padding: $p-xl $p-3xl;
+  padding: $p-xl $p-5xl;
 
   color: $gray-500;
 
-  border-bottom: 1px solid $gray-100;
+  border-bottom: 1px solid var(--borderLight);
 
   .label {
     display: flex;
@@ -50,8 +50,8 @@
   }
 
   &:last-child {
-    padding: $p-xl $p-xl;
-    background-color: $gray-50;
+    padding: $p-2xl $p-5xl;
+    background-color: var(--bgLighter);
     border-bottom: none;
 
     &.merged {

@@ -35,6 +35,9 @@ a {
   --textLight: var(--mauve11);
   --textDisabled: var(--mauve9);
 
+  // Link
+  --colorLink: var(--indigo9);
+
   // BG
   --bgLighter: var(--mauve1);
   --bgLight: var(--mauve2);
@@ -42,7 +45,8 @@ a {
   --bgDark: var(--mauve5);
 
   // OTHER
-  --border: var(--mauve5);
+  --borderLight: var(--mauve3);
+  --border: var(--mauve7);
   --accent: var(--indigo9);
 }
 
@@ -63,6 +67,6 @@ a {
   cursor: pointer;
 
   &:hover {
-    color: $blue-700;
+    color: var(--colorLink);
   }
 }

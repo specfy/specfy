@@ -27,7 +27,6 @@ import { Toolbar } from '../../../components/Flow/Toolbar';
 import type { ComputedFlow } from '../../../components/Flow/helpers';
 import { componentsToFlow } from '../../../components/Flow/helpers';
 import { FakeInput } from '../../../components/Input';
-import { ListRFCs } from '../../../components/ListRFCs';
 import { NotFound } from '../../../components/NotFound';
 import { UpdatedAt } from '../../../components/UpdatedAt';
 import { useEdit } from '../../../hooks/useEdit';
@@ -183,9 +182,9 @@ export const ComponentView: React.FC<{
             params={params}
           />
         </Card>
-        <Card padded>
+        {/* <Card padded>
           <ListRFCs project={proj}></ListRFCs>
-        </Card>
+        </Card> */}
       </Container.Left2Third>
       <Container.Right1Third>
         <div>

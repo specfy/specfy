@@ -1,8 +1,4 @@
-import {
-  IconChevronDown,
-  IconChevronLeft,
-  IconChevronRight,
-} from '@tabler/icons-react';
+import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 import { Button } from 'antd';
 import type { ApiOrg, ApiProject } from 'api/src/types/api';
 import classNames from 'classnames';
@@ -13,30 +9,6 @@ import { AvatarAuto } from '../AvatarAuto';
 import { Staging } from '../ProjectHeader/Staging';
 
 import cls from './index.module.scss';
-
-export const Group: React.FC<{
-  children: React.ReactElement | React.ReactElement[];
-  name: string;
-  actions?: React.ReactElement;
-}> = ({ children, name, actions }) => {
-  const [open, setOpen] = useState(true);
-  const onClick = () => {
-    setOpen(!open);
-  };
-
-  return (
-    <div className={classNames(cls.group, !open && cls.hide)}>
-      <div className={cls.head} role="button" tabIndex={0} onClick={onClick}>
-        {name}
-        <div className={cls.chevron}>
-          {open ? <IconChevronDown /> : <IconChevronRight />}
-        </div>
-        {actions && <div className={cls.actions}>{actions}</div>}
-      </div>
-      <div className={cls.sub}>{children}</div>
-    </div>
-  );
-};
 
 export const Sidebar: React.FC<{
   org: ApiOrg;

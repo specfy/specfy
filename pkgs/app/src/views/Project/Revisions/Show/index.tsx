@@ -31,7 +31,6 @@ import { diffTwoBlob } from '../../../../common/diff';
 import { i18n } from '../../../../common/i18n';
 import { useRevisionStore } from '../../../../common/store';
 import { titleSuffix } from '../../../../common/string';
-import { Card } from '../../../../components/Card';
 import { Container } from '../../../../components/Container';
 import { ContentDoc } from '../../../../components/Content';
 import { DiffCard } from '../../../../components/DiffCard';
@@ -40,7 +39,7 @@ import { FakeInput } from '../../../../components/Input';
 import { NotFound } from '../../../../components/NotFound';
 import { Checks } from '../../../../components/Revision/Checks';
 import { ReviewBar } from '../../../../components/Revision/ReviewBar';
-import { SidebarBlock } from '../../../../components/SidebarBlock';
+import { SidebarBlock } from '../../../../components/Sidebar/Block';
 import { StatusTag } from '../../../../components/StatusTag';
 import { Time } from '../../../../components/Time';
 import { UserList } from '../../../../components/UserList';
@@ -265,17 +264,15 @@ export const ProjectRevisionsShow: React.FC<{
   }
 
   return (
-    <Container className={cls.container}>
-      <Helmet title={`${rev.name} - ${proj.name} ${titleSuffix}`} />
+    <Container noPadding>
+      <Container.Left2Third className={cls.left}>
+        <Helmet title={`${rev.name} - ${proj.name} ${titleSuffix}`} />
 
-      <div className={cls.left}>
-        <Card>
-          <Card.Content>
+        <div className={cls.main}>
+          <div className={cls.card}>
             {!edit && (
               <div className={cls.mainTop}>
-                <Typography.Title level={1} className={cls.title}>
-                  {rev.name}
-                </Typography.Title>
+                <h2 className={cls.title}>{rev.name}</h2>
                 <Space>
                   {save && <LoadingOutlined />}
 
@@ -319,7 +316,7 @@ export const ProjectRevisionsShow: React.FC<{
                 />
               )}
             </Typography>
-          </Card.Content>
+          </div>
 
           {edit && (
             <div className={cls.editSave}>
@@ -337,56 +334,57 @@ export const ProjectRevisionsShow: React.FC<{
           {checks && !edit && (
             <Checks rev={rev} checks={checks} qp={qp} onClick={patchStatus} />
           )}
-        </Card>
-      </div>
+        </div>
 
-      <div className={cls.right}>
-        <SidebarBlock title="Authors">
-          <UserList
-            list={authors || rev.authors}
-            params={qp}
-            edit={edit}
-            onChange={onChangeAuthor}
-            exclude={reviewers || rev.reviewers}
-          />
-        </SidebarBlock>
-        {false && (
-          <SidebarBlock title="Reviewers">
+        {resBlobs.isLoading && (
+          <div>
+            <Skeleton active title={false} paragraph={{ rows: 3 }}></Skeleton>
+          </div>
+        )}
+
+        {!edit && <ReviewBar rev={rev} qp={qp} />}
+
+        <div className={cls.staged}>
+          {diffs.length > 0 ? (
+            diffs.map((diff) => {
+              return (
+                <DiffCard
+                  key={diff.blob.typeId}
+                  diff={diff}
+                  url={to}
+                  onRevert={() => null}
+                />
+              );
+            })
+          ) : (
+            <div className={cls.noDiff}>Empty diff...</div>
+          )}
+        </div>
+      </Container.Left2Third>
+      <Container.Right1Third className={cls.right}>
+        <div className={cls.sidebar}>
+          <SidebarBlock title="Authors">
             <UserList
-              list={reviewers || rev!.reviewers}
+              list={authors || rev.authors}
               params={qp}
               edit={edit}
-              onChange={onChangeReviewer}
-              exclude={authors || rev!.authors}
+              onChange={onChangeAuthor}
+              exclude={reviewers || rev.reviewers}
             />
           </SidebarBlock>
-        )}
-      </div>
-
-      {resBlobs.isLoading && (
-        <div>
-          <Skeleton active title={false} paragraph={{ rows: 3 }}></Skeleton>
-        </div>
-      )}
-
-      {!edit && <ReviewBar rev={rev} qp={qp} />}
-
-      <div className={cls.staged}>
-        {diffs.length > 0 ? (
-          diffs.map((diff) => {
-            return (
-              <DiffCard
-                key={diff.blob.typeId}
-                diff={diff}
-                url={to}
-                onRevert={() => null}
+          {false && (
+            <SidebarBlock title="Reviewers">
+              <UserList
+                list={reviewers || rev!.reviewers}
+                params={qp}
+                edit={edit}
+                onChange={onChangeReviewer}
+                exclude={authors || rev!.authors}
               />
-            );
-          })
-        ) : (
-          <div className={cls.noDiff}>Empty diff...</div>
-        )}
-      </div>
+            </SidebarBlock>
+          )}
+        </div>
+      </Container.Right1Third>
     </Container>
   );
 };

@@ -21,9 +21,7 @@ export async function createInvitation(
     'POST'
   );
 
-  console.log('yo?');
   if (res.status === 200) {
-    console.log('invalidated');
     queryClient.invalidateQueries(['listInvitations'], { exact: false });
   }
 
