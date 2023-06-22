@@ -9,17 +9,19 @@ import { prisma } from '../../../db';
 import { noQuery } from '../../../middlewares/noQuery';
 import { createProject } from '../../../models';
 import { v1 } from '../../../models/billing';
-import type { PostProject } from '../../../types/api';
+import type { ApiProject, PostProject } from '../../../types/api';
 
 function ProjectVal(req: FastifyRequest) {
+  const obj: Record<keyof PostProject['Body'], any> = {
+    name: schemaProject.shape.name,
+    slug: schemaProject.shape.slug,
+    orgId: valOrgId(req),
+    display: schemaProject.shape.display,
+    githubLink: z.string().url().max(2000),
+    githubRepositoryId: z.number().int().positive().nullable(),
+  };
   return z
-    .object({
-      name: schemaProject.shape.name,
-      slug: schemaProject.shape.slug,
-      orgId: valOrgId(req),
-      display: schemaProject.shape.display,
-      githubRepositoryId: z.number().int().positive().nullable(),
-    })
+    .object(obj)
     .strict()
     .superRefine(async (val, ctx) => {
       const res = await prisma.projects.findFirst({
@@ -67,6 +69,10 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
       const data = val.data;
 
+      const links: ApiProject['links'] = [];
+      if (data.githubLink) {
+        links.push({ title: 'Github', url: data.githubLink });
+      }
       const project = await prisma.$transaction(async (tx) => {
         const tmp = await createProject({
           data: {
@@ -77,7 +83,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
               type: 'doc',
               content: [],
             },
-            links: [],
+            links: links as any,
             display: data.display,
             edges: [],
             githubRepositoryId: data.githubRepositoryId,

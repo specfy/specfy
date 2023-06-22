@@ -25,7 +25,9 @@ export type ApiActivity = Omit<
   targetDocument?:
     | Pick<ApiDocument, 'id' | 'name' | 'slug' | 'type'>
     | undefined;
-  targetRevision?: Pick<ApiRevision, 'id' | 'name'> | undefined;
+  targetRevision?:
+    | Pick<ApiRevision, 'id' | 'locked' | 'name' | 'status'>
+    | undefined;
   targetPolicy?: Pick<ApiPolicy, 'id' | 'name'> | undefined;
 };
 export type ApiActivityGrouped = ApiActivity & { childrens?: ApiActivity[] };
@@ -35,6 +37,7 @@ export type ListActivities = Res<{
   Querystring: {
     org_id: string;
     project_id?: string;
+    revision_id?: string;
   };
   Success: {
     data: ApiActivity[];

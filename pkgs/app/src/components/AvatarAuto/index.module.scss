@@ -3,6 +3,8 @@
 .avatar {
   user-select: none;
 
+  position: relative;
+
   overflow: hidden;
   display: inline-flex;
   align-items: center;
@@ -41,6 +43,36 @@
 
   &.square {
     border-radius: $border-radius;
+  }
+
+  &.icon {
+    overflow: initial;
+    display: inline-block;
+
+    svg {
+      position: relative;
+
+      width: 22px;
+      height: 22px;
+      padding: 2px;
+
+      color: var(--acceptDark);
+
+      background-color: var(--accept);
+      border-radius: 100%
+    }
+
+    .image {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+
+
+      width: 16px;
+      height: 16px;
+
+      border: 1px solid #fff;
+    }
   }
 }
 

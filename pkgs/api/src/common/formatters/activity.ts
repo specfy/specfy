@@ -34,7 +34,9 @@ export function toApiActivity(act: ActivitiesList): ApiActivity {
             'type',
           ])
         : undefined,
-    // targetRevision: act.targetRevision ? act.targetRevision : undefined,
+    targetRevision: act.Revision
+      ? (act.Revision as ApiActivity['targetRevision'])
+      : undefined,
     // targetPolicy: act.targetPolicy ? act.targetPolicy : undefined,
 
     createdAt: act.createdAt.toISOString(),

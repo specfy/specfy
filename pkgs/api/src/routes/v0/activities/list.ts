@@ -4,6 +4,7 @@ import { z } from 'zod';
 
 import { validationError } from '../../../common/errors';
 import { toApiActivity } from '../../../common/formatters/activity';
+import { schemaId } from '../../../common/validators';
 import { valOrgId, valProjectId } from '../../../common/zod';
 import { prisma } from '../../../db';
 import type { ListActivities } from '../../../types/api';
@@ -13,9 +14,10 @@ function QueryVal(req: FastifyRequest) {
     .object({
       org_id: valOrgId(req),
       project_id: valProjectId(req),
+      revision_id: schemaId,
     })
     .strict()
-    .partial({ project_id: true });
+    .partial({ project_id: true, revision_id: true });
 }
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
@@ -36,6 +38,10 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       where.OR = [{ projectId: null }, { action: 'Project.created' }];
     }
 
+    if (query.revision_id) {
+      where.targetRevisionId = query.revision_id;
+    }
+
     // TODO: cursor pagination
     const activities = await prisma.activities.findMany({
       where,
@@ -45,6 +51,9 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         },
         User: true,
         Blob: true,
+        Revision: {
+          select: { id: true, name: true, status: true, locked: true },
+        },
       },
       orderBy: { createdAt: 'desc' },
       take: 10,

@@ -43,6 +43,7 @@ describe('POST /projects', () => {
         orgId: '',
         slug: '',
         githubRepositoryId: null,
+        githubLink: null,
       },
       // @ts-expect-error
       Querystring: { random: 'world' },
@@ -60,7 +61,14 @@ describe('POST /projects', () => {
     const slug = slugify(name);
     const res = await t.fetch.post('/0/projects', {
       token,
-      Body: { name, slug, display, orgId: org.id, githubRepositoryId: null },
+      Body: {
+        name,
+        slug,
+        display,
+        orgId: org.id,
+        githubRepositoryId: null,
+        githubLink: null,
+      },
     });
 
     isSuccess(res.json);
@@ -90,6 +98,7 @@ describe('POST /projects', () => {
         display,
         orgId: org.id,
         githubRepositoryId: null,
+        githubLink: null,
       },
     });
     isSuccess(res1.json);
@@ -103,6 +112,7 @@ describe('POST /projects', () => {
         display,
         orgId: org.id,
         githubRepositoryId: null,
+        githubLink: null,
       },
     });
     isValidationError(res2.json);

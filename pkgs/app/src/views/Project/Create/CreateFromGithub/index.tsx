@@ -104,6 +104,7 @@ export const CreateFromGithub: React.FC<{
           size: { width: computeWidth(repo.name, wDef, wMax), height: hDef },
         },
         githubRepositoryId: repo.id,
+        githubLink: repo.url,
       });
       if (isError(res)) {
         if (isValidationError(res)) {

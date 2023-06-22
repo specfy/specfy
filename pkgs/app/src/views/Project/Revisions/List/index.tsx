@@ -1,5 +1,9 @@
 import { LoadingOutlined } from '@ant-design/icons';
-import { IconCircleX, IconHistory, IconSearch } from '@tabler/icons-react';
+import {
+  IconChevronRight,
+  IconCircleXFilled,
+  IconSearch,
+} from '@tabler/icons-react';
 import { Button, Input, Select, Table } from 'antd';
 import type { ApiProject, ApiRevision, ListRevisions } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
@@ -10,6 +14,7 @@ import { useDebounce } from 'react-use';
 import { useListRevisions } from '../../../../api';
 import { titleSuffix } from '../../../../common/string';
 import { Container } from '../../../../components/Container';
+import { Flex } from '../../../../components/Flex';
 import { StatusTag } from '../../../../components/StatusTag';
 import { Time } from '../../../../components/Time';
 import type { RouteProject } from '../../../../types/routes';
@@ -66,10 +71,11 @@ export const ProjectRevisionsList: React.FC<{
       <Container.Left2Third>
         <Helmet title={`Revisions - ${proj.name} ${titleSuffix}`} />
         <div className={cls.searchWrapper}>
+          <h2>Revisions</h2>
           <div className={cls.search}>
-            <div className={cls.inputs}>
+            {loading && <LoadingOutlined size={32} />}
+            <div>
               <Input
-                size="large"
                 prefix={<IconSearch />}
                 onChange={handleInput}
                 value={search}
@@ -88,20 +94,20 @@ export const ProjectRevisionsList: React.FC<{
                   </Select>
                 }
                 suffix={
-                  (search || filterStatus !== 'opened') && (
+                  search || filterStatus !== 'opened' ? (
                     <Button
                       onClick={handleReset}
                       title="Reset search filters..."
                       type="text"
-                      size="small"
-                      icon={<IconCircleX />}
+                      icon={<IconCircleXFilled />}
                     />
+                  ) : (
+                    <span className={cls.placeholderReset}></span>
                   )
                 }
                 placeholder="Search..."
               />
             </div>
-            {loading && <LoadingOutlined size={32} />}
           </div>
         </div>
 
@@ -112,35 +118,40 @@ export const ProjectRevisionsList: React.FC<{
             pagination={{ position: ['bottomCenter'] }}
           >
             <Table.Column
-              title={
-                <div>
-                  <span>
-                    <IconHistory />
-                  </span>{' '}
-                  {list.pagination.totalItems} Revisions
-                </div>
-              }
+              title={false}
               dataIndex="name"
               key="name"
               render={(_, item: ApiRevision) => {
                 return (
-                  <>
-                    <Link
-                      to={`/${params.org_id}/${params.project_slug}/revisions/${item.id}`}
-                      relative="path"
-                      className={cls.title}
-                    >
-                      {item.name}
-                    </Link>
-                    <div className={cls.subtitle}>
+                  <Flex justifyContent="space-between" className={cls.line}>
+                    <div>
+                      <Link
+                        to={`/${params.org_id}/${params.project_slug}/revisions/${item.id}`}
+                        relative="path"
+                        className={cls.title}
+                      >
+                        {item.name}
+                      </Link>
+                      <div className={cls.subtitle}>
+                        Opened <Time time={item.createdAt} />
+                      </div>
+                    </div>
+
+                    <div>
                       <StatusTag
                         status={item.status}
                         locked={item.locked}
                         merged={item.merged}
-                      />{' '}
-                      opened <Time time={item.createdAt} />
+                      />
+                      <Link
+                        to={`/${params.org_id}/${params.project_slug}/revisions/${item.id}`}
+                        relative="path"
+                        className={cls.title}
+                      >
+                        <IconChevronRight />
+                      </Link>
                     </div>
-                  </>
+                  </Flex>
                 );
               }}
             />
