@@ -41,6 +41,10 @@ function ProjectVal(req: FastifyRequest) {
         },
       });
       const org = getOrgFromRequest(req, val.orgId);
+      if (!org) {
+        return;
+      }
+
       const max = org.isPersonal ? v1.free.project.max : v1.paid.project.max;
       if (count >= max) {
         ctx.addIssue({
