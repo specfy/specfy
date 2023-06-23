@@ -72,7 +72,7 @@ describe('POST /invitations', () => {
     });
   });
 
-  it.only('should not be able to invite to an other org', async () => {
+  it('should not be able to invite to an other org', async () => {
     const { token } = await seedWithOrg();
     const seed2 = await seedWithOrg();
 
