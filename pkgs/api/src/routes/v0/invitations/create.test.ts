@@ -71,4 +71,19 @@ describe('POST /invitations', () => {
       },
     });
   });
+
+  it.only('should not be able to invite to an other org', async () => {
+    const { token } = await seedWithOrg();
+    const seed2 = await seedWithOrg();
+
+    const post = await t.fetch.post('/0/invitations', {
+      token,
+      Body: {
+        email: 'foobar@example.com',
+        orgId: seed2.org.id,
+        role: 'viewer',
+      },
+    });
+    isValidationError(post.json);
+  });
 });

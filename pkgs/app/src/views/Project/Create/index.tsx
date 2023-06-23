@@ -42,8 +42,6 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
         zIndex: 1,
         size: { width: computeWidth(name, wDef, wMax), height: hDef },
       },
-      githubRepositoryId: null,
-      githubLink: null,
     });
     if (isError(res)) {
       if (isValidationError(res)) {

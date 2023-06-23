@@ -79,6 +79,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       data.push({
         id: repo.id,
         name: repo.name,
+        fullName: repo.full_name,
         url: repo.html_url,
         private: repo.private,
       });

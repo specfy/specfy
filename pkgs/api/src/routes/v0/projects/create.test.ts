@@ -42,8 +42,6 @@ describe('POST /projects', () => {
         display,
         orgId: '',
         slug: '',
-        githubRepositoryId: null,
-        githubLink: null,
       },
       // @ts-expect-error
       Querystring: { random: 'world' },
@@ -66,8 +64,6 @@ describe('POST /projects', () => {
         slug,
         display,
         orgId: org.id,
-        githubRepositoryId: null,
-        githubLink: null,
       },
     });
 
@@ -97,8 +93,6 @@ describe('POST /projects', () => {
         slug: slugify(name),
         display,
         orgId: org.id,
-        githubRepositoryId: null,
-        githubLink: null,
       },
     });
     isSuccess(res1.json);
@@ -111,8 +105,6 @@ describe('POST /projects', () => {
         slug: slugify(name),
         display,
         orgId: org.id,
-        githubRepositoryId: null,
-        githubLink: null,
       },
     });
     isValidationError(res2.json);

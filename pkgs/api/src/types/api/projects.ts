@@ -23,8 +23,6 @@ export type ListProjects = Res<{
 export type PostProject = Res<{
   Body: Pick<ApiProject, 'name' | 'orgId' | 'slug'> & {
     display: ApiProject['display'];
-    githubRepositoryId: number | null;
-    githubLink: string | null;
   };
   Success: Pick<ApiProject, 'id' | 'slug'>;
 }>;

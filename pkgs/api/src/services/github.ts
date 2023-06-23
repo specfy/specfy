@@ -28,11 +28,11 @@ ws.onAny(({ id, payload, name }) => {
 ws.on('repository.renamed', async ({ id, payload }) => {
   const prev = payload.changes.repository.name.from;
   const next = payload.repository.name;
-  const repoId = payload.repository.id;
+  const owner = payload.repository.owner;
 
   const updated = await prisma.projects.updateMany({
-    where: { githubRepositoryId: repoId, name: prev },
-    data: { name: next },
+    where: { githubRepository: `${owner}/${prev}`, name: prev },
+    data: { name: next, githubRepository: payload.repository.full_name },
   });
 
   l.info(`renamed ${updated.count} projects`, { id });
