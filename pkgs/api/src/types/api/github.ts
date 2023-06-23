@@ -50,7 +50,7 @@ export type GetGithubMembers = Res<{
 export type PostLinkToGithubOrg = Res<{
   Body: {
     orgId: string;
-    installationId: string | null;
+    installationId: number | null;
   };
   Success: {
     done: true;
