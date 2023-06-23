@@ -1,10 +1,10 @@
-import type { DBComponent, DBDocument, DBProject } from '../db/index.js';
 import type {
   DBBlob,
   DBBlobComponent,
   DBBlobDocument,
   DBBlobProject,
-} from '../db/blobs';
+} from '../db/blobs.js';
+import type { DBComponent, DBDocument, DBProject } from '../db/index.js';
 
 import type { QuerystringOrgProject, Res } from './api.js';
 import type { ParamsRevision } from './revisions.js';

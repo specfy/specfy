@@ -9,7 +9,6 @@ module.exports = {
     'plugin:import/errors',
     'plugin:import/warnings',
     'plugin:prettier/recommended',
-    'plugin:require-extensions/recommended',
   ],
   parser: '@typescript-eslint/parser',
   plugins: [
@@ -357,4 +356,14 @@ module.exports = {
     // TMP
     'react/prop-types': ['off'],
   },
+
+  overrides: [
+    {
+      files: ['pkgs/api/src/**/*.ts'],
+      rules: {
+        'require-extensions/require-extensions': 'error',
+        'require-extensions/require-index': 'error',
+      },
+    },
+  ],
 };

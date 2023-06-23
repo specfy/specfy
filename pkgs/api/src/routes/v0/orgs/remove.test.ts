@@ -8,12 +8,12 @@ import {
   shouldBeProtected,
   shouldNotAllowBody,
   shouldNotAllowQueryParams,
-} from '../../../test/helpers';
+} from '../../../test/helpers.js';
 import {
   seedSimpleUser,
   seedWithOrg,
   seedWithProject,
-} from '../../../test/seed/seed';
+} from '../../../test/seed/seed.js';
 
 let t: TestSetup;
 beforeAll(async () => {

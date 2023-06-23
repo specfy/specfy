@@ -10,7 +10,7 @@ import {
   shouldBeProtected,
   shouldEnforceBody,
   shouldNotAllowQueryParams,
-} from '../../../test/helpers';
+} from '../../../test/helpers.js';
 import { seedSimpleUser, seedWithOrg } from '../../../test/seed/seed.js';
 
 let t: TestSetup;

@@ -8,7 +8,7 @@ import {
   shouldBeProtected,
   shouldEnforceBody,
   shouldNotAllowQueryParams,
-} from '../../../test/helpers';
+} from '../../../test/helpers.js';
 import {
   getBlobComponent,
   seedComponent,

@@ -5,7 +5,7 @@ import type { TestSetup } from '../../../test/each.js';
 import {
   shouldNotAllowBody,
   shouldNotAllowQueryParams,
-} from '../../../test/helpers';
+} from '../../../test/helpers.js';
 import { seedSimpleUser } from '../../../test/seed/seed.js';
 
 let t: TestSetup;

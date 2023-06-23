@@ -105,7 +105,7 @@ export async function deploy(
   const {
     stderr,
     stdout,
-  } = $`git clone https://x-access-token:${token}@github.com/${job.Project.githubRepository}.git`;
+  } = $`git clone https://x-access-token:${token}@github.com/${config.url}.git`;
 
   console.log({ stderr, stdout });
   return { status: 'success' };

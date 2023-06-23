@@ -6,7 +6,7 @@ import { isSuccess, isValidationError } from '../../../test/fetch.js';
 import {
   shouldBeProtected,
   shouldNotAllowQueryParams,
-} from '../../../test/helpers';
+} from '../../../test/helpers.js';
 import { seedPolicy } from '../../../test/seed/policies.js';
 import { seedSimpleUser, seedWithOrg } from '../../../test/seed/seed.js';
 

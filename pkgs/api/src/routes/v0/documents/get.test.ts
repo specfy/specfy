@@ -8,7 +8,7 @@ import {
   shouldBeNotFound,
   shouldBeProtected,
   shouldNotAllowQueryParams,
-} from '../../../test/helpers';
+} from '../../../test/helpers.js';
 import { seedDocument } from '../../../test/seed/documents.js';
 import { seedWithProject } from '../../../test/seed/seed.js';
 

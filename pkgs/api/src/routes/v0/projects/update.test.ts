@@ -9,7 +9,7 @@ import {
   shouldBeNotFound,
   shouldBeProtected,
   shouldNotAllowQueryParams,
-} from '../../../test/helpers';
+} from '../../../test/helpers.js';
 import { seedSimpleUser, seedWithProject } from '../../../test/seed/seed.js';
 
 let t: TestSetup;

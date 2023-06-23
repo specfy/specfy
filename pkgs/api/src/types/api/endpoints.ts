@@ -8,7 +8,7 @@ import type {
   ListGithubInstallations,
   ListGithubRepos,
   PostLinkToGithubOrg,
-} from './github';
+} from './github.js';
 import type {
   AcceptInvitation,
   DeclineInvitation,
@@ -16,7 +16,7 @@ import type {
   GetInvitation,
   ListInvitations,
   PostInvitation,
-} from './invitations';
+} from './invitations.js';
 import type { DeleteMe, GetMe, PutMe } from './me.js';
 import type { DeleteOrg, ListOrgs, PostOrg, PutOrg } from './orgs.js';
 import type { DeletePerm, GetCountPerms, ListPerms, PutPerm } from './perms.js';
@@ -27,7 +27,7 @@ import type {
   ListProjects,
   PostProject,
   PutProject,
-} from './projects';
+} from './projects.js';
 import type {
   CommentRevision,
   GetRevision,
@@ -38,7 +38,7 @@ import type {
   PostRevision,
   PostUploadRevision,
   RebaseRevision,
-} from './revisions';
+} from './revisions.js';
 import type { GetRoot } from './root.js';
 import type { ListUsers } from './users.js';
 

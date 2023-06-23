@@ -8,7 +8,7 @@ import {
   shouldBeProtected,
   shouldEnforceBody,
   shouldNotAllowQueryParams,
-} from '../../../test/helpers';
+} from '../../../test/helpers.js';
 import { createOrgId } from '../../../test/seed/orgs.js';
 import { seedSimpleUser } from '../../../test/seed/seed.js';
 
