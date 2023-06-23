@@ -28,7 +28,7 @@
   ],
   "homepage": "https://github.com/specfy/specfy#readme",
   "devDependencies": {
-    "@google-cloud/storage": "6.9.5",
+    "@google-cloud/storage": "6.11.0",
     "@typescript-eslint/eslint-plugin": "5.57.1",
     "@typescript-eslint/parser": "5.57.1",
     "eslint": "8.39.0",
