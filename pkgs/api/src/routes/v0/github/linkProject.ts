@@ -4,10 +4,11 @@ import { Octokit } from 'octokit';
 import { z } from 'zod';
 
 import { notFound, serverError, validationError } from '../../../common/errors';
+import { getOrgFromRequest } from '../../../common/perms';
 import { valOrgId, valProjectId } from '../../../common/zod';
 import { prisma } from '../../../db';
 import { noQuery } from '../../../middlewares/noQuery';
-// import { createJobPush } from '../../../models/jobs';
+import { createGithubActivity } from '../../../models/github';
 import type { ApiProject, PostLinkToGithubProject } from '../../../types/api';
 
 const repoRegex = /^[a-zA-Z0-9_.-]+\/[a-zA-Z0-9_.-]+$/;
@@ -32,6 +33,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
       const user = req.user!;
       const body = val.data;
+      const org = getOrgFromRequest(req, body.orgId)!;
       const accounts = await prisma.accounts.findFirst({
         where: { userId: user.id },
       });
@@ -89,14 +91,16 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
             id: body.projectId,
           },
         });
-        // if (body.repository) {
-        //   await createJobPush(
-        //     { orgId: body.orgId, projectId: body.projectId, tx },
-        //     {
-        //       url: body.repository,
-        //     }
-        //   );
-        // }
+
+        if (body.repository !== proj.githubRepository) {
+          await createGithubActivity({
+            action: !body.repository ? 'Github.unlinked' : 'Github.linked',
+            org,
+            project: proj,
+            tx,
+            user,
+          });
+        }
       });
 
       res.status(200).send({

@@ -57,9 +57,12 @@ export type ActionUser =
 
 export type ActionKey = 'Key.created' | 'Key.deleted';
 
+export type ActionGithub = 'Github.linked' | 'Github.unlinked';
+
 export type ActionAll =
   | ActionComponent
   | ActionDocument
+  | ActionGithub
   | ActionKey
   | ActionOrg
   | ActionPolicy

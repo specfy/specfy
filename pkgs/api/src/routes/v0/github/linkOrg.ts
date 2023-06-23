@@ -5,9 +5,11 @@ import { Octokit } from 'octokit';
 import { z } from 'zod';
 
 import { notFound, serverError, validationError } from '../../../common/errors';
+import { getOrgFromRequest } from '../../../common/perms';
 import { valOrgId } from '../../../common/zod';
 import { prisma } from '../../../db';
 import { noQuery } from '../../../middlewares/noQuery';
+import { createGithubActivity } from '../../../models/github';
 import { github } from '../../../services/github';
 import type { PostLinkToGithubOrg } from '../../../types/api';
 
@@ -32,6 +34,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
       const user = req.user!;
       const body = val.data;
+      const org = getOrgFromRequest(req, body.orgId)!;
       const accounts = await prisma.accounts.findFirst({
         where: { userId: user.id },
       });
@@ -72,11 +75,21 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       }
 
       // Set install
-      await prisma.orgs.update({
-        data,
-        where: {
-          id: body.orgId,
-        },
+      await prisma.$transaction(async (tx) => {
+        await prisma.orgs.update({
+          data,
+          where: {
+            id: body.orgId,
+          },
+        });
+        if (body.installationId !== org.githubInstallationId) {
+          await createGithubActivity({
+            action: !body.installationId ? 'Github.unlinked' : 'Github.linked',
+            org,
+            tx,
+            user,
+          });
+        }
       });
 
       res.status(200).send({
