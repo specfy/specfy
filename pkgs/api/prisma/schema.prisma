@@ -191,10 +191,10 @@ model Jobs {
   // @@index([type, createdAt], map: "idx_jobs_worker")
   // SELECT WHERE orgId, projectId ORDER BY createdAt
   // e.g: display list
-  // @@index([orgId, projectId, createdAt], map: "idx_jobs_display")
+  @@index([orgId, projectId, createdAt], map: "idx_jobs_display")
   // SELECT WHERE orgId, projectId, status ORDER BY createdAt
   // e.g: Pending job
-  // @@index([orgId, projectId, status, createdAt], map: "idx_jobs_display_bystatus")
+  @@index([orgId, projectId, status, createdAt], map: "idx_jobs_display_bystatus")
 }
 
 model Orgs {
