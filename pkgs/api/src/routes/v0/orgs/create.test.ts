@@ -1,16 +1,16 @@
 import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
-import { prisma } from '../../../db';
-import type { TestSetup } from '../../../test/each';
-import { setupBeforeAll, setupAfterAll } from '../../../test/each';
-import { isSuccess, isValidationError } from '../../../test/fetch';
+import { prisma } from '../../../db/index.js';
+import type { TestSetup } from '../../../test/each.js';
+import { setupBeforeAll, setupAfterAll } from '../../../test/each.js';
+import { isSuccess, isValidationError } from '../../../test/fetch.js';
 import {
   shouldBeProtected,
   shouldEnforceBody,
   shouldNotAllowQueryParams,
 } from '../../../test/helpers';
-import { createOrgId } from '../../../test/seed/orgs';
-import { seedSimpleUser } from '../../../test/seed/seed';
+import { createOrgId } from '../../../test/seed/orgs.js';
+import { seedSimpleUser } from '../../../test/seed/seed.js';
 
 let t: TestSetup;
 beforeAll(async () => {

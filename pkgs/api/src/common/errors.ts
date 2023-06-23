@@ -7,7 +7,7 @@ import type {
   ResServerError,
   ResUnauthorized,
   ResValidationError,
-} from '../types/api';
+} from '../types/api/index.js';
 
 export function notFound(res: FastifyReply, message?: string): void {
   const err: ResNotFound = {

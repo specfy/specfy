@@ -1,10 +1,10 @@
 import type { Orgs, Users } from '@prisma/client';
 
-import { nanoid } from '../../common/id';
-import { slugify } from '../../common/string';
-import { prisma } from '../../db';
-import { createProject, updateProject } from '../../models/project';
-import type { DBProject } from '../../types/db';
+import { nanoid } from '../../common/id.js';
+import { slugify } from '../../common/string.js';
+import { prisma } from '../../db/index.js';
+import { createProject, updateProject } from '../../models/project.js';
+import type { DBProject } from '../../types/db/index.js';
 
 /**
  * Seed projects

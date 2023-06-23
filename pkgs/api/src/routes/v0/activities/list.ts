@@ -2,12 +2,12 @@ import type { Prisma } from '@prisma/client';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
-import { validationError } from '../../../common/errors';
-import { toApiActivity } from '../../../common/formatters/activity';
-import { schemaId } from '../../../common/validators';
-import { valOrgId, valProjectId } from '../../../common/zod';
-import { prisma } from '../../../db';
-import type { ListActivities } from '../../../types/api';
+import { validationError } from '../../../common/errors.js';
+import { toApiActivity } from '../../../common/formatters/activity.js';
+import { schemaId } from '../../../common/validators/index.js';
+import { valOrgId, valProjectId } from '../../../common/zod.js';
+import { prisma } from '../../../db/index.js';
+import type { ListActivities } from '../../../types/api/index.js';
 
 function QueryVal(req: FastifyRequest) {
   return z

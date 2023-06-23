@@ -1,9 +1,9 @@
 import type { FastifyPluginCallback } from 'fastify';
 import { Octokit } from 'octokit';
 
-import { prisma } from '../../../db';
-import { noQuery } from '../../../middlewares/noQuery';
-import type { ListGithubInstallations } from '../../../types/api';
+import { prisma } from '../../../db/index.js';
+import { noQuery } from '../../../middlewares/noQuery.js';
+import type { ListGithubInstallations } from '../../../types/api/index.js';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<ListGithubInstallations>(

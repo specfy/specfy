@@ -1,13 +1,13 @@
 import type { FastifyPluginCallback } from 'fastify';
 import { z } from 'zod';
 
-import { validationError } from '../../../common/errors';
-import { toApiMe } from '../../../common/formatters/user';
-import { schemaUser } from '../../../common/validators/user';
-import { prisma } from '../../../db';
-import { noQuery } from '../../../middlewares/noQuery';
-import { createUserActivity } from '../../../models';
-import type { PutMe } from '../../../types/api';
+import { validationError } from '../../../common/errors.js';
+import { toApiMe } from '../../../common/formatters/user.js';
+import { schemaUser } from '../../../common/validators/user.js';
+import { prisma } from '../../../db/index.js';
+import { noQuery } from '../../../middlewares/noQuery.js';
+import { createUserActivity } from '../../../models/index.js';
+import type { PutMe } from '../../../types/api/index.js';
 
 function BodyVal() {
   return z

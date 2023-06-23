@@ -1,15 +1,14 @@
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import z from 'zod';
 
-import { validationError } from '../../../common/errors';
-import { getOrgFromRequest } from '../../../common/perms';
-import { schemaProject } from '../../../common/validators';
-import { valOrgId } from '../../../common/zod';
-import { prisma } from '../../../db';
-import { noQuery } from '../../../middlewares/noQuery';
-import { createProject } from '../../../models';
-import { v1 } from '../../../models/billing';
-import type { PostProject } from '../../../types/api';
+import { validationError } from '../../../common/errors.js';
+import { getOrgFromRequest } from '../../../common/perms.js';
+import { schemaProject } from '../../../common/validators/index.js';
+import { valOrgId } from '../../../common/zod.js';
+import { prisma } from '../../../db/index.js';
+import { noQuery } from '../../../middlewares/noQuery.js';
+import { v1, createProject } from '../../../models/index.js';
+import type { PostProject } from '../../../types/api/index.js';
 
 function ProjectVal(req: FastifyRequest) {
   const obj: Record<keyof PostProject['Body'], any> = {

@@ -1,19 +1,22 @@
 import type { Prisma } from '@prisma/client';
 import type { FastifyPluginCallback } from 'fastify';
 
-import { findAllBlobsWithParent } from '../../../common/blobs';
-import { checkReviews } from '../../../common/revision';
-import { prisma } from '../../../db';
-import { getRevision } from '../../../middlewares/getRevision';
-import { noBody } from '../../../middlewares/noBody';
+import { findAllBlobsWithParent } from '../../../common/blobs.js';
+import { checkReviews } from '../../../common/revision/index.js';
+import { prisma } from '../../../db/index.js';
+import { getRevision } from '../../../middlewares/getRevision.js';
+import { noBody } from '../../../middlewares/noBody.js';
 import {
   createComponentActivity,
   createDocumentActivity,
   createProjectActivity,
   createRevisionActivity,
-} from '../../../models';
-import type { MergeRevision, MergeRevisionError } from '../../../types/api';
-import type { DBBlob } from '../../../types/db';
+} from '../../../models/index.js';
+import type {
+  MergeRevision,
+  MergeRevisionError,
+} from '../../../types/api/index.js';
+import type { DBBlob } from '../../../types/db/index.js';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.post<MergeRevision>(

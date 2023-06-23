@@ -4,14 +4,18 @@ import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { Octokit } from 'octokit';
 import { z } from 'zod';
 
-import { notFound, serverError, validationError } from '../../../common/errors';
-import { getOrgFromRequest } from '../../../common/perms';
-import { valOrgId } from '../../../common/zod';
-import { prisma } from '../../../db';
-import { noQuery } from '../../../middlewares/noQuery';
-import { createGithubActivity } from '../../../models/github';
-import { github } from '../../../services/github';
-import type { PostLinkToGithubOrg } from '../../../types/api';
+import {
+  notFound,
+  serverError,
+  validationError,
+} from '../../../common/errors.js';
+import { getOrgFromRequest } from '../../../common/perms.js';
+import { valOrgId } from '../../../common/zod.js';
+import { prisma } from '../../../db/index.js';
+import { noQuery } from '../../../middlewares/noQuery.js';
+import { createGithubActivity } from '../../../models/index.js';
+import { github } from '../../../services/github/index.js';
+import type { PostLinkToGithubOrg } from '../../../types/api/index.js';
 
 function QueryVal(req: FastifyRequest) {
   const obj: Record<keyof PostLinkToGithubOrg['Body'], any> = {

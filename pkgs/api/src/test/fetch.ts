@@ -4,9 +4,9 @@ import type { Dispatcher } from 'undici';
 import { Client } from 'undici';
 import type { OmitByValue } from 'utility-types';
 
-import type { ResErrors, ResValidationError } from '../types/api';
-import type { API, APIPaths } from '../types/api/endpoints';
-import type { FilterObjObjWithKey } from '../types/utils';
+import type { API, APIPaths } from '../types/api/endpoints.js';
+import type { ResErrors, ResValidationError } from '../types/api/index.js';
+import type { FilterObjObjWithKey } from '../types/utils.js';
 
 type HasGet = { GET: Record<string, unknown> };
 type HasPost = { POST: Record<string, unknown> };

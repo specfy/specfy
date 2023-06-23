@@ -1,15 +1,15 @@
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
-import { validationError } from '../../../common/errors';
-import { nanoid } from '../../../common/id';
-import { schemaId } from '../../../common/validators';
-import { valOrgId, valProjectId } from '../../../common/zod';
-import { prisma } from '../../../db';
-import { noQuery } from '../../../middlewares/noQuery';
-import type { PutPerm } from '../../../types/api';
-import type { DBPerm } from '../../../types/db';
-import { PermType } from '../../../types/db';
+import { validationError } from '../../../common/errors.js';
+import { nanoid } from '../../../common/id.js';
+import { schemaId } from '../../../common/validators/index.js';
+import { valOrgId, valProjectId } from '../../../common/zod.js';
+import { prisma } from '../../../db/index.js';
+import { noQuery } from '../../../middlewares/noQuery.js';
+import type { PutPerm } from '../../../types/api/index.js';
+import type { DBPerm } from '../../../types/db/index.js';
+import { PermType } from '../../../types/db/index.js';
 
 function QueryVal(req: FastifyRequest) {
   return z

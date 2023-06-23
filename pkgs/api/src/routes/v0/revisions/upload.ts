@@ -4,22 +4,22 @@ import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { defaultMarkdownParser } from 'prosemirror-markdown';
 import { z } from 'zod';
 
-import { validationError } from '../../../common/errors';
-import { nanoid } from '../../../common/id';
-import { slugify } from '../../../common/string';
-import { schemaRevision } from '../../../common/validators/revision';
-import { valOrgId, valProjectId } from '../../../common/zod';
-import { prisma } from '../../../db';
-import { noQuery } from '../../../middlewares/noQuery';
-import { createBlobs, createRevisionActivity } from '../../../models';
+import { validationError } from '../../../common/errors.js';
+import { nanoid } from '../../../common/id.js';
+import { slugify } from '../../../common/string.js';
+import { schemaRevision } from '../../../common/validators/revision.js';
+import { valOrgId, valProjectId } from '../../../common/zod.js';
+import { prisma } from '../../../db/index.js';
+import { noQuery } from '../../../middlewares/noQuery.js';
+import { createBlobs, createRevisionActivity } from '../../../models/index.js';
 import type {
   ApiBlobCreate,
   ApiBlobCreateDocument,
   BlockLevelZero,
   Blocks,
   PostUploadRevision,
-} from '../../../types/api';
-import type { DBDocument } from '../../../types/db';
+} from '../../../types/api/index.js';
+import type { DBDocument } from '../../../types/db/index.js';
 
 function BodyVal(req: FastifyRequest) {
   return z

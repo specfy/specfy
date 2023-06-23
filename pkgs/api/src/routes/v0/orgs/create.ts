@@ -1,13 +1,13 @@
 import type { FastifyPluginCallback } from 'fastify';
 import z from 'zod';
 
-import { validationError } from '../../../common/errors';
-import { toApiOrg } from '../../../common/formatters/org';
-import { schemaOrgId } from '../../../common/validators';
-import { prisma } from '../../../db';
-import { noQuery } from '../../../middlewares/noQuery';
-import { createOrg } from '../../../models';
-import type { PostOrg } from '../../../types/api';
+import { validationError } from '../../../common/errors.js';
+import { toApiOrg } from '../../../common/formatters/org.js';
+import { schemaOrgId } from '../../../common/validators/index.js';
+import { prisma } from '../../../db/index.js';
+import { noQuery } from '../../../middlewares/noQuery.js';
+import { createOrg } from '../../../models/index.js';
+import type { PostOrg } from '../../../types/api/index.js';
 
 const OrgVal = z
   .object({

@@ -1,8 +1,8 @@
 import type { Orgs, Users } from '@prisma/client';
 
-import { nanoid } from '../../common/id';
-import { prisma } from '../../db';
-import { createPoliciesActivity } from '../../models';
+import { nanoid } from '../../common/id.js';
+import { prisma } from '../../db/index.js';
+import { createPoliciesActivity } from '../../models/index.js';
 
 /**
  * Seed playbook

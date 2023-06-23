@@ -1,10 +1,10 @@
 import type { Invitations, Prisma } from '@prisma/client';
 
-import type { PermType } from '../db';
+import type { PermType } from '../db/index.js';
 
-import type { Res } from './api';
-import type { ApiOrg } from './orgs';
-import type { ApiUser } from './users';
+import type { Res } from './api.js';
+import type { ApiOrg } from './orgs.js';
+import type { ApiUser } from './users.js';
 
 export type ApiInvitation = Omit<Invitations, 'role' | 'token'> & {
   role: PermType;

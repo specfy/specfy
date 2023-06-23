@@ -1,12 +1,12 @@
 import type { FastifyPluginCallback } from 'fastify';
 
-import { forbidden } from '../../../common/errors';
-import { toApiOrg } from '../../../common/formatters/org';
-import { toApiUser } from '../../../common/formatters/user';
-import { getInvitation } from '../../../middlewares/getInvitation';
-import { noBody } from '../../../middlewares/noBody';
-import type { GetInvitation } from '../../../types/api';
-import type { PermType } from '../../../types/db';
+import { forbidden } from '../../../common/errors.js';
+import { toApiOrg } from '../../../common/formatters/org.js';
+import { toApiUser } from '../../../common/formatters/user.js';
+import { getInvitation } from '../../../middlewares/getInvitation.js';
+import { noBody } from '../../../middlewares/noBody.js';
+import type { GetInvitation } from '../../../types/api/index.js';
+import type { PermType } from '../../../types/db/index.js';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<GetInvitation>(

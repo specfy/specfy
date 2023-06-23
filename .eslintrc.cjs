@@ -9,9 +9,17 @@ module.exports = {
     'plugin:import/errors',
     'plugin:import/warnings',
     'plugin:prettier/recommended',
+    'plugin:require-extensions/recommended',
   ],
   parser: '@typescript-eslint/parser',
-  plugins: ['@typescript-eslint', 'react', 'react-hooks', 'jsx-a11y', 'import'],
+  plugins: [
+    '@typescript-eslint',
+    'react',
+    'react-hooks',
+    'jsx-a11y',
+    'import',
+    'require-extensions',
+  ],
   root: true,
   parserOptions: {
     ecmaVersion: 2018,
@@ -326,6 +334,7 @@ module.exports = {
     // Import
     'import/extensions': ['error', 'never'],
     'import/no-cycle': 'off', // checked by ts
+    'import/no-unresolved': 'off', // checked by ts
 
     'import/order': [
       'error',

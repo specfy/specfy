@@ -1,9 +1,9 @@
 import type { Orgs, Users } from '@prisma/client';
 import { customAlphabet } from 'nanoid/non-secure';
 
-import { nanoid } from '../../common/id';
-import { prisma } from '../../db';
-import { createOrg } from '../../models';
+import { nanoid } from '../../common/id.js';
+import { prisma } from '../../db/index.js';
+import { createOrg } from '../../models/index.js';
 
 export const createOrgId = customAlphabet('abcdefghijklmnopqrstuvwxyz', 20);
 

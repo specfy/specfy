@@ -3,13 +3,23 @@ import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { Octokit } from 'octokit';
 import { z } from 'zod';
 
-import { notFound, serverError, validationError } from '../../../common/errors';
-import { getOrgFromRequest } from '../../../common/perms';
-import { valOrgId, valProjectId } from '../../../common/zod';
-import { prisma } from '../../../db';
-import { noQuery } from '../../../middlewares/noQuery';
-import { createGithubActivity } from '../../../models/github';
-import type { ApiProject, PostLinkToGithubProject } from '../../../types/api';
+import {
+  notFound,
+  serverError,
+  validationError,
+} from '../../../common/errors.js';
+import { getOrgFromRequest } from '../../../common/perms.js';
+import { valOrgId, valProjectId } from '../../../common/zod.js';
+import { prisma } from '../../../db/index.js';
+import { noQuery } from '../../../middlewares/noQuery.js';
+import {
+  createGithubActivity,
+  createJobDeploy,
+} from '../../../models/index.js';
+import type {
+  ApiProject,
+  PostLinkToGithubProject,
+} from '../../../types/api/index.js';
 
 const repoRegex = /^[a-zA-Z0-9_.-]+\/[a-zA-Z0-9_.-]+$/;
 function QueryVal(req: FastifyRequest) {
@@ -92,6 +102,14 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           },
         });
 
+        if (body.repository) {
+          await createJobDeploy(
+            { orgId: body.orgId, projectId: body.projectId, tx },
+            {
+              url: body.repository,
+            }
+          );
+        }
         if (body.repository !== proj.githubRepository) {
           await createGithubActivity({
             action: !body.repository ? 'Github.unlinked' : 'Github.linked',

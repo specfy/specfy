@@ -1,9 +1,9 @@
 import type { Users } from '@prisma/client';
 
-import { env } from '../../common/env';
-import { nanoid } from '../../common/id';
-import { prisma } from '../../db';
-import { pbkdf2 } from '../../middlewares/auth/local';
+import { env } from '../../common/env.js';
+import { nanoid } from '../../common/id.js';
+import { prisma } from '../../db/index.js';
+import { pbkdf2 } from '../../middlewares/auth/local.js';
 
 /**
  * Seed users

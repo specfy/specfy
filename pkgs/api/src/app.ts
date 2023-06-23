@@ -8,12 +8,13 @@ import type {
   FastifyServerOptions,
 } from 'fastify';
 
-import { notFound, serverError } from './common/errors';
-import { logger } from './logger';
-import { AuthError } from './middlewares/auth/errors';
-import { routes } from './routes/routes';
+import { dirname } from './common/env.js';
+import { notFound, serverError } from './common/errors.js';
+import { logger } from './logger.js';
+import { AuthError } from './middlewares/auth/errors.js';
+import { routes } from './routes/routes.js';
 
-import './common/auth';
+import './common/auth.js';
 
 export default async (f: FastifyInstance, opts: FastifyPluginOptions) => {
   await f.register(cors, {
@@ -46,7 +47,7 @@ export default async (f: FastifyInstance, opts: FastifyPluginOptions) => {
   });
 
   await f.register(staticFiles, {
-    root: path.join(__dirname, '..', 'public'),
+    root: path.join(dirname, '..', 'public'),
     prefix: '/',
   });
 

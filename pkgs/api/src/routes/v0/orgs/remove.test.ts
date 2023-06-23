@@ -1,9 +1,9 @@
 import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
-import { prisma } from '../../../db';
-import type { TestSetup } from '../../../test/each';
-import { setupAfterAll, setupBeforeAll } from '../../../test/each';
-import { isError, isSuccess } from '../../../test/fetch';
+import { prisma } from '../../../db/index.js';
+import type { TestSetup } from '../../../test/each.js';
+import { setupAfterAll, setupBeforeAll } from '../../../test/each.js';
+import { isError, isSuccess } from '../../../test/fetch.js';
 import {
   shouldBeProtected,
   shouldNotAllowBody,

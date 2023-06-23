@@ -3,7 +3,7 @@ import type { Keys } from '@prisma/client';
 import type { FastifyInstance } from 'fastify';
 import { Strategy as KeyStrategy } from 'passport-http-bearer';
 
-import { prisma } from '../../db';
+import { prisma } from '../../db/index.js';
 
 // API KEY
 export function registerKey(fastify: FastifyInstance, passport: Authenticator) {

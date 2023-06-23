@@ -1,14 +1,14 @@
-import { prisma } from '../../db';
+import { prisma } from '../../db/index.js';
 
-import { seedComponents } from './components';
-import { seedDocs, seedPlaybook, seedRFC } from './documents';
-import { seedInvitations } from './invitations';
-import { seedOrgs } from './orgs';
-import { seedPolicies } from './policies';
-import { seedProjects } from './projects';
-import { seedRevisions } from './revisions';
-import { truncate } from './seed';
-import { seedUsers } from './users';
+import { seedComponents } from './components.js';
+import { seedDocs, seedPlaybook, seedRFC } from './documents.js';
+import { seedInvitations } from './invitations.js';
+import { seedOrgs } from './orgs.js';
+import { seedPolicies } from './policies.js';
+import { seedProjects } from './projects.js';
+import { seedRevisions } from './revisions.js';
+import { truncate } from './seed.js';
+import { seedUsers } from './users.js';
 
 export async function seed() {
   console.log(' - Users...');

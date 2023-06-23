@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/member-ordering */
-import type { ListActivities } from './activities';
-import type { PostAuthLocal, PostLogout } from './auth';
-import type { ListRevisionBlobs } from './blob';
-import type { ListComponents } from './components';
-import type { GetDocument, ListDocuments } from './documents';
+import type { ListActivities } from './activities.js';
+import type { PostAuthLocal, PostLogout } from './auth.js';
+import type { ListRevisionBlobs } from './blob.js';
+import type { ListComponents } from './components.js';
+import type { GetDocument, ListDocuments } from './documents.js';
 import type {
   ListGithubInstallations,
   ListGithubRepos,
@@ -17,10 +17,10 @@ import type {
   ListInvitations,
   PostInvitation,
 } from './invitations';
-import type { DeleteMe, GetMe, PutMe } from './me';
-import type { DeleteOrg, ListOrgs, PostOrg, PutOrg } from './orgs';
-import type { DeletePerm, GetCountPerms, ListPerms, PutPerm } from './perms';
-import type { ListPolicies } from './policies';
+import type { DeleteMe, GetMe, PutMe } from './me.js';
+import type { DeleteOrg, ListOrgs, PostOrg, PutOrg } from './orgs.js';
+import type { DeletePerm, GetCountPerms, ListPerms, PutPerm } from './perms.js';
+import type { ListPolicies } from './policies.js';
 import type {
   DeleteProject,
   GetProject,
@@ -39,8 +39,8 @@ import type {
   PostUploadRevision,
   RebaseRevision,
 } from './revisions';
-import type { GetRoot } from './root';
-import type { ListUsers } from './users';
+import type { GetRoot } from './root.js';
+import type { ListUsers } from './users.js';
 
 export interface API {
   '/0/': { GET: GetRoot };

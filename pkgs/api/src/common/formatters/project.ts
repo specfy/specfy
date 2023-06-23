@@ -1,7 +1,11 @@
 import type { Projects } from '@prisma/client';
 
-import type { ApiProject, BlockLevelZero } from '../../types/api';
-import type { DBProjectLink, FlowEdge, FlowItemDisplay } from '../../types/db';
+import type { ApiProject, BlockLevelZero } from '../../types/api/index.js';
+import type {
+  DBProjectLink,
+  FlowEdge,
+  FlowItemDisplay,
+} from '../../types/db/index.js';
 
 export function toApiProject(proj: Projects): ApiProject {
   return {

@@ -97,6 +97,7 @@
     "vite.config.ts",
     ".eslintrc.cjs",
     "prod/",
-    "*.test.ts"
+    "*.test.ts",
+    "turbowatch.ts"
   ]
 }

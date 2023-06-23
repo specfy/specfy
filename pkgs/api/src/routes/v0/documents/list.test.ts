@@ -1,14 +1,14 @@
 import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
-import type { TestSetup } from '../../../test/each';
-import { setupAfterAll, setupBeforeAll } from '../../../test/each';
-import { isSuccess, isValidationError } from '../../../test/fetch';
+import type { TestSetup } from '../../../test/each.js';
+import { setupAfterAll, setupBeforeAll } from '../../../test/each.js';
+import { isSuccess, isValidationError } from '../../../test/fetch.js';
 import {
   shouldBeProtected,
   shouldNotAllowQueryParams,
 } from '../../../test/helpers';
-import { seedDocument } from '../../../test/seed/documents';
-import { seedSimpleUser, seedWithProject } from '../../../test/seed/seed';
+import { seedDocument } from '../../../test/seed/documents.js';
+import { seedSimpleUser, seedWithProject } from '../../../test/seed/seed.js';
 
 let t: TestSetup;
 beforeAll(async () => {

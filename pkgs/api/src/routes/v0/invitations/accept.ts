@@ -1,12 +1,12 @@
 import type { FastifyPluginCallback } from 'fastify';
 
-import { forbidden } from '../../../common/errors';
-import { nanoid } from '../../../common/id';
-import { prisma } from '../../../db';
-import { getInvitation } from '../../../middlewares/getInvitation';
-import { noBody } from '../../../middlewares/noBody';
-import { createUserActivity } from '../../../models';
-import type { AcceptInvitation } from '../../../types/api';
+import { forbidden } from '../../../common/errors.js';
+import { nanoid } from '../../../common/id.js';
+import { prisma } from '../../../db/index.js';
+import { getInvitation } from '../../../middlewares/getInvitation.js';
+import { noBody } from '../../../middlewares/noBody.js';
+import { createUserActivity } from '../../../models/index.js';
+import type { AcceptInvitation } from '../../../types/api/index.js';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.post<AcceptInvitation>(

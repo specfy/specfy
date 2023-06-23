@@ -1,17 +1,20 @@
 import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
-import { nanoid } from '../../../common/id';
-import type { TestSetup } from '../../../test/each';
-import { setupBeforeAll, setupAfterAll } from '../../../test/each';
-import { isSuccess, isValidationError } from '../../../test/fetch';
+import { nanoid } from '../../../common/id.js';
+import type { TestSetup } from '../../../test/each.js';
+import { setupBeforeAll, setupAfterAll } from '../../../test/each.js';
+import { isSuccess, isValidationError } from '../../../test/fetch.js';
 import {
   shouldBeProtected,
   shouldEnforceBody,
   shouldNotAllowQueryParams,
 } from '../../../test/helpers';
-import { getBlobComponent, seedComponent } from '../../../test/seed/components';
-import { getBlobProject } from '../../../test/seed/projects';
-import { seedWithProject } from '../../../test/seed/seed';
+import {
+  getBlobComponent,
+  seedComponent,
+} from '../../../test/seed/components.js';
+import { getBlobProject } from '../../../test/seed/projects.js';
+import { seedWithProject } from '../../../test/seed/seed.js';
 
 let t: TestSetup;
 beforeAll(async () => {

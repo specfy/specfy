@@ -1,10 +1,10 @@
 import type { Activities, Orgs, Prisma, Users } from '@prisma/client';
 
-import { acronymize, stringToColor } from '../common/avatar';
-import { nanoid } from '../common/id';
-import type { ActionOrg } from '../types/db';
+import { acronymize, stringToColor } from '../common/avatar.js';
+import { nanoid } from '../common/id.js';
+import type { ActionOrg } from '../types/db/index.js';
 
-import { createKey } from './key';
+import { createKey } from './key.js';
 
 export async function createOrg(
   tx: Prisma.TransactionClient,

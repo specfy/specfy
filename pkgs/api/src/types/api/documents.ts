@@ -1,7 +1,7 @@
-import type { DBDocument } from '../db/documents';
+import type { DBDocument } from '../db/documents.js';
 
-import type { Pagination, QuerystringOrgProject, Res } from './api';
-import type { ApiUser } from './users';
+import type { Pagination, QuerystringOrgProject, Res } from './api.js';
+import type { ApiUser } from './users.js';
 
 export type ApiDocument = DBDocument & {
   authors: ApiUser[];

@@ -1,7 +1,7 @@
 import type { FastifyPluginCallback } from 'fastify';
 
-import { noQuery } from '../../../middlewares/noQuery';
-import type { GetRoot } from '../../../types/api/root';
+import { noQuery } from '../../../middlewares/noQuery.js';
+import type { GetRoot } from '../../../types/api/root.js';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<GetRoot>(

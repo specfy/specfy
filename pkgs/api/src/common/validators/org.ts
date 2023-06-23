@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { schemaOrgId } from './common';
+import { schemaOrgId } from './common.js';
 
 export const schemaOrg = z
   .object({

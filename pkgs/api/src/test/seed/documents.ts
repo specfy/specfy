@@ -3,10 +3,11 @@ import path from 'node:path';
 
 import type { Orgs, Projects, Users } from '@prisma/client';
 
-import { nanoid } from '../../common/id';
-import { prisma } from '../../db';
-import { createDocument, getTypeId } from '../../models';
-import type { ApiDocument } from '../../types/api';
+import { dirname } from '../../common/env.js';
+import { nanoid } from '../../common/id.js';
+import { prisma } from '../../db/index.js';
+import { createDocument, getTypeId } from '../../models/index.js';
+import type { ApiDocument } from '../../types/api/index.js';
 
 /**
  * Seed playbook
@@ -227,7 +228,7 @@ export async function seedRFC(
   const docRfc4Json = JSON.parse(
     (
       await fs.readFile(
-        path.join(__dirname, '../../../', 'src/test/seed/document.rfc.json')
+        path.join(dirname, '../../../', 'src/test/seed/document.rfc.json')
       )
     ).toString()
   );

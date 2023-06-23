@@ -1,12 +1,12 @@
-import type { DBActivity } from '../db';
+import type { DBActivity } from '../db/index.js';
 
-import type { Res } from './api';
-import type { ApiComponent } from './components';
-import type { ApiDocument } from './documents';
-import type { ApiPolicy } from './policies';
-import type { ApiProject } from './projects';
-import type { ApiRevision } from './revisions';
-import type { ApiUser } from './users';
+import type { Res } from './api.js';
+import type { ApiComponent } from './components.js';
+import type { ApiDocument } from './documents.js';
+import type { ApiPolicy } from './policies.js';
+import type { ApiProject } from './projects.js';
+import type { ApiRevision } from './revisions.js';
+import type { ApiUser } from './users.js';
 
 export type ApiActivity = Omit<
   DBActivity,

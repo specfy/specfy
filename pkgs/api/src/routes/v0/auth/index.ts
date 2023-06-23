@@ -1,8 +1,8 @@
 import type { FastifyPluginCallback } from 'fastify';
 
-import github from './github';
-import local from './local';
-import logout from './logout';
+import github from './github.js';
+import local from './local.js';
+import logout from './logout.js';
 
 const fn: FastifyPluginCallback = async (f, _, done) => {
   f.register(github, { prefix: '/auth' });

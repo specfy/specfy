@@ -1,11 +1,11 @@
 import type { FastifyPluginCallback } from 'fastify';
 
-import { findAllBlobsWithParent } from '../../../common/blobs';
-import { toApiReview } from '../../../common/formatters/review';
-import { checkReviews } from '../../../common/revision';
-import { prisma } from '../../../db';
-import { getRevision } from '../../../middlewares/getRevision';
-import type { ListRevisionChecks } from '../../../types/api';
+import { findAllBlobsWithParent } from '../../../common/blobs.js';
+import { toApiReview } from '../../../common/formatters/review.js';
+import { checkReviews } from '../../../common/revision/index.js';
+import { prisma } from '../../../db/index.js';
+import { getRevision } from '../../../middlewares/getRevision.js';
+import type { ListRevisionChecks } from '../../../types/api/index.js';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<ListRevisionChecks>(

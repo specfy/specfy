@@ -6,7 +6,7 @@ import type { LogLevel, LogType } from 'consola';
 import { createConsola } from 'consola';
 import { pino } from 'pino';
 
-import { isProd } from './common/env';
+import { isProd } from './common/env.js';
 
 export const TYPE_COLOR_MAP: { [k in LogType]?: keyof typeof c } = {
   info: 'cyan',

@@ -1,19 +1,22 @@
 import { beforeAll, afterAll, describe, it, expect } from 'vitest';
 
-import { prisma } from '../../../db';
-import { createComponentBlob } from '../../../models/component';
-import type { TestSetup } from '../../../test/each';
-import { setupBeforeAll, setupAfterAll } from '../../../test/each';
-import { isSuccess } from '../../../test/fetch';
+import { prisma } from '../../../db/index.js';
+import { createComponentBlob } from '../../../models/component.js';
+import type { TestSetup } from '../../../test/each.js';
+import { setupBeforeAll, setupAfterAll } from '../../../test/each.js';
+import { isSuccess } from '../../../test/fetch.js';
 import {
   shouldBeProtected,
   shouldNotAllowBody,
   shouldNotAllowQueryParams,
 } from '../../../test/helpers';
-import { getBlobComponent, seedComponent } from '../../../test/seed/components';
-import { seedRevision } from '../../../test/seed/revisions';
-import { seedSimpleUser, seedWithProject } from '../../../test/seed/seed';
-import type { ApiBlobWithPrevious } from '../../../types/api';
+import {
+  getBlobComponent,
+  seedComponent,
+} from '../../../test/seed/components.js';
+import { seedRevision } from '../../../test/seed/revisions.js';
+import { seedSimpleUser, seedWithProject } from '../../../test/seed/seed.js';
+import type { ApiBlobWithPrevious } from '../../../types/api/index.js';
 
 let t: TestSetup;
 beforeAll(async () => {

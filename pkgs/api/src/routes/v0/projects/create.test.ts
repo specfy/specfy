@@ -1,17 +1,17 @@
 import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
-import { nanoid } from '../../../common/id';
-import { slugify } from '../../../common/string';
-import { prisma } from '../../../db';
-import type { TestSetup } from '../../../test/each';
-import { setupBeforeAll, setupAfterAll } from '../../../test/each';
-import { isSuccess, isValidationError } from '../../../test/fetch';
+import { nanoid } from '../../../common/id.js';
+import { slugify } from '../../../common/string.js';
+import { prisma } from '../../../db/index.js';
+import type { TestSetup } from '../../../test/each.js';
+import { setupBeforeAll, setupAfterAll } from '../../../test/each.js';
+import { isSuccess, isValidationError } from '../../../test/fetch.js';
 import {
   shouldBeProtected,
   shouldEnforceBody,
   shouldNotAllowQueryParams,
 } from '../../../test/helpers';
-import { seedSimpleUser, seedWithOrg } from '../../../test/seed/seed';
+import { seedSimpleUser, seedWithOrg } from '../../../test/seed/seed.js';
 
 let t: TestSetup;
 beforeAll(async () => {

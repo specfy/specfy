@@ -1,9 +1,9 @@
 import type { FastifyPluginCallback } from 'fastify';
 
-import create from './create';
-import list from './list';
-import remove from './remove';
-import update from './update';
+import create from './create.js';
+import list from './list.js';
+import remove from './remove.js';
+import update from './update.js';
 
 const fn: FastifyPluginCallback = async (f, _, done) => {
   f.register(list, { prefix: '/orgs' });
