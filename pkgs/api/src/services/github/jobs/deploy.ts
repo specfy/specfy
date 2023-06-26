@@ -1,6 +1,7 @@
 import fs from 'node:fs/promises';
 
 import { $, execa } from 'execa';
+import { Octokit } from 'octokit';
 
 import { env, isProd } from '../../../common/env.js';
 import { nanoid } from '../../../common/id.js';
@@ -14,22 +15,46 @@ import { github } from '../app.js';
 
 export class JobDeploy extends Job {
   folderName?: string;
+  deployId?: number;
+  token?: string;
 
-  async teardown(): Promise<void> {
+  async teardown(job: JobWithOrgProject): Promise<void> {
     // Clean up source code when we are done
-    if (!this.folderName) {
-      return;
+    if (this.folderName) {
+      try {
+        await fs.access(this.folderName);
+        try {
+          await fs.rm(this.folderName, { force: true, recursive: true });
+        } catch (err: unknown) {
+          this.mark('failed', 'failed_to_cleanup', err);
+        }
+      } catch {
+        // do nothing on fs.access, we just couldn't git clone
+      }
     }
 
-    try {
-      await fs.access(this.folderName);
+    if (this.deployId) {
       try {
-        await fs.rm(this.folderName, { force: true, recursive: true });
-      } catch (err: unknown) {
-        this.mark('failed', 'failed_to_cleanup', err);
+        const authClient = new Octokit({
+          auth: this.token,
+        });
+
+        const mark = this.getMark();
+        const [owner, repo] = job.Project!.githubRepository!.split('/');
+        const projUrl = `${env('APP_HOSTNAME')!}/${job.orgId}/${
+          job.Project!.slug
+        }`;
+        await authClient.rest.repos.createDeploymentStatus({
+          owner,
+          repo,
+          deployment_id: this.deployId,
+          state: mark?.status === 'failed' ? 'error' : 'success',
+          environment_url: projUrl,
+          log_url: `${projUrl}/jobs/${job.id}`,
+        });
+      } catch (err) {
+        this.l.error('Cant update Github deployment status', err);
       }
-    } catch {
-      // do nothing on fs.access, we just couldn't git clone
     }
   }
 
@@ -51,23 +76,64 @@ export class JobDeploy extends Job {
       return;
     }
 
+    const ref = config.hook?.ref || 'main';
+    const [owner, repo] = job.Project.githubRepository.split('/');
+
     // Acquire a special short lived token that allow us to clone the repository
-    let token: string;
     try {
       const auth = await github.octokit.rest.apps.createInstallationAccessToken(
         {
           installation_id: job.Org.githubInstallationId,
-          repositories: [job.Project.githubRepository.split('/')[1]],
+          repositories: [repo],
           permissions: {
             environments: 'write',
-            // statuses: 'write',
+            statuses: 'write',
+            deployments: 'write',
             contents: 'read',
           },
         }
       );
-      token = auth.data.token;
+      this.token = auth.data.token;
     } catch (err: unknown) {
       this.mark('failed', 'cant_auth_github', err);
+      return;
+    }
+
+    // Notify Github that we started deploying
+    try {
+      const authClient = new Octokit({
+        auth: this.token,
+      });
+      const res = await authClient.rest.repos.createDeployment({
+        owner,
+        repo,
+        ref,
+        environment: `Production – ${job.Org.id}/${job.Project.slug}`,
+        production_environment: true,
+        auto_merge: false,
+        required_contexts: [],
+      });
+      if (res.status === 201) {
+        this.deployId = res.data.id;
+      } else {
+        this.mark('failed', 'failed_to_start_github_deployment');
+        return;
+      }
+
+      const projUrl = `${env('APP_HOSTNAME')!}/${job.orgId}/${
+        job.Project!.slug
+      }`;
+      await authClient.rest.repos.createDeploymentStatus({
+        owner,
+        repo,
+        deployment_id: this.deployId,
+        state: 'in_progress',
+        auto_inactive: true,
+        environment_url: projUrl,
+        log_url: `${projUrl}/jobs/${job.id}`,
+      });
+    } catch (err) {
+      this.mark('failed', 'failed_to_start_github_deployment', err);
       return;
     }
 
@@ -75,7 +141,7 @@ export class JobDeploy extends Job {
     this.folderName = `/tmp/specfy_clone_${job.id}_${nanoid()}`;
     try {
       const res =
-        await $`git clone https://x-access-token:${token}@github.com/${config.url}.git --depth 1 ${this.folderName}`;
+        await $`git clone https://x-access-token:${this.token}@github.com/${config.url}.git --depth 1 ${this.folderName}`;
 
       if (res.exitCode !== 0) {
         this.mark('failed', 'unknown');
@@ -85,6 +151,19 @@ export class JobDeploy extends Job {
       await fs.access(this.folderName);
     } catch (err: unknown) {
       this.mark('failed', 'failed_to_clone', err);
+      return;
+    }
+
+    // Checkout at the correct ref
+    try {
+      const res = await $`git checkout ${ref}`;
+
+      if (res.exitCode !== 0) {
+        this.mark('failed', 'unknown');
+        return;
+      }
+    } catch (err: unknown) {
+      this.mark('failed', 'failed_to_checkout', err);
       return;
     }
 

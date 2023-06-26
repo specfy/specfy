@@ -22,6 +22,10 @@ export abstract class Job {
     this.l = consola.create({}).withTag('job');
   }
 
+  getMark() {
+    return this.#mark;
+  }
+
   async start() {
     const l = this.l;
     l.info('Job start', { id: this.#job.id });
@@ -34,7 +38,7 @@ export abstract class Job {
     } finally {
       // Clean after ourself
       try {
-        await this.teardown();
+        await this.teardown(this.#job);
       } catch (err: unknown) {
         this.mark('failed', 'failed_to_teardown', err);
       }
@@ -67,5 +71,5 @@ export abstract class Job {
   }
 
   abstract process(job: Jobs): Promise<void>;
-  abstract teardown(): Promise<void>;
+  abstract teardown(job: Jobs): Promise<void>;
 }

@@ -18,6 +18,7 @@ export function toApiProject(proj: Projects): ApiProject {
     links: proj.links as unknown as DBProjectLink[], // TODO: remove this in /list
     display: proj.display as unknown as FlowItemDisplay,
     edges: proj.edges as unknown as FlowEdge[],
+    githubRepository: proj.githubRepository,
     createdAt: proj.createdAt.toISOString(),
     updatedAt: proj.updatedAt.toISOString(),
   };

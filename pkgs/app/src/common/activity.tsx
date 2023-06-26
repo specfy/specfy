@@ -60,7 +60,7 @@ export const mapDocument: Record<ActionDocument, ActivityParams> = {
     Target: DocumentTarget,
     Text: ({ user, act }) => (
       <>
-        {user} created a new ${TYPE_TO_READABLE[act.targetDocument!.type]}{' '}
+        {user} created a new {TYPE_TO_READABLE[act.targetDocument!.type]}{' '}
       </>
     ),
   },
@@ -68,7 +68,7 @@ export const mapDocument: Record<ActionDocument, ActivityParams> = {
     Target: DocumentTarget,
     Text: ({ user, act }) => (
       <>
-        {user} deleted ${TYPE_TO_READABLE[act.targetDocument!.type]}{' '}
+        {user} deleted {TYPE_TO_READABLE[act.targetDocument!.type]}{' '}
       </>
     ),
   },
@@ -76,7 +76,7 @@ export const mapDocument: Record<ActionDocument, ActivityParams> = {
     Target: DocumentTarget,
     Text: ({ user, act }) => (
       <>
-        {user} updated ${TYPE_TO_READABLE[act.targetDocument!.type]}{' '}
+        {user} updated {TYPE_TO_READABLE[act.targetDocument!.type]}{' '}
       </>
     ),
   },

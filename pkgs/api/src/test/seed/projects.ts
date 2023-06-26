@@ -304,6 +304,7 @@ export function getBlobProject(org: Orgs): DBProject {
       pos: { x: 220, y: -20 },
       size: { width: 100, height: 32 },
     },
+    githubRepository: null,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };

@@ -14,6 +14,8 @@ export interface DBProject {
   display: FlowItemDisplay;
   edges: FlowEdge[];
 
+  githubRepository: string | null;
+
   createdAt: string;
   updatedAt: string;
 }

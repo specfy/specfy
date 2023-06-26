@@ -9,6 +9,8 @@ export const JobReason: Record<JobCode, string> = {
   failed_to_cleanup: 'Failed to clean up',
   failed_to_deploy: 'Failed to deploy and analyze source code',
   failed_to_teardown: 'Failed to clean after execution',
+  failed_to_checkout: 'Failed to checkout repository at the commit ref',
+  failed_to_start_github_deployment: 'Failed to reach Github deployment API',
   no_api_key: 'No API Key available to deploy',
   unknown: 'An unknown error occured',
   success: 'Success',

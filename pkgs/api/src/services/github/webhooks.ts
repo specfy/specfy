@@ -1,7 +1,11 @@
 import { nanoid } from '../../common/id.js';
 import { prisma } from '../../db/index.js';
 import { l as consola } from '../../logger.js';
-import { createGithubActivity, userGithubApp } from '../../models/index.js';
+import {
+  createGithubActivity,
+  createJobDeploy,
+  userGithubApp,
+} from '../../models/index.js';
 
 import { webhookService as ws } from './app.js';
 
@@ -118,3 +122,31 @@ export function listen() {
     });
   });
 }
+
+ws.on('push', async ({ id, payload }) => {
+  l.info(`repository push`, {
+    id,
+    repo: payload.repository.full_name,
+    installId: payload.installation?.id,
+  });
+
+  await prisma.$transaction(async (tx) => {
+    const list = await tx.projects.findMany({
+      where: { githubRepository: payload.repository.full_name },
+    });
+    await Promise.all(
+      list.map((project) => {
+        return createJobDeploy(
+          { orgId: project.orgId, projectId: project.id, tx },
+          {
+            url: project.githubRepository!,
+            hook: {
+              id,
+              ref: payload.ref,
+            },
+          }
+        );
+      })
+    );
+  });
+});
