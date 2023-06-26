@@ -1,6 +1,6 @@
-import type { DBProject } from '../db/projects';
+import type { DBProject } from '../db/projects.js';
 
-import type { Pagination, Res } from './api';
+import type { Pagination, Res } from './api.js';
 
 export type ApiProject = DBProject;
 export interface ReqProjectParams {
@@ -23,7 +23,6 @@ export type ListProjects = Res<{
 export type PostProject = Res<{
   Body: Pick<ApiProject, 'name' | 'orgId' | 'slug'> & {
     display: ApiProject['display'];
-    githubRepositoryId: number | null;
   };
   Success: Pick<ApiProject, 'id' | 'slug'>;
 }>;

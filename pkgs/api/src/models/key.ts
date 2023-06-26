@@ -1,7 +1,7 @@
 import type { Activities, Keys, Prisma, Users } from '@prisma/client';
 
-import { nanoid } from '../common/id';
-import type { ActionKey } from '../types/db';
+import { nanoid } from '../common/id.js';
+import type { ActionKey } from '../types/db/index.js';
 
 export async function createKey({
   tx,

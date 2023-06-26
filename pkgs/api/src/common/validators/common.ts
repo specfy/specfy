@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
-import { alphabet, minSize, maxSize } from '../id';
+import { alphabet, minSize, maxSize } from '../id.js';
 
-const slug = /^[a-z]([a-z0-9-]+)?[a-z0-9]/;
+const slug = /^[a-z]([a-z0-9-]+)?[a-z0-9]$/;
 const token = new RegExp(`^[${alphabet}]+$`);
 
 export const schemaOrgId = z.string().min(4).max(36).regex(slug, {

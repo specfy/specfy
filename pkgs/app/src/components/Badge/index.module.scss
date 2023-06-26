@@ -1,6 +1,8 @@
 @import "../../styles/theme";
 
 .badge {
+  display: inline-flex;
+
   min-width: 20px;
   padding: 0 $p-m;
 

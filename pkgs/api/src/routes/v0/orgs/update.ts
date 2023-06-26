@@ -1,15 +1,15 @@
 import type { FastifyPluginCallback } from 'fastify';
 import { z } from 'zod';
 
-import { acronymize, stringToColor } from '../../../common/avatar';
-import { validationError } from '../../../common/errors';
-import { toApiOrg } from '../../../common/formatters/org';
-import { schemaOrg } from '../../../common/validators/org';
-import { prisma } from '../../../db';
-import { getOrg } from '../../../middlewares/getOrg';
-import { noQuery } from '../../../middlewares/noQuery';
-import { createOrgActivity } from '../../../models';
-import type { PutOrg } from '../../../types/api';
+import { acronymize, stringToColor } from '../../../common/avatar.js';
+import { validationError } from '../../../common/errors.js';
+import { toApiOrg } from '../../../common/formatters/org.js';
+import { schemaOrg } from '../../../common/validators/org.js';
+import { prisma } from '../../../db/index.js';
+import { getOrg } from '../../../middlewares/getOrg.js';
+import { noQuery } from '../../../middlewares/noQuery.js';
+import { createOrgActivity } from '../../../models/index.js';
+import type { PutOrg } from '../../../types/api/index.js';
 
 function BodyVal() {
   return z

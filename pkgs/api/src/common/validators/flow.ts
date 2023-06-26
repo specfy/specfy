@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-import { schemaId } from './common';
-import { min, max, wMax, wMin, hMax, hMin } from './flow.constants';
+import { schemaId } from './common.js';
+import { min, max, wMax, wMin, hMax, hMin } from './flow.constants.js';
 
 // const portPosition = ['bottom', 'left', 'right', 'top']; // TODO: enforce union
 

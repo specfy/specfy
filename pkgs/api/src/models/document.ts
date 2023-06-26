@@ -1,9 +1,9 @@
 import { Prisma } from '@prisma/client';
 import type { Activities, Documents, Users } from '@prisma/client';
 
-import { nanoid } from '../common/id';
-import { slugify } from '../common/string';
-import type { ActionDocument } from '../types/db';
+import { nanoid } from '../common/id.js';
+import { slugify } from '../common/string.js';
+import type { ActionDocument } from '../types/db/index.js';
 
 export async function getTypeId({
   data,

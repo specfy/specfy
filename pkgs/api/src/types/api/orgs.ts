@@ -1,6 +1,6 @@
-import type { DBOrg } from '../db/orgs';
+import type { DBOrg } from '../db/orgs.js';
 
-import type { Res } from './api';
+import type { Res } from './api.js';
 
 export type ApiOrg = Omit<DBOrg, 'createdAt' | 'updatedAt'> & {
   githubInstallationId: number | null;

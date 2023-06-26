@@ -4,9 +4,9 @@ import type {
 } from '@octokit/webhooks-types';
 import type { FastifyPluginCallback } from 'fastify';
 
-import { forbidden } from '../../../common/errors';
-import { noQuery } from '../../../middlewares/noQuery';
-import { webhookService } from '../../../services/github';
+import { forbidden } from '../../../common/errors.js';
+import { noQuery } from '../../../middlewares/noQuery.js';
+import { webhookService } from '../../../services/github/index.js';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.post<{ Reply: any; Body: any }>(

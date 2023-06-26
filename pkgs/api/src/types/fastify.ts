@@ -4,8 +4,8 @@ import type { Keys, Orgs, Projects, Users } from '@prisma/client';
 import type { preHandlerHookHandler, RawServerDefault } from 'fastify';
 import type { RouteGenericInterface } from 'fastify/types/route';
 
-import type { InvitationsWithOrgAndUser } from './api';
-import type { PermsWithOrg, RevisionWithProject } from './db';
+import type { InvitationsWithOrgAndUser } from './api/index.js';
+import type { PermsWithOrg, RevisionWithProject } from './db/index.js';
 
 export type PreHandler<T extends RouteGenericInterface = any> =
   preHandlerHookHandler<

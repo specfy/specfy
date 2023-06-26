@@ -1,6 +1,6 @@
 import type { Users } from '@prisma/client';
 
-import type { ApiMe, ApiUser } from '../../types/api';
+import type { ApiMe, ApiUser } from '../../types/api/index.js';
 
 export function toApiUser(user: Users): ApiUser {
   return {

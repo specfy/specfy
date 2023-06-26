@@ -1,4 +1,4 @@
-import type { ResValidationError } from '../../types/api';
+import type { ResValidationError } from '../../types/api/index.js';
 
 export class AuthError extends Error {
   err: ResValidationError;

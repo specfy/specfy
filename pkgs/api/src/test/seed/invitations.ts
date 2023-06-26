@@ -1,7 +1,7 @@
 import type { Orgs, Users } from '@prisma/client';
 
-import { prisma } from '../../db';
-import { EXPIRES } from '../../models/invitations';
+import { prisma } from '../../db/index.js';
+import { EXPIRES } from '../../models/invitations.js';
 
 export async function seedInvitations(users: Users[], orgs: { o1: Orgs }) {
   await prisma.invitations.create({

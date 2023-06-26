@@ -1,4 +1,4 @@
-import type { Res } from './api';
+import type { Res } from './api.js';
 
 export interface ApiMe {
   id: string;

@@ -1,9 +1,9 @@
 import type { Activities, Prisma, Users } from '@prisma/client';
 import JWT from 'jsonwebtoken';
 
-import { JWT_SECRET } from '../common/auth';
-import { nanoid } from '../common/id';
-import type { ActionUser } from '../types/db';
+import { JWT_SECRET } from '../common/auth.js';
+import { nanoid } from '../common/id.js';
+import type { ActionUser } from '../types/db/index.js';
 
 export function getJwtToken(user: Users, expiresAt?: Date): string {
   return JWT.sign(
@@ -44,3 +44,15 @@ export async function createUserActivity({
     },
   });
 }
+
+export const userGithubApp: Users = {
+  id: 'githubapp',
+  name: 'Github App',
+  email: 'support+githubapp@specfy.io',
+  githubLogin: null,
+  password: null,
+  createdAt: new Date('2023-01-01T00:00:01'),
+  updatedAt: new Date('2023-01-01T00:00:01'),
+  emailVerifiedAt: new Date('2023-01-01T00:00:01'),
+  avatarUrl: null,
+};

@@ -7,11 +7,12 @@ import {
   IconLayoutDashboard,
   IconSettings,
 } from '@tabler/icons-react';
-import type { ApiProject, ApiOrg } from 'api/src/types/api';
+import type { ApiProject } from 'api/src/types/api';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-import { useListOrgs, useListRevisions } from '../../api';
+import { useListRevisions } from '../../api';
+import { useOrgStore } from '../../common/store';
 import type { RouteProject } from '../../types/routes';
 import { Badge } from '../Badge';
 
@@ -22,7 +23,6 @@ export const ProjectHeader: React.FC<{
   params: RouteProject;
 }> = ({ proj, params }) => {
   // State
-  const [org, setOrg] = useState<ApiOrg>();
   const [open, setOpen] = useState<string>('');
   const linkSelf = useMemo(() => {
     return `/${params.org_id}/${params.project_slug}`;
@@ -30,20 +30,12 @@ export const ProjectHeader: React.FC<{
   const location = useLocation();
 
   // Data
-  const getOrgs = useListOrgs();
+  const { current: org } = useOrgStore();
   const revisions = useListRevisions({
     org_id: params.org_id,
     project_id: proj.id,
     status: 'opened',
   });
-
-  useEffect(() => {
-    if (!getOrgs.data) {
-      return;
-    }
-
-    setOrg(getOrgs.data.data.find((o) => o.id === params.org_id));
-  }, [getOrgs.data]);
 
   const menu = useMemo(() => {
     return [

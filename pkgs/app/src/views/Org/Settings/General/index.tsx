@@ -106,6 +106,7 @@ export const SettingsGeneral: React.FC<{
       <Helmet title={`Settings - ${org.name} ${titleSuffix}`} />
       <div>
         <h2>General Settings</h2>
+
         <Typography.Text type="secondary">
           Manage your organization general&apos;s settings
         </Typography.Text>

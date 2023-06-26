@@ -9,5 +9,5 @@ export const TYPE_TO_TEXT: Record<ApiDocument['type'], string> = {
 export const TYPE_TO_READABLE: Record<ApiDocument['type'], string> = {
   rfc: 'RFC',
   pb: 'Playbook',
-  doc: 'Doc',
+  doc: 'Document',
 };

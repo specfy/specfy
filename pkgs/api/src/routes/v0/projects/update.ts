@@ -1,15 +1,15 @@
 import type { FastifyPluginCallback } from 'fastify';
 import { z } from 'zod';
 
-import { validationError } from '../../../common/errors';
-import { toApiProject } from '../../../common/formatters/project';
-import { slugify } from '../../../common/string';
-import { schemaProject } from '../../../common/validators';
-import { prisma } from '../../../db';
-import { getProject } from '../../../middlewares/getProject';
-import { noQuery } from '../../../middlewares/noQuery';
-import { createProjectActivity } from '../../../models';
-import type { PutProject } from '../../../types/api';
+import { validationError } from '../../../common/errors.js';
+import { toApiProject } from '../../../common/formatters/project.js';
+import { slugify } from '../../../common/string.js';
+import { schemaProject } from '../../../common/validators/index.js';
+import { prisma } from '../../../db/index.js';
+import { getProject } from '../../../middlewares/getProject.js';
+import { noQuery } from '../../../middlewares/noQuery.js';
+import { createProjectActivity } from '../../../models/index.js';
+import type { PutProject } from '../../../types/api/index.js';
 
 function BodyVal() {
   return z

@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
-// import type { DBDocument } from '../../types/db';
+// import type { DBDocument } from '../../types/db/index.js';
 
-import { schemaId, schemaOrgId, schemaSlug } from './common';
-import { schemaProseMirror } from './prosemirror';
+import { schemaId, schemaOrgId, schemaSlug } from './common.js';
+import { schemaProseMirror } from './prosemirror.js';
 
 // const allowed: Array<DBDocument['type']> = ['pb', 'rfc']; // TODO: enforce union
 

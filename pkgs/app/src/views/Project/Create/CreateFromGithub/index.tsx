@@ -1,5 +1,5 @@
 import { Github } from '@icons-pack/react-simple-icons';
-import { IconArrowRight, IconLock } from '@tabler/icons-react';
+import { IconArrowRight, IconInfoCircle, IconLock } from '@tabler/icons-react';
 import { App, Button, Skeleton } from 'antd';
 import { hDef, wDef, wMax } from 'api/src/common/validators/flow.constants';
 import type {
@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 
 import { createProject } from '../../../../api';
 import {
+  linkToGithubRepo,
   useGetGithubInstallations,
   useGetGithubRepos,
 } from '../../../../api/github';
@@ -103,7 +104,6 @@ export const CreateFromGithub: React.FC<{
           zIndex: 1,
           size: { width: computeWidth(repo.name, wDef, wMax), height: hDef },
         },
-        githubRepositoryId: repo.id,
       });
       if (isError(res)) {
         if (isValidationError(res)) {
@@ -118,6 +118,16 @@ export const CreateFromGithub: React.FC<{
 
       message.success('Project created');
 
+      const link = await linkToGithubRepo({
+        orgId: org.id,
+        projectId: res.id,
+        repository: repo.fullName,
+      });
+      if (isError(link)) {
+        message.error(i18n.errorOccurred);
+        return false;
+      }
+
       return `/${org.id}/${tmpSlug}`;
     },
     [storeProjects.projects]
@@ -126,9 +136,12 @@ export const CreateFromGithub: React.FC<{
   return (
     <div className={cls.github}>
       <header>
-        <h3 className={cls.header}>
-          <Github /> Import from Github
-        </h3>
+        <Flex justifyContent="space-between">
+          <h3 className={cls.header}>
+            <Github /> Import from Github
+          </h3>
+          <IconInfoCircle />
+        </Flex>
       </header>
 
       <div className={cls.main}>

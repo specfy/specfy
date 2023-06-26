@@ -2,11 +2,11 @@ import type { Prisma } from '@prisma/client';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
-import { validationError } from '../../../common/errors';
-import { valOrgId } from '../../../common/zod';
-import { prisma } from '../../../db';
-import type { ListInvitations } from '../../../types/api';
-import type { PermType } from '../../../types/db';
+import { validationError } from '../../../common/errors.js';
+import { valOrgId } from '../../../common/zod.js';
+import { prisma } from '../../../db/index.js';
+import type { ListInvitations } from '../../../types/api/index.js';
+import type { PermType } from '../../../types/db/index.js';
 
 function QueryVal(req: FastifyRequest) {
   return z

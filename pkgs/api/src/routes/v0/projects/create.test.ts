@@ -1,17 +1,17 @@
 import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
-import { nanoid } from '../../../common/id';
-import { slugify } from '../../../common/string';
-import { prisma } from '../../../db';
-import type { TestSetup } from '../../../test/each';
-import { setupBeforeAll, setupAfterAll } from '../../../test/each';
-import { isSuccess, isValidationError } from '../../../test/fetch';
+import { nanoid } from '../../../common/id.js';
+import { slugify } from '../../../common/string.js';
+import { prisma } from '../../../db/index.js';
+import type { TestSetup } from '../../../test/each.js';
+import { setupBeforeAll, setupAfterAll } from '../../../test/each.js';
+import { isSuccess, isValidationError } from '../../../test/fetch.js';
 import {
   shouldBeProtected,
   shouldEnforceBody,
   shouldNotAllowQueryParams,
-} from '../../../test/helpers';
-import { seedSimpleUser, seedWithOrg } from '../../../test/seed/seed';
+} from '../../../test/helpers.js';
+import { seedSimpleUser, seedWithOrg } from '../../../test/seed/seed.js';
 
 let t: TestSetup;
 beforeAll(async () => {
@@ -42,7 +42,6 @@ describe('POST /projects', () => {
         display,
         orgId: '',
         slug: '',
-        githubRepositoryId: null,
       },
       // @ts-expect-error
       Querystring: { random: 'world' },
@@ -60,7 +59,12 @@ describe('POST /projects', () => {
     const slug = slugify(name);
     const res = await t.fetch.post('/0/projects', {
       token,
-      Body: { name, slug, display, orgId: org.id, githubRepositoryId: null },
+      Body: {
+        name,
+        slug,
+        display,
+        orgId: org.id,
+      },
     });
 
     isSuccess(res.json);
@@ -89,7 +93,6 @@ describe('POST /projects', () => {
         slug: slugify(name),
         display,
         orgId: org.id,
-        githubRepositoryId: null,
       },
     });
     isSuccess(res1.json);
@@ -102,7 +105,6 @@ describe('POST /projects', () => {
         slug: slugify(name),
         display,
         orgId: org.id,
-        githubRepositoryId: null,
       },
     });
     isValidationError(res2.json);

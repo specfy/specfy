@@ -1,3 +1,6 @@
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
+
 type Keys =
   | 'API_HOSTNAME'
   | 'APP_HOSTNAME'
@@ -10,6 +13,7 @@ type Keys =
   | 'GITHUB_CLIENT_PKEY'
   | 'GITHUB_CLIENT_SECRET'
   | 'GITHUB_WEBHOOKS_SECRET'
+  | 'GIVE_DEFAULT_PERMS_TO_EMAIL'
   | 'NODE_ENV'
   | 'PASSWORD_SALT'
   | 'PORT';
@@ -24,3 +28,6 @@ export function env(key: Keys, def?: string): string | undefined {
 }
 
 export const isProd = env('NODE_ENV', 'dev') === 'production';
+
+export const filename = fileURLToPath(import.meta.url);
+export const dirname = path.dirname(filename);

@@ -9,9 +9,9 @@
   align-items: center;
   justify-content: space-between;
 
-  margin-bottom: $p-s;
+  margin-bottom: $p-l;
 
-  font-size: $font;
+  font-size: $font-m;
   font-weight: 500;
-  color: $gray-900;
+  color: var(--text);
 }

@@ -1,13 +1,13 @@
-import type { DBComponent, DBDocument, DBProject } from '../db';
 import type {
   DBBlob,
   DBBlobComponent,
   DBBlobDocument,
   DBBlobProject,
-} from '../db/blobs';
+} from '../db/blobs.js';
+import type { DBComponent, DBDocument, DBProject } from '../db/index.js';
 
-import type { QuerystringOrgProject, Res } from './api';
-import type { ParamsRevision } from './revisions';
+import type { QuerystringOrgProject, Res } from './api.js';
+import type { ParamsRevision } from './revisions.js';
 
 export type ApiBlob = DBBlob;
 export type ApiBlobPrevious<T = DBBlob['current']> = {

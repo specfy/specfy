@@ -1,16 +1,15 @@
 import { Avatar, Divider, Skeleton } from 'antd';
-import type { ApiOrg, ApiProject } from 'api/src/types/api';
+import type { ApiProject } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Route, Routes, useParams } from 'react-router-dom';
 
+import { useListComponents, useGetProject, useListProjects } from '../../api';
 import {
-  useListComponents,
-  useListOrgs,
-  useGetProject,
-  useListProjects,
-} from '../../api';
-import { useComponentsStore, useProjectStore } from '../../common/store';
+  useComponentsStore,
+  useOrgStore,
+  useProjectStore,
+} from '../../common/store';
 import { titleSuffix } from '../../common/string';
 import { Card } from '../../components/Card';
 import { Container } from '../../components/Container';
@@ -40,10 +39,9 @@ export const Project: React.FC = () => {
   // Stores
   const storeProject = useProjectStore();
   const storeComponents = useComponentsStore();
+  const { current: org } = useOrgStore();
 
   // Data fetch
-  const getOrgs = useListOrgs();
-  const [org, setOrg] = useState<ApiOrg>();
   const getProjects = useListProjects({ org_id: org?.id });
   const [proj, setProj] = useState<ApiProject>();
   const getProj = useGetProject({
@@ -55,18 +53,6 @@ export const Project: React.FC = () => {
     org_id: params.org_id,
     project_id: proj?.id,
   });
-
-  useEffect(() => {
-    if (!getOrgs.data) {
-      return;
-    }
-
-    const tmp = getOrgs.data.data.find((o) => o.id === params.org_id);
-    setOrg(tmp);
-    if (!tmp) {
-      setLoading(false);
-    }
-  }, [getOrgs.data]);
 
   useEffect(() => {
     if (getProj.data) {

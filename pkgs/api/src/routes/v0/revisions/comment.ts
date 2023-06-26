@@ -1,13 +1,13 @@
 import type { FastifyPluginCallback } from 'fastify';
 import { z } from 'zod';
 
-import { validationError } from '../../../common/errors';
-import { nanoid } from '../../../common/id';
-import { schemaProseMirror } from '../../../common/validators';
-import { prisma } from '../../../db';
-import { getRevision } from '../../../middlewares/getRevision';
-import { createRevisionActivity } from '../../../models';
-import type { CommentRevision } from '../../../types/api';
+import { validationError } from '../../../common/errors.js';
+import { nanoid } from '../../../common/id.js';
+import { schemaProseMirror } from '../../../common/validators/index.js';
+import { prisma } from '../../../db/index.js';
+import { getRevision } from '../../../middlewares/getRevision.js';
+import { createRevisionActivity } from '../../../models/index.js';
+import type { CommentRevision } from '../../../types/api/index.js';
 
 function BodyVal() {
   return z

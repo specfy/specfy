@@ -3,14 +3,14 @@ import fastifySession from '@fastify/secure-session';
 import type { Users } from '@prisma/client';
 import type { FastifyInstance } from 'fastify';
 
-import { env } from '../../common/env';
-import { unauthorized } from '../../common/errors';
-import { prisma } from '../../db';
+import { env } from '../../common/env.js';
+import { unauthorized } from '../../common/errors.js';
+import { prisma } from '../../db/index.js';
 
-import { registerGithub } from './github';
-import { registerJwt } from './jwt';
-import { registerKey } from './key';
-import { registerLocal } from './local';
+import { registerGithub } from './github.js';
+import { registerJwt } from './jwt.js';
+import { registerKey } from './key.js';
+import { registerLocal } from './local.js';
 
 const ALLOW_GUEST = [
   '/*',

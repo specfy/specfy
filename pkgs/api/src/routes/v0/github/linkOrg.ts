@@ -4,20 +4,25 @@ import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { Octokit } from 'octokit';
 import { z } from 'zod';
 
-import { notFound, serverError, validationError } from '../../../common/errors';
-import { valOrgId } from '../../../common/zod';
-import { prisma } from '../../../db';
-import { noQuery } from '../../../middlewares/noQuery';
-import { github } from '../../../services/github';
-import type { PostLinkToGithubOrg } from '../../../types/api';
+import {
+  notFound,
+  serverError,
+  validationError,
+} from '../../../common/errors.js';
+import { getOrgFromRequest } from '../../../common/perms.js';
+import { valOrgId } from '../../../common/zod.js';
+import { prisma } from '../../../db/index.js';
+import { noQuery } from '../../../middlewares/noQuery.js';
+import { createGithubActivity } from '../../../models/index.js';
+import { github } from '../../../services/github/index.js';
+import type { PostLinkToGithubOrg } from '../../../types/api/index.js';
 
 function QueryVal(req: FastifyRequest) {
-  return z
-    .object({
-      orgId: valOrgId(req),
-      installationId: z.number().positive().int().nullable(),
-    })
-    .strict();
+  const obj: Record<keyof PostLinkToGithubOrg['Body'], any> = {
+    orgId: valOrgId(req),
+    installationId: z.number().positive().int().nullable(),
+  };
+  return z.object(obj).strict();
 }
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
@@ -32,6 +37,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
       const user = req.user!;
       const body = val.data;
+      const org = getOrgFromRequest(req, body.orgId)!;
       const accounts = await prisma.accounts.findFirst({
         where: { userId: user.id },
       });
@@ -72,11 +78,21 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       }
 
       // Set install
-      await prisma.orgs.update({
-        data,
-        where: {
-          id: body.orgId,
-        },
+      await prisma.$transaction(async (tx) => {
+        await prisma.orgs.update({
+          data,
+          where: {
+            id: body.orgId,
+          },
+        });
+        if (body.installationId !== org.githubInstallationId) {
+          await createGithubActivity({
+            action: !body.installationId ? 'Github.unlinked' : 'Github.linked',
+            org,
+            tx,
+            user,
+          });
+        }
       });
 
       res.status(200).send({

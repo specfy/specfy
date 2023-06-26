@@ -1,11 +1,11 @@
 import type { FastifyPluginCallback } from 'fastify';
 
-import { findAllBlobsWithParent } from '../../../common/blobs';
-import { prisma } from '../../../db';
-import { getRevision } from '../../../middlewares/getRevision';
-import { noBody } from '../../../middlewares/noBody';
-import { createRevisionActivity } from '../../../models';
-import type { RebaseRevision } from '../../../types/api';
+import { findAllBlobsWithParent } from '../../../common/blobs.js';
+import { prisma } from '../../../db/index.js';
+import { getRevision } from '../../../middlewares/getRevision.js';
+import { noBody } from '../../../middlewares/noBody.js';
+import { createRevisionActivity } from '../../../models/index.js';
+import type { RebaseRevision } from '../../../types/api/index.js';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.post<RebaseRevision>(

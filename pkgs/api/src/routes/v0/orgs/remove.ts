@@ -1,10 +1,10 @@
 import type { FastifyPluginCallback } from 'fastify';
 
-import { prisma } from '../../../db';
-import { getOrg } from '../../../middlewares/getOrg';
-import { noBody } from '../../../middlewares/noBody';
-import { noQuery } from '../../../middlewares/noQuery';
-import type { DeleteOrg } from '../../../types/api';
+import { prisma } from '../../../db/index.js';
+import { getOrg } from '../../../middlewares/getOrg.js';
+import { noBody } from '../../../middlewares/noBody.js';
+import { noQuery } from '../../../middlewares/noQuery.js';
+import type { DeleteOrg } from '../../../types/api/index.js';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.delete<DeleteOrg>(

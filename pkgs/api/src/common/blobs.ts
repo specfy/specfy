@@ -6,7 +6,11 @@ import type {
   Projects,
 } from '@prisma/client';
 
-import { isDocumentBlob, isComponentBlob, isProjectBlob } from '../types/db';
+import {
+  isDocumentBlob,
+  isComponentBlob,
+  isProjectBlob,
+} from '../types/db/index.js';
 
 export type IterateBlob = {
   blob: Blobs;

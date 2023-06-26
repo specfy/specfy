@@ -1,11 +1,11 @@
 import type { FastifyPluginCallback } from 'fastify';
 
-import accept from './accept';
-import create from './create';
-import decline from './decline';
-import get from './get';
-import list from './list';
-import remove from './remove';
+import accept from './accept.js';
+import create from './create.js';
+import decline from './decline.js';
+import get from './get.js';
+import list from './list.js';
+import remove from './remove.js';
 
 const fn: FastifyPluginCallback = async (f, _, done) => {
   f.register(create, { prefix: '/invitations' });

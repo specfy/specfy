@@ -28,19 +28,23 @@
 .main {
   position: relative;
   display: flex;
-  gap: $p-m;
+  gap: $p-l;
 }
 
 .desc {
   flex-grow: 1;
   align-items: center;
   color: var(--textLight);
+
+  a:not(.username) {
+    font-weight: 500;
+  }
 }
 
 .date {
   flex-grow: 0;
 
-  width: 65px;
+  width: 70px;
 
   font-size: $font-s;
   color: $gray-400;
@@ -78,13 +82,4 @@
 .target {
   color: var(--colorLink);
   border-radius: $border-radius-s;
-}
-
-.details {
-  margin: $p-m 0 0 40px;
-  padding: $p-l $p-2xl;
-
-  background-color: white;
-  border-radius: $border-radius-s;
-  box-shadow: $box-shadow2;
 }

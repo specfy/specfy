@@ -16,6 +16,7 @@ import { useListOrgs } from '../../api';
 import { logout } from '../../api/auth';
 import { isError } from '../../api/helpers';
 import { i18n } from '../../common/i18n';
+import { useOrgStore } from '../../common/store';
 import { useAuth } from '../../hooks/useAuth';
 import type { RouteOrg } from '../../types/routes';
 import { AvatarAuto } from '../AvatarAuto';
@@ -39,6 +40,7 @@ const userItems: MenuProps['items'] = [];
 export const LayoutHeader: React.FC = () => {
   const { message } = App.useApp();
   const navigate = useNavigate();
+  const storeOrg = useOrgStore();
 
   const params = useParams<Partial<RouteOrg>>();
   const { user } = useAuth();
@@ -93,6 +95,7 @@ export const LayoutHeader: React.FC = () => {
       }
     );
 
+    storeOrg.fill(orgsQuery.data.data);
     setOrgs(data);
   }, [orgsQuery.data]);
 
@@ -104,6 +107,7 @@ export const LayoutHeader: React.FC = () => {
     for (const org of orgsQuery.data.data) {
       if (org.id === params.org_id) {
         setCurrent(org.id);
+        storeOrg.setCurrent(org);
         return;
       }
     }

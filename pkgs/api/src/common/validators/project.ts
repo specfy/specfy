@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
-import { schemaId, schemaOrgId, schemaSlug } from './common';
-import { schemaDisplay, schemaEdges } from './flow';
-import { schemaProseMirror } from './prosemirror';
+import { schemaId, schemaOrgId, schemaSlug } from './common.js';
+import { schemaDisplay, schemaEdges } from './flow.js';
+import { schemaProseMirror } from './prosemirror.js';
 
 export const schemaProject = z
   .object({

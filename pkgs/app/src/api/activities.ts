@@ -6,7 +6,12 @@ import { APIError, isError } from './helpers';
 
 export function useListActivities(opts: ListActivities['Querystring']) {
   return useQuery({
-    queryKey: ['listActivities', opts.org_id, opts.project_id],
+    queryKey: [
+      'listActivities',
+      opts.org_id,
+      opts.project_id,
+      opts.revision_id,
+    ],
     queryFn: async (): Promise<ListActivities['Success']> => {
       const { json, res } = await fetchApi<ListActivities>('/activities', {
         qp: opts,

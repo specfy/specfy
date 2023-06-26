@@ -18,6 +18,7 @@ type Props = {
   size?: 'default' | 'large' | 'medium' | 'small' | 'xl';
   colored?: boolean;
   single?: boolean;
+  icon?: React.ReactNode;
 } & (PropsBase | PropsOrg);
 
 export const AvatarAuto: React.FC<Props> = ({
@@ -56,9 +57,11 @@ export const AvatarAuto: React.FC<Props> = ({
         cls.avatar,
         className,
         size && cls[size],
-        shape && cls[shape]
+        shape && cls[shape],
+        props.icon && cls.icon
       )}
     >
+      {props.icon}
       <Avatar.Image className={cls.image} src={src!} alt={name} />
       <Avatar.Fallback className={cls.fallback} delayMs={0} style={style}>
         {acr}

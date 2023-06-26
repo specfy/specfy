@@ -1,6 +1,6 @@
 import type { Orgs } from '@prisma/client';
 
-import type { ApiOrg } from '../../types/api';
+import type { ApiOrg } from '../../types/api/index.js';
 
 export function toApiOrg(org: Orgs): ApiOrg {
   return {
