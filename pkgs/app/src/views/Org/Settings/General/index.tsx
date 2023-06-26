@@ -166,9 +166,8 @@ export const SettingsGeneral: React.FC<{
               emptyOption={true}
               defaultSelected={org.githubInstallationId}
               onChange={(sel) => {
-                if (sel !== 'public') setInstallId(sel);
+                setInstallId(sel);
               }}
-              publicRepos={false}
             />
           </Card.Content>
           <Card.Actions>
