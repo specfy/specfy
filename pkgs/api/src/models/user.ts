@@ -51,8 +51,8 @@ export const userGithubApp: Users = {
   email: 'support+githubapp@specfy.io',
   githubLogin: null,
   password: null,
+  avatarUrl: '/github-mark.png',
   createdAt: new Date('2023-01-01T00:00:01'),
   updatedAt: new Date('2023-01-01T00:00:01'),
   emailVerifiedAt: new Date('2023-01-01T00:00:01'),
-  avatarUrl: null,
 };

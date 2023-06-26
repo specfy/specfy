@@ -19,7 +19,7 @@ export const Banner: React.FC<{
         {type === 'error' && <IconExclamationCircle />}
         {type === 'info' && <IconInfoCircle />}
       </div>
-      <div>{children}</div>
+      <div className={cls.content}>{children}</div>
     </div>
   );
 };

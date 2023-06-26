@@ -95,7 +95,13 @@ export type ActivitiesList = Prisma.ActivitiesGetPayload<{
     Project: { select: { id: true; name: true; slug: true } };
     Blob: true;
     Revision: {
-      select: { id: true; name: true; status: true; locked: true };
+      select: {
+        id: true;
+        name: true;
+        status: true;
+        locked: true;
+        merged: true;
+      };
     };
   };
 }>;

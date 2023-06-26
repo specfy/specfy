@@ -19,7 +19,7 @@ export default defineConfig({
         "style-src 'self' 'unsafe-inline' *.googleapis.com *.github.com localhost:*",
         "connect-src data: 'self' *",
         "font-src 'self' *.specfy.io *.gstatic.com",
-        "img-src 'self' blob: data: *.specfy.io *.githubusercontent.com",
+        "img-src 'self' blob: data: *.specfy.io *.githubusercontent.com *.github.com github.com codecov.io",
         'child-src  *.github.com github.com localhost:* specfy.io *.specfy.io',
         "media-src 'self' *.github.com",
       ].join(';'),

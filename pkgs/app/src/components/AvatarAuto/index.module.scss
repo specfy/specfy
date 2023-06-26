@@ -49,20 +49,20 @@
     overflow: initial;
     display: inline-block;
 
-    svg {
+    >div {
       position: relative;
 
       width: 22px;
       height: 22px;
-      padding: 2px;
+      padding: 2px 0 0 4px;
 
-      color: var(--acceptDark);
+      font-size: $font-s;
 
-      background-color: var(--accept);
-      border-radius: 100%
+      border-radius: 100%;
     }
 
-    .image {
+    .image,
+    .fallback {
       position: absolute;
       top: 12px;
       left: 12px;
@@ -72,6 +72,7 @@
       height: 16px;
 
       border: 1px solid #fff;
+      border-radius: inherit;
     }
   }
 }

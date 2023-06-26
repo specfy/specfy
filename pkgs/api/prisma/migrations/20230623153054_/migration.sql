@@ -10,6 +10,7 @@ ALTER TABLE "Jobs"
 INSERT INTO "public"."Users"(
   "id",
   "name",
+  "avatarUrl",
   "email",
   "emailVerifiedAt",
   "createdAt",
@@ -17,6 +18,7 @@ INSERT INTO "public"."Users"(
 VALUES (
   'githubapp',
   'Github App',
+  '/github-mark.png',
   'support+githubapp@specfy.io',
   NOW(),
   NOW(),

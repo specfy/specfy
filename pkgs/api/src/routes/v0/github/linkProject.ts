@@ -26,7 +26,7 @@ function QueryVal(req: FastifyRequest) {
   const obj: Record<keyof PostLinkToGithubProject['Body'], any> = {
     orgId: valOrgId(req),
     projectId: valProjectId(req),
-    repository: z.string().max(250).regex(repoRegex),
+    repository: z.string().max(250).regex(repoRegex).nullable(),
   };
   return z.object(obj).strict();
 }

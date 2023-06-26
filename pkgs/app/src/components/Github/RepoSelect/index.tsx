@@ -2,41 +2,29 @@ import { IconPlus } from '@tabler/icons-react';
 import { App, Button, Select, Skeleton } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 
-import { useGetGithubInstallations } from '../../../api/github';
+import { useGetGithubRepos } from '../../../api/github';
 import { GITHUB_APP } from '../../../common/envs';
 import { Popup } from '../../../common/popup';
-import { AvatarAuto } from '../../AvatarAuto';
 
 import cls from './index.module.scss';
 
-export const GithubOrgSelect: React.FC<{
-  defaultSelected?: number | null;
+export const GithubRepoSelect: React.FC<{
+  installationId: number;
+  defaultSelected: string | null;
   emptyOption?: boolean;
-  disabled?: boolean;
-  onChange: (selected: number | null) => void;
-  onClose?: () => void;
-}> = ({ defaultSelected, emptyOption, disabled, onChange, onClose }) => {
+  onChange: (selected: string | null) => void;
+}> = ({ defaultSelected, installationId, emptyOption, onChange }) => {
   const { message } = App.useApp();
   const ref = useRef<Popup | null>(null);
-  const resInstall = useGetGithubInstallations();
-  const [selected, setSelected] = useState<number | null>(
+  const [selected, setSelected] = useState<string | null>(
     defaultSelected || null
   );
-  const [ready, setReady] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (!resInstall.data || resInstall.isFetching) {
-      return;
-    }
-
-    // If nothing selected yet (first load)
-    // Or the currently selected has been removed
-    if (!selected || !resInstall.data.find((inst) => inst.id === selected)) {
-      setSelected(defaultSelected || null);
-    }
-
-    setReady(true);
-  }, [resInstall]);
+  const res = useGetGithubRepos(
+    {
+      installation_id: installationId,
+    },
+    true
+  );
 
   useEffect(() => {
     onChange(selected);
@@ -54,20 +42,15 @@ export const GithubOrgSelect: React.FC<{
           );
         },
         onClose: () => {
-          setReady(false);
           ref.current = null;
-          resInstall.refetch();
-
-          if (onClose) {
-            onClose();
-          }
+          res.refetch();
         },
       },
     });
     ref.current.open();
   };
 
-  if (!ready) {
+  if (res.isFetching) {
     return <Skeleton.Input active style={{ width: '250px', height: '40px' }} />;
   }
 
@@ -78,7 +61,6 @@ export const GithubOrgSelect: React.FC<{
       size="large"
       onChange={setSelected}
       notFoundContent={<></>}
-      disabled={disabled === true}
       dropdownRender={(menu) => {
         return (
           <>
@@ -86,7 +68,7 @@ export const GithubOrgSelect: React.FC<{
 
             <div className={cls.install}>
               <Button icon={<IconPlus />} type="ghost" onClick={triggerInstall}>
-                Add Github Organization
+                Install more repositories
               </Button>
             </div>
           </>
@@ -94,19 +76,13 @@ export const GithubOrgSelect: React.FC<{
       }}
     >
       {emptyOption && !selected && (
-        <Select.Option>Select an organization</Select.Option>
+        <Select.Option>Select a repository</Select.Option>
       )}
-      {resInstall.data!.map((install) => {
+      {res.data!.map((repo) => {
         return (
-          <Select.Option key={install.id} value={install.id}>
+          <Select.Option key={repo.fullName} value={repo.fullName}>
             <div className={cls.option}>
-              <AvatarAuto
-                name={install.name}
-                src={install.avatarUrl}
-                shape="square"
-                size="small"
-              />
-              <div>{install.name}</div>
+              <div>{repo.name}</div>
             </div>
           </Select.Option>
         );

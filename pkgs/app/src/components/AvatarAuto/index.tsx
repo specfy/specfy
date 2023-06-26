@@ -19,6 +19,7 @@ type Props = {
   colored?: boolean;
   single?: boolean;
   icon?: React.ReactNode;
+  style?: { color: string; backgroundColor: string };
 } & (PropsBase | PropsOrg);
 
 export const AvatarAuto: React.FC<Props> = ({
@@ -62,7 +63,7 @@ export const AvatarAuto: React.FC<Props> = ({
       )}
     >
       {props.icon}
-      <Avatar.Image className={cls.image} src={src!} alt={name} />
+      <Avatar.Image className={cls.image} src={src!} alt={name!} />
       <Avatar.Fallback className={cls.fallback} delayMs={0} style={style}>
         {acr}
       </Avatar.Fallback>
