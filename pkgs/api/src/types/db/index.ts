@@ -15,4 +15,3 @@ export * from './sessions.js';
 export * from './typeHasUsers.js';
 export * from './users.js';
 export * from './verificationToken.js';
-export * from './jobs.js';

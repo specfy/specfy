@@ -4,6 +4,7 @@ import type { FastifyInstance } from 'fastify';
 import { Strategy as KeyStrategy } from 'passport-http-bearer';
 
 import { prisma } from '../../db/index.js';
+import { userGithubApp } from '../../models/user.js';
 
 // API KEY
 export function registerKey(fastify: FastifyInstance, passport: Authenticator) {
@@ -38,18 +39,7 @@ export function registerKey(fastify: FastifyInstance, passport: Authenticator) {
         return;
       }
 
-      const last = key.id.substring(24);
-      req.user = {
-        id: `spfy_${last}`,
-        name: `API [...${last}]`,
-        email: 'support@specfy.io',
-        password: null,
-        avatarUrl: null,
-        githubLogin: null,
-        createdAt: key.createdAt,
-        emailVerifiedAt: key.createdAt,
-        updatedAt: key.createdAt,
-      };
+      req.user = userGithubApp;
       req.key = key;
       req.perms = [
         {
@@ -57,7 +47,7 @@ export function registerKey(fastify: FastifyInstance, passport: Authenticator) {
           orgId: key.orgId,
           projectId: null,
           role: 'owner',
-          userId: key.userId,
+          userId: req.user.id,
           createdAt: key.createdAt,
           updatedAt: key.createdAt,
           Org: {} as any,
@@ -69,7 +59,7 @@ export function registerKey(fastify: FastifyInstance, passport: Authenticator) {
           orgId: key.orgId,
           projectId: key.projectId,
           role: 'owner',
-          userId: key.userId,
+          userId: req.user.id,
           createdAt: key.createdAt,
           updatedAt: key.createdAt,
           Org: {} as any,

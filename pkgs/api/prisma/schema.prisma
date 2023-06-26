@@ -174,7 +174,7 @@ model Jobs {
   type   JobsType
   status JobsStatus
   config Json       @db.Json
-  reason String?    @db.VarChar(250)
+  reason Json?      @db.Json
 
   createdAt  DateTime  @default(now()) @db.Timestamp(3)
   startedAt  DateTime? @db.Timestamp(3)

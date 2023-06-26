@@ -228,7 +228,7 @@ export async function seedRFC(
   const docRfc4Json = JSON.parse(
     (
       await fs.readFile(
-        path.join(dirname, '../../../', 'src/test/seed/document.rfc.json')
+        path.join(dirname, '../..', 'src/test/seed/document.rfc.json')
       )
     ).toString()
   );
@@ -267,7 +267,7 @@ export async function seedRFC(
                   marks: [
                     {
                       attrs: {
-                        href: 'http://localhost:5173/algolia/crawler',
+                        href: 'http://localhost:5173/company/analytics',
                         target: '_blank',
                         class: null,
                       },

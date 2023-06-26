@@ -3,7 +3,7 @@ export * from './component.js';
 export * from './document.js';
 export * from './github.js';
 export * from './invitations.js';
-export * from './jobs.js';
+export * from './jobs/model.js';
 export * from './key.js';
 export * from './org.js';
 export * from './policy.js';

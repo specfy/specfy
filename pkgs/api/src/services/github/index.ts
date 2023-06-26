@@ -1,5 +1,5 @@
 import { github, webhookService } from './app.js';
-import { listen as deployListen, off as deployOff } from './deploy.js';
+import { listen as deployListen, off as deployOff } from './jobs.js';
 import { listen as webhookListen } from './webhooks.js';
 
 export { github, webhookService };

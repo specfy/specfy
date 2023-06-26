@@ -48,7 +48,7 @@ export async function createUserActivity({
 export const userGithubApp: Users = {
   id: 'githubapp',
   name: 'Github App',
-  email: 'support@specfy.io',
+  email: 'support+githubapp@specfy.io',
   githubLogin: null,
   password: null,
   createdAt: new Date('2023-01-01T00:00:01'),

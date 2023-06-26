@@ -1,7 +1,8 @@
 import type { Prisma } from '@prisma/client';
 
-import { nanoid } from '../common/id.js';
-import type { JobDeploy } from '../types/db/index.js';
+import { nanoid } from '../../common/id.js';
+
+import type { JobDeployConfig } from './type.js';
 
 export async function createJobDeploy(
   {
@@ -9,7 +10,7 @@ export async function createJobDeploy(
     orgId,
     projectId,
   }: { orgId: string; projectId: string; tx: Prisma.TransactionClient },
-  config: JobDeploy
+  config: JobDeployConfig
 ) {
   const job = await tx.jobs.create({
     data: {
