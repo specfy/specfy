@@ -1,7 +1,7 @@
 import type { Policies, Users, Prisma, Activities } from '@prisma/client';
 
-import { nanoid } from '../common/id';
-import type { ActionPolicy } from '../types/db';
+import { nanoid } from '../common/id.js';
+import type { ActionPolicy } from '../types/db/index.js';
 
 export async function createPoliciesActivity({
   user,

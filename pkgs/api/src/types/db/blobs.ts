@@ -1,6 +1,6 @@
-import type { DBComponent } from './components';
-import type { DBDocument } from './documents';
-import type { DBProject } from './projects';
+import type { DBComponent } from './components.js';
+import type { DBDocument } from './documents.js';
+import type { DBProject } from './projects.js';
 
 export type DBBlobAll = DBComponent | DBDocument | DBProject;
 export type DBBlobBase = {

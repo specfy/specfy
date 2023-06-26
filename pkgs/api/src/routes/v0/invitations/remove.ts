@@ -1,10 +1,10 @@
 import type { FastifyPluginCallback } from 'fastify';
 
-import { forbidden, notFound } from '../../../common/errors';
-import { prisma } from '../../../db';
-import { noBody } from '../../../middlewares/noBody';
-import { noQuery } from '../../../middlewares/noQuery';
-import type { DeleteInvitation } from '../../../types/api';
+import { forbidden, notFound } from '../../../common/errors.js';
+import { prisma } from '../../../db/index.js';
+import { noBody } from '../../../middlewares/noBody.js';
+import { noQuery } from '../../../middlewares/noQuery.js';
+import type { DeleteInvitation } from '../../../types/api/index.js';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.delete<DeleteInvitation>(

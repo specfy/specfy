@@ -1,8 +1,8 @@
 import type { FastifyPluginCallback } from 'fastify';
 
-import get from './get';
-import remove from './remove';
-import update from './update';
+import get from './get.js';
+import remove from './remove.js';
+import update from './update.js';
 
 const fn: FastifyPluginCallback = async (f, _, done) => {
   f.register(get, { prefix: '/me' });

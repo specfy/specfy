@@ -1,8 +1,11 @@
-import type { ApiRevision, BlockLevelZero } from '../../types/api';
-import type { RevisionWithProject, TypeHasUsersWithUser } from '../../types/db';
-import { env } from '../env';
+import type { ApiRevision, BlockLevelZero } from '../../types/api/index.js';
+import type {
+  RevisionWithProject,
+  TypeHasUsersWithUser,
+} from '../../types/db/index.js';
+import { env } from '../env.js';
 
-import { toApiUser } from './user';
+import { toApiUser } from './user.js';
 
 export function toApiRevision(
   rev: RevisionWithProject,

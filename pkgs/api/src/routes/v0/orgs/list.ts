@@ -1,8 +1,8 @@
 import type { FastifyPluginCallback } from 'fastify';
 
-import { toApiOrg } from '../../../common/formatters/org';
-import { noQuery } from '../../../middlewares/noQuery';
-import type { ListOrgs } from '../../../types/api';
+import { toApiOrg } from '../../../common/formatters/org.js';
+import { noQuery } from '../../../middlewares/noQuery.js';
+import type { ListOrgs } from '../../../types/api/index.js';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<ListOrgs>(

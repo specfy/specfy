@@ -3,13 +3,13 @@ import type {
   DBBlobComponentBase,
   DBBlobDocumentBase,
   DBBlobProjectBase,
-} from '../db/blobs';
-import type { DBRevision } from '../db/revisions';
+} from '../db/blobs.js';
+import type { DBRevision } from '../db/revisions.js';
 
-import type { Pagination, QuerystringOrgProject, Res } from './api';
-import type { BlockLevelZero } from './document';
-import type { ApiReview } from './reviews';
-import type { ApiUser } from './users';
+import type { Pagination, QuerystringOrgProject, Res } from './api.js';
+import type { BlockLevelZero } from './document.js';
+import type { ApiReview } from './reviews.js';
+import type { ApiUser } from './users.js';
 
 export type ApiRevision = DBRevision & {
   authors: ApiUser[];

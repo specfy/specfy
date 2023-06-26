@@ -1,24 +1,24 @@
 import type { Documents, Orgs, Projects, Users } from '@prisma/client';
 
-import { nanoid } from '../../common/id';
-import { prisma } from '../../db';
+import { nanoid } from '../../common/id.js';
+import { prisma } from '../../db/index.js';
 import {
   createComponentBlob,
   createDocumentBlob,
   createProjectBlob,
   createBlobs,
   createRevisionActivity,
-} from '../../models';
+} from '../../models/index.js';
 import type {
   ApiBlobCreate,
   ApiRevision,
   BlockBanner,
   BlockLevelOne,
   BlockLevelZero,
-} from '../../types/api';
-import type { FlowEdge } from '../../types/db';
+} from '../../types/api/index.js';
+import type { FlowEdge } from '../../types/db/index.js';
 
-import type { ResSeedComponents } from './components';
+import type { ResSeedComponents } from './components.js';
 
 /**
  * Seed projects

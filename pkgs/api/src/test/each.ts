@@ -1,9 +1,9 @@
 import type { FastifyInstance } from 'fastify';
 import fastify from 'fastify';
 
-import buildApp from '../app';
+import buildApp from '../app.js';
 
-import { ApiClient } from './fetch';
+import { ApiClient } from './fetch.js';
 
 export type TestSetup = {
   app: FastifyInstance;

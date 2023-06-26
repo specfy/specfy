@@ -1,6 +1,6 @@
 import type { Policies } from '@prisma/client';
 
-import type { ApiPolicy } from '../../types/api';
+import type { ApiPolicy } from '../../types/api/index.js';
 
 export function toApiPolicy(policy: Policies): ApiPolicy {
   return {

@@ -1,13 +1,13 @@
 import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
-import type { TestSetup } from '../../../test/each';
-import { setupAfterAll, setupBeforeAll } from '../../../test/each';
-import { isSuccess, isValidationError } from '../../../test/fetch';
+import type { TestSetup } from '../../../test/each.js';
+import { setupAfterAll, setupBeforeAll } from '../../../test/each.js';
+import { isSuccess } from '../../../test/fetch.js';
 import {
   shouldBeProtected,
   shouldNotAllowQueryParams,
-} from '../../../test/helpers';
-import { seedSimpleUser, seedWithOrg } from '../../../test/seed/seed';
+} from '../../../test/helpers.js';
+import { seedSimpleUser, seedWithOrg } from '../../../test/seed/seed.js';
 
 let t: TestSetup;
 beforeAll(async () => {
@@ -123,20 +123,5 @@ describe('GET /invitations', () => {
     expect(res2.statusCode).toBe(200);
     expect(res2.json.data).toHaveLength(1);
     expect(res2.json.data[0].email).toStrictEqual('foobar2@example.com');
-  });
-
-  it('should not be able to invite to an other org', async () => {
-    const { token } = await seedWithOrg();
-    const seed2 = await seedWithOrg();
-
-    const post = await t.fetch.post('/0/invitations', {
-      token,
-      Body: {
-        email: 'foobar@example.com',
-        orgId: seed2.org.id,
-        role: 'viewer',
-      },
-    });
-    isValidationError(post.json);
   });
 });

@@ -1,9 +1,10 @@
-import type { Res } from './api';
+import type { Res } from './api.js';
 
 // GET /github/repos
 export interface ApiGithubRepo {
   id: number;
   name: string;
+  fullName: string;
   url: string;
   private: boolean;
 }
@@ -50,6 +51,18 @@ export type PostLinkToGithubOrg = Res<{
   Body: {
     orgId: string;
     installationId: number | null;
+  };
+  Success: {
+    done: true;
+  };
+}>;
+
+// POST /github/link_project
+export type PostLinkToGithubProject = Res<{
+  Body: {
+    orgId: string;
+    projectId: string;
+    repository: string | null;
   };
   Success: {
     done: true;

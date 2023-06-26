@@ -1,21 +1,21 @@
 import type { FastifyPluginAsync } from 'fastify';
 
-import { registerAuth } from '../middlewares/auth';
+import { registerAuth } from '../middlewares/auth/index.js';
 
-import activities from './v0/activities';
-import auth from './v0/auth';
-import components from './v0/components';
-import documents from './v0/documents';
-import github from './v0/github';
-import invitations from './v0/invitations';
-import me from './v0/me';
-import orgs from './v0/orgs';
-import perms from './v0/perms';
-import policies from './v0/policies';
-import projects from './v0/projects';
-import revisions from './v0/revisions';
-import root from './v0/root';
-import users from './v0/users';
+import activities from './v0/activities/index.js';
+import auth from './v0/auth/index.js';
+import components from './v0/components/index.js';
+import documents from './v0/documents/index.js';
+import github from './v0/github/index.js';
+import invitations from './v0/invitations/index.js';
+import me from './v0/me/index.js';
+import orgs from './v0/orgs/index.js';
+import perms from './v0/perms/index.js';
+import policies from './v0/policies/index.js';
+import projects from './v0/projects/index.js';
+import revisions from './v0/revisions/index.js';
+import root from './v0/root/index.js';
+import users from './v0/users/index.js';
 
 export const routes: FastifyPluginAsync = async (f) => {
   registerAuth(f);

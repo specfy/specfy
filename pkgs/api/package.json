@@ -3,9 +3,11 @@
   "version": "0.0.1",
   "description": "",
   "main": "src/app.js",
+  "type": "module",
   "scripts": {
     "--dev": "fastify start --logging-module='build/logger.js' -o -w -P build/app.js",
     "dev": "fastify start -o -w -P build/app.js",
+    "dev:built": "node build/index.js",
     "build": "prisma generate && tsc -p tsconfig.json -w",
     "prod:build": "prisma generate && tsc -p tsconfig.json",
     "test:build": "tsc -p tsconfig.json",
@@ -27,9 +29,14 @@
     "@fastify/secure-session": "6.1.0",
     "@fastify/sensible": "5.0.0",
     "@fastify/session": "10.2.0",
+    "@fastify/static": "6.10.2",
     "@octokit/auth-app": "4.0.13",
     "@prisma/client": "4.12.0",
+    "@specfy/sync": "1.0.1",
     "close-with-grace": "1.2.0",
+    "colorette": "2.0.20",
+    "consola": "3.1.0",
+    "execa": "7.1.1",
     "fastify": "4.15.0",
     "fastify-plugin": "4.0.0",
     "jsonwebtoken": "9.0.0",
@@ -44,10 +51,7 @@
     "prisma": "4.12.0",
     "prosemirror-markdown": "1.11.0",
     "slugify": "1.6.5",
-    "zod": "3.21.4",
-    "consola": "3.1.0",
-    "@fastify/static": "6.10.2",
-    "colorette": "2.0.20"
+    "zod": "3.21.4"
   },
   "devDependencies": {
     "@types/node": "18.11.18",

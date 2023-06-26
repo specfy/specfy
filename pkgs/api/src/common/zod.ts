@@ -1,7 +1,7 @@
 import type { FastifyRequest } from 'fastify';
 import z from 'zod';
 
-import { schemaId, schemaOrgId } from './validators';
+import { schemaId, schemaOrgId } from './validators/index.js';
 
 // export function valUniqueColumn(
 //   model: ModelStatic<any>,

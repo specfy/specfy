@@ -1,13 +1,5 @@
 @import "../../../../styles/theme";
 
-.left {
-  width: calc(100% - 300px);
-}
-
-.right {
-  width: 300px;
-}
-
 .main {
   margin-bottom: $p-4xl;
   border-bottom: 1px solid var(--border);
@@ -71,6 +63,9 @@
 }
 
 .sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: $p-3xl;
   padding: $p-l $p-4xl;
 }
 

@@ -1,8 +1,8 @@
 import { z } from 'zod';
 
-import type { BlockBanner } from '../../types/api';
+import type { BlockBanner } from '../../types/api/index.js';
 
-import { schemaId } from './common';
+import { schemaId } from './common.js';
 
 // BlockText
 const blockText = z

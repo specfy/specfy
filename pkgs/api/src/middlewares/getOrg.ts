@@ -1,10 +1,10 @@
 import type { FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
-import { notFound, validationError } from '../common/errors';
-import { valOrgId } from '../common/zod';
-import type { ReqOrgParams } from '../types/api';
-import type { PreHandler } from '../types/fastify';
+import { notFound, validationError } from '../common/errors.js';
+import { valOrgId } from '../common/zod.js';
+import type { ReqOrgParams } from '../types/api/index.js';
+import type { PreHandler } from '../types/fastify.js';
 
 export function QueryVal(req: FastifyRequest) {
   return z

@@ -57,6 +57,18 @@ export type ActionUser =
 
 export type ActionKey = 'Key.created' | 'Key.deleted';
 
+export type ActionGithub = 'Github.linked' | 'Github.unlinked';
+
+export type ActionAll =
+  | ActionComponent
+  | ActionDocument
+  | ActionGithub
+  | ActionKey
+  | ActionOrg
+  | ActionPolicy
+  | ActionProject
+  | ActionRevision
+  | ActionUser;
 export interface DBActivity {
   id: string;
 
@@ -66,15 +78,7 @@ export interface DBActivity {
   userId: string;
 
   activityGroupId: string | null;
-  action:
-    | ActionComponent
-    | ActionDocument
-    | ActionKey
-    | ActionOrg
-    | ActionPolicy
-    | ActionProject
-    | ActionRevision
-    | ActionUser;
+  action: ActionAll;
 
   targetUserId: string | null;
   targetComponentId: string | null;
@@ -90,5 +94,14 @@ export type ActivitiesList = Prisma.ActivitiesGetPayload<{
     User: true;
     Project: { select: { id: true; name: true; slug: true } };
     Blob: true;
+    Revision: {
+      select: {
+        id: true;
+        name: true;
+        status: true;
+        locked: true;
+        merged: true;
+      };
+    };
   };
 }>;

@@ -1,25 +1,26 @@
 import path from 'node:path';
 
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
-import { defaultMarkdownParser } from 'prosemirror-markdown';
 import { z } from 'zod';
 
-import { validationError } from '../../../common/errors';
-import { nanoid } from '../../../common/id';
-import { slugify } from '../../../common/string';
-import { schemaRevision } from '../../../common/validators/revision';
-import { valOrgId, valProjectId } from '../../../common/zod';
-import { prisma } from '../../../db';
-import { noQuery } from '../../../middlewares/noQuery';
-import { createBlobs, createRevisionActivity } from '../../../models';
+import {
+  getDocumentTitle,
+  uploadToDocuments,
+} from '../../../common/document.js';
+import { validationError } from '../../../common/errors.js';
+import { nanoid } from '../../../common/id.js';
+import { slugify } from '../../../common/string.js';
+import { schemaRevision } from '../../../common/validators/revision.js';
+import { valOrgId, valProjectId } from '../../../common/zod.js';
+import { prisma } from '../../../db/index.js';
+import { noQuery } from '../../../middlewares/noQuery.js';
+import { createBlobs, createRevisionActivity } from '../../../models/index.js';
 import type {
   ApiBlobCreate,
   ApiBlobCreateDocument,
-  BlockLevelZero,
-  Blocks,
   PostUploadRevision,
-} from '../../../types/api';
-import type { DBDocument } from '../../../types/db';
+} from '../../../types/api/index.js';
+import type { DBDocument } from '../../../types/db/index.js';
 
 function BodyVal(req: FastifyRequest) {
   return z
@@ -45,40 +46,6 @@ function BodyVal(req: FastifyRequest) {
     .strict();
 }
 
-const attrName = 'uid';
-function correctNode(node: any) {
-  if (node.type === 'bullet_list') {
-    node.type = 'bulletList';
-  } else if (node.type === 'code_block') {
-    node.type = 'codeBlock';
-    node.attrs.language = node.attrs.params || 'sh';
-  } else if (node.type === 'list_item') {
-    node.type = 'listItem';
-  } else if (node.type === 'horizontal_rule') {
-    node.type = 'horizontalRule';
-  } else if (node.type === 'ordered_list') {
-    node.type = 'orderedList';
-  } else if (node.type.includes('_')) {
-    throw new Error(`unsupported block, ${node.type}`);
-  }
-}
-
-function iterNode(node: Blocks) {
-  if (node.type === 'text' || node.type === 'hardBreak') {
-    return;
-  }
-
-  correctNode(node);
-
-  if (!node.attrs) {
-    node.attrs = {} as any;
-  }
-  node.attrs[attrName] = nanoid();
-  if ('content' in node) {
-    node.content.forEach(iterNode);
-  }
-}
-
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.post<PostUploadRevision>(
     '/',
@@ -91,82 +58,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
       // TODO: validate all ids
       const data = val.data;
-
-      // ---- Check if every path has a parent folder
-      const checkedFolder = new Set<string>('/');
-      const copy = [...data.blobs];
-      const checked: Array<
-        PostUploadRevision['Body']['blobs'][0] & { folder: string }
-      > = [];
-      while (copy.length > 0) {
-        const blob = copy.shift()!;
-        if (typeof blob === 'undefined') {
-          continue;
-        }
-
-        // The specified path is already a folder
-        if (blob.path.endsWith('/')) {
-          checked.push({ ...blob, folder: blob.path });
-          checkedFolder.add(blob.path);
-
-          continue;
-        }
-
-        const folder = path.join(path.dirname(blob.path), '/');
-        if (checkedFolder.has(folder)) {
-          checked.push({ ...blob, folder });
-
-          continue;
-        }
-
-        // Exact match, unlikely with regular file upload but since it's an API it can be manually setup
-        const parent = copy.findIndex((b) => b.path === folder);
-        if (parent > -1) {
-          checked.push({ ...copy[parent], folder });
-          checked.push({ ...blob, folder });
-          checkedFolder.add(folder);
-          delete copy[parent];
-
-          continue;
-        }
-
-        // There is an index.md which is good enough source
-        const index = path.join(folder, 'index.md');
-        const dup = copy.findIndex((b) => b.path.toLowerCase() === index);
-        if (dup > -1) {
-          checked.push({ ...copy[dup], path: folder, folder });
-          checked.push({ ...blob, folder });
-          checkedFolder.add(folder);
-          delete copy[dup];
-
-          continue;
-        }
-
-        // No match, we create an empty folder
-        checked.push({ content: '', path: folder, folder });
-        checked.push({ ...blob, folder });
-        checkedFolder.add(folder);
-      }
-
-      // ---- Sort
-      // We also sort:
-      // 1. Because Prisma does not support Deferrable fk check  https://github.com/prisma/prisma/issues/8807
-      // 2. And it creates better Revisions
-      const sorted = checked.sort((a, b) => (a.path > b.path ? 1 : -1));
-
-      // ---- Transform content into a ProseMirror object
-      const parsed: Array<{ path: string; content: BlockLevelZero }> = [];
-      for (const blob of sorted) {
-        const parse: BlockLevelZero = defaultMarkdownParser
-          .parse(blob.content)
-          ?.toJSON();
-        parse.content.forEach(iterNode);
-
-        parsed.push({
-          path: blob.path,
-          content: parse,
-        });
-      }
+      const parsed = uploadToDocuments(data.blobs);
 
       const rev = await prisma.$transaction(async (tx) => {
         const prevs = await tx.documents.findMany({
@@ -184,21 +76,13 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         const blobs: ApiBlobCreateDocument[] = parsed.map((doc) => {
           const prev = prevs.find((p) => p.sourcePath === doc.path);
 
-          let name = prev
-            ? prev.name
-            : path.basename(doc.path).replace('.md', '');
-
-          if (
-            doc.content.content.length > 0 &&
-            doc.content.content[0].type === 'heading'
-          ) {
-            name = doc.content.content[0].content[0].text;
-            doc.content.content.shift();
-          }
+          const name = getDocumentTitle(doc, prev);
 
           const current: DBDocument = prev
             ? {
                 ...(prev as unknown as DBDocument),
+                name,
+                slug: slugify(name),
                 content: doc.content,
                 source: data.source,
                 sourcePath: doc.path,

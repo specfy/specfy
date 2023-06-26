@@ -2,16 +2,15 @@ import { Prisma } from '@prisma/client';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
-import { validationError } from '../../../common/errors';
-import { nanoid } from '../../../common/id';
-import { getOrgFromRequest } from '../../../common/perms';
-import { valOrgId } from '../../../common/zod';
-import { prisma } from '../../../db';
-import { noQuery } from '../../../middlewares/noQuery';
-import { v1 } from '../../../models/billing';
-import { EXPIRES } from '../../../models/invitations';
-import type { PostInvitation } from '../../../types/api';
-import { PermType } from '../../../types/db';
+import { validationError } from '../../../common/errors.js';
+import { nanoid } from '../../../common/id.js';
+import { getOrgFromRequest } from '../../../common/perms.js';
+import { valOrgId } from '../../../common/zod.js';
+import { prisma } from '../../../db/index.js';
+import { noQuery } from '../../../middlewares/noQuery.js';
+import { v1, EXPIRES } from '../../../models/index.js';
+import type { PostInvitation } from '../../../types/api/index.js';
+import { PermType } from '../../../types/db/index.js';
 
 function QueryVal(req: FastifyRequest) {
   return z
@@ -39,8 +38,11 @@ function QueryVal(req: FastifyRequest) {
       }
 
       const org = getOrgFromRequest(req, val.orgId);
-      const max = org.isPersonal ? v1.free.org.maxUser : v1.paid.org.maxUser;
+      if (!org) {
+        return;
+      }
 
+      const max = org.isPersonal ? v1.free.org.maxUser : v1.paid.org.maxUser;
       const check = await prisma.$queryRaw<[{ total: number }]>(
         Prisma.sql`SELECT (SELECT COUNT(*) FROM "Perms" WHERE "orgId" = ${val.orgId} AND "projectId" IS NULL)
          + (SELECT COUNT(*) FROM "Invitations" WHERE "orgId" = ${val.orgId}) as total LIMIT 1`

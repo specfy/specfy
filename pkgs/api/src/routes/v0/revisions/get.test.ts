@@ -1,17 +1,17 @@
 import { beforeAll, afterAll, describe, it, expect } from 'vitest';
 
-import { nanoid } from '../../../common/id';
-import type { TestSetup } from '../../../test/each';
-import { setupBeforeAll, setupAfterAll } from '../../../test/each';
-import { isSuccess, isValidationError } from '../../../test/fetch';
+import { nanoid } from '../../../common/id.js';
+import type { TestSetup } from '../../../test/each.js';
+import { setupBeforeAll, setupAfterAll } from '../../../test/each.js';
+import { isSuccess, isValidationError } from '../../../test/fetch.js';
 import {
   shouldBeNotFound,
   shouldBeProtected,
   shouldNotAllowQueryParams,
-} from '../../../test/helpers';
-import { createOrgId } from '../../../test/seed/orgs';
-import { seedRevision } from '../../../test/seed/revisions';
-import { seedSimpleUser, seedWithProject } from '../../../test/seed/seed';
+} from '../../../test/helpers.js';
+import { createOrgId } from '../../../test/seed/orgs.js';
+import { seedRevision } from '../../../test/seed/revisions.js';
+import { seedSimpleUser, seedWithProject } from '../../../test/seed/seed.js';
 
 let t: TestSetup;
 beforeAll(async () => {

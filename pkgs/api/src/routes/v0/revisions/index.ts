@@ -1,15 +1,15 @@
 import type { FastifyPluginCallback } from 'fastify';
 
-import blobsList from './blobs/list';
-import checks from './checks';
-import comment from './comment';
-import create from './create';
-import get from './get';
-import list from './list';
-import merge from './merge';
-import rebase from './rebase';
-import update from './update';
-import upload from './upload';
+import blobsList from './blobs/list.js';
+import checks from './checks.js';
+import comment from './comment.js';
+import create from './create.js';
+import get from './get.js';
+import list from './list.js';
+import merge from './merge.js';
+import rebase from './rebase.js';
+import update from './update.js';
+import upload from './upload.js';
 
 const fn: FastifyPluginCallback = async (f, _, done) => {
   f.register(create, { prefix: '/revisions' });

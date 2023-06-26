@@ -22,12 +22,14 @@ function diffToGroup(diff: Duration): string {
 export const ListActivity: React.FC<{
   orgId: string;
   projectId?: string;
-}> = ({ orgId, projectId }) => {
+  revisionId?: string;
+}> = ({ orgId, projectId, revisionId }) => {
   const { user } = useAuth();
   const [byPeriod, setByPeriod] = useState<Array<[string, ApiActivity[]]>>([]);
   const res = useListActivities({
     org_id: orgId,
     project_id: projectId,
+    revision_id: revisionId,
   });
 
   useEffect(() => {
@@ -96,8 +98,7 @@ export const ListActivity: React.FC<{
                       key={act.id}
                       me={user!.id}
                       act={act}
-                      orgId={orgId}
-                      projectId={projectId}
+                      ctx={{ orgId, projectId, revisionId }}
                     />
                   );
                 })}

@@ -1,25 +1,24 @@
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import z from 'zod';
 
-import { validationError } from '../../../common/errors';
-import { getOrgFromRequest } from '../../../common/perms';
-import { schemaProject } from '../../../common/validators';
-import { valOrgId } from '../../../common/zod';
-import { prisma } from '../../../db';
-import { noQuery } from '../../../middlewares/noQuery';
-import { createProject } from '../../../models';
-import { v1 } from '../../../models/billing';
-import type { PostProject } from '../../../types/api';
+import { validationError } from '../../../common/errors.js';
+import { getOrgFromRequest } from '../../../common/perms.js';
+import { schemaProject } from '../../../common/validators/index.js';
+import { valOrgId } from '../../../common/zod.js';
+import { prisma } from '../../../db/index.js';
+import { noQuery } from '../../../middlewares/noQuery.js';
+import { v1, createProject } from '../../../models/index.js';
+import type { PostProject } from '../../../types/api/index.js';
 
 function ProjectVal(req: FastifyRequest) {
+  const obj: Record<keyof PostProject['Body'], any> = {
+    name: schemaProject.shape.name,
+    slug: schemaProject.shape.slug,
+    orgId: valOrgId(req),
+    display: schemaProject.shape.display,
+  };
   return z
-    .object({
-      name: schemaProject.shape.name,
-      slug: schemaProject.shape.slug,
-      orgId: valOrgId(req),
-      display: schemaProject.shape.display,
-      githubRepositoryId: z.number().int().positive().nullable(),
-    })
+    .object(obj)
     .strict()
     .superRefine(async (val, ctx) => {
       const res = await prisma.projects.findFirst({
@@ -41,6 +40,10 @@ function ProjectVal(req: FastifyRequest) {
         },
       });
       const org = getOrgFromRequest(req, val.orgId);
+      if (!org) {
+        return;
+      }
+
       const max = org.isPersonal ? v1.free.project.max : v1.paid.project.max;
       if (count >= max) {
         ctx.addIssue({
@@ -80,7 +83,6 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
             links: [],
             display: data.display,
             edges: [],
-            githubRepositoryId: data.githubRepositoryId,
           },
           user: req.user!,
           tx,

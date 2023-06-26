@@ -6,20 +6,20 @@
   display: flex;
   gap: $p-l;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 
   padding: $p-3xl;
+
+  .placeholderReset {
+    pointer-events: none;
+    width: 24px;
+  }
 }
+
 
 .search {
   display: flex;
   gap: $p-l;
-  width: 50%;
-  min-width: 500px;
-
-  .inputs {
-    width: calc(100% - 30px);
-  }
 }
 
 .title {
@@ -31,4 +31,8 @@
 .subtitle {
   font-size: $font-s;
   color: $gray-400;
+}
+
+.line {
+  padding: 0 $p-xl 0 $p;
 }

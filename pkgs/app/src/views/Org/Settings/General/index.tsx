@@ -106,6 +106,7 @@ export const SettingsGeneral: React.FC<{
       <Helmet title={`Settings - ${org.name} ${titleSuffix}`} />
       <div>
         <h2>General Settings</h2>
+
         <Typography.Text type="secondary">
           Manage your organization general&apos;s settings
         </Typography.Text>
@@ -165,9 +166,8 @@ export const SettingsGeneral: React.FC<{
               emptyOption={true}
               defaultSelected={org.githubInstallationId}
               onChange={(sel) => {
-                if (sel !== 'public') setInstallId(sel);
+                setInstallId(sel);
               }}
-              publicRepos={false}
             />
           </Card.Content>
           <Card.Actions>

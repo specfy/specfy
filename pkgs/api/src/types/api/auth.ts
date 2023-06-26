@@ -1,4 +1,4 @@
-import type { Res } from './api';
+import type { Res } from './api.js';
 
 // POST /auth/local
 export type PostAuthLocal = Res<{

@@ -2,12 +2,12 @@ import type { Prisma, TypeHasUsers } from '@prisma/client';
 import type { FastifyPluginCallback } from 'fastify';
 import { z } from 'zod';
 
-import { validationError } from '../../../common/errors';
-import { schemaRevision } from '../../../common/validators/revision';
-import { prisma } from '../../../db';
-import { getRevision } from '../../../middlewares/getRevision';
-import { createRevisionActivity } from '../../../models';
-import type { PatchRevision } from '../../../types/api';
+import { validationError } from '../../../common/errors.js';
+import { schemaRevision } from '../../../common/validators/revision.js';
+import { prisma } from '../../../db/index.js';
+import { getRevision } from '../../../middlewares/getRevision.js';
+import { createRevisionActivity } from '../../../models/index.js';
+import type { PatchRevision } from '../../../types/api/index.js';
 
 function diffUsers(
   origin: TypeHasUsers[],

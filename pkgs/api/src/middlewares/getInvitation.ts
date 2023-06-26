@@ -1,10 +1,10 @@
 import { z } from 'zod';
 
-import { notFound, validationError } from '../common/errors';
-import { schemaId, schemaToken } from '../common/validators';
-import { prisma } from '../db';
-import type { GetInvitation } from '../types/api';
-import type { PreHandler } from '../types/fastify';
+import { notFound, validationError } from '../common/errors.js';
+import { schemaId, schemaToken } from '../common/validators/index.js';
+import { prisma } from '../db/index.js';
+import type { GetInvitation } from '../types/api/index.js';
+import type { PreHandler } from '../types/fastify.js';
 
 export function QueryVal() {
   return z

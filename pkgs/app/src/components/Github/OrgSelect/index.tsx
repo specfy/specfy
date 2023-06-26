@@ -11,15 +11,15 @@ import cls from './index.module.scss';
 
 export const GithubOrgSelect: React.FC<{
   defaultSelected?: number | null;
-  publicRepos: boolean;
   emptyOption?: boolean;
-  onChange: (selected: number | 'public' | null) => void;
+  disabled?: boolean;
+  onChange: (selected: number | null) => void;
   onClose?: () => void;
-}> = ({ defaultSelected, emptyOption, publicRepos, onChange, onClose }) => {
+}> = ({ defaultSelected, emptyOption, disabled, onChange, onClose }) => {
   const { message } = App.useApp();
   const ref = useRef<Popup | null>(null);
   const resInstall = useGetGithubInstallations();
-  const [selected, setSelected] = useState<number | 'public' | null>(
+  const [selected, setSelected] = useState<number | null>(
     defaultSelected || null
   );
   const [ready, setReady] = useState<boolean>(false);
@@ -28,14 +28,11 @@ export const GithubOrgSelect: React.FC<{
     if (!resInstall.data || resInstall.isFetching) {
       return;
     }
-    if (selected === 'public') {
-      return;
-    }
 
     // If nothing selected yet (first load)
     // Or the currently selected has been removed
     if (!selected || !resInstall.data.find((inst) => inst.id === selected)) {
-      setSelected(defaultSelected || (publicRepos ? 'public' : null));
+      setSelected(defaultSelected || null);
     }
 
     setReady(true);
@@ -81,6 +78,7 @@ export const GithubOrgSelect: React.FC<{
       size="large"
       onChange={setSelected}
       notFoundContent={<></>}
+      disabled={disabled === true}
       dropdownRender={(menu) => {
         return (
           <>
@@ -97,12 +95,6 @@ export const GithubOrgSelect: React.FC<{
     >
       {emptyOption && !selected && (
         <Select.Option>Select an organization</Select.Option>
-      )}
-      {publicRepos && (
-        <Select.Option value="public">
-          <div> </div>
-          <div>Public Repositories</div>
-        </Select.Option>
       )}
       {resInstall.data!.map((install) => {
         return (

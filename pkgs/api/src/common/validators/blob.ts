@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
-import { schemaId } from './common';
-import { schemaComponent } from './component';
-import { schemaDocument } from './document';
-import { schemaProject } from './project';
+import { schemaId } from './common.js';
+import { schemaComponent } from './component.js';
+import { schemaDocument } from './document.js';
+import { schemaProject } from './project.js';
 
 const blobProject = z
   .object({
