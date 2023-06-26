@@ -1,4 +1,4 @@
-import { IconThumbUp } from '@tabler/icons-react';
+import { IconGitMerge, IconThumbUp } from '@tabler/icons-react';
 import type { ApiActivity } from 'api/src/types/api';
 import type {
   ActionAll,
@@ -336,7 +336,13 @@ export const RevisionTarget: React.FC<{
 };
 export const mapRevision: Record<ActionRevision, ActivityParams> = {
   'Revision.approved': {
-    icon: <IconThumbUp />,
+    icon: (
+      <div
+        style={{ color: 'var(--acceptDark)', backgroundColor: 'var(--accept)' }}
+      >
+        <IconThumbUp />
+      </div>
+    ),
     Target: RevisionTarget,
     Text: ({ ctx, user, target }) => {
       if (ctx.revisionId) {
@@ -376,6 +382,13 @@ export const mapRevision: Record<ActionRevision, ActivityParams> = {
     },
   },
   'Revision.merged': {
+    icon: (
+      <div
+        style={{ color: 'var(--mergeDark)', backgroundColor: 'var(--merge)' }}
+      >
+        <IconGitMerge />
+      </div>
+    ),
     Target: RevisionTarget,
     Text: ({ ctx, user, target }) => {
       if (ctx.revisionId) {
@@ -464,6 +477,7 @@ export const mapRevision: Record<ActionRevision, ActivityParams> = {
             <StatusTag
               status={act.targetRevision.status}
               locked={act.targetRevision.locked}
+              merged={act.targetRevision.merged}
             />
           </Flex>
         </ActivityCard>

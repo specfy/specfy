@@ -59,6 +59,7 @@ describe('GET /projects/:org_id/:project_slug', () => {
       updatedAt: expect.toBeIsoDate(),
       edges: [],
       links: [],
+      githubRepository: null,
     });
   });
 

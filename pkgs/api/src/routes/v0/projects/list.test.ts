@@ -63,6 +63,7 @@ describe('GET /projects', () => {
         updatedAt: expect.toBeIsoDate(),
         edges: [],
         links: [],
+        githubRepository: null,
       },
     ]);
   });

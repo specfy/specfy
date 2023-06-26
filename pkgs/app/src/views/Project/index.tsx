@@ -61,7 +61,7 @@ export const Project: React.FC = () => {
     } else if (getProj.error) {
       setLoading(false);
     }
-  }, [getProj.status]);
+  }, [getProj.isFetching]);
 
   useEffect(() => {
     storeProject.fill(getProjects.data?.data || []);

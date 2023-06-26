@@ -21,6 +21,7 @@ import { computeProjectPosition, computeWidth } from '../../../../common/flow';
 import { i18n } from '../../../../common/i18n';
 import { useProjectStore } from '../../../../common/store';
 import { slugify } from '../../../../common/string';
+import { Banner } from '../../../../components/Banner';
 import { Flex } from '../../../../components/Flex';
 import { GithubOrgSelect } from '../../../../components/Github/OrgSelect';
 
@@ -72,15 +73,15 @@ export const CreateFromGithub: React.FC<{
   const storeProjects = useProjectStore();
   const { message } = App.useApp();
 
-  const [selected, setSelected] = useState<number | 'public'>('public');
+  const [selected, setSelected] = useState<number | undefined>();
   const [reposReady, setReposReady] = useState<boolean>(false);
 
   const resInstall = useGetGithubInstallations();
   const resRepos = useGetGithubRepos(
     {
-      installation_id: selected === 'public' ? undefined : selected,
+      installation_id: selected,
     },
-    resInstall.data !== null
+    Boolean(selected) && resInstall.data !== null
   );
 
   useEffect(() => {
@@ -145,18 +146,29 @@ export const CreateFromGithub: React.FC<{
       </header>
 
       <div className={cls.main}>
-        <Flex gap="m" alignItems="initial">
+        {org.githubInstallationId && (
           <GithubOrgSelect
-            publicRepos={true}
             defaultSelected={org.githubInstallationId}
+            disabled={true}
             onClose={onClose}
             onChange={(sel) => {
               if (sel) setSelected(sel);
             }}
           />
-        </Flex>
+        )}
 
-        {!reposReady ? (
+        {!org.githubInstallationId ? (
+          <Banner type="info">
+            <Flex justifyContent="space-between" grow={1}>
+              <div>
+                Your organization is not linked to a Github organization.
+              </div>
+              <Link to={`/${org.id}/_/settings`}>
+                <Button type="primary">Settings</Button>
+              </Link>
+            </Flex>
+          </Banner>
+        ) : !reposReady ? (
           <Skeleton title={false} paragraph={{ rows: 3 }} active />
         ) : (
           <div>

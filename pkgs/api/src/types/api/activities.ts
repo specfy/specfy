@@ -26,7 +26,7 @@ export type ApiActivity = Omit<
     | Pick<ApiDocument, 'id' | 'name' | 'slug' | 'type'>
     | undefined;
   targetRevision?:
-    | Pick<ApiRevision, 'id' | 'locked' | 'name' | 'status'>
+    | Pick<ApiRevision, 'id' | 'locked' | 'merged' | 'name' | 'status'>
     | undefined;
   targetPolicy?: Pick<ApiPolicy, 'id' | 'name'> | undefined;
 };

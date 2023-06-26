@@ -22,6 +22,7 @@ export const schemaProject = z
     ),
     display: schemaDisplay,
     edges: schemaEdges,
+    githubRepository: z.string().nullable(),
     createdAt: z.string().datetime(),
     updatedAt: z.string().datetime(),
   })

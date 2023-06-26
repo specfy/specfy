@@ -13,6 +13,9 @@ import { useOrgStore } from '../../../../common/store';
 import { slugify, titleSuffix } from '../../../../common/string';
 import { Banner } from '../../../../components/Banner';
 import { Card } from '../../../../components/Card';
+import { Flex } from '../../../../components/Flex';
+import { GithubOrgSelect } from '../../../../components/Github/OrgSelect';
+import { GithubRepoSelect } from '../../../../components/Github/RepoSelect';
 import type { RouteProject } from '../../../../types/routes';
 
 import cls from './index.module.scss';
@@ -88,7 +91,7 @@ export const SettingsGeneral: React.FC<{
     const res = await linkToGithubRepo({
       orgId: proj.orgId,
       projectId: proj.id,
-      repository: repoId,
+      repository: null,
     });
     if (isError(res)) {
       message.error(i18n.errorOccurred);
@@ -151,11 +154,24 @@ export const SettingsGeneral: React.FC<{
               you push to your repository.
             </p>
 
-            {!org!.githubInstallationId && (
+            {!org!.githubInstallationId ? (
               <Banner type="warning">
                 You need to link your Specfy organization to a Github
                 organization.
               </Banner>
+            ) : (
+              <Flex gap="l">
+                <GithubOrgSelect
+                  onChange={() => null}
+                  defaultSelected={org!.githubInstallationId}
+                  disabled
+                />
+                <GithubRepoSelect
+                  defaultSelected={proj.githubRepository}
+                  installationId={org!.githubInstallationId}
+                  onChange={setRepoId}
+                />
+              </Flex>
             )}
           </Card.Content>
           <Card.Actions>

@@ -37,7 +37,7 @@ export async function linkToGithubRepo(
   );
 
   if (res.status === 200) {
-    queryClient.invalidateQueries(['listOrgs']);
+    queryClient.invalidateQueries(['getProject']);
   }
 
   return json;

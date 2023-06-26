@@ -2,6 +2,7 @@ import type { Prisma } from '@prisma/client';
 import type { FastifyPluginCallback } from 'fastify';
 
 import { findAllBlobsWithParent } from '../../../common/blobs.js';
+import { nanoid } from '../../../common/id.js';
 import { checkReviews } from '../../../common/revision/index.js';
 import { prisma } from '../../../db/index.js';
 import { getRevision } from '../../../middlewares/getRevision.js';
@@ -47,6 +48,21 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
         // TODO: check who can merge
 
+        // Update revision
+        // Merge first to activity ordering
+        const activityGroupId = nanoid();
+        const updated = await tx.revisions.update({
+          data: { merged: true, mergedAt: new Date().toISOString() },
+          where: { id: rev.id },
+        });
+        await createRevisionActivity({
+          user,
+          action: 'Revision.merged',
+          target: updated,
+          activityGroupId,
+          tx,
+        });
+
         // Merge all blobs
         const list = await findAllBlobsWithParent(
           rev.blobs as string[],
@@ -73,6 +89,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
                 user,
                 action: 'Project.deleted',
                 target: del,
+                activityGroupId,
                 tx,
               });
               continue;
@@ -85,6 +102,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
                 user,
                 action: 'Project.updated',
                 target: up,
+                activityGroupId,
                 tx,
               });
               continue;
@@ -100,6 +118,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
               user,
               action: 'Project.created',
               target: created,
+              activityGroupId,
               tx,
             });
             continue;
@@ -115,6 +134,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
                 user,
                 action: 'Component.deleted',
                 target: del,
+                activityGroupId,
                 tx,
               });
               continue;
@@ -127,6 +147,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
                 user,
                 action: 'Component.updated',
                 target: up,
+                activityGroupId,
                 tx,
               });
               continue;
@@ -143,6 +164,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
               user,
               action: 'Component.created',
               target: created,
+              activityGroupId,
               tx,
             });
             continue;
@@ -158,6 +180,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
                 user,
                 action: 'Document.deleted',
                 target: del,
+                activityGroupId,
                 tx,
               });
               continue;
@@ -170,6 +193,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
                 user,
                 action: 'Document.updated',
                 target: up,
+                activityGroupId,
                 tx,
               });
               continue;
@@ -185,22 +209,11 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
               user,
               action: 'Document.created',
               target: created,
+              activityGroupId,
               tx,
             });
           }
         }
-
-        // Update revision
-        const updated = await tx.revisions.update({
-          data: { merged: true, mergedAt: new Date().toISOString() },
-          where: { id: rev.id },
-        });
-        await createRevisionActivity({
-          user,
-          action: 'Revision.merged',
-          target: updated,
-          tx,
-        });
       });
 
       if (reason) {
