@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
-import { schemaId, schemaOrgId } from './common';
-import { schemaProseMirror } from './prosemirror';
+import { schemaId, schemaOrgId } from './common.js';
+import { schemaProseMirror } from './prosemirror.js';
 
 export const schemaRevision = z
   .object({

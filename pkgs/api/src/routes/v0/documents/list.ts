@@ -2,15 +2,15 @@ import type { Prisma } from '@prisma/client';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
-import { validationError } from '../../../common/errors';
-import { valOrgId, valProjectId } from '../../../common/zod';
-import { prisma } from '../../../db';
+import { validationError } from '../../../common/errors.js';
+import { valOrgId, valProjectId } from '../../../common/zod.js';
+import { prisma } from '../../../db/index.js';
 import type {
   Pagination,
   ApiDocument,
   ListDocuments,
-} from '../../../types/api';
-import { DocumentType } from '../../../types/db';
+} from '../../../types/api/index.js';
+import { DocumentType } from '../../../types/db/index.js';
 
 function QueryVal(req: FastifyRequest) {
   return z

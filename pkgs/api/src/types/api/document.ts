@@ -1,6 +1,6 @@
 import type { FileData } from 'react-diff-view';
 
-import type { ApiDocument } from './documents';
+import type { ApiDocument } from './documents.js';
 
 export interface BlockDefaultAttrs {
   uid: string;

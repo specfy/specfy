@@ -2,11 +2,11 @@ import type { Prisma } from '@prisma/client';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
-import { validationError } from '../../../common/errors';
-import { toApiUser } from '../../../common/formatters/user';
-import { valOrgId, valProjectId } from '../../../common/zod';
-import { prisma } from '../../../db';
-import type { ApiPerm, ListPerms } from '../../../types/api';
+import { validationError } from '../../../common/errors.js';
+import { toApiUser } from '../../../common/formatters/user.js';
+import { valOrgId, valProjectId } from '../../../common/zod.js';
+import { prisma } from '../../../db/index.js';
+import type { ApiPerm, ListPerms } from '../../../types/api/index.js';
 
 function QueryVal(req: FastifyRequest) {
   return z

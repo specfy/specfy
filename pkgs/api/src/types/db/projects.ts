@@ -1,6 +1,6 @@
-import type { BlockLevelZero } from '../api';
+import type { BlockLevelZero } from '../api/index.js';
 
-import type { FlowEdge, FlowItemDisplay } from './flow';
+import type { FlowEdge, FlowItemDisplay } from './flow.js';
 
 export interface DBProject {
   id: string;
@@ -13,6 +13,8 @@ export interface DBProject {
 
   display: FlowItemDisplay;
   edges: FlowEdge[];
+
+  githubRepository: string | null;
 
   createdAt: string;
   updatedAt: string;

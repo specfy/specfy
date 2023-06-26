@@ -3,9 +3,13 @@ import type { FastifyPluginCallback } from 'fastify';
 import { Octokit } from 'octokit';
 import { z } from 'zod';
 
-import { notFound, serverError, validationError } from '../../../common/errors';
-import { prisma } from '../../../db';
-import type { GetGithubMembers } from '../../../types/api';
+import {
+  notFound,
+  serverError,
+  validationError,
+} from '../../../common/errors.js';
+import { prisma } from '../../../db/index.js';
+import type { GetGithubMembers } from '../../../types/api/index.js';
 
 function QueryVal() {
   return z

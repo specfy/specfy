@@ -36,6 +36,7 @@ import { ContentDoc } from '../../../../components/Content';
 import { DiffCard } from '../../../../components/DiffCard';
 import { Editor } from '../../../../components/Editor';
 import { FakeInput } from '../../../../components/Input';
+import { ListActivity } from '../../../../components/ListActivity';
 import { NotFound } from '../../../../components/NotFound';
 import { Checks } from '../../../../components/Revision/Checks';
 import { ReviewBar } from '../../../../components/Revision/ReviewBar';
@@ -265,7 +266,7 @@ export const ProjectRevisionsShow: React.FC<{
 
   return (
     <Container noPadding>
-      <Container.Left2Third className={cls.left}>
+      <Container.Left2Third>
         <Helmet title={`${rev.name} - ${proj.name} ${titleSuffix}`} />
 
         <div className={cls.main}>
@@ -361,7 +362,7 @@ export const ProjectRevisionsShow: React.FC<{
           )}
         </div>
       </Container.Left2Third>
-      <Container.Right1Third className={cls.right}>
+      <Container.Right1Third>
         <div className={cls.sidebar}>
           <SidebarBlock title="Authors">
             <UserList
@@ -383,6 +384,13 @@ export const ProjectRevisionsShow: React.FC<{
               />
             </SidebarBlock>
           )}
+          <SidebarBlock title="Activities">
+            <ListActivity
+              orgId={rev.orgId}
+              projectId={rev.projectId}
+              revisionId={rev.id}
+            />
+          </SidebarBlock>
         </div>
       </Container.Right1Third>
     </Container>

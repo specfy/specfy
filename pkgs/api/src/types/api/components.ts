@@ -1,6 +1,6 @@
-import type { DBComponent } from '../db/components';
+import type { DBComponent } from '../db/components.js';
 
-import type { Pagination, QuerystringOrgProject, Res } from './api';
+import type { Pagination, QuerystringOrgProject, Res } from './api.js';
 
 export type ApiComponent = DBComponent;
 

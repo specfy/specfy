@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/member-ordering */
-import type { ListActivities } from './activities';
-import type { PostAuthLocal, PostLogout } from './auth';
-import type { ListRevisionBlobs } from './blob';
-import type { ListComponents } from './components';
-import type { GetDocument, ListDocuments } from './documents';
+import type { ListActivities } from './activities.js';
+import type { PostAuthLocal, PostLogout } from './auth.js';
+import type { ListRevisionBlobs } from './blob.js';
+import type { ListComponents } from './components.js';
+import type { GetDocument, ListDocuments } from './documents.js';
 import type {
   ListGithubInstallations,
   ListGithubRepos,
   PostLinkToGithubOrg,
-} from './github';
+} from './github.js';
 import type {
   AcceptInvitation,
   DeclineInvitation,
@@ -16,18 +16,18 @@ import type {
   GetInvitation,
   ListInvitations,
   PostInvitation,
-} from './invitations';
-import type { DeleteMe, GetMe, PutMe } from './me';
-import type { DeleteOrg, ListOrgs, PostOrg, PutOrg } from './orgs';
-import type { DeletePerm, GetCountPerms, ListPerms, PutPerm } from './perms';
-import type { ListPolicies } from './policies';
+} from './invitations.js';
+import type { DeleteMe, GetMe, PutMe } from './me.js';
+import type { DeleteOrg, ListOrgs, PostOrg, PutOrg } from './orgs.js';
+import type { DeletePerm, GetCountPerms, ListPerms, PutPerm } from './perms.js';
+import type { ListPolicies } from './policies.js';
 import type {
   DeleteProject,
   GetProject,
   ListProjects,
   PostProject,
   PutProject,
-} from './projects';
+} from './projects.js';
 import type {
   CommentRevision,
   GetRevision,
@@ -38,9 +38,9 @@ import type {
   PostRevision,
   PostUploadRevision,
   RebaseRevision,
-} from './revisions';
-import type { GetRoot } from './root';
-import type { ListUsers } from './users';
+} from './revisions.js';
+import type { GetRoot } from './root.js';
+import type { ListUsers } from './users.js';
 
 export interface API {
   '/0/': { GET: GetRoot };

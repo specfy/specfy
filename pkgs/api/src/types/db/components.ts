@@ -1,6 +1,6 @@
-import type { BlockLevelZero } from '../api';
+import type { BlockLevelZero } from '../api/index.js';
 
-import type { FlowEdge, FlowItemDisplay } from './flow';
+import type { FlowEdge, FlowItemDisplay } from './flow.js';
 
 export interface DBComponent {
   id: string;

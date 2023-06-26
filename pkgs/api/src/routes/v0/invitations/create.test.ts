@@ -1,14 +1,14 @@
 import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
-import type { TestSetup } from '../../../test/each';
-import { setupBeforeAll, setupAfterAll } from '../../../test/each';
-import { isSuccess, isValidationError } from '../../../test/fetch';
+import type { TestSetup } from '../../../test/each.js';
+import { setupBeforeAll, setupAfterAll } from '../../../test/each.js';
+import { isSuccess, isValidationError } from '../../../test/fetch.js';
 import {
   shouldBeProtected,
   shouldEnforceBody,
   shouldNotAllowQueryParams,
-} from '../../../test/helpers';
-import { seedSimpleUser, seedWithOrg } from '../../../test/seed/seed';
+} from '../../../test/helpers.js';
+import { seedSimpleUser, seedWithOrg } from '../../../test/seed/seed.js';
 
 let t: TestSetup;
 beforeAll(async () => {
@@ -70,5 +70,20 @@ describe('POST /invitations', () => {
         path: ['email'],
       },
     });
+  });
+
+  it('should not be able to invite to an other org', async () => {
+    const { token } = await seedWithOrg();
+    const seed2 = await seedWithOrg();
+
+    const post = await t.fetch.post('/0/invitations', {
+      token,
+      Body: {
+        email: 'foobar@example.com',
+        orgId: seed2.org.id,
+        role: 'viewer',
+      },
+    });
+    isValidationError(post.json);
   });
 });

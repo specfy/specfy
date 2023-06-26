@@ -1,9 +1,10 @@
 import type { Users } from '@prisma/client';
 
-import { env } from '../../common/env';
-import { nanoid } from '../../common/id';
-import { prisma } from '../../db';
-import { pbkdf2 } from '../../middlewares/auth/local';
+import { env } from '../../common/env.js';
+import { nanoid } from '../../common/id.js';
+import { prisma } from '../../db/index.js';
+import { pbkdf2 } from '../../middlewares/auth/local.js';
+import { userGithubApp } from '../../models/user.js';
 
 /**
  * Seed users
@@ -60,6 +61,9 @@ export async function seedUsers(): Promise<Users[]> {
         name: 'Lisha A. James',
         email: 'LishaAJames@gmail.com',
       },
+    }),
+    await prisma.users.create({
+      data: userGithubApp,
     }),
   ]);
 

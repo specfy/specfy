@@ -2,14 +2,14 @@ import type { Authenticator } from '@fastify/passport';
 import type { Users } from '@prisma/client';
 import { Strategy as GithubStrategy } from 'passport-github2';
 
-import { env } from '../../common/env';
-import { nanoid } from '../../common/id';
-import { slugify } from '../../common/string';
-import { prisma } from '../../db';
-import { createOrg, createUserActivity } from '../../models';
-import type { GithubAuth } from '../../types/github';
+import { env } from '../../common/env.js';
+import { nanoid } from '../../common/id.js';
+import { slugify } from '../../common/string.js';
+import { prisma } from '../../db/index.js';
+import { createOrg, createUserActivity } from '../../models/index.js';
+import type { GithubAuth } from '../../types/github.js';
 
-import { AuthError } from './errors';
+import { AuthError } from './errors.js';
 
 const GITHUB_SCOPES = ['user:email', 'repo'];
 

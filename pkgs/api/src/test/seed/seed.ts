@@ -1,12 +1,12 @@
 import type { Orgs, Projects, Users } from '@prisma/client';
 
-import { nanoid } from '../../common/id';
-import { prisma } from '../../db';
-import { getJwtToken } from '../../models';
+import { nanoid } from '../../common/id.js';
+import { prisma } from '../../db/index.js';
+import { getJwtToken } from '../../models/index.js';
 
-import { seedOrg } from './orgs';
-import { seedProject } from './projects';
-import { seedUser } from './users';
+import { seedOrg } from './orgs.js';
+import { seedProject } from './projects.js';
+import { seedUser } from './users.js';
 
 export async function seedSimpleUser(org?: Orgs): Promise<{
   user: Users;

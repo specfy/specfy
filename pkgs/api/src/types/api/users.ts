@@ -1,6 +1,6 @@
-import type { DBUser } from '../db/users';
+import type { DBUser } from '../db/index.js';
 
-import type { Pagination, Res } from './api';
+import type { Pagination, Res } from './api.js';
 
 export type ApiUser = Pick<DBUser, 'avatarUrl' | 'email' | 'id' | 'name'>;
 

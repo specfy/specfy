@@ -3,9 +3,13 @@ import type { FastifyPluginCallback } from 'fastify';
 import { Octokit } from 'octokit';
 import { z } from 'zod';
 
-import { notFound, serverError, validationError } from '../../../common/errors';
-import { prisma } from '../../../db';
-import type { ListGithubRepos } from '../../../types/api';
+import {
+  notFound,
+  serverError,
+  validationError,
+} from '../../../common/errors.js';
+import { prisma } from '../../../db/index.js';
+import type { ListGithubRepos } from '../../../types/api/index.js';
 
 function QueryVal() {
   return z
@@ -79,6 +83,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       data.push({
         id: repo.id,
         name: repo.name,
+        fullName: repo.full_name,
         url: repo.html_url,
         private: repo.private,
       });

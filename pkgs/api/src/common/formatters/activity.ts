@@ -1,8 +1,12 @@
-import type { ApiActivity } from '../../types/api';
-import type { ActivitiesList, DBComponent, DBDocument } from '../../types/db';
-import { pick } from '../object';
+import type { ApiActivity } from '../../types/api/index.js';
+import type {
+  ActivitiesList,
+  DBComponent,
+  DBDocument,
+} from '../../types/db/index.js';
+import { pick } from '../object.js';
 
-import { toApiUser } from './user';
+import { toApiUser } from './user.js';
 
 export function toApiActivity(act: ActivitiesList): ApiActivity {
   return {
@@ -34,7 +38,9 @@ export function toApiActivity(act: ActivitiesList): ApiActivity {
             'type',
           ])
         : undefined,
-    // targetRevision: act.targetRevision ? act.targetRevision : undefined,
+    targetRevision: act.Revision
+      ? (act.Revision as ApiActivity['targetRevision'])
+      : undefined,
     // targetPolicy: act.targetPolicy ? act.targetPolicy : undefined,
 
     createdAt: act.createdAt.toISOString(),

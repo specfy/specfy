@@ -1,6 +1,6 @@
 import type { Revisions, Prisma } from '@prisma/client';
 
-import type { ReviewWithUser } from '../../types/db';
+import type { ReviewWithUser } from '../../types/db/index.js';
 
 export async function checkReviews(
   rev: Revisions,

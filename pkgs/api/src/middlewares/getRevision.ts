@@ -1,12 +1,12 @@
 import type { FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
-import { notFound, validationError } from '../common/errors';
-import { schemaId } from '../common/validators';
-import { valOrgId, valProjectId } from '../common/zod';
-import { prisma } from '../db';
-import type { GetRevision } from '../types/api';
-import type { PreHandler } from '../types/fastify';
+import { notFound, validationError } from '../common/errors.js';
+import { schemaId } from '../common/validators/index.js';
+import { valOrgId, valProjectId } from '../common/zod.js';
+import { prisma } from '../db/index.js';
+import type { GetRevision } from '../types/api/index.js';
+import type { PreHandler } from '../types/fastify.js';
 
 export function QueryVal(req: FastifyRequest) {
   return z

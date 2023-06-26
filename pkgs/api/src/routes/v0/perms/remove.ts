@@ -2,12 +2,12 @@ import type { Prisma } from '@prisma/client';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
-import { notFound, validationError } from '../../../common/errors';
-import { schemaId } from '../../../common/validators';
-import { valOrgId, valProjectId } from '../../../common/zod';
-import { prisma } from '../../../db';
-import { noQuery } from '../../../middlewares/noQuery';
-import type { DeletePerm } from '../../../types/api';
+import { notFound, validationError } from '../../../common/errors.js';
+import { schemaId } from '../../../common/validators/index.js';
+import { valOrgId, valProjectId } from '../../../common/zod.js';
+import { prisma } from '../../../db/index.js';
+import { noQuery } from '../../../middlewares/noQuery.js';
+import type { DeletePerm } from '../../../types/api/index.js';
 
 function QueryVal(req: FastifyRequest) {
   return z

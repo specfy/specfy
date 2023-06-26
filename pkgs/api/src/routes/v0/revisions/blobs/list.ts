@@ -1,11 +1,11 @@
 import type { FastifyPluginCallback } from 'fastify';
 
-import { prisma } from '../../../../db';
-import { getRevision } from '../../../../middlewares/getRevision';
+import { prisma } from '../../../../db/index.js';
+import { getRevision } from '../../../../middlewares/getRevision.js';
 import type {
   ApiBlobWithPrevious,
   ListRevisionBlobs,
-} from '../../../../types/api';
+} from '../../../../types/api/index.js';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<ListRevisionBlobs>(

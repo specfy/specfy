@@ -1,4 +1,4 @@
-import type { BlockLevelZero } from '../api';
+import type { BlockLevelZero } from '../api/index.js';
 
 export interface DBPolicy {
   id: string;
