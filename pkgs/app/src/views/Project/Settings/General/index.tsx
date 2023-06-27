@@ -163,36 +163,6 @@ export const SettingsGeneral: React.FC<{
       <Card>
         <Form layout="vertical" onFinish={handleRename}>
           <Card.Content>
-            <Typography.Title level={3}>Keys</Typography.Title>
-            <Flex gap="l" direction="column" alignItems="flex-start">
-              <div>
-                <div>Project ID</div>
-                <Input
-                  readOnly
-                  value={proj.id}
-                  style={{ width: '350px' }}
-                  suffix={<CopyButton value={proj.id} />}
-                />
-              </div>
-              <div>
-                <div>Api Key</div>
-                <Input
-                  readOnly
-                  value={key || ''}
-                  style={{ width: '350px' }}
-                  suffix={
-                    <CopyButton value={resKeys.data?.data[0].key || ''} />
-                  }
-                />
-              </div>
-            </Flex>
-          </Card.Content>
-        </Form>
-      </Card>
-
-      <Card>
-        <Form layout="vertical" onFinish={handleRename}>
-          <Card.Content>
             <Typography.Title level={3}>Link to Github</Typography.Title>
             <p>
               Linking to a Github repository enables automatic deployment when
@@ -238,6 +208,36 @@ export const SettingsGeneral: React.FC<{
               </Button>
             )}
           </Card.Actions>
+        </Form>
+      </Card>
+
+      <Card>
+        <Form layout="vertical" onFinish={handleRename}>
+          <Card.Content>
+            <Typography.Title level={3}>Keys</Typography.Title>
+            <Flex gap="l" direction="column" alignItems="flex-start">
+              <div>
+                <div>Project ID</div>
+                <Input
+                  readOnly
+                  value={proj.id}
+                  style={{ width: '350px' }}
+                  suffix={<CopyButton value={proj.id} />}
+                />
+              </div>
+              <div>
+                <div>Api Key</div>
+                <Input
+                  readOnly
+                  value={key || ''}
+                  style={{ width: '350px' }}
+                  suffix={
+                    <CopyButton value={resKeys.data?.data[0].key || ''} />
+                  }
+                />
+              </div>
+            </Flex>
+          </Card.Content>
         </Form>
       </Card>
 
