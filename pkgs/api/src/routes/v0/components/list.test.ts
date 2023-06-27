@@ -82,7 +82,14 @@ describe('GET /components', () => {
     });
 
     isValidationError(res.json);
-    expect(res.json.error.fields).toHaveProperty('org_id');
+    expect(res.json.error.form).toStrictEqual([
+      {
+        code: 'forbidden',
+        message:
+          "Targeted resource doesn't exists or you don't have the permissions",
+        path: [],
+      },
+    ]);
   });
 
   it('should disallow other project', async () => {
@@ -97,6 +104,27 @@ describe('GET /components', () => {
     });
 
     isValidationError(res.json);
-    expect(res.json.error.fields).toHaveProperty('project_id');
+    expect(res.json.error.form).toStrictEqual([
+      {
+        code: 'forbidden',
+        message:
+          "Targeted resource doesn't exists or you don't have the permissions",
+        path: [],
+      },
+    ]);
+  });
+
+  it('should inherit permissions', async () => {
+    // Seed once
+    const seed1 = await seedWithProject();
+
+    // Seed a second time
+    const { token } = await seedSimpleUser(seed1.org);
+    const res = await t.fetch.get('/0/components', {
+      token,
+      Querystring: { org_id: seed1.org.id, project_id: seed1.project.id },
+    });
+
+    isSuccess(res.json);
   });
 });

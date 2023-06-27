@@ -10,7 +10,8 @@ import {
   validationError,
 } from '../../../common/errors.js';
 import { getOrgFromRequest } from '../../../common/perms.js';
-import { valOrgId } from '../../../common/zod.js';
+import { schemaOrgId } from '../../../common/validators/common.js';
+import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import { createGithubActivity } from '../../../models/index.js';
@@ -20,10 +21,11 @@ import type { PostLinkToGithubOrg } from '../../../types/api/index.js';
 function QueryVal(req: FastifyRequest) {
   return z
     .object({
-      orgId: valOrgId(req),
+      orgId: schemaOrgId,
       installationId: z.number().positive().int().nullable(),
     })
-    .strict();
+    .strict()
+    .superRefine(valPermissions(req));
 }
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {

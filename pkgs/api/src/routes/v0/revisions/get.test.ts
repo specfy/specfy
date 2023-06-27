@@ -84,14 +84,14 @@ describe('GET /revisions/:revision_id', () => {
     });
 
     isValidationError(res.json);
-    expect(res.json.error.fields).toStrictEqual({
-      org_id: {
+    expect(res.json.error.form).toStrictEqual([
+      {
         code: 'forbidden',
         message:
-          "The organization doesn't exists or you don't have the permissions",
-        path: ['org_id'],
+          "Targeted resource doesn't exists or you don't have the permissions",
+        path: [],
       },
-    });
+    ]);
   });
 
   it('should error on wrong project id', async () => {
@@ -103,13 +103,14 @@ describe('GET /revisions/:revision_id', () => {
     });
 
     isValidationError(res.json);
-    expect(res.json.error.fields).toStrictEqual({
-      project_id: {
+    expect(res.json.error.form).toStrictEqual([
+      {
         code: 'forbidden',
-        message: "The project doesn't exists or you don't have the permissions",
-        path: ['project_id'],
+        message:
+          "Targeted resource doesn't exists or you don't have the permissions",
+        path: [],
       },
-    });
+    ]);
   });
 
   it('should error on wrong id format', async () => {

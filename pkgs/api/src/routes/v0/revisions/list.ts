@@ -4,15 +4,16 @@ import { z } from 'zod';
 
 import { validationError } from '../../../common/errors.js';
 import { toApiRevision } from '../../../common/formatters/revision.js';
-import { valOrgId, valProjectId } from '../../../common/zod.js';
+import { schemaId, schemaOrgId } from '../../../common/validators/common.js';
+import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
 import type { ListRevisions, Pagination } from '../../../types/api/index.js';
 
 function QueryVal(req: FastifyRequest) {
   return z
     .object({
-      org_id: valOrgId(req),
-      project_id: valProjectId(req),
+      org_id: schemaOrgId,
+      project_id: schemaId,
       search: z.string().min(1).max(50),
       status: z.enum([
         'all',
@@ -25,7 +26,8 @@ function QueryVal(req: FastifyRequest) {
       ]),
     })
     .strict()
-    .partial({ project_id: true, search: true, status: true });
+    .partial({ project_id: true, search: true, status: true })
+    .superRefine(valPermissions(req));
 }
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {

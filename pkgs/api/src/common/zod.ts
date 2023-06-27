@@ -1,38 +1,33 @@
 import type { FastifyRequest } from 'fastify';
+import type { RefinementCtx } from 'zod';
 import z from 'zod';
 
-import { schemaId, schemaOrgId } from './validators/index.js';
+import { checkInheritedPermissions } from './perms.js';
 
-// export function valUniqueColumn(
-//   model: ModelStatic<any>,
-//   col: string,
-//   display: string
-// ) {
-//   return async (val: string, ctx) => {
-//     const res = await model.findOne({ where: { [col]: val } });
-//     if (!res) {
-//       return;
-//     }
+export function valPermissions(req: FastifyRequest) {
+  return (
+    data: {
+      org_id?: string;
+      orgId?: string;
+      project_id?: string | undefined;
+      projectId?: string | undefined;
+    },
+    ctx: RefinementCtx
+  ): void => {
+    const orgId = data.orgId || data.org_id;
+    const projectId = data.projectId || data.project_id;
+    if (!orgId) {
+      // It's weird tho
+      ctx.addIssue({
+        code: z.ZodIssueCode.custom,
+        params: { code: 'forbidden' },
+        message:
+          "Targeted resource doesn't exists or you don't have the permissions",
+      });
+      return;
+    }
 
-//     ctx.addIssue({
-//       code: z.ZodIssueCode.custom,
-//       params: { code: 'exists' },
-//       message: `This ${display} is already used`,
-//     });
-//   };
-// }
-
-// export function valIdAvailable(model: ModelStatic<any>) {
-//   return schemaId.superRefine(valUniqueColumn(model, 'id', 'ID'));
-// }
-
-export function valOrgId(req: FastifyRequest) {
-  return schemaOrgId.superRefine((val, ctx) => {
-    const res = req.perms!.find(
-      (perm) =>
-        perm.userId === req.user!.id && perm.orgId === val && !perm.projectId
-    );
-    if (res) {
+    if (checkInheritedPermissions(req, orgId, projectId)) {
       return;
     }
 
@@ -40,24 +35,7 @@ export function valOrgId(req: FastifyRequest) {
       code: z.ZodIssueCode.custom,
       params: { code: 'forbidden' },
       message:
-        "The organization doesn't exists or you don't have the permissions",
+        "Targeted resource doesn't exists or you don't have the permissions",
     });
-  });
-}
-
-export function valProjectId(req: FastifyRequest) {
-  return schemaId.superRefine((val, ctx) => {
-    const res = req.perms!.find(
-      (perm) => perm.userId === req.user!.id && perm.projectId === val
-    );
-    if (res) {
-      return;
-    }
-
-    ctx.addIssue({
-      code: z.ZodIssueCode.custom,
-      params: { code: 'forbidden' },
-      message: "The project doesn't exists or you don't have the permissions",
-    });
-  });
+  };
 }

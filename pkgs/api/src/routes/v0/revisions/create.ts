@@ -3,9 +3,13 @@ import { z } from 'zod';
 
 import { validationError } from '../../../common/errors.js';
 import { nanoid } from '../../../common/id.js';
-import { schemaBlobs } from '../../../common/validators/index.js';
+import {
+  schemaBlobs,
+  schemaId,
+  schemaOrgId,
+} from '../../../common/validators/index.js';
 import { schemaRevision } from '../../../common/validators/revision.js';
-import { valOrgId, valProjectId } from '../../../common/zod.js';
+import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import { createBlobs, createRevisionActivity } from '../../../models/index.js';
@@ -14,13 +18,14 @@ import type { ApiBlobCreate, PostRevision } from '../../../types/api/index.js';
 function BodyVal(req: FastifyRequest) {
   return z
     .object({
-      orgId: valOrgId(req),
-      projectId: valProjectId(req),
+      orgId: schemaOrgId,
+      projectId: schemaId,
       name: schemaRevision.shape.name,
       description: schemaRevision.shape.description,
       blobs: schemaBlobs,
     })
     .strict()
+    .superRefine(valPermissions(req))
     .superRefine((val, ctx) => {
       const orgId = val.orgId;
       const projectId = val.projectId;

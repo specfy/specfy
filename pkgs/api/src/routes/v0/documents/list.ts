@@ -3,7 +3,8 @@ import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors.js';
-import { valOrgId, valProjectId } from '../../../common/zod.js';
+import { schemaId, schemaOrgId } from '../../../common/validators/common.js';
+import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
 import type {
   Pagination,
@@ -15,13 +16,14 @@ import { DocumentType } from '../../../types/db/index.js';
 function QueryVal(req: FastifyRequest) {
   return z
     .object({
-      org_id: valOrgId(req),
-      project_id: valProjectId(req),
+      org_id: schemaOrgId,
+      project_id: schemaId,
       search: z.string().min(2).max(50),
       type: z.nativeEnum(DocumentType),
     })
     .strict()
-    .partial({ project_id: true, search: true, type: true });
+    .partial({ project_id: true, search: true, type: true })
+    .superRefine(valPermissions(req));
 }
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {

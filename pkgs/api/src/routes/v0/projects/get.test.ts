@@ -70,14 +70,14 @@ describe('GET /projects/:org_id/:project_slug', () => {
     });
 
     isValidationError(res.json);
-    expect(res.json.error.fields).toStrictEqual({
-      org_id: {
+    expect(res.json.error.form).toStrictEqual([
+      {
         code: 'forbidden',
         message:
-          "The organization doesn't exists or you don't have the permissions",
-        path: ['org_id'],
+          "Targeted resource doesn't exists or you don't have the permissions",
+        path: [],
       },
-    });
+    ]);
   });
 
   it('should error on wrong format projectId', async () => {

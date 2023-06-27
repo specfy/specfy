@@ -3,8 +3,8 @@ import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
 import { notFound, validationError } from '../../../common/errors.js';
-import { schemaId } from '../../../common/validators/index.js';
-import { valOrgId, valProjectId } from '../../../common/zod.js';
+import { schemaId, schemaOrgId } from '../../../common/validators/index.js';
+import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import type { DeletePerm } from '../../../types/api/index.js';
@@ -12,12 +12,13 @@ import type { DeletePerm } from '../../../types/api/index.js';
 function QueryVal(req: FastifyRequest) {
   return z
     .object({
-      org_id: valOrgId(req),
-      project_id: valProjectId(req),
+      org_id: schemaOrgId,
+      project_id: schemaId,
       userId: schemaId,
     })
     .strict()
-    .partial({ project_id: true });
+    .partial({ project_id: true })
+    .superRefine(valPermissions(req));
 }
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {

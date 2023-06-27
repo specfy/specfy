@@ -55,7 +55,7 @@ export default async (f: FastifyInstance, opts: FastifyPluginOptions) => {
   f.addContentTypeParser(
     'application/json',
     { parseAs: 'string', bodyLimit: 20971520 },
-    function (req, body, done) {
+    function (_req, body, done) {
       try {
         const json = JSON.parse(body as string);
         done(null, json);

@@ -9,7 +9,8 @@ import {
   validationError,
 } from '../../../common/errors.js';
 import { getOrgFromRequest } from '../../../common/perms.js';
-import { valOrgId, valProjectId } from '../../../common/zod.js';
+import { schemaId, schemaOrgId } from '../../../common/validators/common.js';
+import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import {
@@ -25,11 +26,12 @@ const repoRegex = /^[a-zA-Z0-9_.-]+\/[a-zA-Z0-9_.-]+$/;
 function QueryVal(req: FastifyRequest) {
   return z
     .object({
-      orgId: valOrgId(req),
-      projectId: valProjectId(req),
+      orgId: schemaOrgId,
+      projectId: schemaId,
       repository: z.string().max(250).regex(repoRegex).nullable(),
     })
-    .strict();
+    .strict()
+    .superRefine(valPermissions(req));
 }
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {

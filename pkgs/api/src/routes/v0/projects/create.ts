@@ -3,8 +3,11 @@ import z from 'zod';
 
 import { validationError } from '../../../common/errors.js';
 import { getOrgFromRequest } from '../../../common/perms.js';
-import { schemaProject } from '../../../common/validators/index.js';
-import { valOrgId } from '../../../common/zod.js';
+import {
+  schemaOrgId,
+  schemaProject,
+} from '../../../common/validators/index.js';
+import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import { v1, createProject } from '../../../models/index.js';
@@ -15,10 +18,11 @@ function ProjectVal(req: FastifyRequest) {
     .object({
       name: schemaProject.shape.name,
       slug: schemaProject.shape.slug,
-      orgId: valOrgId(req),
+      orgId: schemaOrgId,
       display: schemaProject.shape.display,
     })
     .strict()
+    .superRefine(valPermissions(req))
     .superRefine(async (val, ctx) => {
       const res = await prisma.projects.findFirst({
         where: { slug: val.slug, orgId: val.orgId },

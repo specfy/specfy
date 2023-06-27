@@ -20,5 +20,5 @@ export interface DBPerm {
 }
 
 export type PermsWithOrg = Prisma.PermsGetPayload<{
-  include: { Org: true };
+  include: { Org: { include: { Projects: { select: { id: true } } } } };
 }>;

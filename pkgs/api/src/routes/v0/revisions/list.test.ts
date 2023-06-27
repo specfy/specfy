@@ -55,28 +55,23 @@ describe('GET /revisions', () => {
     await shouldNotAllowQueryParams(res);
   });
 
-  it('should fail on unknown org/project', async () => {
+  it.only('should fail on unknown org/project', async () => {
     const { token } = await seedSimpleUser();
     const res = await t.fetch.get('/0/revisions', {
       token,
-      Querystring: { org_id: 'e', project_id: 'a' },
+      Querystring: { org_id: 'eaaaa', project_id: 'aaaaaaaaaa' },
     });
 
     isValidationError(res.json);
     expect(res.statusCode).toBe(400);
-    expect(res.json.error.fields).toStrictEqual({
-      org_id: {
+    expect(res.json.error.form).toStrictEqual([
+      {
         code: 'forbidden',
         message:
-          "The organization doesn't exists or you don't have the permissions",
-        path: ['org_id'],
+          "Targeted resource doesn't exists or you don't have the permissions",
+        path: [],
       },
-      project_id: {
-        code: 'forbidden',
-        message: "The project doesn't exists or you don't have the permissions",
-        path: ['project_id'],
-      },
-    });
+    ]);
   });
 
   it('should list', async () => {

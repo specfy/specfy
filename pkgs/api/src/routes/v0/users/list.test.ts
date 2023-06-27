@@ -50,7 +50,14 @@ describe('GET /users', () => {
     });
 
     isValidationError(res.json);
-    expect(res.json.error.fields).toHaveProperty('org_id');
+    expect(res.json.error.form).toStrictEqual([
+      {
+        code: 'forbidden',
+        message:
+          "Targeted resource doesn't exists or you don't have the permissions",
+        path: [],
+      },
+    ]);
   });
 
   it('should list', async () => {

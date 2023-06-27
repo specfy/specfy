@@ -5,7 +5,8 @@ import { z } from 'zod';
 import { validationError } from '../../../common/errors.js';
 import { nanoid } from '../../../common/id.js';
 import { getOrgFromRequest } from '../../../common/perms.js';
-import { valOrgId } from '../../../common/zod.js';
+import { schemaOrgId } from '../../../common/validators/common.js';
+import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import { v1, EXPIRES } from '../../../models/index.js';
@@ -15,11 +16,12 @@ import { PermType } from '../../../types/db/index.js';
 function QueryVal(req: FastifyRequest) {
   return z
     .object({
-      orgId: valOrgId(req),
+      orgId: schemaOrgId,
       email: z.string().max(250).email(),
       role: z.nativeEnum(PermType),
     })
     .strict()
+    .superRefine(valPermissions(req))
     .superRefine(async (val, ctx) => {
       const count = await prisma.perms.count({
         where: {

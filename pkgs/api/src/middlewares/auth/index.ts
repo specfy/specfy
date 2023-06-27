@@ -66,7 +66,7 @@ export function registerAuth(f: FastifyInstance) {
       where: {
         userId: id,
       },
-      include: { Org: true },
+      include: { Org: { include: { Projects: { select: { id: true } } } } },
     });
     req.user = user!;
     req.perms = perms;

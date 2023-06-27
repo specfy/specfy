@@ -4,11 +4,12 @@ import { z } from 'zod';
 
 import { validationError } from '../../../common/errors.js';
 import { nanoid } from '../../../common/id.js';
+import { schemaId, schemaOrgId } from '../../../common/validators/common.js';
 import {
   schemaRevision,
   schemaStack,
 } from '../../../common/validators/revision.js';
-import { valOrgId, valProjectId } from '../../../common/zod.js';
+import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import { createBlobs, createRevisionActivity } from '../../../models/index.js';
@@ -22,8 +23,8 @@ import type { PostUploadRevision } from '../../../types/api/index.js';
 function BodyVal(req: FastifyRequest) {
   return z
     .object({
-      orgId: valOrgId(req),
-      projectId: valProjectId(req),
+      orgId: schemaOrgId,
+      projectId: schemaId,
       name: schemaRevision.shape.name,
       description: schemaRevision.shape.description,
       source: z.literal('github'),
@@ -41,7 +42,8 @@ function BodyVal(req: FastifyRequest) {
         .min(0)
         .max(2000),
     })
-    .strict();
+    .strict()
+    .superRefine(valPermissions(req));
 }
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {

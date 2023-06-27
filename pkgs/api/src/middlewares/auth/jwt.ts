@@ -45,7 +45,7 @@ export function registerJwt(fastify: FastifyInstance, passport: Authenticator) {
         where: {
           userId: user.id,
         },
-        include: { Org: true },
+        include: { Org: { include: { Projects: { select: { id: true } } } } },
       });
       req.user = user;
       req.perms = perms;
