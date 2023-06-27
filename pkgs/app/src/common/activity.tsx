@@ -87,7 +87,9 @@ export const ComponentTarget: React.FC<{
 }> = ({ act }) => {
   return (
     <Link
-      to={`/${act.orgId}/${act.project!.slug}/c/${act.targetComponent!.slug}`}
+      to={`/${act.orgId}/${act.project!.slug}/c/${act.targetComponent!.id}-${
+        act.targetComponent!.slug
+      }`}
     >
       {act.targetComponent!.name}
     </Link>

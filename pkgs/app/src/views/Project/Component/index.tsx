@@ -124,14 +124,14 @@ export const ComponentView: React.FC<{
         <Card padded seamless large>
           <div className={cls.titleEdit}>
             {!isEditing && (
-              <Typography.Title level={2}>
+              <h2>
                 {Icon && (
                   <div className={cls.icon}>
                     <Icon size="1em" />
                   </div>
                 )}
                 {comp.name}
-              </Typography.Title>
+              </h2>
             )}
             {isEditing && (
               <FakeInput.H2

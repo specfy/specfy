@@ -34,7 +34,7 @@
     }
 
     &.isActive {
-      color: $primary;
+      color: var(--accent);
     }
   }
 }

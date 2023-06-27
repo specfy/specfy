@@ -1,4 +1,3 @@
-import { Typography } from 'antd';
 import type { ApiComponent, ApiProject } from 'api/src/types/api';
 import type { FlowEdge } from 'api/src/types/db';
 import type React from 'react';
@@ -293,33 +292,35 @@ export const ComponentDetails: React.FC<{
 
   return (
     <div>
-      {(isEditing || component.tech) && is.component && !component.techId && (
-        <div className={cls.block}>
-          <div className={cls.blockTitle}>
-            <Typography.Title level={5}>Stack</Typography.Title>
-          </div>
+      {(isEditing || component.tech.length > 0) &&
+        is.component &&
+        !component.techId && (
+          <div className={cls.block}>
+            <div className={cls.blockTitle}>
+              <h3>Stack</h3>
+            </div>
 
-          {(isEditing || component.tech) && (
-            <ComponentLineTech
-              title="Build with"
-              techs={component.tech}
-              params={params}
-              editing={isEditing}
-            >
-              <LanguageSelect
-                values={component.tech}
-                onChange={handleStackChange}
-              />
-            </ComponentLineTech>
-          )}
-        </div>
-      )}
+            {(isEditing || component.tech.length > 0) && (
+              <ComponentLineTech
+                title="Build with"
+                techs={component.tech}
+                params={params}
+                editing={isEditing}
+              >
+                <LanguageSelect
+                  values={component.tech}
+                  onChange={handleStackChange}
+                />
+              </ComponentLineTech>
+            )}
+          </div>
+        )}
 
       {(isEditing || hosts.length > 0 || inComp || contains.length > 0) &&
         (is.component || is.hosting) && (
           <div className={cls.block}>
             <div className={cls.blockTitle}>
-              <Typography.Title level={5}>Hosting</Typography.Title>
+              <h3>Hosting</h3>
             </div>
 
             {(isEditing || hosts.length > 0) && (
@@ -384,7 +385,7 @@ export const ComponentDetails: React.FC<{
         !is.hosting && (
           <div className={cls.block}>
             <div className={cls.blockTitle}>
-              <Typography.Title level={5}>Data</Typography.Title>
+              <h3>Data</h3>
             </div>
 
             {(isEditing || readwrite.length > 0) && (

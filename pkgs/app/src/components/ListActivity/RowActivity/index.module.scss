@@ -34,6 +34,7 @@
 .desc {
   flex-grow: 1;
   align-items: center;
+  font-size: $font-s;
   color: var(--textLight);
 
   a:not(.username) {

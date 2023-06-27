@@ -19,7 +19,7 @@ export const CopyButton: React.FC<{ value: string }> = ({ value }) => {
     return () => {
       if (timeout) clearTimeout(timeout);
     };
-  }, []);
+  }, [value]);
 
   return (
     <Button

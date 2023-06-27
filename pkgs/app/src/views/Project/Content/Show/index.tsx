@@ -27,7 +27,9 @@ export const DocumentShow: React.FC<{
   }, [params]);
 
   useEffect(() => {
-    window.scrollTo(0, doc ? 125 : 0);
+    if (window.scrollY > 200 && doc) {
+      window.scrollTo(0, 125);
+    }
   }, [params.document_slug]);
 
   // Load document

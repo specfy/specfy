@@ -2,6 +2,7 @@
 
 .group {
   padding: 0 0 $p-xl 0;
+  font-size: $font-s;
   border-bottom: 1px solid var(--border);
 
   .head {
@@ -71,9 +72,8 @@
     }
 
     &.selected {
-      background-color: $primary-low;
-      border-left-color: $primary;
+      background-color: var(--bgLight);
+      border-left-color: var(--accent);
     }
-
   }
 }

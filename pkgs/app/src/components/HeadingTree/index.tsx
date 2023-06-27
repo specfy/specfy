@@ -13,7 +13,7 @@ export const HeadingTree: React.FC<{ blocks: BlockLevelOne[] }> = ({
     const tmp = [];
     for (let index = 0; index < blocks.length; index++) {
       const blk = blocks[index];
-      if (blk.type !== 'heading' || blk.attrs.level > 1) {
+      if (blk.type !== 'heading' || blk.attrs.level > 2) {
         continue;
       }
 

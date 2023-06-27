@@ -1,4 +1,5 @@
-import { Tag, Typography } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
+import { Tag } from 'antd';
 import Title from 'antd/es/typography/Title';
 import type { ApiComponent, ApiProject } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
@@ -12,6 +13,7 @@ import { titleSuffix } from '../../../common/string';
 import { Card } from '../../../components/Card';
 import { ComponentLine } from '../../../components/ComponentLine';
 import { Container } from '../../../components/Container';
+import { Flex } from '../../../components/Flex';
 import { Flow, FlowWrapper } from '../../../components/Flow';
 import { Toolbar } from '../../../components/Flow/Toolbar';
 import type { ComputedFlow } from '../../../components/Flow/helpers';
@@ -30,6 +32,7 @@ export const Tech: React.FC<{
 
   const [components, setComponents] = useState<ApiComponent[]>();
   const [flow, setFlow] = useState<ComputedFlow>();
+  const [ready, setReady] = useState<boolean>(false);
   const [techname, setTechName] = useState<string>();
   const [usedBy, setUsedBy] = useState<ApiComponent[]>([]);
   const [info, setInfo] = useState<TechInfo>();
@@ -41,10 +44,14 @@ export const Tech: React.FC<{
 
   useEffect(() => {
     if (!components) {
+      setReady(true);
       return;
     }
 
+    let name;
+    console.log(supportedIndexed, route.tech_slug);
     if (route.tech_slug && route.tech_slug in supportedIndexed) {
+      name = supportedIndexed[route.tech_slug].name;
       setInfo(supportedIndexed[route.tech_slug]);
       setIcon(supportedIndexed[route.tech_slug].Icon);
     } else {
@@ -52,7 +59,6 @@ export const Tech: React.FC<{
       setIcon(undefined);
     }
 
-    let name;
     const tmp = [];
     for (const comp of components) {
       if (!comp.tech) {
@@ -67,7 +73,10 @@ export const Tech: React.FC<{
       }
     }
 
-    if (name) setTechName(name);
+    if (name) {
+      setTechName(name);
+    }
+    setReady(true);
     setUsedBy(tmp);
   }, [components]);
 
@@ -79,6 +88,9 @@ export const Tech: React.FC<{
     setFlow(componentsToFlow(components));
   }, [components]);
 
+  if (!ready) {
+    return <LoadingOutlined />;
+  }
   if (!techname) {
     return <NotFound />;
   }
@@ -88,15 +100,17 @@ export const Tech: React.FC<{
       <Helmet title={`${techname} - ${proj.name} ${titleSuffix}`} />
       <Container.Left2Third>
         <Card padded seamless large>
-          <Typography.Title level={2}>
-            {Icon && (
-              <div className={cls.icon}>
-                <Icon size="1em" />
-              </div>
-            )}
-            {techname}
-            {info ? <Tag>{info.type}</Tag> : <Tag>tech</Tag>}
-          </Typography.Title>
+          <Flex justifyContent="space-between">
+            <h2>
+              {Icon && (
+                <div className={cls.icon}>
+                  <Icon size="1em" />
+                </div>
+              )}
+              {techname}
+            </h2>
+            <Tag>{info ? info.type : 'tech'}</Tag>
+          </Flex>
 
           <Title level={5}>Used in</Title>
 

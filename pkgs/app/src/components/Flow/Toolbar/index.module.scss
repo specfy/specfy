@@ -48,7 +48,7 @@
     }
 
     &:hover {
-      color: $primary;
+      color: var(--accent);
       background-color: $gray-50;
     }
   }

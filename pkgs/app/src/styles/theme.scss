@@ -27,10 +27,6 @@ $color-8: #0050b3;
 $color-9: #003a8c;
 $color-10: #002766;
 
-// Primary
-$primary: #677AF2;
-$primary-low: $indigo-50;
-
 // Diff
 $color-added: rgba($lime-50, 0.5);
 $color-added-hi: $lime-200;
@@ -82,7 +78,7 @@ $line-height-3xl: 40px;
 $font-default: system-ui, -apple-system, "Segoe UI", roboto, ubuntu, cantarell, "Noto Sans", sans-serif, blinkmacsystemfont, oxygen, "Open Sans", "Helvetica Neue";
 $font-code: "JetBrains Mono", $font-default;
 $font-graph: "Assistant", $font-default;
-$font-text: "Nunito", $font-default;
+$font-text: "Inter", $font-default;
 
 // Radius
 $border-radius-s: 4px;
@@ -107,7 +103,7 @@ $box-shadow3: 0 1px 10px 0 rgb(0 0 0 / 10%), 0 1px 2px -1px rgb(0 0 0 / 10%);
 $box-shadow-editable: -2px 0 0 0 $blue-50;
 
 // Main column
-$main-col-w: 750px;
+$main-col-w: 780px;
 $min-w: 1024px;
 $max-w: 1216px;
 

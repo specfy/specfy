@@ -9,15 +9,15 @@ $min-height: 34px;
   align-items: flex-start;
 
   min-height: $min-height;
-  margin-bottom: $p-l;
+  margin-bottom: $p-3xl;
 
   line-height: $line-height-m;
-
 
   .label {
     padding-top: 2px;
     font-size: $font-s;
-    color: $gray-500;
+    font-weight: 500;
+    color: var(--text);
   }
 
   .values {
@@ -44,17 +44,17 @@ $min-height: 34px;
   align-items: center;
 
   min-width: 120px;
-  padding: $p-s $p-l;
+  padding: $p-s $p-xl;
 
-  font-size: $font;
-  color: $gray-700;
+  font-size: $font-s;
+  color: var(--text);
 
-  background: $slate-50;
-  border-radius: 10px;
+  border: 1px solid var(--borderLight);
+  border-radius: $border-radius;
 
   &:hover {
-    color: $primary;
-    background: $slate-100;
+    color: var(--accent);
+    background: var(--bgLight);
   }
 
   >svg {
