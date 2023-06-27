@@ -192,12 +192,15 @@ export function positionEdge(
 /**
  * Get all childs of a component.
  */
-export function getAllChilds(list: ApiComponent[], id: string): ApiComponent[] {
+export function getAllChilds(
+  components: ApiComponent[],
+  id: string
+): ApiComponent[] {
   const tmp = [];
-  for (const c of list) {
-    if (c.inComponent === id) {
-      tmp.push(c);
-      tmp.push(...getAllChilds(list, c.id));
+  for (const component of components) {
+    if (component.inComponent === id) {
+      tmp.push(component);
+      tmp.push(...getAllChilds(components, component.id));
     }
   }
   return tmp;
