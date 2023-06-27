@@ -8,6 +8,7 @@ export * from './documents.js';
 export * from './endpoints.js';
 export * from './github.js';
 export * from './invitations.js';
+export * from './keys.js';
 export * from './me.js';
 export * from './orgs.js';
 export * from './perms.js';

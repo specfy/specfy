@@ -8,6 +8,7 @@ import components from './v0/components/index.js';
 import documents from './v0/documents/index.js';
 import github from './v0/github/index.js';
 import invitations from './v0/invitations/index.js';
+import keys from './v0/keys/index.js';
 import me from './v0/me/index.js';
 import orgs from './v0/orgs/index.js';
 import perms from './v0/perms/index.js';
@@ -24,6 +25,7 @@ export const routes: FastifyPluginAsync = async (f) => {
   f.register(auth, { prefix: '/0' });
   f.register(components, { prefix: '/0' });
   f.register(documents, { prefix: '/0' });
+  f.register(keys, { prefix: '/0' });
   f.register(github, { prefix: '/0' });
   f.register(invitations, { prefix: '/0' });
   f.register(me, { prefix: '/0' });

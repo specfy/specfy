@@ -17,6 +17,7 @@ import type {
   ListInvitations,
   PostInvitation,
 } from './invitations.js';
+import type { ListKeys } from './keys.js';
 import type { DeleteMe, GetMe, PutMe } from './me.js';
 import type { DeleteOrg, ListOrgs, PostOrg, PutOrg } from './orgs.js';
 import type { DeletePerm, GetCountPerms, ListPerms, PutPerm } from './perms.js';
@@ -54,6 +55,8 @@ export interface API {
 
   '/0/documents': { GET: ListDocuments };
   [key: `/0/documents/${string}`]: { GET: GetDocument };
+
+  '/0/keys': { GET: ListKeys };
 
   '/0/me': {
     GET: GetMe;

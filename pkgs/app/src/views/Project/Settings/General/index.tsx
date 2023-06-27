@@ -1,17 +1,19 @@
 import { IconCirclesRelation } from '@tabler/icons-react';
 import { Typography, Input, Button, Modal, App, Form } from 'antd';
 import type { ApiProject } from 'api/src/types/api';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { deleteProject, updateProject } from '../../../../api';
 import { linkToGithubRepo } from '../../../../api/github';
 import { isError } from '../../../../api/helpers';
+import { useListKeys } from '../../../../api/keys';
 import { i18n } from '../../../../common/i18n';
 import { useOrgStore } from '../../../../common/store';
 import { slugify, titleSuffix } from '../../../../common/string';
 import { Banner } from '../../../../components/Banner';
+import { CopyButton } from '../../../../components/Button/Copy';
 import { Card } from '../../../../components/Card';
 import { Flex } from '../../../../components/Flex';
 import { GithubOrgSelect } from '../../../../components/Github/OrgSelect';
@@ -101,6 +103,19 @@ export const SettingsGeneral: React.FC<{
     message.success('Unlinked successfully');
   };
 
+  // Keys
+  const resKeys = useListKeys({
+    org_id: proj.orgId,
+    project_id: proj.id,
+  });
+  const key = useMemo<string | null>(() => {
+    if (!resKeys.data || resKeys.data.data.length === 0) {
+      return null;
+    }
+
+    return '•'.repeat(resKeys.data.data[0].key.length);
+  }, [resKeys]);
+
   return (
     <>
       <Helmet title={`Settings - ${proj.name} ${titleSuffix}`} />
@@ -142,6 +157,36 @@ export const SettingsGeneral: React.FC<{
               Rename
             </Button>
           </Card.Actions>
+        </Form>
+      </Card>
+
+      <Card>
+        <Form layout="vertical" onFinish={handleRename}>
+          <Card.Content>
+            <Typography.Title level={3}>Keys</Typography.Title>
+            <Flex gap="l" direction="column" alignItems="flex-start">
+              <div>
+                <div>Project ID</div>
+                <Input
+                  readOnly
+                  value={proj.id}
+                  style={{ width: '350px' }}
+                  suffix={<CopyButton value={proj.id} />}
+                />
+              </div>
+              <div>
+                <div>Api Key</div>
+                <Input
+                  readOnly
+                  value={key || ''}
+                  style={{ width: '350px' }}
+                  suffix={
+                    <CopyButton value={resKeys.data?.data[0].key || ''} />
+                  }
+                />
+              </div>
+            </Flex>
+          </Card.Content>
         </Form>
       </Card>
 
