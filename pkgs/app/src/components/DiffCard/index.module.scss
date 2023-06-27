@@ -141,6 +141,7 @@ $border-width: 10px;
 
 .techs {
   display: flex;
+  flex-wrap: wrap;
   gap: $p-m;
 }
 

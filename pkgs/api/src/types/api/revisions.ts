@@ -1,3 +1,5 @@
+import type { AnalyserJson } from '@specfy/stack-analyser';
+
 import type {
   DBBlobBase,
   DBBlobComponentBase,
@@ -38,6 +40,8 @@ export type ApiBlobCreate = Omit<DBBlobBase, 'createdAt' | 'id' | 'updatedAt'> &
   (DBBlobComponentBase | DBBlobDocumentBase | DBBlobProjectBase);
 export type ApiBlobCreateDocument = DBBlobDocumentBase &
   Omit<DBBlobBase, 'createdAt' | 'id' | 'updatedAt'>;
+export type ApiBlobCreateComponent = DBBlobComponentBase &
+  Omit<DBBlobBase, 'createdAt' | 'id' | 'updatedAt'>;
 
 export type PostRevision = Res<{
   Body: Pick<ApiRevision, 'description' | 'name' | 'orgId' | 'projectId'> & {
@@ -47,13 +51,19 @@ export type PostRevision = Res<{
 }>;
 
 // ------ POST /upload
+export type CreateRevisionError = {
+  error: {
+    code: 'cant_create';
+    reason: 'no_diff';
+  };
+};
 export type PostUploadRevision = Res<{
   Body: Pick<ApiRevision, 'description' | 'name' | 'orgId' | 'projectId'> & {
     source: string;
     blobs: Array<{ path: string; content: string }>;
-    stack: Record<any, any> | null;
+    stack: AnalyserJson | null;
   };
-  Success: Pick<ApiRevision, 'id'>;
+  Success: CreateRevisionError | Pick<ApiRevision, 'id'>;
 }>;
 
 // ------ GET /:id

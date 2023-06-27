@@ -1,0 +1,94 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`uploadedStackToDB > should output new blobs once and nothing the second 1`] = `
+[
+  {
+    "created": true,
+    "current": {
+      "blobId": null,
+      "createdAt": "",
+      "description": {
+        "content": [],
+        "type": "doc",
+      },
+      "display": {
+        "pos": {
+          "x": 0,
+          "y": 0,
+        },
+        "size": {
+          "height": 32,
+          "width": 100,
+        },
+        "zIndex": 1,
+      },
+      "edges": [],
+      "id": Any<String>,
+      "inComponent": null,
+      "name": "a",
+      "orgId": undefined,
+      "projectId": undefined,
+      "slug": "a",
+      "source": "github",
+      "sourceName": "a",
+      "sourcePath": [
+        "/",
+      ],
+      "tech": [],
+      "techId": null,
+      "type": "component",
+      "typeId": null,
+      "updatedAt": "",
+    },
+    "deleted": false,
+    "id": Any<String>,
+    "parentId": null,
+    "type": "component",
+    "typeId": Any<String>,
+  },
+  {
+    "created": true,
+    "current": {
+      "blobId": null,
+      "createdAt": "",
+      "description": {
+        "content": [],
+        "type": "doc",
+      },
+      "display": {
+        "pos": {
+          "x": 0,
+          "y": 0,
+        },
+        "size": {
+          "height": 32,
+          "width": 100,
+        },
+        "zIndex": 1,
+      },
+      "edges": [],
+      "id": Any<String>,
+      "inComponent": null,
+      "name": "b",
+      "orgId": undefined,
+      "projectId": undefined,
+      "slug": "b",
+      "source": "github",
+      "sourceName": "b",
+      "sourcePath": [
+        "/",
+      ],
+      "tech": [],
+      "techId": null,
+      "type": "component",
+      "typeId": null,
+      "updatedAt": "",
+    },
+    "deleted": false,
+    "id": Any<String>,
+    "parentId": null,
+    "type": "component",
+    "typeId": Any<String>,
+  },
+]
+`;

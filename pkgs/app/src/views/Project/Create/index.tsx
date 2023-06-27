@@ -1,5 +1,6 @@
 import { IconCircleArrowRight } from '@tabler/icons-react';
 import { App, Button, Form, Input } from 'antd';
+import { computeProjectPosition, computeWidth } from 'api/src/common/flow';
 import { hDef, wDef, wMax } from 'api/src/common/validators/flow.constants';
 import type { ApiOrg, FieldsErrors } from 'api/src/types/api';
 import { useState } from 'react';
@@ -8,7 +9,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { createProject } from '../../../api';
 import { isError, isValidationError } from '../../../api/helpers';
-import { computeProjectPosition, computeWidth } from '../../../common/flow';
 import { i18n } from '../../../common/i18n';
 import { useProjectStore } from '../../../common/store';
 import { slugify, titleSuffix } from '../../../common/string';

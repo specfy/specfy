@@ -1,6 +1,7 @@
 import { Github } from '@icons-pack/react-simple-icons';
 import { IconArrowRight, IconInfoCircle, IconLock } from '@tabler/icons-react';
 import { App, Button, Skeleton } from 'antd';
+import { computeProjectPosition, computeWidth } from 'api/src/common/flow';
 import { hDef, wDef, wMax } from 'api/src/common/validators/flow.constants';
 import type {
   ApiGithubRepo,
@@ -17,7 +18,6 @@ import {
   useGetGithubRepos,
 } from '../../../../api/github';
 import { isError, isValidationError } from '../../../../api/helpers';
-import { computeProjectPosition, computeWidth } from '../../../../common/flow';
 import { i18n } from '../../../../common/i18n';
 import { useProjectStore } from '../../../../common/store';
 import { slugify } from '../../../../common/string';

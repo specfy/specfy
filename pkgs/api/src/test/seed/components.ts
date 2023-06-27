@@ -625,6 +625,9 @@ export function getBlobComponent(org: Orgs, project: Projects): DBComponent {
     tech: [],
     inComponent: null,
     edges: [],
+    source: null,
+    sourceName: null,
+    sourcePath: null,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };

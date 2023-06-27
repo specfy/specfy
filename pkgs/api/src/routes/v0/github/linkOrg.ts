@@ -18,11 +18,12 @@ import { github } from '../../../services/github/index.js';
 import type { PostLinkToGithubOrg } from '../../../types/api/index.js';
 
 function QueryVal(req: FastifyRequest) {
-  const obj: Record<keyof PostLinkToGithubOrg['Body'], any> = {
-    orgId: valOrgId(req),
-    installationId: z.number().positive().int().nullable(),
-  };
-  return z.object(obj).strict();
+  return z
+    .object({
+      orgId: valOrgId(req),
+      installationId: z.number().positive().int().nullable(),
+    })
+    .strict();
 }
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {

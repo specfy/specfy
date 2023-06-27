@@ -3,7 +3,7 @@ import { Typography, Input, Button, Modal, App, Form } from 'antd';
 import type { ApiProject } from 'api/src/types/api';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { deleteProject, updateProject } from '../../../../api';
 import { linkToGithubRepo } from '../../../../api/github';
@@ -155,9 +155,13 @@ export const SettingsGeneral: React.FC<{
             </p>
 
             {!org!.githubInstallationId ? (
-              <Banner type="warning">
-                You need to link your Specfy organization to a Github
-                organization.
+              <Banner type="info">
+                <Flex justifyContent="space-between">
+                  First, link your Specfy organization to a Github organization.
+                  <Link to={`/${org!.id}/_/settings`}>
+                    <Button>Settings</Button>
+                  </Link>
+                </Flex>
               </Banner>
             ) : (
               <Flex gap="l">

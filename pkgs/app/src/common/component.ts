@@ -1,5 +1,7 @@
 import type { IconType } from '@icons-pack/react-simple-icons';
 import {
+  Docker,
+  Javascript,
   Jirasoftware,
   Github,
   Slack,
@@ -48,6 +50,8 @@ import {
   Gnubash,
   CssThree,
 } from '@icons-pack/react-simple-icons';
+import type { AllowedKeys, TechItem } from '@specfy/stack-analyser';
+import { list } from '@specfy/stack-analyser/dist/common/techs';
 import { nanoid } from 'api/src/common/id';
 import {
   hDef,
@@ -61,68 +65,72 @@ import type { FlowEdge } from 'api/src/types/db';
 import { getEmptyDoc } from './content';
 import type { ComponentsState, ProjectState } from './store';
 
-export interface TechInfo {
-  key: string;
-  name: string;
+type Extending = {
   Icon?: IconType;
-  type: 'db' | 'hosting' | 'language' | 'messaging' | 'sass' | 'tool';
   regHostname?: RegExp;
-}
+};
+export type TechInfo = Extending & TechItem;
 
 // prettier-ignore
-export const supportedArray: TechInfo[] = [
-  { key: 'algolia', name: 'Algolia', type: 'db', Icon: Algolia },
-  { key: 'alibabacloud', name: 'Alibaba Cloud', type: 'hosting', Icon: Alibabacloud },
-  { key: 'aws', name: 'AWS', type: 'hosting', Icon: Amazonaws, regHostname: /aws.amazon.com$/ },
-  { key: 'azure', name: 'Azure', type: 'hosting', Icon: Microsoftazure },
-  { key: 'bash', name: 'Bash', type: 'language', Icon: Gnubash },
-  { key: 'c', name: 'C', type: 'language', Icon: C },
-  { key: 'cplusplus', name: 'C++', type: 'language', Icon: Cplusplus },
-  { key: 'csharp', name: 'C#', type: 'language' },
-  { key: 'css', name: 'CSS', type: 'language', Icon: CssThree },
-  { key: 'dart', name: 'Dart', type: 'language', Icon: Dart },
-  { key: 'datadog', name: 'Datadog', type: 'sass', Icon: Datadog, regHostname: /^(www.)?datadog.com$/ },
-  { key: 'digitalocean', name: 'Digital Ocean', type: 'hosting', Icon: Digitalocean },
-  { key: 'elasticloud', name: 'Elastic Cloud', type: 'sass', Icon: Elasticcloud },
-  { key: 'elasticsearch', name: 'Elasticsearch', type: 'db', Icon: Elasticsearch },
-  { key: 'elixir', name: 'Elixir', type: 'language', Icon: Elixir },
-  { key: 'eslint', name: 'Eslint', type: 'tool', Icon: Eslint },
-  { key: 'gce', name: 'GCE', type: 'hosting', Icon: Googlecloud },
-  { key: 'gcp', name: 'GCP', type: 'hosting', Icon: Googlecloud },
-  { key: 'github', name: 'Github', type: 'sass', Icon: Github, regHostname: /^(www.)?github.com$/ },
-  { key: 'golang', name: 'Go', type: 'language', Icon: Go },
-  { key: 'html', name: 'HTML', type: 'language', Icon: Html5 },
-  { key: 'java', name: 'Java', type: 'language' },
-  { key: 'jira', name: 'Jira', type: 'sass', Icon: Jirasoftware, regHostname: /.atlassian.net$/ },
-  { key: 'kotlin', name: 'Kotlin', type: 'language', Icon: Kotlin },
-  { key: 'kubernetes', name: 'Kubernetes', type: 'hosting', Icon: Kubernetes },
-  { key: 'mailchimp', name: 'Mailchimp', type: 'sass', Icon: Mailchimp },
-  { key: 'mongodb', name: 'MongoDB', type: 'db', Icon: Mongodb },
-  { key: 'netlify', name: 'Netlify', type: 'hosting', Icon: Netlify, regHostname: /^(www.)?netlify.com$/ },
-  { key: 'newrelic', name: 'New Relic', type: 'sass', Icon: Newrelic },
-  { key: 'nodejs', name: 'NodeJS', type: 'language', Icon: Nodedotjs },
-  { key: 'oraclecloud', name: 'Oracle Cloud', type: 'hosting', Icon: Oracle },
-  { key: 'ovh', name: 'OVH', type: 'hosting', Icon: Ovh },
-  { key: 'php', name: 'PHP', type: 'language', Icon: Php },
-  { key: 'pingdom', name: 'Pingdom', type: 'sass', Icon: Pingdom, regHostname: /^(www.)?pingdom.com$/ },
-  { key: 'postgresql', name: 'Postgresql', type: 'db', Icon: Postgresql },
-  { key: 'powershell', name: 'Powershell', type: 'language', Icon: Powershell },
-  { key: 'pubsub', name: 'PubSub', type: 'messaging', Icon: Googlecloud },
-  { key: 'python', name: 'Python', type: 'language', Icon: Python },
-  { key: 'rabbitmq', name: 'RabbitMQ', type: 'messaging', Icon: Rabbitmq },
-  { key: 'react', name: 'React', type: 'language', Icon: ReactJs },
-  { key: 'redis', name: 'Redis', type: 'db', Icon: Redis },
-  { key: 'ruby', name: 'Ruby', type: 'language', Icon: Ruby },
-  { key: 'rust', name: 'Rust', type: 'language', Icon: Rust },
-  { key: 'sentry', name: 'Sentry', type: 'sass', Icon: Sentry, regHostname: /^(www.)?sentry.com$/ },
-  { key: 'slack', name: 'Slack', type: 'sass', Icon: Slack, regHostname: /^(www.)?slack.com$/ },
-  { key: 'swift', name: 'Swift', type: 'language', Icon: Swift },
-  { key: 'typescript', name: 'Typescript', type: 'language', Icon: Typescript },
-  { key: 'vercel', name: 'Vercel', type: 'hosting', Icon: Vercel },
-  { key: 'webpack', name: 'Webpack', type: 'tool', Icon: Webpack },
-  { key: 'zapier', name: 'Zapier', type: 'sass', Icon: Zapier, regHostname: /^(www.)?zapier.com$/ },
-  { key: 'zoom', name: 'Zoom', type: 'sass', Icon: Zoom },
-];
+const extending: Partial<Record<AllowedKeys, Extending>> = {
+  'algolia': { Icon: Algolia },
+  'alibabacloud': { Icon: Alibabacloud },
+  'aws': { Icon: Amazonaws, regHostname: /aws.amazon.com$/ },
+  'azure': { Icon: Microsoftazure },
+  'bash': { Icon: Gnubash },
+  'c': { Icon: C },
+  'cplusplus': { Icon: Cplusplus },
+  'csharp': { },
+  'css': { Icon: CssThree },
+  'dart': { Icon: Dart },
+  'datadog': { Icon: Datadog, regHostname: /^(www.)?datadog.com$/ },
+  'digitalocean': { Icon: Digitalocean },
+  'docker': { Icon: Docker },
+  'elasticloud': { Icon: Elasticcloud },
+  'elasticsearch': { Icon: Elasticsearch },
+  'elixir': { Icon: Elixir },
+  'eslint': { Icon: Eslint },
+  'gce': { Icon: Googlecloud },
+  'gcp': { Icon: Googlecloud },
+  'github': { Icon: Github, regHostname: /^(www.)?github.com$/ },
+  'golang': { Icon: Go },
+  'html': { Icon: Html5 },
+  'java': { },
+  'javascript': { Icon: Javascript },
+  'jira': { Icon: Jirasoftware, regHostname: /.atlassian.net$/ },
+  'kotlin': { Icon: Kotlin },
+  'kubernetes': { Icon: Kubernetes },
+  'mailchimp': { Icon: Mailchimp },
+  'mongodb': { Icon: Mongodb },
+  'netlify': { Icon: Netlify, regHostname: /^(www.)?netlify.com$/ },
+  'newrelic': { Icon: Newrelic },
+  'nodejs': { Icon: Nodedotjs },
+  'oraclecloud': { Icon: Oracle },
+  'ovh': { Icon: Ovh },
+  'php': { Icon: Php },
+  'pingdom': { Icon: Pingdom, regHostname: /^(www.)?pingdom.com$/ },
+  'postgresql': { Icon: Postgresql },
+  'powershell': { Icon: Powershell },
+  'pubsub': { Icon: Googlecloud },
+  'python': { Icon: Python },
+  'rabbitmq': { Icon: Rabbitmq },
+  'react': { Icon: ReactJs },
+  'redis': { Icon: Redis },
+  'ruby': { Icon: Ruby },
+  'rust': { Icon: Rust },
+  'sentry': { Icon: Sentry, regHostname: /^(www.)?sentry.com$/ },
+  'slack': { Icon: Slack, regHostname: /^(www.)?slack.com$/ },
+  'swift': { Icon: Swift },
+  'typescript': { Icon: Typescript },
+  'vercel': { Icon: Vercel },
+  'webpack': { Icon: Webpack },
+  'zapier': { Icon: Zapier, regHostname: /^(www.)?zapier.com$/ },
+  'zoom': { Icon: Zoom },
+};
+
+export const supportedArray: TechInfo[] = list.map((t) => {
+  return { ...t, ...(extending[t.key] || {}) };
+});
 
 export const supportedIndexed: Record<string, TechInfo> = {};
 Object.values(supportedArray).forEach((v) => {
@@ -138,6 +146,9 @@ export const supportedTypeToText: Record<TechInfo['type'], string> = {
   messaging: 'service',
   tool: 'tool',
   sass: 'third-party',
+  app: 'application',
+  ci: 'ci',
+  network: 'network',
 };
 
 export const internalTypeToText: Record<ApiComponent['type'], string> = {

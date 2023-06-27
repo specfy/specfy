@@ -10,6 +10,7 @@ export interface DBComponent {
   techId: string | null;
 
   type: 'component' | 'hosting' | 'project' | 'thirdparty';
+  // Only useful for project
   typeId: string | null;
 
   name: string;
@@ -21,6 +22,10 @@ export interface DBComponent {
   edges: FlowEdge[];
 
   inComponent: string | null;
+
+  source: string | null;
+  sourceName: string | null;
+  sourcePath: string[] | null;
 
   createdAt: string;
   updatedAt: string;

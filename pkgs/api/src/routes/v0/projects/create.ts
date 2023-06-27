@@ -11,14 +11,13 @@ import { v1, createProject } from '../../../models/index.js';
 import type { PostProject } from '../../../types/api/index.js';
 
 function ProjectVal(req: FastifyRequest) {
-  const obj: Record<keyof PostProject['Body'], any> = {
-    name: schemaProject.shape.name,
-    slug: schemaProject.shape.slug,
-    orgId: valOrgId(req),
-    display: schemaProject.shape.display,
-  };
   return z
-    .object(obj)
+    .object({
+      name: schemaProject.shape.name,
+      slug: schemaProject.shape.slug,
+      orgId: valOrgId(req),
+      display: schemaProject.shape.display,
+    })
     .strict()
     .superRefine(async (val, ctx) => {
       const res = await prisma.projects.findFirst({

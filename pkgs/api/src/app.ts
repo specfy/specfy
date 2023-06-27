@@ -51,6 +51,21 @@ export default async (f: FastifyInstance, opts: FastifyPluginOptions) => {
     prefix: '/',
   });
 
+  f.removeAllContentTypeParsers();
+  f.addContentTypeParser(
+    'application/json',
+    { parseAs: 'string', bodyLimit: 20971520 },
+    function (req, body, done) {
+      try {
+        const json = JSON.parse(body as string);
+        done(null, json);
+      } catch (err: unknown) {
+        (err as any).statusCode = 400;
+        done(err as any, undefined);
+      }
+    }
+  );
+
   // Do not touch the following lines
 
   // await start();

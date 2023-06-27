@@ -19,7 +19,7 @@ import { prisma } from '../../db/index.js';
       projectId: res.id,
       type: 'deploy',
       status: 'pending',
-      config: { url: 'specfy/sync' },
+      config: { url: 'specfy/specfy' },
       userId: null,
       createdAt: new Date(),
       updatedAt: new Date(),

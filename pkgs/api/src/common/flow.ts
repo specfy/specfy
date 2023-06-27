@@ -1,5 +1,14 @@
-import { hDef } from 'api/src/common/validators/flow.constants';
 import type { ApiProject } from 'api/src/types/api';
+
+import type { ApiComponent } from '../types/api/index.js';
+
+import {
+  hDef,
+  hDefHost,
+  wDef,
+  wDefHost,
+  wMax,
+} from './validators/flow.constants.js';
 
 export function computeProjectPosition(projects: ApiProject[]): {
   x: number;
@@ -20,4 +29,17 @@ export function computeProjectPosition(projects: ApiProject[]): {
 
 export function computeWidth(name: string, min: number, max: number) {
   return Math.min(max, Math.max(min, name.length * 6 + 16 + 8)); // icon + gap
+}
+
+export function getComponentSize(
+  type: ApiComponent['type'],
+  name: ApiComponent['name']
+): ApiComponent['display']['size'] {
+  return {
+    height: type === 'hosting' ? hDefHost : hDef,
+    width:
+      type === 'hosting'
+        ? computeWidth(name, wDefHost, wMax)
+        : computeWidth(name, wDef, wMax),
+  };
 }

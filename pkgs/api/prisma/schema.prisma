@@ -113,6 +113,9 @@ model Components {
   display     Json     @db.Json
   inComponent String?  @db.VarChar(15)
   edges       Json     @db.Json
+  source      String?  @db.VarChar(15)
+  sourceName  String?  @db.VarChar(100)
+  sourcePath  Json?    @db.Json
   createdAt   DateTime @default(now()) @db.Timestamp(3)
   updatedAt   DateTime @updatedAt
 

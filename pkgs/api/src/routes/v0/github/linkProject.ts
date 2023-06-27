@@ -23,12 +23,13 @@ import type {
 
 const repoRegex = /^[a-zA-Z0-9_.-]+\/[a-zA-Z0-9_.-]+$/;
 function QueryVal(req: FastifyRequest) {
-  const obj: Record<keyof PostLinkToGithubProject['Body'], any> = {
-    orgId: valOrgId(req),
-    projectId: valProjectId(req),
-    repository: z.string().max(250).regex(repoRegex).nullable(),
-  };
-  return z.object(obj).strict();
+  return z
+    .object({
+      orgId: valOrgId(req),
+      projectId: valProjectId(req),
+      repository: z.string().max(250).regex(repoRegex).nullable(),
+    })
+    .strict();
 }
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
