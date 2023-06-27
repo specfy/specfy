@@ -13,6 +13,7 @@ import {
   getBlobComponent,
   seedComponent,
 } from '../../../test/seed/components.js';
+import { getBlobDocument } from '../../../test/seed/documents.js';
 import { getBlobProject } from '../../../test/seed/projects.js';
 import { seedWithProject } from '../../../test/seed/seed.js';
 
@@ -107,7 +108,8 @@ describe('POST /revisions', () => {
   it('should allow with new blob', async () => {
     const { token, org, project } = await seedWithProject();
     const name = `test ${nanoid()}`;
-    const blob = getBlobComponent(org, project);
+    const blobComp = getBlobComponent(org, project);
+    const blobDoc = getBlobDocument(org, project);
 
     const res = await t.fetch.post('/0/revisions', {
       token,
@@ -115,11 +117,19 @@ describe('POST /revisions', () => {
         blobs: [
           {
             type: 'component',
-            typeId: blob.id,
+            typeId: blobComp.id,
             created: true,
             deleted: false,
             parentId: null,
-            current: blob,
+            current: blobComp,
+          },
+          {
+            type: 'document',
+            typeId: blobDoc.id,
+            created: true,
+            deleted: false,
+            parentId: null,
+            current: blobDoc,
           },
         ],
         description: { content: [], type: 'doc' },

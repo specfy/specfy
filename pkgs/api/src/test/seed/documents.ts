@@ -5,9 +5,11 @@ import type { Orgs, Projects, Users } from '@prisma/client';
 
 import { dirname } from '../../common/env.js';
 import { nanoid } from '../../common/id.js';
+import { slugify } from '../../common/string.js';
 import { prisma } from '../../db/index.js';
 import { createDocument, getTypeId } from '../../models/index.js';
 import type { ApiDocument } from '../../types/api/index.js';
+import type { DBDocument } from '../../types/db/documents.js';
 
 /**
  * Seed playbook
@@ -862,4 +864,27 @@ export async function seedDocument(
   });
 
   return document;
+}
+
+export function getBlobDocument(org: Orgs, project: Projects): DBDocument {
+  const id = nanoid();
+  const name = `test ${id}`;
+  return {
+    id,
+    name,
+    slug: slugify(name),
+    type: 'doc',
+    typeId: null,
+    orgId: org.id,
+    projectId: project.id,
+    blobId: null,
+    parentId: null,
+    locked: false,
+    tldr: '',
+    content: { type: 'doc', content: [] },
+    source: null,
+    sourcePath: null,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
 }

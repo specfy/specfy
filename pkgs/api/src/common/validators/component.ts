@@ -25,6 +25,10 @@ export const schemaComponent = z
 
     inComponent: schemaId.nullable(),
 
+    source: z.string().max(100).nullable(),
+    sourceName: z.string().max(100).nullable(),
+    sourcePath: z.array(z.string().max(500)).max(50).nullable(),
+
     createdAt: z.string().datetime(),
     updatedAt: z.string().datetime(),
   })

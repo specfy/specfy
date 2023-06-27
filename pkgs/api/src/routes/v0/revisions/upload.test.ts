@@ -293,7 +293,7 @@ describe('POST /revisions/upload -- Stack', () => {
     expect(res.json).toMatchSnapshot();
   });
 
-  it.only('should create one revision', async () => {
+  it('should create one revision', async () => {
     const { token, org, project } = await seedWithProject();
     const name = `test ${nanoid()}`;
     const res = await t.fetch.post('/0/revisions/upload', {
