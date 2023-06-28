@@ -6,8 +6,8 @@ import type {
   ApiDocument,
   ApiProject,
   BlockLevelZero,
-} from 'api/src/types/api';
-import type { DBComponent } from 'api/src/types/db';
+} from '@specfy/api/src/types/api';
+import type { DBComponent } from '@specfy/api/src/types/db';
 import type { Change } from 'diff';
 
 export type Allowed = ApiComponent | ApiDocument | ApiProject;

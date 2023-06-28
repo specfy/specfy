@@ -1,6 +1,6 @@
+import type { ApiOrg } from '@specfy/api/src/types/api';
 import { IconCirclesRelation } from '@tabler/icons-react';
 import { Typography, Input, Button, Modal, App, Form } from 'antd';
-import type { ApiOrg } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';

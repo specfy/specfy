@@ -1,5 +1,5 @@
+import type { BlockLevelZero, Blocks } from '@specfy/api/src/types/api';
 import { Typography } from 'antd';
-import type { BlockLevelZero, Blocks } from 'api/src/types/api';
 import classnames from 'classnames';
 import { useMemo, useState } from 'react';
 

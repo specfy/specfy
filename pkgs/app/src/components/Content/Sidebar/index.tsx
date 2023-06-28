@@ -1,4 +1,5 @@
 import { LoadingOutlined } from '@ant-design/icons';
+import type { ApiProject, DocumentSimple } from '@specfy/api/src/types/api';
 import {
   IconFileText,
   IconCircleX,
@@ -11,7 +12,6 @@ import {
 } from '@tabler/icons-react';
 import { Button, Input, Tree } from 'antd';
 import type { DataNode, DirectoryTreeProps } from 'antd/es/tree';
-import type { ApiProject, DocumentSimple } from 'api/src/types/api';
 import classnames from 'classnames';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';

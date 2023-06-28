@@ -1,3 +1,7 @@
+import type {
+  ApiRevision,
+  ListRevisionChecks,
+} from '@specfy/api/src/types/api';
 import {
   IconCircleCheckFilled,
   IconExclamationCircle,
@@ -6,7 +10,6 @@ import {
   IconEyeOff,
 } from '@tabler/icons-react';
 import { App, Button } from 'antd';
-import type { ApiRevision, ListRevisionChecks } from 'api/src/types/api';
 import classnames from 'classnames';
 import { useState } from 'react';
 

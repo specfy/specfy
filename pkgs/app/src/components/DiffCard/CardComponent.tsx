@@ -1,5 +1,5 @@
+import type { ApiComponent, BlockLevelZero } from '@specfy/api/src/types/api';
 import { Typography } from 'antd';
-import type { ApiComponent, BlockLevelZero } from 'api/src/types/api';
 import classnames from 'classnames';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';

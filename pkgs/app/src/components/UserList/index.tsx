@@ -1,6 +1,6 @@
+import type { ApiUser, ListUsers } from '@specfy/api/src/types/api';
 import { IconX } from '@tabler/icons-react';
 import { Button, Typography } from 'antd';
-import type { ApiUser, ListUsers } from 'api/src/types/api';
 import { useEffect, useMemo, useState } from 'react';
 
 import { UserCard, UserCardAdd } from '../UserCard';

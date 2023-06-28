@@ -1,5 +1,5 @@
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
-import type { ApiOrg } from 'api/src/types/api';
+import type { ApiOrg } from '@specfy/api/src/types/api';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 

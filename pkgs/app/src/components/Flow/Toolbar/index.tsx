@@ -1,6 +1,6 @@
+import type { ApiProject } from '@specfy/api/src/types/api';
 import { IconMaximize, IconZoomIn, IconZoomOut } from '@tabler/icons-react';
 import { Button, Tooltip } from 'antd';
-import type { ApiProject } from 'api/src/types/api';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import { useReactFlow, useViewport } from 'reactflow';

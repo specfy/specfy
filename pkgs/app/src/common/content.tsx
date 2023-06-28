@@ -1,4 +1,7 @@
-import type { BlocksWithContent, BlockLevelZero } from 'api/src/types/api';
+import type {
+  BlocksWithContent,
+  BlockLevelZero,
+} from '@specfy/api/src/types/api';
 
 import { ContentBlock } from '../components/Content';
 

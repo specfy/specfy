@@ -1,10 +1,10 @@
-import { useQuery } from '@tanstack/react-query';
 import type {
   ListGithubInstallations,
   ListGithubRepos,
   PostLinkToGithubOrg,
   PostLinkToGithubProject,
-} from 'api/src/types/api';
+} from '@specfy/api/src/types/api';
+import { useQuery } from '@tanstack/react-query';
 
 import { queryClient } from '../common/query';
 

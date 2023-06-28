@@ -1,9 +1,9 @@
+import type { ApiProject, ListDocuments } from '@specfy/api/src/types/api';
 import {
   IconBooks,
   IconClipboardList,
   IconNotebook,
 } from '@tabler/icons-react';
-import type { ApiProject, ListDocuments } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';

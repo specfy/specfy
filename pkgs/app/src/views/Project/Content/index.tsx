@@ -1,4 +1,4 @@
-import type { ApiProject } from 'api/src/types/api';
+import type { ApiProject } from '@specfy/api/src/types/api';
 import { Route, Routes } from 'react-router-dom';
 
 import type { RouteProject } from '../../../types/routes';

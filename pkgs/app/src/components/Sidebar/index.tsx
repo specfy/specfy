@@ -1,6 +1,6 @@
+import type { ApiOrg, ApiProject } from '@specfy/api/src/types/api';
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 import { Button } from 'antd';
-import type { ApiOrg, ApiProject } from 'api/src/types/api';
 import classNames from 'classnames';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';

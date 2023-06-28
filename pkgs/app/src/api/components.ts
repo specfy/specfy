@@ -1,5 +1,5 @@
+import type { ApiComponent, ListComponents } from '@specfy/api/src/types/api';
 import { useQuery } from '@tanstack/react-query';
-import type { ApiComponent, ListComponents } from 'api/src/types/api';
 
 import originalStore from '../common/store';
 

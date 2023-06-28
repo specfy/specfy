@@ -1,11 +1,11 @@
-import { useQuery } from '@tanstack/react-query';
 import type {
   DeleteProject,
   GetProject,
   ListProjects,
   PostProject,
   PutProject,
-} from 'api/src/types/api';
+} from '@specfy/api/src/types/api';
+import { useQuery } from '@tanstack/react-query';
 
 import { queryClient } from '../common/query';
 import originalStore from '../common/store';

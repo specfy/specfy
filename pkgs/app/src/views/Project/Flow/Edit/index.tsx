@@ -4,7 +4,7 @@
 //   IconHistory,
 // } from '@tabler/icons-react';
 // import { Badge, Button, Tooltip } from 'antd';
-// import type { ApiComponent, ApiProject } from 'api/src/types/api';
+// import type { ApiComponent, ApiProject } from '@specfy/api/src/types/api';
 // import classnames from 'classnames';
 // import { useCallback, useState } from 'react';
 
@@ -12,17 +12,17 @@
 // import { useEdit } from '../../../hooks/useEdit';
 
 import {
-  IconArrowNarrowLeft,
-  IconArrowNarrowRight,
-  IconArrowsExchange,
-} from '@tabler/icons-react';
-import {
   wMin,
   wMax,
   hMax,
   hMin,
-} from 'api/src/common/validators/flow.constants';
-import type { ApiComponent, ApiProject } from 'api/src/types/api';
+} from '@specfy/api/src/common/validators/flow.constants';
+import type { ApiComponent, ApiProject } from '@specfy/api/src/types/api';
+import {
+  IconArrowNarrowLeft,
+  IconArrowNarrowRight,
+  IconArrowsExchange,
+} from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { useDebounce } from 'react-use';
 import type { Edge, Node } from 'reactflow';

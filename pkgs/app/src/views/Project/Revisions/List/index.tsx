@@ -1,11 +1,15 @@
 import { LoadingOutlined } from '@ant-design/icons';
+import type {
+  ApiProject,
+  ApiRevision,
+  ListRevisions,
+} from '@specfy/api/src/types/api';
 import {
   IconChevronRight,
   IconCircleXFilled,
   IconSearch,
 } from '@tabler/icons-react';
 import { Button, Input, Select, Table } from 'antd';
-import type { ApiProject, ApiRevision, ListRevisions } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';

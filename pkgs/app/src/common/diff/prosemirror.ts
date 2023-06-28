@@ -1,4 +1,3 @@
-import type { Mark } from '@tiptap/pm/model';
 import type {
   BlockHardBreak,
   BlockLevelZero,
@@ -9,7 +8,8 @@ import type {
   BlockText,
   MarkDiff,
   Marks,
-} from 'api/src/types/api';
+} from '@specfy/api/src/types/api';
+import type { Mark } from '@tiptap/pm/model';
 import { createPatch, diffChars } from 'diff';
 import { diff_match_patch } from 'diff-match-patch';
 import jsonDiff from 'json-diff';

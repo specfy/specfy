@@ -1,6 +1,10 @@
+import type {
+  BlockLevelZero,
+  Blocks,
+  MarkDiff,
+} from '@specfy/api/src/types/api';
 import { IconArrowBack } from '@tabler/icons-react';
 import { Checkbox, Typography } from 'antd';
-import type { BlockLevelZero, Blocks, MarkDiff } from 'api/src/types/api';
 import classnames from 'classnames';
 import { useMemo, useState } from 'react';
 import { Diff, Hunk, tokenize, markEdits } from 'react-diff-view';

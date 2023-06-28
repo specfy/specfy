@@ -1,5 +1,5 @@
+import type { BlockLevelZero } from '@specfy/api/src/types/api';
 import { Typography } from 'antd';
-import type { BlockLevelZero } from 'api/src/types/api';
 import { useMemo } from 'react';
 
 import type { DocumentBlobWithDiff } from '../../types/blobs';

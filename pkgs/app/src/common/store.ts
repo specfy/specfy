@@ -1,4 +1,4 @@
-import { nanoid } from 'api/src/common/id';
+import { nanoid } from '@specfy/api/src/common/id';
 import type {
   ApiBlobWithPrevious,
   ApiComponent,
@@ -6,7 +6,7 @@ import type {
   ApiOrg,
   ApiProject,
   ApiRevision,
-} from 'api/src/types/api';
+} from '@specfy/api/src/types/api';
 import { produce } from 'immer';
 import { create } from 'zustand';
 

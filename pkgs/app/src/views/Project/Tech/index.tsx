@@ -1,7 +1,9 @@
 import { LoadingOutlined } from '@ant-design/icons';
+import type { ComputedFlow } from '@specfy/api/src/common/flow/transform';
+import { componentsToFlow } from '@specfy/api/src/common/flow/transform';
+import type { ApiComponent, ApiProject } from '@specfy/api/src/types/api';
 import { Tag } from 'antd';
 import Title from 'antd/es/typography/Title';
-import type { ApiComponent, ApiProject } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
@@ -16,8 +18,6 @@ import { Container } from '../../../components/Container';
 import { Flex } from '../../../components/Flex';
 import { Flow, FlowWrapper } from '../../../components/Flow';
 import { Toolbar } from '../../../components/Flow/Toolbar';
-import type { ComputedFlow } from '../../../components/Flow/helpers';
-import { componentsToFlow } from '../../../components/Flow/helpers';
 import { NotFound } from '../../../components/NotFound';
 import type { RouteProject, RouteTech } from '../../../types/routes';
 

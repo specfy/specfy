@@ -1,5 +1,5 @@
+import type { ListActivities } from '@specfy/api/src/types/api';
 import { useQuery } from '@tanstack/react-query';
-import type { ListActivities } from 'api/src/types/api';
 
 import { fetchApi } from './fetch';
 import { APIError, isError } from './helpers';

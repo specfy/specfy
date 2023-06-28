@@ -1,4 +1,5 @@
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
+import type { ApiProject } from '@specfy/api/src/types/api';
 import {
   IconApps,
   IconBolt,
@@ -7,7 +8,6 @@ import {
   IconLayoutDashboard,
   IconSettings,
 } from '@tabler/icons-react';
-import type { ApiProject } from 'api/src/types/api';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 

@@ -1,5 +1,8 @@
+import type {
+  ApiActivity,
+  ApiActivityGrouped,
+} from '@specfy/api/src/types/api';
 import { Skeleton, Typography } from 'antd';
-import type { ApiActivity, ApiActivityGrouped } from 'api/src/types/api';
 import type { Duration } from 'luxon';
 import { DateTime } from 'luxon';
 import { useEffect, useState } from 'react';

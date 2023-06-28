@@ -1,3 +1,4 @@
+import type { ComputedFlow } from '@specfy/api/src/common/flow/transform';
 import classNames from 'classnames';
 import type { CSSProperties } from 'react';
 import { useState, useEffect } from 'react';
@@ -13,7 +14,6 @@ import {
 
 import 'reactflow/dist/style.css';
 import CustomNode from './CustomNode';
-import type { ComputedFlow } from './helpers';
 import { highlightNode } from './helpers';
 import cls from './index.module.scss';
 

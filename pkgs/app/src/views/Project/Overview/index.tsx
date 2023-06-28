@@ -1,5 +1,8 @@
+import { computeLayout } from '@specfy/api/src/common/flow/layout';
+import type { ComputedFlow } from '@specfy/api/src/common/flow/transform';
+import { componentsToFlow } from '@specfy/api/src/common/flow/transform';
+import type { ApiComponent, BlockLevelZero } from '@specfy/api/src/types/api';
 import { Typography } from 'antd';
-import type { ApiComponent, BlockLevelZero } from 'api/src/types/api';
 import { useCallback, useEffect, useState } from 'react';
 
 import { useComponentsStore, useProjectStore } from '../../../common/store';
@@ -9,8 +12,6 @@ import { ContentDoc } from '../../../components/Content';
 import { EditorMini } from '../../../components/Editor/Mini';
 import { Flow, FlowWrapper } from '../../../components/Flow';
 import { Toolbar } from '../../../components/Flow/Toolbar';
-import type { ComputedFlow } from '../../../components/Flow/helpers';
-import { componentsToFlow } from '../../../components/Flow/helpers';
 import { ListActivity } from '../../../components/ListActivity';
 import { ProjectLinks } from '../../../components/Project/Links';
 import { UpdatedAt } from '../../../components/UpdatedAt';
@@ -41,7 +42,21 @@ export const ProjectOverview: React.FC<{
       return;
     }
 
-    setFlow(componentsToFlow(components));
+    const tmp = componentsToFlow(components);
+    const g = computeLayout(tmp);
+
+    g.nodes().forEach((id) => {
+      const prev = tmp.nodes.find((n) => n.id)!;
+      const next = g.node(id);
+      console.log('updating', id, prev, next);
+      if (prev.parentNode) {
+      } else {
+        prev.position.x = next.x;
+        prev.position.y = next.y;
+      }
+    });
+
+    setFlow(tmp);
   }, [components]);
 
   const onUpdate = useCallback((doc: BlockLevelZero) => {

@@ -1,4 +1,3 @@
-import { useQuery } from '@tanstack/react-query';
 import type {
   GetRevision,
   ListRevisionChecks,
@@ -7,7 +6,8 @@ import type {
   PatchRevision,
   PostRevision,
   RebaseRevision,
-} from 'api/src/types/api';
+} from '@specfy/api/src/types/api';
+import { useQuery } from '@tanstack/react-query';
 
 import { queryClient } from '../common/query';
 

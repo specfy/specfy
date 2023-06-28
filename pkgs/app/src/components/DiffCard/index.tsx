@@ -1,10 +1,10 @@
+import type { ApiBlobWithPrevious } from '@specfy/api/src/types/api';
 import {
   IconCaretDown,
   IconCaretRight,
   IconExternalLink,
 } from '@tabler/icons-react';
 import { Button, Tag } from 'antd';
-import type { ApiBlobWithPrevious } from 'api/src/types/api';
 import classnames from 'classnames';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';

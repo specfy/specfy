@@ -1,5 +1,5 @@
 {
-  "name": "emails",
+  "name": "@specfy/emails",
   "version": "0.0.18",
   "private": true,
   "type": "module",

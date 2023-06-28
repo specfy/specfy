@@ -1,7 +1,7 @@
+import type { ApiComponent } from '@specfy/api/src/types/api';
 import { IconPlus } from '@tabler/icons-react';
 import { Button, Select } from 'antd';
 import type { DefaultOptionType, SelectProps } from 'antd/es/select';
-import type { ApiComponent } from 'api/src/types/api';
 import { useMemo, useState } from 'react';
 
 import {

@@ -1,5 +1,5 @@
+import type { ApiPerm, ListPerms } from '@specfy/api/src/types/api';
 import { Avatar, Skeleton, Typography } from 'antd';
-import type { ApiPerm, ListPerms } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
 
 import { useListPermsProject } from '../../../api';

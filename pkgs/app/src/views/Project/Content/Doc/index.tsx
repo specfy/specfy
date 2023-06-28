@@ -1,8 +1,8 @@
+import type { ApiDocument, ApiProject } from '@specfy/api/src/types/api';
 import { IconDotsVertical } from '@tabler/icons-react';
 import type { MenuProps } from 'antd';
 import { App, Typography, Dropdown, Button } from 'antd';
 import Title from 'antd/es/typography/Title';
-import type { ApiDocument, ApiProject } from 'api/src/types/api';
 import type { MenuClickEventHandler } from 'rc-menu/lib/interface';
 import { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';

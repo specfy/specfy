@@ -1,6 +1,6 @@
+import type { ApiPerm, ApiUser } from '@specfy/api/src/types/api';
 import { IconSearch } from '@tabler/icons-react';
 import { Input, Typography } from 'antd';
-import type { ApiPerm, ApiUser } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
 import { useDebounce } from 'react-use';
 

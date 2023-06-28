@@ -1,5 +1,10 @@
+import type {
+  ComponentForFlow,
+  ComputedFlow,
+} from '@specfy/api/src/common/flow/transform';
+import { componentsToFlow } from '@specfy/api/src/common/flow/transform';
+import type { ApiOrg } from '@specfy/api/src/types/api';
 import { Skeleton } from 'antd';
-import type { ApiOrg } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
@@ -10,11 +15,6 @@ import { Card } from '../../../components/Card';
 import { Container } from '../../../components/Container';
 import { Flow, FlowWrapper } from '../../../components/Flow';
 import { Toolbar } from '../../../components/Flow/Toolbar';
-import type {
-  ComponentForFlow,
-  ComputedFlow,
-} from '../../../components/Flow/helpers';
-import { componentsToFlow } from '../../../components/Flow/helpers';
 import { ListActivity } from '../../../components/ListActivity';
 import { ListProjects } from '../../../components/ListProjects';
 import { OrgOnboarding } from '../../../components/Org/Onboarding';

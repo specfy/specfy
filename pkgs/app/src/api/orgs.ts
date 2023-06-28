@@ -1,5 +1,10 @@
+import type {
+  DeleteOrg,
+  ListOrgs,
+  PostOrg,
+  PutOrg,
+} from '@specfy/api/src/types/api';
 import { useQuery } from '@tanstack/react-query';
-import type { DeleteOrg, ListOrgs, PostOrg, PutOrg } from 'api/src/types/api';
 
 import { queryClient } from '../common/query';
 

@@ -1,11 +1,11 @@
-import { useQuery } from '@tanstack/react-query';
 import type {
   DeletePerm,
   GetCountPerms,
   ListPerms,
   PutPerm,
-} from 'api/src/types/api';
-import type { PermType } from 'api/src/types/db';
+} from '@specfy/api/src/types/api';
+import type { PermType } from '@specfy/api/src/types/db';
+import { useQuery } from '@tanstack/react-query';
 
 import { queryClient } from '../common/query';
 

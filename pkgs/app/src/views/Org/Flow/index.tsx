@@ -1,5 +1,10 @@
 import { LoadingOutlined } from '@ant-design/icons';
-import type { ApiOrg } from 'api/src/types/api';
+import type {
+  ComponentForFlow,
+  ComputedFlow,
+} from '@specfy/api/src/common/flow/transform';
+import { componentsToFlow } from '@specfy/api/src/common/flow/transform';
+import type { ApiOrg } from '@specfy/api/src/types/api';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
@@ -8,11 +13,6 @@ import { useProjectStore } from '../../../common/store';
 import { titleSuffix } from '../../../common/string';
 import { Flow, FlowWrapper } from '../../../components/Flow';
 import { Toolbar } from '../../../components/Flow/Toolbar';
-import type {
-  ComponentForFlow,
-  ComputedFlow,
-} from '../../../components/Flow/helpers';
-import { componentsToFlow } from '../../../components/Flow/helpers';
 import type { RouteOrg } from '../../../types/routes';
 
 import cls from './index.module.scss';

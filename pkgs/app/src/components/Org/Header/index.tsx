@@ -1,6 +1,6 @@
 import * as NavigationMenu from '@radix-ui/react-navigation-menu';
+import type { ApiOrg } from '@specfy/api/src/types/api';
 import { IconApps, IconHome, IconSettings } from '@tabler/icons-react';
-import type { ApiOrg } from 'api/src/types/api';
 import { useState, useMemo, useEffect } from 'react';
 import { useLocation, Link, useParams } from 'react-router-dom';
 

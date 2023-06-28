@@ -1,4 +1,4 @@
-import type { ApiDocument } from 'api/src/types/api';
+import type { ApiDocument } from '@specfy/api/src/types/api';
 
 export const TYPE_TO_TEXT: Record<ApiDocument['type'], string> = {
   rfc: 'RFC',

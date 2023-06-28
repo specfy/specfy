@@ -1,13 +1,20 @@
 import { Github } from '@icons-pack/react-simple-icons';
-import { IconArrowRight, IconInfoCircle, IconLock } from '@tabler/icons-react';
-import { App, Button, Skeleton } from 'antd';
-import { computeProjectPosition, computeWidth } from 'api/src/common/flow';
-import { hDef, wDef, wMax } from 'api/src/common/validators/flow.constants';
+import {
+  computeProjectPosition,
+  computeWidth,
+} from '@specfy/api/src/common/flow';
+import {
+  hDef,
+  wDef,
+  wMax,
+} from '@specfy/api/src/common/validators/flow.constants';
 import type {
   ApiGithubRepo,
   ApiOrg,
   ResValidationError,
-} from 'api/src/types/api';
+} from '@specfy/api/src/types/api';
+import { IconArrowRight, IconInfoCircle, IconLock } from '@tabler/icons-react';
+import { App, Button, Skeleton } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 

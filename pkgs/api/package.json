@@ -1,5 +1,5 @@
 {
-  "name": "api",
+  "name": "@specfy/api",
   "version": "0.0.1",
   "description": "",
   "main": "src/app.js",
@@ -22,6 +22,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@dagrejs/dagre": "1.0.2",
     "@fastify/autoload": "5.0.0",
     "@fastify/cookie": "8.3.0",
     "@fastify/cors": "8.2.0",
@@ -32,8 +33,8 @@
     "@fastify/static": "6.10.2",
     "@octokit/auth-app": "4.0.13",
     "@prisma/client": "4.12.0",
-    "@specfy/sync": "1.0.2",
     "@specfy/stack-analyser": "1.1.5",
+    "@specfy/sync": "1.0.2",
     "close-with-grace": "1.2.0",
     "colorette": "2.0.20",
     "consola": "3.1.0",
@@ -51,6 +52,7 @@
     "pino-pretty": "10.0.0",
     "prisma": "4.12.0",
     "prosemirror-markdown": "1.11.0",
+    "reactflow": "11.7.4",
     "slugify": "1.6.5",
     "zod": "3.21.4"
   },

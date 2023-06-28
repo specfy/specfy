@@ -1,5 +1,5 @@
+import type { ApiProject, BlockLevelZero } from '@specfy/api/src/types/api';
 import { Typography } from 'antd';
-import type { ApiProject, BlockLevelZero } from 'api/src/types/api';
 import classnames from 'classnames';
 
 import type { DiffObjectsArray, ProjectBlobWithDiff } from '../../types/blobs';

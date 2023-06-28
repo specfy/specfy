@@ -1,6 +1,6 @@
+import type { BlockVoteItem } from '@specfy/api/src/types/api';
 import { IconHeartFilled, IconThumbDown } from '@tabler/icons-react';
 import { Avatar } from 'antd';
-import type { BlockVoteItem } from 'api/src/types/api';
 import classnames from 'classnames';
 import { useState } from 'react';
 

@@ -1,15 +1,15 @@
-import {
-  IconGitPullRequest,
-  IconGitPullRequestDraft,
-} from '@tabler/icons-react';
-import { App, Button, Form, Result, Typography } from 'antd';
-import { omit } from 'api/src/common/object';
+import { omit } from '@specfy/api/src/common/object';
 import type {
   ApiBlobCreate,
   ApiProject,
   BlockLevelZero,
   PostRevision,
-} from 'api/src/types/api';
+} from '@specfy/api/src/types/api';
+import {
+  IconGitPullRequest,
+  IconGitPullRequestDraft,
+} from '@tabler/icons-react';
+import { App, Button, Form, Result, Typography } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';

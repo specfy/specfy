@@ -1,5 +1,5 @@
+import type { ApiMe, DeleteMe, GetMe, PutMe } from '@specfy/api/src/types/api';
 import { useQuery } from '@tanstack/react-query';
-import type { ApiMe, DeleteMe, GetMe, PutMe } from 'api/src/types/api';
 
 import { queryClient } from '../common/query';
 

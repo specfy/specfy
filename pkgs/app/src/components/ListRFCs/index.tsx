@@ -1,7 +1,7 @@
+import type { ApiDocument, ApiProject } from '@specfy/api/src/types/api';
 import { IconFileText } from '@tabler/icons-react';
 import { Skeleton, Table } from 'antd';
 import Title from 'antd/es/typography/Title';
-import type { ApiDocument, ApiProject } from 'api/src/types/api';
 import { Link } from 'react-router-dom';
 
 import { useListDocuments } from '../../api';
