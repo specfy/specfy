@@ -24,8 +24,12 @@ export async function createRevision(
   );
 
   if (res.status === 200) {
-    queryClient.removeQueries(['listRevisions', data.orgId, data.projectId]);
-    queryClient.removeQueries(['listActivities', data.orgId]);
+    queryClient.invalidateQueries([
+      'listRevisions',
+      data.orgId,
+      data.projectId,
+    ]);
+    queryClient.invalidateQueries(['listActivities', data.orgId]);
   }
 
   return json;
@@ -42,10 +46,20 @@ export async function updateRevision(
   );
 
   if (res.status === 200) {
-    queryClient.removeQueries(['listRevisions', org_id, project_id]);
-    queryClient.removeQueries(['listBlobs', org_id, project_id, revision_id]);
-    queryClient.removeQueries(['getRevision', org_id, project_id, revision_id]);
-    queryClient.removeQueries([
+    queryClient.invalidateQueries(['listRevisions', org_id, project_id]);
+    queryClient.invalidateQueries([
+      'listBlobs',
+      org_id,
+      project_id,
+      revision_id,
+    ]);
+    queryClient.invalidateQueries([
+      'getRevision',
+      org_id,
+      project_id,
+      revision_id,
+    ]);
+    queryClient.invalidateQueries([
       'getRevisionChecks',
       org_id,
       project_id,
@@ -117,11 +131,16 @@ export async function mergeRevision({
   );
 
   if (res.status === 200) {
-    queryClient.removeQueries(['listRevisions', org_id, project_id]);
-    queryClient.removeQueries(['getRevision', org_id, project_id]);
-    queryClient.refetchQueries(['getRevisionChecks', org_id, project_id]);
+    queryClient.invalidateQueries(['listRevisions', org_id, project_id]);
+    queryClient.invalidateQueries(['getRevision', org_id, project_id]);
+    queryClient.invalidateQueries(['getRevisionChecks', org_id, project_id]);
+    queryClient.invalidateQueries(['getProject', org_id]);
+    queryClient.invalidateQueries(['listProjects', org_id]);
+    queryClient.invalidateQueries(['listComponents', org_id]);
+    queryClient.invalidateQueries(['listDocuments', org_id]);
+    queryClient.invalidateQueries(['getDocument', org_id]);
   } else {
-    queryClient.refetchQueries([
+    queryClient.invalidateQueries([
       'getRevisionChecks',
       org_id,
       project_id,
@@ -171,10 +190,20 @@ export async function rebaseRevision({
   );
 
   if (res.status === 200) {
-    queryClient.removeQueries(['listRevisions', org_id, project_id]);
-    queryClient.removeQueries(['listBlobs', org_id, project_id, revision_id]);
-    queryClient.removeQueries(['getRevision', org_id, project_id, revision_id]);
-    queryClient.removeQueries([
+    queryClient.invalidateQueries(['listRevisions', org_id, project_id]);
+    queryClient.invalidateQueries([
+      'listBlobs',
+      org_id,
+      project_id,
+      revision_id,
+    ]);
+    queryClient.invalidateQueries([
+      'getRevision',
+      org_id,
+      project_id,
+      revision_id,
+    ]);
+    queryClient.invalidateQueries([
       'getRevisionChecks',
       org_id,
       project_id,

@@ -49,7 +49,8 @@ const blockParagraph = z
     attrs: z.object({ uid: schemaId }).strict(),
     content: z.array(z.discriminatedUnion('type', [blockText, blockHardBreak])),
   })
-  .strict();
+  .strict()
+  .partial({ content: true }); // Can happen with placeholder and weird state in breakline
 
 // BlockBanner
 const allowedBanner: Array<BlockBanner['attrs']['type']> = [

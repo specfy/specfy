@@ -142,8 +142,14 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
               });
               continue;
             } else if (item.parent) {
+              const curr = item.blob
+                .current as Prisma.ComponentsUncheckedUpdateInput;
               const up = await tx.components.update({
-                data: { ...(item.blob.current as any), blobId: item.blob.id },
+                data: {
+                  ...curr,
+                  blobId: item.blob.id,
+                  sourcePath: (curr.sourcePath as any) || undefined,
+                },
                 where: { id: blob.typeId },
               });
               await createComponentActivity({

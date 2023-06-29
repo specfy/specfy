@@ -23,6 +23,7 @@ function BodyVal(req: FastifyRequest) {
       name: schemaRevision.shape.name,
       description: schemaRevision.shape.description,
       blobs: schemaBlobs,
+      draft: z.boolean(),
     })
     .strict()
     .superRefine(valPermissions(req))
@@ -95,7 +96,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
             projectId: data.projectId,
             name: data.name,
             description: data.description as any,
-            status: 'draft',
+            status: data.draft ? 'draft' : 'waiting',
             merged: false,
             blobs: ids,
           },

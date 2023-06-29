@@ -1,3 +1,4 @@
+import { nanoid } from '@specfy/api/src/common/id';
 import type {
   BlocksWithContent,
   BlockLevelZero,
@@ -33,6 +34,8 @@ export function removeEmptyContent(json: BlockLevelZero): BlockLevelZero {
 export function getEmptyDoc(withPlaceholder?: true): BlockLevelZero {
   return {
     type: 'doc',
-    content: withPlaceholder ? [{ type: 'paragraph', attrs: { uid: '' } }] : [],
+    content: withPlaceholder
+      ? [{ type: 'paragraph', attrs: { uid: nanoid() } }]
+      : [],
   };
 }

@@ -40,8 +40,12 @@ export async function updateProject(
   );
 
   if (res.status === 200) {
-    queryClient.removeQueries(['listProjects', opts.org_id]);
-    queryClient.removeQueries(['getProject', opts.org_id, opts.project_slug]);
+    queryClient.invalidateQueries(['listProjects', opts.org_id]);
+    queryClient.invalidateQueries([
+      'getProject',
+      opts.org_id,
+      opts.project_slug,
+    ]);
   }
 
   return json;

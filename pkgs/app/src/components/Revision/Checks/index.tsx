@@ -13,6 +13,8 @@ import {
 import { App, Button } from 'antd';
 import classnames from 'classnames';
 import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useMount, useSearchParam } from 'react-use';
 
 import { mergeRevision, rebaseRevision } from '../../../api';
 import { isError } from '../../../api/helpers';
@@ -28,7 +30,9 @@ export const Checks: React.FC<{
   onClick: (status: ApiRevision['status']) => void;
 }> = ({ rev, checks, qp, onClick }) => {
   const { message } = App.useApp();
-
+  const autoMerge = useSearchParam('automerge');
+  const navigate = useNavigate();
+  const loc = useLocation();
   const [merging, setMerging] = useState<boolean>(false);
 
   const onMerge = async () => {
@@ -36,17 +40,19 @@ export const Checks: React.FC<{
     const resMerge = await mergeRevision({ ...qp, revision_id: rev.id });
     setMerging(false);
     if (isError(resMerge)) {
-      message.error(i18n.errorOccurred);
-      return;
-    }
-
-    if ('error' in resMerge) {
-      message.error(i18n.errorOccurred);
+      message.error('Revision could not be merged');
       return;
     }
 
     message.success('Revision merged');
   };
+
+  useMount(() => {
+    if (autoMerge && checks.canMerge && !rev.merged) {
+      setTimeout(onMerge, 500);
+      navigate(loc.pathname, { replace: true });
+    }
+  });
 
   // --------- Rebase
   const [rebasing, setRebasing] = useState<boolean>(false);

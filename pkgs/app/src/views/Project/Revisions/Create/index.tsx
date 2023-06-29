@@ -19,8 +19,10 @@ import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { createRevision } from '../../../../api';
+import { isError } from '../../../../api/helpers';
 import { getEmptyDoc } from '../../../../common/content';
 import { proposeTitle } from '../../../../common/diff';
+import { i18n } from '../../../../common/i18n';
 import originalStore, { useStagingStore } from '../../../../common/store';
 import { titleSuffix } from '../../../../common/string';
 import { Card } from '../../../../components/Card';
@@ -134,9 +136,11 @@ export const ProjectRevisionCreate: React.FC<{
       name: title,
       description,
       blobs,
+      draft: !autoMerge,
     });
 
-    if ('error' in res) {
+    if (isError(res)) {
+      message.error(i18n.errorOccurred);
       return;
     }
 
@@ -144,7 +148,11 @@ export const ProjectRevisionCreate: React.FC<{
     originalStore.revertAll(staging.diffs);
 
     message.success('Revision created');
-    navigate(`/${params.org_id}/${params.project_slug}/revisions/${res.id}`);
+    navigate(
+      `/${params.org_id}/${params.project_slug}/revisions/${res.id}?${
+        autoMerge ? 'automerge=true' : ''
+      }`
+    );
   };
 
   if (staging.diffs.length === 0) {
