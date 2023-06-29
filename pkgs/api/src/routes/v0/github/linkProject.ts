@@ -110,6 +110,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
             { orgId: body.orgId, projectId: body.projectId, tx },
             {
               url: body.repository,
+              autoLayout: true,
             }
           );
         }

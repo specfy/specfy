@@ -1,8 +1,8 @@
+import { componentsToFlow } from '@specfy/api/src/common/flow/transform';
 import type {
   ComponentForFlow,
   ComputedFlow,
-} from '@specfy/api/src/common/flow/transform';
-import { componentsToFlow } from '@specfy/api/src/common/flow/transform';
+} from '@specfy/api/src/common/flow/types';
 import type { ApiOrg } from '@specfy/api/src/types/api';
 import { Skeleton } from 'antd';
 import { useEffect, useState } from 'react';

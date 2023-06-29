@@ -13,6 +13,7 @@ import {
   createProjectActivity,
   createRevisionActivity,
 } from '../../../models/index.js';
+import { flagRevisionApprovalEnabled } from '../../../models/revisions/constants.js';
 import type {
   MergeRevision,
   MergeRevisionError,
@@ -30,10 +31,12 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
       await prisma.$transaction(async (tx) => {
         // Check if we have reviews
-        const reviews = await checkReviews(rev, tx);
-        if (!reviews.check || rev.status !== 'approved') {
-          reason = 'no_reviews';
-          return;
+        if (flagRevisionApprovalEnabled) {
+          const reviews = await checkReviews(rev, tx);
+          if (!reviews.check || rev.status !== 'approved') {
+            reason = 'no_reviews';
+            return;
+          }
         }
 
         if (rev.merged) {

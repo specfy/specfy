@@ -1,6 +1,5 @@
-import { computeLayout } from '@specfy/api/src/common/flow/layout';
-import type { ComputedFlow } from '@specfy/api/src/common/flow/transform';
 import { componentsToFlow } from '@specfy/api/src/common/flow/transform';
+import type { ComputedFlow } from '@specfy/api/src/common/flow/types';
 import type { ApiComponent, BlockLevelZero } from '@specfy/api/src/types/api';
 import { Typography } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
@@ -43,19 +42,6 @@ export const ProjectOverview: React.FC<{
     }
 
     const tmp = componentsToFlow(components);
-    const g = computeLayout(tmp);
-
-    g.nodes().forEach((id) => {
-      const prev = tmp.nodes.find((n) => n.id)!;
-      const next = g.node(id);
-      console.log('updating', id, prev, next);
-      if (prev.parentNode) {
-      } else {
-        prev.position.x = next.x;
-        prev.position.y = next.y;
-      }
-    });
-
     setFlow(tmp);
   }, [components]);
 

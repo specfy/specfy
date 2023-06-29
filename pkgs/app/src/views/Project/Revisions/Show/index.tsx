@@ -1,4 +1,5 @@
 import { LoadingOutlined } from '@ant-design/icons';
+import { flagRevisionApprovalEnabled } from '@specfy/api/src/models/revisions/constants';
 import type {
   ApiProject,
   ApiUser,
@@ -289,7 +290,7 @@ export const ProjectRevisionsShow: React.FC<{
               </div>
             )}
             {edit && (
-              <FakeInput.H1
+              <FakeInput.H2
                 size="large"
                 value={title}
                 placeholder="Title..."
@@ -343,7 +344,9 @@ export const ProjectRevisionsShow: React.FC<{
           </div>
         )}
 
-        {!edit && <ReviewBar rev={rev} qp={qp} />}
+        {flagRevisionApprovalEnabled && !edit && (
+          <ReviewBar rev={rev} qp={qp} />
+        )}
 
         <div className={cls.staged}>
           {diffs.length > 0 ? (

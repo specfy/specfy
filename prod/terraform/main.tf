@@ -23,7 +23,6 @@ data "google_billing_account" "specfy" {
   open         = true
 }
 
-
 resource "google_project" "specfy" {
   name       = var.envs.project
   project_id = var.envs.project
@@ -59,17 +58,6 @@ module "cloudbuild" {
   envs = var.envs
 }
 
-
-# module "gcs" {
-#   source = "./gcs"
-#   depends_on = [
-#     google_project.specfy,
-#     module.google
-#   ]
-
-#   envs = var.envs
-# }
-
 module "network" {
   source = "./network"
   depends_on = [
@@ -90,20 +78,6 @@ module "sql" {
   envs    = var.envs
   network = module.network.network
 }
-
-# module "gce" {
-#   source = "./gce"
-#   depends_on = [
-#     data.google_billing_account.specfy,
-#     module.network,
-#     module.sql
-#   ]
-
-#   envs    = var.envs
-#   network = module.network.network
-#   sql = module.sql.sql
-# }
-
 
 module "run" {
   source = "./run"

@@ -1,4 +1,5 @@
 import { LoadingOutlined } from '@ant-design/icons';
+import { flagRevisionApprovalEnabled } from '@specfy/api/src/models/revisions/constants';
 import type {
   ApiProject,
   ApiRevision,
@@ -92,7 +93,9 @@ export const ProjectRevisionsList: React.FC<{
                   >
                     <Select.Option value="opened">Opened</Select.Option>
                     <Select.Option value="waiting">Waiting</Select.Option>
-                    <Select.Option value="approved">Approved</Select.Option>
+                    {flagRevisionApprovalEnabled && (
+                      <Select.Option value="approved">Approved</Select.Option>
+                    )}
                     <Select.Option value="merged">Merged</Select.Option>
                     <Select.Option value="all">All</Select.Option>
                   </Select>

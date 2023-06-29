@@ -1,4 +1,4 @@
-import type { ComputedFlow } from '@specfy/api/src/common/flow/transform';
+import type { ComputedFlow } from '@specfy/api/src/common/flow/types';
 import classNames from 'classnames';
 import type { CSSProperties } from 'react';
 import { useState, useEffect } from 'react';

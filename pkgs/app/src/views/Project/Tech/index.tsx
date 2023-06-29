@@ -1,6 +1,6 @@
 import { LoadingOutlined } from '@ant-design/icons';
-import type { ComputedFlow } from '@specfy/api/src/common/flow/transform';
 import { componentsToFlow } from '@specfy/api/src/common/flow/transform';
+import type { ComputedFlow } from '@specfy/api/src/common/flow/types';
 import type { ApiComponent, ApiProject } from '@specfy/api/src/types/api';
 import { Tag } from 'antd';
 import Title from 'antd/es/typography/Title';

@@ -21,7 +21,7 @@ export function diffProject(
   }
 
   for (const k of Object.keys(blob.current)) {
-    if (IGNORED_PROJECT_KEYS.includes(k as any)) {
+    if (IGNORED_PROJECT_KEYS.includes(k as keyof ApiBlobProject['current'])) {
       continue;
     }
 

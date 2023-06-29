@@ -1,3 +1,4 @@
+import type { NodeData } from '@specfy/api/src/common/flow/types';
 import { IconCode } from '@tabler/icons-react';
 import classNames from 'classnames';
 import type * as React from 'react';
@@ -7,7 +8,6 @@ import { Handle, Position, NodeResizer } from 'reactflow';
 
 import { supportedIndexed } from '../../../common/component';
 import { AvatarAuto } from '../../AvatarAuto';
-import type { NodeData } from '../helpers';
 
 import cls from './index.module.scss';
 

@@ -1,4 +1,8 @@
 import { omit } from '@specfy/api/src/common/object';
+import {
+  flagRevisionApprovalEnabled,
+  flagRevisionDescRequired,
+} from '@specfy/api/src/models/revisions/constants';
 import type {
   ApiBlobCreate,
   ApiProject,
@@ -9,7 +13,7 @@ import {
   IconGitPullRequest,
   IconGitPullRequestDraft,
 } from '@tabler/icons-react';
-import { App, Button, Form, Result, Typography } from 'antd';
+import { App, Button, Checkbox, Form, Result, Typography } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
@@ -23,6 +27,7 @@ import { Card } from '../../../../components/Card';
 import { Container } from '../../../../components/Container';
 import { DiffCard } from '../../../../components/DiffCard';
 import { Editor } from '../../../../components/Editor';
+import { Flex } from '../../../../components/Flex';
 import { FakeInput } from '../../../../components/Input';
 import type { RouteProject } from '../../../../types/routes';
 
@@ -52,6 +57,9 @@ export const ProjectRevisionCreate: React.FC<{
   const [description, setDescription] = useState<BlockLevelZero>(() =>
     getEmptyDoc(true)
   );
+  const [autoMerge, setAutoMerge] = useState<boolean>(
+    flagRevisionApprovalEnabled === false
+  );
 
   // Compute changes
   useEffect(() => {
@@ -70,7 +78,9 @@ export const ProjectRevisionCreate: React.FC<{
       enoughContent = false;
     }
 
-    setCanSubmit(title !== '' && enoughContent);
+    setCanSubmit(
+      title !== '' && flagRevisionDescRequired ? enoughContent : true
+    );
   }, [title, description]);
 
   // TODO: reup this
@@ -178,14 +188,23 @@ export const ProjectRevisionCreate: React.FC<{
               </Typography>
             </Card.Content>
             <Card.Actions>
-              <Button
-                type="primary"
-                disabled={!canSubmit}
-                htmlType="submit"
-                icon={<IconGitPullRequestDraft />}
-              >
-                Propose changes
-              </Button>
+              <Flex gap="l">
+                <Checkbox
+                  type="checkbox"
+                  checked={autoMerge}
+                  onChange={(el) => setAutoMerge(el.target.checked)}
+                >
+                  Merge directly
+                </Checkbox>
+                <Button
+                  type="primary"
+                  disabled={!canSubmit}
+                  htmlType="submit"
+                  icon={<IconGitPullRequestDraft />}
+                >
+                  {autoMerge ? 'Propose and Merge' : 'Propose changes'}
+                </Button>
+              </Flex>
             </Card.Actions>
           </Form>
         </Card>

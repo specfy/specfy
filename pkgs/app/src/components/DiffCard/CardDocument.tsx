@@ -18,13 +18,13 @@ export const DiffCardDocument: React.FC<{
   const Title = useMemo(() => {
     const hasName = diff.diffs.find((d) => d.key === 'name');
     return (
-      <Typography.Title level={3}>
+      <h2>
         {hasName && !diff.blob.created ? (
           <UnifiedDiff key={hasName.key} diff={hasName} />
         ) : (
           using.name || ''
         )}
-      </Typography.Title>
+      </h2>
     );
   }, [diff]);
 

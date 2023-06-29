@@ -1,105 +1,12 @@
-import dagre from '@dagrejs/dagre';
-
-import type { ComputedFlow } from './transform.js';
-
-export function computeLayoutDagre(flow: ComputedFlow) {
-  const g = new dagre.graphlib.Graph({
-    compound: true,
-  });
-  g.setGraph({
-    nodesep: 30,
-    marginx: 0,
-    marginy: 0,
-    rankdir: 'LR',
-    align: 'UL',
-    ranksep: 30,
-  });
-
-  g.setDefaultEdgeLabel(() => ({}));
-
-  for (const node of flow.nodes) {
-    g.setNode(node.id, {
-      label: node.data.label,
-      width: node.data.originalSize.width,
-      height: node.data.originalSize.height,
-    });
-    if (node.parentNode) {
-      g.setParent(node.id, node.parentNode);
-    }
-  }
-
-  for (const edge of flow.edges) {
-    g.setEdge(edge.source, edge.target);
-  }
-
-  dagre.layout(g);
-
-  return g;
-}
-
-export interface LayoutNode {
-  id: string;
-  pos: { x: number; y: number };
-  size: { width: number; height: number };
-}
-export interface Layout {
-  nodes: LayoutNode[];
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-}
+import type { ComputedFlow, Layout, Tree } from './types.js';
 
 const paddingY = 20;
 const paddingX = 20;
 const paddingHost = 20;
 
-export function computeLayoutSimple(flow: ComputedFlow): Layout {
-  let y = 0;
-  let w = 0;
-  const x = paddingHost;
-
-  const layout: Layout = { nodes: [] };
-
-  // Component
-  for (const node of flow.nodes) {
-    if (node.data.type === 'hosting') {
-      continue;
-    }
-
-    layout.nodes.push({
-      id: node.id,
-      pos: { x, y },
-      size: node.data.originalSize,
-    });
-    y += node.data.originalSize.height + paddingY;
-    w = Math.max(w, x + node.data.originalSize.width);
-  }
-
-  // Hosting
-  for (const node of flow.nodes) {
-    if (node.data.type !== 'hosting') {
-      continue;
-    }
-
-    layout.nodes.push({
-      id: node.id,
-      pos: { x: 0, y: 0 },
-      size: {
-        width: w + paddingHost,
-        height: y + paddingHost * 2,
-      },
-    });
-  }
-
-  return layout;
-}
-
-export interface Tree {
-  id: string;
-  parentId: string | null;
-  childs: Tree[];
-}
+/**
+ * Compute a nested tree representing Flow.nodes .
+ */
 export function computeTree(
   nodes: ComputedFlow['nodes'],
   parentId: string | null = null
@@ -123,6 +30,17 @@ export function computeTree(
   return childs;
 }
 
+/**
+ * Depth first algorithm.
+ *
+ * To compute a layout we:
+ * - Build a tree that will allow us to compute Bounding box of an "Host"
+ * - We go at the deepest level, when there is no more host available
+ * - We compute place the components and compute the BB
+ * - Once we have the BB, we go back one level
+ * - At this level, we know exactly how big the childs are so we can also compute the BB + padding
+ * - etc. until level 0
+ */
 export function computeLayout(flow: ComputedFlow): Layout {
   const trees = computeTree(flow.nodes);
 
@@ -140,7 +58,7 @@ export function computeTreeLayout(
   const x = paddingHost;
   const subs: Array<{ id: string; layout: Layout }> = [];
 
-  // Compute aggregate first
+  // Compute aggregate (host) first
   for (const tree of trees) {
     if (tree.childs.length <= 0) {
       continue;
@@ -150,6 +68,7 @@ export function computeTreeLayout(
 
   const layout: Layout = { nodes: [], height: 0, width: 0, y: 0, x: 0 };
 
+  // Place host first on the layout
   for (const sub of subs) {
     layout.nodes.push(...sub.layout.nodes);
 
@@ -159,10 +78,13 @@ export function computeTreeLayout(
       pos: { x, y },
       size: { width: sub.layout.width, height: sub.layout.height },
     });
-    w = Math.max(w, x + sub.layout.width + paddingY);
+
+    // increase the BB
+    w = Math.max(w, x + sub.layout.width + paddingX);
     y += sub.layout.height + paddingY;
   }
 
+  // Then place the components
   for (const tree of trees) {
     if (tree.childs.length > 0) {
       continue;
@@ -174,12 +96,30 @@ export function computeTreeLayout(
       pos: { x, y },
       size: node.data.originalSize,
     });
+
+    // increase the BB
     y += node.data.originalSize.height + paddingY;
-    w = Math.max(w, x + node.data.originalSize.width + paddingY);
+    w = Math.max(w, x + node.data.originalSize.width + paddingX);
   }
 
-  layout.width = w;
+  // Update the Bounding Box
   layout.height = y;
+  layout.width = w;
 
   return layout;
+}
+
+/**
+ * Apply the computed layout to the Flow.
+ * This will modify the reference.
+ */
+export function applyLayout(layout: Layout, flow: ComputedFlow) {
+  for (const node of flow.nodes) {
+    const rel = layout.nodes.find((l) => l.id === node.id)!;
+    node.position = rel.pos;
+    node.style = {
+      width: `${rel.size.width}px`,
+      height: `${rel.size.height}px`,
+    };
+  }
 }

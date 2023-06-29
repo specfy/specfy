@@ -1,24 +1,6 @@
-import { MarkerType, Position } from 'reactflow';
 import type { Edge, Node } from 'reactflow';
 
-import type { ApiComponent } from '../../types/api/index.js';
-
-export type ComponentForFlow = Pick<
-  ApiComponent,
-  'display' | 'edges' | 'id' | 'inComponent' | 'name' | 'techId' | 'type'
->;
-
-export interface NodeData {
-  label: string;
-  type: ApiComponent['type'];
-  techId: ApiComponent['techId'];
-  originalSize: ComponentForFlow['display']['size'];
-}
-
-export interface ComputedFlow {
-  edges: Edge[];
-  nodes: Array<Node<NodeData>>;
-}
+import type { ComponentForFlow, ComputedFlow, NodeData } from './types.js';
 
 export function createNode(component: ComponentForFlow): Node<NodeData> {
   const node: Node<NodeData> = {
@@ -31,8 +13,8 @@ export function createNode(component: ComponentForFlow): Node<NodeData> {
       originalSize: component.display.size,
     },
     position: { ...component.display.pos },
-    targetPosition: Position.Left,
-    sourcePosition: Position.Right,
+    targetPosition: 'left' as any,
+    sourcePosition: 'right' as any,
     style: {
       width: `${component.display.size.width}px`,
       height: `${component.display.size.height}px`,
@@ -94,14 +76,14 @@ export function componentsToFlow(components: ComponentForFlow[]): ComputedFlow {
       };
       if (edge.read) {
         item.markerStart = {
-          type: MarkerType.ArrowClosed,
+          type: 'arrowclosed' as any,
           width: 10,
           height: 10,
         };
       }
       if (edge.write) {
         item.markerEnd = {
-          type: MarkerType.ArrowClosed,
+          type: 'arrowclosed' as any,
           width: 10,
           height: 10,
         };

@@ -1,3 +1,4 @@
+import { flagRevisionApprovalEnabled } from '@specfy/api/src/models/revisions/constants';
 import type {
   ApiRevision,
   ListRevisionChecks,
@@ -33,12 +34,12 @@ export const Checks: React.FC<{
   const onMerge = async () => {
     setMerging(true);
     const resMerge = await mergeRevision({ ...qp, revision_id: rev.id });
+    setMerging(false);
     if (isError(resMerge)) {
       message.error(i18n.errorOccurred);
       return;
     }
 
-    setMerging(false);
     if ('error' in resMerge) {
       message.error(i18n.errorOccurred);
       return;
@@ -82,7 +83,7 @@ export const Checks: React.FC<{
         </div>
       )}
 
-      {rev.status === 'waiting' && (
+      {flagRevisionApprovalEnabled && rev.status === 'waiting' && (
         <div className={classnames(cls.checkLine, cls.warning)}>
           <div className={cls.label}>
             <IconExclamationCircle /> A review is required to merge
