@@ -85,7 +85,7 @@ export const ProjectLinks: React.FC = () => {
   const { updateField, project } = useProjectStore();
   const [open, setOpen] = useState(false);
 
-  const isEditing = edit.isEnabled();
+  const isEditing = edit.isEditing;
 
   useClickAway(ref, () => {
     // Remove empty link

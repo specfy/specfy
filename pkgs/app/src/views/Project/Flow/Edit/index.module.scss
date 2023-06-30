@@ -13,18 +13,18 @@
   background-color: #fff;
 
   // box-shadow: $box-shadow2;
-  border-left: 1px solid var(--border);
+  border-left: 1px solid var(--border1);
 }
 
 .block {
   overflow: hidden;
 
-  width: 250px;
+  width: 280px;
   max-height: 500px;
 
   font-family: $font-text;
 
-  border-bottom: 1px solid $color-border-light;
+  border-bottom: 1px solid var(--border1);
 }
 
 .title {
@@ -37,8 +37,8 @@
   font-weight: 500;
   color: $gray-700;
 
-  background-color: $neutral-100;
-  border-bottom: 1px solid $neutral-200;
+  background-color: var(--bg1);
+  border-bottom: 1px solid var(--border1);
 
   .titleLeft {
     display: flex;
@@ -119,7 +119,7 @@
 
   color: $gray-800;
 
-  border: 1px solid var(--border);
+  border: 1px solid var(--border2);
   border-radius: $border-radius-s;
 }
 

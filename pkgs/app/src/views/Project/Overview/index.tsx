@@ -30,7 +30,7 @@ export const ProjectOverview: React.FC<{
 
   const [components, setComponents] = useState<ApiComponent[]>();
   const [flow, setFlow] = useState<ComputedFlow>();
-  const isEditing = edit.isEnabled();
+  const isEditing = edit.isEditing;
 
   useEffect(() => {
     setComponents(Object.values(storeComponents.components));

@@ -2,13 +2,15 @@ import { LoadingOutlined } from '@ant-design/icons';
 import { componentsToFlow } from '@specfy/api/src/common/flow/transform';
 import type { ComputedFlow } from '@specfy/api/src/common/flow/types';
 import type { ApiProject, ApiComponent } from '@specfy/api/src/types/api';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import type { ReactFlowProps } from 'reactflow';
 
 import { useComponentsStore } from '../../../common/store';
 import { titleSuffix } from '../../../common/string';
 import { Flow, FlowWrapper } from '../../../components/Flow';
 import { Toolbar } from '../../../components/Flow/Toolbar';
+import { useEdit } from '../../../hooks/useEdit';
 import type { RouteProject } from '../../../types/routes';
 
 import { FlowEdit } from './Edit';
@@ -18,10 +20,10 @@ export const ProjectFlow: React.FC<{
   proj: ApiProject;
   params: RouteProject;
 }> = ({ proj }) => {
+  const { isEditing } = useEdit();
   const storeComponents = useComponentsStore();
   const [flow, setFlow] = useState<ComputedFlow>();
 
-  // const isEditing = edit.isEnabled();
   const [loading, setLoading] = useState<boolean>(true);
   const [components, setComponents] = useState<ApiComponent[]>();
 
@@ -41,6 +43,41 @@ export const ProjectFlow: React.FC<{
     setLoading(false);
   }, [components]);
 
+  // ---- Event Handlers
+  const onNodesChange = useCallback<
+    Exclude<ReactFlowProps['onNodesChange'], undefined>
+  >(
+    (changes) => {
+      for (const change of changes) {
+        if (change.type === 'remove') {
+          storeComponents.remove(change.id);
+        } else if (change.type === 'position') {
+          if (change.position) {
+            const comp = storeComponents.select(change.id)!;
+            storeComponents.updateField(change.id, 'display', {
+              ...comp.display,
+              pos: change.position,
+            });
+          }
+        }
+      }
+    },
+    [components]
+  );
+  const onEdgesChange = useCallback<
+    Exclude<ReactFlowProps['onEdgesChange'], undefined>
+  >(
+    (changes) => {
+      for (const change of changes) {
+        if (change.type === 'remove') {
+          const [source, target] = change.id.split('->');
+          storeComponents.removeEdge(source, target);
+        }
+      }
+    },
+    [components]
+  );
+
   if (loading) {
     return <LoadingOutlined />;
   }
@@ -54,11 +91,15 @@ export const ProjectFlow: React.FC<{
         <>
           <FlowWrapper>
             <Flow
+              readonly={!isEditing}
               flow={flow}
               downlightOther={false}
               keepHighlightOnSelect={true}
+              onNodesChange={onNodesChange}
+              onEdgesChange={onEdgesChange}
             />
             <Toolbar position="top" visible>
+              <Toolbar.Readonly visible={!isEditing} />
               <Toolbar.Main />
             </Toolbar>
             <Toolbar position="bottom" visible>

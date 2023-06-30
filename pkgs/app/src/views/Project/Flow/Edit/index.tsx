@@ -54,7 +54,7 @@ import cls from './index.module.scss';
 
 //   // Edit mode
 //   const edit = useEdit();
-//   const isEditing = edit.isEnabled();
+//   const isEditing = edit.isEditing;
 
 //   // UI
 //   const [selected, setSelected] = useState<ApiComponent>();
@@ -286,14 +286,27 @@ export const FlowEdit: React.FC<{
   // Select Nodes / Edges
   useOnSelectionChange({
     onChange: ({ nodes: nds, edges: eds }) => {
-      if (nds.length <= 0 || nds.length > 1) {
+      // Nodes
+      if (nds.length === 0 || nds.length > 1) {
+        // No selection or more than one
         setComponent(null);
         setNode(null);
+      } else {
+        // Only one
+        const nd = nds[0];
+        const comp = components.find((c) => c.id === nd.id)!;
 
-        if (eds.length <= 0 || eds.length > 1) {
-          return;
-        }
+        setComponent(comp);
+        setNode(nd);
+        setWidth(nd.width || wMin);
+        setHeight(nd.height || hMin);
+      }
 
+      // Edges
+      if (eds.length === 0 || eds.length > 1) {
+        // No selection or more than one
+        setEdge(null);
+      } else {
         const fEdge = eds[0];
         const fSource = components.find((c) => c.id === fEdge.source) || null;
         const fTarget = components.find((c) => c.id === fEdge.target) || null;
@@ -301,17 +314,7 @@ export const FlowEdit: React.FC<{
         setEdge(fEdge);
         setSource(fSource);
         setTarget(fTarget);
-        return;
       }
-
-      const find = nds[0];
-      const comp = components.find((c) => c.id === find.id) || null;
-
-      setEdge(null);
-      setComponent(comp);
-      setNode(find);
-      setWidth(find.width || wMin);
-      setHeight(find.height || hMin);
     },
   });
 

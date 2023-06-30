@@ -44,7 +44,7 @@ export const AvatarAuto: React.FC<Props> = ({
     acr = acronymize(props.name);
     style =
       props.colored === false
-        ? { backgroundColor: 'var(--bgDark)', color: 'var(--textDark)' }
+        ? { backgroundColor: 'var(--bg5)', color: 'var(--textDark)' }
         : stringToColor(props.name);
     src = props.src;
     if (props.single) {

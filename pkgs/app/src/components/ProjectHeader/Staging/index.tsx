@@ -21,7 +21,7 @@ export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
   const { components } = useComponentsStore();
   const { documents } = useDocumentsStore();
   const staging = useStagingStore();
-  const isEditing = edit.isEnabled();
+  const isEditing = edit.isEditing;
 
   useDebounce(
     () => {

@@ -80,9 +80,10 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
               flow={flow}
               downlightOther={false}
               keepHighlightOnSelect={true}
-              readonly
+              readonly={true}
             />
             <Toolbar position="top" visible>
+              <Toolbar.Readonly visible={true} />
               <Toolbar.Main />
             </Toolbar>
             <Toolbar position="bottom" visible>

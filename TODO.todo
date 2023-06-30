@@ -303,7 +303,7 @@ Flow:
   ✔ Group @done(23-03-29 14:43)
   ✔ Edges @done(23-03-29 14:43)
   ✔ Hover @done(23-03-29 14:44)
-    - Fix hover
+    ✔ Fix hover @done(23-06-30 16:00)
   - Try to use the react version for automatic update
   - Modify the graph in every page?
   - Group
@@ -315,6 +315,7 @@ Flow:
   - Modify links
   - Modify ports
   - Export PNG
+  - Block resizing in readonly
 
 
 -----

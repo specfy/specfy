@@ -1,8 +1,8 @@
 import { describe, expect, it } from 'vitest';
 
 import { computeLayout, computeTree } from './layout.js';
-import type { ComponentForFlow } from './transform.js';
 import { createNode } from './transform.js';
+import type { ComponentForFlow } from './types.js';
 
 function getComp(id: string, host: string | null = null): ComponentForFlow {
   return {

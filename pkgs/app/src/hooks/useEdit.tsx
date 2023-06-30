@@ -2,7 +2,7 @@ import { useMemo, useState, createContext, useContext } from 'react';
 
 export interface EditContextInterface {
   can: boolean;
-  isEnabled: () => boolean;
+  isEditing: boolean;
   enable: (val: boolean) => void;
   prev: () => boolean;
 }
@@ -21,7 +21,7 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
   const memoized = useMemo<EditContextInterface>(() => {
     const tmp: EditContextInterface = {
       can,
-      isEnabled: () => enabled,
+      isEditing: enabled,
       enable: (val) => {
         setPrev(enabled);
         setEnabled(val);

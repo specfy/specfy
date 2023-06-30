@@ -24,7 +24,7 @@
   }
 
   &.top {
-    justify-content: center;
+    justify-content: flex-start;
   }
 
   &.bottom {
@@ -48,8 +48,15 @@
     }
 
     &:hover {
-      color: var(--accent);
+      color: var(--accent2);
       background-color: $gray-50;
     }
+  }
+
+  &.dark {
+    padding: $p-s $p-m $p-s $p-xl;
+    font-size: $font-s;
+    color: white;
+    background-color: var(--bg10);
   }
 }

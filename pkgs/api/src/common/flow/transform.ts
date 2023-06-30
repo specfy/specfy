@@ -19,6 +19,11 @@ export function createNode(component: ComponentForFlow): Node<NodeData> {
       width: `${component.display.size.width}px`,
       height: `${component.display.size.height}px`,
     },
+    deletable: true,
+    connectable: true,
+    draggable: true,
+    focusable: true,
+    selectable: true,
   };
 
   if (component.inComponent) {

@@ -52,7 +52,7 @@ export const ComponentView: React.FC<{
 
   // Edition
   const edit = useEdit();
-  const isEditing = edit.isEnabled();
+  const isEditing = edit.isEditing;
   const storeComponents = useComponentsStore();
 
   useEffect(() => {

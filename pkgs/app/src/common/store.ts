@@ -151,6 +151,7 @@ export interface ComponentsState {
   revert: (id: string) => void;
   revertField: (id: string, field: keyof ApiComponent) => void;
   remove: (id: string) => void;
+  removeEdge: (source: string, target: string) => void;
 }
 
 export const useComponentsStore = create<ComponentsState>()((set, get) => ({
@@ -238,6 +239,29 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
         edges.push(edge);
       }
 
+      map[copy.id] = { ...copy, edges };
+    }
+
+    set({ components: map });
+  },
+  removeEdge: (source, target) => {
+    const components = Object.values(get().components);
+    const map: ComponentsState['components'] = {};
+
+    for (const copy of components) {
+      if (copy.id !== source) {
+        map[copy.id] = { ...copy };
+        continue;
+      }
+
+      const edges: ApiComponent['edges'] = [];
+      for (const edge of copy.edges) {
+        if (edge.to === target) {
+          continue;
+        }
+
+        edges.push(edge);
+      }
       map[copy.id] = { ...copy, edges };
     }
 

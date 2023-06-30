@@ -22,7 +22,7 @@
       .react-flow__edge {
         &:local(.focus) {
           .react-flow__edge-path {
-            stroke: $indigo-400;
+            stroke: var(--accent2);
           }
         }
       }
@@ -45,7 +45,7 @@
         .react-flow__edge {
           &:local(.show) {
             .react-flow__edge-path {
-              stroke: $indigo-400;
+              stroke: var(--accent2);
               stroke-dasharray: 5;
             }
           }
@@ -75,7 +75,7 @@
   }
 
   .react-flow__edge-path {
-    stroke: $neutral-300;
+    stroke: var(--border2);
   }
 }
 

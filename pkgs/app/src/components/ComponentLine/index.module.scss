@@ -49,12 +49,12 @@ $min-height: 34px;
   font-size: $font-s;
   color: var(--text);
 
-  border: 1px solid var(--borderLight);
+  border: 1px solid var(--border1);
   border-radius: $border-radius;
 
   &:hover {
-    color: var(--accent);
-    background: var(--bgLight);
+    color: var(--accent2);
+    background: var(--bg2);
   }
 
   >svg {

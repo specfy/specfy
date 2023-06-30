@@ -41,16 +41,17 @@ a {
   --colorLink: var(--indigo9);
 
   // BG
-  --bgLighter: var(--mauve1);
-  --bgLight: var(--mauve2);
-  --bgHover: var(--mauve3);
-  --bgDark: var(--mauve5);
+  --bg1: var(--mauve1);
+  --bg2: var(--mauve2);
+  --bg3: var(--mauve3);
+  --bg5: var(--mauve5);
+  --bg10: #242d3c;
 
   // OTHER
-  --borderLight: var(--mauve3);
-  --border: var(--mauve7);
-  --accentLight: var(--indigo4);
-  --accent: var(--indigo9);
+  --border1: var(--mauve3);
+  --border2: var(--mauve7);
+  --accent1: var(--indigo4);
+  --accent2: var(--indigo9);
 
   // colors
   --accept: hsl(151.88deg 100% 93.73%);

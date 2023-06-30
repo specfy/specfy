@@ -26,48 +26,67 @@ const nodeTypes: NodeTypes = {
 
 export const Flow: React.FC<{
   flow: ComputedFlow;
-  readonly?: true;
+  readonly?: boolean;
   highlight?: string;
   downlightOther?: boolean;
   keepHighlightOnSelect?: boolean;
-}> = ({ flow, highlight, readonly, downlightOther, keepHighlightOnSelect }) => {
+
+  // Events
+  onNodesChange?: ReactFlowProps['onNodesChange'];
+  onEdgesChange?: ReactFlowProps['onEdgesChange'];
+  onEdgesDelete?: ReactFlowProps['onEdgesDelete'];
+}> = ({
+  flow,
+  highlight,
+  readonly,
+  downlightOther,
+  keepHighlightOnSelect,
+  onNodesChange,
+  onEdgesChange,
+  onEdgesDelete,
+}) => {
   const [hasHighlight, setHasHighlight] = useState(!!highlight);
-  const [nodes, setNodes, onNodesChange] = useNodesState(flow.nodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(flow.edges);
+  const [nodes, setNodes, handleNodesChange] = useNodesState(flow.nodes);
+  const [edges, setEdges, handleEdgesChange] = useEdgesState(flow.edges);
   const [select, setSelect] = useState<string | null>(null);
 
+  // Highlight change usually means we switched the parent page
   useEffect(() => {
     if (!highlight) {
       return;
     }
-
     const updates = highlightNode({ id: highlight, nodes, edges });
-
     setEdges(updates.edges);
     setNodes(updates.nodes);
   }, [highlight]);
 
+  // We changed the parent page
   useEffect(() => {
     setEdges((prev) => {
       return flow.edges.map((edge) => {
         const id = `${edge.source}->${edge.target}`;
-        const f = prev.find((n) => n.id === id);
-        if (!f) {
+        const find = prev.find((n) => n.id === id);
+        edge.deletable = !readonly;
+        edge.updatable = !readonly;
+        if (!find) {
           return edge;
         }
-        return { ...edge, className: f.className };
+        return { ...edge, className: find.className };
       });
     });
     setNodes((prev) => {
       return flow.nodes.map((node) => {
-        const f = prev.find((n) => n.id === node.id);
-        if (!f) {
+        const find = prev.find((n) => n.id === node.id);
+        node.deletable = !readonly;
+        node.draggable = !readonly;
+        node.connectable = !readonly;
+        if (!find) {
           return node;
         }
-        return { ...node, className: f.className };
+        return { ...node, className: find.className };
       });
     });
-  }, [flow]);
+  }, [flow, readonly]);
 
   const setHighlightNode = (id: string) => {
     const updates = highlightNode({ id, nodes, edges });
@@ -98,16 +117,15 @@ export const Flow: React.FC<{
     unsetHighlightNode();
   };
 
-  const onEdgesDelete: ReactFlowProps['onEdgesDelete'] = (del) => {
-    console.log('edge deleted', del);
-  };
-
   const onSelect: ReactFlowProps['onSelectionChange'] = (opts) => {
     if (opts.nodes.length <= 0 || opts.nodes.length > 1) {
       if (select) {
         unsetHighlightNode();
       }
       setSelect(null);
+      return;
+    }
+    if (select === opts.nodes[0].id) {
       return;
     }
 
@@ -127,31 +145,31 @@ export const Flow: React.FC<{
     >
       <ReactFlow
         nodes={nodes}
-        onNodesChange={onNodesChange}
         edges={edges}
-        onEdgesChange={onEdgesChange}
         minZoom={0.2}
         maxZoom={3}
         onNodeMouseEnter={onNodeEnter}
         onNodeMouseLeave={onNodeLeave}
         onSelectionChange={onSelect}
-        // onConnect={onConnect}
         nodeTypes={nodeTypes}
-        // edgeTypes={edgeTypes}
         fitView
         fitViewOptions={{ maxZoom: 1.3 }}
         connectionMode={ConnectionMode.Loose}
-        // isValidConnection={isValidConnection}
-        // onNodeDrag={onNodeDrag}
-        // onNodeDragStop={onNodeDrop}
         snapToGrid
         snapGrid={[5, 5]}
-        nodesDraggable={!readonly}
-        nodesConnectable={!readonly}
-        elementsSelectable={!readonly}
         proOptions={{ hideAttribution: true }}
-        onEdgesDelete={onEdgesDelete}
         elevateEdgesOnSelect={true}
+        elevateNodesOnSelect={true}
+        // Bubbled
+        onNodesChange={(changes) => {
+          handleNodesChange(changes);
+          if (onNodesChange) onNodesChange(changes);
+        }}
+        onEdgesChange={(changes) => {
+          handleEdgesChange(changes);
+          if (onEdgesChange) onEdgesChange(changes);
+        }}
+        onEdgesDelete={onEdgesDelete}
       >
         <Background id="1" gap={10} color="#c5c7ca" />
         <Background

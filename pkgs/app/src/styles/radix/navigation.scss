@@ -23,15 +23,15 @@
 
       &:hover {
         color: var(--text);
-        background-color: var(--bgLight);
+        background-color: var(--bg2);
       }
 
       &[data-active] {
         color: var(--text);
-        background-color: var(--bgLight);
+        background-color: var(--bg2);
 
         &::after {
-          border-bottom-color: var(--accent);
+          border-bottom-color: var(--accent2);
         }
       }
 
@@ -82,11 +82,11 @@
 
   &:hover {
     color: var(--text);
-    background-color: var(--bgHover);
+    background-color: var(--bg3);
   }
 
   &[data-active] {
     color: var(--text);
-    background-color: var(--bgHover);
+    background-color: var(--bg3);
   }
 }

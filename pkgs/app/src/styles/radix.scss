@@ -14,7 +14,7 @@
   display: flex;
   flex-shrink: 0;
   margin-bottom: $p-l;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--border2);
 }
 
 .rx_tabsTrigger {
@@ -49,7 +49,7 @@
 
   &[data-state='active'] {
     color: var(--text);
-    border-bottom: 2px solid var(--accent);
+    border-bottom: 2px solid var(--accent2);
   }
 }
 
@@ -76,7 +76,7 @@
   color: var(--text);
 
   background-color: white;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border2);
   border-radius: $border-radius-s;
 
   &[data-placeholder] {
@@ -123,7 +123,7 @@
 
   &[data-highlighted] {
     color: var(--text);
-    background-color: var(--bgHover);
+    background-color: var(--bg3);
     outline: none;
   }
 }

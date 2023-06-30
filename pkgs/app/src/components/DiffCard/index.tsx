@@ -47,7 +47,7 @@ export const DiffCard: React.FC<{
   }, [diff]);
 
   // Actions
-  const [hide, setHide] = useState<boolean>(false);
+  const [hide, setHide] = useState<boolean>(diff.blob.deleted);
   const handleHideShow = () => {
     setHide(!hide);
   };

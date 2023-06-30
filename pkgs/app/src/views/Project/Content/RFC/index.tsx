@@ -32,7 +32,7 @@ export const RFC: React.FC<{
 
   // Edition
   const edit = useEdit();
-  const isEditing = edit.isEnabled();
+  const isEditing = edit.isEditing;
   const [title, setTitle] = useState('');
 
   useEffect(() => {
