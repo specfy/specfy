@@ -63,15 +63,6 @@ export const Sidebar: React.FC<{
           </div>
 
           <div className={classNames(cls.content)}>
-            {/* {project && (
-              <div className={classNames(cls.group, cls.small)}>
-                <Link className={cls.head} to={linkOrg}>
-                  <IconChevronLeft />
-                  Back to org
-                </Link>
-              </div>
-            )} */}
-
             {project && <Staging showBadge={collapse} />}
 
             {children}

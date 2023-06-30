@@ -24,7 +24,8 @@
   }
 
   &.top {
-    justify-content: flex-start;
+    justify-content: flex-end;
+    padding: $p;
   }
 
   &.bottom {
@@ -55,7 +56,7 @@
 
   &.dark {
     padding: $p-s $p-m $p-s $p-xl;
-    font-size: $font-s;
+    font-size: $font-xs;
     color: white;
     background-color: var(--bg10);
   }

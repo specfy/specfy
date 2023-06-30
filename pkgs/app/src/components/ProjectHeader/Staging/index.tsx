@@ -124,7 +124,7 @@ export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
             className={cls.badge}
             count={showBadge ? staging.count : 0}
             size="small"
-            color="#677AF2"
+            color="hsl(226, 70.0%, 55.5%)"
           >
             <div
               className={cls.edit}
@@ -148,13 +148,21 @@ export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
       </Tooltip>
       {isEditing ? (
         <Link to={`/${project!.orgId}/${project!.slug}/revisions/current`}>
-          <Button type="default">
-            {staging.count} pending {staging.count > 1 ? 'changes' : 'change'}
-          </Button>
+          <Badge
+            count={staging.count}
+            size="small"
+            color="hsl(226, 70.0%, 55.5%)"
+          >
+            <Button type="primary">
+              Commit {staging.count > 1 ? 'changes' : 'change'}
+            </Button>
+          </Badge>
         </Link>
       ) : (
         <div>
-          <Button onClick={() => edit.enable(true)}>Enable edition</Button>
+          <Button icon={<IconEdit />} onClick={() => edit.enable(true)}>
+            Edit
+          </Button>
         </div>
       )}
     </div>

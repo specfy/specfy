@@ -1,13 +1,12 @@
 import type { ApiProject } from '@specfy/api/src/types/api';
 import {
+  IconLock,
   IconMaximize,
-  IconX,
   IconZoomIn,
   IconZoomOut,
 } from '@tabler/icons-react';
 import { Button, Tooltip } from 'antd';
 import classnames from 'classnames';
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useReactFlow, useViewport } from 'reactflow';
 
@@ -31,20 +30,16 @@ const ToolbarContainer: React.FC<{
 };
 
 const ToolbarReadonly: React.FC<{ visible: boolean }> = ({ visible }) => {
-  const [closed, setClosed] = useState(false);
-  if (!visible || closed) {
+  // <Toolbar> doesn't want boolean
+  if (!visible) {
     return null;
   }
+
   return (
     <div className={classnames(cls.toolbar, cls.dark)}>
       <Flex gap="m">
         Read-Only
-        <Button
-          icon={<IconX />}
-          type="link"
-          size="small"
-          onClick={() => setClosed(true)}
-        />
+        <IconLock />
       </Flex>
     </div>
   );

@@ -1,6 +1,11 @@
 import type { Edge, Node } from 'reactflow';
 
-import type { ComponentForFlow, ComputedFlow, NodeData } from './types.js';
+import type {
+  ComponentForFlow,
+  ComputedFlow,
+  EdgeData,
+  NodeData,
+} from './types.js';
 
 export function createNode(component: ComponentForFlow): Node<NodeData> {
   const node: Node<NodeData> = {
@@ -34,8 +39,26 @@ export function createNode(component: ComponentForFlow): Node<NodeData> {
   return node;
 }
 
+export function getEdgeMarkers(data: EdgeData) {
+  const edge: Partial<Edge> = {};
+  if (data.read) {
+    edge.markerStart = {
+      type: 'arrowclosed' as any,
+      width: 10,
+      height: 10,
+    };
+  }
+  if (data.write) {
+    edge.markerEnd = {
+      type: 'arrowclosed' as any,
+      width: 10,
+      height: 10,
+    };
+  }
+  return edge;
+}
 export function componentsToFlow(components: ComponentForFlow[]): ComputedFlow {
-  const edges: Edge[] = [];
+  const edges: Array<Edge<EdgeData>> = [];
   const nodes: Array<Node<NodeData>> = [];
 
   // Create all hosting nodes
@@ -69,30 +92,16 @@ export function componentsToFlow(components: ComponentForFlow[]): ComputedFlow {
 
   for (const comp of components) {
     for (const edge of comp.edges) {
-      const item: Edge = {
+      const item: Edge<EdgeData> = {
         id: `${comp.id}->${edge.to}`,
         source: comp.id,
         target: edge.to,
         sourceHandle: edge.portSource,
         targetHandle: edge.portTarget,
         data: { read: edge.read, write: edge.write },
-        // animated: true,
+        ...getEdgeMarkers(edge),
         // type: 'floating',
       };
-      if (edge.read) {
-        item.markerStart = {
-          type: 'arrowclosed' as any,
-          width: 10,
-          height: 10,
-        };
-      }
-      if (edge.write) {
-        item.markerEnd = {
-          type: 'arrowclosed' as any,
-          width: 10,
-          height: 10,
-        };
-      }
       edges.push(item);
     }
   }

@@ -17,62 +17,46 @@
 }
 
 .block {
-  overflow: hidden;
+  width: 300px;
+  font-size: $font-s;
 
-  width: 280px;
-  max-height: 500px;
-
-  font-family: $font-text;
-
-  border-bottom: 1px solid var(--border1);
+  // border-bottom: 1px solid var(--border1);
 }
 
 .title {
   display: flex;
   justify-content: space-between;
 
-  padding: $p-m $p-l;
+  height: 38px;
+  padding: $p-m $p-xl ;
 
-  font-size: $font;
-  font-weight: 500;
-  color: $gray-700;
+  font-size: $font-s;
+  font-weight: 600;
+  color: var(--text);
 
-  background-color: var(--bg1);
-  border-bottom: 1px solid var(--border1);
-
-  .titleLeft {
-    display: flex;
-    gap: $p-s;
-    align-items: center;
-  }
-
-  &.toggle {
-    cursor: pointer;
-    padding-left: $p-m;
-  }
+  // background-color: var(--bg1);
+  border-top: 1px solid var(--border1);
 }
 
 .inside {
   overflow: scroll;
   display: flex;
   flex-direction: column;
-  gap: $p-l;
+  gap: $p-2xl;
 
   max-height: 500px;
-  padding: $p-l $p-l;
-
-  font-size: $font-s;
+  padding: $p-l $p-xl;
 }
 
 .label {
-  font-size: $font-s;
-  font-weight: 500;
-  color: $gray-700;
+  font-size: $font;
+  color: var(--text);
 }
 
 .empty {
+  padding: $p $p-xl;
   font-size: $font-s;
-  color: $gray-400;
+  color: var(--text1);
 }
 
 // ---- BLOCK
@@ -97,56 +81,67 @@
 // Main node
 .xy {
   display: flex;
-  gap: $p-s;
+  gap: $p-l;
   font-size: $font-s;
-  color: $gray-400;
+  color: var(--text2);
 }
 
-.inputs {
+// ---- Preview
+.preview {
   display: flex;
-  gap: $p-s;
-  align-items: flex-end;
-
-  font-size: $font-s;
-  line-height: 20px;
-  color: $gray-400;
+  justify-content: center;
+  min-height: 110px;
+  padding: $p-l $p-2xl $p-5xl $p-2xl;
 }
-
-.input {
-  width: 50px;
-  height: 20px;
-  padding: 0 $p-m;
-
-  color: $gray-800;
-
-  border: 1px solid var(--border2);
-  border-radius: $border-radius-s;
-}
-
 
 // ---- BLOCK
 // Relation
+.relations {
+  table-layout: fixed;
+  width: 100%;
+  margin: 0 0 $p-l 0
+}
+
 .relation {
-  position: relative;
+  height: 35px;
 
-  display: grid;
-  grid-template-columns: 100px 30px 100px;
-  align-items: center;
+  &:hover {
+    background-color: var(--bg2);
+  }
 
-  height: 28px;
+  .target {
+    text-align: right;
+  }
 
-  text-align: center;
+  .source,
+  .target {
+    overflow: hidden;
+    padding: 0 $p-2xl;
+    text-overflow: ellipsis;
+  }
+
+  .source {
+    width: 40%;
+    text-align: left;
+  }
+
+
+  .to {
+    width: 40px;
+    padding: 0 $p-xl;
+  }
 
   .direction {
     display: flex;
     justify-content: center;
     margin-top: -5px;
+    text-align: center;
   }
 
   .english {
     position: absolute;
-    top: 16px;
-    font-size: 8px;
-    color: $indigo-300;
+    top: 12px;
+    font-size: 9px;
+    color: var(--accent2);
   }
 }

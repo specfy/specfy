@@ -449,6 +449,8 @@ h4.ant-typography {
 
 // Table
 .ant-table {
+
+  /* stylelint-disable rule-empty-line-before */
   thead {
 
     th,
@@ -475,6 +477,8 @@ h4.ant-typography {
       }
     }
   }
+
+  /* stylelint-enable rule-empty-line-before */
 }
 
 .ant-table-wrapper {
@@ -531,6 +535,24 @@ h4.ant-typography {
       .ant-select-selection-item-content {
         font-size: $font-s;
       }
+    }
+  }
+}
+
+
+// Tooltip
+.ant-tooltip {
+  .ant-tooltip-arrow {
+    /* stylelint-disable-next-line custom-property-pattern */
+    --antd-arrow-background-color: var(--bg10);
+  }
+
+  .ant-tooltip-content {
+    .ant-tooltip-inner {
+      padding: $p $p-xl;
+      font-size: $font-s;
+      background-color: var(--bg10);
+      border-radius: $border-radius;
     }
   }
 }

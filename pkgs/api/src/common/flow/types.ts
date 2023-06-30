@@ -33,8 +33,12 @@ export interface NodeData {
   techId: ApiComponent['techId'];
   originalSize: ComponentForFlow['display']['size'];
 }
+export interface EdgeData {
+  read: boolean;
+  write: boolean;
+}
 
 export interface ComputedFlow {
-  edges: Edge[];
+  edges: Array<Edge<EdgeData>>;
   nodes: Array<Node<NodeData>>;
 }

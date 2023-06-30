@@ -3,7 +3,7 @@ import { IconCode } from '@tabler/icons-react';
 import classNames from 'classnames';
 import type * as React from 'react';
 import { memo } from 'react';
-import type { NodeProps } from 'reactflow';
+import type { Node, NodeProps } from 'reactflow';
 import { Handle, Position, NodeResizer } from 'reactflow';
 
 import { supportedIndexed } from '../../../common/component';
@@ -96,6 +96,47 @@ const CustomNode: React.FC<NodeProps<NodeData>> = ({ data, selected }) => {
         id="left"
         className={classNames(cls.handle, cls.target, cls.left)}
       />
+    </div>
+  );
+};
+
+export const PreviewNode: React.FC<Node<NodeData>> = ({
+  data,
+  position,
+  width,
+  height,
+}) => {
+  const Icon =
+    data.techId &&
+    data.techId in supportedIndexed &&
+    supportedIndexed[data.techId].Icon;
+  return (
+    <div className={classNames(cls.node, cls.component, cls.preview)}>
+      <div className={cls.pos}>
+        x:{position.x} y:{position.y}
+      </div>
+      <div className={cls.size}>
+        <div className={cls.sizeWidth}>{width}px</div>
+        <div className={cls.sizeHeight}>{height}px</div>
+      </div>
+      <div className={cls.title}>
+        {data.type === 'project' && (
+          <div className={cls.icon}>
+            <AvatarAuto name={data.label} size="small" shape="square" />
+          </div>
+        )}
+        {Icon && (
+          <div className={cls.icon}>
+            <Icon size="1em" />
+          </div>
+        )}
+        {!data.techId && data.type === 'component' && (
+          <div className={classNames(cls.icon, cls.service)}>
+            <IconCode size="1em" />
+          </div>
+        )}
+        <div className={cls.label}>{data.label}</div>
+      </div>
     </div>
   );
 };

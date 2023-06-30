@@ -1,6 +1,8 @@
 @import "../../../styles/theme";
 
 .node {
+  position: relative;
+
   display: flex;
   align-items: center;
 
@@ -12,8 +14,6 @@
   font-weight: 400;
 
   border: 1px solid $gray-100;
-
-  // border-left: 4px solid transparent;
   border-radius: $border-radius;
   box-shadow: 0 2px 5px 1px rgb(0 0 0 / 6%);
 
@@ -26,8 +26,6 @@
       opacity: 1;
     }
   }
-
-
 
   &.hosting {
     align-items: flex-start;
@@ -59,6 +57,10 @@
     gap: $p-m;
     align-items: center;
 
+    // https://css-tricks.com/flexbox-truncated-text/
+    min-width: 0;
+
+
     .icon {
       display: flex;
       align-items: center;
@@ -78,7 +80,7 @@
       }
 
       &.service {
-        padding: 0 0 0 2px;
+        padding: 0 1px;
 
         line-height: 16px;
         color: white;
@@ -90,15 +92,13 @@
   }
 
   .label {
+    // https://css-tricks.com/flexbox-truncated-text/
     overflow: hidden;
     display: inline-block;
-    flex-shrink: 0;
-
-    width: inherit;
 
     font-size: $font-s - 1px;
     line-height: $line-height-s;
-    color: $gray-600;
+    color: var(--text);
     text-overflow: ellipsis;
     white-space: pre-wrap;
   }
@@ -154,6 +154,87 @@
       &.left {
         top: calc(50% + 7px);
       }
+    }
+  }
+
+  &.preview {
+    width: 150px;
+    height: 48px;
+    margin-top: 10px;
+    padding: 0 $p-xl;
+
+    .icon {
+      width: 18px;
+      height: 18px;
+      font-size: 15px;
+    }
+
+    .label {
+      font-size: $font;
+    }
+  }
+}
+
+.pos {
+  position: absolute;
+  top: -20px;
+  left: 0;
+
+  width: 140px;
+
+  font-size: $font-xs;
+  color: var(--text1);
+  text-align: center;
+}
+
+.size {
+  position: absolute;
+  bottom: 0;
+  left: -12px;
+
+  font-size: $font-xs;
+  color: var(--text1);
+
+
+  .sizeHeight {
+    position: absolute;
+    top: -28px;
+    right: 5px;
+
+    &::before {
+      content: " ";
+
+      position: absolute;
+      top: -15px;
+      right: -7px;
+
+      display: block;
+
+      width: 1px;
+      height: 42px;
+
+      background-color: var(--bg5);
+    }
+  }
+
+  .sizeWidth {
+    position: absolute;
+    top: 10px;
+    left: 65px;
+
+    &::before {
+      content: " ";
+
+      position: absolute;
+      top: 0;
+      left: -50px;
+
+      display: block;
+
+      width: 140px;
+      height: 1px;
+
+      background-color: var(--bg5);
     }
   }
 }

@@ -4,7 +4,7 @@ import type { ComputedFlow } from '@specfy/api/src/common/flow/types';
 import type { ApiProject, ApiComponent } from '@specfy/api/src/types/api';
 import { useCallback, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import type { ReactFlowProps } from 'reactflow';
+import type { OnConnect, OnEdgesChange, OnNodesChange } from 'reactflow';
 
 import { useComponentsStore } from '../../../common/store';
 import { titleSuffix } from '../../../common/string';
@@ -36,17 +36,12 @@ export const ProjectFlow: React.FC<{
       return;
     }
 
-    const filtered = components;
-    const tmp = componentsToFlow(filtered);
-
-    setFlow(tmp);
+    setFlow(componentsToFlow(components));
     setLoading(false);
   }, [components]);
 
   // ---- Event Handlers
-  const onNodesChange = useCallback<
-    Exclude<ReactFlowProps['onNodesChange'], undefined>
-  >(
+  const onNodesChange = useCallback<OnNodesChange>(
     (changes) => {
       for (const change of changes) {
         if (change.type === 'remove') {
@@ -64,9 +59,7 @@ export const ProjectFlow: React.FC<{
     },
     [components]
   );
-  const onEdgesChange = useCallback<
-    Exclude<ReactFlowProps['onEdgesChange'], undefined>
-  >(
+  const onEdgesChange = useCallback<OnEdgesChange>(
     (changes) => {
       for (const change of changes) {
         if (change.type === 'remove') {
@@ -78,6 +71,21 @@ export const ProjectFlow: React.FC<{
     [components]
   );
 
+  const onConnect = useCallback<OnConnect>((params) => {
+    storeComponents.addEdge(params);
+  }, []);
+
+  const onRelationChange: React.ComponentProps<
+    typeof FlowEdit
+  >['onRelationChange'] = useCallback((type, rel) => {
+    if (type === 'update') {
+      storeComponents.updateEdge(rel.edge.source, rel.edge.target, {
+        write: rel.edge.data!.write,
+        read: rel.edge.data!.read,
+      });
+    }
+  }, []);
+
   if (loading) {
     return <LoadingOutlined />;
   }
@@ -86,7 +94,13 @@ export const ProjectFlow: React.FC<{
     <div className={cls.flow}>
       <Helmet title={`Flow - ${proj.name} ${titleSuffix}`} />
 
-      <FlowEdit components={components!} proj={proj} />
+      <FlowEdit
+        components={components!}
+        proj={proj}
+        readonly={!isEditing}
+        onNodesChange={onNodesChange}
+        onRelationChange={onRelationChange}
+      />
       {flow && (
         <>
           <FlowWrapper>
@@ -97,6 +111,7 @@ export const ProjectFlow: React.FC<{
               keepHighlightOnSelect={true}
               onNodesChange={onNodesChange}
               onEdgesChange={onEdgesChange}
+              onConnect={onConnect}
             />
             <Toolbar position="top" visible>
               <Toolbar.Readonly visible={!isEditing} />
