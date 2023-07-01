@@ -1,0 +1,50 @@
+@import "../../../styles/theme";
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: $p-xl;
+  height: $p-xl;
+
+  font-size: 11px;
+  line-height: 14px;
+  color: var(--text);
+
+  &.large {
+    width: 18px;
+    height: 18px;
+    font-size: 15px;
+  }
+
+  >span {
+    width: $p-xl;
+    height: $p-xl;
+    line-height: $line-height-s;
+  }
+
+  &.service {
+    padding: 0 1px;
+
+    line-height: 16px;
+    color: white;
+
+    background-color: $indigo-400;
+    border-radius: 4px;
+  }
+
+  &.project {
+    >span {
+      width: $p-xl;
+      height: $p-xl;
+    }
+
+    &.large {
+      >span {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+}

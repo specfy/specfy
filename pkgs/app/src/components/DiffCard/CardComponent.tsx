@@ -4,7 +4,6 @@ import classnames from 'classnames';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { supportedIndexed } from '../../common/component';
 import originalStore, {
   useRevisionStore,
   useComponentsStore,
@@ -14,8 +13,10 @@ import type {
   DiffObjectsArray,
 } from '../../types/blobs';
 import type { RouteProject } from '../../types/routes';
-import { ComponentItem, TechItem } from '../ComponentLine';
+import { ComponentIcon } from '../Component/Icon';
+import { ComponentItem, TechItem } from '../Component/Line';
 import { ContentDoc } from '../Content';
+import { Flex } from '../Flex';
 
 import { Split } from './Split';
 import { UnifiedDiff } from './Unified';
@@ -46,24 +47,18 @@ export const DiffCardComponent: React.FC<{
   };
 
   const Title = useMemo(() => {
-    const Icon =
-      using.techId &&
-      using.techId in supportedIndexed &&
-      supportedIndexed[using.techId].Icon;
     const hasName = diff.diffs.find((d) => d.key === 'name');
 
     return (
       <Typography.Title level={4}>
-        {Icon && (
-          <div className={cls.icon}>
-            <Icon />
-          </div>
-        )}
-        {hasName && !diff.blob.created ? (
-          <UnifiedDiff key={hasName.key} diff={hasName} />
-        ) : (
-          using.name || ''
-        )}
+        <Flex gap="l">
+          <ComponentIcon {...using} label={using.name} large />
+          {hasName && !diff.blob.created ? (
+            <UnifiedDiff key={hasName.key} diff={hasName} />
+          ) : (
+            using.name || ''
+          )}
+        </Flex>
       </Typography.Title>
     );
   }, [diff]);
@@ -101,9 +96,11 @@ export const DiffCardComponent: React.FC<{
                 return (
                   <div key={edge.to}>
                     Link to{' '}
-                    <ComponentItem className={cls.item} techId={comp.techId}>
-                      {comp.name}
-                    </ComponentItem>
+                    <ComponentItem
+                      className={cls.item}
+                      comp={comp}
+                      params={params}
+                    />
                   </div>
                 );
               })}
@@ -118,9 +115,11 @@ export const DiffCardComponent: React.FC<{
               <div className={classnames(cls.line)}>
                 <Typography.Title level={4}>Host</Typography.Title>
                 <div className={cls.techs}>
-                  <ComponentItem className={cls.item} techId={comp.techId}>
-                    {comp.name}
-                  </ComponentItem>
+                  <ComponentItem
+                    className={cls.item}
+                    comp={comp}
+                    params={params}
+                  />
                 </div>
               </div>
             );
@@ -157,19 +156,14 @@ export const DiffCardComponent: React.FC<{
               <Typography.Title level={4}>Stack</Typography.Title>
               {(d.diff as DiffObjectsArray<ApiComponent['tech'][0]>).added.map(
                 (tech) => {
-                  const name =
-                    tech in supportedIndexed
-                      ? supportedIndexed[tech].name
-                      : tech;
                   return (
                     <div key={tech} className={cls.added}>
-                      <ComponentItem
+                      <TechItem
                         className={cls.item}
                         key={tech}
                         techId={tech}
-                      >
-                        {name}
-                      </ComponentItem>
+                        params={params}
+                      />
                     </div>
                   );
                 }
@@ -177,17 +171,14 @@ export const DiffCardComponent: React.FC<{
               {(
                 d.diff as DiffObjectsArray<ApiComponent['tech'][0]>
               ).deleted.map((tech) => {
-                const name =
-                  tech in supportedIndexed ? supportedIndexed[tech].name : tech;
                 return (
                   <div key={tech} className={cls.removed}>
-                    <ComponentItem
+                    <TechItem
                       className={cls.item}
                       key={tech}
                       techId={tech}
-                    >
-                      {name}
-                    </ComponentItem>
+                      params={params}
+                    />
                   </div>
                 );
               })}
@@ -205,9 +196,11 @@ export const DiffCardComponent: React.FC<{
                 return (
                   <div key={edge.to} className={cls.added}>
                     Link to{' '}
-                    <ComponentItem className={cls.item} techId={comp.techId}>
-                      {comp.name}
-                    </ComponentItem>
+                    <ComponentItem
+                      className={cls.item}
+                      comp={comp}
+                      params={params}
+                    />
                   </div>
                 );
               })}
@@ -217,9 +210,11 @@ export const DiffCardComponent: React.FC<{
                 return (
                   <div key={edge.to} className={cls.removed}>
                     Link to{' '}
-                    <ComponentItem className={cls.item} techId={comp.techId}>
-                      {comp.name}
-                    </ComponentItem>
+                    <ComponentItem
+                      className={cls.item}
+                      comp={comp}
+                      params={params}
+                    />
                   </div>
                 );
               })}
@@ -229,9 +224,11 @@ export const DiffCardComponent: React.FC<{
                 return (
                   <div key={edge.to}>
                     Link to{' '}
-                    <ComponentItem className={cls.item} techId={comp.techId}>
-                      {comp.name}
-                    </ComponentItem>
+                    <ComponentItem
+                      className={cls.item}
+                      comp={comp}
+                      params={params}
+                    />
                   </div>
                 );
               })}
@@ -249,16 +246,20 @@ export const DiffCardComponent: React.FC<{
               <Typography.Title level={4}>Host</Typography.Title>
               {newComp && (
                 <div className={cls.added}>
-                  <ComponentItem className={cls.item} techId={newComp.techId}>
-                    {newComp.name}
-                  </ComponentItem>
+                  <ComponentItem
+                    className={cls.item}
+                    comp={newComp}
+                    params={params}
+                  />
                 </div>
               )}
               {oldComp && (
                 <div className={cls.removed}>
-                  <ComponentItem className={cls.item} techId={oldComp.techId}>
-                    {oldComp.name}
-                  </ComponentItem>
+                  <ComponentItem
+                    className={cls.item}
+                    comp={oldComp}
+                    params={params}
+                  />
                 </div>
               )}
             </div>

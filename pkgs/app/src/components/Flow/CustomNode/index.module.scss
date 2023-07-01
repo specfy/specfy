@@ -59,36 +59,6 @@
 
     // https://css-tricks.com/flexbox-truncated-text/
     min-width: 0;
-
-
-    .icon {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      width: $p-xl;
-      height: $p-xl;
-
-      font-size: 11px;
-      line-height: 14px;
-      color: $gray-600;
-
-      >span {
-        width: $p-xl;
-        height: $p-xl;
-        line-height: $line-height-s;
-      }
-
-      &.service {
-        padding: 0 1px;
-
-        line-height: 16px;
-        color: white;
-
-        background-color: $indigo-400;
-        border-radius: 4px;
-      }
-    }
   }
 
   .label {
@@ -163,17 +133,12 @@
     margin-top: 10px;
     padding: 0 $p-xl;
 
-    .icon {
-      width: 18px;
-      height: 18px;
-      font-size: 15px;
-    }
-
     .label {
       font-size: $font;
     }
   }
 }
+
 
 .pos {
   position: absolute;

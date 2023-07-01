@@ -12,18 +12,16 @@ import { Helmet } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useReactFlow } from 'reactflow';
 
-import type { TechInfo } from '../../../common/component';
-import {
-  internalTypeToText,
-  supportedIndexed,
-} from '../../../common/component';
+import { internalTypeToText } from '../../../common/component';
 import { useComponentsStore } from '../../../common/store';
 import { titleSuffix } from '../../../common/string';
 import { Card } from '../../../components/Card';
-import { ComponentDetails } from '../../../components/ComponentDetails';
+import { ComponentDetails } from '../../../components/Component/Details';
+import { ComponentIcon } from '../../../components/Component/Icon';
 import { Container } from '../../../components/Container';
 import { ContentDoc } from '../../../components/Content';
 import { EditorMini } from '../../../components/Editor/Mini';
+import { Flex } from '../../../components/Flex';
 import { Flow, FlowWrapper } from '../../../components/Flow';
 import { Toolbar } from '../../../components/Flow/Toolbar';
 import { FakeInput } from '../../../components/Input';
@@ -43,7 +41,6 @@ export const ComponentView: React.FC<{
 
   // TODO: filter RFC
   const [comp, setComp] = useState<ApiComponent>();
-  const [Icon, setIcon] = useState<TechInfo['Icon']>();
   const params = useParams<Partial<RouteComponent>>() as RouteComponent;
 
   // Components
@@ -70,12 +67,6 @@ export const ComponentView: React.FC<{
   useEffect(() => {
     if (!comp) {
       return;
-    }
-
-    if (comp.techId && comp.techId in supportedIndexed) {
-      setIcon(supportedIndexed[comp.techId].Icon);
-    } else {
-      setIcon(undefined);
     }
   }, [comp?.techId]);
 
@@ -125,12 +116,10 @@ export const ComponentView: React.FC<{
           <div className={cls.titleEdit}>
             {!isEditing && (
               <h2>
-                {Icon && (
-                  <div className={cls.icon}>
-                    <Icon size="1em" />
-                  </div>
-                )}
-                {comp.name}
+                <Flex gap="l">
+                  <ComponentIcon {...comp} label={comp.name} large />
+                  {comp.name}
+                </Flex>
               </h2>
             )}
             {isEditing && (

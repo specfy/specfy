@@ -3,15 +3,12 @@ import type { FlowEdge } from '@specfy/api/src/types/db';
 import type React from 'react';
 import { useEffect, useMemo, useState } from 'react';
 
-import { getAllChilds, positionEdge } from '../../common/component';
-import { useComponentsStore } from '../../common/store';
-import {
-  ComponentLine,
-  ComponentLineTech,
-} from '../../components/ComponentLine';
-import { ComponentSelect, LanguageSelect } from '../../components/StackSearch';
-import { useEdit } from '../../hooks/useEdit';
-import type { RouteComponent } from '../../types/routes';
+import { getAllChilds, positionEdge } from '../../../common/component';
+import { useComponentsStore } from '../../../common/store';
+import { useEdit } from '../../../hooks/useEdit';
+import type { RouteComponent } from '../../../types/routes';
+import { ComponentSelect, LanguageSelect } from '../../StackSearch';
+import { ComponentLine, ComponentLineTech } from '../Line';
 
 import cls from './index.module.scss';
 

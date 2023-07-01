@@ -6,7 +6,7 @@ import { useComponentsStore } from '../../../common/store';
 import {
   ComponentLine,
   ComponentLineTech,
-} from '../../../components/ComponentLine';
+} from '../../../components/Component/Line';
 import type { RouteProject } from '../../../types/routes';
 
 export const TechnicalAspects: React.FC<{

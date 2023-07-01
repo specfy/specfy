@@ -1,21 +1,15 @@
 import type { NodeData } from '@specfy/api/src/common/flow/types';
-import { IconCode } from '@tabler/icons-react';
 import classNames from 'classnames';
 import type * as React from 'react';
 import { memo } from 'react';
 import type { Node, NodeProps } from 'reactflow';
 import { Handle, Position, NodeResizer } from 'reactflow';
 
-import { supportedIndexed } from '../../../common/component';
-import { AvatarAuto } from '../../AvatarAuto';
+import { ComponentIcon } from '../../Component/Icon';
 
 import cls from './index.module.scss';
 
 const CustomNode: React.FC<NodeProps<NodeData>> = ({ data, selected }) => {
-  const Icon =
-    data.techId &&
-    data.techId in supportedIndexed &&
-    supportedIndexed[data.techId].Icon;
   return (
     <div className={classNames(cls.node, cls[data.type])}>
       <NodeResizer
@@ -27,21 +21,7 @@ const CustomNode: React.FC<NodeProps<NodeData>> = ({ data, selected }) => {
         maxHeight={1000}
       />
       <div className={cls.title}>
-        {data.type === 'project' && (
-          <div className={cls.icon}>
-            <AvatarAuto name={data.label} size="small" shape="square" />
-          </div>
-        )}
-        {Icon && (
-          <div className={cls.icon}>
-            <Icon size="1em" />
-          </div>
-        )}
-        {!data.techId && data.type === 'component' && (
-          <div className={classNames(cls.icon, cls.service)}>
-            <IconCode size="1em" />
-          </div>
-        )}
+        <ComponentIcon {...data} />
         <div className={cls.label}>{data.label}</div>
       </div>
 
@@ -102,39 +82,21 @@ const CustomNode: React.FC<NodeProps<NodeData>> = ({ data, selected }) => {
 
 export const PreviewNode: React.FC<Node<NodeData>> = ({
   data,
-  position,
+  positionAbsolute,
   width,
   height,
 }) => {
-  const Icon =
-    data.techId &&
-    data.techId in supportedIndexed &&
-    supportedIndexed[data.techId].Icon;
   return (
     <div className={classNames(cls.node, cls.component, cls.preview)}>
       <div className={cls.pos}>
-        x:{position.x} y:{position.y}
+        x:{positionAbsolute!.x} y:{positionAbsolute!.y}
       </div>
       <div className={cls.size}>
         <div className={cls.sizeWidth}>{width}px</div>
         <div className={cls.sizeHeight}>{height}px</div>
       </div>
       <div className={cls.title}>
-        {data.type === 'project' && (
-          <div className={cls.icon}>
-            <AvatarAuto name={data.label} size="small" shape="square" />
-          </div>
-        )}
-        {Icon && (
-          <div className={cls.icon}>
-            <Icon size="1em" />
-          </div>
-        )}
-        {!data.techId && data.type === 'component' && (
-          <div className={classNames(cls.icon, cls.service)}>
-            <IconCode size="1em" />
-          </div>
-        )}
+        <ComponentIcon {...data} large />
         <div className={cls.label}>{data.label}</div>
       </div>
     </div>

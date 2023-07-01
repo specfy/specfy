@@ -1,7 +1,6 @@
 import type { ApiDocument, ApiProject } from '@specfy/api/src/types/api';
 import { IconFileText } from '@tabler/icons-react';
 import { Skeleton, Table } from 'antd';
-import Title from 'antd/es/typography/Title';
 import { Link } from 'react-router-dom';
 
 import { useListDocuments } from '../../api';
@@ -27,7 +26,7 @@ export const ListRFCs: React.FC<{ project: ApiProject }> = ({ project }) => {
   return (
     <div>
       <div className={cls.header}>
-        <Title level={5}>Technical Specs</Title>
+        <h5>Technical Specs</h5>
       </div>
 
       {!l.data ||
