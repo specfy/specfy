@@ -1,5 +1,5 @@
+import type { GetDocument, ListDocuments } from '@specfy/api/src/types/api';
 import { useQuery } from '@tanstack/react-query';
-import type { GetDocument, ListDocuments } from 'api/src/types/api';
 
 import originalStore from '../common/store';
 

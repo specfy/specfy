@@ -1,9 +1,16 @@
-import { IconMaximize, IconZoomIn, IconZoomOut } from '@tabler/icons-react';
+import type { ApiProject } from '@specfy/api/src/types/api';
+import {
+  IconLock,
+  IconMaximize,
+  IconZoomIn,
+  IconZoomOut,
+} from '@tabler/icons-react';
 import { Button, Tooltip } from 'antd';
-import type { ApiProject } from 'api/src/types/api';
 import classnames from 'classnames';
 import { Link } from 'react-router-dom';
 import { useReactFlow, useViewport } from 'reactflow';
+
+import { Flex } from '../../Flex';
 
 import cls from './index.module.scss';
 
@@ -18,6 +25,22 @@ const ToolbarContainer: React.FC<{
       data-toolbar
     >
       {children}
+    </div>
+  );
+};
+
+const ToolbarReadonly: React.FC<{ visible: boolean }> = ({ visible }) => {
+  // <Toolbar> doesn't want boolean
+  if (!visible) {
+    return null;
+  }
+
+  return (
+    <div className={classnames(cls.toolbar, cls.dark)}>
+      <Flex gap="m">
+        Read-Only
+        <IconLock />
+      </Flex>
     </div>
   );
 };
@@ -72,9 +95,11 @@ export type ToolbarProps = typeof ToolbarContainer & {
   Zoom: typeof ToolbarZoom;
   Fullscreen: typeof ToolbarFullscreen;
   Main: typeof ToolbarMain;
+  Readonly: typeof ToolbarReadonly;
 };
 
 export const Toolbar = ToolbarContainer as ToolbarProps;
 Toolbar.Zoom = ToolbarZoom;
 Toolbar.Fullscreen = ToolbarFullscreen;
 Toolbar.Main = ToolbarMain;
+Toolbar.Readonly = ToolbarReadonly;

@@ -1,6 +1,6 @@
+import type { ApiOrg } from '@specfy/api/src/types/api';
 import { IconArrowNarrowRight, IconCheck } from '@tabler/icons-react';
 import { Button, Typography } from 'antd';
-import type { ApiOrg } from 'api/src/types/api';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';

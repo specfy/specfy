@@ -7,5 +7,5 @@ export const hMax = 2000;
 
 export const hDef = 32;
 export const wDef = 100;
-export const hDefHost = 64;
-export const wDefHost = 200;
+export const hDefHost = 72;
+export const wDefHost = 140;

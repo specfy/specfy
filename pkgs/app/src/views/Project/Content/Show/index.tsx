@@ -1,5 +1,5 @@
+import type { ApiDocument, ApiProject } from '@specfy/api/src/types/api';
 import { Skeleton } from 'antd';
-import type { ApiDocument, ApiProject } from 'api/src/types/api';
 import { useEffect, useMemo, useState } from 'react';
 import { useParams } from 'react-router-dom';
 

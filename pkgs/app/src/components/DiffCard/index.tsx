@@ -1,10 +1,10 @@
+import type { ApiBlobWithPrevious } from '@specfy/api/src/types/api';
 import {
-  IconCaretDown,
-  IconCaretRight,
+  IconChevronDown,
+  IconChevronRight,
   IconExternalLink,
 } from '@tabler/icons-react';
 import { Button, Tag } from 'antd';
-import type { ApiBlobWithPrevious } from 'api/src/types/api';
 import classnames from 'classnames';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -47,7 +47,7 @@ export const DiffCard: React.FC<{
   }, [diff]);
 
   // Actions
-  const [hide, setHide] = useState<boolean>(false);
+  const [hide, setHide] = useState<boolean>(diff.blob.deleted);
   const handleHideShow = () => {
     setHide(!hide);
   };
@@ -60,15 +60,17 @@ export const DiffCard: React.FC<{
             type="text"
             size="small"
             onClick={handleHideShow}
-            icon={hide ? <IconCaretRight /> : <IconCaretDown />}
+            icon={hide ? <IconChevronRight /> : <IconChevronDown />}
           />
         </div>
-        <Tag>
+        <div>
           {type} / {using.name}
-        </Tag>
+        </div>
+        {diff.blob.deleted && <Tag className={cls.fileDeleted}>deleted</Tag>}
+        {diff.blob.created && <Tag className={cls.fileCreated}>new</Tag>}
 
         <Link to={to}>
-          <Button type="text" icon={<IconExternalLink />} size="small"></Button>
+          <Button type="text" icon={<IconExternalLink />} size="small" />
         </Link>
       </div>
       <div
@@ -80,11 +82,6 @@ export const DiffCard: React.FC<{
         )}
       >
         <div className={cls.diffContent}>
-          {diff.blob.deleted && (
-            <div className={cls.fileDeleted}>
-              <span>{type} deleted</span>
-            </div>
-          )}
           {diff.blob.type === 'component' && (
             <DiffCardComponent diff={diff as ComponentBlobWithDiff} />
           )}

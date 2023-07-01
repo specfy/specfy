@@ -30,11 +30,12 @@ Auth:
   ✔ Default in dev @done(23-03-31 16:33)
   ✔ Github Oauth @done(23-04-21 19:19)
     ✔ Github oauth prod app @done(23-04-21 19:22)
-  - Google Oauth
-  - Gitlab Oauth
+  ✘ Google Oauth @cancelled(23-06-29 17:05)
+  ✘ Gitlab Oauth @cancelled(23-06-29 17:06)
   ✔ Standard Email / Password @done(23-04-21 19:21)
-  - Register
+  ✔ Register @done(23-06-29 17:06)
     ✔ Should create a default org @done(23-04-24 11:47)
+    - Onboarding instead of a default org
   ✔ Logout @done(23-04-22 15:19)
 
 
@@ -104,8 +105,8 @@ User:
     ✔ Validation @done(23-03-29 16:59)
     ✔ Unit Test @done(23-04-03 17:53)
     - Search in email
-    - Email validation
-    - User search API for team
+    ✘ Email validation @cancelled(23-06-29 17:07)
+    ✔ User search API for team @done(23-06-29 17:07)
   - Invite
     ✔ Invite new user from team @done(23-06-18 14:40)
     ✔ Invitation par email @done(23-06-18 14:40)
@@ -248,7 +249,7 @@ Revision:
     ✔ Unit Test @done(23-04-04 17:10)
 
   - Commentaire
-  - Timeline
+  ✔ Timeline @done(23-06-29 17:05)
   ✔ Diff visuel (pas juste code) @done(23-03-25 23:25)
     ✔ Validation @done(23-03-30 11:52)
     - Validation ids
@@ -268,7 +269,8 @@ Revision:
   ✔ Ask for review @done(23-03-25 23:25)
     - Unit Test activity
     - Notification
-  - Unit test
+  ☐ Unit test
+  - Weird bug with seed PR, can't merge one document that supposdely doesn't exists, but that should have been caught by rebase check
 
 
 Diff:
@@ -301,7 +303,7 @@ Flow:
   ✔ Group @done(23-03-29 14:43)
   ✔ Edges @done(23-03-29 14:43)
   ✔ Hover @done(23-03-29 14:44)
-    - Fix hover
+    ✔ Fix hover @done(23-06-30 16:00)
   - Try to use the react version for automatic update
   - Modify the graph in every page?
   - Group
@@ -313,6 +315,7 @@ Flow:
   - Modify links
   - Modify ports
   - Export PNG
+  - Block resizing in readonly
 
 
 -----

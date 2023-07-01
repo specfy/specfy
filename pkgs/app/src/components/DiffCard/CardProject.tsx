@@ -1,5 +1,4 @@
-import { Typography } from 'antd';
-import type { ApiProject, BlockLevelZero } from 'api/src/types/api';
+import type { ApiProject, BlockLevelZero } from '@specfy/api/src/types/api';
 import classnames from 'classnames';
 
 import type { DiffObjectsArray, ProjectBlobWithDiff } from '../../types/blobs';
@@ -14,7 +13,7 @@ export const DiffCardProject: React.FC<{
 }> = ({ diff }) => {
   return (
     <div className={cls.content}>
-      <Typography.Title level={3}>{diff.blob.current!.name}</Typography.Title>
+      <h2>{diff.blob.current!.name}</h2>
       {diff.diffs.map((d) => {
         if (d.key === 'name') {
           return null;
@@ -31,7 +30,7 @@ export const DiffCardProject: React.FC<{
         if (d.key === 'links') {
           return (
             <div key={d.key} className={classnames(cls.line)}>
-              <Typography.Title level={4}>Links</Typography.Title>
+              <h4>Links</h4>
               {(d.diff as DiffObjectsArray<ApiProject['links'][0]>).added.map(
                 (link) => {
                   return (

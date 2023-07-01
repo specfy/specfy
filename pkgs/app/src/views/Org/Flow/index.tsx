@@ -1,5 +1,10 @@
 import { LoadingOutlined } from '@ant-design/icons';
-import type { ApiOrg } from 'api/src/types/api';
+import { componentsToFlow } from '@specfy/api/src/common/flow/transform';
+import type {
+  ComponentForFlow,
+  ComputedFlow,
+} from '@specfy/api/src/common/flow/types';
+import type { ApiOrg } from '@specfy/api/src/types/api';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
@@ -8,11 +13,6 @@ import { useProjectStore } from '../../../common/store';
 import { titleSuffix } from '../../../common/string';
 import { Flow, FlowWrapper } from '../../../components/Flow';
 import { Toolbar } from '../../../components/Flow/Toolbar';
-import type {
-  ComponentForFlow,
-  ComputedFlow,
-} from '../../../components/Flow/helpers';
-import { componentsToFlow } from '../../../components/Flow/helpers';
 import type { RouteOrg } from '../../../types/routes';
 
 import cls from './index.module.scss';
@@ -80,9 +80,10 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
               flow={flow}
               downlightOther={false}
               keepHighlightOnSelect={true}
-              readonly
+              readonly={true}
             />
             <Toolbar position="top" visible>
+              <Toolbar.Readonly visible={true} />
               <Toolbar.Main />
             </Toolbar>
             <Toolbar position="bottom" visible>

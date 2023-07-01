@@ -1,6 +1,6 @@
 import * as Avatar from '@radix-ui/react-avatar';
-import { acronymize, stringToColor } from 'api/src/common/avatar';
-import type { ApiOrg } from 'api/src/types/api';
+import { acronymize, stringToColor } from '@specfy/api/src/common/avatar';
+import type { ApiOrg } from '@specfy/api/src/types/api';
 import classNames from 'classnames';
 
 import cls from './index.module.scss';
@@ -44,7 +44,7 @@ export const AvatarAuto: React.FC<Props> = ({
     acr = acronymize(props.name);
     style =
       props.colored === false
-        ? { backgroundColor: 'var(--bgDark)', color: 'var(--textDark)' }
+        ? { backgroundColor: 'var(--bg5)', color: 'var(--textDark)' }
         : stringToColor(props.name);
     src = props.src;
     if (props.single) {

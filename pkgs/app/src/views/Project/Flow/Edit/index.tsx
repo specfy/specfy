@@ -1,37 +1,27 @@
-// import {
-//   IconCaretRight,
-//   IconCaretDown,
-//   IconHistory,
-// } from '@tabler/icons-react';
 // import { Badge, Button, Tooltip } from 'antd';
-// import type { ApiComponent, ApiProject } from 'api/src/types/api';
+// import type { ApiComponent, ApiProject } from '@specfy/api/src/types/api';
 // import classnames from 'classnames';
 // import { useCallback, useState } from 'react';
 
 // import { useComponentsStore, useStagingStore } from '../../../common/store';
 // import { useEdit } from '../../../hooks/useEdit';
 
+import type { EdgeData } from '@specfy/api/src/common/flow/types';
+import type { ApiComponent, ApiProject } from '@specfy/api/src/types/api';
 import {
   IconArrowNarrowLeft,
   IconArrowNarrowRight,
   IconArrowsExchange,
+  IconTrash,
 } from '@tabler/icons-react';
-import {
-  wMin,
-  wMax,
-  hMax,
-  hMin,
-} from 'api/src/common/validators/flow.constants';
-import type { ApiComponent, ApiProject } from 'api/src/types/api';
-import { useEffect, useState } from 'react';
+import { Button, Tooltip } from 'antd';
+import classNames from 'classnames';
+import { useCallback, useEffect, useState } from 'react';
 import { useDebounce } from 'react-use';
-import type { Edge, Node } from 'reactflow';
-import {
-  useStoreApi,
-  useEdges,
-  useNodes,
-  useOnSelectionChange,
-} from 'reactflow';
+import type { Edge, Node, ReactFlowProps } from 'reactflow';
+import { useEdges, useNodes, useOnSelectionChange } from 'reactflow';
+
+import { PreviewNode } from '../../../../components/Flow/CustomNode';
 
 import cls from './index.module.scss';
 
@@ -39,9 +29,7 @@ import cls from './index.module.scss';
  * TODO: hamburger menu
  * TODO: revert should revert all sub node?
  * TODO: group/ungroup
- * TODO: clear listComponents after merge
  * TODO: load edited in other pages
- * TODO: disable highlight when transforming / moving
  *
  * TODO: https://github.com/antvis/X6/issues/3327
  */
@@ -54,7 +42,7 @@ import cls from './index.module.scss';
 
 //   // Edit mode
 //   const edit = useEdit();
-//   const isEditing = edit.isEnabled();
+//   const isEditing = edit.isEditing;
 
 //   // UI
 //   const [selected, setSelected] = useState<ApiComponent>();
@@ -229,89 +217,143 @@ import cls from './index.module.scss';
 //   );
 // };
 
-const EdgeRelation: React.FC<{
-  edge: Edge;
-  source: ApiComponent;
-  target: ApiComponent;
-}> = ({ edge, source, target }) => {
-  return (
-    <div className={cls.relation}>
-      {source.name}
+export interface Relation {
+  edge: Edge<EdgeData>;
+  source?: ApiComponent;
+  target?: ApiComponent;
+}
 
-      {edge.data.write && edge.data.read && (
-        <div className={cls.direction}>
-          <IconArrowsExchange />
-          <span className={cls.english}>read/write</span>
-        </div>
-      )}
-      {!edge.data.write && edge.data.read && (
-        <div className={cls.direction}>
-          <IconArrowNarrowLeft />
-          <span className={cls.english}>read</span>
-        </div>
-      )}
-      {edge.data.write && !edge.data.read && (
-        <div className={cls.direction}>
-          <IconArrowNarrowRight />
-          <span className={cls.english}>write</span>
-        </div>
-      )}
-      {target.name}
-    </div>
+// /**
+//  * Sort read/write, then read, then write
+//  * Then alphabetically.
+//  *
+//  * Not used right now because when we click it reorders which is painful.
+//  */
+// function sortRelation(a: Relation, b: Relation): number {
+//   if (a.edge.data!.read && a.edge.data!.write && !b.edge.data!.write) {
+//     return -1;
+//   }
+//   if (!a.edge.data!.read && !b.edge.data!.read && b.edge.data!.write) {
+//     return 1;
+//   }
+//   if (
+//     a.edge.data!.read &&
+//     a.edge.data!.write &&
+//     b.edge.data!.read &&
+//     b.edge.data!.write
+//   ) {
+//     return a.component.name > b.component.name ? 1 : -1;
+//   }
+
+//   return 0;
+// }
+
+const EdgeRelation: React.FC<
+  Relation & {
+    readonly: boolean;
+    onDirection: (rel: Relation) => void;
+  }
+> = ({ edge, source, target, readonly, onDirection }) => {
+  const onClick: React.ComponentProps<typeof Button>['onClick'] = (e) => {
+    e.preventDefault();
+    if (readonly) {
+      return;
+    }
+
+    onDirection({ edge, source, target });
+  };
+
+  return (
+    <tr className={classNames(cls.relation)}>
+      <td className={cls.source}>{source?.name}</td>
+
+      <td className={cls.to}>
+        <Tooltip title="Click to change direction" placement="left">
+          {edge.data!.write && edge.data!.read && (
+            <Button
+              className={cls.direction}
+              size="small"
+              type="ghost"
+              onClick={onClick}
+            >
+              <IconArrowsExchange />
+              <span className={cls.english}>read/write</span>
+            </Button>
+          )}
+          {!edge.data!.write && edge.data!.read && (
+            <Button
+              className={cls.direction}
+              size="small"
+              type="ghost"
+              onClick={onClick}
+            >
+              <IconArrowNarrowLeft />
+              <span className={cls.english}>read</span>
+            </Button>
+          )}
+          {edge.data!.write && !edge.data!.read && (
+            <Button
+              className={cls.direction}
+              size="small"
+              type="ghost"
+              onClick={onClick}
+            >
+              <IconArrowNarrowRight />
+              <span className={cls.english}>write</span>
+            </Button>
+          )}
+        </Tooltip>
+      </td>
+      {target && <td className={cls.target}>{target.name}</td>}
+    </tr>
   );
 };
 
 export const FlowEdit: React.FC<{
   proj: ApiProject;
   components: ApiComponent[];
-}> = ({ components }) => {
-  const store = useStoreApi();
+  readonly: boolean;
+  // Events
+  onNodesChange?: ReactFlowProps['onNodesChange'];
+  onRelationChange: (type: 'delete' | 'update', relation: Relation) => void;
+}> = ({ components, readonly, onNodesChange, onRelationChange }) => {
   const nodes = useNodes();
-  const edges = useEdges();
+  const edges = useEdges<EdgeData>();
 
   const [component, setComponent] = useState<ApiComponent | null>(null);
-  const [edge, setEdge] = useState<Edge | null>(null);
-  const [node, setNode] = useState<Node | null>(null);
-  const [relation, setRelation] = useState<
-    Array<{ edge: Edge; source: ApiComponent; target: ApiComponent }>
-  >([]);
-  const [source, setSource] = useState<ApiComponent | null>(null);
-  const [target, setTarget] = useState<ApiComponent | null>(null);
-
-  // Node Display
-  const [editingDimensions, setEditingDimensions] = useState<boolean>(false);
-  const [width, setWidth] = useState<number>(0);
-  const [height, setHeight] = useState<number>(0);
+  const [currNode, setNode] = useState<Node | null>(null);
+  const [from, setFrom] = useState<Relation[]>([]);
+  const [to, setTo] = useState<Relation[]>([]);
+  const [relation, setRelation] = useState<Relation | null>(null);
 
   // Select Nodes / Edges
   useOnSelectionChange({
     onChange: ({ nodes: nds, edges: eds }) => {
-      if (nds.length <= 0 || nds.length > 1) {
+      // Nodes
+      if (nds.length === 0 || nds.length > 1) {
+        // No selection or more than one
         setComponent(null);
         setNode(null);
+      } else {
+        // Only one
+        const nd = nds[0];
+        const comp = components.find((c) => c.id === nd.id)!;
 
-        if (eds.length <= 0 || eds.length > 1) {
-          return;
-        }
-
-        const fEdge = eds[0];
-        const fSource = components.find((c) => c.id === fEdge.source) || null;
-        const fTarget = components.find((c) => c.id === fEdge.target) || null;
-
-        setEdge(fEdge);
-        setSource(fSource);
-        setTarget(fTarget);
-        return;
+        setComponent(comp);
+        setNode(nd);
       }
 
-      const find = nds[0];
-      const comp = components.find((c) => c.id === find.id) || null;
+      // Edges
+      if (eds.length === 0 || eds.length > 1) {
+        // No selection or more than one
+        setRelation(null);
+      } else {
+        const edge = eds[0];
+        const source = components.find((c) => c.id === edge.source);
+        const target = components.find((c) => c.id === edge.target);
 
-      setEdge(null);
-      setComponent(comp);
-      setNode(find);
-      setWidth(find.width || wMin);
-      setHeight(find.height || hMin);
+        setRelation({ edge, source, target });
+      }
     },
   });
 
@@ -331,10 +373,6 @@ export const FlowEdit: React.FC<{
       const comp = components.find((c) => c.id === component.id) || null;
       setComponent(comp);
       setNode(find);
-      if (!editingDimensions) {
-        setWidth(find.width || wMin);
-        setHeight(find.height || hMin);
-      }
     },
     150,
     [nodes, component]
@@ -342,106 +380,141 @@ export const FlowEdit: React.FC<{
 
   // List relations of a node
   useEffect(() => {
-    if (!node) {
-      setRelation([]);
+    if (!currNode) {
+      setFrom([]);
+      setTo([]);
       return;
     }
 
-    const list = edges
-      .filter((edg) => {
-        return edg.source === node.id || edg.target === node.id;
-      })
-      .map((edg) => {
-        return {
-          edge: edg,
-          source: components.find((c) => c.id === edg.source)!,
-          target: components.find((c) => c.id === edg.target)!,
-        };
-      });
-
-    setRelation(list);
-  }, [node]);
-
-  // Update node dimensions
-  useEffect(() => {
-    if (!node || !width || !height) {
-      return;
+    const f: Relation[] = [];
+    const t: Relation[] = [];
+    for (const edge of edges) {
+      if (edge.source === currNode.id) {
+        f.push({
+          edge,
+          source: component!,
+          target: components.find((c) => c.id === edge.target)!,
+        });
+      } else if (edge.target === currNode.id) {
+        t.push({
+          edge,
+          source: components.find((c) => c.id === edge.source)!,
+          target: component!,
+        });
+      }
     }
 
-    store.getState().triggerNodeChanges([
-      {
-        id: node.id,
-        type: 'dimensions',
-        updateStyle: true,
-        resizing: true,
-        dimensions: {
-          width: Math.min(wMax, Math.max(wMin, width)),
-          height: Math.min(hMax, Math.max(hMin, height)),
-        },
-      },
-    ]);
-  }, [width, height]);
+    setFrom(f);
+    setTo(t);
+  }, [currNode]);
+
+  const onRelationDirection = useCallback(
+    (rel: Relation) => {
+      if (rel.edge.data!.write && rel.edge.data!.read) {
+        rel.edge.data!.write = false;
+      } else if (!rel.edge.data!.write && rel.edge.data!.read) {
+        rel.edge.data!.read = false;
+        rel.edge.data!.write = true;
+      } else {
+        rel.edge.data!.read = true;
+        rel.edge.data!.write = true;
+      }
+
+      onRelationChange('update', rel);
+    },
+    [nodes]
+  );
+
+  const deleteComponent = () => {
+    if (onNodesChange) {
+      onNodesChange([{ id: currNode!.id, type: 'remove' }]);
+    }
+  };
 
   return (
     <div className={cls.composition}>
-      {component && node && (
-        <div className={cls.block}>
-          <div className={cls.title}>{component.name}</div>
-          <div className={cls.inside}>
-            <div className={cls.xy}>
-              <div>x: {node.position.x.toFixed(0)}</div>
-              <div>y: {node.position.y.toFixed(0)}</div>
+      {component && currNode && (
+        <>
+          <div className={cls.block}>
+            <div className={cls.title}>
+              Component
+              {!readonly && (
+                <div>
+                  <Button
+                    icon={<IconTrash />}
+                    size="small"
+                    type="ghost"
+                    onClick={deleteComponent}
+                  />
+                </div>
+              )}
             </div>
-            <div>
-              <div className={cls.label}>Size</div>
-              <div className={cls.inputs}>
-                Width
-                <input
-                  className={cls.input}
-                  value={width}
-                  onChange={(e) => {
-                    setEditingDimensions(true);
-                    setWidth(parseInt(e.target.value, 10) || 0);
-                  }}
-                  onBlur={() => setEditingDimensions(false)}
-                />
-                Height
-                <input
-                  className={cls.input}
-                  value={height}
-                  onChange={(e) => {
-                    setEditingDimensions(true);
-                    setHeight(parseInt(e.target.value, 10) || 0);
-                  }}
-                  onBlur={() => setEditingDimensions(false)}
-                />
-              </div>
-            </div>
-            <div>
-              <div className={cls.label}>Relations</div>
-              <div>
-                {relation.map((rel) => {
-                  return <EdgeRelation key={rel.edge.id} {...rel} />;
-                })}
-                {relation.length <= 0 && (
-                  <div className={cls.empty}>Empty...</div>
-                )}
-              </div>
+            <div className={cls.preview}>
+              <PreviewNode {...currNode} />
             </div>
           </div>
-        </div>
+
+          <div className={cls.block}>
+            <div className={cls.title}>Outgoing</div>
+            <div>
+              {from.length ? (
+                <table className={cls.relations}>
+                  <tbody>
+                    {from.map((rel) => {
+                      return (
+                        <EdgeRelation
+                          key={rel.edge.id}
+                          {...rel}
+                          readonly={readonly}
+                          onDirection={onRelationDirection}
+                        />
+                      );
+                    })}
+                  </tbody>
+                </table>
+              ) : (
+                <div className={cls.empty}>Nothing to show.</div>
+              )}
+            </div>
+          </div>
+
+          <div className={cls.block}>
+            <div className={cls.title}>Incoming</div>
+            <div>
+              {to.length ? (
+                <table className={cls.relations}>
+                  <tbody>
+                    {to.map((rel) => {
+                      return (
+                        <EdgeRelation
+                          key={rel.edge.id}
+                          {...rel}
+                          readonly={readonly}
+                          onDirection={onRelationDirection}
+                        />
+                      );
+                    })}
+                  </tbody>
+                </table>
+              ) : (
+                <div className={cls.empty}>Nothing to show.</div>
+              )}
+            </div>
+          </div>
+        </>
       )}
-      {edge && (
+      {relation && (
         <div className={cls.block}>
           <div className={cls.title}>Edge</div>
-          <div className={cls.inside}>
-            <EdgeRelation
-              key={edge.id}
-              edge={edge}
-              source={source!}
-              target={target!}
-            />
-          </div>
+          <table className={cls.relations}>
+            <tbody>
+              <EdgeRelation
+                {...relation}
+                readonly={readonly}
+                onDirection={onRelationDirection}
+              />
+            </tbody>
+          </table>
         </div>
       )}
     </div>

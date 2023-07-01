@@ -17,7 +17,10 @@ import {
   uploadedDocumentsToDB,
   uploadToDocuments,
 } from '../../../models/revisions/helpers.document.js';
-import { uploadedStackToDB } from '../../../models/revisions/helpers.stack.js';
+import {
+  autoLayout,
+  uploadedStackToDB,
+} from '../../../models/revisions/helpers.stack.js';
 import type { PostUploadRevision } from '../../../types/api/index.js';
 
 function BodyVal(req: FastifyRequest) {
@@ -28,7 +31,7 @@ function BodyVal(req: FastifyRequest) {
       name: schemaRevision.shape.name,
       description: schemaRevision.shape.description,
       source: z.literal('github'),
-      // TODO: validate this
+      autoLayout: z.boolean().nullable(),
       stack: schemaStack.nullable(),
       blobs: z
         .array(
@@ -40,9 +43,11 @@ function BodyVal(req: FastifyRequest) {
             .strict()
         )
         .min(0)
-        .max(2000),
+        .max(2000)
+        .nullable(),
     })
     .strict()
+    .partial({ autoLayout: true })
     .superRefine(valPermissions(req));
 }
 
@@ -58,33 +63,37 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
       // TODO: validate all ids
       const data = val.data;
-      const parsed = uploadToDocuments(data.blobs);
+      const parsed = data.blobs ? uploadToDocuments(data.blobs) : [];
 
       const rev = await prisma.$transaction(
         async (tx) => {
           const blobsIds: string[] = [];
           // ---- Handle documents
-          const prevsDocuments = await tx.documents.findMany({
-            where: {
-              orgId: data.orgId,
-              projectId: data.projectId,
-              type: 'doc',
-              source: data.source,
-            },
-            take: 1000,
-            skip: 0,
-          });
+          if (data.blobs) {
+            const prevsDocuments = await tx.documents.findMany({
+              where: {
+                orgId: data.orgId,
+                projectId: data.projectId,
+                type: 'doc',
+                source: data.source,
+              },
+              take: 1000,
+              skip: 0,
+            });
 
-          const documents = uploadedDocumentsToDB(
-            parsed,
-            prevsDocuments,
-            data as PostUploadRevision['Body']
-          );
-          const blobs = await createBlobs(
-            [...documents.blobs, ...documents.deleted],
-            tx
-          );
-          blobsIds.push(...blobs);
+            const documents = uploadedDocumentsToDB(
+              parsed,
+              prevsDocuments,
+              data as PostUploadRevision['Body']
+            );
+
+            // Insert in db
+            const blobs = await createBlobs(
+              [...documents.blobs, ...documents.deleted],
+              tx
+            );
+            blobsIds.push(...blobs);
+          }
 
           // ---- Handle stack
           if (data.stack) {
@@ -101,11 +110,18 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
               prevsComponents,
               data as PostUploadRevision['Body']
             );
+
+            if (data.autoLayout) {
+              autoLayout(components);
+            }
+
+            // Insert in db
             const idsBlobsComponents = await createBlobs(
               [
                 ...components.blobs.filter((b) => {
                   return !components.unchanged.includes(b.typeId);
                 }),
+                ...components.deleted,
               ],
               tx
             );
@@ -121,6 +137,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
             });
             return;
           }
+
           // ---- Create Revision
           const revision = await tx.revisions.create({
             data: {

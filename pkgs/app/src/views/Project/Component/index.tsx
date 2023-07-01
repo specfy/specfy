@@ -1,7 +1,9 @@
+import { componentsToFlow } from '@specfy/api/src/common/flow/transform';
+import type { ComputedFlow } from '@specfy/api/src/common/flow/types';
+import type { ApiComponent, ApiProject } from '@specfy/api/src/types/api';
 import { IconDotsVertical } from '@tabler/icons-react';
 import type { MenuProps } from 'antd';
 import { App, Button, Dropdown, Tag, Typography } from 'antd';
-import type { ApiComponent, ApiProject } from 'api/src/types/api';
 import classnames from 'classnames';
 import type { MenuClickEventHandler } from 'rc-menu/lib/interface';
 import type React from 'react';
@@ -24,8 +26,6 @@ import { ContentDoc } from '../../../components/Content';
 import { EditorMini } from '../../../components/Editor/Mini';
 import { Flow, FlowWrapper } from '../../../components/Flow';
 import { Toolbar } from '../../../components/Flow/Toolbar';
-import type { ComputedFlow } from '../../../components/Flow/helpers';
-import { componentsToFlow } from '../../../components/Flow/helpers';
 import { FakeInput } from '../../../components/Input';
 import { NotFound } from '../../../components/NotFound';
 import { UpdatedAt } from '../../../components/UpdatedAt';
@@ -52,7 +52,7 @@ export const ComponentView: React.FC<{
 
   // Edition
   const edit = useEdit();
-  const isEditing = edit.isEnabled();
+  const isEditing = edit.isEditing;
   const storeComponents = useComponentsStore();
 
   useEffect(() => {

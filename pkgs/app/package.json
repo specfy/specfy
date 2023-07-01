@@ -1,17 +1,19 @@
 {
-  "name": "app",
+  "name": "@specfy/app",
   "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
+    "build:ts": "tsc -w",
     "preview": "vite preview",
     "test": "vitest"
   },
   "devDependencies": {
     "@ant-design/icons": "5.0.1",
     "@icons-pack/react-simple-icons": "6.2.0",
+    "@specfy/api": "file:../api",
     "@tabler/icons": "2.12.0",
     "@tabler/icons-react": "2.12.0",
     "@tanstack/react-query": "4.28.0",
@@ -66,10 +68,10 @@
     "react": "18.2.0",
     "react-diff-view": "3.0.3",
     "react-dom": "18.2.0",
-    "react-router-dom": "6.9.0",
+    "react-router-dom": "6.14.0",
     "react-syntax-highlighter": "15.5.0",
     "react-use": "17.4.0",
-    "reactflow": "11.7.2",
+    "reactflow": "11.7.4",
     "refractor": "3.6.0",
     "sass": "1.59.3",
     "slugify": "1.6.6",

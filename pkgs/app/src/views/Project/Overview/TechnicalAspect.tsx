@@ -1,5 +1,5 @@
+import type { ApiComponent } from '@specfy/api/src/types/api';
 import { Typography } from 'antd';
-import type { ApiComponent } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
 
 import { useComponentsStore } from '../../../common/store';

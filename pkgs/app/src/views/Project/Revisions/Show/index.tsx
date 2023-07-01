@@ -1,4 +1,13 @@
 import { LoadingOutlined } from '@ant-design/icons';
+import { flagRevisionApprovalEnabled } from '@specfy/api/src/models/revisions/constants';
+import type {
+  ApiProject,
+  ApiUser,
+  ApiRevision,
+  GetRevision,
+  ListRevisionBlobs,
+  ListRevisionChecks,
+} from '@specfy/api/src/types/api';
 import {
   IconDotsVertical,
   IconGitPullRequestClosed,
@@ -7,14 +16,6 @@ import {
 } from '@tabler/icons-react';
 import type { MenuProps } from 'antd';
 import { App, Button, Dropdown, Skeleton, Space, Typography } from 'antd';
-import type {
-  ApiProject,
-  ApiUser,
-  ApiRevision,
-  GetRevision,
-  ListRevisionBlobs,
-  ListRevisionChecks,
-} from 'api/src/types/api';
 import { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
@@ -289,7 +290,7 @@ export const ProjectRevisionsShow: React.FC<{
               </div>
             )}
             {edit && (
-              <FakeInput.H1
+              <FakeInput.H2
                 size="large"
                 value={title}
                 placeholder="Title..."
@@ -343,7 +344,9 @@ export const ProjectRevisionsShow: React.FC<{
           </div>
         )}
 
-        {!edit && <ReviewBar rev={rev} qp={qp} />}
+        {flagRevisionApprovalEnabled && !edit && (
+          <ReviewBar rev={rev} qp={qp} />
+        )}
 
         <div className={cls.staged}>
           {diffs.length > 0 ? (

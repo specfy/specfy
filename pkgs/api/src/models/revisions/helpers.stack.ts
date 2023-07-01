@@ -1,6 +1,8 @@
 import type { Components } from '@prisma/client';
 import type { AnalyserJson } from '@specfy/stack-analyser';
 
+import { computeLayout } from '../../common/flow/layout.js';
+import { componentsToFlow } from '../../common/flow/transform.js';
 import { getComponentSize } from '../../common/flow.js';
 import { pick } from '../../common/object.js';
 import { slugify, titleCase } from '../../common/string.js';
@@ -21,6 +23,11 @@ const changing: Array<keyof Components> = [
   'name',
 ];
 
+export interface StackToDB {
+  deleted: ApiBlobCreate[];
+  blobs: ApiBlobCreateComponent[];
+  unchanged: string[];
+}
 /**
  * Prepare blobs to create, update or delete
  */
@@ -28,11 +35,7 @@ export function uploadedStackToDB(
   parsed: AnalyserJson,
   prevs: Components[],
   data: PostUploadRevision['Body']
-): {
-  deleted: ApiBlobCreate[];
-  blobs: ApiBlobCreateComponent[];
-  unchanged: string[];
-} {
+): StackToDB {
   const now = new Date().toISOString();
   const unchanged: string[] = [];
 
@@ -61,6 +64,7 @@ export function uploadedStackToDB(
       idsMap[child.id] = current.id;
       idsMap[current.id] = current.id;
     } else {
+      // TODO: try to place new components without overlapping and without autolayout
       current = {
         id: child.id,
         blobId: null,
@@ -166,4 +170,15 @@ function getTitle(title: string): string {
   }
 
   return titleCase(name.replaceAll('-', ' '));
+}
+
+export function autoLayout(stack: StackToDB) {
+  const nodes = stack.blobs.map((b) => b.current!);
+  const layout = computeLayout(componentsToFlow(nodes));
+
+  for (const node of nodes) {
+    const rel = layout.nodes.find((l) => l.id === node.id)!;
+    node.display.pos = rel.pos;
+    node.display.size = rel.size;
+  }
 }

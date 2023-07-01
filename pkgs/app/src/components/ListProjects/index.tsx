@@ -1,8 +1,8 @@
 import { LoadingOutlined } from '@ant-design/icons';
+import type { ApiProject } from '@specfy/api/src/types/api';
 import { IconPlus, IconSearch, IconUsers } from '@tabler/icons-react';
 import { Button, Input } from 'antd';
 import Title from 'antd/es/typography/Title';
-import type { ApiProject } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 

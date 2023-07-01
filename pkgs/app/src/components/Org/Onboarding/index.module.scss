@@ -19,7 +19,7 @@
 
   padding: $p-l 0;
 
-  // border-bottom: 1px solid var(--border);
+  // border-bottom: 1px solid var(--border2);
 }
 
 .check {
@@ -36,7 +36,7 @@
   font-size: $font-2xl;
   color: white;
 
-  background-color: var(--accent);
+  background-color: var(--accent2);
   border-radius: 50%;
   outline: 2px solid white;
 
@@ -46,13 +46,13 @@
     margin: 0 9px;
 
     background-color: white;
-    border: 2px solid var(--accent);
+    border: 2px solid var(--accent2);
   }
 
   .donut {
     width: 6px;
     height: 6px;
-    background-color: var(--accent);
+    background-color: var(--accent2);
     border-radius: 50%;
   }
 }
@@ -66,7 +66,7 @@
   width: 1px;
   height: 60px;
 
-  border-left: 2px solid var(--border);
+  border-left: 2px solid var(--border2);
 }
 
 
@@ -75,7 +75,7 @@
 }
 
 .sub {
-  color: var(--textLight);
+  color: var(--text2);
 }
 
 .action {

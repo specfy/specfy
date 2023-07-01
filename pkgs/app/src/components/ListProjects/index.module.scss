@@ -18,7 +18,7 @@
 
 .item {
   padding: $p-xl $p $p-2xl $p-m !important;
-  border-bottom: 1px solid var(--borderLight);
+  border-bottom: 1px solid var(--border1);
 
   &.tdAvatar {
     width: 42px;
@@ -29,5 +29,5 @@
   display: flex;
   gap: $p;
   font-size: $font-s;
-  color: var(--textLight)
+  color: var(--text2)
 }

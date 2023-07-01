@@ -1,6 +1,6 @@
+import type { ApiProject } from '@specfy/api/src/types/api';
 import { IconCirclesRelation } from '@tabler/icons-react';
 import { Typography, Input, Button, Modal, App, Form } from 'antd';
-import type { ApiProject } from 'api/src/types/api';
 import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';

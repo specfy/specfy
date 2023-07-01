@@ -1,5 +1,5 @@
+import type { ApiMe, DeleteMe, GetMe, PutMe } from '@specfy/api/src/types/api';
 import { useQuery } from '@tanstack/react-query';
-import type { ApiMe, DeleteMe, GetMe, PutMe } from 'api/src/types/api';
 
 import { queryClient } from '../common/query';
 
@@ -31,7 +31,7 @@ export async function updateMe(data: PutMe['Body']): Promise<PutMe['Reply']> {
   const { json, res } = await fetchApi<PutMe>(`/me`, { body: data }, 'PUT');
 
   if (res.status === 200) {
-    queryClient.removeQueries(['listOrgs']);
+    queryClient.invalidateQueries(['listOrgs']);
   }
 
   return json;

@@ -1,6 +1,6 @@
 import { GithubOutlined } from '@ant-design/icons';
+import type { FieldsErrors } from '@specfy/api/src/types/api';
 import { App, Button, Form, Input } from 'antd';
-import type { FieldsErrors } from 'api/src/types/api';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';

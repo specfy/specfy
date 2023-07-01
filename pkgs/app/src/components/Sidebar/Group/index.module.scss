@@ -3,7 +3,7 @@
 .group {
   padding: 0 0 $p-xl 0;
   font-size: $font-s;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--border2);
 
   .head {
     cursor: pointer;
@@ -72,8 +72,8 @@
     }
 
     &.selected {
-      background-color: var(--bgLight);
-      border-left-color: var(--accent);
+      background-color: var(--bg2);
+      border-left-color: var(--accent2);
     }
   }
 }

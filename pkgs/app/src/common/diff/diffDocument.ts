@@ -1,5 +1,5 @@
+import type { ApiBlobDocument } from '@specfy/api/src/types/api';
 import type { Editor } from '@tiptap/react';
-import type { ApiBlobDocument } from 'api/src/types/api';
 import { diffWordsWithSpace } from 'diff';
 
 import type { DocumentBlobWithDiff } from '../../types/blobs';

@@ -2,6 +2,7 @@ import type { Prisma } from '@prisma/client';
 
 export interface JobDeployConfig {
   url: string;
+  autoLayout?: boolean;
   hook?: {
     id: string;
     ref: string;

@@ -1,28 +1,35 @@
+import { omit } from '@specfy/api/src/common/object';
 import {
-  IconGitPullRequest,
-  IconGitPullRequestDraft,
-} from '@tabler/icons-react';
-import { App, Button, Form, Result, Typography } from 'antd';
-import { omit } from 'api/src/common/object';
+  flagRevisionApprovalEnabled,
+  flagRevisionDescRequired,
+} from '@specfy/api/src/models/revisions/constants';
 import type {
   ApiBlobCreate,
   ApiProject,
   BlockLevelZero,
   PostRevision,
-} from 'api/src/types/api';
+} from '@specfy/api/src/types/api';
+import {
+  IconGitPullRequest,
+  IconGitPullRequestDraft,
+} from '@tabler/icons-react';
+import { App, Button, Checkbox, Form, Result, Typography } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { createRevision } from '../../../../api';
+import { isError } from '../../../../api/helpers';
 import { getEmptyDoc } from '../../../../common/content';
 import { proposeTitle } from '../../../../common/diff';
+import { i18n } from '../../../../common/i18n';
 import originalStore, { useStagingStore } from '../../../../common/store';
 import { titleSuffix } from '../../../../common/string';
 import { Card } from '../../../../components/Card';
 import { Container } from '../../../../components/Container';
 import { DiffCard } from '../../../../components/DiffCard';
 import { Editor } from '../../../../components/Editor';
+import { Flex } from '../../../../components/Flex';
 import { FakeInput } from '../../../../components/Input';
 import type { RouteProject } from '../../../../types/routes';
 
@@ -52,6 +59,9 @@ export const ProjectRevisionCreate: React.FC<{
   const [description, setDescription] = useState<BlockLevelZero>(() =>
     getEmptyDoc(true)
   );
+  const [autoMerge, setAutoMerge] = useState<boolean>(
+    flagRevisionApprovalEnabled === false
+  );
 
   // Compute changes
   useEffect(() => {
@@ -70,7 +80,9 @@ export const ProjectRevisionCreate: React.FC<{
       enoughContent = false;
     }
 
-    setCanSubmit(title !== '' && enoughContent);
+    setCanSubmit(
+      title !== '' && flagRevisionDescRequired ? enoughContent : true
+    );
   }, [title, description]);
 
   // TODO: reup this
@@ -124,9 +136,11 @@ export const ProjectRevisionCreate: React.FC<{
       name: title,
       description,
       blobs,
+      draft: !autoMerge,
     });
 
-    if ('error' in res) {
+    if (isError(res)) {
+      message.error(i18n.errorOccurred);
       return;
     }
 
@@ -134,7 +148,11 @@ export const ProjectRevisionCreate: React.FC<{
     originalStore.revertAll(staging.diffs);
 
     message.success('Revision created');
-    navigate(`/${params.org_id}/${params.project_slug}/revisions/${res.id}`);
+    navigate(
+      `/${params.org_id}/${params.project_slug}/revisions/${res.id}?${
+        autoMerge ? 'automerge=true' : ''
+      }`
+    );
   };
 
   if (staging.diffs.length === 0) {
@@ -178,14 +196,23 @@ export const ProjectRevisionCreate: React.FC<{
               </Typography>
             </Card.Content>
             <Card.Actions>
-              <Button
-                type="primary"
-                disabled={!canSubmit}
-                htmlType="submit"
-                icon={<IconGitPullRequestDraft />}
-              >
-                Propose changes
-              </Button>
+              <Flex gap="l">
+                <Checkbox
+                  type="checkbox"
+                  checked={autoMerge}
+                  onChange={(el) => setAutoMerge(el.target.checked)}
+                >
+                  Merge directly
+                </Checkbox>
+                <Button
+                  type="primary"
+                  disabled={!canSubmit}
+                  htmlType="submit"
+                  icon={<IconGitPullRequestDraft />}
+                >
+                  {autoMerge ? 'Propose and Merge' : 'Propose changes'}
+                </Button>
+              </Flex>
             </Card.Actions>
           </Form>
         </Card>

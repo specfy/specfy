@@ -1,3 +1,4 @@
+import type { ComputedFlow } from '@specfy/api/src/common/flow/types';
 import classNames from 'classnames';
 import type { CSSProperties } from 'react';
 import { useState, useEffect } from 'react';
@@ -13,73 +14,92 @@ import {
 
 import 'reactflow/dist/style.css';
 import CustomNode from './CustomNode';
-import type { ComputedFlow } from './helpers';
 import { highlightNode } from './helpers';
 import cls from './index.module.scss';
 
 const nodeTypes: NodeTypes = {
   custom: CustomNode,
 };
-// const edgeTypes: EdgeTypes = {
-//   floating: SimpleFloatingEdge,
-// };
 
 export const Flow: React.FC<{
   flow: ComputedFlow;
-  readonly?: true;
+  readonly?: boolean;
   highlight?: string;
   downlightOther?: boolean;
   keepHighlightOnSelect?: boolean;
-}> = ({ flow, highlight, readonly, downlightOther, keepHighlightOnSelect }) => {
+
+  // Events
+  onNodesChange?: ReactFlowProps['onNodesChange'];
+  onEdgesChange?: ReactFlowProps['onEdgesChange'];
+  onConnect?: ReactFlowProps['onConnect'];
+}> = ({
+  flow,
+  highlight,
+  readonly,
+  downlightOther,
+  keepHighlightOnSelect,
+  onNodesChange,
+  onEdgesChange,
+  onConnect,
+}) => {
   const [hasHighlight, setHasHighlight] = useState(!!highlight);
-  const [nodes, setNodes, onNodesChange] = useNodesState(flow.nodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState(flow.edges);
+  const [hover, setHover] = useState<string | null>(null);
+  const [nodes, setNodes, handleNodesChange] = useNodesState(flow.nodes);
+  const [edges, setEdges, handleEdgesChange] = useEdgesState(flow.edges);
   const [select, setSelect] = useState<string | null>(null);
 
+  // Highlight change usually means we switched the parent page
   useEffect(() => {
-    if (!highlight) {
+    if (!highlight && !hover) {
       return;
     }
 
-    const updates = highlightNode({ id: highlight, nodes, edges });
-
+    const updates = highlightNode({
+      id: hover || highlight!,
+      nodes,
+      edges,
+    });
     setEdges(updates.edges);
     setNodes(updates.nodes);
-  }, [highlight]);
+  }, [flow.edges, highlight]);
 
+  // We changed the parent page
   useEffect(() => {
+    console.log(readonly);
     setEdges((prev) => {
       return flow.edges.map((edge) => {
         const id = `${edge.source}->${edge.target}`;
-        const f = prev.find((n) => n.id === id);
-        if (!f) {
-          return edge;
-        }
-        return { ...edge, className: f.className };
+        const find = prev.find((n) => n.id === id) || edge;
+        find.deletable = !readonly;
+        find.updatable = !readonly;
+        return find;
       });
     });
     setNodes((prev) => {
       return flow.nodes.map((node) => {
-        const f = prev.find((n) => n.id === node.id);
-        if (!f) {
-          return node;
-        }
-        return { ...node, className: f.className };
+        const find = prev.find((n) => n.id === node.id) || node;
+        find.deletable = !readonly;
+        find.draggable = !readonly;
+        find.connectable = !readonly;
+
+        return find;
       });
     });
-  }, [flow]);
+  }, [readonly, flow]);
 
   const setHighlightNode = (id: string) => {
     const updates = highlightNode({ id, nodes, edges });
     setEdges(updates.edges);
     setNodes(updates.nodes);
     setHasHighlight(true);
+    setHover(id);
   };
   const unsetHighlightNode = () => {
     const updates = highlightNode({ id: highlight || 'no', nodes, edges });
     setEdges(updates.edges);
     setNodes(updates.nodes);
     setHasHighlight(!!highlight);
+    setHover(null);
   };
 
   const onNodeEnter: ReactFlowProps['onNodeMouseEnter'] = (_, node) => {
@@ -98,16 +118,15 @@ export const Flow: React.FC<{
     unsetHighlightNode();
   };
 
-  const onEdgesDelete: ReactFlowProps['onEdgesDelete'] = (del) => {
-    console.log('edge deleted', del);
-  };
-
   const onSelect: ReactFlowProps['onSelectionChange'] = (opts) => {
     if (opts.nodes.length <= 0 || opts.nodes.length > 1) {
       if (select) {
         unsetHighlightNode();
       }
       setSelect(null);
+      return;
+    }
+    if (select === opts.nodes[0].id) {
       return;
     }
 
@@ -127,31 +146,31 @@ export const Flow: React.FC<{
     >
       <ReactFlow
         nodes={nodes}
-        onNodesChange={onNodesChange}
         edges={edges}
-        onEdgesChange={onEdgesChange}
         minZoom={0.2}
         maxZoom={3}
         onNodeMouseEnter={onNodeEnter}
         onNodeMouseLeave={onNodeLeave}
         onSelectionChange={onSelect}
-        // onConnect={onConnect}
         nodeTypes={nodeTypes}
-        // edgeTypes={edgeTypes}
         fitView
         fitViewOptions={{ maxZoom: 1.3 }}
         connectionMode={ConnectionMode.Loose}
-        // isValidConnection={isValidConnection}
-        // onNodeDrag={onNodeDrag}
-        // onNodeDragStop={onNodeDrop}
         snapToGrid
         snapGrid={[5, 5]}
-        nodesDraggable={!readonly}
-        nodesConnectable={!readonly}
-        elementsSelectable={!readonly}
         proOptions={{ hideAttribution: true }}
-        onEdgesDelete={onEdgesDelete}
         elevateEdgesOnSelect={true}
+        elevateNodesOnSelect={true}
+        // Bubbled
+        onConnect={onConnect}
+        onNodesChange={(changes) => {
+          handleNodesChange(changes);
+          if (onNodesChange) onNodesChange(changes);
+        }}
+        onEdgesChange={(changes) => {
+          handleEdgesChange(changes);
+          if (onEdgesChange) onEdgesChange(changes);
+        }}
       >
         <Background id="1" gap={10} color="#c5c7ca" />
         <Background

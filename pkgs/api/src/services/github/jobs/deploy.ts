@@ -194,6 +194,7 @@ export class JobDeploy extends Job {
           job.projectId!,
           '-d',
           '/',
+          config.autoLayout ? '--auto-layout' : '',
           this.folderName,
         ],
         {

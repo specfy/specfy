@@ -1,6 +1,6 @@
 import * as Tabs from '@radix-ui/react-tabs';
+import type { ApiOrg } from '@specfy/api/src/types/api';
 import { Typography } from 'antd';
-import type { ApiOrg } from 'api/src/types/api';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 

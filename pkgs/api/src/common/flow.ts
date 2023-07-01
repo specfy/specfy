@@ -1,4 +1,4 @@
-import type { ApiProject } from 'api/src/types/api';
+import type { ApiProject } from '@specfy/api/src/types/api';
 
 import type { ApiComponent } from '../types/api/index.js';
 

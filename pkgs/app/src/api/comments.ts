@@ -1,4 +1,4 @@
-import type { CommentRevision } from 'api/src/types/api';
+import type { CommentRevision } from '@specfy/api/src/types/api';
 
 import { queryClient } from '../common/query';
 

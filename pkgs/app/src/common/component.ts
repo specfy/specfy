@@ -50,17 +50,17 @@ import {
   Gnubash,
   CssThree,
 } from '@icons-pack/react-simple-icons';
-import type { AllowedKeys, TechItem } from '@specfy/stack-analyser';
-import { list } from '@specfy/stack-analyser/dist/common/techs';
-import { nanoid } from 'api/src/common/id';
+import { nanoid } from '@specfy/api/src/common/id';
 import {
   hDef,
   hDefHost,
   wDef,
   wDefHost,
-} from 'api/src/common/validators/flow.constants';
-import type { ApiComponent } from 'api/src/types/api';
-import type { FlowEdge } from 'api/src/types/db';
+} from '@specfy/api/src/common/validators/flow.constants';
+import type { ApiComponent } from '@specfy/api/src/types/api';
+import type { FlowEdge } from '@specfy/api/src/types/db';
+import type { AllowedKeys, TechItem } from '@specfy/stack-analyser';
+import { list } from '@specfy/stack-analyser/dist/common/techs';
 
 import { getEmptyDoc } from './content';
 import type { ComponentsState, ProjectState } from './store';

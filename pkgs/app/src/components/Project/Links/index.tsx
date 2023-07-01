@@ -1,8 +1,8 @@
 import { LinkOutlined } from '@ant-design/icons';
 import type { IconType } from '@icons-pack/react-simple-icons';
+import type { DBProjectLink } from '@specfy/api/src/types/db';
 import { IconPlus, IconTrash } from '@tabler/icons-react';
 import { Button, Input, Typography } from 'antd';
-import type { DBProjectLink } from 'api/src/types/db';
 import classnames from 'classnames';
 import { useMemo, useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
@@ -85,7 +85,7 @@ export const ProjectLinks: React.FC = () => {
   const { updateField, project } = useProjectStore();
   const [open, setOpen] = useState(false);
 
-  const isEditing = edit.isEnabled();
+  const isEditing = edit.isEditing;
 
   useClickAway(ref, () => {
     // Remove empty link

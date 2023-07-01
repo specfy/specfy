@@ -14,7 +14,7 @@ export default defineConfig({
       persistent: true,
       expression: ['match', '*.ts', 'basename'],
       onChange: async ({ spawn }: ChangeEvent) => {
-        await spawn`npm run -w api build`;
+        await spawn`npm run -w @specfy/api build`;
       },
     },
     {
@@ -30,7 +30,7 @@ export default defineConfig({
         ['anyof', ['match', '*.js', 'basename']],
       ],
       onChange: async ({ spawn }: ChangeEvent) => {
-        await spawn`npm run -w api dev:built`;
+        await spawn`npm run -w @specfy/api dev:built`;
       },
       retry: {
         retries: 1,

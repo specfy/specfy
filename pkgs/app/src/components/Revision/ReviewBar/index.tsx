@@ -1,10 +1,10 @@
-import { IconCircleCheck } from '@tabler/icons-react';
-import { Button, Typography, Space, App } from 'antd';
 import type {
   ApiRevision,
   BlockLevelZero,
   GetRevision,
-} from 'api/src/types/api';
+} from '@specfy/api/src/types/api';
+import { IconCircleCheck } from '@tabler/icons-react';
+import { Button, Typography, Space, App } from 'antd';
 import classnames from 'classnames';
 import { useState, useEffect, useRef } from 'react';
 import { useClickAway } from 'react-use';

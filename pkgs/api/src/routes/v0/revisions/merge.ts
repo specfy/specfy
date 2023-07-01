@@ -13,6 +13,7 @@ import {
   createProjectActivity,
   createRevisionActivity,
 } from '../../../models/index.js';
+import { flagRevisionApprovalEnabled } from '../../../models/revisions/constants.js';
 import type {
   MergeRevision,
   MergeRevisionError,
@@ -30,10 +31,12 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
       await prisma.$transaction(async (tx) => {
         // Check if we have reviews
-        const reviews = await checkReviews(rev, tx);
-        if (!reviews.check || rev.status !== 'approved') {
-          reason = 'no_reviews';
-          return;
+        if (flagRevisionApprovalEnabled) {
+          const reviews = await checkReviews(rev, tx);
+          if (!reviews.check || rev.status !== 'approved') {
+            reason = 'no_reviews';
+            return;
+          }
         }
 
         if (rev.merged) {
@@ -139,8 +142,14 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
               });
               continue;
             } else if (item.parent) {
+              const curr = item.blob
+                .current as Prisma.ComponentsUncheckedUpdateInput;
               const up = await tx.components.update({
-                data: { ...(item.blob.current as any), blobId: item.blob.id },
+                data: {
+                  ...curr,
+                  blobId: item.blob.id,
+                  sourcePath: (curr.sourcePath as any) || undefined,
+                },
                 where: { id: blob.typeId },
               });
               await createComponentActivity({

@@ -1,5 +1,5 @@
+import type { ApiProject, ApiPerm, ApiUser } from '@specfy/api/src/types/api';
 import { Typography, Input } from 'antd';
-import type { ApiProject, ApiPerm, ApiUser } from 'api/src/types/api';
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useDebounce } from 'react-use';

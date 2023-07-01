@@ -1,5 +1,5 @@
+import type { BlockLevelZero } from '@specfy/api/src/types/api';
 import { Typography } from 'antd';
-import type { BlockLevelZero } from 'api/src/types/api';
 import { useMemo } from 'react';
 
 import type { DocumentBlobWithDiff } from '../../types/blobs';
@@ -18,13 +18,13 @@ export const DiffCardDocument: React.FC<{
   const Title = useMemo(() => {
     const hasName = diff.diffs.find((d) => d.key === 'name');
     return (
-      <Typography.Title level={3}>
+      <h2>
         {hasName && !diff.blob.created ? (
           <UnifiedDiff key={hasName.key} diff={hasName} />
         ) : (
           using.name || ''
         )}
-      </Typography.Title>
+      </h2>
     );
   }, [diff]);
 

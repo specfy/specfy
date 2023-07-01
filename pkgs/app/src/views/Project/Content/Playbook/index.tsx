@@ -1,6 +1,6 @@
+import type { ApiDocument, ApiProject } from '@specfy/api/src/types/api';
 import { Typography, Space } from 'antd';
 import Title from 'antd/es/typography/Title';
-import type { ApiDocument, ApiProject } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
@@ -23,7 +23,7 @@ export const Playbook: React.FC<{
 
   // Edition
   const edit = useEdit();
-  const isEditing = edit.isEnabled();
+  const isEditing = edit.isEditing;
   const [title, setTitle] = useState('');
 
   useEffect(() => {

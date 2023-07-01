@@ -14,7 +14,7 @@
 
   color: $gray-500;
 
-  border-bottom: 1px solid var(--borderLight);
+  border-bottom: 1px solid var(--border1);
 
   .label {
     display: flex;
@@ -51,7 +51,7 @@
 
   &:last-child {
     padding: $p-2xl $p-5xl;
-    background-color: var(--bgLighter);
+    background-color: var(--bg1);
     border-bottom: none;
 
     &.merged {

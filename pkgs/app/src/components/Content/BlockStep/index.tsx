@@ -1,5 +1,9 @@
+import type {
+  ApiDocument,
+  BlockDocument,
+  BlockStep,
+} from '@specfy/api/src/types/api';
 import { IconCaretDown, IconCaretRight } from '@tabler/icons-react';
-import type { ApiDocument, BlockDocument, BlockStep } from 'api/src/types/api';
 import classnames from 'classnames';
 import { useEffect, useRef, useState } from 'react';
 

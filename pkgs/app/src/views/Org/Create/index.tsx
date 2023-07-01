@@ -1,6 +1,6 @@
+import type { FieldsErrors } from '@specfy/api/src/types/api';
 import { IconCircleArrowRight } from '@tabler/icons-react';
 import { App, Button, Form, Input } from 'antd';
-import type { FieldsErrors } from 'api/src/types/api';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';

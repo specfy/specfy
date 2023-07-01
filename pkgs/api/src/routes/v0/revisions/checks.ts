@@ -5,6 +5,7 @@ import { toApiReview } from '../../../common/formatters/review.js';
 import { checkReviews } from '../../../common/revision/index.js';
 import { prisma } from '../../../db/index.js';
 import { getRevision } from '../../../middlewares/getRevision.js';
+import { flagRevisionApprovalEnabled } from '../../../models/revisions/constants.js';
 import type { ListRevisionChecks } from '../../../types/api/index.js';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
@@ -31,8 +32,9 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       });
 
       const canMerge =
-        rev.status === 'approved' &&
-        checks.reviews.check &&
+        (flagRevisionApprovalEnabled
+          ? rev.status === 'approved' && checks.reviews.check
+          : rev.status === 'waiting' || rev.status === 'approved') &&
         outdatedBlobs.length === 0;
 
       res.status(200).send({

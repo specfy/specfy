@@ -5,7 +5,7 @@ import { prisma } from '../../db/index.js';
 (async () => {
   const res = await prisma.projects.findFirst({
     where: {
-      name: 'Analytics',
+      name: 'Crawler',
     },
   });
   if (!res) {
@@ -19,7 +19,7 @@ import { prisma } from '../../db/index.js';
       projectId: res.id,
       type: 'deploy',
       status: 'pending',
-      config: { url: 'specfy/specfy' },
+      config: { url: 'specfy/specfy', autoLayout: true },
       userId: null,
       createdAt: new Date(),
       updatedAt: new Date(),

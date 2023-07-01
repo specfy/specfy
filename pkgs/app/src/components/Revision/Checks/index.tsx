@@ -1,3 +1,8 @@
+import { flagRevisionApprovalEnabled } from '@specfy/api/src/models/revisions/constants';
+import type {
+  ApiRevision,
+  ListRevisionChecks,
+} from '@specfy/api/src/types/api';
 import {
   IconCircleCheckFilled,
   IconExclamationCircle,
@@ -6,9 +11,10 @@ import {
   IconEyeOff,
 } from '@tabler/icons-react';
 import { App, Button } from 'antd';
-import type { ApiRevision, ListRevisionChecks } from 'api/src/types/api';
 import classnames from 'classnames';
 import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useMount, useSearchParam } from 'react-use';
 
 import { mergeRevision, rebaseRevision } from '../../../api';
 import { isError } from '../../../api/helpers';
@@ -24,25 +30,29 @@ export const Checks: React.FC<{
   onClick: (status: ApiRevision['status']) => void;
 }> = ({ rev, checks, qp, onClick }) => {
   const { message } = App.useApp();
-
+  const autoMerge = useSearchParam('automerge');
+  const navigate = useNavigate();
+  const loc = useLocation();
   const [merging, setMerging] = useState<boolean>(false);
 
   const onMerge = async () => {
     setMerging(true);
     const resMerge = await mergeRevision({ ...qp, revision_id: rev.id });
-    if (isError(resMerge)) {
-      message.error(i18n.errorOccurred);
-      return;
-    }
-
     setMerging(false);
-    if ('error' in resMerge) {
-      message.error(i18n.errorOccurred);
+    if (isError(resMerge)) {
+      message.error('Revision could not be merged');
       return;
     }
 
     message.success('Revision merged');
   };
+
+  useMount(() => {
+    if (autoMerge && checks.canMerge && !rev.merged) {
+      setTimeout(onMerge, 500);
+      navigate(loc.pathname, { replace: true });
+    }
+  });
 
   // --------- Rebase
   const [rebasing, setRebasing] = useState<boolean>(false);
@@ -79,7 +89,7 @@ export const Checks: React.FC<{
         </div>
       )}
 
-      {rev.status === 'waiting' && (
+      {flagRevisionApprovalEnabled && rev.status === 'waiting' && (
         <div className={classnames(cls.checkLine, cls.warning)}>
           <div className={cls.label}>
             <IconExclamationCircle /> A review is required to merge

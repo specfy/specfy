@@ -46,6 +46,7 @@ export type ApiBlobCreateComponent = DBBlobComponentBase &
 export type PostRevision = Res<{
   Body: Pick<ApiRevision, 'description' | 'name' | 'orgId' | 'projectId'> & {
     blobs: ApiBlobCreate[];
+    draft: boolean;
   };
   Success: Pick<ApiRevision, 'id'>;
 }>;

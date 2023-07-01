@@ -1,4 +1,4 @@
-import type { ApiProject } from 'api/src/types/api';
+import type { ApiProject } from '@specfy/api/src/types/api';
 import { Helmet } from 'react-helmet-async';
 
 import { titleSuffix } from '../../../common/string';

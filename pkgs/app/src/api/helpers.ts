@@ -1,4 +1,4 @@
-import type { ResErrors, ResValidationError } from 'api/src/types/api';
+import type { ResErrors, ResValidationError } from '@specfy/api/src/types/api';
 
 export function isError(res: unknown): res is ResErrors {
   return typeof res === 'object' && res !== null && 'error' in res;

@@ -1,6 +1,6 @@
+import type { ApiComponent } from '@specfy/api/src/types/api';
 import { IconCircleArrowRight } from '@tabler/icons-react';
 import { Button, Input, Select, Typography } from 'antd';
-import type { ApiComponent } from 'api/src/types/api';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';

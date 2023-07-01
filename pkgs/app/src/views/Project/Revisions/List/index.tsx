@@ -1,11 +1,16 @@
 import { LoadingOutlined } from '@ant-design/icons';
+import { flagRevisionApprovalEnabled } from '@specfy/api/src/models/revisions/constants';
+import type {
+  ApiProject,
+  ApiRevision,
+  ListRevisions,
+} from '@specfy/api/src/types/api';
 import {
   IconChevronRight,
   IconCircleXFilled,
   IconSearch,
 } from '@tabler/icons-react';
 import { Button, Input, Select, Table } from 'antd';
-import type { ApiProject, ApiRevision, ListRevisions } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
@@ -88,7 +93,9 @@ export const ProjectRevisionsList: React.FC<{
                   >
                     <Select.Option value="opened">Opened</Select.Option>
                     <Select.Option value="waiting">Waiting</Select.Option>
-                    <Select.Option value="approved">Approved</Select.Option>
+                    {flagRevisionApprovalEnabled && (
+                      <Select.Option value="approved">Approved</Select.Option>
+                    )}
                     <Select.Option value="merged">Merged</Select.Option>
                     <Select.Option value="all">All</Select.Option>
                   </Select>

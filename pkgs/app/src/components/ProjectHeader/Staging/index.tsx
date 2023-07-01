@@ -12,7 +12,6 @@ import originalStore, {
 } from '../../../common/store';
 import { useEdit } from '../../../hooks/useEdit';
 import type { Allowed, BlobAndDiffs } from '../../../types/blobs';
-import { Time } from '../../Time';
 
 import cls from './index.module.scss';
 
@@ -22,7 +21,7 @@ export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
   const { components } = useComponentsStore();
   const { documents } = useDocumentsStore();
   const staging = useStagingStore();
-  const isEditing = edit.isEnabled();
+  const isEditing = edit.isEditing;
 
   useDebounce(
     () => {
@@ -115,7 +114,9 @@ export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
   return (
     <div className={cls.staging}>
       <Tooltip
-        title={isEditing ? 'Edition is active' : 'Click to enable edition'}
+        title={
+          isEditing ? 'Click to disable edition' : 'Click to enable edition'
+        }
         placement="bottomLeft"
       >
         {isEditing ? (
@@ -123,7 +124,7 @@ export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
             className={cls.badge}
             count={showBadge ? staging.count : 0}
             size="small"
-            color="#677AF2"
+            color="hsl(226, 70.0%, 55.5%)"
           >
             <div
               className={cls.edit}
@@ -145,15 +146,23 @@ export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
           </div>
         )}
       </Tooltip>
-      {staging.count > 0 ? (
+      {isEditing ? (
         <Link to={`/${project!.orgId}/${project!.slug}/revisions/current`}>
-          <Button type="default">
-            {staging.count} pending {staging.count > 1 ? 'changes' : 'change'}
-          </Button>
+          <Badge
+            count={staging.count}
+            size="small"
+            color="hsl(226, 70.0%, 55.5%)"
+          >
+            <Button type="primary">
+              Commit {staging.count > 1 ? 'changes' : 'change'}
+            </Button>
+          </Badge>
         </Link>
       ) : (
         <div>
-          Updated <Time time={project!.updatedAt} />
+          <Button icon={<IconEdit />} onClick={() => edit.enable(true)}>
+            Edit
+          </Button>
         </div>
       )}
     </div>

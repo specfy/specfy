@@ -1,4 +1,4 @@
-import type { ApiComponent } from 'api/src/types/api';
+import type { ApiComponent } from '@specfy/api/src/types/api';
 import classnames from 'classnames';
 import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';

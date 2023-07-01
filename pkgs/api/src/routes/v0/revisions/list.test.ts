@@ -55,7 +55,7 @@ describe('GET /revisions', () => {
     await shouldNotAllowQueryParams(res);
   });
 
-  it.only('should fail on unknown org/project', async () => {
+  it('should fail on unknown org/project', async () => {
     const { token } = await seedSimpleUser();
     const res = await t.fetch.get('/0/revisions', {
       token,

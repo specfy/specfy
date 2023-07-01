@@ -3,6 +3,7 @@ import { beforeAll, afterAll, describe, it, expect } from 'vitest';
 
 import { prisma } from '../../../db/index.js';
 import { createComponentBlob } from '../../../models/index.js';
+import { flagRevisionApprovalEnabled } from '../../../models/revisions/constants.js';
 import type { TestSetup } from '../../../test/each.js';
 import { setupBeforeAll, setupAfterAll } from '../../../test/each.js';
 import { isError, isSuccess } from '../../../test/fetch.js';
@@ -131,22 +132,25 @@ describe('POST /revisions/:revision_id/merge', () => {
     });
   });
 
-  it('should not merge a non ready revision', async () => {
-    const { token, org, project, user } = await seedWithProject();
-    const revision = await seedRevision(user, org, project);
+  it.skipIf(flagRevisionApprovalEnabled === false)(
+    'should not merge a non ready revision',
+    async () => {
+      const { token, org, project, user } = await seedWithProject();
+      const revision = await seedRevision(user, org, project);
 
-    // Merge
-    const res = await t.fetch.post(`/0/revisions/${revision.id}/merge`, {
-      token,
-      Querystring: { org_id: org.id, project_id: project.id },
-    });
-    isError(res.json);
-    expect(res.statusCode).toBe(400);
-    expect(res.json.error).toStrictEqual({
-      code: 'cant_merge',
-      reason: 'no_reviews',
-    });
-  });
+      // Merge
+      const res = await t.fetch.post(`/0/revisions/${revision.id}/merge`, {
+        token,
+        Querystring: { org_id: org.id, project_id: project.id },
+      });
+      isError(res.json);
+      expect(res.statusCode).toBe(400);
+      expect(res.json.error).toStrictEqual({
+        code: 'cant_merge',
+        reason: 'no_reviews',
+      });
+    }
+  );
 
   it('should not merge an approved outdated revision', async () => {
     const { token, org, project, user } = await seedWithProject();

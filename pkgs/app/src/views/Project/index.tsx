@@ -1,5 +1,5 @@
+import type { ApiProject } from '@specfy/api/src/types/api';
 import { Avatar, Divider, Skeleton } from 'antd';
-import type { ApiProject } from 'api/src/types/api';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Route, Routes, useParams } from 'react-router-dom';

@@ -1,11 +1,11 @@
-import { useQuery } from '@tanstack/react-query';
 import type {
   DeletePerm,
   GetCountPerms,
   ListPerms,
   PutPerm,
-} from 'api/src/types/api';
-import type { PermType } from 'api/src/types/db';
+} from '@specfy/api/src/types/api';
+import type { PermType } from '@specfy/api/src/types/db';
+import { useQuery } from '@tanstack/react-query';
 
 import { queryClient } from '../common/query';
 
@@ -73,7 +73,7 @@ export function useListPermsProject(opts: Required<ListPerms['Querystring']>) {
 export async function updatePerm(opts: PutPerm['Body']) {
   const { json } = await fetchApi<PutPerm>('/perms', { body: opts }, 'PUT');
 
-  queryClient.removeQueries(['listPerms', opts.org_id, opts.project_id]);
+  queryClient.invalidateQueries(['listPerms', opts.org_id, opts.project_id]);
 
   return json;
 }
@@ -86,8 +86,8 @@ export async function removePerm(opts: DeletePerm['Body']) {
   );
 
   if (res.status === 204) {
-    queryClient.removeQueries(['countPerms', opts.org_id]);
-    queryClient.removeQueries(['listPerms', opts.org_id, opts.project_id]);
+    queryClient.invalidateQueries(['countPerms', opts.org_id]);
+    queryClient.invalidateQueries(['listPerms', opts.org_id, opts.project_id]);
   }
 
   return json;

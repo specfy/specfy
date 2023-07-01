@@ -1,3 +1,4 @@
+import type { ApiOrg, ApiPolicy } from '@specfy/api/src/types/api';
 import {
   IconCaretRight,
   IconCircleCheck,
@@ -6,7 +7,6 @@ import {
 } from '@tabler/icons-react';
 import { Button, Skeleton, Table, Typography } from 'antd';
 import type { TitleProps } from 'antd/es/typography/Title';
-import type { ApiOrg, ApiPolicy } from 'api/src/types/api';
 import classnames from 'classnames';
 import { useMemo, useState } from 'react';
 

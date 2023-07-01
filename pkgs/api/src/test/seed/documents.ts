@@ -355,7 +355,7 @@ export async function seedRFC(
             {
               type: 'image',
               attrs: {
-                src: 'https://source.unsplash.com/hbb6GkG6p9M/800x400',
+                src: 'https://images.unsplash.com/photo-1687606746214-71885aa91e79?auto=format&fit=crop&w=800&q=400',
                 alt: null,
                 title: null,
                 uid: 'UidgrRPV011',

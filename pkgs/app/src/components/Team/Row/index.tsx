@@ -1,7 +1,7 @@
 import { LoadingOutlined } from '@ant-design/icons';
+import type { ApiPerm, ApiUser } from '@specfy/api/src/types/api';
 import { IconCheck, IconPlus, IconTrash } from '@tabler/icons-react';
 import { App, Button, Select } from 'antd';
-import type { ApiPerm, ApiUser } from 'api/src/types/api';
 import { useState } from 'react';
 
 import { removePerm, updatePerm } from '../../../api';

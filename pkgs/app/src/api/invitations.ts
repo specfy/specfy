@@ -1,11 +1,11 @@
-import { useQuery } from '@tanstack/react-query';
 import type {
   AcceptInvitation,
   DeclineInvitation,
   GetInvitation,
   ListInvitations,
   PostInvitation,
-} from 'api/src/types/api';
+} from '@specfy/api/src/types/api';
+import { useQuery } from '@tanstack/react-query';
 
 import { queryClient } from '../common/query';
 

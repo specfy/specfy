@@ -1,11 +1,11 @@
-import { useQuery } from '@tanstack/react-query';
 import type {
   DeleteProject,
   GetProject,
   ListProjects,
   PostProject,
   PutProject,
-} from 'api/src/types/api';
+} from '@specfy/api/src/types/api';
+import { useQuery } from '@tanstack/react-query';
 
 import { queryClient } from '../common/query';
 import originalStore from '../common/store';
@@ -40,8 +40,12 @@ export async function updateProject(
   );
 
   if (res.status === 200) {
-    queryClient.removeQueries(['listProjects', opts.org_id]);
-    queryClient.removeQueries(['getProject', opts.org_id, opts.project_slug]);
+    queryClient.invalidateQueries(['listProjects', opts.org_id]);
+    queryClient.invalidateQueries([
+      'getProject',
+      opts.org_id,
+      opts.project_slug,
+    ]);
   }
 
   return json;

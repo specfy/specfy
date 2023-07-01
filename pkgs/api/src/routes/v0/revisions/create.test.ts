@@ -42,6 +42,7 @@ describe('POST /revisions', () => {
         name: '',
         orgId: '',
         projectId: '',
+        draft: true,
       },
       // @ts-expect-error
       Querystring: { random: 'world' },
@@ -64,6 +65,7 @@ describe('POST /revisions', () => {
         name: name,
         orgId: org.id,
         projectId: project.id,
+        draft: true,
       },
     });
 
@@ -95,6 +97,7 @@ describe('POST /revisions', () => {
         name: name,
         orgId: org.id,
         projectId: project.id,
+        draft: true,
       },
     });
 
@@ -136,6 +139,7 @@ describe('POST /revisions', () => {
         name: name,
         orgId: org.id,
         projectId: project.id,
+        draft: true,
       },
     });
 
@@ -165,6 +169,7 @@ describe('POST /revisions', () => {
         name: name,
         orgId: org.id,
         projectId: project.id,
+        draft: true,
       },
     });
 
@@ -205,6 +210,7 @@ describe('POST /revisions', () => {
         name: name,
         orgId: org.id,
         projectId: project.id,
+        draft: true,
       },
     });
 
@@ -245,6 +251,7 @@ describe('POST /revisions', () => {
         name: name,
         orgId: org.id,
         projectId: project.id,
+        draft: true,
       },
     });
 
@@ -288,6 +295,7 @@ describe('POST /revisions', () => {
         name: name,
         orgId: org.id,
         projectId: project.id,
+        draft: true,
       },
     });
 

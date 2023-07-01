@@ -1,5 +1,5 @@
+import type { BlockLevelOne } from '@specfy/api/src/types/api';
 import { Anchor } from 'antd';
-import type { BlockLevelOne } from 'api/src/types/api';
 import { useMemo } from 'react';
 
 import { slugify } from '../../common/string';

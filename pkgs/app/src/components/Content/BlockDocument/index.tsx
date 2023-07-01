@@ -1,6 +1,6 @@
 import { LoadingOutlined } from '@ant-design/icons';
+import type { ApiDocument, BlockDocument } from '@specfy/api/src/types/api';
 import { IconRepeat } from '@tabler/icons-react';
-import type { ApiDocument, BlockDocument } from 'api/src/types/api';
 import { useMemo } from 'react';
 
 import { ContentDoc } from '..';

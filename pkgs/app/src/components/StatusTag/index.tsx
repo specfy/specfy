@@ -1,3 +1,4 @@
+import { flagRevisionApprovalEnabled } from '@specfy/api/src/models/revisions/constants';
 import { IconLock } from '@tabler/icons-react';
 import { Tag } from 'antd';
 
@@ -16,7 +17,10 @@ export const StatusTag: React.FC<{
     return <Tag className={cls.approved}>{locked && <IconLock />}Approved</Tag>;
   } else if (status === 'waiting') {
     return (
-      <Tag className={cls.waiting}>{locked && <IconLock />}Waiting Review</Tag>
+      <Tag className={cls.waiting}>
+        {locked && <IconLock />}Waiting{' '}
+        {flagRevisionApprovalEnabled && 'Review'}
+      </Tag>
     );
   } else if (status === 'closed') {
     return <Tag className={cls.closed}>{locked && <IconLock />}Closed</Tag>;

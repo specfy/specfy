@@ -1,5 +1,5 @@
+import type { ApiOrg } from '@specfy/api/src/types/api';
 import { Skeleton } from 'antd';
-import type { ApiOrg } from 'api/src/types/api';
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Route, Routes, useParams } from 'react-router-dom';

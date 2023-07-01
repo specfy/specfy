@@ -1,5 +1,5 @@
-import type { ApiComponent, ApiProject } from 'api/src/types/api';
-import type { FlowEdge } from 'api/src/types/db';
+import type { ApiComponent, ApiProject } from '@specfy/api/src/types/api';
+import type { FlowEdge } from '@specfy/api/src/types/db';
 import type React from 'react';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -50,7 +50,7 @@ export const ComponentDetails: React.FC<{
 
   // Edition
   const edit = useEdit();
-  const isEditing = edit.isEnabled();
+  const isEditing = edit.isEditing;
   const storeComponents = useComponentsStore();
 
   useEffect(() => {

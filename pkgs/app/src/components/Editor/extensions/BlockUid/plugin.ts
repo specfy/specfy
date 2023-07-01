@@ -1,7 +1,7 @@
+import { nanoid } from '@specfy/api/src/common/id';
 import { Extension } from '@tiptap/core';
 import type { Node } from '@tiptap/pm/model';
 import { Plugin, PluginKey } from '@tiptap/pm/state';
-import { nanoid } from 'api/src/common/id';
 
 function isNodeHasAttribute(node: Node, attrName: string) {
   return Boolean(node.attrs?.[attrName]);

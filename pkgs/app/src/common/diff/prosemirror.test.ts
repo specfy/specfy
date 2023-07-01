@@ -1,9 +1,9 @@
-import { Editor } from '@tiptap/react';
 import type {
   BlockLevelOne,
   BlockLevelZero,
   BlockParagraph,
-} from 'api/src/types/api';
+} from '@specfy/api/src/types/api';
+import { Editor } from '@tiptap/react';
 import { describe, expect, it } from 'vitest';
 
 import { createEditorSchema } from '../../components/Editor/extensions';

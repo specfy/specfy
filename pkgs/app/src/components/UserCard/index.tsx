@@ -1,6 +1,6 @@
+import type { ApiUser, ListUsers } from '@specfy/api/src/types/api';
 import { AutoComplete, Space } from 'antd';
 import type { DefaultOptionType } from 'antd/es/select';
-import type { ApiUser, ListUsers } from 'api/src/types/api';
 import classnames from 'classnames';
 import { useEffect, useState } from 'react';
 import { useDebounce } from 'react-use';

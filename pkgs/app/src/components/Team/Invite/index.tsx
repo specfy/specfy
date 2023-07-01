@@ -1,7 +1,7 @@
 import * as Select from '@radix-ui/react-select';
+import type { ApiOrg, ApiPerm, FieldsErrors } from '@specfy/api/src/types/api';
 import { IconChevronDown } from '@tabler/icons-react';
 import { App, Button, Form, Input, Typography } from 'antd';
-import type { ApiOrg, ApiPerm, FieldsErrors } from 'api/src/types/api';
 import { useState } from 'react';
 
 import { isError, isValidationError } from '../../../api/helpers';

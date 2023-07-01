@@ -1,6 +1,6 @@
+import type { BlockLevelZero } from '@specfy/api/src/types/api';
 import { CharacterCount } from '@tiptap/extension-character-count';
 import { useEditor, EditorContent } from '@tiptap/react';
-import type { BlockLevelZero } from 'api/src/types/api';
 import type React from 'react';
 import { useMemo, useEffect } from 'react';
 

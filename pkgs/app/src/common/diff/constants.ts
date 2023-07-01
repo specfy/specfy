@@ -1,3 +1,9 @@
+import type {
+  ApiBlobComponent,
+  ApiBlobDocument,
+  ApiBlobProject,
+} from '@specfy/api/src/types/api';
+
 const IGNORED_KEYS = [
   'id',
   'slug',
@@ -7,18 +13,31 @@ const IGNORED_KEYS = [
   'orgId',
 ] as const;
 
-export const IGNORED_PROJECT_KEYS = [...IGNORED_KEYS, 'name'] as const;
-export const IGNORED_COMPONENT_KEYS = [
+export const IGNORED_PROJECT_KEYS: Array<
+  keyof NonNullable<ApiBlobProject['current']>
+> = [...IGNORED_KEYS, 'name', 'githubRepository'];
+
+export const IGNORED_COMPONENT_KEYS: Array<
+  keyof NonNullable<ApiBlobComponent['current']>
+> = [
   ...IGNORED_KEYS,
   'orgId',
   'projectId',
   'type',
   'typeId',
-] as const;
-export const IGNORED_DOCUMENT_KEYS = [
+  'source',
+  'sourceName',
+  'sourcePath',
+];
+
+export const IGNORED_DOCUMENT_KEYS: Array<
+  keyof NonNullable<ApiBlobDocument['current']>
+> = [
   ...IGNORED_KEYS,
   'locked',
   'name',
   'type',
   'typeId',
-] as const;
+  'source',
+  'sourcePath',
+];

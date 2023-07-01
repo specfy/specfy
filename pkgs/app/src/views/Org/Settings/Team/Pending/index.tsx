@@ -1,7 +1,7 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+import type { ApiInvitation } from '@specfy/api/src/types/api';
 import { IconDotsVertical } from '@tabler/icons-react';
 import { App, Button, Checkbox, Skeleton, Table } from 'antd';
-import type { ApiInvitation } from 'api/src/types/api';
 import { useState } from 'react';
 
 import { roleReadable } from '../../../../../api';

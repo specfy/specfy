@@ -1,5 +1,7 @@
+import { componentsToFlow } from '@specfy/api/src/common/flow/transform';
+import type { ComputedFlow } from '@specfy/api/src/common/flow/types';
+import type { ApiComponent, BlockLevelZero } from '@specfy/api/src/types/api';
 import { Typography } from 'antd';
-import type { ApiComponent, BlockLevelZero } from 'api/src/types/api';
 import { useCallback, useEffect, useState } from 'react';
 
 import { useComponentsStore, useProjectStore } from '../../../common/store';
@@ -9,8 +11,6 @@ import { ContentDoc } from '../../../components/Content';
 import { EditorMini } from '../../../components/Editor/Mini';
 import { Flow, FlowWrapper } from '../../../components/Flow';
 import { Toolbar } from '../../../components/Flow/Toolbar';
-import type { ComputedFlow } from '../../../components/Flow/helpers';
-import { componentsToFlow } from '../../../components/Flow/helpers';
 import { ListActivity } from '../../../components/ListActivity';
 import { ProjectLinks } from '../../../components/Project/Links';
 import { UpdatedAt } from '../../../components/UpdatedAt';
@@ -30,7 +30,7 @@ export const ProjectOverview: React.FC<{
 
   const [components, setComponents] = useState<ApiComponent[]>();
   const [flow, setFlow] = useState<ComputedFlow>();
-  const isEditing = edit.isEnabled();
+  const isEditing = edit.isEditing;
 
   useEffect(() => {
     setComponents(Object.values(storeComponents.components));
@@ -41,7 +41,8 @@ export const ProjectOverview: React.FC<{
       return;
     }
 
-    setFlow(componentsToFlow(components));
+    const tmp = componentsToFlow(components);
+    setFlow(tmp);
   }, [components]);
 
   const onUpdate = useCallback((doc: BlockLevelZero) => {

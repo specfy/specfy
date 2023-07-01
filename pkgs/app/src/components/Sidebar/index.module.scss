@@ -47,7 +47,7 @@
 .inner {
   width: 250px;
   height: 100%;
-  border-right: 1px solid var(--border);
+  border-right: 1px solid var(--border2);
 }
 
 .header {
@@ -60,7 +60,7 @@
 
   font-size: $font-l;
 
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--border2);
 
   .label {
     overflow: hidden;
@@ -96,7 +96,7 @@
 
   opacity: 0;
   background-color: #fff;
-  border: 1px solid var(--border);
+  border: 1px solid var(--border2);
   border-radius: 10px;
   box-shadow: $box-shadow;
 

@@ -1,4 +1,4 @@
-import { nanoid } from 'api/src/common/id';
+import { nanoid } from '@specfy/api/src/common/id';
 import type {
   ApiBlobWithPrevious,
   ApiComponent,
@@ -6,8 +6,9 @@ import type {
   ApiOrg,
   ApiProject,
   ApiRevision,
-} from 'api/src/types/api';
+} from '@specfy/api/src/types/api';
 import { produce } from 'immer';
+import type { Connection } from 'reactflow';
 import { create } from 'zustand';
 
 import type { Allowed, BlobAndDiffs } from '../types/blobs';
@@ -151,6 +152,13 @@ export interface ComponentsState {
   revert: (id: string) => void;
   revertField: (id: string, field: keyof ApiComponent) => void;
   remove: (id: string) => void;
+  addEdge: (edge: Connection) => void;
+  updateEdge: (
+    source: string,
+    target: string,
+    update: Partial<ApiComponent['edges'][0]>
+  ) => void;
+  removeEdge: (source: string, target: string) => void;
 }
 
 export const useComponentsStore = create<ComponentsState>()((set, get) => ({
@@ -238,6 +246,83 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
         edges.push(edge);
       }
 
+      map[copy.id] = { ...copy, edges };
+    }
+
+    set({ components: map });
+  },
+  addEdge: (connection) => {
+    const components = Object.values(get().components);
+    const map: ComponentsState['components'] = {};
+
+    for (const copy of components) {
+      if (copy.id !== connection.source) {
+        map[copy.id] = { ...copy };
+        continue;
+      }
+
+      map[copy.id] = {
+        ...copy,
+        edges: [
+          ...copy.edges,
+          {
+            to: connection.target!,
+            portSource: connection.sourceHandle as any,
+            portTarget: connection.targetHandle as any,
+            read: true,
+            write: true,
+            vertices: [],
+          },
+        ],
+      };
+    }
+    set({ components: map });
+  },
+  updateEdge: (source, target, update) => {
+    const components = Object.values(get().components);
+    const map: ComponentsState['components'] = {};
+
+    for (const copy of components) {
+      if (copy.id !== source) {
+        map[copy.id] = { ...copy };
+        continue;
+      }
+
+      const edges: ApiComponent['edges'] = [];
+      for (const edge of copy.edges) {
+        if (edge.to !== target) {
+          edges.push(edge);
+          continue;
+        }
+
+        edges.push({
+          ...edge,
+          ...update,
+        });
+      }
+      map[copy.id] = { ...copy, edges };
+    }
+
+    set({ components: map });
+  },
+  removeEdge: (source, target) => {
+    const components = Object.values(get().components);
+    const map: ComponentsState['components'] = {};
+
+    for (const copy of components) {
+      if (copy.id !== source) {
+        map[copy.id] = { ...copy };
+        continue;
+      }
+
+      const edges: ApiComponent['edges'] = [];
+      for (const edge of copy.edges) {
+        if (edge.to === target) {
+          continue;
+        }
+
+        edges.push(edge);
+      }
       map[copy.id] = { ...copy, edges };
     }
 

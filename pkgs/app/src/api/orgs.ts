@@ -1,5 +1,10 @@
+import type {
+  DeleteOrg,
+  ListOrgs,
+  PostOrg,
+  PutOrg,
+} from '@specfy/api/src/types/api';
 import { useQuery } from '@tanstack/react-query';
-import type { DeleteOrg, ListOrgs, PostOrg, PutOrg } from 'api/src/types/api';
 
 import { queryClient } from '../common/query';
 
@@ -31,7 +36,7 @@ export async function createOrg(
   );
 
   if (res.status === 200) {
-    queryClient.removeQueries(['listOrgs']);
+    queryClient.invalidateQueries(['listOrgs']);
   }
 
   return json;
@@ -62,8 +67,8 @@ export async function deleteOrg(opts: DeleteOrg['Params']): Promise<number> {
   );
 
   if (res.status === 204) {
-    queryClient.removeQueries(['listProjects', opts.org_id]);
-    queryClient.removeQueries(['listOrgs']);
+    queryClient.invalidateQueries(['listProjects', opts.org_id]);
+    queryClient.invalidateQueries(['listOrgs']);
   }
 
   return res.status;

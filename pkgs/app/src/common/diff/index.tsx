@@ -1,5 +1,5 @@
+import type { ApiBlobWithPrevious } from '@specfy/api/src/types/api';
 import { Editor } from '@tiptap/react';
-import type { ApiBlobWithPrevious } from 'api/src/types/api';
 
 import { createEditorSchema } from '../../components/Editor/extensions';
 import type { BlobAndDiffs } from '../../types/blobs';
@@ -27,7 +27,7 @@ export function proposeTitle(computed: BlobAndDiffs[]): string {
     }
 
     const keys = diffs.map((diff) => diff.key);
-    return `update(${type}): update ${keys.join(', ')}`;
+    return `fix(${type}): update ${keys.join(', ')}`;
   }
 
   const types = new Set<BlobAndDiffs['blob']['type']>();

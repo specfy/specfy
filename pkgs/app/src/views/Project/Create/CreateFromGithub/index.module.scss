@@ -4,7 +4,7 @@
   width: 600px;
   padding: $p-5xl;
   background-color: #fff;
-  border-top: 1px solid var(--border);
+  border-top: 1px solid var(--border2);
 }
 
 .header {
@@ -26,7 +26,7 @@
   padding: $p-xl;
 
   background-color: #fff;
-  border-bottom: 1px solid var(--border);
+  border-bottom: 1px solid var(--border2);
 
   &:first-child {
     border-radius: $border-radius-s $border-radius-s 0 0;

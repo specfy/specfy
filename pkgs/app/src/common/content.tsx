@@ -1,4 +1,8 @@
-import type { BlocksWithContent, BlockLevelZero } from 'api/src/types/api';
+import { nanoid } from '@specfy/api/src/common/id';
+import type {
+  BlocksWithContent,
+  BlockLevelZero,
+} from '@specfy/api/src/types/api';
 
 import { ContentBlock } from '../components/Content';
 
@@ -30,6 +34,8 @@ export function removeEmptyContent(json: BlockLevelZero): BlockLevelZero {
 export function getEmptyDoc(withPlaceholder?: true): BlockLevelZero {
   return {
     type: 'doc',
-    content: withPlaceholder ? [{ type: 'paragraph', attrs: { uid: '' } }] : [],
+    content: withPlaceholder
+      ? [{ type: 'paragraph', attrs: { uid: nanoid() } }]
+      : [],
   };
 }

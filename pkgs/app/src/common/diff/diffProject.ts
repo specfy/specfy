@@ -1,5 +1,5 @@
+import type { ApiBlobProject } from '@specfy/api/src/types/api';
 import type { Editor } from '@tiptap/react';
-import type { ApiBlobProject } from 'api/src/types/api';
 import { diffJson, diffWordsWithSpace } from 'diff';
 
 import type { ProjectBlobWithDiff } from '../../types/blobs';
@@ -21,7 +21,7 @@ export function diffProject(
   }
 
   for (const k of Object.keys(blob.current)) {
-    if (IGNORED_PROJECT_KEYS.includes(k as any)) {
+    if (IGNORED_PROJECT_KEYS.includes(k as keyof ApiBlobProject['current'])) {
       continue;
     }
 
