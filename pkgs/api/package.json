@@ -62,7 +62,7 @@
     "@types/passport-http-bearer": "1.0.37",
     "@types/passport-jwt": "3.0.8",
     "@types/passport-local": "1.0.35",
-    "@types/validator": "13.7.11",
+    "@types/validator": "13.7.17",
     "@vitest/coverage-c8": "^0.29.8",
     "fastify-cli": "5.7.1",
     "react-diff-view": "3.0.3",
