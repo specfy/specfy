@@ -91,6 +91,8 @@ export function uploadedStackToDB(
         sourcePath: child.path,
         techId: child.tech,
         techs: child.techs,
+        tags: ['github'],
+        show: true,
         createdAt: now,
         updatedAt: now,
       };

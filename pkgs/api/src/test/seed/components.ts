@@ -628,6 +628,8 @@ export function getBlobComponent(org: Orgs, project: Projects): DBComponent {
     source: null,
     sourceName: null,
     sourcePath: [],
+    tags: [],
+    show: true,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };
