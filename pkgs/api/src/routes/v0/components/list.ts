@@ -29,7 +29,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       return validationError(res, val.error);
     }
 
-    const query = val.data;
+    const query: ListComponents['Querystring'] = val.data;
 
     // TODO: pagination or remove it
     const pagination: Pagination = {

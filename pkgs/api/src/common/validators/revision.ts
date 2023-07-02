@@ -15,7 +15,6 @@ export const schemaRevision = z
     blobs: z.array(schemaId).max(100),
     locked: z.boolean(),
     merged: z.boolean(),
-
     status: z.enum(['approved', 'closed', 'draft', 'waiting']),
 
     authors: z.array(schemaId).max(100),

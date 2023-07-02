@@ -29,14 +29,6 @@ exports[`POST /revisions/upload -- Stack > should validate stack 1`] = `
           "edges",
         ],
       },
-      "stack.group": {
-        "code": "invalid_type",
-        "message": "Required",
-        "path": [
-          "stack",
-          "group",
-        ],
-      },
       "stack.id": {
         "code": "invalid_type",
         "message": "Required",

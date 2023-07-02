@@ -14,7 +14,7 @@ export const schemaComponent = z
     blobId: schemaId.nullable(),
     techId: z.string().nonempty().nullable(), // TODO: do something about that?
 
-    type: z.enum(componentTypes as [string, ...string[]]),
+    type: z.enum(componentTypes as [string, ...[]]),
     typeId: schemaId.nullable(),
 
     name: z.string().min(2).max(100),
@@ -30,6 +30,9 @@ export const schemaComponent = z
     source: z.string().max(100).nullable(),
     sourceName: z.string().max(100).nullable(),
     sourcePath: z.array(z.string().max(500)).max(50).nullable(),
+
+    tags: z.string().max(20).array(),
+    show: z.boolean(),
 
     createdAt: z.string().datetime(),
     updatedAt: z.string().datetime(),

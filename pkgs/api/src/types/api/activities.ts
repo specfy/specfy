@@ -36,8 +36,8 @@ export type ApiActivityGrouped = ApiActivity & { childrens?: ApiActivity[] };
 export type ListActivities = Res<{
   Querystring: {
     org_id: string;
-    project_id?: string;
-    revision_id?: string;
+    project_id?: string | undefined;
+    revision_id?: string | undefined;
   };
   Success: {
     data: ApiActivity[];

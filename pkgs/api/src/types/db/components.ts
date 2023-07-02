@@ -21,7 +21,6 @@ export interface DBComponent {
   slug: string;
   description: BlockLevelZero;
   techs: string[];
-  tags: string[];
 
   display: FlowItemDisplay;
   edges: FlowEdge[];
@@ -33,6 +32,7 @@ export interface DBComponent {
   sourcePath: string[] | null;
 
   show: boolean;
+  tags: string[];
 
   createdAt: string;
   updatedAt: string;

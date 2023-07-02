@@ -24,7 +24,7 @@ export const getInvitation: PreHandler<{
     return validationError(res, val.error);
   }
 
-  const data = val.data;
+  const data: GetInvitation['Params'] = val.data;
   const invitation = await prisma.invitations.findFirst({
     where: {
       id: data.invitation_id,

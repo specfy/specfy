@@ -39,7 +39,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       }
 
       const user = req.user!;
-      const body = val.data;
+      const body: PostLinkToGithubOrg['Body'] = val.data;
       const org = getOrgFromRequest(req, body.orgId)!;
       const accounts = await prisma.accounts.findFirst({
         where: { userId: user.id },

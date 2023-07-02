@@ -66,6 +66,8 @@ describe('GET /components', () => {
           zIndex: 1,
         },
         edges: [],
+        show: true,
+        tags: [],
       },
     ]);
   });
