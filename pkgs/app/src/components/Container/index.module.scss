@@ -40,8 +40,8 @@
 }
 
 .left2third {
-  width: 60%;
-  min-width: $main-col-w + $p-xl * 2;
+  width: 57%;
+  min-width: $main-col-w;
   background-color: #fff;
 
   &.padded {
@@ -50,7 +50,7 @@
 }
 
 .right1third {
-  width: calc(100% - 60%);
+  width: calc(100% - 57%);
   background-color: var(--bg2);
   border-left: 1px solid var(--border2);
 }

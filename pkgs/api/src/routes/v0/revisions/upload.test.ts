@@ -313,14 +313,12 @@ describe('POST /revisions/upload -- Stack', () => {
           techs: [],
           inComponent: null,
           languages: {},
-          group: 'component',
           edges: [],
           dependencies: [],
           childs: [
             {
               id: '90uaaV0QPN2D',
               name: 'redis',
-              group: 'component',
               path: ['/analytics/docker-compose.yml'],
               tech: 'redis',
               edges: [],
@@ -333,7 +331,6 @@ describe('POST /revisions/upload -- Stack', () => {
             {
               id: 'rjiySzaZm26h',
               name: '@specfy/test',
-              group: 'component',
               path: ['/src/package.json'],
               tech: null,
               edges: [

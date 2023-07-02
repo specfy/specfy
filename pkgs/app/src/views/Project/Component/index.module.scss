@@ -1,23 +1,7 @@
 @import "../../../styles/theme";
 
-.grid {
-  display: grid;
-  grid-template-columns: max(700px) 1fr;
-  gap: 16px;
-}
-
-.left {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.right {
-  padding-top: 98px;
-
-  img {
-    width: 100%;
-  }
+.content {
+  padding-bottom: $p-xl;
 }
 
 .titleEdit {
@@ -41,7 +25,7 @@
     border-color: $blue-300 !important;
   }
 
-  &.thirdparty {
+  &.sass {
     color: $purple-600;
     border-color: $purple-300 !important;
   }

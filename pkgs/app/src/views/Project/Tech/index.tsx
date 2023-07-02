@@ -7,10 +7,10 @@ import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 
-import type { TechInfo } from '../../../common/component';
-import { supportedIndexed } from '../../../common/component';
 import { useComponentsStore } from '../../../common/store';
 import { titleSuffix } from '../../../common/string';
+import type { TechInfo } from '../../../common/techs';
+import { supportedIndexed } from '../../../common/techs';
 import { Card } from '../../../components/Card';
 import { ComponentIcon } from '../../../components/Component/Icon';
 import { ComponentLine } from '../../../components/Component/Line';
@@ -57,11 +57,11 @@ export const Tech: React.FC<{
 
     const tmp = [];
     for (const comp of components) {
-      if (!comp.tech) {
+      if (!comp.techs) {
         continue;
       }
 
-      for (const _tech of comp.tech) {
+      for (const _tech of comp.techs) {
         if (_tech.toLocaleLowerCase() === route.tech_slug) {
           tmp.push(comp);
           if (!name) name = _tech;

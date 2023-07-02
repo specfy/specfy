@@ -1,6 +1,10 @@
+import type { TechType } from '@specfy/stack-analyser';
+
 import type { BlockLevelZero } from '../api/index.js';
 
 import type { FlowEdge, FlowItemDisplay } from './flow.js';
+
+export type ComponentType = TechType | 'project' | 'service';
 
 export interface DBComponent {
   id: string;
@@ -9,14 +13,15 @@ export interface DBComponent {
   blobId: string | null;
   techId: string | null;
 
-  type: 'component' | 'hosting' | 'project' | 'thirdparty';
+  type: ComponentType;
   // Only useful for project
   typeId: string | null;
 
   name: string;
   slug: string;
   description: BlockLevelZero;
-  tech: string[];
+  techs: string[];
+  tags: string[];
 
   display: FlowItemDisplay;
   edges: FlowEdge[];
@@ -26,6 +31,8 @@ export interface DBComponent {
   source: string | null;
   sourceName: string | null;
   sourcePath: string[] | null;
+
+  show: boolean;
 
   createdAt: string;
   updatedAt: string;

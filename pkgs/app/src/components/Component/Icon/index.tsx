@@ -2,7 +2,7 @@ import type { NodeData } from '@specfy/api/src/common/flow/types';
 import { IconCode } from '@tabler/icons-react';
 import classNames from 'classnames';
 
-import { supportedIndexed } from '../../../common/component';
+import { supportedIndexed } from '../../../common/techs';
 import { AvatarAuto } from '../../AvatarAuto';
 
 import cls from './index.module.scss';
@@ -27,7 +27,7 @@ export const ComponentIcon: React.FC<
       </div>
     );
   }
-  if (type === 'component') {
+  if (type === 'service') {
     return (
       <div className={classNames(cls.icon, cls.service, large && cls.large)}>
         <IconCode size="1em" />

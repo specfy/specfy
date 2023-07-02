@@ -13,6 +13,7 @@
   font-size: 11px;
   font-weight: 400;
 
+  background-color: #fff;
   border: 1px solid $gray-100;
   border-radius: $border-radius;
   box-shadow: 0 2px 5px 1px rgb(0 0 0 / 6%);
@@ -44,12 +45,6 @@
       font-weight: 600;
       color: $gray-400;
     }
-  }
-
-  &.component,
-  &.thirdparty,
-  &.project {
-    background-color: #fff;
   }
 
   .title {

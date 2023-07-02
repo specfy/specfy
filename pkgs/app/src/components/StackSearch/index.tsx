@@ -1,17 +1,18 @@
 import type { ApiComponent } from '@specfy/api/src/types/api';
+import type { ComponentType } from '@specfy/api/src/types/db';
 import { IconPlus } from '@tabler/icons-react';
 import { Button, Select } from 'antd';
 import type { DefaultOptionType, SelectProps } from 'antd/es/select';
 import { useMemo, useState } from 'react';
 
+import { createLocal } from '../../common/components';
+import { useComponentsStore, useProjectStore } from '../../common/store';
+import { slugify } from '../../common/string';
 import {
-  createLocal,
   supportedArray,
   supportedIndexed,
   supportedTypeToText,
-} from '../../common/component';
-import { useComponentsStore, useProjectStore } from '../../common/store';
-import { slugify } from '../../common/string';
+} from '../../common/techs';
 
 import cls from './index.module.scss';
 
@@ -20,11 +21,27 @@ export const LanguageSelect: React.FC<{
   onChange: (values: string[]) => void;
 }> = ({ onChange, values }) => {
   const options = useMemo<DefaultOptionType[]>(() => {
-    const _lang: DefaultOptionType[] = [];
+    const _langs: DefaultOptionType[] = [];
+    const _tools: DefaultOptionType[] = [];
+    const _cis: DefaultOptionType[] = [];
 
     for (const tech of supportedArray) {
-      if (tech.type === 'language' || tech.type === 'tool') {
-        _lang.push({
+      if (tech.type === 'language') {
+        _langs.push({
+          label: tech.name,
+          value: tech.key,
+        });
+        continue;
+      }
+      if (tech.type === 'tool') {
+        _tools.push({
+          label: tech.name,
+          value: tech.key,
+        });
+        continue;
+      }
+      if (tech.type === 'ci') {
+        _cis.push({
           label: tech.name,
           value: tech.key,
         });
@@ -32,7 +49,14 @@ export const LanguageSelect: React.FC<{
       }
     }
 
-    return _lang;
+    return [
+      {
+        label: 'Languages',
+        options: _langs,
+      },
+      { label: 'Tools', options: _tools },
+      { label: 'CI', options: _cis },
+    ];
   }, []);
 
   return (
@@ -50,18 +74,31 @@ export const LanguageSelect: React.FC<{
 
 export const ComponentSelect: React.FC<{
   values: ApiComponent[];
-  current: ApiComponent;
-  filter?: Array<ApiComponent['type']>;
+  createdAs: 'hosting' | 'service';
+  filter?: ComponentType[];
+  current?: ApiComponent;
   multiple?: false;
   onChange: (values: string[] | string) => void;
-}> = ({ onChange, values, current, multiple, filter }) => {
+}> = ({
+  onChange,
+  values,
+  current,
+  multiple,
+  filter = [
+    'app',
+    'ci',
+    'db',
+    'messaging',
+    'network',
+    'project',
+    'sass',
+    'service',
+  ],
+  createdAs,
+}) => {
   const storeComponents = useComponentsStore();
   const storeProject = useProjectStore();
   const [search, setSearch] = useState('');
-  const hasHost = filter?.includes('hosting');
-  const [filterDefault] = useState(
-    () => filter || ['component', 'project', 'thirdparty']
-  );
 
   const optionsComponents = useMemo<DefaultOptionType[]>(() => {
     const tmp: DefaultOptionType[] = [];
@@ -69,10 +106,10 @@ export const ComponentSelect: React.FC<{
 
     // Components
     for (const component of components) {
-      if (!filterDefault.includes(component.type)) {
+      if (!filter.includes(component.type)) {
         continue;
       }
-      if (component.id === current.id) {
+      if (current && component.id === current.id) {
         continue;
       }
       tmp.push({
@@ -90,16 +127,10 @@ export const ComponentSelect: React.FC<{
     const tmp: DefaultOptionType[] = [];
 
     for (const supp of supportedArray) {
-      if (supp.type === 'hosting' && !filterDefault.includes('hosting')) {
+      if (supp.type === 'language') {
         continue;
       }
-      if (supp.type === 'sass' && !filterDefault.includes('thirdparty')) {
-        continue;
-      }
-      if (
-        (supp.type === 'db' || supp.type === 'messaging') &&
-        !filterDefault.includes('component')
-      ) {
+      if (!filter.includes(supp.type)) {
         continue;
       }
       if (components.find((c) => c.techId === supp.key)) {
@@ -123,18 +154,20 @@ export const ComponentSelect: React.FC<{
   }, [storeComponents.components]);
 
   const optionsProjects = useMemo<DefaultOptionType[]>(() => {
-    if (!filterDefault.includes('project')) {
+    if (!filter.includes('project')) {
       return [];
     }
 
     const tmp: DefaultOptionType[] = [];
-    const curr = storeComponents.components[storeComponents.current!];
+    const curr =
+      storeComponents.current &&
+      storeComponents.components[storeComponents.current];
     const created = Object.values(storeComponents.components).filter(
       (c) => c.type === 'project'
     );
 
     for (const project of storeProject.projects) {
-      if (project.id === curr.id) {
+      if (curr && project.id === curr.id) {
         continue;
       }
       if (created.find((c) => c.typeId === project.id)) {
@@ -153,13 +186,14 @@ export const ComponentSelect: React.FC<{
   }, [storeComponents.components]);
 
   const options = useMemo(() => {
-    const res: DefaultOptionType[] = [
-      {
+    const res: DefaultOptionType[] = [];
+
+    if (optionsComponents.length > 0) {
+      res.push({
         label: 'Available',
         options: optionsComponents,
-      },
-    ];
-
+      });
+    }
     if (optionsProjects.length > 0) {
       res.push({
         label: 'Projects',
@@ -191,7 +225,7 @@ export const ComponentSelect: React.FC<{
     }
 
     createLocal(
-      { name: search, slug, type: hasHost ? 'hosting' : 'component' },
+      { name: search, slug, type: createdAs },
       storeProject,
       storeComponents
     );
@@ -226,18 +260,12 @@ export const ComponentSelect: React.FC<{
     // Tech
     const supp = supportedIndexed[option.value!];
 
-    let type: ApiComponent['type'] = hasHost ? 'hosting' : 'component';
-    if (supp) {
-      if (supp.type === 'sass') type = 'thirdparty';
-      else if (supp.type === 'hosting') type = 'hosting';
-    }
-
     // TODO: use id to automatically add
     createLocal(
       {
         name: supp.name,
         slug: supp.key,
-        type,
+        type: supp.type,
         techId: option.value as string,
       },
       storeProject,
@@ -274,28 +302,15 @@ export const ComponentSelect: React.FC<{
             {menu}
             {search && (
               <div className={cls.create}>
-                {!hasHost && (
-                  <div>
-                    <Button
-                      type="link"
-                      icon={<IconPlus />}
-                      onClick={handleAddItem}
-                    >
-                      Create service &quot;{search}&quot;
-                    </Button>
-                  </div>
-                )}
-                {hasHost && (
-                  <div>
-                    <Button
-                      type="link"
-                      icon={<IconPlus />}
-                      onClick={handleAddItem}
-                    >
-                      Create hosting &quot;{search}&quot;
-                    </Button>
-                  </div>
-                )}
+                <div>
+                  <Button
+                    type="link"
+                    icon={<IconPlus />}
+                    onClick={handleAddItem}
+                  >
+                    Create {createdAs} &quot;{search}&quot;
+                  </Button>
+                </div>
               </div>
             )}
           </>

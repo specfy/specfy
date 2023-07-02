@@ -1,8 +1,10 @@
 @import "../../../styles/theme";
 @import "../../../styles/mixin";
 
-.block {
-  margin-top: 32px;
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: $p-2xl;
 }
 
 .blockTitle {

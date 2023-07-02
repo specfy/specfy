@@ -12,9 +12,9 @@ import { Helmet } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useReactFlow } from 'reactflow';
 
-import { internalTypeToText } from '../../../common/component';
 import { useComponentsStore } from '../../../common/store';
 import { titleSuffix } from '../../../common/string';
+import { internalTypeToText } from '../../../common/techs';
 import { Card } from '../../../components/Card';
 import { ComponentDetails } from '../../../components/Component/Details';
 import { ComponentIcon } from '../../../components/Component/Icon';
@@ -113,56 +113,67 @@ export const ComponentView: React.FC<{
 
       <Container.Left2Third>
         <Card padded seamless large>
-          <div className={cls.titleEdit}>
-            {!isEditing && (
-              <h2>
-                <Flex gap="l">
-                  <ComponentIcon {...comp} label={comp.name} large />
-                  {comp.name}
-                </Flex>
-              </h2>
-            )}
-            {isEditing && (
-              <FakeInput.H2
-                size="large"
-                value={comp.name}
-                placeholder="Title..."
-                onChange={(e) => {
-                  storeComponents.updateField(comp!.id, 'name', e.target.value);
-                }}
-              />
-            )}
-            <div className={cls.actions}>
-              <Tag className={classnames(cls.tagType, cls[comp.type])}>
-                {internalTypeToText[comp.type]}
-              </Tag>
-              <div>
-                <Dropdown menu={{ items: menuItems, onClick: onClickMenu }}>
-                  <Button
-                    icon={<IconDotsVertical />}
-                    type="ghost"
-                    size="small"
-                  />
-                </Dropdown>
+          <div className={cls.content}>
+            <div className={cls.titleEdit}>
+              {!isEditing && (
+                <h2>
+                  <Flex gap="l">
+                    <ComponentIcon {...comp} label={comp.name} large />
+                    {comp.name}
+                  </Flex>
+                </h2>
+              )}
+              {isEditing && (
+                <FakeInput.H2
+                  size="large"
+                  value={comp.name}
+                  placeholder="Title..."
+                  onChange={(e) => {
+                    storeComponents.updateField(
+                      comp!.id,
+                      'name',
+                      e.target.value
+                    );
+                  }}
+                />
+              )}
+              <div className={cls.actions}>
+                <Tag
+                  className={classnames(
+                    cls.tagType,
+                    comp.type in cls && cls[comp.type as keyof typeof cls]
+                  )}
+                >
+                  {internalTypeToText[comp.type]}
+                </Tag>
+                <div>
+                  <Dropdown menu={{ items: menuItems, onClick: onClickMenu }}>
+                    <Button
+                      icon={<IconDotsVertical />}
+                      type="ghost"
+                      size="small"
+                    />
+                  </Dropdown>
+                </div>
               </div>
             </div>
-          </div>
-          <UpdatedAt time={comp.updatedAt} />
+            <UpdatedAt time={comp.updatedAt} />
 
-          <Typography>
-            {!isEditing && comp.description && (
-              <ContentDoc doc={comp.description} noPlaceholder />
-            )}
-            {isEditing && (
-              <EditorMini
-                key={comp.id}
-                doc={comp.description}
-                onUpdate={(doc) => {
-                  storeComponents.updateField(comp!.id, 'description', doc);
-                }}
-              />
-            )}
-          </Typography>
+            <Typography>
+              {!isEditing && comp.description && (
+                <ContentDoc doc={comp.description} noPlaceholder />
+              )}
+              {isEditing && (
+                <EditorMini
+                  key={comp.id}
+                  doc={comp.description}
+                  onUpdate={(doc) => {
+                    storeComponents.updateField(comp!.id, 'description', doc);
+                  }}
+                />
+              )}
+            </Typography>
+          </div>
 
           <ComponentDetails
             proj={proj}

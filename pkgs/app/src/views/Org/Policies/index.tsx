@@ -11,7 +11,7 @@ import classnames from 'classnames';
 import { useMemo, useState } from 'react';
 
 import { useListPolicies } from '../../../api';
-import { supportedIndexed } from '../../../common/component';
+import { supportedIndexed } from '../../../common/techs';
 import { AvatarAuto } from '../../../components/AvatarAuto';
 import { Card } from '../../../components/Card';
 import { Container } from '../../../components/Container';

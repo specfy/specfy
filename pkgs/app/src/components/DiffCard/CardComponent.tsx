@@ -74,11 +74,11 @@ export const DiffCardComponent: React.FC<{
             noPlaceholder
           />
         </Typography>
-        {using.tech.length > 0 && (
+        {using.techs.length > 0 && (
           <div className={cls.line}>
             <Typography.Title level={4}>Stack</Typography.Title>
             <div className={cls.techs}>
-              {using.tech?.map((techId) => {
+              {using.techs?.map((techId) => {
                 return (
                   <TechItem key={techId} techId={techId} params={params} />
                 );
@@ -150,11 +150,11 @@ export const DiffCardComponent: React.FC<{
           return <div key={d.key}></div>;
         }
 
-        if (d.key === 'tech') {
+        if (d.key === 'techs') {
           return (
             <div key={d.key} className={classnames(cls.line)}>
               <Typography.Title level={4}>Stack</Typography.Title>
-              {(d.diff as DiffObjectsArray<ApiComponent['tech'][0]>).added.map(
+              {(d.diff as DiffObjectsArray<ApiComponent['techs'][0]>).added.map(
                 (tech) => {
                   return (
                     <div key={tech} className={cls.added}>
@@ -169,7 +169,7 @@ export const DiffCardComponent: React.FC<{
                 }
               )}
               {(
-                d.diff as DiffObjectsArray<ApiComponent['tech'][0]>
+                d.diff as DiffObjectsArray<ApiComponent['techs'][0]>
               ).deleted.map((tech) => {
                 return (
                   <div key={tech} className={cls.removed}>

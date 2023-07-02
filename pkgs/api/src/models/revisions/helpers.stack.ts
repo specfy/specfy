@@ -1,5 +1,6 @@
 import type { Components } from '@prisma/client';
 import type { AnalyserJson } from '@specfy/stack-analyser';
+import { tech } from '@specfy/stack-analyser';
 
 import { computeLayout } from '../../common/flow/layout.js';
 import { componentsToFlow } from '../../common/flow/transform.js';
@@ -11,7 +12,7 @@ import type {
   ApiBlobCreateComponent,
   PostUploadRevision,
 } from '../../types/api/index.js';
-import type { DBComponent } from '../../types/db/components.js';
+import type { ComponentType, DBComponent } from '../../types/db/components.js';
 
 const changing: Array<keyof Components> = [
   'edges',
@@ -19,7 +20,7 @@ const changing: Array<keyof Components> = [
   'sourceName',
   'sourcePath',
   'techId',
-  'tech',
+  'techs',
   'name',
 ];
 
@@ -57,7 +58,7 @@ export function uploadedStackToDB(
         sourceName: child.name,
         sourcePath: child.path,
         techId: child.tech,
-        tech: child.techs,
+        techs: child.techs,
       };
 
       // Store changed ids
@@ -65,6 +66,9 @@ export function uploadedStackToDB(
       idsMap[current.id] = current.id;
     } else {
       // TODO: try to place new components without overlapping and without autolayout
+      const type: ComponentType = child.tech
+        ? tech.indexed[child.tech].type
+        : 'service';
       current = {
         id: child.id,
         blobId: null,
@@ -72,12 +76,12 @@ export function uploadedStackToDB(
         projectId: data.projectId,
         name: child.name,
         slug: slugify(child.name),
-        type: child.group,
+        type: type,
         typeId: null,
         display: {
           zIndex: 1,
           pos: { x: 0, y: 0 },
-          size: getComponentSize(child.group, child.name),
+          size: getComponentSize(type, child.name),
         },
         edges: child.edges,
         inComponent: child.inComponent,
@@ -86,7 +90,7 @@ export function uploadedStackToDB(
         sourceName: child.name,
         sourcePath: child.path,
         techId: child.tech,
-        tech: child.techs,
+        techs: child.techs,
         createdAt: now,
         updatedAt: now,
       };

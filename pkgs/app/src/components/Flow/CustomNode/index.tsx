@@ -11,7 +11,9 @@ import cls from './index.module.scss';
 
 const CustomNode: React.FC<NodeProps<NodeData>> = ({ data, selected }) => {
   return (
-    <div className={classNames(cls.node, cls[data.type])}>
+    <div
+      className={classNames(cls.node, data.type === 'hosting' && cls.hosting)}
+    >
       <NodeResizer
         lineClassName={cls.resizerLine}
         isVisible={selected}
@@ -87,7 +89,7 @@ export const PreviewNode: React.FC<Node<NodeData>> = ({
   height,
 }) => {
   return (
-    <div className={classNames(cls.node, cls.component, cls.preview)}>
+    <div className={classNames(cls.node, cls.preview)}>
       <div className={cls.pos}>
         x:{positionAbsolute!.x} y:{positionAbsolute!.y}
       </div>

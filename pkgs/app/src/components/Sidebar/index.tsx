@@ -6,7 +6,7 @@ import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { AvatarAuto } from '../AvatarAuto';
-import { Staging } from '../ProjectHeader/Staging';
+import { Staging } from '../Project/Header/Staging';
 
 import cls from './index.module.scss';
 

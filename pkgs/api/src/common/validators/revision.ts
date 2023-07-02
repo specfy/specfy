@@ -41,7 +41,6 @@ const schemaStackBase = z
       z.string().min(1).max(50),
       z.number().positive().max(999_999_999)
     ),
-    group: z.enum(['component', 'hosting', 'thirdparty', 'project']),
     edges: z
       .array(
         z
