@@ -95,6 +95,7 @@ export const Flow: React.FC<{
           find.parentNode = node.parentNode;
           find.extent = node.extent;
           find.position = node.position;
+          find.data = node.data;
         }
         find.deletable = !readonly;
         find.draggable = !readonly;

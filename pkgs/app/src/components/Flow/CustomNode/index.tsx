@@ -1,11 +1,12 @@
 import type { NodeData } from '@specfy/api/src/common/flow/types';
 import classNames from 'classnames';
-import type * as React from 'react';
-import { memo } from 'react';
+import type { ChangeEventHandler } from 'react';
+import { memo, useRef, useState } from 'react';
 import type { Node, NodeProps } from 'reactflow';
 import { Handle, Position, NodeResizer } from 'reactflow';
 
 import { ComponentIcon } from '../../Component/Icon';
+import type { OnNodesChangeSuper } from '../helpers';
 
 import cls from './index.module.scss';
 
@@ -82,13 +83,30 @@ const CustomNode: React.FC<NodeProps<NodeData>> = ({ data, selected }) => {
   );
 };
 
-export const PreviewNode: React.FC<Node<NodeData> & { info?: boolean }> = ({
+export const PreviewNode: React.FC<
+  Node<NodeData> & {
+    info?: boolean;
+    editable?: boolean;
+    onNodesChange?: OnNodesChangeSuper;
+  }
+> = ({
+  id,
   data,
   positionAbsolute,
   width,
   height,
   info = true,
+  editable = false,
+  onNodesChange,
 }) => {
+  const input = useRef<HTMLInputElement>(null);
+  const [value, setValue] = useState(data.label);
+
+  const onChange: ChangeEventHandler<HTMLInputElement> = (el) => {
+    onNodesChange!([{ id, type: 'rename', name: el.target.value }]);
+    setValue(el.target.value);
+  };
+
   return (
     <div className={classNames(cls.node, cls.preview)}>
       {info && (
@@ -104,7 +122,14 @@ export const PreviewNode: React.FC<Node<NodeData> & { info?: boolean }> = ({
       )}
       <div className={cls.title}>
         <ComponentIcon {...data} large />
-        <div className={cls.label}>{data.label}</div>
+
+        <input
+          ref={input}
+          readOnly={!editable}
+          className={classNames(cls.label, cls.editable)}
+          value={value}
+          onChange={onChange}
+        />
       </div>
     </div>
   );

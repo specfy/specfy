@@ -69,6 +69,8 @@ export const ProjectFlow: React.FC<{
           });
         } else if (change.type === 'ungroup') {
           storeComponents.updateField(change.id, 'inComponent', null);
+        } else if (change.type === 'rename') {
+          storeComponents.updateField(change.id, 'name', change.name);
         }
       }
     },

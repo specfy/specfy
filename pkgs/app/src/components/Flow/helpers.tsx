@@ -13,6 +13,11 @@ export type NodeChangeSuper =
     }
   | {
       id: string;
+      type: 'rename';
+      name: string;
+    }
+  | {
+      id: string;
       type: 'ungroup';
     };
 export type OnNodesChangeSuper = (changes: NodeChangeSuper[]) => void;

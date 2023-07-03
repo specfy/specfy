@@ -464,7 +464,12 @@ export const FlowDetails: React.FC<{
               )}
             </div>
             <div className={cls.preview}>
-              <PreviewNode {...currNode} />
+              <PreviewNode
+                key={currNode.id}
+                {...currNode}
+                editable={!readonly}
+                onNodesChange={onNodesChange}
+              />
             </div>
           </div>
 

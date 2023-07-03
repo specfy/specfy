@@ -1,6 +1,19 @@
 @import "./theme";
 
+@mixin focusable() {
+  &:hover {
+    outline: 1px solid $blue-100;
+  }
+
+  &:focus {
+    outline: 1px solid $blue-400;
+    box-shadow: rgb(0 0 0 / 9%) 0 1px 4px;
+  }
+}
+
 @mixin editable($padding: $p $p-m, $margin: (-$p) (-$p-m)) {
+  @include focusable;
+
   cursor: text;
 
   margin: $margin;
@@ -12,14 +25,6 @@
 
   transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
 
-  &:hover {
-    outline: 1px solid $blue-100;
-  }
-
-  &:focus {
-    outline: 1px solid $blue-400;
-    box-shadow: rgb(0 0 0 / 9%) 0 1px 4px;
-  }
 }
 
 @mixin link() {
