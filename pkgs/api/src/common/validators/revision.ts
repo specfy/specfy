@@ -1,7 +1,6 @@
 import { z } from 'zod';
 
 import { schemaId, schemaOrgId } from './common.js';
-import { max } from './flow.constants.js';
 import { schemaProseMirror } from './prosemirror.js';
 
 export const schemaRevision = z
@@ -15,7 +14,6 @@ export const schemaRevision = z
     blobs: z.array(schemaId).max(100),
     locked: z.boolean(),
     merged: z.boolean(),
-
     status: z.enum(['approved', 'closed', 'draft', 'waiting']),
 
     authors: z.array(schemaId).max(100),
@@ -41,24 +39,13 @@ const schemaStackBase = z
       z.string().min(1).max(50),
       z.number().positive().max(999_999_999)
     ),
-    group: z.enum(['component', 'hosting', 'thirdparty', 'project']),
     edges: z
       .array(
         z
           .object({
-            to: schemaId,
-            portSource: z.enum(['bottom', 'left', 'right', 'top']),
-            portTarget: z.enum(['bottom', 'left', 'right', 'top']),
+            target: schemaId,
             read: z.boolean(),
             write: z.boolean(),
-            vertices: z.array(
-              z
-                .object({
-                  x: z.number().positive().max(max),
-                  y: z.number().positive().max(max),
-                })
-                .strict()
-            ),
           })
           .strict()
       )

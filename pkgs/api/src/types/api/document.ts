@@ -13,7 +13,11 @@ export type Marks =
   | MarkDiff
   | {
       type: 'link';
-      attrs: { href: string; target: string; class: string | null };
+      attrs: {
+        href: string;
+        target: string;
+        class?: string | null | undefined;
+      };
     }
   | { type: 'bold' }
   | { type: 'code' }
@@ -23,7 +27,7 @@ export type Marks =
 export interface BlockText {
   type: 'text';
   text: string;
-  marks?: Marks[];
+  marks?: Marks[] | undefined;
 }
 
 /**
@@ -31,20 +35,21 @@ export interface BlockText {
  */
 export interface BlockParagraph {
   type: 'paragraph';
-  content?: Array<BlockHardBreak | BlockText>;
+  content?: Array<BlockHardBreak | BlockText> | undefined;
   attrs: BlockDefaultAttrs;
   marks?: MarkDiff[];
 }
 export interface BlockHardBreak {
   type: 'hardBreak';
-  marks?: MarkDiff[];
+  content?: undefined;
+  marks?: MarkDiff[] | undefined;
 }
 
 // ----- Headings
 export interface BlockHeading {
   type: 'heading';
   content: BlockText[];
-  attrs: BlockDefaultAttrs & { level: 1 | 2 | 3 | 4 };
+  attrs: BlockDefaultAttrs & { level: number };
   marks?: MarkDiff[];
 }
 
@@ -176,7 +181,10 @@ export interface BlockCodeBlock {
 export interface BlockStep {
   type: 'step';
   content: BlockLevelOne[];
-  attrs: BlockDefaultAttrs & { title?: string; stepId?: number };
+  attrs: BlockDefaultAttrs & {
+    title?: string | null | undefined;
+    stepId?: number | undefined;
+  };
   marks?: MarkDiff[];
 }
 

@@ -73,12 +73,12 @@ export const ProjectOverview: React.FC<{
           <ProjectLinks />
 
           <div className={cls.block}>
-            <Typography.Title level={5}>Technical Aspect</Typography.Title>
+            <h4>Technical Aspect</h4>
             <TechnicalAspects params={params} />
           </div>
 
           <div className={cls.block}>
-            <Typography.Title level={5}>Team</Typography.Title>
+            <h4>Team</h4>
             <Team org_id={params.org_id} project_id={project.id} />
           </div>
         </Card>

@@ -15,7 +15,7 @@ import { Card } from '../../components/Card';
 import { Container } from '../../components/Container';
 import { ContentSidebar } from '../../components/Content/Sidebar';
 import { NotFound } from '../../components/NotFound';
-import { ProjectHeader } from '../../components/ProjectHeader';
+import { ProjectHeader } from '../../components/Project/Header';
 import { Sidebar } from '../../components/Sidebar';
 import type { RouteProject } from '../../types/routes';
 

@@ -28,7 +28,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       return validationError(res, val.error);
     }
 
-    const query = val.data;
+    const query: ListActivities['Querystring'] = val.data;
     const where: Prisma.ActivitiesWhereInput = {
       orgId: query.org_id,
     };

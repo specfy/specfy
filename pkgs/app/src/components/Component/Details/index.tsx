@@ -3,22 +3,18 @@ import type { FlowEdge } from '@specfy/api/src/types/db';
 import type React from 'react';
 import { useEffect, useMemo, useState } from 'react';
 
-import { getAllChilds, positionEdge } from '../../common/component';
-import { useComponentsStore } from '../../common/store';
-import {
-  ComponentLine,
-  ComponentLineTech,
-} from '../../components/ComponentLine';
-import { ComponentSelect, LanguageSelect } from '../../components/StackSearch';
-import { useEdit } from '../../hooks/useEdit';
-import type { RouteComponent } from '../../types/routes';
+import { getAllChilds, positionEdge } from '../../../common/components';
+import { useComponentsStore } from '../../../common/store';
+import { useEdit } from '../../../hooks/useEdit';
+import type { RouteComponent } from '../../../types/routes';
+import { ComponentSelect, LanguageSelect } from '../../StackSearch';
+import { ComponentLine, ComponentLineTech } from '../Line';
 
 import cls from './index.module.scss';
 
 interface IsType {
   hosting: boolean;
   component: boolean;
-  thirdParty: boolean;
   project: boolean;
 }
 
@@ -41,10 +37,9 @@ export const ComponentDetails: React.FC<{
   const [receiveAnswer, setReceiveAnswer] = useState<ApiComponent[]>([]);
   const is = useMemo<IsType>(() => {
     return {
-      component: component.type === 'component',
+      component: component.type === 'service',
       hosting: component.type === 'hosting',
       project: component.type === 'project',
-      thirdParty: component.type === 'thirdparty',
     };
   }, [component]);
 
@@ -96,11 +91,11 @@ export const ComponentDetails: React.FC<{
 
     for (const edge of component.edges) {
       if (edge.read && edge.write) {
-        _readwrite.set(edge.to, list.get(edge.to)!);
+        _readwrite.set(edge.target, list.get(edge.target)!);
       } else if (edge.write) {
-        _write.set(edge.to, list.get(edge.to)!);
+        _write.set(edge.target, list.get(edge.target)!);
       } else {
-        _read.set(edge.to, list.get(edge.to)!);
+        _read.set(edge.target, list.get(edge.target)!);
       }
     }
 
@@ -110,7 +105,7 @@ export const ComponentDetails: React.FC<{
       }
 
       for (const edge of other.edges) {
-        if (edge.to !== component.id) {
+        if (edge.target !== component.id) {
           continue;
         }
 
@@ -134,7 +129,7 @@ export const ComponentDetails: React.FC<{
   }, [components]);
 
   const handleStackChange = (values: string[]) => {
-    storeComponents.updateField(component.id, 'tech', [...values]);
+    storeComponents.updateField(component.id, 'techs', [...values]);
   };
 
   const handlePickData = (
@@ -161,7 +156,7 @@ export const ComponentDetails: React.FC<{
       if (isFrom) {
         const tmp: FlowEdge[] = [];
         for (const edge of component.edges) {
-          if (edge.to === diff.id) {
+          if (edge.target === diff.id) {
             continue;
           }
           tmp.push(edge);
@@ -174,7 +169,7 @@ export const ComponentDetails: React.FC<{
       // Remove from this other to this component
       const tmp: FlowEdge[] = [];
       for (const edge of diff.edges) {
-        if (component.id === edge.to) {
+        if (component.id === edge.target) {
           continue;
         }
         tmp.push(edge);
@@ -191,7 +186,7 @@ export const ComponentDetails: React.FC<{
       const tmp: FlowEdge[] = [];
       let exists: FlowEdge | false = false;
       for (const edge of component.edges) {
-        if (edge.to === diff) {
+        if (edge.target === diff) {
           exists = JSON.parse(JSON.stringify(edge));
           continue;
         }
@@ -205,7 +200,7 @@ export const ComponentDetails: React.FC<{
         exists !== false
           ? exists
           : {
-              to: diff,
+              target: diff,
               portSource: 'left',
               portTarget: 'left',
               read: false,
@@ -225,7 +220,7 @@ export const ComponentDetails: React.FC<{
     const tmp: FlowEdge[] = [];
     let exists: FlowEdge | false = false;
     for (const edge of add.edges) {
-      if (edge.to === component.id) {
+      if (edge.target === component.id) {
         exists = JSON.parse(JSON.stringify(edge));
         continue;
       }
@@ -239,7 +234,7 @@ export const ComponentDetails: React.FC<{
       exists !== false
         ? exists
         : {
-            to: component.id,
+            target: component.id,
             portSource: 'left',
             portTarget: 'left',
             read: false,
@@ -291,24 +286,24 @@ export const ComponentDetails: React.FC<{
   };
 
   return (
-    <div>
-      {(isEditing || component.tech.length > 0) &&
+    <div className={cls.details}>
+      {(isEditing || component.techs.length > 0) &&
         is.component &&
         !component.techId && (
-          <div className={cls.block}>
+          <div>
             <div className={cls.blockTitle}>
-              <h3>Stack</h3>
+              <h4>Stack</h4>
             </div>
 
-            {(isEditing || component.tech.length > 0) && (
+            {(isEditing || component.techs.length > 0) && (
               <ComponentLineTech
                 title="Build with"
-                techs={component.tech}
+                techs={component.techs}
                 params={params}
                 editing={isEditing}
               >
                 <LanguageSelect
-                  values={component.tech}
+                  values={component.techs}
                   onChange={handleStackChange}
                 />
               </ComponentLineTech>
@@ -318,9 +313,9 @@ export const ComponentDetails: React.FC<{
 
       {(isEditing || hosts.length > 0 || inComp || contains.length > 0) &&
         (is.component || is.hosting) && (
-          <div className={cls.block}>
+          <div>
             <div className={cls.blockTitle}>
-              <h3>Hosting</h3>
+              <h4>Hosting</h4>
             </div>
 
             {(isEditing || hosts.length > 0) && (
@@ -334,6 +329,7 @@ export const ComponentDetails: React.FC<{
                   current={component}
                   values={hosts.length > 0 ? [hosts[0]] : []}
                   filter={['hosting']}
+                  createdAs="hosting"
                   multiple={false}
                   onChange={(res) => handleHost(res)}
                 />
@@ -350,7 +346,8 @@ export const ComponentDetails: React.FC<{
                 <ComponentSelect
                   current={component}
                   values={contains}
-                  filter={is.hosting ? ['component', 'hosting'] : ['component']}
+                  filter={is.hosting ? ['service', 'hosting'] : ['service']}
+                  createdAs="service"
                   onChange={(res) => handleContains(res)}
                 />
               </ComponentLine>
@@ -367,7 +364,8 @@ export const ComponentDetails: React.FC<{
                   current={component}
                   values={inComp ? [inComp] : []}
                   multiple={false}
-                  filter={['component']}
+                  filter={['service']}
+                  createdAs="service"
                   onChange={(res) => handleInComponent(res)}
                 />
               </ComponentLine>
@@ -383,9 +381,9 @@ export const ComponentDetails: React.FC<{
         answer.length > 0 ||
         receiveAnswer.length > 0) &&
         !is.hosting && (
-          <div className={cls.block}>
+          <div>
             <div className={cls.blockTitle}>
-              <h3>Data</h3>
+              <h4>Data</h4>
             </div>
 
             {(isEditing || readwrite.length > 0) && (
@@ -398,6 +396,7 @@ export const ComponentDetails: React.FC<{
                 <ComponentSelect
                   current={component}
                   values={readwrite}
+                  createdAs="service"
                   onChange={(res) =>
                     handlePickData(res, 'readwrite', readwrite)
                   }
@@ -415,6 +414,7 @@ export const ComponentDetails: React.FC<{
                 <ComponentSelect
                   current={component}
                   values={read}
+                  createdAs="service"
                   onChange={(res) => handlePickData(res, 'read', read)}
                 />
               </ComponentLine>
@@ -430,6 +430,7 @@ export const ComponentDetails: React.FC<{
                 <ComponentSelect
                   current={component}
                   values={write}
+                  createdAs="service"
                   onChange={(res) => handlePickData(res, 'write', write)}
                 />
               </ComponentLine>
@@ -445,6 +446,7 @@ export const ComponentDetails: React.FC<{
                 <ComponentSelect
                   current={component}
                   values={receiveAnswer}
+                  createdAs="service"
                   onChange={(res) =>
                     handlePickData(res, 'receiveAnswer', receiveAnswer)
                   }
@@ -461,6 +463,7 @@ export const ComponentDetails: React.FC<{
                 <ComponentSelect
                   current={component}
                   values={receive}
+                  createdAs="service"
                   onChange={(res) => handlePickData(res, 'receive', receive)}
                 />
               </ComponentLine>
@@ -475,6 +478,7 @@ export const ComponentDetails: React.FC<{
                 <ComponentSelect
                   current={component}
                   values={answer}
+                  createdAs="service"
                   onChange={(res) => handlePickData(res, 'answer', answer)}
                 />
               </ComponentLine>

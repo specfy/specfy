@@ -11,10 +11,10 @@ import {
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-import { useListRevisions } from '../../api';
-import { useOrgStore } from '../../common/store';
-import type { RouteProject } from '../../types/routes';
-import { Badge } from '../Badge';
+import { useListRevisions } from '../../../api';
+import { useOrgStore } from '../../../common/store';
+import type { RouteProject } from '../../../types/routes';
+import { Badge } from '../../Badge';
 
 import cls from './index.module.scss';
 

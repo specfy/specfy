@@ -52,9 +52,9 @@ describe('GET /components', () => {
         name: component.name,
         slug: component.slug,
         inComponent: null,
-        tech: [],
+        techs: [],
         techId: null,
-        type: 'component',
+        type: 'service',
         typeId: null,
         updatedAt: expect.toBeIsoDate(),
         blobId: expect.any(String),
@@ -66,6 +66,8 @@ describe('GET /components', () => {
           zIndex: 1,
         },
         edges: [],
+        show: true,
+        tags: [],
       },
     ]);
   });

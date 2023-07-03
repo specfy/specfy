@@ -25,7 +25,7 @@ export const getOrg: PreHandler<{
     return validationError(res, val.error);
   }
 
-  const params = val.data;
+  const params: ReqOrgParams = val.data;
   const permOrg = getOrgFromRequest(req, params.org_id);
 
   if (!permOrg) {

@@ -29,7 +29,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       return validationError(res, val.error);
     }
 
-    const query = val.data;
+    const query: ListComponents['Querystring'] = val.data;
 
     // TODO: pagination or remove it
     const pagination: Pagination = {
@@ -62,10 +62,12 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           name: p.name,
           slug: p.slug,
           description: p.description as unknown as BlockLevelZero,
-          tech: p.tech as ApiComponent['tech'],
+          techs: p.techs as ApiComponent['techs'],
           display: p.display as unknown as ApiComponent['display'],
           inComponent: p.inComponent,
           edges: p.edges as unknown as ApiComponent['edges'],
+          show: p.show,
+          tags: p.tags as ApiComponent['tags'],
 
           createdAt: p.createdAt.toISOString(),
           updatedAt: p.updatedAt.toISOString(),

@@ -239,7 +239,7 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
       // Remove any edges pointing toward this component
       const edges: ApiComponent['edges'] = [];
       for (const edge of copy.edges) {
-        if (edge.to === id) {
+        if (edge.target === id) {
           continue;
         }
 
@@ -266,7 +266,7 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
         edges: [
           ...copy.edges,
           {
-            to: connection.target!,
+            target: connection.target!,
             portSource: connection.sourceHandle as any,
             portTarget: connection.targetHandle as any,
             read: true,
@@ -290,7 +290,7 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
 
       const edges: ApiComponent['edges'] = [];
       for (const edge of copy.edges) {
-        if (edge.to !== target) {
+        if (edge.target !== target) {
           edges.push(edge);
           continue;
         }
@@ -317,7 +317,7 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
 
       const edges: ApiComponent['edges'] = [];
       for (const edge of copy.edges) {
-        if (edge.to === target) {
+        if (edge.target === target) {
           continue;
         }
 

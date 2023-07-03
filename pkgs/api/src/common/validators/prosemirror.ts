@@ -1,7 +1,5 @@
 import { z } from 'zod';
 
-import type { BlockBanner } from '../../types/api/index.js';
-
 import { schemaId } from './common.js';
 
 // BlockText
@@ -11,7 +9,14 @@ const blockText = z
     marks: z
       .array(
         z.discriminatedUnion('type', [
-          z.object({ type: z.literal('markDiff'), attrs: z.any() }).strict(),
+          z
+            .object({
+              type: z.literal('diffMark'),
+              attrs: z.object({
+                type: z.enum(['added', 'formatting', 'removed', 'unchanged']),
+              }),
+            })
+            .strict(),
           z.object({ type: z.literal('bold') }).strict(),
           z.object({ type: z.literal('code') }).strict(),
           z.object({ type: z.literal('italic') }).strict(),
@@ -32,7 +37,8 @@ const blockText = z
       .optional(),
     text: z.string(),
   })
-  .strict();
+  .strict()
+  .partial({ marks: true });
 
 // BlockHardBreak
 const blockHardBreak = z
@@ -53,21 +59,13 @@ const blockParagraph = z
   .partial({ content: true }); // Can happen with placeholder and weird state in breakline
 
 // BlockBanner
-const allowedBanner: Array<BlockBanner['attrs']['type']> = [
-  'error',
-  'info',
-  'success',
-  'warning',
-];
 const blockBanner = z
   .object({
     type: z.literal('banner'),
     attrs: z
       .object({
         uid: schemaId,
-        type: z.string().refine((val) => {
-          return allowedBanner.includes(val as any);
-        }),
+        type: z.enum(['error', 'info', 'success', 'warning']),
       })
       .strict(),
     content: z.array(blockParagraph),

@@ -7,7 +7,7 @@ export interface FlowItemDisplay {
 }
 
 export interface FlowEdge {
-  to: string;
+  target: string;
   read: boolean;
   write: boolean;
   vertices: Array<{ x: number; y: number }>;

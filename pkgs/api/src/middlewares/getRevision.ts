@@ -31,7 +31,7 @@ export const getRevision: PreHandler<{
     return validationError(res, val.error);
   }
 
-  const data = val.data;
+  const data: GetRevision['Params'] & GetRevision['Querystring'] = val.data;
   const proj = await prisma.revisions.findFirst({
     where: {
       orgId: data.org_id,

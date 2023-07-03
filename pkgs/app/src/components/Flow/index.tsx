@@ -1,8 +1,7 @@
 import type { ComputedFlow } from '@specfy/api/src/common/flow/types';
 import classNames from 'classnames';
 import type { CSSProperties } from 'react';
-import { useState, useEffect } from 'react';
-import type { NodeTypes, ReactFlowProps } from 'reactflow';
+import { useRef, useCallback, useState, useEffect } from 'react';
 import {
   BackgroundVariant,
   useNodesState,
@@ -11,6 +10,7 @@ import {
   Background,
   ConnectionMode,
 } from 'reactflow';
+import type { NodeTypes, ReactFlowInstance, ReactFlowProps } from 'reactflow';
 
 import 'reactflow/dist/style.css';
 import CustomNode from './CustomNode';
@@ -32,6 +32,10 @@ export const Flow: React.FC<{
   onNodesChange?: ReactFlowProps['onNodesChange'];
   onEdgesChange?: ReactFlowProps['onEdgesChange'];
   onConnect?: ReactFlowProps['onConnect'];
+  onCreateNode?: (
+    type: 'hosting' | 'service',
+    position: { x: number; y: number }
+  ) => string;
 }> = ({
   flow,
   highlight,
@@ -41,7 +45,11 @@ export const Flow: React.FC<{
   onNodesChange,
   onEdgesChange,
   onConnect,
+  onCreateNode,
 }) => {
+  const reactFlowWrapper = useRef<HTMLDivElement>(null);
+  const [reactFlowInstance, setReactFlowInstance] =
+    useState<ReactFlowInstance | null>(null);
   const [hasHighlight, setHasHighlight] = useState(!!highlight);
   const [hover, setHover] = useState<string | null>(null);
   const [nodes, setNodes, handleNodesChange] = useNodesState(flow.nodes);
@@ -134,9 +142,56 @@ export const Flow: React.FC<{
     setHighlightNode(opts.nodes[0].id);
   };
 
+  const onDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'move';
+  }, []);
+
+  const onDrop = useCallback(
+    (event: React.DragEvent<HTMLDivElement>) => {
+      event.preventDefault();
+      if (!reactFlowWrapper.current || !reactFlowInstance || !onCreateNode) {
+        return;
+      }
+
+      const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
+      const type = event.dataTransfer.getData('application/reactflow');
+
+      // check if the dropped element is valid
+      if (typeof type === 'undefined' || !type) {
+        return;
+      }
+
+      const position = reactFlowInstance.project({
+        x: event.clientX - reactFlowBounds.left,
+        y: event.clientY - reactFlowBounds.top,
+      });
+      // console.log(size);
+      // const newNode: Node<NodeData> = {
+      //   id: nanoid(),
+      //   type: 'custom',
+      //   position,
+      //   width: size.width,
+      //   height: size.height,
+      //   data: {
+      //     label: type,
+      //     type: type as any,
+      //     techId: null,
+      //     originalSize: size,
+      //   },
+      // };
+
+      // setNodes((nds) => nds.concat(newNode));
+      const id = onCreateNode(type as any, position);
+      console.log('created', id);
+    },
+    [reactFlowInstance]
+  );
+
   return (
     <div
       style={{ width: '100%', height: `100%` }}
+      ref={reactFlowWrapper}
       className={classNames(
         cls.flow,
         hasHighlight && cls.hasHighlight,
@@ -161,6 +216,10 @@ export const Flow: React.FC<{
         proOptions={{ hideAttribution: true }}
         elevateEdgesOnSelect={true}
         elevateNodesOnSelect={true}
+        // Drag
+        onInit={setReactFlowInstance}
+        onDragOver={onDragOver}
+        onDrop={onDrop}
         // Bubbled
         onConnect={onConnect}
         onNodesChange={(changes) => {
@@ -185,7 +244,7 @@ export const Flow: React.FC<{
 };
 
 export const FlowWrapper: React.FC<{
-  children: React.ReactElement | React.ReactElement[];
+  children: React.ReactNode;
   style?: CSSProperties;
 }> = ({ children, style }) => {
   return (
