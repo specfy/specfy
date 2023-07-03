@@ -83,7 +83,7 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
               readonly={true}
             />
             <Toolbar position="top" visible>
-              <Toolbar.Readonly visible={true} />
+              {!true && <Toolbar.Readonly />}
               <Toolbar.Main />
             </Toolbar>
             <Toolbar position="bottom" visible>

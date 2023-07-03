@@ -82,21 +82,26 @@ const CustomNode: React.FC<NodeProps<NodeData>> = ({ data, selected }) => {
   );
 };
 
-export const PreviewNode: React.FC<Node<NodeData>> = ({
+export const PreviewNode: React.FC<Node<NodeData> & { info?: boolean }> = ({
   data,
   positionAbsolute,
   width,
   height,
+  info = true,
 }) => {
   return (
     <div className={classNames(cls.node, cls.preview)}>
-      <div className={cls.pos}>
-        x:{positionAbsolute!.x} y:{positionAbsolute!.y}
-      </div>
-      <div className={cls.size}>
-        <div className={cls.sizeWidth}>{width}px</div>
-        <div className={cls.sizeHeight}>{height}px</div>
-      </div>
+      {info && (
+        <>
+          <div className={cls.pos}>
+            x:{positionAbsolute!.x} y:{positionAbsolute!.y}
+          </div>
+          <div className={cls.size}>
+            <div className={cls.sizeWidth}>{width}px</div>
+            <div className={cls.sizeHeight}>{height}px</div>
+          </div>
+        </>
+      )}
       <div className={cls.title}>
         <ComponentIcon {...data} large />
         <div className={cls.label}>{data.label}</div>

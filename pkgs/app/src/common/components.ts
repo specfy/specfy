@@ -30,7 +30,9 @@ export function getAllChilds(
 
 export function createLocal(
   data: Partial<Pick<ApiComponent, 'techId' | 'typeId'>> &
-    Pick<ApiComponent, 'name' | 'slug' | 'type'>,
+    Pick<ApiComponent, 'name' | 'slug' | 'type'> & {
+      position?: { x: number; y: number };
+    },
   storeProject: ProjectState,
   storeComponents: ComponentsState
 ) {
@@ -41,17 +43,23 @@ export function createLocal(
       ? { width: wDefHost, height: hDefHost }
       : { width: wDef, height: hDef };
 
-  // Compute global bounding box
-  const global = { x: 0, y: 0, width: 0, height: 0 };
-  for (const component of Object.values(storeComponents.components)) {
-    global.x = Math.min(component.display.pos.x, global.x);
-    global.y = Math.min(component.display.pos.y, global.y);
-    global.width = Math.max(component.display.size.width, global.width);
-    global.height = Math.max(component.display.size.height, global.height);
-  }
+  let pos = { x: 0, y: 0 };
 
-  // Simply add on top of it
-  const pos = { x: global.x, y: global.y - size.height };
+  // Compute global bounding box
+  if (data.position) {
+    pos = data.position;
+  } else {
+    const global = { x: 0, y: 0, width: 0, height: 0 };
+    for (const component of Object.values(storeComponents.components)) {
+      global.x = Math.min(component.display.pos.x, global.x);
+      global.y = Math.min(component.display.pos.y, global.y);
+      global.width = Math.max(component.display.size.width, global.width);
+      global.height = Math.max(component.display.size.height, global.height);
+    }
+
+    // Simply add on top of it
+    pos = { x: global.x, y: global.y - size.height };
+  }
 
   const add: ApiComponent = {
     id,

@@ -6,14 +6,15 @@ import { useCallback, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import type { OnConnect, OnEdgesChange, OnNodesChange } from 'reactflow';
 
-import { useComponentsStore } from '../../../common/store';
+import { createLocal } from '../../../common/components';
+import { useComponentsStore, useProjectStore } from '../../../common/store';
 import { titleSuffix } from '../../../common/string';
 import { Flow, FlowWrapper } from '../../../components/Flow';
+import { FlowDetails } from '../../../components/Flow/Details';
 import { Toolbar } from '../../../components/Flow/Toolbar';
 import { useEdit } from '../../../hooks/useEdit';
 import type { RouteProject } from '../../../types/routes';
 
-import { FlowEdit } from './Edit';
 import cls from './index.module.scss';
 
 export const ProjectFlow: React.FC<{
@@ -22,6 +23,7 @@ export const ProjectFlow: React.FC<{
 }> = ({ proj }) => {
   const { isEditing } = useEdit();
   const storeComponents = useComponentsStore();
+  const storeProjects = useProjectStore();
   const [flow, setFlow] = useState<ComputedFlow>();
 
   const [loading, setLoading] = useState<boolean>(true);
@@ -76,7 +78,7 @@ export const ProjectFlow: React.FC<{
   }, []);
 
   const onRelationChange: React.ComponentProps<
-    typeof FlowEdit
+    typeof FlowDetails
   >['onRelationChange'] = useCallback((type, rel) => {
     if (type === 'update') {
       storeComponents.updateEdge(rel.edge.source, rel.edge.target, {
@@ -86,6 +88,24 @@ export const ProjectFlow: React.FC<{
     }
   }, []);
 
+  const onCreateNode: React.ComponentProps<typeof Flow>['onCreateNode'] = (
+    type,
+    position
+  ) => {
+    const id = createLocal(
+      {
+        name: 'untitled',
+        slug: 'untitled',
+        type,
+        position,
+      },
+      storeProjects,
+      storeComponents
+    );
+
+    return id;
+  };
+
   if (loading) {
     return <LoadingOutlined />;
   }
@@ -94,7 +114,7 @@ export const ProjectFlow: React.FC<{
     <div className={cls.flow}>
       <Helmet title={`Flow - ${proj.name} ${titleSuffix}`} />
 
-      <FlowEdit
+      <FlowDetails
         components={components!}
         proj={proj}
         readonly={!isEditing}
@@ -112,9 +132,15 @@ export const ProjectFlow: React.FC<{
               onNodesChange={onNodesChange}
               onEdgesChange={onEdgesChange}
               onConnect={onConnect}
+              onCreateNode={onCreateNode}
             />
+            {isEditing && (
+              <Toolbar position="left" visible>
+                <Toolbar.AddComponents />
+              </Toolbar>
+            )}
             <Toolbar position="top" visible>
-              <Toolbar.Readonly visible={!isEditing} />
+              {!isEditing && <Toolbar.Readonly />}
               <Toolbar.Main />
             </Toolbar>
             <Toolbar position="bottom" visible>
