@@ -28,7 +28,7 @@ export const schemaPort = z.enum(['bottom', 'left', 'right', 'top']);
 export const schemaEdges = z.array(
   z
     .object({
-      to: schemaId, // TODO: Val that it exists if not created
+      target: schemaId, // TODO: Val that it exists if not created
       read: z.boolean(),
       write: z.boolean(),
       vertices: z.array(

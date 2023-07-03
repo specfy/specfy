@@ -1,5 +1,7 @@
 import type { ApiProject } from '@specfy/api/src/types/api';
 import {
+  IconBox,
+  IconCode,
   IconLock,
   IconMaximize,
   IconZoomIn,
@@ -7,17 +9,20 @@ import {
 } from '@tabler/icons-react';
 import { Button, Tooltip } from 'antd';
 import classnames from 'classnames';
+import type React from 'react';
+import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useReactFlow, useViewport } from 'reactflow';
 
 import { Flex } from '../../Flex';
+import { PreviewNode } from '../CustomNode';
 
 import cls from './index.module.scss';
 
 const ToolbarContainer: React.FC<{
-  position: 'bottom' | 'top';
+  position: 'bottom' | 'left' | 'top';
   visible?: boolean;
-  children: React.ReactElement | React.ReactElement[];
+  children: React.ReactNode;
 }> = ({ children, position, visible }) => {
   return (
     <div
@@ -29,12 +34,7 @@ const ToolbarContainer: React.FC<{
   );
 };
 
-const ToolbarReadonly: React.FC<{ visible: boolean }> = ({ visible }) => {
-  // <Toolbar> doesn't want boolean
-  if (!visible) {
-    return null;
-  }
-
+const ToolbarReadonly: React.FC = () => {
   return (
     <div className={classnames(cls.toolbar, cls.dark)}>
       <Flex gap="m">
@@ -79,6 +79,7 @@ const ToolbarZoom: React.FC = () => {
     </div>
   );
 };
+
 const ToolbarFullscreen: React.FC<{ project: ApiProject }> = ({ project }) => {
   return (
     <div className={cls.toolbar}>
@@ -91,11 +92,77 @@ const ToolbarFullscreen: React.FC<{ project: ApiProject }> = ({ project }) => {
   );
 };
 
+const ToolbarAddComponents: React.FC = () => {
+  const previewService = useRef<HTMLDivElement>(null);
+  const previewHosting = useRef<HTMLDivElement>(null);
+
+  const onDragStart = (
+    event: React.DragEvent<HTMLDivElement>,
+    nodeType: 'hosting' | 'service'
+  ) => {
+    event.dataTransfer.setData('application/reactflow', nodeType);
+    event.dataTransfer.setDragImage(
+      nodeType === 'hosting'
+        ? previewHosting.current!
+        : previewService.current!,
+      0,
+      0
+    );
+    event.dataTransfer.effectAllowed = 'move';
+  };
+
+  return (
+    <div className={cls.toolbar}>
+      <div
+        style={{
+          transform: 'translate(-10000px, -10000px)',
+          position: 'absolute',
+          pointerEvents: 'none',
+        }}
+      >
+        <div ref={previewService}>
+          <PreviewNode
+            id=""
+            type="custom"
+            position={{} as any}
+            info={false}
+            data={{ label: 'service', type: 'service' } as any}
+          />
+        </div>
+        <div ref={previewHosting}>
+          <PreviewNode
+            id=""
+            type="custom"
+            position={{} as any}
+            info={false}
+            data={{ label: 'hosting', type: 'hosting' } as any}
+          />
+        </div>
+      </div>
+      <div
+        className={cls.add}
+        onDragStart={(event) => onDragStart(event, 'service')}
+        draggable
+      >
+        <IconCode /> Service
+      </div>
+      <div
+        className={cls.add}
+        onDragStart={(event) => onDragStart(event, 'hosting')}
+        draggable
+      >
+        <IconBox /> Host
+      </div>
+    </div>
+  );
+};
+
 export type ToolbarProps = typeof ToolbarContainer & {
   Zoom: typeof ToolbarZoom;
   Fullscreen: typeof ToolbarFullscreen;
   Main: typeof ToolbarMain;
   Readonly: typeof ToolbarReadonly;
+  AddComponents: typeof ToolbarAddComponents;
 };
 
 export const Toolbar = ToolbarContainer as ToolbarProps;
@@ -103,3 +170,4 @@ Toolbar.Zoom = ToolbarZoom;
 Toolbar.Fullscreen = ToolbarFullscreen;
 Toolbar.Main = ToolbarMain;
 Toolbar.Readonly = ToolbarReadonly;
+Toolbar.AddComponents = ToolbarAddComponents;

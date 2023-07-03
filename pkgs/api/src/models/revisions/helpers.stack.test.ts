@@ -96,12 +96,9 @@ describe('uploadedStackToDB', () => {
             name: 'b',
             edges: [
               {
-                to: reup.id,
-                portSource: 'left',
-                portTarget: 'right',
+                target: reup.id,
                 read: true,
                 write: true,
-                vertices: [],
               },
             ],
           },
@@ -113,7 +110,7 @@ describe('uploadedStackToDB', () => {
     expect(res2.blobs).toHaveLength(2);
     expect(res2.blobs[0].typeId).toEqual(up.id);
     expect(res2.blobs[0].current!.id).toEqual(up.id);
-    expect(res2.blobs[1].current!.edges[0].to).toEqual(up.id);
+    expect(res2.blobs[1].current!.edges[0].target).toEqual(up.id);
     expect(res2.unchanged).toStrictEqual([res2.blobs[0].typeId]);
   });
 

@@ -2,7 +2,6 @@ import { LoadingOutlined } from '@ant-design/icons';
 import type { ApiProject } from '@specfy/api/src/types/api';
 import { IconPlus, IconSearch, IconUsers } from '@tabler/icons-react';
 import { Button, Input } from 'antd';
-import Title from 'antd/es/typography/Title';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -39,7 +38,7 @@ export const ListProjects: React.FC<{ orgId: string }> = ({ orgId }) => {
   return (
     <div>
       <div className={cls.header}>
-        <Title level={3}>Projects</Title>
+        <h3>Projects</h3>
         {!brandNew && (
           <div className={cls.actions}>
             <Link to={`/${orgId}/_/project/new`}>

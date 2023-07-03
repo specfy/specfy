@@ -7,8 +7,8 @@ import classnames from 'classnames';
 import { useMemo, useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
 
-import { supportedHostname } from '../../../common/component';
 import { useProjectStore } from '../../../common/store';
+import { supportedHostname } from '../../../common/techs';
 import { useEdit } from '../../../hooks/useEdit';
 
 import cls from './index.module.scss';

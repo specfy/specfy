@@ -141,7 +141,7 @@ export function iterNode(node: Blocks) {
     node.attrs = {} as any;
   }
   node.attrs[attrName] = nanoid();
-  if ('content' in node) {
+  if ('content' in node && node.content) {
     node.content.forEach(iterNode);
   }
 }

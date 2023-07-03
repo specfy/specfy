@@ -32,6 +32,13 @@
     bottom: 0;
     justify-content: left;
   }
+
+  &.left {
+    align-items: center;
+    justify-content: flex-start;
+    height: 95%;
+    background-color: transparent;
+  }
 }
 
 .toolbar {
@@ -60,4 +67,17 @@
     color: white;
     background-color: var(--bg10);
   }
+}
+
+.add {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  padding: $p-m;
+
+  font-size: $font-s;
+
+  background-color: #fff;
+  border-radius: $border-radius;
 }

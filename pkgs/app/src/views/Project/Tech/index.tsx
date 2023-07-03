@@ -3,17 +3,17 @@ import { componentsToFlow } from '@specfy/api/src/common/flow/transform';
 import type { ComputedFlow } from '@specfy/api/src/common/flow/types';
 import type { ApiComponent, ApiProject } from '@specfy/api/src/types/api';
 import { Tag } from 'antd';
-import Title from 'antd/es/typography/Title';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 
-import type { TechInfo } from '../../../common/component';
-import { supportedIndexed } from '../../../common/component';
 import { useComponentsStore } from '../../../common/store';
 import { titleSuffix } from '../../../common/string';
+import type { TechInfo } from '../../../common/techs';
+import { supportedIndexed } from '../../../common/techs';
 import { Card } from '../../../components/Card';
-import { ComponentLine } from '../../../components/ComponentLine';
+import { ComponentIcon } from '../../../components/Component/Icon';
+import { ComponentLine } from '../../../components/Component/Line';
 import { Container } from '../../../components/Container';
 import { Flex } from '../../../components/Flex';
 import { Flow, FlowWrapper } from '../../../components/Flow';
@@ -36,7 +36,6 @@ export const Tech: React.FC<{
   const [techname, setTechName] = useState<string>();
   const [usedBy, setUsedBy] = useState<ApiComponent[]>([]);
   const [info, setInfo] = useState<TechInfo>();
-  const [Icon, setIcon] = useState<TechInfo['Icon']>();
 
   useEffect(() => {
     setComponents(Object.values(storeComponents.components));
@@ -49,23 +48,20 @@ export const Tech: React.FC<{
     }
 
     let name;
-    console.log(supportedIndexed, route.tech_slug);
     if (route.tech_slug && route.tech_slug in supportedIndexed) {
       name = supportedIndexed[route.tech_slug].name;
       setInfo(supportedIndexed[route.tech_slug]);
-      setIcon(supportedIndexed[route.tech_slug].Icon);
     } else {
       setInfo(undefined);
-      setIcon(undefined);
     }
 
     const tmp = [];
     for (const comp of components) {
-      if (!comp.tech) {
+      if (!comp.techs) {
         continue;
       }
 
-      for (const _tech of comp.tech) {
+      for (const _tech of comp.techs) {
         if (_tech.toLocaleLowerCase() === route.tech_slug) {
           tmp.push(comp);
           if (!name) name = _tech;
@@ -100,19 +96,17 @@ export const Tech: React.FC<{
       <Helmet title={`${techname} - ${proj.name} ${titleSuffix}`} />
       <Container.Left2Third>
         <Card padded seamless large>
-          <Flex justifyContent="space-between">
+          <Flex justifyContent="space-between" className={cls.title}>
             <h2>
-              {Icon && (
-                <div className={cls.icon}>
-                  <Icon size="1em" />
-                </div>
-              )}
-              {techname}
+              <Flex gap="l">
+                <ComponentIcon techId={route.tech_slug} large />
+                {techname}
+              </Flex>
             </h2>
             <Tag>{info ? info.type : 'tech'}</Tag>
           </Flex>
 
-          <Title level={5}>Used in</Title>
+          <h3>Used in</h3>
 
           <ComponentLine title="Components" comps={usedBy} params={params} />
         </Card>

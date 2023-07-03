@@ -1,17 +1,17 @@
-import { IconEdit, IconEye } from '@tabler/icons-react';
+import { IconEdit, IconEye, IconPlus } from '@tabler/icons-react';
 import { Badge, Button, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
 import { useDebounce } from 'react-use';
 
-import { diffTwoBlob } from '../../../common/diff';
+import { diffTwoBlob } from '../../../../common/diff';
 import originalStore, {
   useStagingStore,
   useDocumentsStore,
   useComponentsStore,
   useProjectStore,
-} from '../../../common/store';
-import { useEdit } from '../../../hooks/useEdit';
-import type { Allowed, BlobAndDiffs } from '../../../types/blobs';
+} from '../../../../common/store';
+import { useEdit } from '../../../../hooks/useEdit';
+import type { Allowed, BlobAndDiffs } from '../../../../types/blobs';
 
 import cls from './index.module.scss';
 
@@ -153,9 +153,7 @@ export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
             size="small"
             color="hsl(226, 70.0%, 55.5%)"
           >
-            <Button type="primary">
-              Commit {staging.count > 1 ? 'changes' : 'change'}
-            </Button>
+            <Button type="primary">Changes</Button>
           </Badge>
         </Link>
       ) : (
@@ -165,6 +163,9 @@ export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
           </Button>
         </div>
       )}
+      <Link to={`/${project!.orgId}/${project!.slug}/component/new`}>
+        <Button icon={<IconPlus />} />
+      </Link>
     </div>
   );
 };

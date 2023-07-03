@@ -21,7 +21,7 @@ import { useDebounce } from 'react-use';
 import type { Edge, Node, ReactFlowProps } from 'reactflow';
 import { useEdges, useNodes, useOnSelectionChange } from 'reactflow';
 
-import { PreviewNode } from '../../../../components/Flow/CustomNode';
+import { PreviewNode } from '../CustomNode';
 
 import cls from './index.module.scss';
 
@@ -309,7 +309,7 @@ const EdgeRelation: React.FC<
   );
 };
 
-export const FlowEdit: React.FC<{
+export const FlowDetails: React.FC<{
   proj: ApiProject;
   components: ApiComponent[];
   readonly: boolean;

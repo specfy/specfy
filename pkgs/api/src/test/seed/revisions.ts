@@ -78,7 +78,7 @@ export async function seedRevisions(
         id: 'jZDC3Lsc99',
         name: 'PubSub',
         slug: 'pubsub',
-        type: 'component',
+        type: 'messaging',
         typeId: p1.id,
         blobId: '',
         orgId: 'company',
@@ -105,10 +105,10 @@ export async function seedRevisions(
           size: { width: 100, height: 32 },
         },
         inComponent: components.gce.id,
-        tech: [],
+        techs: [],
         edges: [
           {
-            to: components.api.id,
+            target: components.api.id,
             read: false,
             write: true,
             vertices: [],
@@ -127,7 +127,7 @@ export async function seedRevisions(
     edges.shift(); // removes redis
     edges.shift(); // removes pg
     edges.push({
-      to: blob2.typeId,
+      target: blob2.typeId,
       read: true,
       write: false,
       vertices: [],
@@ -135,13 +135,13 @@ export async function seedRevisions(
       portTarget: 'left',
     });
     edges[0].write = false;
-    const tech = ['golang', ...(components.api.tech as string[])];
-    tech.pop();
+    const techs = ['golang', ...(components.api.techs as string[])];
+    techs.pop();
 
     const blob3 = await createComponentBlob({
       blob: {
         ...components.api,
-        tech,
+        techs,
         description: {
           type: 'doc',
           content: [

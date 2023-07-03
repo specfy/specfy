@@ -4,8 +4,9 @@ import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useClickAway } from 'react-use';
 
-import { supportedIndexed } from '../../common/component';
-import type { RouteProject } from '../../types/routes';
+import { supportedIndexed } from '../../../common/techs';
+import type { RouteProject } from '../../../types/routes';
+import { ComponentIcon } from '../Icon';
 
 import cls from './index.module.scss';
 
@@ -17,30 +18,37 @@ export interface Line {
 }
 
 export const ComponentItem: React.FC<{
-  techId?: keyof typeof supportedIndexed | null;
-  children: React.ReactNode;
+  comp: ApiComponent;
+  params: RouteProject;
   className?: string;
-}> = ({ children, techId, className }) => {
-  const Icon =
-    techId && techId in supportedIndexed && supportedIndexed[techId].Icon;
+}> = ({ comp, className }) => {
   return (
-    <span className={classnames(cls.item, className)}>
-      {Icon && <Icon size="1em" />}
-      {children}
-    </span>
+    <Link
+      key={comp.id}
+      to={`/${comp.orgId}/${comp.projectId}/c/${comp.id}-${comp.slug}`}
+    >
+      <span className={classnames(cls.item, className)}>
+        <ComponentIcon {...comp} label={comp.name} />
+        {comp.name}
+      </span>
+    </Link>
   );
 };
 
-export const TechItem: React.FC<{ techId: string; params: RouteProject }> = ({
-  techId,
-  params,
-}) => {
+export const TechItem: React.FC<{
+  techId: string;
+  params: RouteProject;
+  className?: string;
+}> = ({ techId, params, className }) => {
   const supp = techId in supportedIndexed ? supportedIndexed[techId] : null;
   const slug = supp?.key || techId.toLocaleLowerCase();
 
   return (
     <Link to={`/${params.org_id}/${params.project_slug}/t/${slug}`}>
-      <ComponentItem techId={techId}>{supp?.name || techId}</ComponentItem>
+      <span className={classnames(cls.item, className)}>
+        <ComponentIcon techId={techId} />
+        {supp?.name || techId}
+      </span>
     </Link>
   );
 };
@@ -115,7 +123,10 @@ export const ComponentLine: React.FC<Line & { comps?: ApiComponent[] }> = ({
             key={c.id}
             to={`/${params.org_id}/${params.project_slug}/c/${c.id}-${c.slug}`}
           >
-            <ComponentItem techId={c.techId}>{c.name}</ComponentItem>
+            <span className={classnames(cls.item)}>
+              <ComponentIcon {...c} label={c.name} />
+              {c.name}
+            </span>
           </Link>
         );
       })}

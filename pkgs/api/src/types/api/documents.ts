@@ -25,9 +25,9 @@ export type DocumentSimple = Pick<
 export type ListDocuments = Res<{
   Querystring: {
     org_id: string;
-    project_id: string;
-    search?: string;
-    type?: ApiDocument['type'];
+    project_id?: string | undefined;
+    search?: string | undefined;
+    type?: ApiDocument['type'] | undefined;
   };
   Success: {
     data: DocumentSimple[];

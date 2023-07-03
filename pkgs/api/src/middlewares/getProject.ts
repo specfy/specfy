@@ -27,7 +27,7 @@ export const getProject: PreHandler<{
     return validationError(res, val.error);
   }
 
-  const params = val.data;
+  const params: ReqProjectParams = val.data;
   const proj = await prisma.projects.findUnique({
     where: {
       orgId_slug: { orgId: params.org_id, slug: params.project_slug },

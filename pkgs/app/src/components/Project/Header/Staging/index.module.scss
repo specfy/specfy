@@ -1,8 +1,8 @@
-@import "../../../styles/theme";
+@import "../../../../styles/theme";
 
 .staging {
   display: flex;
-  gap: $p-m;
+  gap: $p-xl;
   align-items: center;
 
   height: 72px;
@@ -17,7 +17,7 @@
   cursor: pointer;
 
   width: 40px;
-  margin-right: 10px;
+  margin-right: 2px;
 
   font-size: $font-l;
   text-align: center;
