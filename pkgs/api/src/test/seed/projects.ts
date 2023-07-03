@@ -145,7 +145,7 @@ export async function seedProjects(users: Users[]) {
         data: {
           edges: [
             {
-              to: p4.id,
+              target: p4.id,
               read: true,
               write: false,
               vertices: [],
@@ -153,7 +153,7 @@ export async function seedProjects(users: Users[]) {
               portTarget: 'right',
             },
             {
-              to: p5.id,
+              target: p5.id,
               read: true,
               write: false,
               vertices: [
@@ -174,7 +174,7 @@ export async function seedProjects(users: Users[]) {
         data: {
           edges: [
             {
-              to: p0.id,
+              target: p0.id,
               read: true,
               write: false,
               vertices: [],
@@ -192,7 +192,7 @@ export async function seedProjects(users: Users[]) {
         data: {
           edges: [
             {
-              to: p0.id,
+              target: p0.id,
               read: true,
               write: false,
               vertices: [],
@@ -200,7 +200,7 @@ export async function seedProjects(users: Users[]) {
               portTarget: 'right',
             },
             {
-              to: p4.id,
+              target: p4.id,
               read: true,
               write: false,
               vertices: [{ x: 20, y: 80 }],
@@ -218,7 +218,7 @@ export async function seedProjects(users: Users[]) {
         data: {
           edges: [
             {
-              to: p1.id,
+              target: p1.id,
               read: true,
               write: false,
               vertices: [],

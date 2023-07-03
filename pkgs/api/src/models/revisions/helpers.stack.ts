@@ -83,7 +83,14 @@ export function uploadedStackToDB(
           pos: { x: 0, y: 0 },
           size: getComponentSize(type, child.name),
         },
-        edges: child.edges,
+        edges: child.edges.map((edge) => {
+          return {
+            ...edge,
+            portSource: 'right',
+            portTarget: 'left',
+            vertices: [],
+          };
+        }),
         inComponent: child.inComponent,
         description: { type: 'doc', content: [] },
         source: data.source,
@@ -143,10 +150,10 @@ export function uploadedStackToDB(
     }
 
     blob.current.edges.forEach((edge) => {
-      if (idsMap[edge.to] === undefined) {
+      if (idsMap[edge.target] === undefined) {
         throw new Error('Edge does not exists anymore');
       }
-      edge.to = idsMap[edge.to];
+      edge.target = idsMap[edge.target];
     });
   });
 

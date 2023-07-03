@@ -1,7 +1,6 @@
 import { z } from 'zod';
 
 import { schemaId, schemaOrgId } from './common.js';
-import { max } from './flow.constants.js';
 import { schemaProseMirror } from './prosemirror.js';
 
 export const schemaRevision = z
@@ -44,19 +43,9 @@ const schemaStackBase = z
       .array(
         z
           .object({
-            to: schemaId,
-            portSource: z.enum(['bottom', 'left', 'right', 'top']),
-            portTarget: z.enum(['bottom', 'left', 'right', 'top']),
+            target: schemaId,
             read: z.boolean(),
             write: z.boolean(),
-            vertices: z.array(
-              z
-                .object({
-                  x: z.number().positive().max(max),
-                  y: z.number().positive().max(max),
-                })
-                .strict()
-            ),
           })
           .strict()
       )

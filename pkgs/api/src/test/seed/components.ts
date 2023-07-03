@@ -298,7 +298,7 @@ export async function seedComponents(
           inComponent: kube.id,
           edges: [
             {
-              to: redis.id,
+              target: redis.id,
               read: true,
               write: true,
               vertices: [],
@@ -306,7 +306,7 @@ export async function seedComponents(
               portTarget: 'right',
             },
             {
-              to: pg.id,
+              target: pg.id,
               read: true,
               write: true,
               vertices: [],
@@ -314,7 +314,7 @@ export async function seedComponents(
               portTarget: 'right',
             },
             {
-              to: analytics.id,
+              target: analytics.id,
               read: true,
               write: false,
               vertices: [],
@@ -322,7 +322,7 @@ export async function seedComponents(
               portTarget: 'left',
             },
             {
-              to: es.id,
+              target: es.id,
               read: true,
               write: true,
               vertices: [
@@ -333,7 +333,7 @@ export async function seedComponents(
               portTarget: 'right',
             },
             {
-              to: dd.id,
+              target: dd.id,
               read: false,
               write: true,
               vertices: [],
@@ -341,7 +341,7 @@ export async function seedComponents(
               portTarget: 'left',
             },
             {
-              to: sentry.id,
+              target: sentry.id,
               read: false,
               write: true,
               vertices: [],
@@ -349,7 +349,7 @@ export async function seedComponents(
               portTarget: 'left',
             },
             {
-              to: algolia.id,
+              target: algolia.id,
               read: true,
               write: true,
               vertices: [{ x: 400, y: 280 }],
@@ -379,7 +379,7 @@ export async function seedComponents(
           inComponent: kube.id,
           edges: [
             {
-              to: api.id,
+              target: api.id,
               read: true,
               write: true,
               vertices: [],
@@ -387,7 +387,7 @@ export async function seedComponents(
               portTarget: 'top',
             },
             {
-              to: algolia.id,
+              target: algolia.id,
               read: true,
               write: false,
               vertices: [{ x: 390, y: 270 }],
@@ -395,7 +395,7 @@ export async function seedComponents(
               portTarget: 'left',
             },
             {
-              to: sentry.id,
+              target: sentry.id,
               read: false,
               write: true,
               vertices: [{ x: 400, y: 230 }],
@@ -439,7 +439,7 @@ export async function seedComponents(
           inComponent: kube.id,
           edges: [
             {
-              to: pg.id,
+              target: pg.id,
               read: true,
               write: true,
               vertices: [],
@@ -447,7 +447,7 @@ export async function seedComponents(
               portTarget: 'right',
             },
             {
-              to: rabbit.id,
+              target: rabbit.id,
               read: true,
               write: true,
               vertices: [],
@@ -455,7 +455,7 @@ export async function seedComponents(
               portTarget: 'top',
             },
             {
-              to: es.id,
+              target: es.id,
               read: true,
               write: true,
               vertices: [],
@@ -463,7 +463,7 @@ export async function seedComponents(
               portTarget: 'right',
             },
             {
-              to: algolia.id,
+              target: algolia.id,
               read: true,
               write: true,
               vertices: [],
@@ -471,7 +471,7 @@ export async function seedComponents(
               portTarget: 'left',
             },
             {
-              to: dd.id,
+              target: dd.id,
               read: false,
               write: true,
               vertices: [],
@@ -479,7 +479,7 @@ export async function seedComponents(
               portTarget: 'left',
             },
             {
-              to: sentry.id,
+              target: sentry.id,
               read: false,
               write: true,
               vertices: [],
@@ -523,7 +523,7 @@ export async function seedComponents(
           inComponent: kube.id,
           edges: [
             {
-              to: pg.id,
+              target: pg.id,
               read: true,
               write: false,
               vertices: [],
@@ -531,7 +531,7 @@ export async function seedComponents(
               portTarget: 'right',
             },
             {
-              to: rabbit.id,
+              target: rabbit.id,
               read: true,
               write: true,
               vertices: [],
@@ -539,7 +539,7 @@ export async function seedComponents(
               portTarget: 'bottom',
             },
             {
-              to: es.id,
+              target: es.id,
               read: true,
               write: false,
               vertices: [],
@@ -547,7 +547,7 @@ export async function seedComponents(
               portTarget: 'right',
             },
             {
-              to: dd.id,
+              target: dd.id,
               read: false,
               write: true,
               vertices: [],
@@ -555,7 +555,7 @@ export async function seedComponents(
               portTarget: 'left',
             },
             {
-              to: sentry.id,
+              target: sentry.id,
               read: false,
               write: true,
               vertices: [],

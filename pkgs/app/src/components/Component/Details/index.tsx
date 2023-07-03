@@ -91,11 +91,11 @@ export const ComponentDetails: React.FC<{
 
     for (const edge of component.edges) {
       if (edge.read && edge.write) {
-        _readwrite.set(edge.to, list.get(edge.to)!);
+        _readwrite.set(edge.target, list.get(edge.target)!);
       } else if (edge.write) {
-        _write.set(edge.to, list.get(edge.to)!);
+        _write.set(edge.target, list.get(edge.target)!);
       } else {
-        _read.set(edge.to, list.get(edge.to)!);
+        _read.set(edge.target, list.get(edge.target)!);
       }
     }
 
@@ -105,7 +105,7 @@ export const ComponentDetails: React.FC<{
       }
 
       for (const edge of other.edges) {
-        if (edge.to !== component.id) {
+        if (edge.target !== component.id) {
           continue;
         }
 
@@ -156,7 +156,7 @@ export const ComponentDetails: React.FC<{
       if (isFrom) {
         const tmp: FlowEdge[] = [];
         for (const edge of component.edges) {
-          if (edge.to === diff.id) {
+          if (edge.target === diff.id) {
             continue;
           }
           tmp.push(edge);
@@ -169,7 +169,7 @@ export const ComponentDetails: React.FC<{
       // Remove from this other to this component
       const tmp: FlowEdge[] = [];
       for (const edge of diff.edges) {
-        if (component.id === edge.to) {
+        if (component.id === edge.target) {
           continue;
         }
         tmp.push(edge);
@@ -186,7 +186,7 @@ export const ComponentDetails: React.FC<{
       const tmp: FlowEdge[] = [];
       let exists: FlowEdge | false = false;
       for (const edge of component.edges) {
-        if (edge.to === diff) {
+        if (edge.target === diff) {
           exists = JSON.parse(JSON.stringify(edge));
           continue;
         }
@@ -200,7 +200,7 @@ export const ComponentDetails: React.FC<{
         exists !== false
           ? exists
           : {
-              to: diff,
+              target: diff,
               portSource: 'left',
               portTarget: 'left',
               read: false,
@@ -220,7 +220,7 @@ export const ComponentDetails: React.FC<{
     const tmp: FlowEdge[] = [];
     let exists: FlowEdge | false = false;
     for (const edge of add.edges) {
-      if (edge.to === component.id) {
+      if (edge.target === component.id) {
         exists = JSON.parse(JSON.stringify(edge));
         continue;
       }
@@ -234,7 +234,7 @@ export const ComponentDetails: React.FC<{
       exists !== false
         ? exists
         : {
-            to: component.id,
+            target: component.id,
             portSource: 'left',
             portTarget: 'left',
             read: false,

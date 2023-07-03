@@ -108,7 +108,7 @@ export async function seedRevisions(
         techs: [],
         edges: [
           {
-            to: components.api.id,
+            target: components.api.id,
             read: false,
             write: true,
             vertices: [],
@@ -127,7 +127,7 @@ export async function seedRevisions(
     edges.shift(); // removes redis
     edges.shift(); // removes pg
     edges.push({
-      to: blob2.typeId,
+      target: blob2.typeId,
       read: true,
       write: false,
       vertices: [],

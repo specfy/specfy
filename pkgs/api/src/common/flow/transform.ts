@@ -93,9 +93,9 @@ export function componentsToFlow(components: ComponentForFlow[]): ComputedFlow {
   for (const comp of components) {
     for (const edge of comp.edges) {
       const item: Edge<EdgeData> = {
-        id: `${comp.id}->${edge.to}`,
+        id: `${comp.id}->${edge.target}`,
         source: comp.id,
-        target: edge.to,
+        target: edge.target,
         sourceHandle: edge.portSource,
         targetHandle: edge.portTarget,
         data: { read: edge.read, write: edge.write },

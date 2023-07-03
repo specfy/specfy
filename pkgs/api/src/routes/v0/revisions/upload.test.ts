@@ -335,12 +335,9 @@ describe('POST /revisions/upload -- Stack', () => {
               tech: null,
               edges: [
                 {
-                  to: '90uaaV0QPN2D',
-                  portSource: 'right',
-                  portTarget: 'left',
+                  target: '90uaaV0QPN2D',
                   read: true,
                   write: true,
-                  vertices: [],
                 },
               ],
               inComponent: null,

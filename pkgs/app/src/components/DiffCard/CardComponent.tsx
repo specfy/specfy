@@ -92,9 +92,9 @@ export const DiffCardComponent: React.FC<{
             <Typography.Title level={4}>Data</Typography.Title>
             <div className={classnames(cls.data)}>
               {using.edges.map((edge) => {
-                const comp = getComponent(edge.to);
+                const comp = getComponent(edge.target);
                 return (
-                  <div key={edge.to}>
+                  <div key={edge.target}>
                     Link to{' '}
                     <ComponentItem
                       className={cls.item}
@@ -192,9 +192,9 @@ export const DiffCardComponent: React.FC<{
             <div key={d.key} className={classnames(cls.line)}>
               <Typography.Title level={4}>Data</Typography.Title>
               {change.added.map((edge) => {
-                const comp = getComponent(edge.to);
+                const comp = getComponent(edge.target);
                 return (
-                  <div key={edge.to} className={cls.added}>
+                  <div key={edge.target} className={cls.added}>
                     Link to{' '}
                     <ComponentItem
                       className={cls.item}
@@ -205,10 +205,10 @@ export const DiffCardComponent: React.FC<{
                 );
               })}
               {change.deleted.map((edge) => {
-                const comp = getComponent(edge.to);
+                const comp = getComponent(edge.target);
 
                 return (
-                  <div key={edge.to} className={cls.removed}>
+                  <div key={edge.target} className={cls.removed}>
                     Link to{' '}
                     <ComponentItem
                       className={cls.item}
@@ -219,10 +219,10 @@ export const DiffCardComponent: React.FC<{
                 );
               })}
               {change.modified.map((edge) => {
-                const comp = getComponent(edge.to);
+                const comp = getComponent(edge.target);
 
                 return (
-                  <div key={edge.to}>
+                  <div key={edge.target}>
                     Link to{' '}
                     <ComponentItem
                       className={cls.item}
