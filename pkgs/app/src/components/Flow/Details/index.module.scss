@@ -59,6 +59,21 @@
   color: var(--text1);
 }
 
+.noValue {
+  color: var(--text1);
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  height: 24px;
+
+  .caption {
+    width: 70px;
+    font-weight: 500;
+  }
+}
+
 // ---- BLOCK
 // Changeset
 .change {

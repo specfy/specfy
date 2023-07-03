@@ -14,14 +14,15 @@ import {
   IconArrowsExchange,
   IconTrash,
 } from '@tabler/icons-react';
-import { Button, Tooltip } from 'antd';
+import { Button, Tag, Tooltip } from 'antd';
 import classNames from 'classnames';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'react-use';
-import type { Edge, Node, ReactFlowProps } from 'reactflow';
+import type { Edge, Node } from 'reactflow';
 import { useEdges, useNodes, useOnSelectionChange } from 'reactflow';
 
 import { PreviewNode } from '../CustomNode';
+import type { OnNodesChangeSuper } from '../helpers';
 
 import cls from './index.module.scss';
 
@@ -314,7 +315,7 @@ export const FlowDetails: React.FC<{
   components: ApiComponent[];
   readonly: boolean;
   // Events
-  onNodesChange?: ReactFlowProps['onNodesChange'];
+  onNodesChange?: OnNodesChangeSuper;
   onRelationChange: (type: 'delete' | 'update', relation: Relation) => void;
 }> = ({ components, readonly, onNodesChange, onRelationChange }) => {
   const nodes = useNodes();
@@ -408,6 +409,14 @@ export const FlowDetails: React.FC<{
     setTo(t);
   }, [currNode]);
 
+  const parent = useMemo(() => {
+    if (!component?.inComponent) {
+      return null;
+    }
+
+    return components.find((c) => c.id === component.inComponent);
+  }, [component]);
+
   const onRelationDirection = useCallback(
     (rel: Relation) => {
       if (rel.edge.data!.write && rel.edge.data!.read) {
@@ -430,6 +439,11 @@ export const FlowDetails: React.FC<{
       onNodesChange([{ id: currNode!.id, type: 'remove' }]);
     }
   };
+  const removeParent = () => {
+    if (onNodesChange) {
+      onNodesChange([{ id: currNode!.id, type: 'ungroup' }]);
+    }
+  };
 
   return (
     <div className={cls.composition}>
@@ -437,7 +451,7 @@ export const FlowDetails: React.FC<{
         <>
           <div className={cls.block}>
             <div className={cls.title}>
-              Component
+              {component.type === 'hosting' ? 'Hosting' : 'Component'}
               {!readonly && (
                 <div>
                   <Button
@@ -451,6 +465,21 @@ export const FlowDetails: React.FC<{
             </div>
             <div className={cls.preview}>
               <PreviewNode {...currNode} />
+            </div>
+          </div>
+
+          <div className={cls.block}>
+            <div className={cls.inside}>
+              <div className={cls.info}>
+                <div className={cls.caption}>Parent</div>
+                {parent ? (
+                  <Tag closable onClose={removeParent}>
+                    {parent.name}
+                  </Tag>
+                ) : (
+                  <div className={cls.noValue}>none</div>
+                )}
+              </div>
             </div>
           </div>
 
