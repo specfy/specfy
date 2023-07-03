@@ -1,7 +1,21 @@
 import classNames from 'classnames';
-import type { Edge, Node } from 'reactflow';
+import type { Edge, Node, NodeChange } from 'reactflow';
 
 import cls from './index.module.scss';
+
+export type NodeChangeSuper =
+  | NodeChange
+  | {
+      id: string;
+      type: 'group';
+      parentId: string;
+      position: { x: number; y: number };
+    }
+  | {
+      id: string;
+      type: 'ungroup';
+    };
+export type OnNodesChangeSuper = (changes: NodeChangeSuper[]) => void;
 
 export function highlightNode({
   id,
@@ -42,10 +56,18 @@ export function highlightNode({
   // Update nodes
   const upNodes = nodes.map((node) => {
     if (node.id !== id && !related.has(node.id) && node.parentNode !== id) {
-      return { ...node, className: undefined };
+      return {
+        ...node,
+        className: node.className ? node.className.replace(cls.show, '') : '',
+      };
     }
 
-    return { ...node, className: cls.show };
+    return {
+      ...node,
+      className: node.className?.includes(cls.show)
+        ? node.className
+        : classNames(node.className, cls.show),
+    };
   });
 
   return { nodes: upNodes, edges: upEdges };

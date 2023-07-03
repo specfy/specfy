@@ -9,11 +9,13 @@ import {
   ReactFlow,
   Background,
   ConnectionMode,
+  useReactFlow,
 } from 'reactflow';
 import type { NodeTypes, ReactFlowInstance, ReactFlowProps } from 'reactflow';
 
 import 'reactflow/dist/style.css';
 import CustomNode from './CustomNode';
+import type { OnNodesChangeSuper } from './helpers';
 import { highlightNode } from './helpers';
 import cls from './index.module.scss';
 
@@ -29,7 +31,7 @@ export const Flow: React.FC<{
   keepHighlightOnSelect?: boolean;
 
   // Events
-  onNodesChange?: ReactFlowProps['onNodesChange'];
+  onNodesChange?: OnNodesChangeSuper;
   onEdgesChange?: ReactFlowProps['onEdgesChange'];
   onConnect?: ReactFlowProps['onConnect'];
   onCreateNode?: (
@@ -47,6 +49,7 @@ export const Flow: React.FC<{
   onConnect,
   onCreateNode,
 }) => {
+  const { getIntersectingNodes, getNode } = useReactFlow();
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
   const [reactFlowInstance, setReactFlowInstance] =
     useState<ReactFlowInstance | null>(null);
@@ -73,7 +76,6 @@ export const Flow: React.FC<{
 
   // We changed the parent page
   useEffect(() => {
-    console.log(readonly);
     setEdges((prev) => {
       return flow.edges.map((edge) => {
         const id = `${edge.source}->${edge.target}`;
@@ -85,7 +87,15 @@ export const Flow: React.FC<{
     });
     setNodes((prev) => {
       return flow.nodes.map((node) => {
-        const find = prev.find((n) => n.id === node.id) || node;
+        let find = prev.find((n) => n.id === node.id);
+        if (!find) {
+          find = node;
+        } else {
+          // Reflect updates
+          find.parentNode = node.parentNode;
+          find.extent = node.extent;
+          find.position = node.position;
+        }
         find.deletable = !readonly;
         find.draggable = !readonly;
         find.connectable = !readonly;
@@ -95,6 +105,7 @@ export const Flow: React.FC<{
     });
   }, [readonly, flow]);
 
+  // --- Highlighting
   const setHighlightNode = (id: string) => {
     const updates = highlightNode({ id, nodes, edges });
     setEdges(updates.edges);
@@ -142,11 +153,14 @@ export const Flow: React.FC<{
     setHighlightNode(opts.nodes[0].id);
   };
 
+  // --- Dragging
+  // Before dragging a new node is over
   const onDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = 'move';
   }, []);
 
+  // When we finishing dropping a new node
   const onDrop = useCallback(
     (event: React.DragEvent<HTMLDivElement>) => {
       event.preventDefault();
@@ -166,27 +180,92 @@ export const Flow: React.FC<{
         x: event.clientX - reactFlowBounds.left,
         y: event.clientY - reactFlowBounds.top,
       });
-      // console.log(size);
-      // const newNode: Node<NodeData> = {
-      //   id: nanoid(),
-      //   type: 'custom',
-      //   position,
-      //   width: size.width,
-      //   height: size.height,
-      //   data: {
-      //     label: type,
-      //     type: type as any,
-      //     techId: null,
-      //     originalSize: size,
-      //   },
-      // };
 
-      // setNodes((nds) => nds.concat(newNode));
       const id = onCreateNode(type as any, position);
+      // TODO: auto select
       console.log('created', id);
     },
     [reactFlowInstance]
   );
+
+  // --- Grouping
+  // We move the node around
+  const onNodeDrag: ReactFlowProps['onNodeDrag'] = (_, node) => {
+    const intersections = getIntersectingNodes(node).map((n) => n.id);
+
+    setNodes((nds) => {
+      return nds.map((n) => {
+        // TODO: handle deep nested host
+        // TODO: handle deep parent host
+        if (
+          n.data.type !== 'hosting' ||
+          n.parentNode === node.id ||
+          n.id === node.parentNode
+        ) {
+          return n;
+        }
+
+        return {
+          ...n,
+          className: intersections.includes(n.id) ? cls.highlightToGroup : '',
+        };
+      });
+    });
+  };
+
+  const onNodeDragStop: ReactFlowProps['onNodeDragStop'] = (_, node) => {
+    let last: string | undefined;
+
+    // Find potential hosts
+    nodes.forEach((nd) => {
+      if (nd.className?.includes(cls.highlightToGroup)) {
+        last = nd.id;
+      }
+    });
+
+    if (!last) {
+      // Drag also trigger on click so there is a good chance we didn't found anything
+      return;
+    }
+
+    // Remove highlight from hosts
+    setNodes((nds) => {
+      return nds.map((nd) => {
+        return {
+          ...nd,
+          className: nd.className?.replace(cls.highlightToGroup, ''),
+        };
+      });
+    });
+
+    // The only way to get the absolute position
+    const tmp = getNode(last)!;
+
+    // Then we compute new relative position compared to host
+    const pos = node.position;
+    const position = {
+      x:
+        pos.x < tmp.position.x
+          ? 0
+          : pos.x + node.width! > tmp.position.x + tmp.width!
+          ? tmp.width! - node.width!
+          : pos.x - tmp.position.x,
+      y:
+        pos.y < tmp.position.y
+          ? 0
+          : pos.y + node.height! > tmp.position.y + tmp.height!
+          ? tmp.height! - node.height!
+          : pos.y - tmp.position.y,
+    };
+    onNodesChange!([
+      {
+        type: 'group',
+        id: node.id,
+        parentId: tmp.id,
+        position,
+      },
+    ]);
+  };
 
   return (
     <div
@@ -220,6 +299,8 @@ export const Flow: React.FC<{
         onInit={setReactFlowInstance}
         onDragOver={onDragOver}
         onDrop={onDrop}
+        onNodeDrag={onNodeDrag}
+        onNodeDragStop={onNodeDragStop}
         // Bubbled
         onConnect={onConnect}
         onNodesChange={(changes) => {

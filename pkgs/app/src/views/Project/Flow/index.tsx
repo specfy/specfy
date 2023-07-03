@@ -4,7 +4,7 @@ import type { ComputedFlow } from '@specfy/api/src/common/flow/types';
 import type { ApiProject, ApiComponent } from '@specfy/api/src/types/api';
 import { useCallback, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import type { OnConnect, OnEdgesChange, OnNodesChange } from 'reactflow';
+import type { OnConnect, OnEdgesChange } from 'reactflow';
 
 import { createLocal } from '../../../common/components';
 import { useComponentsStore, useProjectStore } from '../../../common/store';
@@ -12,6 +12,7 @@ import { titleSuffix } from '../../../common/string';
 import { Flow, FlowWrapper } from '../../../components/Flow';
 import { FlowDetails } from '../../../components/Flow/Details';
 import { Toolbar } from '../../../components/Flow/Toolbar';
+import type { OnNodesChangeSuper } from '../../../components/Flow/helpers';
 import { useEdit } from '../../../hooks/useEdit';
 import type { RouteProject } from '../../../types/routes';
 
@@ -43,7 +44,7 @@ export const ProjectFlow: React.FC<{
   }, [components]);
 
   // ---- Event Handlers
-  const onNodesChange = useCallback<OnNodesChange>(
+  const onNodesChange = useCallback<OnNodesChangeSuper>(
     (changes) => {
       for (const change of changes) {
         if (change.type === 'remove') {
@@ -56,6 +57,18 @@ export const ProjectFlow: React.FC<{
               pos: change.position,
             });
           }
+        } else if (change.type === 'group') {
+          const comp = storeComponents.select(change.id)!;
+          storeComponents.update({
+            ...comp,
+            inComponent: change.parentId,
+            display: {
+              ...comp.display,
+              pos: change.position,
+            },
+          });
+        } else if (change.type === 'ungroup') {
+          storeComponents.updateField(change.id, 'inComponent', null);
         }
       }
     },
