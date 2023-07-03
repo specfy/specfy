@@ -193,15 +193,22 @@ export const Flow: React.FC<{
   const onNodeDrag: ReactFlowProps['onNodeDrag'] = (_, node) => {
     const intersections = getIntersectingNodes(node).map((n) => n.id);
 
+    // Compute parents list so we don't highlight them
+    const parents: string[] = [];
+    let parent = node.parentNode;
+    while (parent) {
+      parents.push(parent);
+      parent = getNode(parent)?.parentNode;
+    }
+
     setNodes((nds) => {
       return nds.map((n) => {
-        // TODO: handle deep nested host
-        // TODO: handle deep parent host
-        if (
-          n.data.type !== 'hosting' ||
-          n.parentNode === node.id ||
-          n.id === node.parentNode
-        ) {
+        if (n.data.type !== 'hosting' || n.id === node.parentNode) {
+          return n;
+        }
+
+        // handle deep parent host
+        if (parents.includes(n.id)) {
           return n;
         }
 
