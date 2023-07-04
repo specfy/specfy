@@ -14,6 +14,7 @@ import { useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useReactFlow, useViewport } from 'reactflow';
 
+import { useEdit } from '../../../hooks/useEdit';
 import { Flex } from '../../Flex';
 import { PreviewNode } from '../CustomNode';
 
@@ -35,12 +36,19 @@ const ToolbarContainer: React.FC<{
 };
 
 const ToolbarReadonly: React.FC = () => {
+  const edit = useEdit();
+  const onClick = () => {
+    edit.enable(true);
+  };
+
   return (
     <div className={classnames(cls.toolbar, cls.dark)}>
-      <Flex gap="m">
-        Read-Only
-        <IconLock />
-      </Flex>
+      <button onClick={onClick} title="Click to enable edition">
+        <Flex gap="m">
+          Read-Only
+          <IconLock />
+        </Flex>
+      </button>
     </div>
   );
 };
@@ -122,20 +130,32 @@ const ToolbarAddComponents: React.FC = () => {
       >
         <div ref={previewService}>
           <PreviewNode
-            id=""
-            type="custom"
-            position={{} as any}
             info={false}
-            data={{ label: 'service', type: 'service' } as any}
+            node={{
+              id: '',
+              data: {
+                name: 'service',
+                type: 'service',
+                techId: null,
+                typeId: null,
+                originalSize: {} as any,
+              },
+            }}
           />
         </div>
         <div ref={previewHosting}>
           <PreviewNode
-            id=""
-            type="custom"
-            position={{} as any}
             info={false}
-            data={{ label: 'hosting', type: 'hosting' } as any}
+            node={{
+              id: '',
+              data: {
+                name: 'hosting',
+                type: 'hosting',
+                techId: null,
+                typeId: null,
+                originalSize: {} as any,
+              },
+            }}
           />
         </div>
       </div>

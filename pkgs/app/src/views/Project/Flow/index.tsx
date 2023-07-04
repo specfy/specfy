@@ -71,6 +71,29 @@ export const ProjectFlow: React.FC<{
           storeComponents.updateField(change.id, 'inComponent', null);
         } else if (change.type === 'rename') {
           storeComponents.updateField(change.id, 'name', change.name);
+        } else if (change.type === 'tech') {
+          const comp = storeComponents.select(change.id)!;
+          if (!change.tech) {
+            storeComponents.update({
+              ...comp,
+              typeId: null,
+              techId: null,
+              type: 'service',
+            });
+          } else if (change.tech.type === 'project') {
+            storeComponents.update({
+              ...comp,
+              typeId: change.tech.key,
+              type: 'project',
+              name: change.tech.name,
+            });
+          } else {
+            storeComponents.update({
+              ...comp,
+              techId: change.tech.key,
+              type: change.tech.type,
+            });
+          }
         }
       }
     },

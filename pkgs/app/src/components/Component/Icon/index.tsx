@@ -1,5 +1,5 @@
 import type { NodeData } from '@specfy/api/src/common/flow/types';
-import { IconCode } from '@tabler/icons-react';
+import { IconCode, IconSquare } from '@tabler/icons-react';
 import classNames from 'classnames';
 
 import { supportedIndexed } from '../../../common/techs';
@@ -7,19 +7,23 @@ import { AvatarAuto } from '../../AvatarAuto';
 
 import cls from './index.module.scss';
 
-export const ComponentIcon: React.FC<
-  Partial<Pick<NodeData, 'label' | 'techId' | 'type'>> & { large?: boolean }
-> = ({ label, techId, type, large }) => {
-  if (type === 'project') {
+export const ComponentIcon: React.FC<{
+  data: Partial<Pick<NodeData, 'name' | 'techId' | 'type'>>;
+  large?: boolean;
+  noEmpty?: boolean;
+}> = ({ data, large, noEmpty }) => {
+  if (data.type === 'project') {
     return (
       <div className={classNames(cls.icon, cls.project, large && cls.large)}>
-        <AvatarAuto name={label || ''} size="small" shape="square" />
+        <AvatarAuto name={data.name || ''} size="small" shape="square" />
       </div>
     );
   }
 
   const Icon =
-    techId && techId in supportedIndexed && supportedIndexed[techId].Icon;
+    data.techId &&
+    data.techId in supportedIndexed &&
+    supportedIndexed[data.techId].Icon;
   if (Icon) {
     return (
       <div className={classNames(cls.icon, large && cls.large)}>
@@ -27,13 +31,16 @@ export const ComponentIcon: React.FC<
       </div>
     );
   }
-  if (type === 'service') {
+  if (data.type === 'service') {
     return (
       <div className={classNames(cls.icon, cls.service, large && cls.large)}>
         <IconCode size="1em" />
       </div>
     );
   }
-
-  return null;
+  return (
+    <div className={classNames(cls.icon, large && cls.large)}>
+      {noEmpty && <IconSquare size="1em" />}
+    </div>
+  );
 };

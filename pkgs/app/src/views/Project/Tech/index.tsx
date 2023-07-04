@@ -99,7 +99,7 @@ export const Tech: React.FC<{
           <Flex justifyContent="space-between" className={cls.title}>
             <h2>
               <Flex gap="l">
-                <ComponentIcon techId={route.tech_slug} large />
+                <ComponentIcon data={{ techId: route.tech_slug }} large />
                 {techname}
               </Flex>
             </h2>

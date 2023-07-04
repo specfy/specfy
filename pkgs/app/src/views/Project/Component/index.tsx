@@ -118,7 +118,7 @@ export const ComponentView: React.FC<{
               {!isEditing && (
                 <h2>
                   <Flex gap="l">
-                    <ComponentIcon {...comp} label={comp.name} large />
+                    <ComponentIcon data={comp} large />
                     {comp.name}
                   </Flex>
                 </h2>

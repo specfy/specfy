@@ -1,5 +1,17 @@
 import type { IconType } from '@icons-pack/react-simple-icons';
 import {
+  Apachecassandra,
+  Amazondynamodb,
+  Influxdb,
+  Couchbase,
+  Mariadb,
+  Firebase,
+  Expo,
+  Render,
+  Platformdotsh,
+  Mysql,
+  Elasticstack,
+  Heroku,
   Docker,
   Javascript,
   Jirasoftware,
@@ -65,11 +77,13 @@ const extending: Partial<Record<AllowedKeys, Extending>> = {
   'algolia': { Icon: Algolia },
   'alibabacloud': { Icon: Alibabacloud },
   'aws': { Icon: Amazonaws, regHostname: /aws.amazon.com$/ },
+  'aws.dynamodb': { Icon: Amazondynamodb },
   'azure': { Icon: Microsoftazure },
   'bash': { Icon: Gnubash },
   'c': { Icon: C },
+  'cassandra': { Icon: Apachecassandra },
   'cplusplus': { Icon: Cplusplus },
-  'csharp': { },
+  'couchbase': { Icon: Couchbase },
   'css': { Icon: CssThree },
   'dart': { Icon: Dart },
   'datadog': { Icon: Datadog, regHostname: /^(www.)?datadog.com$/ },
@@ -77,20 +91,35 @@ const extending: Partial<Record<AllowedKeys, Extending>> = {
   'docker': { Icon: Docker },
   'elasticloud': { Icon: Elasticcloud },
   'elasticsearch': { Icon: Elasticsearch },
+  'elasticstack': { Icon: Elasticstack},
   'elixir': { Icon: Elixir },
   'eslint': { Icon: Eslint },
-  'gce': { Icon: Googlecloud },
+  'expodev': { Icon: Expo },
+  'firebase': { Icon: Firebase },
+  'gcp.bigquery': { Icon: Googlecloud },
+  'gcp.cloudrun': { Icon: Googlecloud },
+  'gcp.gce': { Icon: Googlecloud },
+  'gcp.gcs': { Icon: Googlecloud },
+  'gcp.gke': { Icon: Kubernetes },
+  'gcp.pubsub': { Icon: Googlecloud },
+  'gcp.sql': { Icon: Googlecloud },
   'gcp': { Icon: Googlecloud },
+  'github.actions': { Icon: Github },
+  'github.pages': { Icon: Github },
   'github': { Icon: Github, regHostname: /^(www.)?github.com$/ },
   'golang': { Icon: Go },
+  'heroku': { Icon: Heroku },
   'html': { Icon: Html5 },
-  'java': { },
+  'influxdb': { Icon: Influxdb },
   'javascript': { Icon: Javascript },
   'jira': { Icon: Jirasoftware, regHostname: /.atlassian.net$/ },
   'kotlin': { Icon: Kotlin },
   'kubernetes': { Icon: Kubernetes },
   'mailchimp': { Icon: Mailchimp },
+  'mariadb': { Icon: Mariadb },
   'mongodb': { Icon: Mongodb },
+  'mongodbatlas': { Icon: Mongodb },
+  'mysql': { Icon: Mysql},
   'netlify': { Icon: Netlify, regHostname: /^(www.)?netlify.com$/ },
   'newrelic': { Icon: Newrelic },
   'nodejs': { Icon: Nodedotjs },
@@ -98,6 +127,7 @@ const extending: Partial<Record<AllowedKeys, Extending>> = {
   'ovh': { Icon: Ovh },
   'php': { Icon: Php },
   'pingdom': { Icon: Pingdom, regHostname: /^(www.)?pingdom.com$/ },
+  'platformsh': {Icon: Platformdotsh },
   'postgresql': { Icon: Postgresql },
   'powershell': { Icon: Powershell },
   'pubsub': { Icon: Googlecloud },
@@ -105,6 +135,7 @@ const extending: Partial<Record<AllowedKeys, Extending>> = {
   'rabbitmq': { Icon: Rabbitmq },
   'react': { Icon: ReactJs },
   'redis': { Icon: Redis },
+  'render': { Icon: Render },
   'ruby': { Icon: Ruby },
   'rust': { Icon: Rust },
   'sentry': { Icon: Sentry, regHostname: /^(www.)?sentry.com$/ },
@@ -118,7 +149,10 @@ const extending: Partial<Record<AllowedKeys, Extending>> = {
 };
 
 export const supportedArray: TechInfo[] = list.map((t) => {
-  return { ...t, ...(extending[t.key] || {}) };
+  if (t.key in extending) {
+    return { ...t, ...extending[t.key] };
+  }
+  return t;
 });
 
 export const supportedIndexed: Record<string, TechInfo> = {};

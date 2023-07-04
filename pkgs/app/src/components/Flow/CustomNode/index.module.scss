@@ -149,13 +149,16 @@
   }
 }
 
+.iconEdit {
+  @include focusable
+}
 
 .pos {
   position: absolute;
   top: -20px;
   left: 0;
 
-  width: 140px;
+  width: 170px;
 
   font-size: $font-xs;
   color: var(--text1);
@@ -195,14 +198,14 @@
   .sizeWidth {
     position: absolute;
     top: 10px;
-    left: 65px;
+    left: 85px;
 
     &::before {
       content: " ";
 
       position: absolute;
       top: 0;
-      left: -50px;
+      left: -70px;
 
       display: block;
 

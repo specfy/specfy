@@ -1,6 +1,8 @@
 import classNames from 'classnames';
 import type { Edge, Node, NodeChange } from 'reactflow';
 
+import type { TechSearchItem } from '../StackSearch/TechSearch';
+
 import cls from './index.module.scss';
 
 export type NodeChangeSuper =
@@ -18,8 +20,14 @@ export type NodeChangeSuper =
     }
   | {
       id: string;
+      type: 'tech';
+      tech: TechSearchItem | null;
+    }
+  | {
+      id: string;
       type: 'ungroup';
     };
+
 export type OnNodesChangeSuper = (changes: NodeChangeSuper[]) => void;
 
 export function highlightNode({

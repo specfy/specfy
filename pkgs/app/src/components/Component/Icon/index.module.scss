@@ -2,6 +2,7 @@
 
 .icon {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
   justify-content: center;
 
@@ -46,5 +47,9 @@
         height: 20px;
       }
     }
+  }
+
+  &.noEmpty {
+    border: 1px solid var(--border1);
   }
 }

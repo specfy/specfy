@@ -44,6 +44,7 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
           edges: project.edges,
           inComponent: null,
           techId: null,
+          typeId: null,
         };
       })
     );

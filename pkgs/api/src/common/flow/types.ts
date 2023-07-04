@@ -24,15 +24,24 @@ export interface Tree {
 
 export type ComponentForFlow = Pick<
   ApiComponent,
-  'display' | 'edges' | 'id' | 'inComponent' | 'name' | 'techId' | 'type'
+  | 'display'
+  | 'edges'
+  | 'id'
+  | 'inComponent'
+  | 'name'
+  | 'techId'
+  | 'type'
+  | 'typeId'
 >;
 
 export interface NodeData {
-  label: string;
+  name: string;
   type: ApiComponent['type'];
   techId: ApiComponent['techId'];
   originalSize: ComponentForFlow['display']['size'];
+  typeId: ApiComponent['typeId'];
 }
+
 export interface EdgeData {
   read: boolean;
   write: boolean;

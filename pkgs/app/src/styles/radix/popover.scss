@@ -1,0 +1,115 @@
+@import "../theme";
+
+.rx_popoverContent {
+  will-change: transform, opacity;
+
+  z-index: 2;
+
+
+  background-color: white;
+  border-radius: $border-radius;
+  box-shadow: hsl(206deg 22% 7% / 35%) 0 10px 38px -10px, hsl(206deg 22% 7% / 20%) 0 10px 20px -15px;
+
+  animation-duration: 400ms;
+  animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+
+  &:focus {
+    box-shadow: hsl(206deg 22% 7% / 35%) 0 10px 38px -10px, hsl(206deg 22% 7% / 20%) 0 10px 20px -15px,
+      0 0 0 2px var(--accent1);
+  }
+
+  &[data-state='open'][data-side='top'] {
+    animation-name: slideDownAndFade;
+  }
+
+  &[data-state='open'][data-side='right'] {
+    animation-name: slideLeftAndFade;
+  }
+
+  &[data-state='open'][data-side='bottom'] {
+    animation-name: slideUpAndFade;
+  }
+
+  &[data-state='open'][data-side='left'] {
+    animation-name: slideRightAndFade;
+  }
+}
+
+
+.rx_popoverArrow {
+  fill: white;
+}
+
+.rx_popoverClose {
+  position: absolute;
+  top: $p;
+  right: $p;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 25px;
+  height: 25px;
+
+  font-family: inherit;
+  color: var(--text2);
+
+  border-radius: 100%;
+
+  &:hover {
+    background-color: var(--accent1);
+  }
+
+  &:focus {
+    box-shadow: 0 0 0 2px var(--accent2);
+  }
+}
+
+@keyframes slideUpAndFade {
+  from {
+    transform: translateY(2px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideRightAndFade {
+  from {
+    transform: translateX(-2px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideDownAndFade {
+  from {
+    transform: translateY(-2px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideLeftAndFade {
+  from {
+    transform: translateX(2px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}

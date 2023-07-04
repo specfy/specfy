@@ -41,6 +41,7 @@ export const OrgOverview: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
           id: project.id,
           name: project.name,
           type: 'project',
+          typeId: null,
           display: project.display,
           edges: project.edges,
           inComponent: null,

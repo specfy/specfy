@@ -329,6 +329,11 @@ export const FlowDetails: React.FC<{
 
   // Select Nodes / Edges
   useOnSelectionChange({
+    /**
+     * Be careful `nds` is stall.
+     * Maybe it's my fault I don't know, but sometimes the nodes are not up to date.
+     * So prefer selecting back again from `nodes`.
+     */
     onChange: ({ nodes: nds, edges: eds }) => {
       // Nodes
       if (nds.length === 0 || nds.length > 1) {
@@ -337,11 +342,8 @@ export const FlowDetails: React.FC<{
         setNode(null);
       } else {
         // Only one
-        const nd = nds[0];
-        const comp = components.find((c) => c.id === nd.id)!;
-
-        setComponent(comp);
-        setNode(nd);
+        setComponent(components.find((c) => c.id === nds[0].id)!);
+        setNode(nodes.find((n) => n.id === nds[0].id)!);
       }
 
       // Edges
@@ -375,7 +377,7 @@ export const FlowDetails: React.FC<{
       setComponent(comp);
       setNode(find);
     },
-    150,
+    16,
     [nodes, component]
   );
 
@@ -466,7 +468,7 @@ export const FlowDetails: React.FC<{
             <div className={cls.preview}>
               <PreviewNode
                 key={currNode.id}
-                {...currNode}
+                node={currNode}
                 editable={!readonly}
                 onNodesChange={onNodesChange}
               />

@@ -52,7 +52,7 @@ export const DiffCardComponent: React.FC<{
     return (
       <Typography.Title level={4}>
         <Flex gap="l">
-          <ComponentIcon {...using} label={using.name} large />
+          <ComponentIcon data={using} large />
           {hasName && !diff.blob.created ? (
             <UnifiedDiff key={hasName.key} diff={hasName} />
           ) : (

@@ -1,0 +1,75 @@
+@import "../../../styles/theme";
+
+.main {
+  width: 200px;
+}
+
+.inputGroup {
+  .input {
+    width: 100%;
+    padding: $p-l $p-2xl $p-l $p-l;
+    border-bottom: 1px solid var(--border1);
+
+
+    &::placeholder {
+      color: var(--text1);
+    }
+
+  }
+
+  .actions {
+    position: absolute;
+    top: $p-s;
+    right: $p-s;
+  }
+}
+
+.groups {
+  overflow: scroll;
+  max-height: 250px;
+  margin-top: $p;
+}
+
+.group {
+  padding-top: $p-l;
+  border-bottom: 1px solid var(--border1)
+}
+
+.name {
+  padding: 0 $p-l;
+  font-weight: 500;
+  color: var(--text2)
+}
+
+.rows {
+  padding: $p 2px;
+}
+
+.row {
+  cursor: pointer;
+
+  display: grid;
+  grid-template-columns: 20px 1fr;
+  gap: $p-l;
+  align-items: center;
+
+  padding: 6px $p-l;
+
+  font-size: $font-s;
+  color: var(--text2);
+
+  &:hover {
+    color: var(--text);
+    background-color: var(--bg2);
+  }
+
+  &.focused {
+    color: var(--text);
+    background-color: var(--bg3);
+  }
+
+  &.selected {
+    color: var(--accent2);
+    background-color: var(--bg3);
+  }
+}

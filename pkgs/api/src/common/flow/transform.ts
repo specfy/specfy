@@ -12,9 +12,10 @@ export function createNode(component: ComponentForFlow): Node<NodeData> {
     id: component.id,
     type: 'custom',
     data: {
-      label: component.name,
+      name: component.name,
       type: component.type,
       techId: component.techId,
+      typeId: component.typeId,
       originalSize: component.display.size,
     },
     position: { ...component.display.pos },
@@ -57,6 +58,7 @@ export function getEdgeMarkers(data: EdgeData) {
   }
   return edge;
 }
+
 export function componentsToFlow(components: ComponentForFlow[]): ComputedFlow {
   const edges: Array<Edge<EdgeData>> = [];
   const nodes: Array<Node<NodeData>> = [];
