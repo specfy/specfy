@@ -68,8 +68,9 @@ export function componentsToFlow(components: ComponentForFlow[]): ComputedFlow {
   const hosts = components.filter((comp) => comp.type === 'hosting');
   const done: string[] = [];
 
-  // eslint-disable-next-line no-constant-condition
-  while (true) {
+  let i = 0;
+  while (i < 9999) {
+    i += 1;
     if (hosts.length <= 0) {
       break;
     }
@@ -81,6 +82,9 @@ export function componentsToFlow(components: ComponentForFlow[]): ComputedFlow {
 
     nodes.push(createNode(host));
     done.push(host.id);
+  }
+  if (i >= 9999) {
+    throw new Error("Can't compute host");
   }
 
   // Create all other nodes

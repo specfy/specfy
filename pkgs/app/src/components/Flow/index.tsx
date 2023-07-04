@@ -85,6 +85,7 @@ export const Flow: React.FC<{
         return find;
       });
     });
+
     setNodes((prev) => {
       return flow.nodes.map((node) => {
         let find = prev.find((n) => n.id === node.id);
@@ -194,22 +195,45 @@ export const Flow: React.FC<{
   const onNodeDrag: ReactFlowProps['onNodeDrag'] = (_, node) => {
     const intersections = getIntersectingNodes(node).map((n) => n.id);
 
+    const exclude: string[] = [node.id];
+
     // Compute parents list so we don't highlight them
-    const parents: string[] = [];
     let parent = node.parentNode;
     while (parent) {
-      parents.push(parent);
+      exclude.push(parent);
       parent = getNode(parent)?.parentNode;
+    }
+
+    // Compute childs too
+    for (const n of nodes) {
+      if (n.data.type !== 'hosting') continue;
+      if (exclude.includes(n.id)) continue;
+
+      const chains = [n.id];
+      let par = n.parentNode;
+      let i = 0;
+      while (par && i < 9999) {
+        i += 1;
+
+        // One of the parent of this node is the original node we are moving
+        if (par === node.id) {
+          exclude.push(...chains);
+          break;
+        }
+
+        chains.push(par);
+        par = getNode(par)?.parentNode;
+      }
     }
 
     setNodes((nds) => {
       return nds.map((n) => {
-        if (n.data.type !== 'hosting' || n.id === node.parentNode) {
+        if (n.data.type !== 'hosting') {
           return n;
         }
 
-        // handle deep parent host
-        if (parents.includes(n.id)) {
+        // handle deep parent/child host
+        if (exclude.includes(n.id)) {
           return n;
         }
 
@@ -265,6 +289,7 @@ export const Flow: React.FC<{
           ? tmp.height! - node.height!
           : pos.y - tmp.position.y,
     };
+
     onNodesChange!([
       {
         type: 'group',

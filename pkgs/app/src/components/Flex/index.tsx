@@ -1,7 +1,10 @@
+import type { CSSProperties } from 'react';
+
 interface FlexProps {
   children?: any;
   className?: string;
   child?: boolean;
+
   /****** Container Props ********/
   direction?: 'column' | 'row';
   justifyContent?:
@@ -22,11 +25,15 @@ interface FlexProps {
     | 'initial'
     | 'stretch';
   gap?: 'l' | 'm' | 's' | 'xl';
+
   /****** Child Props ********/
   grow?: number;
   shrink?: number;
   basis?: number;
   flex?: string;
+
+  /* other */
+  style?: CSSProperties;
 }
 
 const gap = { s: '4px', m: '8px', l: '12px', xl: '24px' };
@@ -45,6 +52,7 @@ export const Flex: React.FC<FlexProps> = (props) => {
         flexWrap: props.wrap || 'nowrap',
         alignItems: props.alignItems || 'center',
         gap: props.gap ? gap[props.gap] : '',
+        ...props.style,
       }}
     >
       {props.children}
