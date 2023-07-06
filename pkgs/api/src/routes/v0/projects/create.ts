@@ -71,7 +71,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         return validationError(res, val.error);
       }
 
-      const data = val.data;
+      const data: PostProject['Body'] = val.data;
 
       const project = await prisma.$transaction(async (tx) => {
         const tmp = await createProject({
@@ -84,7 +84,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
               content: [],
             },
             links: [],
-            display: data.display,
+            display: data.display as any,
             edges: [],
           },
           user: req.user!,

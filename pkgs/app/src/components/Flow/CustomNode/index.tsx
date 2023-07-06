@@ -2,9 +2,16 @@ import * as Popover from '@radix-ui/react-popover';
 import type { NodeData } from '@specfy/api/src/common/flow/types';
 import classNames from 'classnames';
 import type { ChangeEventHandler, KeyboardEventHandler } from 'react';
-import { useEffect, memo, useRef, useState } from 'react';
-import type { Node, NodeProps } from 'reactflow';
-import { Handle, Position, NodeResizer } from 'reactflow';
+import { useMemo, useEffect, memo, useRef, useState } from 'react';
+import type { Node, NodeProps, ReactFlowState } from 'reactflow';
+import {
+  useUpdateNodeInternals,
+  useEdges,
+  useStore,
+  Handle,
+  Position,
+  NodeResizer,
+} from 'reactflow';
 
 import { ComponentIcon } from '../../Component/Icon';
 import type { TechSearchItem } from '../../StackSearch/TechSearch';
@@ -13,10 +20,73 @@ import type { OnNodesChangeSuper } from '../helpers';
 
 import cls from './index.module.scss';
 
-const CustomNode: React.FC<NodeProps<NodeData>> = ({ data, selected }) => {
+const connectionNodeIdSelector = (state: ReactFlowState) =>
+  state.connectionNodeId;
+
+const CustomNode: React.FC<NodeProps<NodeData>> = ({
+  id,
+  data,
+  selected,
+  isConnectable,
+}) => {
+  const updateNodeInternals = useUpdateNodeInternals();
+  const connectionNodeId = useStore(connectionNodeIdSelector);
+  const isConnecting = !!connectionNodeId;
+  const edges = useEdges();
+
+  const { hasTT, hasTR, hasTB, hasTL, hasST, hasSR, hasSB, hasSL } =
+    useMemo(() => {
+      const filtered = edges.filter(
+        (edge) => edge.target === id || edge.source === id
+      );
+
+      return {
+        hasTT:
+          filtered.findIndex(
+            (edge) => edge.targetHandle === 'tt' && edge.target === id
+          ) > -1,
+        hasTR:
+          filtered.findIndex(
+            (edge) => edge.targetHandle === 'tr' && edge.target === id
+          ) > -1,
+        hasTB:
+          filtered.findIndex(
+            (edge) => edge.targetHandle === 'tb' && edge.target === id
+          ) > -1,
+        hasTL:
+          filtered.findIndex(
+            (edge) => edge.targetHandle === 'tl' && edge.target === id
+          ) > -1,
+        hasST:
+          filtered.findIndex(
+            (edge) => edge.sourceHandle === 'st' && edge.source === id
+          ) > -1,
+        hasSR:
+          filtered.findIndex(
+            (edge) => edge.sourceHandle === 'sr' && edge.source === id
+          ) > -1,
+        hasSB:
+          filtered.findIndex(
+            (edge) => edge.sourceHandle === 'sb' && edge.source === id
+          ) > -1,
+        hasSL:
+          filtered.findIndex(
+            (edge) => edge.sourceHandle === 'sl' && edge.source === id
+          ) > -1,
+      };
+    }, [edges]);
+
+  useEffect(() => {
+    updateNodeInternals(id);
+  }, [isConnecting, hasTT, hasTR, hasTB, hasTL, hasST, hasSR, hasSB, hasSL]);
+
   return (
     <div
-      className={classNames(cls.node, data.type === 'hosting' && cls.hosting)}
+      className={classNames(
+        cls.node,
+        selected && cls.selected,
+        data.type === 'hosting' && cls.hosting
+      )}
     >
       <NodeResizer
         lineClassName={cls.resizerLine}
@@ -31,57 +101,113 @@ const CustomNode: React.FC<NodeProps<NodeData>> = ({ data, selected }) => {
         <div className={cls.label}>{data.name}</div>
       </div>
 
-      <Handle
-        type="source"
-        position={Position.Top}
-        id="top"
-        className={classNames(cls.handle, cls.source, cls.top)}
-      />
-      <Handle
-        type="target"
-        position={Position.Top}
-        id="top"
-        className={classNames(cls.handle, cls.target, cls.top)}
-      />
+      <div className={cls.top}>
+        <Handle
+          type="source"
+          position={Position.Top}
+          id="st"
+          className={classNames(
+            cls.handle,
+            cls.source,
+            cls.top,
+            hasST && cls.show
+          )}
+          isConnectable={isConnectable}
+        />
+        <Handle
+          type="target"
+          position={Position.Top}
+          id="tt"
+          className={classNames(
+            cls.handle,
+            cls.target,
+            cls.top,
+            (hasTT || isConnecting) && cls.show
+          )}
+          isConnectable={isConnectable}
+        />
+      </div>
 
-      <Handle
-        type="source"
-        position={Position.Right}
-        id="right"
-        className={classNames(cls.handle, cls.source, cls.right)}
-      />
-      <Handle
-        type="target"
-        position={Position.Right}
-        id="right"
-        className={classNames(cls.handle, cls.target, cls.right)}
-      />
+      <div className={cls.right}>
+        <Handle
+          type="source"
+          position={Position.Right}
+          id="sr"
+          className={classNames(
+            cls.handle,
+            cls.source,
+            cls.right,
+            hasSR && cls.show
+          )}
+          isConnectable={isConnectable}
+        />
+        <Handle
+          type="target"
+          position={Position.Right}
+          id="tr"
+          className={classNames(
+            cls.handle,
+            cls.target,
+            cls.right,
+            (hasTR || isConnecting) && cls.show
+          )}
+          isConnectable={isConnectable}
+        />
+      </div>
 
-      <Handle
-        type="source"
-        position={Position.Bottom}
-        id="bottom"
-        className={classNames(cls.handle, cls.source, cls.bottom)}
-      />
-      <Handle
-        type="target"
-        position={Position.Bottom}
-        id="bottom"
-        className={classNames(cls.handle, cls.target, cls.bottom)}
-      />
+      <div className={cls.bottom}>
+        <Handle
+          type="source"
+          position={Position.Bottom}
+          id="sb"
+          className={classNames(
+            cls.handle,
+            cls.source,
+            cls.bottom,
+            hasSB && cls.show
+          )}
+          isConnectable={isConnectable}
+        />
+        <Handle
+          type="target"
+          position={Position.Bottom}
+          id="tb"
+          className={classNames(
+            cls.handle,
+            cls.target,
+            cls.bottom,
+            (hasTB || isConnecting) && cls.show
+          )}
+          isConnectable={isConnectable}
+        />
+      </div>
 
-      <Handle
-        type="source"
-        position={Position.Left}
-        id="left"
-        className={classNames(cls.handle, cls.source, cls.left)}
-      />
-      <Handle
-        type="target"
-        position={Position.Left}
-        id="left"
-        className={classNames(cls.handle, cls.target, cls.left)}
-      />
+      <div className={cls.left}>
+        <Handle
+          type="source"
+          position={Position.Left}
+          id="sl"
+          className={classNames(
+            cls.handle,
+            cls.source,
+            cls.left,
+            hasSL && cls.show
+          )}
+          isConnectable={isConnectable}
+        />
+        <Handle
+          type="target"
+          position={Position.Left}
+          id="tl"
+          className={classNames(
+            cls.handle,
+            cls.target,
+            cls.left,
+            (hasTL || isConnecting) && cls.show
+          )}
+          isConnectable={isConnectable}
+        />
+      </div>
     </div>
   );
 };
@@ -103,6 +229,7 @@ export const PreviewNode: React.FC<{
     if (document.activeElement === input.current) {
       return;
     }
+
     setValue(node.data.name);
   }, [node]);
 

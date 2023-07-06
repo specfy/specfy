@@ -3,8 +3,6 @@ import { z } from 'zod';
 import { schemaId } from './common.js';
 import { min, max, wMax, wMin, hMax, hMin } from './flow.constants.js';
 
-// const portPosition = ['bottom', 'left', 'right', 'top']; // TODO: enforce union
-
 export const schemaDisplay = z
   .object({
     zIndex: z.number().min(0).max(100),
@@ -21,9 +19,11 @@ export const schemaDisplay = z
       })
       .strict(),
   })
-  .strict();
+  .strict()
+  .partial({ zIndex: true });
 
-export const schemaPort = z.enum(['bottom', 'left', 'right', 'top']);
+export const schemaPortSource = z.enum(['st', 'sr', 'sb', 'sl']);
+export const schemaPortTarget = z.enum(['tt', 'tr', 'tb', 'tl']);
 
 export const schemaEdges = z.array(
   z
@@ -39,8 +39,8 @@ export const schemaEdges = z.array(
           })
           .strict()
       ),
-      portSource: schemaPort,
-      portTarget: schemaPort,
+      portSource: schemaPortSource,
+      portTarget: schemaPortTarget,
     })
     .strict()
 );

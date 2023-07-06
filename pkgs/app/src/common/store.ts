@@ -19,7 +19,11 @@ import { slugify } from './string';
 const originalStore: Allowed[] = [];
 
 function add(value: Allowed) {
-  if (find(value.id)) {
+  const exists = originalStore.findIndex((val) => {
+    return val.id === value.id;
+  });
+  if (exists > -1) {
+    originalStore[exists] = JSON.parse(JSON.stringify(value));
     return;
   }
 
@@ -257,7 +261,20 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
 
     for (const copy of components) {
       if (copy.id !== connection.source) {
-        map[copy.id] = { ...copy };
+        map[copy.id] = copy;
+        continue;
+      }
+
+      // already exist
+      const exists = copy.edges.findIndex(
+        (edge) => edge.target === connection.target
+      );
+      if (exists > -1) {
+        map[copy.id] = {
+          ...copy,
+          edges: [...copy.edges],
+        };
+        map[copy.id].edges[exists].portTarget = connection.targetHandle as any;
         continue;
       }
 

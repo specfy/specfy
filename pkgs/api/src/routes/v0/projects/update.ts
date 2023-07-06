@@ -42,7 +42,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         return validationError(res, val.error);
       }
 
-      const data = val.data;
+      const data: PutProject['Body'] = val.data;
       let project = req.project!;
 
       if (data.name) {

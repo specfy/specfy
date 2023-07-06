@@ -42,7 +42,7 @@ export async function createBlobs(
       data: {
         id: nanoid(),
         ...blob,
-        current: blob.current as any,
+        current: blob.current ? (blob.current as any) : undefined,
       },
     });
     ids.push(b.id);

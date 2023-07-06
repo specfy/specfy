@@ -201,8 +201,8 @@ export const ComponentDetails: React.FC<{
           ? exists
           : {
               target: diff,
-              portSource: 'left',
-              portTarget: 'left',
+              portSource: 'sl',
+              portTarget: 'tr',
               read: false,
               write: false,
               vertices: [],
@@ -235,14 +235,14 @@ export const ComponentDetails: React.FC<{
         ? exists
         : {
             target: component.id,
-            portSource: 'left',
-            portTarget: 'left',
+            portSource: 'sl',
+            portTarget: 'tr',
             read: false,
             write: false,
             vertices: [],
           };
-    edge.portSource = target;
-    edge.portTarget = source;
+    edge.portSource = source;
+    edge.portTarget = target;
     edge.read = category !== 'receive';
     edge.write = category !== 'answer';
     tmp.push(edge);

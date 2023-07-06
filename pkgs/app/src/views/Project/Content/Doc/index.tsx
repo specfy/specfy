@@ -30,7 +30,7 @@ export const Doc: React.FC<{
 
   // Edition
   const edit = useEdit();
-  const isEditing = edit.isEditing;
+  const isEditing = false;
   const [title, setTitle] = useState('');
 
   useEffect(() => {

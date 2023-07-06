@@ -1,6 +1,7 @@
 @import "../../../styles/theme";
 @import "../../../styles/mixin";
 
+
 .node {
   position: relative;
 
@@ -21,7 +22,8 @@
 
   transition: box-shadow 0.2s ease-in;
 
-  &:hover {
+  &:hover,
+  &.selected {
     box-shadow: 0 0 0 4px $purple-50;
 
     .handle {
@@ -89,51 +91,93 @@
     border-color: $indigo-400;
   }
 
+  .top,
+  .right,
+  .bottom,
+  .left {
+    pointer-events: none;
+
+    position: absolute;
+
+    display: flex;
+    gap: 3px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .top {
+    top: 0;
+    left: 0;
+    transform: translate(0, -20%);
+    width: 100%;
+  }
+
+  .right {
+    right: 0;
+    transform: translate(17%, 0);
+    flex-direction: column;
+  }
+
+  .bottom {
+    bottom: 0;
+    left: 0;
+    transform: translate(0, 20%);
+    width: 100%;
+  }
+
+  .left {
+    left: 0;
+    transform: translate(-20%, 0);
+    flex-direction: column;
+  }
+
   // Handlers
   .handle {
-    width: 5px;
-    height: 5px;
+    pointer-events: initial;
+
+    position: relative;
+
+
+    width: 6px;
+    min-width: 0;
+    height: 6px;
+    min-height: 0;
 
     opacity: 0;
-    background-color: #fff;
-    border: 1px solid var(--border2);
+    background-color: transparent;
+    border: none;
+    border-color: var(--mauve6);
+    border-radius: 10px;
 
     transition: opacity 0.25s;
 
+    &.show {
+      opacity: 1 !important;
+    }
+
+    &.top {
+      border-bottom-style: solid;
+    }
+
+    &.right {
+      border-left-style: solid;
+    }
+
+    &.bottom {
+      border-top-style: solid;
+    }
+
+    &.left {
+      border-right-style: solid;
+    }
+
     &.source {
-      &.top {
-        left: calc(50% - 7px);
-      }
-
-      &.right {
-        top: calc(50% - 7px);
-      }
-
-      &.bottom {
-        left: calc(50% - 7px);
-      }
-
-      &.left {
-        top: calc(50% - 7px);
-      }
+      border-width: 4px;
     }
 
     &.target {
-      &.top {
-        left: calc(50% + 7px);
-      }
-
-      &.right {
-        top: calc(50% + 7px);
-      }
-
-      &.bottom {
-        left: calc(50% + 7px);
-      }
-
-      &.left {
-        top: calc(50% + 7px);
-      }
+      border-width: 2px;
+      border-radius: 0;
     }
   }
 

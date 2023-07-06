@@ -86,8 +86,8 @@ export function uploadedStackToDB(
         edges: child.edges.map((edge) => {
           return {
             ...edge,
-            portSource: 'right',
-            portTarget: 'left',
+            portSource: 'sr',
+            portTarget: 'tl',
             vertices: [],
           };
         }),

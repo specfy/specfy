@@ -480,7 +480,7 @@ export const FlowDetails: React.FC<{
               <div className={cls.info}>
                 <div className={cls.caption}>Parent</div>
                 {parent ? (
-                  <Tag closable onClose={removeParent}>
+                  <Tag closable={!readonly} onClose={removeParent}>
                     {parent.name}
                   </Tag>
                 ) : (

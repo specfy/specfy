@@ -34,7 +34,7 @@ function BodyVal(req: FastifyRequest) {
         const blob = val.blobs[index];
 
         // Check belongs to same org
-        if (blob.current?.orgId !== orgId) {
+        if (blob.current && blob.current.orgId !== orgId) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
             params: { code: 'incompatible_fields' },
@@ -60,7 +60,11 @@ function BodyVal(req: FastifyRequest) {
         }
 
         // Check not edit an other project
-        if (blob.type === 'project' && blob.current?.id !== projectId) {
+        if (
+          blob.type === 'project' &&
+          blob.current &&
+          blob.current.id !== projectId
+        ) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
             params: { code: 'incompatible_fields' },
@@ -83,12 +87,12 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       }
 
       // TODO: validate all ids
-      const data = val.data;
+      // TODO: validate that components are indeed in this project/orgs
+      const data: PostRevision['Body'] = val.data;
 
       const rev = await prisma.$transaction(async (tx) => {
         const ids = await createBlobs(data.blobs as ApiBlobCreate[], tx);
 
-        // TODO: validation
         const revision = await tx.revisions.create({
           data: {
             id: nanoid(),

@@ -162,7 +162,7 @@ describe('POST /revisions', () => {
             created: true,
             deleted: true,
             parentId: null,
-            current: blob,
+            current: null,
           },
         ],
         description: { content: [], type: 'doc' },

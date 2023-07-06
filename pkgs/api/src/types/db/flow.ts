@@ -11,6 +11,6 @@ export interface FlowEdge {
   read: boolean;
   write: boolean;
   vertices: Array<{ x: number; y: number }>;
-  portSource: 'bottom' | 'left' | 'right' | 'top';
-  portTarget: 'bottom' | 'left' | 'right' | 'top';
+  portSource: 'sb' | 'sl' | 'sr' | 'st';
+  portTarget: 'tb' | 'tl' | 'tr' | 'tt';
 }

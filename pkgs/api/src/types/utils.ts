@@ -11,3 +11,7 @@ export type FilterObjObjWithKey<
     ? never
     : T]: any;
 };
+
+export type PartialUndefined<TType> = {
+  [Properties in keyof TType]?: TType[Properties] | undefined;
+};

@@ -310,10 +310,6 @@ export const ContentSidebar: React.FC<{
           selectedKeys={selected}
           // autoExpandParent={true}
           treeData={tree}
-          // onExpand={(keys) => {
-          //   console.log(keys);
-          //   setExpanded(keys as string[]);
-          // }}
         />
       )}
     </div>

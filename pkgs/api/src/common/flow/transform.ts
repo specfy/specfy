@@ -42,13 +42,13 @@ export function createNode(component: ComponentForFlow): Node<NodeData> {
 
 export function getEdgeMarkers(data: EdgeData) {
   const edge: Partial<Edge> = {};
-  if (data.read) {
-    edge.markerStart = {
-      type: 'arrowclosed' as any,
-      width: 10,
-      height: 10,
-    };
-  }
+  // if (data.read) {
+  //   edge.markerStart = {
+  //     type: 'arrowclosed' as any,
+  //     width: 10,
+  //     height: 10,
+  //   };
+  // }
   if (data.write) {
     edge.markerEnd = {
       type: 'arrowclosed' as any,
@@ -105,6 +105,7 @@ export function componentsToFlow(components: ComponentForFlow[]): ComputedFlow {
         sourceHandle: edge.portSource,
         targetHandle: edge.portTarget,
         data: { read: edge.read, write: edge.write },
+        updatable: true,
         ...getEdgeMarkers(edge),
         // type: 'floating',
       };

@@ -7,6 +7,7 @@ import type {
   DBBlobProjectBase,
 } from '../db/blobs.js';
 import type { DBRevision } from '../db/revisions.js';
+import type { PartialUndefined } from '../utils.js';
 
 import type { Pagination, QuerystringOrgProject, Res } from './api.js';
 import type { BlockLevelZero } from './document.js';
@@ -82,7 +83,7 @@ export type GetRevision = Res<{
 export type PatchRevision = Res<{
   Params: ParamsRevision;
   Querystring: QuerystringOrgProject;
-  Body: Partial<
+  Body: PartialUndefined<
     Pick<
       GetRevision['Success']['data'],
       'description' | 'locked' | 'name' | 'status'

@@ -68,6 +68,11 @@
 
   .react-flow__node {
     transition: opacity 0.2s ease-in;
+
+    .react-flow__handle-valid {
+      opacity: 1;
+      border-color: var(--accent2) !important;
+    }
   }
 
   .react-flow__edges.react-flow__container {
@@ -75,7 +80,18 @@
   }
 
   .react-flow__edge-path {
-    stroke: var(--border2);
+    stroke: var(--indigo6);
+  }
+
+  .react-flow__handle-right,
+  .react-flow__handle-left,
+  .react-flow__handle-top,
+  .react-flow__handle-bottom {
+    top: initial;
+    right: initial;
+    bottom: initial;
+    left: initial;
+    transform: initial;
   }
 }
 

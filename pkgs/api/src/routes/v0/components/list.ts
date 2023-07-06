@@ -66,8 +66,13 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           display: p.display as unknown as ApiComponent['display'],
           inComponent: p.inComponent,
           edges: p.edges as unknown as ApiComponent['edges'],
+
           show: p.show,
           tags: p.tags as ApiComponent['tags'],
+
+          source: p.source,
+          sourceName: p.sourceName,
+          sourcePath: (p.sourcePath as string[]) || [],
 
           createdAt: p.createdAt.toISOString(),
           updatedAt: p.updatedAt.toISOString(),

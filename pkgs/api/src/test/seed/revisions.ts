@@ -112,8 +112,8 @@ export async function seedRevisions(
             read: false,
             write: true,
             vertices: [],
-            portSource: 'left',
-            portTarget: 'top',
+            portSource: 'sl',
+            portTarget: 'tt',
           },
         ],
         createdAt: new Date(),
@@ -131,8 +131,8 @@ export async function seedRevisions(
       read: true,
       write: false,
       vertices: [],
-      portSource: 'right',
-      portTarget: 'left',
+      portSource: 'sr',
+      portTarget: 'tl',
     });
     edges[0].write = false;
     const techs = ['golang', ...(components.api.techs as string[])];

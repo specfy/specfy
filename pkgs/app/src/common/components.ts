@@ -63,7 +63,7 @@ export function createLocal(
 
   const add: ApiComponent = {
     id,
-    orgId: storeProject.project!.id,
+    orgId: storeProject.project!.orgId,
     projectId: storeProject.project!.id,
     techId: data.techId || null,
     type: data.type,
@@ -74,10 +74,13 @@ export function createLocal(
     techs: [],
     display: { pos: pos, size },
     edges: [],
-    blobId: '',
+    blobId: null,
     inComponent: null,
     show: true,
     tags: [],
+    source: null,
+    sourceName: null,
+    sourcePath: [],
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };
@@ -101,17 +104,17 @@ export function positionEdge(
     a.display.pos.x > b.display.pos.x + b.display.size.width;
   const isCurrentLeft = a.display.pos.x + a.display.pos.x < b.display.pos.x;
 
-  let source: FlowEdge['portSource'] = 'left';
-  let target: FlowEdge['portTarget'] = 'right';
+  let source: FlowEdge['portSource'] = 'sl';
+  let target: FlowEdge['portTarget'] = 'tr';
   if (isCurrentLeft) {
-    source = 'right';
-    target = 'left';
+    source = 'sr';
+    target = 'tl';
   } else if (isCurrentAbove && !isCurrentRight) {
-    source = 'bottom';
-    target = 'top';
+    source = 'sb';
+    target = 'tt';
   } else if (isCurrentBelow) {
-    source = 'top';
-    target = 'bottom';
+    source = 'st';
+    target = 'tb';
   }
 
   return { source, target };

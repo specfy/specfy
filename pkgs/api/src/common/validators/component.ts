@@ -1,7 +1,5 @@
 import { z } from 'zod';
 
-import { componentTypes } from '../../models/component/constants.js';
-
 import { schemaId, schemaSlug, schemaOrgId } from './common.js';
 import { schemaDisplay, schemaEdges } from './flow.js';
 import { schemaProseMirror } from './prosemirror.js';
@@ -14,7 +12,21 @@ export const schemaComponent = z
     blobId: schemaId.nullable(),
     techId: z.string().nonempty().nullable(), // TODO: do something about that?
 
-    type: z.enum(componentTypes as [string, ...[]]),
+    // Can't find a way to sync them
+    // type: z.enum([...componentTypes]),
+    type: z.enum([
+      'app',
+      'ci',
+      'db',
+      'hosting',
+      'language',
+      'messaging',
+      'network',
+      'sass',
+      'tool',
+      'project',
+      'service',
+    ]),
     typeId: schemaId.nullable(),
 
     name: z.string().min(2).max(100),

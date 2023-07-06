@@ -30,4 +30,4 @@ export function env(key: Keys, def?: string): string | undefined {
 export const isProd = env('NODE_ENV', 'dev') === 'production';
 
 export const filename = fileURLToPath(import.meta.url);
-export const dirname = path.dirname(filename);
+export const dirname = path.dirname(path.join(filename, '..'));

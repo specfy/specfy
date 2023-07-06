@@ -10,7 +10,7 @@ import {
 import { Button, Tooltip } from 'antd';
 import classnames from 'classnames';
 import type React from 'react';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useReactFlow, useViewport } from 'reactflow';
 
@@ -37,15 +37,27 @@ const ToolbarContainer: React.FC<{
 
 const ToolbarReadonly: React.FC = () => {
   const edit = useEdit();
+  const [label, setLabel] = useState('Read-Only');
   const onClick = () => {
     edit.enable(true);
   };
+  const onMouseEnter = () => {
+    setLabel('Enable Edit');
+  };
+  const onMouseLeave = () => {
+    setLabel('Read-Only');
+  };
 
   return (
-    <div className={classnames(cls.toolbar, cls.dark)}>
-      <button onClick={onClick} title="Click to enable edition">
+    <div
+      className={classnames(cls.toolbar, cls.dark)}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      onClick={onClick}
+    >
+      <button title="Click to enable edition">
         <Flex gap="m">
-          Read-Only
+          {label}
           <IconLock />
         </Flex>
       </button>

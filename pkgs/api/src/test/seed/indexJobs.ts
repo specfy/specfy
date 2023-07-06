@@ -5,7 +5,7 @@ import { prisma } from '../../db/index.js';
 (async () => {
   const res = await prisma.projects.findFirst({
     where: {
-      name: 'Crawler',
+      name: 'API',
     },
   });
   if (!res) {

@@ -11,6 +11,7 @@ Global:
   ✔ Update mode @done(23-03-25 23:23)
   ✔ Title to all pages @done(23-06-18 17:05)
   ✔ Favicon @done(23-06-18 17:08)
+  - Block refresh / quit when there are pending changes
 
 Infrastructure:
   ✔ Terraform setup @done(23-04-19 11:10)
@@ -304,18 +305,26 @@ Flow:
   ✔ Edges @done(23-03-29 14:43)
   ✔ Hover @done(23-03-29 14:44)
     ✔ Fix hover @done(23-06-30 16:00)
-  - Try to use the react version for automatic update
+  - Try to use the react version for automatic update (what did I mean ????)
   - Modify the graph in every page?
-  - Group
-  - Ungroup
+  ✔ Group @done(23-07-06 11:01)
+  ✔ Ungroup @done(23-07-06 11:01)
   ✔ Modify size @done(23-03-29 14:45)
   ✔ Modify vertices @done(23-03-29 14:45)
-  - Add component
-  - Remove component
-  - Modify links
-  - Modify ports
+  ✔ Add component @done(23-07-06 11:01)
+  ✔ Remove component @done(23-07-06 11:01)
+  ✔ Modify links @done(23-07-06 11:01)
+  ✔ Modify ports @done(23-07-06 11:01)
   - Export PNG
   - Block resizing in readonly
+  - Click to add component
+  - Width and display of new component
+  - Undo/Redo
+  - Ctrl + Z
+  - Hide / Unhide
+  - Tagging
+  - Fix drop in host that do not place a the correct spot sometimes
+  - Ungroup should not send the component somewhere else
 
 
 -----

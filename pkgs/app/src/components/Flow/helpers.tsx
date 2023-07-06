@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import type { Edge, Node, NodeChange } from 'reactflow';
+import type { Edge, EdgeChange, Node, NodeChange } from 'reactflow';
 
 import type { TechSearchItem } from '../StackSearch/TechSearch';
 
@@ -29,6 +29,19 @@ export type NodeChangeSuper =
     };
 
 export type OnNodesChangeSuper = (changes: NodeChangeSuper[]) => void;
+
+export type EdgeChangeSuper =
+  | EdgeChange
+  | {
+      id: string;
+      type: 'changeTarget';
+      source: string;
+      newSourceHandle: string;
+      oldTarget: string;
+      newTarget: string;
+      newTargetHandle: string;
+    };
+export type OnEdgesChangeSuper = (changes: EdgeChangeSuper[]) => void;
 
 export function highlightNode({
   id,

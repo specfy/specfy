@@ -10,18 +10,23 @@ import {
   Background,
   ConnectionMode,
   useReactFlow,
+  updateEdge,
+  SelectionMode,
 } from 'reactflow';
 import type { NodeTypes, ReactFlowInstance, ReactFlowProps } from 'reactflow';
 
 import 'reactflow/dist/style.css';
 import CustomNode from './CustomNode';
-import type { OnNodesChangeSuper } from './helpers';
+import type { OnEdgesChangeSuper, OnNodesChangeSuper } from './helpers';
 import { highlightNode } from './helpers';
 import cls from './index.module.scss';
 
 const nodeTypes: NodeTypes = {
   custom: CustomNode,
 };
+
+let movingHandle: 'source' | 'target';
+let movingEdgeId: string;
 
 export const Flow: React.FC<{
   flow: ComputedFlow;
@@ -32,7 +37,7 @@ export const Flow: React.FC<{
 
   // Events
   onNodesChange?: OnNodesChangeSuper;
-  onEdgesChange?: ReactFlowProps['onEdgesChange'];
+  onEdgesChange?: OnEdgesChangeSuper;
   onConnect?: ReactFlowProps['onConnect'];
   onCreateNode?: (
     type: 'hosting' | 'service',
@@ -79,7 +84,14 @@ export const Flow: React.FC<{
     setEdges((prev) => {
       return flow.edges.map((edge) => {
         const id = `${edge.source}->${edge.target}`;
-        const find = prev.find((n) => n.id === id) || edge;
+        let find = prev.find((n) => n.id === id);
+        if (!find) {
+          find = edge;
+        } else {
+          // Reflect updates
+          find.targetHandle = edge.targetHandle;
+          find.data = edge.data;
+        }
         find.deletable = !readonly;
         find.updatable = !readonly;
         return find;
@@ -300,6 +312,41 @@ export const Flow: React.FC<{
     ]);
   };
 
+  // ---- Edges
+  const onEdgeUpdateStart: ReactFlowProps['onEdgeUpdateStart'] = (
+    _,
+    edge,
+    handleType
+  ) => {
+    // Not sure why it's the opposite
+    movingHandle = handleType === 'source' ? 'target' : 'source';
+    movingEdgeId = edge.source;
+  };
+  const onEdgeUpdate: ReactFlowProps['onEdgeUpdate'] = (prevEdge, newEdge) => {
+    // Because we update from top -> down, the update will take one cycle to reach here again creating flickering
+    // So we need to replicate the change in reactflow first, then in our store
+    setEdges((els) => updateEdge(prevEdge, newEdge, els));
+
+    onEdgesChange!([
+      {
+        type: 'changeTarget',
+        id: prevEdge.id,
+        source: prevEdge.source,
+        newSourceHandle: newEdge.sourceHandle!,
+        oldTarget: prevEdge.target,
+        newTarget: newEdge.target!,
+        newTargetHandle: newEdge.targetHandle!,
+      },
+    ]);
+  };
+
+  const isValidConnection: ReactFlowProps['isValidConnection'] = (conn) => {
+    if (movingHandle === 'source') {
+      return conn.source === movingEdgeId && conn.sourceHandle!.startsWith('s');
+    }
+    return conn.target !== conn.source && conn.targetHandle!.startsWith('t');
+  };
+
   return (
     <div
       style={{ width: '100%', height: `100%` }}
@@ -323,20 +370,29 @@ export const Flow: React.FC<{
         fitView
         fitViewOptions={{ maxZoom: 1.3 }}
         connectionMode={ConnectionMode.Loose}
+        connectionRadius={50}
+        autoPanOnConnect={true}
         snapToGrid
         snapGrid={[5, 5]}
         proOptions={{ hideAttribution: true }}
         elevateEdgesOnSelect={true}
         elevateNodesOnSelect={true}
-        // Drag
+        selectionMode={SelectionMode.Partial}
+        // // --- Events that are bubble
+        // // Edges
+        onEdgeUpdateStart={onEdgeUpdateStart}
+        onEdgeUpdate={onEdgeUpdate}
+        onConnect={onConnect}
+        isValidConnection={isValidConnection}
+        // // Drag
         onInit={setReactFlowInstance}
         onDragOver={onDragOver}
         onDrop={onDrop}
         onNodeDrag={onNodeDrag}
         onNodeDragStop={onNodeDragStop}
-        // Bubbled
-        onConnect={onConnect}
+        // Global
         onNodesChange={(changes) => {
+          // Useful for resize
           handleNodesChange(changes);
           if (onNodesChange) onNodesChange(changes);
         }}

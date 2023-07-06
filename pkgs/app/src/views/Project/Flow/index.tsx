@@ -4,7 +4,7 @@ import type { ComputedFlow } from '@specfy/api/src/common/flow/types';
 import type { ApiProject, ApiComponent } from '@specfy/api/src/types/api';
 import { useCallback, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import type { OnConnect, OnEdgesChange } from 'reactflow';
+import type { OnConnect } from 'reactflow';
 
 import { createLocal } from '../../../common/components';
 import { useComponentsStore, useProjectStore } from '../../../common/store';
@@ -12,7 +12,10 @@ import { titleSuffix } from '../../../common/string';
 import { Flow, FlowWrapper } from '../../../components/Flow';
 import { FlowDetails } from '../../../components/Flow/Details';
 import { Toolbar } from '../../../components/Flow/Toolbar';
-import type { OnNodesChangeSuper } from '../../../components/Flow/helpers';
+import type {
+  OnEdgesChangeSuper,
+  OnNodesChangeSuper,
+} from '../../../components/Flow/helpers';
 import { useEdit } from '../../../hooks/useEdit';
 import type { RouteProject } from '../../../types/routes';
 
@@ -40,6 +43,7 @@ export const ProjectFlow: React.FC<{
     }
 
     setFlow(componentsToFlow(components));
+
     setLoading(false);
   }, [components]);
 
@@ -92,19 +96,38 @@ export const ProjectFlow: React.FC<{
               ...comp,
               techId: change.tech.key,
               type: change.tech.type,
+              name:
+                comp.name === 'untitled' || !comp.name
+                  ? change.tech.name
+                  : comp.name,
             });
           }
+        } else if (change.type === 'dimensions' && change.dimensions) {
+          const comp = storeComponents.select(change.id)!;
+          storeComponents.update({
+            ...comp,
+            display: {
+              ...comp.display,
+              size: change.dimensions,
+            },
+          });
         }
       }
     },
     [components]
   );
-  const onEdgesChange = useCallback<OnEdgesChange>(
+  const onEdgesChange = useCallback<OnEdgesChangeSuper>(
     (changes) => {
       for (const change of changes) {
         if (change.type === 'remove') {
           const [source, target] = change.id.split('->');
           storeComponents.removeEdge(source, target);
+        } else if (change.type === 'changeTarget') {
+          storeComponents.updateEdge(change.source, change.oldTarget, {
+            portSource: change.newSourceHandle as any,
+            target: change.newTarget,
+            portTarget: change.newTargetHandle as any,
+          });
         }
       }
     },
@@ -115,6 +138,7 @@ export const ProjectFlow: React.FC<{
     storeComponents.addEdge(params);
   }, []);
 
+  // TODO: replace this with onEdgesChange
   const onRelationChange: React.ComponentProps<
     typeof FlowDetails
   >['onRelationChange'] = useCallback((type, rel) => {

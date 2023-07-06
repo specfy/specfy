@@ -1,9 +1,10 @@
 import fs from 'node:fs/promises';
+import path from 'node:path';
 
 import { $, execa } from 'execa';
 import { Octokit } from 'octokit';
 
-import { env, isProd } from '../../../common/env.js';
+import { dirname, env, isProd } from '../../../common/env.js';
 import { nanoid } from '../../../common/id.js';
 import { prisma } from '../../../db/index.js';
 import type {
@@ -181,31 +182,37 @@ export class JobDeploy extends Job {
 
     // Execute deploy
     try {
-      const res = await execa(
-        'npx',
-        [
-          '@specfy/sync',
-          'run',
-          '-t',
-          key.id,
-          '-o',
-          job.orgId,
-          '-p',
-          job.projectId!,
-          '-d',
-          '/',
-          config.autoLayout ? '--auto-layout' : '',
-          this.folderName,
-        ],
-        {
-          env: {
-            // Bug in node-fetch that do not resolve localhost correctly
-            SPECFY_HOSTNAME: !isProd
-              ? env('API_HOSTNAME')?.replace('localhost', '127.0.0.1')
-              : undefined,
-          },
-        }
+      const bin = path.join(
+        dirname,
+        '../../..',
+        'node_modules/.bin/specfy-sync'
       );
+      const args = [
+        bin,
+        'run',
+        '-t',
+        key.id,
+        '-o',
+        job.orgId,
+        '-p',
+        job.projectId!,
+        '-d',
+        '/',
+        config.autoLayout ? '--auto-layout' : '',
+        this.folderName,
+      ];
+      const envs = {
+        // Bug in node-fetch that do not resolve localhost correctly
+        SPECFY_HOSTNAME: !isProd
+          ? env('API_HOSTNAME')?.replace('localhost', '127.0.0.1')
+          : undefined,
+      };
+
+      // TODO: redact secret
+      this.l.info('Executing', JSON.stringify({ args, envs }));
+
+      const res = await execa('node', args, { env: envs });
+      this.l.info('Stdout', res.stdout);
 
       if (res.exitCode !== 0) {
         this.mark('failed', 'unknown');

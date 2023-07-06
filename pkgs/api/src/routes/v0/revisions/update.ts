@@ -89,7 +89,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         return validationError(res, val.error);
       }
 
-      const data = val.data;
+      const data: PatchRevision['Body'] = val.data;
       const rev = req.revision!;
       const user = req.user!;
 
@@ -151,7 +151,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
             updates.name = body.name;
           }
           if (body.description) {
-            updates.description = body.description;
+            updates.description = body.description as any;
           }
           if (typeof body.locked === 'boolean') {
             updates.locked = body.locked;
