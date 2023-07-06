@@ -1,5 +1,5 @@
 export interface FlowItemDisplay {
-  zIndex?: number;
+  zIndex?: number | undefined;
   color?: string;
   backgroundColor?: string;
   pos: { x: number; y: number };
