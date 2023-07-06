@@ -325,6 +325,7 @@ Flow:
   - Tagging
   - Fix drop in host that do not place a the correct spot sometimes
   - Ungroup should not send the component somewhere else
+  - When connecting a Project we should update the Project edges
 
 
 -----
