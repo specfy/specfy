@@ -1,3 +1,4 @@
+import { IGNORED_PROJECT_KEYS } from '@specfy/api/src/models/revisions/constants';
 import type { ApiBlobProject } from '@specfy/api/src/types/api';
 import type { Editor } from '@tiptap/react';
 import { diffJson, diffWordsWithSpace } from 'diff';
@@ -6,7 +7,6 @@ import type { ProjectBlobWithDiff } from '../../types/blobs';
 import { getEmptyDoc } from '../content';
 
 import { diffObjectsArray } from './array';
-import { IGNORED_PROJECT_KEYS } from './constants';
 import { isDiffSimple } from './helpers';
 import { diffEditor } from './prosemirror';
 

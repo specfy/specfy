@@ -1,3 +1,4 @@
+import { IGNORED_COMPONENT_KEYS } from '@specfy/api/src/models/revisions/constants';
 import type { ApiBlobComponent } from '@specfy/api/src/types/api';
 import type { Editor } from '@tiptap/react';
 import { diffJson, diffWordsWithSpace } from 'diff';
@@ -6,7 +7,6 @@ import type { ComponentBlobWithDiff } from '../../types/blobs';
 import { getEmptyDoc } from '../content';
 
 import { diffObjectsArray, diffStringArray } from './array';
-import { IGNORED_COMPONENT_KEYS } from './constants';
 import { isDiffSimple } from './helpers';
 import { diffEditor } from './prosemirror';
 

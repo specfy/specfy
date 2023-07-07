@@ -32,8 +32,6 @@ export async function findAllBlobsWithParent(
     },
     orderBy: { createdAt: 'asc' },
     take: 200,
-    // TODO: add back lock?
-    // lock: Transaction.LOCK.UPDATE,
   });
 
   // Update all blobs
@@ -46,24 +44,18 @@ export async function findAllBlobsWithParent(
     if (isDocumentBlob(blob)) {
       const parent = await tx.documents.findFirst({
         where: { blobId: blob.parentId },
-        // TODO: add back lock?
-        // lock: Transaction.LOCK[lock],
       });
 
       list.push({ blob, parent });
     } else if (isComponentBlob(blob)) {
       const parent = await tx.components.findFirst({
         where: { blobId: blob.parentId },
-        // TODO: add back lock?
-        // lock: Transaction.LOCK[lock],
       });
 
       list.push({ blob, parent });
     } else if (isProjectBlob(blob)) {
       const parent = await tx.projects.findFirst({
         where: { blobId: blob.parentId },
-        // TODO: add back lock?
-        // lock: Transaction.LOCK[lock],
       });
 
       list.push({ blob, parent });

@@ -139,6 +139,7 @@ export async function mergeRevision({
     queryClient.invalidateQueries(['listComponents', org_id]);
     queryClient.invalidateQueries(['listDocuments', org_id]);
     queryClient.invalidateQueries(['getDocument', org_id]);
+    queryClient.invalidateQueries(['getFlow', org_id]);
   } else {
     queryClient.invalidateQueries([
       'getRevisionChecks',

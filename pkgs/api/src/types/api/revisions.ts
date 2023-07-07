@@ -43,6 +43,8 @@ export type ApiBlobCreateDocument = DBBlobDocumentBase &
   Omit<DBBlobBase, 'createdAt' | 'id' | 'updatedAt'>;
 export type ApiBlobCreateComponent = DBBlobComponentBase &
   Omit<DBBlobBase, 'createdAt' | 'id' | 'updatedAt'>;
+export type ApiBlobCreateProject = DBBlobProjectBase &
+  Omit<DBBlobBase, 'createdAt' | 'id' | 'updatedAt'>;
 
 export type PostRevision = Res<{
   Body: Pick<ApiRevision, 'description' | 'name' | 'orgId' | 'projectId'> & {

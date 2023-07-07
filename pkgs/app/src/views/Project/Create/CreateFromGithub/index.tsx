@@ -1,13 +1,4 @@
 import { Github } from '@icons-pack/react-simple-icons';
-import {
-  computeProjectPosition,
-  computeWidth,
-} from '@specfy/api/src/common/flow';
-import {
-  hDef,
-  wDef,
-  wMax,
-} from '@specfy/api/src/common/validators/flow.constants';
 import type {
   ApiGithubRepo,
   ApiOrg,
@@ -107,11 +98,6 @@ export const CreateFromGithub: React.FC<{
         name: repo.name,
         slug: tmpSlug,
         orgId: org.id,
-        display: {
-          pos: computeProjectPosition(storeProjects.projects),
-          zIndex: 1,
-          size: { width: computeWidth(repo.name, wDef, wMax), height: hDef },
-        },
       });
       if (isError(res)) {
         if (isValidationError(res)) {

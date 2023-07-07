@@ -3,6 +3,7 @@ import type { FastifyPluginCallback } from 'fastify';
 
 import { findAllBlobsWithParent } from '../../../common/blobs.js';
 import { nanoid } from '../../../common/id.js';
+import { omit } from '../../../common/object.js';
 import { checkReviews } from '../../../common/revision/index.js';
 import { prisma } from '../../../db/index.js';
 import { getRevision } from '../../../middlewares/getRevision.js';
@@ -13,7 +14,16 @@ import {
   createProjectActivity,
   createRevisionActivity,
 } from '../../../models/index.js';
-import { flagRevisionApprovalEnabled } from '../../../models/revisions/constants.js';
+import {
+  flagRevisionApprovalEnabled,
+  IGNORED_COMPONENT_KEYS,
+  IGNORED_DOCUMENT_KEYS,
+  IGNORED_PROJECT_KEYS,
+} from '../../../models/revisions/constants.js';
+import {
+  recomputeOrgGraph,
+  hasProjectComponentChanges,
+} from '../../../models/revisions/helpers.js';
 import type {
   MergeRevision,
   MergeRevisionError,
@@ -98,7 +108,10 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
               continue;
             } else if (item.parent) {
               const up = await tx.projects.update({
-                data: { ...(item.blob.current as any), blobId: item.blob.id },
+                data: {
+                  ...omit(item.blob.current as any, IGNORED_PROJECT_KEYS),
+                  blobId: item.blob.id,
+                },
                 where: { id: blob.typeId },
               });
               await createProjectActivity({
@@ -111,20 +124,10 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
               continue;
             }
 
-            const created = await tx.projects.create({
-              data: {
-                ...(blob.current! as unknown as Prisma.ProjectsUncheckedCreateInput),
-                blobId: blob.id,
-              },
-            });
-            await createProjectActivity({
-              user,
-              action: 'Project.created',
-              target: created,
-              activityGroupId,
-              tx,
-            });
-            continue;
+            // Can't happen
+            throw new Error(
+              `Trying to create a project in revision ${rev.id}::${blob.id}`
+            );
           }
 
           // --- Components
@@ -146,9 +149,8 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
                 .current as Prisma.ComponentsUncheckedUpdateInput;
               const up = await tx.components.update({
                 data: {
-                  ...curr,
+                  ...omit(curr, IGNORED_COMPONENT_KEYS),
                   blobId: item.blob.id,
-                  sourcePath: (curr.sourcePath as any) || undefined,
                 },
                 where: { id: blob.typeId },
               });
@@ -195,7 +197,10 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
               continue;
             } else if (item.parent) {
               const up = await tx.documents.update({
-                data: { ...(item.blob.current as any), blobId: item.blob.id },
+                data: {
+                  ...omit(item.blob.current as any, IGNORED_DOCUMENT_KEYS),
+                  blobId: item.blob.id,
+                },
                 where: { id: blob.typeId },
               });
               await createDocumentActivity({
@@ -222,6 +227,21 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
               tx,
             });
           }
+        }
+
+        // Check organization graph
+        const hasChangedProjects = await hasProjectComponentChanges(
+          rev.projectId,
+          list.map(({ blob }) => {
+            return blob;
+          }) as unknown as DBBlob[],
+          tx
+        );
+        if (hasChangedProjects) {
+          // If so we recompute every relationships an update the Projects' edges
+          await recomputeOrgGraph({ orgId: rev.orgId, tx });
+        } else {
+          console.log('Merged', { rev: rev.id, hasChangedProjects });
         }
       });
 

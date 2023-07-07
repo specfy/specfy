@@ -118,11 +118,13 @@ export function uploadedStackToDB(
     };
   });
 
-  // TODO: potential error with component with the same name ?
   const deleted: ApiBlobCreate[] = prevs
     .filter((p) => {
       return !parsed.childs.find(
-        (child) => child.name === p.sourceName && child.tech === p.techId
+        (child) =>
+          child.name === p.sourceName &&
+          child.tech === p.techId &&
+          p.source === data.source
       );
     })
     .map((prev) => {
@@ -132,7 +134,7 @@ export function uploadedStackToDB(
         parentId: prev.blobId,
         type: 'component',
         typeId: prev.id,
-        current: undefined as unknown as null,
+        current: prev as any,
       };
     });
 

@@ -22,11 +22,6 @@ afterAll(async () => {
   await setupAfterAll(t);
 });
 
-const display = {
-  zIndex: 1,
-  pos: { x: 0, y: 0 },
-  size: { width: 50, height: 32 },
-};
 describe('POST /projects', () => {
   it('should be protected', async () => {
     const res = await t.fetch.post('/0/projects');
@@ -39,7 +34,6 @@ describe('POST /projects', () => {
       token,
       Body: {
         name: '',
-        display,
         orgId: '',
         slug: '',
       },
@@ -62,7 +56,6 @@ describe('POST /projects', () => {
       Body: {
         name,
         slug,
-        display,
         orgId: org.id,
       },
     });
@@ -91,7 +84,6 @@ describe('POST /projects', () => {
       Body: {
         name,
         slug: slugify(name),
-        display,
         orgId: org.id,
       },
     });
@@ -103,7 +95,6 @@ describe('POST /projects', () => {
       Body: {
         name,
         slug: slugify(name),
-        display,
         orgId: org.id,
       },
     });

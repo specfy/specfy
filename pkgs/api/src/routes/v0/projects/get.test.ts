@@ -50,14 +50,8 @@ describe('GET /projects/:org_id/:project_slug', () => {
       slug: project.slug,
       blobId: expect.any(String),
       description: { content: [], type: 'doc' },
-      display: {
-        zIndex: 1,
-        size: { height: 32, width: 100 },
-        pos: { x: 20, y: 10 },
-      },
       createdAt: expect.toBeIsoDate(),
       updatedAt: expect.toBeIsoDate(),
-      edges: [],
       links: [],
       githubRepository: null,
     });

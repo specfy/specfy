@@ -1,24 +1,30 @@
-import type { Orgs, Users } from '@prisma/client';
+import type { Orgs, Projects, Users } from '@prisma/client';
 
 import { nanoid } from '../../common/id.js';
 import { slugify } from '../../common/string.js';
 import { prisma } from '../../db/index.js';
-import { createProject, updateProject } from '../../models/project.js';
+import { createProject } from '../../models/project.js';
+import { recomputeOrgGraph } from '../../models/revisions/helpers.js';
 import type { DBProject } from '../../types/db/index.js';
 
 /**
  * Seed projects
  */
-export async function seedProjects(users: Users[]) {
+export async function seedProjects(users: Users[]): Promise<{
+  pDash: Projects;
+  pAnalytics: Projects;
+  pFront: Projects;
+  pAPI: Projects;
+  pBilling: Projects;
+}> {
   const res = await prisma.$transaction(
     async (tx) => {
-      let p0 = await createProject({
+      const pDash = await createProject({
         data: {
           id: 'b01tMzwd5A',
           name: 'Dashboard',
           orgId: 'company',
           links: [],
-          edges: [],
           description: {
             type: 'doc',
             content: [
@@ -34,40 +40,28 @@ export async function seedProjects(users: Users[]) {
               },
             ],
           },
-          display: {
-            zIndex: 1,
-            pos: { x: 20, y: 10 },
-            size: { width: 100, height: 32 },
-          },
         },
         user: users[0],
         tx,
       });
 
-      let p3 = await createProject({
+      const pFront = await createProject({
         data: {
           id: 'b02tMzwd5A',
           name: 'Frontend',
           orgId: 'company',
           links: [],
-          edges: [],
           description: { type: 'doc', content: [] },
-          display: {
-            zIndex: 1,
-            pos: { x: 220, y: -20 },
-            size: { width: 100, height: 32 },
-          },
         },
         user: users[0],
         tx,
       });
 
-      let p1 = await createProject({
+      const pAnalytics = await createProject({
         data: {
           id: 'b03tMzwd5A',
           name: 'Analytics',
           orgId: 'company',
-          edges: [],
           description: {
             type: 'doc',
             content: [
@@ -92,141 +86,32 @@ export async function seedProjects(users: Users[]) {
             { title: 'Github', url: 'https://github.com/specfy' },
             { title: 'Slack', url: 'https://slack.com/foobar' },
           ],
-          display: {
-            zIndex: 1,
-            pos: { x: 200, y: 70 },
-            size: { width: 100, height: 32 },
-          },
         },
         user: users[0],
         tx,
       });
 
-      const p4 = await createProject({
+      const pAPI = await createProject({
         data: {
           id: 'b04tMzwd5A',
           name: 'API',
           orgId: 'company',
           links: [],
-          edges: [],
           description: { type: 'doc', content: [] },
-          display: {
-            zIndex: 1,
-            pos: { x: -150, y: 40 },
-            size: { width: 100, height: 32 },
-          },
         },
         user: users[0],
         tx,
       });
 
-      let p5 = await createProject({
+      const pBilling = await createProject({
         data: {
           id: 'b05tMzwd5A',
           name: 'Billing',
           orgId: 'company',
           links: [],
-          edges: [],
           description: { type: 'doc', content: [] },
-          display: {
-            zIndex: 1,
-            pos: { x: 0, y: 120 },
-            size: { width: 100, height: 32 },
-          },
         },
         user: users[0],
-        tx,
-      });
-
-      // ---- Edges for graph
-      p0 = await updateProject({
-        original: p0,
-        user: users[0],
-        data: {
-          edges: [
-            {
-              target: p4.id,
-              read: true,
-              write: false,
-              vertices: [],
-              portSource: 'sl',
-              portTarget: 'tr',
-            },
-            {
-              target: p5.id,
-              read: true,
-              write: false,
-              vertices: [
-                { x: -5, y: 60 },
-                { x: -5, y: 110 },
-              ],
-              portSource: 'sl',
-              portTarget: 'tl',
-            },
-          ],
-        },
-        tx,
-      });
-
-      p3 = await updateProject({
-        original: p3,
-        user: users[0],
-        data: {
-          edges: [
-            {
-              target: p0.id,
-              read: true,
-              write: false,
-              vertices: [],
-              portSource: 'sl',
-              portTarget: 'tr',
-            },
-          ],
-        },
-        tx,
-      });
-
-      p1 = await updateProject({
-        original: p1,
-        user: users[0],
-        data: {
-          edges: [
-            {
-              target: p0.id,
-              read: true,
-              write: false,
-              vertices: [],
-              portSource: 'sl',
-              portTarget: 'tr',
-            },
-            {
-              target: p4.id,
-              read: true,
-              write: false,
-              vertices: [{ x: 20, y: 80 }],
-              portSource: 'sl',
-              portTarget: 'tr',
-            },
-          ],
-        },
-        tx,
-      });
-
-      p5 = await updateProject({
-        original: p5,
-        user: users[0],
-        data: {
-          edges: [
-            {
-              target: p1.id,
-              read: true,
-              write: false,
-              vertices: [],
-              portSource: 'sr',
-              portTarget: 'tl',
-            },
-          ],
-        },
         tx,
       });
 
@@ -237,7 +122,7 @@ export async function seedProjects(users: Users[]) {
           data: {
             id: nanoid(),
             orgId: 'company',
-            projectId: p1.id,
+            projectId: pAnalytics.id,
             userId: users[1].id,
             role: 'viewer',
           },
@@ -248,7 +133,7 @@ export async function seedProjects(users: Users[]) {
             data: {
               id: nanoid(),
               orgId: 'company',
-              projectId: p1.id,
+              projectId: pAnalytics.id,
               userId: u.id,
               role: 'contributor',
             },
@@ -256,7 +141,44 @@ export async function seedProjects(users: Users[]) {
         }),
       ]);
 
-      return { p0, p1, /*p2,*/ p3, p4, p5 };
+      await recomputeOrgGraph({
+        orgId: 'company',
+        updates: {
+          b01tMzwd5A: {
+            display: {
+              pos: { x: 20, y: 10 },
+              size: { width: 100, height: 32 },
+            },
+          },
+          b02tMzwd5A: {
+            display: {
+              pos: { x: 220, y: -20 },
+              size: { width: 100, height: 32 },
+            },
+          },
+          b03tMzwd5A: {
+            display: {
+              pos: { x: 200, y: 70 },
+              size: { width: 100, height: 32 },
+            },
+          },
+          b04tMzwd5A: {
+            display: {
+              pos: { x: -150, y: 40 },
+              size: { width: 100, height: 32 },
+            },
+          },
+          b05tMzwd5A: {
+            display: {
+              pos: { x: 0, y: 120 },
+              size: { width: 100, height: 32 },
+            },
+          },
+        },
+        tx,
+      });
+
+      return { pDash, pAnalytics, /*p2,*/ pFront, pAPI, pBilling };
     },
     { timeout: 20000 }
   );
@@ -272,13 +194,7 @@ export async function seedProject(user: Users, org: Orgs) {
       name: `Project ${id}`,
       orgId: org.id,
       links: [],
-      edges: [],
       description: { type: 'doc', content: [] },
-      display: {
-        zIndex: 1,
-        pos: { x: 20, y: 10 },
-        size: { width: 100, height: 32 },
-      },
     },
     tx: prisma,
     user,
@@ -297,13 +213,7 @@ export function getBlobProject(org: Orgs): DBProject {
     blobId: null,
     orgId: org.id,
     links: [],
-    edges: [],
     description: { type: 'doc', content: [] },
-    display: {
-      zIndex: 1,
-      pos: { x: 220, y: -20 },
-      size: { width: 100, height: 32 },
-    },
     githubRepository: null,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),

@@ -162,7 +162,7 @@ describe('POST /revisions', () => {
             created: true,
             deleted: true,
             parentId: null,
-            current: null,
+            current: { ...blob, id: blob.id },
           },
         ],
         description: { content: [], type: 'doc' },
@@ -184,7 +184,7 @@ describe('POST /revisions', () => {
     });
   });
 
-  it('should disallow deleted with a blob', async () => {
+  it('should enforce deleted with a blob', async () => {
     const { token, org, project, user } = await seedWithProject();
 
     // Create a component
@@ -214,15 +214,7 @@ describe('POST /revisions', () => {
       },
     });
 
-    isValidationError(res.json);
-    expect(res.statusCode).toBe(400);
-    expect(res.json.error.fields).toStrictEqual({
-      'blobs.0': {
-        code: 'incompatible_fields',
-        message: "Can't specify a blob when deleting",
-        path: ['blobs', 0],
-      },
-    });
+    isSuccess(res.json);
   });
 
   it('should disallow blob wrong org/project ', async () => {
@@ -302,6 +294,11 @@ describe('POST /revisions', () => {
     isValidationError(res.json);
     expect(res.statusCode).toBe(400);
     expect(res.json.error.fields).toStrictEqual({
+      'blobs.0': {
+        code: 'incompatible_fields',
+        message: "Can't create project from a Revision",
+        path: ['blobs', 0],
+      },
       'blobs.0.id': {
         code: 'incompatible_fields',
         message: 'Project blob can not be an other project',

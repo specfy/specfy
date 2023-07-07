@@ -24,7 +24,7 @@ import type { ResSeedComponents } from './components.js';
  * Seed projects
  */
 export async function seedRevisions(
-  { p1 }: { p1: Projects },
+  { pAnalytics }: { pAnalytics: Projects },
   users: Users[],
   rfcs: Record<string, Documents>,
   components: ResSeedComponents
@@ -34,7 +34,7 @@ export async function seedRevisions(
     // Update Project
     const blob1 = await createProjectBlob({
       blob: {
-        ...p1,
+        ...pAnalytics,
         description: {
           type: 'doc',
           content: [
@@ -79,10 +79,10 @@ export async function seedRevisions(
         name: 'PubSub',
         slug: 'pubsub',
         type: 'messaging',
-        typeId: p1.id,
+        typeId: pAnalytics.id,
         blobId: '',
         orgId: 'company',
-        projectId: p1.id,
+        projectId: pAnalytics.id,
         techId: 'pubsub',
         description: {
           type: 'doc',
@@ -288,7 +288,7 @@ export async function seedRevisions(
       data: {
         id: '1oxA2sPxkR',
         orgId: 'company',
-        projectId: p1.id,
+        projectId: pAnalytics.id,
         name: 'fix: update project, create component, delete RFC-2',
         description: {
           type: 'doc',

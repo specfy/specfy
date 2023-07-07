@@ -21,9 +21,7 @@ export type ListProjects = Res<{
 
 // POST /
 export type PostProject = Res<{
-  Body: Pick<ApiProject, 'name' | 'orgId' | 'slug'> & {
-    display: ApiProject['display'];
-  };
+  Body: Pick<ApiProject, 'name' | 'orgId' | 'slug'>;
   Success: Pick<ApiProject, 'id' | 'slug'>;
 }>;
 

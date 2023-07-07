@@ -16,7 +16,7 @@ import type { DBDocument } from '../../types/db/documents.js';
  */
 export async function seedPlaybook(
   { o1 }: { o1: Orgs },
-  { p1 }: { p1: Projects },
+  { pAnalytics }: { pAnalytics: Projects },
   [u1]: Users[]
 ) {
   const res = await prisma.$transaction(async (tx) => {
@@ -25,7 +25,7 @@ export async function seedPlaybook(
       data: {
         id: 'd1grRPVYnx',
         orgId: o1.id,
-        projectId: p1.id,
+        projectId: pAnalytics.id,
         type: 'pb',
         typeId: 1,
         tldr: '',
@@ -59,7 +59,7 @@ export async function seedPlaybook(
       data: {
         id: 'd2grRPVYnx',
         orgId: o1.id,
-        projectId: p1.id,
+        projectId: pAnalytics.id,
         type: 'pb',
         typeId: 2,
         tldr: '',
@@ -104,7 +104,7 @@ export async function seedPlaybook(
       data: {
         id: 'd3grRPVYnx',
         orgId: o1.id,
-        projectId: p1.id,
+        projectId: pAnalytics.id,
         type: 'pb',
         typeId: 3,
         tldr: '',
@@ -223,14 +223,14 @@ export async function seedPlaybook(
  */
 export async function seedRFC(
   { o1 }: { o1: Orgs },
-  { p1 }: { p1: Projects },
+  { pAnalytics }: { pAnalytics: Projects },
   [u1, u2]: Users[]
 ) {
   // to avoid import it in tests too
   const docRfc4Json = JSON.parse(
     (
       await fs.readFile(
-        path.join(dirname, '../..', 'src/test/seed/document.rfc.json')
+        path.join(dirname, '../', 'src/test/seed/document.rfc.json')
       )
     ).toString()
   );
@@ -242,7 +242,7 @@ export async function seedRFC(
       data: {
         id: 'r1grRPVYnx',
         orgId: o1.id,
-        projectId: p1.id,
+        projectId: pAnalytics.id,
         type: 'rfc',
         typeId: 1,
         name: 'API definition',
@@ -664,7 +664,7 @@ export async function seedRFC(
       data: {
         id: 'r2grRPVYnx',
         orgId: o1.id,
-        projectId: p1.id,
+        projectId: pAnalytics.id,
         type: 'rfc',
         typeId: 2,
         name: 'Frontend definition',
@@ -679,7 +679,7 @@ export async function seedRFC(
       data: {
         id: 'r3grRPVYnx',
         orgId: o1.id,
-        projectId: p1.id,
+        projectId: pAnalytics.id,
         type: 'rfc',
         typeId: 3,
         name: 'Use of Oauth2 in authentication system',
@@ -694,7 +694,7 @@ export async function seedRFC(
       data: {
         id: 'r4grRPVYnx',
         orgId: o1.id,
-        projectId: p1.id,
+        projectId: pAnalytics.id,
         type: 'rfc',
         typeId: 4,
         name: 'API Global Specification',
@@ -730,7 +730,7 @@ export async function seedRFC(
  */
 export async function seedDocs(
   { o1 }: { o1: Orgs },
-  { p1 }: { p1: Projects },
+  { pAnalytics }: { pAnalytics: Projects },
   [u1]: Users[]
 ) {
   const res = await prisma.$transaction(async (tx) => {
@@ -739,7 +739,7 @@ export async function seedDocs(
       data: {
         id: 'z1grRPVYnx',
         orgId: o1.id,
-        projectId: p1.id,
+        projectId: pAnalytics.id,
         source: 'github',
         sourcePath: '/docs/README.md',
         type: 'doc',
@@ -770,7 +770,7 @@ export async function seedDocs(
       data: {
         id: 'z2grRPVYnx',
         orgId: o1.id,
-        projectId: p1.id,
+        projectId: pAnalytics.id,
         source: 'github',
         sourcePath: '/docs/decisions/README.md',
         parentId: null,
@@ -802,7 +802,7 @@ export async function seedDocs(
       data: {
         id: 'z3grRPVYnx',
         orgId: o1.id,
-        projectId: p1.id,
+        projectId: pAnalytics.id,
         source: 'github',
         sourcePath: '/docs/deicisions/Nested.md',
         parentId: d2.id,

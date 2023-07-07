@@ -71,6 +71,10 @@ export type Res<
     (T['Querystring'] extends Record<string, any> ? T['Querystring'] : never);
 };
 
+export interface QuerystringOrgMaybeProject {
+  org_id: string;
+  project_id?: string;
+}
 export interface QuerystringOrgProject {
   org_id: string;
   project_id: string;

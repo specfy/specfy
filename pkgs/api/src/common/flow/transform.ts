@@ -1,4 +1,7 @@
+import type { Projects } from '@prisma/client';
 import type { Edge, Node } from 'reactflow';
+
+import type { FlowItemDisplay } from '../../types/db/flow.js';
 
 import type {
   ComponentForFlow,
@@ -7,7 +10,24 @@ import type {
   NodeData,
 } from './types.js';
 
-export function createNode(component: ComponentForFlow): Node<NodeData> {
+export function createNodeFromProject(
+  project: Pick<Projects, 'id' | 'name'>,
+  display: FlowItemDisplay
+) {
+  return createNode({
+    id: project.id,
+    name: project.name,
+    type: 'project',
+    display: display,
+    inComponent: null,
+    techId: null,
+    typeId: null,
+  });
+}
+
+export function createNode(
+  component: Omit<ComponentForFlow, 'edges'>
+): Node<NodeData> {
   const node: Node<NodeData> = {
     id: component.id,
     type: 'custom',
@@ -19,17 +39,10 @@ export function createNode(component: ComponentForFlow): Node<NodeData> {
       originalSize: component.display.size,
     },
     position: { ...component.display.pos },
-    targetPosition: 'left' as any,
-    sourcePosition: 'right' as any,
     style: {
       width: `${component.display.size.width}px`,
       height: `${component.display.size.height}px`,
     },
-    deletable: true,
-    connectable: true,
-    draggable: true,
-    focusable: true,
-    selectable: true,
   };
 
   if (component.inComponent) {
@@ -105,7 +118,6 @@ export function componentsToFlow(components: ComponentForFlow[]): ComputedFlow {
         sourceHandle: edge.portSource,
         targetHandle: edge.portTarget,
         data: { read: edge.read, write: edge.write },
-        updatable: true,
         ...getEdgeMarkers(edge),
         // type: 'floating',
       };

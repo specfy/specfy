@@ -72,4 +72,5 @@ export async function truncate() {
   await prisma.$executeRawUnsafe(`TRUNCATE TABLE "Projects" CASCADE`);
   await prisma.$executeRawUnsafe(`TRUNCATE TABLE "Orgs" CASCADE`);
   await prisma.$executeRawUnsafe(`TRUNCATE TABLE "Keys" CASCADE`);
+  await prisma.$executeRawUnsafe(`TRUNCATE TABLE "Flows" CASCADE`);
 }

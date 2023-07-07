@@ -17,19 +17,19 @@ export type DBBlobBase = {
 
 export type DBBlobDocumentBase = {
   type: 'document';
-  current: DBDocument | null;
+  current: DBDocument;
 };
 export type DBBlobDocument = DBBlobBase & DBBlobDocumentBase;
 
 export type DBBlobComponentBase = {
   type: 'component';
-  current: DBComponent | null;
+  current: DBComponent;
 };
 export type DBBlobComponent = DBBlobBase & DBBlobComponentBase;
 
 export type DBBlobProjectBase = {
   type: 'project';
-  current: DBProject | null;
+  current: DBProject;
 };
 export type DBBlobProject = DBBlobBase & DBBlobProjectBase;
 
