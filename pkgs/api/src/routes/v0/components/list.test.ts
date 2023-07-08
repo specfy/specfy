@@ -68,7 +68,7 @@ describe('GET /components', () => {
         tags: [],
         source: null,
         sourceName: null,
-        sourcePath: [],
+        sourcePath: null,
         updatedAt: expect.toBeIsoDate(),
         createdAt: expect.toBeIsoDate(),
       },
