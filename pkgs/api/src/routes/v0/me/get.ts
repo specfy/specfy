@@ -12,7 +12,6 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       data: toApiMe(user),
     });
   });
-
   done();
 };
 

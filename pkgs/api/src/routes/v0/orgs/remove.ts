@@ -15,7 +15,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
 
       if (org.isPersonal) {
         // Can't delete own org
-        res.status(400).send({
+        return res.status(400).send({
           error: {
             code: 'cant_delete',
             reason: 'is_personal',
@@ -36,10 +36,9 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         await tx.orgs.delete({ where: { id: org.id } });
       });
 
-      res.status(204).send();
+      return res.status(204).send();
     }
   );
-
   done();
 };
 

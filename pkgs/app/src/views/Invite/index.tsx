@@ -59,7 +59,7 @@ export const Invite: React.FC = () => {
       token,
     });
     if (isError(del)) {
-      message.error(i18n.errorOccurred);
+      void message.error(i18n.errorOccurred);
       return;
     }
 
@@ -72,7 +72,7 @@ export const Invite: React.FC = () => {
       token,
     });
     if (isError(del)) {
-      message.error(i18n.errorOccurred);
+      void message.error(i18n.errorOccurred);
       return;
     }
 

@@ -61,7 +61,6 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       return serverError(res);
     }
   });
-
   done();
 };
 

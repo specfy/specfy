@@ -40,11 +40,11 @@ export const Checks: React.FC<{
     const resMerge = await mergeRevision({ ...qp, revision_id: rev.id });
     setMerging(false);
     if (isError(resMerge)) {
-      message.error('Revision could not be merged');
+      void message.error('Revision could not be merged');
       return;
     }
 
-    message.success('Revision merged');
+    void message.success('Revision merged');
   };
 
   useMount(() => {
@@ -64,16 +64,16 @@ export const Checks: React.FC<{
     setRebasing(false);
 
     if (isError(resRebase)) {
-      message.error(i18n.errorOccurred);
+      void message.error(i18n.errorOccurred);
       return;
     }
 
     if (!resRebase.data.done) {
-      message.error('Revision could not be rebased');
+      void message.error('Revision could not be rebased');
       return;
     }
 
-    message.success('Revision rebased');
+    void message.success('Revision rebased');
   };
 
   return (
@@ -82,7 +82,7 @@ export const Checks: React.FC<{
         <div className={classnames(cls.checkLine, cls.success)}>
           <div className={cls.label}>
             <IconCircleCheckFilled /> Approved by
-            {checks?.reviews.map((one) => {
+            {checks.reviews.map((one) => {
               return <span key={one.id}>{one.user.name}</span>;
             })}
           </div>

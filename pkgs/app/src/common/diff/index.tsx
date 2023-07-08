@@ -18,7 +18,7 @@ export function proposeTitle(computed: BlobAndDiffs[]): string {
     const type =
       blob.type === 'project'
         ? 'project'
-        : blob.current?.name || blob.previous?.name;
+        : blob.current.name || blob.previous?.name;
     if (blob.deleted) {
       return `fix(${blob.type}): delete ${type}`;
     }

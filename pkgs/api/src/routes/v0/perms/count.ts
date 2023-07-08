@@ -40,7 +40,6 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       data: perms,
     });
   });
-
   done();
 };
 

@@ -14,14 +14,11 @@ const obj = z
   })
   .strict();
 
-export const validation: PreHandler = (req, res, done) => {
+export const validation: PreHandler = async (req, res) => {
   const val = obj.safeParse(req.body);
   if (!val.success) {
-    void validationError(res as any, val.error);
-    return;
+    return validationError(res, val.error);
   }
-
-  done();
 };
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
@@ -35,7 +32,6 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       return res.status(200).send({ data: { done: true } });
     }
   );
-
   done();
 };
 

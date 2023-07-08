@@ -24,7 +24,7 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
       return;
     }
 
-    setFlow(resFlow.data?.data.flow);
+    setFlow(resFlow.data.data.flow);
   }, [resFlow]);
 
   if (resFlow.isLoading) {

@@ -1,19 +1,26 @@
 import type { IncomingMessage, ServerResponse } from 'http';
 
 import type { Keys, Orgs, Projects, Users } from '@prisma/client';
-import type { preHandlerHookHandler, RawServerDefault } from 'fastify';
+import type {
+  preHandlerAsyncHookHandler,
+  preHandlerHookHandler,
+  RawServerDefault,
+} from 'fastify';
 import type { RouteGenericInterface } from 'fastify/types/route';
 
 import type { InvitationsWithOrgAndUser } from './api/index.js';
 import type { PermsWithOrg, RevisionWithProject } from './db/index.js';
 
 export type PreHandler<T extends RouteGenericInterface = any> =
-  preHandlerHookHandler<
+  preHandlerAsyncHookHandler<
     RawServerDefault,
     IncomingMessage,
-    ServerResponse<IncomingMessage>,
+    ServerResponse,
     T
   >;
+
+export type PreHandlerSync<T extends RouteGenericInterface = any> =
+  preHandlerHookHandler<RawServerDefault, IncomingMessage, ServerResponse, T>;
 
 declare module 'fastify' {
   interface FastifyRequest {

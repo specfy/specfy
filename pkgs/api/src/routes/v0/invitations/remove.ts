@@ -36,10 +36,9 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         where: { id: invitation.id },
       });
 
-      res.status(204).send();
+      return res.status(204).send();
     }
   );
-
   done();
 };
 

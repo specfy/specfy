@@ -1,13 +1,11 @@
-import type { FastifyPluginCallback } from 'fastify';
+import type { FastifyPluginAsync } from 'fastify';
 
 import get from './get.js';
 import list from './list.js';
 
-const fn: FastifyPluginCallback = (f, _, done) => {
-  f.register(list, { prefix: '/documents' });
-  f.register(get, { prefix: '/documents/' });
-
-  done();
+const fn: FastifyPluginAsync = async (f) => {
+  await f.register(list, { prefix: '/documents' });
+  await f.register(get, { prefix: '/documents/' });
 };
 
 export default fn;

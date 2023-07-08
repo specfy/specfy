@@ -37,11 +37,11 @@ export const SettingsGeneral: React.FC<{
   const handleRename = async () => {
     const res = await updateOrg(params, { name: name! });
     if (isError(res)) {
-      message.error(i18n.errorOccurred);
+      void message.error(i18n.errorOccurred);
       return;
     }
 
-    message.success('Organization renamed');
+    void message.success('Organization renamed');
   };
   const handleReset = () => {
     setName(org.name);
@@ -65,11 +65,11 @@ export const SettingsGeneral: React.FC<{
   const confirmDelete = async () => {
     const res = await deleteOrg(params);
     if (res !== 204) {
-      message.error(i18n.errorOccurred);
+      void message.error(i18n.errorOccurred);
       return;
     }
 
-    message.success('Organization deleted');
+    void message.success('Organization deleted');
     navigate(`/`);
   };
 
@@ -82,11 +82,11 @@ export const SettingsGeneral: React.FC<{
       orgId: org.id,
     });
     if (isError(res)) {
-      message.error(i18n.errorOccurred);
+      void message.error(i18n.errorOccurred);
       return;
     }
 
-    message.success('Linked successfully');
+    void message.success('Linked successfully');
   };
   const onUnlink = async () => {
     const res = await linkToGithubOrg({
@@ -94,11 +94,11 @@ export const SettingsGeneral: React.FC<{
       orgId: org.id,
     });
     if (isError(res)) {
-      message.error(i18n.errorOccurred);
+      void message.error(i18n.errorOccurred);
       return;
     }
 
-    message.success('Unlinked successfully');
+    void message.success('Unlinked successfully');
   };
 
   return (

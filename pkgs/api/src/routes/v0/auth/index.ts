@@ -1,15 +1,13 @@
-import type { FastifyPluginCallback } from 'fastify';
+import type { FastifyPluginAsync } from 'fastify';
 
 import github from './github.js';
 import local from './local.js';
 import logout from './logout.js';
 
-const fn: FastifyPluginCallback = (f, _, done) => {
-  f.register(github, { prefix: '/auth' });
-  f.register(local, { prefix: '/auth' });
-  f.register(logout, { prefix: '/auth' });
-
-  done();
+const fn: FastifyPluginAsync = async (f) => {
+  await f.register(github, { prefix: '/auth' });
+  await f.register(local, { prefix: '/auth' });
+  await f.register(logout, { prefix: '/auth' });
 };
 
 export default fn;

@@ -59,7 +59,7 @@ export const LayoutHeader: React.FC = () => {
   const handleLogout = async () => {
     const res = await logout();
     if (isError(res)) {
-      message.error(i18n.errorOccurred);
+      void message.error(i18n.errorOccurred);
       return;
     }
 
@@ -180,7 +180,7 @@ export const LayoutHeader: React.FC = () => {
               type="text"
               className={cls.avatar}
               icon={
-                user?.avatarUrl ? <img src={user?.avatarUrl} /> : <IconUser />
+                user?.avatarUrl ? <img src={user.avatarUrl} /> : <IconUser />
               }
             ></Button>
           </Dropdown>

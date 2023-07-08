@@ -29,10 +29,9 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         // await createProjectActivity(req.user!, 'Project.deleted', project, tx);
       });
 
-      res.status(204).send();
+      return res.status(204).send();
     }
   );
-
   done();
 };
 

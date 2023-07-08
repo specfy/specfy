@@ -98,7 +98,7 @@ export const ComponentView: React.FC<{
     if (e.key === 'delete') {
       edit.enable(true);
       storeComponents.remove(comp!.id);
-      message.success('Component deleted');
+      void message.success('Component deleted');
       navigate(`/${params.org_id}/${params.project_slug}`);
     }
   };

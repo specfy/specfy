@@ -11,10 +11,9 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
     async function (req, res) {
       await req.logOut();
       // nothing todo
-      res.status(204).send();
+      return res.status(204).send();
     }
   );
-
   done();
 };
 

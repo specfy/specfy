@@ -12,7 +12,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
     },
     function (_req, res) {
       // nothing todo
-      res.status(403);
+      return res.status(403);
     }
   );
 
@@ -35,10 +35,9 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         return;
       }
 
-      res.redirect(env('APP_HOSTNAME')!);
+      return res.redirect(env('APP_HOSTNAME')!);
     }
   );
-
   done();
 };
 

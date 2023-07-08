@@ -114,7 +114,7 @@ export class BubbleMenuView {
     }
 
     if (
-      event?.relatedTarget &&
+      event.relatedTarget &&
       this.element.parentNode?.contains(event.relatedTarget as Node)
     ) {
       return;
@@ -183,7 +183,7 @@ export class BubbleMenuView {
     const from = Math.min(...ranges.map((range) => range.$from.pos));
     const to = Math.max(...ranges.map((range) => range.$to.pos));
 
-    const shouldShow = this.shouldShow?.({
+    const shouldShow = this.shouldShow({
       editor: this.editor,
       view,
       state,

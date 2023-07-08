@@ -1,4 +1,4 @@
-import type { FastifyPluginCallback } from 'fastify';
+import type { FastifyPluginAsync } from 'fastify';
 
 import accept from './accept.js';
 import create from './create.js';
@@ -7,17 +7,15 @@ import get from './get.js';
 import list from './list.js';
 import remove from './remove.js';
 
-const fn: FastifyPluginCallback = (f, _, done) => {
-  f.register(create, { prefix: '/invitations' });
-  f.register(list, { prefix: '/invitations' });
+const fn: FastifyPluginAsync = async (f) => {
+  await f.register(create, { prefix: '/invitations' });
+  await f.register(list, { prefix: '/invitations' });
 
-  f.register(accept, { prefix: '/invitations/:invitation_id/accept' });
-  f.register(decline, { prefix: '/invitations/:invitation_id/decline' });
+  await f.register(accept, { prefix: '/invitations/:invitation_id/accept' });
+  await f.register(decline, { prefix: '/invitations/:invitation_id/decline' });
 
-  f.register(get, { prefix: '/invitations/:invitation_id' });
-  f.register(remove, { prefix: '/invitations/:invitation_id' });
-
-  done();
+  await f.register(get, { prefix: '/invitations/:invitation_id' });
+  await f.register(remove, { prefix: '/invitations/:invitation_id' });
 };
 
 export default fn;

@@ -242,7 +242,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       });
 
       if (reason) {
-        res.status(400).send({
+        return res.status(400).send({
           error: {
             code: 'cant_merge',
             reason,
@@ -258,7 +258,6 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       });
     }
   );
-
   done();
 };
 

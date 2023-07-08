@@ -32,12 +32,12 @@ export const OrgCreate: React.FC = () => {
       if (isValidationError(res)) {
         setErrors(res.error.fields);
       } else {
-        message.error(i18n.errorOccurred);
+        void message.error(i18n.errorOccurred);
       }
       return;
     }
 
-    message.success('Organization created');
+    void message.success('Organization created');
     navigate(`/${res.id}`);
   };
 

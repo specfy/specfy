@@ -42,7 +42,7 @@ export const ContentBlockStep: React.FC<{ block: BlockStep; pl: Payload }> = ({
       return;
     }
 
-    const tmp = (ref.current?.children[0] as HTMLElement).dataset.title;
+    const tmp = (ref.current.children[0] as HTMLElement).dataset.title;
     if (!tmp) {
       return;
     }

@@ -45,11 +45,11 @@ export const SettingsGeneral: React.FC<{
   const handleRename = async () => {
     const res = await updateProject(params, { name });
     if (isError(res)) {
-      message.error(i18n.errorOccurred);
+      void message.error(i18n.errorOccurred);
       return;
     }
 
-    message.success('Project renamed');
+    void message.success('Project renamed');
     navigate(`/${params.org_id}/${res.data.slug}/settings`);
   };
   const handleReset = () => {
@@ -68,7 +68,7 @@ export const SettingsGeneral: React.FC<{
   };
   const confirmDelete = async () => {
     await deleteProject(params);
-    message.success('Project deleted');
+    void message.success('Project deleted');
 
     navigate(`/${params.org_id}`);
   };
@@ -83,11 +83,11 @@ export const SettingsGeneral: React.FC<{
       repository: repoId,
     });
     if (isError(res)) {
-      message.error(i18n.errorOccurred);
+      void message.error(i18n.errorOccurred);
       return;
     }
 
-    message.success('Linked successfully');
+    void message.success('Linked successfully');
   };
   const onUnlink = async () => {
     const res = await linkToGithubRepo({
@@ -96,11 +96,11 @@ export const SettingsGeneral: React.FC<{
       repository: null,
     });
     if (isError(res)) {
-      message.error(i18n.errorOccurred);
+      void message.error(i18n.errorOccurred);
       return;
     }
 
-    message.success('Unlinked successfully');
+    void message.success('Unlinked successfully');
   };
 
   // Keys

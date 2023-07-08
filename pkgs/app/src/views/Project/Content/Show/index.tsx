@@ -40,7 +40,7 @@ export const DocumentShow: React.FC<{
   });
 
   useEffect(() => {
-    if (documentsStore.documents[reqParams.document_id]) {
+    if (reqParams.document_id in documentsStore.documents) {
       setDoc(documentsStore.documents[reqParams.document_id]);
     } else if (getDoc.data?.data) {
       documentsStore.add([getDoc.data.data]);

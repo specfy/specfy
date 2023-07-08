@@ -324,7 +324,7 @@ export const ContentDoc: React.FC<{
   noPlaceholder?: true;
 }> = ({ doc, id, pl, noPlaceholder }) => {
   const [payload] = useState<Payload>(() => {
-    return pl || { displayed: [id as string] };
+    return pl || { displayed: [id!] };
   });
 
   if (doc.content.length <= 0) {

@@ -33,17 +33,16 @@ export default async (f: FastifyInstance, opts: FastifyPluginOptions) => {
 
   f.setErrorHandler(function (error, _req, res) {
     if (error instanceof AuthError) {
-      res.status(400).send(error.err);
-      return;
+      return res.status(400).send(error.err);
     } else {
       console.error(error);
       // fastify will use parent error handler to handle this
-      serverError(res);
+      return serverError(res);
     }
   });
 
   f.setNotFoundHandler(function (req, res) {
-    notFound(res, `${req.method} ${req.url}`);
+    return notFound(res, `${req.method} ${req.url}`);
   });
 
   await f.register(staticFiles, {

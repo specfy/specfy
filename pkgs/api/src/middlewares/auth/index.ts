@@ -25,8 +25,8 @@ const COOKIE_SECRET = Buffer.from(env('COOKIE_SECRET')!, 'hex');
 
 export const fastifyPassport = new Authenticator();
 
-export function registerAuth(f: FastifyInstance) {
-  f.register(fastifySession, {
+export async function registerAuth(f: FastifyInstance) {
+  await f.register(fastifySession, {
     sessionName: 'session',
     cookieName: 'specfy-app-session',
     cookie: {
@@ -38,8 +38,8 @@ export function registerAuth(f: FastifyInstance) {
     },
     key: COOKIE_SECRET,
   });
-  f.register(fastifyPassport.initialize());
-  f.register(fastifyPassport.secureSession());
+  await f.register(fastifyPassport.initialize());
+  await f.register(fastifyPassport.secureSession());
 
   // Cookie pre validation
   f.addHook('preValidation', async (req) => {
@@ -88,12 +88,12 @@ export function registerAuth(f: FastifyInstance) {
   }
 
   fastifyPassport.registerUserSerializer(async (user: Users) => {
-    return { id: user.id };
+    return Promise.resolve({ id: user.id });
   });
 
   // Deserializer will fetch the user from the database when a request with an id in the session arrives
   fastifyPassport.registerUserDeserializer(async (user: unknown) => {
-    return user;
+    return Promise.resolve(user);
   });
 
   // Final check to see if we are connected
@@ -108,6 +108,6 @@ export function registerAuth(f: FastifyInstance) {
       return;
     }
 
-    unauthorized(res);
+    return unauthorized(res);
   });
 }

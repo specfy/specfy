@@ -31,12 +31,12 @@ export const SettingsGeneral: React.FC = () => {
   const handleRename = async () => {
     const res = await updateMe({ name });
     if (isError(res)) {
-      message.error(i18n.errorOccurred);
+      void message.error(i18n.errorOccurred);
       return;
     }
 
     tryLogin();
-    message.success('Account renamed');
+    void message.success('Account renamed');
   };
   const handleReset = () => {
     setName(me.name);
@@ -59,11 +59,11 @@ export const SettingsGeneral: React.FC = () => {
   const confirmDelete = async () => {
     const res = await deleteMe();
     if (res !== 204) {
-      message.error(i18n.errorOccurred);
+      void message.error(i18n.errorOccurred);
       return;
     }
 
-    message.success('Account deleted');
+    void message.success('Account deleted');
     navigate(`/login`);
   };
 

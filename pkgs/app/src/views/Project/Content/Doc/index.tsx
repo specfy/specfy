@@ -45,7 +45,7 @@ export const Doc: React.FC<{
     if (e.key === 'delete') {
       edit.enable(true);
       documentsStore.remove(doc.id);
-      message.success('Document deleted');
+      void message.success('Document deleted');
       navigate(`/${proj.orgId}/${proj.slug}/content`);
     }
   };

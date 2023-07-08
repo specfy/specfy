@@ -90,7 +90,6 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       data,
     });
   });
-
   done();
 };
 

@@ -49,14 +49,14 @@ export const GithubOrgSelect: React.FC<{
       callbacks: {
         onBlocked: () => {
           ref.current = null;
-          message.error(
+          void message.error(
             'The popup to install the GitHub App could not be opened.'
           );
         },
         onClose: () => {
           setReady(false);
           ref.current = null;
-          resInstall.refetch();
+          void resInstall.refetch();
 
           if (onClose) {
             onClose();

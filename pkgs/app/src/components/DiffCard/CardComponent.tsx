@@ -78,7 +78,7 @@ export const DiffCardComponent: React.FC<{
           <div className={cls.line}>
             <Typography.Title level={4}>Stack</Typography.Title>
             <div className={cls.techs}>
-              {using.techs?.map((techId) => {
+              {using.techs.map((techId) => {
                 return (
                   <TechItem key={techId} techId={techId} params={params} />
                 );

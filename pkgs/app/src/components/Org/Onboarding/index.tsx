@@ -22,14 +22,14 @@ export const OrgOnboarding: React.FC<{ org: ApiOrg }> = ({ org }) => {
       return;
     }
 
-    setProject(projects.data?.data.length > 0);
+    setProject(projects.data.data.length > 0);
   }, [projects.isFetching]);
   useEffect(() => {
     if (!perms.data) {
       return;
     }
 
-    setTeam(perms.data?.data.length > 1);
+    setTeam(perms.data.data.length > 1);
   }, [perms.isFetching]);
 
   if (link && project && team) {

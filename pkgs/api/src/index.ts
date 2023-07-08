@@ -4,13 +4,14 @@ import Fastify from 'fastify';
 import appService, { options } from './app.js';
 import { env } from './common/env.js';
 import { start, stop } from './services/github/index.js';
+
 // Require library to exit fastify process, gracefully (if possible)
 
 // Instantiate Fastify with some config
 const app = Fastify(options);
 
 // Register your application as a normal plugin.
-app.register(appService);
+void app.register(appService);
 
 // delay is the number of milliseconds for the graceful close to finish
 const closeListeners = closeWithGrace(

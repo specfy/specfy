@@ -33,12 +33,12 @@ export const TeamInvite: React.FC<{
       if (isValidationError(res)) {
         setErrors(res.error.fields);
       } else {
-        message.error(i18n.errorOccurred);
+        void message.error(i18n.errorOccurred);
       }
       return;
     }
 
-    message.success('User invited');
+    void message.success('User invited');
     setErrors({});
     setEmail('');
 

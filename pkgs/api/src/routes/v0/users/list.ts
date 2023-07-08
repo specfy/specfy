@@ -71,7 +71,6 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       pagination,
     });
   });
-
   done();
 };
 

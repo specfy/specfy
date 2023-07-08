@@ -30,7 +30,6 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       });
     }
   );
-
   done();
 };
 

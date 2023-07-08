@@ -47,24 +47,24 @@ export const SettingsTeamPending: React.FC<{ params: RouteOrg }> = ({
     for (const sel of selected) {
       const res = await deleteInvitations({ invitation_id: sel });
       if (isError(res)) {
-        message.error(i18n.errorOccurred);
-        list.refetch();
+        void message.error(i18n.errorOccurred);
+        void list.refetch();
         return;
       }
     }
 
-    message.success('Invitations removed');
-    list.refetch();
+    void message.success('Invitations removed');
+    void list.refetch();
   };
   const onRemoveOne = async (item: ApiInvitation) => {
     const res = await deleteInvitations({ invitation_id: item.id });
     if (isError(res)) {
-      message.error(i18n.errorOccurred);
+      void message.error(i18n.errorOccurred);
       return;
     }
 
-    message.success('Invitation removed');
-    list.refetch();
+    void message.success('Invitation removed');
+    void list.refetch();
   };
 
   return (

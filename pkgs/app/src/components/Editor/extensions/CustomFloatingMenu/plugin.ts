@@ -111,7 +111,7 @@ export class FloatingMenuView {
     }
 
     if (
-      event?.relatedTarget &&
+      event.relatedTarget &&
       this.element.parentNode?.contains(event.relatedTarget as Node)
     ) {
       return;

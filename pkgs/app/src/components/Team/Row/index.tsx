@@ -41,7 +41,7 @@ export const Row: React.FC<RowProps> = ({
       role: newRole,
       userId,
     });
-    message.success(`User ${action === 'add' ? 'added' : 'updated'}`);
+    void message.success(`User ${action === 'add' ? 'added' : 'updated'}`);
 
     setTimeout(() => setLoading(false), 250);
     onUpdated();
@@ -54,7 +54,7 @@ export const Row: React.FC<RowProps> = ({
       ...params,
       userId,
     });
-    message.success('User removed');
+    void message.success('User removed');
 
     setTimeout(() => {
       setLoading(false);

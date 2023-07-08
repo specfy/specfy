@@ -20,7 +20,7 @@ export class Popup {
   callbacks;
   interval: NodeJS.Timeout | null = null;
   popup: Window | null = null;
-  private cb: (event: MessageEvent<any>) => void;
+  private cb: (event: MessageEvent) => void;
 
   constructor({ id, url, width, height, callbacks }: Params) {
     this.id = id;
@@ -109,7 +109,7 @@ export class Popup {
     window.removeEventListener('message', this.cb, false);
   }
 
-  receiveMessage(event: MessageEvent<any>) {
+  receiveMessage(event: MessageEvent) {
     if (event.origin !== API_HOSTNAME) {
       return;
     }

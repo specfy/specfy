@@ -144,7 +144,7 @@ export async function recomputeOrgGraph({
     }
     newFlow.nodes.push(node);
 
-    if (!relations[project.id]) {
+    if (!(project.id in relations)) {
       continue;
     }
 

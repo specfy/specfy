@@ -4,8 +4,8 @@ import type {
   ApiBlobProject,
 } from '@specfy/api/src/types/api';
 
-export const flagRevisionApprovalEnabled = false;
-export const flagRevisionDescRequired = false;
+export const flagRevisionApprovalEnabled: boolean = false;
+export const flagRevisionDescRequired: boolean = false;
 
 const IGNORED_KEYS = [
   'id',

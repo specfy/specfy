@@ -37,13 +37,13 @@ export const GithubRepoSelect: React.FC<{
       callbacks: {
         onBlocked: () => {
           ref.current = null;
-          message.error(
+          void message.error(
             'The popup to install the GitHub App could not be opened.'
           );
         },
         onClose: () => {
           ref.current = null;
-          res.refetch();
+          void res.refetch();
         },
       },
     });

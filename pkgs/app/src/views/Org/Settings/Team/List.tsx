@@ -75,7 +75,7 @@ export const SettingsTeamList: React.FC<{ params: RouteOrg }> = ({
 
   // --- Actions
   const onUpdate = () => {
-    team.refetch();
+    void team.refetch();
   };
 
   return (

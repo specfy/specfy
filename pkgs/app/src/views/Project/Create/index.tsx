@@ -38,12 +38,12 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
       if (isValidationError(res)) {
         setErrors(res.error.fields);
       } else {
-        message.error(i18n.errorOccurred);
+        void message.error(i18n.errorOccurred);
       }
       return;
     }
 
-    message.success('Project created');
+    void message.success('Project created');
 
     navigate(`/${params.org_id}/${res.slug}`);
   };

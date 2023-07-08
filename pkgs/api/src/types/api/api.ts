@@ -10,7 +10,7 @@ export interface ValidationError {
   message: string;
 }
 
-export type FieldsErrors = Record<string, ValidationError>;
+export type FieldsErrors = Record<string, ValidationError | undefined>;
 
 export interface ResValidationError {
   error: {

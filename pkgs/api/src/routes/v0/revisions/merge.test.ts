@@ -132,7 +132,7 @@ describe('POST /revisions/:revision_id/merge', () => {
     });
   });
 
-  it.skipIf(flagRevisionApprovalEnabled === false)(
+  it.skipIf(!flagRevisionApprovalEnabled)(
     'should not merge a non ready revision',
     async () => {
       const { token, org, project, user } = await seedWithProject();

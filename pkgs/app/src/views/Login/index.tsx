@@ -27,7 +27,7 @@ export const Login: React.FC = () => {
       if (isValidationError(res)) {
         setErrors(res.error.fields);
       } else {
-        message.error(i18n.errorOccurred);
+        void message.error(i18n.errorOccurred);
       }
       return;
     }

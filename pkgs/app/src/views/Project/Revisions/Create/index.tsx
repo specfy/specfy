@@ -60,7 +60,7 @@ export const ProjectRevisionCreate: React.FC<{
     getEmptyDoc(true)
   );
   const [autoMerge, setAutoMerge] = useState<boolean>(
-    flagRevisionApprovalEnabled === false
+    !flagRevisionApprovalEnabled
   );
 
   // Compute changes
@@ -140,14 +140,14 @@ export const ProjectRevisionCreate: React.FC<{
     });
 
     if (isError(res)) {
-      message.error(i18n.errorOccurred);
+      void message.error(i18n.errorOccurred);
       return;
     }
 
     // Discard local changes
     originalStore.revertAll(staging.diffs);
 
-    message.success('Revision created');
+    void message.success('Revision created');
     navigate(
       `/${params.org_id}/${params.project_slug}/revisions/${res.id}?${
         autoMerge ? 'automerge=true' : ''

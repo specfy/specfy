@@ -61,10 +61,9 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         return notFound(res);
       }
 
-      res.status(204).send();
+      return res.status(204).send();
     }
   );
-
   done();
 };
 

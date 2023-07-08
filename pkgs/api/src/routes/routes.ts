@@ -20,24 +20,24 @@ import root from './v0/root/index.js';
 import users from './v0/users/index.js';
 
 export const routes: FastifyPluginAsync = async (f) => {
-  registerAuth(f);
+  await registerAuth(f);
 
-  f.register(activities, { prefix: '/0' });
-  f.register(auth, { prefix: '/0' });
-  f.register(components, { prefix: '/0' });
-  f.register(documents, { prefix: '/0' });
-  f.register(keys, { prefix: '/0' });
-  f.register(github, { prefix: '/0' });
-  f.register(invitations, { prefix: '/0' });
-  f.register(me, { prefix: '/0' });
-  f.register(orgs, { prefix: '/0' });
-  f.register(perms, { prefix: '/0' });
-  f.register(policies, { prefix: '/0' });
-  f.register(projects, { prefix: '/0' });
-  f.register(revisions, { prefix: '/0' });
-  f.register(flows, { prefix: '/0' });
-  f.register(users, { prefix: '/0' });
+  await f.register(activities, { prefix: '/0' });
+  await f.register(auth, { prefix: '/0' });
+  await f.register(components, { prefix: '/0' });
+  await f.register(documents, { prefix: '/0' });
+  await f.register(keys, { prefix: '/0' });
+  await f.register(github, { prefix: '/0' });
+  await f.register(invitations, { prefix: '/0' });
+  await f.register(me, { prefix: '/0' });
+  await f.register(orgs, { prefix: '/0' });
+  await f.register(perms, { prefix: '/0' });
+  await f.register(policies, { prefix: '/0' });
+  await f.register(projects, { prefix: '/0' });
+  await f.register(revisions, { prefix: '/0' });
+  await f.register(flows, { prefix: '/0' });
+  await f.register(users, { prefix: '/0' });
 
-  f.register(root, { prefix: '/0' });
-  f.register(root);
+  await f.register(root, { prefix: '/0' });
+  await f.register(root);
 };

@@ -108,7 +108,7 @@ export const ProjectRevisionsShow: React.FC<{
       return;
     }
 
-    setChecks(resChecks.data?.data);
+    setChecks(resChecks.data.data);
   }, [resChecks.data]);
 
   // --------- Edit
@@ -188,16 +188,16 @@ export const ProjectRevisionsShow: React.FC<{
     setSave(false);
 
     if (isError(up)) {
-      message.error(i18n.errorOccurred);
+      void message.error(i18n.errorOccurred);
       return;
     }
 
     if (!up.data.done) {
-      message.error('Revision could not saved');
+      void message.error('Revision could not saved');
       return;
     }
 
-    message.success('Revision updated');
+    void message.success('Revision updated');
     setEdit(false);
   };
 
@@ -208,7 +208,7 @@ export const ProjectRevisionsShow: React.FC<{
 
     setSave(true);
     await updateRevision({ ...qp, revision_id: rev.id }, { status });
-    message.success('Revision updated');
+    void message.success('Revision updated');
     setSave(false);
   };
   const patchLocked = async (locked: boolean) => {
@@ -218,7 +218,7 @@ export const ProjectRevisionsShow: React.FC<{
 
     setSave(true);
     await updateRevision({ ...qp, revision_id: rev.id }, { locked });
-    message.success('Revision updated');
+    void message.success('Revision updated');
     setSave(false);
   };
 

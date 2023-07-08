@@ -129,7 +129,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
           }
 
           if (blobsIds.length <= 0) {
-            res.status(400).send({
+            return res.status(400).send({
               error: {
                 code: 'cant_create',
                 reason: 'no_diff',
@@ -200,7 +200,6 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       }
     }
   );
-
   done();
 };
 

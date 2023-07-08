@@ -75,7 +75,7 @@ export const SettingsTeam: React.FC<{
 
   // --- Actions
   const onUpdate = () => {
-    team.refetch();
+    void team.refetch();
   };
 
   return (

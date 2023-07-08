@@ -4,7 +4,7 @@ import type { Node } from '@tiptap/pm/model';
 import { Plugin, PluginKey } from '@tiptap/pm/state';
 
 function isNodeHasAttribute(node: Node, attrName: string) {
-  return Boolean(node.attrs?.[attrName]);
+  return Boolean(node.attrs[attrName]);
 }
 
 const attrName = 'uid';

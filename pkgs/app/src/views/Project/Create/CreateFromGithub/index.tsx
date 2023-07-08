@@ -79,7 +79,7 @@ export const CreateFromGithub: React.FC<{
     {
       installation_id: selected,
     },
-    Boolean(selected) && resInstall.data !== null
+    Boolean(selected) && !!resInstall.data
   );
 
   useEffect(() => {
@@ -88,7 +88,7 @@ export const CreateFromGithub: React.FC<{
 
   const onClose = () => {
     setReposReady(false);
-    resRepos.refetch();
+    void resRepos.refetch();
   };
 
   const onQuickCreate = useCallback(
@@ -105,12 +105,12 @@ export const CreateFromGithub: React.FC<{
 
           window.scrollTo(0, 0);
         } else {
-          message.error(i18n.errorOccurred);
+          void message.error(i18n.errorOccurred);
         }
         return false;
       }
 
-      message.success('Project created');
+      void message.success('Project created');
 
       const link = await linkToGithubRepo({
         orgId: org.id,
@@ -118,7 +118,7 @@ export const CreateFromGithub: React.FC<{
         repository: repo.fullName,
       });
       if (isError(link)) {
-        message.error(i18n.errorOccurred);
+        void message.error(i18n.errorOccurred);
         return false;
       }
 

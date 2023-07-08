@@ -9,6 +9,7 @@ module.exports = {
     'plugin:import/errors',
     'plugin:import/warnings',
     'plugin:prettier/recommended',
+    // 'plugin:@typescript-eslint/recommended-requiring-type-checking',
   ],
   parser: '@typescript-eslint/parser',
   plugins: [
@@ -27,7 +28,8 @@ module.exports = {
       impliedStrict: true,
       jsx: true,
     },
-    project: './tsconfig.lint.json',
+    // project: './tsconfig.lint.json',
+    project: false,
   },
   settings: {
     'import/extensions': ['.js', '.jsx', '.ts', '.tsx'],
@@ -219,12 +221,8 @@ module.exports = {
     '@typescript-eslint/no-loss-of-precision': 'error',
     '@typescript-eslint/ban-tslint-comment': ['error'],
     '@typescript-eslint/consistent-generic-constructors': 'error',
-    '@typescript-eslint/dot-notation': 'error',
     '@typescript-eslint/no-duplicate-enum-values': 'error',
-    '@typescript-eslint/no-meaningless-void-operator': 'error',
-    '@typescript-eslint/no-mixed-enums': 'error',
     '@typescript-eslint/no-non-null-asserted-nullish-coalescing': 'error',
-    '@typescript-eslint/no-throw-literal': 'error',
     '@typescript-eslint/no-unsafe-declaration-merging': 'error',
     // '@typescript-eslint/no-unsafe-enum-comparison': 'error',
 
@@ -282,7 +280,7 @@ module.exports = {
     '@typescript-eslint/prefer-for-of': ['warn'],
 
     // Disabled => Require slow parser. Requires parserOptions.project above to enable them
-    // '@typescript-eslint/no-throw-literal': ['off'],
+    '@typescript-eslint/no-throw-literal': ['off'],
     '@typescript-eslint/await-thenable': ['off'],
     '@typescript-eslint/no-base-to-string': ['off'],
     '@typescript-eslint/no-confusing-void-expression': ['off'],
@@ -315,6 +313,9 @@ module.exports = {
     '@typescript-eslint/strict-boolean-expressions': ['off'],
     '@typescript-eslint/switch-exhaustiveness-check': ['off'],
     '@typescript-eslint/unbound-method': ['off'],
+    '@typescript-eslint/dot-notation': ['off'],
+    '@typescript-eslint/no-meaningless-void-operator': ['off'],
+    '@typescript-eslint/no-mixed-enums': ['off'],
 
     // Disabled On purpose
     '@typescript-eslint/ban-ts-comment': ['off'],
@@ -363,6 +364,12 @@ module.exports = {
       rules: {
         'require-extensions/require-extensions': 'error',
         'require-extensions/require-index': 'error',
+      },
+    },
+    {
+      files: ['pkgs/**/*.test.ts'],
+      rules: {
+        '@typescript-eslint/no-unsafe-assignment': ['off'],
       },
     },
   ],

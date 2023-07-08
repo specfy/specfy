@@ -30,7 +30,7 @@ export const ProjectContentCreate: React.FC<{ params: RouteProject }> = ({
   const [name, setName] = useState<string>('');
   const [type, setType] = useState<ApiDocument['type']>('rfc');
 
-  const onFinish = async () => {
+  const onFinish = () => {
     const proj = storeProject.project!;
     const doc = storeDocument.create({
       orgId: proj.orgId,

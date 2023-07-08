@@ -36,7 +36,7 @@ export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
 
       // Find added and modified
       for (const item of store) {
-        const original = originalStore.find(item.id) as typeof item;
+        const original = originalStore.find(item.id)!;
 
         const bd: BlobAndDiffs = {
           blob: {
