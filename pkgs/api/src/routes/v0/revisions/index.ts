@@ -11,7 +11,7 @@ import rebase from './rebase.js';
 import update from './update.js';
 import upload from './upload.js';
 
-const fn: FastifyPluginCallback = async (f, _, done) => {
+const fn: FastifyPluginCallback = (f, _, done) => {
   f.register(create, { prefix: '/revisions' });
   f.register(list, { prefix: '/revisions' });
   f.register(upload, { prefix: '/revisions/upload' });

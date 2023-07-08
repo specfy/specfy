@@ -21,7 +21,7 @@ export async function linkToGithubOrg(
   );
 
   if (res.status === 200) {
-    queryClient.invalidateQueries(['listOrgs']);
+    void queryClient.invalidateQueries(['listOrgs']);
   }
 
   return json;
@@ -37,7 +37,7 @@ export async function linkToGithubRepo(
   );
 
   if (res.status === 200) {
-    queryClient.invalidateQueries(['getProject']);
+    void queryClient.invalidateQueries(['getProject']);
   }
 
   return json;

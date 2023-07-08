@@ -21,7 +21,7 @@ function QueryVal(req: FastifyRequest) {
     .superRefine(valPermissions(req));
 }
 
-const fn: FastifyPluginCallback = async (fastify, _, done) => {
+const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.delete<DeletePerm>(
     '/',
     { preHandler: noQuery },

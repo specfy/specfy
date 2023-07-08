@@ -7,7 +7,7 @@ import members from './members.js';
 import repos from './repos.js';
 import webhooks from './webhooks.js';
 
-const fn: FastifyPluginCallback = async (f, _, done) => {
+const fn: FastifyPluginCallback = (f, _, done) => {
   f.register(repos, { prefix: '/github/repos' });
   f.register(installations, { prefix: '/github/installations' });
   f.register(members, { prefix: '/github/members' });

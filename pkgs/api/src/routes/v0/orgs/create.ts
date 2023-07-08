@@ -27,7 +27,7 @@ const OrgVal = z
   })
   .strict();
 
-const fn: FastifyPluginCallback = async (fastify, _, done) => {
+const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.post<PostOrg>(
     '/',
     { preHandler: noQuery },
@@ -43,7 +43,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         return createOrg(tx, req.user!, data);
       });
 
-      res.status(200).send(toApiOrg(org));
+      return res.status(200).send(toApiOrg(org));
     }
   );
 

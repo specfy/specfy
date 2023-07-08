@@ -32,7 +32,7 @@ function BodyVal() {
     .strict();
 }
 
-const fn: FastifyPluginCallback = async (fastify, _, done) => {
+const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.put<PutProject>(
     '/',
     { preHandler: [noQuery, getProject] },
@@ -62,7 +62,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         });
       }
 
-      res.status(200).send({
+      return res.status(200).send({
         data: toApiProject(project),
       });
     }

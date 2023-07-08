@@ -7,7 +7,7 @@ import { noQuery } from '../../../middlewares/noQuery.js';
 import { createUserActivity } from '../../../models/index.js';
 import type { DeleteMe } from '../../../types/api/index.js';
 
-const fn: FastifyPluginCallback = async (fastify, _, done) => {
+const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.delete<DeleteMe>(
     '/',
     { preHandler: [noQuery, noBody] },

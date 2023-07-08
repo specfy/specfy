@@ -79,7 +79,7 @@ function BodyVal() {
     });
 }
 
-const fn: FastifyPluginCallback = async (fastify, _, done) => {
+const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.patch<PatchRevision>(
     '/',
     { preHandler: getRevision },
@@ -210,7 +210,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         return;
       }
 
-      res.status(200).send({
+      return res.status(200).send({
         data: { done: true },
       });
     }

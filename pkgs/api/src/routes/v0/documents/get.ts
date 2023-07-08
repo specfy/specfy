@@ -19,7 +19,7 @@ function QueryVal(req: FastifyRequest) {
     .superRefine(valPermissions(req));
 }
 
-const fn: FastifyPluginCallback = async (fastify, _, done) => {
+const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.get<GetDocument>('/:document_id', async function (req, res) {
     const val = QueryVal(req).safeParse({ ...req.query, ...req.params });
     if (!val.success) {
@@ -46,7 +46,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       include: { User: true },
     });
 
-    res.status(200).send({
+    return res.status(200).send({
       data: {
         id: p.id,
         orgId: p.orgId,

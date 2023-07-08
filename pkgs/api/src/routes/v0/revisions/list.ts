@@ -30,7 +30,7 @@ function QueryVal(req: FastifyRequest) {
     .superRefine(valPermissions(req));
 }
 
-const fn: FastifyPluginCallback = async (fastify, _, done) => {
+const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.get<ListRevisions>('/', async function (req, res) {
     const val = QueryVal(req).safeParse(req.query);
     if (!val.success) {
@@ -89,7 +89,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       return tmp;
     });
 
-    res.status(200).send({
+    return res.status(200).send({
       data: list.map((rev) => {
         return toApiRevision(rev, [] /* TODO: fill authors */);
       }),

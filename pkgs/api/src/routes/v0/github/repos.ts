@@ -20,7 +20,7 @@ function QueryVal() {
     .partial();
 }
 
-const fn: FastifyPluginCallback = async (fastify, _, done) => {
+const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.get<ListGithubRepos>('/', async function (req, res) {
     const val = QueryVal().safeParse(req.query);
     if (!val.success) {
@@ -65,12 +65,10 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       } catch (e: unknown) {
         if (e instanceof RequestError) {
           console.error(e);
-          notFound(res);
-          return;
+          return notFound(res);
         }
 
-        serverError(res);
-        return;
+        return serverError(res);
       }
     }
 
@@ -88,7 +86,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         private: repo.private,
       });
     }
-    res.status(200).send({
+    return res.status(200).send({
       data,
     });
   });

@@ -1,10 +1,10 @@
 import type {
+  ApiPerm,
   DeletePerm,
   GetCountPerms,
   ListPerms,
   PutPerm,
 } from '@specfy/api/src/types/api';
-import type { PermType } from '@specfy/api/src/types/db';
 import { useQuery } from '@tanstack/react-query';
 
 import { queryClient } from '../common/query';
@@ -12,7 +12,7 @@ import { queryClient } from '../common/query';
 import { fetchApi } from './fetch';
 import { APIError, isError } from './helpers';
 
-export const roleReadable: Record<PermType, string> = {
+export const roleReadable: Record<ApiPerm['role'], string> = {
   contributor: 'Contributor',
   owner: 'Owner',
   reviewer: 'Reviewer',
@@ -73,7 +73,11 @@ export function useListPermsProject(opts: Required<ListPerms['Querystring']>) {
 export async function updatePerm(opts: PutPerm['Body']) {
   const { json } = await fetchApi<PutPerm>('/perms', { body: opts }, 'PUT');
 
-  queryClient.invalidateQueries(['listPerms', opts.org_id, opts.project_id]);
+  void queryClient.invalidateQueries([
+    'listPerms',
+    opts.org_id,
+    opts.project_id,
+  ]);
 
   return json;
 }
@@ -86,8 +90,12 @@ export async function removePerm(opts: DeletePerm['Body']) {
   );
 
   if (res.status === 204) {
-    queryClient.invalidateQueries(['countPerms', opts.org_id]);
-    queryClient.invalidateQueries(['listPerms', opts.org_id, opts.project_id]);
+    void queryClient.invalidateQueries(['countPerms', opts.org_id]);
+    void queryClient.invalidateQueries([
+      'listPerms',
+      opts.org_id,
+      opts.project_id,
+    ]);
   }
 
   return json;

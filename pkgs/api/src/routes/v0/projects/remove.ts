@@ -6,7 +6,7 @@ import { noBody } from '../../../middlewares/noBody.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import type { DeleteProject } from '../../../types/api/index.js';
 
-const fn: FastifyPluginCallback = async (fastify, _, done) => {
+const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.delete<DeleteProject>(
     '/',
     { preHandler: [noQuery, noBody, getProject] },

@@ -8,7 +8,7 @@ import { getRevision } from '../../../middlewares/getRevision.js';
 import { flagRevisionApprovalEnabled } from '../../../models/revisions/constants.js';
 import type { ListRevisionChecks } from '../../../types/api/index.js';
 
-const fn: FastifyPluginCallback = async (fastify, _, done) => {
+const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.get<ListRevisionChecks>(
     '/',
     { preHandler: getRevision },
@@ -37,7 +37,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           : rev.status === 'waiting' || rev.status === 'approved') &&
         outdatedBlobs.length === 0;
 
-      res.status(200).send({
+      return res.status(200).send({
         data: {
           canMerge,
           outdatedBlobs,

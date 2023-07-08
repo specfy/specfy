@@ -5,7 +5,7 @@ import { prisma } from '../../../db/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import type { ListGithubInstallations } from '../../../types/api/index.js';
 
-const fn: FastifyPluginCallback = async (fastify, _, done) => {
+const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.get<ListGithubInstallations>(
     '/',
     { preHandler: [noQuery] },
@@ -38,7 +38,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         });
       }
 
-      res.status(200).send({
+      return res.status(200).send({
         data,
       });
     }

@@ -8,7 +8,7 @@ import { noBody } from '../../../middlewares/noBody.js';
 import { createUserActivity } from '../../../models/index.js';
 import type { AcceptInvitation } from '../../../types/api/index.js';
 
-const fn: FastifyPluginCallback = async (fastify, _, done) => {
+const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.post<AcceptInvitation>(
     '/',
     { preHandler: [noBody, getInvitation] },
@@ -43,7 +43,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         });
       });
 
-      res.status(200).send({
+      return res.status(200).send({
         done: true,
       });
     }

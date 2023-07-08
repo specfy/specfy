@@ -17,21 +17,22 @@ const obj = z
 export const validation: PreHandler = (req, res, done) => {
   const val = obj.safeParse(req.body);
   if (!val.success) {
-    return validationError(res, val.error);
+    void validationError(res as any, val.error);
+    return;
   }
 
   done();
 };
 
-const fn: FastifyPluginCallback = async (fastify, _, done) => {
+const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.post<PostAuthLocal>(
     '/local',
     {
       preHandler: [noQuery, validation, fastifyPassport.authenticate('local')],
     },
-    function (_req, res) {
+    async function (_req, res) {
       // nothing todo
-      res.status(200).send({ data: { done: true } });
+      return res.status(200).send({ data: { done: true } });
     }
   );
 

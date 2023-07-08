@@ -41,8 +41,8 @@ export async function updateProject(
   );
 
   if (res.status === 200) {
-    queryClient.invalidateQueries(['listProjects', opts.org_id]);
-    queryClient.invalidateQueries([
+    void queryClient.invalidateQueries(['listProjects', opts.org_id]);
+    void queryClient.invalidateQueries([
       'getProject',
       opts.org_id,
       opts.project_slug,
@@ -62,8 +62,8 @@ export async function deleteProject(
   );
 
   if (res.status === 200) {
-    queryClient.invalidateQueries(['listProjects', opts.org_id]);
-    queryClient.invalidateQueries([
+    void queryClient.invalidateQueries(['listProjects', opts.org_id]);
+    void queryClient.invalidateQueries([
       'getProject',
       opts.org_id,
       opts.project_slug,

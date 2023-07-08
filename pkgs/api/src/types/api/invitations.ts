@@ -1,10 +1,14 @@
 import type { Invitations, Prisma } from '@prisma/client';
 
+import type { DBPerm } from '../db/perms.js';
+
 import type { Res } from './api.js';
 import type { ApiOrg } from './orgs.js';
 import type { ApiUser } from './users.js';
 
-export type ApiInvitation = Omit<Invitations, 'token'>;
+export type ApiInvitation = Omit<Invitations, 'role' | 'token'> & {
+  role: DBPerm['role'];
+};
 
 export type InvitationsWithOrgAndUser = Prisma.InvitationsGetPayload<{
   include: { Org: true; User: true };

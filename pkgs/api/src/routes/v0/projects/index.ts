@@ -6,7 +6,7 @@ import list from './list.js';
 import remove from './remove.js';
 import update from './update.js';
 
-const fn: FastifyPluginCallback = async (f, _, done) => {
+const fn: FastifyPluginCallback = (f, _, done) => {
   f.register(list, { prefix: '/projects' });
   f.register(create, { prefix: '/projects' });
   f.register(get, { prefix: '/projects/:org_id/:project_slug' });

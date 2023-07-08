@@ -61,7 +61,7 @@ function ProjectVal(req: FastifyRequest) {
     });
 }
 
-const fn: FastifyPluginCallback = async (fastify, _, done) => {
+const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.post<PostProject>(
     '/',
     { preHandler: noQuery },
@@ -94,7 +94,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         return tmp;
       });
 
-      res.status(200).send({
+      return res.status(200).send({
         id: project.id,
         slug: project.slug,
       });

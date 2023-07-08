@@ -31,7 +31,7 @@ export async function updateMe(data: PutMe['Body']): Promise<PutMe['Reply']> {
   const { json, res } = await fetchApi<PutMe>(`/me`, { body: data }, 'PUT');
 
   if (res.status === 200) {
-    queryClient.invalidateQueries(['listOrgs']);
+    void queryClient.invalidateQueries(['listOrgs']);
   }
 
   return json;

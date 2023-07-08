@@ -18,7 +18,7 @@ function BodyVal() {
     .strict();
 }
 
-const fn: FastifyPluginCallback = async (fastify, _, done) => {
+const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.put<PutMe>('/', { preHandler: [noQuery] }, async function (req, res) {
     const val = await BodyVal().safeParseAsync(req.body);
     if (!val.success) {
@@ -46,7 +46,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       });
     }
 
-    res.status(200).send({
+    return res.status(200).send({
       data: toApiMe(user),
     });
   });

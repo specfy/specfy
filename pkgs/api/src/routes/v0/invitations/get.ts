@@ -7,7 +7,7 @@ import { getInvitation } from '../../../middlewares/getInvitation.js';
 import { noBody } from '../../../middlewares/noBody.js';
 import type { GetInvitation } from '../../../types/api/index.js';
 
-const fn: FastifyPluginCallback = async (fastify, _, done) => {
+const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.get<GetInvitation>(
     '/',
     { preHandler: [noBody, getInvitation] },
@@ -19,7 +19,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         return forbidden(res);
       }
 
-      res.status(200).send({
+      return res.status(200).send({
         data: {
           id: inv.id,
           email: inv.email,

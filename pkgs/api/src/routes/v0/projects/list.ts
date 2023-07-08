@@ -17,7 +17,7 @@ function QueryVal(req: FastifyRequest) {
     .superRefine(valPermissions(req));
 }
 
-const fn: FastifyPluginCallback = async (fastify, _, done) => {
+const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.get<ListProjects>('/', async function (req, res) {
     const val = QueryVal(req).safeParse(req.query);
     if (!val.success) {
@@ -42,7 +42,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       skip: 0,
     });
 
-    res.status(200).send({
+    return res.status(200).send({
       data: projects.map(toApiProject),
       pagination,
     });

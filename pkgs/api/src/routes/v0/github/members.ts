@@ -19,7 +19,7 @@ function QueryVal() {
     .strict();
 }
 
-const fn: FastifyPluginCallback = async (fastify, _, done) => {
+const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.get<GetGithubMembers>('/', async function (req, res) {
     const val = QueryVal().safeParse(req.query);
     if (!val.success) {
@@ -42,7 +42,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         org: query.org,
       });
 
-      res.status(200).send({
+      return res.status(200).send({
         data: list.data.map((u) => {
           return {
             id: u.id,
@@ -55,12 +55,10 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     } catch (e: unknown) {
       console.error(e);
       if (e instanceof RequestError) {
-        notFound(res);
-        return;
+        return notFound(res);
       }
 
-      serverError(res);
-      return;
+      return serverError(res);
     }
   });
 

@@ -4,7 +4,7 @@ import { toApiOrg } from '../../../common/formatters/org.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import type { ListOrgs } from '../../../types/api/index.js';
 
-const fn: FastifyPluginCallback = async (fastify, _, done) => {
+const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.get<ListOrgs>(
     '/',
     { preHandler: noQuery },
@@ -19,7 +19,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         orgs.push(toApiOrg(perm.Org));
       }
 
-      res.status(200).send({
+      return res.status(200).send({
         data: orgs,
       });
     }

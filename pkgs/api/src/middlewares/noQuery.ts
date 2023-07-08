@@ -6,7 +6,8 @@ import type { PreHandler } from '../types/fastify.js';
 export const noQuery: PreHandler = (req, res, done) => {
   const val = z.object({}).strict().safeParse(req.query);
   if (!val.success) {
-    return validationError(res, val.error);
+    void validationError(res as any, val.error);
+    return;
   }
 
   done();

@@ -6,7 +6,7 @@ import { prisma } from '../../../db/index.js';
 import { getRevision } from '../../../middlewares/getRevision.js';
 import type { GetRevision } from '../../../types/api/index.js';
 
-const fn: FastifyPluginCallback = async (fastify, _, done) => {
+const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.get<GetRevision>(
     '/',
     { preHandler: getRevision },
@@ -20,7 +20,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         include: { User: true },
       });
 
-      res.status(200).send({
+      return res.status(200).send({
         data: {
           ...toApiRevision(rev, users),
           reviewers: users

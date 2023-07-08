@@ -6,8 +6,8 @@ import buildApp from '../app.js';
 import { ApiClient } from './fetch.js';
 
 export type TestSetup = {
-  app?: FastifyInstance;
-  fetch?: ApiClient;
+  app: FastifyInstance;
+  fetch: ApiClient;
 };
 
 export async function setupBeforeAll(): Promise<TestSetup> {
@@ -20,7 +20,7 @@ export async function setupBeforeAll(): Promise<TestSetup> {
   return { app, fetch };
 }
 
-export async function setupAfterAll(ts: TestSetup) {
+export async function setupAfterAll(ts: Partial<TestSetup>) {
   await ts.app?.close();
   if (ts.fetch) {
     await ts.fetch.close();

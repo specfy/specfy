@@ -51,7 +51,7 @@ function BodyVal(req: FastifyRequest) {
     .superRefine(valPermissions(req));
 }
 
-const fn: FastifyPluginCallback = async (fastify, _, done) => {
+const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.post<PostUploadRevision>(
     '/',
     { preHandler: noQuery },
@@ -190,7 +190,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       );
 
       if (rev) {
-        res.status(200).send({
+        return res.status(200).send({
           id: rev.id,
         });
       } else {

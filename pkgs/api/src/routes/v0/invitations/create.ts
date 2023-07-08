@@ -62,7 +62,7 @@ function QueryVal(req: FastifyRequest) {
     });
 }
 
-const fn: FastifyPluginCallback = async (fastify, _, done) => {
+const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.post<PostInvitation>(
     '/',
     { preHandler: noQuery },
@@ -94,7 +94,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         },
       });
 
-      res.status(200).send({
+      return res.status(200).send({
         data: { token: created.token, id: created.id },
       });
     }

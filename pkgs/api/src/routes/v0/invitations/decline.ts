@@ -6,7 +6,7 @@ import { getInvitation } from '../../../middlewares/getInvitation.js';
 import { noBody } from '../../../middlewares/noBody.js';
 import type { DeclineInvitation } from '../../../types/api/index.js';
 
-const fn: FastifyPluginCallback = async (fastify, _, done) => {
+const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.post<DeclineInvitation>(
     '/',
     { preHandler: [noBody, getInvitation] },
@@ -22,7 +22,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         where: { id: inv.id },
       });
 
-      res.status(200).send({
+      return res.status(200).send({
         done: true,
       });
     }

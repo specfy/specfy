@@ -10,7 +10,8 @@ export const noBody: PreHandler = (req, res, done) => {
   }
   const val = z.object({}).strict().safeParse(req.body);
   if (!val.success) {
-    return validationError(res, val.error);
+    void validationError(res as any, val.error);
+    return;
   }
 
   done();

@@ -8,7 +8,7 @@ import { forbidden } from '../../../common/errors.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import { webhookService } from '../../../services/github/index.js';
 
-const fn: FastifyPluginCallback = async (fastify, _, done) => {
+const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.post<{ Reply: any; Body: any }>(
     '/',
     { preHandler: [noQuery] },
@@ -45,7 +45,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         payload: payload as any,
       });
 
-      res.status(200).send({
+      return res.status(200).send({
         done: true,
       });
     }

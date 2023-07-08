@@ -20,7 +20,7 @@ function BodyVal() {
     .strict();
 }
 
-const fn: FastifyPluginCallback = async (fastify, _, done) => {
+const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.put<PutOrg>(
     '/',
     { preHandler: [noQuery, getOrg] },
@@ -52,7 +52,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         });
       }
 
-      res.status(200).send({
+      return res.status(200).send({
         data: toApiOrg(org),
       });
     }

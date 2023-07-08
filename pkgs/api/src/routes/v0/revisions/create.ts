@@ -77,7 +77,7 @@ function BodyVal(req: FastifyRequest) {
     });
 }
 
-const fn: FastifyPluginCallback = async (fastify, _, done) => {
+const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.post<PostRevision>(
     '/',
     { preHandler: noQuery },
@@ -124,7 +124,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         return revision;
       });
 
-      res.status(200).send({
+      return res.status(200).send({
         id: rev.id,
       });
     }

@@ -36,7 +36,7 @@ export async function createOrg(
   );
 
   if (res.status === 200) {
-    queryClient.invalidateQueries(['listOrgs']);
+    void queryClient.invalidateQueries(['listOrgs']);
   }
 
   return json;
@@ -53,7 +53,7 @@ export async function updateOrg(
   );
 
   if (res.status === 200) {
-    queryClient.invalidateQueries(['listOrgs']);
+    void queryClient.invalidateQueries(['listOrgs']);
   }
 
   return json;
@@ -67,8 +67,8 @@ export async function deleteOrg(opts: DeleteOrg['Params']): Promise<number> {
   );
 
   if (res.status === 204) {
-    queryClient.invalidateQueries(['listProjects', opts.org_id]);
-    queryClient.invalidateQueries(['listOrgs']);
+    void queryClient.invalidateQueries(['listProjects', opts.org_id]);
+    void queryClient.invalidateQueries(['listOrgs']);
   }
 
   return res.status;

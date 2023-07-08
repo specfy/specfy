@@ -9,44 +9,50 @@ import type {
   ResValidationError,
 } from '../types/api/index.js';
 
-export function notFound(res: FastifyReply, message?: string): void {
+export async function notFound(
+  res: FastifyReply,
+  message?: string
+): Promise<void> {
   const err: ResNotFound = {
     error: {
       code: '404_not_found',
       message,
     },
   };
-  res.status(404).send(err);
+  return res.status(404).send(err);
 }
 
-export function unauthorized(res: FastifyReply): void {
+export async function unauthorized(res: FastifyReply): Promise<void> {
   const err: ResUnauthorized = {
     error: {
       code: '401_unauthorized',
     },
   };
-  res.status(401).send(err);
+  return res.status(401).send(err);
 }
 
-export function forbidden(res: FastifyReply): void {
+export async function forbidden(res: FastifyReply): Promise<void> {
   const err: ResForbidden = {
     error: {
       code: '403_forbidden',
     },
   };
-  res.status(403).send(err);
+  return res.status(403).send(err);
 }
 
-export function serverError(res: FastifyReply): void {
+export async function serverError(res: FastifyReply): Promise<void> {
   const err: ResServerError = {
     error: {
       code: '500_server_error',
     },
   };
-  res.status(500).send(err);
+  return res.status(500).send(err);
 }
 
-export function validationError(res: FastifyReply, data: ZodError): void {
+export async function validationError(
+  res: FastifyReply<any>,
+  data: ZodError
+): Promise<void> {
   const fields: ResValidationError['error']['fields'] = {};
   const form: ResValidationError['error']['form'] = [];
   for (const issue of data.issues) {
@@ -72,7 +78,7 @@ export function validationError(res: FastifyReply, data: ZodError): void {
       fields,
     },
   };
-  res.status(400).send(err);
+  return res.status(400).send(err);
 }
 
 export class TransactionError extends Error {}

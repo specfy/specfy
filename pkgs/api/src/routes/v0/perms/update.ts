@@ -23,7 +23,7 @@ function QueryVal(req: FastifyRequest) {
     .superRefine(valPermissions(req));
 }
 
-const fn: FastifyPluginCallback = async (fastify, _, done) => {
+const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.put<PutPerm>('/', { preHandler: noQuery }, async function (req, res) {
     const val = QueryVal(req).safeParse(req.body);
     if (!val.success) {
@@ -72,7 +72,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       }
     });
 
-    res.status(200).send({
+    return res.status(200).send({
       data: { done: true },
     });
   });

@@ -28,7 +28,7 @@ function QueryVal(req: FastifyRequest) {
     .superRefine(valPermissions(req));
 }
 
-const fn: FastifyPluginCallback = async (fastify, _, done) => {
+const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.post<PostLinkToGithubOrg>(
     '/',
     { preHandler: noQuery },
@@ -59,12 +59,10 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         } catch (e: unknown) {
           if (e instanceof RequestError) {
             console.error(e);
-            notFound(res);
-            return;
+            return notFound(res);
           }
 
-          serverError(res);
-          return;
+          return serverError(res);
         }
       }
 
@@ -98,7 +96,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         }
       });
 
-      res.status(200).send({
+      return res.status(200).send({
         done: true,
       });
     }

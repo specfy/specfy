@@ -44,7 +44,7 @@ export async function fetchApi<
     credentials: 'include', // for cookies
   });
 
-  let json: T;
+  let json: T | undefined;
   if (res.status !== 204) {
     json = (await res.json()) as T;
   }

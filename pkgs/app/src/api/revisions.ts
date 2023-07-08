@@ -24,12 +24,12 @@ export async function createRevision(
   );
 
   if (res.status === 200) {
-    queryClient.invalidateQueries([
+    void queryClient.invalidateQueries([
       'listRevisions',
       data.orgId,
       data.projectId,
     ]);
-    queryClient.invalidateQueries(['listActivities', data.orgId]);
+    void queryClient.invalidateQueries(['listActivities', data.orgId]);
   }
 
   return json;
@@ -46,20 +46,20 @@ export async function updateRevision(
   );
 
   if (res.status === 200) {
-    queryClient.invalidateQueries(['listRevisions', org_id, project_id]);
-    queryClient.invalidateQueries([
+    void queryClient.invalidateQueries(['listRevisions', org_id, project_id]);
+    void queryClient.invalidateQueries([
       'listBlobs',
       org_id,
       project_id,
       revision_id,
     ]);
-    queryClient.invalidateQueries([
+    void queryClient.invalidateQueries([
       'getRevision',
       org_id,
       project_id,
       revision_id,
     ]);
-    queryClient.invalidateQueries([
+    void queryClient.invalidateQueries([
       'getRevisionChecks',
       org_id,
       project_id,
@@ -131,17 +131,21 @@ export async function mergeRevision({
   );
 
   if (res.status === 200) {
-    queryClient.invalidateQueries(['listRevisions', org_id, project_id]);
-    queryClient.invalidateQueries(['getRevision', org_id, project_id]);
-    queryClient.invalidateQueries(['getRevisionChecks', org_id, project_id]);
-    queryClient.invalidateQueries(['getProject', org_id]);
-    queryClient.invalidateQueries(['listProjects', org_id]);
-    queryClient.invalidateQueries(['listComponents', org_id]);
-    queryClient.invalidateQueries(['listDocuments', org_id]);
-    queryClient.invalidateQueries(['getDocument', org_id]);
-    queryClient.invalidateQueries(['getFlow', org_id]);
+    void queryClient.invalidateQueries(['listRevisions', org_id, project_id]);
+    void queryClient.invalidateQueries(['getRevision', org_id, project_id]);
+    void queryClient.invalidateQueries([
+      'getRevisionChecks',
+      org_id,
+      project_id,
+    ]);
+    void queryClient.invalidateQueries(['getProject', org_id]);
+    void queryClient.invalidateQueries(['listProjects', org_id]);
+    void queryClient.invalidateQueries(['listComponents', org_id]);
+    void queryClient.invalidateQueries(['listDocuments', org_id]);
+    void queryClient.invalidateQueries(['getDocument', org_id]);
+    void queryClient.invalidateQueries(['getFlow', org_id]);
   } else {
-    queryClient.invalidateQueries([
+    void queryClient.invalidateQueries([
       'getRevisionChecks',
       org_id,
       project_id,
@@ -191,20 +195,20 @@ export async function rebaseRevision({
   );
 
   if (res.status === 200) {
-    queryClient.invalidateQueries(['listRevisions', org_id, project_id]);
-    queryClient.invalidateQueries([
+    void queryClient.invalidateQueries(['listRevisions', org_id, project_id]);
+    void queryClient.invalidateQueries([
       'listBlobs',
       org_id,
       project_id,
       revision_id,
     ]);
-    queryClient.invalidateQueries([
+    void queryClient.invalidateQueries([
       'getRevision',
       org_id,
       project_id,
       revision_id,
     ]);
-    queryClient.invalidateQueries([
+    void queryClient.invalidateQueries([
       'getRevisionChecks',
       org_id,
       project_id,

@@ -22,7 +22,7 @@ export async function createInvitation(
   );
 
   if (res.status === 200) {
-    queryClient.invalidateQueries(['listInvitations'], { exact: false });
+    void queryClient.invalidateQueries(['listInvitations'], { exact: false });
   }
 
   return json;
@@ -38,9 +38,9 @@ export async function acceptInvitations(
   );
 
   if (res.status === 200) {
-    queryClient.invalidateQueries(['listInvitations']);
-    queryClient.invalidateQueries(['listOrgs']);
-    queryClient.invalidateQueries(['listProjects']);
+    void queryClient.invalidateQueries(['listInvitations']);
+    void queryClient.invalidateQueries(['listOrgs']);
+    void queryClient.invalidateQueries(['listProjects']);
   }
 
   return json;
@@ -56,7 +56,7 @@ export async function declineInvitations(
   );
 
   if (res.status === 200) {
-    queryClient.invalidateQueries(['listInvitations']);
+    void queryClient.invalidateQueries(['listInvitations']);
   }
 
   return json;
@@ -72,7 +72,7 @@ export async function deleteInvitations(
   );
 
   if (res.status === 204) {
-    queryClient.invalidateQueries(['listInvitations']);
+    void queryClient.invalidateQueries(['listInvitations']);
   }
 
   return json;
