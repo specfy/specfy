@@ -98,7 +98,7 @@ export function uploadedDocumentsToDB(
         parentId: prev.blobId,
         type: 'document',
         typeId: prev.id,
-        current: undefined as unknown as null,
+        current: prev as any,
       };
     });
 

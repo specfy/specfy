@@ -12,7 +12,7 @@ const blobProject = z
     typeId: schemaId, // TODO: Val that it exists if not created
     deleted: z.boolean(),
     created: z.boolean(),
-    current: schemaProject.nullable(),
+    current: schemaProject,
   })
   .strict();
 const blobComponent = z
@@ -22,7 +22,7 @@ const blobComponent = z
     typeId: schemaId,
     deleted: z.boolean(),
     created: z.boolean(),
-    current: schemaComponent.nullable(),
+    current: schemaComponent,
   })
   .strict();
 const blobDocument = z
@@ -32,7 +32,7 @@ const blobDocument = z
     typeId: schemaId,
     deleted: z.boolean(),
     created: z.boolean(),
-    current: schemaDocument.nullable(),
+    current: schemaDocument,
   })
   .strict();
 
@@ -47,21 +47,8 @@ export const schemaBlobs = z
             params: { code: 'incompatible_fields' },
             message: 'Deleted and Created can not be both true',
           });
-        } else if (val.deleted && val.current) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            params: { code: 'incompatible_fields' },
-            message: "Can't specify a blob when deleting",
-          });
         }
 
-        if (!val.deleted && !val.current) {
-          ctx.addIssue({
-            code: z.ZodIssueCode.custom,
-            params: { code: 'incompatible_fields' },
-            message: 'Missing current',
-          });
-        }
         if (!val.created && !val.parentId) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
@@ -69,11 +56,20 @@ export const schemaBlobs = z
             message: 'Updated blob should come with a parentId',
           });
         }
-        if (val.current && val.typeId !== val.current.id) {
+
+        if (val.typeId !== val.current.id) {
           ctx.addIssue({
             code: z.ZodIssueCode.custom,
             params: { code: 'incompatible_fields' },
             message: "Blob's id and blob definition should be the same",
+          });
+        }
+
+        if (val.created && val.type === 'project') {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            params: { code: 'incompatible_fields' },
+            message: "Can't create project from a Revision",
           });
         }
       })

@@ -1,7 +1,6 @@
-import type { ApiProject } from '@specfy/api/src/types/api';
-
 import type { ApiComponent } from '../types/api/index.js';
 
+import type { ComputedFlow } from './flow/types.js';
 import {
   hDef,
   hDefHost,
@@ -10,17 +9,15 @@ import {
   wMax,
 } from './validators/flow.constants.js';
 
-export function computeProjectPosition(projects: ApiProject[]): {
+export function computeNewProjectPosition(flow: ComputedFlow): {
   x: number;
   y: number;
 } {
   // Compute global bounding box
-  const global = { x: 0, y: 0, width: 0, height: 0 };
-  for (const proj of Object.values(projects)) {
-    global.x = Math.min(proj.display.pos.x, global.x);
-    global.y = Math.min(proj.display.pos.y, global.y);
-    global.width = Math.max(proj.display.size.width, global.width);
-    global.height = Math.max(proj.display.size.height, global.height);
+  const global = { x: 0, y: 0 };
+  for (const node of flow.nodes) {
+    global.x = Math.min(node.position.x, global.x);
+    global.y = Math.min(node.position.y, global.y);
   }
 
   // Simply add on top of it

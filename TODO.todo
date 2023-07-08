@@ -83,14 +83,14 @@ Project:
   - soft suppression !!
   - Import Excalidraw
   - Import Draw.io
-  - Perms
-    - Perms should inherit org if none (e.g: you have been added to an already existing org or new project is created not by you)
+  ✔ Perms @done(23-07-07 20:42)
+    ✔ Perms should inherit org if none (e.g: you have been added to an already existing org or new project is created not by you) @done(23-07-07 20:42)
   ✔ Edition “inline” @done(23-03-25 23:26)
   - Visibility: Public ou Privé (pour pouvoir montrer une demo facilement)
   ✔ Connect: Github @done(23-06-14 15:18)
     ✔ Import @done(23-06-14 15:18)
       - Import from UI
-  - One way Sync (from specfy to confluence)
+  - One way Sync Confluence?
   ✔ Automatic languages detection @done(23-06-14 15:18)
   ✔ Automatic “service” detection @done(23-06-14 15:18)
   - Pingback depuis une Pull Request
@@ -152,20 +152,19 @@ Components:
     ✔ Unit Test @done(23-04-03 12:28)
     ✔ Validation @done(23-03-29 15:15)
   - Click to create + Click to add c'est vraiment chiant
-  - Pouvoir editer le graph depuis n'importe où
   - Autocomplete supported dans la page de creation de composant
-  - Changer les ports
+  ✔ Changer les ports @done(23-07-07 20:43)
   - Quand on change l'host on devrait bouger le composant dans le graph pour fit la boudingBox
   - Check policy on add language
   - Check policy on add techId
   ✔  suppression @done(23-03-25 23:26)
-  - Base de données de reference (genre une liste avec toutes les tech connu)
-      - Hosting
-      - Tech
-      - Languages
+  ✔ Base de données de reference (genre une liste avec toutes les tech connu) @done(23-07-07 20:43)
+      ✔ Hosting @done(23-07-07 20:43)
+      ✔ Tech @done(23-07-07 20:43)
+      ✔ Languages @done(23-07-07 20:43)
   ✔ Ajout et suppression de liaison @done(23-03-28 11:12)
   ✔ Ajout et suppression de languages @done(23-03-28 11:12)
-  - Composant de type projet
+  ✔ Composant de type projet @done(23-07-07 20:43)
 
 
 Documents:
@@ -271,7 +270,8 @@ Revision:
     - Unit Test activity
     - Notification
   ☐ Unit test
-  - Weird bug with seed PR, can't merge one document that supposdely doesn't exists, but that should have been caught by rebase check
+  - BUG: with seed PR, can't merge one document that supposedly doesn't exists, but that should have been caught by rebase check
+  - BUG: when merging sometimes it pops the change again in staging, this is a desync with originalStore
 
 
 Diff:
@@ -305,7 +305,6 @@ Flow:
   ✔ Edges @done(23-03-29 14:43)
   ✔ Hover @done(23-03-29 14:44)
     ✔ Fix hover @done(23-06-30 16:00)
-  - Try to use the react version for automatic update (what did I mean ????)
   - Modify the graph in every page?
   ✔ Group @done(23-07-06 11:01)
   ✔ Ungroup @done(23-07-06 11:01)
@@ -318,13 +317,14 @@ Flow:
   - Export PNG
   - Block resizing in readonly
   - Click to add component
-  - Width and display of new component
+  - Width and display of new dragged component (currently too big and host is not correct)
   - Undo/Redo
-  - Ctrl + Z
+    - Ctrl + Z
   - Hide / Unhide
   - Tagging
   - Fix drop in host that do not place a the correct spot sometimes
   - Ungroup should not send the component somewhere else
+  ✔ When connecting a Project we should update the Project edges @done(23-07-07 20:45)
 
 
 -----
@@ -350,6 +350,7 @@ Org:
       - Permissions
   ✔ Switch in the UI @done(23-03-27 17:46)
   - Editer le graph d'organization
+    ✔ Auto update org graph @done(23-07-07 20:45)
   ✔ Hide everything when no projects @done(23-04-24 21:40)
   ✔ Flow Page @done(23-06-14 15:20)
   - Policies Page

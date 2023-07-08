@@ -1,12 +1,3 @@
-import {
-  computeProjectPosition,
-  computeWidth,
-} from '@specfy/api/src/common/flow';
-import {
-  hDef,
-  wDef,
-  wMax,
-} from '@specfy/api/src/common/validators/flow.constants';
 import type { ApiOrg, FieldsErrors } from '@specfy/api/src/types/api';
 import { IconCircleArrowRight } from '@tabler/icons-react';
 import { App, Button, Form, Input } from 'antd';
@@ -17,7 +8,6 @@ import { useNavigate } from 'react-router-dom';
 import { createProject } from '../../../api';
 import { isError, isValidationError } from '../../../api/helpers';
 import { i18n } from '../../../common/i18n';
-import { useProjectStore } from '../../../common/store';
 import { slugify, titleSuffix } from '../../../common/string';
 import { Card } from '../../../components/Card';
 import type { RouteOrg } from '../../../types/routes';
@@ -31,7 +21,6 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
 }) => {
   const { message } = App.useApp();
   const navigate = useNavigate();
-  const storeProjects = useProjectStore();
 
   const [name, setName] = useState<string>('');
   const [slug, setSlug] = useState<string>('');
@@ -44,11 +33,6 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
       name,
       slug,
       orgId: params.org_id,
-      display: {
-        pos: computeProjectPosition(storeProjects.projects),
-        zIndex: 1,
-        size: { width: computeWidth(name, wDef, wMax), height: hDef },
-      },
     });
     if (isError(res)) {
       if (isValidationError(res)) {

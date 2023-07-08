@@ -1,14 +1,11 @@
-import { componentsToFlow } from '@specfy/api/src/common/flow/transform';
-import type {
-  ComponentForFlow,
-  ComputedFlow,
-} from '@specfy/api/src/common/flow/types';
+import type { ComputedFlow } from '@specfy/api/src/common/flow/types';
 import type { ApiOrg } from '@specfy/api/src/types/api';
 import { Skeleton } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
 import { useListProjects } from '../../../api';
+import { useGetFlow } from '../../../api/flows';
 import { useProjectStore } from '../../../common/store';
 import { titleSuffix } from '../../../common/string';
 import { Card } from '../../../components/Card';
@@ -26,38 +23,16 @@ export const OrgOverview: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
 }) => {
   const storeProjects = useProjectStore();
   const res = useListProjects({ org_id: params.org_id });
-  const [components, setComponents] = useState<ComponentForFlow[]>([]);
+  const resFlow = useGetFlow({ org_id: params.org_id });
   const [flow, setFlow] = useState<ComputedFlow>();
 
   useEffect(() => {
-    if (!res.data?.data) {
+    if (!resFlow.data) {
       return;
     }
 
-    storeProjects.fill(res.data.data);
-    setComponents(
-      res.data.data.map((project) => {
-        return {
-          id: project.id,
-          name: project.name,
-          type: 'project',
-          typeId: null,
-          display: project.display,
-          edges: project.edges,
-          inComponent: null,
-          techId: null,
-        };
-      })
-    );
-  }, [res.data]);
-
-  useEffect(() => {
-    if (components.length <= 0) {
-      return;
-    }
-
-    setFlow(componentsToFlow(components));
-  }, [components]);
+    setFlow(resFlow.data?.data.flow);
+  }, [resFlow]);
 
   if (res.isLoading) {
     return (

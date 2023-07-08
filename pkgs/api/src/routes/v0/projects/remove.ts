@@ -13,6 +13,8 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
     async function (req, res) {
       const project = req.project!;
 
+      // TODO: delete all edges to this project in each Project
+      // TODO: delete all edges to this project in each components
       await prisma.$transaction(async (tx) => {
         await tx.activities.deleteMany({ where: { projectId: project.id } });
         await tx.comments.deleteMany({ where: { projectId: project.id } });

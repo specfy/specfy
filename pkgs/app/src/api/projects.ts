@@ -24,6 +24,7 @@ export async function createProject(
 
   if (res.status === 200) {
     queryClient.refetchQueries(['listProjects', data.orgId]);
+    queryClient.refetchQueries(['getFlow', data.orgId]);
   }
 
   return json;

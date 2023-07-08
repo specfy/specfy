@@ -31,7 +31,8 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
         data.push({
           id: inst.id,
-          name: inst.account.login!,
+          name:
+            'login' in inst.account ? inst.account.login : inst.account.name,
           avatarUrl: inst.account.avatar_url!,
           url: inst.account.html_url!,
         });

@@ -1,3 +1,4 @@
+import { IGNORED_DOCUMENT_KEYS } from '@specfy/api/src/models/revisions/constants';
 import type { ApiBlobDocument } from '@specfy/api/src/types/api';
 import type { Editor } from '@tiptap/react';
 import { diffWordsWithSpace } from 'diff';
@@ -5,7 +6,6 @@ import { diffWordsWithSpace } from 'diff';
 import type { DocumentBlobWithDiff } from '../../types/blobs';
 import { getEmptyDoc } from '../content';
 
-import { IGNORED_DOCUMENT_KEYS } from './constants';
 import { isDiffSimple } from './helpers';
 import { diffEditor } from './prosemirror';
 

@@ -13,9 +13,6 @@ export async function checkReviews(
       revisionId: rev.id,
     },
     include: { User: true },
-
-    // TODO: add back lock?
-    // lock: Transaction.LOCK.UPDATE,
   });
 
   return { list, check: list.length > 0 };

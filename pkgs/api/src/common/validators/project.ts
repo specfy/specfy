@@ -1,7 +1,6 @@
 import { z } from 'zod';
 
 import { schemaId, schemaOrgId, schemaSlug } from './common.js';
-import { schemaDisplay, schemaEdges } from './flow.js';
 import { schemaProseMirror } from './prosemirror.js';
 
 export const schemaProject = z
@@ -20,8 +19,6 @@ export const schemaProject = z
         })
         .strict()
     ),
-    display: schemaDisplay,
-    edges: schemaEdges,
     githubRepository: z.string().nullable(),
     createdAt: z.string().datetime(),
     updatedAt: z.string().datetime(),

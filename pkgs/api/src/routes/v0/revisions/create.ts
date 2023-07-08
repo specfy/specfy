@@ -30,6 +30,7 @@ function BodyVal(req: FastifyRequest) {
     .superRefine((val, ctx) => {
       const orgId = val.orgId;
       const projectId = val.projectId;
+
       for (let index = 0; index < val.blobs.length; index++) {
         const blob = val.blobs[index];
 

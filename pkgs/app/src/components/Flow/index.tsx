@@ -94,6 +94,7 @@ export const Flow: React.FC<{
         }
         find.deletable = !readonly;
         find.updatable = !readonly;
+
         return find;
       });
     });
@@ -113,6 +114,8 @@ export const Flow: React.FC<{
         find.deletable = !readonly;
         find.draggable = !readonly;
         find.connectable = !readonly;
+        find.focusable = true;
+        find.selectable = true;
 
         return find;
       });

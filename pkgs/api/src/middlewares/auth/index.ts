@@ -14,6 +14,7 @@ import { registerLocal } from './local.js';
 
 const ALLOW_GUEST = [
   '/*',
+  '/0/',
   '/favicon.ico',
   '/0/auth/github',
   '/0/auth/github/cb',

@@ -56,9 +56,7 @@ describe('GET /components', () => {
         techId: null,
         type: 'service',
         typeId: null,
-        updatedAt: expect.toBeIsoDate(),
         blobId: expect.any(String),
-        createdAt: expect.toBeIsoDate(),
         description: { content: [], type: 'doc' },
         display: {
           size: { height: 32, width: 100 },
@@ -68,6 +66,11 @@ describe('GET /components', () => {
         edges: [],
         show: true,
         tags: [],
+        source: null,
+        sourceName: null,
+        sourcePath: [],
+        updatedAt: expect.toBeIsoDate(),
+        createdAt: expect.toBeIsoDate(),
       },
     ]);
   });

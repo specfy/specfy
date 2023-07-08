@@ -11,6 +11,7 @@ import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import { v1, createProject } from '../../../models/index.js';
+import { recomputeOrgGraph } from '../../../models/revisions/helpers.js';
 import type { PostProject } from '../../../types/api/index.js';
 
 function ProjectVal(req: FastifyRequest) {
@@ -19,7 +20,6 @@ function ProjectVal(req: FastifyRequest) {
       name: schemaProject.shape.name,
       slug: schemaProject.shape.slug,
       orgId: schemaOrgId,
-      display: schemaProject.shape.display,
     })
     .strict()
     .superRefine(valPermissions(req))
@@ -84,12 +84,12 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
               content: [],
             },
             links: [],
-            display: data.display as any,
-            edges: [],
           },
           user: req.user!,
           tx,
         });
+
+        await recomputeOrgGraph({ orgId: data.orgId, tx });
 
         return tmp;
       });

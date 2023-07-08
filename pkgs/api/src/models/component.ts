@@ -38,6 +38,8 @@ export async function createComponent({
   tx: Prisma.TransactionClient;
 }) {
   const body: Prisma.ComponentsUncheckedCreateInput = {
+    show: true,
+    tags: [],
     ...data,
     slug: slugify(data.name),
     id: data.id || nanoid(),

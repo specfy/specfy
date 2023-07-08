@@ -4,6 +4,7 @@ import { nanoid } from '../../common/id.js';
 import { slugify } from '../../common/string.js';
 import { prisma } from '../../db/index.js';
 import { createComponent } from '../../models/index.js';
+import { recomputeOrgGraph } from '../../models/revisions/helpers.js';
 import type { DBComponent } from '../../types/db/index.js';
 
 export type ResSeedComponents = {
@@ -20,7 +21,19 @@ export type ResSeedComponents = {
  */
 export async function seedComponents(
   { o1 }: { o1: Orgs },
-  { p1, p3 }: { p1: Projects; p3: Projects },
+  {
+    pDash,
+    pAnalytics,
+    pFront,
+    pAPI,
+    pBilling,
+  }: {
+    pDash: Projects;
+    pAnalytics: Projects;
+    pFront: Projects;
+    pAPI: Projects;
+    pBilling: Projects;
+  },
   users: Users[]
 ): Promise<ResSeedComponents> {
   const res = await prisma.$transaction(
@@ -32,7 +45,7 @@ export async function seedComponents(
           name: 'GCP',
           type: 'hosting',
           orgId: o1.id,
-          projectId: p1.id,
+          projectId: pAnalytics.id,
           techId: 'gcp',
           description: { type: 'doc', content: [] },
           display: {
@@ -54,7 +67,7 @@ export async function seedComponents(
           name: 'GCE',
           type: 'hosting',
           orgId: o1.id,
-          projectId: p1.id,
+          projectId: pAnalytics.id,
           techId: 'gce',
           description: { type: 'doc', content: [] },
           display: {
@@ -76,7 +89,7 @@ export async function seedComponents(
           name: 'Kubernetes',
           type: 'hosting',
           orgId: o1.id,
-          projectId: p1.id,
+          projectId: pAnalytics.id,
           techId: 'kubernetes',
           description: { type: 'doc', content: [] },
           display: {
@@ -98,7 +111,7 @@ export async function seedComponents(
           name: 'Postgresql',
           type: 'db',
           orgId: o1.id,
-          projectId: p1.id,
+          projectId: pAnalytics.id,
           techId: 'postgresql',
           description: { type: 'doc', content: [] },
           display: {
@@ -120,7 +133,7 @@ export async function seedComponents(
           name: 'Datadog',
           type: 'sass',
           orgId: o1.id,
-          projectId: p1.id,
+          projectId: pAnalytics.id,
           techId: 'datadog',
           description: { type: 'doc', content: [] },
           display: {
@@ -142,7 +155,7 @@ export async function seedComponents(
           name: 'Sentry',
           type: 'sass',
           orgId: o1.id,
-          projectId: p1.id,
+          projectId: pAnalytics.id,
           techId: 'sentry',
           description: { type: 'doc', content: [] },
           display: {
@@ -164,7 +177,7 @@ export async function seedComponents(
           name: 'Algolia',
           type: 'sass',
           orgId: o1.id,
-          projectId: p1.id,
+          projectId: pAnalytics.id,
           techId: 'algolia',
           description: { type: 'doc', content: [] },
           display: {
@@ -186,7 +199,7 @@ export async function seedComponents(
           name: 'Redis',
           type: 'db',
           orgId: o1.id,
-          projectId: p1.id,
+          projectId: pAnalytics.id,
           techId: 'redis',
           description: { type: 'doc', content: [] },
           display: {
@@ -208,7 +221,7 @@ export async function seedComponents(
           name: 'Elasticsearch',
           type: 'db',
           orgId: o1.id,
-          projectId: p1.id,
+          projectId: pAnalytics.id,
           techId: 'elasticsearch',
           description: { type: 'doc', content: [] },
           display: {
@@ -230,7 +243,7 @@ export async function seedComponents(
           name: 'RabbitMQ',
           type: 'messaging',
           orgId: o1.id,
-          projectId: p1.id,
+          projectId: pAnalytics.id,
           techId: 'rabbitmq',
           description: { type: 'doc', content: [] },
           display: {
@@ -246,18 +259,40 @@ export async function seedComponents(
         tx,
       });
 
-      const analytics = await createComponent({
+      const dashboard = await createComponent({
         data: {
           id: 'jZDC3Lsc11',
-          name: 'Dashboard',
+          name: pDash.name,
           type: 'project',
-          typeId: p3.id,
+          typeId: pDash.id,
           orgId: o1.id,
-          projectId: p1.id,
+          projectId: pAnalytics.id,
           description: { type: 'doc', content: [] },
           display: {
             zIndex: 3,
             pos: { x: 450, y: 90 },
+            size: { width: 100, height: 32 },
+          },
+          inComponent: null,
+          edges: [],
+          techs: [],
+        },
+        user: users[4],
+        tx,
+      });
+
+      const billing = await createComponent({
+        data: {
+          id: 'jZDC3Lsc99',
+          name: pBilling.name,
+          type: 'project',
+          typeId: pBilling.id,
+          orgId: o1.id,
+          projectId: pAnalytics.id,
+          description: { type: 'doc', content: [] },
+          display: {
+            zIndex: 3,
+            pos: { x: 450, y: 40 },
             size: { width: 100, height: 32 },
           },
           inComponent: null,
@@ -274,7 +309,7 @@ export async function seedComponents(
           name: 'API',
           type: 'service',
           orgId: o1.id,
-          projectId: p1.id,
+          projectId: pAnalytics.id,
           description: {
             type: 'doc',
             content: [
@@ -314,9 +349,17 @@ export async function seedComponents(
               portTarget: 'tr',
             },
             {
-              target: analytics.id,
+              target: dashboard.id,
               read: true,
               write: false,
+              vertices: [],
+              portSource: 'sr',
+              portTarget: 'tl',
+            },
+            {
+              target: billing.id,
+              read: false,
+              write: true,
               vertices: [],
               portSource: 'sr',
               portTarget: 'tl',
@@ -369,7 +412,7 @@ export async function seedComponents(
           name: 'Frontend',
           type: 'service',
           orgId: o1.id,
-          projectId: p1.id,
+          projectId: pAnalytics.id,
           description: { type: 'doc', content: [] },
           display: {
             zIndex: 4,
@@ -415,7 +458,7 @@ export async function seedComponents(
           name: 'Manager',
           type: 'service',
           orgId: o1.id,
-          projectId: p1.id,
+          projectId: pAnalytics.id,
           description: {
             type: 'doc',
             content: [
@@ -499,7 +542,7 @@ export async function seedComponents(
           name: 'Worker',
           type: 'service',
           orgId: o1.id,
-          projectId: p1.id,
+          projectId: pAnalytics.id,
           description: {
             type: 'doc',
             content: [
@@ -569,6 +612,171 @@ export async function seedComponents(
         tx,
       });
 
+      // --- Others to create some edes in Org graph
+      const display = getBlobComponent(o1, pDash).display;
+      // Dashboard
+      const p01 = await createComponent({
+        data: {
+          ...(getBlobComponent(o1, pDash) as any),
+          type: 'project',
+          name: pAPI.name,
+          typeId: pAPI.id,
+        },
+        user: users[4],
+        tx,
+      });
+      const p02 = await createComponent({
+        data: {
+          ...(getBlobComponent(o1, pDash) as any),
+          type: 'project',
+          name: pBilling.name,
+          typeId: pBilling.id,
+          display: {
+            ...display,
+            pos: { x: 270, y: 20 },
+          },
+        },
+        user: users[4],
+        tx,
+      });
+      await createComponent({
+        data: {
+          ...(getBlobComponent(o1, pDash) as any),
+          name: 'api',
+          display: {
+            ...display,
+            pos: { x: 140, y: 65 },
+          },
+          edges: [
+            {
+              target: p01.id,
+              read: true,
+              write: false,
+              vertices: [],
+              portSource: 'sl',
+              portTarget: 'tr',
+            },
+            {
+              target: p02.id,
+              read: true,
+              write: false,
+              vertices: [
+                { x: -5, y: 60 },
+                { x: -5, y: 110 },
+              ],
+              portSource: 'sl',
+              portTarget: 'tl',
+            },
+          ],
+        },
+        user: users[4],
+        tx,
+      });
+
+      // Frontend
+      const p31 = await createComponent({
+        data: {
+          ...(getBlobComponent(o1, pFront) as any),
+          type: 'project',
+          name: pDash.name,
+          typeId: pDash.id,
+        },
+        user: users[4],
+        tx,
+      });
+      await createComponent({
+        data: {
+          ...(getBlobComponent(o1, pFront) as any),
+          name: 'api',
+          display: {
+            ...display,
+            pos: { x: 165, y: 35 },
+          },
+          edges: [
+            {
+              target: p31.id,
+              read: true,
+              write: true,
+              vertices: [],
+              portSource: 'sl',
+              portTarget: 'tr',
+            },
+          ],
+        },
+        user: users[4],
+        tx,
+      });
+
+      // Billing
+      const p51 = await createComponent({
+        data: {
+          ...(getBlobComponent(o1, pBilling) as any),
+          name: 'api',
+          display: {
+            ...display,
+            pos: { x: 165, y: 35 },
+          },
+        },
+        user: users[4],
+        tx,
+      });
+      await createComponent({
+        data: {
+          ...(getBlobComponent(o1, pBilling) as any),
+          type: 'project',
+          name: pAnalytics.name,
+          typeId: pAnalytics.id,
+          edges: [
+            {
+              target: p51.id,
+              read: false,
+              write: true,
+              vertices: [],
+              portSource: 'sl',
+              portTarget: 'tr',
+            },
+          ],
+        },
+        user: users[4],
+        tx,
+      });
+
+      // API
+      const pAPI1 = await createComponent({
+        data: {
+          ...(getBlobComponent(o1, pAPI) as any),
+          type: 'project',
+          name: pAnalytics.name,
+          typeId: pAnalytics.id,
+        },
+        user: users[4],
+        tx,
+      });
+      await createComponent({
+        data: {
+          ...(getBlobComponent(o1, pAPI) as any),
+          name: 'API',
+          display: {
+            ...display,
+            pos: { x: 165, y: 35 },
+          },
+          edges: [
+            {
+              target: pAPI1.id,
+              read: true,
+              write: true,
+              vertices: [],
+              portSource: 'sl',
+              portTarget: 'tr',
+            },
+          ],
+        },
+        user: users[4],
+        tx,
+      });
+
+      await recomputeOrgGraph({ orgId: o1.id, tx });
+
       return { api, gcp, worker, manager, pg, gce };
     },
     { timeout: 20000 }
@@ -619,8 +827,8 @@ export function getBlobComponent(org: Orgs, project: Projects): DBComponent {
     description: { type: 'doc', content: [] },
     display: {
       zIndex: 1,
-      pos: { x: -80, y: 20 },
-      size: { width: 490, height: 370 },
+      pos: { x: 0, y: 0 },
+      size: { width: 100, height: 32 },
     },
     techs: [],
     inComponent: null,

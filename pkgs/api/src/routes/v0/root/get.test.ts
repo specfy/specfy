@@ -3,10 +3,7 @@ import { beforeAll, afterAll, describe, it, expect } from 'vitest';
 import type { TestSetup } from '../../../test/each.js';
 import { setupBeforeAll, setupAfterAll } from '../../../test/each.js';
 import { isSuccess } from '../../../test/fetch.js';
-import {
-  shouldBeProtected,
-  shouldNotAllowQueryParams,
-} from '../../../test/helpers.js';
+import { shouldNotAllowQueryParams } from '../../../test/helpers.js';
 import { seedSimpleUser } from '../../../test/seed/seed.js';
 
 let t: TestSetup;
@@ -19,9 +16,9 @@ afterAll(async () => {
 });
 
 describe('GET /me', () => {
-  it('should be protected', async () => {
+  it('should not be protected', async () => {
     const res = await t.fetch.get('/0/');
-    await shouldBeProtected(res);
+    isSuccess(res);
   });
 
   it('should not allow query params', async () => {
