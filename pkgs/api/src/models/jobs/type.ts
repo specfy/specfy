@@ -1,4 +1,4 @@
-import type { Prisma } from '@prisma/client';
+import type { Jobs, Prisma } from '@prisma/client';
 
 export interface JobDeployConfig {
   url: string;
@@ -27,3 +27,12 @@ export type JobCode =
   | 'project_not_installed'
   | 'success'
   | 'unknown';
+
+export interface JobMark {
+  status: Jobs['status'];
+  code: JobCode;
+  reason: string;
+  err?: string | undefined;
+}
+
+export type JobReason = JobMark;

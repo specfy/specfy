@@ -6,9 +6,10 @@ import buildApp from '../app.js';
 import { ApiClient } from './fetch.js';
 
 export type TestSetup = {
-  app: FastifyInstance;
-  fetch: ApiClient;
+  app?: FastifyInstance;
+  fetch?: ApiClient;
 };
+
 export async function setupBeforeAll(): Promise<TestSetup> {
   const app = fastify();
   await buildApp(app, {});

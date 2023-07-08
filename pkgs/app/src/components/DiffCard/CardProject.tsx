@@ -13,7 +13,7 @@ export const DiffCardProject: React.FC<{
 }> = ({ diff }) => {
   return (
     <div className={cls.content}>
-      <h2>{diff.blob.current!.name}</h2>
+      <h2>{diff.blob.current.name}</h2>
       {diff.diffs.map((d) => {
         if (d.key === 'name') {
           return null;

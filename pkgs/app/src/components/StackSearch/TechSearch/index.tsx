@@ -104,7 +104,7 @@ export const TechSearch: React.FC<{
 
       const index = filtered.findIndex((f) => f.key === currGroup);
       const tmp = filtered[index];
-      if (focus < tmp!.items.length - 1) {
+      if (focus < tmp.items.length - 1) {
         // Still in the same group
         setFocus(focus + 1);
         return;

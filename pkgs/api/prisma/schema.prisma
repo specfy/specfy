@@ -3,6 +3,10 @@ generator client {
   previewFeatures = ["fullTextSearch", "clientExtensions", "orderByNulls"]
 }
 
+generator json {
+  provider = "prisma-json-types-generator"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
@@ -32,6 +36,7 @@ model Activities {
   projectId        String?  @db.VarChar(15)
   userId           String   @db.VarChar(15)
   activityGroupId  String?  @db.VarChar(15)
+  /// [PrismaActivitiesAction]
   action           String   @db.VarChar(25)
   targetUserId     String?  @db.VarChar(15)
   targetRevisionId String?  @db.VarChar(15)
@@ -48,23 +53,12 @@ model Activities {
   @@index([orgId, projectId, activityGroupId], map: "idx_activities_projectid_group")
 }
 
-model Keys {
-  id        String   @id @db.VarChar(32)
-  userId    String   @db.VarChar(15)
-  orgId     String   @db.VarChar(36)
-  projectId String?  @db.VarChar(15)
-  createdAt DateTime @default(now()) @db.Timestamp(3)
-
-  Org     Orgs?     @relation(fields: [orgId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  Project Projects? @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  User    Users     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-}
-
 model Blobs {
   id        String   @id @db.VarChar(15)
   type      String   @db.VarChar(36)
   typeId    String   @db.VarChar(36)
   parentId  String?  @db.VarChar(15)
+  /// [PrismaBlobsCurrent]
   current   Json?    @db.Json
   created   Boolean  @default(false)
   deleted   Boolean  @default(false)
@@ -86,6 +80,7 @@ model Comments {
   projectId  String   @db.VarChar(15)
   revisionId String   @db.VarChar(15)
   userId     String   @db.VarChar(15)
+  /// [PrismaProseMirror]
   content    Json     @db.Json
   createdAt  DateTime @default(now()) @db.Timestamp(3)
   updatedAt  DateTime @updatedAt
@@ -104,19 +99,26 @@ model Components {
   projectId   String  @db.VarChar(15)
   blobId      String? @db.VarChar(15)
   techId      String? @db.VarChar(50)
+  /// [PrismaComponentsType]
   type        String  @db.VarChar(25)
   typeId      String? @db.VarChar(36)
   name        String  @db.VarChar(100)
   slug        String  @db.VarChar(100)
+  /// [PrismaProseMirror]
   description Json    @db.Json
+  /// [PrismaComponentsTechs]
   techs       Json    @default("[]") @db.Json
+  /// [PrismaComponentsDisplay]
   display     Json    @db.Json
   inComponent String? @db.VarChar(15)
+  /// [PrismaComponentsEdges]
   edges       Json    @db.Json
   source      String? @db.VarChar(15)
   sourceName  String? @db.VarChar(100)
+  /// [PrismaComponentsSourcePath]
   sourcePath  Json?   @db.Json
   show        Boolean @default(true)
+  /// [PrismaComponentsTags]
   tags        Json    @default("[]") @db.Json
 
   createdAt DateTime @default(now()) @db.Timestamp(3)
@@ -135,11 +137,13 @@ model Documents {
   source     String?  @db.VarChar(15)
   sourcePath String?  @db.VarChar(255)
   parentId   String?  @db.VarChar(15)
+  /// [PrismaDocumentsType]
   type       String   @db.VarChar(25)
   typeId     Int?
   name       String   @db.VarChar(100)
   slug       String   @db.VarChar(100)
   tldr       String   @db.VarChar(500)
+  /// [PrismaProseMirror]
   content    Json     @db.Json
   locked     Boolean  @default(false)
   createdAt  DateTime @default(now()) @db.Timestamp(3)
@@ -155,6 +159,34 @@ model Documents {
 
   @@unique([orgId, type, typeId], map: "idx_document_orgid_type_typeid")
   @@index([orgId, projectId], map: "idx_document_orgid_projectid")
+}
+
+model Flows {
+  id        String   @id @db.VarChar(15)
+  orgId     String   @db.VarChar(36)
+  /// [PrismaFlowsFlow]
+  flow      Json     @db.Json
+  createdAt DateTime @default(now()) @db.Timestamp(3)
+  updatedAt DateTime @updatedAt
+
+  Org Orgs @relation(fields: [orgId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model Invitations {
+  id        String   @id @db.VarChar(15)
+  token     String   @db.VarChar(100)
+  userId    String   @db.VarChar(15)
+  orgId     String   @db.VarChar(36)
+  email     String   @db.VarChar(250)
+  /// [PrismaPermsRole]
+  role      String   @db.VarChar(25)
+  createdAt DateTime @default(now()) @db.Timestamp(3)
+  expiresAt DateTime @db.Timestamp(3)
+
+  Org  Orgs  @relation(fields: [orgId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  User Users @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([orgId, expiresAt], map: "idx_invitations_orgid_expiresat")
 }
 
 enum JobsType {
@@ -179,7 +211,9 @@ model Jobs {
 
   type   JobsType
   status JobsStatus
+  /// [PrismaJobsConfig]
   config Json       @db.Json
+  /// [PrismaJobsReason]
   reason Json?      @db.Json
 
   createdAt  DateTime  @default(now()) @db.Timestamp(3)
@@ -201,6 +235,18 @@ model Jobs {
   // SELECT WHERE orgId, projectId, status ORDER BY createdAt
   // e.g: Pending job
   @@index([orgId, projectId, status, createdAt], map: "idx_jobs_display_bystatus")
+}
+
+model Keys {
+  id        String   @id @db.VarChar(32)
+  userId    String   @db.VarChar(15)
+  orgId     String   @db.VarChar(36)
+  projectId String?  @db.VarChar(15)
+  createdAt DateTime @default(now()) @db.Timestamp(3)
+
+  Org     Orgs?     @relation(fields: [orgId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  Project Projects? @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  User    Users     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model Orgs {
@@ -234,6 +280,7 @@ model Perms {
   orgId     String   @db.VarChar(36)
   projectId String?  @db.VarChar(15)
   userId    String   @db.VarChar(15)
+  /// [PrismaPermsRole]
   role      String   @db.VarChar(25)
   createdAt DateTime @default(now()) @db.Timestamp(3)
   updatedAt DateTime @updatedAt
@@ -248,9 +295,11 @@ model Perms {
 model Policies {
   id        String   @id @db.VarChar(15)
   orgId     String   @db.VarChar(36)
+  /// [PrismaPoliciesType]
   type      String   @db.VarChar(36)
   name      String?  @db.VarChar(250)
   tech      String?  @db.VarChar(36)
+  /// [PrismaProseMirror]
   content   Json     @db.Json
   createdAt DateTime @default(now()) @db.Timestamp(3)
   updatedAt DateTime @updatedAt
@@ -268,7 +317,9 @@ model Projects {
   blobId           String?  @db.VarChar(15)
   name             String   @db.VarChar(36)
   slug             String   @db.VarChar(100)
+  /// [PrismaProseMirror]
   description      Json     @db.Json
+  /// [PrismaProjectsLinks]
   links            Json     @db.Json
   githubRepository String?
   createdAt        DateTime @default(now()) @db.Timestamp(3)
@@ -312,9 +363,12 @@ model Revisions {
   orgId       String    @db.VarChar(36)
   projectId   String    @db.VarChar(15)
   name        String    @db.VarChar(75)
+  /// [PrismaProseMirror]
   description Json      @db.Json
+  /// [PrismaRevisionsBlobs]
   blobs       Json      @db.Json
   locked      Boolean   @default(false)
+  /// [PrismaRevisionsStatus]
   status      String    @default("draft") @db.VarChar(25)
   merged      Boolean   @default(false)
   createdAt   DateTime  @default(now()) @db.Timestamp(3)
@@ -331,22 +385,13 @@ model Revisions {
   Activities   Activities[]
 }
 
-model Flows {
-  id        String   @id @db.VarChar(15)
-  orgId     String   @db.VarChar(36)
-  flow      Json     @db.Json
-  createdAt DateTime @default(now()) @db.Timestamp(3)
-  updatedAt DateTime @updatedAt
-
-  Org Orgs @relation(fields: [orgId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-}
-
 model TypeHasUsers {
   id         BigInt   @id @default(autoincrement())
   documentId String?  @db.VarChar(15)
   revisionId String?  @db.VarChar(15)
   policyId   String?  @db.VarChar(15)
   userId     String   @db.VarChar(15)
+  /// [PrismaTypeHasUsersRole]
   role       String   @db.VarChar(25)
   createdAt  DateTime @default(now()) @db.Timestamp(3)
 
@@ -380,20 +425,4 @@ model Users {
   Keys         Keys[]
   Invitations  Invitations[]
   Jobs         Jobs[]
-}
-
-model Invitations {
-  id        String   @id @db.VarChar(15)
-  token     String   @db.VarChar(100)
-  userId    String   @db.VarChar(15)
-  orgId     String   @db.VarChar(36)
-  email     String   @db.VarChar(250)
-  role      String   @db.VarChar(25)
-  createdAt DateTime @default(now()) @db.Timestamp(3)
-  expiresAt DateTime @db.Timestamp(3)
-
-  Org  Orgs  @relation(fields: [orgId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  User Users @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-
-  @@index([orgId, expiresAt], map: "idx_invitations_orgid_expiresat")
 }

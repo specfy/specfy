@@ -67,7 +67,7 @@ function getTexts(node: BlocksWithText): string {
 
 function getMarks(nodes: FindTextNode[]): Marks[] {
   const map = new Map<string, Marks>();
-  for (const item of nodes!) {
+  for (const item of nodes) {
     if (item.node.marks && item.node.marks.length > 0) {
       for (const mark of item.node.marks) {
         map.set(mark.type, mark);

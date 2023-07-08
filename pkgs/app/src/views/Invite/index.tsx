@@ -51,7 +51,7 @@ export const Invite: React.FC = () => {
     return null;
   }
 
-  const inv = res.data!.data;
+  const inv = res.data.data;
 
   const onAccept = async () => {
     const del = await acceptInvitations({

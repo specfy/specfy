@@ -17,10 +17,7 @@ import {
   createGithubActivity,
   createJobDeploy,
 } from '../../../models/index.js';
-import type {
-  ApiProject,
-  PostLinkToGithubProject,
-} from '../../../types/api/index.js';
+import type { PostLinkToGithubProject } from '../../../types/api/index.js';
 
 const repoRegex = /^[a-zA-Z0-9_.-]+\/[a-zA-Z0-9_.-]+$/;
 function QueryVal(req: FastifyRequest) {
@@ -85,7 +82,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           throw new Error('cant find project');
         }
 
-        let links = proj.links as unknown as ApiProject['links'];
+        let links = proj.links;
         if (body.repository) {
           links.push({
             title: 'Github',
@@ -97,7 +94,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
         await tx.projects.update({
           data: {
-            links: links as any,
+            links,
             githubRepository: body.repository,
           },
           where: {

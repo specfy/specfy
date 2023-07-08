@@ -6,7 +6,6 @@ import { toApiUser } from '../../../common/formatters/user.js';
 import { getInvitation } from '../../../middlewares/getInvitation.js';
 import { noBody } from '../../../middlewares/noBody.js';
 import type { GetInvitation } from '../../../types/api/index.js';
-import type { PermType } from '../../../types/db/index.js';
 
 const fn: FastifyPluginCallback = async (fastify, _, done) => {
   fastify.get<GetInvitation>(
@@ -26,7 +25,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           email: inv.email,
           userId: inv.userId,
           orgId: inv.orgId,
-          role: inv.role as PermType,
+          role: inv.role,
           by: toApiUser(inv.User),
           org: toApiOrg(inv.Org),
           createdAt: inv.createdAt,

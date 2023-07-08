@@ -15,7 +15,7 @@ export async function createJobDeploy(
   const job = await tx.jobs.create({
     data: {
       id: nanoid(),
-      config: config as any,
+      config,
       orgId,
       projectId,
 

@@ -17,7 +17,7 @@ export function toApiActivity(act: ActivitiesList): ApiActivity {
     user: toApiUser(act.User),
 
     activityGroupId: act.activityGroupId,
-    action: act.action as ApiActivity['action'],
+    action: act.action,
 
     // TODO: reup this
     // targetUser: act.targetUser ? toApiUser(act.targetUser) : undefined,

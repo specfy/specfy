@@ -165,10 +165,10 @@ describe('POST /revisions/upload -- Documents', () => {
 
     const one = resBlobs.json.data[0] as ApiBlobCreateDocument;
     const two = resBlobs.json.data[1] as ApiBlobCreateDocument;
-    expect(one.current!.parentId).toBeNull();
-    expect(one.current!.sourcePath).toBe('/folder/');
-    expect(two.current!.parentId).toBe(one.current!.id);
-    expect(two.current!.sourcePath).toBe('/folder/foobar.md');
+    expect(one.current.parentId).toBeNull();
+    expect(one.current.sourcePath).toBe('/folder/');
+    expect(two.current.parentId).toBe(one.current.id);
+    expect(two.current.sourcePath).toBe('/folder/foobar.md');
   });
 
   it('should use index.md as intermediate folder if present', async () => {
@@ -214,10 +214,10 @@ describe('POST /revisions/upload -- Documents', () => {
 
     const one = resBlobs.json.data[0] as ApiBlobCreateDocument;
     const two = resBlobs.json.data[1] as ApiBlobCreateDocument;
-    expect(one.current!.parentId).toBeNull();
-    expect(one.current!.sourcePath).toBe('/folder/');
-    expect(two.current!.parentId).toBe(one.current!.id);
-    expect(two.current!.sourcePath).toBe('/folder/foobar.md');
+    expect(one.current.parentId).toBeNull();
+    expect(one.current.sourcePath).toBe('/folder/');
+    expect(two.current.parentId).toBe(one.current.id);
+    expect(two.current.sourcePath).toBe('/folder/foobar.md');
   });
 
   it('should not use index.md if folder is specified', async () => {
@@ -263,10 +263,10 @@ describe('POST /revisions/upload -- Documents', () => {
 
     const one = resBlobs.json.data[0] as ApiBlobCreateDocument;
     const two = resBlobs.json.data[1] as ApiBlobCreateDocument;
-    expect(one.current!.parentId).toBeNull();
-    expect(one.current!.sourcePath).toBe('/folder/');
-    expect(two.current!.parentId).toBe(one.current!.id);
-    expect(two.current!.sourcePath).toBe('/folder/index.md');
+    expect(one.current.parentId).toBeNull();
+    expect(one.current.sourcePath).toBe('/folder/');
+    expect(two.current.parentId).toBe(one.current.id);
+    expect(two.current.sourcePath).toBe('/folder/index.md');
   });
 });
 

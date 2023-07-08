@@ -202,7 +202,7 @@ export const SettingsTeam: React.FC<{
                 />
               );
             })}
-            {options.length <= 0 && <Empty search={search!} />}
+            {options.length <= 0 && <Empty search={search} />}
           </div>
         )}
       </Card>

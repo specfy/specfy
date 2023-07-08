@@ -1,11 +1,7 @@
 import { z } from 'zod';
 
-// import type { DBDocument } from '../../types/db/index.js';
-
 import { schemaId, schemaOrgId, schemaSlug } from './common.js';
 import { schemaProseMirror } from './prosemirror.js';
-
-// const allowed: Array<DBDocument['type']> = ['pb', 'rfc']; // TODO: enforce union
 
 export const schemaDocument = z
   .object({
@@ -14,9 +10,6 @@ export const schemaDocument = z
     projectId: schemaId,
     blobId: schemaId.nullable(),
 
-    // type: z.string().refine((val) => {
-    //   return allowed.includes(val as any);
-    // }),
     type: z.enum(['pb', 'rfc', 'doc']),
     typeId: z.number().positive().nullable(),
 

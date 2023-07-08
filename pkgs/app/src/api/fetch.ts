@@ -49,5 +49,5 @@ export async function fetchApi<
     json = (await res.json()) as T;
   }
 
-  return { res, json: json! || {} };
+  return { res, json: json || {} };
 }

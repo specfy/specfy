@@ -1,4 +1,4 @@
-import type { ApiRevision, BlockLevelZero } from '../../types/api/index.js';
+import type { ApiRevision } from '../../types/api/index.js';
 import type {
   RevisionWithProject,
   TypeHasUsersWithUser,
@@ -16,11 +16,11 @@ export function toApiRevision(
     orgId: rev.orgId,
     projectId: rev.projectId,
     name: rev.name,
-    description: rev.description as unknown as BlockLevelZero,
+    description: rev.description,
     locked: rev.locked,
     merged: rev.merged,
-    status: rev.status as ApiRevision['status'],
-    blobs: rev.blobs as string[],
+    status: rev.status,
+    blobs: rev.blobs,
     authors: users
       .filter((user) => user.role === 'author')
       .map((u) => toApiUser(u.User)),

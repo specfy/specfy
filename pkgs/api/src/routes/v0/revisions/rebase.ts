@@ -15,7 +15,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       const rev = req.revision!;
 
       await prisma.$transaction(async (tx) => {
-        const list = await findAllBlobsWithParent(rev.blobs as string[], tx);
+        const list = await findAllBlobsWithParent(rev.blobs, tx);
 
         for (const item of list) {
           // If we can find the prev that means it's up to date

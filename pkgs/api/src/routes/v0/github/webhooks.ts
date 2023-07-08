@@ -39,7 +39,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         return forbidden(res);
       }
 
-      webhookService.receive({
+      void webhookService.receive({
         id,
         name: name as any,
         payload: payload as any,

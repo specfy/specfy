@@ -1,6 +1,7 @@
 import type { Orgs, Projects, Users } from '@prisma/client';
 
 import { prisma } from '../../db/index.js';
+import { JobReason } from '../../models/jobs/helpers.js';
 
 export async function seedJobs(
   users: Users[],
@@ -46,7 +47,11 @@ export async function seedJobs(
       projectId: pAnalytics.id,
       type: 'deploy',
       status: 'failed',
-      reason: 'Specfy App is not installed on the Github organization',
+      reason: {
+        status: 'failed',
+        code: 'org_not_installed',
+        reason: JobReason.org_not_installed,
+      },
       config: { url: 'specfy/sync' },
       userId: users[0].id,
       createdAt: new Date(),

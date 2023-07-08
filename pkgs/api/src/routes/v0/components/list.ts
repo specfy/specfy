@@ -5,12 +5,7 @@ import { validationError } from '../../../common/errors.js';
 import { schemaId, schemaOrgId } from '../../../common/validators/common.js';
 import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
-import type {
-  ApiComponent,
-  BlockLevelZero,
-  ListComponents,
-  Pagination,
-} from '../../../types/api/index.js';
+import type { ListComponents, Pagination } from '../../../types/api/index.js';
 
 function QueryVal(req: FastifyRequest) {
   return z
@@ -57,22 +52,22 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           blobId: p.blobId,
           techId: p.techId,
 
-          type: p.type as ApiComponent['type'],
+          type: p.type,
           typeId: p.typeId,
           name: p.name,
           slug: p.slug,
-          description: p.description as unknown as BlockLevelZero,
-          techs: p.techs as ApiComponent['techs'],
-          display: p.display as unknown as ApiComponent['display'],
+          description: p.description,
+          techs: p.techs,
+          display: p.display,
           inComponent: p.inComponent,
-          edges: p.edges as unknown as ApiComponent['edges'],
+          edges: p.edges,
 
           show: p.show,
-          tags: p.tags as ApiComponent['tags'],
+          tags: p.tags,
 
           source: p.source,
           sourceName: p.sourceName,
-          sourcePath: (p.sourcePath as string[]) || [],
+          sourcePath: p.sourcePath,
 
           createdAt: p.createdAt.toISOString(),
           updatedAt: p.updatedAt.toISOString(),

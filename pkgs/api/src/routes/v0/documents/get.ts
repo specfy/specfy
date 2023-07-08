@@ -6,7 +6,7 @@ import { toApiUser } from '../../../common/formatters/user.js';
 import { schemaId, schemaOrgId } from '../../../common/validators/index.js';
 import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
-import type { ApiDocument, GetDocument } from '../../../types/api/index.js';
+import type { GetDocument } from '../../../types/api/index.js';
 
 function QueryVal(req: FastifyRequest) {
   return z
@@ -53,7 +53,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         projectId: p.projectId,
         blobId: p.blobId,
 
-        type: p.type as ApiDocument['type'],
+        type: p.type,
         typeId: p.typeId,
 
         source: p.source,
@@ -63,7 +63,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         name: p.name,
         slug: p.slug,
         tldr: p.tldr,
-        content: p.content as any,
+        content: p.content,
         authors: users
           .filter((user) => user.role === 'author')
           .map((u) => toApiUser(u.User)),

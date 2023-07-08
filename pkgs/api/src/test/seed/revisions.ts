@@ -14,9 +14,7 @@ import type {
   ApiRevision,
   BlockBanner,
   BlockLevelOne,
-  BlockLevelZero,
 } from '../../types/api/index.js';
-import type { FlowEdge } from '../../types/db/index.js';
 
 import type { ResSeedComponents } from './components.js';
 
@@ -123,7 +121,7 @@ export async function seedRevisions(
     });
 
     // Update component
-    const edges = components.api.edges as unknown as FlowEdge[];
+    const edges = components.api.edges;
     edges.shift(); // removes redis
     edges.shift(); // removes pg
     edges.push({
@@ -135,7 +133,7 @@ export async function seedRevisions(
       portTarget: 'tl',
     });
     edges[0].write = false;
-    const techs = ['golang', ...(components.api.techs as string[])];
+    const techs = ['golang', ...components.api.techs];
     techs.pop();
 
     const blob3 = await createComponentBlob({
@@ -163,7 +161,7 @@ export async function seedRevisions(
           pos: { x: 190, y: 110 },
           size: { width: 140, height: 42 },
         },
-        edges: edges as any,
+        edges,
       },
       tx,
     });
@@ -211,7 +209,7 @@ export async function seedRevisions(
 
     // --Update RFC
     const content: BlockLevelOne[] = JSON.parse(
-      JSON.stringify((rfcs.d1.content as unknown as BlockLevelZero).content)
+      JSON.stringify(rfcs.d1.content.content)
     );
 
     // Modify title

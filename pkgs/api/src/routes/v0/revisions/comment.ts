@@ -44,7 +44,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           data: {
             ...where,
             id: nanoid(),
-            content: data.content as Record<string, any>,
+            content: data.content,
           },
         });
 

@@ -55,9 +55,7 @@ export async function hasProjectComponentChanges(
   // If a component that was modified has an edge to a project component we need to recompute
   return (
     components.find((component) => {
-      return (component.edges as unknown as DBComponent['edges']).find((edge) =>
-        componentIds.includes(edge.target)
-      );
+      return component.edges.find((edge) => componentIds.includes(edge.target));
     }) !== undefined
   );
 }
@@ -84,12 +82,10 @@ export async function recomputeOrgGraph({
   // Instead of selecting all components from the org because that could be huge (if this project work someday)
   const relations: Record<string, Record<string, ProjectRelation['to']>> = {};
   for (const project of projects) {
-    const components = (await tx.components.findMany({
+    const components = await tx.components.findMany({
       where: { projectId: project.id },
       select: { id: true, edges: true, type: true, typeId: true },
-    })) as unknown as Array<
-      Pick<DBComponent, 'edges' | 'id' | 'type' | 'typeId'>
-    >;
+    });
 
     const rels = computeRelationsToProjects({
       components,
@@ -116,7 +112,7 @@ export async function recomputeOrgGraph({
     where: { orgId: orgId },
   });
 
-  const oldFlow = snapshot?.flow as ComputedFlow | null;
+  const oldFlow = snapshot?.flow;
   const newFlow: ComputedFlow = {
     edges: [],
     nodes: [],
@@ -177,11 +173,11 @@ export async function recomputeOrgGraph({
   if (snapshot) {
     await tx.flows.update({
       where: { id: snapshot.id },
-      data: { flow: newFlow as any },
+      data: { flow: newFlow },
     });
   } else {
     await tx.flows.create({
-      data: { id: nanoid(), orgId, flow: newFlow as any },
+      data: { id: nanoid(), orgId, flow: newFlow },
     });
   }
 }

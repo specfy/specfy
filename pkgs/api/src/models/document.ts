@@ -30,7 +30,7 @@ export async function createDocumentBlob({
   return await tx.blobs.create({
     data: {
       id: nanoid(),
-      parentId: blob?.blobId || null,
+      parentId: blob.blobId || null,
       type: 'document',
       typeId: blob.id,
       current: data?.deleted ? Prisma.DbNull : (blob as any),

@@ -50,7 +50,7 @@ export const ComponentDetails: React.FC<{
 
   useEffect(() => {
     const list = new Map<string, ApiComponent>();
-    for (const c of components!) {
+    for (const c of components) {
       list.set(c.id, c);
     }
 
@@ -87,7 +87,7 @@ export const ComponentDetails: React.FC<{
 
     // Find contains
     // First find direct ascendant then register all childs
-    setContains(getAllChilds(components!, component.id));
+    setContains(getAllChilds(components, component.id));
 
     for (const edge of component.edges) {
       if (edge.read && edge.write) {
@@ -99,7 +99,7 @@ export const ComponentDetails: React.FC<{
       }
     }
 
-    for (const other of components!) {
+    for (const other of components) {
       if (other.id === component.id) {
         continue;
       }
@@ -252,7 +252,7 @@ export const ComponentDetails: React.FC<{
 
   const handleInComponent = (values: string[] | string) => {
     if (typeof values === 'string') {
-      const childs = getAllChilds(components!, component.id);
+      const childs = getAllChilds(components, component.id);
       for (const child of childs) {
         if (child.inComponent === component.id) {
           storeComponents.updateField(child.id, 'inComponent', null);

@@ -93,7 +93,7 @@ export const ContentSidebar: React.FC<{
           continue;
         }
 
-        const before = doc.name.substring(0, match.index!);
+        const before = doc.name.substring(0, match.index);
         const center = doc.name.substring(
           match.index!,
           match.index! + search.length

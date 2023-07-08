@@ -79,7 +79,7 @@ describe('GET /revisions/:revision_id/blobs', () => {
     expect(res.statusCode).toBe(200);
     expect(res.json.data).toStrictEqual([
       {
-        id: (revision.blobs as string[])[0],
+        id: revision.blobs[0],
         parentId: null,
         type: 'component',
         typeId: blob.id,
@@ -122,7 +122,7 @@ describe('GET /revisions/:revision_id/blobs', () => {
     expect(res.statusCode).toBe(200);
     expect(res.json.data).toStrictEqual([
       {
-        id: (revision.blobs as string[])[0],
+        id: revision.blobs[0],
         parentId: component.blobId,
         type: 'component',
         typeId: blob.id,

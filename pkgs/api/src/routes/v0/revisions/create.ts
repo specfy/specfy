@@ -13,7 +13,7 @@ import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import { createBlobs, createRevisionActivity } from '../../../models/index.js';
-import type { ApiBlobCreate, PostRevision } from '../../../types/api/index.js';
+import type { PostRevision } from '../../../types/api/index.js';
 
 function BodyVal(req: FastifyRequest) {
   return z
@@ -92,7 +92,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       const data: PostRevision['Body'] = val.data;
 
       const rev = await prisma.$transaction(async (tx) => {
-        const ids = await createBlobs(data.blobs as ApiBlobCreate[], tx);
+        const ids = await createBlobs(data.blobs, tx);
 
         const revision = await tx.revisions.create({
           data: {
@@ -100,7 +100,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
             orgId: data.orgId,
             projectId: data.projectId,
             name: data.name,
-            description: data.description as any,
+            description: data.description,
             status: data.draft ? 'draft' : 'waiting',
             merged: false,
             blobs: ids,

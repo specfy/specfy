@@ -9,7 +9,7 @@ export function acronymize(name: string): string {
 
   const firstLetters = clean.match(/\b(\w)/g)?.join('');
   if (firstLetters && firstLetters.length > 1) {
-    return firstLetters!.slice(0, 2).toUpperCase();
+    return firstLetters.slice(0, 2).toUpperCase();
   }
 
   // Rollback to something generic if nothing is left

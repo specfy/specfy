@@ -699,7 +699,7 @@ export async function seedRFC(
         typeId: 4,
         name: 'API Global Specification',
         tldr: 'Donec eget porttitor nisi. Proin ac augue bibendum, posuere dui vel, volutpat ligula.',
-        content: docRfc4Json as any,
+        content: docRfc4Json,
         locked: false,
       },
     });

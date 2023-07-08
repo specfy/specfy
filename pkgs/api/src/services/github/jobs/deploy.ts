@@ -7,10 +7,7 @@ import { Octokit } from 'octokit';
 import { dirname, env, isProd } from '../../../common/env.js';
 import { nanoid } from '../../../common/id.js';
 import { prisma } from '../../../db/index.js';
-import type {
-  JobDeployConfig,
-  JobWithOrgProject,
-} from '../../../models/jobs/type.js';
+import type { JobWithOrgProject } from '../../../models/jobs/type.js';
 import { Job } from '../Job.js';
 import { github } from '../app.js';
 
@@ -60,7 +57,7 @@ export class JobDeploy extends Job {
   }
 
   async process(job: JobWithOrgProject): Promise<void> {
-    const config = job.config as unknown as JobDeployConfig;
+    const config = job.config;
 
     if (!job.Org || !job.Project) {
       this.mark('failed', 'missing_dependencies');

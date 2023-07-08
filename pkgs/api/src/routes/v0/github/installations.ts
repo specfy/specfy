@@ -33,8 +33,8 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           id: inst.id,
           name:
             'login' in inst.account ? inst.account.login : inst.account.name,
-          avatarUrl: inst.account.avatar_url!,
-          url: inst.account.html_url!,
+          avatarUrl: inst.account.avatar_url,
+          url: inst.account.html_url,
         });
       }
 

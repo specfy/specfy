@@ -8,7 +8,6 @@ import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import type { PutPerm } from '../../../types/api/index.js';
-import type { DBPerm } from '../../../types/db/index.js';
 import { PermType } from '../../../types/db/index.js';
 
 function QueryVal(req: FastifyRequest) {
@@ -63,12 +62,12 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
       if (exist) {
         await tx.perms.update({
-          data: { role: data.role as DBPerm['role'] },
+          data: { role: data.role },
           where: { id: exist.id },
         });
       } else {
         await tx.perms.create({
-          data: { id: nanoid(), ...body, role: data.role as DBPerm['role'] },
+          data: { id: nanoid(), ...body, role: data.role },
         });
       }
     });

@@ -77,15 +77,15 @@ export function uploadedDocumentsToDB(
 
   // ---- Find blobs parents to construct hierarchy
   blobs.forEach((blob) => {
-    const folder = path.join(path.dirname(blob.current!.sourcePath!), '/');
+    const folder = path.join(path.dirname(blob.current.sourcePath!), '/');
     const parent = blobs.find(
-      (b) => b.current!.sourcePath === folder && b.typeId !== blob.typeId
+      (b) => b.current.sourcePath === folder && b.typeId !== blob.typeId
     );
     if (!parent) {
       return;
     }
 
-    blob.current!.parentId = parent!.current!.id;
+    blob.current.parentId = parent.current.id;
   });
 
   // ---- Find Deleted blobs

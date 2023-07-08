@@ -17,7 +17,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       const outdatedBlobs: string[] = [];
 
       const checks = await prisma.$transaction(async (tx) => {
-        const list = await findAllBlobsWithParent(rev.blobs as string[], tx);
+        const list = await findAllBlobsWithParent(rev.blobs, tx);
         for (const item of list) {
           // If we can't find the prev, that means it's not longer in the main branch
           if (!item.parent && item.blob.parentId) {

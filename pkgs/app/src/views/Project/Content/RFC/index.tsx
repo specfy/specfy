@@ -46,7 +46,7 @@ export const RFC: React.FC<{
   const onClickMenu: MenuClickEventHandler = (e) => {
     if (e.key === 'delete') {
       edit.enable(true);
-      documentsStore.remove(doc!.id);
+      documentsStore.remove(doc.id);
       message.success('Document deleted');
       navigate(`/${proj.orgId}/${proj.slug}/content`);
     }

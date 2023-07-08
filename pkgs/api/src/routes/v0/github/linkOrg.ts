@@ -73,7 +73,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       };
       if (body.installationId) {
         const install = await github.octokit.rest.apps.getInstallation({
-          installation_id: body.installationId!,
+          installation_id: body.installationId,
         });
         if (install.data.account?.avatar_url) {
           data.avatarUrl = install.data.account.avatar_url;

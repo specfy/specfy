@@ -69,7 +69,7 @@ export const OrgPolicies: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   params,
 }) => {
   const res = useListPolicies({
-    org_id: params.org_id!,
+    org_id: params.org_id,
   });
   const [selected, setSelected] = useState<ApiPolicy>();
 

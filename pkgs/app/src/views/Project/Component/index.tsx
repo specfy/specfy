@@ -130,7 +130,7 @@ export const ComponentView: React.FC<{
                   placeholder="Title..."
                   onChange={(e) => {
                     storeComponents.updateField(
-                      comp!.id,
+                      comp.id,
                       'name',
                       e.target.value
                     );
@@ -168,7 +168,7 @@ export const ComponentView: React.FC<{
                   key={comp.id}
                   doc={comp.description}
                   onUpdate={(doc) => {
-                    storeComponents.updateField(comp!.id, 'description', doc);
+                    storeComponents.updateField(comp.id, 'description', doc);
                   }}
                 />
               )}

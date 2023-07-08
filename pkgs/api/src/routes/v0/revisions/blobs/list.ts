@@ -15,7 +15,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
       const rev = req.revision!;
       const list = await prisma.blobs.findMany({
         where: {
-          id: { in: rev.blobs as string[] },
+          id: { in: rev.blobs },
         },
         include: { Previous: true },
         orderBy: { createdAt: 'asc' },

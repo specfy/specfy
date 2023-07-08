@@ -54,7 +54,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           return;
         }
 
-        if ((rev.blobs as string[]).length === 0) {
+        if (rev.blobs.length === 0) {
           reason = 'empty';
           return;
         }
@@ -77,11 +77,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
         });
 
         // Merge all blobs
-        const list = await findAllBlobsWithParent(
-          rev.blobs as string[],
-          tx,
-          true
-        );
+        const list = await findAllBlobsWithParent(rev.blobs, tx, true);
         for (const item of list) {
           // If we can't find the prev, that means it's not longer in the main branch
           if (!item.parent && item.blob.parentId) {
@@ -166,7 +162,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
             const created = await tx.components.create({
               data: {
-                ...(blob.current! as unknown as Prisma.ComponentsUncheckedCreateInput),
+                ...(blob.current as unknown as Prisma.ComponentsUncheckedCreateInput),
                 blobId: blob.id,
               },
             });
@@ -215,7 +211,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
 
             const created = await tx.documents.create({
               data: {
-                ...(blob.current! as unknown as Prisma.DocumentsUncheckedCreateInput),
+                ...(blob.current as unknown as Prisma.DocumentsUncheckedCreateInput),
                 blobId: blob.id,
               },
             });

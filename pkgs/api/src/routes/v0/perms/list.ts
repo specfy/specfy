@@ -7,7 +7,7 @@ import { toApiUser } from '../../../common/formatters/user.js';
 import { schemaId, schemaOrgId } from '../../../common/validators/common.js';
 import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
-import type { ApiPerm, ListPerms } from '../../../types/api/index.js';
+import type { ListPerms } from '../../../types/api/index.js';
 
 function QueryVal(req: FastifyRequest) {
   return z
@@ -50,7 +50,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           orgId: p.orgId,
           projectId: p.projectId,
           user: toApiUser(p.User!),
-          role: p.role as ApiPerm['role'],
+          role: p.role,
           createdAt: p.createdAt.toISOString(),
           updatedAt: p.updatedAt.toISOString(),
         };

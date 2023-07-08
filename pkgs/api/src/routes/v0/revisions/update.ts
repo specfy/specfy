@@ -151,7 +151,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
             updates.name = body.name;
           }
           if (body.description) {
-            updates.description = body.description as any;
+            updates.description = body.description;
           }
           if (typeof body.locked === 'boolean') {
             updates.locked = body.locked;
@@ -174,8 +174,6 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
             action = 'locked';
           }
 
-          // rev.set(body as ApiRevision);
-          // await rev.save({ transaction });
           await tx.revisions.update({ data: updates, where: { id: rev.id } });
 
           if (action === 'closed') {

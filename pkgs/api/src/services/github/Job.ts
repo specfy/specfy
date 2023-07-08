@@ -4,18 +4,12 @@ import { consola } from 'consola';
 
 import { prisma } from '../../db/index.js';
 import { JobReason } from '../../models/jobs/helpers.js';
-import type { JobCode } from '../../models/jobs/type.js';
+import type { JobMark } from '../../models/jobs/type.js';
 
-export interface Mark {
-  status: Jobs['status'];
-  code: JobCode;
-  reason: string;
-  err?: string | undefined;
-}
 export abstract class Job {
   l: ConsolaInstance;
   #job: Jobs;
-  #mark?: Mark;
+  #mark?: JobMark;
 
   constructor(job: Jobs) {
     this.#job = job;
@@ -48,8 +42,8 @@ export abstract class Job {
       data: {
         status: this.#mark?.status || 'failed',
         reason: this.#mark
-          ? (this.#mark as any)
-          : { code: 'unknown', reason: JobReason.unknown },
+          ? this.#mark
+          : { status: 'failed', code: 'unknown', reason: JobReason.unknown },
         updatedAt: new Date(),
         finishedAt: new Date(),
       },
@@ -60,7 +54,7 @@ export abstract class Job {
     l.info('Job end', { id: this.#job.id, mark: this.#mark });
   }
 
-  mark(status: Mark['status'], code: Mark['code'], err?: unknown) {
+  mark(status: JobMark['status'], code: JobMark['code'], err?: unknown) {
     let _err: string | undefined;
     if (err) {
       this.l.error(err);

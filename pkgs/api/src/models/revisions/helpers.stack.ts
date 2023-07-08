@@ -140,7 +140,7 @@ export function uploadedStackToDB(
 
   // ---- Find ids that has changed
   blobs.forEach((blob) => {
-    if (!blob.current) {
+    if (blob.deleted) {
       return;
     }
 
@@ -168,7 +168,7 @@ export function uploadedStackToDB(
     const prev = prevs.find((p) => p.id === blob.typeId)!;
     if (
       JSON.stringify(pick(prev, changing)) ===
-      JSON.stringify(pick(blob.current!, changing))
+      JSON.stringify(pick(blob.current, changing))
     ) {
       unchanged.push(prev.id);
     }
@@ -188,7 +188,7 @@ function getTitle(title: string): string {
 }
 
 export function autoLayout(stack: StackToDB) {
-  const nodes = stack.blobs.map((b) => b.current!);
+  const nodes = stack.blobs.map((b) => b.current);
   const layout = computeLayout(componentsToFlow(nodes));
 
   for (const node of nodes) {

@@ -145,7 +145,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
               orgId: data.orgId,
               projectId: data.projectId,
               name: data.name,
-              description: data.description as any,
+              description: data.description,
               status: 'approved',
               merged: false,
               blobs: blobsIds,

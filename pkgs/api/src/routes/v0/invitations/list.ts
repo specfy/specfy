@@ -7,7 +7,6 @@ import { schemaOrgId } from '../../../common/validators/common.js';
 import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
 import type { ListInvitations } from '../../../types/api/index.js';
-import type { PermType } from '../../../types/db/index.js';
 
 function QueryVal(req: FastifyRequest) {
   return z
@@ -46,7 +45,7 @@ const fn: FastifyPluginCallback = async (fastify, _, done) => {
           orgId: inv.orgId,
           email: inv.email,
           userId: inv.userId,
-          role: inv.role as PermType,
+          role: inv.role,
           createdAt: inv.createdAt,
           expiresAt: inv.expiresAt,
         };
