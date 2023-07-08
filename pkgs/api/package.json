@@ -57,7 +57,7 @@
     "zod": "3.21.4"
   },
   "devDependencies": {
-    "@types/node": "18.11.18",
+    "@types/node": "18.16.19",
     "@types/passport-github2": "1.2.5",
     "@types/passport-http-bearer": "1.0.37",
     "@types/passport-jwt": "3.0.8",
