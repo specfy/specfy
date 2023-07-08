@@ -4,5 +4,7 @@
   ],
   "baseBranches": [
     "chore/renovateBaseBranch"
-  ]
+  ],
+  "prHourlyLimit": 20,
+  "prConcurrentLimit": 50
 }
