@@ -47,7 +47,9 @@ export interface EdgeData {
   write: boolean;
 }
 
+export type ComputedNode = Node<NodeData>;
+export type ComputedEdge = Edge<EdgeData>;
 export interface ComputedFlow {
-  edges: Array<Edge<EdgeData>>;
-  nodes: Array<Node<NodeData>>;
+  nodes: ComputedNode[];
+  edges: ComputedEdge[];
 }

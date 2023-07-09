@@ -1,13 +1,13 @@
 import type { Projects } from '@prisma/client';
-import type { Edge, Node } from 'reactflow';
 
 import type { FlowItemDisplay } from '../../types/db/flow.js';
 
 import type {
   ComponentForFlow,
+  ComputedEdge,
   ComputedFlow,
+  ComputedNode,
   EdgeData,
-  NodeData,
 } from './types.js';
 
 export function createNodeFromProject(
@@ -27,8 +27,8 @@ export function createNodeFromProject(
 
 export function createNode(
   component: Omit<ComponentForFlow, 'edges'>
-): Node<NodeData> {
-  const node: Node<NodeData> = {
+): ComputedNode {
+  const node: ComputedNode = {
     id: component.id,
     type: 'custom',
     data: {
@@ -54,7 +54,7 @@ export function createNode(
 }
 
 export function getEdgeMarkers(data: EdgeData) {
-  const edge: Partial<Edge> = {};
+  const edge: Partial<ComputedEdge> = {};
   // if (data.read) {
   //   edge.markerStart = {
   //     type: 'arrowclosed' as any,
@@ -73,8 +73,8 @@ export function getEdgeMarkers(data: EdgeData) {
 }
 
 export function componentsToFlow(components: ComponentForFlow[]): ComputedFlow {
-  const edges: Array<Edge<EdgeData>> = [];
-  const nodes: Array<Node<NodeData>> = [];
+  const edges: ComputedEdge[] = [];
+  const nodes: ComputedNode[] = [];
 
   // Create all hosting nodes
   // We need to add them first because React Flow is not reordering
@@ -111,7 +111,7 @@ export function componentsToFlow(components: ComponentForFlow[]): ComputedFlow {
 
   for (const comp of components) {
     for (const edge of comp.edges) {
-      const item: Edge<EdgeData> = {
+      const item: ComputedEdge = {
         id: `${comp.id}->${edge.target}`,
         source: comp.id,
         target: edge.target,

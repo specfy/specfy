@@ -7,6 +7,7 @@ import { Helmet } from 'react-helmet-async';
 import { useGetFlow } from '../../../api/flows';
 import { titleSuffix } from '../../../common/string';
 import { Flow, FlowWrapper } from '../../../components/Flow';
+import { FlowDetails } from '../../../components/Flow/Details';
 import { Toolbar } from '../../../components/Flow/Toolbar';
 import type { RouteOrg } from '../../../types/routes';
 
@@ -42,6 +43,12 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
               downlightOther={false}
               keepHighlightOnSelect={true}
               readonly={true}
+            />
+
+            <FlowDetails
+              readonly={true}
+              flow={flow}
+              onRelationChange={() => null}
             />
             <Toolbar position="top" visible>
               {!true && <Toolbar.Readonly />}

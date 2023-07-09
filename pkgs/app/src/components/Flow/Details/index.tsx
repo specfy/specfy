@@ -1,184 +1,25 @@
-// import { Badge, Button, Tooltip } from 'antd';
-// import type { ApiComponent, ApiProject } from '@specfy/api/src/types/api';
-// import classnames from 'classnames';
-// import { useCallback, useState } from 'react';
-
-// import { useComponentsStore, useStagingStore } from '../../../common/store';
-// import { useEdit } from '../../../hooks/useEdit';
-
-import type { EdgeData } from '@specfy/api/src/common/flow/types';
-import type { ApiComponent, ApiProject } from '@specfy/api/src/types/api';
-import {
-  IconArrowNarrowLeft,
-  IconArrowNarrowRight,
-  IconArrowsExchange,
-  IconTrash,
-} from '@tabler/icons-react';
-import { Button, Tag, Tooltip } from 'antd';
-import classNames from 'classnames';
+import type { ComputedFlow, EdgeData } from '@specfy/api/src/common/flow/types';
+import { IconTrash } from '@tabler/icons-react';
+import { Button, Tag } from 'antd';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'react-use';
-import type { Edge, Node } from 'reactflow';
+import type { Node } from 'reactflow';
 import { useEdges, useNodes, useOnSelectionChange } from 'reactflow';
 
 import { PreviewNode } from '../CustomNode';
 import type { OnNodesChangeSuper } from '../helpers';
 
+import type { Relation } from './EdgeRelation';
+import { EdgeRelation } from './EdgeRelation';
 import cls from './index.module.scss';
 
 /**
  * TODO: hamburger menu
  * TODO: revert should revert all sub node?
- * TODO: group/ungroup
- * TODO: load edited in other pages
- *
- * TODO: https://github.com/antvis/X6/issues/3327
  */
-// export const GraphEdit: React.FC<{
-//   proj: ApiProject;
-//   comps: ApiComponent[];
-// }> = ({ comps }) => {
-//   const storeComponents = useComponentsStore();
-//   const storeStaging = useStagingStore(); // TODO: it is probably triggering too many render
-
-//   // Edit mode
-//   const edit = useEdit();
-//   const isEditing = edit.isEditing;
-
-//   // UI
-//   const [selected, setSelected] = useState<ApiComponent>();
-//   const [info, setInfo] = useState<ApiComponent['display']>();
-//   const [changed, setChanged] = useState<ApiComponent[]>([]);
-//   const [hide, setHide] = useState<boolean>(true);
-
-//   // This function is outside because it requires "edit" ref
-//   const updateEdge = useCallback(
-//     (e: Cell.EventArgs['change:*']) => {
-//       //     if (!e.cell.isEdge()) {
-//       //       return;
-//       //     }
-//       //     const id = e.cell.getSourceCellId()!;
-//       //     const targetId = e.cell.getTargetCellId()!;
-//       //     // Find related component
-//       //     const comp = comps.find((c) => c.id === id);
-//       //     if (!comp) {
-//       //       return;
-//       //     }
-//       //     // Because objects are read only we copy, modify and apply the modification in zustand again
-//       //     const edges: ApiComponent['edges'] = JSON.parse(
-//       //       JSON.stringify(comp.edges)
-//       //     );
-//       //     const edge = edges.find((ed) => ed.to === targetId);
-//       //     if (!edge) {
-//       //       return;
-//       //     }
-//       //     edge.vertices = e.current;
-//       //     storeComponents.updateField(comp.id, 'edges', edges);
-//       //     return;
-//     },
-//     [edit]
-//   );
-
-//   // // Debounce change registry
-//   // useDebounce(
-//   //   () => {
-//   //     const json = g.getRef()?.toJSON();
-//   //     if (!json) {
-//   //       return;
-//   //     }
-
-//   //     const tmp: ApiComponent[] = [];
-//   //     for (const cell of Object.values(json.cells)) {
-//   //       const comp = comps.find((c) => c.id === cell.id);
-//   //       if (!comp) {
-//   //         continue;
-//   //       }
-
-//   //       const has = storeStaging.diffs.find(
-//   //         (clean) =>
-//   //           clean.blob.type === 'component' && clean.blob.typeId === comp.id
-//   //       );
-//   //       if (!has || has.blob.deleted) {
-//   //         continue;
-//   //       }
-
-//   //       tmp.push(comp);
-//   //     }
-
-//   //     setChanged(tmp);
-//   //   },
-//   //   200,
-//   //   [storeStaging]
-//   // );
-
-//   const handleRevert = (id: string) => {
-//     //   const graph = g.getRef();
-//     //   if (!graph) {
-//     //     return;
-//     //   }
-//     //   const find = storeStaging.diffs.find((comp) => comp.blob.typeId === id);
-//     //   const cell = graph.getCellById(id);
-//     //   if (!find || !cell) {
-//     //     return;
-//     //   }
-//     //   if (cell.isNode()) {
-//     //     graph.batchUpdate(() => {
-//     //       if (!find.blob.previous || find.blob.type === 'document') {
-//     //         return;
-//     //       }
-//     //       cell.setSize({ ...find.blob.previous.display.size });
-//     //       cell.setPosition({ ...find.blob.previous.display.pos });
-//     //       const outgoing = graph.getOutgoingEdges(cell);
-//     //       if (!outgoing) {
-//     //         return;
-//     //       }
-//     //       outgoing.forEach((edge) => {
-//     //         if (!find.blob.previous || find.blob.type === 'document') {
-//     //           return;
-//     //         }
-//     //         const old = find.blob.previous.edges.find(
-//     //           (prev) => prev.to === edge.getTargetCellId()
-//     //         );
-//     //         edge.setVertices(old!.vertices);
-//     //       });
-//     //     });
-//     //   }
-//   };
 
 //   return (
 //     <div className={cls.composition}>
-//       {selected && info && (
-//         <div className={cls.block}>
-//           <div className={cls.title}>{selected.name}</div>
-//           <div className={cls.inside}>
-//             <div className={cls.xy}>
-//               <div>x: {info.pos.x.toFixed(0)}</div>
-//               <div>y: {info.pos.y.toFixed(0)}</div>
-//             </div>
-//             <div>
-//               <div className={cls.label}>Size</div>
-//               <div className={cls.inputs}>
-//                 Width
-//                 <input
-//                   className={cls.input}
-//                   value={info.size.width}
-//                   onChange={(e) => {
-//                     handleSize('width', e.target.value);
-//                   }}
-//                 />
-//                 Height
-//                 <input
-//                   className={cls.input}
-//                   value={info.size.height}
-//                   onChange={(e) => {
-//                     handleSize('height', e.target.value);
-//                   }}
-//                 />
-//               </div>
-//             </div>
-//           </div>
-//         </div>
-//       )}
 
 //       {isEditing && changed.length > 0 && (
 //         <div className={cls.block}>
@@ -218,12 +59,6 @@ import cls from './index.module.scss';
 //   );
 // };
 
-export interface Relation {
-  edge: Edge<EdgeData>;
-  source?: ApiComponent;
-  target?: ApiComponent;
-}
-
 // /**
 //  * Sort read/write, then read, then write
 //  * Then alphabetically.
@@ -249,79 +84,16 @@ export interface Relation {
 //   return 0;
 // }
 
-const EdgeRelation: React.FC<
-  Relation & {
-    readonly: boolean;
-    onDirection: (rel: Relation) => void;
-  }
-> = ({ edge, source, target, readonly, onDirection }) => {
-  const onClick: React.ComponentProps<typeof Button>['onClick'] = (e) => {
-    e.preventDefault();
-    if (readonly) {
-      return;
-    }
-
-    onDirection({ edge, source, target });
-  };
-
-  return (
-    <tr className={classNames(cls.relation)}>
-      <td className={cls.source}>{source?.name}</td>
-
-      <td className={cls.to}>
-        <Tooltip title="Click to change direction" placement="left">
-          {edge.data!.write && edge.data!.read && (
-            <Button
-              className={cls.direction}
-              size="small"
-              type="ghost"
-              onClick={onClick}
-            >
-              <IconArrowsExchange />
-              <span className={cls.english}>read/write</span>
-            </Button>
-          )}
-          {!edge.data!.write && edge.data!.read && (
-            <Button
-              className={cls.direction}
-              size="small"
-              type="ghost"
-              onClick={onClick}
-            >
-              <IconArrowNarrowLeft />
-              <span className={cls.english}>read</span>
-            </Button>
-          )}
-          {edge.data!.write && !edge.data!.read && (
-            <Button
-              className={cls.direction}
-              size="small"
-              type="ghost"
-              onClick={onClick}
-            >
-              <IconArrowNarrowRight />
-              <span className={cls.english}>write</span>
-            </Button>
-          )}
-        </Tooltip>
-      </td>
-      {target && <td className={cls.target}>{target.name}</td>}
-    </tr>
-  );
-};
-
 export const FlowDetails: React.FC<{
-  proj: ApiProject;
-  components: ApiComponent[];
+  flow: ComputedFlow;
   readonly: boolean;
   // Events
   onNodesChange?: OnNodesChangeSuper;
   onRelationChange: (type: 'delete' | 'update', relation: Relation) => void;
-}> = ({ components, readonly, onNodesChange, onRelationChange }) => {
+}> = ({ flow, readonly, onNodesChange, onRelationChange }) => {
   const nodes = useNodes();
   const edges = useEdges<EdgeData>();
 
-  const [component, setComponent] = useState<ApiComponent | null>(null);
   const [currNode, setNode] = useState<Node | null>(null);
   const [from, setFrom] = useState<Relation[]>([]);
   const [to, setTo] = useState<Relation[]>([]);
@@ -338,11 +110,9 @@ export const FlowDetails: React.FC<{
       // Nodes
       if (nds.length === 0 || nds.length > 1) {
         // No selection or more than one
-        setComponent(null);
         setNode(null);
       } else {
         // Only one
-        setComponent(components.find((c) => c.id === nds[0].id)!);
         setNode(nodes.find((n) => n.id === nds[0].id)!);
       }
 
@@ -352,8 +122,8 @@ export const FlowDetails: React.FC<{
         setRelation(null);
       } else {
         const edge = eds[0];
-        const source = components.find((c) => c.id === edge.source);
-        const target = components.find((c) => c.id === edge.target);
+        const source = flow.nodes.find((c) => c.id === edge.source);
+        const target = flow.nodes.find((c) => c.id === edge.target);
 
         setRelation({ edge, source, target });
       }
@@ -364,21 +134,19 @@ export const FlowDetails: React.FC<{
   // Useful if we resize or delete it in the flow
   useDebounce(
     () => {
-      if (!component) {
+      if (!currNode) {
         return;
       }
 
-      const find = nodes.find((n) => n.id === component.id);
+      const find = nodes.find((n) => n.id === currNode.id);
       if (!find) {
         return;
       }
 
-      const comp = components.find((c) => c.id === component.id) || null;
-      setComponent(comp);
       setNode(find);
     },
     16,
-    [nodes, component]
+    [nodes, currNode]
   );
 
   // List relations of a node
@@ -395,14 +163,14 @@ export const FlowDetails: React.FC<{
       if (edge.source === currNode.id) {
         f.push({
           edge,
-          source: component!,
-          target: components.find((c) => c.id === edge.target)!,
+          source: currNode!,
+          target: flow.nodes.find((c) => c.id === edge.target)!,
         });
       } else if (edge.target === currNode.id) {
         t.push({
           edge,
-          source: components.find((c) => c.id === edge.source)!,
-          target: component!,
+          source: flow.nodes.find((c) => c.id === edge.source)!,
+          target: currNode!,
         });
       }
     }
@@ -412,12 +180,12 @@ export const FlowDetails: React.FC<{
   }, [currNode]);
 
   const parent = useMemo(() => {
-    if (!component?.inComponent) {
+    if (!currNode?.parentNode) {
       return null;
     }
 
-    return components.find((c) => c.id === component.inComponent);
-  }, [component]);
+    return flow.nodes.find((c) => c.id === currNode.parentNode);
+  }, [currNode]);
 
   const onRelationDirection = useCallback(
     (rel: Relation) => {
@@ -449,11 +217,11 @@ export const FlowDetails: React.FC<{
 
   return (
     <div className={cls.composition}>
-      {component && currNode && (
+      {currNode && (
         <>
           <div className={cls.block}>
             <div className={cls.title}>
-              {component.type === 'hosting' ? 'Hosting' : 'Component'}
+              {currNode.data.type === 'hosting' ? 'Hosting' : 'Component'}
               {!readonly && (
                 <div>
                   <Button
@@ -481,7 +249,7 @@ export const FlowDetails: React.FC<{
                 <div className={cls.caption}>Parent</div>
                 {parent ? (
                   <Tag closable={!readonly} onClose={removeParent}>
-                    {parent.name}
+                    {parent.data.name}
                   </Tag>
                 ) : (
                   <div className={cls.noValue}>none</div>

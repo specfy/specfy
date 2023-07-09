@@ -168,7 +168,7 @@ export const ProjectFlow: React.FC<{
     return id;
   };
 
-  if (loading) {
+  if (loading || !flow) {
     return <LoadingOutlined />;
   }
 
@@ -176,42 +176,38 @@ export const ProjectFlow: React.FC<{
     <div className={cls.flow}>
       <Helmet title={`Flow - ${proj.name} ${titleSuffix}`} />
 
-      <FlowDetails
-        components={components!}
-        proj={proj}
-        readonly={!isEditing}
-        onNodesChange={onNodesChange}
-        onRelationChange={onRelationChange}
-      />
-      {flow && (
-        <>
-          <FlowWrapper>
-            <Flow
-              readonly={!isEditing}
-              flow={flow}
-              downlightOther={false}
-              keepHighlightOnSelect={true}
-              onNodesChange={onNodesChange}
-              onEdgesChange={onEdgesChange}
-              onConnect={onConnect}
-              onCreateNode={onCreateNode}
-            />
-            {isEditing && (
-              <Toolbar position="left" visible>
-                <Toolbar.AddComponents />
-              </Toolbar>
-            )}
-            <Toolbar position="top" visible>
-              {!isEditing && <Toolbar.Readonly />}
-              <Toolbar.Main />
-            </Toolbar>
-            <Toolbar position="bottom" visible>
-              <Toolbar.Zoom />
-              {/* <Toolbar.History /> */}
-            </Toolbar>
-          </FlowWrapper>
-        </>
-      )}
+      <FlowWrapper>
+        <Flow
+          readonly={!isEditing}
+          flow={flow}
+          downlightOther={false}
+          keepHighlightOnSelect={true}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          onConnect={onConnect}
+          onCreateNode={onCreateNode}
+        />
+
+        <FlowDetails
+          flow={flow}
+          readonly={!isEditing}
+          onNodesChange={onNodesChange}
+          onRelationChange={onRelationChange}
+        />
+        {isEditing && (
+          <Toolbar position="left" visible>
+            <Toolbar.AddComponents />
+          </Toolbar>
+        )}
+        <Toolbar position="top" visible>
+          {!isEditing && <Toolbar.Readonly />}
+          <Toolbar.Main />
+        </Toolbar>
+        <Toolbar position="bottom" visible>
+          <Toolbar.Zoom />
+          {/* <Toolbar.History /> */}
+        </Toolbar>
+      </FlowWrapper>
     </div>
   );
 };

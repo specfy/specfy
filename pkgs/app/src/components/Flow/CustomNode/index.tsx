@@ -1,9 +1,9 @@
 import * as Popover from '@radix-ui/react-popover';
-import type { NodeData } from '@specfy/api/src/common/flow/types';
+import type { ComputedNode, NodeData } from '@specfy/api/src/common/flow/types';
 import classNames from 'classnames';
 import type { ChangeEventHandler, KeyboardEventHandler } from 'react';
 import { useMemo, useEffect, memo, useRef, useState } from 'react';
-import type { Node, NodeProps, ReactFlowState } from 'reactflow';
+import type { NodeProps, ReactFlowState } from 'reactflow';
 import {
   useUpdateNodeInternals,
   useEdges,
@@ -214,7 +214,7 @@ const CustomNode: React.FC<NodeProps<NodeData>> = ({
 
 export const PreviewNode: React.FC<{
   node: Pick<
-    Node<NodeData>,
+    ComputedNode,
     'data' | 'height' | 'id' | 'positionAbsolute' | 'width'
   >;
   info?: boolean;
