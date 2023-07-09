@@ -11,7 +11,7 @@
     "test": "vitest"
   },
   "devDependencies": {
-    "@ant-design/icons": "5.0.1",
+    "@ant-design/icons": "5.1.4",
     "@icons-pack/react-simple-icons": "6.2.0",
     "@radix-ui/colors": "0.1.9",
     "@radix-ui/react-avatar": "1.0.3",
