@@ -10,8 +10,8 @@ import {
 import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
+import { recomputeOrgGraph } from '../../../models/flows/helpers.js';
 import { v1, createProject } from '../../../models/index.js';
-import { recomputeOrgGraph } from '../../../models/revisions/helpers.js';
 import type { PostProject } from '../../../types/api/index.js';
 
 function ProjectVal(req: FastifyRequest) {

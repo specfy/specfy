@@ -4,6 +4,7 @@ import type { PostAuthLocal, PostLogout } from './auth.js';
 import type { ListRevisionBlobs } from './blob.js';
 import type { ListComponents } from './components.js';
 import type { GetDocument, ListDocuments } from './documents.js';
+import type { GetFlow } from './flows.js';
 import type {
   ListGithubInstallations,
   ListGithubRepos,
@@ -55,6 +56,8 @@ export interface API {
 
   '/0/documents': { GET: ListDocuments };
   [key: `/0/documents/${string}`]: { GET: GetDocument };
+
+  [key: `/0/flows/${string}`]: { GET: GetFlow };
 
   '/0/keys': { GET: ListKeys };
 

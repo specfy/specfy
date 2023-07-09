@@ -4,6 +4,7 @@ import { acronymize, stringToColor } from '../common/avatar.js';
 import { nanoid } from '../common/id.js';
 import type { ActionOrg } from '../types/db/index.js';
 
+import { recomputeOrgGraph } from './flows/helpers.js';
 import { createKey } from './key.js';
 
 export async function createOrg(
@@ -20,6 +21,8 @@ export async function createOrg(
       color: colors.backgroundColor,
     },
   });
+
+  // Put the creator as owner
   await tx.perms.create({
     data: {
       id: nanoid(),
@@ -30,6 +33,7 @@ export async function createOrg(
     },
   });
 
+  // Log everything
   const activityGroupId = nanoid();
   await createOrgActivity({
     user,
@@ -39,9 +43,15 @@ export async function createOrg(
     activityGroupId,
   });
 
+  // Add a default api key
   await createKey({ tx, user, data: { orgId: tmp.id }, activityGroupId });
 
-  return tmp;
+  // Finally creating the associated empty flow
+  const flow = await recomputeOrgGraph({ orgId: tmp.id, tx });
+  return await tx.orgs.update({
+    data: { flowId: flow.id },
+    where: { id: tmp.id },
+  });
 }
 
 export async function createOrgActivity({

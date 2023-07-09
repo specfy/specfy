@@ -8,6 +8,7 @@ import { checkReviews } from '../../../common/revision/index.js';
 import { prisma } from '../../../db/index.js';
 import { getRevision } from '../../../middlewares/getRevision.js';
 import { noBody } from '../../../middlewares/noBody.js';
+import { recomputeOrgGraph } from '../../../models/flows/helpers.js';
 import {
   createComponentActivity,
   createDocumentActivity,
@@ -20,10 +21,7 @@ import {
   IGNORED_DOCUMENT_KEYS,
   IGNORED_PROJECT_KEYS,
 } from '../../../models/revisions/constants.js';
-import {
-  recomputeOrgGraph,
-  hasProjectComponentChanges,
-} from '../../../models/revisions/helpers.js';
+import { hasProjectComponentChanges } from '../../../models/revisions/helpers.js';
 import type {
   MergeRevision,
   MergeRevisionError,

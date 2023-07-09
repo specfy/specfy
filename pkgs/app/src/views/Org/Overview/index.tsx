@@ -23,7 +23,7 @@ export const OrgOverview: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
 }) => {
   const storeProjects = useProjectStore();
   const res = useListProjects({ org_id: params.org_id });
-  const resFlow = useGetFlow({ org_id: params.org_id });
+  const resFlow = useGetFlow({ org_id: params.org_id, flow_id: org.flowId });
   const [flow, setFlow] = useState<ComputedFlow>();
 
   useEffect(() => {

@@ -2,7 +2,7 @@ import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
 import { notFound, validationError } from '../../../common/errors.js';
-import { schemaOrgId } from '../../../common/validators/common.js';
+import { schemaId, schemaOrgId } from '../../../common/validators/common.js';
 import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
 import type { GetFlow } from '../../../types/api/index.js';
@@ -11,6 +11,7 @@ function QueryVal(req: FastifyRequest) {
   return z
     .object({
       org_id: schemaOrgId,
+      flow_id: schemaId,
     })
     .strict()
     .superRefine(valPermissions(req));
@@ -18,27 +19,29 @@ function QueryVal(req: FastifyRequest) {
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.get<GetFlow>('/', async function (req, res) {
-    const val = QueryVal(req).safeParse(req.query);
+    const val = QueryVal(req).safeParse({ ...req.query, ...req.params });
     if (!val.success) {
       return validationError(res, val.error);
     }
 
-    const query: GetFlow['Querystring'] = val.data;
-    const snap = await prisma.flows.findFirst({
+    const query: GetFlow['Params'] & GetFlow['Querystring'] = val.data;
+    const flow = await prisma.flows.findFirst({
       where: {
+        id: query.flow_id,
         orgId: query.org_id,
       },
     });
-    if (!snap) {
+
+    if (!flow) {
       return notFound(res);
     }
 
     return res.status(200).send({
       data: {
-        id: snap.id,
-        flow: snap.flow,
-        createdAt: snap.createdAt.toISOString(),
-        updatedAt: snap.createdAt.toISOString(),
+        id: flow.id,
+        flow: flow.flow,
+        createdAt: flow.createdAt.toISOString(),
+        updatedAt: flow.createdAt.toISOString(),
       },
     });
   });

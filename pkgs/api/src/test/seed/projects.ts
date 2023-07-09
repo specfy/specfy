@@ -3,8 +3,8 @@ import type { Orgs, Projects, Users } from '@prisma/client';
 import { nanoid } from '../../common/id.js';
 import { slugify } from '../../common/string.js';
 import { prisma } from '../../db/index.js';
+import { recomputeOrgGraph } from '../../models/flows/helpers.js';
 import { createProject } from '../../models/project.js';
-import { recomputeOrgGraph } from '../../models/revisions/helpers.js';
 import type { DBProject } from '../../types/db/index.js';
 
 /**
@@ -144,34 +144,37 @@ export async function seedProjects(users: Users[]): Promise<{
       await recomputeOrgGraph({
         orgId: 'company',
         updates: {
-          b01tMzwd5A: {
-            display: {
-              pos: { x: 20, y: 10 },
-              size: { width: 100, height: 32 },
+          edges: {},
+          nodes: {
+            b01tMzwd5A: {
+              display: {
+                pos: { x: 20, y: 10 },
+                size: { width: 100, height: 32 },
+              },
             },
-          },
-          b02tMzwd5A: {
-            display: {
-              pos: { x: 220, y: -20 },
-              size: { width: 100, height: 32 },
+            b02tMzwd5A: {
+              display: {
+                pos: { x: 220, y: -20 },
+                size: { width: 100, height: 32 },
+              },
             },
-          },
-          b03tMzwd5A: {
-            display: {
-              pos: { x: 200, y: 70 },
-              size: { width: 100, height: 32 },
+            b03tMzwd5A: {
+              display: {
+                pos: { x: 200, y: 70 },
+                size: { width: 100, height: 32 },
+              },
             },
-          },
-          b04tMzwd5A: {
-            display: {
-              pos: { x: -150, y: 40 },
-              size: { width: 100, height: 32 },
+            b04tMzwd5A: {
+              display: {
+                pos: { x: -150, y: 40 },
+                size: { width: 100, height: 32 },
+              },
             },
-          },
-          b05tMzwd5A: {
-            display: {
-              pos: { x: 0, y: 120 },
-              size: { width: 100, height: 32 },
+            b05tMzwd5A: {
+              display: {
+                pos: { x: 0, y: 120 },
+                size: { width: 100, height: 32 },
+              },
             },
           },
         },

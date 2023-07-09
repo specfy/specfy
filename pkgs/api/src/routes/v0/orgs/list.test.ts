@@ -53,6 +53,7 @@ describe('GET /orgs', () => {
     expect(res.json.data).toStrictEqual([
       {
         id: org.id,
+        flowId: expect.any(String),
         name: org.name,
         isPersonal: false,
         avatarUrl: null,
@@ -75,6 +76,7 @@ describe('GET /orgs', () => {
     expect(res1.json.data).toStrictEqual([
       {
         id: seed1.org.id,
+        flowId: expect.any(String),
         name: seed1.org.name,
         isPersonal: false,
         avatarUrl: null,
@@ -92,6 +94,7 @@ describe('GET /orgs', () => {
     expect(res2.json.data).toStrictEqual([
       {
         id: seed2.org.id,
+        flowId: expect.any(String),
         name: seed2.org.name,
         isPersonal: false,
         avatarUrl: null,

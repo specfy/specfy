@@ -53,6 +53,7 @@ describe('POST /orgs', () => {
     expect(res.statusCode).toBe(200);
     expect(res.json).toStrictEqual({
       id: id,
+      flowId: expect.any(String),
       name: `test ${id}`,
       isPersonal: false,
       avatarUrl: null,

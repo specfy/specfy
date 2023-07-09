@@ -1,5 +1,7 @@
 export interface DBOrg {
   id: string;
+  flowId: string;
+
   name: string;
   isPersonal: boolean;
   avatarUrl: string | null;

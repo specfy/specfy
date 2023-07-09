@@ -5,6 +5,7 @@ import type { ApiOrg } from '../../types/api/index.js';
 export function toApiOrg(org: Orgs): ApiOrg {
   return {
     id: org.id,
+    flowId: org.flowId!,
     isPersonal: org.isPersonal,
     name: org.name,
     avatarUrl: org.avatarUrl,

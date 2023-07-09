@@ -4,11 +4,15 @@ import { useQuery } from '@tanstack/react-query';
 import { fetchApi } from './fetch';
 import { APIError, isError } from './helpers';
 
-export function useGetFlow({ org_id, project_id }: GetFlow['Querystring']) {
+export function useGetFlow({
+  flow_id,
+  org_id,
+  project_id,
+}: GetFlow['Params'] & GetFlow['Querystring']) {
   return useQuery({
-    queryKey: ['getFlow', org_id, project_id],
+    queryKey: ['getFlow', org_id, project_id, flow_id],
     queryFn: async (): Promise<GetFlow['Success']> => {
-      const { json, res } = await fetchApi<GetFlow>(`/flows`, {
+      const { json, res } = await fetchApi<GetFlow>(`/flows/${flow_id}`, {
         qp: { org_id, project_id },
       });
 

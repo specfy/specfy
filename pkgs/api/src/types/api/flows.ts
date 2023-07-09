@@ -13,6 +13,9 @@ export interface ApiFlow {
 
 // GET /:id
 export type GetFlow = Res<{
+  Params: {
+    flow_id: string;
+  };
   Querystring: QuerystringOrgMaybeProject;
   Success: {
     data: ApiFlow;

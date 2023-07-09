@@ -16,7 +16,7 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   org,
   params,
 }) => {
-  const resFlow = useGetFlow({ org_id: params.org_id });
+  const resFlow = useGetFlow({ org_id: params.org_id, flow_id: org.flowId });
   const [flow, setFlow] = useState<ComputedFlow>();
 
   useEffect(() => {

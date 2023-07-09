@@ -3,8 +3,8 @@ import type { Components, Orgs, Projects, Users } from '@prisma/client';
 import { nanoid } from '../../common/id.js';
 import { slugify } from '../../common/string.js';
 import { prisma } from '../../db/index.js';
+import { recomputeOrgGraph } from '../../models/flows/helpers.js';
 import { createComponent } from '../../models/index.js';
-import { recomputeOrgGraph } from '../../models/revisions/helpers.js';
 import type { DBComponent } from '../../types/db/index.js';
 
 export type ResSeedComponents = {

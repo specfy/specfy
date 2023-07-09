@@ -86,6 +86,7 @@ describe('GET /invitations/:id', () => {
       },
       org: {
         id: org.id,
+        flowId: expect.any(String),
         acronym: expect.any(String),
         avatarUrl: null,
         color: expect.any(String),
