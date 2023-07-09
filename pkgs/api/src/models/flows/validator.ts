@@ -53,8 +53,8 @@ export const schemaFlowUpdate = z
     edges: z.record(
       z.string().regex(edgeId),
       z.object({
-        portSource: schemaPortSource,
-        portTarget: schemaPortTarget,
+        sourceHandle: schemaPortSource,
+        targetHandle: schemaPortTarget,
       })
     ),
     nodes: z.record(schemaId, z.object({ display: schemaDisplay }).strict()),
