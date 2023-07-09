@@ -1,7 +1,9 @@
 import { z } from 'zod';
 
-import { schemaId } from './common.js';
-import { min, max, wMax, wMin, hMax, hMin } from './flow.constants.js';
+import { alphabet } from '../../common/id.js';
+import { schemaId } from '../../common/validators/common.js';
+
+import { min, max, wMax, wMin, hMax, hMin } from './constants.js';
 
 export const schemaDisplay = z
   .object({
@@ -25,6 +27,7 @@ export const schemaDisplay = z
 export const schemaPortSource = z.enum(['st', 'sr', 'sb', 'sl']);
 export const schemaPortTarget = z.enum(['tt', 'tr', 'tb', 'tl']);
 
+const edgeId = new RegExp(`^[${alphabet}]+->[${alphabet}]+$`);
 export const schemaEdges = z.array(
   z
     .object({
@@ -44,3 +47,16 @@ export const schemaEdges = z.array(
     })
     .strict()
 );
+
+export const schemaFlowUpdate = z
+  .object({
+    edges: z.record(
+      z.string().regex(edgeId),
+      z.object({
+        portSource: schemaPortSource,
+        portTarget: schemaPortTarget,
+      })
+    ),
+    nodes: z.record(schemaId, z.object({ display: schemaDisplay }).strict()),
+  })
+  .strict();

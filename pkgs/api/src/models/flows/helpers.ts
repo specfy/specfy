@@ -37,7 +37,7 @@ export async function recomputeOrgGraph({
   const relations: Record<string, Record<string, ProjectRelation['to']>> = {};
   for (const project of projects) {
     const components = await tx.components.findMany({
-      where: { projectId: project.id },
+      where: { orgId, projectId: project.id },
       select: { id: true, edges: true, type: true, typeId: true },
     });
 

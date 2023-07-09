@@ -1,4 +1,5 @@
 import type { ComputedFlow } from '../../common/flow/types.js';
+import type { OrgFlowUpdates } from '../../models/flows/types.js';
 
 import type { QuerystringOrgMaybeProject, Res } from './api.js';
 
@@ -19,5 +20,21 @@ export type GetFlow = Res<{
   Querystring: QuerystringOrgMaybeProject;
   Success: {
     data: ApiFlow;
+  };
+}>;
+
+// PATCH /:id
+export type PatchFlow = Res<{
+  Params: {
+    flow_id: string;
+  };
+  Body: {
+    updates: OrgFlowUpdates;
+  };
+  Querystring: QuerystringOrgMaybeProject;
+  Success: {
+    data: {
+      done: true;
+    };
   };
 }>;

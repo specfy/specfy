@@ -26,7 +26,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       return validationError(res, val.error);
     }
 
-    const query: GetDocument['Params'] & GetDocument['Querystring'] = val.data;
+    const query: GetDocument['QP'] = val.data;
     const p = await prisma.documents.findFirst({
       where: {
         id: query.document_id,

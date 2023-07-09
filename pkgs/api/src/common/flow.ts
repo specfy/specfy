@@ -1,13 +1,13 @@
-import type { ApiComponent } from '../types/api/index.js';
-
-import type { ComputedFlow } from './flow/types.js';
 import {
   hDef,
   hDefHost,
   wDef,
   wDefHost,
   wMax,
-} from './validators/flow.constants.js';
+} from '../models/flows/constants.js';
+import type { ApiComponent } from '../types/api/index.js';
+
+import type { ComputedFlow } from './flow/types.js';
 
 export function computeNewProjectPosition(flow: ComputedFlow): {
   x: number;

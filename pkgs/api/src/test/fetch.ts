@@ -16,7 +16,7 @@ type HasDelete = { DELETE: Record<string, unknown> };
 
 export function isError(json: any): asserts json is ResErrors {
   if (!('error' in json)) {
-    console.log(util.inspect(json, true, 100));
+    console.log('isError', util.inspect(json, true, 100));
     throw new Error('Response is not an error');
   }
 }
@@ -25,7 +25,7 @@ export function isValidationError(
   json: any
 ): asserts json is ResValidationError {
   if (!('error' in json) || json.error.code !== 'validation_error') {
-    console.log(util.inspect(json, true, 100));
+    console.log('isValidationError', util.inspect(json, true, 100));
     throw new Error('Response is not a validation error');
   }
 }
@@ -34,7 +34,7 @@ export function isSuccess<TType extends Record<string, any>>(
   json: TType
 ): asserts json is Exclude<TType, { error: any }> {
   if (json && 'error' in json) {
-    console.log(util.inspect(json, true, 100));
+    console.log('isSuccess', util.inspect(json, true, 100));
     throw new Error('Response is not a success');
   }
 }

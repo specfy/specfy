@@ -1,6 +1,6 @@
 import type { IncomingMessage, ServerResponse } from 'http';
 
-import type { Keys, Orgs, Projects, Users } from '@prisma/client';
+import type { Flows, Keys, Orgs, Projects, Users } from '@prisma/client';
 import type {
   preHandlerAsyncHookHandler,
   preHandlerHookHandler,
@@ -31,6 +31,7 @@ declare module 'fastify' {
     key?: Keys;
     org?: Orgs;
     invitation?: InvitationsWithOrgAndUser;
+    flow?: Flows;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-interface

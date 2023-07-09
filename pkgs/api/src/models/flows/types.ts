@@ -6,6 +6,6 @@ export type ProjectRelation = {
 };
 
 export type OrgFlowUpdates = {
-  edges: Record<string, Pick<FlowEdge, 'portSource'>>;
+  edges: Record<string, Pick<FlowEdge, 'portSource' | 'portTarget'>>;
   nodes: Record<string, { display: FlowItemDisplay }>;
 };

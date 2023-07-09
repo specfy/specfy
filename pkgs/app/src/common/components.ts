@@ -4,7 +4,7 @@ import {
   hDefHost,
   wDef,
   wDefHost,
-} from '@specfy/api/src/common/validators/flow.constants';
+} from '@specfy/api/src/models/flows/constants';
 import type { ApiComponent } from '@specfy/api/src/types/api';
 import type { FlowEdge } from '@specfy/api/src/types/db';
 
