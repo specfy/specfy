@@ -1,0 +1,70 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`rebuildFlow > should create a new flow 1`] = `
+{
+  "edges": [
+    {
+      "data": {
+        "read": true,
+        "write": true,
+      },
+      "id": "a->b",
+      "markerEnd": {
+        "height": 10,
+        "type": "arrowclosed",
+        "width": 10,
+      },
+      "source": "a",
+      "sourceHandle": "sr",
+      "target": "b",
+      "targetHandle": "tl",
+    },
+  ],
+  "nodes": [
+    {
+      "data": {
+        "name": "A",
+        "originalSize": {
+          "height": 32,
+          "width": 100,
+        },
+        "techId": null,
+        "type": "project",
+        "typeId": null,
+      },
+      "id": "a",
+      "position": {
+        "x": 0,
+        "y": -42,
+      },
+      "style": {
+        "height": "32px",
+        "width": "100px",
+      },
+      "type": "custom",
+    },
+    {
+      "data": {
+        "name": "B",
+        "originalSize": {
+          "height": 32,
+          "width": 100,
+        },
+        "techId": null,
+        "type": "project",
+        "typeId": null,
+      },
+      "id": "b",
+      "position": {
+        "x": 0,
+        "y": -84,
+      },
+      "style": {
+        "height": "32px",
+        "width": "100px",
+      },
+      "type": "custom",
+    },
+  ],
+}
+`;

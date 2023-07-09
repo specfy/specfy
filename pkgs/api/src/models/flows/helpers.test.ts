@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 
 import { getBlobComponent } from '../../test/seed/components.js';
 
-import { computeRelationsToProjects } from './helpers.js';
+import { computeRelationsToProjects, rebuildFlow } from './helpers.js';
 
 describe('computeRelationsToProjects', () => {
   const org = { id: 'org' } as Orgs;
@@ -145,6 +145,120 @@ describe('computeRelationsToProjects', () => {
           write: true,
         },
       },
+    });
+  });
+});
+
+describe('rebuildFlow', () => {
+  it('should create a new empty flow', () => {
+    const flow = rebuildFlow({
+      projects: [],
+      relations: {},
+    });
+    expect(flow).toStrictEqual({ nodes: [], edges: [] });
+  });
+
+  it('should create a new flow', () => {
+    const flow = rebuildFlow({
+      projects: [
+        { id: 'a', name: 'A' },
+        { id: 'b', name: 'B' },
+      ],
+      relations: {
+        a: {
+          b: { read: true, write: true },
+        },
+      },
+    });
+    expect(flow).toMatchSnapshot();
+  });
+
+  it('should create a new flow with updates', () => {
+    const flow = rebuildFlow({
+      projects: [
+        { id: 'a', name: 'A' },
+        { id: 'b', name: 'B' },
+      ],
+      relations: {
+        a: {
+          b: { read: true, write: true },
+        },
+      },
+      updates: {
+        edges: {
+          'a->b': {
+            sourceHandle: 'sb',
+            targetHandle: 'tt',
+          },
+        },
+        nodes: {},
+      },
+    });
+    expect(flow.edges[0]).toMatchObject({
+      sourceHandle: 'sb',
+      targetHandle: 'tt',
+    });
+  });
+
+  it('should update a flow', () => {
+    const flowA = rebuildFlow({
+      projects: [
+        { id: 'a', name: 'A' },
+        { id: 'b', name: 'B' },
+      ],
+      relations: {
+        a: {
+          b: { read: true, write: true },
+        },
+      },
+    });
+    // Ensure default
+    expect(flowA.edges[0]).toMatchObject({
+      sourceHandle: 'sr',
+      targetHandle: 'tl',
+    });
+
+    const flowB = rebuildFlow({
+      oldFlow: flowA,
+      projects: [
+        { id: 'a', name: 'A' },
+        { id: 'b', name: 'B' },
+        { id: 'c', name: 'C' }, // Add a component
+      ],
+      relations: {
+        a: {
+          b: { read: true, write: true },
+        },
+        // Add a rel
+        c: {
+          a: { read: true, write: true },
+        },
+      },
+      updates: {
+        edges: {
+          'a->b': {
+            sourceHandle: 'sl',
+            targetHandle: 'tr',
+          },
+        },
+        nodes: {},
+      },
+    });
+    expect(flowB.edges).toHaveLength(2);
+    expect(flowB.nodes).toHaveLength(3);
+
+    // Ensure update
+    expect(flowB.edges[0]).toMatchObject({
+      id: 'a->b',
+      sourceHandle: 'sl',
+      targetHandle: 'tr',
+    });
+
+    // Ensure default
+    expect(flowB.edges[1]).toMatchObject({
+      id: 'c->a',
+      sourceHandle: 'sr',
+      targetHandle: 'tl',
     });
   });
 });

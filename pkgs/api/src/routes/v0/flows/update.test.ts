@@ -67,8 +67,8 @@ async function linkTwoProjects(
       updates: {
         edges: {
           [`${project2.id}->${project.id}`]: {
-            portSource: 'st',
-            portTarget: 'tr',
+            sourceHandle: 'st',
+            targetHandle: 'tr',
           },
         },
         nodes: {},
@@ -188,8 +188,8 @@ describe('PATCH /flows/:flow_id', () => {
         updates: {
           edges: {
             [edgeId]: {
-              portSource: 'sr',
-              portTarget: 'tl',
+              sourceHandle: 'sr',
+              targetHandle: 'tl',
             },
           },
           nodes: {},

@@ -775,7 +775,39 @@ export async function seedComponents(
         tx,
       });
 
-      await recomputeOrgGraph({ orgId: o1.id, tx });
+      await recomputeOrgGraph({
+        orgId: o1.id,
+        updates: {
+          edges: {
+            'b03tMzwd5A->b01tMzwd5A': {
+              sourceHandle: 'sl',
+              targetHandle: 'tr',
+            },
+            'b03tMzwd5A->b05tMzwd5A': {
+              sourceHandle: 'sl',
+              targetHandle: 'tr',
+            },
+            'b04tMzwd5A->b03tMzwd5A': {
+              sourceHandle: 'sr',
+              targetHandle: 'tl',
+            },
+            'b01tMzwd5A->b04tMzwd5A': {
+              sourceHandle: 'sl',
+              targetHandle: 'tr',
+            },
+            'b01tMzwd5A->b05tMzwd5A': {
+              sourceHandle: 'sl',
+              targetHandle: 'tl',
+            },
+            'b02tMzwd5A->b01tMzwd5A': {
+              sourceHandle: 'sl',
+              targetHandle: 'tr',
+            },
+          },
+          nodes: {},
+        },
+        tx,
+      });
 
       return { api, gcp, worker, manager, pg, gce };
     },

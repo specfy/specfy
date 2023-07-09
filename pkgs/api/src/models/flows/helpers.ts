@@ -1,4 +1,4 @@
-import type { Prisma } from '@prisma/client';
+import type { Prisma, Projects } from '@prisma/client';
 
 import {
   createNodeFromProject,
@@ -12,7 +12,11 @@ import {
 import { nanoid } from '../../common/id.js';
 import type { DBComponent } from '../../types/db/index.js';
 
-import type { OrgFlowUpdates, ProjectRelation } from './types.js';
+import type {
+  OrgFlowUpdates,
+  ProjectRelation,
+  ProjectRelations,
+} from './types.js';
 
 /**
  * Completely recompute the organization graph's edges.
@@ -34,7 +38,7 @@ export async function recomputeOrgGraph({
 
   // Compute relations project by project
   // Instead of selecting all components from the org because that could be huge (if this project work someday)
-  const relations: Record<string, Record<string, ProjectRelation['to']>> = {};
+  const relations: ProjectRelations = {};
   for (const project of projects) {
     const components = await tx.components.findMany({
       where: { orgId, projectId: project.id },
@@ -66,63 +70,12 @@ export async function recomputeOrgGraph({
     where: { orgId: orgId },
   });
 
-  const oldFlow = snapshot?.flow;
-  const newFlow: ComputedFlow = {
-    edges: [],
-    nodes: [],
-  };
-
-  // Rebuild the whole snapshot
-  for (const project of projects) {
-    const prevNode = oldFlow?.nodes.find((nd) => nd.id === project.id);
-    const update = updates?.nodes[project.id];
-    let node: ComputedFlow['nodes'][0];
-
-    if (prevNode) {
-      node = createNodeFromProject(
-        project,
-        update?.display || {
-          pos: prevNode.position,
-          size: prevNode.data.originalSize,
-        }
-      );
-    } else {
-      node = createNodeFromProject(
-        project,
-        update?.display || {
-          // TODO: place it better
-          pos: computeNewProjectPosition(oldFlow || newFlow),
-          size: getComponentSize('project', project.name),
-        }
-      );
-    }
-    newFlow.nodes.push(node);
-
-    if (!(project.id in relations)) {
-      continue;
-    }
-
-    for (const [targetId, opts] of Object.entries(relations[project.id])) {
-      const id = `${project.id}->${targetId}`;
-      const prevEdge = oldFlow?.edges.find((ed) => ed.id === id);
-      let edge: ComputedFlow['edges'][0];
-
-      if (prevEdge) {
-        edge = { ...prevEdge, data: opts };
-      } else {
-        edge = {
-          id,
-          source: project.id,
-          target: targetId,
-          sourceHandle: 'sr',
-          targetHandle: 'tl',
-          data: opts,
-          ...getEdgeMarkers(opts),
-        };
-      }
-      newFlow.edges.push(edge);
-    }
-  }
+  const newFlow = rebuildFlow({
+    oldFlow: snapshot?.flow,
+    projects,
+    relations,
+    updates,
+  });
 
   if (snapshot) {
     return await tx.flows.update({
@@ -225,4 +178,81 @@ export function computeRelationsToProjects({
   }
 
   return relations;
+}
+
+export function rebuildFlow({
+  projects,
+  relations,
+  oldFlow,
+  updates,
+}: {
+  projects: Array<Pick<Projects, 'id' | 'name'>>;
+  relations: ProjectRelations;
+  oldFlow?: ComputedFlow | undefined;
+  updates?: OrgFlowUpdates | undefined;
+}): ComputedFlow {
+  const newFlow: ComputedFlow = {
+    edges: [],
+    nodes: [],
+  };
+
+  // Rebuild the whole snapshot
+  for (const project of projects) {
+    const prevNode = oldFlow?.nodes.find((nd) => nd.id === project.id);
+    const update = updates?.nodes[project.id];
+    let node: ComputedFlow['nodes'][0];
+
+    if (prevNode) {
+      node = createNodeFromProject(
+        project,
+        update?.display || {
+          pos: prevNode.position,
+          size: prevNode.data.originalSize,
+        }
+      );
+    } else {
+      node = createNodeFromProject(
+        project,
+        update?.display || {
+          // TODO: place it better
+          pos: computeNewProjectPosition(oldFlow || newFlow),
+          size: getComponentSize('project', project.name),
+        }
+      );
+    }
+    newFlow.nodes.push(node);
+
+    if (!(project.id in relations)) {
+      continue;
+    }
+
+    for (const [targetId, opts] of Object.entries(relations[project.id])) {
+      const id = `${project.id}->${targetId}`;
+      const prevEdge = oldFlow?.edges.find((ed) => ed.id === id);
+      const updateEdge = updates?.edges[id];
+      let edge: ComputedFlow['edges'][0];
+
+      if (prevEdge) {
+        edge = {
+          ...prevEdge,
+          sourceHandle: updateEdge?.sourceHandle || prevEdge.sourceHandle!,
+          targetHandle: updateEdge?.targetHandle || prevEdge.targetHandle!,
+          data: opts,
+        };
+      } else {
+        edge = {
+          id,
+          source: project.id,
+          target: targetId,
+          sourceHandle: updateEdge?.sourceHandle || 'sr',
+          targetHandle: updateEdge?.targetHandle || 'tl',
+          data: opts,
+          ...getEdgeMarkers(opts),
+        };
+      }
+      newFlow.edges.push(edge);
+    }
+  }
+
+  return newFlow;
 }
