@@ -1,3 +1,5 @@
+import Head from 'next/head';
+
 import type { Post } from '@/lib/blog';
 import { getAllPosts } from '@/lib/blog';
 
@@ -8,6 +10,11 @@ type Props = {
 export default function Blog({ posts }: Props) {
   return (
     <main className="relative isolate px-6 pt-14 lg:px-8">
+      <Head>
+        <title key="title">Blog - Specfy</title>
+        <meta name="description" content="Specfy.io blog" />
+        <link rel="canonical" href={`/blog`} />
+      </Head>
       <div className="relative">
         <div className="mx-auto max-w-5xl py-16 min-h-screen">
           <div className="mx-auto max-w-2xl lg:mx-0">

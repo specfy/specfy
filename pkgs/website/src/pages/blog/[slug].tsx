@@ -135,9 +135,16 @@ type Props = {
 };
 
 export default function PostPage({ source }: Props) {
+  const post = source.frontmatter;
+  const title = `${post.title} - Specfy`;
   return (
     <div>
-      <Head>{/* <title >{source.frontmatter.title}- Specfy</title> */}</Head>
+      <Head>
+        <title key="title">{title}</title>
+        <meta name="description" content={post.description} />
+        <link rel="canonical" href={`/blog/${post.id}-${post.slug}`} />
+        <meta name="twitter:card" content="summary_large_image" />
+      </Head>
       <main className="relative isolate px-6 pt-14 lg:px-8">
         <div className="relative">
           <div className="mx-auto max-w-5xl py-16 min-h-screen">
@@ -179,7 +186,13 @@ export default function PostPage({ source }: Props) {
 }
 
 export async function getStaticPaths() {
-  return { paths: [], fallback: 'blocking' };
+  const posts = await getAllPosts();
+  return {
+    paths: posts.map((post) => {
+      return `/blog/${post.id}-${post.slug}`;
+    }),
+    fallback: false,
+  };
 }
 
 export async function getStaticProps(
