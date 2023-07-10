@@ -15,12 +15,19 @@ import Head from 'next/head';
 import { MDXRemote } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 import { Bar } from 'react-chartjs-2';
-import { PrismAsyncLight } from 'react-syntax-highlighter';
+import { PrismLight } from 'react-syntax-highlighter';
+import dockerfile from 'react-syntax-highlighter/dist/cjs/languages/prism/docker';
+import js from 'react-syntax-highlighter/dist/cjs/languages/prism/javascript';
+import ts from 'react-syntax-highlighter/dist/cjs/languages/prism/typescript';
 import { oneLight } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 
 import { Banner } from '@/components/Banner';
 import type { Post } from '@/lib/blog';
 import { getAllPosts } from '@/lib/blog';
+
+PrismLight.registerLanguage('js', js);
+PrismLight.registerLanguage('ts', ts);
+PrismLight.registerLanguage('dockerfile', dockerfile);
 
 ChartJS.register(
   CategoryScale,
@@ -62,14 +69,14 @@ const Code: React.FC<{ children?: React.ReactNode; className?: string }> = ({
   if (hasLanguage) {
     return (
       <div className="codeHighlight mb-8 h-full">
-        <PrismAsyncLight
+        <PrismLight
           style={oneLight}
           wrapLines={true}
           showLineNumbers={true}
           language={hasLanguage[1]}
         >
           {children as string}
-        </PrismAsyncLight>
+        </PrismLight>
       </div>
     );
   }

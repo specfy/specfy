@@ -78,7 +78,7 @@ EXPOSE 8080
 
 <br />
 
-<Banner type="info">To build from scratch everytime you need to `docker system prune` and `docker build --pull --no-cache ./`</Banner>
+<Banner type="info">To build from scratch every time you need to `docker system prune` and `docker build --pull --no-cache ./`</Banner>
 
 The output will look like this:
 
@@ -682,7 +682,7 @@ To remember:
 
 Just a few points that were not covered:
 
-- Removing the source code is usally not that impactful. By adding this, I saved around 2MB.
+- Removing the source code is usually not that impactful. By adding this, I saved around 2MB.
 
 ```dockerfile
 # Clean src
@@ -692,6 +692,6 @@ RUN true \
 
 - If you compile a frontend in your dockerfile be sure to clean cache file, usually it's saved for reuse in the `node_modules` folder but can be deleted.
 
-- [depot.dev](http://depot.dev), while being very promising is a payed/remote solution.
+- [depot.dev](http://depot.dev), while being very promising is a paid / remote solution.
 
 
