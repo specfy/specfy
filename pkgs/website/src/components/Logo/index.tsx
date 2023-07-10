@@ -1,17 +1,15 @@
-import cls from './index.module.scss';
-
 export const Logo: React.FC<{ color?: 'white' }> = ({ color }) => {
   const fill = color || 'black';
 
   return (
-    <div className={cls.logo}>
+    <div className="w-[150px] text-[40px] flex gap-2">
       <svg
         width="200"
         height="200"
         viewBox="0 0 200 200"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className={cls.icon}
+        className="w-[40px] h-[40px]"
       >
         <rect
           x="20"
@@ -38,7 +36,6 @@ export const Logo: React.FC<{ color?: 'white' }> = ({ color }) => {
         viewBox="0 0 150 40"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className={cls.name}
       >
         <path
           d="M8.93137 32.1993C14.1116 32.1993 18.086 29.6425 18.086 25.0921C18.086 21.0184 14.7814 19.3283 12.2806 18.5049L9.37794 17.4648C7.81495 16.9881 7.36838 16.2947 7.36838 15.558C7.36838 14.7779 8.03824 13.9978 9.37794 13.9978C10.3157 13.9978 11.4768 14.3879 12.0574 16.1213L17.4608 14.8212C16.657 11.1809 13.4864 8.7974 9.11 8.7974C4.555 8.7974 0.669853 11.2676 0.669853 15.4713C0.669853 18.2882 2.32216 20.7151 6.16265 22.0585L9.28863 23.1853C10.807 23.662 11.2535 24.3554 11.2535 25.0921C11.2535 26.3489 10.0925 26.9556 8.84206 26.9556C6.65387 26.9556 5.85005 25.4388 5.4928 24.3554L0 25.7855C0.71451 30.0758 4.2424 32.1993 8.93137 32.1993Z"

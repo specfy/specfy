@@ -115,7 +115,7 @@ The output will look like this:
 
 **Results**:
 <div className="flex gap-8 mb-8">
-  <table className="border rounded-md text-sm">
+  <table className="border rounded-md text-sm h-full">
     <thead>
       <tr><th style={{ width: "200px"}}></th><th></th></tr>
     </thead>
@@ -180,7 +180,7 @@ EXPOSE 8080
 
 **Results**:
 <div className="flex gap-8 mb-8">
-  <table className="border rounded-md text-sm">
+  <table className="border rounded-md text-sm h-full">
     <thead>
       <tr><th style={{ width: "150px"}}></th><th></th><th></th></tr>
     </thead>
@@ -262,7 +262,7 @@ This is portal we were talking about, we created a second image, where the only 
 
 **Results**:
 <div className="flex gap-8 mb-8">
-  <table className="border rounded-md text-sm">
+  <table className="border rounded-md text-sm h-full">
     <thead>
       <tr><th style={{ width: "150px"}}></th><th></th><th></th></tr>
     </thead>
@@ -372,7 +372,7 @@ The result is a **significant improvement** in build time, particularly when onl
 
 **Results**:
 <div className="flex gap-8 mb-8">
-  <table className="border rounded-md text-sm">
+  <table className="border rounded-md text-sm h-full">
     <thead>
       <tr><th style={{ width: "150px"}}></th><th></th><th></th></tr>
     </thead>
@@ -463,7 +463,7 @@ With a simple one-liner, we have achieved remarkable results in terms of image s
 
 **Results**:
 <div className="flex gap-8 mb-8">
-  <table className="border rounded-md text-sm">
+  <table className="border rounded-md text-sm h-full">
     <thead>
       <tr><th style={{ width: "150px"}}></th><th></th><th></th></tr>
     </thead>
@@ -557,12 +557,7 @@ RUN /tmp/clean_package_json.sh /tmp/website_package.json
 
 I have now a very small stage to manipulate the `package.json` that can be executed in parallel. While these layers will always be invalidated due to the modification of the file system, their impact is minimal as they are short-lived.
 
-From scratch: 54.1s
-Code source modified: 17s
-Cached: 1.0
-Size: 613MB
-
-We don't save on the final image size since all `devDependencies` were already ignored, but we saved a few seconds (about 5seconds or 10% decrease) on the initial install time and we save on intermediate layers size. This step is definitely far less impacting but always good to take.
+We don't save on the final image size since all `devDependencies` were already ignored, but we saved a few seconds (about 5 seconds or 10% decrease) on the initial install time and we save on intermediate layers size. This step is definitely far less impacting but always good to take.
 
 <Banner type="info"><strong>Good to know:</strong> if you don't use this technique and you increment the `version` field when you release, it will invalidate the cache every time.</Banner>
 
@@ -631,7 +626,7 @@ RUN true \
 After implementing various optimization techniques, we achieved notable improvements in both build time and image size. Here are the key findings:
 
 <div className="flex gap-8 mb-8">
-  <table className="border rounded-md text-sm">
+  <table className="border rounded-md text-sm h-full">
     <thead>
       <tr><th style={{ width: "150px"}}></th><th></th><th></th></tr>
     </thead>

@@ -61,7 +61,7 @@ const Code: React.FC<{ children?: React.ReactNode; className?: string }> = ({
 
   if (hasLanguage) {
     return (
-      <div className="codeHighlight mb-8">
+      <div className="codeHighlight mb-8 h-full">
         <PrismAsyncLight
           style={oneLight}
           wrapLines={true}
