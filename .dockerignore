@@ -11,6 +11,10 @@
 coverage/
 docs/
 scripts/
+**/.next
+**/.vercel
+**/.react-email
+pkgs/website
 
 # Logs
 **/*.log
