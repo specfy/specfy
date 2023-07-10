@@ -4,19 +4,59 @@ import classNames from 'classnames';
 import { Bar } from 'react-chartjs-2';
 import { PrismLight } from 'react-syntax-highlighter';
 import { oneLight } from 'react-syntax-highlighter/dist/cjs/styles/prism';
+import slugifyOrigin from 'slugify';
 
 import { Banner } from '@/components/Banner';
 
+export const slugify = (str: string) => {
+  return slugifyOrigin(str, { lower: true, trim: true, strict: true });
+};
+
 const H2: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
-  return <h2 className="text-2xl pt-16 mb-4 font-600">{children}</h2>;
+  const hash = `#h-${slugify(children as string)}`;
+  return (
+    <h2 className="group text-2xl pt-16 mb-4 font-600" id={hash}>
+      <a
+        href={`${hash}`}
+        className="opacity-0 pr-2 -ml-5 text-gray-600 hover:text-gray-800 group-hover:opacity-100 transition-all"
+      >
+        §
+      </a>
+      {children}
+    </h2>
+  );
 };
 
 const H3: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
-  return <h3 className="text-xl pt-8 mb-4 font-600">{children}</h3>;
+  const hash = `#h-${slugify(children as string)}`;
+
+  return (
+    <h3 className="group text-xl pt-8 mb-4 font-600" id={hash}>
+      <a
+        href={`${hash}`}
+        className="opacity-0 pr-2 -ml-5 text-gray-600 hover:text-gray-800 group-hover:opacity-100 transition-all"
+      >
+        §
+      </a>
+      {children}
+    </h3>
+  );
 };
 
 const H4: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
-  return <h4 className="text-m pt-8 mb-4 font-600">{children}</h4>;
+  const hash = `#h-${slugify(children as string)}`;
+
+  return (
+    <h4 className="group text-m pt-8 mb-4 font-600" id={hash}>
+      <a
+        href={`${hash}`}
+        className="opacity-0 pr-2 -ml-5 text-gray-600 hover:text-gray-800 group-hover:opacity-100 transition-all"
+      >
+        §
+      </a>
+      {children}
+    </h4>
+  );
 };
 
 const P: React.FC<{ children?: React.ReactNode }> = ({ children }) => {

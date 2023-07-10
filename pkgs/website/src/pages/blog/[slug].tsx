@@ -48,6 +48,7 @@ type Props = {
 export default function PostPage({ source }: Props) {
   const post = source.frontmatter;
   const title = `${post.title} - Specfy`;
+
   return (
     <div>
       <Head>
@@ -128,7 +129,10 @@ export async function getStaticProps(
 
   // read the MDX serialized content along with the frontmatter
   // from the .mdx blog post file
-  const mdxSource = await serialize(postFile, { parseFrontmatter: true });
+  const mdxSource = await serialize(postFile, {
+    parseFrontmatter: true,
+    mdxOptions: {},
+  });
   return {
     props: {
       source: mdxSource,
