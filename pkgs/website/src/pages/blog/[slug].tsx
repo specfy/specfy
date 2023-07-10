@@ -16,6 +16,7 @@ import { MDXRemote } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
 import { Bar } from 'react-chartjs-2';
 import { PrismLight } from 'react-syntax-highlighter';
+import bash from 'react-syntax-highlighter/dist/cjs/languages/prism/bash';
 import dockerfile from 'react-syntax-highlighter/dist/cjs/languages/prism/docker';
 import js from 'react-syntax-highlighter/dist/cjs/languages/prism/javascript';
 import ts from 'react-syntax-highlighter/dist/cjs/languages/prism/typescript';
@@ -28,6 +29,7 @@ import { getAllPosts } from '@/lib/blog';
 PrismLight.registerLanguage('js', js);
 PrismLight.registerLanguage('ts', ts);
 PrismLight.registerLanguage('dockerfile', dockerfile);
+PrismLight.registerLanguage('bash', bash);
 
 ChartJS.register(
   CategoryScale,
@@ -72,7 +74,7 @@ const Code: React.FC<{ children?: React.ReactNode; className?: string }> = ({
         <PrismLight
           style={oneLight}
           wrapLines={true}
-          showLineNumbers={true}
+          showLineNumbers={false}
           language={hasLanguage[1]}
         >
           {children as string}

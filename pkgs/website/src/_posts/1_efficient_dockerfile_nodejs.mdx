@@ -136,7 +136,7 @@ The output will look like this:
           {
             label: 'Original Time to build',
             data: [106.8, 69, 0.9],
-            backgroundColor: 'hsl(206 81.9% 65.3%)',
+            backgroundColor: 'hsl(206 86.9% 65.3%)',
           },
         ],
       }}
@@ -188,7 +188,7 @@ EXPOSE 8080
       <tr><td className="py-2 px-4">From scratch</td><td className="px-4">106.8s</td><td className="px-4">57.5s (-47%)</td></tr>
       <tr><td className="py-2 px-4">Code Modified</td><td className="px-4">69s</td><td className="px-4">45s (-34%)</td></tr>
       <tr><td className="py-2 px-4">Cache hit</td><td className="px-4">0.9s</td><td className="px-4">1.0s</td></tr>
-      <tr><td className="py-2 px-4">Image Size </td><td className="px-4">2.48GB</td><td className="px-4">1.61GB (-46%)</td></tr>
+      <tr><td className="py-2 px-4">Image Size </td><td className="px-4">2.48GB</td><td className="px-4">1.61GB (-36%)</td></tr>
     </tbody>
   </table>
 
@@ -201,12 +201,12 @@ EXPOSE 8080
           {
             label: 'Original',
             data: [106.8, 69],
-            backgroundColor: 'hsl(206 81.9% 65.3%)',
+            backgroundColor: 'hsl(206 86.9% 65.3%)',
           },
           {
             label: 'Slim image',
             data: [57.5, 45],
-            backgroundColor: 'hsl(131 38.1% 56.3%)',
+            backgroundColor: 'hsl(131 58.1% 56.3%)',
           },
         ],
       }}
@@ -214,13 +214,13 @@ EXPOSE 8080
   </div>
 </div>
 
-That was an easy step and we managed to reduce our image size by 46%, almost a GB, I don't know exactly what was removed but my mind is shaking.
-Additionally, the build time improved by 47% (~40seconds), especially considering that it was achieved with just one line of modification.
-Please mind that this base image is still ~230MB (uncompressed), so can never go reach lower than that.
+That was an easy step and we managed to reduce our image size by 36%, almost a GB, I don't know what exactly was removed but my mind is shaking at this much waste.
+Additionally, the build time improved by 47% (~40seconds), amazing especially considering that it was achieved with just one line of modification.
+Please note that this base image is still ~230MB (uncompressed), so we will never reach lower than that.
 
 ## 3. Multi Stage build
 
-We now turn our attention to the multi-stage builds tricks. For those unfamiliar with this concept, multi-stage builds are like **portals within a Dockerfile**.
+We now turn our attention to the multi-stage builds trick. For those unfamiliar with this concept, multi-stage builds are like **portals within a Dockerfile**.
 You can simply change the context entirely but you are allowed to keep some things with you, and only the final stage will be sent.
 This is perfect to copy the compiled source and completely removes `node_modules` or remove some part of the source code.
 
@@ -283,17 +283,17 @@ This is portal we were talking about, we created a second image, where the only 
           {
             label: 'Original',
             data: [106.8, 69],
-            backgroundColor: 'hsl(206 81.9% 65.3%)',
+            backgroundColor: 'hsl(206 86.9% 65.3%)',
           },
           {
             label: 'Slim image',
             data: [57.5, 45],
-            backgroundColor: 'hsl(131 38.1% 56.3%)',
+            backgroundColor: 'hsl(131 58.1% 76.3%)',
           },
           {
             label: 'Multi-Staged',
             data: [65.2, 50],
-            backgroundColor: 'hsl(131 38.1% 56.3%)',
+            backgroundColor: 'hsl(131 58.1% 56.3%)',
           },
         ],
       }}
@@ -393,22 +393,22 @@ The result is a **significant improvement** in build time, particularly when onl
           {
             label: 'Original',
             data: [106.8, 69],
-            backgroundColor: 'hsl(206 81.9% 65.3%)',
+            backgroundColor: 'hsl(206 86.9% 65.3%)',
           },
           {
             label: 'Slim image',
             data: [57.5, 45],
-            backgroundColor: 'hsl(131 38.1% 56.3%)',
+            backgroundColor: 'hsl(131 58.1% 76.3%)',
           },
           {
             label: 'Multi-Staged',
             data: [65.2, 50],
-            backgroundColor: 'hsl(131 38.1% 56.3%)',
+            backgroundColor: 'hsl(131 58.1% 76.3%)',
           },
           {
             label: 'Cached Dependencies',
             data: [62.0, 20],
-            backgroundColor: 'hsl(131 38.1% 56.3%)',
+            backgroundColor: 'hsl(131 58.1% 56.3%)',
           },
         ],
       }}
@@ -484,27 +484,27 @@ With a simple one-liner, we have achieved remarkable results in terms of image s
           {
             label: 'Original',
             data: [106.8, 69],
-            backgroundColor: 'hsl(206 81.9% 65.3%)',
+            backgroundColor: 'hsl(206 86.9% 65.3%)',
           },
           {
             label: 'Slim image',
             data: [57.5, 45],
-            backgroundColor: 'hsl(131 38.1% 56.3%)',
+            backgroundColor: 'hsl(131 58.1% 76.3%)',
           },
           {
             label: 'Multi-Staged',
             data: [65.2, 50],
-            backgroundColor: 'hsl(131 38.1% 56.3%)',
+            backgroundColor: 'hsl(131 58.1% 76.3%)',
           },
           {
             label: 'Cached Dependencies',
             data: [62.0, 20],
-            backgroundColor: 'hsl(131 38.1% 56.3%)',
+            backgroundColor: 'hsl(131 58.1% 76.3%)',
           },
           {
             label: 'Removed devDependencies',
             data: [60.6, 18],
-            backgroundColor: 'hsl(131 38.1% 56.3%)',
+            backgroundColor: 'hsl(131 58.1% 56.3%)',
           },
         ],
       }}
@@ -574,10 +574,7 @@ Breakdown:
 Yes, more than 300Mb of "production" dependencies. The biggest offenders being:
 
 ```bash
-712K	  node_modules/bluebird
-744K	  node_modules/zod
-900K	  node_modules/bottleneck
-952K	  node_modules/pino
+[...]
 1.0M	  node_modules/markdown-it
 1.1M	  node_modules/js-beautify
 1.4M	  node_modules/@babel
@@ -647,12 +644,12 @@ After implementing various optimization techniques, we achieved notable improvem
           {
             label: 'Original',
             data: [106.8, 69],
-            backgroundColor: 'hsl(206 81.9% 65.3%)',
+            backgroundColor: 'hsl(206 86.9% 65.3%)',
           },
           {
             label: 'Final',
             data: [60.6, 18],
-            backgroundColor: 'hsl(131 38.1% 56.3%)',
+            backgroundColor: 'hsl(131 58.1% 56.3%)',
           },
         ],
       }}
@@ -660,11 +657,9 @@ After implementing various optimization techniques, we achieved notable improvem
   </div>
 </div>
 
-**Build Time Savings**:
-- Fresh build: saved 40 seconds, representing a 43% decrease in build time.
-- Regular build: significant time reduction of 51 seconds, which corresponds to an impressive **73% decrease in build time**.
-
-**Image Size Reduction**:
+**Savings**:
+  - Fresh build: saved 40 seconds, representing a 43% decrease in build time.
+  - Regular build: significant time reduction of 51 seconds, which corresponds to an impressive **73% decrease in build time**.
   - The compiled image size was reduced by 1.9GB, resulting in an **80% decrease in size**.
 
 Although these results are significant, there is still a sense of bittersweetness. It becomes apparent that many of the optimization steps undertaken should ideally be automated. Additionally, despite the achieved improvements, the final image size remains relatively large for an API.
@@ -676,6 +671,94 @@ To remember:
 - **Cleaning up dependencies** plays a crucial role
 
 
+## Final docker image
+
+```dockerfile
+# ------------------
+# package.json cache
+# ------------------
+FROM alpine:latest as deps
+
+RUN apk add --no-cache bash curl wget jq
+
+# To prevent cache invalidation from changes in fields other than dependencies
+COPY prod/clean_package_json.sh /tmp
+
+COPY package.json /tmp
+RUN /tmp/clean_package_json.sh /tmp/package.json
+
+COPY pkgs/api/package.json /tmp/api_package.json
+RUN /tmp/clean_package_json.sh /tmp/api_package.json
+
+COPY pkgs/app/package.json /tmp/app_package.json
+RUN /tmp/clean_package_json.sh /tmp/app_package.json
+
+COPY pkgs/website/package.json /tmp/website_package.json
+RUN /tmp/clean_package_json.sh /tmp/website_package.json
+
+
+# ------------------
+# New tmp image
+# ------------------
+FROM node:18.16.1-bullseye-slim AS tmp
+
+WORKDIR /app/tmp
+
+RUN mkdir -p ./pkgs/api/
+RUN mkdir -p ./pkgs/api/
+RUN mkdir -p ./pkgs/website/
+
+# Copy and install dependencies separately from the app's code
+# To leverage Docker's cache when no dependency has change
+COPY --from=deps /tmp/package.json ./package.json
+COPY --from=deps /tmp/api_package.json ./pkgs/api/package.json
+COPY --from=deps /tmp/app_package.json ./pkgs/app/package.json
+COPY --from=deps /tmp/website_package.json ./pkgs/website/package.json
+
+COPY package-lock.json  ./
+
+# Install every dependencies
+RUN true \
+  && npm install
+
+# At this stage we copy back all sources and overwrite package(s).json
+# This is expected since we already installed the dependencies we have cached what was important
+# At this point nothing can be cached anymore
+COPY . /app/tmp
+
+ENV NODE_ENV=production
+
+# Build API
+RUN true \
+  && cd pkgs/api \
+  && npm run prod:build
+
+# Clean src
+RUN true \
+  && rm -rf pkgs/api/src \
+  && rm -rf pkgs/app/src/ \
+  && rm -rf pkgs/website/src/
+
+# Clean dev dependencies
+RUN true \
+  && npm prune --omit=dev --omit=peer
+
+# ---- Web ----
+# Resulting new, minimal image
+# This image must have the minimum amount of layers
+FROM node:18.16.1-bullseye-slim as web
+
+ENV NODE_ENV=production
+
+# Do not use root to run the app
+USER node
+
+WORKDIR /app/specfy
+
+COPY --from=tmp --chown=node:node /app/tmp /app/specfy
+
+EXPOSE 8080
+```
 
 
 ## Bonus
@@ -692,6 +775,6 @@ RUN true \
 
 - If you compile a frontend in your dockerfile be sure to clean cache file, usually it's saved for reuse in the `node_modules` folder but can be deleted.
 
-- [depot.dev](http://depot.dev), while being very promising is a paid / remote solution.
+- Compiling with [depot.dev](http://depot.dev), while being very promising it's a paid / remote solution.
 
 
