@@ -1,6 +1,5 @@
 import fs from 'node:fs/promises';
 
-import type { MDXProvider } from '@mdx-js/react';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -14,15 +13,13 @@ import type { GetStaticPropsContext } from 'next';
 import Head from 'next/head';
 import { MDXRemote } from 'next-mdx-remote';
 import { serialize } from 'next-mdx-remote/serialize';
-import { Bar } from 'react-chartjs-2';
 import { PrismLight } from 'react-syntax-highlighter';
 import bash from 'react-syntax-highlighter/dist/cjs/languages/prism/bash';
 import dockerfile from 'react-syntax-highlighter/dist/cjs/languages/prism/docker';
 import js from 'react-syntax-highlighter/dist/cjs/languages/prism/javascript';
 import ts from 'react-syntax-highlighter/dist/cjs/languages/prism/typescript';
-import { oneLight } from 'react-syntax-highlighter/dist/cjs/styles/prism';
 
-import { Banner } from '@/components/Banner';
+import { mdxComponents } from '@/components/Blog';
 import type { Post } from '@/lib/blog';
 import { getAllPosts } from '@/lib/blog';
 
@@ -39,101 +36,6 @@ ChartJS.register(
   Tooltip,
   Legend
 );
-
-const H2: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
-  return <h2 className="text-2xl pt-16 mb-4 font-600">{children}</h2>;
-};
-const H3: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
-  return <h3 className="text-xl pt-8 mb-4 font-600">{children}</h3>;
-};
-const H4: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
-  return <h4 className="text-m pt-8 mb-4 font-600">{children}</h4>;
-};
-const P: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
-  return <p className="mb-4 leading-7 ">{children}</p>;
-};
-const Li: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
-  return <li className="ml-4">{children}</li>;
-};
-const Ol: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
-  return <ol className="list-decimal ml-4 mb-4">{children}</ol>;
-};
-const Ul: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
-  return <ol className="list-disc ml-4 mb-4">{children}</ol>;
-};
-const codeLanguage = /language-(\w+)/;
-const Code: React.FC<{ children?: React.ReactNode; className?: string }> = ({
-  children,
-  className,
-}) => {
-  const hasLanguage = codeLanguage.exec(className || '');
-
-  if (hasLanguage) {
-    return (
-      <div className="codeHighlight mb-8 h-full">
-        <PrismLight
-          style={oneLight}
-          wrapLines={true}
-          showLineNumbers={false}
-          language={hasLanguage[1]}
-        >
-          {children as string}
-        </PrismLight>
-      </div>
-    );
-  }
-  return (
-    <code className="px-3 py-0.5 text-xs font-mono bg-gray-100 border rounded-md">
-      {children}
-    </code>
-  );
-};
-const Link: React.FC<{ children?: React.ReactNode; href?: string }> = ({
-  children,
-  href,
-}) => {
-  return (
-    <a href={href} className="text-indigo-600">
-      {children}
-    </a>
-  );
-};
-
-const Blockquote: React.FC<{ children?: React.ReactNode }> = ({ children }) => {
-  return (
-    <blockquote className="px-4 pt-1 pb-1 text-gray-600 border text-sm rounded-md border-[#f9f8f9] italic">
-      {children}
-    </blockquote>
-  );
-};
-
-const Chart: React.FC<
-  React.ComponentProps<typeof Bar> & { children?: React.ReactNode }
-> = ({ children, ...rest }) => {
-  return (
-    <div className="">
-      <Bar
-        options={{ responsive: true, plugins: { legend: { display: false } } }}
-        {...rest}
-      ></Bar>
-    </div>
-  );
-};
-
-const components: React.ComponentProps<typeof MDXProvider>['components'] = {
-  h2: H2,
-  h3: H3,
-  h4: H4,
-  p: P,
-  li: Li,
-  ol: Ol,
-  ul: Ul,
-  code: Code,
-  a: Link,
-  blockquote: Blockquote,
-  Banner,
-  ChartBar: Chart,
-};
 
 type Props = {
   source: {
@@ -184,8 +86,8 @@ export default function PostPage({ source }: Props) {
               </div>
             </div>
 
-            <div className="border-t border-gray-200 pt-10 max-w-3xl">
-              <MDXRemote {...source} components={components} />
+            <div className="border-t border-gray-200 pt-10 max-w-4xl">
+              <MDXRemote {...source} components={mdxComponents} />
             </div>
           </div>
         </div>

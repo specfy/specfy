@@ -8,6 +8,8 @@ publishedAt: "2023-07-10"
 
 Docker is an invaluable tool for managing containers, but it can be **challenging to grasp** its inner workings, especially for newcomers. While modern hosting platforms like Vercel and Netlify often eliminate the need for writing Dockerfiles for NodeJS processes, understanding Docker optimization becomes crucial when handling your infrastructure. By achieving optimal efficiency, you can **save both time and money** in the long run.
 
+<br />
+**tl;dr** it's possible to save up to 80% of time to build and image size
 
 ## A Brief Overview of Docker's Internals
 
@@ -114,29 +116,23 @@ The output will look like this:
 
 
 **Results**:
-<div className="flex gap-8 mb-8">
-  <table className="border rounded-md text-sm h-full">
-    <thead>
-      <tr><th style={{ width: "200px"}}></th><th></th></tr>
-    </thead>
-    <tbody>
-      <tr><td className="py-2 px-4">From scratch</td><td  className="px-4">106.8s</td></tr>
-      <tr><td className="py-2 px-4">Code Modified</td><td  className="px-4">69s</td></tr>
-      <tr><td className="py-2 px-4">Cache hit</td><td className="px-4">0.9s</td></tr>
-      <tr><td className="py-2 px-4">Image Size </td><td className="px-4">2.48GB</td></tr>
-    </tbody>
-  </table>
-
+<div className="flex gap-8 mb-8 flex-col lg:flex-row">
+  <div className="grid gap-4 max-w-4xl grid-cols-2 h-fit">
+    <Stats label="From Scratch" from="106.8s" />
+    <Stats label="Partial Cache" from="69s" />
+    <Stats label="Full Cache" from="0.9s" />
+    <Stats label="Image Size" from="2.48GB" />
+  </div>
 
   <div className="grow">
     <ChartBar
       data={{
-        labels: ["From scratch", "Modified Source", "Cached"],
+        labels: ["From scratch", "Partial Cache", "Cached"],
         datasets: [
           {
             label: 'Original Time to build',
             data: [106.8, 69, 0.9],
-            backgroundColor: 'hsl(206 86.9% 65.3%)',
+            backgroundColor: 'hsl(226 70.0% 55.5%)',
           },
         ],
       }}
@@ -179,29 +175,23 @@ EXPOSE 8080
 ```
 
 **Results**:
-<div className="flex gap-8 mb-8">
-  <table className="border rounded-md text-sm h-full">
-    <thead>
-      <tr><th style={{ width: "150px"}}></th><th></th><th></th></tr>
-    </thead>
-    <tbody>
-      <tr><td className="py-2 px-4">From scratch</td><td className="px-4">106.8s</td><td className="px-4">57.5s (-47%)</td></tr>
-      <tr><td className="py-2 px-4">Code Modified</td><td className="px-4">69s</td><td className="px-4">45s (-34%)</td></tr>
-      <tr><td className="py-2 px-4">Cache hit</td><td className="px-4">0.9s</td><td className="px-4">1.0s</td></tr>
-      <tr><td className="py-2 px-4">Image Size </td><td className="px-4">2.48GB</td><td className="px-4">1.61GB (-36%)</td></tr>
-    </tbody>
-  </table>
-
+<div className="flex gap-8 mb-8 flex-col lg:flex-row">
+  <div className="grid gap-4 max-w-4xl grid-cols-2 h-fit">
+    <Stats label="From Scratch" from="106.8s" to="57.5s" pct="47" good  />
+    <Stats label="Partial Cache" from="69s" to="45s" pct="34" good  />
+    <Stats label="Full Cache" from="1.0s" />
+    <Stats label="Image Size" from="2.48GB" to="1.61GB" pct="36" good  />
+  </div>
 
   <div className="grow">
     <ChartBar
       data={{
-        labels: ["From scratch", "Modified Source"],
+        labels: ["From scratch", "Partial Cache"],
         datasets: [
           {
             label: 'Original',
             data: [106.8, 69],
-            backgroundColor: 'hsl(206 86.9% 65.3%)',
+            backgroundColor: 'hsl(226 70.0% 55.5%)',
           },
           {
             label: 'Slim image',
@@ -261,34 +251,28 @@ This is portal we were talking about, we created a second image, where the only 
 
 
 **Results**:
-<div className="flex gap-8 mb-8">
-  <table className="border rounded-md text-sm h-full">
-    <thead>
-      <tr><th style={{ width: "150px"}}></th><th></th><th></th></tr>
-    </thead>
-    <tbody>
-      <tr><td className="py-2 px-4">From scratch</td><td className="px-4">106.8s</td><td className="px-4">65.2s (-38%)</td></tr>
-      <tr><td className="py-2 px-4">Code Modified</td><td className="px-4">69s</td><td className="px-4">50s (-27%)</td></tr>
-      <tr><td className="py-2 px-4">Cache hit</td><td className="px-4">0.9s</td><td className="px-4">1.2s</td></tr>
-      <tr><td className="py-2 px-4">Image Size </td><td className="px-4">2.48GB</td><td className="px-4">1.32GB (-46%)</td></tr>
-    </tbody>
-  </table>
-
+<div className="flex gap-8 mb-8 flex-col lg:flex-row">
+  <div className="grid gap-4 max-w-4xl grid-cols-2 h-fit">
+    <Stats label="From Scratch" from="106.8s" to="65.2s" pct="38" good  />
+    <Stats label="Partial Cache" from="69s" to="50s" pct="27" good  />
+    <Stats label="Full Cache" from="1.2s" />
+    <Stats label="Image Size" from="2.48GB" to="1.32GB" pct="46" good  />
+  </div>
 
   <div className="grow">
     <ChartBar
       data={{
-        labels: ["From scratch", "Modified Source"],
+        labels: ["From scratch", "Partial Cache"],
         datasets: [
           {
             label: 'Original',
             data: [106.8, 69],
-            backgroundColor: 'hsl(206 86.9% 65.3%)',
+            backgroundColor: 'hsl(226 70.0% 55.5%)',
           },
           {
             label: 'Slim image',
             data: [57.5, 45],
-            backgroundColor: 'hsl(131 58.1% 76.3%)',
+            backgroundColor: 'hsl(255 3.7% 85.8%)',
           },
           {
             label: 'Multi-Staged',
@@ -371,39 +355,33 @@ The result is a **significant improvement** in build time, particularly when onl
 
 
 **Results**:
-<div className="flex gap-8 mb-8">
-  <table className="border rounded-md text-sm h-full">
-    <thead>
-      <tr><th style={{ width: "150px"}}></th><th></th><th></th></tr>
-    </thead>
-    <tbody>
-      <tr><td className="py-2 px-4">From scratch</td><td className="px-4">106.8s</td><td className="px-4">62.0s (-41%)</td></tr>
-      <tr><td className="py-2 px-4">Code Modified</td><td className="px-4">69s</td><td className="px-4">20s (-71%)</td></tr>
-      <tr><td className="py-2 px-4">Cache hit</td><td className="px-4">0.9s</td><td className="px-4">1.5s</td></tr>
-      <tr><td className="py-2 px-4">Image Size </td><td className="px-4">2.48GB</td><td className="px-4">1.32GB (-46%)</td></tr>
-    </tbody>
-  </table>
-
+<div className="flex gap-8 mb-8 flex-col lg:flex-row">
+  <div className="grid gap-4 max-w-4xl grid-cols-2 h-fit">
+    <Stats label="From Scratch" from="106.8s" to="62.0s" pct="41" good  />
+    <Stats label="Partial Cache" from="69s" to="20s" pct="71" good  />
+    <Stats label="Full Cache" from="1.5s" />
+    <Stats label="Image Size" from="2.48GB" to="1.32GB" pct="46" good  />
+  </div>
 
   <div className="grow">
     <ChartBar
       data={{
-        labels: ["From scratch", "Modified Source"],
+        labels: ["From scratch", "Partial Cache"],
         datasets: [
           {
             label: 'Original',
             data: [106.8, 69],
-            backgroundColor: 'hsl(206 86.9% 65.3%)',
+            backgroundColor: 'hsl(226 70.0% 55.5%)',
           },
           {
             label: 'Slim image',
             data: [57.5, 45],
-            backgroundColor: 'hsl(131 58.1% 76.3%)',
+            backgroundColor: 'hsl(255 3.7% 85.8%)',
           },
           {
             label: 'Multi-Staged',
             data: [65.2, 50],
-            backgroundColor: 'hsl(131 58.1% 76.3%)',
+            backgroundColor: 'hsl(255 3.7% 85.8%)',
           },
           {
             label: 'Cached Dependencies',
@@ -462,44 +440,38 @@ RUN true \
 With a simple one-liner, we have achieved remarkable results in terms of image size reduction. Approximately 53% or around 600MB of dependencies have been eliminated from the final image. One might say that the NodeJS ecosystem is bloated, but I still love it very much.
 
 **Results**:
-<div className="flex gap-8 mb-8">
-  <table className="border rounded-md text-sm h-full">
-    <thead>
-      <tr><th style={{ width: "150px"}}></th><th></th><th></th></tr>
-    </thead>
-    <tbody>
-      <tr><td className="py-2 px-4">From scratch</td><td className="px-4">106.8s</td><td className="px-4">60.6 (-43%)</td></tr>
-      <tr><td className="py-2 px-4">Code Modified</td><td className="px-4">69s</td><td className="px-4">18s (-73%)</td></tr>
-      <tr><td className="py-2 px-4">Cache hit</td><td className="px-4">0.9s</td><td className="px-4">0.8s</td></tr>
-      <tr><td className="py-2 px-4">Image Size </td><td className="px-4">2.48GB</td><td className="px-4">613MB (-75%)</td></tr>
-    </tbody>
-  </table>
-
+<div className="flex gap-8 mb-8 flex-col lg:flex-row">
+  <div className="grid gap-4 max-w-4xl grid-cols-2 h-fit">
+    <Stats label="From Scratch" from="106.8s" to="60.6s" pct="43" good  />
+    <Stats label="Partial Cache" from="69s" to="18s" pct="73" good  />
+    <Stats label="Full Cache" from="0.8s" />
+    <Stats label="Image Size" from="2.48GB" to="0.61GB" pct="75" good  />
+  </div>
 
   <div className="grow">
     <ChartBar
       data={{
-        labels: ["From scratch", "Modified Source"],
+        labels: ["From scratch", "Partial Cache"],
         datasets: [
           {
             label: 'Original',
             data: [106.8, 69],
-            backgroundColor: 'hsl(206 86.9% 65.3%)',
+            backgroundColor: 'hsl(226 70.0% 55.5%)',
           },
           {
             label: 'Slim image',
             data: [57.5, 45],
-            backgroundColor: 'hsl(131 58.1% 76.3%)',
+            backgroundColor: 'hsl(255 3.7% 85.8%)',
           },
           {
             label: 'Multi-Staged',
             data: [65.2, 50],
-            backgroundColor: 'hsl(131 58.1% 76.3%)',
+            backgroundColor: 'hsl(255 3.7% 85.8%)',
           },
           {
             label: 'Cached Dependencies',
             data: [62.0, 20],
-            backgroundColor: 'hsl(131 58.1% 76.3%)',
+            backgroundColor: 'hsl(255 3.7% 85.8%)',
           },
           {
             label: 'Removed devDependencies',
@@ -622,29 +594,23 @@ RUN true \
 
 After implementing various optimization techniques, we achieved notable improvements in both build time and image size. Here are the key findings:
 
-<div className="flex gap-8 mb-8">
-  <table className="border rounded-md text-sm h-full">
-    <thead>
-      <tr><th style={{ width: "150px"}}></th><th></th><th></th></tr>
-    </thead>
-    <tbody>
-      <tr><td className="py-2 px-4">From scratch</td><td className="px-4">106.8s</td><td className="px-4">60.6 (-43%)</td></tr>
-      <tr><td className="py-2 px-4">Code Modified</td><td className="px-4">69s</td><td className="px-4">18s (-73%)</td></tr>
-      <tr><td className="py-2 px-4">Cache hit</td><td className="px-4">0.9s</td><td className="px-4">0.8s</td></tr>
-      <tr><td className="py-2 px-4">Image Size </td><td className="px-4">2.48GB</td><td className="px-4">513MB (-79%)</td></tr>
-    </tbody>
-  </table>
-
+<div className="flex gap-8 mb-8 flex-col lg:flex-row">
+  <div className="grid gap-4 max-w-4xl grid-cols-2 h-fit">
+    <Stats label="From Scratch" from="106.8s" to="60.6s" pct="43" good  />
+    <Stats label="Partial Cache" from="69s" to="18s" pct="73" good  />
+    <Stats label="Full Cache" from="0.9s" />
+    <Stats label="Image Size" from="2.48GB" to="0.51GB" pct="79" good  />
+  </div>
 
   <div className="grow">
     <ChartBar
       data={{
-        labels: ["From scratch", "Modified Source"],
+        labels: ["From scratch", "Partial Cache"],
         datasets: [
           {
             label: 'Original',
             data: [106.8, 69],
-            backgroundColor: 'hsl(206 86.9% 65.3%)',
+            backgroundColor: 'hsl(226 70.0% 55.5%)',
           },
           {
             label: 'Final',
