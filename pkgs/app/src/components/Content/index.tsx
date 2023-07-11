@@ -265,7 +265,7 @@ export const ContentBlock: React.FC<{
           showLineNumbers={false}
           className={cls.code}
         >
-          {block.content[0].text}
+          {block.content?.[0].text}
         </PrismAsyncLight>
       </div>
     );

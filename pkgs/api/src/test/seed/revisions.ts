@@ -8,6 +8,7 @@ import {
   createProjectBlob,
   createBlobs,
   createRevisionActivity,
+  getTypeId,
 } from '../../models/index.js';
 import type {
   ApiBlobCreate,
@@ -73,7 +74,7 @@ export async function seedRevisions(
     const blob2 = await createComponentBlob({
       data: { created: true },
       blob: {
-        id: 'jZDC3Lsc99',
+        id: 'jZDC3Lsc97',
         name: 'PubSub',
         slug: 'pubsub',
         type: 'messaging',
@@ -180,6 +181,15 @@ export async function seedRevisions(
     const blob5 = await createDocumentBlob({
       blob: {
         ...rfcs.d1,
+        blobId: null,
+        typeId: await getTypeId({
+          data: {
+            orgId: pAnalytics.orgId,
+            projectId: pAnalytics.id,
+            type: 'rfc',
+          },
+          tx: prisma,
+        }),
         id: nanoid(),
         name: 'Use RabbitMQ to publish jobs',
         content: {
@@ -267,7 +277,7 @@ export async function seedRevisions(
         content: {
           type: 'doc',
           content: content.filter(Boolean),
-        } as any,
+        },
       },
       tx,
     });

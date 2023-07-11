@@ -12,7 +12,11 @@ import {
 import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
-import { createBlobs, createRevisionActivity } from '../../../models/index.js';
+import {
+  createBlobs,
+  createRevisionActivity,
+  v1,
+} from '../../../models/index.js';
 import {
   uploadedDocumentsToDB,
   uploadToDocuments,
@@ -38,13 +42,34 @@ function BodyVal(req: FastifyRequest) {
           z
             .object({
               path: z.string().max(255),
-              content: z.string().max(9_999_999),
+              content: z.string().max(v1.paid.upload.maxDocumentSize),
             })
             .strict()
         )
         .min(0)
-        .max(2000)
-        .nullable(),
+        .max(v1.paid.upload.maxDocuments)
+        .nullable()
+        .superRefine((blobs, ctx) => {
+          if (!blobs) {
+            return;
+          }
+
+          const paths = new Set();
+          for (let index = 0; index < blobs.length; index++) {
+            const blob = blobs[index];
+            if (paths.has(blob.path)) {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                params: { code: 'duplicate' },
+                message: 'Path already exists',
+                path: [index, 'path'],
+              });
+              continue;
+            }
+
+            paths.add(blob.path);
+          }
+        }),
     })
     .strict()
     .partial({ autoLayout: true })

@@ -16,13 +16,16 @@ const IGNORED_KEYS = [
   'orgId',
 ] as const;
 
-export const IGNORED_PROJECT_KEYS: Array<
+export const IGNORED_PROJECT_KEYS_CONST = [
+  ...IGNORED_KEYS,
+  'name',
+  'githubRepository',
+] as const;
+export const IGNORED_PROJECT_KEYS: ReadonlyArray<
   keyof NonNullable<ApiBlobProject['current']>
-> = [...IGNORED_KEYS, 'name', 'githubRepository'];
+> = IGNORED_PROJECT_KEYS_CONST;
 
-export const IGNORED_COMPONENT_KEYS: Array<
-  keyof NonNullable<ApiBlobComponent['current']>
-> = [
+export const IGNORED_COMPONENT_KEYS_CONST = [
   ...IGNORED_KEYS,
   'orgId',
   'projectId',
@@ -31,11 +34,12 @@ export const IGNORED_COMPONENT_KEYS: Array<
   'source',
   'sourceName',
   'sourcePath',
-];
+] as const;
+export const IGNORED_COMPONENT_KEYS: ReadonlyArray<
+  keyof NonNullable<ApiBlobComponent['current']>
+> = IGNORED_COMPONENT_KEYS_CONST;
 
-export const IGNORED_DOCUMENT_KEYS: Array<
-  keyof NonNullable<ApiBlobDocument['current']>
-> = [
+export const IGNORED_DOCUMENT_KEYS_CONST = [
   ...IGNORED_KEYS,
   'locked',
   'name',
@@ -43,4 +47,7 @@ export const IGNORED_DOCUMENT_KEYS: Array<
   'typeId',
   'source',
   'sourcePath',
-];
+] as const;
+export const IGNORED_DOCUMENT_KEYS: ReadonlyArray<
+  keyof NonNullable<ApiBlobDocument['current']>
+> = IGNORED_DOCUMENT_KEYS_CONST;

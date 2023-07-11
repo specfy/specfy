@@ -85,7 +85,7 @@ export async function createProject({
     activityGroupId,
   });
 
-  return tmp;
+  return update;
 }
 
 export async function updateProject({

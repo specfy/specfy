@@ -1,5 +1,4 @@
-import { Prisma } from '@prisma/client';
-import type { Activities, Documents, Users } from '@prisma/client';
+import type { Prisma, Activities, Documents, Users } from '@prisma/client';
 
 import { nanoid } from '../common/id.js';
 import { slugify } from '../common/string.js';
@@ -33,7 +32,7 @@ export async function createDocumentBlob({
       parentId: blob.blobId || null,
       type: 'document',
       typeId: blob.id,
-      current: data?.deleted ? Prisma.DbNull : (blob as any),
+      current: blob as any,
       created: false,
       deleted: false,
       ...data,

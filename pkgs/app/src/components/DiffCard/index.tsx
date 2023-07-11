@@ -69,9 +69,11 @@ export const DiffCard: React.FC<{
         {diff.blob.deleted && <Tag className={cls.fileDeleted}>deleted</Tag>}
         {diff.blob.created && <Tag className={cls.fileCreated}>new</Tag>}
 
-        <Link to={to}>
-          <Button type="text" icon={<IconExternalLink />} size="small" />
-        </Link>
+        {!diff.blob.created && (
+          <Link to={to}>
+            <Button type="text" icon={<IconExternalLink />} size="small" />
+          </Link>
+        )}
       </div>
       <div
         className={classnames(

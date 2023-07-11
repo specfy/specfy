@@ -11,6 +11,10 @@ export interface Billing {
   project: {
     max: number;
   };
+  upload: {
+    maxDocuments: number;
+    maxDocumentSize: number;
+  };
 }
 
 export const v1: Record<Plan, Billing> = {
@@ -22,6 +26,10 @@ export const v1: Record<Plan, Billing> = {
     project: {
       max: 3,
     },
+    upload: {
+      maxDocuments: 100,
+      maxDocumentSize: 1_999_999,
+    },
   },
   paid: {
     org: {
@@ -30,6 +38,10 @@ export const v1: Record<Plan, Billing> = {
     },
     project: {
       max: 500,
+    },
+    upload: {
+      maxDocuments: 300,
+      maxDocumentSize: 9_999_999,
     },
   },
 };

@@ -1,5 +1,4 @@
-import { Prisma } from '@prisma/client';
-import type { Activities, Components, Users } from '@prisma/client';
+import type { Prisma, Activities, Components, Users } from '@prisma/client';
 
 import { nanoid } from '../common/id.js';
 import { slugify } from '../common/string.js';
@@ -20,7 +19,7 @@ export async function createComponentBlob({
       parentId: blob.blobId || null,
       type: 'component',
       typeId: blob.id,
-      current: data?.deleted ? Prisma.DbNull : (blob as any),
+      current: blob as any,
       created: false,
       deleted: false,
       ...data,

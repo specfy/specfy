@@ -269,8 +269,9 @@ Revision:
   ✔ Ask for review @done(23-03-25 23:25)
     - Unit Test activity
     - Notification
+  - Path in diff card header is wrong with nested documents
   ☐ Unit test
-  - BUG: with seed PR, can't merge one document that supposedly doesn't exists, but that should have been caught by rebase check
+  ✔ BUG: with seed PR, can't merge one document that supposedly doesn't exists, but that should have been caught by rebase check @done(23-07-11 14:49)
   - BUG: when merging sometimes it pops the change again in staging, this is a desync with originalStore
 
 

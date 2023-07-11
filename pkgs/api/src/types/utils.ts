@@ -15,3 +15,5 @@ export type FilterObjObjWithKey<
 export type PartialUndefined<TType> = {
   [Properties in keyof TType]?: TType[Properties] | undefined;
 };
+
+export type Writeable<T> = { -readonly [P in keyof T]: T[P] };

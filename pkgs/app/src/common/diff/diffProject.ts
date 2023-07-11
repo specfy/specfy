@@ -1,7 +1,9 @@
+import type { IGNORED_PROJECT_KEYS_CONST } from '@specfy/api/src/models/revisions/constants';
 import { IGNORED_PROJECT_KEYS } from '@specfy/api/src/models/revisions/constants';
 import type { ApiBlobProject } from '@specfy/api/src/types/api';
+import type { Writeable } from '@specfy/api/src/types/utils';
 import type { Editor } from '@tiptap/react';
-import { diffJson, diffWordsWithSpace } from 'diff';
+import { diffWordsWithSpace } from 'diff';
 
 import type { ProjectBlobWithDiff } from '../../types/blobs';
 import { getEmptyDoc } from '../content';
@@ -25,9 +27,9 @@ export function diffProject(
       continue;
     }
 
-    const key = k as Exclude<
-      keyof Exclude<ApiBlobProject['current'], null>,
-      (typeof IGNORED_PROJECT_KEYS)[number]
+    const key = k as keyof Omit<
+      ApiBlobProject['current'],
+      Writeable<typeof IGNORED_PROJECT_KEYS_CONST>[number]
     >;
 
     // no prev and no value
@@ -56,16 +58,6 @@ export function diffProject(
       });
       continue;
     }
-    if (key === 'edges') {
-      const prev = blob.previous?.[key] ? blob.previous[key] : [];
-      const value = blob.current[key];
-
-      diffs.push({
-        key,
-        diff: diffObjectsArray(prev, value, 'to'),
-      });
-      continue;
-    }
     if (key === 'links') {
       const prev = blob.previous?.[key] ? blob.previous[key] : [];
       const value = blob.current[key];
@@ -73,16 +65,6 @@ export function diffProject(
       diffs.push({
         key,
         diff: diffObjectsArray(prev, value, 'url'),
-      });
-      continue;
-    }
-    if (key === 'display') {
-      const value = blob.current[key];
-      const prev = blob.previous?.[key] ? blob.previous[key] : {};
-
-      diffs.push({
-        key,
-        diff: diffJson(prev, value),
       });
       continue;
     }

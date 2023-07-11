@@ -1,5 +1,7 @@
+import type { IGNORED_COMPONENT_KEYS_CONST } from '@specfy/api/src/models/revisions/constants';
 import { IGNORED_COMPONENT_KEYS } from '@specfy/api/src/models/revisions/constants';
 import type { ApiBlobComponent } from '@specfy/api/src/types/api';
+import type { Writeable } from '@specfy/api/src/types/utils';
 import type { Editor } from '@tiptap/react';
 import { diffJson, diffWordsWithSpace } from 'diff';
 
@@ -21,17 +23,19 @@ export function diffComponent(
   }
 
   for (const k of Object.keys(blob.current)) {
-    if ((IGNORED_COMPONENT_KEYS as readonly string[]).includes(k)) {
+    if (
+      IGNORED_COMPONENT_KEYS.includes(k as keyof ApiBlobComponent['current'])
+    ) {
       continue;
     }
 
-    const key = k as Exclude<
-      keyof Exclude<ApiBlobComponent['current'], null>,
-      (typeof IGNORED_COMPONENT_KEYS)[number]
+    const key = k as keyof Omit<
+      ApiBlobComponent['current'],
+      Writeable<typeof IGNORED_COMPONENT_KEYS_CONST>[number]
     >;
 
-    // no prev and no value
     if (!blob.previous?.[key] && !blob.current[key]) {
+      // no prev and no value
       continue;
     }
     // no diff between prev and value
@@ -62,11 +66,11 @@ export function diffComponent(
 
       diffs.push({
         key,
-        diff: diffObjectsArray(prev, value, 'to'),
+        diff: diffObjectsArray(prev, value, 'target'),
       });
       continue;
     }
-    if (key === 'tech') {
+    if (key === 'techs' || key === 'tags') {
       const prev = blob.previous?.[key] ? blob.previous[key] : [];
       const value = blob.current[key];
 
@@ -83,6 +87,13 @@ export function diffComponent(
       diffs.push({
         key,
         diff: diffJson(prev, value),
+      });
+      continue;
+    }
+    if (key === 'show') {
+      diffs.push({
+        key,
+        diff: 'modified',
       });
       continue;
     }

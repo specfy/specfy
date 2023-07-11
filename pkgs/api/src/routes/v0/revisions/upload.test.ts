@@ -41,6 +41,7 @@ describe('POST /revisions/upload -- General', () => {
     await shouldEnforceBody(t.fetch, '/0/revisions/upload', 'POST');
   });
 });
+
 describe('POST /revisions/upload -- Documents', () => {
   it('should create one revision', async () => {
     const { token, org, project } = await seedWithProject();
@@ -267,6 +268,41 @@ describe('POST /revisions/upload -- Documents', () => {
     expect(one.current.sourcePath).toBe('/folder/');
     expect(two.current.parentId).toBe(one.current.id);
     expect(two.current.sourcePath).toBe('/folder/index.md');
+  });
+
+  it('should not allow same path', async () => {
+    const { token, org, project } = await seedWithProject();
+    const name = `test ${nanoid()}`;
+    const res = await t.fetch.post('/0/revisions/upload', {
+      token,
+      Body: {
+        blobs: [
+          {
+            path: '/readme.md',
+            content: 'folder1\n',
+          },
+          {
+            path: '/readme.md',
+            content: 'index\n',
+          },
+        ],
+        description: { content: [], type: 'doc' },
+        name: name,
+        orgId: org.id,
+        projectId: project.id,
+        source: 'github',
+        stack: null,
+      },
+    });
+
+    isValidationError(res.json);
+    expect(res.json.error.fields).toStrictEqual({
+      'blobs.1.path': {
+        code: 'duplicate',
+        message: 'Path already exists',
+        path: ['blobs', 1, 'path'],
+      },
+    });
   });
 });
 

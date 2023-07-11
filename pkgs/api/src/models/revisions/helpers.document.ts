@@ -4,7 +4,7 @@ import type { Documents } from '@prisma/client';
 import { defaultMarkdownParser } from 'prosemirror-markdown';
 
 import { nanoid } from '../../common/id.js';
-import { slugify } from '../../common/string.js';
+import { slugify, titleCase } from '../../common/string.js';
 import type {
   ApiBlobCreate,
   ApiBlobCreateDocument,
@@ -36,7 +36,7 @@ export function uploadedDocumentsToDB(
   const blobs: ApiBlobCreateDocument[] = parsed.map((doc) => {
     const prev = prevs.find((p) => p.sourcePath === doc.path);
 
-    const name = getDocumentTitle(doc, prev);
+    const name = titleCase(getDocumentTitle(doc, prev));
 
     const current: DBDocument = prev
       ? {
@@ -153,68 +153,113 @@ export function iterNode(node: Blocks) {
 export function uploadToDocuments(
   blobs: PostUploadRevision['Body']['blobs']
 ): ParsedUpload[] {
-  // ---- Check if every path has a parent folder
-  const checkedFolder = new Set<string>('/');
   const copy = [...blobs];
-  const checked: Array<
-    PostUploadRevision['Body']['blobs'][0] & { folder: string }
-  > = [];
-  while (copy.length > 0) {
-    const blob = copy.shift()!;
-    if (typeof blob === 'undefined') {
-      continue;
+
+  // Build folder hierarchy
+  const folders = new Map<
+    string,
+    PostUploadRevision['Body']['blobs'][0] | false
+  >();
+  for (const blob of blobs) {
+    if (folders.has(blob.path)) {
+      throw new Error('Same path should not happen');
     }
 
     // The specified path is already a folder
     if (blob.path.endsWith('/')) {
-      checked.push({ ...blob, folder: blob.path });
-      checkedFolder.add(blob.path);
-
+      folders.set(blob.path, blob);
       continue;
     }
 
-    // The folder has already been checked
-    const folder = path.join(path.dirname(blob.path), '/');
-    if (checkedFolder.has(folder)) {
-      checked.push({ ...blob, folder });
-
+    const dir = path.dirname(blob.path);
+    if (folders.has(dir)) {
       continue;
     }
 
-    // Exact match, unlikely with regular file upload but since it's an API it can be manually setup
-    const parent = copy.findIndex((b) => b && b.path === folder);
-    if (parent > -1) {
-      checked.push({ ...copy[parent], folder });
-      checked.push({ ...blob, folder });
-      checkedFolder.add(folder);
-      delete copy[parent];
-
-      continue;
+    const paths = blob.path.split('/');
+    let acc = '/';
+    for (const tmp of paths) {
+      if (!folders.has(acc)) {
+        folders.set(acc, false);
+      }
+      acc = path.join(acc, tmp);
     }
-
-    // There is an index.md which is good enough source
-    const index = path.join(folder, 'index.md');
-    const dup = copy.findIndex((b) => b && b.path.toLowerCase() === index);
-    if (dup > -1) {
-      checked.push({ ...copy[dup], path: folder, folder });
-      checked.push({ ...blob, folder });
-      checkedFolder.add(folder);
-      delete copy[dup];
-
-      continue;
-    }
-
-    // No match, we create an empty folder
-    checked.push({ content: '', path: folder, folder });
-    checked.push({ ...blob, folder });
-    checkedFolder.add(folder);
   }
+
+  // Create missing folder index
+  for (const [key, folder] of folders) {
+    if (folder) {
+      continue;
+    }
+
+    copy.push({
+      path: key,
+      content: `# Index`,
+    });
+  }
+
+  // // ---- Check if every path has a parent folder
+  // const checkedFolder = new Set<string>('/');
+  // const copy = [...blobs];
+  // const checked: Array<
+  //   PostUploadRevision['Body']['blobs'][0] & { folder: string }
+  // > = [];
+  // while (copy.length > 0) {
+  //   const blob = copy.shift()!;
+  //   if (typeof blob === 'undefined') {
+  //     continue;
+  //   }
+
+  //   // The specified path is already a folder
+  //   if (blob.path.endsWith('/')) {
+  //     checked.push({ ...blob, folder: blob.path });
+  //     checkedFolder.add(blob.path);
+
+  //     continue;
+  //   }
+
+  //   // The folder has already been checked
+  //   const folder = path.join(path.dirname(blob.path), '/');
+  //   if (checkedFolder.has(folder)) {
+  //     checked.push({ ...blob, folder });
+
+  //     continue;
+  //   }
+
+  //   // Exact match, unlikely with regular file upload but since it's an API it can be manually setup
+  //   const parent = copy.findIndex((b) => b && b.path === folder);
+  //   if (parent > -1) {
+  //     checked.push({ ...copy[parent], folder });
+  //     checked.push({ ...blob, folder });
+  //     checkedFolder.add(folder);
+  //     delete copy[parent];
+
+  //     continue;
+  //   }
+
+  //   // // There is an index.md which is good enough source
+  //   // const index = path.join(folder, 'index.md');
+  //   // const dup = copy.findIndex((b) => b && b.path.toLowerCase() === index);
+  //   // if (dup > -1) {
+  //   //   checked.push({ ...copy[dup], path: folder, folder });
+  //   //   checked.push({ ...blob, folder });
+  //   //   checkedFolder.add(folder);
+  //   //   delete copy[dup];
+
+  //   //   continue;
+  //   // }
+
+  //   // No match, we create an empty folder
+  //   checked.push({ content: '', path: folder, folder });
+  //   checked.push({ ...blob, folder });
+  //   checkedFolder.add(folder);
+  // }
 
   // ---- Sort
   // We also sort:
   // 1. Because Prisma does not support Deferrable fk check  https://github.com/prisma/prisma/issues/8807
   // 2. And it creates better Revisions
-  const sorted = checked.sort((a, b) => (a.path > b.path ? 1 : -1));
+  const sorted = copy.sort((a, b) => (a.path > b.path ? 1 : -1));
 
   // ---- Transform content into a ProseMirror object
   const parsed: ParsedUpload[] = [];
@@ -253,8 +298,11 @@ export function getDocumentTitle(doc: ParsedUpload, _prev?: Documents): string {
   // // It can be problematic when github is the source of truth and user change the title in the markdown but not the path, it won't be reflected.
   // if (prev) name = prev.name;
   const basename = path.basename(doc.path);
-  if (basename in allowListFilename) name = allowListFilename[basename];
-  else if (!name) name = path.basename(doc.path).replace('.md', '');
+  if (basename in allowListFilename) {
+    name = allowListFilename[basename];
+  } else if (!name) {
+    name = path.basename(doc.path).replace('.md', '');
+  }
 
   return name;
 }
