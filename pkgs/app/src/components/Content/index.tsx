@@ -115,6 +115,9 @@ export const ContentBlock: React.FC<{
 
   // Headings
   else if (block.type === 'heading') {
+    if (!block.content || block.content.length === 0) {
+      return null;
+    }
     const id = `h-${slugify(block.content.map((e) => e.text).join(''))}`;
     const els = map(block, pl);
     if (block.attrs.level === 1)

@@ -16,6 +16,9 @@ export const HeadingTree: React.FC<{ blocks: BlockLevelOne[] }> = ({
       if (blk.type !== 'heading' || blk.attrs.level > 2) {
         continue;
       }
+      if (!blk.content || blk.content.length === 0) {
+        continue;
+      }
 
       const text = blk.content.map((e) => e.text).join('');
 

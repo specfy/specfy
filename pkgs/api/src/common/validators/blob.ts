@@ -1,5 +1,7 @@
 import { z } from 'zod';
 
+import { v1 } from '../../models/billing.js';
+
 import { schemaId } from './common.js';
 import { schemaComponent } from './component.js';
 import { schemaDocument } from './document.js';
@@ -74,4 +76,4 @@ export const schemaBlobs = z
         }
       })
   )
-  .max(200);
+  .max(v1.paid.upload.maxDocuments);

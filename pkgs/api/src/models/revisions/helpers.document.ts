@@ -77,7 +77,7 @@ export function uploadedDocumentsToDB(
 
   // ---- Find blobs parents to construct hierarchy
   blobs.forEach((blob) => {
-    const folder = path.join(path.dirname(blob.current.sourcePath!), '/');
+    const folder = path.join(path.dirname(blob.current.sourcePath!));
     const parent = blobs.find(
       (b) => b.current.sourcePath === folder && b.typeId !== blob.typeId
     );
@@ -192,74 +192,23 @@ export function uploadToDocuments(
       continue;
     }
 
+    const title = titleCase(path.basename(key));
     copy.push({
       path: key,
-      content: `# Index`,
+      content: `# ${title}`,
     });
   }
-
-  // // ---- Check if every path has a parent folder
-  // const checkedFolder = new Set<string>('/');
-  // const copy = [...blobs];
-  // const checked: Array<
-  //   PostUploadRevision['Body']['blobs'][0] & { folder: string }
-  // > = [];
-  // while (copy.length > 0) {
-  //   const blob = copy.shift()!;
-  //   if (typeof blob === 'undefined') {
-  //     continue;
-  //   }
-
-  //   // The specified path is already a folder
-  //   if (blob.path.endsWith('/')) {
-  //     checked.push({ ...blob, folder: blob.path });
-  //     checkedFolder.add(blob.path);
-
-  //     continue;
-  //   }
-
-  //   // The folder has already been checked
-  //   const folder = path.join(path.dirname(blob.path), '/');
-  //   if (checkedFolder.has(folder)) {
-  //     checked.push({ ...blob, folder });
-
-  //     continue;
-  //   }
-
-  //   // Exact match, unlikely with regular file upload but since it's an API it can be manually setup
-  //   const parent = copy.findIndex((b) => b && b.path === folder);
-  //   if (parent > -1) {
-  //     checked.push({ ...copy[parent], folder });
-  //     checked.push({ ...blob, folder });
-  //     checkedFolder.add(folder);
-  //     delete copy[parent];
-
-  //     continue;
-  //   }
-
-  //   // // There is an index.md which is good enough source
-  //   // const index = path.join(folder, 'index.md');
-  //   // const dup = copy.findIndex((b) => b && b.path.toLowerCase() === index);
-  //   // if (dup > -1) {
-  //   //   checked.push({ ...copy[dup], path: folder, folder });
-  //   //   checked.push({ ...blob, folder });
-  //   //   checkedFolder.add(folder);
-  //   //   delete copy[dup];
-
-  //   //   continue;
-  //   // }
-
-  //   // No match, we create an empty folder
-  //   checked.push({ content: '', path: folder, folder });
-  //   checked.push({ ...blob, folder });
-  //   checkedFolder.add(folder);
-  // }
 
   // ---- Sort
   // We also sort:
   // 1. Because Prisma does not support Deferrable fk check  https://github.com/prisma/prisma/issues/8807
   // 2. And it creates better Revisions
   const sorted = copy.sort((a, b) => (a.path > b.path ? 1 : -1));
+
+  // Remove empty root
+  if (sorted.length > 0 && sorted[0].path === '/') {
+    sorted.shift();
+  }
 
   // ---- Transform content into a ProseMirror object
   const parsed: ParsedUpload[] = [];
@@ -288,7 +237,8 @@ export function getDocumentTitle(doc: ParsedUpload, _prev?: Documents): string {
   // Remove the title in document since we will display it independently
   if (
     doc.content.content.length > 0 &&
-    doc.content.content[0].type === 'heading'
+    doc.content.content[0].type === 'heading' &&
+    doc.content.content[0].content
   ) {
     name = doc.content.content[0].content[0].text;
     doc.content.content.shift();

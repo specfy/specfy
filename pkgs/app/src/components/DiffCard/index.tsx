@@ -26,12 +26,13 @@ import cls from './index.module.scss';
 export const DiffCard: React.FC<{
   diff: BlobAndDiffs;
   url: string;
+  defaultHide?: boolean;
   onRevert: (
     type: ApiBlobWithPrevious['type'],
     typeId: ApiBlobWithPrevious['typeId'],
     key: string
   ) => void;
-}> = ({ diff, url }) => {
+}> = ({ diff, url, defaultHide }) => {
   const using = (diff.blob.current || diff.blob.previous) as Allowed;
 
   const [type, to] = useMemo<[string, string]>(() => {
@@ -47,7 +48,9 @@ export const DiffCard: React.FC<{
   }, [diff]);
 
   // Actions
-  const [hide, setHide] = useState<boolean>(diff.blob.deleted);
+  const [hide, setHide] = useState<boolean>(
+    diff.blob.deleted || defaultHide === true
+  );
   const handleHideShow = () => {
     setHide(!hide);
   };
@@ -83,17 +86,19 @@ export const DiffCard: React.FC<{
           diff.blob.created && cls.added
         )}
       >
-        <div className={cls.diffContent}>
-          {diff.blob.type === 'component' && (
-            <DiffCardComponent diff={diff as ComponentBlobWithDiff} />
-          )}
-          {diff.blob.type === 'document' && (
-            <DiffCardDocument diff={diff as DocumentBlobWithDiff} />
-          )}
-          {diff.blob.type === 'project' && (
-            <DiffCardProject diff={diff as ProjectBlobWithDiff} />
-          )}
-        </div>
+        {!hide && (
+          <div className={cls.diffContent}>
+            {diff.blob.type === 'component' && (
+              <DiffCardComponent diff={diff as ComponentBlobWithDiff} />
+            )}
+            {diff.blob.type === 'document' && (
+              <DiffCardDocument diff={diff as DocumentBlobWithDiff} />
+            )}
+            {diff.blob.type === 'project' && (
+              <DiffCardProject diff={diff as ProjectBlobWithDiff} />
+            )}
+          </div>
+        )}
       </div>
     </Card>
   );

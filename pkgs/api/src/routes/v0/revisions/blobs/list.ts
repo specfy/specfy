@@ -2,6 +2,7 @@ import type { FastifyPluginCallback } from 'fastify';
 
 import { prisma } from '../../../../db/index.js';
 import { getRevision } from '../../../../middlewares/getRevision.js';
+import { sortBlobsByInsertion } from '../../../../models/revisions/helpers.js';
 import type {
   ApiBlobWithPrevious,
   ListRevisionBlobs,
@@ -19,17 +20,16 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         },
         include: { Previous: true },
         orderBy: { createdAt: 'asc' },
-        take: 100,
-        skip: 0,
       });
 
       if (list.length <= 0) {
         return res.status(200).send({ data: [] });
-        return;
       }
 
+      const sorted = sortBlobsByInsertion(rev.blobs, list) as typeof list;
+
       return res.status(200).send({
-        data: list.map((blob) => {
+        data: sorted.map((blob) => {
           const ex: ApiBlobWithPrevious = {
             id: blob.id,
             parentId: blob.parentId,

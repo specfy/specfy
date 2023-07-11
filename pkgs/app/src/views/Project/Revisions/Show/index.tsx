@@ -69,6 +69,7 @@ export const ProjectRevisionsShow: React.FC<{
   };
 
   // diff
+  const [computing, setComputing] = useState(true);
   const [diffs, setDiffs] = useState<BlobAndDiffs[]>([]);
 
   // --------- Data fetching
@@ -250,6 +251,7 @@ export const ProjectRevisionsShow: React.FC<{
     }
 
     setDiffs(_diffs);
+    setComputing(false);
   }, [blobs, rev]);
 
   // --------- Content
@@ -338,7 +340,7 @@ export const ProjectRevisionsShow: React.FC<{
           )}
         </div>
 
-        {resBlobs.isLoading && (
+        {computing && (
           <div>
             <Skeleton active title={false} paragraph={{ rows: 3 }}></Skeleton>
           </div>
@@ -348,22 +350,25 @@ export const ProjectRevisionsShow: React.FC<{
           <ReviewBar rev={rev} qp={qp} />
         )}
 
-        <div className={cls.staged}>
-          {diffs.length > 0 ? (
-            diffs.map((diff) => {
-              return (
-                <DiffCard
-                  key={diff.blob.typeId}
-                  diff={diff}
-                  url={to}
-                  onRevert={() => null}
-                />
-              );
-            })
-          ) : (
-            <div className={cls.noDiff}>Empty diff...</div>
-          )}
-        </div>
+        {!computing && (
+          <div className={cls.staged}>
+            {diffs.length > 0 ? (
+              diffs.map((diff) => {
+                return (
+                  <DiffCard
+                    key={diff.blob.typeId}
+                    diff={diff}
+                    url={to}
+                    onRevert={() => null}
+                    defaultHide={diffs.length > 20}
+                  />
+                );
+              })
+            ) : (
+              <div className={cls.noDiff}>Empty diff...</div>
+            )}
+          </div>
+        )}
       </Container.Left2Third>
       <Container.Right1Third>
         <div className={cls.sidebar}>

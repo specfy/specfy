@@ -6,6 +6,7 @@ import type {
   Projects,
 } from '@prisma/client';
 
+import { sortBlobsByInsertion } from '../models/revisions/helpers.js';
 import {
   isDocumentBlob,
   isComponentBlob,
@@ -30,12 +31,12 @@ export async function findAllBlobsWithParent(
     where: {
       id: { in: blobIds },
     },
-    orderBy: { createdAt: 'asc' },
-    take: 200,
   });
 
+  const sorted = sortBlobsByInsertion(blobIds, blobs);
+
   // Update all blobs
-  for (const blob of blobs) {
+  for (const blob of sorted) {
     if (!blob.parentId) {
       list.push({ blob, parent: null });
       continue;

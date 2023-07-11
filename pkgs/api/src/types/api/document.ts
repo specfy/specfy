@@ -48,7 +48,7 @@ export interface BlockHardBreak {
 // ----- Headings
 export interface BlockHeading {
   type: 'heading';
-  content: BlockText[];
+  content?: BlockText[] | undefined;
   attrs: BlockDefaultAttrs & { level: number };
   marks?: MarkDiff[];
 }

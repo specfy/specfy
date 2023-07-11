@@ -1,4 +1,4 @@
-import type { Prisma } from '@prisma/client';
+import type { Blobs, Prisma } from '@prisma/client';
 
 import type { ApiBlobCreate } from '../../types/api/revisions.js';
 
@@ -42,4 +42,19 @@ export async function hasProjectComponentChanges(
       return component.edges.find((edge) => componentIds.includes(edge.target));
     }) !== undefined
   );
+}
+
+/**
+ * Allow to keep order of Blobs insertion because it's required to perform an insert since we can't delay Foreign Key check with prisma.
+ */
+export function sortBlobsByInsertion(
+  blobIds: string[],
+  blobs: Blobs[]
+): Blobs[] {
+  const orderMap: Record<string, Blobs> = {};
+  for (const blob of blobs) {
+    orderMap[blobIds.indexOf(blob.id)] = blob;
+  }
+
+  return Object.values(orderMap);
 }

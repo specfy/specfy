@@ -119,7 +119,8 @@ const blockHeading = z
       .strict(),
     content: z.array(blockText),
   })
-  .strict();
+  .strict()
+  .partial({ content: true }); // Can happen with just a hash (e.g: "# ")
 
 // BlockHorizontalRule
 const blockHorizontalRule = z
