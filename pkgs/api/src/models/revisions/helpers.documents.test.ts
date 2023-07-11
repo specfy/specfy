@@ -180,4 +180,17 @@ describe('uploadedDocumentsToDB', () => {
     expect(res.blobs[3].current.parentId).toBe(res.blobs[2].current.id);
     expect(res.blobs[4].current.parentId).toBe(res.blobs[3].current.id);
   });
+
+  it('should handle unordered files', () => {
+    const res = uploadedDocumentsToDB(
+      uploadToDocuments([
+        { content: '# My Foobar', path: '/folder/foobar.md' },
+        { content: '# My Title', path: '/folder' },
+      ]),
+      [],
+      payload
+    );
+
+    expect(res.blobs).toHaveLength(2);
+  });
 });

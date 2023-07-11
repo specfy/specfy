@@ -2,3 +2,8 @@ build/
 *.scss.d.ts
 
 dist/
+out/
+.vercel/
+.next/
+coverage
+.react-email/

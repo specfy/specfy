@@ -162,11 +162,16 @@ export function uploadToDocuments(
   >();
   for (const blob of blobs) {
     if (folders.has(blob.path)) {
-      throw new Error('Same path should not happen');
+      const defined = folders.get(blob.path);
+      if (defined !== false) {
+        throw new Error('Same path should not happen');
+      }
+      folders.set(blob.path, blob);
+      continue;
     }
 
-    // The specified path is already a folder
-    if (blob.path.endsWith('/')) {
+    // The specified path is already a folder (most probably)
+    if (!blob.path.endsWith('.md')) {
       folders.set(blob.path, blob);
       continue;
     }

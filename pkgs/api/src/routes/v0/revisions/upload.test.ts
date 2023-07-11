@@ -51,7 +51,7 @@ describe('POST /revisions/upload -- Documents', () => {
       Body: {
         blobs: [
           {
-            path: '/',
+            path: '/Readme.md',
             content: 'Hello world\n',
           },
         ],
@@ -95,13 +95,13 @@ describe('POST /revisions/upload -- Documents', () => {
           updatedAt: expect.any(String),
           id: expect.any(String),
           locked: false,
-          name: '',
+          name: 'Readme',
           orgId: org.id,
           parentId: null,
           projectId: project.id,
-          slug: '',
+          slug: 'readme',
           source: 'github',
-          sourcePath: '/',
+          sourcePath: '/Readme.md',
           tldr: '',
           type: 'doc',
           typeId: null,
@@ -125,6 +125,37 @@ describe('POST /revisions/upload -- Documents', () => {
         },
       },
     ]);
+  });
+
+  it('should forbid to create root level', async () => {
+    const { token, org, project } = await seedWithProject();
+    const name = `test ${nanoid()}`;
+    const res = await t.fetch.post('/0/revisions/upload', {
+      token,
+      Body: {
+        blobs: [
+          {
+            path: '/',
+            content: 'Hello world\n',
+          },
+        ],
+        description: { content: [], type: 'doc' },
+        name: name,
+        orgId: org.id,
+        projectId: project.id,
+        source: 'github',
+        stack: null,
+      },
+    });
+
+    isValidationError(res.json);
+    expect(res.json.error.fields).toStrictEqual({
+      'blobs.0.path': {
+        code: 'forbidden',
+        message: 'Root level path ("/") is not allowed',
+        path: ['blobs', 0, 'path'],
+      },
+    });
   });
 
   it('should create one revision with intermediate folder', async () => {
@@ -167,12 +198,12 @@ describe('POST /revisions/upload -- Documents', () => {
     const one = resBlobs.json.data[0] as ApiBlobCreateDocument;
     const two = resBlobs.json.data[1] as ApiBlobCreateDocument;
     expect(one.current.parentId).toBeNull();
-    expect(one.current.sourcePath).toBe('/folder/');
+    expect(one.current.sourcePath).toBe('/folder');
     expect(two.current.parentId).toBe(one.current.id);
     expect(two.current.sourcePath).toBe('/folder/foobar.md');
   });
 
-  it('should use index.md as intermediate folder if present', async () => {
+  it('should not create folder even unordered', async () => {
     const { token, org, project } = await seedWithProject();
     const name = `test ${nanoid()}`;
     const res = await t.fetch.post('/0/revisions/upload', {
@@ -180,62 +211,13 @@ describe('POST /revisions/upload -- Documents', () => {
       Body: {
         blobs: [
           {
-            path: '/folder/foobar.md',
-            content: 'foobar\n',
-          },
-          {
-            path: '/folder/index.md',
+            path: '/folder/readme.md',
             content: 'index\n',
           },
-        ],
-        description: { content: [], type: 'doc' },
-        name: name,
-        orgId: org.id,
-        projectId: project.id,
-        source: 'github',
-        stack: null,
-      },
-    });
-
-    isSuccess(res.json);
-    expect(res.statusCode).toBe(200);
-    expect(res.json).toStrictEqual({
-      id: expect.any(String),
-    });
-
-    // Get blobs
-    const resBlobs = await t.fetch.get(`/0/revisions/${res.json.id}/blobs`, {
-      token,
-      Querystring: { org_id: org.id, project_id: project.id },
-    });
-
-    isSuccess(resBlobs.json);
-    expect(resBlobs.statusCode).toBe(200);
-    expect(resBlobs.json.data).toHaveLength(2);
-
-    const one = resBlobs.json.data[0] as ApiBlobCreateDocument;
-    const two = resBlobs.json.data[1] as ApiBlobCreateDocument;
-    expect(one.current.parentId).toBeNull();
-    expect(one.current.sourcePath).toBe('/folder/');
-    expect(two.current.parentId).toBe(one.current.id);
-    expect(two.current.sourcePath).toBe('/folder/foobar.md');
-  });
-
-  it('should not use index.md if folder is specified', async () => {
-    const { token, org, project } = await seedWithProject();
-    const name = `test ${nanoid()}`;
-    const res = await t.fetch.post('/0/revisions/upload', {
-      token,
-      Body: {
-        blobs: [
           {
-            path: '/folder/',
+            path: '/folder',
             content: 'folder1\n',
           },
-          {
-            path: '/folder/index.md',
-            content: 'index\n',
-          },
         ],
         description: { content: [], type: 'doc' },
         name: name,
@@ -265,9 +247,9 @@ describe('POST /revisions/upload -- Documents', () => {
     const one = resBlobs.json.data[0] as ApiBlobCreateDocument;
     const two = resBlobs.json.data[1] as ApiBlobCreateDocument;
     expect(one.current.parentId).toBeNull();
-    expect(one.current.sourcePath).toBe('/folder/');
+    expect(one.current.sourcePath).toBe('/folder');
     expect(two.current.parentId).toBe(one.current.id);
-    expect(two.current.sourcePath).toBe('/folder/index.md');
+    expect(two.current.sourcePath).toBe('/folder/readme.md');
   });
 
   it('should not allow same path', async () => {
@@ -301,6 +283,37 @@ describe('POST /revisions/upload -- Documents', () => {
         code: 'duplicate',
         message: 'Path already exists',
         path: ['blobs', 1, 'path'],
+      },
+    });
+  });
+
+  it('should disallow binary', async () => {
+    const { token, org, project } = await seedWithProject();
+    const name = `test ${nanoid()}`;
+    const res = await t.fetch.post('/0/revisions/upload', {
+      token,
+      Body: {
+        blobs: [
+          {
+            path: '/readme',
+            content: Buffer.from('index\n') as unknown as string,
+          },
+        ],
+        description: { content: [], type: 'doc' },
+        name: name,
+        orgId: org.id,
+        projectId: project.id,
+        source: 'github',
+        stack: null,
+      },
+    });
+
+    isValidationError(res.json);
+    expect(res.json.error.fields).toStrictEqual({
+      'blobs.0.content': {
+        code: 'invalid_type',
+        message: 'Expected string, received object',
+        path: ['blobs', 0, 'content'],
       },
     });
   });

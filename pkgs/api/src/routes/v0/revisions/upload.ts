@@ -66,6 +66,15 @@ function BodyVal(req: FastifyRequest) {
               });
               continue;
             }
+            if (blob.path === '/') {
+              ctx.addIssue({
+                code: z.ZodIssueCode.custom,
+                params: { code: 'forbidden' },
+                message: 'Root level path ("/") is not allowed',
+                path: [index, 'path'],
+              });
+              continue;
+            }
 
             paths.add(blob.path);
           }
