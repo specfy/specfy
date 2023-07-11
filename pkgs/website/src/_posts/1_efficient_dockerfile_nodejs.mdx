@@ -625,12 +625,12 @@ After implementing various optimization techniques, we achieved notable improvem
 
 **Savings**:
   - Fresh build: saved 40 seconds, representing a 43% decrease in build time.
-  - Regular build: significant time reduction of 51 seconds, which corresponds to an impressive **73% decrease in build time**.
+  - Regular build:  time reduction of 51 seconds, which corresponds to an impressive **73% decrease in build time**.
   - The compiled image size was reduced by 1.9GB, resulting in an **80% decrease in size**.
 
 Although these results are significant, there is still a sense of bittersweetness. It becomes apparent that many of the optimization steps undertaken should ideally be automated. Additionally, despite the achieved improvements, the final image size remains relatively large for an API.
 
-To remember:
+**To remember**:
 - Modifications to the repository that are not ignored by `.dockerignore` will break the cache, necessitating a complete rebuild.
 - **Deleting files** during the build will **not save size**
 - Utilizing a **multi-stage build** approach simplifies the process of eliminating unnecessary layers.

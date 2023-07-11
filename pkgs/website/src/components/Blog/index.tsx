@@ -168,7 +168,7 @@ const Stats: React.FC<{
   good?: true;
 }> = ({ from, to, label, pct, good }) => {
   return (
-    <div className="py-4 px-5 border rounded min-w-[170px]">
+    <div className="py-4 px-5 border rounded min-w-[200px]">
       <div className="text-sm text-gray-700">{label}</div>
       <div className="flex justify-between gap-2">
         <div className="inline-flex text-indigo-600 items-center gap-2">
@@ -183,7 +183,7 @@ const Stats: React.FC<{
         {pct && (
           <div
             className={classNames(
-              'text-xs inline-flex rounded-md px-2 grow-0 items-center',
+              'text-xs inline-flex rounded-md px-2 grow-0 items-center h-[25px]',
               good && 'bg-emerald-100 text-emerald-700'
             )}
           >
