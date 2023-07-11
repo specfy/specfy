@@ -1,5 +1,5 @@
-import * as Popover from '@radix-ui/react-popover';
 import type { ComputedNode, NodeData } from '@specfy/api/src/common/flow/types';
+import { Tooltip } from 'antd';
 import classNames from 'classnames';
 import type { ChangeEventHandler, KeyboardEventHandler } from 'react';
 import { useMemo, useEffect, memo, useRef, useState } from 'react';
@@ -14,8 +14,7 @@ import {
 } from 'reactflow';
 
 import { ComponentIcon } from '../../Component/Icon';
-import type { TechSearchItem } from '../../StackSearch/TechSearch';
-import { TechSearch } from '../../StackSearch/TechSearch';
+import { TechPopover } from '../TechPopover';
 import type { OnNodesChangeSuper } from '../helpers';
 
 import cls from './index.module.scss';
@@ -223,7 +222,6 @@ export const PreviewNode: React.FC<{
 }> = ({ node, info = true, editable = false, onNodesChange }) => {
   const input = useRef<HTMLInputElement>(null);
   const [value, setValue] = useState(node.data.name);
-  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (document.activeElement === input.current) {
@@ -247,14 +245,6 @@ export const PreviewNode: React.FC<{
     }
   };
 
-  const onTechChange = (tech: TechSearchItem | null) => {
-    onNodesChange!([{ id: node.id, type: 'tech', tech }]);
-    setOpen(false);
-  };
-  const onOpenChange = (val: boolean) => {
-    setOpen(val);
-  };
-
   return (
     <div className={classNames(cls.node, cls.preview)}>
       {info && (
@@ -270,34 +260,33 @@ export const PreviewNode: React.FC<{
       )}
       <div className={cls.title}>
         {editable ? (
-          <Popover.Root onOpenChange={onOpenChange} open={open}>
-            <Popover.Trigger asChild>
-              <button className={cls.iconEdit}>
-                <ComponentIcon data={node.data} large noEmpty />
-              </button>
-            </Popover.Trigger>
-            <Popover.Portal>
-              <Popover.Content className="rx_popoverContent" sideOffset={5}>
-                <TechSearch
-                  selected={node.data.techId || node.data.typeId}
-                  onPick={onTechChange}
-                />
-                <Popover.Arrow className="rx_popoverArrow" />
-              </Popover.Content>
-            </Popover.Portal>
-          </Popover.Root>
+          <TechPopover
+            id={node.id}
+            techId={node.data.techId || node.data.typeId}
+            data={node.data}
+            onNodesChange={onNodesChange}
+          />
         ) : (
           <ComponentIcon data={node.data} large />
         )}
-        <input
-          ref={input}
-          readOnly={!editable || node.data.type === 'project'}
-          className={classNames(cls.label, editable && cls.editable)}
-          value={value}
-          onChange={onChange}
-          onBlur={onBlur}
-          onKeyDown={onKeyDown}
-        />
+        <Tooltip
+          title={
+            editable &&
+            node.data.type === 'project' &&
+            "Can't edit Project name"
+          }
+          placement="top"
+        >
+          <input
+            ref={input}
+            readOnly={!editable || node.data.type === 'project'}
+            className={classNames(cls.label, editable && cls.editable)}
+            value={value}
+            onChange={onChange}
+            onBlur={onBlur}
+            onKeyDown={onKeyDown}
+          />
+        </Tooltip>
       </div>
     </div>
   );

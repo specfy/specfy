@@ -1,6 +1,6 @@
 import type { ComponentType } from '@specfy/api/src/types/db';
 import { IconLinkOff } from '@tabler/icons-react';
-import { Button } from 'antd';
+import { Button, Tooltip } from 'antd';
 import classNames from 'classnames';
 import type { ChangeEventHandler } from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -172,11 +172,13 @@ export const TechSearch: React.FC<{
         />
         {selected && (
           <div className={cls.actions}>
-            <Button
-              icon={<IconLinkOff />}
-              type="ghost"
-              onClick={() => onPick(null)}
-            />
+            <Tooltip title={'Make it a service'} placement="top">
+              <Button
+                icon={<IconLinkOff />}
+                type="ghost"
+                onClick={() => onPick(null)}
+              />
+            </Tooltip>
           </div>
         )}
       </div>

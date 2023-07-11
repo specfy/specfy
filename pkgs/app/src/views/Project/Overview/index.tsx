@@ -72,10 +72,12 @@ export const ProjectOverview: React.FC<{
 
           <ProjectLinks />
 
-          <div className={cls.block}>
-            <h4>Technical Aspect</h4>
-            <TechnicalAspects params={params} />
-          </div>
+          {components && components.length > 0 && (
+            <div className={cls.block}>
+              <h4>Technical Aspect</h4>
+              <TechnicalAspects params={params} />
+            </div>
+          )}
 
           <div className={cls.block}>
             <h4>Team</h4>

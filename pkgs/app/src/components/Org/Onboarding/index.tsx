@@ -4,14 +4,17 @@ import { Button, Typography } from 'antd';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useLocalStorage } from 'react-use';
 
 import { useListPerms, useListProjects } from '../../../api';
+import { Flex } from '../../Flex';
 
 import cls from './index.module.scss';
 
 export const OrgOnboarding: React.FC<{ org: ApiOrg }> = ({ org }) => {
   const projects = useListProjects({ org_id: org.id });
   const perms = useListPerms({ org_id: org.id });
+  const [done, setDone] = useLocalStorage(`orgOnboarding-${org.id}`, false);
 
   const [link] = useState(org.githubInstallationId);
   const [project, setProject] = useState(false);
@@ -32,18 +35,25 @@ export const OrgOnboarding: React.FC<{ org: ApiOrg }> = ({ org }) => {
     setTeam(perms.data.data.length > 1);
   }, [perms.isFetching]);
 
-  if (link && project && team) {
+  if ((link && project && team) || done) {
     return null;
   }
 
   return (
     <div className={cls.onboarding}>
-      <div className={cls.header}>
-        <Typography.Title level={2}>Welcome</Typography.Title>
-        <div className={cls.sub}>
-          Follow the steps to get ready to use Specfy
+      <Flex className={cls.header} justifyContent="space-between">
+        <div>
+          <Typography.Title level={2}>Welcome</Typography.Title>
+          <div className={cls.sub}>
+            Follow the steps to get ready to use Specfy
+          </div>
         </div>
-      </div>
+        <div>
+          <Button onClick={() => setDone(true)} size="small" type="text">
+            skip
+          </Button>
+        </div>
+      </Flex>
 
       <div className={cls.item}>
         <div className={cls.line}></div>

@@ -1,10 +1,7 @@
 @import "../../styles/theme";
 
 .updatedAt {
-  margin-top: -2px;
   margin-bottom: $p-xl;
-
   font-size: $font-s;
-  font-style: italic;
-  color: $gray-400;
+  color: var(--text1);
 }

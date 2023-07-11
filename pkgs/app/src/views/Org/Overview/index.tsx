@@ -3,6 +3,7 @@ import type { ApiOrg } from '@specfy/api/src/types/api';
 import { Skeleton } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useLocalStorage } from 'react-use';
 
 import { useListProjects } from '../../../api';
 import { useGetFlow } from '../../../api/flows';
@@ -25,6 +26,7 @@ export const OrgOverview: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   const res = useListProjects({ org_id: params.org_id });
   const resFlow = useGetFlow({ org_id: params.org_id, flow_id: org.flowId });
   const [flow, setFlow] = useState<ComputedFlow>();
+  const [done] = useLocalStorage(`orgOnboarding-${org.id}`, false);
 
   useEffect(() => {
     if (!resFlow.data) {
@@ -48,7 +50,7 @@ export const OrgOverview: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
     <>
       <Helmet title={`${org.name} ${titleSuffix}`} />
       <Container.Left2Third>
-        <OrgOnboarding org={org} key={org.id} />
+        {!done && <OrgOnboarding org={org} key={org.id} />}
         <Card large seamless>
           <ListProjects orgId={params.org_id}></ListProjects>
         </Card>

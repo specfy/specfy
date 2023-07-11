@@ -13,7 +13,7 @@ $min-height: 34px;
 
   line-height: $line-height-m;
 
-  .label {
+  .title {
     padding-top: 2px;
     font-size: $font-s;
     font-weight: 500;
@@ -35,16 +35,16 @@ $min-height: 34px;
       margin: -5px -8px;
     }
   }
-
 }
 
 .item {
   display: inline-flex;
-  gap: $p-s;
+  gap: $p;
   align-items: center;
 
-  min-width: 120px;
-  padding: $p-s $p-xl;
+  min-width: 134px;
+  max-width: 134px;
+  padding: $p-s $p-l;
 
   font-size: $font-s;
   color: var(--text);
@@ -59,5 +59,10 @@ $min-height: 34px;
 
   >svg {
     font-size: $font-s;
+  }
+
+  .label {
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 }

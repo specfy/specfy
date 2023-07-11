@@ -33,35 +33,8 @@
 
         height: 0;
 
-        color: #adb5bd;
+        color: var(--text1);
       }
     }
   }
 }
-
-// .toolbar {
-//   position: absolute;
-//   z-index: 1;
-//   top: 0;
-//   right: -24px;
-
-//   display: flex;
-//   flex-direction: column;
-//   gap: $p;
-
-//   min-height: 40px;
-//   padding: $p-m - 1px 0;
-
-//   background-color: $blue-50;
-
-//   button {
-//     color: $sky-200;
-//     background-color: transparent;
-//     border: none;
-//     box-shadow: none;
-
-//     &.isUpdated {
-//       color: $blue-400;
-//     }
-//   }
-// }

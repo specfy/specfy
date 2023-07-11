@@ -1,0 +1,6 @@
+@import "../../../styles/theme";
+@import "../../../styles/mixin";
+
+.iconEdit {
+  @include focusable
+}

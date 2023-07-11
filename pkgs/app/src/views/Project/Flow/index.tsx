@@ -16,6 +16,7 @@ import type {
   OnEdgesChangeSuper,
   OnNodesChangeSuper,
 } from '../../../components/Flow/helpers';
+import { onNodesChangeProject } from '../../../components/Flow/helpers';
 import { useEdit } from '../../../hooks/useEdit';
 import type { RouteProject } from '../../../types/routes';
 
@@ -49,71 +50,7 @@ export const ProjectFlow: React.FC<{
 
   // ---- Event Handlers
   const onNodesChange = useCallback<OnNodesChangeSuper>(
-    (changes) => {
-      for (const change of changes) {
-        if (change.type === 'remove') {
-          storeComponents.remove(change.id);
-        } else if (change.type === 'position') {
-          if (change.position) {
-            const comp = storeComponents.select(change.id)!;
-            storeComponents.updateField(change.id, 'display', {
-              ...comp.display,
-              pos: change.position,
-            });
-          }
-        } else if (change.type === 'group') {
-          const comp = storeComponents.select(change.id)!;
-          storeComponents.update({
-            ...comp,
-            inComponent: change.parentId,
-            display: {
-              ...comp.display,
-              pos: change.position,
-            },
-          });
-        } else if (change.type === 'ungroup') {
-          storeComponents.updateField(change.id, 'inComponent', null);
-        } else if (change.type === 'rename') {
-          storeComponents.updateField(change.id, 'name', change.name);
-        } else if (change.type === 'tech') {
-          const comp = storeComponents.select(change.id)!;
-          if (!change.tech) {
-            storeComponents.update({
-              ...comp,
-              typeId: null,
-              techId: null,
-              type: 'service',
-            });
-          } else if (change.tech.type === 'project') {
-            storeComponents.update({
-              ...comp,
-              typeId: change.tech.key,
-              type: 'project',
-              name: change.tech.name,
-            });
-          } else {
-            storeComponents.update({
-              ...comp,
-              techId: change.tech.key,
-              type: change.tech.type,
-              name:
-                comp.name === 'untitled' || !comp.name
-                  ? change.tech.name
-                  : comp.name,
-            });
-          }
-        } else if (change.type === 'dimensions' && change.dimensions) {
-          const comp = storeComponents.select(change.id)!;
-          storeComponents.update({
-            ...comp,
-            display: {
-              ...comp.display,
-              size: change.dimensions,
-            },
-          });
-        }
-      }
-    },
+    (changes) => onNodesChangeProject(storeComponents)(changes),
     [components]
   );
   const onEdgesChange = useCallback<OnEdgesChangeSuper>(

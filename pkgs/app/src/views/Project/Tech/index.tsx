@@ -108,7 +108,7 @@ export const Tech: React.FC<{
 
           <h3>Used in</h3>
 
-          <ComponentLine title="Components" comps={usedBy} params={params} />
+          <ComponentLine title="Services" comps={usedBy} params={params} />
         </Card>
       </Container.Left2Third>
       <Container.Right1Third>

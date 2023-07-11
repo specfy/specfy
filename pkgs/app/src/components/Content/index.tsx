@@ -4,7 +4,7 @@ import type {
   MarkDiff,
 } from '@specfy/api/src/types/api';
 import { IconArrowBack } from '@tabler/icons-react';
-import { Checkbox, Typography } from 'antd';
+import { Checkbox } from 'antd';
 import classnames from 'classnames';
 import { useMemo, useState } from 'react';
 import { Diff, Hunk, tokenize, markEdits } from 'react-diff-view';
@@ -331,9 +331,7 @@ export const ContentDoc: React.FC<{
     if (noPlaceholder) {
       return null;
     }
-    return (
-      <Typography.Text type="secondary">Write something...</Typography.Text>
-    );
+    return <div className={cls.placeholder}>Write something ...</div>;
   }
 
   return (

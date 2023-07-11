@@ -15,7 +15,11 @@ export const ComponentIcon: React.FC<{
   if (data.type === 'project') {
     return (
       <div className={classNames(cls.icon, cls.project, large && cls.large)}>
-        <AvatarAuto name={data.name || ''} size="small" shape="square" />
+        <AvatarAuto
+          name={data.name || ''}
+          size={large ? 'default' : 'small'}
+          shape="square"
+        />
       </div>
     );
   }

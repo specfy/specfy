@@ -27,10 +27,10 @@ export const ComponentItem: React.FC<{
       key={comp.id}
       to={`/${comp.orgId}/${comp.projectId}/c/${comp.id}-${comp.slug}`}
     >
-      <span className={classnames(cls.item, className)}>
+      <div className={classnames(cls.item, className)}>
         <ComponentIcon data={comp} />
-        {comp.name}
-      </span>
+        <div className={cls.label}>{comp.name}</div>
+      </div>
     </Link>
   );
 };
@@ -45,10 +45,10 @@ export const TechItem: React.FC<{
 
   return (
     <Link to={`/${params.org_id}/${params.project_slug}/t/${slug}`}>
-      <span className={classnames(cls.item, className)}>
+      <div className={classnames(cls.item, className)}>
         <ComponentIcon data={{ techId }} />
-        {supp?.name || techId}
-      </span>
+        <div className={cls.label}>{supp?.name || techId}</div>
+      </div>
     </Link>
   );
 };
@@ -78,7 +78,7 @@ const InternalLine: React.FC<
 
   return (
     <div className={cls.line} ref={ref}>
-      <div className={cls.label}>{title}</div>
+      <div className={cls.title}>{title}</div>
       <div
         className={classnames(cls.values, editing && cls.clickToEdit)}
         onClick={handleClick}
@@ -123,10 +123,10 @@ export const ComponentLine: React.FC<Line & { comps?: ApiComponent[] }> = ({
             key={c.id}
             to={`/${params.org_id}/${params.project_slug}/c/${c.id}-${c.slug}`}
           >
-            <span className={classnames(cls.item)}>
+            <div className={classnames(cls.item)}>
               <ComponentIcon data={c} />
-              {c.name}
-            </span>
+              <div className={cls.label}>{c.name}</div>
+            </div>
           </Link>
         );
       })}

@@ -47,7 +47,7 @@ input {
   --bg10: #242d3c;
 
   // OTHER
-  --border1: var(--mauve3);
+  --border1: var(--mauve4);
   --border2: var(--mauve7);
   --accent1: var(--indigo4);
   --accent2: var(--indigo9);
@@ -69,6 +69,8 @@ body {
   font: $font $font-text;
   color: var(--text);
   background-color: $gray-2;
+
+  -webkit-font-smoothing: antialiased;
 }
 
 button {

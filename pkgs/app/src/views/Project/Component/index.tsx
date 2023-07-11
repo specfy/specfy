@@ -3,7 +3,7 @@ import type { ComputedFlow } from '@specfy/api/src/common/flow/types';
 import type { ApiComponent, ApiProject } from '@specfy/api/src/types/api';
 import { IconDotsVertical } from '@tabler/icons-react';
 import type { MenuProps } from 'antd';
-import { App, Button, Dropdown, Tag, Typography } from 'antd';
+import { Tooltip, App, Button, Dropdown, Tag, Typography } from 'antd';
 import classnames from 'classnames';
 import type { MenuClickEventHandler } from 'rc-menu/lib/interface';
 import type React from 'react';
@@ -23,7 +23,10 @@ import { ContentDoc } from '../../../components/Content';
 import { EditorMini } from '../../../components/Editor/Mini';
 import { Flex } from '../../../components/Flex';
 import { Flow, FlowWrapper } from '../../../components/Flow';
+import { TechPopover } from '../../../components/Flow/TechPopover';
 import { Toolbar } from '../../../components/Flow/Toolbar';
+import type { OnNodesChangeSuper } from '../../../components/Flow/helpers';
+import { onNodesChangeProject } from '../../../components/Flow/helpers';
 import { FakeInput } from '../../../components/Input';
 import { NotFound } from '../../../components/NotFound';
 import { UpdatedAt } from '../../../components/UpdatedAt';
@@ -39,7 +42,6 @@ export const ComponentView: React.FC<{
   const { getNodes, viewportInitialized } = useReactFlow();
   const navigate = useNavigate();
 
-  // TODO: filter RFC
   const [comp, setComp] = useState<ApiComponent>();
   const params = useParams<Partial<RouteComponent>>() as RouteComponent;
 
@@ -103,6 +105,10 @@ export const ComponentView: React.FC<{
     }
   };
 
+  const onNodesChange: OnNodesChangeSuper = (changes) => {
+    onNodesChangeProject(storeComponents)(changes);
+  };
+
   if (!comp) {
     return <NotFound />;
   }
@@ -114,30 +120,48 @@ export const ComponentView: React.FC<{
       <Container.Left2Third>
         <Card padded seamless large>
           <div className={cls.content}>
-            <div className={cls.titleEdit}>
-              {!isEditing && (
-                <h2>
-                  <Flex gap="l">
-                    <ComponentIcon data={comp} large />
-                    {comp.name}
-                  </Flex>
-                </h2>
-              )}
-              {isEditing && (
-                <FakeInput.H2
-                  size="large"
-                  value={comp.name}
-                  placeholder="Title..."
-                  onChange={(e) => {
-                    storeComponents.updateField(
-                      comp.id,
-                      'name',
-                      e.target.value
-                    );
-                  }}
-                />
-              )}
-              <div className={cls.actions}>
+            <Flex alignItems="center" justifyContent="space-between">
+              <Flex alignItems="center" gap="l">
+                {isEditing ? (
+                  <TechPopover
+                    id={comp.id}
+                    techId={comp.techId || comp.typeId}
+                    data={comp}
+                    onNodesChange={onNodesChange}
+                  />
+                ) : (
+                  <ComponentIcon data={comp} large />
+                )}
+
+                <Tooltip
+                  title={
+                    isEditing &&
+                    comp.type === 'project' &&
+                    "Can't edit Project name"
+                  }
+                  placement="top"
+                >
+                  {!isEditing || comp.type === 'project' ? (
+                    <h2>
+                      <Flex gap="l">{comp.name}</Flex>
+                    </h2>
+                  ) : (
+                    <FakeInput.H2
+                      size="large"
+                      value={comp.name}
+                      placeholder="Title..."
+                      onChange={(e) => {
+                        storeComponents.updateField(
+                          comp.id,
+                          'name',
+                          e.target.value
+                        );
+                      }}
+                    />
+                  )}
+                </Tooltip>
+              </Flex>
+              <Flex alignItems="center">
                 <Tag
                   className={classnames(
                     cls.tagType,
@@ -155,8 +179,8 @@ export const ComponentView: React.FC<{
                     />
                   </Dropdown>
                 </div>
-              </div>
-            </div>
+              </Flex>
+            </Flex>
             <UpdatedAt time={comp.updatedAt} />
 
             <Typography>
@@ -182,9 +206,6 @@ export const ComponentView: React.FC<{
             params={params}
           />
         </Card>
-        {/* <Card padded>
-          <ListRFCs project={proj}></ListRFCs>
-        </Card> */}
       </Container.Left2Third>
       <Container.Right1Third>
         <div>

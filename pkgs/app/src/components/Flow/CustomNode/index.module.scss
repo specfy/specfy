@@ -1,7 +1,6 @@
 @import "../../../styles/theme";
 @import "../../../styles/mixin";
 
-
 .node {
   position: relative;
 
@@ -191,10 +190,6 @@
       font-size: $font;
     }
   }
-}
-
-.iconEdit {
-  @include focusable
 }
 
 .pos {

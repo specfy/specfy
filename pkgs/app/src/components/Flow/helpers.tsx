@@ -1,6 +1,7 @@
 import classNames from 'classnames';
 import type { Edge, EdgeChange, Node, NodeChange } from 'reactflow';
 
+import type { ComponentsState } from '../../common/store';
 import type { TechSearchItem } from '../StackSearch/TechSearch';
 
 import cls from './index.module.scss';
@@ -98,3 +99,74 @@ export function highlightNode({
 
   return { nodes: upNodes, edges: upEdges };
 }
+
+export const onNodesChangeProject: (
+  store: ComponentsState
+) => OnNodesChangeSuper = (store) => {
+  return (changes) => {
+    for (const change of changes) {
+      if (change.type === 'remove') {
+        store.remove(change.id);
+      } else if (change.type === 'position') {
+        if (change.position) {
+          const comp = store.select(change.id)!;
+          store.updateField(change.id, 'display', {
+            ...comp.display,
+            pos: change.position,
+          });
+        }
+      } else if (change.type === 'group') {
+        const comp = store.select(change.id)!;
+        store.update({
+          ...comp,
+          inComponent: change.parentId,
+          display: {
+            ...comp.display,
+            pos: change.position,
+          },
+        });
+      } else if (change.type === 'ungroup') {
+        store.updateField(change.id, 'inComponent', null);
+      } else if (change.type === 'rename') {
+        store.updateField(change.id, 'name', change.name);
+      } else if (change.type === 'tech') {
+        const comp = store.select(change.id)!;
+        if (!change.tech) {
+          store.update({
+            ...comp,
+            typeId: null,
+            techId: null,
+            type: 'service',
+          });
+        } else if (change.tech.type === 'project') {
+          store.update({
+            ...comp,
+            typeId: change.tech.key,
+            type: 'project',
+            techId: null,
+            name: change.tech.name,
+          });
+        } else {
+          store.update({
+            ...comp,
+            techId: change.tech.key,
+            type: change.tech.type,
+            name:
+              comp.name === 'untitled' || !comp.name
+                ? change.tech.name
+                : comp.name,
+          });
+        }
+      } else if (change.type === 'dimensions' && change.dimensions) {
+        const comp = store.select(change.id)!;
+        store.update({
+          ...comp,
+          display: {
+            ...comp.display,
+            size: change.dimensions,
+          },
+        });
+      }
+    }
+  };
+};
