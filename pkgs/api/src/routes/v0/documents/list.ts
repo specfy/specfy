@@ -6,6 +6,7 @@ import { validationError } from '../../../common/errors.js';
 import { schemaId, schemaOrgId } from '../../../common/validators/common.js';
 import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
+import { v1 } from '../../../models/billing.js';
 import type { Pagination, ListDocuments } from '../../../types/api/index.js';
 import { DocumentType } from '../../../types/db/index.js';
 
@@ -74,7 +75,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
           { parentId: { sort: 'asc', nulls: 'first' } },
         ],
         // TODO: add limit/offset to qp
-        take: 200,
+        take: v1.paid.upload.maxDocuments,
         skip: 0,
       });
 

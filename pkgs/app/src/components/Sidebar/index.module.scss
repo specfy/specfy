@@ -15,8 +15,10 @@
 .sidebar {
   z-index: 100;
 
+  overflow: hidden;
+
   width: 250px;
-  height: calc(100vh - $height-header);
+  height: calc(100vh);
 
   background-color: #fff;
 
@@ -45,8 +47,12 @@
 }
 
 .inner {
+  display: flex;
+  flex-direction: column;
+
   width: 250px;
   height: 100%;
+
   border-right: 1px solid var(--border1);
 }
 
@@ -123,5 +129,14 @@
 
 
 .content {
+  position: relative;
+
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+
+  height: 100%;
+
   transition: opacity 0.25s $trst-smooth;
 }

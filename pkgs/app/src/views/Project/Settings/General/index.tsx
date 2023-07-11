@@ -9,6 +9,7 @@ import { deleteProject, updateProject } from '../../../../api';
 import { linkToGithubRepo } from '../../../../api/github';
 import { isError } from '../../../../api/helpers';
 import { useListKeys } from '../../../../api/keys';
+import { API_HOSTNAME, IS_PROD } from '../../../../common/envs';
 import { i18n } from '../../../../common/i18n';
 import { useOrgStore } from '../../../../common/store';
 import { slugify, titleSuffix } from '../../../../common/string';
@@ -114,6 +115,15 @@ export const SettingsGeneral: React.FC<{
     }
 
     return '•'.repeat(resKeys.data.data[0].key.length);
+  }, [resKeys]);
+
+  const manualCli = useMemo<string>(() => {
+    return `SPECFY_HOSTNAME=${API_HOSTNAME.replace(
+      'localhost',
+      '127.0.0.1'
+    )} node ./dist/cli.js run -d docs -s / -o ${proj.orgId} -p ${proj.id} -t ${
+      resKeys.data?.data[0].key
+    }`;
   }, [resKeys]);
 
   return (
@@ -236,6 +246,17 @@ export const SettingsGeneral: React.FC<{
                   }
                 />
               </div>
+              {!IS_PROD && (
+                <div>
+                  <div>Manual deploy command</div>
+                  <Input
+                    readOnly
+                    value={manualCli}
+                    style={{ width: '350px' }}
+                    suffix={<CopyButton value={manualCli || ''} />}
+                  />
+                </div>
+              )}
             </Flex>
           </Card.Content>
         </Form>
