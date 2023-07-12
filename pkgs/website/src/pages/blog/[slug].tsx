@@ -54,7 +54,7 @@ export default function PostPage({ source }: Props) {
     '@context': 'https://schema.org',
     '@type': 'NewsArticle',
     headline: title,
-    image: [`https://specfy.io/${post.slug}.png`],
+    image: [`https://specfy.io/${post.socialImage}`],
     datePublished: date.toISOString(),
     author: [
       {

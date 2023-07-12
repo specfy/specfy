@@ -8,6 +8,7 @@ export type Post = {
   slug: string;
   title: string;
   description: string;
+  socialImage: string;
   publishedAt: string;
   filePath: string;
 };
@@ -29,6 +30,7 @@ export async function initPosts() {
         slug: data.slug,
         title: data.title,
         description: data.description,
+        socialImage: data.socialImage,
         publishedAt: data.publishedAt,
         filePath: fp,
       };
