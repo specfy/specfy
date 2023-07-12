@@ -108,7 +108,7 @@ describe('PATCH /flows/:flow_id', () => {
             id: {
               display: {
                 pos: { x: 1, y: 2 },
-                size: { width: 100, height: 32 },
+                size: { width: 130, height: 40 },
               },
             },
           },

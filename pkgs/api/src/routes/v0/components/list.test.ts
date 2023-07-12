@@ -59,7 +59,7 @@ describe('GET /components', () => {
         blobId: expect.any(String),
         description: { content: [], type: 'doc' },
         display: {
-          size: { height: 32, width: 100 },
+          size: { height: 40, width: 130 },
           pos: { x: 20, y: 10 },
           zIndex: 1,
         },

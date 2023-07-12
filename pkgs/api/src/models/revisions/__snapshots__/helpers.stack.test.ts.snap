@@ -17,8 +17,8 @@ exports[`uploadedStackToDB > should output new blobs once and nothing the second
           "y": 0,
         },
         "size": {
-          "height": 32,
-          "width": 100,
+          "height": 40,
+          "width": 130,
         },
         "zIndex": 1,
       },
@@ -65,8 +65,8 @@ exports[`uploadedStackToDB > should output new blobs once and nothing the second
           "y": 0,
         },
         "size": {
-          "height": 32,
-          "width": 100,
+          "height": 40,
+          "width": 130,
         },
         "zIndex": 1,
       },
