@@ -19,7 +19,7 @@ describe('uploadToDocuments', () => {
     const res = uploadToDocuments([
       { content: '# My Title', path: '/README.md' },
     ]);
-    expect(res).toMatchInlineSnapshot([
+    expect(res).toMatchObject([
       {
         content: {
           content: [
