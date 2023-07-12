@@ -74,7 +74,7 @@ ENV NODE_ENV=production
 # Bash is just to be able to log inside the image and have a decent shell
 # OpenSSL is here to handle HTTPS requests correctly
 RUN true \
-  && apt update && apt-get install -y bash curl openssl \
+  && apt update && apt-get install -y bash curl openssl git \
   && rm -rf /var/lib/apt/lists/* \
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false
 
