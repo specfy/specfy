@@ -44,6 +44,7 @@ export const TechnicalAspects: React.FC<{
       messaging: [],
       network: [],
       tool: [],
+      storage: [],
       others: [],
     };
 
@@ -71,7 +72,7 @@ export const TechnicalAspects: React.FC<{
     }
 
     setGroups(_groups);
-    setTechs(Array.from(_techs.values()));
+    setTechs(Array.from(_techs.values()).sort());
     setEmtpy(
       !(Object.keys(_groups) as Array<keyof typeof _groups>).find(
         (k) => _groups[k]!.length > 0

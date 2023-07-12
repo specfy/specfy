@@ -64,5 +64,6 @@ $min-height: 34px;
   .label {
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
   }
 }

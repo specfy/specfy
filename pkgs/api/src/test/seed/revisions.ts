@@ -101,7 +101,7 @@ export async function seedRevisions(
         display: {
           zIndex: 3,
           pos: { x: -10, y: 90 },
-          size: { width: 100, height: 32 },
+          size: { width: 130, height: 40 },
         },
         inComponent: components.gce.id,
         techs: [],

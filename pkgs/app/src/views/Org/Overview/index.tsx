@@ -63,7 +63,7 @@ export const OrgOverview: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
             ) : (
               <FlowWrapper>
                 <Flow flow={flow} readonly />
-                <Toolbar position="bottom">
+                <Toolbar bottom>
                   <Toolbar.Zoom />
                 </Toolbar>
               </FlowWrapper>

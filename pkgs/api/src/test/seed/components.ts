@@ -117,7 +117,7 @@ export async function seedComponents(
           display: {
             zIndex: 3,
             pos: { x: 20, y: 130 },
-            size: { width: 100, height: 32 },
+            size: { width: 130, height: 40 },
           },
           inComponent: gcp.id,
           edges: [],
@@ -139,7 +139,7 @@ export async function seedComponents(
           display: {
             zIndex: 3,
             pos: { x: 450, y: 190 },
-            size: { width: 100, height: 32 },
+            size: { width: 130, height: 40 },
           },
           inComponent: null,
           edges: [],
@@ -161,7 +161,7 @@ export async function seedComponents(
           display: {
             zIndex: 3,
             pos: { x: 450, y: 250 },
-            size: { width: 100, height: 32 },
+            size: { width: 130, height: 40 },
           },
           inComponent: null,
           edges: [],
@@ -183,7 +183,7 @@ export async function seedComponents(
           display: {
             zIndex: 3,
             pos: { x: 450, y: 310 },
-            size: { width: 100, height: 32 },
+            size: { width: 130, height: 40 },
           },
           inComponent: null,
           edges: [],
@@ -205,7 +205,7 @@ export async function seedComponents(
           display: {
             zIndex: 3,
             pos: { x: 20, y: 60 },
-            size: { width: 100, height: 32 },
+            size: { width: 130, height: 40 },
           },
           inComponent: gcp.id,
           edges: [],
@@ -227,7 +227,7 @@ export async function seedComponents(
           display: {
             zIndex: 3,
             pos: { x: 20, y: 10 },
-            size: { width: 100, height: 32 },
+            size: { width: 130, height: 40 },
           },
           inComponent: gce.id,
           edges: [],
@@ -249,7 +249,7 @@ export async function seedComponents(
           display: {
             zIndex: 3,
             pos: { x: 100, y: 190 },
-            size: { width: 100, height: 32 },
+            size: { width: 130, height: 40 },
           },
           inComponent: kube.id,
           edges: [],
@@ -271,7 +271,7 @@ export async function seedComponents(
           display: {
             zIndex: 3,
             pos: { x: 450, y: 90 },
-            size: { width: 100, height: 32 },
+            size: { width: 130, height: 40 },
           },
           inComponent: null,
           edges: [],
@@ -293,7 +293,7 @@ export async function seedComponents(
           display: {
             zIndex: 3,
             pos: { x: 450, y: 40 },
-            size: { width: 100, height: 32 },
+            size: { width: 130, height: 40 },
           },
           inComponent: null,
           edges: [],
@@ -328,7 +328,7 @@ export async function seedComponents(
           display: {
             zIndex: 3,
             pos: { x: 40, y: 70 },
-            size: { width: 100, height: 32 },
+            size: { width: 130, height: 40 },
           },
           inComponent: kube.id,
           edges: [
@@ -417,7 +417,7 @@ export async function seedComponents(
           display: {
             zIndex: 4,
             pos: { x: 70, y: 10 },
-            size: { width: 100, height: 32 },
+            size: { width: 130, height: 40 },
           },
           inComponent: kube.id,
           edges: [
@@ -477,7 +477,7 @@ export async function seedComponents(
           display: {
             zIndex: 3,
             pos: { x: 100, y: 130 },
-            size: { width: 100, height: 32 },
+            size: { width: 130, height: 40 },
           },
           inComponent: kube.id,
           edges: [
@@ -561,7 +561,7 @@ export async function seedComponents(
           display: {
             zIndex: 3,
             pos: { x: 100, y: 250 },
-            size: { width: 100, height: 32 },
+            size: { width: 130, height: 40 },
           },
           inComponent: kube.id,
           edges: [
@@ -832,7 +832,7 @@ export async function seedComponent(user: Users, org: Orgs, project: Projects) {
       display: {
         zIndex: 1,
         pos: { x: 20, y: 10 },
-        size: { width: 100, height: 32 },
+        size: { width: 130, height: 40 },
       },
       techs: [],
     },
@@ -860,7 +860,7 @@ export function getBlobComponent(org: Orgs, project: Projects): DBComponent {
     display: {
       zIndex: 1,
       pos: { x: 0, y: 0 },
-      size: { width: 100, height: 32 },
+      size: { width: 130, height: 40 },
     },
     techs: [],
     inComponent: null,

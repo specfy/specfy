@@ -1,14 +1,12 @@
-import type { GetFlow } from '@specfy/api/src/types/api';
+import type { GetFlow, PatchFlow } from '@specfy/api/src/types/api';
 import { useQuery } from '@tanstack/react-query';
+
+import { queryClient } from '../common/query';
 
 import { fetchApi } from './fetch';
 import { APIError, isError } from './helpers';
 
-export function useGetFlow({
-  flow_id,
-  org_id,
-  project_id,
-}: GetFlow['Params'] & GetFlow['Querystring']) {
+export function useGetFlow({ flow_id, org_id, project_id }: GetFlow['QP']) {
   return useQuery({
     queryKey: ['getFlow', org_id, project_id, flow_id],
     queryFn: async (): Promise<GetFlow['Success']> => {
@@ -23,4 +21,21 @@ export function useGetFlow({
       return json;
     },
   });
+}
+
+export async function updateFlow(
+  { flow_id, org_id, project_id }: PatchFlow['QP'],
+  data: PatchFlow['Body']
+): Promise<PatchFlow['Reply']> {
+  const { res, json } = await fetchApi<PatchFlow>(
+    `/flows/${flow_id}`,
+    { body: data, qp: { org_id, project_id } },
+    'PATCH'
+  );
+
+  if (res.status === 200) {
+    void queryClient.invalidateQueries(['getFlow', org_id]);
+  }
+
+  return json;
 }

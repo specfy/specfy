@@ -38,13 +38,17 @@ export const EdgeRelation: React.FC<
       <td className={cls.source}>{source?.data.name}</td>
 
       <td className={cls.to}>
-        <Tooltip title="Click to change direction" placement="left">
+        <Tooltip
+          title={!readonly && 'Click to change direction'}
+          placement="left"
+        >
           {edge.data!.write && edge.data!.read && (
             <Button
               className={cls.direction}
               size="small"
               type="ghost"
               onClick={onClick}
+              disabled={readonly}
             >
               <IconArrowsExchange />
               <span className={cls.english}>read/write</span>
@@ -56,6 +60,7 @@ export const EdgeRelation: React.FC<
               size="small"
               type="ghost"
               onClick={onClick}
+              disabled={readonly}
             >
               <IconArrowNarrowLeft />
               <span className={cls.english}>read</span>
@@ -67,6 +72,7 @@ export const EdgeRelation: React.FC<
               size="small"
               type="ghost"
               onClick={onClick}
+              disabled={readonly}
             >
               <IconArrowNarrowRight />
               <span className={cls.english}>write</span>

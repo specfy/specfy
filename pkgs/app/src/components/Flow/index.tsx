@@ -30,15 +30,18 @@ let movingEdgeId: string;
 
 export const Flow: React.FC<{
   flow: ComputedFlow;
-  readonly?: boolean;
   highlight?: string;
   downlightOther?: boolean;
   keepHighlightOnSelect?: boolean;
 
+  // Readonly
+  readonly?: boolean;
+  deletable?: boolean;
+  connectable?: boolean;
+
   // Events
   onNodesChange?: OnNodesChangeSuper;
   onEdgesChange?: OnEdgesChangeSuper;
-  onConnect?: ReactFlowProps['onConnect'];
   onCreateNode?: (
     type: 'hosting' | 'service',
     position: { x: number; y: number }
@@ -47,11 +50,12 @@ export const Flow: React.FC<{
   flow,
   highlight,
   readonly,
+  deletable = true,
+  connectable = true,
   downlightOther,
   keepHighlightOnSelect,
   onNodesChange,
   onEdgesChange,
-  onConnect,
   onCreateNode,
 }) => {
   const { getIntersectingNodes, getNode } = useReactFlow();
@@ -92,8 +96,8 @@ export const Flow: React.FC<{
           find.targetHandle = edge.targetHandle;
           find.data = edge.data;
         }
-        find.deletable = !readonly;
-        find.updatable = !readonly;
+        find.deletable = !readonly && deletable;
+        find.updatable = !readonly && connectable;
 
         return find;
       });
@@ -111,9 +115,9 @@ export const Flow: React.FC<{
           find.position = node.position;
           find.data = node.data;
         }
-        find.deletable = !readonly;
+        find.deletable = !readonly && deletable;
         find.draggable = !readonly;
-        find.connectable = !readonly;
+        find.connectable = !readonly && connectable;
         find.focusable = true;
         find.selectable = true;
 
@@ -330,7 +334,12 @@ export const Flow: React.FC<{
     // So we need to replicate the change in reactflow first, then in our store
     setEdges((els) => updateEdge(prevEdge, newEdge, els));
 
-    onEdgesChange!([
+    if (!onEdgesChange) {
+      console.error('Edge changed but no function was registered');
+      return;
+    }
+
+    onEdgesChange([
       {
         type: 'changeTarget',
         id: prevEdge.id,
@@ -348,6 +357,20 @@ export const Flow: React.FC<{
       return conn.source === movingEdgeId && conn.sourceHandle!.startsWith('s');
     }
     return conn.target !== conn.source && conn.targetHandle!.startsWith('t');
+  };
+
+  const onAddEdge: ReactFlowProps['onConnect'] = (conn) => {
+    if (!onEdgesChange) {
+      console.error('Edge changed but no function was registered');
+      return;
+    }
+
+    onEdgesChange([
+      {
+        type: 'create',
+        conn,
+      },
+    ]);
   };
 
   return (
@@ -385,7 +408,7 @@ export const Flow: React.FC<{
         // // Edges
         onEdgeUpdateStart={onEdgeUpdateStart}
         onEdgeUpdate={onEdgeUpdate}
-        onConnect={onConnect}
+        onConnect={onAddEdge}
         isValidConnection={isValidConnection}
         // // Drag
         onInit={setReactFlowInstance}

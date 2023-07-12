@@ -5,7 +5,7 @@
   pointer-events: none;
 
   position: absolute;
-  z-index: 10;
+  z-index: 100;
 
   display: flex;
   gap: $p-l;
@@ -36,8 +36,11 @@
   &.left {
     align-items: center;
     justify-content: flex-start;
-    height: 95%;
-    background-color: transparent;
+  }
+
+  &.right {
+    right: 0;
+    justify-content: right;
   }
 }
 
@@ -70,6 +73,8 @@
 }
 
 .add {
+  cursor: pointer;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -80,4 +85,8 @@
 
   background-color: #fff;
   border-radius: $border-radius;
+
+  &:hover {
+    background-color: var(--bg2);
+  }
 }

@@ -149,31 +149,31 @@ export async function seedProjects(users: Users[]): Promise<{
             b01tMzwd5A: {
               display: {
                 pos: { x: 20, y: 10 },
-                size: { width: 100, height: 32 },
+                size: { width: 130, height: 40 },
               },
             },
             b02tMzwd5A: {
               display: {
                 pos: { x: 220, y: -20 },
-                size: { width: 100, height: 32 },
+                size: { width: 130, height: 40 },
               },
             },
             b03tMzwd5A: {
               display: {
                 pos: { x: 200, y: 70 },
-                size: { width: 100, height: 32 },
+                size: { width: 130, height: 40 },
               },
             },
             b04tMzwd5A: {
               display: {
                 pos: { x: -150, y: 40 },
-                size: { width: 100, height: 32 },
+                size: { width: 130, height: 40 },
               },
             },
             b05tMzwd5A: {
               display: {
                 pos: { x: 0, y: 120 },
-                size: { width: 100, height: 32 },
+                size: { width: 130, height: 40 },
               },
             },
           },

@@ -62,12 +62,8 @@ export async function deleteProject(
   );
 
   if (res.status === 200) {
-    void queryClient.invalidateQueries(['listProjects', opts.org_id]);
-    void queryClient.invalidateQueries([
-      'getProject',
-      opts.org_id,
-      opts.project_slug,
-    ]);
+    void queryClient.refetchQueries(['listProjects', opts.org_id]);
+    void queryClient.invalidateQueries(['getProject', opts.org_id]);
   }
 
   return json;

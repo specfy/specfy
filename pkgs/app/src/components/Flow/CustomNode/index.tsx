@@ -84,7 +84,8 @@ const CustomNode: React.FC<NodeProps<NodeData>> = ({
       className={classNames(
         cls.node,
         selected && cls.selected,
-        data.type === 'hosting' && cls.hosting
+        data.type === 'hosting' && cls.hosting,
+        isConnecting && cls.isConnecting
       )}
     >
       <NodeResizer

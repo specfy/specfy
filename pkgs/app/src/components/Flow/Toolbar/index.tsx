@@ -20,14 +20,24 @@ import { PreviewNode } from '../CustomNode';
 
 import cls from './index.module.scss';
 
-const ToolbarContainer: React.FC<{
-  position: 'bottom' | 'left' | 'top';
+const Container: React.FC<{
+  top?: true;
+  left?: true;
+  right?: true;
+  bottom?: true;
   visible?: boolean;
   children: React.ReactNode;
-}> = ({ children, position, visible }) => {
+}> = ({ children, top, left, right, bottom, visible }) => {
   return (
     <div
-      className={classnames(cls.menu, cls[position], visible && cls.visible)}
+      className={classnames(
+        cls.menu,
+        top && cls.top,
+        left && cls.left,
+        right && cls.right,
+        bottom && cls.bottom,
+        visible && cls.visible
+      )}
       data-toolbar
     >
       {children}
@@ -35,7 +45,13 @@ const ToolbarContainer: React.FC<{
   );
 };
 
-const ToolbarReadonly: React.FC = () => {
+const Inner: React.FC<{
+  children: React.ReactNode;
+}> = ({ children }) => {
+  return <div className={cls.toolbar}>{children}</div>;
+};
+
+const Readonly: React.FC = () => {
   const edit = useEdit();
   const [label, setLabel] = useState('Read-Only');
   const onClick = () => {
@@ -63,10 +79,6 @@ const ToolbarReadonly: React.FC = () => {
       </button>
     </div>
   );
-};
-
-const ToolbarMain: React.FC = () => {
-  return <div className={cls.toolbar}></div>;
 };
 
 const ToolbarZoom: React.FC = () => {
@@ -100,7 +112,7 @@ const ToolbarZoom: React.FC = () => {
   );
 };
 
-const ToolbarFullscreen: React.FC<{ project: ApiProject }> = ({ project }) => {
+const Fullscreen: React.FC<{ project: ApiProject }> = ({ project }) => {
   return (
     <div className={cls.toolbar}>
       <Tooltip title="Fullscreen" placement="bottom">
@@ -112,10 +124,11 @@ const ToolbarFullscreen: React.FC<{ project: ApiProject }> = ({ project }) => {
   );
 };
 
-const ToolbarAddComponents: React.FC = () => {
+const AddComponents: React.FC = () => {
   const previewService = useRef<HTMLDivElement>(null);
   const previewHosting = useRef<HTMLDivElement>(null);
 
+  // NB: it's not a button because the dragEvent does not work somehow
   const onDragStart = (
     event: React.DragEvent<HTMLDivElement>,
     nodeType: 'hosting' | 'service'
@@ -175,6 +188,8 @@ const ToolbarAddComponents: React.FC = () => {
         className={cls.add}
         onDragStart={(event) => onDragStart(event, 'service')}
         draggable
+        role="button"
+        tabIndex={0}
       >
         <IconCode /> Service
       </div>
@@ -182,6 +197,8 @@ const ToolbarAddComponents: React.FC = () => {
         className={cls.add}
         onDragStart={(event) => onDragStart(event, 'hosting')}
         draggable
+        role="button"
+        tabIndex={0}
       >
         <IconBox /> Host
       </div>
@@ -189,17 +206,17 @@ const ToolbarAddComponents: React.FC = () => {
   );
 };
 
-export type ToolbarProps = typeof ToolbarContainer & {
+export type ToolbarProps = typeof Container & {
   Zoom: typeof ToolbarZoom;
-  Fullscreen: typeof ToolbarFullscreen;
-  Main: typeof ToolbarMain;
-  Readonly: typeof ToolbarReadonly;
-  AddComponents: typeof ToolbarAddComponents;
+  Fullscreen: typeof Fullscreen;
+  Readonly: typeof Readonly;
+  AddComponents: typeof AddComponents;
+  Inner: typeof Inner;
 };
 
-export const Toolbar = ToolbarContainer as ToolbarProps;
+export const Toolbar = Container as ToolbarProps;
 Toolbar.Zoom = ToolbarZoom;
-Toolbar.Fullscreen = ToolbarFullscreen;
-Toolbar.Main = ToolbarMain;
-Toolbar.Readonly = ToolbarReadonly;
-Toolbar.AddComponents = ToolbarAddComponents;
+Toolbar.Fullscreen = Fullscreen;
+Toolbar.Readonly = Readonly;
+Toolbar.AddComponents = AddComponents;
+Toolbar.Inner = Inner;

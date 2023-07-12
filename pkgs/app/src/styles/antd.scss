@@ -211,6 +211,7 @@ h4.ant-typography {
   box-shadow: none;
 
   &:disabled {
+    cursor: initial;
     border: 1px solid transparent;
   }
 

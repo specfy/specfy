@@ -1,5 +1,5 @@
 import classNames from 'classnames';
-import type { Edge, EdgeChange, Node, NodeChange } from 'reactflow';
+import type { Connection, Edge, EdgeChange, Node, NodeChange } from 'reactflow';
 
 import type { ComponentsState } from '../../common/store';
 import type { TechSearchItem } from '../StackSearch/TechSearch';
@@ -41,6 +41,10 @@ export type EdgeChangeSuper =
       oldTarget: string;
       newTarget: string;
       newTargetHandle: string;
+    }
+  | {
+      type: 'create';
+      conn: Connection;
     };
 export type OnEdgesChangeSuper = (changes: EdgeChangeSuper[]) => void;
 

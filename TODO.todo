@@ -93,6 +93,7 @@ Project:
   - One way Sync Confluence?
   ✔ Automatic languages detection @done(23-06-14 15:18)
   ✔ Automatic “service” detection @done(23-06-14 15:18)
+  - Hide when too much tech stack on Overview
   - Pingback depuis une Pull Request
       - Auto merge une revision quand la pull request est merge
 
@@ -168,6 +169,13 @@ Components:
 
 
 Documents:
+  Markdown parsing:
+    - Change strategy? Currently markdown-it is missing some stuff like table, auto link
+    - Support table
+    - Image base path
+    - Link base path
+  - Image should not be full size by default to be equivalent to Github
+  - Display outgoing link differently
   ✔ List documents @done(23-03-29 14:47)
     ✔ Search @done(23-03-29 15:55)
     ✔ Validation @done(23-03-29 15:55)
@@ -306,7 +314,7 @@ Flow:
   ✔ Edges @done(23-03-29 14:43)
   ✔ Hover @done(23-03-29 14:44)
     ✔ Fix hover @done(23-06-30 16:00)
-  - Modify the graph in every page?
+  ✘ Modify the graph in every page? @cancelled(23-07-12 10:38)
   ✔ Group @done(23-07-06 11:01)
   ✔ Ungroup @done(23-07-06 11:01)
   ✔ Modify size @done(23-03-29 14:45)
@@ -316,7 +324,7 @@ Flow:
   ✔ Modify links @done(23-07-06 11:01)
   ✔ Modify ports @done(23-07-06 11:01)
   - Export PNG
-  - Block resizing in readonly
+  ✔ Block resizing in readonly @done(23-07-11 23:15)
   - Click to add component
   - Width and display of new dragged component (currently too big and host is not correct)
   - Undo/Redo
@@ -326,6 +334,7 @@ Flow:
   - Fix drop in host that do not place a the correct spot sometimes
   - Ungroup should not send the component somewhere else
   ✔ When connecting a Project we should update the Project edges @done(23-07-07 20:45)
+  - Enforce to not connect to the same component twice (currently error silently in console)
 
 
 -----

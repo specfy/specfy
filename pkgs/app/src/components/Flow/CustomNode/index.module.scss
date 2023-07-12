@@ -9,7 +9,7 @@
 
   width: 100%;
   height: 100%;
-  padding: 0 $p;
+  padding: 0 10px 0 14px;
 
   font-size: 11px;
   font-weight: 400;
@@ -26,6 +26,7 @@
     box-shadow: 0 0 0 4px $purple-50;
 
     .handle {
+      pointer-events: initial;
       opacity: 1;
     }
   }
@@ -107,39 +108,38 @@
   .top {
     top: 0;
     left: 0;
-    transform: translate(0, -20%);
+    transform: translate(0, -25%);
     width: 100%;
   }
 
   .right {
     right: 0;
-    transform: translate(17%, 0);
+    transform: translate(25%, 0);
     flex-direction: column;
   }
 
   .bottom {
     bottom: 0;
     left: 0;
-    transform: translate(0, 20%);
+    transform: translate(0, 25%);
     width: 100%;
   }
 
   .left {
     left: 0;
-    transform: translate(-20%, 0);
+    transform: translate(-25%, 0);
     flex-direction: column;
   }
 
   // Handlers
   .handle {
-    pointer-events: initial;
+    pointer-events: none;
 
     position: relative;
 
-
-    width: 6px;
+    width: 8px;
     min-width: 0;
-    height: 6px;
+    height: 8px;
     min-height: 0;
 
     opacity: 0;
@@ -188,6 +188,13 @@
 
     .label {
       font-size: $font;
+    }
+  }
+
+  &.isConnecting {
+    .source {
+      pointer-events: none;
+      opacity: 0;
     }
   }
 }

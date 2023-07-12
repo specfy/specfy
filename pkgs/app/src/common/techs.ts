@@ -78,6 +78,7 @@ const extending: Partial<Record<AllowedKeys, Extending>> = {
   'alibabacloud': { Icon: Alibabacloud },
   'aws.dynamodb': { Icon: Amazondynamodb },
   'aws': { Icon: Amazonaws, regHostname: /aws.amazon.com$/ },
+  'aws.s3': { Icon: Amazonaws },
   'azure': { Icon: Microsoftazure },
   'bash': { Icon: Gnubash },
   'c': { Icon: C },
@@ -171,6 +172,7 @@ export const supportedTypeToText: Record<TechInfo['type'], string> = {
   app: 'application',
   ci: 'ci',
   network: 'network',
+  storage: 'storage',
 };
 
 export const internalTypeToText: Record<ApiComponent['type'], string> = {
@@ -185,4 +187,5 @@ export const internalTypeToText: Record<ApiComponent['type'], string> = {
   app: 'Application',
   ci: 'CI',
   network: 'Network',
+  storage: 'Storage',
 };

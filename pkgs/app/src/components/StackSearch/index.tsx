@@ -92,6 +92,7 @@ export const ComponentSelect: React.FC<{
     'network',
     'project',
     'sass',
+    'storage',
     'service',
   ],
   createdAs,

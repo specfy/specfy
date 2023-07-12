@@ -4,7 +4,6 @@ import type { ComputedFlow } from '@specfy/api/src/common/flow/types';
 import type { ApiProject, ApiComponent } from '@specfy/api/src/types/api';
 import { useCallback, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import type { OnConnect } from 'reactflow';
 
 import { createLocal } from '../../../common/components';
 import { useComponentsStore, useProjectStore } from '../../../common/store';
@@ -65,15 +64,13 @@ export const ProjectFlow: React.FC<{
             target: change.newTarget,
             portTarget: change.newTargetHandle as any,
           });
+        } else if (change.type === 'create') {
+          storeComponents.addEdge(change.conn);
         }
       }
     },
     [components]
   );
-
-  const onConnect = useCallback<OnConnect>((params) => {
-    storeComponents.addEdge(params);
-  }, []);
 
   // TODO: replace this with onEdgesChange
   const onRelationChange: React.ComponentProps<
@@ -121,7 +118,6 @@ export const ProjectFlow: React.FC<{
           keepHighlightOnSelect={true}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
-          onConnect={onConnect}
           onCreateNode={onCreateNode}
         />
 
@@ -132,15 +128,14 @@ export const ProjectFlow: React.FC<{
           onRelationChange={onRelationChange}
         />
         {isEditing && (
-          <Toolbar position="left" visible>
+          <Toolbar left visible>
             <Toolbar.AddComponents />
           </Toolbar>
         )}
-        <Toolbar position="top" visible>
+        <Toolbar top visible>
           {!isEditing && <Toolbar.Readonly />}
-          <Toolbar.Main />
         </Toolbar>
-        <Toolbar position="bottom" visible>
+        <Toolbar bottom visible>
           <Toolbar.Zoom />
           {/* <Toolbar.History /> */}
         </Toolbar>

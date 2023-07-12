@@ -41,6 +41,7 @@ export const TechSearch: React.FC<{
         language: [],
         network: [],
         service: [],
+        storage: [],
       };
 
       for (const tech of supportedArray) {

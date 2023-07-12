@@ -90,7 +90,7 @@ export const ProjectOverview: React.FC<{
           {flow && (
             <FlowWrapper style={{ height: '350px' }}>
               <Flow flow={flow} readonly />
-              <Toolbar position="bottom">
+              <Toolbar bottom>
                 <Toolbar.Fullscreen project={project} />
                 <Toolbar.Zoom />
               </Toolbar>

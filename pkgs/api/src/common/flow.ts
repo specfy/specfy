@@ -24,8 +24,15 @@ export function computeNewProjectPosition(flow: ComputedFlow): {
   return { x: global.x, y: global.y - (hDef + 10) };
 }
 
+const iconSize = 21;
+const padding = 6 * 2;
+const gap = 2;
+const char = 6;
 export function computeWidth(name: string, min: number, max: number) {
-  return Math.min(max, Math.max(min, name.length * 6 + 16 + 8)); // icon + gap
+  return Math.min(
+    max,
+    Math.max(min, name.length * char + padding + iconSize + gap)
+  ); // icon + gap + padding
 }
 
 export function getComponentSize(
