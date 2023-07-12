@@ -1,4 +1,3 @@
-import { LoadingOutlined } from '@ant-design/icons';
 import type { ApiProject, DocumentSimple } from '@specfy/api/src/types/api';
 import {
   IconFileText,
@@ -21,6 +20,7 @@ import { useListDocuments } from '../../../api';
 import { TYPE_TO_TEXT } from '../../../common/document';
 import { useDocumentsStore } from '../../../common/store';
 import type { RouteProject } from '../../../types/routes';
+import { Loading } from '../../Loading';
 
 import cls from './index.module.scss';
 
@@ -223,7 +223,7 @@ export const ContentSidebar: React.FC<{
   if (res.isLoading) {
     return (
       <div>
-        <LoadingOutlined />
+        <Loading />
       </div>
     );
   }
@@ -249,7 +249,7 @@ export const ContentSidebar: React.FC<{
             value={search}
             suffix={
               loading ? (
-                <LoadingOutlined size={32} />
+                <Loading />
               ) : (
                 search && (
                   <Button

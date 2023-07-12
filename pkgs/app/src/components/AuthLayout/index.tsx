@@ -1,4 +1,3 @@
-import { LoadingOutlined } from '@ant-design/icons';
 import { Layout } from 'antd';
 import classNames from 'classnames';
 import { useState } from 'react';
@@ -7,6 +6,7 @@ import { useMount } from 'react-use';
 
 import { useAuth } from '../../hooks/useAuth';
 import { LayoutHeader } from '../LayoutHeader';
+import { Loading } from '../Loading';
 
 import cls from './index.module.scss';
 
@@ -25,7 +25,7 @@ export const AuthLayout: React.FC<{ children?: React.ReactNode }> = ({
   if (wait) {
     return (
       <div className={classNames(cls.app, cls.loading)}>
-        <LoadingOutlined />
+        <Loading />
       </div>
     );
   }

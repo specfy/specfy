@@ -1,4 +1,3 @@
-import { LoadingOutlined } from '@ant-design/icons';
 import type { ApiProject } from '@specfy/api/src/types/api';
 import { IconPlus, IconSearch, IconUsers } from '@tabler/icons-react';
 import { Button, Input } from 'antd';
@@ -9,6 +8,7 @@ import { useProjectStore } from '../../common/store';
 import { AvatarAuto } from '../AvatarAuto';
 import { Empty } from '../Empty';
 import { Flex } from '../Flex';
+import { Loading } from '../Loading';
 import { Time } from '../Time';
 
 import cls from './index.module.scss';
@@ -56,7 +56,7 @@ export const ListProjects: React.FC<{ orgId: string }> = ({ orgId }) => {
         )}
       </div>
 
-      {!list && <LoadingOutlined />}
+      {!list && <Loading />}
       {list && (
         <>
           {brandNew && (

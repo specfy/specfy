@@ -1,4 +1,3 @@
-import { LoadingOutlined } from '@ant-design/icons';
 import type { ComputedFlow } from '@specfy/api/src/common/flow/types';
 import type { ApiOrg, PatchFlow } from '@specfy/api/src/types/api';
 import { IconCheck, IconEdit, IconX } from '@tabler/icons-react';
@@ -14,6 +13,7 @@ import { titleSuffix } from '../../../common/string';
 import { Flow, FlowWrapper } from '../../../components/Flow';
 import { FlowDetails } from '../../../components/Flow/Details';
 import { Toolbar } from '../../../components/Flow/Toolbar';
+import { Loading } from '../../../components/Loading';
 import type { RouteOrg } from '../../../types/routes';
 
 import cls from './index.module.scss';
@@ -81,7 +81,7 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   };
 
   if (resFlow.isLoading) {
-    return <LoadingOutlined />;
+    return <Loading />;
   }
 
   return (

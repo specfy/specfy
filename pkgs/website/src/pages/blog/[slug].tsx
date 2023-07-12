@@ -9,6 +9,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import dayjs from 'dayjs';
 import type { GetStaticPropsContext } from 'next';
 import Head from 'next/head';
 import { MDXRemote } from 'next-mdx-remote';
@@ -48,6 +49,21 @@ type Props = {
 export default function PostPage({ source }: Props) {
   const post = source.frontmatter;
   const title = `${post.title} - Specfy`;
+  const date = dayjs(post.publishedAt);
+  const ldJson = {
+    '@context': 'https://schema.org',
+    '@type': 'NewsArticle',
+    headline: title,
+    image: ['https://example.com/photos/1x1/photo.jpg'],
+    datePublished: date.toISOString(),
+    author: [
+      {
+        '@type': 'Person',
+        name: 'Samuel Bodin',
+        url: 'https://www.linkedin.com/in/bodinsamuel/',
+      },
+    ],
+  };
 
   return (
     <div>
@@ -56,6 +72,7 @@ export default function PostPage({ source }: Props) {
         <meta name="description" content={post.description} />
         <link rel="canonical" href={`/blog/${post.id}-${post.slug}`} />
         <meta name="twitter:card" content="summary_large_image" />
+        <script type="application/ld+json">{JSON.stringify(ldJson)}</script>
       </Head>
       <main className="relative isolate px-6 pt-14 lg:px-8">
         <div className="relative">
@@ -65,7 +82,7 @@ export default function PostPage({ source }: Props) {
                 dateTime={source.frontmatter.publishedAt}
                 className="text-gray-500 text-xs px-1"
               >
-                {source.frontmatter.publishedAt}
+                {date.format('MMM DD, YYYY')}
               </time>
             </div>
 

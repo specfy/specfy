@@ -1,4 +1,3 @@
-import { LoadingOutlined } from '@ant-design/icons';
 import type { ApiPerm, ApiUser } from '@specfy/api/src/types/api';
 import { IconCheck, IconPlus, IconTrash } from '@tabler/icons-react';
 import { App, Button, Select } from 'antd';
@@ -6,6 +5,7 @@ import { useState } from 'react';
 
 import { removePerm, updatePerm } from '../../../api';
 import { AvatarAuto } from '../../../components/AvatarAuto';
+import { Loading } from '../../Loading';
 
 import cls from './index.module.scss';
 
@@ -73,7 +73,7 @@ export const Row: React.FC<RowProps> = ({
       </div>
       <div className={cls.right}>
         {perm && fromSearch && <IconCheck />}
-        {loading && <LoadingOutlined />}
+        {loading && <Loading />}
         <Select
           value={role}
           style={{ width: '125px' }}

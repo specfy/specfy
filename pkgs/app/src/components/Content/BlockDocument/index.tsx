@@ -1,4 +1,3 @@
-import { LoadingOutlined } from '@ant-design/icons';
 import type { ApiDocument, BlockDocument } from '@specfy/api/src/types/api';
 import { IconRepeat } from '@tabler/icons-react';
 import { useMemo } from 'react';
@@ -7,6 +6,7 @@ import { ContentDoc } from '..';
 import { useGetDocument } from '../../../api';
 import type { Payload } from '../../../common/content';
 import { useDocumentsStore, useProjectStore } from '../../../common/store';
+import { Loading } from '../../Loading';
 
 export const ContentBlockDocument: React.FC<{
   block: BlockDocument;
@@ -44,7 +44,7 @@ export const ContentBlockDocument: React.FC<{
   if (doc.isLoading || !doc.data) {
     return (
       <div>
-        <LoadingOutlined />
+        <Loading />
       </div>
     );
   }

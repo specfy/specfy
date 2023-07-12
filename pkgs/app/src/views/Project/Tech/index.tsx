@@ -1,4 +1,3 @@
-import { LoadingOutlined } from '@ant-design/icons';
 import { componentsToFlow } from '@specfy/api/src/common/flow/transform';
 import type { ComputedFlow } from '@specfy/api/src/common/flow/types';
 import type { ApiComponent, ApiProject } from '@specfy/api/src/types/api';
@@ -18,6 +17,7 @@ import { Container } from '../../../components/Container';
 import { Flex } from '../../../components/Flex';
 import { Flow, FlowWrapper } from '../../../components/Flow';
 import { Toolbar } from '../../../components/Flow/Toolbar';
+import { Loading } from '../../../components/Loading';
 import { NotFound } from '../../../components/NotFound';
 import type { RouteProject, RouteTech } from '../../../types/routes';
 
@@ -85,7 +85,7 @@ export const Tech: React.FC<{
   }, [components]);
 
   if (!ready) {
-    return <LoadingOutlined />;
+    return <Loading />;
   }
   if (!techname) {
     return <NotFound />;

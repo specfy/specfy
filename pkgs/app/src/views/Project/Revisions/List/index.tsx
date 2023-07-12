@@ -1,4 +1,3 @@
-import { LoadingOutlined } from '@ant-design/icons';
 import { flagRevisionApprovalEnabled } from '@specfy/api/src/models/revisions/constants';
 import type {
   ApiProject,
@@ -20,6 +19,7 @@ import { useListRevisions } from '../../../../api';
 import { titleSuffix } from '../../../../common/string';
 import { Container } from '../../../../components/Container';
 import { Flex } from '../../../../components/Flex';
+import { Loading } from '../../../../components/Loading';
 import { StatusTag } from '../../../../components/StatusTag';
 import { Time } from '../../../../components/Time';
 import type { RouteProject } from '../../../../types/routes';
@@ -78,7 +78,7 @@ export const ProjectRevisionsList: React.FC<{
         <div className={cls.searchWrapper}>
           <h2>Revisions</h2>
           <div className={cls.search}>
-            {loading && <LoadingOutlined size={32} />}
+            {loading && <Loading />}
             <div>
               <Input
                 prefix={<IconSearch />}

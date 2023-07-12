@@ -1,4 +1,3 @@
-import { LoadingOutlined } from '@ant-design/icons';
 import { flagRevisionApprovalEnabled } from '@specfy/api/src/models/revisions/constants';
 import type {
   ApiProject,
@@ -38,6 +37,7 @@ import { DiffCard } from '../../../../components/DiffCard';
 import { Editor } from '../../../../components/Editor';
 import { FakeInput } from '../../../../components/Input';
 import { ListActivity } from '../../../../components/ListActivity';
+import { Loading } from '../../../../components/Loading';
 import { NotFound } from '../../../../components/NotFound';
 import { Checks } from '../../../../components/Revision/Checks';
 import { ReviewBar } from '../../../../components/Revision/ReviewBar';
@@ -278,7 +278,7 @@ export const ProjectRevisionsShow: React.FC<{
               <div className={cls.mainTop}>
                 <h2 className={cls.title}>{rev.name}</h2>
                 <Space>
-                  {save && <LoadingOutlined />}
+                  {save && <Loading />}
 
                   <Dropdown.Button
                     menu={{ items: actionsItems, onClick: onMenuClick }}

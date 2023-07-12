@@ -17,9 +17,8 @@ RUN /tmp/clean_package_json.sh /tmp/api_package.json
 COPY pkgs/app/package.json /tmp/app_package.json
 RUN /tmp/clean_package_json.sh /tmp/app_package.json
 
-COPY pkgs/website/package.json /tmp/website_package.json
-RUN /tmp/clean_package_json.sh /tmp/website_package.json
-
+COPY pkgs/emails/package.json /tmp/emails_package.json
+RUN /tmp/clean_package_json.sh /tmp/emails_package.json
 
 # ------------------
 # New tmp image
@@ -29,16 +28,12 @@ FROM node:18.16.1-bullseye-slim AS tmp
 # Setup the app WORKDIR
 WORKDIR /app/tmp
 
-RUN mkdir -p ./pkgs/api/
-RUN mkdir -p ./pkgs/api/
-RUN mkdir -p ./pkgs/website/
-
 # Copy and install dependencies separately from the app's code
 # To leverage Docker's cache when no dependency has change
 COPY --from=deps /tmp/package.json ./package.json
 COPY --from=deps /tmp/api_package.json ./pkgs/api/package.json
 COPY --from=deps /tmp/app_package.json ./pkgs/app/package.json
-COPY --from=deps /tmp/website_package.json ./pkgs/website/package.json
+COPY --from=deps /tmp/emails_package.json ./pkgs/emails/package.json
 
 COPY package-lock.json  ./
 
@@ -62,9 +57,7 @@ RUN true \
 
 # Clean src
 RUN true \
-  && rm -rf pkgs/api/src \
-  && rm -rf pkgs/app/src/ \
-  && rm -rf pkgs/website/src/
+  && rm -rf pkgs/*/src
 
 # Clean dev dependencies
 RUN true \

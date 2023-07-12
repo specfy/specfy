@@ -1,4 +1,3 @@
-import { LoadingOutlined } from '@ant-design/icons';
 import { componentsToFlow } from '@specfy/api/src/common/flow/transform';
 import type { ComputedFlow } from '@specfy/api/src/common/flow/types';
 import type { ApiProject, ApiComponent } from '@specfy/api/src/types/api';
@@ -16,6 +15,7 @@ import type {
   OnNodesChangeSuper,
 } from '../../../components/Flow/helpers';
 import { onNodesChangeProject } from '../../../components/Flow/helpers';
+import { Loading } from '../../../components/Loading';
 import { useEdit } from '../../../hooks/useEdit';
 import type { RouteProject } from '../../../types/routes';
 
@@ -103,7 +103,7 @@ export const ProjectFlow: React.FC<{
   };
 
   if (loading || !flow) {
-    return <LoadingOutlined />;
+    return <Loading />;
   }
 
   return (
