@@ -1,0 +1,40 @@
+.nodeCreated,
+.nodeModified {
+  border-radius: 6px;
+  box-shadow: 0 0 2px 0 var(--modified);
+}
+
+.nodeDeleted {
+  border-radius: 6px;
+  box-shadow: 0 0 2px 0 var(--declineDark);
+}
+
+.edgeCreated,
+.edgeModified {
+  :global {
+
+    /* stylelint-disable-next-line selector-class-pattern */
+    .react-flow__edge-path {
+      stroke: var(--modified);
+      stroke-dasharray: 2;
+      stroke-width: 2px;
+    }
+  }
+}
+
+.edgeDeleted {
+  :global {
+
+    /* stylelint-disable-next-line selector-class-pattern */
+    .react-flow__edge-path {
+      stroke: var(--declineDark);
+      stroke-dasharray: 2;
+      stroke-width: 2px;
+    }
+  }
+}
+
+.unmodified {
+  opacity: 0.5;
+  filter: grayscale(10);
+}

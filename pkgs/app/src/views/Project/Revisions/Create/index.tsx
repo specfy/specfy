@@ -1,3 +1,5 @@
+import { componentsToFlow } from '@specfy/api/src/common/flow/transform';
+import type { ComputedFlow } from '@specfy/api/src/common/flow/types';
 import { omit } from '@specfy/api/src/common/object';
 import {
   flagRevisionApprovalEnabled,
@@ -5,6 +7,7 @@ import {
 } from '@specfy/api/src/models/revisions/constants';
 import type {
   ApiBlobCreate,
+  ApiComponent,
   ApiProject,
   BlockLevelZero,
   PostRevision,
@@ -23,13 +26,19 @@ import { isError } from '../../../../api/helpers';
 import { getEmptyDoc } from '../../../../common/content';
 import { proposeTitle } from '../../../../common/diff';
 import { i18n } from '../../../../common/i18n';
-import originalStore, { useStagingStore } from '../../../../common/store';
+import originalStore, {
+  useComponentsStore,
+  useStagingStore,
+} from '../../../../common/store';
 import { titleSuffix } from '../../../../common/string';
 import { Card } from '../../../../components/Card';
 import { Container } from '../../../../components/Container';
 import { DiffCard } from '../../../../components/DiffCard';
+import { DiffFlow } from '../../../../components/DiffCard/Flow';
 import { Editor } from '../../../../components/Editor';
 import { Flex } from '../../../../components/Flex';
+import { FlowWrapper } from '../../../../components/Flow';
+import { Toolbar } from '../../../../components/Flow/Toolbar';
 import { FakeInput } from '../../../../components/Input';
 import type { RouteProject } from '../../../../types/routes';
 
@@ -44,13 +53,13 @@ export const ProjectRevisionCreate: React.FC<{
   const navigate = useNavigate();
 
   // Edition
-  // const storeProject = useProjectStore();
-  // const storeComponents = useComponentsStore();
-  // const storeDocuments = useDocumentsStore();
   const staging = useStagingStore();
+  const storeComponents = useComponentsStore();
 
   // Local
   const [to] = useState(() => `/${params.org_id}/${params.project_slug}`);
+  const [flow, setFlow] = useState<ComputedFlow>();
+  const [previousFlow, setPreviousFlow] = useState<ComputedFlow>();
 
   // Form
   const [canSubmit, setCanSubmit] = useState<boolean>(false);
@@ -66,6 +75,14 @@ export const ProjectRevisionCreate: React.FC<{
   // Compute changes
   useEffect(() => {
     setTitle(proposeTitle(staging.diffs));
+    if (staging.hasGraphChanged) {
+      setFlow(componentsToFlow(Object.values(storeComponents.components)));
+
+      const oldComponents = originalStore.originalStore.filter((old) => {
+        return 'edges' in old && old.projectId === proj.id;
+      }) as ApiComponent[];
+      setPreviousFlow(componentsToFlow(oldComponents));
+    }
   }, [staging]);
 
   // Can submit form?
@@ -179,21 +196,25 @@ export const ProjectRevisionCreate: React.FC<{
         <Card>
           <Form onFinish={onSubmit}>
             <Card.Content>
-              <FakeInput.H1
-                size="large"
-                value={title}
-                placeholder="Revision title..."
-                onChange={(e) => setTitle(e.target.value)}
-              />
-
-              <Typography>
-                <Editor
-                  key={'edit'}
-                  content={description}
-                  onUpdate={setDescription}
-                  minHeight="100px"
+              <Flex gap="l" direction="column" alignItems="flex-start">
+                <FakeInput.H1
+                  size="large"
+                  value={title}
+                  placeholder="Revision title..."
+                  onChange={(e) => setTitle(e.target.value)}
                 />
-              </Typography>
+
+                <div style={{ width: '100%' }}>
+                  <Typography>
+                    <Editor
+                      key={'edit'}
+                      content={description}
+                      onUpdate={setDescription}
+                      minHeight="100px"
+                    />
+                  </Typography>
+                </div>
+              </Flex>
             </Card.Content>
             <Card.Actions>
               <Flex gap="l">
@@ -228,6 +249,15 @@ export const ProjectRevisionCreate: React.FC<{
 
       <div className={cls.staged}>
         <div className={cls.staged}>
+          {flow && (
+            <FlowWrapper style={{ height: '350px' }}>
+              <DiffFlow next={flow} prev={previousFlow!} />
+
+              <Toolbar bottom>
+                <Toolbar.Zoom />
+              </Toolbar>
+            </FlowWrapper>
+          )}
           {staging.diffs.map((diff) => {
             return (
               <DiffCard

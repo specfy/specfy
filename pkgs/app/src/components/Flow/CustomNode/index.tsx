@@ -251,7 +251,8 @@ export const PreviewNode: React.FC<{
       {info && (
         <>
           <div className={cls.pos}>
-            x:{node.positionAbsolute!.x} y:{node.positionAbsolute!.y}
+            x:{Math.round(node.positionAbsolute!.x)} y:
+            {Math.round(node.positionAbsolute!.y)}
           </div>
           <div className={cls.size}>
             <div className={cls.sizeWidth}>{node.width}px</div>

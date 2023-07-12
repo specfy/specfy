@@ -1,11 +1,9 @@
-import type { IGNORED_PROJECT_KEYS_CONST } from '@specfy/api/src/models/revisions/constants';
 import { IGNORED_PROJECT_KEYS } from '@specfy/api/src/models/revisions/constants';
 import type { ApiBlobProject } from '@specfy/api/src/types/api';
-import type { Writeable } from '@specfy/api/src/types/utils';
 import type { Editor } from '@tiptap/react';
 import { diffWordsWithSpace } from 'diff';
 
-import type { ProjectBlobWithDiff } from '../../types/blobs';
+import type { ProjectBlobWithDiff, ProjectDiffKeys } from '../../types/blobs';
 import { getEmptyDoc } from '../content';
 
 import { diffObjectsArray } from './array';
@@ -27,10 +25,7 @@ export function diffProject(
       continue;
     }
 
-    const key = k as keyof Omit<
-      ApiBlobProject['current'],
-      Writeable<typeof IGNORED_PROJECT_KEYS_CONST>[number]
-    >;
+    const key = k as ProjectDiffKeys;
 
     // no prev and no value
     if (!blob.previous?.[key] && !blob.current[key]) {

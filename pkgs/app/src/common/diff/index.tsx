@@ -59,7 +59,7 @@ export function diffTwoBlob(blob: ApiBlobWithPrevious): BlobAndDiffs['diffs'] {
     return diffComponent(editor, blob);
   } else if (blob.type === 'document') {
     return diffDocument(editor, blob);
-  } else {
-    return diffProject(editor, blob);
   }
+
+  return diffProject(editor, blob);
 }

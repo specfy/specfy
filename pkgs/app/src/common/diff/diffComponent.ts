@@ -1,11 +1,12 @@
-import type { IGNORED_COMPONENT_KEYS_CONST } from '@specfy/api/src/models/revisions/constants';
 import { IGNORED_COMPONENT_KEYS } from '@specfy/api/src/models/revisions/constants';
 import type { ApiBlobComponent } from '@specfy/api/src/types/api';
-import type { Writeable } from '@specfy/api/src/types/utils';
 import type { Editor } from '@tiptap/react';
 import { diffJson, diffWordsWithSpace } from 'diff';
 
-import type { ComponentBlobWithDiff } from '../../types/blobs';
+import type {
+  ComponentBlobWithDiff,
+  ComponentDiffKeys,
+} from '../../types/blobs';
 import { getEmptyDoc } from '../content';
 
 import { diffObjectsArray, diffStringArray } from './array';
@@ -29,10 +30,7 @@ export function diffComponent(
       continue;
     }
 
-    const key = k as keyof Omit<
-      ApiBlobComponent['current'],
-      Writeable<typeof IGNORED_COMPONENT_KEYS_CONST>[number]
-    >;
+    const key = k as ComponentDiffKeys;
 
     if (!blob.previous?.[key] && !blob.current[key]) {
       // no prev and no value

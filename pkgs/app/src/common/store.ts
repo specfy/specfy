@@ -92,14 +92,20 @@ export const useOrgStore = create<OrgState>()((set) => ({
 interface StagingState {
   count: number;
   diffs: BlobAndDiffs[];
-  update: (diffs: BlobAndDiffs[], count: number) => void;
+  hasGraphChanged: boolean;
+  update: (
+    diffs: BlobAndDiffs[],
+    count: number,
+    hasGraphChanged: boolean
+  ) => void;
 }
 
 export const useStagingStore = create<StagingState>()((set) => ({
   count: 0,
   diffs: [],
-  update: (diffs, count) => {
-    set({ diffs, count });
+  hasGraphChanged: false,
+  update: (diffs, count, hasGraphChanged) => {
+    set({ diffs, count, hasGraphChanged });
   },
 }));
 

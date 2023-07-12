@@ -1,4 +1,9 @@
 import type {
+  IGNORED_COMPONENT_KEYS_CONST,
+  IGNORED_DOCUMENT_KEYS_CONST,
+  IGNORED_PROJECT_KEYS_CONST,
+} from '@specfy/api/src/models/revisions/constants';
+import type {
   ApiBlobComponent,
   ApiBlobDocument,
   ApiBlobProject,
@@ -7,7 +12,7 @@ import type {
   ApiProject,
   BlockLevelZero,
 } from '@specfy/api/src/types/api';
-import type { DBComponent } from '@specfy/api/src/types/db';
+import type { Writeable } from '@specfy/api/src/types/utils';
 import type { Change } from 'diff';
 
 export type Allowed = ApiComponent | ApiDocument | ApiProject;
@@ -25,19 +30,31 @@ export interface ComputedForDiff<T = unknown> {
   diff: BlockLevelZero | Change[] | DiffObjectsArray<unknown> | 'modified';
 }
 
+export type ComponentDiffKeys = keyof Omit<
+  ApiBlobComponent['current'],
+  Writeable<typeof IGNORED_COMPONENT_KEYS_CONST>[number]
+>;
 export type ComponentBlobWithDiff = {
   blob: ApiBlobComponent;
-  diffs: Array<ComputedForDiff<keyof DBComponent>>;
+  diffs: Array<ComputedForDiff<ComponentDiffKeys>>;
 };
 
+export type ProjectDiffKeys = keyof Omit<
+  ApiBlobProject['current'],
+  Writeable<typeof IGNORED_PROJECT_KEYS_CONST>[number]
+>;
 export type ProjectBlobWithDiff = {
   blob: ApiBlobProject;
-  diffs: Array<ComputedForDiff<keyof ApiProject>>;
+  diffs: Array<ComputedForDiff<ProjectDiffKeys>>;
 };
 
+export type DocumentDiffKeys = keyof Omit<
+  ApiBlobDocument['current'],
+  Writeable<typeof IGNORED_DOCUMENT_KEYS_CONST>[number]
+>;
 export type DocumentBlobWithDiff = {
   blob: ApiBlobDocument;
-  diffs: Array<ComputedForDiff<keyof ApiDocument>>;
+  diffs: Array<ComputedForDiff<DocumentDiffKeys>>;
 };
 
 export type BlobAndDiffs =

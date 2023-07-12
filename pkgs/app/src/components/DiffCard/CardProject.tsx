@@ -15,9 +15,6 @@ export const DiffCardProject: React.FC<{
     <div className={cls.content}>
       <h2>{diff.blob.current.name}</h2>
       {diff.diffs.map((d) => {
-        if (d.key === 'name') {
-          return null;
-        }
         if (d.key === 'description') {
           return (
             <UnifiedContent

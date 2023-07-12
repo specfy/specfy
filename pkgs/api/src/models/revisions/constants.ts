@@ -42,7 +42,6 @@ export const IGNORED_COMPONENT_KEYS: ReadonlyArray<
 export const IGNORED_DOCUMENT_KEYS_CONST = [
   ...IGNORED_KEYS,
   'locked',
-  'name',
   'type',
   'typeId',
   'source',

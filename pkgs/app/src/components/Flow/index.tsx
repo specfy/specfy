@@ -398,8 +398,8 @@ export const Flow: React.FC<{
         connectionMode={ConnectionMode.Loose}
         connectionRadius={50}
         autoPanOnConnect={true}
-        snapToGrid
-        snapGrid={[5, 5]}
+        snapToGrid={false}
+        // snapGrid={[2, 2]}
         proOptions={{ hideAttribution: true }}
         elevateEdgesOnSelect={true}
         elevateNodesOnSelect={true}

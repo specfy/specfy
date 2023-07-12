@@ -13,7 +13,7 @@ import cls from './index.module.scss';
 export const DiffCardDocument: React.FC<{
   diff: DocumentBlobWithDiff;
 }> = ({ diff }) => {
-  const using = (diff.blob.deleted ? diff.blob.previous : diff.blob.current)!;
+  const using = diff.blob.current;
 
   const Title = useMemo(() => {
     const hasName = diff.diffs.find((d) => d.key === 'name');

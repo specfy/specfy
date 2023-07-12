@@ -11,7 +11,11 @@ import originalStore, {
   useProjectStore,
 } from '../../../../common/store';
 import { useEdit } from '../../../../hooks/useEdit';
-import type { Allowed, BlobAndDiffs } from '../../../../types/blobs';
+import type {
+  Allowed,
+  BlobAndDiffs,
+  ComponentBlobWithDiff,
+} from '../../../../types/blobs';
 
 import cls from './index.module.scss';
 
@@ -33,6 +37,7 @@ export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
       ];
 
       const bds: BlobAndDiffs[] = [];
+      let hasGraphChanged = false;
 
       // Find added and modified
       for (const item of store) {
@@ -57,6 +62,17 @@ export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
 
         if (diffs.length <= 0) {
           continue;
+        }
+
+        // Compute a global flag to know if the graph has potentially changed
+        if (bd.blob.type === 'component' && !hasGraphChanged) {
+          const has = (diffs as ComponentBlobWithDiff['diffs']).find(
+            (diff) =>
+              diff.key === 'edges' ||
+              diff.key === 'display' ||
+              diff.key === 'inComponent'
+          );
+          if (has) hasGraphChanged = true;
         }
 
         // clean.push(diff.clean);
@@ -96,12 +112,16 @@ export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
         };
         const diffs = diffTwoBlob(bd.blob);
 
+        if (bd.blob.type === 'component' && !hasGraphChanged) {
+          hasGraphChanged = true;
+        }
+
         count += 1;
         bd.diffs = diffs;
         bds.push(bd);
       }
 
-      staging.update(bds, count);
+      staging.update(bds, count, hasGraphChanged);
     },
     150,
     [project, components, documents]

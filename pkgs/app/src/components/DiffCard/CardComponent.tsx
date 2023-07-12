@@ -17,6 +17,7 @@ import { ComponentIcon } from '../Component/Icon';
 import { ComponentItem, TechItem } from '../Component/Line';
 import { ContentDoc } from '../Content';
 import { Flex } from '../Flex';
+import { PreviewNode } from '../Flow/CustomNode';
 
 import { Split } from './Split';
 import { UnifiedDiff } from './Unified';
@@ -29,7 +30,7 @@ export const DiffCardComponent: React.FC<{
   const params = useParams<Partial<RouteProject>>() as RouteProject;
   const storeComponents = useComponentsStore();
   const storeRevision = useRevisionStore();
-  const using = (diff.blob.deleted ? diff.blob.previous : diff.blob.current)!;
+  const using = diff.blob.current;
 
   const getComponent = (id: string): ApiComponent => {
     if (storeComponents.components[id]) {
@@ -147,7 +148,25 @@ export const DiffCardComponent: React.FC<{
         }
 
         if (d.key === 'display') {
-          return <div key={d.key}></div>;
+          return (
+            <div key={d.key}>
+              <Flex style={{ margin: '40px 0 20px 0' }} justifyContent="center">
+                <div style={{ margin: '15px 60px 0 -50px' }}>
+                  Display changed
+                </div>
+                <PreviewNode
+                  node={{
+                    id: using.id,
+                    data: { ...using, originalSize: using.display.size },
+                    positionAbsolute: using.display.pos,
+                    height: using.display.size.height,
+                    width: using.display.size.width,
+                  }}
+                  info={true}
+                />
+              </Flex>
+            </div>
+          );
         }
 
         if (d.key === 'techs') {

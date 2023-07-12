@@ -1,11 +1,9 @@
-import type { IGNORED_DOCUMENT_KEYS_CONST } from '@specfy/api/src/models/revisions/constants';
 import { IGNORED_DOCUMENT_KEYS } from '@specfy/api/src/models/revisions/constants';
 import type { ApiBlobDocument } from '@specfy/api/src/types/api';
-import type { Writeable } from '@specfy/api/src/types/utils';
 import type { Editor } from '@tiptap/react';
 import { diffWordsWithSpace } from 'diff';
 
-import type { DocumentBlobWithDiff } from '../../types/blobs';
+import type { DocumentBlobWithDiff, DocumentDiffKeys } from '../../types/blobs';
 import { getEmptyDoc } from '../content';
 
 import { isDiffSimple } from './helpers';
@@ -26,10 +24,7 @@ export function diffDocument(
       continue;
     }
 
-    const key = k as keyof Omit<
-      ApiBlobDocument['current'],
-      Writeable<typeof IGNORED_DOCUMENT_KEYS_CONST>[number]
-    >;
+    const key = k as DocumentDiffKeys;
 
     // no prev and no value
     if (!blob.previous?.[key] && !blob.current[key]) {
