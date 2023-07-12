@@ -3,9 +3,6 @@ import {
   IconFileText,
   IconCircleX,
   IconSearch,
-  // IconFileCode,
-  // IconLayoutSidebarLeftCollapse,
-  // IconPlus,
   IconLayoutSidebarLeftExpand,
   IconChevronDown,
 } from '@tabler/icons-react';
