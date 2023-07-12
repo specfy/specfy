@@ -54,7 +54,7 @@ export default function PostPage({ source }: Props) {
     '@context': 'https://schema.org',
     '@type': 'NewsArticle',
     headline: title,
-    image: ['https://example.com/photos/1x1/photo.jpg'],
+    image: [`https://specfy.io/${post.slug}.png`],
     datePublished: date.toISOString(),
     author: [
       {
@@ -73,6 +73,10 @@ export default function PostPage({ source }: Props) {
         <link rel="canonical" href={`/blog/${post.id}-${post.slug}`} />
         <meta name="twitter:card" content="summary_large_image" />
         <script type="application/ld+json">{JSON.stringify(ldJson)}</script>
+        <meta property="og:type" content="article" />
+        <meta property="og:site_name" content="Specfy" />
+        <meta property="og:image" content={ldJson.image[0]} />
+        <meta name="twitter:image:src" content={ldJson.image[0]} />
       </Head>
       <main className="relative isolate px-6 pt-14 lg:px-8">
         <div className="relative">

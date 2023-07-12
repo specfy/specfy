@@ -153,7 +153,7 @@ While [Alpine](https://www.docker.com/blog/how-to-use-the-alpine-docker-official
 
 Alpine images utilize musl libc, which operates slightly differently from the regular glibc. This difference can introduce issues such as segfaults, memory problems, DNS issues, and more, particularly when working with NodeJS. For example, at my previous job Algolia, we faced DNS errors while using Alpine in the Crawler (as mentioned in my [blog post](https://www.algolia.com/blog/engineering/30-days-to-improve-our-crawler-performance-by-50-percent/)) and Segfault when using Isolated V8.
 
-Considering these concerns, it's advisable to choose **Slim** images, which offer **similar benefits** in terms of reduced image size without compromising compatibility or introducing potential issues.
+Considering these concerns, it's advisable to choose **Slim** images, which offer less benefits in terms of reduced image size but offers more stability and compatibility.
 
 ```dockerfile
 FROM node:18.16.1-bullseye-slim
