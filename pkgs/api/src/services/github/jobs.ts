@@ -51,7 +51,7 @@ export function listen() {
 
       const job = new JobDeploy(next);
       running.push(job);
-      job.start();
+      (() => job.start())();
     });
   }, 5000);
 }
