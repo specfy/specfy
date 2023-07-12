@@ -76,6 +76,10 @@ export default function PostPage({ source }: Props) {
         <meta property="og:type" content="article" />
         <meta property="og:site_name" content="Specfy" />
         <meta property="og:image" content={ldJson.image[0]} />
+        <meta property="twitter:card" content="summary_large_image" />
+        <meta property="twitter:creator" content="@samdotb" />
+        <meta property="twitter:title" content={title} />
+        <meta property="twitter:description" content={post.description} />
         <meta name="twitter:image:src" content={ldJson.image[0]} />
       </Head>
       <main className="relative isolate px-6 pt-14 lg:px-8">
