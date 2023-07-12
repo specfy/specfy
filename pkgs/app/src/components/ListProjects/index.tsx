@@ -4,6 +4,7 @@ import { Button, Input } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { useListProjects } from '../../api';
 import { useProjectStore } from '../../common/store';
 import { AvatarAuto } from '../AvatarAuto';
 import { Empty } from '../Empty';
@@ -14,9 +15,14 @@ import { Time } from '../Time';
 import cls from './index.module.scss';
 
 export const ListProjects: React.FC<{ orgId: string }> = ({ orgId }) => {
+  const getProjects = useListProjects({ org_id: orgId });
   const storeProjects = useProjectStore();
   const [list, setList] = useState<ApiProject[]>();
   const [search, setSearch] = useState<string>('');
+
+  useEffect(() => {
+    storeProjects.fill(getProjects.data?.data || []);
+  }, [getProjects.data]);
 
   useEffect(() => {
     setList(storeProjects.projects);

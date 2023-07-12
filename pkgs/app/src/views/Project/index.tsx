@@ -166,6 +166,7 @@ export const Project: React.FC = () => {
             path="/revisions/:revision_id"
             element={<ProjectRevisionsShow proj={proj} params={params} />}
           />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
     </div>
