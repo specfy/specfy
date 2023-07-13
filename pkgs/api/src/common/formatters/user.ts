@@ -1,5 +1,6 @@
 import type { Users } from '@prisma/client';
 
+import { getJwtToken } from '../../models/user.js';
 import type { ApiMe, ApiUser } from '../../types/api/index.js';
 
 export function toApiUser(user: Users): ApiUser {
@@ -17,6 +18,7 @@ export function toApiMe(user: Users): ApiMe {
     name: user.name,
     email: user.email,
     avatarUrl: user.avatarUrl,
+    token: getJwtToken(user, new Date(Date.now() + 3600 * 1000)),
     createdAt: user.createdAt.toISOString(),
     updatedAt: user.updatedAt.toISOString(),
   };

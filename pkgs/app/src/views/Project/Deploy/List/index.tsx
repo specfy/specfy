@@ -38,9 +38,10 @@ const Row: React.FC<{
           </div>
         </Flex>
         <Flex className={cls.info} gap="m">
-          {deploy.finishedAt && <Time time={deploy.finishedAt} />}
-          {deploy.startedAt && !deploy.finishedAt && (
-            <Time time={deploy.startedAt} />
+          {deploy.finishedAt ? (
+            <Time time={deploy.finishedAt} />
+          ) : (
+            <Time time={deploy.startedAt || deploy.createdAt} />
           )}{' '}
           ·{' '}
           <Flex gap="m">

@@ -15,6 +15,7 @@ import { AuthError } from './middlewares/auth/errors.js';
 import { routes } from './routes/routes.js';
 
 import './common/auth.js';
+import { initSocket } from './socket.js';
 
 export default async (f: FastifyInstance, opts: FastifyPluginOptions) => {
   await f.register(cors, {
@@ -79,6 +80,8 @@ export default async (f: FastifyInstance, opts: FastifyPluginOptions) => {
   // });
 
   await routes(f, opts);
+
+  initSocket(f.server);
 };
 
 export const options: FastifyServerOptions = {

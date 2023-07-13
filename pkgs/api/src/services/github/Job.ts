@@ -5,6 +5,8 @@ import { consola } from 'consola';
 import { prisma } from '../../db/index.js';
 import { JobReason } from '../../models/jobs/helpers.js';
 import type { JobMark } from '../../models/jobs/type.js';
+import { io } from '../../socket.js';
+import type { EventJob } from '../../types/socket.js';
 
 export abstract class Job {
   l: ConsolaInstance;
@@ -21,18 +23,29 @@ export abstract class Job {
   }
 
   async start() {
+    const job = this.#job;
     const l = this.l;
-    l.info('Job start', { id: this.#job.id });
+    l.info('Job start', { id: job.id });
+    const evt: EventJob = {
+      id: job.id,
+      orgId: job.orgId,
+      projectId: job.projectId,
+      type: job.type,
+      typeId: job.typeId,
+      status: job.status,
+    };
+
+    io.to(`project-${job.projectId}`).emit('job.start', evt);
 
     try {
-      await this.process(this.#job as any);
+      await this.process(job as any);
     } catch (err: unknown) {
       l.error('Uncaught error during job', err);
       this.mark('failed', 'unknown', err);
     } finally {
       // Clean after ourself
       try {
-        await this.teardown(this.#job);
+        await this.teardown(job);
       } catch (err: unknown) {
         this.mark('failed', 'failed_to_teardown', err);
       }
@@ -48,10 +61,13 @@ export abstract class Job {
         finishedAt: new Date(),
       },
       where: {
-        id: this.#job.id,
+        id: job.id,
       },
     });
-    l.info('Job end', { id: this.#job.id, mark: this.#mark });
+    l.info('Job end', { id: job.id, mark: this.#mark });
+
+    evt.status = this.#mark?.status || 'failed';
+    io.to(`project-${job.projectId}`).emit('job.finish', evt);
   }
 
   mark(status: JobMark['status'], code: JobMark['code'], err?: unknown) {
