@@ -5,20 +5,15 @@ FROM alpine:latest as deps
 
 RUN apk add --no-cache bash curl wget jq
 
-# To prevent cache invalidation from changes in fields other than dependencies
-COPY prod/clean_package_json.sh /tmp
+WORKDIR /tmp
 
-COPY package.json /tmp
-RUN /tmp/clean_package_json.sh /tmp/package.json
+# Copy all the package.json
+COPY prod/clean_package_json.sh package.json ./
+COPY pkgs/api/package.json ./pkgs/api/package.json
+COPY pkgs/emails/package.json ./pkgs/emails/package.json
 
-COPY pkgs/api/package.json /tmp/api_package.json
-RUN /tmp/clean_package_json.sh /tmp/api_package.json
-
-COPY pkgs/app/package.json /tmp/app_package.json
-RUN /tmp/clean_package_json.sh /tmp/app_package.json
-
-COPY pkgs/emails/package.json /tmp/emails_package.json
-RUN /tmp/clean_package_json.sh /tmp/emails_package.json
+RUN ./clean_package_json.sh './package.json'
+RUN ./clean_package_json.sh './**/*/package.json'
 
 # ------------------
 # New tmp image
@@ -30,10 +25,7 @@ WORKDIR /app/tmp
 
 # Copy and install dependencies separately from the app's code
 # To leverage Docker's cache when no dependency has change
-COPY --from=deps /tmp/package.json ./package.json
-COPY --from=deps /tmp/api_package.json ./pkgs/api/package.json
-COPY --from=deps /tmp/app_package.json ./pkgs/app/package.json
-COPY --from=deps /tmp/emails_package.json ./pkgs/emails/package.json
+COPY --from=deps /tmp ./
 
 COPY package-lock.json  ./
 
@@ -71,10 +63,11 @@ FROM node:18.16.1-bullseye-slim as web
 ENV PORT=8080
 ENV NODE_ENV=production
 
-# Bash is just to be able to log inside the image and have a decent shell
-# OpenSSL is here to handle HTTPS requests correctly
+# - Bash is just to be able to log inside the image and have a decent shell
+# - OpenSSL is here to handle HTTPS requests correctly
+# - Git is to be able to clone repositories
 RUN true \
-  && apt update && apt-get install -y bash curl openssl git \
+  && apt update && apt-get install -y bash openssl git \
   && rm -rf /var/lib/apt/lists/* \
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false
 
