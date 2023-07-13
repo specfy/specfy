@@ -1,5 +1,5 @@
 import { prisma } from '../../db/index.js';
-import { createJobDeploy } from '../../models/index.js';
+import { createJobDeploy, userGithubApp } from '../../models/index.js';
 
 // Publish a job in the queue
 (async () => {
@@ -15,6 +15,7 @@ import { createJobDeploy } from '../../models/index.js';
   await createJobDeploy({
     orgId: res.orgId,
     projectId: res.id,
+    userId: userGithubApp.id,
     config: { url: 'specfy/specfy', autoLayout: true },
     tx: prisma,
   });

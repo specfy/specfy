@@ -139,6 +139,7 @@ ws.on('push', async ({ id, payload }) => {
         return createJobDeploy({
           orgId: project.orgId,
           projectId: project.id,
+          userId: userGithubApp.id,
           config: {
             url: project.githubRepository!,
             hook: {

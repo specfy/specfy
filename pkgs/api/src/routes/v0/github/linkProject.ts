@@ -104,6 +104,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
           await createJobDeploy({
             orgId: body.orgId,
             projectId: body.projectId,
+            userId: user.id,
             config: {
               url: body.repository,
               autoLayout: true,
