@@ -101,13 +101,15 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         });
 
         if (body.repository) {
-          await createJobDeploy(
-            { orgId: body.orgId, projectId: body.projectId, tx },
-            {
+          await createJobDeploy({
+            orgId: body.orgId,
+            projectId: body.projectId,
+            config: {
               url: body.repository,
               autoLayout: true,
-            }
-          );
+            },
+            tx,
+          });
         }
         if (body.repository !== proj.githubRepository) {
           await createGithubActivity({

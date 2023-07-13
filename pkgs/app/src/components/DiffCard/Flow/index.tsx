@@ -55,7 +55,6 @@ export const DiffFlow: React.FC<{
     // Diff nodes
     for (const node of prev.nodes) {
       const newNode = next.nodes.find((n) => n.id === node.id);
-      console.log('node', node.data.name);
       if (!newNode) {
         nodesDeleted.push(node);
         continue;

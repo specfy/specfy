@@ -9,12 +9,12 @@ import { App, Button, Skeleton } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { createProject } from '../../../../api';
 import {
+  createProject,
   linkToGithubRepo,
   useGetGithubInstallations,
   useGetGithubRepos,
-} from '../../../../api/github';
+} from '../../../../api';
 import { isError, isValidationError } from '../../../../api/helpers';
 import { i18n } from '../../../../common/i18n';
 import { useProjectStore } from '../../../../common/store';

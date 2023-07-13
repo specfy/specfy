@@ -3,8 +3,8 @@ import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 
+import { deleteMe, updateMe } from '../../../api';
 import { isError } from '../../../api/helpers';
-import { deleteMe, updateMe } from '../../../api/me';
 import { i18n } from '../../../common/i18n';
 import { titleSuffix } from '../../../common/string';
 import { Card } from '../../../components/Card';

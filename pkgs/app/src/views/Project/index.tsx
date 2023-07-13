@@ -23,6 +23,8 @@ import { ProjectActivity } from './Activity';
 import { ComponentView } from './Component';
 import { ProjectComponentCreate } from './Component/Create';
 import { ProjectContentIndex } from './Content';
+import { ProjectDeploysList } from './Deploy/List';
+import { ProjectDeploysShow } from './Deploy/Show';
 import { ProjectFlow } from './Flow';
 import { ProjectOverview } from './Overview';
 import { ProjectRevisionCreate } from './Revisions/Create';
@@ -115,7 +117,7 @@ export const Project: React.FC = () => {
 
       <div>
         <Sidebar org={org} project={proj}>
-          <div className={cls.content}>
+          <div className={cls.sidebarContent}>
             <ContentSidebar proj={proj} params={params} />
           </div>
         </Sidebar>
@@ -124,50 +126,60 @@ export const Project: React.FC = () => {
         <div>
           <ProjectHeader proj={proj} params={params} />
         </div>
-        <Routes>
-          <Route path="/" element={<ProjectOverview params={params} />} />
-          <Route
-            path="/content/*"
-            element={<ProjectContentIndex proj={proj} params={params} />}
-          />
-          <Route
-            path="/flow"
-            element={<ProjectFlow proj={proj} params={params} />}
-          />
-          <Route
-            path="/activity"
-            element={<ProjectActivity proj={proj} params={params} />}
-          />
-          <Route
-            path="/t/:tech_slug"
-            element={<Tech proj={proj} params={params} />}
-          />
-          <Route
-            path="/component/new"
-            element={<ProjectComponentCreate params={params} />}
-          />
-          <Route
-            path="/c/:component_slug"
-            element={<ComponentView proj={proj} />}
-          />
-          <Route
-            path="/settings/*"
-            element={<ProjectSettings proj={proj} params={params} />}
-          />
-          <Route
-            path="/revisions"
-            element={<ProjectRevisionsList proj={proj} params={params} />}
-          />
-          <Route
-            path="/revisions/current"
-            element={<ProjectRevisionCreate proj={proj} params={params} />}
-          />
-          <Route
-            path="/revisions/:revision_id"
-            element={<ProjectRevisionsShow proj={proj} params={params} />}
-          />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
+        <div className={cls.content}>
+          <Routes>
+            <Route path="/" element={<ProjectOverview params={params} />} />
+            <Route
+              path="/content/*"
+              element={<ProjectContentIndex proj={proj} params={params} />}
+            />
+            <Route
+              path="/flow"
+              element={<ProjectFlow proj={proj} params={params} />}
+            />
+            <Route
+              path="/activity"
+              element={<ProjectActivity proj={proj} params={params} />}
+            />
+            <Route
+              path="/t/:tech_slug"
+              element={<Tech proj={proj} params={params} />}
+            />
+            <Route
+              path="/component/new"
+              element={<ProjectComponentCreate params={params} />}
+            />
+            <Route
+              path="/c/:component_slug"
+              element={<ComponentView proj={proj} />}
+            />
+            <Route
+              path="/settings/*"
+              element={<ProjectSettings proj={proj} params={params} />}
+            />
+            <Route
+              path="/revisions"
+              element={<ProjectRevisionsList proj={proj} params={params} />}
+            />
+            <Route
+              path="/revisions/current"
+              element={<ProjectRevisionCreate proj={proj} params={params} />}
+            />
+            <Route
+              path="/revisions/:revision_id"
+              element={<ProjectRevisionsShow proj={proj} params={params} />}
+            />
+            <Route
+              path="/deploys"
+              element={<ProjectDeploysList proj={proj} params={params} />}
+            />
+            <Route
+              path="/deploys/:job_id"
+              element={<ProjectDeploysShow proj={proj} params={params} />}
+            />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </div>
       </div>
     </div>
   );

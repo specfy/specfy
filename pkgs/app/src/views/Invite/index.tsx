@@ -4,12 +4,12 @@ import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import { useSearchParam } from 'react-use';
 
-import { isError } from '../../api/helpers';
 import {
   acceptInvitations,
   declineInvitations,
   useGetInvitation,
-} from '../../api/invitations';
+} from '../../api';
+import { isError } from '../../api/helpers';
 import { i18n } from '../../common/i18n';
 import { titleSuffix } from '../../common/string';
 import { AvatarAuto } from '../../components/AvatarAuto';

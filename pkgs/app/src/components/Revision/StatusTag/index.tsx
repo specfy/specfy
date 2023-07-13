@@ -1,11 +1,12 @@
 import { flagRevisionApprovalEnabled } from '@specfy/api/src/models/revisions/constants';
+import type { ApiRevision } from '@specfy/api/src/types/api';
 import { IconLock } from '@tabler/icons-react';
 import { Tag } from 'antd';
 
 import cls from './index.module.scss';
 
 export const StatusTag: React.FC<{
-  status: string;
+  status: ApiRevision['status'];
   locked: boolean;
   merged?: boolean;
 }> = ({ status, locked, merged }) => {

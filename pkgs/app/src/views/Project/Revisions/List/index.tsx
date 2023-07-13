@@ -20,7 +20,7 @@ import { titleSuffix } from '../../../../common/string';
 import { Container } from '../../../../components/Container';
 import { Flex } from '../../../../components/Flex';
 import { Loading } from '../../../../components/Loading';
-import { StatusTag } from '../../../../components/StatusTag';
+import { StatusTag } from '../../../../components/Revision/StatusTag';
 import { Time } from '../../../../components/Time';
 import type { RouteProject } from '../../../../types/routes';
 

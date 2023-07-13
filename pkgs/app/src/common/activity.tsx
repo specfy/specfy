@@ -17,7 +17,7 @@ import { Link } from 'react-router-dom';
 import { AvatarAuto } from '../components/AvatarAuto';
 import { Flex } from '../components/Flex';
 import { ActivityCard } from '../components/ListActivity/Details';
-import { StatusTag } from '../components/StatusTag';
+import { StatusTag } from '../components/Revision/StatusTag';
 
 import { TYPE_TO_READABLE } from './document';
 

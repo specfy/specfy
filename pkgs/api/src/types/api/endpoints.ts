@@ -1,4 +1,7 @@
 /* eslint-disable @typescript-eslint/member-ordering */
+
+import type { ListJobs, GetJob } from '../../models/jobs/type.api.js';
+
 import type { ListActivities } from './activities.js';
 import type { PostAuthLocal, PostLogout } from './auth.js';
 import type { ListRevisionBlobs } from './blob.js';
@@ -58,6 +61,9 @@ export interface API {
   [key: `/0/documents/${string}`]: { GET: GetDocument };
 
   [key: `/0/flows/${string}`]: { GET: GetFlow; PATCH: PatchFlow };
+
+  '/0/jobs': { GET: ListJobs };
+  [key: `/0/jobs/${string}`]: { GET: GetJob };
 
   '/0/keys': { GET: ListKeys };
 

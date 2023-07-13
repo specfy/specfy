@@ -5,8 +5,7 @@ import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useLocalStorage } from 'react-use';
 
-import { useListProjects } from '../../../api';
-import { useGetFlow } from '../../../api/flows';
+import { useListProjects, useGetFlow } from '../../../api';
 import { titleSuffix } from '../../../common/string';
 import { Card } from '../../../components/Card';
 import { Container } from '../../../components/Container';

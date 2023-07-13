@@ -1,3 +1,4 @@
+export * from '../../models/jobs/type.api.js';
 export * from './activities.js';
 export * from './api.js';
 export * from './auth.js';

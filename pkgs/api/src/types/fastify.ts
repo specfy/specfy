@@ -8,6 +8,8 @@ import type {
 } from 'fastify';
 import type { RouteGenericInterface } from 'fastify/types/route';
 
+import type { JobWithUser } from '../models/jobs/type.js';
+
 import type { InvitationsWithOrgAndUser } from './api/index.js';
 import type { PermsWithOrg, RevisionWithProject } from './db/index.js';
 
@@ -32,6 +34,7 @@ declare module 'fastify' {
     org?: Orgs;
     invitation?: InvitationsWithOrgAndUser;
     flow?: Flows;
+    job?: JobWithUser;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-interface

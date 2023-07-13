@@ -211,6 +211,7 @@ model Jobs {
   userId    String? @db.VarChar(15)
 
   type   JobsType
+  typeId Int
   status JobsStatus
   /// [PrismaJobsConfig]
   config Json       @db.Json

@@ -5,8 +5,11 @@ import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { deleteProject, updateProject } from '../../../../api';
-import { linkToGithubRepo } from '../../../../api/github';
+import {
+  deleteProject,
+  updateProject,
+  linkToGithubRepo,
+} from '../../../../api';
 import { isError } from '../../../../api/helpers';
 import { useListKeys } from '../../../../api/keys';
 import { API_HOSTNAME, IS_PROD } from '../../../../common/envs';

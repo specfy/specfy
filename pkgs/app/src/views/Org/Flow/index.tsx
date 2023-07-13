@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useReactFlow } from 'reactflow';
 
-import { updateFlow, useGetFlow } from '../../../api/flows';
+import { updateFlow, useGetFlow } from '../../../api';
 import { isError } from '../../../api/helpers';
 import { i18n } from '../../../common/i18n';
 import { titleSuffix } from '../../../common/string';

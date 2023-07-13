@@ -5,8 +5,7 @@ import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 
-import { deleteOrg, updateOrg } from '../../../../api';
-import { linkToGithubOrg } from '../../../../api/github';
+import { deleteOrg, updateOrg, linkToGithubOrg } from '../../../../api';
 import { isError } from '../../../../api/helpers';
 import { i18n } from '../../../../common/i18n';
 import { titleSuffix } from '../../../../common/string';

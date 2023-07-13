@@ -136,16 +136,18 @@ ws.on('push', async ({ id, payload }) => {
     });
     await Promise.all(
       list.map((project) => {
-        return createJobDeploy(
-          { orgId: project.orgId, projectId: project.id, tx },
-          {
+        return createJobDeploy({
+          orgId: project.orgId,
+          projectId: project.id,
+          config: {
             url: project.githubRepository!,
             hook: {
               id,
               ref: payload.ref,
             },
-          }
-        );
+          },
+          tx,
+        });
       })
     );
   });

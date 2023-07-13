@@ -2,7 +2,7 @@ import { IconPlus } from '@tabler/icons-react';
 import { App, Button, Select, Skeleton } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 
-import { useGetGithubInstallations } from '../../../api/github';
+import { useGetGithubInstallations } from '../../../api';
 import { GITHUB_APP } from '../../../common/envs';
 import { Popup } from '../../../common/popup';
 import { AvatarAuto } from '../../AvatarAuto';

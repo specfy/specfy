@@ -4,12 +4,12 @@ import { IconDotsVertical } from '@tabler/icons-react';
 import { App, Button, Checkbox, Skeleton, Table } from 'antd';
 import { useState } from 'react';
 
-import { roleReadable } from '../../../../../api';
-import { isError } from '../../../../../api/helpers';
 import {
+  roleReadable,
   deleteInvitations,
   useListInvitations,
-} from '../../../../../api/invitations';
+} from '../../../../../api';
+import { isError } from '../../../../../api/helpers';
 import { i18n } from '../../../../../common/i18n';
 import { AvatarAuto } from '../../../../../components/AvatarAuto';
 import { Card } from '../../../../../components/Card';

@@ -36,3 +36,7 @@ export interface JobMark {
 }
 
 export type JobReason = JobMark;
+
+export type JobWithUser = Prisma.JobsGetPayload<{
+  include: { User: true };
+}>;

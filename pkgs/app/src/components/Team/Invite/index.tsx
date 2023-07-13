@@ -4,8 +4,8 @@ import { IconChevronDown } from '@tabler/icons-react';
 import { App, Button, Form, Input, Typography } from 'antd';
 import { useState } from 'react';
 
+import { createInvitation } from '../../../api';
 import { isError, isValidationError } from '../../../api/helpers';
-import { createInvitation } from '../../../api/invitations';
 import { i18n } from '../../../common/i18n';
 import { Card } from '../../../components/Card';
 
