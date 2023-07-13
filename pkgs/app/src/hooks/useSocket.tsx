@@ -5,6 +5,8 @@ import { useMount, useUnmount } from 'react-use';
 import { queryClient } from '../common/query';
 import { socket } from '../common/socket';
 
+import { useToast } from './useToast';
+
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface SocketContextInterface {}
 
@@ -16,6 +18,8 @@ export const SocketProvider: React.FC<{
   children: React.ReactNode;
   user: ApiMe;
 }> = ({ children, user }) => {
+  const toast = useToast();
+
   useEffect(() => {
     if (!user) {
       return;
@@ -30,16 +34,26 @@ export const SocketProvider: React.FC<{
   useMount(() => {
     socket.on('job.start', (data) => {
       queryClient.invalidateQueries(['listJobs', data.orgId, data.projectId]);
+      toast.add({
+        id: data.id,
+        title: `Deploy #${data.typeId}`,
+        loading: true,
+      });
     });
 
     socket.on('job.finish', (data) => {
       setTimeout(() => {
         queryClient.invalidateQueries(['listJobs', data.orgId, data.projectId]);
+        toast.update({
+          id: data.id,
+          status: data.status === 'failed' ? 'error' : 'success',
+          loading: false,
+        });
       }, 1000);
     });
   });
+
   useUnmount(() => {
-    console.log('unsub');
     socket.offAny();
   });
 

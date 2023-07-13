@@ -1,10 +1,11 @@
 import { IconPlus } from '@tabler/icons-react';
-import { App, Button, Select, Skeleton } from 'antd';
+import { Button, Select, Skeleton } from 'antd';
 import { useEffect, useRef, useState } from 'react';
 
 import { useGetGithubInstallations } from '../../../api';
 import { GITHUB_APP } from '../../../common/envs';
 import { Popup } from '../../../common/popup';
+import { useToast } from '../../../hooks/useToast';
 import { AvatarAuto } from '../../AvatarAuto';
 
 import cls from './index.module.scss';
@@ -16,7 +17,7 @@ export const GithubOrgSelect: React.FC<{
   onChange: (selected: number | null) => void;
   onClose?: () => void;
 }> = ({ defaultSelected, emptyOption, disabled, onChange, onClose }) => {
-  const { message } = App.useApp();
+  const toast = useToast();
   const ref = useRef<Popup | null>(null);
   const resInstall = useGetGithubInstallations();
   const [selected, setSelected] = useState<number | null>(
@@ -49,9 +50,10 @@ export const GithubOrgSelect: React.FC<{
       callbacks: {
         onBlocked: () => {
           ref.current = null;
-          void message.error(
-            'The popup to install the GitHub App could not be opened.'
-          );
+          toast.add({
+            title: 'The popup to install the GitHub App could not be opened.',
+            status: 'error',
+          });
         },
         onClose: () => {
           setReady(false);

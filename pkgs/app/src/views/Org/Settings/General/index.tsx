@@ -1,6 +1,6 @@
 import type { ApiOrg } from '@specfy/api/src/types/api';
 import { IconCirclesRelation } from '@tabler/icons-react';
-import { Typography, Input, Button, Modal, App, Form } from 'antd';
+import { Typography, Input, Button, Modal, Form } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +12,7 @@ import { titleSuffix } from '../../../../common/string';
 import { Banner } from '../../../../components/Banner';
 import { Card } from '../../../../components/Card';
 import { GithubOrgSelect } from '../../../../components/Github/OrgSelect';
+import { useToast } from '../../../../hooks/useToast';
 import type { RouteOrg } from '../../../../types/routes';
 
 import cls from './index.module.scss';
@@ -20,7 +21,7 @@ export const SettingsGeneral: React.FC<{
   org: ApiOrg;
   params: RouteOrg;
 }> = ({ org, params }) => {
-  const { message } = App.useApp();
+  const toast = useToast();
   const navigate = useNavigate();
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -36,11 +37,11 @@ export const SettingsGeneral: React.FC<{
   const handleRename = async () => {
     const res = await updateOrg(params, { name: name! });
     if (isError(res)) {
-      void message.error(i18n.errorOccurred);
+      toast.add({ title: i18n.errorOccurred, status: 'error' });
       return;
     }
 
-    void message.success('Organization renamed');
+    toast.add({ title: 'Organization renamed', status: 'success' });
   };
   const handleReset = () => {
     setName(org.name);
@@ -64,11 +65,11 @@ export const SettingsGeneral: React.FC<{
   const confirmDelete = async () => {
     const res = await deleteOrg(params);
     if (res !== 204) {
-      void message.error(i18n.errorOccurred);
+      toast.add({ title: i18n.errorOccurred, status: 'error' });
       return;
     }
 
-    void message.success('Organization deleted');
+    toast.add({ title: 'Organization deleted', status: 'success' });
     navigate(`/`);
   };
 
@@ -81,11 +82,11 @@ export const SettingsGeneral: React.FC<{
       orgId: org.id,
     });
     if (isError(res)) {
-      void message.error(i18n.errorOccurred);
+      toast.add({ title: i18n.errorOccurred, status: 'error' });
       return;
     }
 
-    void message.success('Linked successfully');
+    toast.add({ title: 'Organization linked to Github', status: 'success' });
   };
   const onUnlink = async () => {
     const res = await linkToGithubOrg({
@@ -93,11 +94,11 @@ export const SettingsGeneral: React.FC<{
       orgId: org.id,
     });
     if (isError(res)) {
-      void message.error(i18n.errorOccurred);
+      toast.add({ title: i18n.errorOccurred, status: 'error' });
       return;
     }
 
-    void message.success('Unlinked successfully');
+    toast.add({ title: 'Successfully unlinked', status: 'success' });
   };
 
   return (

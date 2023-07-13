@@ -14,7 +14,7 @@ import {
   IconLockAccessOff,
 } from '@tabler/icons-react';
 import type { MenuProps } from 'antd';
-import { App, Button, Dropdown, Skeleton, Space, Typography } from 'antd';
+import { Button, Dropdown, Skeleton, Space, Typography } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
@@ -45,6 +45,7 @@ import { StatusTag } from '../../../../components/Revision/StatusTag';
 import { SidebarBlock } from '../../../../components/Sidebar/Block';
 import { Time } from '../../../../components/Time';
 import { UserList } from '../../../../components/UserList';
+import { useToast } from '../../../../hooks/useToast';
 import type { BlobAndDiffs } from '../../../../types/blobs';
 import type { RouteProject, RouteRevision } from '../../../../types/routes';
 
@@ -55,7 +56,7 @@ export const ProjectRevisionsShow: React.FC<{
   params: RouteProject;
 }> = ({ proj, params }) => {
   // Global
-  const { message } = App.useApp();
+  const toast = useToast();
   const storeRevision = useRevisionStore();
 
   const more = useParams<Partial<RouteRevision>>();
@@ -189,16 +190,16 @@ export const ProjectRevisionsShow: React.FC<{
     setSave(false);
 
     if (isError(up)) {
-      void message.error(i18n.errorOccurred);
+      toast.add({ title: i18n.errorOccurred, status: 'error' });
       return;
     }
 
     if (!up.data.done) {
-      void message.error('Revision could not saved');
+      toast.add({ title: 'Revision could not saved', status: 'error' });
       return;
     }
 
-    void message.success('Revision updated');
+    toast.add({ title: 'Revision updated', status: 'success' });
     setEdit(false);
   };
 
@@ -209,7 +210,7 @@ export const ProjectRevisionsShow: React.FC<{
 
     setSave(true);
     await updateRevision({ ...qp, revision_id: rev.id }, { status });
-    void message.success('Revision updated');
+    toast.add({ title: 'Revision updated', status: 'success' });
     setSave(false);
   };
   const patchLocked = async (locked: boolean) => {
@@ -219,7 +220,7 @@ export const ProjectRevisionsShow: React.FC<{
 
     setSave(true);
     await updateRevision({ ...qp, revision_id: rev.id }, { locked });
-    void message.success('Revision updated');
+    toast.add({ title: 'Revision updated', status: 'success' });
     setSave(false);
   };
 

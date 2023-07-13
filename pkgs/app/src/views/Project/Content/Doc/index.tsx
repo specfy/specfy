@@ -1,7 +1,7 @@
 import type { ApiDocument, ApiProject } from '@specfy/api/src/types/api';
 import { IconDotsVertical } from '@tabler/icons-react';
 import type { MenuProps } from 'antd';
-import { App, Typography, Dropdown, Button } from 'antd';
+import { Typography, Dropdown, Button } from 'antd';
 import Title from 'antd/es/typography/Title';
 import type { MenuClickEventHandler } from 'rc-menu/lib/interface';
 import { useEffect, useMemo, useState } from 'react';
@@ -16,6 +16,7 @@ import { HeadingTree } from '../../../../components/HeadingTree';
 import { FakeInput } from '../../../../components/Input';
 import { UpdatedAt } from '../../../../components/UpdatedAt';
 import { useEdit } from '../../../../hooks/useEdit';
+import { useToast } from '../../../../hooks/useToast';
 import clsLayout from '../Show/index.module.scss';
 
 import cls from './index.module.scss';
@@ -25,7 +26,7 @@ export const Doc: React.FC<{
   doc: ApiDocument;
 }> = ({ doc, proj }) => {
   const documentsStore = useDocumentsStore();
-  const { message } = App.useApp();
+  const toast = useToast();
   const navigate = useNavigate();
 
   // Edition
@@ -45,7 +46,7 @@ export const Doc: React.FC<{
     if (e.key === 'delete') {
       edit.enable(true);
       documentsStore.remove(doc.id);
-      void message.success('Document deleted');
+      toast.add({ title: 'Document deleted', status: 'success' });
       navigate(`/${proj.orgId}/${proj.slug}/content`);
     }
   };

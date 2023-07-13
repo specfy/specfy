@@ -10,7 +10,7 @@ import {
   IconEyeCheck,
   IconEyeOff,
 } from '@tabler/icons-react';
-import { App, Button } from 'antd';
+import { Button } from 'antd';
 import classnames from 'classnames';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -19,6 +19,7 @@ import { useMount, useSearchParam } from 'react-use';
 import { mergeRevision, rebaseRevision } from '../../../api';
 import { isError } from '../../../api/helpers';
 import { i18n } from '../../../common/i18n';
+import { useToast } from '../../../hooks/useToast';
 import { Time } from '../../Time';
 
 import cls from './index.module.scss';
@@ -29,7 +30,7 @@ export const Checks: React.FC<{
   qp: ListRevisionChecks['Querystring'];
   onClick: (status: ApiRevision['status']) => void;
 }> = ({ rev, checks, qp, onClick }) => {
-  const { message } = App.useApp();
+  const toast = useToast();
   const autoMerge = useSearchParam('automerge');
   const navigate = useNavigate();
   const loc = useLocation();
@@ -40,11 +41,11 @@ export const Checks: React.FC<{
     const resMerge = await mergeRevision({ ...qp, revision_id: rev.id });
     setMerging(false);
     if (isError(resMerge)) {
-      void message.error('Revision could not be merged');
+      toast.add({ title: 'Revision could not be merged', status: 'error' });
       return;
     }
 
-    void message.success('Revision merged');
+    toast.add({ title: 'Revision merged', status: 'success' });
   };
 
   useMount(() => {
@@ -64,16 +65,16 @@ export const Checks: React.FC<{
     setRebasing(false);
 
     if (isError(resRebase)) {
-      void message.error(i18n.errorOccurred);
+      toast.add({ title: i18n.errorOccurred, status: 'error' });
       return;
     }
 
     if (!resRebase.data.done) {
-      void message.error('Revision could not be rebased');
+      toast.add({ title: 'Revision could not be rebased', status: 'error' });
       return;
     }
 
-    void message.success('Revision rebased');
+    toast.add({ title: 'Revision rebased', status: 'success' });
   };
 
   return (

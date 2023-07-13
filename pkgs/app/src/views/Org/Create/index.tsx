@@ -1,6 +1,6 @@
 import type { FieldsErrors } from '@specfy/api/src/types/api';
 import { IconCircleArrowRight } from '@tabler/icons-react';
-import { App, Button, Form, Input } from 'antd';
+import { Button, Form, Input } from 'antd';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
@@ -10,11 +10,12 @@ import { isError, isValidationError } from '../../../api/helpers';
 import { i18n } from '../../../common/i18n';
 import { slugify, titleSuffix } from '../../../common/string';
 import { Card } from '../../../components/Card';
+import { useToast } from '../../../hooks/useToast';
 
 import cls from './index.module.scss';
 
 export const OrgCreate: React.FC = () => {
-  const { message } = App.useApp();
+  const toast = useToast();
   const navigate = useNavigate();
 
   const [name, setName] = useState<string>('');
@@ -32,12 +33,12 @@ export const OrgCreate: React.FC = () => {
       if (isValidationError(res)) {
         setErrors(res.error.fields);
       } else {
-        void message.error(i18n.errorOccurred);
+        toast.add({ title: i18n.errorOccurred, status: 'error' });
       }
       return;
     }
 
-    void message.success('Organization created');
+    toast.add({ title: 'Organization created', status: 'success' });
     navigate(`/${res.id}`);
   };
 

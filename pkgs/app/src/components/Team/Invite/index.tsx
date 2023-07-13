@@ -1,13 +1,14 @@
 import * as Select from '@radix-ui/react-select';
 import type { ApiOrg, ApiPerm, FieldsErrors } from '@specfy/api/src/types/api';
 import { IconChevronDown } from '@tabler/icons-react';
-import { App, Button, Form, Input, Typography } from 'antd';
+import { Button, Form, Input, Typography } from 'antd';
 import { useState } from 'react';
 
 import { createInvitation } from '../../../api';
 import { isError, isValidationError } from '../../../api/helpers';
 import { i18n } from '../../../common/i18n';
 import { Card } from '../../../components/Card';
+import { useToast } from '../../../hooks/useToast';
 
 import cls from './index.module.scss';
 
@@ -15,7 +16,7 @@ export const TeamInvite: React.FC<{
   org: ApiOrg;
   onInvite?: () => void;
 }> = ({ org, onInvite }) => {
-  const { message } = App.useApp();
+  const toast = useToast();
 
   const [email, setEmail] = useState<string>('');
   const [role, setRole] = useState<ApiPerm['role']>('viewer');
@@ -33,12 +34,12 @@ export const TeamInvite: React.FC<{
       if (isValidationError(res)) {
         setErrors(res.error.fields);
       } else {
-        void message.error(i18n.errorOccurred);
+        toast.add({ title: i18n.errorOccurred, status: 'error' });
       }
       return;
     }
 
-    void message.success('User invited');
+    toast.add({ title: 'User invited', status: 'success' });
     setErrors({});
     setEmail('');
 

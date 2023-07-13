@@ -1,6 +1,6 @@
 import type { ApiOrg, FieldsErrors } from '@specfy/api/src/types/api';
 import { IconCircleArrowRight } from '@tabler/icons-react';
-import { App, Button, Form, Input } from 'antd';
+import { Button, Form, Input } from 'antd';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +10,7 @@ import { isError, isValidationError } from '../../../api/helpers';
 import { i18n } from '../../../common/i18n';
 import { slugify, titleSuffix } from '../../../common/string';
 import { Card } from '../../../components/Card';
+import { useToast } from '../../../hooks/useToast';
 import type { RouteOrg } from '../../../types/routes';
 
 import { CreateFromGithub } from './CreateFromGithub';
@@ -19,7 +20,7 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   org,
   params,
 }) => {
-  const { message } = App.useApp();
+  const toast = useToast();
   const navigate = useNavigate();
 
   const [name, setName] = useState<string>('');
@@ -38,12 +39,12 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
       if (isValidationError(res)) {
         setErrors(res.error.fields);
       } else {
-        void message.error(i18n.errorOccurred);
+        toast.add({ title: i18n.errorOccurred, status: 'error' });
       }
       return;
     }
 
-    void message.success('Project created');
+    toast.add({ title: 'Project created', status: 'success' });
 
     navigate(`/${params.org_id}/${res.slug}`);
   };

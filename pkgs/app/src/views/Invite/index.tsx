@@ -1,5 +1,5 @@
 import { IconArrowRight } from '@tabler/icons-react';
-import { App, Button, Typography } from 'antd';
+import { Button, Typography } from 'antd';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import { useSearchParam } from 'react-use';
@@ -17,11 +17,12 @@ import { Card } from '../../components/Card';
 import { Flex } from '../../components/Flex';
 import { NotFound } from '../../components/NotFound';
 import { useAuth } from '../../hooks/useAuth';
+import { useToast } from '../../hooks/useToast';
 
 import cls from './index.module.scss';
 
 export const Invite: React.FC = () => {
-  const { message } = App.useApp();
+  const toast = useToast();
   const navigate = useNavigate();
   const { user } = useAuth();
   const invitationId = useSearchParam('invitation_id')!;
@@ -59,7 +60,7 @@ export const Invite: React.FC = () => {
       token,
     });
     if (isError(del)) {
-      void message.error(i18n.errorOccurred);
+      toast.add({ title: i18n.errorOccurred, status: 'error' });
       return;
     }
 
@@ -72,11 +73,11 @@ export const Invite: React.FC = () => {
       token,
     });
     if (isError(del)) {
-      void message.error(i18n.errorOccurred);
+      toast.add({ title: i18n.errorOccurred, status: 'error' });
       return;
     }
 
-    message.info('Invitation declined');
+    toast.add({ title: 'Invitation declined', status: 'success' });
     navigate(`/`);
   };
 

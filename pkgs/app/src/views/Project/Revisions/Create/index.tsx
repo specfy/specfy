@@ -16,7 +16,7 @@ import {
   IconGitPullRequest,
   IconGitPullRequestDraft,
 } from '@tabler/icons-react';
-import { App, Button, Checkbox, Form, Result, Typography } from 'antd';
+import { Button, Checkbox, Form, Result, Typography } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
@@ -40,6 +40,7 @@ import { Flex } from '../../../../components/Flex';
 import { FlowWrapper } from '../../../../components/Flow';
 import { Toolbar } from '../../../../components/Flow/Toolbar';
 import { FakeInput } from '../../../../components/Input';
+import { useToast } from '../../../../hooks/useToast';
 import type { RouteProject } from '../../../../types/routes';
 
 import cls from './index.module.scss';
@@ -49,7 +50,7 @@ export const ProjectRevisionCreate: React.FC<{
   params: RouteProject;
 }> = ({ proj, params }) => {
   // Global
-  const { message } = App.useApp();
+  const toast = useToast();
   const navigate = useNavigate();
 
   // Edition
@@ -157,14 +158,14 @@ export const ProjectRevisionCreate: React.FC<{
     });
 
     if (isError(res)) {
-      void message.error(i18n.errorOccurred);
+      toast.add({ title: i18n.errorOccurred, status: 'error' });
       return;
     }
 
     // Discard local changes
     originalStore.revertAll(staging.diffs);
 
-    void message.success('Revision created');
+    toast.add({ title: 'Revision created', status: 'success' });
     navigate(
       `/${params.org_id}/${params.project_slug}/revisions/${res.id}?${
         autoMerge ? 'automerge=true' : ''

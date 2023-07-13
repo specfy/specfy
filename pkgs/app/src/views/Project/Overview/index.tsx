@@ -86,9 +86,9 @@ export const ProjectOverview: React.FC<{
         </Card>
       </Container.Left2Third>
       <Container.Right1Third>
-        <div>
+        <div style={{ height: '350px' }}>
           {flow && (
-            <FlowWrapper style={{ height: '350px' }}>
+            <FlowWrapper style={{ height: '350px' }} key={project.id}>
               <Flow flow={flow} readonly />
               <Toolbar bottom>
                 <Toolbar.Fullscreen project={project} />

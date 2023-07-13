@@ -1,6 +1,6 @@
 import type { ApiProject } from '@specfy/api/src/types/api';
 import { IconCirclesRelation } from '@tabler/icons-react';
-import { Typography, Input, Button, Modal, App, Form } from 'antd';
+import { Typography, Input, Button, Modal, Form } from 'antd';
 import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
@@ -22,6 +22,7 @@ import { Card } from '../../../../components/Card';
 import { Flex } from '../../../../components/Flex';
 import { GithubOrgSelect } from '../../../../components/Github/OrgSelect';
 import { GithubRepoSelect } from '../../../../components/Github/RepoSelect';
+import { useToast } from '../../../../hooks/useToast';
 import type { RouteProject } from '../../../../types/routes';
 
 import cls from './index.module.scss';
@@ -30,7 +31,7 @@ export const SettingsGeneral: React.FC<{
   proj: ApiProject;
   params: RouteProject;
 }> = ({ proj, params }) => {
-  const { message } = App.useApp();
+  const toast = useToast();
   const navigate = useNavigate();
   const { current: org } = useOrgStore();
 
@@ -49,11 +50,11 @@ export const SettingsGeneral: React.FC<{
   const handleRename = async () => {
     const res = await updateProject(params, { name });
     if (isError(res)) {
-      void message.error(i18n.errorOccurred);
+      toast.add({ title: i18n.errorOccurred, status: 'error' });
       return;
     }
 
-    void message.success('Project renamed');
+    toast.add({ title: 'Project renamed', status: 'success' });
     navigate(`/${params.org_id}/${res.data.slug}/settings`);
   };
   const handleReset = () => {
@@ -72,7 +73,7 @@ export const SettingsGeneral: React.FC<{
   };
   const confirmDelete = async () => {
     await deleteProject(params);
-    void message.success('Project deleted');
+    toast.add({ title: 'Project deleted', status: 'success' });
 
     navigate(`/${params.org_id}`);
   };
@@ -87,12 +88,13 @@ export const SettingsGeneral: React.FC<{
       repository: repoId,
     });
     if (isError(res)) {
-      void message.error(i18n.errorOccurred);
+      toast.add({ title: i18n.errorOccurred, status: 'error' });
       return;
     }
 
-    void message.success('Linked successfully');
+    toast.add({ title: 'Project linked to Github', status: 'success' });
   };
+
   const onUnlink = async () => {
     const res = await linkToGithubRepo({
       orgId: proj.orgId,
@@ -100,11 +102,11 @@ export const SettingsGeneral: React.FC<{
       repository: null,
     });
     if (isError(res)) {
-      void message.error(i18n.errorOccurred);
+      toast.add({ title: i18n.errorOccurred, status: 'error' });
       return;
     }
 
-    void message.success('Unlinked successfully');
+    toast.add({ title: 'Successfully unlinked', status: 'success' });
   };
 
   // Keys

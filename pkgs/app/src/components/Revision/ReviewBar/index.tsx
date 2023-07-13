@@ -4,7 +4,7 @@ import type {
   GetRevision,
 } from '@specfy/api/src/types/api';
 import { IconCircleCheck } from '@tabler/icons-react';
-import { Button, Typography, Space, App } from 'antd';
+import { Button, Typography, Space } from 'antd';
 import classnames from 'classnames';
 import { useState, useEffect, useRef } from 'react';
 import { useClickAway } from 'react-use';
@@ -13,6 +13,7 @@ import { createComment } from '../../../api';
 import { isError } from '../../../api/helpers';
 import { getEmptyDoc } from '../../../common/content';
 import { i18n } from '../../../common/i18n';
+import { useToast } from '../../../hooks/useToast';
 import { Editor } from '../../Editor';
 
 import cls from './index.module.scss';
@@ -21,7 +22,7 @@ export const ReviewBar: React.FC<{
   rev: ApiRevision;
   qp: GetRevision['Querystring'];
 }> = ({ rev, qp }) => {
-  const { message } = App.useApp();
+  const toast = useToast();
 
   const ref = useRef<HTMLDivElement>(null);
   const [canReview, setCanReview] = useState<boolean>(false);
@@ -58,11 +59,11 @@ export const ReviewBar: React.FC<{
       }
     );
     if (isError(resComment)) {
-      void message.error(i18n.errorOccurred);
+      toast.add({ title: i18n.errorOccurred, status: 'error' });
       return;
     }
 
-    void message.success('Revision approved');
+    toast.add({ title: 'Revision approved', status: 'success' });
     setOpen(false);
     setReview(getEmptyDoc());
   };

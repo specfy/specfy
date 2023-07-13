@@ -5,7 +5,7 @@ import type {
   ResValidationError,
 } from '@specfy/api/src/types/api';
 import { IconArrowRight, IconInfoCircle, IconLock } from '@tabler/icons-react';
-import { App, Button, Skeleton } from 'antd';
+import { Button, Skeleton } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -22,6 +22,7 @@ import { slugify } from '../../../../common/string';
 import { Banner } from '../../../../components/Banner';
 import { Flex } from '../../../../components/Flex';
 import { GithubOrgSelect } from '../../../../components/Github/OrgSelect';
+import { useToast } from '../../../../hooks/useToast';
 
 import cls from './index.module.scss';
 
@@ -69,7 +70,7 @@ export const CreateFromGithub: React.FC<{
   onError: (repo: ApiGithubRepo, err: ResValidationError['error']) => void;
 }> = ({ org, onError }) => {
   const storeProjects = useProjectStore();
-  const { message } = App.useApp();
+  const toast = useToast();
 
   const [selected, setSelected] = useState<number | undefined>();
   const [reposReady, setReposReady] = useState<boolean>(false);
@@ -105,12 +106,12 @@ export const CreateFromGithub: React.FC<{
 
           window.scrollTo(0, 0);
         } else {
-          void message.error(i18n.errorOccurred);
+          toast.add({ title: i18n.errorOccurred, status: 'error' });
         }
         return false;
       }
 
-      void message.success('Project created');
+      toast.add({ title: 'Project created', status: 'success' });
 
       const link = await linkToGithubRepo({
         orgId: org.id,
@@ -118,7 +119,7 @@ export const CreateFromGithub: React.FC<{
         repository: repo.fullName,
       });
       if (isError(link)) {
-        void message.error(i18n.errorOccurred);
+        toast.add({ title: i18n.errorOccurred, status: 'error' });
         return false;
       }
 

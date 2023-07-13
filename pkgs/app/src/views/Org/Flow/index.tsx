@@ -1,7 +1,7 @@
 import type { ComputedFlow } from '@specfy/api/src/common/flow/types';
 import type { ApiOrg, PatchFlow } from '@specfy/api/src/types/api';
 import { IconCheck, IconEdit, IconX } from '@tabler/icons-react';
-import { App, Button } from 'antd';
+import { Button } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useReactFlow } from 'reactflow';
@@ -14,6 +14,7 @@ import { Flow, FlowWrapper } from '../../../components/Flow';
 import { FlowDetails } from '../../../components/Flow/Details';
 import { Toolbar } from '../../../components/Flow/Toolbar';
 import { Loading } from '../../../components/Loading';
+import { useToast } from '../../../hooks/useToast';
 import type { RouteOrg } from '../../../types/routes';
 
 import cls from './index.module.scss';
@@ -22,7 +23,7 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   org,
   params,
 }) => {
-  const { message } = App.useApp();
+  const toast = useToast();
 
   const rf = useReactFlow();
   const resFlow = useGetFlow({ org_id: params.org_id, flow_id: org.flowId });
@@ -69,11 +70,11 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
     );
     setPublishing(false);
     if (isError(res)) {
-      void message.error(i18n.errorOccurred);
+      toast.add({ title: i18n.errorOccurred, status: 'error' });
       return;
     }
 
-    void message.success('Published');
+    toast.add({ title: 'Published', status: 'success' });
   };
 
   const onCancel = () => {
