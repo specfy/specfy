@@ -1,6 +1,6 @@
-import type { ComputedFlow, OrgFlowUpdates } from '../../models/flows/types.js';
+import type { QuerystringOrgMaybeProject, Res } from '../../types/api/api.js';
 
-import type { QuerystringOrgMaybeProject, Res } from './api.js';
+import type { ComputedFlow, OrgFlowUpdates } from './types.js';
 
 export interface ApiFlow {
   id: string;

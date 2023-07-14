@@ -1,7 +1,7 @@
-import type { DBPerm } from '../db/perms.js';
+import type { Res } from '../../types/api/api.js';
+import type { ApiUser } from '../users/types.api.js';
 
-import type { Res } from './api.js';
-import type { ApiUser } from './users.js';
+import type { DBPerm } from './types.js';
 
 export type ApiPerm = Omit<DBPerm, 'userId'> & { user: ApiUser };
 

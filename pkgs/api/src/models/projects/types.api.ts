@@ -1,6 +1,6 @@
-import type { DBProject } from '../db/projects.js';
+import type { Pagination, Res } from '../../types/api/api.js';
 
-import type { Pagination, Res } from './api.js';
+import type { DBProject } from './types.js';
 
 export type ApiProject = DBProject;
 export interface ReqProjectParams {

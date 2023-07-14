@@ -5,7 +5,7 @@ import { slugify } from '../../common/string.js';
 import { prisma } from '../../db/index.js';
 import { recomputeOrgGraph } from '../../models/flows/helpers.rebuild.js';
 import { createProject } from '../../models/projects/model.js';
-import type { DBProject } from '../../types/db/index.js';
+import type { DBProject } from '../../models/projects/types.js';
 
 /**
  * Seed projects

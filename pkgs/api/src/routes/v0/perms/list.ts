@@ -6,7 +6,7 @@ import { validationError } from '../../../common/errors.js';
 import { schemaId, schemaOrgId } from '../../../common/validators/index.js';
 import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
-import { toApiUser } from '../../../models/user/formatter.js';
+import { toApiUser } from '../../../models/users/formatter.js';
 import type { ListPerms } from '../../../types/api/index.js';
 
 function QueryVal(req: FastifyRequest) {

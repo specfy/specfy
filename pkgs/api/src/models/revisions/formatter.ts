@@ -1,10 +1,9 @@
 import { env } from '../../common/env.js';
 import type { ApiRevision } from '../../types/api/index.js';
-import type {
-  RevisionWithProject,
-  TypeHasUsersWithUser,
-} from '../../types/db/index.js';
-import { toApiUser } from '../user/formatter.js';
+import type { TypeHasUsersWithUser } from '../typesHasUsers/types.js';
+import { toApiUser } from '../users/formatter.js';
+
+import type { RevisionWithProject } from './types.js';
 
 export function toApiRevision(
   rev: RevisionWithProject,

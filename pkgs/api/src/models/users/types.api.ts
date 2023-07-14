@@ -1,8 +1,8 @@
-import type { DBUser } from '../db/index.js';
+import type { Users } from '@prisma/client';
 
-import type { Pagination, Res } from './api.js';
+import type { Pagination, Res } from '../../types/api/api.js';
 
-export type ApiUser = Pick<DBUser, 'avatarUrl' | 'email' | 'id' | 'name'>;
+export type ApiUser = Pick<Users, 'avatarUrl' | 'email' | 'id' | 'name'>;
 
 // ------ GET /
 export type ListUsers = Res<{

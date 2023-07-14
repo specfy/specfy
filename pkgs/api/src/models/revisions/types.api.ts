@@ -1,18 +1,22 @@
 import type { AnalyserJson } from '@specfy/stack-analyser';
 
 import type {
+  Pagination,
+  QuerystringOrgProject,
+  Res,
+} from '../../types/api/api.js';
+import type { PartialUndefined } from '../../types/utils.js';
+import type {
   DBBlobBase,
   DBBlobComponentBase,
   DBBlobDocumentBase,
   DBBlobProjectBase,
-} from '../db/blobs.js';
-import type { DBRevision } from '../db/revisions.js';
-import type { PartialUndefined } from '../utils.js';
+} from '../blobs/types.js';
+import type { BlockLevelZero } from '../documents/types.prosemirror.js';
+import type { ApiReview } from '../reviews/types.api.js';
+import type { ApiUser } from '../users/types.api.js';
 
-import type { Pagination, QuerystringOrgProject, Res } from './api.js';
-import type { BlockLevelZero } from './document.js';
-import type { ApiReview } from './reviews.js';
-import type { ApiUser } from './users.js';
+import type { DBRevision } from './types.js';
 
 export type ApiRevision = DBRevision & {
   authors: ApiUser[];

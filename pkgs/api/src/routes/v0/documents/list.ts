@@ -7,8 +7,8 @@ import { schemaId, schemaOrgId } from '../../../common/validators/index.js';
 import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
 import { v1 } from '../../../models/billing/model.js';
+import { DocumentType } from '../../../models/documents/types.js';
 import type { Pagination, ListDocuments } from '../../../types/api/index.js';
-import { DocumentType } from '../../../types/db/index.js';
 
 function QueryVal(req: FastifyRequest) {
   return z

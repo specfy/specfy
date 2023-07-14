@@ -1,6 +1,6 @@
-import type { DBPolicy } from '../db/policies.js';
+import type { Pagination, Res } from '../../types/api/api.js';
 
-import type { Pagination, Res } from './api.js';
+import type { DBPolicy } from './types.js';
 
 export type ApiPolicy = DBPolicy;
 

@@ -1,8 +1,7 @@
 import type { Projects } from '@prisma/client';
 
-import type { FlowItemDisplay } from '../../types/db/flow.js';
-
 import type {
+  FlowItemDisplay,
   ComponentForFlow,
   ComputedEdge,
   ComputedFlow,

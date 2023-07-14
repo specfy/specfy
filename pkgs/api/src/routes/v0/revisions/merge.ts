@@ -7,6 +7,7 @@ import { prisma } from '../../../db/index.js';
 import { getRevision } from '../../../middlewares/getRevision.js';
 import { noBody } from '../../../middlewares/noBody.js';
 import { findAllBlobsWithParent } from '../../../models/blobs/helpers.js';
+import type { DBBlob } from '../../../models/blobs/types.js';
 import { recomputeOrgGraph } from '../../../models/flows/helpers.rebuild.js';
 import {
   createComponentActivity,
@@ -26,7 +27,6 @@ import type {
   MergeRevision,
   MergeRevisionError,
 } from '../../../types/api/index.js';
-import type { DBBlob } from '../../../types/db/index.js';
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.post<MergeRevision>(
@@ -84,7 +84,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
           }
 
           // Update a blob
-          const blob = item.blob as unknown as DBBlob;
+          const blob = item.blob;
 
           // --- Projects
           if (blob.type === 'project') {

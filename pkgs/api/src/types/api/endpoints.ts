@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 
-import type { ListJobs, GetJob } from '../../models/jobs/type.api.js';
-
-import type { ListActivities } from './activities.js';
-import type { PostAuthLocal, PostLogout } from './auth.js';
-import type { ListRevisionBlobs } from './blob.js';
-import type { ListComponents } from './components.js';
-import type { GetDocument, ListDocuments } from './documents.js';
-import type { GetFlow, PatchFlow } from './flows.js';
+import type { ListActivities } from '../../models/activities/types.api.js';
+import type { ListRevisionBlobs } from '../../models/blobs/types.api.js';
+import type { ListComponents } from '../../models/components/types.api.js';
+import type {
+  GetDocument,
+  ListDocuments,
+} from '../../models/documents/types.api.js';
+import type { GetFlow, PatchFlow } from '../../models/flows/types.api.js';
 import type {
   ListGithubInstallations,
   ListGithubRepos,
   PostLinkToGithubOrg,
-} from './github.js';
+} from '../../models/github/types.api.js';
 import type {
   AcceptInvitation,
   DeclineInvitation,
@@ -20,19 +20,29 @@ import type {
   GetInvitation,
   ListInvitations,
   PostInvitation,
-} from './invitations.js';
-import type { ListKeys } from './keys.js';
-import type { DeleteMe, GetMe, PutMe } from './me.js';
-import type { DeleteOrg, ListOrgs, PostOrg, PutOrg } from './orgs.js';
-import type { DeletePerm, GetCountPerms, ListPerms, PutPerm } from './perms.js';
-import type { ListPolicies } from './policies.js';
+} from '../../models/invitations/types.api.js';
+import type { ListJobs, GetJob } from '../../models/jobs/type.api.js';
+import type { ListKeys } from '../../models/keys/types.api.js';
+import type {
+  DeleteOrg,
+  ListOrgs,
+  PostOrg,
+  PutOrg,
+} from '../../models/orgs/types.api.js';
+import type {
+  DeletePerm,
+  GetCountPerms,
+  ListPerms,
+  PutPerm,
+} from '../../models/perms/types.api.js';
+import type { ListPolicies } from '../../models/policies/types.api.js';
 import type {
   DeleteProject,
   GetProject,
   ListProjects,
   PostProject,
   PutProject,
-} from './projects.js';
+} from '../../models/projects/types.api.js';
 import type {
   CommentRevision,
   GetRevision,
@@ -43,9 +53,12 @@ import type {
   PostRevision,
   PostUploadRevision,
   RebaseRevision,
-} from './revisions.js';
+} from '../../models/revisions/types.api.js';
+import type { ListUsers } from '../../models/users/types.api.js';
+
+import type { PostAuthLocal, PostLogout } from './auth.js';
+import type { DeleteMe, GetMe, PutMe } from './me.js';
 import type { GetRoot } from './root.js';
-import type { ListUsers } from './users.js';
 
 export interface API {
   '/0/': { GET: GetRoot };

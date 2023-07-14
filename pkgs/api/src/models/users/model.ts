@@ -3,7 +3,7 @@ import JWT from 'jsonwebtoken';
 
 import { JWT_SECRET } from '../../common/auth.js';
 import { nanoid } from '../../common/id.js';
-import type { ActionUser } from '../../types/db/index.js';
+import type { ActionUser } from '../activities/types.js';
 
 export function getJwtToken(user: Users, expiresAt?: Date): string {
   return JWT.sign(

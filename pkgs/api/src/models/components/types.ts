@@ -1,8 +1,7 @@
 import type { TechType } from '@specfy/stack-analyser';
 
-import type { BlockLevelZero } from '../api/index.js';
-
-import type { FlowEdge, FlowItemDisplay } from './flow.js';
+import type { BlockLevelZero } from '../../types/api/index.js';
+import type { FlowEdge, FlowItemDisplay } from '../flows/types.js';
 
 export type ComponentType = TechType | 'project' | 'service';
 

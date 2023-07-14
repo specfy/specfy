@@ -6,12 +6,9 @@ import type {
   Projects,
 } from '@prisma/client';
 
-import {
-  isDocumentBlob,
-  isComponentBlob,
-  isProjectBlob,
-} from '../../types/db/index.js';
 import { sortBlobsByInsertion } from '../revisions/helpers.js';
+
+import { isComponentBlob, isDocumentBlob, isProjectBlob } from './types.js';
 
 export type IterateBlob = {
   blob: Blobs;

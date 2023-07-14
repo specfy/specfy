@@ -1,4 +1,4 @@
-import type { Res } from './api.js';
+import type { Res } from '../../types/api/api.js';
 
 // GET /github/repos
 export interface ApiGithubRepo {

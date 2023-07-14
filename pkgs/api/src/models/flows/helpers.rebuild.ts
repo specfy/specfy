@@ -1,7 +1,7 @@
 import type { Prisma, Projects } from '@prisma/client';
 
 import { nanoid } from '../../common/id.js';
-import type { DBComponent } from '../../types/db/index.js';
+import type { DBComponent } from '../components/types.js';
 
 import { computeNewProjectPosition, getComponentSize } from './helpers.js';
 import { createNodeFromProject, getEdgeMarkers } from './transform.js';

@@ -1,8 +1,9 @@
 import type { Users } from '@prisma/client';
 import type { Server } from 'socket.io';
 
+import type { PermsWithOrg } from '../models/perms/types.js';
+
 import type { ApiJob, ApiProject } from './api/index.js';
-import type { PermsWithOrg } from './db/index.js';
 
 export interface PayloadAuth {
   userId: string;

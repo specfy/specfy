@@ -1,4 +1,4 @@
-import type { ComponentType } from '../../types/db/index.js';
+import type { ComponentType } from './types.js';
 
 export const componentTypes: ComponentType[] = [
   'app',

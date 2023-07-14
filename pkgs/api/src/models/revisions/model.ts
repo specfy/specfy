@@ -1,8 +1,9 @@
 import type { Prisma, Users, Activities, Revisions } from '@prisma/client';
 
 import { nanoid } from '../../common/id.js';
-import type { ApiBlobCreate } from '../../types/api/revisions.js';
-import type { ActionRevision } from '../../types/db/index.js';
+import type { ActionRevision } from '../activities/types.js';
+
+import type { ApiBlobCreate } from './types.api.js';
 
 export async function createRevisionActivity({
   user,

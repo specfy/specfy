@@ -1,6 +1,6 @@
 import type { Prisma } from '@prisma/client';
 
-import type { BlockLevelZero } from '../api/index.js';
+import type { BlockLevelZero } from '../../types/api/index.js';
 
 export interface DBRevision {
   id: string;

@@ -2,7 +2,7 @@ import type { Activities, Orgs, Prisma, Users } from '@prisma/client';
 
 import { acronymize, stringToColor } from '../../common/avatar.js';
 import { nanoid } from '../../common/id.js';
-import type { ActionOrg } from '../../types/db/index.js';
+import type { ActionOrg } from '../activities/types.js';
 import { recomputeOrgGraph } from '../flows/helpers.rebuild.js';
 import { createKey } from '../keys/model.js';
 

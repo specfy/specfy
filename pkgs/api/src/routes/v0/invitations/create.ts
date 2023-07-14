@@ -10,8 +10,8 @@ import { prisma } from '../../../db/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import { v1, EXPIRES } from '../../../models/index.js';
 import { getOrgFromRequest } from '../../../models/perms/helpers.js';
+import { PermType } from '../../../models/perms/types.js';
 import type { PostInvitation } from '../../../types/api/index.js';
-import { PermType } from '../../../types/db/index.js';
 
 function QueryVal(req: FastifyRequest) {
   return z

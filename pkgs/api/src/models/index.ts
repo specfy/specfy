@@ -9,4 +9,4 @@ export * from './orgs/model.js';
 export * from './policies/model.js';
 export * from './projects/model.js';
 export * from './revisions/model.js';
-export * from './user/model.js';
+export * from './users/model.js';

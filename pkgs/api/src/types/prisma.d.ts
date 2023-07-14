@@ -1,16 +1,16 @@
+import type { DBActivity } from '../models/activities/types.js';
+import type { DBBlob } from '../models/blobs/types.js';
+import type { DBComponent } from '../models/components/types.js';
+import type { DBDocument } from '../models/documents/types.js';
 import type { ComputedFlow } from '../models/flows/types.js';
 import type { JobDeployConfig, JobReason } from '../models/jobs/type.js';
+import type { DBPerm } from '../models/perms/types.js';
+import type { DBPolicy } from '../models/policies/types.js';
+import type { DBProject } from '../models/projects/types.js';
+import type { DBRevision } from '../models/revisions/types.js';
+import type { DBTypeHasUser } from '../models/typesHasUsers/types.js';
 
 import type { BlockLevelZero } from './api/index.js';
-import type { DBActivity } from './db/activities.js';
-import type { DBBlob } from './db/blobs.js';
-import type { DBComponent } from './db/components.js';
-import type { DBDocument } from './db/documents.js';
-import type { DBPerm } from './db/perms.js';
-import type { DBPolicy } from './db/policies.js';
-import type { DBProject } from './db/projects.js';
-import type { DBRevision } from './db/revisions.js';
-import type { DBTypeHasUser } from './db/typeHasUsers.js';
 
 declare global {
   namespace PrismaJson {

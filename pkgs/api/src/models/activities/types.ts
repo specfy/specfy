@@ -69,6 +69,7 @@ export type ActionAll =
   | ActionProject
   | ActionRevision
   | ActionUser;
+
 export interface DBActivity {
   id: string;
 

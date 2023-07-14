@@ -1,7 +1,6 @@
 import type { Edge, Node } from 'reactflow';
 
 import type { ApiComponent } from '../../types/api/index.js';
-import type { FlowEdge, FlowItemDisplay } from '../../types/db/index.js';
 
 export interface LayoutNode {
   id: string;
@@ -75,3 +74,20 @@ export type OrgFlowUpdates = {
   >;
   nodes: Record<string, { display: FlowItemDisplay }>;
 };
+
+export interface FlowItemDisplay {
+  zIndex?: number | undefined;
+  color?: string;
+  backgroundColor?: string;
+  pos: { x: number; y: number };
+  size: { width: number; height: number };
+}
+
+export interface FlowEdge {
+  target: string;
+  read: boolean;
+  write: boolean;
+  vertices: Array<{ x: number; y: number }>;
+  portSource: 'sb' | 'sl' | 'sr' | 'st';
+  portTarget: 'tb' | 'tl' | 'tr' | 'tt';
+}

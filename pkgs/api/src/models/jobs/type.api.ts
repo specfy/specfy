@@ -1,7 +1,7 @@
 import type { Jobs } from '@prisma/client';
 
 import type { Pagination, Res } from '../../types/api/api.js';
-import type { ApiUser } from '../../types/api/users.js';
+import type { ApiUser } from '../users/types.api.js';
 
 import type { JobReason } from './type.js';
 

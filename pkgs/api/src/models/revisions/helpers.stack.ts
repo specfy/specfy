@@ -9,7 +9,7 @@ import type {
   ApiBlobCreateComponent,
   PostUploadRevision,
 } from '../../types/api/index.js';
-import type { ComponentType, DBComponent } from '../../types/db/components.js';
+import type { ComponentType, DBComponent } from '../components/types.js';
 import { getComponentSize } from '../flows/helpers.js';
 import { computeLayout } from '../flows/layout.js';
 import { componentsToFlow } from '../flows/transform.js';

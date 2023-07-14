@@ -24,7 +24,7 @@ Global:
     - Anchor
     - Dropdown
     - Skeleton
-  - API: Clean models and group everything together
+  ✔ API: Clean models and group everything together @done(23-07-14 16:41)
 
 
 Infrastructure:

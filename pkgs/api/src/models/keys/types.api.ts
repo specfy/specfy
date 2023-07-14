@@ -1,4 +1,4 @@
-import type { Pagination, Res } from './api.js';
+import type { Pagination, Res } from '../../types/api/api.js';
 
 export type ApiKey = { key: string; createdAt: string };
 

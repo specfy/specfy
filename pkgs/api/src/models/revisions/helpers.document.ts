@@ -12,7 +12,7 @@ import type {
   Blocks,
   PostUploadRevision,
 } from '../../types/api/index.js';
-import type { DBDocument } from '../../types/db/documents.js';
+import type { DBDocument } from '../documents/types.js';
 
 const attrName = 'uid';
 const allowListFilename: Record<string, string> = {

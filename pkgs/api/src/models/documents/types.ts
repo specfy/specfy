@@ -1,4 +1,4 @@
-import type { BlockLevelZero } from '../api/index.js';
+import type { BlockLevelZero } from '../../types/api/index.js';
 
 export enum DocumentType {
   'pb' = 'pb',

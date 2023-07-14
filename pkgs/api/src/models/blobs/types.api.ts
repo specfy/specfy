@@ -1,13 +1,15 @@
+import type { QuerystringOrgProject, Res } from '../../types/api/api.js';
+import type { DBComponent } from '../components/types.js';
+import type { DBDocument } from '../documents/types.js';
+import type { DBProject } from '../projects/types.js';
+import type { ParamsRevision } from '../revisions/types.api.js';
+
 import type {
   DBBlob,
   DBBlobComponent,
   DBBlobDocument,
   DBBlobProject,
-} from '../db/blobs.js';
-import type { DBComponent, DBDocument, DBProject } from '../db/index.js';
-
-import type { QuerystringOrgProject, Res } from './api.js';
-import type { ParamsRevision } from './revisions.js';
+} from './types.js';
 
 export type ApiBlob = DBBlob;
 export type ApiBlobPrevious<T = DBBlob['current']> = {

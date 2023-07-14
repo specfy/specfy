@@ -1,4 +1,3 @@
-import type { ApiActivity } from '@specfy/api/src/types/api';
 import type {
   ActionAll,
   ActionComponent,
@@ -10,7 +9,8 @@ import type {
   ActionProject,
   ActionRevision,
   ActionUser,
-} from '@specfy/api/src/types/db';
+} from '@specfy/api/src/models/activities/types';
+import type { ApiActivity } from '@specfy/api/src/types/api';
 import { IconGitMerge, IconThumbUp } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 
