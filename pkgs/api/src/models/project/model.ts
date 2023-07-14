@@ -1,10 +1,9 @@
 import type { Projects, Prisma, Activities, Users } from '@prisma/client';
 
-import { nanoid } from '../common/id.js';
-import { slugify } from '../common/string.js';
-import type { ActionProject } from '../types/db/index.js';
-
-import { createKey } from './key.js';
+import { nanoid } from '../../common/id.js';
+import { slugify } from '../../common/string.js';
+import type { ActionProject } from '../../types/db/index.js';
+import { createKey } from '../key/model.js';
 
 export async function createProjectBlob({
   data,

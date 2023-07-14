@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { v1 } from '../../models/billing.js';
+import { v1 } from '../../models/billing/model.js';
 
 import { schemaId } from './common.js';
 import { schemaComponent } from './component.js';

@@ -1,8 +1,8 @@
 import type { Prisma, Activities, Components, Users } from '@prisma/client';
 
-import { nanoid } from '../common/id.js';
-import { slugify } from '../common/string.js';
-import type { ActionComponent } from '../types/db/index.js';
+import { nanoid } from '../../common/id.js';
+import { slugify } from '../../common/string.js';
+import type { ActionComponent } from '../../types/db/index.js';
 
 export async function createComponentBlob({
   data,
