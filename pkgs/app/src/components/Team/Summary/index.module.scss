@@ -1,0 +1,16 @@
+@import "../../../styles/theme";
+
+.team {
+  display: inline-flex;
+  gap: $p-5xl;
+}
+
+.block {
+  min-width: 100px;
+}
+
+.label {
+  padding: 0 0 $p-m;
+  font-size: $font-s;
+  color: var(--text3);
+}

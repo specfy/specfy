@@ -42,7 +42,10 @@ export const Row: React.FC<RowProps> = ({
       role: newRole,
       userId,
     });
-    toast.add({ title: `User ${action === 'add' ? 'added' : 'updated'}` });
+    toast.add({
+      title: `User ${action === 'add' ? 'added' : 'updated'}`,
+      status: 'success',
+    });
 
     setTimeout(() => setLoading(false), 250);
     onUpdated();

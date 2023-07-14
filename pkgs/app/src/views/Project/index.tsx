@@ -1,5 +1,5 @@
 import type { ApiProject } from '@specfy/api/src/types/api';
-import { Avatar, Divider, Skeleton } from 'antd';
+import { Divider, Skeleton } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Route, Routes, useParams } from 'react-router-dom';
@@ -11,6 +11,7 @@ import {
   useProjectStore,
 } from '../../common/store';
 import { titleSuffix } from '../../common/string';
+import { AvatarGroup } from '../../components/AvatarAuto';
 import { Card } from '../../components/Card';
 import { Container } from '../../components/Container';
 import { ContentSidebar } from '../../components/Content/Sidebar';
@@ -94,11 +95,11 @@ export const Project: React.FC = () => {
               <Card padded large seamless>
                 <Skeleton active paragraph={{ rows: 3 }}></Skeleton>
                 <Divider />
-                <Avatar.Group>
+                <AvatarGroup>
                   <Skeleton.Avatar active />
                   <Skeleton.Avatar active />
                   <Skeleton.Avatar active />
-                </Avatar.Group>
+                </AvatarGroup>
               </Card>
             </Container.Left>
           </Container>

@@ -13,11 +13,11 @@ import { Flow, FlowWrapper } from '../../../components/Flow';
 import { Toolbar } from '../../../components/Flow/Toolbar';
 import { ListActivity } from '../../../components/ListActivity';
 import { ProjectLinks } from '../../../components/Project/Links';
+import { TeamSummary } from '../../../components/Team/Summary';
 import { UpdatedAt } from '../../../components/UpdatedAt';
 import { useEdit } from '../../../hooks/useEdit';
 import type { RouteProject } from '../../../types/routes';
 
-import { Team } from './Team';
 import { TechnicalAspects } from './TechnicalAspect';
 import cls from './index.module.scss';
 
@@ -81,7 +81,7 @@ export const ProjectOverview: React.FC<{
 
           <div className={cls.block}>
             <h4>Team</h4>
-            <Team org_id={params.org_id} project_id={project.id} />
+            <TeamSummary org_id={params.org_id} project_id={project.id} />
           </div>
         </Card>
       </Container.Left2Third>

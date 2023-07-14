@@ -1,13 +1,16 @@
 import type { ApiPerm, ListPerms } from '@specfy/api/src/types/api';
-import { Avatar, Skeleton, Typography } from 'antd';
+import { Skeleton } from 'antd';
 import { useEffect, useState } from 'react';
 
 import { useListPermsProject } from '../../../api';
-import { AvatarAuto } from '../../../components/AvatarAuto';
+import { AvatarAuto, AvatarGroup } from '../../../components/AvatarAuto';
+import { Flex } from '../../../components/Flex';
 
 import cls from './index.module.scss';
 
-export const Team: React.FC<Required<ListPerms['Querystring']>> = (opts) => {
+export const TeamSummary: React.FC<Required<ListPerms['Querystring']>> = (
+  opts
+) => {
   const team = useListPermsProject(opts);
   const [owners, setOwners] = useState<ApiPerm[]>([]);
   const [reviewers, setReviewers] = useState<ApiPerm[]>([]);
@@ -34,82 +37,94 @@ export const Team: React.FC<Required<ListPerms['Querystring']>> = (opts) => {
 
   if (team.isLoading) {
     return (
-      <Avatar.Group>
+      <AvatarGroup>
         <Skeleton.Avatar active />
         <Skeleton.Avatar active />
         <Skeleton.Avatar active />
-      </Avatar.Group>
+      </AvatarGroup>
     );
-  }
-
-  if (!team.data || team.data.data.length <= 0) {
-    return <Typography.Text type="secondary">Nothing to show.</Typography.Text>;
   }
 
   return (
     <div>
       <div className={cls.team}>
-        <div>
-          <div>Admin</div>
-          <Avatar.Group>
+        <Flex direction="column" alignItems="flex-start" className={cls.block}>
+          <div className={cls.label}>Admin</div>
+          <AvatarGroup>
             {owners.map((perm) => {
               return (
                 <AvatarAuto
                   key={perm.id}
                   name={perm.user.name}
                   src={perm.user.avatarUrl}
+                  colored={false}
                 />
               );
             })}
-          </Avatar.Group>
-        </div>
+          </AvatarGroup>
+        </Flex>
         {false && reviewers.length > 0 && (
-          <div>
-            <div>Reviewers</div>
-            <Avatar.Group>
+          <Flex
+            direction="column"
+            alignItems="flex-start"
+            className={cls.block}
+          >
+            <div className={cls.label}>Reviewers</div>
+            <AvatarGroup>
               {reviewers.map((perm) => {
                 return (
                   <AvatarAuto
                     key={perm.id}
                     name={perm.user.name}
                     src={perm.user.avatarUrl}
+                    colored={false}
                   />
                 );
               })}
-            </Avatar.Group>
-          </div>
+            </AvatarGroup>
+          </Flex>
         )}
         {contributors.length > 0 && (
-          <div>
-            <div>Contributors</div>
-            <Avatar.Group>
+          <Flex
+            direction="column"
+            alignItems="flex-start"
+            className={cls.block}
+          >
+            <div className={cls.label}>Contributors</div>
+            <AvatarGroup>
               {contributors.map((perm) => {
                 return (
                   <AvatarAuto
                     key={perm.id}
                     name={perm.user.name}
                     src={perm.user.avatarUrl}
+                    colored={false}
                   />
                 );
               })}
-            </Avatar.Group>
-          </div>
+            </AvatarGroup>
+          </Flex>
         )}
         {viewers.length > 0 && (
-          <div>
-            <div>Viewers</div>
-            <Avatar.Group>
+          <Flex
+            direction="column"
+            alignItems="flex-start"
+            className={cls.block}
+          >
+            <div className={cls.label}>Viewers</div>
+            <AvatarGroup>
               {viewers.map((perm) => {
                 return (
                   <AvatarAuto
                     key={perm.id}
                     name={perm.user.name}
                     src={perm.user.avatarUrl}
+                    colored={false}
                   />
                 );
               })}
-            </Avatar.Group>
-          </div>
+            </AvatarGroup>
+          </Flex>
         )}
       </div>
     </div>

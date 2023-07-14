@@ -8,7 +8,7 @@ import {
   IconUser,
 } from '@tabler/icons-react';
 import type { MenuProps } from 'antd';
-import { Divider, Button, Menu, Dropdown, Badge } from 'antd';
+import { Divider, Button, Dropdown, Badge } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
@@ -24,17 +24,6 @@ import { AvatarAuto } from '../AvatarAuto';
 import { Logo } from '../Logo';
 
 import cls from './index.module.scss';
-
-const menuItems: MenuProps['items'] = [
-  // {
-  //   key: 'review',
-  //   label: <Link to="/review">Review</Link>,
-  // },
-  // {
-  //   key: 'settings',
-  //   label: <Link to="/settings">Settings</Link>,
-  // },
-];
 
 const userItems: MenuProps['items'] = [];
 
@@ -134,14 +123,7 @@ export const LayoutHeader: React.FC = () => {
         </Dropdown>
       </div>
 
-      <div>
-        <Menu
-          className={cls.menu}
-          items={menuItems}
-          selectedKeys={['home']}
-          mode="horizontal"
-        ></Menu>
-      </div>
+      <div></div>
 
       <div className={cls.right}>
         <div>

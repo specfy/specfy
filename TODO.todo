@@ -12,6 +12,20 @@ Global:
   ✔ Title to all pages @done(23-06-18 17:05)
   ✔ Favicon @done(23-06-18 17:08)
   - Block refresh / quit when there are pending changes
+  - Remove antd
+    - Layout
+    - Checkbox
+    - Input
+    - Button
+    - Tag
+    - Typography
+    - Select
+    - Tooltip
+    - Anchor
+    - Dropdown
+    - Skeleton
+  - API: Clean models and group everything together
+
 
 Infrastructure:
   ✔ Terraform setup @done(23-04-19 11:10)
@@ -31,8 +45,6 @@ Auth:
   ✔ Default in dev @done(23-03-31 16:33)
   ✔ Github Oauth @done(23-04-21 19:19)
     ✔ Github oauth prod app @done(23-04-21 19:22)
-  ✘ Google Oauth @cancelled(23-06-29 17:05)
-  ✘ Gitlab Oauth @cancelled(23-06-29 17:06)
   ✔ Standard Email / Password @done(23-04-21 19:21)
   ✔ Register @done(23-06-29 17:06)
     ✔ Should create a default org @done(23-04-24 11:47)
@@ -63,6 +75,9 @@ Project:
     ✔ Validation @done(23-03-28 16:11)
     - Unit Test activity
     ✔ Enforce slug @done(23-03-28 16:11)
+    - Better UX with Github first
+      - Advanced mode
+      - Sync configuration
   ✔ List @done(23-03-29 12:19)
     ✔ Unit test @done(23-04-04 17:26)
     - Unit Test activity
@@ -80,22 +95,21 @@ Project:
     ✔ Unit test @done(23-04-04 11:20)
     ✔ Validation @done(23-03-29 14:43)
   - archivage
-  - soft suppression !!
-  - Import Excalidraw
-  - Import Draw.io
   ✔ Perms @done(23-07-07 20:42)
     ✔ Perms should inherit org if none (e.g: you have been added to an already existing org or new project is created not by you) @done(23-07-07 20:42)
   ✔ Edition “inline” @done(23-03-25 23:26)
-  - Visibility: Public ou Privé (pour pouvoir montrer une demo facilement)
   ✔ Connect: Github @done(23-06-14 15:18)
     ✔ Import @done(23-06-14 15:18)
       - Import from UI
-  - One way Sync Confluence?
   ✔ Automatic languages detection @done(23-06-14 15:18)
   ✔ Automatic “service” detection @done(23-06-14 15:18)
   - Hide when too much tech stack on Overview
-  - Pingback depuis une Pull Request
-      - Auto merge une revision quand la pull request est merge
+  - Socket: only subscribe to currently viewed Project
+  - Bug: link edition open even on readonly mode
+  ✔ Bug: team display use colored avatar @done(23-07-14 13:17)
+  - Better Documentation tree in the Sidebar
+    - Not everything open by default
+    - Clicking a folder should not close it
 
 
 User:
@@ -107,6 +121,7 @@ User:
     ✔ Validation @done(23-03-29 16:59)
     ✔ Unit Test @done(23-04-03 17:53)
     - Search in email
+    - Case insensitive search
     ✘ Email validation @cancelled(23-06-29 17:07)
     ✔ User search API for team @done(23-06-29 17:07)
   - Invite
@@ -118,7 +133,6 @@ User:
   ✔ Suppression de compte @done(23-04-24 17:01)
       ✔ Anonymisation @done(23-04-24 17:01)
   - Profil ?
-  - Hover card?
 
 Permissions:
   ✔ List @done(23-03-29 15:54)
@@ -156,8 +170,6 @@ Components:
   - Autocomplete supported dans la page de creation de composant
   ✔ Changer les ports @done(23-07-07 20:43)
   - Quand on change l'host on devrait bouger le composant dans le graph pour fit la boudingBox
-  - Check policy on add language
-  - Check policy on add techId
   ✔  suppression @done(23-03-25 23:26)
   ✔ Base de données de reference (genre une liste avec toutes les tech connu) @done(23-07-07 20:43)
       ✔ Hosting @done(23-07-07 20:43)
@@ -192,16 +204,236 @@ Documents:
   ✔ supprimer @done(23-03-25 23:28)
     ✔ Delete in UI should clean store but not really, and should not fetch document again from api @done(23-04-25 10:40)
     - Unit Test
-  - Draft document should be added to the list somehow
-    - RFC number computed?
   ✔ Type: RFC @done(23-03-25 23:28)
   ✔ Type: Playbook @done(23-03-25 23:28)
-  - Type: incident report
   ✔ [x]  Bloc réutilisable ou Page special qui peut importer d’autre doc (pour les procédures surtout) @done(23-03-25 23:27)
-  - Lock definitif
-  - Overload d’une RFC
-  - Diff
-    - diffObjectsArray should check inside the object too (links, edges)
+
+Revision:
+  ✔ List @done(23-03-29 14:47)
+    ✔ Search @done(23-03-29 14:47)
+    ✔ Filter @done(23-03-29 14:47)
+    ✔ Validation @done(23-03-29 17:49)
+    ✔ Unit Test @done(23-04-04 17:10)
+  ✔ Show one @done(23-03-29 14:47)
+    ✔ Validation @done(23-03-30 11:51)
+    ✔ Unit Test @done(23-04-04 17:10)
+  ✔ Edition @done(23-03-27 12:24)
+    ✔ Validation @done(23-03-30 11:51)
+    - Permission
+    - Unit Test activity
+    ✔ Unit Test @done(23-04-04 17:10)
+  - Close
+    ✔ Validation @done(23-03-30 11:51)
+    - Permission
+    - Unit Test activity
+    ✔ Unit Test @done(23-04-04 17:10)
+  - Lock
+    ✔ Validation @done(23-03-30 11:51)
+    - Permission
+    - Unit Test activity
+    ✔ Unit Test @done(23-04-04 17:10)
+  ✔ Timeline @done(23-06-29 17:05)
+  ✔ Diff visuel (pas juste code) @done(23-03-25 23:25)
+    ✔ Validation @done(23-03-30 11:52)
+    - Validation ids
+  ✔ Draft @done(23-03-25 23:25)
+    ✔ Validation @done(23-03-30 12:05)
+    - Unit Test activity
+    - Unit Test
+  ✔ Approval @done(23-03-25 23:25)
+    - Unit Test activity
+    ✔ Validation @done(23-03-30 12:05)
+    - Unit Test
+  ✔ Merge @done(23-03-25 23:25)
+    - Unit Test activity
+    ✔ Validation @done(23-03-30 12:06)
+    - Unit Test
+  ✔ Ask for review @done(23-03-25 23:25)
+    - Unit Test activity
+    - Notification
+  - Path in diff card header is wrong with nested documents
+  ✔ Unit test @done(23-07-11 16:31)
+  ✔ BUG: with seed PR, can't merge one document that supposedly doesn't exists, but that should have been caught by rebase check @done(23-07-11 14:49)
+  - BUG: when merging sometimes it pops the change again in staging, this is a desync with originalStore
+
+
+Diff:
+  - Quand on ajoute un text au début ça diff (marked) tout le text suivant
+  ✔ Diff Edges @started(23-07-14 12:37) @done(23-07-14 12:37) @lasted(44s)
+  ✔ Diff Display @started(23-07-14 12:37) @done(23-07-14 12:37) @lasted(43s)
+
+Activities:
+  ✔ List @done(23-03-29 15:08)
+    - Filtre:
+      ✔ Org @done(23-03-29 15:09)
+      ✔ Projet @done(23-04-03 12:15)
+      - Revision
+      - Composant
+      - Document
+    ✔ Validation @done(23-03-29 15:09)
+    ✔ Unit Test @done(23-04-03 12:15)
+  ✔ Une activité par actions @done(23-06-14 15:19)
+  - Deleting / Renaming breaks the query, we should select blobId or store some info inside the activity
+
+
+Flow:
+  ✔ Display components @done(23-03-29 14:43)
+  ✔ Group @done(23-03-29 14:43)
+  ✔ Edges @done(23-03-29 14:43)
+  ✔ Hover @done(23-03-29 14:44)
+    ✔ Fix hover @done(23-06-30 16:00)
+  ✘ Modify the graph in every page? @cancelled(23-07-12 10:38)
+  ✔ Group @done(23-07-06 11:01)
+  ✔ Ungroup @done(23-07-06 11:01)
+  ✔ Modify size @done(23-03-29 14:45)
+  ✔ Modify vertices @done(23-03-29 14:45)
+  ✔ Add component @done(23-07-06 11:01)
+  ✔ Remove component @done(23-07-06 11:01)
+  ✔ Modify links @done(23-07-06 11:01)
+  ✔ Modify ports @done(23-07-06 11:01)
+  ✔ Block resizing in readonly @done(23-07-11 23:15)
+  - Export PNG
+  - Click to add component
+  - Width and display of new dragged component (currently too big and host is not correct)
+  - Undo/Redo
+    - Ctrl + Z
+  - Hide / Unhide
+  - Tagging
+  - Bug: Fix drop in host that do not place a the correct spot sometimes
+  - Bug: Ungroup should not send the component somewhere else
+  ✔ When connecting a Project we should update the Project edges @done(23-07-07 20:45)
+  - Bug: Enforce to not connect to the same component twice (currently error silently in console)
+  - Better auto layout algorithm
+
+
+-----
+
+
+Org:
+  ✔ Creér @done(23-03-28 11:11)
+    ✔ Enforce unique ID @done(23-03-28 14:48)
+    ✔ Validation @done(23-03-28 14:49)
+    ✔ Unit test @done(23-06-21 17:06)
+  ✔ List @done(23-03-31 16:14)
+    ✔ Unit test @done(23-03-31 16:14)
+    ✔ Validation @done(23-03-31 16:15)
+  ✔ Settings @done(23-07-14 12:39)
+    ✔ Rename @done(23-04-24 15:10)
+      ✔ Unit test @done(23-04-24 15:10)
+      - Reserved name
+      ✔ Handle error @done(23-04-24 15:10)
+      - Permissions
+    - Change id
+    ✔ Delete @done(23-04-24 14:17)
+      ✔ Unit Test @done(23-04-24 14:17)
+      - Permissions
+  ✔ Switch in the UI @done(23-03-27 17:46)
+  ✔ Editer le graph d'organization @done(23-07-14 12:39)
+    ✔ Auto update org graph @done(23-07-07 20:45)
+  ✔ Hide everything when no projects @done(23-04-24 21:40)
+  ✔ Flow Page @done(23-06-14 15:20)
+  ✔ Team Page @done(23-04-22 16:12)
+    ✔ Display correct count @done(23-04-22 16:12)
+    ✔ Invite member @done(23-06-21 17:06)
+  ✔ 1 personal @done(23-04-24 15:10)
+
+  List Projects:
+    - Correct number of users
+
+
+
+
+-----
+Later
+
+Auth:
+  ☐ Google Oauth
+  ☐ Gitlab Oauth
+
+Org:
+  - Orer by Fav Project
+  - Policies Page
+  - Visibility Public
+  - Activty page ?
+
+
+Policies:
+  ✔ List @done(23-03-29 16:41)
+    ✔ Validation @done(23-03-29 16:42)
+    - Unit Test
+  - Create
+    ☐ Validation
+    - Unit Test
+  - Update
+    ☐ Validation
+    - Unit Test
+  - Delete
+    ☐ Validation
+    - Unit Test
+  - Définir tech/language autorisé/interdite et pourquoi
+  - Template RFC
+  - Template Revision
+  - Minimum review for approval
+
+Global Search:
+  - Search in Projects
+  - Search in Components
+  - Search in Documents
+
+Projects:
+  - Connect: Confluence
+      - Import
+      - One way Sync (from specfy to confluence)
+  - Connect: Datadog
+      - Import some stuff
+      - Pouvoir lié un monitoring à un composant
+  - Connect: Google Cloud
+      - Import services
+      - Monitoring
+  - Connect: AWS
+      - Import services
+      - Monitoring
+  - Connect: Slack
+      - Send updates in slack
+      - Review ask
+  - Connect: Pingdom
+      - Monitoring de composant
+  - Connect: PagerDuty
+      - Afficher les gens on-call
+      - Afficher quand il y a un outage et automatiquement trouvé les procédures liés
+  - Integrate Grammarly
+  ☐ Import Excalidraw
+  ☐ Import Draw.io
+  ☐ One way Sync Confluence?
+  ☐ Pingback depuis une Pull Request
+      ☐ Auto merge une revision quand la pull request est merge
+  - Visibility: Public ou Privé (pour pouvoir montrer une demo facilement)
+  - soft delete
+
+  API:
+    - Ajout d’une swagger / API?
+      - Page de documentation automatique?
+    - Liaison de type API Endpoint
+
+
+Revision:
+  ☐ Revert d’une revision publié
+  - Comments
+  - Preview current Project with revision applied before merge
+
+User:
+  - Hover card
+
+Components:
+  ☐ Check policy on add language
+  ☐ Check policy on add techId
+
+Documents:
+  ☐ Draft document should be added to the list somehow
+    ☐ RFC number computed?
+  ☐ Lock definitif
+  ☐ Overload d’une RFC
+  ☐ Type: incident report
 
   Editeur de texte:
     - Better floating menu
@@ -229,202 +461,3 @@ Documents:
     - Drag and drop block
     - Table, use react-table instead ?
     - Flow Snapshot
-
-
-Revision:
-  ✔ List @done(23-03-29 14:47)
-    ✔ Search @done(23-03-29 14:47)
-    ✔ Filter @done(23-03-29 14:47)
-    ✔ Validation @done(23-03-29 17:49)
-    ✔ Unit Test @done(23-04-04 17:10)
-  ✔ Show one @done(23-03-29 14:47)
-    ✔ Validation @done(23-03-30 11:51)
-    ✔ Unit Test @done(23-04-04 17:10)
-  ✔ Edition @done(23-03-27 12:24)
-    ✔ Validation @done(23-03-30 11:51)
-    - Permission
-    - Unit Test activity
-    ✔ Unit Test @done(23-04-04 17:10)
-  - Close
-    ✔ Validation @done(23-03-30 11:51)
-    - Permission
-    - Unit Test activity
-    ✔ Unit Test @done(23-04-04 17:10)
-  - Lock
-    ✔ Validation @done(23-03-30 11:51)
-    - Permission
-    - Unit Test activity
-    ✔ Unit Test @done(23-04-04 17:10)
-
-  - Commentaire
-  ✔ Timeline @done(23-06-29 17:05)
-  ✔ Diff visuel (pas juste code) @done(23-03-25 23:25)
-    ✔ Validation @done(23-03-30 11:52)
-    - Validation ids
-  - Revert d’une revision publié
-  ✔ Draft @done(23-03-25 23:25)
-    ✔ Validation @done(23-03-30 12:05)
-    - Unit Test activity
-    - Unit Test
-  ✔ Approval @done(23-03-25 23:25)
-    - Unit Test activity
-    ✔ Validation @done(23-03-30 12:05)
-    - Unit Test
-  ✔ Merge @done(23-03-25 23:25)
-    - Unit Test activity
-    ✔ Validation @done(23-03-30 12:06)
-    - Unit Test
-  ✔ Ask for review @done(23-03-25 23:25)
-    - Unit Test activity
-    - Notification
-  - Path in diff card header is wrong with nested documents
-  ✔ Unit test @done(23-07-11 16:31)
-  ✔ BUG: with seed PR, can't merge one document that supposedly doesn't exists, but that should have been caught by rebase check @done(23-07-11 14:49)
-  - BUG: when merging sometimes it pops the change again in staging, this is a desync with originalStore
-
-
-Diff:
-  - Quand on ajoute un text au début ça diff (marked) tout le text suivant
-  - Diff Edges
-  - Diff Display
-
-Activities:
-  ✔ List @done(23-03-29 15:08)
-    - Filtre:
-      ✔ Org @done(23-03-29 15:09)
-      ✔ Projet @done(23-04-03 12:15)
-      - Revision
-      - Composant
-      - Document
-    ✔ Validation @done(23-03-29 15:09)
-    ✔ Unit Test @done(23-04-03 12:15)
-  ✔ Une activité par actions @done(23-06-14 15:19)
-  - Deleting / Renaming breaks the query, we should select blobId or store some info inside the activity
-
-
-API:
-  - Ajout d’une swagger / API?
-    - Page de documentation automatique?
-  - Liaison de type API Endpoint
-
-
-Flow:
-  ✔ Display components @done(23-03-29 14:43)
-  ✔ Group @done(23-03-29 14:43)
-  ✔ Edges @done(23-03-29 14:43)
-  ✔ Hover @done(23-03-29 14:44)
-    ✔ Fix hover @done(23-06-30 16:00)
-  ✘ Modify the graph in every page? @cancelled(23-07-12 10:38)
-  ✔ Group @done(23-07-06 11:01)
-  ✔ Ungroup @done(23-07-06 11:01)
-  ✔ Modify size @done(23-03-29 14:45)
-  ✔ Modify vertices @done(23-03-29 14:45)
-  ✔ Add component @done(23-07-06 11:01)
-  ✔ Remove component @done(23-07-06 11:01)
-  ✔ Modify links @done(23-07-06 11:01)
-  ✔ Modify ports @done(23-07-06 11:01)
-  - Export PNG
-  ✔ Block resizing in readonly @done(23-07-11 23:15)
-  - Click to add component
-  - Width and display of new dragged component (currently too big and host is not correct)
-  - Undo/Redo
-    - Ctrl + Z
-  - Hide / Unhide
-  - Tagging
-  - Fix drop in host that do not place a the correct spot sometimes
-  - Ungroup should not send the component somewhere else
-  ✔ When connecting a Project we should update the Project edges @done(23-07-07 20:45)
-  - Enforce to not connect to the same component twice (currently error silently in console)
-
-
------
-
-
-Org:
-  ✔ Creér @done(23-03-28 11:11)
-    ✔ Enforce unique ID @done(23-03-28 14:48)
-    ✔ Validation @done(23-03-28 14:49)
-    ✔ Unit test @done(23-06-21 17:06)
-  ✔ List @done(23-03-31 16:14)
-    ✔ Unit test @done(23-03-31 16:14)
-    ✔ Validation @done(23-03-31 16:15)
-  - Settings
-    ✔ Rename @done(23-04-24 15:10)
-      ✔ Unit test @done(23-04-24 15:10)
-      - Reserved name
-      ✔ Handle error @done(23-04-24 15:10)
-      - Permissions
-    - Change id
-    ✔ Delete @done(23-04-24 14:17)
-      ✔ Unit Test @done(23-04-24 14:17)
-      - Permissions
-  ✔ Switch in the UI @done(23-03-27 17:46)
-  - Editer le graph d'organization
-    ✔ Auto update org graph @done(23-07-07 20:45)
-  ✔ Hide everything when no projects @done(23-04-24 21:40)
-  ✔ Flow Page @done(23-06-14 15:20)
-  - Policies Page
-  - Visibility Public
-  ✔ Team Page @done(23-04-22 16:12)
-    ✔ Display correct count @done(23-04-22 16:12)
-    ✔ Invite member @done(23-06-21 17:06)
-  - Activty page ?
-  ✔ 1 personal @done(23-04-24 15:10)
-
-  List Projects:
-    - Correct number of users
-    - Fav?
-
-Policies:
-  ✔ List @done(23-03-29 16:41)
-    ✔ Validation @done(23-03-29 16:42)
-    - Unit Test
-  - Create
-    ☐ Validation
-    - Unit Test
-  - Update
-    ☐ Validation
-    - Unit Test
-  - Delete
-    ☐ Validation
-    - Unit Test
-  - Définir tech/language autorisé/interdite et pourquoi
-  - Template RFC
-  - Template Revision
-  - Minimum review for approval
-
-
-Global Search:
-  - Search in Projects
-  - Search in Components
-  - Search in Documents
-
-
------
-Long term
-
-Projects:
-  - Connect: Confluence
-      - Import
-      - One way Sync (from specfy to confluence)
-  - Connect: Datadog
-      - Import some stuff
-      - Pouvoir lié un monitoring à un composant
-  - Connect: Google Cloud
-      - Import services
-      - Monitoring
-  - Connect: AWS
-      - Import services
-      - Monitoring
-  - Connect: Slack
-      - Send updates in slack
-      - Review ask
-  - Connect: Pingdom
-      - Monitoring de composant
-  - Connect: PagerDuty
-      - Afficher les gens on-call
-      - Afficher quand il y a un outage et automatiquement trouvé les procédures liés
-  - Integrate Grammarly
-
-
----
