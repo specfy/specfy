@@ -19,6 +19,8 @@ export async function seedJobs(
         typeId: 1,
         status: 'cancelled',
         config: { url: 'specfy/sync' },
+        startedAt: new Date(),
+        finishedAt: new Date(),
         tx,
       }),
       createJobDeploy({
@@ -29,6 +31,8 @@ export async function seedJobs(
         typeId: 2,
         status: 'skipped',
         config: { url: 'specfy/sync' },
+        startedAt: new Date(),
+        finishedAt: new Date(),
         tx,
       }),
       createJobDeploy({
@@ -44,6 +48,8 @@ export async function seedJobs(
           code: 'org_not_installed',
           reason: JobReason.org_not_installed,
         },
+        startedAt: new Date(),
+        finishedAt: new Date(),
         tx,
       }),
       createJobDeploy({
@@ -54,6 +60,8 @@ export async function seedJobs(
         typeId: 4,
         status: 'timeout',
         config: { url: 'specfy/sync' },
+        startedAt: new Date(),
+        finishedAt: new Date(),
         tx,
       }),
       createJobDeploy({
@@ -75,6 +83,8 @@ export async function seedJobs(
         typeId: 6,
         status: 'success',
         config: { url: 'specfy/sync' },
+        startedAt: new Date(),
+        finishedAt: new Date(),
         tx,
       }),
     ]);

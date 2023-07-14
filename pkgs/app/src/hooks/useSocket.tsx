@@ -1,6 +1,5 @@
 import type { ApiMe } from '@specfy/api/src/types/api';
 import { createContext, useEffect, useMemo } from 'react';
-import { useMount, useUnmount } from 'react-use';
 
 import { queryClient } from '../common/query';
 import { socket } from '../common/socket';
@@ -31,31 +30,37 @@ export const SocketProvider: React.FC<{
     }
   }, [user]);
 
-  useMount(() => {
+  useEffect(() => {
+    console.log('on sub');
     socket.on('job.start', (data) => {
-      queryClient.invalidateQueries(['listJobs', data.orgId, data.projectId]);
+      const job = data.job;
+      queryClient.invalidateQueries(['listJobs', job.orgId, job.projectId]);
       toast.add({
-        id: data.id,
-        title: `Deploy #${data.typeId}`,
+        id: job.id,
+        title: `Deploy #${job.typeId}`,
         loading: true,
+        link: `/${job.orgId}/${data.project.slug}/deploys/${job.id}`,
       });
     });
 
     socket.on('job.finish', (data) => {
       setTimeout(() => {
-        queryClient.invalidateQueries(['listJobs', data.orgId, data.projectId]);
+        const job = data.job;
+        queryClient.invalidateQueries(['listJobs', job.orgId, job.projectId]);
         toast.update({
-          id: data.id,
-          status: data.status === 'failed' ? 'error' : 'success',
+          id: job.id,
+          status: job.status === 'failed' ? 'error' : 'success',
           loading: false,
         });
       }, 1000);
     });
-  });
 
-  useUnmount(() => {
-    socket.offAny();
-  });
+    return () => {
+      console.log('on unsub');
+
+      socket.offAny();
+    };
+  }, []);
 
   const value = useMemo(() => {
     return {};

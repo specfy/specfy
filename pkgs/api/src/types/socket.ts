@@ -1,6 +1,7 @@
-import type { Jobs, Users } from '@prisma/client';
+import type { Users } from '@prisma/client';
 import type { Server } from 'socket.io';
 
+import type { ApiJob, ApiProject } from './api/index.js';
 import type { PermsWithOrg } from './db/index.js';
 
 export interface PayloadAuth {
@@ -8,10 +9,10 @@ export interface PayloadAuth {
   token: string;
 }
 
-export type EventJob = Pick<
-  Jobs,
-  'id' | 'orgId' | 'projectId' | 'status' | 'type' | 'typeId'
->;
+export type EventJob = {
+  job: ApiJob;
+  project: ApiProject;
+};
 
 export interface ServerEvents {
   'job.start': (data: EventJob) => void;

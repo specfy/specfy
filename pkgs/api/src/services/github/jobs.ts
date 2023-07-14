@@ -32,6 +32,7 @@ export function listen() {
         include: {
           Org: true,
           Project: true,
+          User: true,
         },
       });
       if (!next) {

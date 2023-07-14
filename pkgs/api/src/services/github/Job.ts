@@ -2,18 +2,20 @@ import type { Jobs } from '@prisma/client';
 import type { ConsolaInstance } from 'consola';
 import { consola } from 'consola';
 
+import { toApiProject } from '../../common/formatters/project.js';
 import { prisma } from '../../db/index.js';
+import { toApiJob } from '../../models/jobs/formatter.js';
 import { JobReason } from '../../models/jobs/helpers.js';
-import type { JobMark } from '../../models/jobs/type.js';
+import type { JobMark, JobWithOrgProject } from '../../models/jobs/type.js';
 import { io } from '../../socket.js';
 import type { EventJob } from '../../types/socket.js';
 
 export abstract class Job {
   l: ConsolaInstance;
-  #job: Jobs;
+  #job: JobWithOrgProject;
   #mark?: JobMark;
 
-  constructor(job: Jobs) {
+  constructor(job: JobWithOrgProject) {
     this.#job = job;
     this.l = consola.create({}).withTag('job');
   }
@@ -27,12 +29,8 @@ export abstract class Job {
     const l = this.l;
     l.info('Job start', { id: job.id });
     const evt: EventJob = {
-      id: job.id,
-      orgId: job.orgId,
-      projectId: job.projectId,
-      type: job.type,
-      typeId: job.typeId,
-      status: job.status,
+      job: toApiJob(job),
+      project: toApiProject(job.Project!),
     };
 
     io.to(`project-${job.projectId}`).emit('job.start', evt);
@@ -51,7 +49,7 @@ export abstract class Job {
       }
     }
 
-    await prisma.jobs.update({
+    const jobUpdated = await prisma.jobs.update({
       data: {
         status: this.#mark?.status || 'failed',
         reason: this.#mark
@@ -66,7 +64,7 @@ export abstract class Job {
     });
     l.info('Job end', { id: job.id, mark: this.#mark });
 
-    evt.status = this.#mark?.status || 'failed';
+    evt.job = toApiJob({ ...jobUpdated, User: job.User });
     io.to(`project-${job.projectId}`).emit('job.finish', evt);
   }
 

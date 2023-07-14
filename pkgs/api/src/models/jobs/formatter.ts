@@ -6,6 +6,8 @@ import type { JobWithUser } from './type.js';
 export function toApiJob(job: JobWithUser): ApiJob {
   return {
     id: job.id,
+    orgId: job.orgId,
+    projectId: job.projectId,
     type: job.type,
     typeId: job.typeId,
     status: job.status,

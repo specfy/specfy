@@ -10,7 +10,7 @@ export interface JobDeployConfig {
 }
 
 export type JobWithOrgProject = Prisma.JobsGetPayload<{
-  include: { Org: true; Project: true };
+  include: { Org: true; Project: true; User: true };
 }>;
 
 export type JobCode =

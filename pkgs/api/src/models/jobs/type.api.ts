@@ -7,7 +7,7 @@ import type { JobReason } from './type.js';
 
 export type ApiJob = Pick<
   Jobs,
-  'config' | 'id' | 'status' | 'type' | 'typeId'
+  'config' | 'id' | 'orgId' | 'projectId' | 'status' | 'type' | 'typeId'
 > & {
   reason: JobReason | null; // Frontend bug without this
   createdAt: string;

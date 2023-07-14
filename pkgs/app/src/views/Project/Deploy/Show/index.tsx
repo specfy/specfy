@@ -9,6 +9,7 @@ import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import { useGetDeploy } from '../../../../api';
 import { titleSuffix } from '../../../../common/string';
 import { AvatarAuto } from '../../../../components/AvatarAuto';
+import { Banner } from '../../../../components/Banner';
 import { Container } from '../../../../components/Container';
 import { Flex } from '../../../../components/Flex';
 import { StatusTag } from '../../../../components/Job/StatusTag';
@@ -46,19 +47,21 @@ export const ProjectDeploysShow: React.FC<{
       return tmp;
     }
 
-    tmp.push(`Job created`);
-    tmp.push('Configuration:');
-    tmp.push(JSON.stringify(deploy.config));
+    tmp.push(`Created - ${deploy.createdAt}`);
+    tmp.push(`Job [id: "${deploy.id}"]`);
+    tmp.push(`Org [id: "${deploy.orgId}"]`);
+    tmp.push(`Project [id: "${deploy.projectId}"]`);
+    tmp.push('Configuration =>');
+    tmp.push(JSON.stringify(deploy.config, null, 2));
     if (deploy.startedAt) {
-      tmp.push('');
-      tmp.push(`Starting...`);
+      tmp.push(`Processing`);
     }
     if (deploy.finishedAt) {
-      tmp.push(deploy.status);
-      if (deploy.reason) {
-        tmp.push(`Code: ${deploy.reason.code}`);
-        tmp.push(`Reason: ${deploy.reason.reason}`);
+      tmp.push(`Status [code: "${deploy.status}"]`);
+      if (deploy.reason && deploy.status !== 'success') {
+        tmp.push(JSON.stringify(deploy.reason, null, 2));
       }
+      tmp.push(`end - ${deploy.finishedAt}`);
     }
     return tmp;
   }, [deploy]);
@@ -106,8 +109,15 @@ export const ProjectDeploysShow: React.FC<{
             </Flex>
           </div>
         </Flex>
+        {deploy.status === 'failed' && deploy.reason && (
+          <div className={cls.header}>
+            <Banner type="error">
+              {deploy.reason.reason} (code: {deploy.reason.code})
+            </Banner>
+          </div>
+        )}
         <PrismAsyncLight
-          language="bash"
+          language="log"
           style={prism}
           wrapLines={true}
           showLineNumbers={true}
