@@ -1,10 +1,10 @@
 import type { FastifyPluginCallback } from 'fastify';
 
 import { findAllBlobsWithParent } from '../../../common/blobs.js';
-import { toApiReview } from '../../../common/formatters/review.js';
 import { checkReviews } from '../../../common/revision/index.js';
 import { prisma } from '../../../db/index.js';
 import { getRevision } from '../../../middlewares/getRevision.js';
+import { toApiReview } from '../../../models/review/formatter.js';
 import { flagRevisionApprovalEnabled } from '../../../models/revisions/constants.js';
 import type { ListRevisionChecks } from '../../../types/api/index.js';
 

@@ -1,10 +1,10 @@
 import type { FastifyPluginCallback } from 'fastify';
 
 import { forbidden } from '../../../common/errors.js';
-import { toApiOrg } from '../../../common/formatters/org.js';
-import { toApiUser } from '../../../common/formatters/user.js';
 import { getInvitation } from '../../../middlewares/getInvitation.js';
 import { noBody } from '../../../middlewares/noBody.js';
+import { toApiOrg } from '../../../models/org/formatter.js';
+import { toApiUser } from '../../../models/user/formatter.js';
 import type { GetInvitation } from '../../../types/api/index.js';
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {

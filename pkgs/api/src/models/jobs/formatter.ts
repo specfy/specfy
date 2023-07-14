@@ -1,5 +1,5 @@
-import { toApiUser } from '../../common/formatters/user.js';
 import type { ApiJob } from '../../types/api/index.js';
+import { toApiUser } from '../user/formatter.js';
 
 import type { JobWithUser } from './type.js';
 

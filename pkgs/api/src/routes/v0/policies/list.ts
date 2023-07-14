@@ -3,10 +3,10 @@ import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors.js';
-import { toApiPolicy } from '../../../common/formatters/policy.js';
 import { schemaOrgId } from '../../../common/validators/common.js';
 import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
+import { toApiPolicy } from '../../../models/policy/formatter.js';
 import type { ListPolicies, Pagination } from '../../../types/api/index.js';
 
 function QueryVal(req: FastifyRequest) {

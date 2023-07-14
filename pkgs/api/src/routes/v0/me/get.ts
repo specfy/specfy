@@ -1,7 +1,7 @@
 import type { FastifyPluginCallback } from 'fastify';
 
-import { toApiMe } from '../../../common/formatters/user.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
+import { toApiMe } from '../../../models/user/formatter.js';
 import type { GetMe } from '../../../types/api/index.js';
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {

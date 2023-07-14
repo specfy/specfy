@@ -2,13 +2,13 @@ import type { FastifyPluginCallback } from 'fastify';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors.js';
-import { toApiProject } from '../../../common/formatters/project.js';
 import { slugify } from '../../../common/string.js';
 import { schemaProject } from '../../../common/validators/index.js';
 import { prisma } from '../../../db/index.js';
 import { getProject } from '../../../middlewares/getProject.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import { createProjectActivity } from '../../../models/index.js';
+import { toApiProject } from '../../../models/project/project.js';
 import type { PutProject } from '../../../types/api/index.js';
 
 function BodyVal() {

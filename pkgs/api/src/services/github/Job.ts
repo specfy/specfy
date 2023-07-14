@@ -2,11 +2,11 @@ import type { Jobs } from '@prisma/client';
 import type { ConsolaInstance } from 'consola';
 import { consola } from 'consola';
 
-import { toApiProject } from '../../common/formatters/project.js';
 import { prisma } from '../../db/index.js';
 import { toApiJob } from '../../models/jobs/formatter.js';
 import { JobReason } from '../../models/jobs/helpers.js';
 import type { JobMark, JobWithOrgProject } from '../../models/jobs/type.js';
+import { toApiProject } from '../../models/project/project.js';
 import { io } from '../../socket.js';
 import type { EventJob } from '../../types/socket.js';
 

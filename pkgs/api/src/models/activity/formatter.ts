@@ -1,12 +1,11 @@
+import { pick } from '../../common/object.js';
 import type { ApiActivity } from '../../types/api/index.js';
 import type {
   ActivitiesList,
   DBComponent,
   DBDocument,
 } from '../../types/db/index.js';
-import { pick } from '../object.js';
-
-import { toApiUser } from './user.js';
+import { toApiUser } from '../user/formatter.js';
 
 export function toApiActivity(act: ActivitiesList): ApiActivity {
   return {
