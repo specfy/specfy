@@ -1,5 +1,4 @@
-import type { ComputedFlow } from '../../common/flow/types.js';
-import type { OrgFlowUpdates } from '../../models/flows/types.js';
+import type { ComputedFlow, OrgFlowUpdates } from '../../models/flows/types.js';
 
 import type { QuerystringOrgMaybeProject, Res } from './api.js';
 

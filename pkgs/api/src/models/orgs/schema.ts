@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { schemaOrgId } from './common.js';
+import { schemaOrgId } from '../../common/validators/index.js';
 
 export const schemaOrg = z
   .object({

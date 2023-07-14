@@ -1,11 +1,10 @@
 import { z } from 'zod';
 
-import { v1 } from '../../models/billing/model.js';
-
-import { schemaId } from './common.js';
-import { schemaComponent } from './component.js';
-import { schemaDocument } from './document.js';
-import { schemaProject } from './project.js';
+import { schemaId } from '../../common/validators/index.js';
+import { v1 } from '../billing/model.js';
+import { schemaComponent } from '../components/schema.js';
+import { schemaDocument } from '../documents/schema.js';
+import { schemaProject } from '../projects/schema.js';
 
 const blobProject = z
   .object({

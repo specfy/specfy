@@ -3,8 +3,8 @@ import type { Orgs, Projects, Users } from '@prisma/client';
 import { nanoid } from '../../common/id.js';
 import { slugify } from '../../common/string.js';
 import { prisma } from '../../db/index.js';
-import { recomputeOrgGraph } from '../../models/flows/helpers.js';
-import { createProject } from '../../models/project/model.js';
+import { recomputeOrgGraph } from '../../models/flows/helpers.rebuild.js';
+import { createProject } from '../../models/projects/model.js';
 import type { DBProject } from '../../types/db/index.js';
 
 /**

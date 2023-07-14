@@ -1,4 +1,4 @@
-import type { ComputedFlow } from '../common/flow/types.js';
+import type { ComputedFlow } from '../models/flows/types.js';
 import type { JobDeployConfig, JobReason } from '../models/jobs/type.js';
 
 import type { BlockLevelZero } from './api/index.js';

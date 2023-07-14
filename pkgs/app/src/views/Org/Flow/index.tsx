@@ -1,4 +1,4 @@
-import type { ComputedFlow } from '@specfy/api/src/common/flow/types';
+import type { ComputedFlow } from '@specfy/api/src/models/flows/types';
 import type { ApiOrg, PatchFlow } from '@specfy/api/src/types/api';
 import { IconCheck, IconEdit, IconX } from '@tabler/icons-react';
 import { Button } from 'antd';

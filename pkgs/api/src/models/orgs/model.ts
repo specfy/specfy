@@ -3,8 +3,8 @@ import type { Activities, Orgs, Prisma, Users } from '@prisma/client';
 import { acronymize, stringToColor } from '../../common/avatar.js';
 import { nanoid } from '../../common/id.js';
 import type { ActionOrg } from '../../types/db/index.js';
-import { recomputeOrgGraph } from '../flows/helpers.js';
-import { createKey } from '../key/model.js';
+import { recomputeOrgGraph } from '../flows/helpers.rebuild.js';
+import { createKey } from '../keys/model.js';
 
 export async function createOrg(
   tx: Prisma.TransactionClient,

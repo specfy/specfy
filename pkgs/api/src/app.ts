@@ -13,9 +13,9 @@ import { notFound, serverError } from './common/errors.js';
 import { logger } from './logger.js';
 import { AuthError } from './middlewares/auth/errors.js';
 import { routes } from './routes/routes.js';
+import { initSocket } from './socket.js';
 
 import './common/auth.js';
-import { initSocket } from './socket.js';
 
 export default async (f: FastifyInstance, opts: FastifyPluginOptions) => {
   await f.register(cors, {

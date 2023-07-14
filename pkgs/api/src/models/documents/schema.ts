@@ -1,7 +1,11 @@
 import { z } from 'zod';
 
-import { schemaId, schemaOrgId, schemaSlug } from './common.js';
-import { schemaProseMirror } from './prosemirror.js';
+import {
+  schemaId,
+  schemaOrgId,
+  schemaSlug,
+} from '../../common/validators/index.js';
+import { schemaProseMirror } from '../../common/validators/prosemirror.js';
 
 export const schemaDocument = z
   .object({

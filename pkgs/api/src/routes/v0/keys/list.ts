@@ -2,7 +2,7 @@ import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors.js';
-import { schemaId, schemaOrgId } from '../../../common/validators/common.js';
+import { schemaId, schemaOrgId } from '../../../common/validators/index.js';
 import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
 import type { ListKeys, Pagination } from '../../../types/api/index.js';

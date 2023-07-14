@@ -4,7 +4,7 @@ import { describe, expect, it } from 'vitest';
 
 import { getBlobComponent } from '../../test/seed/components.js';
 
-import { computeRelationsToProjects, rebuildFlow } from './helpers.js';
+import { computeRelationsToProjects, rebuildFlow } from './helpers.rebuild.js';
 
 describe('computeRelationsToProjects', () => {
   const org = { id: 'org' } as Orgs;

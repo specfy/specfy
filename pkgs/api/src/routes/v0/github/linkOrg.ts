@@ -9,12 +9,12 @@ import {
   serverError,
   validationError,
 } from '../../../common/errors.js';
-import { getOrgFromRequest } from '../../../common/perms.js';
-import { schemaOrgId } from '../../../common/validators/common.js';
+import { schemaOrgId } from '../../../common/validators/index.js';
 import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import { createGithubActivity } from '../../../models/index.js';
+import { getOrgFromRequest } from '../../../models/perms/helpers.js';
 import { github } from '../../../services/github/index.js';
 import type { PostLinkToGithubOrg } from '../../../types/api/index.js';
 

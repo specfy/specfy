@@ -6,7 +6,7 @@ import { prisma } from '../../db/index.js';
 import { toApiJob } from '../../models/jobs/formatter.js';
 import { JobReason } from '../../models/jobs/helpers.js';
 import type { JobMark, JobWithOrgProject } from '../../models/jobs/type.js';
-import { toApiProject } from '../../models/project/project.js';
+import { toApiProject } from '../../models/projects/formatter.js';
 import { io } from '../../socket.js';
 import type { EventJob } from '../../types/socket.js';
 

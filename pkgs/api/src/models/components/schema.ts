@@ -1,9 +1,12 @@
 import { z } from 'zod';
 
-import { schemaDisplay, schemaEdges } from '../../models/flows/validator.js';
-
-import { schemaId, schemaSlug, schemaOrgId } from './common.js';
-import { schemaProseMirror } from './prosemirror.js';
+import {
+  schemaId,
+  schemaSlug,
+  schemaOrgId,
+} from '../../common/validators/index.js';
+import { schemaProseMirror } from '../../common/validators/prosemirror.js';
+import { schemaDisplay, schemaEdges } from '../flows/validator.js';
 
 export const schemaComponent = z
   .object({

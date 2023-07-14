@@ -1,4 +1,7 @@
-import type { ComputedNode, NodeData } from '@specfy/api/src/common/flow/types';
+import type {
+  ComputedNode,
+  NodeData,
+} from '@specfy/api/src/models/flows/types';
 import { Tooltip } from 'antd';
 import classNames from 'classnames';
 import type { ChangeEventHandler, KeyboardEventHandler } from 'react';

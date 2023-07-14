@@ -1,4 +1,4 @@
-import type { ComputedFlow } from '@specfy/api/src/common/flow/types';
+import type { ComputedFlow } from '@specfy/api/src/models/flows/types';
 import type { ApiOrg } from '@specfy/api/src/types/api';
 import { Skeleton } from 'antd';
 import { useEffect, useState } from 'react';

@@ -1,20 +1,20 @@
 import type { Prisma } from '@prisma/client';
 import type { FastifyPluginCallback } from 'fastify';
 
-import { findAllBlobsWithParent } from '../../../common/blobs.js';
 import { nanoid } from '../../../common/id.js';
 import { omit } from '../../../common/object.js';
-import { checkReviews } from '../../../common/revision/index.js';
 import { prisma } from '../../../db/index.js';
 import { getRevision } from '../../../middlewares/getRevision.js';
 import { noBody } from '../../../middlewares/noBody.js';
-import { recomputeOrgGraph } from '../../../models/flows/helpers.js';
+import { findAllBlobsWithParent } from '../../../models/blobs/helpers.js';
+import { recomputeOrgGraph } from '../../../models/flows/helpers.rebuild.js';
 import {
   createComponentActivity,
   createDocumentActivity,
   createProjectActivity,
   createRevisionActivity,
 } from '../../../models/index.js';
+import { checkReviews } from '../../../models/revisions/checks.js';
 import {
   flagRevisionApprovalEnabled,
   IGNORED_COMPONENT_KEYS,

@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { validationError } from '../../../common/errors.js';
 import { prisma } from '../../../db/index.js';
 import { getFlow } from '../../../middlewares/getFlow.js';
-import { recomputeOrgGraph } from '../../../models/flows/helpers.js';
+import { recomputeOrgGraph } from '../../../models/flows/helpers.rebuild.js';
 import { schemaFlowUpdate } from '../../../models/flows/validator.js';
 import type { PatchFlow } from '../../../types/api/index.js';
 

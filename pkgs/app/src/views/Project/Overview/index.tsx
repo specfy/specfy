@@ -1,5 +1,5 @@
-import { componentsToFlow } from '@specfy/api/src/common/flow/transform';
-import type { ComputedFlow } from '@specfy/api/src/common/flow/types';
+import { componentsToFlow } from '@specfy/api/src/models/flows/transform';
+import type { ComputedFlow } from '@specfy/api/src/models/flows/types';
 import type { ApiComponent, BlockLevelZero } from '@specfy/api/src/types/api';
 import { Typography } from 'antd';
 import { useCallback, useEffect, useState } from 'react';

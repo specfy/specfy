@@ -2,16 +2,14 @@ import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import z from 'zod';
 
 import { validationError } from '../../../common/errors.js';
-import { getOrgFromRequest } from '../../../common/perms.js';
-import {
-  schemaOrgId,
-  schemaProject,
-} from '../../../common/validators/index.js';
+import { schemaOrgId } from '../../../common/validators/index.js';
 import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
-import { recomputeOrgGraph } from '../../../models/flows/helpers.js';
+import { recomputeOrgGraph } from '../../../models/flows/helpers.rebuild.js';
 import { v1, createProject } from '../../../models/index.js';
+import { getOrgFromRequest } from '../../../models/perms/helpers.js';
+import { schemaProject } from '../../../models/projects/schema.js';
 import type { PostProject } from '../../../types/api/index.js';
 
 function ProjectVal(req: FastifyRequest) {

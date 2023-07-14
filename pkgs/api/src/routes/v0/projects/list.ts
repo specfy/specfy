@@ -2,10 +2,10 @@ import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors.js';
-import { schemaOrgId } from '../../../common/validators/common.js';
+import { schemaOrgId } from '../../../common/validators/index.js';
 import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
-import { toApiProject } from '../../../models/project/project.js';
+import { toApiProject } from '../../../models/projects/formatter.js';
 import type { ListProjects, Pagination } from '../../../types/api/index.js';
 
 function QueryVal(req: FastifyRequest) {
