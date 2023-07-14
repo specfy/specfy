@@ -53,6 +53,8 @@ describe('GET /jobs/:job_id', () => {
         url: 'hello',
       },
       id: expect.any(String),
+      orgId: expect.any(String),
+      projectId: expect.any(String),
       reason: null,
       status: 'pending',
       type: 'deploy',

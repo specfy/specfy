@@ -135,6 +135,8 @@ describe('GET /jobs', () => {
         url: 'specfy/sync',
       },
       id: expect.any(String),
+      orgId: expect.any(String),
+      projectId: expect.any(String),
       reason: null,
       status: 'running',
       type: 'deploy',
