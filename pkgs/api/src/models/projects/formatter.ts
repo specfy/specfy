@@ -1,6 +1,6 @@
 import type { Projects } from '@prisma/client';
 
-import type { ApiProject } from '../../types/api/index.js';
+import type { ApiProject, ListProjects } from '../../types/api/index.js';
 
 export function toApiProject(proj: Projects): ApiProject {
   return {
@@ -14,5 +14,20 @@ export function toApiProject(proj: Projects): ApiProject {
     githubRepository: proj.githubRepository,
     createdAt: proj.createdAt.toISOString(),
     updatedAt: proj.updatedAt.toISOString(),
+  };
+}
+
+export function toApiProjectList(
+  proj: Projects & { _count: { Perms: number } }
+): ListProjects['Success']['data'][0] {
+  return {
+    id: proj.id,
+    orgId: proj.orgId,
+    name: proj.name,
+    slug: proj.slug,
+    githubRepository: proj.githubRepository,
+    createdAt: proj.createdAt.toISOString(),
+    updatedAt: proj.updatedAt.toISOString(),
+    users: proj._count.Perms,
   };
 }

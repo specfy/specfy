@@ -17,12 +17,9 @@
 }
 
 .item {
-  padding: $p-xl $p $p-2xl $p-m !important;
-  border-bottom: 1px solid var(--border1);
-
-  &.tdAvatar {
-    width: 42px;
-  }
+  padding: $p-xl $p $p-2xl $p-xl !important;
+  border: 1px solid var(--border2);
+  border-radius: $border-radius-s;
 }
 
 .info {
@@ -30,4 +27,11 @@
   gap: $p;
   font-size: $font-s;
   color: var(--text2)
+}
+
+.list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: $p-xl;
+  margin-top: $p-5xl;
 }
