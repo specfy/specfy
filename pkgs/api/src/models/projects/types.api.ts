@@ -20,7 +20,7 @@ export type ListProjects = Res<{
     org_id: string;
   };
   Success: {
-    data: ApiProject[];
+    data: ApiProjectList[];
     pagination: Pagination;
   };
 }>;

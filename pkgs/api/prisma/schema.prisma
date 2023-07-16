@@ -327,6 +327,8 @@ model Projects {
   /// [PrismaProjectsLinks]
   links            Json     @db.Json
   githubRepository String?
+  /// [PrismaProjectsConfig]
+  config           Json?    @db.Json
   createdAt        DateTime @default(now()) @db.Timestamp(3)
   updatedAt        DateTime @updatedAt
 
