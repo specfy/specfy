@@ -24,13 +24,9 @@ const Row: React.FC<{
   const link = `/${params.org_id}/${params.project_slug}/deploys/${deploy.id}`;
 
   return (
-    <Flex
-      className={cls.row}
-      justifyContent="space-between"
-      alignItems="center"
-    >
+    <Flex className={cls.row} justify="space-between" align="center">
       <div>
-        <Flex alignItems="center" gap="l">
+        <Flex align="center" gap="l">
           <div className={cls.title}>
             <Link to={link} relative="path">
               Deploy <span className={cls.typeId}>#{deploy.typeId}</span>

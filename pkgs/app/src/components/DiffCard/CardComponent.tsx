@@ -150,7 +150,7 @@ export const DiffCardComponent: React.FC<{
         if (d.key === 'display') {
           return (
             <div key={d.key}>
-              <Flex style={{ margin: '40px 0 20px 0' }} justifyContent="center">
+              <Flex style={{ margin: '40px 0 20px 0' }} justify="center">
                 <div style={{ margin: '15px 60px 0 -50px' }}>
                   Display changed
                 </div>

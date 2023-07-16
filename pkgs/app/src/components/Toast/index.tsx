@@ -70,8 +70,8 @@ export const Toast: React.FC<
       onOpenChange={close}
       onClick={close}
     >
-      <Flex gap="l" alignItems="flex-start" justifyContent="space-between">
-        <Flex gap="l" alignItems="flex-start">
+      <Flex gap="l" align="flex-start" justify="space-between">
+        <Flex gap="l" align="flex-start">
           {(loading || status) && (
             <div className={cls.icon}>
               {loading && <Loading />}

@@ -121,8 +121,8 @@ export const ComponentView: React.FC<{
       <Container.Left2Third>
         <Card padded seamless large>
           <div className={cls.content}>
-            <Flex alignItems="center" justifyContent="space-between">
-              <Flex alignItems="center" gap="l">
+            <Flex align="center" justify="space-between">
+              <Flex align="center" gap="l">
                 {isEditing ? (
                   <TechPopover
                     id={comp.id}
@@ -162,7 +162,7 @@ export const ComponentView: React.FC<{
                   )}
                 </Tooltip>
               </Flex>
-              <Flex alignItems="center">
+              <Flex align="center">
                 <Tag
                   className={classnames(
                     cls.tagType,

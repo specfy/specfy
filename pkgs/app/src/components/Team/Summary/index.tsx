@@ -48,7 +48,7 @@ export const TeamSummary: React.FC<Required<ListPerms['Querystring']>> = (
   return (
     <div>
       <div className={cls.team}>
-        <Flex direction="column" alignItems="flex-start" className={cls.block}>
+        <Flex column align="flex-start" className={cls.block}>
           <div className={cls.label}>Admin</div>
           <AvatarGroup>
             {owners.map((perm) => {
@@ -64,11 +64,7 @@ export const TeamSummary: React.FC<Required<ListPerms['Querystring']>> = (
           </AvatarGroup>
         </Flex>
         {false && reviewers.length > 0 && (
-          <Flex
-            direction="column"
-            alignItems="flex-start"
-            className={cls.block}
-          >
+          <Flex column align="flex-start" className={cls.block}>
             <div className={cls.label}>Reviewers</div>
             <AvatarGroup>
               {reviewers.map((perm) => {
@@ -85,11 +81,7 @@ export const TeamSummary: React.FC<Required<ListPerms['Querystring']>> = (
           </Flex>
         )}
         {contributors.length > 0 && (
-          <Flex
-            direction="column"
-            alignItems="flex-start"
-            className={cls.block}
-          >
+          <Flex column align="flex-start" className={cls.block}>
             <div className={cls.label}>Contributors</div>
             <AvatarGroup>
               {contributors.map((perm) => {
@@ -106,11 +98,7 @@ export const TeamSummary: React.FC<Required<ListPerms['Querystring']>> = (
           </Flex>
         )}
         {viewers.length > 0 && (
-          <Flex
-            direction="column"
-            alignItems="flex-start"
-            className={cls.block}
-          >
+          <Flex column align="flex-start" className={cls.block}>
             <div className={cls.label}>Viewers</div>
             <AvatarGroup>
               {viewers.map((perm) => {

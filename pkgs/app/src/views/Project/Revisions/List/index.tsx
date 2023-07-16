@@ -130,7 +130,7 @@ export const ProjectRevisionsList: React.FC<{
               key="name"
               render={(_, item: ApiRevision) => {
                 return (
-                  <Flex justifyContent="space-between" className={cls.line}>
+                  <Flex justify="space-between" className={cls.line}>
                     <div>
                       <Link
                         to={`/${params.org_id}/${params.project_slug}/revisions/${item.id}`}

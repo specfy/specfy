@@ -86,7 +86,7 @@ export const SettingsTeamPending: React.FC<{ params: RouteOrg }> = ({
             rowKey="id"
             title={() => {
               return (
-                <Flex justifyContent="space-between" grow={1}>
+                <Flex justify="space-between" grow>
                   <Checkbox
                     onClick={onSelectAll}
                     indeterminate={indeterminate}

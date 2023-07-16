@@ -96,7 +96,7 @@ export const Tech: React.FC<{
       <Helmet title={`${techname} - ${proj.name} ${titleSuffix}`} />
       <Container.Left2Third>
         <Card padded seamless large>
-          <Flex justifyContent="space-between" className={cls.title}>
+          <Flex justify="space-between" className={cls.title}>
             <h2>
               <Flex gap="l">
                 <ComponentIcon data={{ techId: route.tech_slug }} large />

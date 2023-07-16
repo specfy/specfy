@@ -131,7 +131,7 @@ export const CreateFromGithub: React.FC<{
   return (
     <div className={cls.github}>
       <header>
-        <Flex justifyContent="space-between">
+        <Flex justify="space-between">
           <h3 className={cls.header}>
             <Github /> Import from Github
           </h3>
@@ -153,7 +153,7 @@ export const CreateFromGithub: React.FC<{
 
         {!org.githubInstallationId ? (
           <Banner type="info">
-            <Flex justifyContent="space-between" grow={1}>
+            <Flex justify="space-between" grow>
               <div>
                 Your organization is not linked to a Github organization.
               </div>

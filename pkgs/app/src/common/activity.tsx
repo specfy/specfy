@@ -234,7 +234,7 @@ export const mapProject: Record<ActionProject, ActivityParams> = {
 
       return (
         <ActivityCard>
-          <Flex direction="column" alignItems="flex-start" gap="l">
+          <Flex column align="flex-start" gap="l">
             <Flex gap="l">
               <AvatarAuto name={act.project.name} />
               <ProjectTarget act={act}>{act.project.name}</ProjectTarget>
@@ -470,7 +470,7 @@ export const mapRevision: Record<ActionRevision, ActivityParams> = {
 
       return (
         <ActivityCard>
-          <Flex direction="column" alignItems="flex-start" gap="s">
+          <Flex column align="flex-start" gap="s">
             <h4>
               <RevisionTarget act={act}>
                 {act.targetRevision.name}

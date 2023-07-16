@@ -186,7 +186,7 @@ export const SettingsGeneral: React.FC<{
 
             {!org!.githubInstallationId ? (
               <Banner type="info">
-                <Flex justifyContent="space-between">
+                <Flex justify="space-between">
                   First, link your Specfy organization to a Github organization.
                   <Link to={`/${org!.id}/_/settings`}>
                     <Button>Settings</Button>
@@ -230,7 +230,7 @@ export const SettingsGeneral: React.FC<{
         <Form layout="vertical" onFinish={handleRename}>
           <Card.Content>
             <Typography.Title level={3}>Keys</Typography.Title>
-            <Flex gap="l" direction="column" alignItems="flex-start">
+            <Flex gap="l" column align="flex-start">
               <div>
                 <div>Project ID</div>
                 <Input

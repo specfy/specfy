@@ -34,12 +34,7 @@ export const Invite: React.FC = () => {
 
   if (!invitationId || !token || res.error) {
     return (
-      <Flex
-        alignItems="center"
-        justifyContent="center"
-        className={cls.container}
-        direction="column"
-      >
+      <Flex align="center" justify="center" className={cls.container} column>
         <NotFound
           title="Invitation not found"
           message="The invitation does not exists or is expired"
@@ -82,12 +77,7 @@ export const Invite: React.FC = () => {
   };
 
   return (
-    <Flex
-      alignItems="center"
-      justifyContent="center"
-      className={cls.container}
-      direction="column"
-    >
+    <Flex align="center" justify="center" className={cls.container} column>
       <Helmet title={`Join ${inv.org.name} ${titleSuffix}`} />
 
       <div>
@@ -100,8 +90,8 @@ export const Invite: React.FC = () => {
             </p>
 
             <Flex
-              alignItems="center"
-              justifyContent="center"
+              align="center"
+              justify="center"
               gap="l"
               className={cls.content}
             >

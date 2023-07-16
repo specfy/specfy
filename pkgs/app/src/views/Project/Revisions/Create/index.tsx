@@ -197,7 +197,7 @@ export const ProjectRevisionCreate: React.FC<{
         <Card>
           <Form onFinish={onSubmit}>
             <Card.Content>
-              <Flex gap="l" direction="column" alignItems="flex-start">
+              <Flex gap="l" column align="flex-start">
                 <FakeInput.H1
                   size="large"
                   value={title}

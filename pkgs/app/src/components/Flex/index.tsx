@@ -6,8 +6,8 @@ interface FlexProps {
   child?: boolean;
 
   /****** Container Props ********/
-  direction?: 'column' | 'row';
-  justifyContent?:
+  column?: true;
+  justify?:
     | 'center'
     | 'flex-end'
     | 'flex-start'
@@ -16,7 +16,7 @@ interface FlexProps {
     | 'space-around'
     | 'space-between';
   wrap?: 'nowrap' | 'wrap-reverse' | 'wrap';
-  alignItems?:
+  align?:
     | 'baseline'
     | 'center'
     | 'flex-end'
@@ -24,10 +24,10 @@ interface FlexProps {
     | 'inherit'
     | 'initial'
     | 'stretch';
-  gap?: 'l' | 'm' | 's' | 'xl';
+  gap?: '2xl' | 'l' | 'm' | 's' | 'xl';
 
   /****** Child Props ********/
-  grow?: number;
+  grow?: number | true;
   shrink?: number;
   basis?: number;
   flex?: string;
@@ -36,7 +36,13 @@ interface FlexProps {
   style?: CSSProperties;
 }
 
-const gap = { s: '4px', m: '8px', l: '12px', xl: '24px' };
+const gap: Record<Exclude<FlexProps['gap'], undefined>, string> = {
+  s: '4px',
+  m: '8px',
+  l: '12px',
+  xl: '32px',
+  '2xl': '48px',
+};
 
 export const Flex: React.FC<FlexProps> = (props) => {
   return (
@@ -44,14 +50,15 @@ export const Flex: React.FC<FlexProps> = (props) => {
       className={props.className}
       style={{
         display: props.child ? 'block' : 'flex',
-        justifyContent: props.justifyContent || 'flex-start',
-        flexDirection: props.direction || 'row',
-        flexGrow: props.grow || 0,
+        justifyContent: props.justify || 'flex-start',
+        flexDirection: props.column ? 'column' : 'row',
+        flexGrow: props.grow === true ? 1 : props.grow || 0,
         flexBasis: props.basis || 'auto',
         flexShrink: props.shrink || 1,
         flexWrap: props.wrap || 'nowrap',
-        alignItems: props.alignItems || 'center',
+        alignItems: props.align || 'center',
         gap: props.gap ? gap[props.gap] : '',
+        width: props.grow === 1 || props.grow === true ? '100%' : undefined,
         ...props.style,
       }}
     >
