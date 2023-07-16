@@ -39,7 +39,7 @@ import { Editor } from '../../../../components/Editor';
 import { Flex } from '../../../../components/Flex';
 import { FlowWrapper } from '../../../../components/Flow';
 import { Toolbar } from '../../../../components/Flow/Toolbar';
-import { FakeInput } from '../../../../components/Input';
+import { FakeInput } from '../../../../components/Form/FakeInput';
 import { useToast } from '../../../../hooks/useToast';
 import type { RouteProject } from '../../../../types/routes';
 

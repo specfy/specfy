@@ -27,7 +27,7 @@ import { TechPopover } from '../../../components/Flow/TechPopover';
 import { Toolbar } from '../../../components/Flow/Toolbar';
 import type { OnNodesChangeSuper } from '../../../components/Flow/helpers';
 import { onNodesChangeProject } from '../../../components/Flow/helpers';
-import { FakeInput } from '../../../components/Input';
+import { FakeInput } from '../../../components/Form/FakeInput';
 import { NotFound } from '../../../components/NotFound';
 import { UpdatedAt } from '../../../components/UpdatedAt';
 import { useEdit } from '../../../hooks/useEdit';

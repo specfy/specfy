@@ -35,7 +35,7 @@ import { Container } from '../../../../components/Container';
 import { ContentDoc } from '../../../../components/Content';
 import { DiffCard } from '../../../../components/DiffCard';
 import { Editor } from '../../../../components/Editor';
-import { FakeInput } from '../../../../components/Input';
+import { FakeInput } from '../../../../components/Form/FakeInput';
 import { ListActivity } from '../../../../components/ListActivity';
 import { Loading } from '../../../../components/Loading';
 import { NotFound } from '../../../../components/NotFound';
