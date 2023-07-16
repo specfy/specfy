@@ -62,7 +62,7 @@
     "@types/node": "18.16.19",
     "@types/passport-github2": "1.2.5",
     "@types/passport-http-bearer": "1.0.37",
-    "@types/passport-jwt": "3.0.8",
+    "@types/passport-jwt": "3.0.9",
     "@types/passport-local": "1.0.35",
     "@types/validator": "13.7.17",
     "@vitest/coverage-c8": "^0.29.8",
