@@ -43,7 +43,7 @@
     "execa": "7.1.1",
     "fastify": "4.19.2",
     "fastify-plugin": "4.5.0",
-    "jsonwebtoken": "9.0.0",
+    "jsonwebtoken": "9.0.1",
     "nanoid": "3.3.6",
     "octokit": "2.0.14",
     "passport-github2": "0.1.12",
