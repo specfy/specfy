@@ -1,4 +1,7 @@
-import type { ComputedFlow } from '@specfy/api/src/models/flows/types';
+import type {
+  ComputedEdge,
+  ComputedFlow,
+} from '@specfy/api/src/models/flows/types';
 import classNames from 'classnames';
 import type { CSSProperties } from 'react';
 import { useRef, useCallback, useState, useEffect } from 'react';
@@ -26,7 +29,7 @@ const nodeTypes: NodeTypes = {
 };
 
 let movingHandle: 'source' | 'target';
-let movingEdgeId: string;
+let movingEdge: ComputedEdge;
 
 export const Flow: React.FC<{
   flow: ComputedFlow;
@@ -94,6 +97,7 @@ export const Flow: React.FC<{
         } else {
           // Reflect updates
           find.targetHandle = edge.targetHandle;
+          find.sourceHandle = edge.sourceHandle;
           find.data = edge.data;
         }
         find.deletable = !readonly && deletable;
@@ -327,23 +331,44 @@ export const Flow: React.FC<{
   ) => {
     // Not sure why it's the opposite
     movingHandle = handleType === 'source' ? 'target' : 'source';
-    movingEdgeId = edge.source;
+    movingEdge = edge;
+    // if (!onEdgesChange) {
+    setNodes((prev) => {
+      return prev.map((nde) => {
+        if (nde.id === edge.source) {
+          nde.data.moving = movingHandle;
+          return nde;
+        }
+        if (nde.id === edge.target) {
+          nde.data.moving = handleType;
+          return nde;
+        }
+        return nde;
+      });
+    });
   };
-  const onEdgeUpdate: ReactFlowProps['onEdgeUpdate'] = (prevEdge, newEdge) => {
+
+  const onEdgeUpdate: ReactFlowProps['onEdgeUpdate'] = async (
+    prevEdge,
+    newEdge
+  ) => {
     // Because we update from top -> down, the update will take one cycle to reach here again creating flickering
     // So we need to replicate the change in reactflow first, then in our store
-    setEdges((els) => updateEdge(prevEdge, newEdge, els));
+    setEdges((els) =>
+      updateEdge(prevEdge, newEdge, els, { shouldReplaceId: false })
+    );
 
     if (!onEdgesChange) {
       console.error('Edge changed but no function was registered');
       return;
     }
 
+    // We change the target and sourceHandle
     onEdgesChange([
       {
         type: 'changeTarget',
         id: prevEdge.id,
-        source: prevEdge.source,
+        source: newEdge.source!,
         newSourceHandle: newEdge.sourceHandle!,
         oldTarget: prevEdge.target,
         newTarget: newEdge.target!,
@@ -353,15 +378,54 @@ export const Flow: React.FC<{
   };
 
   const isValidConnection: ReactFlowProps['isValidConnection'] = (conn) => {
-    if (movingHandle === 'source') {
-      return conn.source === movingEdgeId && conn.sourceHandle!.startsWith('s');
+    // Project scenario, we are allowed to move source and target around
+    // TODO: reup this
+    // if (onEdgesChange) {
+    //   if (movingHandle === 'source') {
+    //     return conn.sourceHandle!.startsWith('s');
+    //   }
+    //   return conn.targetHandle!.startsWith('t');
+    // }
+
+    // New connection
+    if (!movingEdge) {
+      return conn.source !== conn.target && conn.targetHandle!.startsWith('t');
     }
-    return conn.target !== conn.source && conn.targetHandle!.startsWith('t');
+
+    // Moving an existing connection
+    // In organisation we are only allowed to move the source and target within the same Node
+    if (movingHandle === 'source') {
+      return (
+        conn.source === movingEdge.source && conn.sourceHandle!.startsWith('s')
+      );
+    }
+    return (
+      conn.target === movingEdge.target && conn.targetHandle!.startsWith('t')
+    );
   };
 
   const onAddEdge: ReactFlowProps['onConnect'] = (conn) => {
     if (!onEdgesChange) {
       console.error('Edge changed but no function was registered');
+      return;
+    }
+
+    const exists = edges.find(
+      (edge) => edge.target === conn.target && edge.source === conn.source
+    );
+    if (exists) {
+      // Adding an edge that already exists (e.g: same or different handle but same source / target)
+      onEdgesChange([
+        {
+          type: 'changeTarget',
+          id: `${conn.source}->${conn.target}`,
+          source: conn.source!,
+          newSourceHandle: conn.sourceHandle!,
+          newTarget: conn.target!,
+          newTargetHandle: conn.targetHandle!,
+          oldTarget: conn.target!,
+        },
+      ]);
       return;
     }
 

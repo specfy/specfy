@@ -97,7 +97,7 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
               keepHighlightOnSelect={true}
               readonly={!editing}
               deletable={false}
-              connectable={false}
+              connectable={true}
             />
 
             <FlowDetails

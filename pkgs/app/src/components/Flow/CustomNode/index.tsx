@@ -36,6 +36,9 @@ const CustomNode: React.FC<NodeProps<NodeData>> = ({
   const isConnecting = !!connectionNodeId;
   const edges = useEdges();
 
+  // console.log(data.name, data.moving, isConnecting);
+  const disableHandle = isConnecting && data.moving === false;
+
   const { hasTT, hasTR, hasTB, hasTL, hasST, hasSR, hasSB, hasSL } =
     useMemo(() => {
       const filtered = edges.filter(
@@ -88,7 +91,8 @@ const CustomNode: React.FC<NodeProps<NodeData>> = ({
         cls.node,
         selected && cls.selected,
         data.type === 'hosting' && cls.hosting,
-        isConnecting && cls.isConnecting
+        // isConnecting && cls.isConnecting,
+        disableHandle && cls.disableHandle
       )}
     >
       <NodeResizer
