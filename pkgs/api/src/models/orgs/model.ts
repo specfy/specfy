@@ -13,6 +13,7 @@ export async function createOrg(
 ): Promise<Orgs> {
   const acronym = acronymize(data.name);
   const colors = stringToColor(data.name);
+
   const tmp = await tx.orgs.create({
     data: {
       ...data,

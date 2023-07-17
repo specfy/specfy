@@ -332,7 +332,6 @@ export const Flow: React.FC<{
     // Not sure why it's the opposite
     movingHandle = handleType === 'source' ? 'target' : 'source';
     movingEdge = edge;
-    // if (!onEdgesChange) {
     setNodes((prev) => {
       return prev.map((nde) => {
         if (nde.id === edge.source) {

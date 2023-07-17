@@ -257,7 +257,7 @@ model Orgs {
   name                 String   @db.VarChar(36)
   isPersonal           Boolean  @default(false)
   avatarUrl            String?  @db.VarChar(1000)
-  color                String   @db.VarChar(7)
+  color                String   @db.VarChar(20)
   acronym              String   @db.VarChar(3)
   githubInstallationId Int?
   createdAt            DateTime @default(now()) @db.Timestamp(3)
