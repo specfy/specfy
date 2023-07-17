@@ -63,7 +63,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         },
       },
       orderBy: { createdAt: 'desc' },
-      take: 10,
+      take: 20,
       skip: 0,
     });
 

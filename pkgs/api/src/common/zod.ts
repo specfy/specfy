@@ -27,7 +27,7 @@ export function valPermissions(req: FastifyRequest) {
       return;
     }
 
-    if (checkInheritedPermissions(req, orgId, projectId)) {
+    if (checkInheritedPermissions(req.perms!, orgId, projectId)) {
       return;
     }
 

@@ -167,7 +167,7 @@ export const ContentSidebar: React.FC<{
     // ];
 
     return docs;
-  }, [res.isLoading, deleted]);
+  }, [res.data, deleted]);
 
   useEffect(() => {
     const split = location.pathname.split('/');

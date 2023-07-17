@@ -10,7 +10,8 @@ export function toApiProject(proj: Projects): ApiProject {
     description: proj.description,
     name: proj.name,
     slug: proj.slug,
-    links: proj.links, // TODO: remove this in /list
+    links: proj.links,
+    config: proj.config,
     githubRepository: proj.githubRepository,
     createdAt: proj.createdAt.toISOString(),
     updatedAt: proj.updatedAt.toISOString(),

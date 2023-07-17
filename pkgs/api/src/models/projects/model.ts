@@ -5,6 +5,8 @@ import { slugify } from '../../common/string.js';
 import type { ActionProject } from '../activities/types.js';
 import { createKey } from '../keys/model.js';
 
+import type { DBProject } from './types.js';
+
 export async function createProjectBlob({
   data,
   blob,
@@ -40,7 +42,7 @@ export async function createProject({
 }) {
   const body: Prisma.ProjectsUncheckedCreateInput = {
     ...data,
-    slug: slugify(data.name),
+    slug: data.slug || slugify(data.name),
     id: data.id || nanoid(),
     blobId: null,
   };
@@ -87,38 +89,6 @@ export async function createProject({
   return update;
 }
 
-export async function updateProject({
-  data,
-  original,
-  user,
-  tx,
-}: {
-  data: Partial<Projects>;
-  original: Projects;
-  user: Users;
-  tx: Prisma.TransactionClient;
-}) {
-  if (data.name && data.name !== original.name) {
-    data.slug = slugify(data.name);
-  }
-
-  const blob = await createProjectBlob({ blob: { ...original, ...data }, tx });
-
-  const tmp = await tx.projects.update({
-    data: { ...(data as Prisma.ProjectsUncheckedUpdateInput), blobId: blob.id },
-    where: { id: original.id },
-  });
-
-  await createProjectActivity({
-    user,
-    action: 'Project.updated',
-    target: tmp,
-    tx,
-  });
-
-  return tmp;
-}
-
 export async function createProjectActivity({
   user,
   action,
@@ -144,4 +114,17 @@ export async function createProjectActivity({
       createdAt: new Date(),
     },
   });
+}
+
+export function getDefaultConfig(): DBProject['config'] {
+  return {
+    documentation: {
+      enabled: true,
+      path: '/docs',
+    },
+    stack: {
+      enabled: true,
+      path: '/',
+    },
+  };
 }

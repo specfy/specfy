@@ -20,7 +20,9 @@ export interface ServerEvents {
   'job.finish': (data: EventJob) => void;
 }
 
-export type ListenEvents = Record<string, unknown>;
+export interface ListenEvents {
+  join: (data: { orgId: string; projectId: string }) => void;
+}
 type InterEvents = Record<string, unknown>;
 
 export type SocketServer = Server<

@@ -2,36 +2,35 @@ import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import z from 'zod';
 
 import { validationError } from '../../../common/errors.js';
+import { nanoid } from '../../../common/id.js';
+import { slugify } from '../../../common/string.js';
 import { schemaOrgId } from '../../../common/validators/index.js';
 import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import { recomputeOrgGraph } from '../../../models/flows/helpers.rebuild.js';
-import { v1, createProject } from '../../../models/index.js';
+import { v1, createProject, getDefaultConfig } from '../../../models/index.js';
 import { getOrgFromRequest } from '../../../models/perms/helpers.js';
 import { schemaProject } from '../../../models/projects/schema.js';
+import type { DBProject } from '../../../models/projects/types.js';
 import type { PostProject } from '../../../types/api/index.js';
 
 function ProjectVal(req: FastifyRequest) {
   return z
     .object({
       name: schemaProject.shape.name,
-      slug: schemaProject.shape.slug,
       orgId: schemaOrgId,
+      config: schemaProject.shape.config.partial({
+        documentation: true,
+        stack: true,
+      }),
     })
     .strict()
+    .partial({ config: true })
     .superRefine(valPermissions(req))
     .superRefine(async (val, ctx) => {
-      const res = await prisma.projects.findFirst({
-        where: { slug: val.slug, orgId: val.orgId },
-      });
-      if (res) {
-        ctx.addIssue({
-          path: ['slug'],
-          code: z.ZodIssueCode.custom,
-          params: { code: 'exists' },
-          message: `This slug is already used`,
-        });
+      const org = getOrgFromRequest(req, val.orgId);
+      if (!org) {
         return;
       }
 
@@ -40,11 +39,6 @@ function ProjectVal(req: FastifyRequest) {
           orgId: val.orgId,
         },
       });
-      const org = getOrgFromRequest(req, val.orgId);
-      if (!org) {
-        return;
-      }
-
       const max = org.isPersonal ? v1.free.project.max : v1.paid.project.max;
       if (count >= max) {
         ctx.addIssue({
@@ -70,18 +64,39 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       }
 
       const data: PostProject['Body'] = val.data;
+      let slug = slugify(data.name);
+
+      const def = getDefaultConfig();
+      const config: DBProject['config'] = {
+        documentation: {
+          ...def.documentation,
+          ...data.config?.documentation,
+        },
+        stack: {
+          ...def.stack,
+          ...data.config?.stack,
+        },
+      };
 
       const project = await prisma.$transaction(async (tx) => {
+        const count = await tx.projects.count({
+          where: { slug, orgId: data.orgId },
+        });
+        if (count > 0) {
+          slug = `${slug}-${nanoid().substring(0, 4)}`.toLocaleLowerCase();
+        }
+
         const tmp = await createProject({
           data: {
             orgId: data.orgId,
             name: data.name,
-            slug: data.slug,
+            slug,
             description: {
               type: 'doc',
               content: [],
             },
             links: [],
+            config,
           },
           user: req.user!,
           tx,

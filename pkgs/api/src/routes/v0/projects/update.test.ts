@@ -10,6 +10,7 @@ import {
   shouldBeProtected,
   shouldNotAllowQueryParams,
 } from '../../../test/helpers.js';
+import { seedProject } from '../../../test/seed/projects.js';
 import { seedSimpleUser, seedWithProject } from '../../../test/seed/seed.js';
 
 let t: TestSetup;
@@ -45,6 +46,7 @@ describe('PUT /projects/:org_id/:project_slug', () => {
       token,
       Body: {
         name,
+        slug: slugify(name),
       },
     });
 
@@ -70,24 +72,24 @@ describe('PUT /projects/:org_id/:project_slug', () => {
   });
 
   it('should prevent slug conflict', async () => {
-    const seed1 = await seedWithProject();
-    const { token, org, project } = await seedWithProject();
+    const { token, user, org, project } = await seedWithProject();
+    const seed2 = await seedProject(user, org);
 
-    const name = seed1.project.name;
-    const res = await t.fetch.put(`/0/projects/${org.id}/${project.slug}`, {
+    const res = await t.fetch.put(`/0/projects/${org.id}/${seed2.slug}`, {
       token,
       Body: {
-        name,
+        name: 'foobar',
+        slug: project.slug,
       },
     });
 
     isValidationError(res.json);
     expect(res.statusCode).toBe(400);
     expect(res.json.error.fields).toStrictEqual({
-      name: {
+      slug: {
         code: 'exists',
         message: 'This slug is already used',
-        path: ['name'],
+        path: ['slug'],
       },
     });
   });

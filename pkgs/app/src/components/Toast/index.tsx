@@ -33,6 +33,8 @@ export type ToastProps = {
   status?: 'error' | 'success';
   loading?: boolean;
   link?: string;
+  closable?: boolean;
+  action?: React.ReactNode;
 };
 
 type PropsWithId = RequireAtLeastOne<ToastProps, 'id'>;
@@ -44,7 +46,17 @@ interface ToastContextData {
 
 export const Toast: React.FC<
   PropsWithId & { onClose: (id: string) => void }
-> = ({ message, id, loading, status, title, link, onClose }) => {
+> = ({
+  message,
+  id,
+  status,
+  title,
+  link,
+  loading = false,
+  closable = true,
+  action = false,
+  onClose,
+}) => {
   const close = () => {
     onClose(id);
   };
@@ -55,8 +67,8 @@ export const Toast: React.FC<
     if (loading) {
       return;
     }
-
-    const timeout = setTimeout(close, 3000);
+    const expires = loading || !closable ? 999_999 : 3000;
+    const timeout = setTimeout(close, expires);
     return () => {
       clearTimeout(timeout);
     };
@@ -66,7 +78,7 @@ export const Toast: React.FC<
     <RadixToast.Root
       className={classNames(cls.toast, status && cls[status])}
       data-id={id}
-      duration={loading ? Infinity : 3000}
+      duration={999_999}
       onOpenChange={close}
       onClick={close}
     >
@@ -91,6 +103,7 @@ export const Toast: React.FC<
                 </Link>
               </div>
             )}
+            {action && <div className={cls.show}>{action}</div>}
           </div>
         </Flex>
         <RadixToast.Close>
@@ -113,7 +126,6 @@ export const ToastProvider: React.FC<{ children: React.ReactNode }> = ({
   const [toasts, setToasts] = useState<PropsWithId[]>([]);
   const onClose = useCallback(
     (id: string) => {
-      console.log('on remove id');
       setToasts((prev) => prev.filter((t) => t.id !== id));
     },
     [setToasts]

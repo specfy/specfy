@@ -38,7 +38,7 @@ export const getProject: PreHandler<{
     return notFound(res);
   }
 
-  if (!checkInheritedPermissions(req, params.org_id, proj.id)) {
+  if (!checkInheritedPermissions(req.perms!, params.org_id, proj.id)) {
     return forbidden(res);
   }
 

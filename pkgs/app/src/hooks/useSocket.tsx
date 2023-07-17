@@ -1,7 +1,8 @@
 import type { ApiMe } from '@specfy/api/src/types/api';
+import { Button } from 'antd';
 import { createContext, useEffect, useMemo } from 'react';
 
-import { queryClient } from '../common/query';
+import { qcli, refreshProject } from '../common/query';
 import { socket } from '../common/socket';
 
 import { useToast } from './useToast';
@@ -31,10 +32,9 @@ export const SocketProvider: React.FC<{
   }, [user]);
 
   useEffect(() => {
-    console.log('on sub');
     socket.on('job.start', (data) => {
       const job = data.job;
-      queryClient.invalidateQueries(['listJobs', job.orgId, job.projectId]);
+      qcli.invalidateQueries(['listJobs', job.orgId, job.projectId]);
       toast.add({
         id: job.id,
         title: `Deploy #${job.typeId}`,
@@ -46,18 +46,28 @@ export const SocketProvider: React.FC<{
     socket.on('job.finish', (data) => {
       setTimeout(() => {
         const job = data.job;
-        queryClient.invalidateQueries(['listJobs', job.orgId, job.projectId]);
+        qcli.invalidateQueries(['listJobs', job.orgId, job.projectId]);
         toast.update({
           id: job.id,
           status: job.status === 'failed' ? 'error' : 'success',
           loading: false,
         });
+        toast.add({
+          title: 'This project has been updated',
+          closable: false,
+          action: (
+            <Button
+              size="small"
+              onClick={() => refreshProject(job.orgId, job.projectId!, true)}
+            >
+              Refresh
+            </Button>
+          ),
+        });
       }, 1000);
     });
 
     return () => {
-      console.log('on unsub');
-
       socket.offAny();
     };
   }, []);

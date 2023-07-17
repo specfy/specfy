@@ -6,7 +6,7 @@ import type {
 } from '@specfy/api/src/types/api';
 import { useQuery } from '@tanstack/react-query';
 
-import { queryClient } from '../common/query';
+import { qcli } from '../common/query';
 
 import { fetchApi } from './fetch';
 import { APIError, isError } from './helpers';
@@ -36,7 +36,7 @@ export async function createOrg(
   );
 
   if (res.status === 200) {
-    void queryClient.invalidateQueries(['listOrgs']);
+    void qcli.invalidateQueries(['listOrgs']);
   }
 
   return json;
@@ -53,7 +53,7 @@ export async function updateOrg(
   );
 
   if (res.status === 200) {
-    void queryClient.invalidateQueries(['listOrgs']);
+    void qcli.invalidateQueries(['listOrgs']);
   }
 
   return json;
@@ -67,8 +67,8 @@ export async function deleteOrg(opts: DeleteOrg['Params']): Promise<number> {
   );
 
   if (res.status === 204) {
-    void queryClient.invalidateQueries(['listProjects', opts.org_id]);
-    void queryClient.invalidateQueries(['listOrgs']);
+    void qcli.invalidateQueries(['listProjects', opts.org_id]);
+    void qcli.invalidateQueries(['listOrgs']);
   }
 
   return res.status;

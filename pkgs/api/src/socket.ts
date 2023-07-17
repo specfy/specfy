@@ -6,6 +6,7 @@ import { Server } from 'socket.io';
 import { JWT_SECRET } from './common/auth.js';
 import { nanoid } from './common/id.js';
 import { prisma } from './db/index.js';
+import { checkInheritedPermissions } from './models/perms/helpers.js';
 import type { PayloadAuth, SocketServer } from './types/socket.js';
 
 export let io: SocketServer;
@@ -44,12 +45,7 @@ export function initSocket(server: http.Server) {
       return next(new Error('failed to auth'));
     }
 
-    const perms = await prisma.perms.findMany({
-      where: {
-        userId: auth.userId,
-      },
-      include: { Org: { include: { Projects: { select: { id: true } } } } },
-    });
+    const perms = await getSocketPerms(auth.userId);
     socket.data.sessionID = nanoid();
     socket.data.user = user;
     socket.data.perms = perms;
@@ -78,5 +74,32 @@ export function initSocket(server: http.Server) {
     }
 
     void socket.join(Array.from(list.values()));
+
+    // allow the client to request to join rooms
+    socket.on('join', async (event) => {
+      if (!socket.data.user) {
+        // for some reason
+        return;
+      }
+      // TODO: rate limit this somehow
+
+      // User created a new Project
+      if (event.orgId && event.projectId) {
+        const perms = await getSocketPerms(socket.data.user.id);
+        socket.data.perms = perms;
+        if (checkInheritedPermissions(perms, event.orgId, event.projectId)) {
+          void socket.join(`project-${event.projectId}`);
+        }
+      }
+    });
+  });
+}
+
+async function getSocketPerms(userId: string) {
+  return await prisma.perms.findMany({
+    where: {
+      userId: userId,
+    },
+    include: { Org: { include: { Projects: { select: { id: true } } } } },
   });
 }

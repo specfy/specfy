@@ -52,7 +52,7 @@ export const Project: React.FC = () => {
     project_slug: params.project_slug,
   });
   const [loading, setLoading] = useState<boolean>(true);
-  const getComps = useListComponents(params.project_slug, {
+  const getComps = useListComponents({
     org_id: params.org_id,
     project_id: proj?.id,
   });

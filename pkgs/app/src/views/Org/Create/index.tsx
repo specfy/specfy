@@ -38,6 +38,7 @@ export const OrgCreate: React.FC = () => {
       return;
     }
 
+    setErrors({});
     toast.add({ title: 'Organization created', status: 'success' });
     navigate(`/${res.id}`);
   };

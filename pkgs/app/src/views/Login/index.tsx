@@ -32,7 +32,7 @@ export const Login: React.FC = () => {
       }
       return;
     }
-
+    setErrors({});
     navigate(`/`);
   };
 

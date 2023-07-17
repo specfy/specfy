@@ -24,6 +24,22 @@ export const schemaProject = z
         .strict()
     ),
     githubRepository: z.string().nullable(),
+    config: z
+      .object({
+        documentation: z
+          .object({
+            enabled: z.boolean(),
+            path: z.string().max(255),
+          })
+          .strict(),
+        stack: z
+          .object({
+            enabled: z.boolean(),
+            path: z.string().max(255),
+          })
+          .strict(),
+      })
+      .strict(),
     createdAt: z.string().datetime(),
     updatedAt: z.string().datetime(),
   })

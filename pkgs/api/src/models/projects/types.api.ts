@@ -4,10 +4,10 @@ import type { Pagination, Res } from '../../types/api/api.js';
 
 import type { DBProject } from './types.js';
 
-export type ApiProject = Omit<DBProject, 'config'>;
+export type ApiProject = DBProject;
 export type ApiProjectList = Omit<
   ApiProject,
-  'blobId' | 'description' | 'links'
+  'blobId' | 'config' | 'description' | 'links'
 > & { users: number };
 export interface ReqProjectParams {
   org_id: string;
@@ -27,7 +27,14 @@ export type ListProjects = Res<{
 
 // POST /
 export type PostProject = Res<{
-  Body: Pick<ApiProject, 'name' | 'orgId' | 'slug'>;
+  Body: Pick<ApiProject, 'name' | 'orgId'> & {
+    config?:
+      | {
+          documentation?: ConfigDocumentation | undefined;
+          stack?: ConfigStack | undefined;
+        }
+      | undefined;
+  };
   Success: Pick<ApiProject, 'id' | 'slug'>;
 }>;
 
@@ -40,7 +47,7 @@ export type GetProject = Res<{
 // POST /:org_id/:project_slug
 export type PutProject = Res<{
   Params: ReqProjectParams;
-  Body: Pick<ApiProject, 'name'>;
+  Body: Pick<ApiProject, 'name' | 'slug'>;
   Success: { data: ApiProject };
 }>;
 

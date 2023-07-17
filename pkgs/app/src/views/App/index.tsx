@@ -7,7 +7,7 @@ import { HelmetProvider } from 'react-helmet-async';
 import { Route, Routes } from 'react-router-dom';
 import { ReactFlowProvider } from 'reactflow';
 
-import { queryClient } from '../../common/query';
+import { qcli } from '../../common/query';
 import { AuthLayout } from '../../components/AuthLayout';
 import { ErrorFallback } from '../../components/ErrorFallback';
 import { NotFound } from '../../components/NotFound';
@@ -62,7 +62,7 @@ const App: React.FC = () => {
               },
             }}
           >
-            <QueryClientProvider client={queryClient}>
+            <QueryClientProvider client={qcli}>
               {/* <ReactQueryDevtools initialIsOpen={false} /> */}
 
               <AuthProvider>

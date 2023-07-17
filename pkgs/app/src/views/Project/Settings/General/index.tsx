@@ -1,4 +1,4 @@
-import type { ApiProject } from '@specfy/api/src/types/api';
+import type { ApiProject, FieldsErrors } from '@specfy/api/src/types/api';
 import { IconCirclesRelation } from '@tabler/icons-react';
 import { Typography, Input, Button, Modal, Form } from 'antd';
 import { useMemo, useState } from 'react';
@@ -10,7 +10,7 @@ import {
   updateProject,
   linkToGithubRepo,
 } from '../../../../api';
-import { isError } from '../../../../api/helpers';
+import { isError, isValidationError } from '../../../../api/helpers';
 import { useListKeys } from '../../../../api/keys';
 import { API_HOSTNAME, IS_PROD } from '../../../../common/envs';
 import { i18n } from '../../../../common/i18n';
@@ -41,19 +41,33 @@ export const SettingsGeneral: React.FC<{
   // Edit
   const [name, setName] = useState(() => proj.name);
   const [slug, setSlug] = useState(() => proj.slug);
+  const [errors, setErrors] = useState<FieldsErrors>({});
   const onName: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setName(e.target.value);
+    const prev = slugify(name);
+    if (slug === prev || slug === '') {
+      setSlug(slugify(e.target.value));
+    }
+  };
+  const onSlug: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setSlug(slugify(e.target.value));
   };
-  const nameChanged = name !== proj.name;
+  const nameChanged = useMemo(() => {
+    return name !== proj.name || slug !== proj.slug;
+  }, [name, slug]);
 
   const handleRename = async () => {
-    const res = await updateProject(params, { name });
+    const res = await updateProject(params, { name, slug });
     if (isError(res)) {
-      toast.add({ title: i18n.errorOccurred, status: 'error' });
+      if (isValidationError(res)) {
+        setErrors(res.error.fields);
+      } else {
+        toast.add({ title: i18n.errorOccurred, status: 'error' });
+      }
       return;
     }
 
+    setErrors({});
     toast.add({ title: 'Project renamed', status: 'success' });
     navigate(`/${params.org_id}/${res.data.slug}/settings`);
   };
@@ -148,17 +162,21 @@ export const SettingsGeneral: React.FC<{
           <Card.Content>
             <Form.Item
               label="Name"
-              extra={
-                <div className={cls.desc}>
-                  The project is accessible at{' '}
-                  <em>
-                    https://app.specfy.io/
-                    {proj.orgId}/<strong>{slug}</strong>
-                  </em>
-                </div>
-              }
+              help={errors.name?.message}
+              validateStatus={errors.name && 'error'}
             >
               <Input value={name} onChange={onName} />
+            </Form.Item>
+            <Form.Item
+              label="Slug"
+              help={errors.slug?.message}
+              validateStatus={errors.slug && 'error'}
+            >
+              <Input
+                value={slug}
+                onChange={onSlug}
+                addonBefore={`https://app.specfy.io/${proj.orgId}/`}
+              />
             </Form.Item>
           </Card.Content>
 
