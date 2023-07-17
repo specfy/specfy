@@ -10,7 +10,7 @@
     "lint": "next lint"
   },
   "devDependencies": {
-    "@icons-pack/react-simple-icons": "8.0.1",
+    "@icons-pack/react-simple-icons": "6.3.0",
     "@mdx-js/loader": "2.3.0",
     "@mdx-js/react": "2.3.0",
     "@next/mdx": "13.4.10",
