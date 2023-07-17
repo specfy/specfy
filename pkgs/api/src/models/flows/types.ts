@@ -40,6 +40,7 @@ export interface NodeData {
   techId: ApiComponent['techId'];
   originalSize: ComponentForFlow['display']['size'];
   typeId: ApiComponent['typeId'];
+  moving?: boolean | 'source' | 'target';
 }
 
 export interface EdgeData {

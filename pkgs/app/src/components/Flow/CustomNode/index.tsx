@@ -36,8 +36,7 @@ const CustomNode: React.FC<NodeProps<NodeData>> = ({
   const isConnecting = !!connectionNodeId;
   const edges = useEdges();
 
-  // console.log(data.name, data.moving, isConnecting);
-  const disableHandle = isConnecting && data.moving === false;
+  const disableHandle = isConnecting && data?.moving === false;
 
   const { hasTT, hasTR, hasTB, hasTL, hasST, hasSR, hasSB, hasSL } =
     useMemo(() => {
