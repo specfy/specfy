@@ -1,7 +1,7 @@
 import type { FastifyPluginCallback } from 'fastify';
 
-import { toApiOrg } from '../../../common/formatters/org.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
+import { toApiOrg } from '../../../models/orgs/formatter.js';
 import type { ListOrgs } from '../../../types/api/index.js';
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {

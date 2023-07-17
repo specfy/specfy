@@ -9,7 +9,7 @@ import type {
 } from '@specfy/api/src/types/api';
 import { useQuery } from '@tanstack/react-query';
 
-import { queryClient } from '../common/query';
+import { qcli, refreshProject } from '../common/query';
 
 import { fetchApi } from './fetch';
 import { APIError, isError } from './helpers';
@@ -24,12 +24,8 @@ export async function createRevision(
   );
 
   if (res.status === 200) {
-    void queryClient.invalidateQueries([
-      'listRevisions',
-      data.orgId,
-      data.projectId,
-    ]);
-    void queryClient.invalidateQueries(['listActivities', data.orgId]);
+    void qcli.invalidateQueries(['listRevisions', data.orgId, data.projectId]);
+    void qcli.invalidateQueries(['listActivities', data.orgId]);
   }
 
   return json;
@@ -46,20 +42,15 @@ export async function updateRevision(
   );
 
   if (res.status === 200) {
-    void queryClient.invalidateQueries(['listRevisions', org_id, project_id]);
-    void queryClient.invalidateQueries([
-      'listBlobs',
-      org_id,
-      project_id,
-      revision_id,
-    ]);
-    void queryClient.invalidateQueries([
+    void qcli.invalidateQueries(['listRevisions', org_id, project_id]);
+    void qcli.invalidateQueries(['listBlobs', org_id, project_id, revision_id]);
+    void qcli.invalidateQueries([
       'getRevision',
       org_id,
       project_id,
       revision_id,
     ]);
-    void queryClient.invalidateQueries([
+    void qcli.invalidateQueries([
       'getRevisionChecks',
       org_id,
       project_id,
@@ -131,21 +122,9 @@ export async function mergeRevision({
   );
 
   if (res.status === 200) {
-    void queryClient.invalidateQueries(['listRevisions', org_id, project_id]);
-    void queryClient.invalidateQueries(['getRevision', org_id, project_id]);
-    void queryClient.invalidateQueries([
-      'getRevisionChecks',
-      org_id,
-      project_id,
-    ]);
-    void queryClient.invalidateQueries(['getProject', org_id]);
-    void queryClient.invalidateQueries(['listProjects', org_id]);
-    void queryClient.invalidateQueries(['listComponents', org_id]);
-    void queryClient.invalidateQueries(['listDocuments', org_id]);
-    void queryClient.invalidateQueries(['getDocument', org_id]);
-    void queryClient.invalidateQueries(['getFlow', org_id]);
+    await refreshProject(org_id, project_id);
   } else {
-    void queryClient.invalidateQueries([
+    void qcli.invalidateQueries([
       'getRevisionChecks',
       org_id,
       project_id,
@@ -195,20 +174,15 @@ export async function rebaseRevision({
   );
 
   if (res.status === 200) {
-    void queryClient.invalidateQueries(['listRevisions', org_id, project_id]);
-    void queryClient.invalidateQueries([
-      'listBlobs',
-      org_id,
-      project_id,
-      revision_id,
-    ]);
-    void queryClient.invalidateQueries([
+    void qcli.invalidateQueries(['listRevisions', org_id, project_id]);
+    void qcli.invalidateQueries(['listBlobs', org_id, project_id, revision_id]);
+    void qcli.invalidateQueries([
       'getRevision',
       org_id,
       project_id,
       revision_id,
     ]);
-    void queryClient.invalidateQueries([
+    void qcli.invalidateQueries([
       'getRevisionChecks',
       org_id,
       project_id,

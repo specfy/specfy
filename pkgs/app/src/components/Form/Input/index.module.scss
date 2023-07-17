@@ -1,0 +1,73 @@
+/* stylelint-disable selector-class-pattern */
+@import "../../../styles/theme";
+
+.wrapper {
+  display: flex;
+  flex-grow: 1;
+
+  line-height: $line-height;
+  color: var(--text);
+
+  border: 1px solid var(--border3);
+  border-radius: $border-radius-s;
+
+  &.s {
+    font-size: $font-s;
+
+    .input,
+    .before {
+      padding: $p-s $p;
+    }
+
+  }
+
+  &.m {
+    font-size: $font;
+
+    .input,
+    .before {
+      padding: $p $p-l;
+    }
+  }
+
+  &.l {
+    font-size: $font-m;
+
+    .input,
+    .before {
+      padding: $p-m $p-l;
+    }
+  }
+
+  &.xl {
+    font-size: $font-l;
+
+    .input,
+    .before {
+      padding: $p-l $p-l;
+    }
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+    color: var(--text3);
+    background-color: var(--bg2);
+    border-color: var(--border2);
+  }
+}
+
+.input {
+  width: 100%;
+  outline: 0;
+
+  &::placeholder {
+    color: var(--text1)
+  }
+}
+
+.before {
+  display: flex;
+  align-items: center;
+  color: var(--text);
+  background-color: var(--bg2);
+}

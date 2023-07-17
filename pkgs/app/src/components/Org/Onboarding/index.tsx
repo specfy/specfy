@@ -35,13 +35,19 @@ export const OrgOnboarding: React.FC<{ org: ApiOrg }> = ({ org }) => {
     setTeam(perms.data.data.length > 1);
   }, [perms.isFetching]);
 
+  useEffect(() => {
+    if (link && project && team) {
+      setDone(true);
+    }
+  }, [link, project, team]);
+
   if ((link && project && team) || done) {
     return null;
   }
 
   return (
     <div className={cls.onboarding}>
-      <Flex className={cls.header} justifyContent="space-between">
+      <Flex className={cls.header} justify="space-between">
         <div>
           <Typography.Title level={2}>Welcome</Typography.Title>
           <div className={cls.sub}>

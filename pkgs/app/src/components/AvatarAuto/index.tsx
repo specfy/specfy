@@ -70,3 +70,9 @@ export const AvatarAuto: React.FC<Props> = ({
     </Avatar.Root>
   );
 };
+
+export const AvatarGroup: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  return <div className={cls.group}>{children}</div>;
+};

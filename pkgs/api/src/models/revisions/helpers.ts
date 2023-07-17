@@ -1,6 +1,6 @@
 import type { Blobs, Prisma } from '@prisma/client';
 
-import type { ApiBlobCreate } from '../../types/api/revisions.js';
+import type { ApiBlobCreate } from './types.api.js';
 
 /**
  * Determine if we the revision has modified a project<>project edge.

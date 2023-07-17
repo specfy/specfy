@@ -1,5 +1,5 @@
-import { componentsToFlow } from '@specfy/api/src/common/flow/transform';
-import type { ComputedFlow } from '@specfy/api/src/common/flow/types';
+import { componentsToFlow } from '@specfy/api/src/models/flows/transform';
+import type { ComputedFlow } from '@specfy/api/src/models/flows/types';
 import type { ApiComponent, ApiProject } from '@specfy/api/src/types/api';
 import { Tag } from 'antd';
 import { useEffect, useState } from 'react';
@@ -96,7 +96,7 @@ export const Tech: React.FC<{
       <Helmet title={`${techname} - ${proj.name} ${titleSuffix}`} />
       <Container.Left2Third>
         <Card padded seamless large>
-          <Flex justifyContent="space-between" className={cls.title}>
+          <Flex justify="space-between" className={cls.title}>
             <h2>
               <Flex gap="l">
                 <ComponentIcon data={{ techId: route.tech_slug }} large />

@@ -1,0 +1,31 @@
+@import "../../../../styles/theme";
+
+
+.header {
+  padding: $p-3xl $p-5xl;
+}
+
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  padding: $p-l $p-5xl $p-xl;
+  border-bottom: 1px solid var(--border1);
+
+  .title {
+    font-weight: 500;
+  }
+
+  .typeId {
+    font-weight: 300;
+    color: var(--text2);
+  }
+
+  .info {
+    font-size: $font-s;
+    color: var(--text2)
+  }
+}

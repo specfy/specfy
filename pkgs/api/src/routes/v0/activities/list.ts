@@ -3,10 +3,10 @@ import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors.js';
-import { toApiActivity } from '../../../common/formatters/activity.js';
 import { schemaId, schemaOrgId } from '../../../common/validators/index.js';
 import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
+import { toApiActivity } from '../../../models/activities/formatter.js';
 import type { ListActivities } from '../../../types/api/index.js';
 
 function QueryVal(req: FastifyRequest) {
@@ -63,7 +63,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         },
       },
       orderBy: { createdAt: 'desc' },
-      take: 10,
+      take: 20,
       skip: 0,
     });
 

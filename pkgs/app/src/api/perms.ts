@@ -7,7 +7,7 @@ import type {
 } from '@specfy/api/src/types/api';
 import { useQuery } from '@tanstack/react-query';
 
-import { queryClient } from '../common/query';
+import { qcli } from '../common/query';
 
 import { fetchApi } from './fetch';
 import { APIError, isError } from './helpers';
@@ -73,11 +73,7 @@ export function useListPermsProject(opts: Required<ListPerms['Querystring']>) {
 export async function updatePerm(opts: PutPerm['Body']) {
   const { json } = await fetchApi<PutPerm>('/perms', { body: opts }, 'PUT');
 
-  void queryClient.invalidateQueries([
-    'listPerms',
-    opts.org_id,
-    opts.project_id,
-  ]);
+  void qcli.invalidateQueries(['listPerms', opts.org_id, opts.project_id]);
 
   return json;
 }
@@ -90,12 +86,8 @@ export async function removePerm(opts: DeletePerm['Body']) {
   );
 
   if (res.status === 204) {
-    void queryClient.invalidateQueries(['countPerms', opts.org_id]);
-    void queryClient.invalidateQueries([
-      'listPerms',
-      opts.org_id,
-      opts.project_id,
-    ]);
+    void qcli.invalidateQueries(['countPerms', opts.org_id]);
+    void qcli.invalidateQueries(['listPerms', opts.org_id, opts.project_id]);
   }
 
   return json;

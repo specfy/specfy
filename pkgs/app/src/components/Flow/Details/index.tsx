@@ -1,4 +1,7 @@
-import type { ComputedFlow, EdgeData } from '@specfy/api/src/common/flow/types';
+import type {
+  ComputedFlow,
+  EdgeData,
+} from '@specfy/api/src/models/flows/types';
 import { IconTrash } from '@tabler/icons-react';
 import { Button, Tag } from 'antd';
 import { useCallback, useEffect, useMemo, useState } from 'react';

@@ -1,0 +1,39 @@
+@import "../../../../styles/theme";
+
+.header {
+  padding: $p-3xl $p-5xl;
+}
+
+.states {
+  padding: 0 $p-5xl $p-2xl;
+}
+
+.block {
+  min-width: 200px;
+
+  .label {
+    padding: 0 0 $p-m;
+    font-size: $font-s;
+    color: var(--text3);
+  }
+}
+
+.logs {
+  background-color: $gray-50 !important;
+  border: none !important;
+
+  code,
+  code span {
+    font-family: $font-code !important;
+    font-size: $font !important;
+    font-weight: inherit;
+    font-style: inherit;
+    font-variant-ligatures: inherit;
+    line-height: inherit;
+    text-shadow: none !important;
+    text-rendering: inherit;
+    letter-spacing: inherit;
+
+    -webkit-font-smoothing: antialiased;
+  }
+}

@@ -1,9 +1,33 @@
 @import "./theme";
-@import '@radix-ui/colors/mauve.css';
-@import '@radix-ui/colors/indigo.css';
-@import '@radix-ui/colors/mauveDark.css';
-@import '@radix-ui/colors/plum.css';
+@import '@radix-ui/colors/amber.css';
+@import '@radix-ui/colors/blue.css';
+@import '@radix-ui/colors/bronze.css';
+@import '@radix-ui/colors/brown.css';
+@import '@radix-ui/colors/crimson.css';
+@import '@radix-ui/colors/cyan.css';
+@import '@radix-ui/colors/gold.css';
 @import '@radix-ui/colors/grass.css';
+@import '@radix-ui/colors/green.css';
+@import '@radix-ui/colors/indigo.css';
+@import '@radix-ui/colors/lime.css';
+@import '@radix-ui/colors/mauve.css';
+@import '@radix-ui/colors/mauveDark.css';
+@import '@radix-ui/colors/mint.css';
+@import '@radix-ui/colors/olive.css';
+@import '@radix-ui/colors/orange.css';
+@import '@radix-ui/colors/pink.css';
+@import '@radix-ui/colors/plum.css';
+@import '@radix-ui/colors/purple.css';
+@import '@radix-ui/colors/red.css';
+@import '@radix-ui/colors/sage.css';
+@import '@radix-ui/colors/sand.css';
+@import '@radix-ui/colors/sky.css';
+@import '@radix-ui/colors/slate.css';
+@import '@radix-ui/colors/teal.css';
+@import '@radix-ui/colors/tomato.css';
+@import '@radix-ui/colors/tomato.css';
+@import '@radix-ui/colors/violet.css';
+@import '@radix-ui/colors/yellow.css';
 
 button,
 a,
@@ -33,7 +57,9 @@ input {
 :root {
   // TEXT
   --text1: var(--mauve8);
-  --text2: var(--mauve11);
+  --text2: var(--mauve9);
+  --text3: var(--mauve11);
+  --text4: hsl(255deg 4% 44%);
   --text: var(--mauve12);
 
   // Link
@@ -47,10 +73,12 @@ input {
   --bg10: #242d3c;
 
   // OTHER
-  --border1: var(--mauve4);
-  --border2: var(--mauve7);
+  --border1: var(--mauve2);
+  --border2: var(--mauve4);
+  --border3: var(--mauve7);
   --accent1: var(--indigo4);
   --accent2: var(--indigo9);
+  --primary: #242d3c;
 
   // colors
   --accept: hsl(151.88deg 100% 93.73%);

@@ -7,9 +7,9 @@ import { dirname } from '../../common/env.js';
 import { nanoid } from '../../common/id.js';
 import { slugify } from '../../common/string.js';
 import { prisma } from '../../db/index.js';
-import { createDocument, getTypeId } from '../../models/index.js';
+import type { DBDocument } from '../../models/documents/types.js';
+import { createDocument, getDocumentTypeId } from '../../models/index.js';
 import type { ApiDocument } from '../../types/api/index.js';
-import type { DBDocument } from '../../types/db/documents.js';
 
 /**
  * Seed playbook
@@ -852,7 +852,7 @@ export async function seedDocument(
       orgId: org.id,
       projectId: project.id,
       type,
-      typeId: await getTypeId({
+      typeId: await getDocumentTypeId({
         data: { orgId: org.id, projectId: project.id, type },
         tx: prisma,
       }),

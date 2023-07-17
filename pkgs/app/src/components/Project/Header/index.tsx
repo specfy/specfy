@@ -4,6 +4,7 @@ import {
   IconApps,
   IconBolt,
   IconBook,
+  IconCloudUpload,
   IconHistory,
   IconLayoutDashboard,
   IconSettings,
@@ -38,7 +39,7 @@ export const ProjectHeader: React.FC<{
   });
 
   const menu = useMemo(() => {
-    return [
+    const items = [
       {
         key: 'overview',
         label: (
@@ -90,6 +91,17 @@ export const ProjectHeader: React.FC<{
         ),
       },
       {
+        key: 'deploys',
+        label: (
+          <Link to={`${linkSelf}/deploys`} className={cls.link}>
+            <span>
+              <IconCloudUpload />
+            </span>
+            Deploys
+          </Link>
+        ),
+      },
+      {
         key: 'activity',
         label: (
           <Link to={`${linkSelf}/activity`} className={cls.link}>
@@ -112,17 +124,21 @@ export const ProjectHeader: React.FC<{
         ),
       },
     ];
+
+    return items;
   }, [linkSelf, revisions]);
 
   useEffect(() => {
     if (location.pathname.match(/content|rfc/)) {
       setOpen('content');
-    } else if (location.pathname.match(/revisions/)) {
-      setOpen('revisions');
     } else if (location.pathname.match(/\/c\/|\/t\//)) {
       setOpen('overview');
     } else if (location.pathname.match(/flow/)) {
       setOpen('flow');
+    } else if (location.pathname.match(/revisions/)) {
+      setOpen('revisions');
+    } else if (location.pathname.match(/deploys/)) {
+      setOpen('deploys');
     } else if (location.pathname.match(/activity/)) {
       setOpen('activity');
     } else if (location.pathname.match(/settings/)) {

@@ -1,0 +1,26 @@
+@import "../../../styles/theme";
+
+.merged {
+  color: $purple-700;
+  background-color: $purple-100;
+}
+
+.closed {
+  color: $rose-700;
+  background-color: $rose-100;
+}
+
+.draft {
+  color: $gray-600;
+  background-color: $gray-100;
+}
+
+.approved {
+  color: $green-700;
+  background-color: $green-100;
+}
+
+.waiting {
+  color: $sky-700;
+  background-color: $sky-100;
+}

@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 import { validationError } from '../../../common/errors.js';
 import { nanoid } from '../../../common/id.js';
-import { schemaProseMirror } from '../../../common/validators/index.js';
+import { schemaProseMirror } from '../../../common/validators/prosemirror.js';
 import { prisma } from '../../../db/index.js';
 import { getRevision } from '../../../middlewares/getRevision.js';
 import { createRevisionActivity } from '../../../models/index.js';

@@ -27,7 +27,7 @@ export const SettingsTeam: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
     <Container noPadding>
       <Helmet title={`Team - ${org.name} ${titleSuffix}`} />
 
-      <Flex className={cls.team} gap="xl" direction="column">
+      <Flex className={cls.team} gap="xl" column>
         <div className={cls.header}>
           <div>
             <Typography.Title level={2}>Team members</Typography.Title>

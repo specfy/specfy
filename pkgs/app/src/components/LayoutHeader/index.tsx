@@ -8,7 +8,7 @@ import {
   IconUser,
 } from '@tabler/icons-react';
 import type { MenuProps } from 'antd';
-import { App, Divider, Button, Menu, Dropdown, Badge } from 'antd';
+import { Divider, Button, Dropdown, Badge } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
@@ -18,27 +18,17 @@ import { isError } from '../../api/helpers';
 import { i18n } from '../../common/i18n';
 import { useOrgStore } from '../../common/store';
 import { useAuth } from '../../hooks/useAuth';
+import { useToast } from '../../hooks/useToast';
 import type { RouteOrg } from '../../types/routes';
 import { AvatarAuto } from '../AvatarAuto';
 import { Logo } from '../Logo';
 
 import cls from './index.module.scss';
 
-const menuItems: MenuProps['items'] = [
-  // {
-  //   key: 'review',
-  //   label: <Link to="/review">Review</Link>,
-  // },
-  // {
-  //   key: 'settings',
-  //   label: <Link to="/settings">Settings</Link>,
-  // },
-];
-
 const userItems: MenuProps['items'] = [];
 
 export const LayoutHeader: React.FC = () => {
-  const { message } = App.useApp();
+  const toast = useToast();
   const navigate = useNavigate();
   const storeOrg = useOrgStore();
 
@@ -59,7 +49,7 @@ export const LayoutHeader: React.FC = () => {
   const handleLogout = async () => {
     const res = await logout();
     if (isError(res)) {
-      void message.error(i18n.errorOccurred);
+      toast.add({ title: i18n.errorOccurred, status: 'error' });
       return;
     }
 
@@ -133,14 +123,7 @@ export const LayoutHeader: React.FC = () => {
         </Dropdown>
       </div>
 
-      <div>
-        <Menu
-          className={cls.menu}
-          items={menuItems}
-          selectedKeys={['home']}
-          mode="horizontal"
-        ></Menu>
-      </div>
+      <div></div>
 
       <div className={cls.right}>
         <div>

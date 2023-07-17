@@ -2,7 +2,7 @@ import type { FastifyRequest } from 'fastify';
 import type { RefinementCtx } from 'zod';
 import z from 'zod';
 
-import { checkInheritedPermissions } from './perms.js';
+import { checkInheritedPermissions } from '../models/perms/helpers.js';
 
 export function valPermissions(req: FastifyRequest) {
   return (
@@ -27,7 +27,7 @@ export function valPermissions(req: FastifyRequest) {
       return;
     }
 
-    if (checkInheritedPermissions(req, orgId, projectId)) {
+    if (checkInheritedPermissions(req.perms!, orgId, projectId)) {
       return;
     }
 

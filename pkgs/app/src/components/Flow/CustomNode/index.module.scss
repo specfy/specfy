@@ -197,6 +197,15 @@
       opacity: 0;
     }
   }
+
+  &.disableHandle {
+
+    .source,
+    .target {
+      pointer-events: none !important;
+      opacity: 0 !important;
+    }
+  }
 }
 
 .pos {

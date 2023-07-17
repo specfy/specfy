@@ -1,6 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["fullTextSearch", "clientExtensions", "orderByNulls"]
+  previewFeatures = ["fullTextSearch", "clientExtensions", "orderByNulls", "filteredRelationCount"]
 }
 
 generator json {
@@ -211,6 +211,7 @@ model Jobs {
   userId    String? @db.VarChar(15)
 
   type   JobsType
+  typeId Int
   status JobsStatus
   /// [PrismaJobsConfig]
   config Json       @db.Json
@@ -326,6 +327,8 @@ model Projects {
   /// [PrismaProjectsLinks]
   links            Json     @db.Json
   githubRepository String?
+  /// [PrismaProjectsConfig]
+  config           Json     @db.Json
   createdAt        DateTime @default(now()) @db.Timestamp(3)
   updatedAt        DateTime @updatedAt
 

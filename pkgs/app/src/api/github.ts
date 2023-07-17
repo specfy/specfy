@@ -6,7 +6,7 @@ import type {
 } from '@specfy/api/src/types/api';
 import { useQuery } from '@tanstack/react-query';
 
-import { queryClient } from '../common/query';
+import { qcli } from '../common/query';
 
 import { fetchApi } from './fetch';
 import { APIError, isError } from './helpers';
@@ -21,7 +21,7 @@ export async function linkToGithubOrg(
   );
 
   if (res.status === 200) {
-    void queryClient.invalidateQueries(['listOrgs']);
+    void qcli.invalidateQueries(['listOrgs']);
   }
 
   return json;
@@ -37,7 +37,7 @@ export async function linkToGithubRepo(
   );
 
   if (res.status === 200) {
-    void queryClient.invalidateQueries(['getProject']);
+    void qcli.invalidateQueries(['getProject']);
   }
 
   return json;
