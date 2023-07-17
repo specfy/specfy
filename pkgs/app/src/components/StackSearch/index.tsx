@@ -1,5 +1,5 @@
+import type { ComponentType } from '@specfy/api/src/models/components/types';
 import type { ApiComponent } from '@specfy/api/src/types/api';
-import type { ComponentType } from '@specfy/api/src/types/db';
 import { IconPlus } from '@tabler/icons-react';
 import { Button, Select } from 'antd';
 import type { DefaultOptionType, SelectProps } from 'antd/es/select';

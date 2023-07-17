@@ -8,8 +8,7 @@ import {
   serverError,
   validationError,
 } from '../../../common/errors.js';
-import { getOrgFromRequest } from '../../../common/perms.js';
-import { schemaId, schemaOrgId } from '../../../common/validators/common.js';
+import { schemaId, schemaOrgId } from '../../../common/validators/index.js';
 import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
@@ -17,6 +16,7 @@ import {
   createGithubActivity,
   createJobDeploy,
 } from '../../../models/index.js';
+import { getOrgFromRequest } from '../../../models/perms/helpers.js';
 import type { PostLinkToGithubProject } from '../../../types/api/index.js';
 
 const repoRegex = /^[a-zA-Z0-9_.-]+\/[a-zA-Z0-9_.-]+$/;
@@ -101,13 +101,16 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         });
 
         if (body.repository) {
-          await createJobDeploy(
-            { orgId: body.orgId, projectId: body.projectId, tx },
-            {
+          await createJobDeploy({
+            orgId: body.orgId,
+            projectId: body.projectId,
+            userId: user.id,
+            config: {
               url: body.repository,
               autoLayout: true,
-            }
-          );
+            },
+            tx,
+          });
         }
         if (body.repository !== proj.githubRepository) {
           await createGithubActivity({

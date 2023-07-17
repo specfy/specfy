@@ -2,9 +2,6 @@ import type { Components } from '@prisma/client';
 import type { AnalyserJson } from '@specfy/stack-analyser';
 import { tech } from '@specfy/stack-analyser';
 
-import { computeLayout } from '../../common/flow/layout.js';
-import { componentsToFlow } from '../../common/flow/transform.js';
-import { getComponentSize } from '../../common/flow.js';
 import { pick } from '../../common/object.js';
 import { slugify, titleCase } from '../../common/string.js';
 import type {
@@ -12,7 +9,10 @@ import type {
   ApiBlobCreateComponent,
   PostUploadRevision,
 } from '../../types/api/index.js';
-import type { ComponentType, DBComponent } from '../../types/db/components.js';
+import type { ComponentType, DBComponent } from '../components/types.js';
+import { getComponentSize } from '../flows/helpers.js';
+import { computeLayout } from '../flows/layout.js';
+import { componentsToFlow } from '../flows/transform.js';
 
 const changing: Array<keyof Components> = [
   'edges',

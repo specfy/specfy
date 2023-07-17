@@ -7,7 +7,7 @@ import type {
 } from '@specfy/api/src/types/api';
 import { useQuery } from '@tanstack/react-query';
 
-import { queryClient } from '../common/query';
+import { qcli } from '../common/query';
 import originalStore from '../common/store';
 
 import { fetchApi } from './fetch';
@@ -23,8 +23,8 @@ export async function createProject(
   );
 
   if (res.status === 200) {
-    queryClient.refetchQueries(['listProjects', data.orgId]);
-    queryClient.refetchQueries(['getFlow', data.orgId]);
+    qcli.refetchQueries(['listProjects', data.orgId]);
+    qcli.refetchQueries(['getFlow', data.orgId]);
   }
 
   return json;
@@ -41,12 +41,8 @@ export async function updateProject(
   );
 
   if (res.status === 200) {
-    void queryClient.invalidateQueries(['listProjects', opts.org_id]);
-    void queryClient.invalidateQueries([
-      'getProject',
-      opts.org_id,
-      opts.project_slug,
-    ]);
+    void qcli.invalidateQueries(['listProjects', opts.org_id]);
+    void qcli.invalidateQueries(['getProject', opts.org_id, opts.project_slug]);
   }
 
   return json;
@@ -61,9 +57,10 @@ export async function deleteProject(
     'DELETE'
   );
 
-  if (res.status === 200) {
-    void queryClient.refetchQueries(['listProjects', opts.org_id]);
-    void queryClient.invalidateQueries(['getProject', opts.org_id]);
+  if (res.status === 204) {
+    void qcli.invalidateQueries(['listProjects', opts.org_id]);
+    void qcli.invalidateQueries(['getProject', opts.org_id]);
+    void qcli.invalidateQueries(['getFlow', opts.org_id]);
   }
 
   return json;

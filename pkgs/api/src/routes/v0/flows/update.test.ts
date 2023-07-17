@@ -2,8 +2,8 @@ import type { Orgs, Projects, Users } from '@prisma/client';
 import { beforeAll, afterAll, describe, it, expect } from 'vitest';
 
 import { prisma } from '../../../db/index.js';
-import { createComponent } from '../../../models/component.js';
-import { recomputeOrgGraph } from '../../../models/flows/helpers.js';
+import { createComponent } from '../../../models/components/model.js';
+import { recomputeOrgGraph } from '../../../models/flows/helpers.rebuild.js';
 import type { TestSetup } from '../../../test/each.js';
 import { setupBeforeAll, setupAfterAll } from '../../../test/each.js';
 import { isSuccess, isValidationError } from '../../../test/fetch.js';

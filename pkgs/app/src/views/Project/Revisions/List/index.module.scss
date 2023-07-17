@@ -1,14 +1,12 @@
 @import "../../../../styles/theme";
 
-
-
 .searchWrapper {
   display: flex;
   gap: $p-l;
   align-items: center;
   justify-content: space-between;
 
-  padding: $p-3xl;
+  padding: $p-3xl $p-5xl;
 
   .placeholderReset {
     pointer-events: none;
@@ -30,7 +28,7 @@
 
 .subtitle {
   font-size: $font-s;
-  color: $gray-400;
+  color: var(--text2);
 }
 
 .line {

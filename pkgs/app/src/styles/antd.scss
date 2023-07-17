@@ -372,7 +372,7 @@ h4.ant-typography {
 // Tree
 .ant-tree {
   padding-left: 2px;
-  font-size: $font-s;
+  font-size: $font;
 
   .ant-tree-switcher {
     width: 20px;
@@ -380,7 +380,7 @@ h4.ant-typography {
     svg {
       width: 16px;
       height: 16px;
-      margin-top: 7px;
+      margin-top: 9px;
       transition: transform 0.3s;
     }
 
@@ -397,7 +397,7 @@ h4.ant-typography {
 
   .ant-tree-node-content-wrapper {
     overflow: hidden;
-    padding: 3px $p 3px 0;
+    padding: 5px $p 5px 0;
     text-overflow: ellipsis;
     white-space: pre;
 
@@ -425,7 +425,7 @@ h4.ant-typography {
 
     &.ant-tree-treenode-switcher-open,
     &.ant-tree-treenode-switcher-close {
-      padding: 0 $p $p-s $p;
+      padding: 0 $p $p-s $p-m;
     }
 
     &:hover::before,
@@ -437,11 +437,11 @@ h4.ant-typography {
 
     &.ant-tree-treenode-selected {
       &::before {
-        background-color: var(--accent1) !important;
+        background-color: var(--bg3) !important;
       }
 
       .ant-tree-node-content-wrapper.ant-tree-node-selected {
-        color: var(--accent2);
+        color: var(--text);
       }
     }
   }

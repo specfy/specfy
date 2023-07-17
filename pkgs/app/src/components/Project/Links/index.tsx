@@ -1,6 +1,6 @@
 import { LinkOutlined } from '@ant-design/icons';
 import type { IconType } from '@icons-pack/react-simple-icons';
-import type { DBProjectLink } from '@specfy/api/src/types/db';
+import type { DBProjectLink } from '@specfy/api/src/models/projects/types';
 import { IconPlus, IconTrash } from '@tabler/icons-react';
 import { Button, Input, Typography } from 'antd';
 import classnames from 'classnames';

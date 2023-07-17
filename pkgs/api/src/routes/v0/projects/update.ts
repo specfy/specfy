@@ -1,22 +1,28 @@
-import type { FastifyPluginCallback } from 'fastify';
+import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors.js';
-import { toApiProject } from '../../../common/formatters/project.js';
-import { slugify } from '../../../common/string.js';
-import { schemaProject } from '../../../common/validators/index.js';
 import { prisma } from '../../../db/index.js';
 import { getProject } from '../../../middlewares/getProject.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
+import { recomputeOrgGraph } from '../../../models/flows/helpers.rebuild.js';
 import { createProjectActivity } from '../../../models/index.js';
+import { toApiProject } from '../../../models/projects/formatter.js';
+import { schemaProject } from '../../../models/projects/schema.js';
 import type { PutProject } from '../../../types/api/index.js';
 
-function BodyVal() {
+function BodyVal(req: FastifyRequest) {
   return z
     .object({
-      name: schemaProject.shape.name.superRefine(async (val, ctx) => {
-        const slug = slugify(val);
-        const res = await prisma.projects.findFirst({ where: { slug } });
+      name: schemaProject.shape.name,
+      slug: schemaProject.shape.slug.superRefine(async (val, ctx) => {
+        const res = await prisma.projects.count({
+          where: {
+            slug: val,
+            orgId: req.project!.orgId,
+            id: { not: req.project!.id },
+          },
+        });
         if (!res) {
           return;
         }
@@ -27,7 +33,6 @@ function BodyVal() {
           message: `This slug is already used`,
         });
       }),
-      // TODO: allow slug modification
     })
     .strict();
 }
@@ -37,7 +42,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
     '/',
     { preHandler: [noQuery, getProject] },
     async function (req, res) {
-      const val = await BodyVal().safeParseAsync(req.body);
+      const val = await BodyVal(req).safeParseAsync(req.body);
       if (!val.success) {
         return validationError(res, val.error);
       }
@@ -48,7 +53,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       if (data.name) {
         project = await prisma.$transaction(async (tx) => {
           const tmp = await tx.projects.update({
-            data: { name: data.name, slug: slugify(data.name) },
+            data: { name: data.name, slug: data.slug },
             where: { id: project.id },
           });
           await createProjectActivity({
@@ -57,6 +62,8 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
             target: tmp,
             tx,
           });
+
+          await recomputeOrgGraph({ orgId: tmp.orgId, tx });
 
           return tmp;
         });

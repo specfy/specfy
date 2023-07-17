@@ -5,6 +5,7 @@ import { Navigate, Outlet } from 'react-router-dom';
 import { useMount } from 'react-use';
 
 import { useAuth } from '../../hooks/useAuth';
+import { SocketProvider } from '../../hooks/useSocket';
 import { LayoutHeader } from '../LayoutHeader';
 import { Loading } from '../Loading';
 
@@ -36,8 +37,10 @@ export const AuthLayout: React.FC<{ children?: React.ReactNode }> = ({
 
   return (
     <Layout className={cls.app}>
-      <LayoutHeader></LayoutHeader>
-      <Layout.Content>{children ? children : <Outlet />}</Layout.Content>
+      <SocketProvider user={auth.user}>
+        <LayoutHeader></LayoutHeader>
+        <Layout.Content>{children ? children : <Outlet />}</Layout.Content>
+      </SocketProvider>
     </Layout>
   );
 };

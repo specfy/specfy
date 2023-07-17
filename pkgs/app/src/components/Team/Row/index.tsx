@@ -1,10 +1,11 @@
 import type { ApiPerm, ApiUser } from '@specfy/api/src/types/api';
 import { IconCheck, IconPlus, IconTrash } from '@tabler/icons-react';
-import { App, Button, Select } from 'antd';
+import { Button, Select } from 'antd';
 import { useState } from 'react';
 
 import { removePerm, updatePerm } from '../../../api';
 import { AvatarAuto } from '../../../components/AvatarAuto';
+import { useToast } from '../../../hooks/useToast';
 import { Loading } from '../../Loading';
 
 import cls from './index.module.scss';
@@ -26,7 +27,7 @@ export const Row: React.FC<RowProps> = ({
   perm,
   onUpdated,
 }) => {
-  const { message } = App.useApp();
+  const toast = useToast();
   const [role, setRole] = useState(() => perm?.role || 'viewer');
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -41,7 +42,10 @@ export const Row: React.FC<RowProps> = ({
       role: newRole,
       userId,
     });
-    void message.success(`User ${action === 'add' ? 'added' : 'updated'}`);
+    toast.add({
+      title: `User ${action === 'add' ? 'added' : 'updated'}`,
+      status: 'success',
+    });
 
     setTimeout(() => setLoading(false), 250);
     onUpdated();
@@ -54,7 +58,7 @@ export const Row: React.FC<RowProps> = ({
       ...params,
       userId,
     });
-    void message.success('User removed');
+    toast.add({ title: 'User removed', status: 'success' });
 
     setTimeout(() => {
       setLoading(false);

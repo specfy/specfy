@@ -1,9 +1,10 @@
-import type { ApiProject } from '@specfy/api/src/types/api';
+import type { ApiProjectList } from '@specfy/api/src/types/api';
 import { IconPlus, IconSearch, IconUsers } from '@tabler/icons-react';
 import { Button, Input } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import { useListProjects } from '../../api';
 import { useProjectStore } from '../../common/store';
 import { AvatarAuto } from '../AvatarAuto';
 import { Empty } from '../Empty';
@@ -14,9 +15,14 @@ import { Time } from '../Time';
 import cls from './index.module.scss';
 
 export const ListProjects: React.FC<{ orgId: string }> = ({ orgId }) => {
+  const getProjects = useListProjects({ org_id: orgId });
   const storeProjects = useProjectStore();
-  const [list, setList] = useState<ApiProject[]>();
+  const [list, setList] = useState<ApiProjectList[]>();
   const [search, setSearch] = useState<string>('');
+
+  useEffect(() => {
+    storeProjects.fill(getProjects.data?.data || []);
+  }, [getProjects.data]);
 
   useEffect(() => {
     setList(storeProjects.projects);
@@ -38,11 +44,11 @@ export const ListProjects: React.FC<{ orgId: string }> = ({ orgId }) => {
   return (
     <div>
       <div className={cls.header}>
-        <h3>Projects</h3>
+        <h2>Projects</h2>
         {!brandNew && (
           <div className={cls.actions}>
             <Link to={`/${orgId}/_/project/new`}>
-              <Button type="default" icon={<IconPlus />}>
+              <Button type="primary" icon={<IconPlus />}>
                 New
               </Button>
             </Link>
@@ -65,8 +71,8 @@ export const ListProjects: React.FC<{ orgId: string }> = ({ orgId }) => {
               desc="Create a project manually or from Github."
               action={
                 <Link to={`/${orgId}/_/project/new`}>
-                  <Button type="default" icon={<IconPlus />}>
-                    Create a New Project
+                  <Button type="primary" icon={<IconPlus />}>
+                    Create a new Project
                   </Button>
                 </Link>
               }
@@ -75,34 +81,41 @@ export const ListProjects: React.FC<{ orgId: string }> = ({ orgId }) => {
 
           {search != '' && empty && <Empty search={search} />}
 
-          {!empty &&
-            list.map((item) => {
-              return (
-                <Flex gap="xl" key={item.id} className={cls.item}>
-                  <Link to={`/${item.orgId}/${item.slug}`} relative="path">
-                    <AvatarAuto name={item.name} size="medium" shape="square" />
-                  </Link>
-                  <div>
-                    <Link
-                      to={`/${item.orgId}/${item.slug}`}
-                      relative="path"
-                      className={cls.title}
-                    >
-                      {item.name}
+          <div className={cls.list}>
+            {!empty &&
+              list.map((item) => {
+                return (
+                  <Flex gap="xl" key={item.id} className={cls.item}>
+                    <Link to={`/${item.orgId}/${item.slug}`} relative="path">
+                      <AvatarAuto
+                        name={item.name}
+                        size="medium"
+                        shape="square"
+                      />
                     </Link>
+                    <div>
+                      <Link
+                        to={`/${item.orgId}/${item.slug}`}
+                        relative="path"
+                        className={cls.title}
+                      >
+                        {item.name}
+                      </Link>
 
-                    <div className={cls.info}>
-                      <div>
-                        <IconUsers /> 12
-                      </div>
-                      <div>
-                        · <Time time={item.updatedAt} />
+                      <div className={cls.info}>
+                        <div>
+                          <IconUsers /> {item.users}
+                        </div>
+                        ·
+                        <div>
+                          <Time time={item.updatedAt} />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </Flex>
-              );
-            })}
+                  </Flex>
+                );
+              })}
+          </div>
         </>
       )}
     </div>

@@ -20,19 +20,43 @@ export function acronymize(name: string): string {
 }
 
 const palette = [
-  'ea9280',
-  'e58fb1',
-  'e38ec3',
-  'be93e4',
-  '8da4ef',
-  '5eb0ef',
-  '40c4aa',
-  '3db9cf',
-  '5bb98c',
-  '94ba2c',
-  'ebbc00',
-  'fa934e',
-  'd09e72',
+  // '#ea9280',
+  // '#e58fb1',
+  // '#e38ec3',
+  // '#be93e4',
+  // '#8da4ef',
+  // '#5eb0ef',
+  // '#40c4aa',
+  // '#3db9cf',
+  // '#5bb98c',
+  // '#94ba2c',
+  // '#ebbc00',
+  // '#fa934e',
+  // '#d09e72',
+  'tomato',
+  'amber',
+  'blue',
+  'bronze',
+  'brown',
+  'crimson',
+  'cyan',
+  'gold',
+  'grass',
+  'green',
+  'indigo',
+  'lime',
+  'mint',
+  'orange',
+  'pink',
+  'plum',
+  'purple',
+  'red',
+  'sky',
+  'slate',
+  'teal',
+  'tomato',
+  'violet',
+  'yellow',
 ];
 
 export function stringToColor(str: string): {
@@ -46,7 +70,7 @@ export function stringToColor(str: string): {
 
   const colorIndex = Math.abs(hash % palette.length);
   return {
-    backgroundColor: `#${palette[colorIndex]}`,
-    color: `white`,
+    backgroundColor: `var(--${palette[colorIndex]}4)`,
+    color: `var(--${palette[colorIndex]}11)`,
   };
 }

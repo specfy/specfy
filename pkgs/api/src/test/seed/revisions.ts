@@ -8,7 +8,7 @@ import {
   createProjectBlob,
   createBlobs,
   createRevisionActivity,
-  getTypeId,
+  getDocumentTypeId,
 } from '../../models/index.js';
 import type {
   ApiBlobCreate,
@@ -182,7 +182,7 @@ export async function seedRevisions(
       blob: {
         ...rfcs.d1,
         blobId: null,
-        typeId: await getTypeId({
+        typeId: await getDocumentTypeId({
           data: {
             orgId: pAnalytics.orgId,
             projectId: pAnalytics.id,

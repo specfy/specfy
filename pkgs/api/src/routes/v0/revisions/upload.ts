@@ -4,11 +4,7 @@ import { z } from 'zod';
 
 import { validationError } from '../../../common/errors.js';
 import { nanoid } from '../../../common/id.js';
-import { schemaId, schemaOrgId } from '../../../common/validators/common.js';
-import {
-  schemaRevision,
-  schemaStack,
-} from '../../../common/validators/revision.js';
+import { schemaId, schemaOrgId } from '../../../common/validators/index.js';
 import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
@@ -25,6 +21,10 @@ import {
   autoLayout,
   uploadedStackToDB,
 } from '../../../models/revisions/helpers.stack.js';
+import {
+  schemaRevision,
+  schemaStack,
+} from '../../../models/revisions/schema.js';
 import type { PostUploadRevision } from '../../../types/api/index.js';
 
 function BodyVal(req: FastifyRequest) {

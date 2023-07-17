@@ -1,5 +1,5 @@
+import type { FlowEdge } from '@specfy/api/src/models/flows/types';
 import type { ApiComponent, ApiProject } from '@specfy/api/src/types/api';
-import type { FlowEdge } from '@specfy/api/src/types/db';
 import type React from 'react';
 import { useEffect, useMemo, useState } from 'react';
 

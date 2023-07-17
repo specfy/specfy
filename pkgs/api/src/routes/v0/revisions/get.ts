@@ -1,9 +1,9 @@
 import type { FastifyPluginCallback } from 'fastify';
 
-import { toApiRevision } from '../../../common/formatters/revision.js';
-import { toApiUser } from '../../../common/formatters/user.js';
 import { prisma } from '../../../db/index.js';
 import { getRevision } from '../../../middlewares/getRevision.js';
+import { toApiRevision } from '../../../models/revisions/formatter.js';
+import { toApiUser } from '../../../models/users/formatter.js';
 import type { GetRevision } from '../../../types/api/index.js';
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {

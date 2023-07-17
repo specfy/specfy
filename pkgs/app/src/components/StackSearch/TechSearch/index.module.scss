@@ -10,11 +10,9 @@
     padding: $p-l $p-2xl $p-l $p-l;
     border-bottom: 1px solid var(--border1);
 
-
     &::placeholder {
       color: var(--text1);
     }
-
   }
 
   .actions {

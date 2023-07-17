@@ -7,14 +7,16 @@ import { getMe } from '../api/me';
 
 interface AuthContextInterface {
   user: ApiMe | null;
-  tryLogin: () => void;
+  tryLogin: () => Promise<boolean>;
   login: () => void;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextInterface>({
   user: null,
-  tryLogin: () => {},
+  tryLogin: () => {
+    return Promise.resolve(false);
+  },
   login: () => {},
   logout: () => {},
 });

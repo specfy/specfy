@@ -2,10 +2,10 @@ import type { FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
 import { notFound, validationError, forbidden } from '../common/errors.js';
-import { checkInheritedPermissions } from '../common/perms.js';
 import { schemaOrgId, schemaSlug } from '../common/validators/index.js';
 import { valPermissions } from '../common/zod.js';
 import { prisma } from '../db/index.js';
+import { checkInheritedPermissions } from '../models/perms/helpers.js';
 import type { ReqProjectParams } from '../types/api/index.js';
 import type { PreHandler } from '../types/fastify.js';
 
@@ -38,7 +38,7 @@ export const getProject: PreHandler<{
     return notFound(res);
   }
 
-  if (!checkInheritedPermissions(req, params.org_id, proj.id)) {
+  if (!checkInheritedPermissions(req.perms!, params.org_id, proj.id)) {
     return forbidden(res);
   }
 

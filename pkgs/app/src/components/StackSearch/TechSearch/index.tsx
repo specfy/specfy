@@ -1,4 +1,4 @@
-import type { ComponentType } from '@specfy/api/src/types/db';
+import type { ComponentType } from '@specfy/api/src/models/components/types';
 import { IconLinkOff } from '@tabler/icons-react';
 import { Button, Tooltip } from 'antd';
 import classNames from 'classnames';

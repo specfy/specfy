@@ -1,20 +1,21 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import type { ApiInvitation } from '@specfy/api/src/types/api';
 import { IconDotsVertical } from '@tabler/icons-react';
-import { App, Button, Checkbox, Skeleton, Table } from 'antd';
+import { Button, Checkbox, Skeleton, Table } from 'antd';
 import { useState } from 'react';
 
-import { roleReadable } from '../../../../../api';
-import { isError } from '../../../../../api/helpers';
 import {
+  roleReadable,
   deleteInvitations,
   useListInvitations,
-} from '../../../../../api/invitations';
+} from '../../../../../api';
+import { isError } from '../../../../../api/helpers';
 import { i18n } from '../../../../../common/i18n';
 import { AvatarAuto } from '../../../../../components/AvatarAuto';
 import { Card } from '../../../../../components/Card';
 import { Empty } from '../../../../../components/Empty';
 import { Flex } from '../../../../../components/Flex';
+import { useToast } from '../../../../../hooks/useToast';
 import type { RouteOrg } from '../../../../../types/routes';
 
 import cls from './index.module.scss';
@@ -22,7 +23,7 @@ import cls from './index.module.scss';
 export const SettingsTeamPending: React.FC<{ params: RouteOrg }> = ({
   params,
 }) => {
-  const { message } = App.useApp();
+  const toast = useToast();
   const [selected, setSelected] = useState<string[]>([]);
   const list = useListInvitations({ org_id: params.org_id });
 
@@ -47,23 +48,23 @@ export const SettingsTeamPending: React.FC<{ params: RouteOrg }> = ({
     for (const sel of selected) {
       const res = await deleteInvitations({ invitation_id: sel });
       if (isError(res)) {
-        void message.error(i18n.errorOccurred);
+        toast.add({ title: i18n.errorOccurred, status: 'error' });
         void list.refetch();
         return;
       }
     }
 
-    void message.success('Invitations removed');
+    toast.add({ title: 'Invitations removed', status: 'success' });
     void list.refetch();
   };
   const onRemoveOne = async (item: ApiInvitation) => {
     const res = await deleteInvitations({ invitation_id: item.id });
     if (isError(res)) {
-      void message.error(i18n.errorOccurred);
+      toast.add({ title: i18n.errorOccurred, status: 'error' });
       return;
     }
 
-    void message.success('Invitation removed');
+    toast.add({ title: 'Invitation removed', status: 'success' });
     void list.refetch();
   };
 
@@ -85,7 +86,7 @@ export const SettingsTeamPending: React.FC<{ params: RouteOrg }> = ({
             rowKey="id"
             title={() => {
               return (
-                <Flex justifyContent="space-between" grow={1}>
+                <Flex justify="space-between" grow>
                   <Checkbox
                     onClick={onSelectAll}
                     indeterminate={indeterminate}

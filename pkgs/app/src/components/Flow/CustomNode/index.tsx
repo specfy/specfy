@@ -1,4 +1,7 @@
-import type { ComputedNode, NodeData } from '@specfy/api/src/common/flow/types';
+import type {
+  ComputedNode,
+  NodeData,
+} from '@specfy/api/src/models/flows/types';
 import { Tooltip } from 'antd';
 import classNames from 'classnames';
 import type { ChangeEventHandler, KeyboardEventHandler } from 'react';
@@ -32,6 +35,8 @@ const CustomNode: React.FC<NodeProps<NodeData>> = ({
   const connectionNodeId = useStore(connectionNodeIdSelector);
   const isConnecting = !!connectionNodeId;
   const edges = useEdges();
+
+  const disableHandle = isConnecting && data?.moving === false;
 
   const { hasTT, hasTR, hasTB, hasTL, hasST, hasSR, hasSB, hasSL } =
     useMemo(() => {
@@ -85,7 +90,8 @@ const CustomNode: React.FC<NodeProps<NodeData>> = ({
         cls.node,
         selected && cls.selected,
         data.type === 'hosting' && cls.hosting,
-        isConnecting && cls.isConnecting
+        // isConnecting && cls.isConnecting,
+        disableHandle && cls.disableHandle
       )}
     >
       <NodeResizer

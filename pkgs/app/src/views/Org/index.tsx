@@ -5,8 +5,7 @@ import { Helmet } from 'react-helmet-async';
 import { Route, Routes, useParams } from 'react-router-dom';
 import { useLocalStorage } from 'react-use';
 
-import { useListOrgs, useListProjects } from '../../api';
-import { useProjectStore } from '../../common/store';
+import { useListOrgs } from '../../api';
 import { titleSuffix } from '../../common/string';
 import { Card } from '../../components/Card';
 import { Container } from '../../components/Container';
@@ -26,12 +25,10 @@ import cls from './index.module.scss';
 
 export const Org: React.FC = () => {
   const params = useParams<Partial<RouteOrg>>() as RouteOrg;
-  const storeProject = useProjectStore();
 
   // Data
   const getOrgs = useListOrgs();
   const [org, setOrg] = useState<ApiOrg>();
-  const getProjects = useListProjects({ org_id: org?.id });
 
   const [, setLastOrg] = useLocalStorage('lastOrg');
 
@@ -47,11 +44,7 @@ export const Org: React.FC = () => {
     }
   }, [org]);
 
-  useEffect(() => {
-    storeProject.fill(getProjects.data?.data || []);
-  }, [getProjects.data]);
-
-  if (getOrgs.isLoading || getProjects.isLoading) {
+  if (getOrgs.isLoading || params.org_id !== org?.id) {
     return (
       <div className={cls.org}>
         <div></div>
@@ -82,7 +75,7 @@ export const Org: React.FC = () => {
         <Sidebar org={org} />
       </div>
 
-      <div className={cls.main}>
+      <div className={cls.main} key={params.org_id}>
         <div>
           <OrgHeader org={org} />
         </div>
@@ -116,6 +109,7 @@ export const Org: React.FC = () => {
               path="/project/new"
               element={<ProjectCreate org={org} params={params} />}
             />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Container>
       </div>

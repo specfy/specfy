@@ -4,6 +4,7 @@ import { prisma } from '../../../db/index.js';
 import { getProject } from '../../../middlewares/getProject.js';
 import { noBody } from '../../../middlewares/noBody.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
+import { recomputeOrgGraph } from '../../../models/flows/helpers.rebuild.js';
 import type { DeleteProject } from '../../../types/api/index.js';
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
@@ -27,6 +28,8 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         await tx.projects.delete({ where: { id: project.id } });
         // await tx.blobs.deleteMany({ where: { projectId: project.id } });
         // await createProjectActivity(req.user!, 'Project.deleted', project, tx);
+
+        await recomputeOrgGraph({ orgId: project.orgId, tx });
       });
 
       return res.status(204).send();

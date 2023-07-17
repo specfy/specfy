@@ -8,8 +8,11 @@ import type {
 } from 'fastify';
 import type { RouteGenericInterface } from 'fastify/types/route';
 
+import type { JobWithUser } from '../models/jobs/type.js';
+import type { PermsWithOrg } from '../models/perms/types.js';
+import type { RevisionWithProject } from '../models/revisions/types.js';
+
 import type { InvitationsWithOrgAndUser } from './api/index.js';
-import type { PermsWithOrg, RevisionWithProject } from './db/index.js';
 
 export type PreHandler<T extends RouteGenericInterface = any> =
   preHandlerAsyncHookHandler<
@@ -32,6 +35,7 @@ declare module 'fastify' {
     org?: Orgs;
     invitation?: InvitationsWithOrgAndUser;
     flow?: Flows;
+    job?: JobWithUser;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-interface

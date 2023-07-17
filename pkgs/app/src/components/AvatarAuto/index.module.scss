@@ -14,6 +14,7 @@
   vertical-align: middle;
 
   background-color: var(--blackA3);
+  border: 1px solid transparent;
   border-radius: 100%;
 
   &.default {
@@ -97,4 +98,13 @@
   color: var(--text);
 
   background-color: var(--bg5);
+}
+
+.group {
+  display: flex;
+
+  >span:not(:first-child) {
+    margin-inline-start: -8px;
+    border-color: #fff;
+  }
 }

@@ -1,13 +1,11 @@
-import type { ComputedFlow } from '@specfy/api/src/common/flow/types';
+import type { ComputedFlow } from '@specfy/api/src/models/flows/types';
 import type { ApiOrg } from '@specfy/api/src/types/api';
 import { Skeleton } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useLocalStorage } from 'react-use';
 
-import { useListProjects } from '../../../api';
-import { useGetFlow } from '../../../api/flows';
-import { useProjectStore } from '../../../common/store';
+import { useListProjects, useGetFlow } from '../../../api';
 import { titleSuffix } from '../../../common/string';
 import { Card } from '../../../components/Card';
 import { Container } from '../../../components/Container';
@@ -22,7 +20,6 @@ export const OrgOverview: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   org,
   params,
 }) => {
-  const storeProjects = useProjectStore();
   const res = useListProjects({ org_id: params.org_id });
   const resFlow = useGetFlow({ org_id: params.org_id, flow_id: org.flowId });
   const [flow, setFlow] = useState<ComputedFlow>();
@@ -56,7 +53,7 @@ export const OrgOverview: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
         </Card>
       </Container.Left2Third>
       <Container.Right1Third>
-        {storeProjects.projects.length > 0 && (
+        {flow && (
           <div>
             {!flow ? (
               <Skeleton active title={false} paragraph={{ rows: 3 }}></Skeleton>

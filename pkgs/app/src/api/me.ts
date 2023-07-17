@@ -1,7 +1,7 @@
 import type { ApiMe, DeleteMe, GetMe, PutMe } from '@specfy/api/src/types/api';
 import { useQuery } from '@tanstack/react-query';
 
-import { queryClient } from '../common/query';
+import { qcli } from '../common/query';
 
 import { fetchApi } from './fetch';
 import { APIError, isError } from './helpers';
@@ -31,7 +31,7 @@ export async function updateMe(data: PutMe['Body']): Promise<PutMe['Reply']> {
   const { json, res } = await fetchApi<PutMe>(`/me`, { body: data }, 'PUT');
 
   if (res.status === 200) {
-    void queryClient.invalidateQueries(['listOrgs']);
+    void qcli.invalidateQueries(['listOrgs']);
   }
 
   return json;

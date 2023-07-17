@@ -3,10 +3,10 @@ import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors.js';
-import { toApiUser } from '../../../common/formatters/user.js';
-import { schemaId, schemaOrgId } from '../../../common/validators/common.js';
+import { schemaId, schemaOrgId } from '../../../common/validators/index.js';
 import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
+import { toApiUser } from '../../../models/users/formatter.js';
 import type { ListPerms } from '../../../types/api/index.js';
 
 function QueryVal(req: FastifyRequest) {

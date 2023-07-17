@@ -21,3 +21,7 @@ export type RouteDocument = RouteProject & {
 export type RouteRevision = RouteProject & {
   revision_id: string;
 };
+
+export type RouteJob = RouteProject & {
+  job_id: string;
+};
