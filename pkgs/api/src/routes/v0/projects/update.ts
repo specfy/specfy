@@ -2,10 +2,10 @@ import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors.js';
-import { slugify } from '../../../common/string.js';
 import { prisma } from '../../../db/index.js';
 import { getProject } from '../../../middlewares/getProject.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
+import { recomputeOrgGraph } from '../../../models/flows/helpers.rebuild.js';
 import { createProjectActivity } from '../../../models/index.js';
 import { toApiProject } from '../../../models/projects/formatter.js';
 import { schemaProject } from '../../../models/projects/schema.js';
@@ -17,7 +17,11 @@ function BodyVal(req: FastifyRequest) {
       name: schemaProject.shape.name,
       slug: schemaProject.shape.slug.superRefine(async (val, ctx) => {
         const res = await prisma.projects.count({
-          where: { slug: val, orgId: req.project!.orgId },
+          where: {
+            slug: val,
+            orgId: req.project!.orgId,
+            id: { not: req.project!.id },
+          },
         });
         if (!res) {
           return;
@@ -58,6 +62,8 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
             target: tmp,
             tx,
           });
+
+          await recomputeOrgGraph({ orgId: tmp.orgId, tx });
 
           return tmp;
         });

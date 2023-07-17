@@ -81,8 +81,9 @@ export const OrgCreate: React.FC = () => {
               disabled={!name || name.length < 4 || !id || id.length < 4}
               className={cls.button}
               htmlType="submit"
-              icon={<IconCircleArrowRight />}
-            ></Button>
+            >
+              Create <IconCircleArrowRight />
+            </Button>
           </div>
           <Form.Item
             className={cls.wrap}

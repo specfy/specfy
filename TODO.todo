@@ -186,7 +186,7 @@ Documents:
     - Support table
     - Image base path
     - Link base path
-  - Image should not be full size by default to be equivalent to Github
+  ✔ Image should not be full size by default to be equivalent to Github @done(23-07-17 12:19)
   - Display outgoing link differently
   ✔ List documents @done(23-03-29 14:47)
     ✔ Search @done(23-03-29 15:55)

@@ -17,9 +17,10 @@ ul.taskList {
   position: relative;
 
   img {
-    width: 100%;
-    object-fit: contain;
-    image-orientation: none;
+    // width: 100%;
+    // object-fit: contain;
+    // image-orientation: none;
+    max-width: 100%;
   }
 }
 

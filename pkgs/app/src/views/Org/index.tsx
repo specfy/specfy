@@ -44,7 +44,7 @@ export const Org: React.FC = () => {
     }
   }, [org]);
 
-  if (getOrgs.isLoading) {
+  if (getOrgs.isLoading || params.org_id !== org?.id) {
     return (
       <div className={cls.org}>
         <div></div>
@@ -75,7 +75,7 @@ export const Org: React.FC = () => {
         <Sidebar org={org} />
       </div>
 
-      <div className={cls.main}>
+      <div className={cls.main} key={params.org_id}>
         <div>
           <OrgHeader org={org} />
         </div>

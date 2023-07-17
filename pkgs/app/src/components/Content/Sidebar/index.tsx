@@ -1,6 +1,5 @@
 import type { ApiProject, DocumentSimple } from '@specfy/api/src/types/api';
 import {
-  IconFileText,
   IconCircleX,
   IconSearch,
   IconLayoutSidebarLeftExpand,
@@ -35,7 +34,7 @@ function buildDocHierarchy(
     node.push({
       key: doc.id,
       title: doc.name,
-      icon: <IconFileText />,
+      // icon: <IconFileText />,
       children: buildDocHierarchy(docs, doc.id),
     });
   }
@@ -238,7 +237,7 @@ export const ContentSidebar: React.FC<{
 
   return (
     <div className={classnames(cls.tree, collapsed && cls.collapsed)}>
-      <div className={cls.treeHeader} style={{ display: 'none' }}>
+      <div className={cls.treeHeader}>
         <div className={cls.search}>
           <Input
             prefix={<IconSearch />}
@@ -266,10 +265,6 @@ export const ContentSidebar: React.FC<{
         {/* <Link to={`/${proj.orgId}/${proj.slug}/content/new`}>
           <Button icon={<IconPlus />} />
         </Link> */}
-        {/* <Button
-          icon={<IconLayoutSidebarLeftCollapse />}
-          onClick={handleCollapse}
-        /> */}
       </div>
       {tree.length <= 0 && (
         <div className={cls.empty}>Content will appear here...</div>
@@ -290,7 +285,8 @@ export const ContentSidebar: React.FC<{
                   <mark>{item.center}</mark>
                   {item.after}
                   <br />
-                  {TYPE_TO_TEXT[item.doc.type]}-{item.doc.typeId}
+                  {item.doc.type !== 'doc' && `${TYPE_TO_TEXT[item.doc.type]}-`}
+                  {item.doc.typeId}
                 </div>
               </Link>
             );
@@ -299,8 +295,8 @@ export const ContentSidebar: React.FC<{
       )}
       {!list && (
         <Tree.DirectoryTree
-          showIcon
-          defaultExpandAll
+          showIcon={false}
+          defaultExpandAll={false}
           // expandedKeys={expanded}
           switcherIcon={<IconChevronDown />}
           onSelect={onSelect}
