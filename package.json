@@ -44,6 +44,6 @@
     "stylelint-config-standard": "34.0.0",
     "stylelint-config-standard-scss": "10.0.0",
     "turbowatch": "2.29.4",
-    "typescript": "4.9.5"
+    "typescript": "5.1.6"
   }
 }
