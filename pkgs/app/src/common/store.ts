@@ -5,6 +5,7 @@ import type {
   ApiDocument,
   ApiOrg,
   ApiProject,
+  ApiProjectList,
   ApiRevision,
 } from '@specfy/api/src/types/api';
 import { produce } from 'immer';
@@ -111,9 +112,9 @@ export const useStagingStore = create<StagingState>()((set) => ({
 
 // ------------------------------------------ Project Store
 export interface ProjectState {
-  projects: ApiProject[];
+  projects: ApiProjectList[];
   project: ApiProject | null;
-  fill: (value: ApiProject[]) => void;
+  fill: (value: ApiProjectList[]) => void;
   update: (value: ApiProject) => void;
   updateField: <TKey extends keyof ApiProject>(
     field: TKey,

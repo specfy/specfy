@@ -5,6 +5,7 @@ export interface ApiMe {
   name: string;
   email: string;
   avatarUrl: string | null;
+  token: string;
   createdAt: string;
   updatedAt: string;
 }

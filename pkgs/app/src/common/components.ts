@@ -5,8 +5,8 @@ import {
   wDef,
   wDefHost,
 } from '@specfy/api/src/models/flows/constants';
+import type { FlowEdge } from '@specfy/api/src/models/flows/types';
 import type { ApiComponent } from '@specfy/api/src/types/api';
-import type { FlowEdge } from '@specfy/api/src/types/db';
 
 import { getEmptyDoc } from './content';
 import type { ComponentsState, ProjectState } from './store';

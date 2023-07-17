@@ -51,7 +51,7 @@ export const SettingsTeam: React.FC<{
   const [search, setSearch] = useState<string>();
   const [searchDebounced, setSearchDebounced] = useState<string>();
 
-  const res = useListUser({ ...p, search: searchDebounced });
+  const res = useListUser({ org_id: proj.orgId, search: searchDebounced });
   useDebounce(
     () => {
       setSearchDebounced(search);

@@ -1,7 +1,7 @@
 import type { GetFlow, PatchFlow } from '@specfy/api/src/types/api';
 import { useQuery } from '@tanstack/react-query';
 
-import { queryClient } from '../common/query';
+import { qcli } from '../common/query';
 
 import { fetchApi } from './fetch';
 import { APIError, isError } from './helpers';
@@ -34,7 +34,7 @@ export async function updateFlow(
   );
 
   if (res.status === 200) {
-    void queryClient.invalidateQueries(['getFlow', org_id]);
+    void qcli.invalidateQueries(['getFlow', org_id]);
   }
 
   return json;

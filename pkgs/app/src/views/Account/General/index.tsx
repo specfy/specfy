@@ -1,19 +1,20 @@
-import { Typography, Input, Button, Modal, App, Form } from 'antd';
+import { Typography, Input, Button, Modal, Form } from 'antd';
 import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 
+import { deleteMe, updateMe } from '../../../api';
 import { isError } from '../../../api/helpers';
-import { deleteMe, updateMe } from '../../../api/me';
 import { i18n } from '../../../common/i18n';
 import { titleSuffix } from '../../../common/string';
 import { Card } from '../../../components/Card';
 import { useAuth } from '../../../hooks/useAuth';
+import { useToast } from '../../../hooks/useToast';
 
 import cls from './index.module.scss';
 
 export const SettingsGeneral: React.FC = () => {
-  const { message } = App.useApp();
+  const toast = useToast();
   const navigate = useNavigate();
   const { user, tryLogin } = useAuth();
 
@@ -31,12 +32,12 @@ export const SettingsGeneral: React.FC = () => {
   const handleRename = async () => {
     const res = await updateMe({ name });
     if (isError(res)) {
-      void message.error(i18n.errorOccurred);
+      toast.add({ title: i18n.errorOccurred, status: 'error' });
       return;
     }
 
     tryLogin();
-    void message.success('Account renamed');
+    toast.add({ title: 'Account renamed', status: 'success' });
   };
   const handleReset = () => {
     setName(me.name);
@@ -59,11 +60,11 @@ export const SettingsGeneral: React.FC = () => {
   const confirmDelete = async () => {
     const res = await deleteMe();
     if (res !== 204) {
-      void message.error(i18n.errorOccurred);
+      toast.add({ title: i18n.errorOccurred, status: 'error' });
       return;
     }
 
-    void message.success('Account deleted');
+    toast.add({ title: 'Account deleted', status: 'success' });
     navigate(`/login`);
   };
 

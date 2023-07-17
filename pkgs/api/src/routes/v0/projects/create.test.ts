@@ -5,7 +5,7 @@ import { slugify } from '../../../common/string.js';
 import { prisma } from '../../../db/index.js';
 import type { TestSetup } from '../../../test/each.js';
 import { setupBeforeAll, setupAfterAll } from '../../../test/each.js';
-import { isSuccess, isValidationError } from '../../../test/fetch.js';
+import { isSuccess } from '../../../test/fetch.js';
 import {
   shouldBeProtected,
   shouldEnforceBody,
@@ -35,7 +35,6 @@ describe('POST /projects', () => {
       Body: {
         name: '',
         orgId: '',
-        slug: '',
       },
       // @ts-expect-error
       Querystring: { random: 'world' },
@@ -55,7 +54,6 @@ describe('POST /projects', () => {
       token,
       Body: {
         name,
-        slug,
         orgId: org.id,
       },
     });
@@ -74,16 +72,16 @@ describe('POST /projects', () => {
     expect(hasPerms).toBe(1);
   });
 
-  it('should reject already used slug', async () => {
+  it('should create a new slug when already used', async () => {
     const { token, org } = await seedWithOrg();
-    const name = `test ${nanoid()}`;
+    const id = nanoid();
+    const name = `test ${id}`;
 
     // Insert one
     const res1 = await t.fetch.post('/0/projects', {
       token,
       Body: {
         name,
-        slug: slugify(name),
         orgId: org.id,
       },
     });
@@ -94,17 +92,11 @@ describe('POST /projects', () => {
       token,
       Body: {
         name,
-        slug: slugify(name),
         orgId: org.id,
       },
     });
-    isValidationError(res2.json);
-    expect(res2.json.error.fields).toStrictEqual({
-      slug: {
-        code: 'exists',
-        message: 'This slug is already used',
-        path: ['slug'],
-      },
-    });
+    isSuccess(res2.json);
+    expect(res2.json.slug.startsWith('test')).toEqual(true);
+    expect(res2.json.slug.includes(id.toLocaleLowerCase())).toEqual(true);
   });
 });

@@ -45,6 +45,7 @@ describe('GET /me', () => {
       id: user.id,
       name: user.name,
       avatarUrl: null,
+      token: expect.any(String),
       updatedAt: expect.toBeIsoDate(),
     });
   });

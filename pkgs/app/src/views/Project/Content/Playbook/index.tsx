@@ -8,7 +8,7 @@ import { useDocumentsStore } from '../../../../common/store';
 import { titleSuffix } from '../../../../common/string';
 import { ContentDoc } from '../../../../components/Content';
 import { Editor } from '../../../../components/Editor';
-import { FakeInput } from '../../../../components/Input';
+import { FakeInput } from '../../../../components/Form/FakeInput';
 import { Time } from '../../../../components/Time';
 import { useEdit } from '../../../../hooks/useEdit';
 import clsLayout from '../Show/index.module.scss';

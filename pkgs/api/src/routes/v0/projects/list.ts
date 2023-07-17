@@ -2,10 +2,10 @@ import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors.js';
-import { toApiProject } from '../../../common/formatters/project.js';
-import { schemaOrgId } from '../../../common/validators/common.js';
+import { schemaOrgId } from '../../../common/validators/index.js';
 import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
+import { toApiProjectList } from '../../../models/projects/formatter.js';
 import type { ListProjects, Pagination } from '../../../types/api/index.js';
 
 function QueryVal(req: FastifyRequest) {
@@ -32,18 +32,22 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       totalItems: 0,
     };
 
-    // TODO: perms
     const projects = await prisma.projects.findMany({
       where: {
         orgId: query.org_id,
       },
       orderBy: { name: 'asc' },
-      take: 20,
+      include: {
+        _count: {
+          select: { Perms: true },
+        },
+      },
+      take: 50,
       skip: 0,
     });
 
     return res.status(200).send({
-      data: projects.map(toApiProject),
+      data: projects.map(toApiProjectList),
       pagination,
     });
   });

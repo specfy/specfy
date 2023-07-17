@@ -1,0 +1,47 @@
+@import "../../styles/theme";
+
+.portal {
+  position: fixed;
+  z-index: 9989892;
+  top: $height-header + 16px;
+  right: 16px;
+
+  display: flex;
+  flex-direction: column;
+  gap: $p-l;
+
+  list-style: none;
+}
+
+.toast {
+  width: 220px;
+  padding: $p-l $p-xl;
+
+  line-height: $font-l;
+
+  background-color: #fff;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow3;
+
+
+  &.success {
+    .icon {
+      color: var(--grass9)
+    }
+  }
+
+  &.error {
+    .icon {
+      color: var(--tomato9)
+    }
+  }
+}
+
+.icon {
+  width: 20px;
+  font-size: $font-m;
+}
+
+.show {
+  margin-top: $p-m;
+}

@@ -6,6 +6,8 @@
 }
 
 .main {
+  display: flex;
+  flex-direction: column;
   width: 100%;
 }
 
@@ -37,5 +39,10 @@
 }
 
 .content {
+  display: flex;
+  flex-grow: 1;
+}
+
+.sidebarContent {
   overflow: scroll;
 }

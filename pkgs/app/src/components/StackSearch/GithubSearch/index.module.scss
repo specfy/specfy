@@ -1,0 +1,67 @@
+@import "../../../styles/theme";
+
+.content {
+  /* stylelint-disable-next-line custom-property-pattern */
+  width: var(--radix-popover-trigger-width);
+}
+
+.select {
+  display: flex;
+  gap: $p-l;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  height: 48px;
+  padding: $p-m $p-xl;
+
+  font-size: $font-m;
+
+  background-color: #fff;
+  border: 1px solid var(--border3);
+  border-radius: $border-radius-s;
+}
+
+.pick {
+  display: flex;
+  gap: $p-l;
+  align-items: center;
+}
+
+.input {
+  padding: $p $p;
+  border-color: transparent;
+}
+
+.row {
+  cursor: pointer;
+
+  display: flex;
+  gap: $p-l;
+  align-items: center;
+
+  // justify-content: space-between;
+
+  padding: $p-l $p-2xl;
+
+  font-size: $font;
+  color: var(--text4);
+
+  background-color: #fff;
+  border-top: 1px solid var(--border2);
+
+  &:hover {
+    color: var(--text);
+    background-color: var(--bg2);
+  }
+
+  &.focused {
+    color: var(--text);
+    background-color: var(--bg2);
+  }
+}
+
+.empty {
+  padding: $p-l $p-2xl;
+  color: var(--text3);
+}

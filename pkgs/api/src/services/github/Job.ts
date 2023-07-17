@@ -3,15 +3,19 @@ import type { ConsolaInstance } from 'consola';
 import { consola } from 'consola';
 
 import { prisma } from '../../db/index.js';
+import { toApiJob } from '../../models/jobs/formatter.js';
 import { JobReason } from '../../models/jobs/helpers.js';
-import type { JobMark } from '../../models/jobs/type.js';
+import type { JobMark, JobWithOrgProject } from '../../models/jobs/type.js';
+import { toApiProject } from '../../models/projects/formatter.js';
+import { io } from '../../socket.js';
+import type { EventJob } from '../../types/socket.js';
 
 export abstract class Job {
   l: ConsolaInstance;
-  #job: Jobs;
+  #job: JobWithOrgProject;
   #mark?: JobMark;
 
-  constructor(job: Jobs) {
+  constructor(job: JobWithOrgProject) {
     this.#job = job;
     this.l = consola.create({}).withTag('job');
   }
@@ -21,24 +25,31 @@ export abstract class Job {
   }
 
   async start() {
+    const job = this.#job;
     const l = this.l;
-    l.info('Job start', { id: this.#job.id });
+    l.info('Job start', { id: job.id });
+    const evt: EventJob = {
+      job: toApiJob(job),
+      project: toApiProject(job.Project!),
+    };
+
+    io.to(`project-${job.projectId}`).emit('job.start', evt);
 
     try {
-      await this.process(this.#job as any);
+      await this.process(job as any);
     } catch (err: unknown) {
       l.error('Uncaught error during job', err);
       this.mark('failed', 'unknown', err);
     } finally {
       // Clean after ourself
       try {
-        await this.teardown(this.#job);
+        await this.teardown(job);
       } catch (err: unknown) {
         this.mark('failed', 'failed_to_teardown', err);
       }
     }
 
-    await prisma.jobs.update({
+    const jobUpdated = await prisma.jobs.update({
       data: {
         status: this.#mark?.status || 'failed',
         reason: this.#mark
@@ -48,10 +59,13 @@ export abstract class Job {
         finishedAt: new Date(),
       },
       where: {
-        id: this.#job.id,
+        id: job.id,
       },
     });
-    l.info('Job end', { id: this.#job.id, mark: this.#mark });
+    l.info('Job end', { id: job.id, mark: this.#mark });
+
+    evt.job = toApiJob({ ...jobUpdated, User: job.User });
+    io.to(`project-${job.projectId}`).emit('job.finish', evt);
   }
 
   mark(status: JobMark['status'], code: JobMark['code'], err?: unknown) {

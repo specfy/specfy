@@ -1,6 +1,6 @@
 import type { PostAuthLocal, PostLogout } from '@specfy/api/src/types/api';
 
-import { queryClient } from '../common/query';
+import { qcli } from '../common/query';
 
 import { fetchApi } from './fetch';
 
@@ -22,7 +22,7 @@ export async function logout() {
   );
 
   if (res.status === 204) {
-    queryClient.clear();
+    qcli.clear();
   }
   return json;
 }

@@ -1,9 +1,9 @@
-import { componentsToFlow } from '@specfy/api/src/common/flow/transform';
-import type { ComputedFlow } from '@specfy/api/src/common/flow/types';
+import { componentsToFlow } from '@specfy/api/src/models/flows/transform';
+import type { ComputedFlow } from '@specfy/api/src/models/flows/types';
 import type { ApiComponent, ApiProject } from '@specfy/api/src/types/api';
 import { IconDotsVertical } from '@tabler/icons-react';
 import type { MenuProps } from 'antd';
-import { Tooltip, App, Button, Dropdown, Tag, Typography } from 'antd';
+import { Tooltip, Button, Dropdown, Tag, Typography } from 'antd';
 import classnames from 'classnames';
 import type { MenuClickEventHandler } from 'rc-menu/lib/interface';
 import type React from 'react';
@@ -27,10 +27,11 @@ import { TechPopover } from '../../../components/Flow/TechPopover';
 import { Toolbar } from '../../../components/Flow/Toolbar';
 import type { OnNodesChangeSuper } from '../../../components/Flow/helpers';
 import { onNodesChangeProject } from '../../../components/Flow/helpers';
-import { FakeInput } from '../../../components/Input';
+import { FakeInput } from '../../../components/Form/FakeInput';
 import { NotFound } from '../../../components/NotFound';
 import { UpdatedAt } from '../../../components/UpdatedAt';
 import { useEdit } from '../../../hooks/useEdit';
+import { useToast } from '../../../hooks/useToast';
 import type { RouteComponent } from '../../../types/routes';
 
 import cls from './index.module.scss';
@@ -38,7 +39,7 @@ import cls from './index.module.scss';
 export const ComponentView: React.FC<{
   proj: ApiProject;
 }> = ({ proj }) => {
-  const { message } = App.useApp();
+  const toast = useToast();
   const { getNodes, viewportInitialized } = useReactFlow();
   const navigate = useNavigate();
 
@@ -100,7 +101,7 @@ export const ComponentView: React.FC<{
     if (e.key === 'delete') {
       edit.enable(true);
       storeComponents.remove(comp!.id);
-      void message.success('Component deleted');
+      toast.add({ title: 'Component deleted', status: 'success' });
       navigate(`/${params.org_id}/${params.project_slug}`);
     }
   };
@@ -120,8 +121,8 @@ export const ComponentView: React.FC<{
       <Container.Left2Third>
         <Card padded seamless large>
           <div className={cls.content}>
-            <Flex alignItems="center" justifyContent="space-between">
-              <Flex alignItems="center" gap="l">
+            <Flex align="center" justify="space-between">
+              <Flex align="center" gap="l">
                 {isEditing ? (
                   <TechPopover
                     id={comp.id}
@@ -161,7 +162,7 @@ export const ComponentView: React.FC<{
                   )}
                 </Tooltip>
               </Flex>
-              <Flex alignItems="center">
+              <Flex align="center">
                 <Tag
                   className={classnames(
                     cls.tagType,

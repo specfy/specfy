@@ -3,7 +3,10 @@
 .banner {
   display: flex;
   align-items: center;
+
   padding: $p-xl;
+
+  border: 1px solid var(--border2);
   border-radius: $border-radius-s;
 
   p:last-of-type {
@@ -11,7 +14,7 @@
   }
 
   &.error {
-    background-color: $red-100;
+    border-color: $red-100;
 
     .icon {
       color: $red-500;
@@ -19,7 +22,7 @@
   }
 
   &.warning {
-    background-color: $yellow-100;
+    border-color: $yellow-100;
 
     .icon {
       color: $yellow-500;
@@ -27,7 +30,7 @@
   }
 
   &.info {
-    background-color: $blue-100;
+    border-color: $blue-100;
 
     .icon {
       color: $blue-500;
@@ -35,7 +38,7 @@
   }
 
   &.success {
-    background-color: $green-100;
+    border-color: $green-100;
 
     .icon {
       color: $green-500;

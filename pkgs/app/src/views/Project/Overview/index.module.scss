@@ -1,17 +1,11 @@
 @import "../../../styles/theme";
 
-.team {
-  display: inline-flex;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 32px;
-
-  >div {
-    display: inline-flex;
-    gap: 4px;
-    align-items: center;
-  }
-}
-
 .block {
-  margin-top: 32px;
+  margin-top: $p-5xl;
+  padding-top: $p-5xl;
+  border-top: 1px solid var(--border1);
+
+  h4 {
+    margin-bottom: $p-l;
+  }
 }

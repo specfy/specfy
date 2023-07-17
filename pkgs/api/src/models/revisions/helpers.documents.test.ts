@@ -1,11 +1,10 @@
 import { describe, expect, it } from 'vitest';
 
-import type { PostUploadRevision } from '../../types/api/revisions.js';
-
 import {
   uploadedDocumentsToDB,
   uploadToDocuments,
 } from './helpers.document.js';
+import type { PostUploadRevision } from './types.api.js';
 
 import '../../test/helpers.js';
 

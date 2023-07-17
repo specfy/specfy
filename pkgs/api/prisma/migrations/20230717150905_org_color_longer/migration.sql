@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Orgs" ALTER COLUMN "color" SET DATA TYPE VARCHAR(20);

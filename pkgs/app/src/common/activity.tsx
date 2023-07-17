@@ -1,4 +1,3 @@
-import type { ApiActivity } from '@specfy/api/src/types/api';
 import type {
   ActionAll,
   ActionComponent,
@@ -10,14 +9,15 @@ import type {
   ActionProject,
   ActionRevision,
   ActionUser,
-} from '@specfy/api/src/types/db';
+} from '@specfy/api/src/models/activities/types';
+import type { ApiActivity } from '@specfy/api/src/types/api';
 import { IconGitMerge, IconThumbUp } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 
 import { AvatarAuto } from '../components/AvatarAuto';
 import { Flex } from '../components/Flex';
 import { ActivityCard } from '../components/ListActivity/Details';
-import { StatusTag } from '../components/StatusTag';
+import { StatusTag } from '../components/Revision/StatusTag';
 
 import { TYPE_TO_READABLE } from './document';
 
@@ -234,7 +234,7 @@ export const mapProject: Record<ActionProject, ActivityParams> = {
 
       return (
         <ActivityCard>
-          <Flex direction="column" alignItems="flex-start" gap="l">
+          <Flex column align="flex-start" gap="l">
             <Flex gap="l">
               <AvatarAuto name={act.project.name} />
               <ProjectTarget act={act}>{act.project.name}</ProjectTarget>
@@ -470,7 +470,7 @@ export const mapRevision: Record<ActionRevision, ActivityParams> = {
 
       return (
         <ActivityCard>
-          <Flex direction="column" alignItems="flex-start" gap="s">
+          <Flex column align="flex-start" gap="s">
             <h4>
               <RevisionTarget act={act}>
                 {act.targetRevision.name}

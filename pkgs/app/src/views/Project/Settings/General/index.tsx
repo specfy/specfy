@@ -1,13 +1,16 @@
-import type { ApiProject } from '@specfy/api/src/types/api';
+import type { ApiProject, FieldsErrors } from '@specfy/api/src/types/api';
 import { IconCirclesRelation } from '@tabler/icons-react';
-import { Typography, Input, Button, Modal, App, Form } from 'antd';
+import { Typography, Input, Button, Modal, Form } from 'antd';
 import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { deleteProject, updateProject } from '../../../../api';
-import { linkToGithubRepo } from '../../../../api/github';
-import { isError } from '../../../../api/helpers';
+import {
+  deleteProject,
+  updateProject,
+  linkToGithubRepo,
+} from '../../../../api';
+import { isError, isValidationError } from '../../../../api/helpers';
 import { useListKeys } from '../../../../api/keys';
 import { API_HOSTNAME, IS_PROD } from '../../../../common/envs';
 import { i18n } from '../../../../common/i18n';
@@ -19,6 +22,7 @@ import { Card } from '../../../../components/Card';
 import { Flex } from '../../../../components/Flex';
 import { GithubOrgSelect } from '../../../../components/Github/OrgSelect';
 import { GithubRepoSelect } from '../../../../components/Github/RepoSelect';
+import { useToast } from '../../../../hooks/useToast';
 import type { RouteProject } from '../../../../types/routes';
 
 import cls from './index.module.scss';
@@ -27,7 +31,7 @@ export const SettingsGeneral: React.FC<{
   proj: ApiProject;
   params: RouteProject;
 }> = ({ proj, params }) => {
-  const { message } = App.useApp();
+  const toast = useToast();
   const navigate = useNavigate();
   const { current: org } = useOrgStore();
 
@@ -37,20 +41,34 @@ export const SettingsGeneral: React.FC<{
   // Edit
   const [name, setName] = useState(() => proj.name);
   const [slug, setSlug] = useState(() => proj.slug);
+  const [errors, setErrors] = useState<FieldsErrors>({});
   const onName: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setName(e.target.value);
+    const prev = slugify(name);
+    if (slug === prev || slug === '') {
+      setSlug(slugify(e.target.value));
+    }
+  };
+  const onSlug: React.ChangeEventHandler<HTMLInputElement> = (e) => {
     setSlug(slugify(e.target.value));
   };
-  const nameChanged = name !== proj.name;
+  const nameChanged = useMemo(() => {
+    return name !== proj.name || slug !== proj.slug;
+  }, [name, slug]);
 
   const handleRename = async () => {
-    const res = await updateProject(params, { name });
+    const res = await updateProject(params, { name, slug });
     if (isError(res)) {
-      void message.error(i18n.errorOccurred);
+      if (isValidationError(res)) {
+        setErrors(res.error.fields);
+      } else {
+        toast.add({ title: i18n.errorOccurred, status: 'error' });
+      }
       return;
     }
 
-    void message.success('Project renamed');
+    setErrors({});
+    toast.add({ title: 'Project renamed', status: 'success' });
     navigate(`/${params.org_id}/${res.data.slug}/settings`);
   };
   const handleReset = () => {
@@ -69,7 +87,7 @@ export const SettingsGeneral: React.FC<{
   };
   const confirmDelete = async () => {
     await deleteProject(params);
-    void message.success('Project deleted');
+    toast.add({ title: 'Project deleted', status: 'success' });
 
     navigate(`/${params.org_id}`);
   };
@@ -84,12 +102,13 @@ export const SettingsGeneral: React.FC<{
       repository: repoId,
     });
     if (isError(res)) {
-      void message.error(i18n.errorOccurred);
+      toast.add({ title: i18n.errorOccurred, status: 'error' });
       return;
     }
 
-    void message.success('Linked successfully');
+    toast.add({ title: 'Project linked to Github', status: 'success' });
   };
+
   const onUnlink = async () => {
     const res = await linkToGithubRepo({
       orgId: proj.orgId,
@@ -97,11 +116,11 @@ export const SettingsGeneral: React.FC<{
       repository: null,
     });
     if (isError(res)) {
-      void message.error(i18n.errorOccurred);
+      toast.add({ title: i18n.errorOccurred, status: 'error' });
       return;
     }
 
-    void message.success('Unlinked successfully');
+    toast.add({ title: 'Successfully unlinked', status: 'success' });
   };
 
   // Keys
@@ -143,17 +162,21 @@ export const SettingsGeneral: React.FC<{
           <Card.Content>
             <Form.Item
               label="Name"
-              extra={
-                <div className={cls.desc}>
-                  The project is accessible at{' '}
-                  <em>
-                    https://app.specfy.io/
-                    {proj.orgId}/<strong>{slug}</strong>
-                  </em>
-                </div>
-              }
+              help={errors.name?.message}
+              validateStatus={errors.name && 'error'}
             >
               <Input value={name} onChange={onName} />
+            </Form.Item>
+            <Form.Item
+              label="Slug"
+              help={errors.slug?.message}
+              validateStatus={errors.slug && 'error'}
+            >
+              <Input
+                value={slug}
+                onChange={onSlug}
+                addonBefore={`https://app.specfy.io/${proj.orgId}/`}
+              />
             </Form.Item>
           </Card.Content>
 
@@ -181,7 +204,7 @@ export const SettingsGeneral: React.FC<{
 
             {!org!.githubInstallationId ? (
               <Banner type="info">
-                <Flex justifyContent="space-between">
+                <Flex justify="space-between">
                   First, link your Specfy organization to a Github organization.
                   <Link to={`/${org!.id}/_/settings`}>
                     <Button>Settings</Button>
@@ -225,7 +248,7 @@ export const SettingsGeneral: React.FC<{
         <Form layout="vertical" onFinish={handleRename}>
           <Card.Content>
             <Typography.Title level={3}>Keys</Typography.Title>
-            <Flex gap="l" direction="column" alignItems="flex-start">
+            <Flex gap="l" column align="flex-start">
               <div>
                 <div>Project ID</div>
                 <Input

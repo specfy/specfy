@@ -1,9 +1,9 @@
+import { pick } from '@specfy/api/src/common/object';
 import type {
   ComputedEdge,
   ComputedFlow,
   ComputedNode,
-} from '@specfy/api/src/common/flow/types';
-import { pick } from '@specfy/api/src/common/object';
+} from '@specfy/api/src/models/flows/types';
 import classNames from 'classnames';
 import { useEffect, useRef } from 'react';
 import type { NodeTypes } from 'reactflow';
@@ -55,7 +55,6 @@ export const DiffFlow: React.FC<{
     // Diff nodes
     for (const node of prev.nodes) {
       const newNode = next.nodes.find((n) => n.id === node.id);
-      console.log('node', node.data.name);
       if (!newNode) {
         nodesDeleted.push(node);
         continue;

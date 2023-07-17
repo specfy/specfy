@@ -17,3 +17,5 @@ export type PartialUndefined<TType> = {
 };
 
 export type Writeable<T> = { -readonly [P in keyof T]: T[P] };
+
+export type Modify<T, TR> = Omit<T, keyof TR> & TR;

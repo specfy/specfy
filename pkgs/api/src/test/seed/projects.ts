@@ -3,9 +3,12 @@ import type { Orgs, Projects, Users } from '@prisma/client';
 import { nanoid } from '../../common/id.js';
 import { slugify } from '../../common/string.js';
 import { prisma } from '../../db/index.js';
-import { recomputeOrgGraph } from '../../models/flows/helpers.js';
-import { createProject } from '../../models/project.js';
-import type { DBProject } from '../../types/db/index.js';
+import { recomputeOrgGraph } from '../../models/flows/helpers.rebuild.js';
+import {
+  createProject,
+  getDefaultConfig,
+} from '../../models/projects/model.js';
+import type { DBProject } from '../../models/projects/types.js';
 
 /**
  * Seed projects
@@ -40,6 +43,7 @@ export async function seedProjects(users: Users[]): Promise<{
               },
             ],
           },
+          config: getDefaultConfig(),
         },
         user: users[0],
         tx,
@@ -52,6 +56,7 @@ export async function seedProjects(users: Users[]): Promise<{
           orgId: 'company',
           links: [],
           description: { type: 'doc', content: [] },
+          config: getDefaultConfig(),
         },
         user: users[0],
         tx,
@@ -86,6 +91,7 @@ export async function seedProjects(users: Users[]): Promise<{
             { title: 'Github', url: 'https://github.com/specfy' },
             { title: 'Slack', url: 'https://slack.com/foobar' },
           ],
+          config: getDefaultConfig(),
         },
         user: users[0],
         tx,
@@ -98,6 +104,7 @@ export async function seedProjects(users: Users[]): Promise<{
           orgId: 'company',
           links: [],
           description: { type: 'doc', content: [] },
+          config: getDefaultConfig(),
         },
         user: users[0],
         tx,
@@ -110,6 +117,7 @@ export async function seedProjects(users: Users[]): Promise<{
           orgId: 'company',
           links: [],
           description: { type: 'doc', content: [] },
+          config: getDefaultConfig(),
         },
         user: users[0],
         tx,
@@ -198,6 +206,7 @@ export async function seedProject(user: Users, org: Orgs) {
       orgId: org.id,
       links: [],
       description: { type: 'doc', content: [] },
+      config: getDefaultConfig(),
     },
     tx: prisma,
     user,
@@ -218,6 +227,7 @@ export function getBlobProject(org: Orgs): DBProject {
     links: [],
     description: { type: 'doc', content: [] },
     githubRepository: null,
+    config: getDefaultConfig(),
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   };

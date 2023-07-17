@@ -54,6 +54,16 @@ describe('GET /projects/:org_id/:project_slug', () => {
       updatedAt: expect.toBeIsoDate(),
       links: [],
       githubRepository: null,
+      config: {
+        documentation: {
+          enabled: true,
+          path: '/docs',
+        },
+        stack: {
+          enabled: true,
+          path: '/',
+        },
+      },
     });
   });
 

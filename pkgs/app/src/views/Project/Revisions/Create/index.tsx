@@ -1,6 +1,6 @@
-import { componentsToFlow } from '@specfy/api/src/common/flow/transform';
-import type { ComputedFlow } from '@specfy/api/src/common/flow/types';
 import { omit } from '@specfy/api/src/common/object';
+import { componentsToFlow } from '@specfy/api/src/models/flows/transform';
+import type { ComputedFlow } from '@specfy/api/src/models/flows/types';
 import {
   flagRevisionApprovalEnabled,
   flagRevisionDescRequired,
@@ -16,7 +16,7 @@ import {
   IconGitPullRequest,
   IconGitPullRequestDraft,
 } from '@tabler/icons-react';
-import { App, Button, Checkbox, Form, Result, Typography } from 'antd';
+import { Button, Checkbox, Form, Result, Typography } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
@@ -39,7 +39,8 @@ import { Editor } from '../../../../components/Editor';
 import { Flex } from '../../../../components/Flex';
 import { FlowWrapper } from '../../../../components/Flow';
 import { Toolbar } from '../../../../components/Flow/Toolbar';
-import { FakeInput } from '../../../../components/Input';
+import { FakeInput } from '../../../../components/Form/FakeInput';
+import { useToast } from '../../../../hooks/useToast';
 import type { RouteProject } from '../../../../types/routes';
 
 import cls from './index.module.scss';
@@ -49,7 +50,7 @@ export const ProjectRevisionCreate: React.FC<{
   params: RouteProject;
 }> = ({ proj, params }) => {
   // Global
-  const { message } = App.useApp();
+  const toast = useToast();
   const navigate = useNavigate();
 
   // Edition
@@ -157,14 +158,14 @@ export const ProjectRevisionCreate: React.FC<{
     });
 
     if (isError(res)) {
-      void message.error(i18n.errorOccurred);
+      toast.add({ title: i18n.errorOccurred, status: 'error' });
       return;
     }
 
     // Discard local changes
     originalStore.revertAll(staging.diffs);
 
-    void message.success('Revision created');
+    toast.add({ title: 'Revision created', status: 'success' });
     navigate(
       `/${params.org_id}/${params.project_slug}/revisions/${res.id}?${
         autoMerge ? 'automerge=true' : ''
@@ -196,7 +197,7 @@ export const ProjectRevisionCreate: React.FC<{
         <Card>
           <Form onFinish={onSubmit}>
             <Card.Content>
-              <Flex gap="l" direction="column" alignItems="flex-start">
+              <Flex gap="l" column align="flex-start">
                 <FakeInput.H1
                   size="large"
                   value={title}

@@ -3,10 +3,10 @@ import type { FastifyPluginCallback } from 'fastify';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors.js';
-import { schemaRevision } from '../../../common/validators/revision.js';
 import { prisma } from '../../../db/index.js';
 import { getRevision } from '../../../middlewares/getRevision.js';
 import { createRevisionActivity } from '../../../models/index.js';
+import { schemaRevision } from '../../../models/revisions/schema.js';
 import type { PatchRevision } from '../../../types/api/index.js';
 
 function diffUsers(

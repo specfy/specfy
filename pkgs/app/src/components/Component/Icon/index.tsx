@@ -1,4 +1,4 @@
-import type { NodeData } from '@specfy/api/src/common/flow/types';
+import type { NodeData } from '@specfy/api/src/models/flows/types';
 import { IconCode, IconSquare } from '@tabler/icons-react';
 import classNames from 'classnames';
 

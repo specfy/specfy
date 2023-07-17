@@ -1,5 +1,5 @@
 import type { ApiProject } from '@specfy/api/src/types/api';
-import { Avatar, Divider, Skeleton } from 'antd';
+import { Divider, Skeleton } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Route, Routes, useParams } from 'react-router-dom';
@@ -11,6 +11,7 @@ import {
   useProjectStore,
 } from '../../common/store';
 import { titleSuffix } from '../../common/string';
+import { AvatarGroup } from '../../components/AvatarAuto';
 import { Card } from '../../components/Card';
 import { Container } from '../../components/Container';
 import { ContentSidebar } from '../../components/Content/Sidebar';
@@ -23,6 +24,8 @@ import { ProjectActivity } from './Activity';
 import { ComponentView } from './Component';
 import { ProjectComponentCreate } from './Component/Create';
 import { ProjectContentIndex } from './Content';
+import { ProjectDeploysList } from './Deploy/List';
+import { ProjectDeploysShow } from './Deploy/Show';
 import { ProjectFlow } from './Flow';
 import { ProjectOverview } from './Overview';
 import { ProjectRevisionCreate } from './Revisions/Create';
@@ -49,7 +52,7 @@ export const Project: React.FC = () => {
     project_slug: params.project_slug,
   });
   const [loading, setLoading] = useState<boolean>(true);
-  const getComps = useListComponents(params.project_slug, {
+  const getComps = useListComponents({
     org_id: params.org_id,
     project_id: proj?.id,
   });
@@ -92,11 +95,11 @@ export const Project: React.FC = () => {
               <Card padded large seamless>
                 <Skeleton active paragraph={{ rows: 3 }}></Skeleton>
                 <Divider />
-                <Avatar.Group>
+                <AvatarGroup>
                   <Skeleton.Avatar active />
                   <Skeleton.Avatar active />
                   <Skeleton.Avatar active />
-                </Avatar.Group>
+                </AvatarGroup>
               </Card>
             </Container.Left>
           </Container>
@@ -115,7 +118,7 @@ export const Project: React.FC = () => {
 
       <div>
         <Sidebar org={org} project={proj}>
-          <div className={cls.content}>
+          <div className={cls.sidebarContent}>
             <ContentSidebar proj={proj} params={params} />
           </div>
         </Sidebar>
@@ -124,49 +127,60 @@ export const Project: React.FC = () => {
         <div>
           <ProjectHeader proj={proj} params={params} />
         </div>
-        <Routes>
-          <Route path="/" element={<ProjectOverview params={params} />} />
-          <Route
-            path="/content/*"
-            element={<ProjectContentIndex proj={proj} params={params} />}
-          />
-          <Route
-            path="/flow"
-            element={<ProjectFlow proj={proj} params={params} />}
-          />
-          <Route
-            path="/activity"
-            element={<ProjectActivity proj={proj} params={params} />}
-          />
-          <Route
-            path="/t/:tech_slug"
-            element={<Tech proj={proj} params={params} />}
-          />
-          <Route
-            path="/component/new"
-            element={<ProjectComponentCreate params={params} />}
-          />
-          <Route
-            path="/c/:component_slug"
-            element={<ComponentView proj={proj} />}
-          />
-          <Route
-            path="/settings/*"
-            element={<ProjectSettings proj={proj} params={params} />}
-          />
-          <Route
-            path="/revisions"
-            element={<ProjectRevisionsList proj={proj} params={params} />}
-          />
-          <Route
-            path="/revisions/current"
-            element={<ProjectRevisionCreate proj={proj} params={params} />}
-          />
-          <Route
-            path="/revisions/:revision_id"
-            element={<ProjectRevisionsShow proj={proj} params={params} />}
-          />
-        </Routes>
+        <div className={cls.content}>
+          <Routes>
+            <Route path="/" element={<ProjectOverview params={params} />} />
+            <Route
+              path="/content/*"
+              element={<ProjectContentIndex proj={proj} params={params} />}
+            />
+            <Route
+              path="/flow"
+              element={<ProjectFlow proj={proj} params={params} />}
+            />
+            <Route
+              path="/activity"
+              element={<ProjectActivity proj={proj} params={params} />}
+            />
+            <Route
+              path="/t/:tech_slug"
+              element={<Tech proj={proj} params={params} />}
+            />
+            <Route
+              path="/component/new"
+              element={<ProjectComponentCreate params={params} />}
+            />
+            <Route
+              path="/c/:component_slug"
+              element={<ComponentView proj={proj} />}
+            />
+            <Route
+              path="/settings/*"
+              element={<ProjectSettings proj={proj} params={params} />}
+            />
+            <Route
+              path="/revisions"
+              element={<ProjectRevisionsList proj={proj} params={params} />}
+            />
+            <Route
+              path="/revisions/current"
+              element={<ProjectRevisionCreate proj={proj} params={params} />}
+            />
+            <Route
+              path="/revisions/:revision_id"
+              element={<ProjectRevisionsShow proj={proj} params={params} />}
+            />
+            <Route
+              path="/deploys"
+              element={<ProjectDeploysList proj={proj} params={params} />}
+            />
+            <Route
+              path="/deploys/:job_id"
+              element={<ProjectDeploysShow proj={proj} params={params} />}
+            />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </div>
       </div>
     </div>
   );

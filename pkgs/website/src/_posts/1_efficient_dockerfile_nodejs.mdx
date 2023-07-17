@@ -301,11 +301,13 @@ FROM alpine:latest as deps
 
 RUN apk add --no-cache bash curl wget jq
 
-# Each package.json needs to copied manually unfortunately
-COPY package.json /tmp
-COPY pkgs/api/package.json /tmp/api_package.json
-COPY pkgs/app/package.json /tmp/app_package.json
-COPY pkgs/website/package.json /tmp/website_package.json
+WORKDIR /tmp
+
+# Each package.json needs to be copied manually unfortunately
+COPY package.json ./
+COPY pkgs/api/package.json ./pkgs/api/package.json
+COPY pkgs/app/package.json ./pkgs/app/package.json
+COPY pkgs/website/package.json ./pkgs/website/package.json
 
 # Base image
 FROM node:18.16.1-bullseye-slim as tmp
@@ -313,11 +315,8 @@ FROM node:18.16.1-bullseye-slim as tmp
 WORKDIR /app/tmp
 
 # Copy and install dependencies separately from the app's code
-# To leverage Docker's cache when no dependency has change
-COPY --from=deps /tmp/package.json ./package.json
-COPY --from=deps /tmp/api_package.json ./pkgs/api/package.json
-COPY --from=deps /tmp/app_package.json ./pkgs/app/package.json
-COPY --from=deps /tmp/website_package.json ./pkgs/website/package.json
+# To leverage Docker's cache when no dependency has changed
+COPY --from=deps /tmp ./
 
 COPY package-lock.json  ./
 
@@ -497,9 +496,16 @@ To simplify this process, I have created a small bash script that utilizes JQ to
 #!/usr/bin/env bash
 
 # clean_package.json.sh
+list=($1)
+regex='^jest|stylelint|turbowatch|prettier|eslint|semantic|dotenv|nodemon|renovate'
 
-jq 'walk(if type == "object" then with_entries(select(.key | test("^jest|prettier|stylelint|turbowatch|eslint|semantic|dotenv|nodemon|renovate") | not)) else . end) | { name, type, dependencies, devDependencies, packageManager, workspaces }' <"$1" >"${1}_tmp"
-mv "${1}_tmp" "$1"
+for file in "${list[@]}"; do
+  echo "cleaning $file"
+  jq "walk(if type == \"object\" then with_entries(select(.key | test(\"$regex\") | not)) else . end) | { name, type, dependencies, devDependencies, packageManager, workspaces }" <"$file" >"${file}_tmp"
+  # jq empties the file if we write directly
+  mv "${file}_tmp" "${file}"
+done
+
 ```
 
 ```dockerfile
@@ -508,18 +514,16 @@ FROM alpine:latest as deps
 
 RUN apk add --no-cache bash curl wget jq
 
-# To prevent cache invalidation from changes in fields other than dependencies
-COPY prod/clean_package_json.sh /tmp
+WORKDIR /tmp
 
-# Each package.json needs to copied manually unfortunately
-COPY package.json /tmp
-RUN /tmp/clean_package_json.sh /tmp/package.json
-COPY pkgs/api/package.json /tmp/api_package.json
-RUN /tmp/clean_package_json.sh /tmp/api_package.json
-COPY pkgs/app/package.json /tmp/app_package.json
-RUN /tmp/clean_package_json.sh /tmp/app_package.json
-COPY pkgs/website/package.json /tmp/website_package.json
-RUN /tmp/clean_package_json.sh /tmp/website_package.json
+# Each package.json needs to b copied manually unfortunately
+COPY prod/clean_package_json.sh package.json ./
+COPY pkgs/api/package.json ./pkgs/api/package.json
+COPY pkgs/app/package.json ./pkgs/app/package.json
+COPY pkgs/website/package.json ./pkgs/website/package.json
+
+RUN ./clean_package_json.sh './package.json'
+RUN ./clean_package_json.sh './**/*/package.json'
 
 [...]
 ```
@@ -644,30 +648,27 @@ FROM alpine:latest as deps
 
 RUN apk add --no-cache bash curl wget jq
 
-# To prevent cache invalidation from changes in fields other than dependencies
-COPY prod/clean_package_json.sh /tmp
+WORKDIR /tmp
 
-COPY package.json /tmp
-RUN /tmp/clean_package_json.sh /tmp/package.json
+# Copy all the package.json
+COPY prod/clean_package_json.sh package.json ./
+COPY pkgs/api/package.json ./pkgs/api/package.json
 
-COPY pkgs/api/package.json /tmp/api_package.json
-RUN /tmp/clean_package_json.sh /tmp/api_package.json
-
-COPY pkgs/app/package.json /tmp/app_package.json
-RUN /tmp/clean_package_json.sh /tmp/app_package.json
+# Remove unnecessary dependencies
+RUN ./clean_package_json.sh './package.json'
+RUN ./clean_package_json.sh './**/*/package.json'
 
 # ------------------
 # New tmp image
 # ------------------
 FROM node:18.16.1-bullseye-slim AS tmp
 
+# Setup the app WORKDIR
 WORKDIR /app/tmp
 
 # Copy and install dependencies separately from the app's code
 # To leverage Docker's cache when no dependency has change
-COPY --from=deps /tmp/package.json ./package.json
-COPY --from=deps /tmp/api_package.json ./pkgs/api/package.json
-COPY --from=deps /tmp/app_package.json ./pkgs/app/package.json
+COPY --from=deps /tmp ./
 
 COPY package-lock.json  ./
 
@@ -700,6 +701,7 @@ RUN true \
 # This image must have the minimum amount of layers
 FROM node:18.16.1-bullseye-slim as web
 
+ENV PORT=8080
 ENV NODE_ENV=production
 
 # Do not use root to run the app
