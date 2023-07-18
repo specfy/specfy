@@ -1,6 +1,7 @@
 export enum Plan {
   'free' = 'free',
-  'paid' = 'paid',
+  'pro' = 'pro',
+  'enterprise' = 'enterprise',
 }
 
 export interface Billing {
@@ -20,7 +21,7 @@ export interface Billing {
 export const v1: Record<Plan, Billing> = {
   free: {
     org: {
-      maxUser: 3,
+      maxUser: 5,
       maxUserPersonal: 10,
     },
     project: {
@@ -31,9 +32,22 @@ export const v1: Record<Plan, Billing> = {
       maxDocumentSize: 1_999_999,
     },
   },
-  paid: {
+  pro: {
     org: {
-      maxUser: 500,
+      maxUser: 100,
+      maxUserPersonal: 10,
+    },
+    project: {
+      max: 50,
+    },
+    upload: {
+      maxDocuments: 300,
+      maxDocumentSize: 9_999_999,
+    },
+  },
+  enterprise: {
+    org: {
+      maxUser: 1000,
       maxUserPersonal: 10,
     },
     project: {

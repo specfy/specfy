@@ -18,7 +18,7 @@ export async function createOrg(
     data: {
       ...data,
       acronym,
-      color: colors.backgroundColor,
+      color: colors.palette,
     },
   });
 

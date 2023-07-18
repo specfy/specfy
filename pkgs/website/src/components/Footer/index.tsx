@@ -2,7 +2,7 @@ import { SiGithub } from '@icons-pack/react-simple-icons';
 
 export const Footer: React.FC = () => {
   return (
-    <footer className="flex-0 pt-8 pb-8 border-t border-gray-700 bg-[#242d3c]">
+    <footer className="flex-0 pt-8 pb-8 border-t border-gray-700 bg-[#0b101b]">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 gap-8 text-gray-400">
         <div className="flex justify-between">
           <p className="text-sm">© 2023 Specfy, all rights reserved.</p>

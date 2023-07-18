@@ -62,6 +62,7 @@ const palette = [
 export function stringToColor(str: string): {
   backgroundColor: string;
   color: string;
+  palette: string;
 } {
   let hash = 0;
   for (let i = 0; i < str.length; i++) {
@@ -72,5 +73,6 @@ export function stringToColor(str: string): {
   return {
     backgroundColor: `var(--${palette[colorIndex]}4)`,
     color: `var(--${palette[colorIndex]}11)`,
+    palette: palette[colorIndex],
   };
 }

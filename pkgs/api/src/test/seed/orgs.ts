@@ -14,8 +14,8 @@ export async function seedOrgs(
   users: Users[]
 ): Promise<{ o1: Orgs; o2: Orgs }> {
   const o1 = await createOrg(prisma, users[0], {
-    id: 'company',
-    name: 'My Company',
+    id: 'acme',
+    name: 'Acme',
     isPersonal: false,
   });
 

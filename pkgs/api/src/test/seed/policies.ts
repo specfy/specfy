@@ -7,12 +7,12 @@ import { createPoliciesActivity } from '../../models/index.js';
 /**
  * Seed playbook
  */
-export async function seedPolicies([u1]: Users[]) {
+export async function seedPolicies({ o1 }: { o1: Orgs }, [u1]: Users[]) {
   await prisma.$transaction(async (tx) => {
     const p1 = await tx.policies.create({
       data: {
         id: nanoid(),
-        orgId: 'company',
+        orgId: o1.id,
         type: 'template_revision',
         name: 'Simple Revision',
         content: {
@@ -39,7 +39,7 @@ export async function seedPolicies([u1]: Users[]) {
     const p2 = await tx.policies.create({
       data: {
         id: nanoid(),
-        orgId: 'company',
+        orgId: o1.id,
         type: 'template_rfc',
         name: 'Classic RFC',
         content: {
@@ -128,7 +128,7 @@ export async function seedPolicies([u1]: Users[]) {
       },
     });
     // const p3 = await Policy.create({
-    //   orgId:'company',
+    //   orgId:o1.id,
     //   type: 'template_rfc',
     //   name: 'Vote RFC',
     //   content: {
@@ -140,7 +140,7 @@ export async function seedPolicies([u1]: Users[]) {
     const p4 = await tx.policies.create({
       data: {
         id: nanoid(),
-        orgId: 'company',
+        orgId: o1.id,
         type: 'promote',
         tech: 'nodejs',
         content: {
@@ -174,7 +174,7 @@ export async function seedPolicies([u1]: Users[]) {
     const p5 = await tx.policies.create({
       data: {
         id: nanoid(),
-        orgId: 'company',
+        orgId: o1.id,
         type: 'ban',
         tech: 'php',
         content: {

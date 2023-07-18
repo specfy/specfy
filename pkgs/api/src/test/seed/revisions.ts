@@ -23,6 +23,7 @@ import type { ResSeedComponents } from './components.js';
  * Seed projects
  */
 export async function seedRevisions(
+  { o1 }: { o1: Orgs },
   { pAnalytics }: { pAnalytics: Projects },
   users: Users[],
   rfcs: Record<string, Documents>,
@@ -80,7 +81,7 @@ export async function seedRevisions(
         type: 'messaging',
         typeId: pAnalytics.id,
         blobId: '',
-        orgId: 'company',
+        orgId: o1.id,
         projectId: pAnalytics.id,
         techId: 'pubsub',
         description: {
@@ -295,7 +296,7 @@ export async function seedRevisions(
     const rev = await tx.revisions.create({
       data: {
         id: '1oxA2sPxkR',
-        orgId: 'company',
+        orgId: o1.id,
         projectId: pAnalytics.id,
         name: 'fix: update project, create component, delete RFC-2',
         description: {

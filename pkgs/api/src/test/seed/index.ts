@@ -21,7 +21,7 @@ export async function seed() {
   const orgs = await seedOrgs(users);
 
   console.log(' - Projects...');
-  const projects = await seedProjects(users);
+  const projects = await seedProjects(orgs, users);
 
   console.log(' - Documents...');
   const rfcs = await seedRFC(orgs, projects, users);
@@ -32,10 +32,10 @@ export async function seed() {
   const components = await seedComponents(orgs, projects, users);
 
   console.log(' - Revisions...');
-  await seedRevisions(projects, users, rfcs, components);
+  await seedRevisions(orgs, projects, users, rfcs, components);
 
   console.log(' - Policies...');
-  await seedPolicies(users);
+  await seedPolicies(orgs, users);
 
   console.log(' - Invitations');
   await seedInvitations(users, orgs);

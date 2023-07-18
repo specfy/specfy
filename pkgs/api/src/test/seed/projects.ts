@@ -13,7 +13,10 @@ import type { DBProject } from '../../models/projects/types.js';
 /**
  * Seed projects
  */
-export async function seedProjects(users: Users[]): Promise<{
+export async function seedProjects(
+  { o1 }: { o1: Orgs },
+  users: Users[]
+): Promise<{
   pDash: Projects;
   pAnalytics: Projects;
   pFront: Projects;
@@ -26,7 +29,7 @@ export async function seedProjects(users: Users[]): Promise<{
         data: {
           id: 'b01tMzwd5A',
           name: 'Dashboard',
-          orgId: 'company',
+          orgId: o1.id,
           links: [],
           description: {
             type: 'doc',
@@ -53,7 +56,7 @@ export async function seedProjects(users: Users[]): Promise<{
         data: {
           id: 'b02tMzwd5A',
           name: 'Frontend',
-          orgId: 'company',
+          orgId: o1.id,
           links: [],
           description: { type: 'doc', content: [] },
           config: getDefaultConfig(),
@@ -66,7 +69,7 @@ export async function seedProjects(users: Users[]): Promise<{
         data: {
           id: 'b03tMzwd5A',
           name: 'Analytics',
-          orgId: 'company',
+          orgId: o1.id,
           description: {
             type: 'doc',
             content: [
@@ -101,7 +104,7 @@ export async function seedProjects(users: Users[]): Promise<{
         data: {
           id: 'b04tMzwd5A',
           name: 'API',
-          orgId: 'company',
+          orgId: o1.id,
           links: [],
           description: { type: 'doc', content: [] },
           config: getDefaultConfig(),
@@ -114,7 +117,7 @@ export async function seedProjects(users: Users[]): Promise<{
         data: {
           id: 'b05tMzwd5A',
           name: 'Billing',
-          orgId: 'company',
+          orgId: o1.id,
           links: [],
           description: { type: 'doc', content: [] },
           config: getDefaultConfig(),
@@ -129,7 +132,7 @@ export async function seedProjects(users: Users[]): Promise<{
         tx.perms.create({
           data: {
             id: nanoid(),
-            orgId: 'company',
+            orgId: o1.id,
             projectId: pAnalytics.id,
             userId: users[1].id,
             role: 'viewer',
@@ -140,7 +143,7 @@ export async function seedProjects(users: Users[]): Promise<{
           return tx.perms.create({
             data: {
               id: nanoid(),
-              orgId: 'company',
+              orgId: o1.id,
               projectId: pAnalytics.id,
               userId: u.id,
               role: 'contributor',
@@ -150,7 +153,7 @@ export async function seedProjects(users: Users[]): Promise<{
       ]);
 
       await recomputeOrgGraph({
-        orgId: 'company',
+        orgId: o1.id,
         updates: {
           edges: {},
           nodes: {
