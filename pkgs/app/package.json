@@ -12,7 +12,7 @@
   },
   "devDependencies": {
     "@icons-pack/react-simple-icons": "6.2.0",
-    "@radix-ui/colors": "0.1.9",
+    "@radix-ui/colors": "1.0.0",
     "@radix-ui/react-avatar": "1.0.3",
     "@radix-ui/react-collapsible": "1.0.3",
     "@radix-ui/react-dropdown-menu": "2.0.5",
