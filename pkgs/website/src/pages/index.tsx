@@ -12,7 +12,7 @@ import {
   IconUsersPlus,
 } from '@tabler/icons-react';
 import classNames from 'classnames';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const tabsFeature = [
   {
@@ -85,7 +85,7 @@ const Appears: React.FC<{
   children: React.ReactNode;
   className?: string;
   once?: boolean;
-}> = ({ className, children, once }) => {
+}> = ({ className, children }) => {
   const [ref, style] = useInView(
     () => {
       return {
@@ -252,9 +252,10 @@ export default function Home() {
                   Stack Intelligence Platform
                 </h1>
                 <p className="mt-6 text-lg leading-8 text-gray-800">
-                  Specfy extract metadata from your organization's repositories
-                  and build an exhaustive infrastructure documentation that
-                  helps onboarding, and managing your stack at scale
+                  Specfy extract metadata from your organization&apos;s
+                  repositories and build an exhaustive infrastructure
+                  documentation that helps onboarding, and managing your stack
+                  at scale
                 </p>
                 <div className="mt-12 pt-2">
                   <form
