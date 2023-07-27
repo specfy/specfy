@@ -320,7 +320,7 @@ Org:
   ✔ Settings @done(23-07-14 12:39)
     ✔ Rename @done(23-04-24 15:10)
       ✔ Unit test @done(23-04-24 15:10)
-      - Reserved name
+      ✔ Reserved name @done(23-07-27 11:28)
       ✔ Handle error @done(23-04-24 15:10)
       - Permissions
     - Change id

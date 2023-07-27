@@ -75,4 +75,4 @@ export const schemaBlobs = z
         }
       })
   )
-  .max(v1.paid.upload.maxDocuments);
+  .max(v1.pro.upload.maxDocuments);

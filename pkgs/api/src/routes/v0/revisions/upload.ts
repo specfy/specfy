@@ -42,12 +42,12 @@ function BodyVal(req: FastifyRequest) {
           z
             .object({
               path: z.string().max(255),
-              content: z.string().max(v1.paid.upload.maxDocumentSize),
+              content: z.string().max(v1.pro.upload.maxDocumentSize),
             })
             .strict()
         )
         .min(0)
-        .max(v1.paid.upload.maxDocuments)
+        .max(v1.pro.upload.maxDocuments)
         .nullable()
         .superRefine((blobs, ctx) => {
           if (!blobs) {

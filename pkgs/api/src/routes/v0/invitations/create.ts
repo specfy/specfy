@@ -44,7 +44,7 @@ function QueryVal(req: FastifyRequest) {
         return;
       }
 
-      const max = org.isPersonal ? v1.free.org.maxUser : v1.paid.org.maxUser;
+      const max = org.isPersonal ? v1.free.org.maxUser : v1.pro.org.maxUser;
       const check = await prisma.$queryRaw<[{ total: number }]>(
         Prisma.sql`SELECT (SELECT COUNT(*) FROM "Perms" WHERE "orgId" = ${val.orgId} AND "projectId" IS NULL)
          + (SELECT COUNT(*) FROM "Invitations" WHERE "orgId" = ${val.orgId}) as total LIMIT 1`

@@ -39,7 +39,7 @@ function ProjectVal(req: FastifyRequest) {
           orgId: val.orgId,
         },
       });
-      const max = org.isPersonal ? v1.free.project.max : v1.paid.project.max;
+      const max = org.isPersonal ? v1.free.project.max : v1.pro.project.max;
       if (count >= max) {
         ctx.addIssue({
           path: ['name'],

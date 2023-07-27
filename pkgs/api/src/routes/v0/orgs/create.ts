@@ -6,22 +6,29 @@ import { schemaOrgId } from '../../../common/validators/index.js';
 import { prisma } from '../../../db/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import { createOrg } from '../../../models/index.js';
+import { forbiddenOrgName } from '../../../models/orgs/constants.js';
 import { toApiOrg } from '../../../models/orgs/formatter.js';
 import type { PostOrg } from '../../../types/api/index.js';
 
 const OrgVal = z
   .object({
     id: schemaOrgId.superRefine(async (val, ctx) => {
-      const res = await prisma.orgs.findUnique({ where: { id: val } });
-      if (!res) {
-        return;
+      if (forbiddenOrgName.includes(val)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          params: { code: 'forbidden' },
+          message: 'This id is not allowed',
+        });
       }
 
-      ctx.addIssue({
-        code: z.ZodIssueCode.custom,
-        params: { code: 'exists' },
-        message: 'This id is already used',
-      });
+      const res = await prisma.orgs.findUnique({ where: { id: val } });
+      if (res) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          params: { code: 'exists' },
+          message: 'This id is already used',
+        });
+      }
     }),
     name: z.string().min(4).max(36),
   })

@@ -46,13 +46,13 @@ describe('POST /orgs', () => {
     const id = createOrgId();
     const res = await t.fetch.post('/0/orgs', {
       token,
-      Body: { id: id, name: `test ${id}` },
+      Body: { id, name: `test ${id}` },
     });
 
     isSuccess(res.json);
     expect(res.statusCode).toBe(200);
     expect(res.json).toStrictEqual({
-      id: id,
+      id,
       flowId: expect.any(String),
       name: `test ${id}`,
       isPersonal: false,
@@ -76,20 +76,39 @@ describe('POST /orgs', () => {
     // Insert one
     const res1 = await t.fetch.post('/0/orgs', {
       token,
-      Body: { id: id, name: `test ${id}` },
+      Body: { id, name: `test ${id}` },
     });
     isSuccess(res1.json);
 
     // Insert the same
     const res2 = await t.fetch.post('/0/orgs', {
       token,
-      Body: { id: id, name: `test ${id}` },
+      Body: { id, name: `test ${id}` },
     });
     isValidationError(res2.json);
     expect(res2.json.error.fields).toStrictEqual({
       id: {
         code: 'exists',
         message: 'This id is already used',
+        path: ['id'],
+      },
+    });
+  });
+
+  it('should reject forbidden name', async () => {
+    const { token } = await seedSimpleUser();
+
+    // Insert one
+    const res = await t.fetch.post('/0/orgs', {
+      token,
+      Body: { id: `admin`, name: `Admin` },
+    });
+    isValidationError(res.json);
+
+    expect(res.json.error.fields).toStrictEqual({
+      id: {
+        code: 'forbidden',
+        message: 'This id is not allowed',
         path: ['id'],
       },
     });
