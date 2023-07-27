@@ -26,7 +26,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
     }
 
     const data = val.data;
-    let user = req.user!;
+    let user = req.me!;
 
     if (data.name) {
       user = await prisma.$transaction(async (tx) => {
@@ -35,7 +35,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
           where: { id: user.id },
         });
         await createUserActivity({
-          user: req.user!,
+          user: req.me!,
           action: 'User.updated',
           target: tmp,
           orgId: null,

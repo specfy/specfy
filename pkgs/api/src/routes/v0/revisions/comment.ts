@@ -36,7 +36,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         orgId: rev.orgId,
         projectId: rev.projectId,
         revisionId: rev.id,
-        userId: req.user!.id,
+        userId: req.me!.id,
       };
 
       const com = await prisma.$transaction(async (tx) => {
@@ -58,14 +58,14 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
             where: { id: rev.id },
           });
           await createRevisionActivity({
-            user: req.user!,
+            user: req.me!,
             action: 'Revision.approved',
             target: rev,
             tx,
           });
         } else {
           await createRevisionActivity({
-            user: req.user!,
+            user: req.me!,
             action: 'Revision.commented',
             target: rev,
             tx,

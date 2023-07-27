@@ -30,6 +30,7 @@ declare module 'fastify' {
     perms?: PermsWithOrg[];
     project?: Projects;
     revision?: RevisionWithProject;
+    me?: Users;
     user?: Users;
     key?: Keys;
     org?: Orgs;

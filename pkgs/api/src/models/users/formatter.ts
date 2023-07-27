@@ -1,6 +1,6 @@
 import type { Users } from '@prisma/client';
 
-import type { ApiMe, ApiUser } from '../../types/api/index.js';
+import type { ApiMe, ApiUser, ApiUserPublic } from '../../types/api/index.js';
 
 import { getJwtToken } from './model.js';
 
@@ -10,6 +10,15 @@ export function toApiUser(user: Users): ApiUser {
     name: user.name,
     email: user.email,
     avatarUrl: user.avatarUrl,
+  };
+}
+
+export function toApiUserPublic(user: Users): ApiUserPublic {
+  return {
+    id: user.id,
+    name: user.name,
+    avatarUrl: user.avatarUrl,
+    githubLogin: user.githubLogin,
   };
 }
 

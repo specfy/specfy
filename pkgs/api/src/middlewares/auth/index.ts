@@ -69,7 +69,7 @@ export async function registerAuth(f: FastifyInstance) {
       },
       include: { Org: { include: { Projects: { select: { id: true } } } } },
     });
-    req.user = user!;
+    req.me = user!;
     req.perms = perms;
   });
 
@@ -98,7 +98,7 @@ export async function registerAuth(f: FastifyInstance) {
 
   // Final check to see if we are connected
   f.addHook('preValidation', (req, res, done) => {
-    if (req.user) {
+    if (req.me) {
       done();
       return;
     }

@@ -47,7 +47,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       const data = val.data;
 
       const org = await prisma.$transaction(async (tx) => {
-        return createOrg(tx, req.user!, data);
+        return createOrg(tx, req.me!, data);
       });
 
       return res.status(200).send(toApiOrg(org));

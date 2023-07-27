@@ -133,7 +133,7 @@ User:
     ✔ Unit test @done(23-04-24 17:01)
   ✔ Suppression de compte @done(23-04-24 17:01)
       ✔ Anonymisation @done(23-04-24 17:01)
-  - Profil ?
+  ✔ Profil ? @done(23-07-27 14:57)
 
 Permissions:
   ✔ List @done(23-03-29 15:54)
@@ -424,6 +424,9 @@ Revision:
 
 User:
   - Hover card
+  Profile:
+    - Add currents orgs
+    - Latest activities
 
 Components:
   ☐ Check policy on add language

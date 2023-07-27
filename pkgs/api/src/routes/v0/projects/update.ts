@@ -57,7 +57,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
             where: { id: project.id },
           });
           await createProjectActivity({
-            user: req.user!,
+            user: req.me!,
             action: 'Project.updated',
             target: tmp,
             tx,

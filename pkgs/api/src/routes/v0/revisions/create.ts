@@ -104,7 +104,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
           },
         });
         await createRevisionActivity({
-          user: req.user!,
+          user: req.me!,
           action: 'Revision.created',
           target: revision,
           tx,
@@ -114,7 +114,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
           data: {
             revisionId: revision.id,
             role: 'author',
-            userId: req.user!.id,
+            userId: req.me!.id,
           },
         });
 

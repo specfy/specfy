@@ -31,7 +31,7 @@ export function registerKey(fastify: FastifyInstance, passport: Authenticator) {
     'preValidation',
     //@ts-expect-error
     passport.authenticate('key', async (req, res, err, key?: Keys) => {
-      if (req.user) {
+      if (req.me) {
         return;
       }
 
@@ -39,7 +39,7 @@ export function registerKey(fastify: FastifyInstance, passport: Authenticator) {
         return;
       }
 
-      req.user = userGithubApp;
+      req.me = userGithubApp;
       req.key = key;
       req.perms = [
         {
@@ -47,7 +47,7 @@ export function registerKey(fastify: FastifyInstance, passport: Authenticator) {
           orgId: key.orgId,
           projectId: null,
           role: 'owner',
-          userId: req.user.id,
+          userId: req.me.id,
           createdAt: key.createdAt,
           updatedAt: key.createdAt,
           Org: {} as any,
@@ -59,7 +59,7 @@ export function registerKey(fastify: FastifyInstance, passport: Authenticator) {
           orgId: key.orgId,
           projectId: key.projectId,
           role: 'owner',
-          userId: req.user.id,
+          userId: req.me.id,
           createdAt: key.createdAt,
           updatedAt: key.createdAt,
           Org: {} as any,

@@ -12,7 +12,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
     '/',
     { preHandler: [noQuery, noBody] },
     async function (req, res) {
-      const user = req.user!;
+      const user = req.me!;
 
       await prisma.$transaction(async (tx) => {
         await tx.accounts.deleteMany({ where: { userId: user.id } });

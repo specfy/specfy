@@ -91,7 +91,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
 
       const data: PatchRevision['Body'] = val.data;
       const rev = req.revision!;
-      const user = req.user!;
+      const user = req.me!;
 
       // TODO: validation
       try {
@@ -177,7 +177,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
           await tx.revisions.update({ data: updates, where: { id: rev.id } });
 
           if (action === 'closed') {
-            // await rev.onAfterClosed(req.user!, { transaction });
+            // await rev.onAfterClosed(req.me!, { transaction });
             await createRevisionActivity({
               user,
               action: 'Revision.closed',
@@ -185,7 +185,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
               tx,
             });
           } else if (action === 'locked') {
-            // await rev.onAfterLocked(req.user!, { transaction });
+            // await rev.onAfterLocked(req.me!, { transaction });
             await createRevisionActivity({
               user,
               action: 'Revision.locked',

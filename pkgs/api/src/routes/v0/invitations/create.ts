@@ -89,7 +89,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
           orgId: body.orgId,
           role: body.role,
           token: nanoid(32),
-          userId: req.user!.id,
+          userId: req.me!.id,
           expiresAt: new Date(Date.now() + EXPIRES),
         },
       });

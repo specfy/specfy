@@ -99,7 +99,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
             links: [],
             config,
           },
-          user: req.user!,
+          user: req.me!,
           tx,
         });
 

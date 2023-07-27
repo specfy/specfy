@@ -27,7 +27,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
     }
 
     const query = val.data;
-    const user = req.user!;
+    const user = req.me!;
 
     const accounts = await prisma.accounts.findFirst({
       where: { userId: user.id },
