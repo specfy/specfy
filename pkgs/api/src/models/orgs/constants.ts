@@ -1,3 +1,4 @@
+// Mostly there to protect future use or people trying to be funny.
 export const forbiddenOrgName = [
   'about',
   'account',

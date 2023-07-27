@@ -69,7 +69,7 @@ Project:
     - Unit Test activity
     ✔ Handle error @done(23-06-21 17:05)
   ✔ Creation @done(23-03-25 23:30)
-    - Reserved name
+    ✔ Reserved name @done(23-07-27 11:54)
     - Permission check
     ✔ Unit Test @done(23-04-04 17:26)
     ✔ Validation @done(23-03-28 16:11)

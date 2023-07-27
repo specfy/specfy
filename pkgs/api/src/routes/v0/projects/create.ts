@@ -11,6 +11,7 @@ import { noQuery } from '../../../middlewares/noQuery.js';
 import { recomputeOrgGraph } from '../../../models/flows/helpers.rebuild.js';
 import { v1, createProject, getDefaultConfig } from '../../../models/index.js';
 import { getOrgFromRequest } from '../../../models/perms/helpers.js';
+import { forbiddenProjectSlug } from '../../../models/projects/constants.js';
 import { schemaProject } from '../../../models/projects/schema.js';
 import type { DBProject } from '../../../models/projects/types.js';
 import type { PostProject } from '../../../types/api/index.js';
@@ -82,7 +83,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         const count = await tx.projects.count({
           where: { slug, orgId: data.orgId },
         });
-        if (count > 0) {
+        if (count > 0 || forbiddenProjectSlug.includes(slug)) {
           slug = `${slug}-${nanoid().substring(0, 4)}`.toLocaleLowerCase();
         }
 
