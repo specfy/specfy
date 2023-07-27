@@ -42,11 +42,20 @@ export function registerGithub(passport: Authenticator) {
         where: { email },
       });
 
+      const displayName = profile.displayName || profile.username;
       // We found the user
       if (user) {
-        if (user.avatarUrl !== avatarUrl) {
+        if (
+          user.avatarUrl !== avatarUrl ||
+          user.githubLogin !== profile.username ||
+          displayName !== profile.displayName
+        ) {
           await prisma.users.update({
-            data: { avatarUrl },
+            data: {
+              avatarUrl,
+              githubLogin: profile.username,
+              name: profile.displayName || profile.username,
+            },
             where: { id: user.id },
           });
         }
@@ -72,6 +81,7 @@ export function registerGithub(passport: Authenticator) {
             email,
             emailVerifiedAt: new Date(),
             avatarUrl,
+            githubLogin: profile.username,
             Accounts: {
               create: {
                 id: nanoid(),

@@ -43,15 +43,19 @@ export default function Blog({ posts }: Props) {
                   </div>
                   <div className="relative mt-8 flex items-center gap-x-4">
                     <img
-                      src="https://avatars.githubusercontent.com/u/1637651?v=4"
+                      src={post.avatarUrl}
                       alt=""
                       className="h-8 w-8 rounded-full bg-gray-50"
                     />
                     <div className="text-sm leading-6">
                       <p className="font-semibold text-gray-900">
-                        <a href="#">
+                        <a
+                          href={post.authorUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
                           <span className="absolute inset-0"></span>
-                          Samuel Bodin
+                          {post.author}
                         </a>
                       </p>
                     </div>

@@ -68,7 +68,7 @@ export async function seedComponents(
           type: 'hosting',
           orgId: o1.id,
           projectId: pAnalytics.id,
-          techId: 'gce',
+          techId: 'gcp.gce',
           description: { type: 'doc', content: [] },
           display: {
             zIndex: 2,

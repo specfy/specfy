@@ -35,7 +35,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
     async function (req, res) {
       const rev = req.revision!;
       let reason: MergeRevisionError['error']['reason'] | false = false;
-      const user = req.user!;
+      const user = req.me!;
 
       await prisma.$transaction(async (tx) => {
         // Check if we have reviews

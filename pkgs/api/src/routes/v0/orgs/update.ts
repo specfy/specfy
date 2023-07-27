@@ -42,7 +42,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
             where: { id: org.id },
           });
           await createOrgActivity({
-            user: req.user!,
+            user: req.me!,
             action: 'Org.renamed',
             target: tmp,
             tx,

@@ -14,7 +14,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
     { preHandler: [noBody, getInvitation] },
     async function (req, res) {
       const inv = req.invitation!;
-      const user = req.user!;
+      const user = req.me!;
 
       if (user.email !== inv.email) {
         return forbidden(res);

@@ -41,7 +41,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         return validationError(res, val.error);
       }
 
-      const user = req.user!;
+      const user = req.me!;
       const body = val.data;
       const org = getOrgFromRequest(req, body.orgId)!;
       const accounts = await prisma.accounts.findFirst({

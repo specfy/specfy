@@ -10,9 +10,11 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Layout>
       <Head>
-        <title key="title">
-          Specfy - Automatic infrastructure documentation
-        </title>
+        <title key="title">Specfy - Stack Intelligence Platform</title>
+        <meta
+          name="description"
+          content="Automatic infrastructure and dependencies documentation. Collaborate, discover and make informed decision at company scale."
+        />
         <link
           rel="apple-touch-icon"
           sizes="180x180"

@@ -28,7 +28,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
     }
 
     const query = val.data;
-    const user = req.user!;
+    const user = req.me!;
 
     let repos: Awaited<
       ReturnType<Octokit['rest']['repos']['listForAuthenticatedUser']>

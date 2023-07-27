@@ -50,7 +50,7 @@ const blocks = [
     id: 2,
     icon: <IconRotateClockwise2 />,
     title: 'Stay on top of things with always up-to-date reporting',
-    desc: 'Your stack is refreshed every time you push on Github. Never waste time ever again presenting outdated slides about your Tech Stack.',
+    desc: 'Your stack is refreshed every time you push on Github. Never waste time ever again presenting outdated slides about your technical stack.',
   },
   {
     id: 3,
@@ -63,7 +63,7 @@ const blocks = [
 const faqs = [
   {
     id: 1,
-    question: 'Does Specfy store my Source Code?',
+    question: 'Does Specfy store my source code?',
     answer:
       'We only temporarly clone the repositories you allowed us to, the code is always deleted after use.',
   },
@@ -85,7 +85,7 @@ const Appears: React.FC<{
   children: React.ReactNode;
   className?: string;
   once?: boolean;
-}> = ({ className, children, once }) => {
+}> = ({ className, children }) => {
   const [ref, style] = useInView(
     () => {
       return {
@@ -108,27 +108,26 @@ const Appears: React.FC<{
   );
 };
 
-const STROKE_WIDTH = 0.1;
-
-const OFFSET = STROKE_WIDTH / 2;
-
-const MAX_WIDTH = 250 + OFFSET * 2;
-const MAX_HEIGHT = 200 + OFFSET * 2;
-const SIZE = 12;
+const OFFSET = 0.1 / 2;
 
 const AnimatedGrid: React.FC = () => {
+  const [strokeWidth, setStrokeWidth] = useState<number>(0.1);
+  const [width, setWidth] = useState<number>(1000);
+  const [height, setHeight] = useState<number>(1000);
+  const [cols, setCols] = useState<number>(16);
+  const [spacing, setSpacing] = useState<number>(12);
   const gridApi = useSpringRef();
 
-  const gridSprings = useTrail(16, {
+  const gridSprings = useTrail(cols, {
     ref: gridApi,
     from: {
       x2: 0,
       y2: 0,
-      color: '#8c8c8c',
+      color: '#aaaaaa',
     },
     to: {
-      x2: MAX_WIDTH,
-      y2: MAX_HEIGHT,
+      x2: width,
+      y2: height,
       // color: '#1a71ff',
     },
     reset: false,
@@ -137,31 +136,39 @@ const AnimatedGrid: React.FC = () => {
   const boxApi = useSpringRef();
 
   useChain([gridApi, boxApi], [0, 1], 1500);
+  useEffect(() => {
+    const large = window.innerWidth > 600;
+    setStrokeWidth(large ? 0.1 : 0.1);
+    setHeight(window.innerHeight / 10);
+    setWidth(window.innerWidth / 10);
+    setCols(large ? 30 : 15);
+    setSpacing(large ? 7 : 5);
+  }, []);
 
   return (
     <div className="">
       <div className="text-gray-200">
-        <svg viewBox={`0 0 ${MAX_WIDTH} ${MAX_HEIGHT}`}>
+        <svg viewBox={`0 0 ${width} ${height}`}>
           <g>
             {gridSprings.map(({ x2, color }, index) => (
               <animated.line
                 x1={0}
-                y1={index * SIZE + OFFSET}
+                y1={index * spacing + OFFSET}
                 x2={x2}
-                y2={index * SIZE + OFFSET}
+                y2={index * spacing + OFFSET}
                 key={index}
-                strokeWidth={STROKE_WIDTH}
+                strokeWidth={strokeWidth}
                 stroke={color}
               />
             ))}
             {gridSprings.map(({ y2, color }, index) => (
               <animated.line
-                x1={index * SIZE + OFFSET}
+                x1={index * spacing + OFFSET}
                 y1={0}
-                x2={index * SIZE + OFFSET}
+                x2={index * spacing + OFFSET}
                 y2={y2}
                 key={index}
-                strokeWidth={STROKE_WIDTH}
+                strokeWidth={strokeWidth}
                 stroke={color}
               />
             ))}
@@ -209,7 +216,13 @@ export default function Home() {
     3,
     () => {
       return {
-        config: { mass: 20, tension: 2000, friction: 200 },
+        config: {
+          mass: 20,
+          tension: 2000,
+          friction: 200,
+          duration: 500,
+          damping: 0.1,
+        },
         delay: 1000,
         to: { opacity: 1, y: 20 },
         from: { opacity: 0, y: 0 },
@@ -229,7 +242,7 @@ export default function Home() {
       <div className="relative isolate overflow-hidden px-6 pt-14 lg:px-8">
         <div className="mx-auto max-w-5xl">
           <div className="py-32 sm:py-48 lg:py-56 lg:pl-2 grid grid-cols-1 lg:grid-cols-12">
-            <div className="absolute w-full h-full top-12 left-5 z-0 opacity-20">
+            <div className="absolute w-screen h-screen top-12 -left-0 z-0 opacity-20">
               <AnimatedGrid />
             </div>
 
@@ -239,9 +252,10 @@ export default function Home() {
                   Stack Intelligence Platform
                 </h1>
                 <p className="mt-6 text-lg leading-8 text-gray-800">
-                  Specfy extract metadata from your organization's repositories
-                  and build an exhaustive infrastructure documentation that
-                  helps onboarding, and managing your stack at scale
+                  Specfy extract metadata from your organization&apos;s
+                  repositories and build an exhaustive infrastructure
+                  documentation that helps onboarding, and managing your stack
+                  at scale
                 </p>
                 <div className="mt-12 pt-2">
                   <form
@@ -264,7 +278,7 @@ export default function Home() {
                 </div>
               </div>
             </div>
-            <div className="relative lg:col-span-5 mt-20 pl-40">
+            <div className="relative mt-20 pr-20 mx-auto w-[200px] h-[120px] lg:mx-0 lg:col-span-5 lg:pl-40">
               {trailsCard.map((props, i) => {
                 return (
                   <animated.div
@@ -363,7 +377,7 @@ export default function Home() {
                     <p className="text-center text-base lg:hidden text-white">
                       {desc}
                     </p>
-                    <div className="mt-10 w-[45rem] overflow-hidden rounded-xl bg-slate-50 shadow-xl shadow-blue-900/20 sm:w-auto lg:mt-0 lg:w-[67.8125rem]">
+                    <div className="mt-10 overflow-hidden rounded-xl bg-slate-50 shadow-xl shadow-blue-900/20 w-auto lg:mt-0 lg:w-[67.8125rem]">
                       <img
                         alt=""
                         width="2174"

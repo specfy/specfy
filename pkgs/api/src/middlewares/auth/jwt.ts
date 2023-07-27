@@ -33,7 +33,7 @@ export function registerJwt(fastify: FastifyInstance, passport: Authenticator) {
     'preValidation',
     //@ts-expect-error
     passport.authenticate('jwt', async (req, res, err, user?: Users) => {
-      if (req.user) {
+      if (req.me) {
         return;
       }
 
@@ -47,7 +47,7 @@ export function registerJwt(fastify: FastifyInstance, passport: Authenticator) {
         },
         include: { Org: { include: { Projects: { select: { id: true } } } } },
       });
-      req.user = user;
+      req.me = user;
       req.perms = perms;
       req.session.set('passport', { id: user.id });
     })

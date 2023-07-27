@@ -21,6 +21,7 @@ import { Login } from '../Login';
 import { Org } from '../Org';
 import { OrgCreate } from '../Org/Create';
 import { Project } from '../Project';
+import { User } from '../User';
 
 const App: React.FC = () => {
   return (
@@ -76,6 +77,7 @@ const App: React.FC = () => {
                         <Route path="/invite" element={<Invite />} />
                         <Route path="/account" element={<Account />} />
                         <Route path="/organizations" element={<NotFound />} />
+                        <Route path="/user/*" element={<User />} />
                         <Route
                           path="/organizations/*"
                           element={<OrgCreate />}

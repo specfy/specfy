@@ -11,6 +11,7 @@ import { noQuery } from '../../../middlewares/noQuery.js';
 import { recomputeOrgGraph } from '../../../models/flows/helpers.rebuild.js';
 import { v1, createProject, getDefaultConfig } from '../../../models/index.js';
 import { getOrgFromRequest } from '../../../models/perms/helpers.js';
+import { forbiddenProjectSlug } from '../../../models/projects/constants.js';
 import { schemaProject } from '../../../models/projects/schema.js';
 import type { DBProject } from '../../../models/projects/types.js';
 import type { PostProject } from '../../../types/api/index.js';
@@ -39,7 +40,7 @@ function ProjectVal(req: FastifyRequest) {
           orgId: val.orgId,
         },
       });
-      const max = org.isPersonal ? v1.free.project.max : v1.paid.project.max;
+      const max = org.isPersonal ? v1.free.project.max : v1.pro.project.max;
       if (count >= max) {
         ctx.addIssue({
           path: ['name'],
@@ -82,7 +83,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         const count = await tx.projects.count({
           where: { slug, orgId: data.orgId },
         });
-        if (count > 0) {
+        if (count > 0 || forbiddenProjectSlug.includes(slug)) {
           slug = `${slug}-${nanoid().substring(0, 4)}`.toLocaleLowerCase();
         }
 
@@ -98,7 +99,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
             links: [],
             config,
           },
-          user: req.user!,
+          user: req.me!,
           tx,
         });
 

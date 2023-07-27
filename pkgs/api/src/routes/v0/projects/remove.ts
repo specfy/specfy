@@ -27,7 +27,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
 
         await tx.projects.delete({ where: { id: project.id } });
         // await tx.blobs.deleteMany({ where: { projectId: project.id } });
-        // await createProjectActivity(req.user!, 'Project.deleted', project, tx);
+        // await createProjectActivity(req.me!, 'Project.deleted', project, tx);
 
         await recomputeOrgGraph({ orgId: project.orgId, tx });
       });

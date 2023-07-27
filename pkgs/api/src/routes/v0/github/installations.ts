@@ -10,7 +10,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
     '/',
     { preHandler: [noQuery] },
     async function (req, res) {
-      const user = req.user!;
+      const user = req.me!;
 
       const accounts = await prisma.accounts.findFirst({
         where: { userId: user.id },

@@ -69,14 +69,15 @@ Project:
     - Unit Test activity
     ✔ Handle error @done(23-06-21 17:05)
   ✔ Creation @done(23-03-25 23:30)
-    - Reserved name
+    ✔ Reserved name @done(23-07-27 11:54)
     - Permission check
     ✔ Unit Test @done(23-04-04 17:26)
     ✔ Validation @done(23-03-28 16:11)
     - Unit Test activity
     ✔ Enforce slug @done(23-03-28 16:11)
-    - Better UX with Github first
-      - Advanced mode
+    ✔ Better UX with Github first @done(23-07-27 12:07)
+      ✔ Advanced mode @done(23-07-27 12:03)
+      ✔ Use configuration @done(23-07-27 12:07)
       - Sync configuration
   ✔ List @done(23-03-29 12:19)
     ✔ Unit test @done(23-04-04 17:26)
@@ -105,7 +106,7 @@ Project:
   ✔ Automatic “service” detection @done(23-06-14 15:18)
   - Hide when too much tech stack on Overview
   - Socket: only subscribe to currently viewed Project
-  - Bug: link edition open even on readonly mode
+  ✔ Bug: link edition open even on readonly mode @done(23-07-27 12:10)
   ✔ Bug: team display use colored avatar @done(23-07-14 13:17)
   - Better Documentation tree in the Sidebar
     - Not everything open by default
@@ -132,7 +133,7 @@ User:
     ✔ Unit test @done(23-04-24 17:01)
   ✔ Suppression de compte @done(23-04-24 17:01)
       ✔ Anonymisation @done(23-04-24 17:01)
-  - Profil ?
+  ✔ Profil ? @done(23-07-27 14:57)
 
 Permissions:
   ✔ List @done(23-03-29 15:54)
@@ -320,7 +321,7 @@ Org:
   ✔ Settings @done(23-07-14 12:39)
     ✔ Rename @done(23-04-24 15:10)
       ✔ Unit test @done(23-04-24 15:10)
-      - Reserved name
+      ✔ Reserved name @done(23-07-27 11:28)
       ✔ Handle error @done(23-04-24 15:10)
       - Permissions
     - Change id
@@ -423,6 +424,9 @@ Revision:
 
 User:
   - Hover card
+  Profile:
+    - Add currents orgs
+    - Latest activities
 
 Components:
   ☐ Check policy on add language

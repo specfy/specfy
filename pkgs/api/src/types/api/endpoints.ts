@@ -54,7 +54,7 @@ import type {
   PostUploadRevision,
   RebaseRevision,
 } from '../../models/revisions/types.api.js';
-import type { ListUsers } from '../../models/users/types.api.js';
+import type { GetUser, ListUsers } from '../../models/users/types.api.js';
 
 import type { PostAuthLocal, PostLogout } from './auth.js';
 import type { DeleteMe, GetMe, PutMe } from './me.js';
@@ -146,6 +146,7 @@ export interface API {
   };
 
   '/0/users': { GET: ListUsers };
+  [key: `/0/users/${string}`]: { GET: GetUser };
 
   '/0/github/installations': { GET: ListGithubInstallations };
   '/0/github/repos': { GET: ListGithubRepos };

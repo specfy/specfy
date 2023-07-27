@@ -75,7 +75,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
           { parentId: { sort: 'asc', nulls: 'first' } },
         ],
         // TODO: add limit/offset to qp
-        take: v1.paid.upload.maxDocuments,
+        take: v1.pro.upload.maxDocuments,
         skip: 0,
       });
 
