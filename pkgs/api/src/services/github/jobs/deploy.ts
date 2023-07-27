@@ -178,6 +178,7 @@ export class JobDeploy extends Job {
     }
 
     // Execute deploy
+    const projConfig = job.Project.config;
     try {
       const bin = path.join(
         dirname,
@@ -187,14 +188,18 @@ export class JobDeploy extends Job {
       const args = [
         bin,
         'run',
-        '-t',
+        '--token',
         key.id,
-        '-o',
+        '--org',
         job.orgId,
-        '-p',
+        '--project',
         job.projectId!,
-        '-d',
-        '/',
+        '--doc',
+        projConfig.documentation.path,
+        !projConfig.documentation.enabled ? '--no-doc' : '',
+        '--stack',
+        projConfig.stack.path,
+        !projConfig.stack.enabled ? '--no-stack' : '',
         config.autoLayout ? '--auto-layout' : '',
         this.folderName,
       ];

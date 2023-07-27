@@ -75,8 +75,9 @@ Project:
     ✔ Validation @done(23-03-28 16:11)
     - Unit Test activity
     ✔ Enforce slug @done(23-03-28 16:11)
-    - Better UX with Github first
-      - Advanced mode
+    ✔ Better UX with Github first @done(23-07-27 12:07)
+      ✔ Advanced mode @done(23-07-27 12:03)
+      ✔ Use configuration @done(23-07-27 12:07)
       - Sync configuration
   ✔ List @done(23-03-29 12:19)
     ✔ Unit test @done(23-04-04 17:26)
