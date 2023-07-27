@@ -106,7 +106,7 @@ Project:
   ✔ Automatic “service” detection @done(23-06-14 15:18)
   - Hide when too much tech stack on Overview
   - Socket: only subscribe to currently viewed Project
-  - Bug: link edition open even on readonly mode
+  ✔ Bug: link edition open even on readonly mode @done(23-07-27 12:10)
   ✔ Bug: team display use colored avatar @done(23-07-14 13:17)
   - Better Documentation tree in the Sidebar
     - Not everything open by default

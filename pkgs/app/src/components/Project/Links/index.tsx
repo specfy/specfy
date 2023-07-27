@@ -99,7 +99,9 @@ export const ProjectLinks: React.FC = () => {
   });
 
   const handleClick = () => {
-    setOpen(true);
+    if (isEditing) {
+      setOpen(true);
+    }
   };
 
   const handleChange = (pos: number, link?: DBProjectLink) => {
