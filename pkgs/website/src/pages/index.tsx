@@ -50,7 +50,7 @@ const blocks = [
     id: 2,
     icon: <IconRotateClockwise2 />,
     title: 'Stay on top of things with always up-to-date reporting',
-    desc: 'Your stack is refreshed every time you push on Github. Never waste time ever again presenting outdated slides about your Tech Stack.',
+    desc: 'Your stack is refreshed every time you push on Github. Never waste time ever again presenting outdated slides about your technical stack.',
   },
   {
     id: 3,
@@ -63,7 +63,7 @@ const blocks = [
 const faqs = [
   {
     id: 1,
-    question: 'Does Specfy store my Source Code?',
+    question: 'Does Specfy store my source code?',
     answer:
       'We only temporarly clone the repositories you allowed us to, the code is always deleted after use.',
   },

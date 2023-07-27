@@ -10,6 +10,9 @@ export type Post = {
   description: string;
   socialImage: string;
   publishedAt: string;
+  author: string;
+  avatarUrl: string;
+  authorUrl: string;
   filePath: string;
 };
 
@@ -32,6 +35,9 @@ export async function initPosts() {
         description: data.description,
         socialImage: data.socialImage,
         publishedAt: data.publishedAt,
+        author: data.author,
+        authorUrl: data.authorUrl,
+        avatarUrl: data.avatarUrl,
         filePath: fp,
       };
     })

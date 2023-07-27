@@ -59,8 +59,8 @@ export default function PostPage({ source }: Props) {
     author: [
       {
         '@type': 'Person',
-        name: 'Samuel Bodin',
-        url: 'https://www.linkedin.com/in/bodinsamuel/',
+        name: post.author,
+        url: post.authorUrl,
       },
     ],
   };
@@ -98,15 +98,15 @@ export default function PostPage({ source }: Props) {
 
             <div className="relative mt-2 mb-8 flex items-center gap-x-4 px-1">
               <img
-                src="https://avatars.githubusercontent.com/u/1637651?v=4"
+                src={post.avatarUrl}
                 alt=""
                 className="h-8 w-8 rounded-full bg-gray-50"
               />
               <div className="text-sm leading-6">
                 <p className="font-semibold text-gray-900">
-                  <a href="#">
+                  <a href={post.authorUrl} target="_blank" rel="noreferrer">
                     <span className="absolute inset-0"></span>
-                    Samuel Bodin
+                    {post.author}
                   </a>
                 </p>
               </div>
