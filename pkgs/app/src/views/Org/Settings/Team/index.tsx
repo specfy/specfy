@@ -50,7 +50,7 @@ export const SettingsTeam: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
               Members
             </Tabs.Trigger>
             <Tabs.Trigger className="rx_tabsTrigger" value="tab2">
-              Invitation
+              Invitations
             </Tabs.Trigger>
           </Tabs.List>
           <Tabs.Content className="rx_tabsContent" value="tab1">

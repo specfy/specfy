@@ -72,7 +72,7 @@ WORKDIR /app/tmp
 COPY . /app/tmp
 
 # Install the dependencies
-RUN npm install
+RUN npm ci
 
 # Build the source code
 RUN true \
@@ -110,7 +110,7 @@ The output will look like this:
 => => transferring context: 68.01kB                                                                                   0.1s
 => [2/5] WORKDIR /app/tmp                                                                                             0.2s
 => [3/5] COPY . /app/tmp                                                                                              0.1s
-=> [4/5] RUN npm install                                                                                             47.4s
+=> [4/5] RUN npm ci                                                                                                  47.4s
 => [5/5] RUN true   && cd pkgs/api   && npm run prod:build                                                            8.6s
 => exporting to image                                                                                                10.3s
 => => exporting layers                                                                                               10.3s
@@ -168,7 +168,7 @@ WORKDIR /app/tmp
 COPY . /app/tmp
 
 # Install the dependencies
-RUN npm install
+RUN npm ci
 
 # Build the backend
 RUN true \
@@ -230,7 +230,7 @@ WORKDIR /app/tmp
 COPY . /app/tmp
 
 # Install the dependencies
-RUN npm install
+RUN npm ci
 
 # Build the backend
 RUN true \
@@ -324,8 +324,7 @@ COPY --from=deps /tmp ./
 COPY package-lock.json  ./
 
 # Install every dependencies
-RUN true \
-  && npm install
+RUN npm ci
 
 # Copy source code
 COPY . /app/tmp
@@ -348,7 +347,7 @@ COPY --from=tmp --chown=node:node /app/tmp /app
 EXPOSE 8080
 ```
 
-<Banner>I prefer to execute `npm install` on the second image for readability but it could be done in the `deps` image</Banner>
+<Banner>I prefer to execute `npm ci` on the second image for readability but it could be done in the `deps` image</Banner>
 
 In this enhanced Dockerfile, we introduce a new stage named `deps`. This stage solely copies the `package.json` files, enabling us to leverage Docker's caching mechanism effectively.
 
@@ -412,7 +411,7 @@ The result is a **significant improvement** in build time, particularly when onl
 => CACHED [tmp  8/13] COPY --from=deps /tmp/app_package.json ./pkgs/app/package.json                                  0.0s
 => CACHED [tmp  9/13] COPY --from=deps /tmp/website_package.json ./pkgs/website/package.json                          0.0s
 => CACHED [tmp 10/13] COPY package-lock.json  ./                                                                      0.0s
-=> CACHED [tmp 11/13] RUN true   && npm install                                                                       0.0s
+=> CACHED [tmp 11/13] RUN npm ci                                                                                      0.0s
 => [tmp 12/13] COPY . /app/tmp                                                                                        0.1s
 => [tmp 13/13] RUN true   && cd pkgs/api   && npm run prod:build                                                      8.5s
 => CACHED [web 2/3] WORKDIR /app                                                                                      0.0s
@@ -490,7 +489,7 @@ With a simple one-liner, we have achieved remarkable results in terms of image s
 
 An even better approach is to avoid downloading unnecessary dependencies altogether. This is the most challenging aspect of our optimization process as it goes beyond the scope of Docker itself.
 
-To accomplish this, I have chosen to implement a bash script that removes unnecessary dependencies before the `npm install` command is executed. Alternatively, you can also consider using a different package.json file specifically tailored for production use. Unfortunately, unlike in Ruby, there is currently no built-in way to tag dependencies and selectively install them. Therefore, we must rely on manual intervention to achieve our goal.
+To accomplish this, I have chosen to implement a bash script that removes unnecessary dependencies before the `npm ci` command is executed. Alternatively, you can also consider using a different package.json file specifically tailored for production use. Unfortunately, unlike in Ruby, there is currently no built-in way to tag dependencies and selectively install them. Therefore, we must rely on manual intervention to achieve our goal.
 
 Dependencies that can be safely removed are: formatting libraries, testing libraries, release libraries, and any other libraries that are only required during development and not at compile time.
 
@@ -680,8 +679,7 @@ COPY --from=deps /tmp ./
 COPY package-lock.json  ./
 
 # Install every dependencies
-RUN true \
-  && npm install
+RUN npm ci
 
 # At this stage we copy back all sources and overwrite package(s).json
 # This is expected since we already installed the dependencies we have cached what was important

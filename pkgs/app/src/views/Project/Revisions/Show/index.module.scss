@@ -4,6 +4,10 @@
   min-height: auto !important;
 }
 
+.left {
+  min-width: $main-col-w + 60px;
+}
+
 .main {
   border-bottom: 1px solid var(--border2);
 }

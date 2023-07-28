@@ -1,13 +1,15 @@
 import type { ApiDocument } from '@specfy/api/src/types/api';
 import { IconCircleArrowRight } from '@tabler/icons-react';
-import type { SelectProps } from 'antd';
-import { Button, Input, Select, Typography } from 'antd';
+import { Button } from 'antd';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 
 import { useDocumentsStore, useProjectStore } from '../../../../common/store';
 import { titleSuffix } from '../../../../common/string';
+import { Input } from '../../../../components/Form/Input';
+import type { SelectOption } from '../../../../components/Form/Select';
+import { SelectFull } from '../../../../components/Form/Select';
 import { useEdit } from '../../../../hooks/useEdit';
 import type { RouteProject } from '../../../../types/routes';
 
@@ -21,7 +23,7 @@ export const ProjectContentCreate: React.FC<{ params: RouteProject }> = ({
   const storeDocument = useDocumentsStore();
   const edit = useEdit();
 
-  const [options] = useState<SelectProps['options']>(() => {
+  const [options] = useState<SelectOption[]>(() => {
     return [
       { label: 'RFC', value: 'rfc' },
       { label: 'Playbook', value: 'pb' },
@@ -56,17 +58,16 @@ export const ProjectContentCreate: React.FC<{ params: RouteProject }> = ({
       <Helmet
         title={`Create Content - ${storeProject.project!.name} ${titleSuffix}`}
       />
-      <Typography.Title level={4}>Create Content</Typography.Title>
-      <Select
+      <h4>Create Content</h4>
+      <SelectFull
+        placeholder="Select a type"
+        size="l"
         options={options}
-        size="large"
-        className={cls.type}
         value={type}
-        onChange={setType}
+        onValueChange={(v: any) => setType(v)}
       />
       <div className={cls.title}>
         <Input
-          size="large"
           placeholder="Title..."
           className={cls.input}
           value={name}

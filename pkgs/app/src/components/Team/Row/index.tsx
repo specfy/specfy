@@ -1,11 +1,13 @@
 import type { ApiPerm, ApiUser } from '@specfy/api/src/types/api';
 import { IconCheck, IconPlus, IconTrash } from '@tabler/icons-react';
-import { Button, Select } from 'antd';
+import { Button } from 'antd';
 import { useState } from 'react';
 
 import { removePerm, updatePerm } from '../../../api';
+import { selectPerms } from '../../../common/perms';
 import { AvatarAuto } from '../../../components/AvatarAuto';
 import { useToast } from '../../../hooks/useToast';
+import { SelectFull } from '../../Form/Select';
 import { Loading } from '../../Loading';
 
 import cls from './index.module.scss';
@@ -78,22 +80,21 @@ export const Row: React.FC<RowProps> = ({
       <div className={cls.right}>
         {perm && fromSearch && <IconCheck />}
         {loading && <Loading />}
-        <Select
+
+        <SelectFull
           value={role}
-          style={{ width: '125px' }}
-          onChange={(v) => {
+          defaultValue="viewer"
+          placeholder="Select a role"
+          options={selectPerms}
+          onValueChange={(v: any) => {
             setRole(v);
             if (perm) {
               onUpdate(user.id, 'update', v);
             }
           }}
           disabled={perm && user.id === me ? true : false}
-        >
-          <Select.Option key="owner">Owner</Select.Option>
-          {/* <Select.Option key="reviewer">Reviewer</Select.Option> */}
-          <Select.Option key="contributor">Contributor</Select.Option>
-          <Select.Option key="viewer">Viewer</Select.Option>
-        </Select>
+        />
+
         {perm ? (
           <Button
             type="default"

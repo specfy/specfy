@@ -1,8 +1,9 @@
-import type { Components } from '@prisma/client';
+import type { Components, Orgs, Projects } from '@prisma/client';
 import type { AnalyserJson } from '@specfy/stack-analyser';
 import { Payload } from '@specfy/stack-analyser';
 import { describe, expect, it } from 'vitest';
 
+import { getBlobComponent } from '../../test/seed/components.js';
 import type { PostUploadRevision } from '../../types/api/index.js';
 
 import { uploadedStackToDB } from './helpers.stack.js';
@@ -143,5 +144,31 @@ describe('uploadedStackToDB', () => {
     expect(res2.deleted).toHaveLength(1);
     expect(res2.deleted[0].typeId).toEqual(up.id);
     expect(res2.unchanged).toStrictEqual([]);
+  });
+
+  it('should not delete different source', () => {
+    // New upload
+    const up: AnalyserJson = {
+      ...getDefault(),
+      name: 'coucou',
+      tech: 'algolia',
+    };
+    const res = uploadedStackToDB(
+      {
+        ...getDefault(),
+        childs: [up],
+      },
+      [
+        {
+          ...(getBlobComponent(
+            { id: 'acme' } as Orgs,
+            { id: 'foobar' } as Projects
+          ) as unknown as Components),
+        },
+      ],
+      { source: 'github' } as PostUploadRevision['Body']
+    );
+
+    expect(res.deleted).toHaveLength(0);
   });
 });

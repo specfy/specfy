@@ -202,7 +202,7 @@ export class JobDeploy extends Job {
         !projConfig.stack.enabled ? '--no-stack' : '',
         config.autoLayout ? '--auto-layout' : '',
         this.folderName,
-      ];
+      ].filter(Boolean);
       const envs = {
         // Bug in node-fetch that do not resolve localhost correctly
         SPECFY_HOSTNAME: !isProd

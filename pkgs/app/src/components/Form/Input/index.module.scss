@@ -8,7 +8,8 @@
   line-height: $line-height;
   color: var(--text);
 
-  border: 1px solid var(--border3);
+  background-color: #fff;
+  border: 1px solid var(--border2);
   border-radius: $border-radius-s;
 
   &.s {
@@ -35,7 +36,7 @@
 
     .input,
     .before {
-      padding: $p-m $p-l;
+      padding: $p-m $p-xl;
     }
   }
 
@@ -44,7 +45,7 @@
 
     .input,
     .before {
-      padding: $p-l $p-l;
+      padding: $p-l $p-xl;
     }
   }
 
@@ -53,6 +54,15 @@
     color: var(--text3);
     background-color: var(--bg2);
     border-color: var(--border2);
+  }
+
+  &.seamless {
+
+    .before,
+    .after {
+      padding: $p $p;
+      background-color: transparent;
+    }
   }
 }
 
@@ -65,9 +75,14 @@
   }
 }
 
-.before {
+.before,
+.after {
   display: flex;
   align-items: center;
+
+  min-width: 30px;
+
   color: var(--text);
+
   background-color: var(--bg2);
 }

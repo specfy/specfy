@@ -271,7 +271,7 @@ export const ProjectRevisionsShow: React.FC<{
   return (
     <div>
       <Container noPadding className={cls.container}>
-        <Container.Left2Third>
+        <Container.Left2Third className={cls.left}>
           <Helmet title={`${rev.name} - ${proj.name} ${titleSuffix}`} />
 
           <div className={cls.main}>

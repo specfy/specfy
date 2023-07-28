@@ -1,0 +1,21 @@
+.btn {
+  display: inline-flex;
+  gap: var(--spc);
+
+  padding: var(--spc) var(--spc-l);
+
+  border: 1px solid var(--border2);
+  border-radius: var(--radius2);
+
+  transition: background-color 0.15s ease-in-out;
+
+  &:hover {
+    background-color: var(--bg2);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    color: var(--text3);
+    background-color: var(--bg1);
+  }
+}

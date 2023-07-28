@@ -5,7 +5,6 @@ import { toApiUser } from '../users/formatter.js';
 import type { RevisionWithProject } from './types.js';
 
 export function toApiRevision(rev: RevisionWithProject): ApiRevision {
-  console.log(rev);
   return {
     id: rev.id,
     orgId: rev.orgId,

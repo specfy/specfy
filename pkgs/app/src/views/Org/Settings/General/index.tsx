@@ -163,10 +163,13 @@ export const SettingsGeneral: React.FC<{
 
             <GithubOrgSelect
               key={org.githubInstallationId}
-              emptyOption={true}
-              defaultSelected={org.githubInstallationId}
+              defaultSelected={
+                org.githubInstallationId ? String(org.githubInstallationId) : ''
+              }
               onChange={(sel) => {
-                setInstallId(sel);
+                if (sel) {
+                  setInstallId(Number(sel));
+                }
               }}
             />
           </Card.Content>

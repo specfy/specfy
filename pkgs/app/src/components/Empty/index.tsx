@@ -3,7 +3,7 @@ export const Empty: React.FC<{
   search?: string;
   title?: string;
   desc?: string;
-  action?: React.ReactElement;
+  action?: React.ReactNode;
 }> = ({ search, title, desc, action }) => {
   return (
     <div className={cls.empty}>

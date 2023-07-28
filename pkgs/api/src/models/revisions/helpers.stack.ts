@@ -120,11 +120,11 @@ export function uploadedStackToDB(
 
   const deleted: ApiBlobCreate[] = prevs
     .filter((p) => {
+      if (p.source !== data.source) {
+        return false;
+      }
       return !parsed.childs.find(
-        (child) =>
-          child.name === p.sourceName &&
-          child.tech === p.techId &&
-          p.source === data.source
+        (child) => child.name === p.sourceName && child.tech === p.techId
       );
     })
     .map((prev) => {

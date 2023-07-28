@@ -1,14 +1,15 @@
-import * as Select from '@radix-ui/react-select';
 import type { ApiOrg, ApiPerm, FieldsErrors } from '@specfy/api/src/types/api';
-import { IconChevronDown } from '@tabler/icons-react';
-import { Button, Form, Input, Typography } from 'antd';
+import { Button, Form, Typography } from 'antd';
 import { useState } from 'react';
 
 import { createInvitation } from '../../../api';
 import { isError, isValidationError } from '../../../api/helpers';
 import { i18n } from '../../../common/i18n';
+import { selectPerms } from '../../../common/perms';
 import { Card } from '../../../components/Card';
 import { useToast } from '../../../hooks/useToast';
+import { Input } from '../../Form/Input';
+import { SelectFull } from '../../Form/Select';
 
 import cls from './index.module.scss';
 
@@ -65,38 +66,13 @@ export const TeamInvite: React.FC<{
             />
           </Form.Item>
 
-          <Select.Root
+          <SelectFull
             value={role}
             defaultValue="viewer"
+            placeholder="Select a role"
+            options={selectPerms}
             onValueChange={(val) => setRole(val as any)}
-          >
-            <Select.Trigger className="rx_selectTrigger" aria-label="Food">
-              <Select.Value placeholder="Select a role" />
-              <Select.Icon className="rx_selectIcon">
-                <IconChevronDown />
-              </Select.Icon>
-            </Select.Trigger>
-
-            <Select.Portal>
-              <Select.Content className="rx_selectContent">
-                <Select.Viewport>
-                  <Select.Item
-                    className="rx_selectItem"
-                    value="owner"
-                    disabled={org.isPersonal}
-                  >
-                    <Select.ItemText>Owner</Select.ItemText>
-                  </Select.Item>
-                  <Select.Item className="rx_selectItem" value="contributor">
-                    <Select.ItemText>Contributor</Select.ItemText>
-                  </Select.Item>
-                  <Select.Item className="rx_selectItem" value="viewer">
-                    <Select.ItemText>Viewer</Select.ItemText>
-                  </Select.Item>
-                </Select.Viewport>
-              </Select.Content>
-            </Select.Portal>
-          </Select.Root>
+          />
         </form>
       </Card.Content>
       <Card.Actions>

@@ -10,6 +10,7 @@ import { useListDeploys } from '../../../../api';
 import { titleSuffix } from '../../../../common/string';
 import { AvatarAuto } from '../../../../components/AvatarAuto';
 import { Container } from '../../../../components/Container';
+import { Empty } from '../../../../components/Empty';
 import { Flex } from '../../../../components/Flex';
 import { StatusTag } from '../../../../components/Job/StatusTag';
 import { Time } from '../../../../components/Time';
@@ -93,6 +94,8 @@ export const ProjectDeploysList: React.FC<{
             })}
           </div>
         )}
+
+        {list && list.data.length <= 0 && <Empty />}
       </Container.Left2Third>
     </Container>
   );

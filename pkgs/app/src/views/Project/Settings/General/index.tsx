@@ -93,13 +93,15 @@ export const SettingsGeneral: React.FC<{
   };
 
   // Github
-  const [repoId, setRepoId] = useState(proj.githubRepository);
+  const [repoId, setRepoId] = useState<string | undefined>(
+    proj.githubRepository ?? undefined
+  );
 
   const onLink = async () => {
     const res = await linkToGithubRepo({
       orgId: proj.orgId,
       projectId: proj.id,
-      repository: repoId,
+      repository: repoId || null,
     });
     if (isError(res)) {
       toast.add({ title: i18n.errorOccurred, status: 'error' });
@@ -215,11 +217,19 @@ export const SettingsGeneral: React.FC<{
               <Flex gap="l">
                 <GithubOrgSelect
                   onChange={() => null}
-                  defaultSelected={org!.githubInstallationId}
+                  defaultSelected={
+                    org!.githubInstallationId
+                      ? String(org!.githubInstallationId)
+                      : undefined
+                  }
                   disabled
                 />
                 <GithubRepoSelect
-                  defaultSelected={proj.githubRepository}
+                  value={
+                    proj.githubRepository
+                      ? String(proj.githubRepository)
+                      : undefined
+                  }
                   installationId={org!.githubInstallationId}
                   onChange={setRepoId}
                 />
