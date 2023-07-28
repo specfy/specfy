@@ -26,7 +26,9 @@ import { isError } from '../../../../api/helpers';
 import { getEmptyDoc } from '../../../../common/content';
 import { proposeTitle } from '../../../../common/diff';
 import { i18n } from '../../../../common/i18n';
-import originalStore, {
+import {
+  originalStore,
+  revertAll,
   useComponentsStore,
   useStagingStore,
 } from '../../../../common/store';
@@ -79,7 +81,7 @@ export const ProjectRevisionCreate: React.FC<{
     if (staging.hasGraphChanged) {
       setFlow(componentsToFlow(Object.values(storeComponents.components)));
 
-      const oldComponents = originalStore.originalStore.filter((old) => {
+      const oldComponents = originalStore.filter((old) => {
         return 'edges' in old && old.projectId === proj.id;
       }) as ApiComponent[];
       setPreviousFlow(componentsToFlow(oldComponents));
@@ -120,7 +122,7 @@ export const ProjectRevisionCreate: React.FC<{
   // };
 
   const handleRevertAll = () => {
-    originalStore.revertAll(staging.diffs);
+    revertAll(staging.diffs);
   };
 
   const onSubmit = async () => {
@@ -163,7 +165,7 @@ export const ProjectRevisionCreate: React.FC<{
     }
 
     // Discard local changes
-    originalStore.revertAll(staging.diffs);
+    revertAll(staging.diffs);
 
     toast.add({ title: 'Revision created', status: 'success' });
     navigate(

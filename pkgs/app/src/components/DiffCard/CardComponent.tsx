@@ -4,7 +4,8 @@ import classnames from 'classnames';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
-import originalStore, {
+import {
+  findOriginal,
   useRevisionStore,
   useComponentsStore,
 } from '../../common/store';
@@ -44,7 +45,7 @@ export const DiffCardComponent: React.FC<{
         : (inRevision.current as ApiComponent);
     }
 
-    return originalStore.find(id)!;
+    return findOriginal(id)!;
   };
 
   const Title = useMemo(() => {

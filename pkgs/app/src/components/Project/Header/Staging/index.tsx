@@ -4,7 +4,10 @@ import { Link } from 'react-router-dom';
 import { useDebounce } from 'react-use';
 
 import { diffTwoBlob } from '../../../../common/diff';
-import originalStore, {
+import {
+  originalStore,
+  findOriginal,
+  allowedType,
   useStagingStore,
   useDocumentsStore,
   useComponentsStore,
@@ -41,7 +44,7 @@ export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
 
       // Find added and modified
       for (const item of store) {
-        const original = originalStore.find(item.id)!;
+        const original = findOriginal(item.id)!;
 
         const bd: BlobAndDiffs = {
           blob: {
@@ -50,7 +53,7 @@ export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
             deleted: false,
             parentId: original ? original.blobId : null,
             previous: (original as any) || null,
-            type: originalStore.allowedType(item) as any,
+            type: allowedType(item) as any,
             typeId: item.id,
             current: item as any, // Can't fix this
             createdAt: '',
@@ -82,7 +85,7 @@ export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
       }
 
       // Find deleted
-      for (const item of originalStore.originalStore) {
+      for (const item of originalStore) {
         // ignore others item
         if ('projectId' in item && item.projectId !== project!.id) {
           continue;
@@ -101,7 +104,7 @@ export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
             created: false,
             deleted: true,
             parentId: item.blobId,
-            type: originalStore.allowedType(item) as any,
+            type: allowedType(item) as any,
             typeId: item.id,
             current: item as any,
             previous: item as any,

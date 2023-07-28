@@ -1,7 +1,7 @@
 import type { GetDocument, ListDocuments } from '@specfy/api/src/types/api';
 import { useQuery } from '@tanstack/react-query';
 
-import originalStore from '../common/store';
+import { addOriginal } from '../common/store';
 
 import { fetchApi } from './fetch';
 import { APIError, isError } from './helpers';
@@ -47,7 +47,7 @@ export function useGetDocument(
         throw new APIError({ res, json });
       }
 
-      originalStore.add(json.data);
+      addOriginal(json.data);
       return json;
     },
   });
