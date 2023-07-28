@@ -13,7 +13,7 @@ Global:
   ✔ Favicon @done(23-06-18 17:08)
   - Block refresh / quit when there are pending changes
   - Remove antd
-    - Layout
+    ✔ Layout @done(23-07-28 11:38)
     - Checkbox
     - Input
     - Button

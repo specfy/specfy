@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 list=($1)
-regex='^jest|stylelint|turbowatch|prettier|eslint|semantic|dotenv|nodemon|renovate'
+regex='^jest|stylelint|turbowatch|prettier|eslint|semantic|dotenv|nodemon|renovate|vitest|ts-node'
 
 for file in "${list[@]}"; do
   echo "cleaning $file"
