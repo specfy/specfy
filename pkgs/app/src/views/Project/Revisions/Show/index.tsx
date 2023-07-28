@@ -33,13 +33,13 @@ import { useRevisionStore } from '../../../../common/store';
 import { titleSuffix } from '../../../../common/string';
 import { Container } from '../../../../components/Container';
 import { ContentDoc } from '../../../../components/Content';
-import { DiffCard } from '../../../../components/DiffCard';
 import { Editor } from '../../../../components/Editor';
 import { FakeInput } from '../../../../components/Form/FakeInput';
 import { ListActivity } from '../../../../components/ListActivity';
 import { Loading } from '../../../../components/Loading';
 import { NotFound } from '../../../../components/NotFound';
 import { Checks } from '../../../../components/Revision/Checks';
+import { DiffCard } from '../../../../components/Revision/DiffCard';
 import { ReviewBar } from '../../../../components/Revision/ReviewBar';
 import { StatusTag } from '../../../../components/Revision/StatusTag';
 import { SidebarBlock } from '../../../../components/Sidebar/Block';
@@ -269,88 +269,123 @@ export const ProjectRevisionsShow: React.FC<{
   }
 
   return (
-    <Container noPadding>
-      <Container.Left2Third>
-        <Helmet title={`${rev.name} - ${proj.name} ${titleSuffix}`} />
+    <div>
+      <Container noPadding className={cls.container}>
+        <Container.Left2Third>
+          <Helmet title={`${rev.name} - ${proj.name} ${titleSuffix}`} />
 
-        <div className={cls.main}>
-          <div className={cls.card}>
-            {!edit && (
-              <div className={cls.mainTop}>
-                <h2 className={cls.title}>{rev.name}</h2>
+          <div className={cls.main}>
+            <div className={cls.card}>
+              {!edit && (
+                <div className={cls.mainTop}>
+                  <h2 className={cls.title}>{rev.name}</h2>
+                  <Space>
+                    {save && <Loading />}
+
+                    <Dropdown.Button
+                      menu={{ items: actionsItems, onClick: onMenuClick }}
+                      overlayClassName={cls.editDropdown}
+                      onClick={() => setEdit(true)}
+                      icon={<IconDotsVertical />}
+                    >
+                      Edit
+                    </Dropdown.Button>
+                  </Space>
+                </div>
+              )}
+              {edit && (
+                <FakeInput.H2
+                  size="large"
+                  value={title}
+                  placeholder="Title..."
+                  onChange={(e) => setTitle(e.target.value)}
+                />
+              )}
+
+              <div className={cls.subtitle}>
+                <StatusTag
+                  status={rev.status}
+                  locked={rev.locked}
+                  merged={rev.merged}
+                />{' '}
+                opened <Time time={rev.createdAt} />
+              </div>
+
+              <Typography className={cls.content}>
+                {!edit && <ContentDoc doc={rev.description} />}
+                {edit && (
+                  <Editor
+                    key={rev.id}
+                    content={description}
+                    onUpdate={setDescription}
+                    minHeight="100px"
+                  />
+                )}
+              </Typography>
+            </div>
+
+            {edit && (
+              <div className={cls.editSave}>
                 <Space>
-                  {save && <Loading />}
-
-                  <Dropdown.Button
-                    menu={{ items: actionsItems, onClick: onMenuClick }}
-                    overlayClassName={cls.editDropdown}
-                    onClick={() => setEdit(true)}
-                    icon={<IconDotsVertical />}
-                  >
-                    Edit
-                  </Dropdown.Button>
+                  <Button type="text" onClick={() => setEdit(false)}>
+                    cancel
+                  </Button>
+                  <Button type="primary" onClick={onClickSave} loading={save}>
+                    Save
+                  </Button>
                 </Space>
               </div>
             )}
-            {edit && (
-              <FakeInput.H2
-                size="large"
-                value={title}
-                placeholder="Title..."
-                onChange={(e) => setTitle(e.target.value)}
-              />
+
+            {checks && !edit && (
+              <Checks rev={rev} checks={checks} qp={qp} onClick={patchStatus} />
             )}
+          </div>
 
-            <div className={cls.subtitle}>
-              <StatusTag
-                status={rev.status}
-                locked={rev.locked}
-                merged={rev.merged}
-              />{' '}
-              opened <Time time={rev.createdAt} />
+          {computing && (
+            <div>
+              <Skeleton active title={false} paragraph={{ rows: 3 }}></Skeleton>
             </div>
+          )}
 
-            <Typography className={cls.content}>
-              {!edit && <ContentDoc doc={rev.description} />}
-              {edit && (
-                <Editor
-                  key={rev.id}
-                  content={description}
-                  onUpdate={setDescription}
-                  minHeight="100px"
+          {flagRevisionApprovalEnabled && !edit && (
+            <ReviewBar rev={rev} qp={qp} />
+          )}
+        </Container.Left2Third>
+        <Container.Right1Third>
+          <div className={cls.sidebar}>
+            <SidebarBlock title="Authors">
+              <UserList
+                list={authors || rev.authors}
+                params={qp}
+                edit={edit}
+                onChange={onChangeAuthor}
+                exclude={reviewers || rev.reviewers}
+              />
+            </SidebarBlock>
+            {false && (
+              <SidebarBlock title="Reviewers">
+                <UserList
+                  list={reviewers || rev!.reviewers}
+                  params={qp}
+                  edit={edit}
+                  onChange={onChangeReviewer}
+                  exclude={authors || rev!.authors}
                 />
-              )}
-            </Typography>
+              </SidebarBlock>
+            )}
+            <SidebarBlock title="Activities">
+              <ListActivity
+                orgId={rev.orgId}
+                projectId={rev.projectId}
+                revisionId={rev.id}
+              />
+            </SidebarBlock>
           </div>
+        </Container.Right1Third>
+      </Container>
 
-          {edit && (
-            <div className={cls.editSave}>
-              <Space>
-                <Button type="text" onClick={() => setEdit(false)}>
-                  cancel
-                </Button>
-                <Button type="primary" onClick={onClickSave} loading={save}>
-                  Save
-                </Button>
-              </Space>
-            </div>
-          )}
-
-          {checks && !edit && (
-            <Checks rev={rev} checks={checks} qp={qp} onClick={patchStatus} />
-          )}
-        </div>
-
-        {computing && (
-          <div>
-            <Skeleton active title={false} paragraph={{ rows: 3 }}></Skeleton>
-          </div>
-        )}
-
-        {flagRevisionApprovalEnabled && !edit && (
-          <ReviewBar rev={rev} qp={qp} />
-        )}
-
+      <div>
         {!computing && (
           <div className={cls.staged}>
             {diffs.length > 0 ? (
@@ -370,38 +405,7 @@ export const ProjectRevisionsShow: React.FC<{
             )}
           </div>
         )}
-      </Container.Left2Third>
-      <Container.Right1Third>
-        <div className={cls.sidebar}>
-          <SidebarBlock title="Authors">
-            <UserList
-              list={authors || rev.authors}
-              params={qp}
-              edit={edit}
-              onChange={onChangeAuthor}
-              exclude={reviewers || rev.reviewers}
-            />
-          </SidebarBlock>
-          {false && (
-            <SidebarBlock title="Reviewers">
-              <UserList
-                list={reviewers || rev!.reviewers}
-                params={qp}
-                edit={edit}
-                onChange={onChangeReviewer}
-                exclude={authors || rev!.authors}
-              />
-            </SidebarBlock>
-          )}
-          <SidebarBlock title="Activities">
-            <ListActivity
-              orgId={rev.orgId}
-              projectId={rev.projectId}
-              revisionId={rev.id}
-            />
-          </SidebarBlock>
-        </div>
-      </Container.Right1Third>
-    </Container>
+      </div>
+    </div>
   );
 };

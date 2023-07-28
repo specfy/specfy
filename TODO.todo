@@ -17,7 +17,7 @@ Global:
     - Checkbox
     - Input
     - Button
-    - Tag
+    ✔ Tag @done(23-07-28 11:21)
     - Typography
     - Select
     - Tooltip

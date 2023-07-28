@@ -16,7 +16,12 @@ export const UserCard: React.FC<{
 }> = ({ user, size }) => {
   return (
     <Space className={classnames(cls.userCard, size && cls[size])}>
-      <AvatarAuto name={user.name} size={size} src={user.avatarUrl} />
+      <AvatarAuto
+        name={user.name}
+        size={size}
+        src={user.avatarUrl}
+        colored={false}
+      />
       {user.name}
     </Space>
   );

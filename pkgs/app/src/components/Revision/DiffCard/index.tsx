@@ -4,7 +4,7 @@ import {
   IconChevronRight,
   IconExternalLink,
 } from '@tabler/icons-react';
-import { Button, Tag } from 'antd';
+import { Button } from 'antd';
 import classnames from 'classnames';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -15,8 +15,9 @@ import type {
   ComponentBlobWithDiff,
   DocumentBlobWithDiff,
   ProjectBlobWithDiff,
-} from '../../types/blobs';
-import { Card } from '../Card';
+} from '../../../types/blobs';
+import { Card } from '../../Card';
+import { Tag } from '../../Tag';
 
 import { DiffCardComponent } from './CardComponent';
 import { DiffCardDocument } from './CardDocument';

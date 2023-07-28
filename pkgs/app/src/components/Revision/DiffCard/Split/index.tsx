@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import type { Change } from 'diff';
 import { useMemo } from 'react';
 
-import type { ComputedForDiff } from '../../../types/blobs';
+import type { ComputedForDiff } from '../../../../types/blobs';
 
 import cls from './index.module.scss';
 

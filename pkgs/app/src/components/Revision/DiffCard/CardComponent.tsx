@@ -8,17 +8,17 @@ import {
   findOriginal,
   useRevisionStore,
   useComponentsStore,
-} from '../../common/store';
+} from '../../../common/store';
 import type {
   ComponentBlobWithDiff,
   DiffObjectsArray,
-} from '../../types/blobs';
-import type { RouteProject } from '../../types/routes';
-import { ComponentIcon } from '../Component/Icon';
-import { ComponentItem, TechItem } from '../Component/Line';
-import { ContentDoc } from '../Content';
-import { Flex } from '../Flex';
-import { PreviewNode } from '../Flow/CustomNode';
+} from '../../../types/blobs';
+import type { RouteProject } from '../../../types/routes';
+import { ComponentIcon } from '../../Component/Icon';
+import { ComponentItem, TechItem } from '../../Component/Line';
+import { ContentDoc } from '../../Content';
+import { Flex } from '../../Flex';
+import { PreviewNode } from '../../Flow/CustomNode';
 
 import { Split } from './Split';
 import { UnifiedDiff } from './Unified';

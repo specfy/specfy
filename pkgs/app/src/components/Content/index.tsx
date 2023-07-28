@@ -17,7 +17,7 @@ import type { Payload } from '../../common/content';
 import { map } from '../../common/content';
 import { slugify } from '../../common/string';
 import { Banner } from '../Banner';
-import clsDiff from '../DiffCard/index.module.scss';
+import clsDiff from '../Revision/DiffCard/index.module.scss';
 
 import { ContentBlockDocument } from './BlockDocument';
 import { ContentBlockStep } from './BlockStep';

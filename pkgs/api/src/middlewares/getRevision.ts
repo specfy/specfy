@@ -40,6 +40,7 @@ export const getRevision: PreHandler<{
     },
     include: {
       Project: true,
+      TypeHasUsers: { include: { User: true } },
     },
   });
 

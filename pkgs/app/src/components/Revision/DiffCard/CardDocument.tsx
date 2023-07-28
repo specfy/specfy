@@ -2,8 +2,8 @@ import type { BlockLevelZero } from '@specfy/api/src/types/api';
 import { Typography } from 'antd';
 import { useMemo } from 'react';
 
-import type { DocumentBlobWithDiff } from '../../types/blobs';
-import { ContentDoc } from '../Content';
+import type { DocumentBlobWithDiff } from '../../../types/blobs';
+import { ContentDoc } from '../../Content';
 
 import { Split } from './Split';
 import { UnifiedDiff } from './Unified';

@@ -1,7 +1,8 @@
 import { flagRevisionApprovalEnabled } from '@specfy/api/src/models/revisions/constants';
 import type { ApiRevision } from '@specfy/api/src/types/api';
 import { IconLock } from '@tabler/icons-react';
-import { Tag } from 'antd';
+
+import { Tag } from '../../Tag';
 
 import cls from './index.module.scss';
 

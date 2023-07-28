@@ -1,8 +1,11 @@
 import type { ApiProject, BlockLevelZero } from '@specfy/api/src/types/api';
 import classnames from 'classnames';
 
-import type { DiffObjectsArray, ProjectBlobWithDiff } from '../../types/blobs';
-import { Link } from '../Project/Links';
+import type {
+  DiffObjectsArray,
+  ProjectBlobWithDiff,
+} from '../../../types/blobs';
+import { Link } from '../../Project/Links';
 
 import { Split } from './Split';
 import { UnifiedContent } from './Unified/Content';

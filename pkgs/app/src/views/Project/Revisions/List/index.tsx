@@ -1,15 +1,11 @@
 import { flagRevisionApprovalEnabled } from '@specfy/api/src/models/revisions/constants';
-import type {
-  ApiProject,
-  ApiRevision,
-  ListRevisions,
-} from '@specfy/api/src/types/api';
+import type { ApiProject, ListRevisions } from '@specfy/api/src/types/api';
 import {
   IconChevronRight,
   IconCircleXFilled,
   IconSearch,
 } from '@tabler/icons-react';
-import { Button, Input, Select, Table } from 'antd';
+import { Button, Input, Select, Skeleton } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
@@ -17,6 +13,7 @@ import { useDebounce } from 'react-use';
 
 import { useListRevisions } from '../../../../api';
 import { titleSuffix } from '../../../../common/string';
+import { AvatarAuto, AvatarGroup } from '../../../../components/AvatarAuto';
 import { Container } from '../../../../components/Container';
 import { Flex } from '../../../../components/Flex';
 import { Loading } from '../../../../components/Loading';
@@ -25,6 +22,66 @@ import { Time } from '../../../../components/Time';
 import type { RouteProject } from '../../../../types/routes';
 
 import cls from './index.module.scss';
+
+const Row: React.FC<{
+  item: ListRevisions['Success']['data'][0];
+  params: RouteProject;
+}> = ({ item, params }) => {
+  const link = `/${params.org_id}/${params.project_slug}/revisions/${item.id}`;
+
+  return (
+    <Flex className={cls.row} justify="space-between" align="center">
+      <div>
+        <Flex align="center" gap="l">
+          <div className={cls.title}>
+            <Link to={link} relative="path">
+              {item.name}
+            </Link>
+          </div>
+        </Flex>
+        <Flex className={cls.info} gap="m">
+          <Time time={item.updatedAt} />·{' '}
+          {item.authors.length > 1 && (
+            <AvatarGroup>
+              {item.authors.map((user) => {
+                return (
+                  <AvatarAuto
+                    key={user.id}
+                    name={user.name}
+                    colored={false}
+                    size="small"
+                  />
+                );
+              })}
+            </AvatarGroup>
+          )}
+          {item.authors.length > 0 && (
+            <Flex gap="m">
+              <AvatarAuto
+                key={item.authors[0].id}
+                name={item.authors[0].name}
+                colored={false}
+                size="small"
+              />
+              {item.authors[0].name}
+            </Flex>
+          )}
+        </Flex>
+      </div>
+      <Flex gap="l">
+        <StatusTag
+          status={item.status}
+          locked={item.locked}
+          merged={item.merged}
+        />
+
+        <Link to={link} relative="path">
+          <IconChevronRight />
+        </Link>
+      </Flex>
+    </Flex>
+  );
+};
 
 export const ProjectRevisionsList: React.FC<{
   proj: ApiProject;
@@ -118,51 +175,14 @@ export const ProjectRevisionsList: React.FC<{
           </div>
         </div>
 
-        {list && (
-          <Table
-            rowKey="id"
-            dataSource={list.data}
-            pagination={{ position: ['bottomCenter'] }}
-          >
-            <Table.Column
-              title={false}
-              dataIndex="name"
-              key="name"
-              render={(_, item: ApiRevision) => {
-                return (
-                  <Flex justify="space-between" className={cls.line}>
-                    <div>
-                      <Link
-                        to={`/${params.org_id}/${params.project_slug}/revisions/${item.id}`}
-                        relative="path"
-                        className={cls.title}
-                      >
-                        {item.name}
-                      </Link>
-                      <div className={cls.subtitle}>
-                        Opened <Time time={item.createdAt} />
-                      </div>
-                    </div>
+        {!list && <Skeleton active title={false} />}
 
-                    <div>
-                      <StatusTag
-                        status={item.status}
-                        locked={item.locked}
-                        merged={item.merged}
-                      />
-                      <Link
-                        to={`/${params.org_id}/${params.project_slug}/revisions/${item.id}`}
-                        relative="path"
-                        className={cls.title}
-                      >
-                        <IconChevronRight />
-                      </Link>
-                    </div>
-                  </Flex>
-                );
-              }}
-            />
-          </Table>
+        {list && (
+          <div className={cls.list}>
+            {list.data.map((item) => {
+              return <Row item={item} params={params} key={item.id} />;
+            })}
+          </div>
         )}
       </Container.Left2Third>
     </Container>

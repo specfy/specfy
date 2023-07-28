@@ -22,5 +22,5 @@ export interface DBRevision {
 }
 
 export type RevisionWithProject = Prisma.RevisionsGetPayload<{
-  include: { Project: true };
+  include: { Project: true; TypeHasUsers: { include: { User: true } } };
 }>;

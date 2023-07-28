@@ -16,8 +16,8 @@ import {
   useNodesState,
 } from 'reactflow';
 
-import { isDiffSimple } from '../../../common/diff/helpers';
-import CustomNode from '../../Flow/CustomNode';
+import { isDiffSimple } from '../../../../common/diff/helpers';
+import CustomNode from '../../../Flow/CustomNode';
 
 import cls from './index.module.scss';
 

@@ -3,8 +3,8 @@ import { Typography } from 'antd';
 import classnames from 'classnames';
 import { useMemo, useState } from 'react';
 
-import type { Payload } from '../../../common/content';
-import { ContentBlock } from '../../Content';
+import type { Payload } from '../../../../common/content';
+import { ContentBlock } from '../../../Content';
 
 import cls from './content.module.scss';
 

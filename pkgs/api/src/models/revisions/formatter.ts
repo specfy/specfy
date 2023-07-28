@@ -1,14 +1,11 @@
 import { env } from '../../common/env.js';
 import type { ApiRevision } from '../../types/api/index.js';
-import type { TypeHasUsersWithUser } from '../typesHasUsers/types.js';
 import { toApiUser } from '../users/formatter.js';
 
 import type { RevisionWithProject } from './types.js';
 
-export function toApiRevision(
-  rev: RevisionWithProject,
-  users: TypeHasUsersWithUser[]
-): ApiRevision {
+export function toApiRevision(rev: RevisionWithProject): ApiRevision {
+  console.log(rev);
   return {
     id: rev.id,
     orgId: rev.orgId,
@@ -19,9 +16,9 @@ export function toApiRevision(
     merged: rev.merged,
     status: rev.status,
     blobs: rev.blobs,
-    authors: users
-      .filter((user) => user.role === 'author')
-      .map((u) => toApiUser(u.User)),
+    authors: rev.TypeHasUsers.filter((user) => user.role === 'author').map(
+      (u) => toApiUser(u.User)
+    ),
     url: `${env('APP_HOSTNAME')}/${rev.orgId}/${rev.Project.slug}/revisions/${
       rev.id
     }`,

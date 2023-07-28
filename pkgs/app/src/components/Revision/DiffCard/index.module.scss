@@ -1,4 +1,4 @@
-@import "../../styles/theme";
+@import "../../../styles/theme";
 
 $border-width: 10px;
 
@@ -89,13 +89,15 @@ $border-width: 10px;
 }
 
 .fileDeleted {
-  background-color: var(--decline);
-  border-color: transparent;
+  color: var(--decline3) !important;
+  background-color: var(--decline1) !important;
+  border-color: transparent !important
 }
 
 .fileCreated {
-  background-color: var(--accept);
-  border-color: transparent;
+  color: var(--accept2) !important;
+  background-color: var(--accept1) !important;
+  border-color: transparent !important;
 }
 
 .line {

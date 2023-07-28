@@ -11,9 +11,11 @@ export const ProjectActivity: React.FC<{
   params: RouteProject;
 }> = ({ params, proj }) => {
   return (
-    <Container>
+    <Container noPadding>
       <Helmet title={`Activity - ${proj.name} ${titleSuffix}`} />
-      <ListActivity orgId={params.org_id} projectId={proj.id} />
+      <Container.Left2Third padded>
+        <ListActivity orgId={params.org_id} projectId={proj.id} />
+      </Container.Left2Third>
     </Container>
   );
 };

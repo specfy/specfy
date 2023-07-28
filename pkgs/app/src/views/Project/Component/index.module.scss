@@ -5,8 +5,9 @@
 }
 
 .tagType {
+  color: var(--text3);
   background-color: #fff;
-  border: 1px solid var(--border1) !important;
+  border: 1px solid var(--border2) !important;
 
   &.service {
     color: $blue-600;

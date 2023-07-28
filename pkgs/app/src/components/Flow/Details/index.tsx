@@ -3,12 +3,13 @@ import type {
   EdgeData,
 } from '@specfy/api/src/models/flows/types';
 import { IconTrash } from '@tabler/icons-react';
-import { Button, Tag } from 'antd';
+import { Button } from 'antd';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'react-use';
 import type { Node } from 'reactflow';
 import { useEdges, useNodes, useOnSelectionChange } from 'reactflow';
 
+import { Tag } from '../../Tag';
 import { PreviewNode } from '../CustomNode';
 import type { OnNodesChangeSuper } from '../helpers';
 

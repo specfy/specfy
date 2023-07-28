@@ -1,12 +1,12 @@
 .nodeCreated,
 .nodeModified {
   border-radius: 6px;
-  box-shadow: 0 0 2px 0 var(--modified);
+  box-shadow: 0 0 2px 0 var(--modified1);
 }
 
 .nodeDeleted {
   border-radius: 6px;
-  box-shadow: 0 0 2px 0 var(--declineDark);
+  box-shadow: 0 0 2px 0 var(--decline2);
 }
 
 .edgeCreated,
@@ -15,7 +15,7 @@
 
     /* stylelint-disable-next-line selector-class-pattern */
     .react-flow__edge-path {
-      stroke: var(--modified);
+      stroke: var(--modified1);
       stroke-dasharray: 2;
       stroke-width: 2px;
     }
@@ -27,7 +27,7 @@
 
     /* stylelint-disable-next-line selector-class-pattern */
     .react-flow__edge-path {
-      stroke: var(--declineDark);
+      stroke: var(--decline2);
       stroke-dasharray: 2;
       stroke-width: 2px;
     }
