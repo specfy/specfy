@@ -11,7 +11,7 @@
     "build": "prisma generate && tsc -p tsconfig.json -w",
     "prod:build": "prisma generate && tsc -p tsconfig.json",
     "test:build": "tsc -p tsconfig.json",
-    "seed": "node ./build/test/seed/index.js",
+    "seed": "ts-node --esm ./src/test/seed/index.ts",
     "test": "vitest",
     "prisma:gen": "prisma generate",
     "migrate": "prisma db push",

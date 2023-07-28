@@ -208,7 +208,7 @@ EXPOSE 8080
   </div>
 </div>
 
-That was an easy step and we managed to reduce our image size by 36%, almost a GB, I don't know what exactly was removed but my mind is shaking at this much waste.
+That was an easy step and we managed to reduce our image size by 36%. Classic distribs contains a lot of unecessary tools and binaries that are removed in Slim distribs.
 Additionally, the build time improved by 47% (~40seconds), amazing especially considering that it was achieved with just one line of modification.
 Please note that this base image is still ~230MB (uncompressed), so we will never reach lower than that.
 
@@ -240,7 +240,7 @@ RUN true \
 # Final image
 FROM node:18.16.1-bullseye-slim as web
 
-# BONUS: Do not use root to run the app
+# BONUS: Do not use root to run the app to avoid privilege escalation, container escape, etc.
 USER node
 
 WORKDIR /app
@@ -289,7 +289,7 @@ This is portal we were talking about, we created a second image, where the only 
   </div>
 </div>
 
-In this example I copied everything from the filesystem, but we still managed to **save ~300MB**, at the relative cost of few seconds of build time.
+In this example I copied all the files from the previous steps, but we still managed to **save ~300MB**, at the relative cost of few seconds of build time.
 
 
 ## 4. Caching Dependencies
@@ -302,7 +302,7 @@ To address this issue, we can introduce another multi-stage image to leverage ca
 # package.json cache
 FROM alpine:latest as deps
 
-RUN apk add --no-cache bash curl wget jq
+RUN apk add --no-cache bash jq
 
 WORKDIR /tmp
 
@@ -347,6 +347,8 @@ COPY --from=tmp --chown=node:node /app/tmp /app
 
 EXPOSE 8080
 ```
+
+<Banner>I prefer to execute `npm install` on the second image for readability but it could be done in the `deps` image</Banner>
 
 In this enhanced Dockerfile, we introduce a new stage named `deps`. This stage solely copies the `package.json` files, enabling us to leverage Docker's caching mechanism effectively.
 
@@ -400,7 +402,7 @@ The result is a **significant improvement** in build time, particularly when onl
 => CACHED [tmp  3/13] RUN mkdir -p ./pkgs/api/                                                                        0.0s
 => CACHED [tmp  4/13] RUN mkdir -p ./pkgs/api/                                                                        0.0s
 => CACHED [tmp  5/13] RUN mkdir -p ./pkgs/website/                                                                    0.0s
-=> CACHED [deps 2/6] RUN apk add --no-cache bash curl wget jq                                                         0.0s
+=> CACHED [deps 2/6] RUN apk add --no-cache bash jq                                                                   0.0s
 => CACHED [deps 3/6] COPY package.json /tmp                                                                           0.0s
 => CACHED [deps 4/6] COPY pkgs/api/package.json /tmp/api_package.json                                                 0.0s
 => CACHED [deps 5/6] COPY pkgs/app/package.json /tmp/app_package.json                                                 0.0s
@@ -515,7 +517,7 @@ done
 # package.json cache
 FROM alpine:latest as deps
 
-RUN apk add --no-cache bash curl wget jq
+RUN apk add --no-cache bash jq
 
 WORKDIR /tmp
 
@@ -651,7 +653,7 @@ Although these results are significant, there is still a sense of bittersweetnes
 # ------------------
 FROM alpine:latest as deps
 
-RUN apk add --no-cache bash curl wget jq
+RUN apk add --no-cache bash jq
 
 WORKDIR /tmp
 
@@ -724,7 +726,9 @@ EXPOSE 8080
 
 Just a few points that were not covered:
 
-- I saved around 2MB after removing the source code, not that impactful,
+- I didn't mention the obvious `.dockerignore`
+
+- I saved around 2MB after removing the source code, not that impactful but it's cleaner.
 
 - If you compile a frontend in your dockerfile be sure to clean cache file, usually it's saved for reuse in the `node_modules` folder but can be deleted.
 

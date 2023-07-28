@@ -3,7 +3,7 @@
 # ------------------
 FROM alpine:latest as deps
 
-RUN apk add --no-cache bash curl wget jq
+RUN apk add --no-cache bash jq
 
 WORKDIR /tmp
 
