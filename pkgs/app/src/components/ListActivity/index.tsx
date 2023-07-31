@@ -2,7 +2,7 @@ import type {
   ApiActivity,
   ApiActivityGrouped,
 } from '@specfy/api/src/types/api';
-import { Skeleton, Typography } from 'antd';
+import { Skeleton } from 'antd';
 import type { Duration } from 'luxon';
 import { DateTime } from 'luxon';
 import { useEffect, useState } from 'react';
@@ -91,9 +91,7 @@ export const ListActivity: React.FC<{
         {byPeriod.map(([name, acts]) => {
           return (
             <div key={name}>
-              {name !== 'Today' && (
-                <Typography.Title level={5}>{name}</Typography.Title>
-              )}
+              {name !== 'Today' && <h5>{name}</h5>}
               <div className={cls.list}>
                 {acts.map((act) => {
                   return (

@@ -1,5 +1,5 @@
 import type { ApiOrg, ApiPerm, FieldsErrors } from '@specfy/api/src/types/api';
-import { Button, Form, Typography } from 'antd';
+import { Button, Form } from 'antd';
 import { useState } from 'react';
 
 import { createInvitation } from '../../../api';
@@ -52,7 +52,7 @@ export const TeamInvite: React.FC<{
   return (
     <Card>
       <Card.Content>
-        <Typography.Title level={3}>Add team members</Typography.Title>
+        <h3>Add team members</h3>
         <form className={cls.form} onSubmit={handleInvite}>
           <Form.Item
             help={errors.email?.message}

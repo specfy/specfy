@@ -74,7 +74,7 @@ export const SettingsGeneral: React.FC = () => {
       <Helmet title={`Account ${titleSuffix}`} />
       <div>
         <div>
-          <Typography.Title level={2}>General Settings</Typography.Title>
+          <h2>General Settings</h2>
           <Typography.Text type="secondary">
             Manage your account general&apos;s settings
           </Typography.Text>
@@ -108,7 +108,7 @@ export const SettingsGeneral: React.FC = () => {
       <Card padded>
         <div className={cls.actions}>
           <div>
-            <Typography.Title level={4}>Delete your account</Typography.Title>
+            <h4>Delete your account</h4>
             <Typography.Text type="secondary">
               This operation can&apos;t be undone.
             </Typography.Text>

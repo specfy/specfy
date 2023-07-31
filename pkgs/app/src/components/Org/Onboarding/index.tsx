@@ -1,6 +1,6 @@
 import type { ApiOrg } from '@specfy/api/src/types/api';
 import { IconArrowNarrowRight, IconCheck } from '@tabler/icons-react';
-import { Button, Typography } from 'antd';
+import { Button } from 'antd';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -49,7 +49,7 @@ export const OrgOnboarding: React.FC<{ org: ApiOrg }> = ({ org }) => {
     <div className={cls.onboarding}>
       <Flex className={cls.header} justify="space-between">
         <div>
-          <Typography.Title level={2}>Welcome</Typography.Title>
+          <h2>Welcome</h2>
           <div className={cls.sub}>
             Follow the steps to get ready to use Specfy
           </div>

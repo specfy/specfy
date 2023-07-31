@@ -122,7 +122,7 @@ export const SettingsGeneral: React.FC<{
       <Card>
         <Form layout="vertical" onFinish={handleRename}>
           <Card.Content>
-            <Typography.Title level={3}>Organization Name</Typography.Title>
+            <h3>Organization Name</h3>
             <br />
             <Form.Item
               extra={
@@ -156,7 +156,7 @@ export const SettingsGeneral: React.FC<{
       <Card>
         <Form layout="vertical" onFinish={handleRename}>
           <Card.Content>
-            <Typography.Title level={3}>Link to Github</Typography.Title>
+            <h3>Link to Github</h3>
             <p>
               Linking to a Github organization will sync the avatar and enable
               automatic repository discovery.
@@ -196,9 +196,7 @@ export const SettingsGeneral: React.FC<{
         <Card padded>
           <div className={cls.actions}>
             <div>
-              <Typography.Title level={4}>
-                Delete this organization
-              </Typography.Title>
+              <h4>Delete this organization</h4>
               <Typography.Text type="secondary">
                 This operation can&apos;t be undone.
               </Typography.Text>

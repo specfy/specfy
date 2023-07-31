@@ -84,7 +84,7 @@ export const ReviewBar: React.FC<{
       {open && (
         <div>
           <Typography className={cls.text}>
-            <Typography.Title level={2}>Finish your review</Typography.Title>
+            <h2>Finish your review</h2>
             <Editor content={review} onUpdate={setReview} minHeight="150px" />
           </Typography>
           <Space className={cls.actions}>

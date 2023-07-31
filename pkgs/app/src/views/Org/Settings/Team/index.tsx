@@ -30,7 +30,7 @@ export const SettingsTeam: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
       <Flex className={cls.team} gap="xl" column>
         <div className={cls.header}>
           <div>
-            <Typography.Title level={2}>Team members</Typography.Title>
+            <h2>Team members</h2>
             <Typography.Text type="secondary">
               Invite or manage your project&apos;s members.
             </Typography.Text>

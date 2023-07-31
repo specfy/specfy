@@ -1,6 +1,5 @@
 import type { ApiPerm, ApiUser } from '@specfy/api/src/types/api';
 import { IconSearch } from '@tabler/icons-react';
-import { Typography } from 'antd';
 import { useEffect, useState } from 'react';
 import { useDebounce } from 'react-use';
 
@@ -95,9 +94,7 @@ export const SettingsTeamList: React.FC<{ params: RouteOrg }> = ({
         {!searchDebounced && (
           <div className={cls.lines}>
             <div>
-              <Typography.Title level={5} className={cls.title}>
-                Owners
-              </Typography.Title>
+              <h5 className={cls.title}>Owners</h5>
               {owners.map((perm) => {
                 return (
                   <Row
@@ -117,9 +114,7 @@ export const SettingsTeamList: React.FC<{ params: RouteOrg }> = ({
 
             {false && (
               <div>
-                <Typography.Title level={5} className={cls.title}>
-                  Reviewers
-                </Typography.Title>
+                <h5 className={cls.title}>Reviewers</h5>
                 {reviewers.map((perm) => {
                   return (
                     <Row
@@ -139,9 +134,7 @@ export const SettingsTeamList: React.FC<{ params: RouteOrg }> = ({
             )}
 
             <div>
-              <Typography.Title level={5} className={cls.title}>
-                Contributors
-              </Typography.Title>
+              <h5 className={cls.title}>Contributors</h5>
               {contributors.map((perm) => {
                 return (
                   <Row
@@ -160,9 +153,7 @@ export const SettingsTeamList: React.FC<{ params: RouteOrg }> = ({
             </div>
 
             <div>
-              <Typography.Title level={5} className={cls.title}>
-                Viewers
-              </Typography.Title>
+              <h5 className={cls.title}>Viewers</h5>
               {viewers.map((perm) => {
                 return (
                   <Row

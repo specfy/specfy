@@ -52,7 +52,7 @@ export const DiffCardComponent: React.FC<{
     const hasName = diff.diffs.find((d) => d.key === 'name');
 
     return (
-      <Typography.Title level={4}>
+      <h4>
         <Flex gap="l">
           <ComponentIcon data={using} large />
           {hasName && !diff.blob.created ? (
@@ -61,7 +61,7 @@ export const DiffCardComponent: React.FC<{
             using.name || ''
           )}
         </Flex>
-      </Typography.Title>
+      </h4>
     );
   }, [diff]);
 
@@ -78,7 +78,7 @@ export const DiffCardComponent: React.FC<{
         </Typography>
         {using.techs.length > 0 && (
           <div className={cls.line}>
-            <Typography.Title level={4}>Stack</Typography.Title>
+            <h4>Stack</h4>
             <div className={cls.techs}>
               {using.techs.map((techId) => {
                 return (
@@ -91,7 +91,7 @@ export const DiffCardComponent: React.FC<{
 
         {using.edges.length > 0 && (
           <div className={classnames(cls.line)}>
-            <Typography.Title level={4}>Data</Typography.Title>
+            <h4>Data</h4>
             <div className={classnames(cls.data)}>
               {using.edges.map((edge) => {
                 const comp = getComponent(edge.target);
@@ -115,7 +115,7 @@ export const DiffCardComponent: React.FC<{
             const comp = getComponent(using.inComponent);
             return (
               <div className={classnames(cls.line)}>
-                <Typography.Title level={4}>Host</Typography.Title>
+                <h4>Host</h4>
                 <div className={cls.techs}>
                   <ComponentItem
                     className={cls.item}
@@ -173,7 +173,7 @@ export const DiffCardComponent: React.FC<{
         if (d.key === 'techs') {
           return (
             <div key={d.key} className={classnames(cls.line)}>
-              <Typography.Title level={4}>Stack</Typography.Title>
+              <h4>Stack</h4>
               {(d.diff as DiffObjectsArray<ApiComponent['techs'][0]>).added.map(
                 (tech) => {
                   return (
@@ -210,7 +210,7 @@ export const DiffCardComponent: React.FC<{
           const change = d.diff as DiffObjectsArray<ApiComponent['edges'][0]>;
           return (
             <div key={d.key} className={classnames(cls.line)}>
-              <Typography.Title level={4}>Data</Typography.Title>
+              <h4>Data</h4>
               {change.added.map((edge) => {
                 const comp = getComponent(edge.target);
                 return (
@@ -263,7 +263,7 @@ export const DiffCardComponent: React.FC<{
             getComponent(diff.blob.previous.inComponent);
           return (
             <div key={d.key} className={classnames(cls.line)}>
-              <Typography.Title level={4}>Host</Typography.Title>
+              <h4>Host</h4>
               {newComp && (
                 <div className={cls.added}>
                   <ComponentItem

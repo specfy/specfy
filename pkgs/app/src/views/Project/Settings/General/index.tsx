@@ -154,7 +154,7 @@ export const SettingsGeneral: React.FC<{
 
       <div>
         <div>
-          <Typography.Title level={2}>General Settings</Typography.Title>
+          <h2>General Settings</h2>
           <Typography.Text type="secondary">
             Manage your project general&apos;s settings
           </Typography.Text>
@@ -200,7 +200,7 @@ export const SettingsGeneral: React.FC<{
       <Card>
         <Form layout="vertical" onFinish={handleRename}>
           <Card.Content>
-            <Typography.Title level={3}>Link to Github</Typography.Title>
+            <h3>Link to Github</h3>
             <p>
               Linking to a Github repository enables automatic deployment when
               you push to your repository.
@@ -259,7 +259,7 @@ export const SettingsGeneral: React.FC<{
       <Card>
         <Form layout="vertical" onFinish={handleRename}>
           <Card.Content>
-            <Typography.Title level={3}>Keys</Typography.Title>
+            <h3>Keys</h3>
             <Flex gap="l" column align="flex-start">
               <div>
                 <div>Project ID</div>
@@ -298,7 +298,7 @@ export const SettingsGeneral: React.FC<{
       <Card padded>
         <div className={cls.actions}>
           <div>
-            <Typography.Title level={4}>Delete this project</Typography.Title>
+            <h4>Delete this project</h4>
             <Typography.Text type="secondary">
               Deleting a project can&apos;t be undone.
             </Typography.Text>

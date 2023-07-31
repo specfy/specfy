@@ -2,7 +2,7 @@ import { LinkOutlined } from '@ant-design/icons';
 import type { IconType } from '@icons-pack/react-simple-icons';
 import type { DBProjectLink } from '@specfy/api/src/models/projects/types';
 import { IconPlus, IconTrash } from '@tabler/icons-react';
-import { Button, Typography } from 'antd';
+import { Button } from 'antd';
 import classnames from 'classnames';
 import { useMemo, useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
@@ -149,7 +149,7 @@ export const ProjectLinks: React.FC = () => {
       )}
       {open && (
         <div className={cls.edits}>
-          <Typography.Title level={4}>Links</Typography.Title>
+          <h4>Links</h4>
           {project.links.map((link, i) => {
             return (
               <LinkEdit

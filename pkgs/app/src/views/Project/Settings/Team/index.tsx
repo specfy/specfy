@@ -84,7 +84,7 @@ export const SettingsTeam: React.FC<{
       <Helmet title={`Team - ${proj.name} ${titleSuffix}`} />
       <div className={cls.header}>
         <div>
-          <Typography.Title level={2}>Team members</Typography.Title>
+          <h2>Team members</h2>
           <Typography.Text type="secondary">
             Invite or manage your project&apos;s members.
           </Typography.Text>
@@ -100,9 +100,7 @@ export const SettingsTeam: React.FC<{
         {!searchDebounced && (
           <div className={cls.lines}>
             <div>
-              <Typography.Title level={5} className={cls.title}>
-                Owners
-              </Typography.Title>
+              <h5 className={cls.title}>Owners</h5>
               {owners.map((perm) => {
                 return (
                   <Row
@@ -122,9 +120,7 @@ export const SettingsTeam: React.FC<{
 
             {false && (
               <div>
-                <Typography.Title level={5} className={cls.title}>
-                  Reviewers
-                </Typography.Title>
+                <h5 className={cls.title}>Reviewers</h5>
                 {reviewers.map((perm) => {
                   return (
                     <Row
@@ -144,9 +140,7 @@ export const SettingsTeam: React.FC<{
             )}
 
             <div>
-              <Typography.Title level={5} className={cls.title}>
-                Contributors
-              </Typography.Title>
+              <h5 className={cls.title}>Contributors</h5>
               {contributors.map((perm) => {
                 return (
                   <Row
@@ -165,9 +159,7 @@ export const SettingsTeam: React.FC<{
             </div>
 
             <div>
-              <Typography.Title level={5} className={cls.title}>
-                Viewers
-              </Typography.Title>
+              <h5 className={cls.title}>Viewers</h5>
               {viewers.map((perm) => {
                 return (
                   <Row

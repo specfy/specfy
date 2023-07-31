@@ -5,8 +5,7 @@ import {
   IconForbid,
   IconTemplate,
 } from '@tabler/icons-react';
-import { Button, Skeleton, Table, Typography } from 'antd';
-import type { TitleProps } from 'antd/es/typography/Title';
+import { Button, Skeleton, Table } from 'antd';
 import classnames from 'classnames';
 import { useMemo, useState } from 'react';
 
@@ -21,44 +20,35 @@ import type { RouteOrg } from '../../../types/routes';
 
 import cls from './index.module.scss';
 
-const Title: React.FC<{ item: ApiPolicy; level: TitleProps['level'] }> = ({
-  item,
-  level,
-}) => {
+const Title: React.FC<{ item: ApiPolicy }> = ({ item }) => {
   const tech = item.tech ? supportedIndexed[item.tech] : null;
 
   if (item.type === 'promote') {
     return (
-      <Typography.Title
-        level={level}
-        className={classnames(cls.title, cls.approved)}
-      >
+      <h4 className={classnames(cls.title, cls.approved)}>
         <IconCircleCheck /> {tech?.name}
-      </Typography.Title>
+      </h4>
     );
   } else if (item.type === 'ban') {
     return (
-      <Typography.Title
-        level={level}
-        className={classnames(cls.title, cls.banned)}
-      >
+      <h4 className={classnames(cls.title, cls.banned)}>
         <IconForbid />
         {tech?.name}
-      </Typography.Title>
+      </h4>
     );
   } else if (item.type === 'template_revision') {
     return (
-      <Typography.Title level={level} className={classnames(cls.title)}>
+      <h4 className={classnames(cls.title)}>
         <IconTemplate />
         Template for Revision
-      </Typography.Title>
+      </h4>
     );
   } else if (item.type === 'template_rfc') {
     return (
-      <Typography.Title level={level} className={classnames(cls.title)}>
+      <h4 className={classnames(cls.title)}>
         <IconTemplate />
         Template for RFC
-      </Typography.Title>
+      </h4>
     );
   }
 
@@ -115,7 +105,7 @@ export const OrgPolicies: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
               return (
                 <div className={cls.rowTitle}>
                   <div>
-                    <Title item={item} level={4} />
+                    <Title item={item} />
                     <div className={cls.subtitle}>
                       <div>
                         created <Time time={item.createdAt} />
@@ -138,7 +128,7 @@ export const OrgPolicies: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
       <Container.Right>
         {selected && (
           <Card padded>
-            <Title item={selected} level={2} />
+            <Title item={selected} />
             <div className={cls.subtitle}>
               <AvatarAuto name="Samuel Bodin" size="small" /> Samuel Bodin
               <span>-</span>

@@ -1,5 +1,5 @@
 import { IconArrowRight } from '@tabler/icons-react';
-import { Button, Typography } from 'antd';
+import { Button } from 'antd';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import { useSearchParam } from 'react-use';
@@ -83,7 +83,7 @@ export const Invite: React.FC = () => {
       <div>
         <Card>
           <Card.Content large>
-            <Typography.Title level={2}>Join an organization</Typography.Title>
+            <h2>Join an organization</h2>
             <p>
               <strong>{inv.by.name}</strong> ({inv.by.email}) invited you to
               join the organization <strong>{inv.org.name}</strong>.
