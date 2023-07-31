@@ -10,7 +10,7 @@ import {
   IconChevronRight,
   IconCircleArrowRight,
 } from '@tabler/icons-react';
-import { Button, Checkbox } from 'antd';
+import { Button } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
@@ -23,7 +23,8 @@ import { titleSuffix } from '../../../common/string';
 import { Banner } from '../../../components/Banner';
 import { Container } from '../../../components/Container';
 import { Flex } from '../../../components/Flex';
-import { Field } from '../../../components/Form/Field';
+import { Checkbox } from '../../../components/Form/Checkbox';
+import { Field, FieldCheckbox } from '../../../components/Form/Field';
 import { Input } from '../../../components/Form/Input';
 import { GithubSearch } from '../../../components/StackSearch/GithubSearch';
 import { useToast } from '../../../hooks/useToast';
@@ -187,12 +188,14 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
                     grow
                     className={cls.inputs}
                   >
-                    <Checkbox
-                      checked={stackEnabled}
-                      onChange={() => setStackEnabled(!stackEnabled)}
-                    >
-                      Enabled
-                    </Checkbox>
+                    <Flex gap="l">
+                      <FieldCheckbox name="checkStackEnabled" label="Enabled">
+                        <Checkbox
+                          checked={stackEnabled}
+                          onCheckedChange={() => setStackEnabled(!stackEnabled)}
+                        />
+                      </FieldCheckbox>
+                    </Flex>
 
                     <Field
                       name="stackPath"
@@ -222,13 +225,12 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
                     grow
                     className={cls.inputs}
                   >
-                    <Checkbox
-                      checked={docEnabled}
-                      onChange={() => setDocEnabled(!docEnabled)}
-                    >
-                      Enabled
-                    </Checkbox>
-
+                    <FieldCheckbox name="checkDocEnabled" label="Enabled">
+                      <Checkbox
+                        checked={docEnabled}
+                        onCheckedChange={() => setDocEnabled(!docEnabled)}
+                      />
+                    </FieldCheckbox>
                     <Field
                       name="docPath"
                       label="Path"

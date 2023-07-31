@@ -14,7 +14,7 @@ Global:
   - Block refresh / quit when there are pending changes
   - Remove antd
     ✔ Layout @done(23-07-28 11:38)
-    - Checkbox
+    ✔ Checkbox @done(23-07-31 11:45)
     - Input
     - Button
     ✔ Tag @done(23-07-28 11:21)

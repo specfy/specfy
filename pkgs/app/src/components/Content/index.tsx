@@ -4,7 +4,6 @@ import type {
   MarkDiff,
 } from '@specfy/api/src/types/api';
 import { IconArrowBack } from '@tabler/icons-react';
-import { Checkbox } from 'antd';
 import classnames from 'classnames';
 import { useMemo, useState } from 'react';
 import { Diff, Hunk, tokenize, markEdits } from 'react-diff-view';
@@ -17,6 +16,7 @@ import type { Payload } from '../../common/content';
 import { map } from '../../common/content';
 import { slugify } from '../../common/string';
 import { Banner } from '../Banner';
+import { Checkbox } from '../Form/Checkbox';
 import clsDiff from '../Revision/DiffCard/index.module.scss';
 
 import { ContentBlockDocument } from './BlockDocument';
@@ -188,7 +188,8 @@ export const ContentBlock: React.FC<{
   else if (block.type === 'taskItem') {
     return (
       <li className={stl}>
-        <Checkbox checked={block.attrs.checked}>{map(block, pl)}</Checkbox>
+        <Checkbox checked={block.attrs.checked} />
+        {map(block, pl)}
       </li>
     );
   }

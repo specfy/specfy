@@ -1,7 +1,7 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import type { ApiInvitation } from '@specfy/api/src/types/api';
 import { IconDotsVertical } from '@tabler/icons-react';
-import { Button, Checkbox, Skeleton, Table } from 'antd';
+import { Button, Skeleton, Table } from 'antd';
 import { useState } from 'react';
 
 import {
@@ -15,6 +15,7 @@ import { AvatarAuto } from '../../../../../components/AvatarAuto';
 import { Card } from '../../../../../components/Card';
 import { Empty } from '../../../../../components/Empty';
 import { Flex } from '../../../../../components/Flex';
+import { Checkbox } from '../../../../../components/Form/Checkbox';
 import { useToast } from '../../../../../hooks/useToast';
 import type { RouteOrg } from '../../../../../types/routes';
 

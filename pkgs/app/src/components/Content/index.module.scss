@@ -4,7 +4,16 @@ ul.taskList {
   list-style: none;
 
   li {
+    display: flex;
+    gap: $p;
+    align-items: center;
+
+    margin-bottom: $p-l;
     margin-left: 0;
+
+    >p {
+      margin-bottom: 0;
+    }
   }
 
   ul {

@@ -1,3 +1,4 @@
+import * as Form from '@radix-ui/react-form';
 import { omit } from '@specfy/api/src/common/object';
 import { componentsToFlow } from '@specfy/api/src/models/flows/transform';
 import type { ComputedFlow } from '@specfy/api/src/models/flows/types';
@@ -16,7 +17,7 @@ import {
   IconGitPullRequest,
   IconGitPullRequestDraft,
 } from '@tabler/icons-react';
-import { Button, Checkbox, Form, Result, Typography } from 'antd';
+import { Button, Result, Typography } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
@@ -39,7 +40,9 @@ import { Editor } from '../../../../components/Editor';
 import { Flex } from '../../../../components/Flex';
 import { FlowWrapper } from '../../../../components/Flow';
 import { Toolbar } from '../../../../components/Flow/Toolbar';
+import { Checkbox } from '../../../../components/Form/Checkbox';
 import { FakeInput } from '../../../../components/Form/FakeInput';
+import { FieldCheckbox } from '../../../../components/Form/Field';
 import { DiffCard } from '../../../../components/Revision/DiffCard';
 import { DiffFlow } from '../../../../components/Revision/DiffCard/Flow';
 import { useToast } from '../../../../hooks/useToast';
@@ -198,7 +201,7 @@ export const ProjectRevisionCreate: React.FC<{
         <Helmet title={`Create Revision - ${proj.name} ${titleSuffix}`} />
         <div className={cls.left}>
           <Card>
-            <Form onFinish={onSubmit}>
+            <Form.Root onSubmit={onSubmit}>
               <Card.Content>
                 <Flex gap="l" column align="flex-start">
                   <FakeInput.H1
@@ -222,13 +225,13 @@ export const ProjectRevisionCreate: React.FC<{
               </Card.Content>
               <Card.Actions>
                 <Flex gap="l">
-                  <Checkbox
-                    type="checkbox"
-                    checked={autoMerge}
-                    onChange={(el) => setAutoMerge(el.target.checked)}
-                  >
-                    Merge directly
-                  </Checkbox>
+                  <FieldCheckbox name="autoMerge" label="Merge directly">
+                    <Checkbox
+                      checked={autoMerge}
+                      onCheckedChange={() => setAutoMerge(!autoMerge)}
+                    />
+                  </FieldCheckbox>
+
                   <Button
                     type="primary"
                     disabled={!canSubmit}
@@ -239,7 +242,7 @@ export const ProjectRevisionCreate: React.FC<{
                   </Button>
                 </Flex>
               </Card.Actions>
-            </Form>
+            </Form.Root>
           </Card>
         </div>
         <div className={cls.right}></div>
