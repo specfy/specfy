@@ -24,7 +24,7 @@ Global:
     - Anchor
     - Dropdown
     - Badge
-    - Skeleton
+    ✔ Skeleton @done(23-07-31 17:04)
     - Tree
     - Table
     - Autocomplete

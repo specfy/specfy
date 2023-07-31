@@ -1,8 +1,8 @@
 import type { ComputedFlow } from '@specfy/api/src/models/flows/types';
 import type { ApiOrg } from '@specfy/api/src/types/api';
-import { Skeleton } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import Skeleton from 'react-loading-skeleton';
 import { useLocalStorage } from 'react-use';
 
 import { useListProjects, useGetFlow } from '../../../api';
@@ -34,13 +34,7 @@ export const OrgOverview: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   }, [resFlow]);
 
   if (res.isLoading) {
-    return (
-      <Container.Left>
-        <Card padded>
-          <Skeleton active title={false} paragraph={{ rows: 3 }}></Skeleton>
-        </Card>
-      </Container.Left>
-    );
+    return null;
   }
 
   return (
@@ -53,20 +47,20 @@ export const OrgOverview: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
         </Card>
       </Container.Left2Third>
       <Container.Right1Third>
-        {flow && (
-          <div>
+        <div>
+          <FlowWrapper>
             {!flow ? (
-              <Skeleton active title={false} paragraph={{ rows: 3 }}></Skeleton>
+              <div style={{ margin: '20px' }}>
+                <Skeleton count={3} />
+              </div>
             ) : (
-              <FlowWrapper>
-                <Flow flow={flow} readonly />
-                <Toolbar bottom>
-                  <Toolbar.Zoom />
-                </Toolbar>
-              </FlowWrapper>
+              <Flow flow={flow} readonly />
             )}
-          </div>
-        )}
+            <Toolbar bottom>
+              <Toolbar.Zoom />
+            </Toolbar>
+          </FlowWrapper>
+        </div>
 
         <Card large seamless transparent>
           <ListActivity orgId={params.org_id}></ListActivity>

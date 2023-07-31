@@ -1,5 +1,4 @@
 import type { ApiProject } from '@specfy/api/src/types/api';
-import { Divider, Skeleton } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Route, Routes, useParams } from 'react-router-dom';
@@ -11,10 +10,9 @@ import {
   useProjectStore,
 } from '../../common/store';
 import { titleSuffix } from '../../common/string';
-import { AvatarGroup } from '../../components/AvatarAuto';
-import { Card } from '../../components/Card';
 import { Container } from '../../components/Container';
 import { ContentSidebar } from '../../components/Content/Sidebar';
+import { Loading } from '../../components/Loading';
 import { NotFound } from '../../components/NotFound';
 import { ProjectHeader } from '../../components/Project/Header';
 import { Sidebar } from '../../components/Sidebar';
@@ -92,15 +90,7 @@ export const Project: React.FC = () => {
 
           <Container>
             <Container.Left>
-              <Card padded large seamless>
-                <Skeleton active paragraph={{ rows: 3 }}></Skeleton>
-                <Divider />
-                <AvatarGroup>
-                  <Skeleton.Avatar active />
-                  <Skeleton.Avatar active />
-                  <Skeleton.Avatar active />
-                </AvatarGroup>
-              </Card>
+              <Loading />
             </Container.Left>
           </Container>
         </div>

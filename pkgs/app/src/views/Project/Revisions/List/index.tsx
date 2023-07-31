@@ -4,9 +4,9 @@ import {
   IconCircleXFilled,
   IconSearch,
 } from '@tabler/icons-react';
-import { Skeleton } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import Skeleton from 'react-loading-skeleton';
 import { Link } from 'react-router-dom';
 import { useDebounce } from 'react-use';
 
@@ -179,7 +179,22 @@ export const ProjectRevisionsList: React.FC<{
           </Flex>
         </div>
 
-        {!list && <Skeleton active title={false} />}
+        {!list && (
+          <div className={cls.list}>
+            {[1, 2, 3].map((i) => {
+              return (
+                <Flex
+                  key={i}
+                  className={cls.row}
+                  justify="space-between"
+                  align="center"
+                >
+                  <Skeleton width={200} />
+                </Flex>
+              );
+            })}
+          </div>
+        )}
 
         {list && (
           <div className={cls.list}>

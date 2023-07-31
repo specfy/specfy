@@ -5,9 +5,10 @@ import {
   IconForbid,
   IconTemplate,
 } from '@tabler/icons-react';
-import { Skeleton, Table } from 'antd';
+import { Table } from 'antd';
 import classnames from 'classnames';
 import { useMemo, useState } from 'react';
+import Skeleton from 'react-loading-skeleton';
 
 import { useListPolicies } from '../../../api';
 import { supportedIndexed } from '../../../common/techs';

@@ -1,12 +1,11 @@
 import { Github } from '@icons-pack/react-simple-icons';
-import { Divider, Skeleton } from 'antd';
 import { Helmet } from 'react-helmet-async';
+import Skeleton from 'react-loading-skeleton';
 import { useParams } from 'react-router-dom';
 
 import { useGetUser } from '../../../api';
 import { titleSuffix } from '../../../common/string';
-import { AvatarAuto, AvatarGroup } from '../../../components/AvatarAuto';
-import { Card } from '../../../components/Card';
+import { AvatarAuto } from '../../../components/AvatarAuto';
 import { Container } from '../../../components/Container';
 import { Flex } from '../../../components/Flex';
 import { NotFound } from '../../../components/NotFound';
@@ -23,24 +22,16 @@ export const UserShow: React.FC = () => {
 
   if (get.isFetching) {
     return (
-      <div>
-        <div></div>
-        <div>
-          <Container>
-            <Container.Left>
-              <Card padded large seamless>
-                <Skeleton active paragraph={{ rows: 3 }}></Skeleton>
-                <Divider />
-                <AvatarGroup>
-                  <Skeleton.Avatar active />
-                  <Skeleton.Avatar active />
-                  <Skeleton.Avatar active />
-                </AvatarGroup>
-              </Card>
-            </Container.Left>
-          </Container>
+      <Container>
+        <div className={cls.main}>
+          <Flex gap="l">
+            <Skeleton circle width={60} height={60} />
+            <Skeleton width={200} />
+          </Flex>
+          <br />
+          <Skeleton width={200} count={2} />
         </div>
-      </div>
+      </Container>
     );
   }
 

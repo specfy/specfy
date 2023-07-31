@@ -1,10 +1,11 @@
 import type { ApiDocument, ApiProject } from '@specfy/api/src/types/api';
-import { Skeleton } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
+import Skeleton from 'react-loading-skeleton';
 import { useParams } from 'react-router-dom';
 
 import { useGetDocument } from '../../../../api';
 import { useDocumentsStore } from '../../../../common/store';
+import { Flex } from '../../../../components/Flex';
 import { NotFound } from '../../../../components/NotFound';
 import type { RouteDocument } from '../../../../types/routes';
 import { Doc } from '../Doc';
@@ -53,7 +54,10 @@ export const DocumentShow: React.FC<{
       <div className={cls.wrapper}>
         <div className={cls.container}>
           <div></div>
-          <Skeleton active title={true} paragraph={{ rows: 3 }}></Skeleton>
+          <Flex column gap="l" align="flex-start" style={{ margin: '32px 0' }}>
+            <Skeleton height={40} width={200} />
+            <Skeleton count={3} width={400} />
+          </Flex>
         </div>
       </div>
     );

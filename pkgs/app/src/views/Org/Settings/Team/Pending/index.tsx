@@ -1,8 +1,9 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import type { ApiInvitation } from '@specfy/api/src/types/api';
 import { IconDotsVertical } from '@tabler/icons-react';
-import { Skeleton, Table } from 'antd';
+import { Table } from 'antd';
 import { useState } from 'react';
+import Skeleton from 'react-loading-skeleton';
 
 import {
   roleReadable,
@@ -73,7 +74,11 @@ export const SettingsTeamPending: React.FC<{ params: RouteOrg }> = ({
   return (
     <div className={cls.invite}>
       <Card>
-        {list.isLoading && <Skeleton title={false} paragraph={{ rows: 3 }} />}
+        {list.isLoading && (
+          <div style={{ margin: '20px' }}>
+            <Skeleton count={3} />
+          </div>
+        )}
         {!list.isLoading && (!list.data || list.data.data.length <= 0) ? (
           <Empty title="No pending invitations found" />
         ) : (

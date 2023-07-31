@@ -1,13 +1,12 @@
 import type { ApiOrg } from '@specfy/api/src/types/api';
-import { Skeleton } from 'antd';
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
+import Skeleton from 'react-loading-skeleton';
 import { Route, Routes, useParams } from 'react-router-dom';
 import { useLocalStorage } from 'react-use';
 
 import { useListOrgs } from '../../api';
 import { titleSuffix } from '../../common/string';
-import { Card } from '../../components/Card';
 import { Container } from '../../components/Container';
 import { NotFound } from '../../components/NotFound';
 import { OrgHeader } from '../../components/Org/Header';
@@ -53,11 +52,11 @@ export const Org: React.FC = () => {
           <div></div>
 
           <Container>
-            <Container.Left>
-              <Card padded large seamless>
-                <Skeleton active paragraph={{ rows: 3 }}></Skeleton>
-              </Card>
-            </Container.Left>
+            <div>
+              <Skeleton circle width={50} height={50} />
+              <br />
+              <Skeleton count={3} width={400} />
+            </div>
           </Container>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import { IconPlus } from '@tabler/icons-react';
-import { Skeleton } from 'antd';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import Skeleton from 'react-loading-skeleton';
 
 import { useGetGithubInstallations } from '../../../api';
 import { GITHUB_APP } from '../../../common/envs';
@@ -96,7 +96,7 @@ export const GithubOrgSelect: React.FC<{
   };
 
   if (!ready) {
-    return <Skeleton.Input active style={{ width: '250px', height: '40px' }} />;
+    return <Skeleton width="250px" height="34px" />;
   }
 
   return (

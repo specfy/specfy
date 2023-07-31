@@ -14,9 +14,10 @@ import {
   IconLockAccessOff,
 } from '@tabler/icons-react';
 import type { MenuProps } from 'antd';
-import { Dropdown, Skeleton } from 'antd';
+import { Dropdown } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import Skeleton from 'react-loading-skeleton';
 import { useParams } from 'react-router-dom';
 
 import {
@@ -260,9 +261,20 @@ export const ProjectRevisionsShow: React.FC<{
   // --------- Content
   if (res.isLoading && !rev) {
     return (
-      <div>
-        <Skeleton active title={false} paragraph={{ rows: 3 }}></Skeleton>
-      </div>
+      <Container noPadding className={cls.container}>
+        <Container.Left2Third className={cls.left}>
+          <div className={cls.main}>
+            <div className={cls.card}>
+              <div className={cls.mainTop}>
+                <Skeleton width={150} height={40} />
+              </div>
+              <div className={cls.content}>
+                <Skeleton width={350} count={3} />
+              </div>
+            </div>
+          </div>
+        </Container.Left2Third>
+      </Container>
     );
   }
 
@@ -350,7 +362,7 @@ export const ProjectRevisionsShow: React.FC<{
 
           {computing && (
             <div>
-              <Skeleton active title={false} paragraph={{ rows: 3 }}></Skeleton>
+              <Skeleton count={3} />
             </div>
           )}
 

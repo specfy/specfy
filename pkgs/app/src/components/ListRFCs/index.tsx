@@ -1,6 +1,7 @@
 import type { ApiDocument, ApiProject } from '@specfy/api/src/types/api';
 import { IconFileText } from '@tabler/icons-react';
-import { Skeleton, Table } from 'antd';
+import { Table } from 'antd';
+import Skeleton from 'react-loading-skeleton';
 import { Link } from 'react-router-dom';
 
 import { useListDocuments } from '../../api';
@@ -18,7 +19,7 @@ export const ListRFCs: React.FC<{ project: ApiProject }> = ({ project }) => {
   if (l.isLoading) {
     return (
       <div>
-        <Skeleton active title={false} paragraph={{ rows: 3 }}></Skeleton>
+        <Skeleton />
       </div>
     );
   }

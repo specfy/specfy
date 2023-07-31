@@ -1,6 +1,6 @@
 import { IconPlus } from '@tabler/icons-react';
-import { Skeleton } from 'antd';
 import { useEffect, useMemo, useRef, useState } from 'react';
+import Skeleton from 'react-loading-skeleton';
 
 import { useGetGithubRepos } from '../../../api';
 import { GITHUB_APP } from '../../../common/envs';
@@ -76,7 +76,7 @@ export const GithubRepoSelect: React.FC<{
   };
 
   if (res.isFetching) {
-    return <Skeleton.Input active style={{ width: '250px', height: '40px' }} />;
+    return <Skeleton width="250px" height="34px" />;
   }
 
   return (
