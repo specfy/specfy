@@ -1,6 +1,95 @@
 @import "../../styles/theme";
 
+.content {
+  .mb {
+    margin-bottom: $p-l;
+  }
+
+  hr {
+    margin: $p-3xl 10%;
+    border: none;
+    border-top: 1px solid var(--border2);
+  }
+
+  h1 {
+    margin-bottom: $p-l;
+    font-size: $font-2xl;
+  }
+
+  h2 {
+    margin-bottom: $p-m;
+    font-size: $font-l;
+  }
+
+  h3 {
+    margin-bottom: $p-s;
+    font-size: $font-m;
+  }
+
+  h4 {
+    margin-bottom: $p-s;
+    font-size: $font;
+  }
+
+  code {
+    font-family: $font-code;
+    border: none;
+  }
+
+  p {
+    min-height: 22px;
+    font-size: var(--font);
+  }
+
+  p>code {
+    color: #eb5757;
+  }
+
+  table {
+    overflow: hidden;
+    table-layout: fixed;
+    border-collapse: collapse;
+
+    width: 100%;
+    margin: 0;
+
+    border-radius: $border-radius-s;
+
+    td,
+    th {
+      position: relative;
+
+      box-sizing: border-box;
+      min-width: 1em;
+      padding: $p $p-l;
+
+      vertical-align: top;
+
+      border: 1px solid $slate-200;
+
+      >* {
+        margin-bottom: 0;
+      }
+    }
+
+    th {
+      padding: $p-m $p-xl;
+
+      font-weight: bold;
+      color: $slate-800;
+      text-align: left;
+
+      background-color: $slate-100;
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+}
+
 ul.taskList {
+  padding-inline-start: $p;
   list-style: none;
 
   li {

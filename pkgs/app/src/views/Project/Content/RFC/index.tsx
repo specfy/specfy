@@ -1,8 +1,7 @@
 import type { ApiDocument, ApiProject } from '@specfy/api/src/types/api';
 import { IconDotsVertical } from '@tabler/icons-react';
 import type { MenuProps } from 'antd';
-import { Typography, Dropdown, Button } from 'antd';
-import Title from 'antd/es/typography/Title';
+import { Dropdown, Button } from 'antd';
 import type { MenuClickEventHandler } from 'rc-menu/lib/interface';
 import { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
@@ -64,10 +63,10 @@ export const RFC: React.FC<{
       <div className={clsLayout.col2}>
         <div className={cls.header}>
           {!isEditing && (
-            <Title level={1} className={cls.title} id={doc.slug}>
+            <h1 className={cls.title} id={doc.slug}>
               <span className={cls.type}>[RFC-{doc.typeId}]</span>
               {title}
-            </Title>
+            </h1>
           )}
           {isEditing && (
             <div className={cls.title}>
@@ -93,7 +92,7 @@ export const RFC: React.FC<{
         </div>
         <UpdatedAt time={doc.updatedAt} />
 
-        <Typography className={cls.content}>
+        <div className={cls.content}>
           {!isEditing && <ContentDoc doc={doc.content} />}
           {isEditing && (
             <Editor
@@ -105,7 +104,7 @@ export const RFC: React.FC<{
               }}
             />
           )}
-        </Typography>
+        </div>
       </div>
 
       <div className={clsLayout.col3}>

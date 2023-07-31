@@ -3,7 +3,7 @@ import type { ComputedFlow } from '@specfy/api/src/models/flows/types';
 import type { ApiComponent, ApiProject } from '@specfy/api/src/types/api';
 import { IconDotsVertical } from '@tabler/icons-react';
 import type { MenuProps } from 'antd';
-import { Tooltip, Button, Dropdown, Typography } from 'antd';
+import { Tooltip, Button, Dropdown } from 'antd';
 import classnames from 'classnames';
 import type { MenuClickEventHandler } from 'rc-menu/lib/interface';
 import type React from 'react';
@@ -185,20 +185,18 @@ export const ComponentView: React.FC<{
             </Flex>
             <UpdatedAt time={comp.updatedAt} />
 
-            <Typography>
-              {!isEditing && comp.description && (
-                <ContentDoc doc={comp.description} noPlaceholder />
-              )}
-              {isEditing && (
-                <EditorMini
-                  key={comp.id}
-                  doc={comp.description}
-                  onUpdate={(doc) => {
-                    storeComponents.updateField(comp.id, 'description', doc);
-                  }}
-                />
-              )}
-            </Typography>
+            {!isEditing && comp.description && (
+              <ContentDoc doc={comp.description} noPlaceholder />
+            )}
+            {isEditing && (
+              <EditorMini
+                key={comp.id}
+                doc={comp.description}
+                onUpdate={(doc) => {
+                  storeComponents.updateField(comp.id, 'description', doc);
+                }}
+              />
+            )}
           </div>
 
           <ComponentDetails

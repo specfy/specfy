@@ -16,6 +16,7 @@
     @include editable;
 
     min-height: inherit;
+    font-size: var(--font);
 
 
     p.is-editor-empty:first-child::before {

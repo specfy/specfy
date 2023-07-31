@@ -1,5 +1,4 @@
 import type { ApiComponent, BlockLevelZero } from '@specfy/api/src/types/api';
-import { Typography } from 'antd';
 import classnames from 'classnames';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
@@ -68,14 +67,11 @@ export const DiffCardComponent: React.FC<{
   if (diff.blob.deleted || diff.blob.created) {
     return (
       <div className={cls.content}>
-        {Title}
-        <Typography>
-          <ContentDoc
-            doc={using.description}
-            id={diff.blob.typeId}
-            noPlaceholder
-          />
-        </Typography>
+        <ContentDoc
+          doc={using.description}
+          id={diff.blob.typeId}
+          noPlaceholder
+        />
         {using.techs.length > 0 && (
           <div className={cls.line}>
             <h4>Stack</h4>

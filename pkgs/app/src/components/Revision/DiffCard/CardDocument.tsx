@@ -1,5 +1,4 @@
 import type { BlockLevelZero } from '@specfy/api/src/types/api';
-import { Typography } from 'antd';
 import { useMemo } from 'react';
 
 import type { DocumentBlobWithDiff } from '../../../types/blobs';
@@ -32,9 +31,7 @@ export const DiffCardDocument: React.FC<{
     return (
       <div className={cls.content}>
         {Title}
-        <Typography>
-          <ContentDoc doc={using.content} id={diff.blob.typeId} noPlaceholder />
-        </Typography>
+        <ContentDoc doc={using.content} id={diff.blob.typeId} noPlaceholder />
       </div>
     );
   }

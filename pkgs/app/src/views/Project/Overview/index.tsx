@@ -1,7 +1,6 @@
 import { componentsToFlow } from '@specfy/api/src/models/flows/transform';
 import type { ComputedFlow } from '@specfy/api/src/models/flows/types';
 import type { ApiComponent, BlockLevelZero } from '@specfy/api/src/types/api';
-import { Typography } from 'antd';
 import { useCallback, useEffect, useState } from 'react';
 
 import { useComponentsStore, useProjectStore } from '../../../common/store';
@@ -59,7 +58,7 @@ export const ProjectOverview: React.FC<{
         <Card padded large seamless>
           <h2>{project.name}</h2>
           <UpdatedAt time={project.updatedAt} />
-          <Typography>
+          <div>
             {!isEditing && <ContentDoc doc={project.description} />}
             {isEditing && (
               <EditorMini
@@ -68,7 +67,7 @@ export const ProjectOverview: React.FC<{
                 onUpdate={onUpdate}
               />
             )}
-          </Typography>
+          </div>
 
           <ProjectLinks />
 

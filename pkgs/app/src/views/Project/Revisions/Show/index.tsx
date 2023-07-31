@@ -14,7 +14,7 @@ import {
   IconLockAccessOff,
 } from '@tabler/icons-react';
 import type { MenuProps } from 'antd';
-import { Button, Dropdown, Skeleton, Space, Typography } from 'antd';
+import { Button, Dropdown, Skeleton, Space } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
@@ -311,7 +311,7 @@ export const ProjectRevisionsShow: React.FC<{
                 opened <Time time={rev.createdAt} />
               </div>
 
-              <Typography className={cls.content}>
+              <div className={cls.content}>
                 {!edit && <ContentDoc doc={rev.description} />}
                 {edit && (
                   <Editor
@@ -321,7 +321,7 @@ export const ProjectRevisionsShow: React.FC<{
                     minHeight="100px"
                   />
                 )}
-              </Typography>
+              </div>
             </div>
 
             {edit && (

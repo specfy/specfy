@@ -278,7 +278,7 @@ export const ContentBlock: React.FC<{
   // Banner
   else if (block.type === 'banner') {
     return (
-      <div className={stl}>
+      <div className={classnames(stl, cls.mb)}>
         <Banner type={block.attrs.type}>{map(block, pl)}</Banner>
       </div>
     );
@@ -321,6 +321,12 @@ export const ContentBlock: React.FC<{
   return <div>unsupported block &quot;{JSON.stringify(block)}&quot;</div>;
 };
 
+export const Presentation: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  return <div className={cls.content}>{children}</div>;
+};
+
 export const ContentDoc: React.FC<{
   doc: BlockLevelZero;
   id?: string;
@@ -339,10 +345,10 @@ export const ContentDoc: React.FC<{
   }
 
   return (
-    <>
+    <Presentation>
       {doc.content.map((blk, i) => {
         return <ContentBlock block={blk} key={i} pl={payload} />;
       })}
-    </>
+    </Presentation>
   );
 };

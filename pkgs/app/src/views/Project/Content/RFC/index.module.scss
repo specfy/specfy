@@ -4,15 +4,16 @@
   display: flex;
   grid-template-columns: 1fr 40px;
   align-items: center;
-
   height: 50px;
-  margin-bottom: $p-l;
 }
 
 .title {
   display: flex;
   flex-grow: 1;
+  align-items: center;
+
   margin-bottom: 0 !important;
+
   font-size: $font-3xl !important;
 
   >div {
@@ -21,9 +22,10 @@
 }
 
 .type {
+  flex-shrink: 0;
   padding: 0 $p-l 0 0;
   font-weight: 600;
-  color: $gray-600
+  color: $gray-600;
 }
 
 .headings {

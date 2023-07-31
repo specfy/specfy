@@ -17,7 +17,7 @@ import {
   IconGitPullRequest,
   IconGitPullRequestDraft,
 } from '@tabler/icons-react';
-import { Button, Result, Typography } from 'antd';
+import { Button, Result } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
@@ -212,14 +212,12 @@ export const ProjectRevisionCreate: React.FC<{
                   />
 
                   <div style={{ width: '100%' }}>
-                    <Typography>
-                      <Editor
-                        key={'edit'}
-                        content={description}
-                        onUpdate={setDescription}
-                        minHeight="100px"
-                      />
-                    </Typography>
+                    <Editor
+                      key={'edit'}
+                      content={description}
+                      onUpdate={setDescription}
+                      minHeight="100px"
+                    />
                   </div>
                 </Flex>
               </Card.Content>

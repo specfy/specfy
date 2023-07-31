@@ -4,7 +4,7 @@ import type {
   GetRevision,
 } from '@specfy/api/src/types/api';
 import { IconCircleCheck } from '@tabler/icons-react';
-import { Button, Typography, Space } from 'antd';
+import { Button, Space } from 'antd';
 import classnames from 'classnames';
 import { useState, useEffect, useRef } from 'react';
 import { useClickAway } from 'react-use';
@@ -83,10 +83,10 @@ export const ReviewBar: React.FC<{
 
       {open && (
         <div>
-          <Typography className={cls.text}>
+          <div className={cls.text}>
             <h2>Finish your review</h2>
             <Editor content={review} onUpdate={setReview} minHeight="150px" />
-          </Typography>
+          </div>
           <Space className={cls.actions}>
             <Button onClick={() => onClickReview(false)} type="text">
               Cancel

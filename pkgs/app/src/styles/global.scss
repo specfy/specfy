@@ -153,3 +153,32 @@ a {
     color: var(--colorLink);
   }
 }
+
+
+// Global typo
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-weight: 500;
+}
+
+h1 {
+  font-size: $font-2xl;
+}
+
+h2 {
+  font-size: $font-xl;
+}
+
+h3 {
+  font-size: $font-l;
+}
+
+h4 {
+  font-size: $font-m;
+}
