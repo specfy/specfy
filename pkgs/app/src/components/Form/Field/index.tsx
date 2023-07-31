@@ -15,11 +15,9 @@ export const Field: React.FC<{
     <Form.Field name={name} className={classNames(cls.field)}>
       {label && <Form.Label className={cls.label}>{label}</Form.Label>}
       <Form.Control asChild>{children}</Form.Control>
-      {error && (
-        <Form.Message className={cls.message}>
-          <div>{error}</div>
-        </Form.Message>
-      )}
+      <Form.Message className={cls.message}>
+        {error && <div>{error}</div>}{' '}
+      </Form.Message>
     </Form.Field>
   );
 };
@@ -38,11 +36,9 @@ export const FieldCheckbox: React.FC<{
         </Form.Control>
         <Form.Label htmlFor={name}>{label}</Form.Label>
       </Flex>
-      {error && (
-        <Form.Message className={cls.message}>
-          <div>{error}</div>
-        </Form.Message>
-      )}
+      <Form.Message className={cls.message}>
+        {error && <div>{error}</div>}{' '}
+      </Form.Message>
     </Form.Field>
   );
 };

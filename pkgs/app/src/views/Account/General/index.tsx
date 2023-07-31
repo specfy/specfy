@@ -1,4 +1,5 @@
-import { Modal, Form } from 'antd';
+import * as Form from '@radix-ui/react-form';
+import { Modal } from 'antd';
 import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +10,7 @@ import { i18n } from '../../../common/i18n';
 import { titleSuffix } from '../../../common/string';
 import { Card } from '../../../components/Card';
 import { Button } from '../../../components/Form/Button';
+import { Field } from '../../../components/Form/Field';
 import { Input } from '../../../components/Form/Input';
 import { Subdued } from '../../../components/Text';
 import { useAuth } from '../../../hooks/useAuth';
@@ -32,7 +34,8 @@ export const SettingsGeneral: React.FC = () => {
     setName(e.target.value);
   };
 
-  const handleRename = async () => {
+  const handleRename: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
     const res = await updateMe({ name });
     if (isError(res)) {
       toast.add({ title: i18n.errorOccurred, status: 'error' });
@@ -82,14 +85,14 @@ export const SettingsGeneral: React.FC = () => {
       </div>
 
       <Card>
-        <Form layout="vertical" onFinish={handleRename}>
+        <Form.Root onSubmit={handleRename}>
           <Card.Content>
-            <Form.Item label="Display Name">
+            <Field name="name" label="Display Name">
               <Input value={name} onChange={onName} />
-            </Form.Item>
-            <Form.Item label="Email">
+            </Field>
+            <Field name="email" label="Email">
               <Input value={email} onChange={onName} disabled />
-            </Form.Item>
+            </Field>
           </Card.Content>
 
           <Card.Actions>
@@ -102,7 +105,7 @@ export const SettingsGeneral: React.FC = () => {
               Update
             </Button>
           </Card.Actions>
-        </Form>
+        </Form.Root>
       </Card>
 
       <Card padded>

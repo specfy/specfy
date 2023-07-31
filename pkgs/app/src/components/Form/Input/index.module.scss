@@ -9,6 +9,7 @@
   display: flex;
   flex-grow: 1;
 
+  font-size: var(--font);
   line-height: $line-height;
   color: var(--text);
 
@@ -49,7 +50,7 @@
   }
 
   &.l {
-    font-size: $font-m;
+    font-size: $font;
 
     .input {
       padding: $p-m $p-xl;

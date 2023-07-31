@@ -1,5 +1,5 @@
+import * as Form from '@radix-ui/react-form';
 import type { ApiOrg, ApiPerm, FieldsErrors } from '@specfy/api/src/types/api';
-import { Form } from 'antd';
 import { useState } from 'react';
 
 import { createInvitation } from '../../../api';
@@ -9,6 +9,7 @@ import { selectPerms } from '../../../common/perms';
 import { Card } from '../../../components/Card';
 import { useToast } from '../../../hooks/useToast';
 import { Button } from '../../Form/Button';
+import { Field } from '../../Form/Field';
 import { Input } from '../../Form/Input';
 import { SelectFull } from '../../Form/Select';
 
@@ -54,18 +55,15 @@ export const TeamInvite: React.FC<{
     <Card>
       <Card.Content>
         <h3>Add team members</h3>
-        <form className={cls.form} onSubmit={handleInvite}>
-          <Form.Item
-            help={errors.email?.message}
-            validateStatus={errors.email && 'error'}
-          >
+        <Form.Root className={cls.form} onSubmit={handleInvite}>
+          <Field name="email" error={errors.email?.message}>
             <Input
               type="email"
               placeholder="jane@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
-          </Form.Item>
+          </Field>
 
           <SelectFull
             value={role}
@@ -74,7 +72,7 @@ export const TeamInvite: React.FC<{
             options={selectPerms}
             onValueChange={(val) => setRole(val as any)}
           />
-        </form>
+        </Form.Root>
       </Card.Content>
       <Card.Actions>
         <Button onClick={handleInvite} display="primary">

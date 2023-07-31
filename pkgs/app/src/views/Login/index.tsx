@@ -1,6 +1,6 @@
 import { GithubOutlined } from '@ant-design/icons';
+import * as Form from '@radix-ui/react-form';
 import type { FieldsErrors } from '@specfy/api/src/types/api';
-import { Form } from 'antd';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
@@ -11,7 +11,9 @@ import { API_HOSTNAME } from '../../common/envs';
 import { i18n } from '../../common/i18n';
 import { titleSuffix } from '../../common/string';
 import { Card } from '../../components/Card';
+import { Flex } from '../../components/Flex';
 import { Button } from '../../components/Form/Button';
+import { Field } from '../../components/Form/Field';
 import { Input } from '../../components/Form/Input';
 import { Logo } from '../../components/Logo';
 import { useToast } from '../../hooks/useToast';
@@ -22,9 +24,12 @@ export const Login: React.FC = () => {
   const toast = useToast();
   const navigate = useNavigate();
   const [errors, setErrors] = useState<FieldsErrors>({});
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const onFinish = async (values: { email: string; password: string }) => {
-    const res = await authLocal(values);
+  const onFinish: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
+    const res = await authLocal({ email, password });
 
     if (isError(res)) {
       if (isValidationError(res)) {
@@ -55,31 +60,36 @@ export const Login: React.FC = () => {
           </Button>
         </div>
         <Card padded>
-          <Form layout="vertical" onFinish={onFinish} requiredMark={false}>
-            <Form.Item
-              label="Email"
-              name="email"
-              required
-              rules={[{ required: true, message: '' }]}
-              help={errors.email?.message}
-              validateStatus={errors.email && 'error'}
-            >
-              <Input type="email" placeholder="you@email.com" size="l" />
-            </Form.Item>
-            <Form.Item
-              label="Password"
-              name="password"
-              rules={[{ required: true, message: '' }]}
-              required
-              help={errors.password?.message}
-              validateStatus={errors.password && 'error'}
-            >
-              <Input type="password" size="l" />
-            </Form.Item>
-            <Button display="primary" size="l" block type="submit">
-              Sign in
-            </Button>
-          </Form>
+          <Form.Root onSubmit={onFinish}>
+            <Flex gap="l" column>
+              <Field label="Email" name="email" error={errors.email?.message}>
+                <Input
+                  type="email"
+                  placeholder="you@email.com"
+                  size="l"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </Field>
+              <Field
+                label="Password"
+                name="password"
+                error={errors.password?.message}
+              >
+                <Input
+                  type="password"
+                  size="l"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+              </Field>
+              <Button display="primary" size="l" block type="submit">
+                Sign in
+              </Button>
+            </Flex>
+          </Form.Root>
         </Card>
       </div>
     </div>

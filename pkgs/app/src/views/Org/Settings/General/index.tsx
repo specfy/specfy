@@ -1,6 +1,7 @@
+import * as Form from '@radix-ui/react-form';
 import type { ApiOrg } from '@specfy/api/src/types/api';
 import { IconCirclesRelation } from '@tabler/icons-react';
-import { Modal, Form } from 'antd';
+import { Modal } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +13,7 @@ import { titleSuffix } from '../../../../common/string';
 import { Banner } from '../../../../components/Banner';
 import { Card } from '../../../../components/Card';
 import { Button } from '../../../../components/Form/Button';
+import { Field } from '../../../../components/Form/Field';
 import { Input } from '../../../../components/Form/Input';
 import { GithubOrgSelect } from '../../../../components/Github/OrgSelect';
 import { Subdued } from '../../../../components/Text';
@@ -37,7 +39,8 @@ export const SettingsGeneral: React.FC<{
   };
   const nameChanged = name !== org.name;
 
-  const handleRename = async () => {
+  const handleRename: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
     const res = await updateOrg(params, { name: name! });
     if (isError(res)) {
       toast.add({ title: i18n.errorOccurred, status: 'error' });
@@ -120,22 +123,19 @@ export const SettingsGeneral: React.FC<{
       </div>
 
       <Card>
-        <Form layout="vertical" onFinish={handleRename}>
+        <Form.Root onSubmit={handleRename}>
           <Card.Content>
             <h3>Organization Name</h3>
             <br />
-            <Form.Item
-              extra={
-                <div className={cls.desc}>
-                  The organization is accessible at{' '}
-                  <em>
-                    https://app.specfy.io/<strong>{org.id}</strong>
-                  </em>
-                </div>
-              }
-            >
+            <Field name="name">
               <Input value={name} onChange={onName} disabled={org.isPersonal} />
-            </Form.Item>
+            </Field>
+            <Subdued>
+              The organization is accessible at{' '}
+              <em>
+                https://app.specfy.io/<strong>{org.id}</strong>
+              </em>
+            </Subdued>
           </Card.Content>
 
           {!org.isPersonal && (
@@ -150,11 +150,11 @@ export const SettingsGeneral: React.FC<{
               </Button>
             </Card.Actions>
           )}
-        </Form>
+        </Form.Root>
       </Card>
 
       <Card>
-        <Form layout="vertical" onFinish={handleRename}>
+        <Form.Root onSubmit={(e) => e.preventDefault()}>
           <Card.Content>
             <h3>Link to Github</h3>
             <p>
@@ -189,7 +189,7 @@ export const SettingsGeneral: React.FC<{
               </Button>
             )}
           </Card.Actions>
-        </Form>
+        </Form.Root>
       </Card>
 
       {!org.isPersonal && (

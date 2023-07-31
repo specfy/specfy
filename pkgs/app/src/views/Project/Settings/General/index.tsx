@@ -1,6 +1,7 @@
+import * as Form from '@radix-ui/react-form';
 import type { ApiProject, FieldsErrors } from '@specfy/api/src/types/api';
 import { IconCirclesRelation } from '@tabler/icons-react';
-import { Modal, Form } from 'antd';
+import { Modal } from 'antd';
 import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
@@ -21,6 +22,7 @@ import { CopyButton } from '../../../../components/Button/Copy';
 import { Card } from '../../../../components/Card';
 import { Flex } from '../../../../components/Flex';
 import { Button } from '../../../../components/Form/Button';
+import { Field } from '../../../../components/Form/Field';
 import { Input } from '../../../../components/Form/Input';
 import { GithubOrgSelect } from '../../../../components/Github/OrgSelect';
 import { GithubRepoSelect } from '../../../../components/Github/RepoSelect';
@@ -59,7 +61,8 @@ export const SettingsGeneral: React.FC<{
     return name !== proj.name || slug !== proj.slug;
   }, [name, slug]);
 
-  const handleRename = async () => {
+  const handleRename: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
     const res = await updateProject(params, { name, slug });
     if (isError(res)) {
       if (isValidationError(res)) {
@@ -161,27 +164,20 @@ export const SettingsGeneral: React.FC<{
         </div>
       </div>
       <Card>
-        <Form layout="vertical" onFinish={handleRename}>
+        <Form.Root onSubmit={handleRename}>
           <Card.Content>
-            <Form.Item
-              label="Name"
-              help={errors.name?.message}
-              validateStatus={errors.name && 'error'}
-            >
+            <h3>Project Name</h3>
+            <Field name="name" label="Name" error={errors.name?.message}>
               <Input value={name} onChange={onName} />
-            </Form.Item>
-            <Form.Item
-              label="Slug"
-              help={errors.slug?.message}
-              validateStatus={errors.slug && 'error'}
-            >
+            </Field>
+            <Field name="slug" label="Slug" error={errors.slug?.message}>
               <Input
                 value={slug}
                 onChange={onSlug}
                 before={`https://app.specfy.io/${proj.orgId}/`}
                 seamless
               />
-            </Form.Item>
+            </Field>
           </Card.Content>
 
           <Card.Actions>
@@ -194,11 +190,11 @@ export const SettingsGeneral: React.FC<{
               Rename
             </Button>
           </Card.Actions>
-        </Form>
+        </Form.Root>
       </Card>
 
       <Card>
-        <Form layout="vertical" onFinish={handleRename}>
+        <Form.Root onSubmit={(e) => e.preventDefault()}>
           <Card.Content>
             <h3>Link to Github</h3>
             <p>
@@ -253,11 +249,11 @@ export const SettingsGeneral: React.FC<{
               </Button>
             )}
           </Card.Actions>
-        </Form>
+        </Form.Root>
       </Card>
 
       <Card>
-        <Form layout="vertical" onFinish={handleRename}>
+        <Form.Root onSubmit={(e) => e.preventDefault()}>
           <Card.Content>
             <h3>Keys</h3>
             <Flex gap="l" column align="flex-start">
@@ -292,7 +288,7 @@ export const SettingsGeneral: React.FC<{
               )}
             </Flex>
           </Card.Content>
-        </Form>
+        </Form.Root>
       </Card>
 
       <Card padded>

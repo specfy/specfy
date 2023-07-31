@@ -29,6 +29,7 @@ Global:
     - Table
     - Autocomplete
     - Modal
+    ✔ Form @done(23-07-31 17:30)
     ✔ Result @done(23-07-31 16:04)
     ✔ Space @done(23-07-31 16:00)
   ✔ API: Clean models and group everything together @done(23-07-14 16:41)
