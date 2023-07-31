@@ -1,6 +1,5 @@
 import * as Tabs from '@radix-ui/react-tabs';
 import type { ApiOrg } from '@specfy/api/src/types/api';
-import { Typography } from 'antd';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
@@ -8,6 +7,7 @@ import { titleSuffix } from '../../../../common/string';
 import { Container } from '../../../../components/Container';
 import { Flex } from '../../../../components/Flex';
 import { TeamInvite } from '../../../../components/Team/Invite';
+import { Subdued } from '../../../../components/Text';
 import type { RouteOrg } from '../../../../types/routes';
 
 import { SettingsTeamList } from './List';
@@ -31,9 +31,7 @@ export const SettingsTeam: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
         <div className={cls.header}>
           <div>
             <h2>Team members</h2>
-            <Typography.Text type="secondary">
-              Invite or manage your project&apos;s members.
-            </Typography.Text>
+            <Subdued>Invite or manage your project&apos;s members.</Subdued>
           </div>
         </div>
 

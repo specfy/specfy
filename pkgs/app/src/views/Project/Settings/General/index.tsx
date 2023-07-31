@@ -1,6 +1,6 @@
 import type { ApiProject, FieldsErrors } from '@specfy/api/src/types/api';
 import { IconCirclesRelation } from '@tabler/icons-react';
-import { Typography, Button, Modal, Form } from 'antd';
+import { Button, Modal, Form } from 'antd';
 import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
@@ -23,6 +23,7 @@ import { Flex } from '../../../../components/Flex';
 import { Input } from '../../../../components/Form/Input';
 import { GithubOrgSelect } from '../../../../components/Github/OrgSelect';
 import { GithubRepoSelect } from '../../../../components/Github/RepoSelect';
+import { Subdued } from '../../../../components/Text';
 import { useToast } from '../../../../hooks/useToast';
 import type { RouteProject } from '../../../../types/routes';
 
@@ -155,9 +156,7 @@ export const SettingsGeneral: React.FC<{
       <div>
         <div>
           <h2>General Settings</h2>
-          <Typography.Text type="secondary">
-            Manage your project general&apos;s settings
-          </Typography.Text>
+          <Subdued>Manage your project general&apos;s settings</Subdued>
         </div>
       </div>
       <Card>
@@ -299,9 +298,7 @@ export const SettingsGeneral: React.FC<{
         <div className={cls.actions}>
           <div>
             <h4>Delete this project</h4>
-            <Typography.Text type="secondary">
-              Deleting a project can&apos;t be undone.
-            </Typography.Text>
+            <Subdued>Deleting a project can&apos;t be undone.</Subdued>
           </div>
           <Button danger type="primary" onClick={showModal}>
             Delete Project

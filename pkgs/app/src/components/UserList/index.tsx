@@ -1,8 +1,9 @@
 import type { ApiUser, ListUsers } from '@specfy/api/src/types/api';
 import { IconX } from '@tabler/icons-react';
-import { Button, Typography } from 'antd';
+import { Button } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
 
+import { Subdued } from '../Text';
 import { UserCard, UserCardAdd } from '../UserCard';
 
 import cls from './index.module.scss';
@@ -56,9 +57,7 @@ export const UserList: React.FC<{
           </li>
         );
       })}
-      {list.length <= 0 && (
-        <Typography.Text type="secondary">No one assigned</Typography.Text>
-      )}
+      {list.length <= 0 && <Subdued>No one assigned</Subdued>}
       {edit && params && (
         <UserCardAdd params={params} onAdd={onAdd} excludeIds={excludeIds} />
       )}

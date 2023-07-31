@@ -1,4 +1,4 @@
-import { Typography, Button, Modal, Form } from 'antd';
+import { Button, Modal, Form } from 'antd';
 import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +9,7 @@ import { i18n } from '../../../common/i18n';
 import { titleSuffix } from '../../../common/string';
 import { Card } from '../../../components/Card';
 import { Input } from '../../../components/Form/Input';
+import { Subdued } from '../../../components/Text';
 import { useAuth } from '../../../hooks/useAuth';
 import { useToast } from '../../../hooks/useToast';
 
@@ -75,9 +76,7 @@ export const SettingsGeneral: React.FC = () => {
       <div>
         <div>
           <h2>General Settings</h2>
-          <Typography.Text type="secondary">
-            Manage your account general&apos;s settings
-          </Typography.Text>
+          <Subdued>Manage your account general&apos;s settings</Subdued>
         </div>
       </div>
 
@@ -109,9 +108,7 @@ export const SettingsGeneral: React.FC = () => {
         <div className={cls.actions}>
           <div>
             <h4>Delete your account</h4>
-            <Typography.Text type="secondary">
-              This operation can&apos;t be undone.
-            </Typography.Text>
+            <Subdued>This operation can&apos;t be undone.</Subdued>
           </div>
           <Button danger type="default" onClick={showModal}>
             Delete Account

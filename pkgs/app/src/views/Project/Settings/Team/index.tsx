@@ -1,5 +1,4 @@
 import type { ApiProject, ApiPerm, ApiUser } from '@specfy/api/src/types/api';
-import { Typography } from 'antd';
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useDebounce } from 'react-use';
@@ -10,6 +9,7 @@ import { Card } from '../../../../components/Card';
 import { Empty } from '../../../../components/Empty';
 import { Input } from '../../../../components/Form/Input';
 import { Row } from '../../../../components/Team/Row';
+import { Subdued } from '../../../../components/Text';
 import { useAuth } from '../../../../hooks/useAuth';
 
 import cls from './index.module.scss';
@@ -85,9 +85,7 @@ export const SettingsTeam: React.FC<{
       <div className={cls.header}>
         <div>
           <h2>Team members</h2>
-          <Typography.Text type="secondary">
-            Invite or manage your project&apos;s members.
-          </Typography.Text>
+          <Subdued>Invite or manage your project&apos;s members.</Subdued>
         </div>
 
         <Input

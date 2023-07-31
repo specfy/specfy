@@ -1,6 +1,6 @@
 import type { ApiOrg } from '@specfy/api/src/types/api';
 import { IconCirclesRelation } from '@tabler/icons-react';
-import { Typography, Button, Modal, Form } from 'antd';
+import { Button, Modal, Form } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
@@ -13,6 +13,7 @@ import { Banner } from '../../../../components/Banner';
 import { Card } from '../../../../components/Card';
 import { Input } from '../../../../components/Form/Input';
 import { GithubOrgSelect } from '../../../../components/Github/OrgSelect';
+import { Subdued } from '../../../../components/Text';
 import { useToast } from '../../../../hooks/useToast';
 import type { RouteOrg } from '../../../../types/routes';
 
@@ -108,9 +109,7 @@ export const SettingsGeneral: React.FC<{
       <div>
         <h2>General Settings</h2>
 
-        <Typography.Text type="secondary">
-          Manage your organization general&apos;s settings
-        </Typography.Text>
+        <Subdued>Manage your organization general&apos;s settings</Subdued>
 
         {org.isPersonal && (
           <Banner type="info">
@@ -197,9 +196,7 @@ export const SettingsGeneral: React.FC<{
           <div className={cls.actions}>
             <div>
               <h4>Delete this organization</h4>
-              <Typography.Text type="secondary">
-                This operation can&apos;t be undone.
-              </Typography.Text>
+              <Subdued>This operation can&apos;t be undone.</Subdued>
             </div>
             <Button danger type="default" onClick={showModal}>
               Delete Organization
