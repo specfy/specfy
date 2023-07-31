@@ -1,5 +1,5 @@
 import type { ApiUser, ListUsers } from '@specfy/api/src/types/api';
-import { AutoComplete, Space } from 'antd';
+import { AutoComplete } from 'antd';
 import type { DefaultOptionType } from 'antd/es/select';
 import classnames from 'classnames';
 import { useEffect, useState } from 'react';
@@ -7,6 +7,7 @@ import { useDebounce } from 'react-use';
 
 import { useListUser } from '../../api';
 import { AvatarAuto } from '../AvatarAuto';
+import { Flex } from '../Flex';
 
 import cls from './index.module.scss';
 
@@ -15,7 +16,7 @@ export const UserCard: React.FC<{
   size?: 'default' | 'small';
 }> = ({ user, size }) => {
   return (
-    <Space className={classnames(cls.userCard, size && cls[size])}>
+    <Flex gap="l" className={classnames(cls.userCard, size && cls[size])}>
       <AvatarAuto
         name={user.name}
         size={size}
@@ -23,7 +24,7 @@ export const UserCard: React.FC<{
         colored={false}
       />
       {user.name}
-    </Space>
+    </Flex>
   );
 };
 
@@ -81,7 +82,8 @@ export const UserCardAdd: React.FC<{
   };
 
   return (
-    <Space
+    <Flex
+      gap="l"
       className={classnames(cls.userCard, cls.userCardAdd, size && cls[size])}
     >
       <div className={cls.avatarEmpty}></div>
@@ -95,6 +97,6 @@ export const UserCardAdd: React.FC<{
         onSelect={onSelect}
         className={cls.search}
       />
-    </Space>
+    </Flex>
   );
 };

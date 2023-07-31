@@ -4,7 +4,6 @@ import type {
   GetRevision,
 } from '@specfy/api/src/types/api';
 import { IconCircleCheck } from '@tabler/icons-react';
-import { Space } from 'antd';
 import classnames from 'classnames';
 import { useState, useEffect, useRef } from 'react';
 import { useClickAway } from 'react-use';
@@ -15,6 +14,7 @@ import { getEmptyDoc } from '../../../common/content';
 import { i18n } from '../../../common/i18n';
 import { useToast } from '../../../hooks/useToast';
 import { Editor } from '../../Editor';
+import { Flex } from '../../Flex';
 import { Button } from '../../Form/Button';
 
 import cls from './index.module.scss';
@@ -87,7 +87,7 @@ export const ReviewBar: React.FC<{
             <h2>Finish your review</h2>
             <Editor content={review} onUpdate={setReview} minHeight="150px" />
           </div>
-          <Space className={cls.actions}>
+          <Flex className={cls.actions}>
             <Button onClick={() => onClickReview(false)} display="ghost">
               Cancel
             </Button>
@@ -99,7 +99,7 @@ export const ReviewBar: React.FC<{
               <IconCircleCheck />
               Approve
             </Button>
-          </Space>
+          </Flex>
         </div>
       )}
     </div>

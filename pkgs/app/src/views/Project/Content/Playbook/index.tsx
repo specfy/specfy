@@ -1,5 +1,4 @@
 import type { ApiDocument, ApiProject } from '@specfy/api/src/types/api';
-import { Space } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
@@ -7,6 +6,7 @@ import { useDocumentsStore } from '../../../../common/store';
 import { titleSuffix } from '../../../../common/string';
 import { ContentDoc } from '../../../../components/Content';
 import { Editor } from '../../../../components/Editor';
+import { Flex } from '../../../../components/Flex';
 import { FakeInput } from '../../../../components/Form/FakeInput';
 import { Time } from '../../../../components/Time';
 import { useEdit } from '../../../../hooks/useEdit';
@@ -51,11 +51,11 @@ export const Playbook: React.FC<{
             }}
           />
         )}
-        <Space>
+        <Flex>
           <div className={cls.lastUpdate}>
             Updated <Time time={doc.updatedAt} />
           </div>
-        </Space>
+        </Flex>
 
         <div className={cls.content}>
           {!isEditing && (

@@ -14,7 +14,7 @@ import {
   IconLockAccessOff,
 } from '@tabler/icons-react';
 import type { MenuProps } from 'antd';
-import { Dropdown, Skeleton, Space } from 'antd';
+import { Dropdown, Skeleton } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
@@ -34,6 +34,7 @@ import { titleSuffix } from '../../../../common/string';
 import { Container } from '../../../../components/Container';
 import { ContentDoc } from '../../../../components/Content';
 import { Editor } from '../../../../components/Editor';
+import { Flex } from '../../../../components/Flex';
 import { Button } from '../../../../components/Form/Button';
 import { FakeInput } from '../../../../components/Form/FakeInput';
 import { ListActivity } from '../../../../components/ListActivity';
@@ -280,7 +281,7 @@ export const ProjectRevisionsShow: React.FC<{
               {!edit && (
                 <div className={cls.mainTop}>
                   <h2 className={cls.title}>{rev.name}</h2>
-                  <Space>
+                  <Flex>
                     {save && <Loading />}
 
                     <Dropdown.Button
@@ -291,7 +292,7 @@ export const ProjectRevisionsShow: React.FC<{
                     >
                       Edit
                     </Dropdown.Button>
-                  </Space>
+                  </Flex>
                 </div>
               )}
               {edit && (
@@ -327,7 +328,7 @@ export const ProjectRevisionsShow: React.FC<{
 
             {edit && (
               <div className={cls.editSave}>
-                <Space>
+                <Flex>
                   <Button display="ghost" onClick={() => setEdit(false)}>
                     cancel
                   </Button>
@@ -338,7 +339,7 @@ export const ProjectRevisionsShow: React.FC<{
                   >
                     Save
                   </Button>
-                </Space>
+                </Flex>
               </div>
             )}
 

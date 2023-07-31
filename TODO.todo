@@ -15,7 +15,7 @@ Global:
   - Remove antd
     ✔ Layout @done(23-07-28 11:38)
     ✔ Checkbox @done(23-07-31 11:45)
-    - Input
+    ✔ Input @done(23-07-31 15:58)
     ✔ Button @done(23-07-31 15:57)
     ✔ Tag @done(23-07-28 11:21)
     ✔ Typography @done(23-07-31 14:31)
@@ -23,7 +23,12 @@ Global:
     - Tooltip
     - Anchor
     - Dropdown
+    - Badge
     - Skeleton
+    - Tree
+    - Table
+    - Autocomplete
+    ✔ Space @done(23-07-31 16:00)
   ✔ API: Clean models and group everything together @done(23-07-14 16:41)
 
 
