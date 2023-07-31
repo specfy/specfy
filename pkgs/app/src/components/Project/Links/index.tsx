@@ -2,7 +2,7 @@ import { LinkOutlined } from '@ant-design/icons';
 import type { IconType } from '@icons-pack/react-simple-icons';
 import type { DBProjectLink } from '@specfy/api/src/models/projects/types';
 import { IconPlus, IconTrash } from '@tabler/icons-react';
-import { Button, Input, Typography } from 'antd';
+import { Button, Typography } from 'antd';
 import classnames from 'classnames';
 import { useMemo, useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
@@ -10,6 +10,7 @@ import { useClickAway } from 'react-use';
 import { useProjectStore } from '../../../common/store';
 import { supportedHostname } from '../../../common/techs';
 import { useEdit } from '../../../hooks/useEdit';
+import { Input } from '../../Form/Input';
 
 import cls from './index.module.scss';
 
@@ -55,8 +56,9 @@ const LinkEdit: React.FC<{
     <div className={cls.edit}>
       <Input
         value={link.title}
-        size="small"
-        prefix={Icon && <Icon size="1em" />}
+        size="s"
+        before={Icon && <Icon size="1em" />}
+        seamless
         className={cls.label}
         placeholder="Label"
         onChange={(e) => {
@@ -66,7 +68,7 @@ const LinkEdit: React.FC<{
       />
       <Input
         value={link.url}
-        size="small"
+        size="s"
         placeholder="https://"
         onChange={(e) => {
           onChange({ ...link, url: e.target.value });

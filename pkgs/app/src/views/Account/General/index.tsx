@@ -1,4 +1,4 @@
-import { Typography, Input, Button, Modal, Form } from 'antd';
+import { Typography, Button, Modal, Form } from 'antd';
 import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +8,7 @@ import { isError } from '../../../api/helpers';
 import { i18n } from '../../../common/i18n';
 import { titleSuffix } from '../../../common/string';
 import { Card } from '../../../components/Card';
+import { Input } from '../../../components/Form/Input';
 import { useAuth } from '../../../hooks/useAuth';
 import { useToast } from '../../../hooks/useToast';
 

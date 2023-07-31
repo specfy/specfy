@@ -149,7 +149,7 @@ export const ComponentView: React.FC<{
                     </h2>
                   ) : (
                     <FakeInput.H2
-                      size="large"
+                      size="l"
                       value={comp.name}
                       placeholder="Title..."
                       onChange={(e) => {

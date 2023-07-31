@@ -1,12 +1,13 @@
 import type { ApiPerm, ApiUser } from '@specfy/api/src/types/api';
 import { IconSearch } from '@tabler/icons-react';
-import { Input, Typography } from 'antd';
+import { Typography } from 'antd';
 import { useEffect, useState } from 'react';
 import { useDebounce } from 'react-use';
 
 import { useListPerms, useListUser } from '../../../../api';
 import { Card } from '../../../../components/Card';
 import { Empty } from '../../../../components/Empty';
+import { Input } from '../../../../components/Form/Input';
 import { Row } from '../../../../components/Team/Row';
 import { useAuth } from '../../../../hooks/useAuth';
 import type { RouteOrg } from '../../../../types/routes';
@@ -82,12 +83,13 @@ export const SettingsTeamList: React.FC<{ params: RouteOrg }> = ({
     <div>
       <div className={cls.header}>
         <Input
-          prefix={<IconSearch />}
+          before={<IconSearch />}
+          seamless
           placeholder="Search..."
           className={cls.search}
           onChange={(e) => setSearch(e.target.value)}
-          size="large"
-        ></Input>
+          size="l"
+        />
       </div>
       <Card>
         {!searchDebounced && (

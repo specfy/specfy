@@ -1,6 +1,6 @@
 import type { ApiOrg } from '@specfy/api/src/types/api';
 import { IconCirclesRelation } from '@tabler/icons-react';
-import { Typography, Input, Button, Modal, Form } from 'antd';
+import { Typography, Button, Modal, Form } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +11,7 @@ import { i18n } from '../../../../common/i18n';
 import { titleSuffix } from '../../../../common/string';
 import { Banner } from '../../../../components/Banner';
 import { Card } from '../../../../components/Card';
+import { Input } from '../../../../components/Form/Input';
 import { GithubOrgSelect } from '../../../../components/Github/OrgSelect';
 import { useToast } from '../../../../hooks/useToast';
 import type { RouteOrg } from '../../../../types/routes';

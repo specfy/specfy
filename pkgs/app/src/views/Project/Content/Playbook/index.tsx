@@ -43,7 +43,7 @@ export const Playbook: React.FC<{
         )}
         {isEditing && (
           <FakeInput.H1
-            size="large"
+            size="l"
             value={title}
             placeholder="Title..."
             onChange={(e) => {

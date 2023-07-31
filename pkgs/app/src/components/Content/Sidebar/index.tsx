@@ -5,7 +5,7 @@ import {
   IconLayoutSidebarLeftExpand,
   IconChevronDown,
 } from '@tabler/icons-react';
-import { Button, Input, Tree } from 'antd';
+import { Button, Tree } from 'antd';
 import type { DataNode, DirectoryTreeProps } from 'antd/es/tree';
 import classnames from 'classnames';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -16,6 +16,7 @@ import { useListDocuments } from '../../../api';
 import { TYPE_TO_TEXT } from '../../../common/document';
 import { useDocumentsStore } from '../../../common/store';
 import type { RouteProject } from '../../../types/routes';
+import { Input } from '../../Form/Input';
 import { Loading } from '../../Loading';
 
 import cls from './index.module.scss';
@@ -240,21 +241,18 @@ export const ContentSidebar: React.FC<{
       <div className={cls.treeHeader}>
         <div className={cls.search}>
           <Input
-            prefix={<IconSearch />}
+            seamless
+            before={<IconSearch />}
             onChange={handleInput}
             value={search}
-            suffix={
+            after={
               loading ? (
                 <Loading />
               ) : (
                 search && (
-                  <Button
-                    onClick={handleReset}
-                    title="Reset search filters..."
-                    type="text"
-                    size="small"
-                    icon={<IconCircleX />}
-                  />
+                  <button onClick={handleReset} title="Reset search filters...">
+                    <IconCircleX />
+                  </button>
                 )
               )
             }

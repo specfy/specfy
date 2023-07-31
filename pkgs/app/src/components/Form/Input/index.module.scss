@@ -1,3 +1,4 @@
+/* stylelint-disable rule-empty-line-before */
 /* stylelint-disable selector-class-pattern */
 @import "../../../styles/theme";
 
@@ -15,28 +16,48 @@
   &.s {
     font-size: $font-s;
 
-    .input,
-    .before {
-      padding: $p-s $p;
+    .input {
+      padding: $p-s $p-l;
     }
 
+    .before {
+      padding: $p-s $p-l;
+
+      &+.input {
+        padding-left: $p-s;
+      }
+    }
   }
 
   &.m {
     font-size: $font;
 
-    .input,
-    .before {
+    .input {
       padding: $p $p-l;
+    }
+
+    .before {
+      padding: $p $p $p $p-l;
+
+      &+.input {
+        padding-left: $p;
+      }
     }
   }
 
   &.l {
     font-size: $font-m;
 
-    .input,
-    .before {
+    .input {
       padding: $p-m $p-xl;
+    }
+
+    .before {
+      padding: $p $p $p $p-l;
+
+      &+.input {
+        padding-left: $p;
+      }
     }
   }
 
@@ -56,18 +77,21 @@
     border-color: var(--border2);
   }
 
+  &.readonly {
+    color: var(--text4);
+  }
+
   &.seamless {
 
     .before,
     .after {
-      padding: $p $p;
       background-color: transparent;
     }
   }
 }
 
 .input {
-  width: 100%;
+  flex-grow: 1;
   outline: 0;
 
   &::placeholder {
@@ -82,7 +106,7 @@
 
   min-width: 30px;
 
-  color: var(--text);
+  color: var(--text3);
 
-  background-color: var(--bg2);
+  background-color: var(--bg2)
 }

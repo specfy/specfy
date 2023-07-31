@@ -1,6 +1,5 @@
 import type { ApiProjectList } from '@specfy/api/src/types/api';
 import { IconPlus, IconSearch, IconUsers } from '@tabler/icons-react';
-import { Button, Input } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -9,6 +8,8 @@ import { useProjectStore } from '../../common/store';
 import { AvatarAuto } from '../AvatarAuto';
 import { Empty } from '../Empty';
 import { Flex } from '../Flex';
+import { Button } from '../Form/Button';
+import { Input } from '../Form/Input';
 import { Loading } from '../Loading';
 import { Time } from '../Time';
 
@@ -48,13 +49,13 @@ export const ListProjects: React.FC<{ orgId: string }> = ({ orgId }) => {
         {!brandNew && (
           <div className={cls.actions}>
             <Link to={`/${orgId}/_/project/new`}>
-              <Button type="primary" icon={<IconPlus />}>
-                New
+              <Button display="primary">
+                <IconPlus /> New
               </Button>
             </Link>
             <Input
-              prefix={<IconSearch />}
-              style={{ width: '200px' }}
+              before={<IconSearch />}
+              seamless
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search..."
             />
@@ -71,8 +72,8 @@ export const ListProjects: React.FC<{ orgId: string }> = ({ orgId }) => {
               desc="Create a project manually or from Github."
               action={
                 <Link to={`/${orgId}/_/project/new`}>
-                  <Button type="primary" icon={<IconPlus />}>
-                    Create a new Project
+                  <Button display="primary">
+                    <IconPlus /> Create a new Project
                   </Button>
                 </Link>
               }

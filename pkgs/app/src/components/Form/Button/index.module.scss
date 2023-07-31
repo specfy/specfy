@@ -1,6 +1,7 @@
 .btn {
   display: inline-flex;
   gap: var(--spc);
+  align-items: center;
 
   padding: var(--spc) var(--spc-l);
 
@@ -17,5 +18,18 @@
     cursor: not-allowed;
     color: var(--text3);
     background-color: var(--bg1);
+  }
+
+  &.default {
+    background-color: #fff;
+  }
+
+  &.primary {
+    color: var(--primaryText);
+    background-color: var(--primary);
+
+    &:hover {
+      background-color: var(--primaryHover);
+    }
   }
 }

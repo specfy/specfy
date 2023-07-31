@@ -1,6 +1,6 @@
 import type { FieldsErrors } from '@specfy/api/src/types/api';
 import { IconCircleArrowRight } from '@tabler/icons-react';
-import { Button, Form, Input } from 'antd';
+import { Button, Form } from 'antd';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +10,7 @@ import { isError, isValidationError } from '../../../api/helpers';
 import { i18n } from '../../../common/i18n';
 import { slugify, titleSuffix } from '../../../common/string';
 import { Card } from '../../../components/Card';
+import { Input } from '../../../components/Form/Input';
 import { useToast } from '../../../hooks/useToast';
 
 import cls from './index.module.scss';
@@ -62,7 +63,7 @@ export const OrgCreate: React.FC = () => {
               validateStatus={errors.name && 'error'}
             >
               <Input
-                size="large"
+                size="l"
                 placeholder="Name"
                 value={name}
                 className={cls.input}
@@ -93,7 +94,8 @@ export const OrgCreate: React.FC = () => {
             <Input
               placeholder="Unique ID"
               value={id}
-              addonBefore="https://app.specify.io/"
+              before="https://app.specify.io/"
+              seamless
               onChange={(e) => setId(e.target.value)}
             />
           </Form.Item>

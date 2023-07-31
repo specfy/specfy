@@ -1,6 +1,6 @@
 import { GithubOutlined } from '@ant-design/icons';
 import type { FieldsErrors } from '@specfy/api/src/types/api';
-import { Button, Form, Input } from 'antd';
+import { Button, Form } from 'antd';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
@@ -11,6 +11,7 @@ import { API_HOSTNAME } from '../../common/envs';
 import { i18n } from '../../common/i18n';
 import { titleSuffix } from '../../common/string';
 import { Card } from '../../components/Card';
+import { Input } from '../../components/Form/Input';
 import { Logo } from '../../components/Logo';
 import { useToast } from '../../hooks/useToast';
 
@@ -67,7 +68,7 @@ export const Login: React.FC = () => {
               help={errors.email?.message}
               validateStatus={errors.email && 'error'}
             >
-              <Input type="email" placeholder="you@email.com" size="large" />
+              <Input type="email" placeholder="you@email.com" size="l" />
             </Form.Item>
             <Form.Item
               label="Password"
@@ -77,7 +78,7 @@ export const Login: React.FC = () => {
               help={errors.password?.message}
               validateStatus={errors.password && 'error'}
             >
-              <Input type="password" size="large" />
+              <Input type="password" size="l" />
             </Form.Item>
             <Button type="primary" size="large" block htmlType="submit">
               Sign in

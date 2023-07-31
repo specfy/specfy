@@ -1,5 +1,5 @@
 import type { ApiProject, ApiPerm, ApiUser } from '@specfy/api/src/types/api';
-import { Typography, Input } from 'antd';
+import { Typography } from 'antd';
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useDebounce } from 'react-use';
@@ -8,6 +8,7 @@ import { useListPermsProject, useListUser } from '../../../../api';
 import { titleSuffix } from '../../../../common/string';
 import { Card } from '../../../../components/Card';
 import { Empty } from '../../../../components/Empty';
+import { Input } from '../../../../components/Form/Input';
 import { Row } from '../../../../components/Team/Row';
 import { useAuth } from '../../../../hooks/useAuth';
 
@@ -93,7 +94,7 @@ export const SettingsTeam: React.FC<{
           placeholder="Search or add user..."
           className={cls.search}
           onChange={(e) => setSearch(e.target.value)}
-        ></Input>
+        />
       </div>
       <Card>
         {!searchDebounced && (

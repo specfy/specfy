@@ -1,6 +1,6 @@
 import type { ApiProject, FieldsErrors } from '@specfy/api/src/types/api';
 import { IconCirclesRelation } from '@tabler/icons-react';
-import { Typography, Input, Button, Modal, Form } from 'antd';
+import { Typography, Button, Modal, Form } from 'antd';
 import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
@@ -20,6 +20,7 @@ import { Banner } from '../../../../components/Banner';
 import { CopyButton } from '../../../../components/Button/Copy';
 import { Card } from '../../../../components/Card';
 import { Flex } from '../../../../components/Flex';
+import { Input } from '../../../../components/Form/Input';
 import { GithubOrgSelect } from '../../../../components/Github/OrgSelect';
 import { GithubRepoSelect } from '../../../../components/Github/RepoSelect';
 import { useToast } from '../../../../hooks/useToast';
@@ -177,7 +178,8 @@ export const SettingsGeneral: React.FC<{
               <Input
                 value={slug}
                 onChange={onSlug}
-                addonBefore={`https://app.specfy.io/${proj.orgId}/`}
+                before={`https://app.specfy.io/${proj.orgId}/`}
+                seamless
               />
             </Form.Item>
           </Card.Content>
@@ -265,7 +267,7 @@ export const SettingsGeneral: React.FC<{
                   readOnly
                   value={proj.id}
                   style={{ width: '350px' }}
-                  suffix={<CopyButton value={proj.id} />}
+                  after={<CopyButton value={proj.id} />}
                 />
               </div>
               <div>
@@ -274,9 +276,7 @@ export const SettingsGeneral: React.FC<{
                   readOnly
                   value={key || ''}
                   style={{ width: '350px' }}
-                  suffix={
-                    <CopyButton value={resKeys.data?.data[0].key || ''} />
-                  }
+                  after={<CopyButton value={resKeys.data?.data[0].key || ''} />}
                 />
               </div>
               {!IS_PROD && (
@@ -286,7 +286,7 @@ export const SettingsGeneral: React.FC<{
                     readOnly
                     value={manualCli}
                     style={{ width: '350px' }}
-                    suffix={<CopyButton value={manualCli || ''} />}
+                    after={<CopyButton value={manualCli || ''} />}
                   />
                 </div>
               )}

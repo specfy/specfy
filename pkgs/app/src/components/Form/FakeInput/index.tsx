@@ -1,6 +1,7 @@
-import type { InputProps } from 'antd';
-import { Input } from 'antd';
 import classnames from 'classnames';
+
+import type { InputProps } from '../Input';
+import { Input } from '../Input';
 
 import cls from './index.module.scss';
 
@@ -11,6 +12,7 @@ const H1: React.FC<InputProps> = (args) => {
     </div>
   );
 };
+
 const H2: React.FC<InputProps> = (args) => {
   return (
     <div className={cls.fake}>

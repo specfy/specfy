@@ -205,7 +205,7 @@ export const ProjectRevisionCreate: React.FC<{
               <Card.Content>
                 <Flex gap="l" column align="flex-start">
                   <FakeInput.H1
-                    size="large"
+                    size="l"
                     value={title}
                     placeholder="Revision title..."
                     onChange={(e) => setTitle(e.target.value)}

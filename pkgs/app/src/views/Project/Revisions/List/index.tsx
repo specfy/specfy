@@ -67,7 +67,7 @@ const Row: React.FC<{
               })}
             </AvatarGroup>
           )}
-          {item.authors.length > 0 && (
+          {item.authors.length > 0 && item.authors.length < 1 && (
             <Flex gap="m">
               <AvatarAuto
                 key={item.authors[0].id}

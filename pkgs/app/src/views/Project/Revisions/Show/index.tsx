@@ -295,7 +295,7 @@ export const ProjectRevisionsShow: React.FC<{
               )}
               {edit && (
                 <FakeInput.H2
-                  size="large"
+                  size="l"
                   value={title}
                   placeholder="Title..."
                   onChange={(e) => setTitle(e.target.value)}

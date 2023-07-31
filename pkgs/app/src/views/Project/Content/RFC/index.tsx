@@ -73,7 +73,7 @@ export const RFC: React.FC<{
             <div className={cls.title}>
               <span className={cls.type}>[RFC-{doc.typeId}]</span>
               <FakeInput.H1
-                size="large"
+                size="l"
                 value={title}
                 placeholder="Title..."
                 onChange={(e) => {

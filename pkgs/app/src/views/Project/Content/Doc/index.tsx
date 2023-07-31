@@ -70,7 +70,7 @@ export const Doc: React.FC<{
           {isEditing && (
             <div className={cls.title}>
               <FakeInput.H1
-                size="large"
+                size="l"
                 value={title}
                 placeholder="Title..."
                 onChange={(e) => {
