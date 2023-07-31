@@ -1,8 +1,13 @@
 .empty {
   display: flex;
   flex-direction: column;
+  gap: var(--spc);
   align-items: center;
   justify-content: center;
 
   min-height: 300px;
+}
+
+.icon {
+  font-size: var(--font-2xl);
 }

@@ -17,7 +17,6 @@ import {
   IconGitPullRequest,
   IconGitPullRequestDraft,
 } from '@tabler/icons-react';
-import { Result } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
@@ -37,6 +36,7 @@ import { titleSuffix } from '../../../../common/string';
 import { Card } from '../../../../components/Card';
 import { Container } from '../../../../components/Container';
 import { Editor } from '../../../../components/Editor';
+import { Empty } from '../../../../components/Empty';
 import { Flex } from '../../../../components/Flex';
 import { FlowWrapper } from '../../../../components/Flow';
 import { Toolbar } from '../../../../components/Flow/Toolbar';
@@ -183,10 +183,10 @@ export const ProjectRevisionCreate: React.FC<{
     return (
       <Container className={cls.container}>
         <Helmet title={`Create Revision - ${proj.name} ${titleSuffix}`} />
-        <Result
-          icon={<IconGitPullRequest size="1em" />}
+        <Empty
+          icon={<IconGitPullRequest />}
           title="No changes to commit..."
-          extra={
+          action={
             <Link to={to}>
               <Button display="primary">Back to Overview</Button>
             </Link>
