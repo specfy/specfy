@@ -1,5 +1,5 @@
 import { IconEdit, IconEye, IconPlus } from '@tabler/icons-react';
-import { Badge, Tooltip } from 'antd';
+import { Badge } from 'antd';
 import { Link } from 'react-router-dom';
 import { useDebounce } from 'react-use';
 
@@ -20,6 +20,7 @@ import type {
   ComponentBlobWithDiff,
 } from '../../../../types/blobs';
 import { Button } from '../../../Form/Button';
+import { TooltipFull } from '../../../Tooltip';
 
 import cls from './index.module.scss';
 
@@ -137,39 +138,39 @@ export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
 
   return (
     <div className={cls.staging}>
-      <Tooltip
-        title={
-          isEditing ? 'Click to disable edition' : 'Click to enable edition'
-        }
-        placement="bottomLeft"
+      <TooltipFull
+        msg={isEditing ? 'Click to disable edition' : 'Click to enable edition'}
+        side="bottom"
       >
-        {isEditing ? (
-          <Badge
-            className={cls.badge}
-            count={showBadge ? staging.count : 0}
-            size="small"
-            color="hsl(226, 70.0%, 55.5%)"
-          >
+        <button>
+          {isEditing ? (
+            <Badge
+              className={cls.badge}
+              count={showBadge ? staging.count : 0}
+              size="small"
+              color="hsl(226, 70.0%, 55.5%)"
+            >
+              <div
+                className={cls.edit}
+                role="button"
+                tabIndex={0}
+                onClick={() => edit.enable(false)}
+              >
+                <IconEdit />
+              </div>
+            </Badge>
+          ) : (
             <div
               className={cls.edit}
               role="button"
               tabIndex={0}
-              onClick={() => edit.enable(false)}
+              onClick={() => edit.enable(true)}
             >
-              <IconEdit />
+              <IconEye />
             </div>
-          </Badge>
-        ) : (
-          <div
-            className={cls.edit}
-            role="button"
-            tabIndex={0}
-            onClick={() => edit.enable(true)}
-          >
-            <IconEye />
-          </div>
-        )}
-      </Tooltip>
+          )}
+        </button>
+      </TooltipFull>
       {isEditing ? (
         <Link to={`/${project!.orgId}/${project!.slug}/revisions/current`}>
           <Badge

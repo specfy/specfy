@@ -3,7 +3,7 @@ import type { ComputedFlow } from '@specfy/api/src/models/flows/types';
 import type { ApiComponent, ApiProject } from '@specfy/api/src/types/api';
 import { IconDotsVertical } from '@tabler/icons-react';
 import type { MenuProps } from 'antd';
-import { Tooltip, Dropdown } from 'antd';
+import { Dropdown } from 'antd';
 import classnames from 'classnames';
 import type { MenuClickEventHandler } from 'rc-menu/lib/interface';
 import type React from 'react';
@@ -31,6 +31,7 @@ import { Button } from '../../../components/Form/Button';
 import { FakeInput } from '../../../components/Form/FakeInput';
 import { NotFound } from '../../../components/NotFound';
 import { Tag } from '../../../components/Tag';
+import { TooltipFull } from '../../../components/Tooltip';
 import { UpdatedAt } from '../../../components/UpdatedAt';
 import { useEdit } from '../../../hooks/useEdit';
 import { useToast } from '../../../hooks/useToast';
@@ -136,13 +137,13 @@ export const ComponentView: React.FC<{
                   <ComponentIcon data={comp} large />
                 )}
 
-                <Tooltip
-                  title={
+                <TooltipFull
+                  msg={
                     isEditing &&
                     comp.type === 'project' &&
                     "Can't edit Project name"
                   }
-                  placement="top"
+                  side="top"
                 >
                   {!isEditing || comp.type === 'project' ? (
                     <h2>
@@ -162,7 +163,7 @@ export const ComponentView: React.FC<{
                       }}
                     />
                   )}
-                </Tooltip>
+                </TooltipFull>
               </Flex>
               <Flex align="center">
                 <Tag

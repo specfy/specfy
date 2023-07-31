@@ -1,0 +1,38 @@
+.content {
+  z-index: 50000;
+
+  overflow: hidden;
+
+  padding: var(--spc) var(--spc-l);
+
+  font-size: var(--font-s);
+  color: var(--primaryText);
+
+  background-color: var(--primary);
+  border-radius: var(--radius2);
+  box-shadow: var(--boxshadow1);
+
+  &[data-state="closed"] {
+    animation-name: exit;
+    animation-duration: .15s;
+  }
+
+  &[data-state="instant-open"] {
+    animation-name: enter;
+    animation-duration: .15s;
+  }
+}
+
+@keyframes enter {
+  0% {
+    transform: scale3d(.80, 0.80, 0.80);
+    opacity: 0;
+  }
+}
+
+@keyframes exit {
+  to {
+    transform: translate3d(0, 0, 0) scale3d(1, 1, 1) rotate(0);
+    opacity: 0;
+  }
+}
