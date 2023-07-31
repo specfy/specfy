@@ -7,8 +7,10 @@ import {
   IconArrowNarrowRight,
   IconArrowsExchange,
 } from '@tabler/icons-react';
-import { Button, Tooltip } from 'antd';
+import { Tooltip } from 'antd';
 import classNames from 'classnames';
+
+import { Button } from '../../Form/Button';
 
 import cls from './index.module.scss';
 
@@ -45,8 +47,8 @@ export const EdgeRelation: React.FC<
           {edge.data!.write && edge.data!.read && (
             <Button
               className={cls.direction}
-              size="small"
-              type="ghost"
+              size="s"
+              display="ghost"
               onClick={onClick}
               disabled={readonly}
             >
@@ -57,8 +59,8 @@ export const EdgeRelation: React.FC<
           {!edge.data!.write && edge.data!.read && (
             <Button
               className={cls.direction}
-              size="small"
-              type="ghost"
+              size="s"
+              display="ghost"
               onClick={onClick}
               disabled={readonly}
             >
@@ -69,8 +71,8 @@ export const EdgeRelation: React.FC<
           {edge.data!.write && !edge.data!.read && (
             <Button
               className={cls.direction}
-              size="small"
-              type="ghost"
+              size="s"
+              display="ghost"
               onClick={onClick}
               disabled={readonly}
             >

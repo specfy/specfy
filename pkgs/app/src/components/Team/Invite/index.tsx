@@ -1,5 +1,5 @@
 import type { ApiOrg, ApiPerm, FieldsErrors } from '@specfy/api/src/types/api';
-import { Button, Form } from 'antd';
+import { Form } from 'antd';
 import { useState } from 'react';
 
 import { createInvitation } from '../../../api';
@@ -8,6 +8,7 @@ import { i18n } from '../../../common/i18n';
 import { selectPerms } from '../../../common/perms';
 import { Card } from '../../../components/Card';
 import { useToast } from '../../../hooks/useToast';
+import { Button } from '../../Form/Button';
 import { Input } from '../../Form/Input';
 import { SelectFull } from '../../Form/Select';
 
@@ -76,7 +77,7 @@ export const TeamInvite: React.FC<{
         </form>
       </Card.Content>
       <Card.Actions>
-        <Button onClick={handleInvite} type="primary">
+        <Button onClick={handleInvite} display="primary">
           Invite
         </Button>
       </Card.Actions>

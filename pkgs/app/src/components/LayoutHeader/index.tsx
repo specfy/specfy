@@ -1,14 +1,12 @@
 import {
-  IconBell,
   IconCaretDown,
   IconHelp,
   IconLogout,
   IconPlus,
   IconSettings,
-  IconUser,
 } from '@tabler/icons-react';
 import type { MenuProps } from 'antd';
-import { Divider, Button, Dropdown, Badge } from 'antd';
+import { Divider, Dropdown } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
@@ -21,6 +19,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { useToast } from '../../hooks/useToast';
 import type { RouteOrg } from '../../types/routes';
 import { AvatarAuto } from '../AvatarAuto';
+import { Button } from '../Form/Button';
 import { Logo } from '../Logo';
 
 import cls from './index.module.scss';
@@ -119,18 +118,22 @@ export const LayoutHeader: React.FC = () => {
           placement="bottomRight"
           trigger={['click']}
         >
-          <Button type="text" icon={<IconCaretDown />} />
+          <Button display="ghost">
+            <IconCaretDown />
+          </Button>
         </Dropdown>
       </div>
 
       <div></div>
 
       <div className={cls.right}>
-        <div>
+        {/* <div>
           <Badge count={0} size="small">
-            <Button icon={<IconBell />} type="text" />
+            <Button display="ghost">
+              <IconBell />
+            </Button>
           </Badge>
-        </div>
+        </div> */}
         <div>
           <Dropdown
             menu={{ items: userItems }}
@@ -159,13 +162,9 @@ export const LayoutHeader: React.FC = () => {
             )}
             placement="bottomRight"
           >
-            <Button
-              type="text"
-              className={cls.avatar}
-              icon={
-                user?.avatarUrl ? <img src={user.avatarUrl} /> : <IconUser />
-              }
-            ></Button>
+            <button className={cls.avatar}>
+              <AvatarAuto name={user!.name} src={user!.avatarUrl} />
+            </button>
           </Dropdown>
         </div>
       </div>

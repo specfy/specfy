@@ -1,6 +1,6 @@
 import { GithubOutlined } from '@ant-design/icons';
 import type { FieldsErrors } from '@specfy/api/src/types/api';
-import { Button, Form } from 'antd';
+import { Form } from 'antd';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
@@ -11,6 +11,7 @@ import { API_HOSTNAME } from '../../common/envs';
 import { i18n } from '../../common/i18n';
 import { titleSuffix } from '../../common/string';
 import { Card } from '../../components/Card';
+import { Button } from '../../components/Form/Button';
 import { Input } from '../../components/Form/Input';
 import { Logo } from '../../components/Logo';
 import { useToast } from '../../hooks/useToast';
@@ -49,13 +50,8 @@ export const Login: React.FC = () => {
           <Logo />
         </Link>
         <div className={cls.oauth}>
-          <Button
-            onClick={handleGithub}
-            icon={<GithubOutlined />}
-            size="large"
-            block
-          >
-            Sign in with Github
+          <Button onClick={handleGithub} size="l" block>
+            <GithubOutlined /> Sign in with Github
           </Button>
         </div>
         <Card padded>
@@ -80,7 +76,7 @@ export const Login: React.FC = () => {
             >
               <Input type="password" size="l" />
             </Form.Item>
-            <Button type="primary" size="large" block htmlType="submit">
+            <Button display="primary" size="l" block type="submit">
               Sign in
             </Button>
           </Form>

@@ -17,6 +17,7 @@
     "selector-class-pattern": "^(((tabler-|ant-|x6-|rx_)[a-zA-Z-]+)|([a-z][a-z0-9]+([A-Z][a-z0-9]+)*))$",
     "no-descending-specificity": null,
     "custom-property-pattern": "^[a-z][a-z0-9-]+([A-Z][a-z0-9-]*)*$",
-    "keyframes-name-pattern": "^[a-z][a-z0-9]+([A-Z][a-z0-9]+)*$"
+    "keyframes-name-pattern": "^[a-z][a-z0-9]+([A-Z][a-z0-9]+)*$",
+    "scss/at-mixin-pattern": "^[a-z][a-z0-9]+([A-Z][a-z0-9]+)*$"
   }
 }

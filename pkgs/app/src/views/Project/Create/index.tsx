@@ -10,7 +10,6 @@ import {
   IconChevronRight,
   IconCircleArrowRight,
 } from '@tabler/icons-react';
-import { Button } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
@@ -23,6 +22,7 @@ import { titleSuffix } from '../../../common/string';
 import { Banner } from '../../../components/Banner';
 import { Container } from '../../../components/Container';
 import { Flex } from '../../../components/Flex';
+import { Button } from '../../../components/Form/Button';
 import { Checkbox } from '../../../components/Form/Checkbox';
 import { Field, FieldCheckbox } from '../../../components/Form/Field';
 import { Input } from '../../../components/Form/Input';
@@ -131,12 +131,7 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
             </Field>
 
             <Form.Submit asChild>
-              <Button
-                type="primary"
-                htmlType="submit"
-                className={cls.go}
-                disabled={!repo}
-              >
+              <Button size="l" display="primary" type="submit" disabled={!repo}>
                 Create <IconCircleArrowRight />
               </Button>
             </Form.Submit>
@@ -149,7 +144,7 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
                   Your organization is not linked to a Github organization.
                 </div>
                 <Link to={`/${org.id}/_/settings`}>
-                  <Button type="default">Settings</Button>
+                  <Button display="default">Settings</Button>
                 </Link>
               </Flex>
             </Banner>

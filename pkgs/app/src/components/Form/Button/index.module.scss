@@ -1,17 +1,104 @@
+/* stylelint-disable selector-class-pattern */
+@import "../../../styles/mixin";
+
 .btn {
+  @include ring;
+
   display: inline-flex;
+  flex-shrink: 0;
   gap: var(--spc);
   align-items: center;
-
-  padding: var(--spc) var(--spc-l);
 
   border: 1px solid var(--border2);
   border-radius: var(--radius2);
 
-  transition: background-color 0.15s ease-in-out;
+  transition-timing-function: ease-in-out;
+  transition-duration: 0.15s;
+  transition-property: background-color, box-shadow, border-color, color;
 
   &:hover {
     background-color: var(--bg2);
+  }
+
+  // Colors / Type
+  &.default {
+    background-color: #fff;
+
+    &:hover {
+      color: var(--text);
+      border-color: var(--border4);
+    }
+
+    &.danger {
+      color: var(--tomato9);
+      border-color: var(--tomato9);
+
+      &:hover {
+        color: var(--tomato11);
+        border-color: var(--tomato11);
+      }
+    }
+  }
+
+  &.primary {
+    color: var(--primaryText);
+    background-color: var(--primary);
+
+    &:hover:not([disabled]) {
+      background-color: var(--primaryHover);
+    }
+
+    .loading {
+      color: var(--primaryText);
+    }
+  }
+
+  &.ghost {
+    color: var(--text3);
+    background-color: transparent;
+    border-color: transparent;
+
+    &:hover {
+      color: var(--text);
+    }
+
+    &.danger {
+      &:hover {
+        color: var(--tomato9);
+      }
+    }
+  }
+
+  &.item {
+    color: var(--text3);
+    border-color: transparent;
+
+    &:hover {
+      color: var(--text);
+    }
+
+    &.danger {
+      color: var(--tomato9);
+
+      &:hover {
+        color: #fff;
+        background-color: var(--tomato9);
+      }
+    }
+  }
+
+  // Sizing
+  &.s {
+    padding: var(--spc-xs) var(--spc-m);
+    font-size: var(--font-s);
+  }
+
+  &.m {
+    padding: var(--spc) var(--spc-l);
+  }
+
+  &.l {
+    padding: var(--spc-m) var(--spc-l);
   }
 
   &:disabled {
@@ -20,16 +107,7 @@
     background-color: var(--bg1);
   }
 
-  &.default {
-    background-color: #fff;
-  }
-
-  &.primary {
-    color: var(--primaryText);
-    background-color: var(--primary);
-
-    &:hover {
-      background-color: var(--primaryHover);
-    }
+  &.block {
+    width: 100%;
   }
 }

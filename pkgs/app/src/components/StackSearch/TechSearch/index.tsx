@@ -1,6 +1,6 @@
 import type { ComponentType } from '@specfy/api/src/models/components/types';
 import { IconLinkOff } from '@tabler/icons-react';
-import { Button, Tooltip } from 'antd';
+import { Tooltip } from 'antd';
 import classNames from 'classnames';
 import type { ChangeEventHandler } from 'react';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -9,6 +9,7 @@ import { useProjectStore } from '../../../common/store';
 import type { TechInfo } from '../../../common/techs';
 import { internalTypeToText, supportedArray } from '../../../common/techs';
 import { AvatarAuto } from '../../AvatarAuto';
+import { Button } from '../../Form/Button';
 
 import cls from './index.module.scss';
 
@@ -174,11 +175,9 @@ export const TechSearch: React.FC<{
         {selected && (
           <div className={cls.actions}>
             <Tooltip title={'Make it a service'} placement="top">
-              <Button
-                icon={<IconLinkOff />}
-                type="ghost"
-                onClick={() => onPick(null)}
-              />
+              <Button display="ghost" onClick={() => onPick(null)}>
+                <IconLinkOff />
+              </Button>
             </Tooltip>
           </div>
         )}

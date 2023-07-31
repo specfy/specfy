@@ -1,8 +1,11 @@
 /* stylelint-disable rule-empty-line-before */
 /* stylelint-disable selector-class-pattern */
 @import "../../../styles/theme";
+@import "../../../styles/mixin";
 
 .wrapper {
+  @include ringWithin;
+
   display: flex;
   flex-grow: 1;
 

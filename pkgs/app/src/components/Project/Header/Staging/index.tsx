@@ -1,5 +1,5 @@
 import { IconEdit, IconEye, IconPlus } from '@tabler/icons-react';
-import { Badge, Button, Tooltip } from 'antd';
+import { Badge, Tooltip } from 'antd';
 import { Link } from 'react-router-dom';
 import { useDebounce } from 'react-use';
 
@@ -19,6 +19,7 @@ import type {
   BlobAndDiffs,
   ComponentBlobWithDiff,
 } from '../../../../types/blobs';
+import { Button } from '../../../Form/Button';
 
 import cls from './index.module.scss';
 
@@ -176,18 +177,22 @@ export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
             size="small"
             color="hsl(226, 70.0%, 55.5%)"
           >
-            <Button type="primary">Changes</Button>
+            <Button display="primary" size="l">
+              Changes
+            </Button>
           </Badge>
         </Link>
       ) : (
         <div>
-          <Button icon={<IconEdit />} onClick={() => edit.enable(true)}>
-            Edit
+          <Button onClick={() => edit.enable(true)} size="l">
+            <IconEdit /> Edit
           </Button>
         </div>
       )}
       <Link to={`/${project!.orgId}/${project!.slug}/component/new`}>
-        <Button icon={<IconPlus />} />
+        <Button size="l">
+          <IconPlus />
+        </Button>
       </Link>
     </div>
   );

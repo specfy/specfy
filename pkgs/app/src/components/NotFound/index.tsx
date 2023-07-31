@@ -1,8 +1,8 @@
-import { Button } from 'antd';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
 import { titleSuffix } from '../../common/string';
+import { Button } from '../Form/Button';
 
 import cls from './index.module.scss';
 
@@ -18,7 +18,7 @@ export const NotFound: React.FC<{ title?: string; message?: string }> = ({
         <p>{message}</p>
 
         <Link to="/">
-          <Button type="primary">Back Home</Button>
+          <Button display="primary">Back Home</Button>
         </Link>
       </div>
     </div>

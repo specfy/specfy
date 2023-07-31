@@ -10,7 +10,6 @@ import {
   IconEyeCheck,
   IconEyeOff,
 } from '@tabler/icons-react';
-import { Button } from 'antd';
 import classnames from 'classnames';
 import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -20,6 +19,7 @@ import { mergeRevision, rebaseRevision } from '../../../api';
 import { isError } from '../../../api/helpers';
 import { i18n } from '../../../common/i18n';
 import { useToast } from '../../../hooks/useToast';
+import { Button } from '../../Form/Button';
 import { Time } from '../../Time';
 
 import cls from './index.module.scss';
@@ -104,7 +104,7 @@ export const Checks: React.FC<{
             <IconExclamationCircle /> This revision is not up to date
           </div>
           <div>
-            <Button onClick={onClickRebase} type="default" loading={rebasing}>
+            <Button onClick={onClickRebase} loading={rebasing}>
               Rebase
             </Button>
           </div>
@@ -113,8 +113,7 @@ export const Checks: React.FC<{
 
       <div className={classnames(cls.checkLine, rev.merged && cls.merged)}>
         <Button
-          type={rev.merged ? 'ghost' : 'primary'}
-          icon={<IconGitPullRequest />}
+          display={rev.merged ? 'ghost' : 'primary'}
           disabled={!checks.canMerge}
           loading={merging}
           className={classnames(
@@ -124,7 +123,7 @@ export const Checks: React.FC<{
           )}
           onClick={onMerge}
         >
-          {rev.merged ? 'Merged' : 'Merge'}
+          <IconGitPullRequest /> {rev.merged ? 'Merged' : 'Merge'}
         </Button>
         <div className={cls.mergeAction}>
           {rev.status === 'draft' && <>This revision is still in draft</>}
@@ -141,19 +140,12 @@ export const Checks: React.FC<{
           {!rev.merged &&
             rev.status !== 'closed' &&
             (rev.status === 'draft' ? (
-              <Button
-                onClick={() => onClick('waiting')}
-                icon={<IconEyeCheck size={16} />}
-              >
-                Set ready for Review
+              <Button onClick={() => onClick('waiting')}>
+                <IconEyeCheck size={16} /> Set ready for Review
               </Button>
             ) : (
-              <Button
-                type="text"
-                onClick={() => onClick('draft')}
-                icon={<IconEyeOff size={16} />}
-              >
-                Convert to Draft
+              <Button display="ghost" onClick={() => onClick('draft')}>
+                <IconEyeOff size={16} /> Convert to Draft
               </Button>
             ))}
         </div>

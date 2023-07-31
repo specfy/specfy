@@ -1,4 +1,8 @@
+@import "../../../styles/mixin";
+
 .checkbox {
+  @include ring;
+
   position: relative;
 
   width: 16px;

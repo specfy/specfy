@@ -82,12 +82,13 @@ body * {
   --bg2: var(--mauve2);
   --bg3: var(--mauve3);
   --bg5: var(--mauve5);
-  --bg10: #242d3c;
+  --bg10: hsl(217.5deg 25% 18.82%);
 
   // Border
   --border1: var(--mauve2);
   --border2: var(--mauve4);
   --border3: var(--mauve7);
+  --border4: var(--mauve9);
   --radius1: 2px;
   --radius2: 4px;
   --radius3: 8px;
@@ -107,7 +108,7 @@ body * {
   // OTHER
   --accent1: var(--indigo4);
   --accent2: var(--indigo9);
-  --primary: #242d3c;
+  --primary: hsl(217.5deg 25% 18.82%);
   --primaryHover: #303a48;
   --primaryText: #fff;
 

@@ -3,7 +3,7 @@ import type { ComputedFlow } from '@specfy/api/src/models/flows/types';
 import type { ApiComponent, ApiProject } from '@specfy/api/src/types/api';
 import { IconDotsVertical } from '@tabler/icons-react';
 import type { MenuProps } from 'antd';
-import { Tooltip, Button, Dropdown } from 'antd';
+import { Tooltip, Dropdown } from 'antd';
 import classnames from 'classnames';
 import type { MenuClickEventHandler } from 'rc-menu/lib/interface';
 import type React from 'react';
@@ -27,6 +27,7 @@ import { TechPopover } from '../../../components/Flow/TechPopover';
 import { Toolbar } from '../../../components/Flow/Toolbar';
 import type { OnNodesChangeSuper } from '../../../components/Flow/helpers';
 import { onNodesChangeProject } from '../../../components/Flow/helpers';
+import { Button } from '../../../components/Form/Button';
 import { FakeInput } from '../../../components/Form/FakeInput';
 import { NotFound } from '../../../components/NotFound';
 import { Tag } from '../../../components/Tag';
@@ -174,11 +175,9 @@ export const ComponentView: React.FC<{
                 </Tag>
                 <div>
                   <Dropdown menu={{ items: menuItems, onClick: onClickMenu }}>
-                    <Button
-                      icon={<IconDotsVertical />}
-                      type="ghost"
-                      size="small"
-                    />
+                    <Button display="ghost" size="s">
+                      <IconDotsVertical />
+                    </Button>
                   </Dropdown>
                 </div>
               </Flex>

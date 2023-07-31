@@ -1,6 +1,6 @@
 import type { ApiProject, FieldsErrors } from '@specfy/api/src/types/api';
 import { IconCirclesRelation } from '@tabler/icons-react';
-import { Button, Modal, Form } from 'antd';
+import { Modal, Form } from 'antd';
 import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
@@ -20,6 +20,7 @@ import { Banner } from '../../../../components/Banner';
 import { CopyButton } from '../../../../components/Button/Copy';
 import { Card } from '../../../../components/Card';
 import { Flex } from '../../../../components/Flex';
+import { Button } from '../../../../components/Form/Button';
 import { Input } from '../../../../components/Form/Input';
 import { GithubOrgSelect } from '../../../../components/Github/OrgSelect';
 import { GithubRepoSelect } from '../../../../components/Github/RepoSelect';
@@ -185,11 +186,11 @@ export const SettingsGeneral: React.FC<{
 
           <Card.Actions>
             {nameChanged && (
-              <Button type="text" onClick={handleReset}>
+              <Button display="ghost" onClick={handleReset}>
                 reset
               </Button>
             )}
-            <Button type="primary" htmlType="submit" disabled={!nameChanged}>
+            <Button display="primary" type="submit" disabled={!nameChanged}>
               Rename
             </Button>
           </Card.Actions>
@@ -239,12 +240,12 @@ export const SettingsGeneral: React.FC<{
           </Card.Content>
           <Card.Actions>
             {proj.githubRepository === repoId && repoId !== null ? (
-              <Button type="default" onClick={onUnlink} danger>
+              <Button display="default" onClick={onUnlink} danger>
                 Unlink
               </Button>
             ) : (
               <Button
-                type="primary"
+                display="primary"
                 disabled={proj.githubRepository === repoId}
                 onClick={onLink}
               >
@@ -300,7 +301,7 @@ export const SettingsGeneral: React.FC<{
             <h4>Delete this project</h4>
             <Subdued>Deleting a project can&apos;t be undone.</Subdued>
           </div>
-          <Button danger type="primary" onClick={showModal}>
+          <Button danger display="primary" onClick={showModal}>
             Delete Project
           </Button>
         </div>
@@ -312,13 +313,13 @@ export const SettingsGeneral: React.FC<{
         onOk={confirmDelete}
         onCancel={cancelDelete}
         footer={[
-          <Button key="back" type="text" onClick={cancelDelete}>
+          <Button key="back" display="ghost" onClick={cancelDelete}>
             cancel
           </Button>,
           <Button
             danger
             key="submit"
-            type="primary"
+            display="primary"
             disabled={waitToRead}
             onClick={confirmDelete}
             loading={waitToRead}

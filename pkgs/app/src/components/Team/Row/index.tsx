@@ -1,12 +1,12 @@
 import type { ApiPerm, ApiUser } from '@specfy/api/src/types/api';
 import { IconCheck, IconPlus, IconTrash } from '@tabler/icons-react';
-import { Button } from 'antd';
 import { useState } from 'react';
 
 import { removePerm, updatePerm } from '../../../api';
 import { selectPerms } from '../../../common/perms';
 import { AvatarAuto } from '../../../components/AvatarAuto';
 import { useToast } from '../../../hooks/useToast';
+import { Button } from '../../Form/Button';
 import { SelectFull } from '../../Form/Select';
 import { Loading } from '../../Loading';
 
@@ -97,18 +97,15 @@ export const Row: React.FC<RowProps> = ({
 
         {perm ? (
           <Button
-            type="default"
             danger
-            icon={<IconTrash />}
             disabled={perm && user.id === me}
             onClick={() => onRemove(user.id)}
-          ></Button>
-        ) : (
-          <Button
-            type="default"
-            icon={<IconPlus />}
-            onClick={() => onUpdate(user.id, 'add', role)}
           >
+            <IconTrash />
+          </Button>
+        ) : (
+          <Button onClick={() => onUpdate(user.id, 'add', role)}>
+            <IconPlus />
             Add
           </Button>
         )}

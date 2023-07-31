@@ -7,7 +7,7 @@ import {
   IconZoomIn,
   IconZoomOut,
 } from '@tabler/icons-react';
-import { Button, Tooltip } from 'antd';
+import { Tooltip } from 'antd';
 import classnames from 'classnames';
 import type React from 'react';
 import { useRef, useState } from 'react';
@@ -16,6 +16,7 @@ import { useReactFlow, useViewport } from 'reactflow';
 
 import { useEdit } from '../../../hooks/useEdit';
 import { Flex } from '../../Flex';
+import { Button } from '../../Form/Button';
 import { PreviewNode } from '../CustomNode';
 
 import cls from './index.module.scss';
@@ -98,15 +99,19 @@ const ToolbarZoom: React.FC = () => {
   return (
     <div className={cls.toolbar}>
       <Tooltip title="Zoom Out (Cmd -)" placement="bottom">
-        <Button icon={<IconZoomOut />} type="text" onClick={handleZoomOut} />
+        <Button display="ghost" onClick={handleZoomOut}>
+          <IconZoomOut />
+        </Button>
       </Tooltip>
       <Tooltip title="Reset to fit" placement="bottom">
-        <Button type="text" onClick={handmeZoomReset}>
+        <Button display="ghost" onClick={handmeZoomReset}>
           {Math.ceil(zoom * 100)}%
         </Button>
       </Tooltip>
       <Tooltip title="Zoom In (Cmd +)" placement="bottom">
-        <Button icon={<IconZoomIn />} type="text" onClick={handleZoomIn} />
+        <Button display="ghost" onClick={handleZoomIn}>
+          <IconZoomIn />
+        </Button>
       </Tooltip>
     </div>
   );
@@ -117,7 +122,9 @@ const Fullscreen: React.FC<{ project: ApiProject }> = ({ project }) => {
     <div className={cls.toolbar}>
       <Tooltip title="Fullscreen" placement="bottom">
         <Link to={`/${project.orgId}/${project.slug}/flow`}>
-          <Button icon={<IconMaximize />} type="text" />
+          <Button display="ghost">
+            <IconMaximize />
+          </Button>
         </Link>
       </Tooltip>
     </div>

@@ -1,3 +1,4 @@
+/* stylelint-disable scss/double-slash-comment-empty-line-before */
 @import "../../styles/theme";
 
 .header {
@@ -43,29 +44,11 @@
   display: flex;
   gap: 8px;
   justify-content: flex-end;
-
-  margin-top: -2px;
-
   color: inherit;
-
-  button {
-    border: 1px solid rgb(255 255 255 / 5%);
-    border-radius: 20px;
-  }
 }
 
 .avatar {
-  background-color: rgb(255 255 255 / 5%);
-
-  img {
-    transform: scale(1.2);
-
-    width: 100%;
-    margin-top: -3px;
-    padding: 2px;
-
-    border-radius: 20px;
-  }
+  cursor: pointer;
 }
 
 .menu {
@@ -117,6 +100,7 @@
 }
 
 :global {
+
   // In the dropdown
   .ant-divider {
     margin: 4px 0;

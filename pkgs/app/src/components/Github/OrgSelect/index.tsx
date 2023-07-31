@@ -1,5 +1,5 @@
 import { IconPlus } from '@tabler/icons-react';
-import { Button, Skeleton } from 'antd';
+import { Skeleton } from 'antd';
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { useGetGithubInstallations } from '../../../api';
@@ -8,6 +8,7 @@ import { Popup } from '../../../common/popup';
 import { useToast } from '../../../hooks/useToast';
 import { AvatarAuto } from '../../AvatarAuto';
 import { CommandItem } from '../../Command';
+import { Button } from '../../Form/Button';
 import type { ComboboxOption } from '../../Form/Combobox';
 import { Combobox } from '../../Form/Combobox';
 
@@ -108,12 +109,8 @@ export const GithubOrgSelect: React.FC<{
       disabled={disabled}
       after={
         <CommandItem onSelect={triggerInstall}>
-          <Button
-            size="small"
-            icon={<IconPlus />}
-            type="ghost"
-            onClick={triggerInstall}
-          >
+          <Button size="s" display="ghost" onClick={triggerInstall}>
+            <IconPlus />
             Add Github Organization
           </Button>
         </CommandItem>

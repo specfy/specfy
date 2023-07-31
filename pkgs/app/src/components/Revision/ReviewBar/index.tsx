@@ -4,7 +4,7 @@ import type {
   GetRevision,
 } from '@specfy/api/src/types/api';
 import { IconCircleCheck } from '@tabler/icons-react';
-import { Button, Space } from 'antd';
+import { Space } from 'antd';
 import classnames from 'classnames';
 import { useState, useEffect, useRef } from 'react';
 import { useClickAway } from 'react-use';
@@ -15,6 +15,7 @@ import { getEmptyDoc } from '../../../common/content';
 import { i18n } from '../../../common/i18n';
 import { useToast } from '../../../hooks/useToast';
 import { Editor } from '../../Editor';
+import { Button } from '../../Form/Button';
 
 import cls from './index.module.scss';
 
@@ -72,7 +73,6 @@ export const ReviewBar: React.FC<{
     <div className={classnames(cls.bar, open && cls.opened)} ref={ref}>
       <div className={cls.inner}>
         <Button
-          type="default"
           disabled={!canReview}
           className={classnames(cls.reviewButton)}
           onClick={() => onClickReview(true)}
@@ -88,15 +88,15 @@ export const ReviewBar: React.FC<{
             <Editor content={review} onUpdate={setReview} minHeight="150px" />
           </div>
           <Space className={cls.actions}>
-            <Button onClick={() => onClickReview(false)} type="text">
+            <Button onClick={() => onClickReview(false)} display="ghost">
               Cancel
             </Button>
             <Button
               onClick={onSubmitReview}
-              type="primary"
+              display="primary"
               className={classnames(cls.reviewButton, cls.success)}
-              icon={<IconCircleCheck />}
             >
+              <IconCircleCheck />
               Approve
             </Button>
           </Space>

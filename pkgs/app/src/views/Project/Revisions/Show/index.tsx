@@ -14,7 +14,7 @@ import {
   IconLockAccessOff,
 } from '@tabler/icons-react';
 import type { MenuProps } from 'antd';
-import { Button, Dropdown, Skeleton, Space } from 'antd';
+import { Dropdown, Skeleton, Space } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
@@ -34,6 +34,7 @@ import { titleSuffix } from '../../../../common/string';
 import { Container } from '../../../../components/Container';
 import { ContentDoc } from '../../../../components/Content';
 import { Editor } from '../../../../components/Editor';
+import { Button } from '../../../../components/Form/Button';
 import { FakeInput } from '../../../../components/Form/FakeInput';
 import { ListActivity } from '../../../../components/ListActivity';
 import { Loading } from '../../../../components/Loading';
@@ -327,10 +328,14 @@ export const ProjectRevisionsShow: React.FC<{
             {edit && (
               <div className={cls.editSave}>
                 <Space>
-                  <Button type="text" onClick={() => setEdit(false)}>
+                  <Button display="ghost" onClick={() => setEdit(false)}>
                     cancel
                   </Button>
-                  <Button type="primary" onClick={onClickSave} loading={save}>
+                  <Button
+                    display="primary"
+                    onClick={onClickSave}
+                    loading={save}
+                  >
                     Save
                   </Button>
                 </Space>

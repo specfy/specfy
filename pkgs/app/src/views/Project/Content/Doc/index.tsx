@@ -1,7 +1,7 @@
 import type { ApiDocument, ApiProject } from '@specfy/api/src/types/api';
 import { IconDotsVertical } from '@tabler/icons-react';
 import type { MenuProps } from 'antd';
-import { Dropdown, Button } from 'antd';
+import { Dropdown } from 'antd';
 import type { MenuClickEventHandler } from 'rc-menu/lib/interface';
 import { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
@@ -11,6 +11,7 @@ import { useDocumentsStore } from '../../../../common/store';
 import { titleSuffix } from '../../../../common/string';
 import { ContentDoc } from '../../../../components/Content';
 import { Editor } from '../../../../components/Editor';
+import { Button } from '../../../../components/Form/Button';
 import { FakeInput } from '../../../../components/Form/FakeInput';
 import { HeadingTree } from '../../../../components/HeadingTree';
 import { UpdatedAt } from '../../../../components/UpdatedAt';
@@ -83,7 +84,9 @@ export const Doc: React.FC<{
           {edit.can && (
             <div>
               <Dropdown menu={{ items: menuItems, onClick: onClickMenu }}>
-                <Button icon={<IconDotsVertical />} type="ghost" />
+                <Button display="ghost">
+                  <IconDotsVertical />
+                </Button>
               </Dropdown>
             </div>
           )}

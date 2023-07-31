@@ -1,6 +1,6 @@
 import type { FieldsErrors } from '@specfy/api/src/types/api';
 import { IconCircleArrowRight } from '@tabler/icons-react';
-import { Button, Form } from 'antd';
+import { Form } from 'antd';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +10,7 @@ import { isError, isValidationError } from '../../../api/helpers';
 import { i18n } from '../../../common/i18n';
 import { slugify, titleSuffix } from '../../../common/string';
 import { Card } from '../../../components/Card';
+import { Button } from '../../../components/Form/Button';
 import { Input } from '../../../components/Form/Input';
 import { useToast } from '../../../hooks/useToast';
 
@@ -78,10 +79,10 @@ export const OrgCreate: React.FC = () => {
               />
             </Form.Item>
             <Button
-              type="primary"
+              display="primary"
               disabled={!name || name.length < 4 || !id || id.length < 4}
               className={cls.button}
-              htmlType="submit"
+              type="submit"
             >
               Create <IconCircleArrowRight />
             </Button>

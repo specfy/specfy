@@ -1,7 +1,7 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import type { ApiInvitation } from '@specfy/api/src/types/api';
 import { IconDotsVertical } from '@tabler/icons-react';
-import { Button, Skeleton, Table } from 'antd';
+import { Skeleton, Table } from 'antd';
 import { useState } from 'react';
 
 import {
@@ -15,6 +15,7 @@ import { AvatarAuto } from '../../../../../components/AvatarAuto';
 import { Card } from '../../../../../components/Card';
 import { Empty } from '../../../../../components/Empty';
 import { Flex } from '../../../../../components/Flex';
+import { Button } from '../../../../../components/Form/Button';
 import { Checkbox } from '../../../../../components/Form/Checkbox';
 import { useToast } from '../../../../../hooks/useToast';
 import type { RouteOrg } from '../../../../../types/routes';
@@ -94,7 +95,7 @@ export const SettingsTeamPending: React.FC<{ params: RouteOrg }> = ({
                     checked={checked}
                   />
                   {selected.length > 0 && (
-                    <Button size="small" danger onClick={onRemoveSelected}>
+                    <Button size="s" danger onClick={onRemoveSelected}>
                       Remove {selected.length} invitations
                     </Button>
                   )}
@@ -143,9 +144,8 @@ export const SettingsTeamPending: React.FC<{ params: RouteOrg }> = ({
                           <DropdownMenu.Item className="rx_dropdownMenuItem">
                             <Button
                               danger
-                              type="link"
+                              display="item"
                               block
-                              size="small"
                               onClick={() => onRemoveOne(item)}
                             >
                               Remove

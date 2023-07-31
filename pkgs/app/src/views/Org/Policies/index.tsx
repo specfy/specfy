@@ -5,7 +5,7 @@ import {
   IconForbid,
   IconTemplate,
 } from '@tabler/icons-react';
-import { Button, Skeleton, Table } from 'antd';
+import { Skeleton, Table } from 'antd';
 import classnames from 'classnames';
 import { useMemo, useState } from 'react';
 
@@ -15,6 +15,7 @@ import { AvatarAuto } from '../../../components/AvatarAuto';
 import { Card } from '../../../components/Card';
 import { Container } from '../../../components/Container';
 import { ContentDoc } from '../../../components/Content';
+import { Button } from '../../../components/Form/Button';
 import { Time } from '../../../components/Time';
 import type { RouteOrg } from '../../../types/routes';
 
@@ -114,10 +115,11 @@ export const OrgPolicies: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
                   </div>
                   <div>
                     <Button
-                      type="text"
-                      icon={<IconCaretRight />}
+                      display="ghost"
                       onClick={() => handleClick(item.id)}
-                    />
+                    >
+                      <IconCaretRight />
+                    </Button>
                   </div>
                 </div>
               );

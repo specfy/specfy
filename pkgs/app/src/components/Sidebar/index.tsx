@@ -1,11 +1,11 @@
 import type { ApiOrg, ApiProject } from '@specfy/api/src/types/api';
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
-import { Button } from 'antd';
 import classNames from 'classnames';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { AvatarAuto } from '../AvatarAuto';
+import { Button } from '../Form/Button';
 import { Staging } from '../Project/Header/Staging';
 
 import cls from './index.module.scss';
@@ -31,12 +31,9 @@ export const Sidebar: React.FC<{
   return (
     <div className={cls.wrapper}>
       <div className={classNames(cls.collapser, collapse && cls.collapsed)}>
-        <Button
-          size="small"
-          icon={collapse ? <IconChevronRight /> : <IconChevronLeft />}
-          type="ghost"
-          onClick={onCollapse}
-        />
+        <Button size="s" display="ghost" onClick={onCollapse}>
+          {collapse ? <IconChevronRight /> : <IconChevronLeft />}
+        </Button>
       </div>
       <div className={classNames(cls.sidebar, collapse && cls.collapsed)}>
         <div className={cls.inner}>

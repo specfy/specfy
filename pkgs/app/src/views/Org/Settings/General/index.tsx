@@ -1,6 +1,6 @@
 import type { ApiOrg } from '@specfy/api/src/types/api';
 import { IconCirclesRelation } from '@tabler/icons-react';
-import { Button, Modal, Form } from 'antd';
+import { Modal, Form } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +11,7 @@ import { i18n } from '../../../../common/i18n';
 import { titleSuffix } from '../../../../common/string';
 import { Banner } from '../../../../components/Banner';
 import { Card } from '../../../../components/Card';
+import { Button } from '../../../../components/Form/Button';
 import { Input } from '../../../../components/Form/Input';
 import { GithubOrgSelect } from '../../../../components/Github/OrgSelect';
 import { Subdued } from '../../../../components/Text';
@@ -140,11 +141,11 @@ export const SettingsGeneral: React.FC<{
           {!org.isPersonal && (
             <Card.Actions>
               {nameChanged && (
-                <Button type="text" onClick={handleReset}>
+                <Button display="ghost" onClick={handleReset}>
                   reset
                 </Button>
               )}
-              <Button type="primary" htmlType="submit" disabled={!nameChanged}>
+              <Button display="primary" type="submit" disabled={!nameChanged}>
                 Rename
               </Button>
             </Card.Actions>
@@ -175,12 +176,12 @@ export const SettingsGeneral: React.FC<{
           </Card.Content>
           <Card.Actions>
             {org.githubInstallationId === installId && installId !== null ? (
-              <Button type="default" onClick={onUnlink} danger>
+              <Button onClick={onUnlink} danger>
                 Unlink
               </Button>
             ) : (
               <Button
-                type="primary"
+                display="primary"
                 disabled={org.githubInstallationId === installId}
                 onClick={onLink}
               >
@@ -198,7 +199,7 @@ export const SettingsGeneral: React.FC<{
               <h4>Delete this organization</h4>
               <Subdued>This operation can&apos;t be undone.</Subdued>
             </div>
-            <Button danger type="default" onClick={showModal}>
+            <Button danger onClick={showModal}>
               Delete Organization
             </Button>
           </div>
@@ -211,13 +212,13 @@ export const SettingsGeneral: React.FC<{
         onOk={confirmDelete}
         onCancel={cancelDelete}
         footer={[
-          <Button key="back" type="text" onClick={cancelDelete}>
+          <Button key="back" display="ghost" onClick={cancelDelete}>
             cancel
           </Button>,
           <Button
             danger
             key="submit"
-            type="primary"
+            display="primary"
             disabled={waitToRead}
             onClick={confirmDelete}
             loading={waitToRead}

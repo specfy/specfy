@@ -3,12 +3,12 @@ import type {
   EdgeData,
 } from '@specfy/api/src/models/flows/types';
 import { IconTrash } from '@tabler/icons-react';
-import { Button } from 'antd';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'react-use';
 import type { Node } from 'reactflow';
 import { useEdges, useNodes, useOnSelectionChange } from 'reactflow';
 
+import { Button } from '../../Form/Button';
 import { Tag } from '../../Tag';
 import { PreviewNode } from '../CustomNode';
 import type { OnNodesChangeSuper } from '../helpers';
@@ -228,12 +228,9 @@ export const FlowDetails: React.FC<{
               {currNode.data.type === 'hosting' ? 'Hosting' : 'Component'}
               {!readonly && (
                 <div>
-                  <Button
-                    icon={<IconTrash />}
-                    size="small"
-                    type="ghost"
-                    onClick={deleteComponent}
-                  />
+                  <Button size="s" display="ghost" onClick={deleteComponent}>
+                    <IconTrash />
+                  </Button>
                 </div>
               )}
             </div>

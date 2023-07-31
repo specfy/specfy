@@ -1,8 +1,8 @@
 import type { ApiUser, ListUsers } from '@specfy/api/src/types/api';
 import { IconX } from '@tabler/icons-react';
-import { Button } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
 
+import { Button } from '../Form/Button';
 import { Subdued } from '../Text';
 import { UserCard, UserCardAdd } from '../UserCard';
 
@@ -49,10 +49,11 @@ export const UserList: React.FC<{
             {edit && (
               <Button
                 className={cls.remove}
-                type="text"
+                display="ghost"
                 onClick={() => onRemove(user.id)}
-                icon={<IconX size={16} />}
-              />
+              >
+                <IconX size={16} />
+              </Button>
             )}
           </li>
         );

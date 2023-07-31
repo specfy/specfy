@@ -5,7 +5,7 @@ import {
   IconLayoutSidebarLeftExpand,
   IconChevronDown,
 } from '@tabler/icons-react';
-import { Button, Tree } from 'antd';
+import { Tree } from 'antd';
 import type { DataNode, DirectoryTreeProps } from 'antd/es/tree';
 import classnames from 'classnames';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -16,6 +16,7 @@ import { useListDocuments } from '../../../api';
 import { TYPE_TO_TEXT } from '../../../common/document';
 import { useDocumentsStore } from '../../../common/store';
 import type { RouteProject } from '../../../types/routes';
+import { Button } from '../../Form/Button';
 import { Input } from '../../Form/Input';
 import { Loading } from '../../Loading';
 
@@ -228,10 +229,9 @@ export const ContentSidebar: React.FC<{
   if (collapsed) {
     return (
       <div className={classnames(cls.tree, cls.collapsed)}>
-        <Button
-          icon={<IconLayoutSidebarLeftExpand />}
-          onClick={handleCollapse}
-        />
+        <Button onClick={handleCollapse}>
+          <IconLayoutSidebarLeftExpand />
+        </Button>
       </div>
     );
   }

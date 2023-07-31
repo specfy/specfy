@@ -17,7 +17,7 @@ import {
   IconGitPullRequest,
   IconGitPullRequestDraft,
 } from '@tabler/icons-react';
-import { Button, Result } from 'antd';
+import { Result } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
@@ -40,6 +40,7 @@ import { Editor } from '../../../../components/Editor';
 import { Flex } from '../../../../components/Flex';
 import { FlowWrapper } from '../../../../components/Flow';
 import { Toolbar } from '../../../../components/Flow/Toolbar';
+import { Button } from '../../../../components/Form/Button';
 import { Checkbox } from '../../../../components/Form/Checkbox';
 import { FakeInput } from '../../../../components/Form/FakeInput';
 import { FieldCheckbox } from '../../../../components/Form/Field';
@@ -187,7 +188,7 @@ export const ProjectRevisionCreate: React.FC<{
           title="No changes to commit..."
           extra={
             <Link to={to}>
-              <Button type="primary">Back to Overview</Button>
+              <Button display="primary">Back to Overview</Button>
             </Link>
           }
         />
@@ -230,12 +231,8 @@ export const ProjectRevisionCreate: React.FC<{
                     />
                   </FieldCheckbox>
 
-                  <Button
-                    type="primary"
-                    disabled={!canSubmit}
-                    htmlType="submit"
-                    icon={<IconGitPullRequestDraft />}
-                  >
+                  <Button display="primary" disabled={!canSubmit} type="submit">
+                    <IconGitPullRequestDraft />
                     {autoMerge ? 'Propose and Merge' : 'Propose changes'}
                   </Button>
                 </Flex>

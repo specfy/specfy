@@ -1,6 +1,5 @@
 import type { ApiComponent } from '@specfy/api/src/types/api';
 import { IconCircleArrowRight } from '@tabler/icons-react';
-import { Button } from 'antd';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +8,7 @@ import { createLocal } from '../../../../common/components';
 import { useComponentsStore, useProjectStore } from '../../../../common/store';
 import { slugify, titleSuffix } from '../../../../common/string';
 import { internalTypeToText } from '../../../../common/techs';
+import { Button } from '../../../../components/Form/Button';
 import { Input } from '../../../../components/Form/Input';
 import { SelectFull } from '../../../../components/Form/Select';
 import type { RouteProject } from '../../../../types/routes';
@@ -76,13 +76,14 @@ export const ProjectComponentCreate: React.FC<{ params: RouteProject }> = ({
           onChange={(e) => setName(e.target.value)}
         />
         <Button
-          type="primary"
+          display="primary"
           disabled={!name || name.length < 2}
           className={cls.button}
           onClick={onFinish}
-          htmlType="submit"
-          icon={<IconCircleArrowRight />}
-        ></Button>
+          type="submit"
+        >
+          <IconCircleArrowRight />
+        </Button>
       </div>
     </form>
   );

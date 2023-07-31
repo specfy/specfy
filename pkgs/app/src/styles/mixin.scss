@@ -1,5 +1,22 @@
 @import "./theme";
 
+
+@mixin ring() {
+  transition: box-shadow .15s;
+
+  &:focus-visible:not([disabled]) {
+    box-shadow: #fff 0 0 0 2px, hsl(217.5deg 25% 10.82% / 70%) 0 0 0 4px;
+  }
+}
+
+@mixin ringWithin() {
+  transition: box-shadow .15s;
+
+  &:focus-within:not([disabled]) {
+    box-shadow: #fff 0 0 0 2px, hsl(217.5deg 25% 10.82% / 70%) 0 0 0 4px;
+  }
+}
+
 @mixin focusable() {
   &:hover {
     outline: 1px solid $blue-100;

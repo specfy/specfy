@@ -1,6 +1,5 @@
 import type { ApiOrg } from '@specfy/api/src/types/api';
 import { IconArrowNarrowRight, IconCheck } from '@tabler/icons-react';
-import { Button } from 'antd';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -8,6 +7,7 @@ import { useLocalStorage } from 'react-use';
 
 import { useListPerms, useListProjects } from '../../../api';
 import { Flex } from '../../Flex';
+import { Button } from '../../Form/Button';
 
 import cls from './index.module.scss';
 
@@ -55,7 +55,7 @@ export const OrgOnboarding: React.FC<{ org: ApiOrg }> = ({ org }) => {
           </div>
         </div>
         <div>
-          <Button onClick={() => setDone(true)} size="small" type="text">
+          <Button onClick={() => setDone(true)} size="s" display="ghost">
             skip
           </Button>
         </div>

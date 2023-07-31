@@ -1,4 +1,4 @@
-import { Button, Modal, Form } from 'antd';
+import { Modal, Form } from 'antd';
 import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +8,7 @@ import { isError } from '../../../api/helpers';
 import { i18n } from '../../../common/i18n';
 import { titleSuffix } from '../../../common/string';
 import { Card } from '../../../components/Card';
+import { Button } from '../../../components/Form/Button';
 import { Input } from '../../../components/Form/Input';
 import { Subdued } from '../../../components/Text';
 import { useAuth } from '../../../hooks/useAuth';
@@ -93,11 +94,11 @@ export const SettingsGeneral: React.FC = () => {
 
           <Card.Actions>
             {changed && (
-              <Button type="text" onClick={handleReset}>
+              <Button display="ghost" onClick={handleReset}>
                 reset
               </Button>
             )}
-            <Button type="primary" htmlType="submit" disabled={!changed}>
+            <Button display="primary" type="submit" disabled={!changed}>
               Update
             </Button>
           </Card.Actions>
@@ -110,7 +111,7 @@ export const SettingsGeneral: React.FC = () => {
             <h4>Delete your account</h4>
             <Subdued>This operation can&apos;t be undone.</Subdued>
           </div>
-          <Button danger type="default" onClick={showModal}>
+          <Button danger onClick={showModal}>
             Delete Account
           </Button>
         </div>
@@ -122,13 +123,13 @@ export const SettingsGeneral: React.FC = () => {
         onOk={confirmDelete}
         onCancel={cancelDelete}
         footer={[
-          <Button key="back" type="text" onClick={cancelDelete}>
+          <Button key="back" display="ghost" onClick={cancelDelete}>
             cancel
           </Button>,
           <Button
             danger
             key="submit"
-            type="primary"
+            display="primary"
             disabled={waitToRead}
             onClick={confirmDelete}
             loading={waitToRead}

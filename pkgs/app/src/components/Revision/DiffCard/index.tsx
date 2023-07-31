@@ -4,7 +4,6 @@ import {
   IconChevronRight,
   IconExternalLink,
 } from '@tabler/icons-react';
-import { Button } from 'antd';
 import classnames from 'classnames';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -17,6 +16,7 @@ import type {
   ProjectBlobWithDiff,
 } from '../../../types/blobs';
 import { Card } from '../../Card';
+import { Button } from '../../Form/Button';
 import { Tag } from '../../Tag';
 
 import { DiffCardComponent } from './CardComponent';
@@ -60,12 +60,9 @@ export const DiffCard: React.FC<{
     <Card>
       <div className={cls.header}>
         <div>
-          <Button
-            type="text"
-            size="small"
-            onClick={handleHideShow}
-            icon={hide ? <IconChevronRight /> : <IconChevronDown />}
-          />
+          <Button display="ghost" size="s" onClick={handleHideShow}>
+            {hide ? <IconChevronRight /> : <IconChevronDown />}
+          </Button>
         </div>
         <div>
           {type} / {using.name}
@@ -75,7 +72,9 @@ export const DiffCard: React.FC<{
 
         {!diff.blob.created && (
           <Link to={to}>
-            <Button type="text" icon={<IconExternalLink />} size="small" />
+            <Button display="ghost" size="s">
+              <IconExternalLink />
+            </Button>
           </Link>
         )}
       </div>

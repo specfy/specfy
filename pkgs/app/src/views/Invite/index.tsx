@@ -1,5 +1,4 @@
 import { IconArrowRight } from '@tabler/icons-react';
-import { Button } from 'antd';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import { useSearchParam } from 'react-use';
@@ -15,6 +14,7 @@ import { titleSuffix } from '../../common/string';
 import { AvatarAuto } from '../../components/AvatarAuto';
 import { Card } from '../../components/Card';
 import { Flex } from '../../components/Flex';
+import { Button } from '../../components/Form/Button';
 import { NotFound } from '../../components/NotFound';
 import { useAuth } from '../../hooks/useAuth';
 import { useToast } from '../../hooks/useToast';
@@ -101,10 +101,10 @@ export const Invite: React.FC = () => {
             </Flex>
           </Card.Content>
           <Card.Actions>
-            <Button type="ghost" onClick={onDecline}>
+            <Button display="ghost" onClick={onDecline}>
               Decline
             </Button>
-            <Button type="primary" onClick={onAccept}>
+            <Button display="primary" onClick={onAccept}>
               Join
             </Button>
           </Card.Actions>
