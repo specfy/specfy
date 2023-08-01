@@ -1,13 +1,14 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
 import type { ApiProject, DocumentSimple } from '@specfy/api/src/types/api';
 import {
   IconCircleX,
   IconSearch,
   IconLayoutSidebarLeftExpand,
-  IconChevronDown,
+  IconChevronRight,
 } from '@tabler/icons-react';
-import { Tree } from 'antd';
-import type { DataNode, DirectoryTreeProps } from 'antd/es/tree';
 import classnames from 'classnames';
+import type { TreeProps } from 'rc-tree';
+import Tree from 'rc-tree';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useDebounce } from 'react-use';
@@ -22,11 +23,19 @@ import { Loading } from '../../Loading';
 
 import cls from './index.module.scss';
 
+interface Item {
+  key: string;
+  title: string;
+  href: string;
+  children: Item[];
+}
+
 function buildDocHierarchy(
   docs: DocumentSimple[],
-  parentId: string | null
-): DataNode[] {
-  const node: DataNode[] = [];
+  parentId: string | null,
+  proj: ApiProject
+): Item[] {
+  const node: Item[] = [];
 
   for (const doc of docs) {
     if (doc.parentId !== parentId) {
@@ -36,8 +45,8 @@ function buildDocHierarchy(
     node.push({
       key: doc.id,
       title: doc.name,
-      // icon: <IconFileText />,
-      children: buildDocHierarchy(docs, doc.id),
+      href: `/${proj.orgId}/${proj.slug}/content/${doc.id}-${doc.slug}`,
+      children: buildDocHierarchy(docs, doc.id, proj),
     });
   }
 
@@ -113,59 +122,13 @@ export const ContentSidebar: React.FC<{
     [search]
   );
 
-  const tree: DataNode[] = useMemo(() => {
+  const tree: Item[] = useMemo(() => {
     if (!res.data?.data) {
       return [];
     }
 
-    // const rfc: DataNode[] = [];
-    // const playbook: DataNode[] = [];
-
     const tmp = res.data.data.filter((d) => d.type === 'doc');
-    const docs: DataNode[] = buildDocHierarchy(tmp, null);
-
-    // for (const doc of res.data.data) {
-    //   if (deleted.includes(doc.id)) {
-    //     continue;
-    //   }
-    //   if (doc.type === 'docs') {
-    //     continue;
-    //   }
-
-    //   if (doc.type === 'pb') {
-    //     playbook.push({
-    //       key: doc.id,
-    //       title: doc.name,
-    //       isLeaf: true,
-    //       icon: <IconFileCode />,
-    //     });
-    //   } else {
-    //     rfc.push({
-    //       key: doc.id,
-    //       title: `RFC-${doc.typeId} - ${doc.name}`,
-    //       isLeaf: true,
-    //       icon: <IconFileText />,
-    //     });
-    //   }
-    // }
-
-    // return [
-    //   {
-    //     title: 'Docs',
-    //     key: 'docs',
-    //     children: docs,
-    //   },
-    //   {
-    //     title: 'RFC',
-    //     key: 'rfc',
-    //     children: rfc,
-    //   },
-    //   {
-    //     title: 'Playbook',
-    //     key: 'pb',
-    //     children: playbook,
-    //   },
-    // ];
+    const docs: Item[] = buildDocHierarchy(tmp, null, proj);
 
     return docs;
   }, [res.data, deleted]);
@@ -178,19 +141,7 @@ export const ContentSidebar: React.FC<{
     }
 
     setSelected([split[4].split('-')[0]]);
-    // setExpanded(['docs', 'rfc', 'pb']);
   }, [location]);
-
-  const onSelect: DirectoryTreeProps['onSelect'] = (keys) => {
-    if (keys[0] === 'rfc') {
-      return;
-    }
-    for (const item of res.data!.data) {
-      if (item.id === keys[0]) {
-        navigate(`/${proj.orgId}/${proj.slug}/content/${item.id}-${item.slug}`);
-      }
-    }
-  };
 
   // Handler
   const handleInput: React.ChangeEventHandler<HTMLInputElement> = (e) => {
@@ -214,8 +165,19 @@ export const ContentSidebar: React.FC<{
       }
     }
   };
+
   const handleCollapse = () => {
     setCollapsed(!collapsed);
+  };
+  const onSelect: TreeProps['onSelect'] = (keys) => {
+    if (keys[0] === 'rfc') {
+      return;
+    }
+    for (const item of res.data!.data) {
+      if (item.id === keys[0]) {
+        navigate(`/${proj.orgId}/${proj.slug}/content/${item.id}-${item.slug}`);
+      }
+    }
   };
 
   if (res.isLoading) {
@@ -237,8 +199,8 @@ export const ContentSidebar: React.FC<{
   }
 
   return (
-    <div className={classnames(cls.tree, collapsed && cls.collapsed)}>
-      <div className={cls.treeHeader}>
+    <div className={classnames(cls.content, collapsed && cls.collapsed)}>
+      <div className={cls.header}>
         <div className={cls.search}>
           <Input
             seamless
@@ -249,20 +211,19 @@ export const ContentSidebar: React.FC<{
               loading ? (
                 <Loading />
               ) : (
-                search && (
-                  <button onClick={handleReset} title="Reset search filters...">
-                    <IconCircleX />
-                  </button>
-                )
+                <button
+                  onClick={handleReset}
+                  title="Reset search filters..."
+                  style={{ opacity: !search ? 0 : 100 }}
+                >
+                  <IconCircleX />
+                </button>
               )
             }
             placeholder="Search..."
             onKeyDown={handleKeyPress}
           />
         </div>
-        {/* <Link to={`/${proj.orgId}/${proj.slug}/content/new`}>
-          <Button icon={<IconPlus />} />
-        </Link> */}
       </div>
       {tree.length <= 0 && (
         <div className={cls.empty}>Content will appear here...</div>
@@ -291,18 +252,17 @@ export const ContentSidebar: React.FC<{
           })}
         </div>
       )}
-      {!list && (
-        <Tree.DirectoryTree
-          showIcon={false}
-          defaultExpandAll={false}
-          // expandedKeys={expanded}
-          switcherIcon={<IconChevronDown />}
-          onSelect={onSelect}
-          selectedKeys={selected}
-          // autoExpandParent={true}
-          treeData={tree}
-        />
-      )}
+
+      <Tree
+        treeData={tree}
+        showIcon={false}
+        defaultExpandAll={false}
+        autoExpandParent={true}
+        defaultExpandParent={true}
+        switcherIcon={<IconChevronRight />}
+        selectedKeys={selected}
+        onSelect={onSelect}
+      />
     </div>
   );
 };
