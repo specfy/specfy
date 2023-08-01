@@ -1,4 +1,3 @@
-import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import type { ApiProject } from '@specfy/api/src/types/api';
 import { IconSettings, IconUsers } from '@tabler/icons-react';
 import { useEffect, useMemo, useState } from 'react';
@@ -8,6 +7,7 @@ import { useCountPerms } from '../../../api';
 import { Badge } from '../../../components/Badge';
 import { Container } from '../../../components/Container';
 import { Flex } from '../../../components/Flex';
+import * as Menu from '../../../components/Menu';
 import type { RouteProject } from '../../../types/routes';
 
 import { SettingsGeneral } from './General';
@@ -35,7 +35,7 @@ export const ProjectSettings: React.FC<{
       {
         key: 'general',
         label: (
-          <Link to={linkSelf} className={cls.link}>
+          <Link to={linkSelf}>
             <Flex gap="l">
               <IconSettings />
               General
@@ -46,7 +46,7 @@ export const ProjectSettings: React.FC<{
       {
         key: 'team',
         label: (
-          <Link to={`${linkSelf}/team`} className={cls.link}>
+          <Link to={`${linkSelf}/team`}>
             <Flex gap="l">
               <IconUsers />
               Team
@@ -68,25 +68,21 @@ export const ProjectSettings: React.FC<{
 
   return (
     <Container className={cls.container}>
-      <NavigationMenu.Root orientation="vertical" className="rx_navMenuRoot">
-        <NavigationMenu.List className="rx_navMenuList">
+      <Menu.Menu orientation="vertical">
+        <Menu.List>
           {menu.map((item) => {
             return (
-              <NavigationMenu.Item className="rx_navMenuItem" key={item.key}>
-                <NavigationMenu.Link
-                  asChild
-                  className="rx_navMenuLink"
-                  active={open === item.key}
-                >
+              <Menu.Item key={item.key}>
+                <Menu.Link asChild active={open === item.key}>
                   {item.label}
-                </NavigationMenu.Link>
-              </NavigationMenu.Item>
+                </Menu.Link>
+              </Menu.Item>
             );
           })}
-        </NavigationMenu.List>
-      </NavigationMenu.Root>
+        </Menu.List>
+      </Menu.Menu>
 
-      <div className={cls.flex}>
+      <Flex gap="2xl" column align="initial">
         <Routes>
           <Route
             path="/"
@@ -94,7 +90,7 @@ export const ProjectSettings: React.FC<{
           />
           <Route path="/team" element={<SettingsTeam proj={proj} />} />
         </Routes>
-      </div>
+      </Flex>
     </Container>
   );
 };

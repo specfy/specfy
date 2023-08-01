@@ -1,12 +1,13 @@
-@import "../theme";
+@import "../../styles/theme";
 
-.rx_navMenuRoot {
+
+.menu {
   position: relative;
   z-index: 1;
   display: flex;
 
   &[data-orientation="horizontal"] {
-    .rx_navMenuLink {
+    .link {
       padding: $p $p-l;
 
       &::after {
@@ -39,7 +40,7 @@
   }
 }
 
-.rx_navMenuList {
+.list {
   display: flex;
   gap: $p-s;
   justify-content: center;
@@ -55,15 +56,15 @@
     flex-direction: column;
     width: 200px;
 
-    .rx_navMenuTrigger,
-    .rx_navMenuLink {
+    .trigger,
+    .link {
       width: 100%;
     }
   }
 }
 
-.rx_navMenuTrigger,
-.rx_navMenuLink {
+.trigger,
+.link {
   cursor: pointer;
   user-select: none;
 
