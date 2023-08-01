@@ -1,4 +1,5 @@
 @import "./theme";
+@import "./mixin";
 @import '@radix-ui/colors/amber.css';
 @import '@radix-ui/colors/blue.css';
 @import '@radix-ui/colors/bronze.css';
@@ -149,6 +150,9 @@ button {
 }
 
 a {
+  // Buggy with Dropdown
+  // @include ring;
+
   cursor: pointer;
 
   &:hover {

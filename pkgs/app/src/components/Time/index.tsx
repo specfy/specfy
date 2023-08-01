@@ -10,9 +10,11 @@ export const Time: React.FC<{ time: string }> = ({ time }) => {
 
   return (
     <TooltipFull msg={dt.toLocaleString(DateTime.DATETIME_SHORT)} side="bottom">
-      {dt.toRelative({
-        style: 'narrow',
-      })}
+      <span>
+        {dt.toRelative({
+          style: 'narrow',
+        })}
+      </span>
     </TooltipFull>
   );
 };

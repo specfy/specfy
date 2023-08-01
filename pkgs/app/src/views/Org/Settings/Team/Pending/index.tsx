@@ -1,6 +1,5 @@
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import type { ApiInvitation } from '@specfy/api/src/types/api';
-import { IconDotsVertical } from '@tabler/icons-react';
+import { IconDotsVertical, IconTrash } from '@tabler/icons-react';
 import { Table } from 'antd';
 import { useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
@@ -14,6 +13,7 @@ import { isError } from '../../../../../api/helpers';
 import { i18n } from '../../../../../common/i18n';
 import { AvatarAuto } from '../../../../../components/AvatarAuto';
 import { Card } from '../../../../../components/Card';
+import * as Dropdown from '../../../../../components/Dropdown';
 import { Empty } from '../../../../../components/Empty';
 import { Flex } from '../../../../../components/Flex';
 import { Button } from '../../../../../components/Form/Button';
@@ -135,32 +135,30 @@ export const SettingsTeamPending: React.FC<{ params: RouteOrg }> = ({
               render={(_, item: ApiInvitation) => {
                 return (
                   <div>
-                    <DropdownMenu.Root>
-                      <DropdownMenu.Trigger asChild>
-                        <button className="rx_dropdownButton">
+                    <Dropdown.Menu>
+                      <Dropdown.Trigger asChild>
+                        <Button display="ghost">
                           <IconDotsVertical />
-                        </button>
-                      </DropdownMenu.Trigger>
-                      <DropdownMenu.Portal>
-                        <DropdownMenu.Content
-                          className="rx_dropdownMenuContent"
-                          sideOffset={5}
-                        >
-                          <DropdownMenu.Item className="rx_dropdownMenuItem">
-                            <Button
-                              danger
-                              display="item"
-                              block
-                              onClick={() => onRemoveOne(item)}
-                            >
-                              Remove
-                            </Button>
-                          </DropdownMenu.Item>
-
-                          <DropdownMenu.Arrow className="rx_dropdownMenuArrow" />
-                        </DropdownMenu.Content>
-                      </DropdownMenu.Portal>
-                    </DropdownMenu.Root>
+                        </Button>
+                      </Dropdown.Trigger>
+                      <Dropdown.Portal>
+                        <Dropdown.Content>
+                          <Dropdown.Group>
+                            <Dropdown.Item asChild>
+                              <Button
+                                danger
+                                display="item"
+                                block
+                                onClick={() => onRemoveOne(item)}
+                                size="s"
+                              >
+                                <IconTrash /> Remove
+                              </Button>
+                            </Dropdown.Item>
+                          </Dropdown.Group>
+                        </Dropdown.Content>
+                      </Dropdown.Portal>
+                    </Dropdown.Menu>
                   </div>
                 );
               }}

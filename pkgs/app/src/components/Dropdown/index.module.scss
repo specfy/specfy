@@ -1,23 +1,24 @@
-@import "../theme";
-@import "../mixin";
+@import "../../styles/theme";
+@import "../../styles/mixin";
 
-.rx_dropdownButton {
+.button {
   @include button;
 
   padding: $p;
 }
 
 
-.rx_dropdownMenuContent,
-.rx_dropdownMenuSubContent {
+.menuContent,
+.menuSubContent {
   will-change: transform, opacity;
 
+  z-index: 500;
+
   min-width: 100px;
-  padding: $p;
 
   background-color: white;
   border-radius: $border-radius;
-  box-shadow: 0 10px 38px -10px rgb(22 23 24 / 35%), 0 10px 20px -15px rgb(22 23 24 / 20%);
+  box-shadow: var(--boxshadow2);
 
   animation-duration: 400ms;
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
@@ -43,8 +44,36 @@
   }
 }
 
-.rx_dropdownMenuArrow {
+.menuArrow {
   fill: white;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  padding: var(--spc) 0;
+}
+
+.separator {
+  height: 1px;
+  margin: -1px 0 0;
+  padding: 0;
+  background-color: var(--bg3)
+}
+
+.item {
+  display: flex;
+  gap: var(--spc-m);
+  align-items: center;
+
+  padding: var(--spc-m) var(--spc-xl);
+
+  color: var(--text4);
+
+  &:hover {
+    color: var(--text);
+    background-color: var(--bg3)
+  }
 }
 
 @keyframes slideUpAndFade {

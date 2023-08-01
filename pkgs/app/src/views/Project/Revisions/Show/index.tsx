@@ -13,9 +13,7 @@ import {
   IconLock,
   IconLockAccessOff,
 } from '@tabler/icons-react';
-import type { MenuProps } from 'antd';
-import { Dropdown } from 'antd';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Skeleton from 'react-loading-skeleton';
 import { useParams } from 'react-router-dom';
@@ -34,6 +32,7 @@ import { useRevisionStore } from '../../../../common/store';
 import { titleSuffix } from '../../../../common/string';
 import { Container } from '../../../../components/Container';
 import { ContentDoc } from '../../../../components/Content';
+import * as Dropdown from '../../../../components/Dropdown';
 import { Editor } from '../../../../components/Editor';
 import { Flex } from '../../../../components/Flex';
 import { Button } from '../../../../components/Form/Button';
@@ -135,38 +134,6 @@ export const ProjectRevisionsShow: React.FC<{
     setReviewers([...rev.reviewers]);
   }, [edit, rev]);
 
-  const actionsItems = useMemo(() => {
-    if (!rev) {
-      return;
-    }
-
-    return [
-      !rev.locked
-        ? {
-            key: 'lock',
-            icon: <IconLock size={16} />,
-            label: 'Lock',
-          }
-        : {
-            key: 'unlock',
-            icon: <IconLockAccessOff size={16} />,
-            label: 'Unlock',
-          },
-      !rev.closedAt
-        ? {
-            key: 'close',
-            icon: <IconGitPullRequestClosed size={16} />,
-            label: 'Close',
-            danger: true,
-          }
-        : {
-            key: 'reopen',
-            icon: <IconGitPullRequestClosed size={16} />,
-            label: 'Reopen',
-          },
-    ];
-  }, [rev]);
-
   const onChangeAuthor = (list: ApiUser[]) => {
     setAuthors([...list]);
   };
@@ -227,14 +194,14 @@ export const ProjectRevisionsShow: React.FC<{
     setSave(false);
   };
 
-  const onMenuClick: MenuProps['onClick'] = async (e) => {
-    if (e.key === 'lock') {
+  const onMenuClick = async (type: 'close' | 'lock' | 'reopen' | 'unlock') => {
+    if (type === 'lock') {
       await patchLocked(true);
-    } else if (e.key === 'unlock') {
+    } else if (type === 'unlock') {
       await patchLocked(false);
-    } else if (e.key === 'close') {
+    } else if (type === 'close') {
       await patchStatus('closed');
-    } else if (e.key === 'reopen') {
+    } else if (type === 'reopen') {
       await patchStatus('draft');
     }
   };
@@ -296,14 +263,59 @@ export const ProjectRevisionsShow: React.FC<{
                   <Flex>
                     {save && <Loading />}
 
-                    <Dropdown.Button
-                      menu={{ items: actionsItems, onClick: onMenuClick }}
-                      overlayClassName={cls.editDropdown}
-                      onClick={() => setEdit(true)}
-                      icon={<IconDotsVertical />}
-                    >
-                      Edit
-                    </Dropdown.Button>
+                    <Button onClick={() => setEdit(true)}>Edit</Button>
+
+                    <Dropdown.Menu>
+                      <Dropdown.Trigger asChild>
+                        <Button display="ghost">
+                          <IconDotsVertical />
+                        </Button>
+                      </Dropdown.Trigger>
+                      <Dropdown.Portal>
+                        <Dropdown.Content>
+                          <Dropdown.Group>
+                            {!rev.locked ? (
+                              <Dropdown.Item asChild>
+                                <Button
+                                  display="item"
+                                  onClick={() => onMenuClick('lock')}
+                                >
+                                  <IconLock /> Lock
+                                </Button>
+                              </Dropdown.Item>
+                            ) : (
+                              <Dropdown.Item asChild>
+                                <Button
+                                  display="item"
+                                  onClick={() => onMenuClick('unlock')}
+                                >
+                                  <IconLockAccessOff /> Unlock
+                                </Button>
+                              </Dropdown.Item>
+                            )}
+                            {!rev.closedAt ? (
+                              <Dropdown.Item asChild>
+                                <Button
+                                  display="item"
+                                  onClick={() => onMenuClick('close')}
+                                >
+                                  <IconGitPullRequestClosed /> Close
+                                </Button>
+                              </Dropdown.Item>
+                            ) : (
+                              <Dropdown.Item asChild>
+                                <Button
+                                  display="item"
+                                  onClick={() => onMenuClick('reopen')}
+                                >
+                                  <IconGitPullRequestClosed /> Open
+                                </Button>
+                              </Dropdown.Item>
+                            )}
+                          </Dropdown.Group>
+                        </Dropdown.Content>
+                      </Dropdown.Portal>
+                    </Dropdown.Menu>
                   </Flex>
                 </div>
               )}

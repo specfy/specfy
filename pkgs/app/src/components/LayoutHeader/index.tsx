@@ -5,8 +5,7 @@ import {
   IconPlus,
   IconSettings,
 } from '@tabler/icons-react';
-import type { MenuProps } from 'antd';
-import { Divider, Dropdown } from 'antd';
+import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
@@ -19,12 +18,11 @@ import { useAuth } from '../../hooks/useAuth';
 import { useToast } from '../../hooks/useToast';
 import type { RouteOrg } from '../../types/routes';
 import { AvatarAuto } from '../AvatarAuto';
+import * as Dropdown from '../Dropdown';
 import { Button } from '../Form/Button';
 import { Logo } from '../Logo';
 
 import cls from './index.module.scss';
-
-const userItems: MenuProps['items'] = [];
 
 export const LayoutHeader: React.FC = () => {
   const toast = useToast();
@@ -34,16 +32,7 @@ export const LayoutHeader: React.FC = () => {
   const params = useParams<Partial<RouteOrg>>();
   const { user } = useAuth();
   const orgsQuery = useListOrgs();
-  const [orgs, setOrgs] = useState<MenuProps['items']>([]);
   const [current, setCurrent] = useState<string>();
-
-  const handleNavigate = (item: Exclude<MenuProps['items'], undefined>[0]) => {
-    navigate(`/${item!.key}`);
-  };
-
-  const handleCreate = () => {
-    navigate('/organizations/new');
-  };
 
   const handleLogout = async () => {
     const res = await logout();
@@ -60,32 +49,7 @@ export const LayoutHeader: React.FC = () => {
       return;
     }
 
-    const data: MenuProps['items'] = orgsQuery.data.data.map((org) => {
-      return {
-        key: org.id,
-        label: (
-          <Link to="/" className={cls.org}>
-            <AvatarAuto org={org} /> {org.name}
-          </Link>
-        ),
-        onClick: handleNavigate,
-      };
-    });
-
-    data.push(
-      {
-        type: 'divider',
-      },
-      {
-        label: 'Create organization',
-        key: '#create',
-        icon: <IconPlus size="1em" />,
-        onClick: handleCreate,
-      }
-    );
-
     storeOrg.fill(orgsQuery.data.data);
-    setOrgs(data);
   }, [orgsQuery.data]);
 
   useEffect(() => {
@@ -109,19 +73,44 @@ export const LayoutHeader: React.FC = () => {
       </Link>
 
       <div>
-        <Dropdown
-          menu={{
-            items: orgs,
-            selectable: true,
-            selectedKeys: current ? [current] : [],
-          }}
-          placement="bottomRight"
-          trigger={['click']}
-        >
-          <Button display="ghost">
-            <IconCaretDown />
-          </Button>
-        </Dropdown>
+        <Dropdown.Menu>
+          <Dropdown.Trigger asChild>
+            <Button display="ghost">
+              <IconCaretDown />
+            </Button>
+          </Dropdown.Trigger>
+          <Dropdown.Portal>
+            <Dropdown.Content>
+              <Dropdown.Group>
+                {orgsQuery.data?.data.map((org) => {
+                  return (
+                    <Dropdown.Item key={org.id} asChild>
+                      <Link
+                        to="/"
+                        className={classNames(
+                          cls.org,
+                          current === org.id,
+                          cls.current
+                        )}
+                      >
+                        <AvatarAuto org={org} /> {org.name}
+                      </Link>
+                    </Dropdown.Item>
+                  );
+                })}
+              </Dropdown.Group>
+              <Dropdown.Separator />
+              <Dropdown.Group>
+                <Dropdown.Item asChild>
+                  <Link to="/organizations/new'" className={cls.org}>
+                    <IconPlus size="1em" />
+                    Create organization
+                  </Link>
+                </Dropdown.Item>
+              </Dropdown.Group>
+            </Dropdown.Content>
+          </Dropdown.Portal>
+        </Dropdown.Menu>
       </div>
 
       <div></div>
@@ -135,37 +124,49 @@ export const LayoutHeader: React.FC = () => {
           </Badge>
         </div> */}
         <div>
-          <Dropdown
-            menu={{ items: userItems }}
-            trigger={['click']}
-            dropdownRender={() => (
-              <div className={cls.userDropdown}>
-                <div className={cls.userDropdownProfil}>
+          <Dropdown.Menu>
+            <Dropdown.Trigger asChild>
+              <button>
+                <AvatarAuto name={user!.name} src={user!.avatarUrl} />
+              </button>
+            </Dropdown.Trigger>
+            <Dropdown.Portal>
+              <Dropdown.Content>
+                <div className={cls.userDropdown}>
                   <div>{user!.name}</div>
                   <strong>{user!.email}</strong>
                 </div>
-                <Divider />
-                <Link to="/account/" className={cls.userDropdownItem}>
-                  <IconSettings />
-                  <div>Settings</div>
-                </Link>
-                <Link to="/account/" className={cls.userDropdownItem}>
-                  <IconHelp />
-                  <div>Support</div>
-                </Link>
-                <Divider />
-                <a onClick={handleLogout} className={cls.userDropdownItem}>
-                  <IconLogout />
-                  <div>Logout</div>
-                </a>
-              </div>
-            )}
-            placement="bottomRight"
-          >
-            <button className={cls.avatar}>
-              <AvatarAuto name={user!.name} src={user!.avatarUrl} />
-            </button>
-          </Dropdown>
+
+                <Dropdown.Separator />
+                <Dropdown.Group>
+                  <Dropdown.Item asChild>
+                    <Link to="/account/">
+                      <IconSettings />
+                      <div>Settings</div>
+                    </Link>
+                  </Dropdown.Item>
+
+                  <Dropdown.Item asChild>
+                    <Link to="/account/">
+                      <IconHelp />
+                      <div>Support</div>
+                    </Link>
+                  </Dropdown.Item>
+                </Dropdown.Group>
+
+                <Dropdown.Separator />
+
+                <Dropdown.Group>
+                  <Dropdown.Item asChild>
+                    <button onClick={handleLogout}>
+                      <IconLogout />
+                      <div>Logout</div>
+                    </button>
+                  </Dropdown.Item>
+                </Dropdown.Group>
+              </Dropdown.Content>
+            </Dropdown.Portal>
+          </Dropdown.Menu>
         </div>
       </div>
     </div>
