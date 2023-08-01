@@ -21,11 +21,8 @@
 
   font-size: $font-l;
   text-align: center;
-}
 
-.badge {
-  :global(.ant-badge-count) {
-    top: 16px;
-    right: 7px;
+  &.badge {
+    color: var(--accent2);
   }
 }

@@ -116,13 +116,6 @@ export const LayoutHeader: React.FC = () => {
       <div></div>
 
       <div className={cls.right}>
-        {/* <div>
-          <Badge count={0} size="small">
-            <Button display="ghost">
-              <IconBell />
-            </Button>
-          </Badge>
-        </div> */}
         <div>
           <Dropdown.Menu>
             <Dropdown.Trigger asChild>

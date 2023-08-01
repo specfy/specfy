@@ -1,5 +1,5 @@
 import { IconEdit, IconEye, IconPlus } from '@tabler/icons-react';
-import { Badge } from 'antd';
+import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 import { useDebounce } from 'react-use';
 
@@ -144,21 +144,17 @@ export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
       >
         <button>
           {isEditing ? (
-            <Badge
-              className={cls.badge}
-              count={showBadge ? staging.count : 0}
-              size="small"
-              color="hsl(226, 70.0%, 55.5%)"
+            <div
+              className={classNames(
+                cls.edit,
+                showBadge && staging.count > 0 && cls.badge
+              )}
+              role="button"
+              tabIndex={0}
+              onClick={() => edit.enable(false)}
             >
-              <div
-                className={cls.edit}
-                role="button"
-                tabIndex={0}
-                onClick={() => edit.enable(false)}
-              >
-                <IconEdit />
-              </div>
-            </Badge>
+              <IconEdit />
+            </div>
           ) : (
             <div
               className={cls.edit}
@@ -173,15 +169,9 @@ export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
       </TooltipFull>
       {isEditing ? (
         <Link to={`/${project!.orgId}/${project!.slug}/revisions/current`}>
-          <Badge
-            count={staging.count}
-            size="small"
-            color="hsl(226, 70.0%, 55.5%)"
-          >
-            <Button display="primary" size="l">
-              Changes
-            </Button>
-          </Badge>
+          <Button display="primary" size="l">
+            {staging.count} Changes
+          </Button>
         </Link>
       ) : (
         <div>
