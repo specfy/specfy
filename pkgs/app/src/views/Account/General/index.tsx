@@ -1,5 +1,4 @@
 import * as Form from '@radix-ui/react-form';
-import { Modal } from 'antd';
 import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +8,7 @@ import { isError } from '../../../api/helpers';
 import { i18n } from '../../../common/i18n';
 import { titleSuffix } from '../../../common/string';
 import { Card } from '../../../components/Card';
+import * as Dialog from '../../../components/Dialog';
 import { Button } from '../../../components/Form/Button';
 import { Field } from '../../../components/Form/Field';
 import { Input } from '../../../components/Form/Input';
@@ -23,7 +23,6 @@ export const SettingsGeneral: React.FC = () => {
   const navigate = useNavigate();
   const { user, tryLogin } = useAuth();
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [waitToRead, setWaitToRead] = useState(true);
 
   // Edit
@@ -54,13 +53,12 @@ export const SettingsGeneral: React.FC = () => {
   }, [name, email]);
 
   // Delete modal
-  const showModal = () => {
-    setIsModalOpen(true);
-    setTimeout(() => setWaitToRead(false), 2000);
-  };
-  const cancelDelete = () => {
-    setIsModalOpen(false);
-    setWaitToRead(true);
+  const onOpenChange = (open: boolean) => {
+    if (open) {
+      setTimeout(() => setWaitToRead(false), 2000);
+    } else {
+      setWaitToRead(true);
+    }
   };
 
   const confirmDelete = async () => {
@@ -114,38 +112,40 @@ export const SettingsGeneral: React.FC = () => {
             <h4>Delete your account</h4>
             <Subdued>This operation can&apos;t be undone.</Subdued>
           </div>
-          <Button danger onClick={showModal}>
-            Delete Account
-          </Button>
+          <Dialog.Dialog onOpenChange={onOpenChange}>
+            <Dialog.Trigger asChild>
+              <Button danger>Delete Account</Button>
+            </Dialog.Trigger>
+            <Dialog.Content>
+              <Dialog.Header>
+                <Dialog.Title>Delete your Account?</Dialog.Title>
+                <Dialog.Description>
+                  Are you sure to delete your account? <br></br>This operation
+                  can&apos;t be undone.
+                </Dialog.Description>
+              </Dialog.Header>
+              <div></div>
+              <Dialog.Footer>
+                <Dialog.Close asChild>
+                  <Button key="back" display="ghost">
+                    cancel
+                  </Button>
+                </Dialog.Close>
+                <Button
+                  danger
+                  key="submit"
+                  display="primary"
+                  disabled={waitToRead}
+                  onClick={confirmDelete}
+                  loading={waitToRead}
+                >
+                  Delete Account
+                </Button>
+              </Dialog.Footer>
+            </Dialog.Content>
+          </Dialog.Dialog>
         </div>
       </Card>
-
-      <Modal
-        title="Delete your account?"
-        open={isModalOpen}
-        onOk={confirmDelete}
-        onCancel={cancelDelete}
-        footer={[
-          <Button key="back" display="ghost" onClick={cancelDelete}>
-            cancel
-          </Button>,
-          <Button
-            danger
-            key="submit"
-            display="primary"
-            disabled={waitToRead}
-            onClick={confirmDelete}
-            loading={waitToRead}
-          >
-            Delete Account
-          </Button>,
-        ]}
-      >
-        <p>
-          Are you sure to delete your account? <br></br>This operation
-          can&apos;t be undone.
-        </p>
-      </Modal>
     </>
   );
 };

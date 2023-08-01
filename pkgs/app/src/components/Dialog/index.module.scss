@@ -1,5 +1,70 @@
 .overlay {
   position: fixed;
-  z-index: 50;
+  z-index: 999;
+  inset: 0;
+
+  background-color: hsl(0deg 0% 70.59% / 14.12%);
+  backdrop-filter: blur(4px);
+}
+
+.content {
+  position: fixed;
+  z-index: 9999;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  display: grid;
+
+  width: 450px;
+
   background-color: #fff;
+  border-radius: var(--radius2);
+  box-shadow: var(--boxshadow2);
+
+  &[data-state="closed"] {
+    animation-name: exit;
+    animation-duration: .15s;
+  }
+
+  &[data-state="open"] {
+    animation-name: enter;
+    animation-duration: .15s;
+  }
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spc);
+  padding: var(--spc-l) var(--spc-3xl);
+}
+
+.description {
+  color: var(--text3);
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: var(--spc-l) var(--spc-3xl);
+}
+
+
+@keyframes enter {
+  0% {
+    opacity: 0;
+  }
+}
+
+@keyframes exit {
+  to {
+    opacity: 0;
+  }
 }

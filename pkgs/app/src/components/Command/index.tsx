@@ -4,7 +4,7 @@ import cn from 'classnames';
 import { Command as CommandPrimitive } from 'cmdk';
 import { forwardRef } from 'react';
 
-import { Dialog, DialogContent } from '../Dialog';
+import * as Dialog from '../Dialog';
 
 import cls from './index.module.scss';
 
@@ -22,11 +22,11 @@ type CommandDialogProps = DialogProps;
 
 const CommandDialog = ({ children, ...props }: CommandDialogProps) => {
   return (
-    <Dialog {...props}>
-      <DialogContent className="">
+    <Dialog.Dialog {...props}>
+      <Dialog.Content className="">
         <Command className="">{children}</Command>
-      </DialogContent>
-    </Dialog>
+      </Dialog.Content>
+    </Dialog.Dialog>
   );
 };
 

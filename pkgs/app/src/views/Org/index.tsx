@@ -43,7 +43,7 @@ export const Org: React.FC = () => {
     }
   }, [org]);
 
-  if (getOrgs.isLoading || params.org_id !== org?.id) {
+  if (getOrgs.isLoading || (org && params.org_id !== org?.id)) {
     return (
       <div className={cls.org}>
         <div></div>
@@ -64,7 +64,15 @@ export const Org: React.FC = () => {
   }
 
   if (!org) {
-    return <NotFound />;
+    return (
+      <div className={cls.org}>
+        <div className={cls.main}>
+          <Container noPadding className={cls.container}>
+            <NotFound />
+          </Container>
+        </div>
+      </div>
+    );
   }
 
   return (

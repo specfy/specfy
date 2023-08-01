@@ -1,7 +1,6 @@
 import * as Form from '@radix-ui/react-form';
 import type { ApiProject, FieldsErrors } from '@specfy/api/src/types/api';
 import { IconCirclesRelation } from '@tabler/icons-react';
-import { Modal } from 'antd';
 import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
@@ -20,6 +19,7 @@ import { slugify, titleSuffix } from '../../../../common/string';
 import { Banner } from '../../../../components/Banner';
 import { CopyButton } from '../../../../components/Button/Copy';
 import { Card } from '../../../../components/Card';
+import * as Dialog from '../../../../components/Dialog';
 import { Flex } from '../../../../components/Flex';
 import { Button } from '../../../../components/Form/Button';
 import { Field } from '../../../../components/Form/Field';
@@ -40,7 +40,6 @@ export const SettingsGeneral: React.FC<{
   const navigate = useNavigate();
   const { current: org } = useOrgStore();
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [waitToRead, setWaitToRead] = useState(true);
 
   // Edit
@@ -83,13 +82,12 @@ export const SettingsGeneral: React.FC<{
   };
 
   // Delete modal
-  const showModal = () => {
-    setIsModalOpen(true);
-    setTimeout(() => setWaitToRead(false), 2000);
-  };
-  const cancelDelete = () => {
-    setIsModalOpen(false);
-    setWaitToRead(true);
+  const onOpenChange = (open: boolean) => {
+    if (open) {
+      setTimeout(() => setWaitToRead(false), 2000);
+    } else {
+      setWaitToRead(true);
+    }
   };
   const confirmDelete = async () => {
     await deleteProject(params);
@@ -297,38 +295,41 @@ export const SettingsGeneral: React.FC<{
             <h4>Delete this project</h4>
             <Subdued>Deleting a project can&apos;t be undone.</Subdued>
           </div>
-          <Button danger display="primary" onClick={showModal}>
-            Delete Project
-          </Button>
+
+          <Dialog.Dialog onOpenChange={onOpenChange}>
+            <Dialog.Trigger asChild>
+              <Button danger>Delete Project</Button>
+            </Dialog.Trigger>
+            <Dialog.Content>
+              <Dialog.Header>
+                <Dialog.Title>Delete this project?</Dialog.Title>
+                <Dialog.Description>
+                  Are you sure to delete this project? <br></br>This operation
+                  can&apos;t be undone.
+                </Dialog.Description>
+              </Dialog.Header>
+              <div></div>
+              <Dialog.Footer>
+                <Dialog.Close asChild>
+                  <Button key="back" display="ghost">
+                    cancel
+                  </Button>
+                </Dialog.Close>
+                <Button
+                  danger
+                  key="submit"
+                  display="primary"
+                  disabled={waitToRead}
+                  onClick={confirmDelete}
+                  loading={waitToRead}
+                >
+                  Delete Project
+                </Button>
+              </Dialog.Footer>
+            </Dialog.Content>
+          </Dialog.Dialog>
         </div>
       </Card>
-
-      <Modal
-        title="Delete this project?"
-        open={isModalOpen}
-        onOk={confirmDelete}
-        onCancel={cancelDelete}
-        footer={[
-          <Button key="back" display="ghost" onClick={cancelDelete}>
-            cancel
-          </Button>,
-          <Button
-            danger
-            key="submit"
-            display="primary"
-            disabled={waitToRead}
-            onClick={confirmDelete}
-            loading={waitToRead}
-          >
-            Delete Project
-          </Button>,
-        ]}
-      >
-        <p>
-          Are you sure to delete this project? <br></br>This action can&apos;t
-          be undone.
-        </p>
-      </Modal>
     </>
   );
 };

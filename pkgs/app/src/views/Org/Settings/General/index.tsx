@@ -1,10 +1,10 @@
 import * as Form from '@radix-ui/react-form';
 import type { ApiOrg } from '@specfy/api/src/types/api';
 import { IconCirclesRelation } from '@tabler/icons-react';
-import { Modal } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
+import { useLocalStorage } from 'react-use';
 
 import { deleteOrg, updateOrg, linkToGithubOrg } from '../../../../api';
 import { isError } from '../../../../api/helpers';
@@ -12,6 +12,7 @@ import { i18n } from '../../../../common/i18n';
 import { titleSuffix } from '../../../../common/string';
 import { Banner } from '../../../../components/Banner';
 import { Card } from '../../../../components/Card';
+import * as Dialog from '../../../../components/Dialog';
 import { Button } from '../../../../components/Form/Button';
 import { Field } from '../../../../components/Form/Field';
 import { Input } from '../../../../components/Form/Input';
@@ -28,8 +29,8 @@ export const SettingsGeneral: React.FC<{
 }> = ({ org, params }) => {
   const toast = useToast();
   const navigate = useNavigate();
+  const [, setLastOrg] = useLocalStorage<string>('lastOrg');
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [waitToRead, setWaitToRead] = useState(true);
 
   // Edit
@@ -59,13 +60,12 @@ export const SettingsGeneral: React.FC<{
   }, [org.name]);
 
   // Delete modal
-  const showModal = () => {
-    setIsModalOpen(true);
-    setTimeout(() => setWaitToRead(false), 2000);
-  };
-  const cancelDelete = () => {
-    setIsModalOpen(false);
-    setWaitToRead(true);
+  const onOpenChange = (open: boolean) => {
+    if (open) {
+      setTimeout(() => setWaitToRead(false), 2000);
+    } else {
+      setWaitToRead(true);
+    }
   };
 
   const confirmDelete = async () => {
@@ -76,6 +76,7 @@ export const SettingsGeneral: React.FC<{
     }
 
     toast.add({ title: 'Organization deleted', status: 'success' });
+    setLastOrg(undefined);
     navigate(`/`);
   };
 
@@ -199,39 +200,42 @@ export const SettingsGeneral: React.FC<{
               <h4>Delete this organization</h4>
               <Subdued>This operation can&apos;t be undone.</Subdued>
             </div>
-            <Button danger onClick={showModal}>
-              Delete Organization
-            </Button>
+
+            <Dialog.Dialog onOpenChange={onOpenChange}>
+              <Dialog.Trigger asChild>
+                <Button danger>Delete Organization</Button>
+              </Dialog.Trigger>
+              <Dialog.Content>
+                <Dialog.Header>
+                  <Dialog.Title>Delete this organization?</Dialog.Title>
+                  <Dialog.Description>
+                    Are you sure to delete this organization? <br></br>This
+                    operation can&apos;t be undone.
+                  </Dialog.Description>
+                </Dialog.Header>
+                <div></div>
+                <Dialog.Footer>
+                  <Dialog.Close asChild>
+                    <Button key="back" display="ghost">
+                      cancel
+                    </Button>
+                  </Dialog.Close>
+                  <Button
+                    danger
+                    key="submit"
+                    display="primary"
+                    disabled={waitToRead}
+                    onClick={confirmDelete}
+                    loading={waitToRead}
+                  >
+                    Delete Organization
+                  </Button>
+                </Dialog.Footer>
+              </Dialog.Content>
+            </Dialog.Dialog>
           </div>
         </Card>
       )}
-
-      <Modal
-        title="Delete this organization?"
-        open={isModalOpen}
-        onOk={confirmDelete}
-        onCancel={cancelDelete}
-        footer={[
-          <Button key="back" display="ghost" onClick={cancelDelete}>
-            cancel
-          </Button>,
-          <Button
-            danger
-            key="submit"
-            display="primary"
-            disabled={waitToRead}
-            onClick={confirmDelete}
-            loading={waitToRead}
-          >
-            Delete Organization
-          </Button>,
-        ]}
-      >
-        <p>
-          Are you sure to delete this organization? <br></br>This operation
-          can&apos;t be undone.
-        </p>
-      </Modal>
     </>
   );
 };
