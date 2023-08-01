@@ -18,7 +18,6 @@ import { OrgActivity } from './Activity';
 import { OrgContent } from './Content';
 import { OrgFlow } from './Flow';
 import { OrgOverview } from './Overview';
-import { OrgPolicies } from './Policies';
 import { OrgSettings } from './Settings';
 import cls from './index.module.scss';
 
@@ -95,10 +94,6 @@ export const Org: React.FC = () => {
             <Route
               path="/content"
               element={<OrgContent org={org} params={params} />}
-            />
-            <Route
-              path="/policies"
-              element={<OrgPolicies org={org} params={params} />}
             />
             <Route
               path="/flow"

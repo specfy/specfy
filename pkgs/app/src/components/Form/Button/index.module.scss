@@ -89,16 +89,18 @@
 
   // Sizing
   &.s {
+    height: var(--h-s);
     padding: var(--spc-xs) var(--spc-m);
     font-size: var(--font-s);
   }
 
   &.m {
-    height: 32px;
+    height: var(--h-m);
     padding: var(--spc) var(--spc-l);
   }
 
   &.l {
+    height: var(--h-l);
     padding: var(--spc-m) var(--spc-l);
   }
 

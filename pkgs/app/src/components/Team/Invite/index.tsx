@@ -62,6 +62,7 @@ export const TeamInvite: React.FC<{
               placeholder="jane@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              size="l"
             />
           </Field>
 
@@ -71,6 +72,7 @@ export const TeamInvite: React.FC<{
             placeholder="Select a role"
             options={selectPerms}
             onValueChange={(val) => setRole(val as any)}
+            size="l"
           />
         </Form.Root>
       </Card.Content>

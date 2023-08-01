@@ -22,13 +22,13 @@ Global:
     - Select
     ✔ Tooltip @done(23-07-31 18:18)
     - Anchor
-    - Dropdown
+    ✔ Dropdown @done(23-08-01 14:24)
     - Badge
     ✔ Skeleton @done(23-07-31 17:04)
     - Tree
-    - Table
+    ✔ Table @done(23-08-01 14:43)
     - Autocomplete
-    - Modal
+    ✔ Modal @done(23-08-01 14:24)
     ✔ Form @done(23-07-31 17:30)
     ✔ Result @done(23-07-31 16:04)
     ✔ Space @done(23-07-31 16:00)
