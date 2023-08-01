@@ -1,15 +1,20 @@
 import type { BlockLevelOne } from '@specfy/api/src/types/api';
-import { Anchor } from 'antd';
 import { useMemo } from 'react';
+import { Link } from 'react-router-dom';
 
 import { slugify } from '../../common/string';
 
 import cls from './index.module.scss';
 
+interface Item {
+  key: number;
+  href: string;
+  title: string;
+}
 export const HeadingTree: React.FC<{ blocks: BlockLevelOne[] }> = ({
   blocks,
 }) => {
-  const headings = useMemo(() => {
+  const headings = useMemo<Item[]>(() => {
     const tmp = [];
     for (let index = 0; index < blocks.length; index++) {
       const blk = blocks[index];
@@ -32,9 +37,30 @@ export const HeadingTree: React.FC<{ blocks: BlockLevelOne[] }> = ({
     return tmp;
   }, [blocks]);
 
+  const onClick = (item: Item) => {
+    const id = item.href.substring(1);
+    const target = document.getElementById(id);
+    if (!target) {
+      return;
+    }
+
+    target.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <div className={cls.tree}>
-      <Anchor items={headings} targetOffset={20} />
+      {headings.map((item) => {
+        return (
+          <Link
+            to={item.href}
+            key={item.key}
+            className={cls.link}
+            onClick={() => onClick(item)}
+          >
+            {item.title}
+          </Link>
+        );
+      })}
     </div>
   );
 };

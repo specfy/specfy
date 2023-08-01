@@ -35,9 +35,7 @@ export const RFC: React.FC<{
     <>
       <Helmet title={`${doc.name} - ${proj.name} ${titleSuffix}`} />
       <div className={clsLayout.col1}>
-        <div className={cls.headings}>
-          <HeadingTree blocks={doc.content.content}></HeadingTree>
-        </div>
+        <HeadingTree blocks={doc.content.content}></HeadingTree>
       </div>
       <div className={clsLayout.col2}>
         <div className={cls.header}>
