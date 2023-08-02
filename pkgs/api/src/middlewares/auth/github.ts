@@ -113,16 +113,18 @@ export function registerGithub(passport: Authenticator) {
         });
       });
 
-      logger.info('Sending email', { to: email, type: 'welcome' });
-      await sendWelcome(
-        resend,
-        {
-          from: 'Specfy <support@app.specfy.io>',
-          subject: 'Welcome to Specfy',
-          to: email,
-        },
-        { email, name: displayName }
-      );
+      if (!process.env.VITEST) {
+        logger.info('Sending email', { to: email, type: 'welcome' });
+        await sendWelcome(
+          resend,
+          {
+            from: 'Specfy <support@app.specfy.io>',
+            subject: 'Welcome to Specfy',
+            to: email,
+          },
+          { email, name: displayName }
+        );
+      }
 
       done(null, user);
     }

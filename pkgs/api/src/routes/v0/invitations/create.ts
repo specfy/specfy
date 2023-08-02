@@ -99,23 +99,25 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         },
       });
 
-      const link = `${envs.APP_HOSTNAME}/invite?invitation_id=${created.id}&token=${created.token}`;
-      const org = getOrgFromRequest(req, body.orgId)!;
-      logger.info('Sending email', { to: body.email, type: 'invitation' });
-      await sendInvitation(
-        resend,
-        {
-          from: 'Specfy <support@app.specfy.io>',
-          subject: `Join ${org.name} on Specfy`,
-          to: body.email,
-        },
-        {
-          email: body.email,
-          invitedBy: me,
-          inviteLink: link,
-          org,
-        }
-      );
+      if (!process.env.VITEST) {
+        const link = `${envs.APP_HOSTNAME}/invite?invitation_id=${created.id}&token=${created.token}`;
+        const org = getOrgFromRequest(req, body.orgId)!;
+        logger.info('Sending email', { to: body.email, type: 'invitation' });
+        await sendInvitation(
+          resend,
+          {
+            from: 'Specfy <support@app.specfy.io>',
+            subject: `Join ${org.name} on Specfy`,
+            to: body.email,
+          },
+          {
+            email: body.email,
+            invitedBy: me,
+            inviteLink: link,
+            org,
+          }
+        );
+      }
 
       return res.status(200).send({
         data: { token: created.token, id: created.id },
