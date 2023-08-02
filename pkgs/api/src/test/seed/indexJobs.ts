@@ -5,7 +5,7 @@ import { createJobDeploy, userGithubApp } from '../../models/index.js';
 (async () => {
   const res = await prisma.projects.findFirst({
     where: {
-      name: 'API',
+      name: 'Analytics',
     },
   });
   if (!res) {
@@ -16,7 +16,7 @@ import { createJobDeploy, userGithubApp } from '../../models/index.js';
     orgId: res.orgId,
     projectId: res.id,
     userId: userGithubApp.id,
-    config: { url: 'specfy/specfy', autoLayout: true },
+    config: { url: 'specfy/specfy', autoLayout: false },
     tx: prisma,
   });
 

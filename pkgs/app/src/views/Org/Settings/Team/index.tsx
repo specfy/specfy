@@ -1,6 +1,5 @@
 import * as Tabs from '@radix-ui/react-tabs';
 import type { ApiOrg } from '@specfy/api/src/types/api';
-import { Typography } from 'antd';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
@@ -8,6 +7,7 @@ import { titleSuffix } from '../../../../common/string';
 import { Container } from '../../../../components/Container';
 import { Flex } from '../../../../components/Flex';
 import { TeamInvite } from '../../../../components/Team/Invite';
+import { Subdued } from '../../../../components/Text';
 import type { RouteOrg } from '../../../../types/routes';
 
 import { SettingsTeamList } from './List';
@@ -30,10 +30,8 @@ export const SettingsTeam: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
       <Flex className={cls.team} gap="xl" column>
         <div className={cls.header}>
           <div>
-            <Typography.Title level={2}>Team members</Typography.Title>
-            <Typography.Text type="secondary">
-              Invite or manage your project&apos;s members.
-            </Typography.Text>
+            <h2>Team members</h2>
+            <Subdued>Invite or manage your project&apos;s members.</Subdued>
           </div>
         </div>
 
@@ -50,7 +48,7 @@ export const SettingsTeam: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
               Members
             </Tabs.Trigger>
             <Tabs.Trigger className="rx_tabsTrigger" value="tab2">
-              Invitation
+              Invitations
             </Tabs.Trigger>
           </Tabs.List>
           <Tabs.Content className="rx_tabsContent" value="tab1">

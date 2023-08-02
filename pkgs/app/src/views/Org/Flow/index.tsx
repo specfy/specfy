@@ -1,7 +1,6 @@
 import type { ComputedFlow } from '@specfy/api/src/models/flows/types';
 import type { ApiOrg, PatchFlow } from '@specfy/api/src/types/api';
 import { IconCheck, IconEdit, IconX } from '@tabler/icons-react';
-import { Button } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useReactFlow } from 'reactflow';
@@ -13,6 +12,7 @@ import { titleSuffix } from '../../../common/string';
 import { Flow, FlowWrapper } from '../../../components/Flow';
 import { FlowDetails } from '../../../components/Flow/Details';
 import { Toolbar } from '../../../components/Flow/Toolbar';
+import { Button } from '../../../components/Form/Button';
 import { Loading } from '../../../components/Loading';
 import { useToast } from '../../../hooks/useToast';
 import type { RouteOrg } from '../../../types/routes';
@@ -108,11 +108,8 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
             <Toolbar left top visible>
               <Toolbar.Inner>
                 {!editing && (
-                  <Button
-                    onClick={() => setEditing(true)}
-                    type="text"
-                    icon={<IconEdit />}
-                  >
+                  <Button onClick={() => setEditing(true)} display="ghost">
+                    <IconEdit />
                     Edit
                   </Button>
                 )}
@@ -120,17 +117,15 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
                   <>
                     <Button
                       onClick={() => onSave()}
-                      type="text"
-                      icon={<IconCheck />}
+                      display="ghost"
                       loading={publishing}
                     >
+                      <IconCheck />
                       Publish
                     </Button>
-                    <Button
-                      onClick={() => onCancel()}
-                      type="text"
-                      icon={<IconX />}
-                    />
+                    <Button onClick={() => onCancel()} display="ghost">
+                      <IconX />
+                    </Button>
                   </>
                 )}
               </Toolbar.Inner>

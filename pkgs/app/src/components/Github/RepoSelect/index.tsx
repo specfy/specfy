@@ -1,25 +1,26 @@
 import { IconPlus } from '@tabler/icons-react';
-import { Button, Select, Skeleton } from 'antd';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import Skeleton from 'react-loading-skeleton';
 
 import { useGetGithubRepos } from '../../../api';
 import { GITHUB_APP } from '../../../common/envs';
 import { Popup } from '../../../common/popup';
 import { useToast } from '../../../hooks/useToast';
+import { CommandItem } from '../../Command';
+import { Button } from '../../Form/Button';
+import type { ComboboxOption } from '../../Form/Combobox';
+import { Combobox } from '../../Form/Combobox';
 
 import cls from './index.module.scss';
 
 export const GithubRepoSelect: React.FC<{
   installationId: number;
-  defaultSelected: string | null;
-  emptyOption?: boolean;
-  onChange: (selected: string | null) => void;
-}> = ({ defaultSelected, installationId, emptyOption, onChange }) => {
+  value: string | undefined;
+  onChange: (selected: string | undefined) => void;
+}> = ({ value, installationId, onChange }) => {
   const toast = useToast();
   const ref = useRef<Popup | null>(null);
-  const [selected, setSelected] = useState<string | null>(
-    defaultSelected || null
-  );
+  const [selected, setSelected] = useState<string | undefined>();
   const res = useGetGithubRepos(
     {
       installation_id: installationId,
@@ -27,8 +28,30 @@ export const GithubRepoSelect: React.FC<{
     true
   );
 
+  const options = useMemo<ComboboxOption[]>(() => {
+    if (!res.data!) {
+      return [];
+    }
+    return res.data.map((repo) => {
+      return { label: repo.name, value: String(repo.id) };
+    });
+  }, [res.data]);
+
   useEffect(() => {
-    onChange(selected);
+    if (!res.data) {
+      return;
+    }
+    setSelected(
+      value ? String(res.data.find((v) => v.fullName === value)!.id) : undefined
+    );
+  }, [value]);
+
+  useEffect(() => {
+    if (!selected) {
+      return;
+    }
+
+    onChange(res.data!.find((v) => String(v.id) === selected)?.fullName);
   }, [selected]);
 
   const triggerInstall = () => {
@@ -53,42 +76,24 @@ export const GithubRepoSelect: React.FC<{
   };
 
   if (res.isFetching) {
-    return <Skeleton.Input active style={{ width: '250px', height: '40px' }} />;
+    return <Skeleton width="250px" height="34px" />;
   }
 
   return (
-    <Select
-      className={cls.select}
+    <Combobox
+      placeholder="Select a Github repository"
+      options={options}
       value={selected}
-      size="large"
       onChange={setSelected}
-      notFoundContent={<></>}
-      dropdownRender={(menu) => {
-        return (
-          <>
-            {menu}
-
-            <div className={cls.install}>
-              <Button icon={<IconPlus />} type="ghost" onClick={triggerInstall}>
-                Install more repositories
-              </Button>
-            </div>
-          </>
-        );
-      }}
-    >
-      {emptyOption && !selected && (
-        <Select.Option>Select a repository</Select.Option>
-      )}
-      {res.data!.map((repo) => {
-        return (
-          <Select.Option key={repo.fullName} value={repo.fullName}>
-            <div className={cls.option}>
-              <div>{repo.name}</div>
-            </div>
-          </Select.Option>
-        );
-      })}
-    </Select>
+      className={cls.select}
+      after={
+        <CommandItem onSelect={triggerInstall}>
+          <Button size="s" display="ghost" onClick={triggerInstall}>
+            <IconPlus />
+            Install more repositories
+          </Button>
+        </CommandItem>
+      }
+    />
   );
 };

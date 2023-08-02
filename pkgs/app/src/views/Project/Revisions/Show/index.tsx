@@ -13,10 +13,9 @@ import {
   IconLock,
   IconLockAccessOff,
 } from '@tabler/icons-react';
-import type { MenuProps } from 'antd';
-import { Button, Dropdown, Skeleton, Space, Typography } from 'antd';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import Skeleton from 'react-loading-skeleton';
 import { useParams } from 'react-router-dom';
 
 import {
@@ -33,13 +32,16 @@ import { useRevisionStore } from '../../../../common/store';
 import { titleSuffix } from '../../../../common/string';
 import { Container } from '../../../../components/Container';
 import { ContentDoc } from '../../../../components/Content';
-import { DiffCard } from '../../../../components/DiffCard';
+import * as Dropdown from '../../../../components/Dropdown';
 import { Editor } from '../../../../components/Editor';
+import { Flex } from '../../../../components/Flex';
+import { Button } from '../../../../components/Form/Button';
 import { FakeInput } from '../../../../components/Form/FakeInput';
 import { ListActivity } from '../../../../components/ListActivity';
 import { Loading } from '../../../../components/Loading';
 import { NotFound } from '../../../../components/NotFound';
 import { Checks } from '../../../../components/Revision/Checks';
+import { DiffCard } from '../../../../components/Revision/DiffCard';
 import { ReviewBar } from '../../../../components/Revision/ReviewBar';
 import { StatusTag } from '../../../../components/Revision/StatusTag';
 import { SidebarBlock } from '../../../../components/Sidebar/Block';
@@ -132,45 +134,6 @@ export const ProjectRevisionsShow: React.FC<{
     setReviewers([...rev.reviewers]);
   }, [edit, rev]);
 
-  const actionsItems = useMemo(() => {
-    if (!rev) {
-      return;
-    }
-
-    return [
-      !rev.locked
-        ? {
-            key: 'lock',
-            icon: <IconLock size={16} />,
-            label: 'Lock',
-          }
-        : {
-            key: 'unlock',
-            icon: <IconLockAccessOff size={16} />,
-            label: 'Unlock',
-          },
-      !rev.closedAt
-        ? {
-            key: 'close',
-            icon: <IconGitPullRequestClosed size={16} />,
-            label: 'Close',
-            danger: true,
-          }
-        : {
-            key: 'reopen',
-            icon: <IconGitPullRequestClosed size={16} />,
-            label: 'Reopen',
-          },
-    ];
-  }, [rev]);
-
-  const onChangeAuthor = (list: ApiUser[]) => {
-    setAuthors([...list]);
-  };
-  const onChangeReviewer = (list: ApiUser[]) => {
-    setReviewers([...list]);
-  };
-
   const onClickSave = async () => {
     if (!rev) {
       return;
@@ -224,14 +187,14 @@ export const ProjectRevisionsShow: React.FC<{
     setSave(false);
   };
 
-  const onMenuClick: MenuProps['onClick'] = async (e) => {
-    if (e.key === 'lock') {
+  const onMenuClick = async (type: 'close' | 'lock' | 'reopen' | 'unlock') => {
+    if (type === 'lock') {
       await patchLocked(true);
-    } else if (e.key === 'unlock') {
+    } else if (type === 'unlock') {
       await patchLocked(false);
-    } else if (e.key === 'close') {
+    } else if (type === 'close') {
       await patchStatus('closed');
-    } else if (e.key === 'reopen') {
+    } else if (type === 'reopen') {
       await patchStatus('draft');
     }
   };
@@ -258,9 +221,20 @@ export const ProjectRevisionsShow: React.FC<{
   // --------- Content
   if (res.isLoading && !rev) {
     return (
-      <div>
-        <Skeleton active title={false} paragraph={{ rows: 3 }}></Skeleton>
-      </div>
+      <Container noPadding className={cls.container}>
+        <Container.Left2Third className={cls.left}>
+          <div className={cls.main}>
+            <div className={cls.card}>
+              <div className={cls.mainTop}>
+                <Skeleton width={150} height={40} />
+              </div>
+              <div className={cls.content}>
+                <Skeleton width={350} count={3} />
+              </div>
+            </div>
+          </div>
+        </Container.Left2Third>
+      </Container>
     );
   }
 
@@ -269,88 +243,160 @@ export const ProjectRevisionsShow: React.FC<{
   }
 
   return (
-    <Container noPadding>
-      <Container.Left2Third>
-        <Helmet title={`${rev.name} - ${proj.name} ${titleSuffix}`} />
+    <div>
+      <Container noPadding className={cls.container}>
+        <Container.Left2Third className={cls.left}>
+          <Helmet title={`${rev.name} - ${proj.name} ${titleSuffix}`} />
 
-        <div className={cls.main}>
-          <div className={cls.card}>
-            {!edit && (
-              <div className={cls.mainTop}>
-                <h2 className={cls.title}>{rev.name}</h2>
-                <Space>
-                  {save && <Loading />}
+          <div className={cls.main}>
+            <div className={cls.card}>
+              {!edit && (
+                <div className={cls.mainTop}>
+                  <h2 className={cls.title}>{rev.name}</h2>
+                  <Flex>
+                    {save && <Loading />}
 
-                  <Dropdown.Button
-                    menu={{ items: actionsItems, onClick: onMenuClick }}
-                    overlayClassName={cls.editDropdown}
-                    onClick={() => setEdit(true)}
-                    icon={<IconDotsVertical />}
-                  >
-                    Edit
-                  </Dropdown.Button>
-                </Space>
-              </div>
-            )}
-            {edit && (
-              <FakeInput.H2
-                size="large"
-                value={title}
-                placeholder="Title..."
-                onChange={(e) => setTitle(e.target.value)}
-              />
-            )}
+                    <Button onClick={() => setEdit(true)}>Edit</Button>
 
-            <div className={cls.subtitle}>
-              <StatusTag
-                status={rev.status}
-                locked={rev.locked}
-                merged={rev.merged}
-              />{' '}
-              opened <Time time={rev.createdAt} />
-            </div>
-
-            <Typography className={cls.content}>
-              {!edit && <ContentDoc doc={rev.description} />}
+                    <Dropdown.Menu>
+                      <Dropdown.Trigger asChild>
+                        <Button display="ghost">
+                          <IconDotsVertical />
+                        </Button>
+                      </Dropdown.Trigger>
+                      <Dropdown.Portal>
+                        <Dropdown.Content>
+                          <Dropdown.Group>
+                            {!rev.locked ? (
+                              <Dropdown.Item asChild>
+                                <Button
+                                  display="item"
+                                  onClick={() => onMenuClick('lock')}
+                                >
+                                  <IconLock /> Lock
+                                </Button>
+                              </Dropdown.Item>
+                            ) : (
+                              <Dropdown.Item asChild>
+                                <Button
+                                  display="item"
+                                  onClick={() => onMenuClick('unlock')}
+                                >
+                                  <IconLockAccessOff /> Unlock
+                                </Button>
+                              </Dropdown.Item>
+                            )}
+                            {!rev.closedAt ? (
+                              <Dropdown.Item asChild>
+                                <Button
+                                  display="item"
+                                  onClick={() => onMenuClick('close')}
+                                >
+                                  <IconGitPullRequestClosed /> Close
+                                </Button>
+                              </Dropdown.Item>
+                            ) : (
+                              <Dropdown.Item asChild>
+                                <Button
+                                  display="item"
+                                  onClick={() => onMenuClick('reopen')}
+                                >
+                                  <IconGitPullRequestClosed /> Open
+                                </Button>
+                              </Dropdown.Item>
+                            )}
+                          </Dropdown.Group>
+                        </Dropdown.Content>
+                      </Dropdown.Portal>
+                    </Dropdown.Menu>
+                  </Flex>
+                </div>
+              )}
               {edit && (
-                <Editor
-                  key={rev.id}
-                  content={description}
-                  onUpdate={setDescription}
-                  minHeight="100px"
+                <FakeInput.H2
+                  size="l"
+                  value={title}
+                  placeholder="Title..."
+                  onChange={(e) => setTitle(e.target.value)}
                 />
               )}
-            </Typography>
+
+              <div className={cls.subtitle}>
+                <StatusTag
+                  status={rev.status}
+                  locked={rev.locked}
+                  merged={rev.merged}
+                />{' '}
+                opened <Time time={rev.createdAt} />
+              </div>
+
+              <div className={cls.content}>
+                {!edit && <ContentDoc doc={rev.description} />}
+                {edit && (
+                  <Editor
+                    key={rev.id}
+                    content={description}
+                    onUpdate={setDescription}
+                    minHeight="100px"
+                  />
+                )}
+              </div>
+            </div>
+
+            {edit && (
+              <div className={cls.editSave}>
+                <Flex>
+                  <Button display="ghost" onClick={() => setEdit(false)}>
+                    cancel
+                  </Button>
+                  <Button
+                    display="primary"
+                    onClick={onClickSave}
+                    loading={save}
+                  >
+                    Save
+                  </Button>
+                </Flex>
+              </div>
+            )}
+
+            {checks && !edit && (
+              <Checks rev={rev} checks={checks} qp={qp} onClick={patchStatus} />
+            )}
           </div>
 
-          {edit && (
-            <div className={cls.editSave}>
-              <Space>
-                <Button type="text" onClick={() => setEdit(false)}>
-                  cancel
-                </Button>
-                <Button type="primary" onClick={onClickSave} loading={save}>
-                  Save
-                </Button>
-              </Space>
+          {computing && (
+            <div>
+              <Skeleton count={3} />
             </div>
           )}
 
-          {checks && !edit && (
-            <Checks rev={rev} checks={checks} qp={qp} onClick={patchStatus} />
+          {flagRevisionApprovalEnabled && !edit && (
+            <ReviewBar rev={rev} qp={qp} />
           )}
-        </div>
-
-        {computing && (
-          <div>
-            <Skeleton active title={false} paragraph={{ rows: 3 }}></Skeleton>
+        </Container.Left2Third>
+        <Container.Right1Third>
+          <div className={cls.sidebar}>
+            <SidebarBlock title="Authors">
+              <UserList list={authors || rev.authors} />
+            </SidebarBlock>
+            {false && (
+              <SidebarBlock title="Reviewers">
+                <UserList list={reviewers || rev!.reviewers} />
+              </SidebarBlock>
+            )}
+            <SidebarBlock title="Activities">
+              <ListActivity
+                orgId={rev.orgId}
+                projectId={rev.projectId}
+                revisionId={rev.id}
+              />
+            </SidebarBlock>
           </div>
-        )}
+        </Container.Right1Third>
+      </Container>
 
-        {flagRevisionApprovalEnabled && !edit && (
-          <ReviewBar rev={rev} qp={qp} />
-        )}
-
+      <div>
         {!computing && (
           <div className={cls.staged}>
             {diffs.length > 0 ? (
@@ -370,38 +416,7 @@ export const ProjectRevisionsShow: React.FC<{
             )}
           </div>
         )}
-      </Container.Left2Third>
-      <Container.Right1Third>
-        <div className={cls.sidebar}>
-          <SidebarBlock title="Authors">
-            <UserList
-              list={authors || rev.authors}
-              params={qp}
-              edit={edit}
-              onChange={onChangeAuthor}
-              exclude={reviewers || rev.reviewers}
-            />
-          </SidebarBlock>
-          {false && (
-            <SidebarBlock title="Reviewers">
-              <UserList
-                list={reviewers || rev!.reviewers}
-                params={qp}
-                edit={edit}
-                onChange={onChangeReviewer}
-                exclude={authors || rev!.authors}
-              />
-            </SidebarBlock>
-          )}
-          <SidebarBlock title="Activities">
-            <ListActivity
-              orgId={rev.orgId}
-              projectId={rev.projectId}
-              revisionId={rev.id}
-            />
-          </SidebarBlock>
-        </div>
-      </Container.Right1Third>
-    </Container>
+      </div>
+    </div>
   );
 };

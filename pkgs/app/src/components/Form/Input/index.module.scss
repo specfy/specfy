@@ -1,50 +1,88 @@
+/* stylelint-disable rule-empty-line-before */
 /* stylelint-disable selector-class-pattern */
 @import "../../../styles/theme";
+@import "../../../styles/mixin";
 
 .wrapper {
+  @include ringWithin;
+
   display: flex;
   flex-grow: 1;
 
+  font-size: var(--font);
   line-height: $line-height;
   color: var(--text);
 
-  border: 1px solid var(--border3);
+  background-color: #fff;
+  border: 1px solid var(--border2);
   border-radius: $border-radius-s;
 
   &.s {
+    height: var(--h-s);
     font-size: $font-s;
 
-    .input,
-    .before {
-      padding: $p-s $p;
+    .input {
+      padding: $p-s $p-l;
     }
 
+    .before {
+      padding: $p-s $p-l;
+
+      &+.input {
+        padding-left: $p-s;
+      }
+    }
   }
 
   &.m {
+    height: var(--h-m);
     font-size: $font;
 
-    .input,
-    .before {
+    .input {
       padding: $p $p-l;
+    }
+
+    .before {
+      padding: $p $p $p $p-l;
+
+      &+.input {
+        padding-left: $p;
+      }
+    }
+
+    .after {
+      padding: $p $p-l $p $p;
     }
   }
 
   &.l {
-    font-size: $font-m;
+    height: var(--h-l);
+    font-size: $font;
 
-    .input,
+    .input {
+      padding: $p-m $p-xl;
+    }
+
     .before {
-      padding: $p-m $p-l;
+      padding: $p $p $p $p-l;
+
+      &+.input {
+        padding-left: $p;
+      }
+    }
+
+    .after {
+      padding: $p $p-l $p $p;
     }
   }
 
   &.xl {
+    height: var(--h-xl);
     font-size: $font-l;
 
     .input,
     .before {
-      padding: $p-l $p-l;
+      padding: $p-l $p-xl;
     }
   }
 
@@ -54,10 +92,22 @@
     background-color: var(--bg2);
     border-color: var(--border2);
   }
+
+  &.readonly {
+    color: var(--text4);
+  }
+
+  &.seamless {
+
+    .before,
+    .after {
+      background-color: transparent;
+    }
+  }
 }
 
 .input {
-  width: 100%;
+  flex-grow: 1;
   outline: 0;
 
   &::placeholder {
@@ -65,9 +115,14 @@
   }
 }
 
-.before {
+.before,
+.after {
   display: flex;
   align-items: center;
-  color: var(--text);
-  background-color: var(--bg2);
+
+  min-width: 34px;
+
+  color: var(--text3);
+
+  background-color: var(--bg2)
 }

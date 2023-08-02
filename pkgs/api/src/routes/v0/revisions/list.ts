@@ -78,7 +78,10 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         // TODO: add limit/offset to qp
         take: 10,
         skip: 0,
-        include: { Project: true },
+        include: {
+          Project: true,
+          TypeHasUsers: { include: { User: true }, where: { role: 'author' } },
+        },
       });
 
       const count = await tx.revisions.count({
@@ -91,7 +94,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
 
     return res.status(200).send({
       data: list.map((rev) => {
-        return toApiRevision(rev, [] /* TODO: fill authors */);
+        return toApiRevision(rev);
       }),
       pagination,
     });

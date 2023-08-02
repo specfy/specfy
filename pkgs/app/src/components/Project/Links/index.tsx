@@ -2,7 +2,6 @@ import { LinkOutlined } from '@ant-design/icons';
 import type { IconType } from '@icons-pack/react-simple-icons';
 import type { DBProjectLink } from '@specfy/api/src/models/projects/types';
 import { IconPlus, IconTrash } from '@tabler/icons-react';
-import { Button, Input, Typography } from 'antd';
 import classnames from 'classnames';
 import { useMemo, useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
@@ -10,6 +9,8 @@ import { useClickAway } from 'react-use';
 import { useProjectStore } from '../../../common/store';
 import { supportedHostname } from '../../../common/techs';
 import { useEdit } from '../../../hooks/useEdit';
+import { Button } from '../../Form/Button';
+import { Input } from '../../Form/Input';
 
 import cls from './index.module.scss';
 
@@ -55,8 +56,9 @@ const LinkEdit: React.FC<{
     <div className={cls.edit}>
       <Input
         value={link.title}
-        size="small"
-        prefix={Icon && <Icon size="1em" />}
+        size="s"
+        before={Icon && <Icon size="1em" />}
+        seamless
         className={cls.label}
         placeholder="Label"
         onChange={(e) => {
@@ -66,14 +68,16 @@ const LinkEdit: React.FC<{
       />
       <Input
         value={link.url}
-        size="small"
+        size="s"
         placeholder="https://"
         onChange={(e) => {
           onChange({ ...link, url: e.target.value });
         }}
       />
       <div>
-        <Button icon={<IconTrash />} type="text" onClick={() => onChange()} />
+        <Button danger display="ghost" onClick={() => onChange()}>
+          <IconTrash />
+        </Button>
       </div>
     </div>
   );
@@ -147,7 +151,7 @@ export const ProjectLinks: React.FC = () => {
       )}
       {open && (
         <div className={cls.edits}>
-          <Typography.Title level={4}>Links</Typography.Title>
+          <h4>Links</h4>
           {project.links.map((link, i) => {
             return (
               <LinkEdit
@@ -158,12 +162,12 @@ export const ProjectLinks: React.FC = () => {
             );
           })}
           <Button
-            icon={<IconPlus />}
-            size="small"
+            size="s"
             onClick={() => {
               updateField('links', [...project.links, { title: '', url: '' }]);
             }}
           >
+            <IconPlus />
             Add Link
           </Button>
         </div>

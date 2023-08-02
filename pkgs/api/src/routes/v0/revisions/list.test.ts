@@ -90,7 +90,14 @@ describe('GET /revisions', () => {
     expect(res.statusCode).toBe(200);
     expect(res.json.data).toHaveLength(2);
     expect(res.json.data[1]).toStrictEqual({
-      authors: [],
+      authors: [
+        {
+          avatarUrl: null,
+          email: user.email,
+          id: user.id,
+          name: user.name,
+        },
+      ],
       blobs: [],
       closedAt: null,
       createdAt: expect.toBeIsoDate(),

@@ -1,12 +1,16 @@
 import { Prisma } from '@prisma/client';
+import { sendInvitation } from '@specfy/emails';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
+import { resend } from '../../../common/emails.js';
+import { envs } from '../../../common/env.js';
 import { validationError } from '../../../common/errors.js';
 import { nanoid } from '../../../common/id.js';
 import { schemaOrgId } from '../../../common/validators/index.js';
 import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
+import { logger } from '../../../logger.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import { v1, EXPIRES } from '../../../models/index.js';
 import { getOrgFromRequest } from '../../../models/perms/helpers.js';
@@ -73,6 +77,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       }
 
       const body = val.data;
+      const me = req.me!;
 
       // Dedup and invalidate old invites
       await prisma.invitations.deleteMany({
@@ -93,6 +98,26 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
           expiresAt: new Date(Date.now() + EXPIRES),
         },
       });
+
+      if (!process.env.VITEST) {
+        const link = `${envs.APP_HOSTNAME}/invite?invitation_id=${created.id}&token=${created.token}`;
+        const org = getOrgFromRequest(req, body.orgId)!;
+        logger.info('Sending email', { to: body.email, type: 'invitation' });
+        await sendInvitation(
+          resend,
+          {
+            from: 'Specfy <support@app.specfy.io>',
+            subject: `Join ${org.name} on Specfy`,
+            to: body.email,
+          },
+          {
+            email: body.email,
+            invitedBy: me,
+            inviteLink: link,
+            org,
+          }
+        );
+      }
 
       return res.status(200).send({
         data: { token: created.token, id: created.id },

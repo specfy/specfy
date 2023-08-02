@@ -1,0 +1,75 @@
+.cmd {
+  position: relative;
+  z-index: 10;
+
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  width: 100%;
+  height: 100%;
+
+  background-color: #fff;
+  border: 1px solid var(--border2);
+  border-radius: var(--radius2);
+  box-shadow: var(--boxshadow2);
+}
+
+.inputWrapper {
+  display: flex;
+  gap: var(--spc-l);
+  align-items: center;
+
+  padding: var(--spc-m) var(--spc-xl);
+
+  border-bottom: 1px solid var(--border2);
+}
+
+.input {
+  display: flex;
+  width: 100%;
+  height: 22px;
+  border-radius: var(--radius2);
+}
+
+.icon {
+  width: var(--spc-xl);
+}
+
+.group {
+  margin: var(--spc) 0;
+}
+
+.item {
+  cursor: pointer;
+
+  position: relative;
+
+  display: flex;
+  gap: var(--spc-l);
+  align-items: center;
+
+  padding: var(--spc) var(--spc-xl);
+
+  border-radius: var(--radius2);
+
+  &:hover,
+  &[aria-selected] {
+    background-color: var(--bg2);
+  }
+
+}
+
+.empty {
+  padding: var(--spc-l) var(--spc-xl);
+  font-size: var(--font-s);
+  color: var(--text1);
+  text-align: center;
+}
+
+
+.separator {
+  height: 1px;
+  margin: -1px 0 0;
+  background-color: var(--border2);
+}

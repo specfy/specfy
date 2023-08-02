@@ -6,6 +6,8 @@ import type { ActionOrg } from '../activities/types.js';
 import { recomputeOrgGraph } from '../flows/helpers.rebuild.js';
 import { createKey } from '../keys/model.js';
 
+export type { Orgs } from '@prisma/client';
+
 export async function createOrg(
   tx: Prisma.TransactionClient,
   user: Users,

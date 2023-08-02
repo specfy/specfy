@@ -1,7 +1,7 @@
 import type { ApiJob, ApiProject } from '@specfy/api/src/types/api';
-import { Skeleton } from 'antd';
 import { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import Skeleton from 'react-loading-skeleton';
 import { useParams } from 'react-router-dom';
 import { PrismAsyncLight } from 'react-syntax-highlighter';
 import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
@@ -69,9 +69,17 @@ export const ProjectDeploysShow: React.FC<{
   // --------- Content
   if (res.isLoading && !deploy) {
     return (
-      <div>
-        <Skeleton active title={false} paragraph={{ rows: 3 }}></Skeleton>
-      </div>
+      <Container noPadding>
+        <Container.Left2Third>
+          <div className={cls.header}>
+            <Skeleton width={150} height={40} />
+          </div>
+
+          <Flex gap="l" className={cls.states}>
+            <Skeleton width={350} count={3} />
+          </Flex>
+        </Container.Left2Third>
+      </Container>
     );
   }
 

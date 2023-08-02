@@ -23,11 +23,6 @@
   margin: 0 auto;
 }
 
-
-.wrap {
-  width: 100%;
-}
-
 .title {
   display: flex;
   gap: $p-m;
@@ -35,7 +30,7 @@
 }
 
 .input {
-  padding: $p-l;
+  height: 48px;
   font-size: $font-l;
 }
 

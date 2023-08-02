@@ -2,13 +2,14 @@ import type {
   ApiActivity,
   ApiActivityGrouped,
 } from '@specfy/api/src/types/api';
-import { Skeleton, Typography } from 'antd';
 import type { Duration } from 'luxon';
 import { DateTime } from 'luxon';
 import { useEffect, useState } from 'react';
+import Skeleton from 'react-loading-skeleton';
 
 import { useListActivities } from '../../api';
 import { useAuth } from '../../hooks/useAuth';
+import { Flex } from '../Flex';
 
 import { RowActivity } from './RowActivity';
 import cls from './index.module.scss';
@@ -78,22 +79,28 @@ export const ListActivity: React.FC<{
     setByPeriod(Object.entries(period));
   }, [res.data]);
 
+  if (res.isLoading) {
+    return (
+      <Flex gap="l" column align="flex-start">
+        {[1, 2, 3].map((i) => {
+          return (
+            <Flex key={i} gap="l">
+              <Skeleton circle height={20} width={20} />
+              <Skeleton height={20} width={150} />
+            </Flex>
+          );
+        })}
+      </Flex>
+    );
+  }
+
   return (
     <div>
-      {res.isLoading && (
-        <div>
-          <Skeleton paragraph={{ rows: 0 }} active />
-          <Skeleton paragraph={{ rows: 0 }} active />
-          <Skeleton paragraph={{ rows: 0 }} active />
-        </div>
-      )}
       <div className={cls.groups}>
         {byPeriod.map(([name, acts]) => {
           return (
             <div key={name}>
-              {name !== 'Today' && (
-                <Typography.Title level={5}>{name}</Typography.Title>
-              )}
+              {name !== 'Today' && <h5>{name}</h5>}
               <div className={cls.list}>
                 {acts.map((act) => {
                   return (

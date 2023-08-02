@@ -1,0 +1,16 @@
+.tag {
+  display: inline-flex;
+  gap: var(--spc-m);
+
+  padding: 0 var(--spc-l);
+
+  font-size: var(--font-s);
+  color: white;
+
+  background-color: var(--primary);
+  border-radius: var(--radius3);
+
+  &.closable {
+    padding-right: var(--spc-m);
+  }
+}

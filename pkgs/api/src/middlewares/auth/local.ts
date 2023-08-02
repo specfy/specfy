@@ -4,13 +4,13 @@ import type { Authenticator } from '@fastify/passport';
 import type { FastifyInstance } from 'fastify';
 import { Strategy as LocalStrategy } from 'passport-local';
 
-import { env } from '../../common/env.js';
+import { envs } from '../../common/env.js';
 import { prisma } from '../../db/index.js';
 
 import { AuthError } from './errors.js';
 
 // TODO: once per user
-export const SALT = env('PASSWORD_SALT')!;
+export const SALT = envs.PASSWORD_SALT;
 export const LEN = 32;
 export const ITER = 310000;
 export const DIG = 'sha256';

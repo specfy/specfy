@@ -1,7 +1,7 @@
 import type { ApiComponent, ListComponents } from '@specfy/api/src/types/api';
 import { useQuery } from '@tanstack/react-query';
 
-import originalStore from '../common/store';
+import { addOriginal } from '../common/store';
 
 import { fetchApi } from './fetch';
 import { APIError, isError } from './helpers';
@@ -22,7 +22,7 @@ export function useListComponents(
       }
 
       return json.data.map((component) => {
-        originalStore.add(component);
+        addOriginal(component);
         return component;
       });
     },

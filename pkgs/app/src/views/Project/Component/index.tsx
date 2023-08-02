@@ -1,13 +1,10 @@
 import { componentsToFlow } from '@specfy/api/src/models/flows/transform';
 import type { ComputedFlow } from '@specfy/api/src/models/flows/types';
 import type { ApiComponent, ApiProject } from '@specfy/api/src/types/api';
-import { IconDotsVertical } from '@tabler/icons-react';
-import type { MenuProps } from 'antd';
-import { Tooltip, Button, Dropdown, Tag, Typography } from 'antd';
+import { IconDotsVertical, IconTrash } from '@tabler/icons-react';
 import classnames from 'classnames';
-import type { MenuClickEventHandler } from 'rc-menu/lib/interface';
 import type React from 'react';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useReactFlow } from 'reactflow';
@@ -20,6 +17,7 @@ import { ComponentDetails } from '../../../components/Component/Details';
 import { ComponentIcon } from '../../../components/Component/Icon';
 import { Container } from '../../../components/Container';
 import { ContentDoc } from '../../../components/Content';
+import * as Dropdown from '../../../components/Dropdown';
 import { EditorMini } from '../../../components/Editor/Mini';
 import { Flex } from '../../../components/Flex';
 import { Flow, FlowWrapper } from '../../../components/Flow';
@@ -27,8 +25,11 @@ import { TechPopover } from '../../../components/Flow/TechPopover';
 import { Toolbar } from '../../../components/Flow/Toolbar';
 import type { OnNodesChangeSuper } from '../../../components/Flow/helpers';
 import { onNodesChangeProject } from '../../../components/Flow/helpers';
+import { Button } from '../../../components/Form/Button';
 import { FakeInput } from '../../../components/Form/FakeInput';
 import { NotFound } from '../../../components/NotFound';
+import { Tag } from '../../../components/Tag';
+import { TooltipFull } from '../../../components/Tooltip';
 import { UpdatedAt } from '../../../components/UpdatedAt';
 import { useEdit } from '../../../hooks/useEdit';
 import { useToast } from '../../../hooks/useToast';
@@ -93,17 +94,11 @@ export const ComponentView: React.FC<{
     setFlow(componentsToFlow(components));
   }, [components]);
 
-  const menuItems = useMemo<MenuProps['items']>(() => {
-    return [{ key: 'delete', label: 'Delete', danger: true }];
-  }, []);
-
-  const onClickMenu: MenuClickEventHandler = (e) => {
-    if (e.key === 'delete') {
-      edit.enable(true);
-      storeComponents.remove(comp!.id);
-      toast.add({ title: 'Component deleted', status: 'success' });
-      navigate(`/${params.org_id}/${params.project_slug}`);
-    }
+  const onRemove = () => {
+    edit.enable(true);
+    storeComponents.remove(comp!.id);
+    toast.add({ title: 'Component deleted', status: 'success' });
+    navigate(`/${params.org_id}/${params.project_slug}`);
   };
 
   const onNodesChange: OnNodesChangeSuper = (changes) => {
@@ -134,13 +129,13 @@ export const ComponentView: React.FC<{
                   <ComponentIcon data={comp} large />
                 )}
 
-                <Tooltip
-                  title={
+                <TooltipFull
+                  msg={
                     isEditing &&
                     comp.type === 'project' &&
                     "Can't edit Project name"
                   }
-                  placement="top"
+                  side="top"
                 >
                   {!isEditing || comp.type === 'project' ? (
                     <h2>
@@ -148,7 +143,7 @@ export const ComponentView: React.FC<{
                     </h2>
                   ) : (
                     <FakeInput.H2
-                      size="large"
+                      size="l"
                       value={comp.name}
                       placeholder="Title..."
                       onChange={(e) => {
@@ -160,7 +155,7 @@ export const ComponentView: React.FC<{
                       }}
                     />
                   )}
-                </Tooltip>
+                </TooltipFull>
               </Flex>
               <Flex align="center">
                 <Tag
@@ -172,32 +167,47 @@ export const ComponentView: React.FC<{
                   {internalTypeToText[comp.type]}
                 </Tag>
                 <div>
-                  <Dropdown menu={{ items: menuItems, onClick: onClickMenu }}>
-                    <Button
-                      icon={<IconDotsVertical />}
-                      type="ghost"
-                      size="small"
-                    />
-                  </Dropdown>
+                  <Dropdown.Menu>
+                    <Dropdown.Trigger asChild>
+                      <Button display="ghost">
+                        <IconDotsVertical />
+                      </Button>
+                    </Dropdown.Trigger>
+                    <Dropdown.Portal>
+                      <Dropdown.Content>
+                        <Dropdown.Group>
+                          <Dropdown.Item asChild>
+                            <Button
+                              danger
+                              display="item"
+                              block
+                              onClick={() => onRemove()}
+                              size="s"
+                            >
+                              <IconTrash /> Remove
+                            </Button>
+                          </Dropdown.Item>
+                        </Dropdown.Group>
+                      </Dropdown.Content>
+                    </Dropdown.Portal>
+                  </Dropdown.Menu>
                 </div>
               </Flex>
             </Flex>
             <UpdatedAt time={comp.updatedAt} />
 
-            <Typography>
-              {!isEditing && comp.description && (
-                <ContentDoc doc={comp.description} noPlaceholder />
-              )}
-              {isEditing && (
-                <EditorMini
-                  key={comp.id}
-                  doc={comp.description}
-                  onUpdate={(doc) => {
-                    storeComponents.updateField(comp.id, 'description', doc);
-                  }}
-                />
-              )}
-            </Typography>
+            {!isEditing && comp.description && (
+              <ContentDoc doc={comp.description} noPlaceholder />
+            )}
+            {isEditing && (
+              <EditorMini
+                key={comp.id}
+                doc={comp.description}
+                onUpdate={(doc) => {
+                  storeComponents.updateField(comp.id, 'description', doc);
+                }}
+              />
+            )}
           </div>
 
           <ComponentDetails

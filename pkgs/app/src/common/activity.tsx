@@ -340,7 +340,10 @@ export const mapRevision: Record<ActionRevision, ActivityParams> = {
   'Revision.approved': {
     icon: (
       <div
-        style={{ color: 'var(--acceptDark)', backgroundColor: 'var(--accept)' }}
+        style={{
+          color: 'var(--accept2)',
+          backgroundColor: 'var(--accept1)',
+        }}
       >
         <IconThumbUp />
       </div>
@@ -385,9 +388,7 @@ export const mapRevision: Record<ActionRevision, ActivityParams> = {
   },
   'Revision.merged': {
     icon: (
-      <div
-        style={{ color: 'var(--mergeDark)', backgroundColor: 'var(--merge)' }}
-      >
+      <div style={{ color: 'var(--merge2)', backgroundColor: 'var(--merge1)' }}>
         <IconGitMerge />
       </div>
     ),

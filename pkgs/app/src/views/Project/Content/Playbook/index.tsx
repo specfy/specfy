@@ -1,6 +1,4 @@
 import type { ApiDocument, ApiProject } from '@specfy/api/src/types/api';
-import { Typography, Space } from 'antd';
-import Title from 'antd/es/typography/Title';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
@@ -8,6 +6,7 @@ import { useDocumentsStore } from '../../../../common/store';
 import { titleSuffix } from '../../../../common/string';
 import { ContentDoc } from '../../../../components/Content';
 import { Editor } from '../../../../components/Editor';
+import { Flex } from '../../../../components/Flex';
 import { FakeInput } from '../../../../components/Form/FakeInput';
 import { Time } from '../../../../components/Time';
 import { useEdit } from '../../../../hooks/useEdit';
@@ -36,14 +35,14 @@ export const Playbook: React.FC<{
       <div className={clsLayout.col1}></div>
       <div className={clsLayout.col2}>
         {!isEditing && (
-          <Title level={1} className={cls.title} id={doc.slug}>
+          <h1 className={cls.title} id={doc.slug}>
             <span className={cls.type}>[RFC-{doc.typeId}]</span>
             {title}
-          </Title>
+          </h1>
         )}
         {isEditing && (
           <FakeInput.H1
-            size="large"
+            size="l"
             value={title}
             placeholder="Title..."
             onChange={(e) => {
@@ -52,13 +51,13 @@ export const Playbook: React.FC<{
             }}
           />
         )}
-        <Space>
+        <Flex>
           <div className={cls.lastUpdate}>
             Updated <Time time={doc.updatedAt} />
           </div>
-        </Space>
+        </Flex>
 
-        <Typography className={cls.content}>
+        <div className={cls.content}>
           {!isEditing && (
             <ContentDoc key={doc.id} id={doc.id} doc={doc.content} />
           )}
@@ -72,7 +71,7 @@ export const Playbook: React.FC<{
               }}
             />
           )}
-        </Typography>
+        </div>
       </div>
       <div className={clsLayout.col3}></div>
     </>

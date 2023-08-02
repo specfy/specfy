@@ -1,7 +1,6 @@
 import { componentsToFlow } from '@specfy/api/src/models/flows/transform';
 import type { ComputedFlow } from '@specfy/api/src/models/flows/types';
 import type { ApiComponent, ApiProject } from '@specfy/api/src/types/api';
-import { Tag } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
@@ -19,6 +18,7 @@ import { Flow, FlowWrapper } from '../../../components/Flow';
 import { Toolbar } from '../../../components/Flow/Toolbar';
 import { Loading } from '../../../components/Loading';
 import { NotFound } from '../../../components/NotFound';
+import { Tag } from '../../../components/Tag';
 import type { RouteProject, RouteTech } from '../../../types/routes';
 
 import cls from './index.module.scss';
@@ -103,7 +103,7 @@ export const Tech: React.FC<{
                 {techname}
               </Flex>
             </h2>
-            <Tag>{info ? info.type : 'tech'}</Tag>
+            {info && <Tag>{info ? info.type : 'tech'}</Tag>}
           </Flex>
 
           <h3>Used in</h3>

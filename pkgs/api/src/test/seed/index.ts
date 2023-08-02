@@ -1,4 +1,4 @@
-import { env } from '../../common/env.js';
+import { envs } from '../../common/env.js';
 import { nanoid } from '../../common/id.js';
 import { prisma } from '../../db/index.js';
 
@@ -43,7 +43,7 @@ export async function seed() {
   console.log(' - Jobs');
   await seedJobs(users, orgs, projects);
 
-  const def = env('GIVE_DEFAULT_PERMS_TO_EMAIL');
+  const def = envs.GIVE_DEFAULT_PERMS_TO_EMAIL;
   if (def) {
     const u = await prisma.users.create({
       data: {

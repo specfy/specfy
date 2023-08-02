@@ -1,7 +1,7 @@
 import type { ComponentType } from '@specfy/api/src/models/components/types';
 import type { ApiComponent } from '@specfy/api/src/types/api';
 import { IconPlus } from '@tabler/icons-react';
-import { Button, Select } from 'antd';
+import { Select } from 'antd';
 import type { DefaultOptionType, SelectProps } from 'antd/es/select';
 import { useMemo, useState } from 'react';
 
@@ -13,6 +13,7 @@ import {
   supportedIndexed,
   supportedTypeToText,
 } from '../../common/techs';
+import { Button } from '../Form/Button';
 
 import cls from './index.module.scss';
 
@@ -304,12 +305,8 @@ export const ComponentSelect: React.FC<{
             {search && (
               <div className={cls.create}>
                 <div>
-                  <Button
-                    type="link"
-                    icon={<IconPlus />}
-                    onClick={handleAddItem}
-                  >
-                    Create {createdAs} &quot;{search}&quot;
+                  <Button display="ghost" onClick={handleAddItem}>
+                    <IconPlus /> Create {createdAs} &quot;{search}&quot;
                   </Button>
                 </div>
               </div>

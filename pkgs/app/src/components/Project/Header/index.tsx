@@ -1,4 +1,3 @@
-import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import type { ApiProject } from '@specfy/api/src/types/api';
 import {
   IconApps,
@@ -14,8 +13,10 @@ import { Link, useLocation } from 'react-router-dom';
 
 import { useListRevisions } from '../../../api';
 import { useOrgStore } from '../../../common/store';
+import * as Menu from '../../../components/Menu';
 import type { RouteProject } from '../../../types/routes';
 import { Badge } from '../../Badge';
+import { Flex } from '../../Flex';
 
 import cls from './index.module.scss';
 
@@ -43,45 +44,45 @@ export const ProjectHeader: React.FC<{
       {
         key: 'overview',
         label: (
-          <Link to={linkSelf} className={cls.link}>
-            <span>
+          <Link to={linkSelf}>
+            <Flex gap="l">
               <IconLayoutDashboard />
-            </span>
-            Overview
+              Overview
+            </Flex>
           </Link>
         ),
       },
       {
         key: 'content',
         label: (
-          <Link to={`${linkSelf}/content`} className={cls.link}>
-            <span>
+          <Link to={`${linkSelf}/content`}>
+            <Flex gap="l">
               <IconBook />
-            </span>
-            Content
+              Content
+            </Flex>
           </Link>
         ),
       },
       {
         key: 'flow',
         label: (
-          <Link to={`${linkSelf}/flow`} className={cls.link}>
-            <span>
+          <Link to={`${linkSelf}/flow`}>
+            <Flex gap="l">
               <IconApps />
-            </span>
-            Flow
+              Flow
+            </Flex>
           </Link>
         ),
       },
       {
         key: 'revisions',
         label: (
-          <Link to={`${linkSelf}/revisions`} className={cls.link}>
-            <span>
+          <Link to={`${linkSelf}/revisions`}>
+            <Flex gap="l">
               <IconHistory />
-            </span>
-            <div className={cls.badged}>
               Revisions
+            </Flex>
+            <div>
               <Badge
                 count={revisions.data?.pagination.totalItems}
                 showZero={false}
@@ -93,33 +94,33 @@ export const ProjectHeader: React.FC<{
       {
         key: 'deploys',
         label: (
-          <Link to={`${linkSelf}/deploys`} className={cls.link}>
-            <span>
+          <Link to={`${linkSelf}/deploys`}>
+            <Flex gap="l">
               <IconCloudUpload />
-            </span>
-            Deploys
+              Deploys
+            </Flex>
           </Link>
         ),
       },
       {
         key: 'activity',
         label: (
-          <Link to={`${linkSelf}/activity`} className={cls.link}>
-            <span>
+          <Link to={`${linkSelf}/activity`}>
+            <Flex gap="l">
               <IconBolt />
-            </span>
-            Activity
+              Activity
+            </Flex>
           </Link>
         ),
       },
       {
         key: 'settings',
         label: (
-          <Link to={`${linkSelf}/settings`} className={cls.link}>
-            <span>
+          <Link to={`${linkSelf}/settings`}>
+            <Flex gap="l">
               <IconSettings />
-            </span>
-            Settings
+              Settings
+            </Flex>
           </Link>
         ),
       },
@@ -154,23 +155,19 @@ export const ProjectHeader: React.FC<{
 
   return (
     <div className={cls.header}>
-      <NavigationMenu.Root className="rx_navMenuRoot">
-        <NavigationMenu.List className="rx_navMenuList">
+      <Menu.Menu>
+        <Menu.List>
           {menu.map((item) => {
             return (
-              <NavigationMenu.Item className="rx_navMenuItem" key={item.key}>
-                <NavigationMenu.Link
-                  asChild
-                  className="rx_navMenuLink"
-                  active={open === item.key}
-                >
+              <Menu.Item key={item.key}>
+                <Menu.Link asChild active={open === item.key}>
                   {item.label}
-                </NavigationMenu.Link>
-              </NavigationMenu.Item>
+                </Menu.Link>
+              </Menu.Item>
             );
           })}
-        </NavigationMenu.List>
-      </NavigationMenu.Root>
+        </Menu.List>
+      </Menu.Menu>
     </div>
   );
 };

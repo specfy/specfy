@@ -1,10 +1,10 @@
 import { IconPlus } from '@tabler/icons-react';
-import { Button } from 'antd';
 import { useMemo } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { useLocalStorage } from 'react-use';
 
 import { useListOrgs } from '../../api';
+import { Button } from '../../components/Form/Button';
 
 import cls from './index.module.scss';
 
@@ -36,8 +36,8 @@ export const Homepage: React.FC = () => {
     return (
       <div className={cls.empty}>
         <Link to="/organizations/new">
-          <Button type="default" icon={<IconPlus />}>
-            Create an organization
+          <Button display="default">
+            <IconPlus /> Create an organization
           </Button>
         </Link>
       </div>

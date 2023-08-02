@@ -6,6 +6,7 @@ import App from './views/App';
 
 import 'antd/dist/reset.css';
 import './styles/index.scss';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   // <React.StrictMode>

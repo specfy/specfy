@@ -1,6 +1,5 @@
 import type { ComponentType } from '@specfy/api/src/models/components/types';
 import type { ApiComponent } from '@specfy/api/src/types/api';
-import { Typography } from 'antd';
 import { useEffect, useState } from 'react';
 
 import { useComponentsStore } from '../../../common/store';
@@ -8,6 +7,7 @@ import {
   ComponentLine,
   ComponentLineTech,
 } from '../../../components/Component/Line';
+import { Subdued } from '../../../components/Text';
 import type { RouteProject } from '../../../types/routes';
 
 export const TechnicalAspects: React.FC<{
@@ -86,9 +86,7 @@ export const TechnicalAspects: React.FC<{
 
   return (
     <>
-      {empty && (
-        <Typography.Text type="secondary">Nothing to show</Typography.Text>
-      )}
+      {empty && <Subdued>Nothing to show</Subdued>}
 
       {groups.service.length > 0 && (
         <ComponentLine

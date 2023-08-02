@@ -1,6 +1,5 @@
 import type { ApiOrg } from '@specfy/api/src/types/api';
 import { IconArrowNarrowRight, IconCheck } from '@tabler/icons-react';
-import { Button, Typography } from 'antd';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -8,6 +7,7 @@ import { useLocalStorage } from 'react-use';
 
 import { useListPerms, useListProjects } from '../../../api';
 import { Flex } from '../../Flex';
+import { Button } from '../../Form/Button';
 
 import cls from './index.module.scss';
 
@@ -49,13 +49,13 @@ export const OrgOnboarding: React.FC<{ org: ApiOrg }> = ({ org }) => {
     <div className={cls.onboarding}>
       <Flex className={cls.header} justify="space-between">
         <div>
-          <Typography.Title level={2}>Welcome</Typography.Title>
+          <h2>Welcome</h2>
           <div className={cls.sub}>
             Follow the steps to get ready to use Specfy
           </div>
         </div>
         <div>
-          <Button onClick={() => setDone(true)} size="small" type="text">
+          <Button onClick={() => setDone(true)} size="s" display="ghost">
             skip
           </Button>
         </div>

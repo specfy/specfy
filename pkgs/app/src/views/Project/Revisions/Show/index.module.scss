@@ -1,7 +1,14 @@
 @import "../../../../styles/theme";
 
+.container {
+  min-height: auto !important;
+}
+
+.left {
+  min-width: $main-col-w + 60px;
+}
+
 .main {
-  margin-bottom: $p-4xl;
   border-bottom: 1px solid var(--border2);
 }
 
@@ -13,10 +20,6 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-}
-
-.editDropdown {
-  min-width: 125px !important;
 }
 
 .editSave {
@@ -75,7 +78,8 @@
   flex-direction: column;
   gap: $p-3xl;
 
-  width: calc($min-w - 250px);
-  margin: 0 auto;
-  padding: $p-4xl 0;
+  max-width: $main-col-w;
+  margin: $p-5xl;
+
+  background-color: var(--bg2);
 }

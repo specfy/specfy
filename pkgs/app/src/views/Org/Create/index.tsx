@@ -1,6 +1,6 @@
+import * as Form from '@radix-ui/react-form';
 import type { FieldsErrors } from '@specfy/api/src/types/api';
 import { IconCircleArrowRight } from '@tabler/icons-react';
-import { Button, Form, Input } from 'antd';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
@@ -10,6 +10,9 @@ import { isError, isValidationError } from '../../../api/helpers';
 import { i18n } from '../../../common/i18n';
 import { slugify, titleSuffix } from '../../../common/string';
 import { Card } from '../../../components/Card';
+import { Button } from '../../../components/Form/Button';
+import { Field } from '../../../components/Form/Field';
+import { Input } from '../../../components/Form/Input';
 import { useToast } from '../../../hooks/useToast';
 
 import cls from './index.module.scss';
@@ -47,7 +50,7 @@ export const OrgCreate: React.FC = () => {
     <div className={cls.container}>
       <Helmet title={`Create Organization ${titleSuffix}`} />
       <Card large padded>
-        <form onSubmit={onFinish} className={cls.form}>
+        <Form.Root onSubmit={onFinish} className={cls.form}>
           <header>
             <h1>Create an Organization</h1>
             <p>
@@ -56,13 +59,9 @@ export const OrgCreate: React.FC = () => {
             </p>
           </header>
           <div className={cls.title}>
-            <Form.Item
-              className={cls.wrap}
-              help={errors.name?.message}
-              validateStatus={errors.name && 'error'}
-            >
+            <Field name="name" error={errors.name?.message}>
               <Input
-                size="large"
+                size="l"
                 placeholder="Name"
                 value={name}
                 className={cls.input}
@@ -75,29 +74,26 @@ export const OrgCreate: React.FC = () => {
                   }
                 }}
               />
-            </Form.Item>
+            </Field>
             <Button
-              type="primary"
+              display="primary"
               disabled={!name || name.length < 4 || !id || id.length < 4}
               className={cls.button}
-              htmlType="submit"
+              type="submit"
             >
               Create <IconCircleArrowRight />
             </Button>
           </div>
-          <Form.Item
-            className={cls.wrap}
-            help={errors.id?.message}
-            validateStatus={errors.id && 'error'}
-          >
+          <Field name="unique" error={errors.id?.message}>
             <Input
               placeholder="Unique ID"
               value={id}
-              addonBefore="https://app.specify.io/"
+              before="https://app.specify.io/"
+              seamless
               onChange={(e) => setId(e.target.value)}
             />
-          </Form.Item>
-        </form>
+          </Field>
+        </Form.Root>
       </Card>
     </div>
   );

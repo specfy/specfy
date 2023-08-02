@@ -5,3 +5,13 @@
   flex-direction: column;
   gap: $p-2xl;
 }
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.row {
+  padding: $p-l $p-5xl $p-l;
+  border-bottom: 1px solid var(--border1);
+}

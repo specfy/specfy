@@ -3,13 +3,26 @@
   "version": "0.0.18",
   "private": true,
   "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
+    "build": "tsup",
+    "prod:build": "tsup",
     "dev": "email dev -p 3001",
     "export": "email export"
   },
   "dependencies": {
-    "react": "18.2.0",
     "@react-email/components": "0.0.7",
-    "react-email": "1.9.4"
+    "react": "18.2.0",
+    "resend": "0.17.2"
+  },
+  "devDependencies": {
+    "@types/react": "18.2.18",
+    "@specfy/api": "file:../api",
+    "react-email": "1.9.4",
+    "tsup": "7.1.0"
   }
 }

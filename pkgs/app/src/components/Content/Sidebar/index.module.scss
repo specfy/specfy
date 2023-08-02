@@ -1,10 +1,11 @@
+/* stylelint-disable selector-class-pattern */
 @import "../../../styles/theme";
 @import "../../../styles/mixin";
 
-.tree {
+.content {
   background-color: #fff;
 
-  .treeHeader {
+  .header {
     display: flex;
     gap: $p-m;
     margin: $p-l $p-l;
@@ -12,7 +13,8 @@
 
   .search {
     flex: 1 1 0;
-    margin-right: $p-l;
+    flex-grow: 1;
+    width: 100%;
   }
 
   &.collapsed {
@@ -46,4 +48,57 @@
 .empty {
   padding: $p-xl;
   color: $gray-600;
+}
+
+
+.tree {
+  margin: var(--spc) 0;
+}
+
+
+:global {
+  .rc-tree-treenode {
+    cursor: pointer;
+    display: flex;
+    padding: var(--spc) 0 var(--spc) var(--spc-l);
+    white-space: nowrap;
+
+    &:hover,
+    &.rc-tree-treenode-selected {
+      color: var(--primary);
+      background-color: var(--bg3);
+    }
+
+    &.rc-tree-treenode-leaf-last {
+      .rc-tree-switcher {
+        pointer-events: none;
+        opacity: 0;
+      }
+    }
+
+    .rc-tree-switcher {
+      margin-right: var(--spc);
+      transition: transform 0.15s;
+
+      &.rc-tree-switcher_open {
+        transform: rotate(90deg);
+      }
+
+      &:hover {
+        background-color: var(--bg5);
+      }
+    }
+
+    .rc-tree-node-content-wrapper {
+      overflow: hidden;
+      flex-grow: 1;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .rc-tree-indent-unit {
+      display: block;
+      width: var(--spc-m);
+    }
+  }
 }

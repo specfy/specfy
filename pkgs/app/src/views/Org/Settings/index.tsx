@@ -1,9 +1,11 @@
-import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import type { ApiOrg } from '@specfy/api/src/types/api';
+import { IconSettings, IconUsers } from '@tabler/icons-react';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 
 import { Container } from '../../../components/Container';
+import { Flex } from '../../../components/Flex';
+import * as Menu from '../../../components/Menu';
 import type { RouteOrg } from '../../../types/routes';
 
 import { SettingsGeneral } from './General';
@@ -22,6 +24,33 @@ export const OrgSettings: React.FC<{ params: RouteOrg; org: ApiOrg }> = ({
   }, [params]);
   const [open, setOpen] = useState<string>('');
 
+  const menu = useMemo(() => {
+    return [
+      {
+        key: 'general',
+        label: (
+          <Link to={linkSelf}>
+            <Flex gap="l">
+              <IconSettings />
+              General
+            </Flex>
+          </Link>
+        ),
+      },
+      {
+        key: 'team',
+        label: (
+          <Link to={`${linkSelf}/team`}>
+            <Flex gap="l">
+              <IconUsers />
+              Team
+            </Flex>
+          </Link>
+        ),
+      },
+    ];
+  }, []);
+
   useEffect(() => {
     if (location.pathname.match(/team/)) {
       setOpen('team');
@@ -32,30 +61,21 @@ export const OrgSettings: React.FC<{ params: RouteOrg; org: ApiOrg }> = ({
 
   return (
     <Container className={cls.container}>
-      <NavigationMenu.Root orientation="vertical" className="rx_navMenuRoot">
-        <NavigationMenu.List className="rx_navMenuList">
-          <NavigationMenu.Item className="rx_navMenuItem">
-            <NavigationMenu.Link
-              className="rx_navMenuLink"
-              active={open === 'general'}
-              asChild
-            >
-              <Link to={linkSelf}>General</Link>
-            </NavigationMenu.Link>
-          </NavigationMenu.Item>
-          <NavigationMenu.Item className="rx_navMenuItem">
-            <NavigationMenu.Link
-              className="rx_navMenuLink"
-              active={open === 'team'}
-              asChild
-            >
-              <Link to={`${linkSelf}/team`}>Team</Link>
-            </NavigationMenu.Link>
-          </NavigationMenu.Item>
-        </NavigationMenu.List>
-      </NavigationMenu.Root>
+      <Menu.Menu orientation="vertical">
+        <Menu.List>
+          {menu.map((item) => {
+            return (
+              <Menu.Item key={item.key}>
+                <Menu.Link asChild active={open === item.key}>
+                  {item.label}
+                </Menu.Link>
+              </Menu.Item>
+            );
+          })}
+        </Menu.List>
+      </Menu.Menu>
 
-      <div className={cls.flex}>
+      <Flex gap="2xl" column align="initial">
         <Routes>
           <Route
             path="/"
@@ -66,7 +86,7 @@ export const OrgSettings: React.FC<{ params: RouteOrg; org: ApiOrg }> = ({
             element={<SettingsTeam org={org} params={params} />}
           />
         </Routes>
-      </div>
+      </Flex>
     </Container>
   );
 };

@@ -7,8 +7,10 @@ import {
   IconArrowNarrowRight,
   IconArrowsExchange,
 } from '@tabler/icons-react';
-import { Button, Tooltip } from 'antd';
 import classNames from 'classnames';
+
+import { Button } from '../../Form/Button';
+import { TooltipFull } from '../../Tooltip';
 
 import cls from './index.module.scss';
 
@@ -38,47 +40,46 @@ export const EdgeRelation: React.FC<
       <td className={cls.source}>{source?.data.name}</td>
 
       <td className={cls.to}>
-        <Tooltip
-          title={!readonly && 'Click to change direction'}
-          placement="left"
-        >
-          {edge.data!.write && edge.data!.read && (
-            <Button
-              className={cls.direction}
-              size="small"
-              type="ghost"
-              onClick={onClick}
-              disabled={readonly}
-            >
-              <IconArrowsExchange />
-              <span className={cls.english}>read/write</span>
-            </Button>
-          )}
-          {!edge.data!.write && edge.data!.read && (
-            <Button
-              className={cls.direction}
-              size="small"
-              type="ghost"
-              onClick={onClick}
-              disabled={readonly}
-            >
-              <IconArrowNarrowLeft />
-              <span className={cls.english}>read</span>
-            </Button>
-          )}
-          {edge.data!.write && !edge.data!.read && (
-            <Button
-              className={cls.direction}
-              size="small"
-              type="ghost"
-              onClick={onClick}
-              disabled={readonly}
-            >
-              <IconArrowNarrowRight />
-              <span className={cls.english}>write</span>
-            </Button>
-          )}
-        </Tooltip>
+        <TooltipFull msg={!readonly && 'Click to change direction'} side="left">
+          <div>
+            {edge.data!.write && edge.data!.read && (
+              <Button
+                className={cls.direction}
+                size="s"
+                display="ghost"
+                onClick={onClick}
+                disabled={readonly}
+              >
+                <IconArrowsExchange />
+                <span className={cls.english}>read/write</span>
+              </Button>
+            )}
+            {!edge.data!.write && edge.data!.read && (
+              <Button
+                className={cls.direction}
+                size="s"
+                display="ghost"
+                onClick={onClick}
+                disabled={readonly}
+              >
+                <IconArrowNarrowLeft />
+                <span className={cls.english}>read</span>
+              </Button>
+            )}
+            {edge.data!.write && !edge.data!.read && (
+              <Button
+                className={cls.direction}
+                size="s"
+                display="ghost"
+                onClick={onClick}
+                disabled={readonly}
+              >
+                <IconArrowNarrowRight />
+                <span className={cls.english}>write</span>
+              </Button>
+            )}
+          </div>
+        </TooltipFull>
       </td>
       {target && <td className={cls.target}>{target.data.name}</td>}
     </tr>

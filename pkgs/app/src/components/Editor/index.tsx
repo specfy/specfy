@@ -4,6 +4,7 @@ import { useEditor, EditorContent } from '@tiptap/react';
 import { useEffect } from 'react';
 
 import { removeEmptyContent } from '../../common/content';
+import { Presentation } from '../Content';
 
 import { createEditorSchema } from './extensions';
 import { BubbleMenu } from './extensions/CustomBubbleMenu/BubbleMenu';
@@ -51,11 +52,13 @@ export const Editor: React.FC<Props> = (props) => {
     <div>
       {editor && <BubbleMenu editor={editor} />}
       {editor && <FloatingMenu editor={editor} />}
-      <EditorContent
-        editor={editor}
-        className={cls.editor}
-        style={{ minHeight: props.minHeight }}
-      />
+      <Presentation>
+        <EditorContent
+          editor={editor}
+          className={cls.editor}
+          style={{ minHeight: props.minHeight }}
+        />
+      </Presentation>
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { Typography, Input, Button, Modal, Form } from 'antd';
+import * as Form from '@radix-ui/react-form';
 import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
@@ -8,6 +8,11 @@ import { isError } from '../../../api/helpers';
 import { i18n } from '../../../common/i18n';
 import { titleSuffix } from '../../../common/string';
 import { Card } from '../../../components/Card';
+import * as Dialog from '../../../components/Dialog';
+import { Button } from '../../../components/Form/Button';
+import { Field } from '../../../components/Form/Field';
+import { Input } from '../../../components/Form/Input';
+import { Subdued } from '../../../components/Text';
 import { useAuth } from '../../../hooks/useAuth';
 import { useToast } from '../../../hooks/useToast';
 
@@ -18,7 +23,6 @@ export const SettingsGeneral: React.FC = () => {
   const navigate = useNavigate();
   const { user, tryLogin } = useAuth();
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [waitToRead, setWaitToRead] = useState(true);
 
   // Edit
@@ -29,7 +33,8 @@ export const SettingsGeneral: React.FC = () => {
     setName(e.target.value);
   };
 
-  const handleRename = async () => {
+  const handleRename: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
     const res = await updateMe({ name });
     if (isError(res)) {
       toast.add({ title: i18n.errorOccurred, status: 'error' });
@@ -48,13 +53,12 @@ export const SettingsGeneral: React.FC = () => {
   }, [name, email]);
 
   // Delete modal
-  const showModal = () => {
-    setIsModalOpen(true);
-    setTimeout(() => setWaitToRead(false), 2000);
-  };
-  const cancelDelete = () => {
-    setIsModalOpen(false);
-    setWaitToRead(true);
+  const onOpenChange = (open: boolean) => {
+    if (open) {
+      setTimeout(() => setWaitToRead(false), 2000);
+    } else {
+      setWaitToRead(true);
+    }
   };
 
   const confirmDelete = async () => {
@@ -73,77 +77,75 @@ export const SettingsGeneral: React.FC = () => {
       <Helmet title={`Account ${titleSuffix}`} />
       <div>
         <div>
-          <Typography.Title level={2}>General Settings</Typography.Title>
-          <Typography.Text type="secondary">
-            Manage your account general&apos;s settings
-          </Typography.Text>
+          <h2>General Settings</h2>
+          <Subdued>Manage your account general&apos;s settings</Subdued>
         </div>
       </div>
 
       <Card>
-        <Form layout="vertical" onFinish={handleRename}>
+        <Form.Root onSubmit={handleRename}>
           <Card.Content>
-            <Form.Item label="Display Name">
+            <Field name="name" label="Display Name">
               <Input value={name} onChange={onName} />
-            </Form.Item>
-            <Form.Item label="Email">
+            </Field>
+            <Field name="email" label="Email">
               <Input value={email} onChange={onName} disabled />
-            </Form.Item>
+            </Field>
           </Card.Content>
 
           <Card.Actions>
             {changed && (
-              <Button type="text" onClick={handleReset}>
+              <Button display="ghost" onClick={handleReset}>
                 reset
               </Button>
             )}
-            <Button type="primary" htmlType="submit" disabled={!changed}>
+            <Button display="primary" type="submit" disabled={!changed}>
               Update
             </Button>
           </Card.Actions>
-        </Form>
+        </Form.Root>
       </Card>
 
       <Card padded>
         <div className={cls.actions}>
           <div>
-            <Typography.Title level={4}>Delete your account</Typography.Title>
-            <Typography.Text type="secondary">
-              This operation can&apos;t be undone.
-            </Typography.Text>
+            <h4>Delete your account</h4>
+            <Subdued>This operation can&apos;t be undone.</Subdued>
           </div>
-          <Button danger type="default" onClick={showModal}>
-            Delete Account
-          </Button>
+          <Dialog.Dialog onOpenChange={onOpenChange}>
+            <Dialog.Trigger asChild>
+              <Button danger>Delete Account</Button>
+            </Dialog.Trigger>
+            <Dialog.Content>
+              <Dialog.Header>
+                <Dialog.Title>Delete your Account?</Dialog.Title>
+                <Dialog.Description>
+                  Are you sure to delete your account? <br></br>This operation
+                  can&apos;t be undone.
+                </Dialog.Description>
+              </Dialog.Header>
+              <div></div>
+              <Dialog.Footer>
+                <Dialog.Close asChild>
+                  <Button key="back" display="ghost">
+                    cancel
+                  </Button>
+                </Dialog.Close>
+                <Button
+                  danger
+                  key="submit"
+                  display="primary"
+                  disabled={waitToRead}
+                  onClick={confirmDelete}
+                  loading={waitToRead}
+                >
+                  Delete Account
+                </Button>
+              </Dialog.Footer>
+            </Dialog.Content>
+          </Dialog.Dialog>
         </div>
       </Card>
-
-      <Modal
-        title="Delete your account?"
-        open={isModalOpen}
-        onOk={confirmDelete}
-        onCancel={cancelDelete}
-        footer={[
-          <Button key="back" type="text" onClick={cancelDelete}>
-            cancel
-          </Button>,
-          <Button
-            danger
-            key="submit"
-            type="primary"
-            disabled={waitToRead}
-            onClick={confirmDelete}
-            loading={waitToRead}
-          >
-            Delete Account
-          </Button>,
-        ]}
-      >
-        <p>
-          Are you sure to delete your account? <br></br>This operation
-          can&apos;t be undone.
-        </p>
-      </Modal>
     </>
   );
 };

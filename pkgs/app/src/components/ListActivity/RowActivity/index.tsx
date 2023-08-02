@@ -32,7 +32,7 @@ export const RowActivity: React.FC<{
     >
       <div className={cls.main}>
         {!isChild ? (
-          <Link to={`/user/${act.user.id}`} className={cls.avatar}>
+          <Link to={`/user/${act.user.id}`}>
             <AvatarAuto
               name={act.user.name}
               src={act.user.avatarUrl}

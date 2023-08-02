@@ -1,10 +1,11 @@
-import * as NavigationMenu from '@radix-ui/react-navigation-menu';
 import type { ApiOrg } from '@specfy/api/src/types/api';
 import { IconApps, IconHome, IconSettings } from '@tabler/icons-react';
 import { useState, useMemo, useEffect } from 'react';
 import { useLocation, Link, useParams } from 'react-router-dom';
 
+import * as Menu from '../../../components/Menu';
 import type { RouteOrg } from '../../../types/routes';
+import { Flex } from '../../Flex';
 
 import cls from './index.module.scss';
 
@@ -36,56 +37,59 @@ export const OrgHeader: React.FC<{ org: ApiOrg }> = () => {
     }
   }, [location]);
 
+  const menu = useMemo(() => {
+    return [
+      {
+        key: 'home',
+        label: (
+          <Link to={linkSelf}>
+            <Flex gap="l">
+              <IconHome />
+              Home
+            </Flex>
+          </Link>
+        ),
+      },
+      {
+        key: 'flow',
+        label: (
+          <Link to={`${linkSelf}/flow`}>
+            <Flex gap="l">
+              <IconApps />
+              Flow
+            </Flex>
+          </Link>
+        ),
+      },
+      {
+        key: 'settings',
+        label: (
+          <Link to={`${linkSelf}/settings`}>
+            <Flex gap="l">
+              <IconSettings />
+              Settings
+            </Flex>
+          </Link>
+        ),
+      },
+    ];
+  }, [linkSelf]);
+
   return (
     <div className={cls.header}>
-      <NavigationMenu.Root className="rx_navMenuRoot">
-        <NavigationMenu.List className="rx_navMenuList">
-          <NavigationMenu.Item className="rx_navMenuItem">
-            <NavigationMenu.Link
-              asChild
-              className="rx_navMenuLink"
-              active={open === 'home'}
-            >
-              <Link to={linkSelf}>
-                <span>
-                  <IconHome />
-                </span>
-                Home
-              </Link>
-            </NavigationMenu.Link>
-          </NavigationMenu.Item>
-
-          <NavigationMenu.Item className="rx_navMenuItem">
-            <NavigationMenu.Link
-              asChild
-              className="rx_navMenuLink"
-              active={open === 'flow'}
-            >
-              <Link to={`${linkSelf}/flow`}>
-                <span>
-                  <IconApps />
-                </span>
-                Flow
-              </Link>
-            </NavigationMenu.Link>
-          </NavigationMenu.Item>
-
-          <NavigationMenu.Item className="rx_navMenuItem">
-            <NavigationMenu.Link
-              asChild
-              className="rx_navMenuLink"
-              active={open === 'settings'}
-            >
-              <Link to={`${linkSelf}/settings`}>
-                <span>
-                  <IconSettings />
-                </span>
-                Settings
-              </Link>
-            </NavigationMenu.Link>
-          </NavigationMenu.Item>
-        </NavigationMenu.List>
-      </NavigationMenu.Root>
+      <Menu.Menu>
+        <Menu.List>
+          {menu.map((item) => {
+            return (
+              <Menu.Item key={item.key}>
+                <Menu.Link asChild active={open === item.key}>
+                  {item.label}
+                </Menu.Link>
+              </Menu.Item>
+            );
+          })}
+        </Menu.List>
+      </Menu.Menu>
     </div>
   );
 };

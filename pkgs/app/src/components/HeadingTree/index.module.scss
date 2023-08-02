@@ -1,15 +1,23 @@
 @import "../../styles/theme";
 
 .tree {
-  width: 200px;
+  position: sticky;
+  top: 20px;
 
-  :global {
-    .ant-anchor {
-      padding-top: 20px;
-    }
+  display: flex;
+  flex-direction: column;
 
-    .ant-anchor-ink {
-      display: none;
-    }
-  }
+  width: 180px;
+  margin: 20px 0 0 20px;
+}
+
+.link {
+  overflow: hidden;
+  display: block;
+
+  padding: var(--spc-xs) var(--spc-l);
+
+  font-size: var(--font-s);
+  text-overflow: ellipsis;
+  white-space: pre;
 }

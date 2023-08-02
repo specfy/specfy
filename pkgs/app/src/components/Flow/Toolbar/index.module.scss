@@ -46,6 +46,9 @@
 
 .toolbar {
   pointer-events: all;
+
+  display: flex;
+
   background-color: #fff;
   border-radius: $border-radius;
   box-shadow: $box-shadow2;

@@ -1,11 +1,11 @@
 import { App } from 'octokit';
 
-import { env } from '../../common/env.js';
+import { envs } from '../../common/env.js';
 
-const secret = env('GITHUB_WEBHOOKS_SECRET')!;
+const secret = envs.GITHUB_WEBHOOKS_SECRET;
 const app = new App({
-  appId: env('GITHUB_CLIENT_APPID')!,
-  privateKey: env('GITHUB_CLIENT_PKEY')!,
+  appId: envs.GITHUB_CLIENT_APPID,
+  privateKey: envs.GITHUB_CLIENT_PKEY,
   webhooks: {
     secret,
   },

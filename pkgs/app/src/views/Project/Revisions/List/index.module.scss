@@ -14,23 +14,26 @@
   }
 }
 
-
-.search {
+.list {
   display: flex;
-  gap: $p-l;
+  flex-direction: column;
 }
 
-.title {
-  font-size: $font-m;
-  font-weight: 600;
-  color: $gray-800;
-}
+.row {
+  padding: $p-l $p-5xl $p-xl;
+  border-bottom: 1px solid var(--border1);
 
-.subtitle {
-  font-size: $font-s;
-  color: var(--text2);
-}
+  .title {
+    font-weight: 500;
+  }
 
-.line {
-  padding: 0 $p-xl 0 $p;
+  .typeId {
+    font-weight: 300;
+    color: var(--text2);
+  }
+
+  .info {
+    font-size: $font-s;
+    color: var(--text2)
+  }
 }

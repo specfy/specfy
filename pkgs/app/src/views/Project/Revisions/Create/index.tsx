@@ -1,3 +1,4 @@
+import * as Form from '@radix-ui/react-form';
 import { omit } from '@specfy/api/src/common/object';
 import { componentsToFlow } from '@specfy/api/src/models/flows/transform';
 import type { ComputedFlow } from '@specfy/api/src/models/flows/types';
@@ -16,7 +17,6 @@ import {
   IconGitPullRequest,
   IconGitPullRequestDraft,
 } from '@tabler/icons-react';
-import { Button, Checkbox, Form, Result, Typography } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
@@ -26,20 +26,26 @@ import { isError } from '../../../../api/helpers';
 import { getEmptyDoc } from '../../../../common/content';
 import { proposeTitle } from '../../../../common/diff';
 import { i18n } from '../../../../common/i18n';
-import originalStore, {
+import {
+  originalStore,
+  revertAll,
   useComponentsStore,
   useStagingStore,
 } from '../../../../common/store';
 import { titleSuffix } from '../../../../common/string';
 import { Card } from '../../../../components/Card';
 import { Container } from '../../../../components/Container';
-import { DiffCard } from '../../../../components/DiffCard';
-import { DiffFlow } from '../../../../components/DiffCard/Flow';
 import { Editor } from '../../../../components/Editor';
+import { Empty } from '../../../../components/Empty';
 import { Flex } from '../../../../components/Flex';
 import { FlowWrapper } from '../../../../components/Flow';
 import { Toolbar } from '../../../../components/Flow/Toolbar';
+import { Button } from '../../../../components/Form/Button';
+import { Checkbox } from '../../../../components/Form/Checkbox';
 import { FakeInput } from '../../../../components/Form/FakeInput';
+import { FieldCheckbox } from '../../../../components/Form/Field';
+import { DiffCard } from '../../../../components/Revision/DiffCard';
+import { DiffFlow } from '../../../../components/Revision/DiffCard/Flow';
 import { useToast } from '../../../../hooks/useToast';
 import type { RouteProject } from '../../../../types/routes';
 
@@ -79,7 +85,7 @@ export const ProjectRevisionCreate: React.FC<{
     if (staging.hasGraphChanged) {
       setFlow(componentsToFlow(Object.values(storeComponents.components)));
 
-      const oldComponents = originalStore.originalStore.filter((old) => {
+      const oldComponents = originalStore.filter((old) => {
         return 'edges' in old && old.projectId === proj.id;
       }) as ApiComponent[];
       setPreviousFlow(componentsToFlow(oldComponents));
@@ -120,7 +126,7 @@ export const ProjectRevisionCreate: React.FC<{
   // };
 
   const handleRevertAll = () => {
-    originalStore.revertAll(staging.diffs);
+    revertAll(staging.diffs);
   };
 
   const onSubmit = async () => {
@@ -163,7 +169,7 @@ export const ProjectRevisionCreate: React.FC<{
     }
 
     // Discard local changes
-    originalStore.revertAll(staging.diffs);
+    revertAll(staging.diffs);
 
     toast.add({ title: 'Revision created', status: 'success' });
     navigate(
@@ -177,12 +183,12 @@ export const ProjectRevisionCreate: React.FC<{
     return (
       <Container className={cls.container}>
         <Helmet title={`Create Revision - ${proj.name} ${titleSuffix}`} />
-        <Result
-          icon={<IconGitPullRequest size="1em" />}
+        <Empty
+          icon={<IconGitPullRequest />}
           title="No changes to commit..."
-          extra={
+          action={
             <Link to={to}>
-              <Button type="primary">Back to Overview</Button>
+              <Button display="primary">Back to Overview</Button>
             </Link>
           }
         />
@@ -191,84 +197,80 @@ export const ProjectRevisionCreate: React.FC<{
   }
 
   return (
-    <Container className={cls.container}>
-      <Helmet title={`Create Revision - ${proj.name} ${titleSuffix}`} />
-      <div className={cls.left}>
-        <Card>
-          <Form onFinish={onSubmit}>
-            <Card.Content>
-              <Flex gap="l" column align="flex-start">
-                <FakeInput.H1
-                  size="large"
-                  value={title}
-                  placeholder="Revision title..."
-                  onChange={(e) => setTitle(e.target.value)}
-                />
+    <Container>
+      <div className={cls.container}>
+        <Helmet title={`Create Revision - ${proj.name} ${titleSuffix}`} />
+        <div className={cls.left}>
+          <Card>
+            <Form.Root onSubmit={onSubmit}>
+              <Card.Content>
+                <Flex gap="l" column align="flex-start">
+                  <FakeInput.H1
+                    size="l"
+                    value={title}
+                    placeholder="Revision title..."
+                    onChange={(e) => setTitle(e.target.value)}
+                  />
 
-                <div style={{ width: '100%' }}>
-                  <Typography>
+                  <div style={{ width: '100%' }}>
                     <Editor
                       key={'edit'}
                       content={description}
                       onUpdate={setDescription}
                       minHeight="100px"
                     />
-                  </Typography>
-                </div>
-              </Flex>
-            </Card.Content>
-            <Card.Actions>
-              <Flex gap="l">
-                <Checkbox
-                  type="checkbox"
-                  checked={autoMerge}
-                  onChange={(el) => setAutoMerge(el.target.checked)}
-                >
-                  Merge directly
-                </Checkbox>
-                <Button
-                  type="primary"
-                  disabled={!canSubmit}
-                  htmlType="submit"
-                  icon={<IconGitPullRequestDraft />}
-                >
-                  {autoMerge ? 'Propose and Merge' : 'Propose changes'}
-                </Button>
-              </Flex>
-            </Card.Actions>
-          </Form>
-        </Card>
-      </div>
-      <div className={cls.right}></div>
+                  </div>
+                </Flex>
+              </Card.Content>
+              <Card.Actions>
+                <Flex gap="l">
+                  <FieldCheckbox name="autoMerge" label="Merge directly">
+                    <Checkbox
+                      checked={autoMerge}
+                      onCheckedChange={() => setAutoMerge(!autoMerge)}
+                    />
+                  </FieldCheckbox>
 
-      <div className={cls.reviewBar}>
-        <div>
-          {staging.count} pending {staging.count > 1 ? 'changes' : 'change'}
+                  <Button display="primary" disabled={!canSubmit} type="submit">
+                    <IconGitPullRequestDraft />
+                    {autoMerge ? 'Propose and Merge' : 'Propose changes'}
+                  </Button>
+                </Flex>
+              </Card.Actions>
+            </Form.Root>
+          </Card>
         </div>
-        <Button onClick={() => handleRevertAll()}>Revert all</Button>
-      </div>
+        <div className={cls.right}></div>
 
-      <div className={cls.staged}>
+        <div className={cls.reviewBar}>
+          <div>
+            {staging.count} pending {staging.count > 1 ? 'changes' : 'change'}
+          </div>
+          <Button onClick={() => handleRevertAll()}>Revert all</Button>
+        </div>
+
         <div className={cls.staged}>
-          {flow && (
-            <FlowWrapper style={{ height: '350px' }}>
-              <DiffFlow next={flow} prev={previousFlow!} />
+          <div className={cls.staged}>
+            {flow && (
+              <FlowWrapper style={{ height: '350px' }}>
+                <DiffFlow next={flow} prev={previousFlow!} />
 
-              <Toolbar bottom>
-                <Toolbar.Zoom />
-              </Toolbar>
-            </FlowWrapper>
-          )}
-          {staging.diffs.map((diff) => {
-            return (
-              <DiffCard
-                key={diff.blob.typeId}
-                diff={diff}
-                url={to}
-                onRevert={() => null}
-              />
-            );
-          })}
+                <Toolbar bottom>
+                  <Toolbar.Zoom />
+                </Toolbar>
+              </FlowWrapper>
+            )}
+            {staging.diffs.map((diff) => {
+              return (
+                <DiffCard
+                  key={diff.blob.typeId}
+                  diff={diff}
+                  url={to}
+                  onRevert={() => null}
+                />
+              );
+            })}
+          </div>
         </div>
       </div>
     </Container>

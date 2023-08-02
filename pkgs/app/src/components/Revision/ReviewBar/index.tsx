@@ -4,7 +4,6 @@ import type {
   GetRevision,
 } from '@specfy/api/src/types/api';
 import { IconCircleCheck } from '@tabler/icons-react';
-import { Button, Typography, Space } from 'antd';
 import classnames from 'classnames';
 import { useState, useEffect, useRef } from 'react';
 import { useClickAway } from 'react-use';
@@ -15,6 +14,8 @@ import { getEmptyDoc } from '../../../common/content';
 import { i18n } from '../../../common/i18n';
 import { useToast } from '../../../hooks/useToast';
 import { Editor } from '../../Editor';
+import { Flex } from '../../Flex';
+import { Button } from '../../Form/Button';
 
 import cls from './index.module.scss';
 
@@ -72,7 +73,6 @@ export const ReviewBar: React.FC<{
     <div className={classnames(cls.bar, open && cls.opened)} ref={ref}>
       <div className={cls.inner}>
         <Button
-          type="default"
           disabled={!canReview}
           className={classnames(cls.reviewButton)}
           onClick={() => onClickReview(true)}
@@ -83,23 +83,23 @@ export const ReviewBar: React.FC<{
 
       {open && (
         <div>
-          <Typography className={cls.text}>
-            <Typography.Title level={2}>Finish your review</Typography.Title>
+          <div className={cls.text}>
+            <h2>Finish your review</h2>
             <Editor content={review} onUpdate={setReview} minHeight="150px" />
-          </Typography>
-          <Space className={cls.actions}>
-            <Button onClick={() => onClickReview(false)} type="text">
+          </div>
+          <Flex className={cls.actions}>
+            <Button onClick={() => onClickReview(false)} display="ghost">
               Cancel
             </Button>
             <Button
               onClick={onSubmitReview}
-              type="primary"
+              display="primary"
               className={classnames(cls.reviewButton, cls.success)}
-              icon={<IconCircleCheck />}
             >
+              <IconCircleCheck />
               Approve
             </Button>
-          </Space>
+          </Flex>
         </div>
       )}
     </div>

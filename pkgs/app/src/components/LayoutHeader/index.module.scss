@@ -12,19 +12,6 @@
   color: white;
 
   background: #242d3c;
-
-  :global {
-    .ant-btn {
-      color: white;
-
-      &.ant-btn-text {
-        &:hover {
-          color: $gray-100;
-          background-color: $slate-700;
-        }
-      }
-    }
-  }
 }
 
 .logo {
@@ -38,87 +25,25 @@
   min-width: 200px;
 }
 
+.current {
+  color: var(--text);
+}
 
 .right {
   display: flex;
   gap: 8px;
   justify-content: flex-end;
-
-  margin-top: -2px;
-
   color: inherit;
-
-  button {
-    border: 1px solid rgb(255 255 255 / 5%);
-    border-radius: 20px;
-  }
-}
-
-.avatar {
-  background-color: rgb(255 255 255 / 5%);
-
-  img {
-    transform: scale(1.2);
-
-    width: 100%;
-    margin-top: -3px;
-    padding: 2px;
-
-    border-radius: 20px;
-  }
-}
-
-.menu {
-  background: transparent !important;
-  border-bottom: none;
 }
 
 .userDropdown {
   width: 256px;
-  padding-bottom: 4px;
+  padding: $p-l $p-xl;
+  line-height: $line-height-s;
 
-  background-color: #fff;
-  border-radius: $border-radius-s;
-  box-shadow:
-    #fff 0 0 0 0,
-    rgb(0 0 0 / 5%) 0 0 0 1px,
-    rgb(0 0 0 / 10%) 0 10px 15px -3px,
-    rgb(0 0 0 / 10%) 0 4px 6px -4px;
-
-  &Profil {
-    padding: $p-l $p-xl;
-    line-height: $line-height-s;
-
-    strong {
-      font-size: $font-s;
-      font-weight: normal;
-      color: $gray-7;
-    }
-  }
-
-  &Item {
-    display: flex;
-    gap: $p-m;
-    align-items: center;
-
-    padding: 8px 16px;
-
-    color: $gray-8;
-
-    svg {
-      margin-top: 2px;
-    }
-
-    &:hover {
-      color: $gray-11;
-      background-color: $gray-3;
-    }
-  }
-}
-
-:global {
-  // In the dropdown
-  .ant-divider {
-    margin: 4px 0;
+  strong {
+    font-size: $font-s;
+    font-weight: normal;
+    color: $gray-7;
   }
 }

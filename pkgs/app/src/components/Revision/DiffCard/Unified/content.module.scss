@@ -1,0 +1,25 @@
+@import "../../../../styles/theme";
+
+.group {
+  margin-bottom: 0;
+}
+
+.unchanged {
+  display: flex;
+  gap: $p-m;
+
+  padding: $p $p-2xl;
+
+  color: $gray-400;
+
+  background-color: rgba($blue-50, 0.5);
+}
+
+.accordion {
+  height: auto;
+}
+
+.unchangedContent {
+  padding: 0 0 $p-2xl 0;
+
+}

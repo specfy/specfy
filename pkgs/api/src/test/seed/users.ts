@@ -1,6 +1,6 @@
 import type { Users } from '@prisma/client';
 
-import { env } from '../../common/env.js';
+import { envs } from '../../common/env.js';
 import { nanoid } from '../../common/id.js';
 import { prisma } from '../../db/index.js';
 import { pbkdf2 } from '../../middlewares/auth/local.js';
@@ -71,7 +71,7 @@ export async function seedUsers(): Promise<Users[]> {
 }
 
 export async function seedDefaultAccount(): Promise<Users> {
-  let email = env('DEFAULT_ACCOUNT');
+  let email = envs.DEFAULT_ACCOUNT;
   if (!email) {
     console.warn('⚠️  No DEFAULT_ACCOUNT');
     email = `${nanoid()}@default.com`;

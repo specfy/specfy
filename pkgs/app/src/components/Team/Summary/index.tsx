@@ -1,6 +1,6 @@
 import type { ApiPerm, ListPerms } from '@specfy/api/src/types/api';
-import { Skeleton } from 'antd';
 import { useEffect, useState } from 'react';
+import Skeleton from 'react-loading-skeleton';
 
 import { useListPermsProject } from '../../../api';
 import { AvatarAuto, AvatarGroup } from '../../../components/AvatarAuto';
@@ -38,9 +38,9 @@ export const TeamSummary: React.FC<Required<ListPerms['Querystring']>> = (
   if (team.isLoading) {
     return (
       <AvatarGroup>
-        <Skeleton.Avatar active />
-        <Skeleton.Avatar active />
-        <Skeleton.Avatar active />
+        <Skeleton circle width={30} height={30} />
+        <Skeleton circle width={30} height={30} />
+        <Skeleton circle width={30} height={30} />
       </AvatarGroup>
     );
   }

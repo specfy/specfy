@@ -13,17 +13,25 @@ Global:
   ✔ Favicon @done(23-06-18 17:08)
   - Block refresh / quit when there are pending changes
   - Remove antd
-    - Layout
-    - Checkbox
-    - Input
-    - Button
-    - Tag
-    - Typography
+    ✔ Layout @done(23-07-28 11:38)
+    ✔ Checkbox @done(23-07-31 11:45)
+    ✔ Input @done(23-07-31 15:58)
+    ✔ Button @done(23-07-31 15:57)
+    ✔ Tag @done(23-07-28 11:21)
+    ✔ Typography @done(23-07-31 14:31)
     - Select
-    - Tooltip
-    - Anchor
-    - Dropdown
-    - Skeleton
+    ✔ Tooltip @done(23-07-31 18:18)
+    ✔ Anchor @done(23-08-01 15:29)
+    ✔ Dropdown @done(23-08-01 14:24)
+    ✔ Badge @done(23-08-01 17:56)
+    ✔ Skeleton @done(23-07-31 17:04)
+    ✔ Tree @done(23-08-01 17:56)
+    ✔ Table @done(23-08-01 14:43)
+    ✔ Autocomplete @done(23-08-02 10:24)
+    ✔ Modal @done(23-08-01 14:24)
+    ✔ Form @done(23-07-31 17:30)
+    ✔ Result @done(23-07-31 16:04)
+    ✔ Space @done(23-07-31 16:00)
   ✔ API: Clean models and group everything together @done(23-07-14 16:41)
 
 

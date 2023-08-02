@@ -1,17 +1,10 @@
 @import "../../../../styles/theme";
 
 .container {
-  display: grid;
-  grid-template:
-    "left right"
-    "review empty"
-    "staged empty" / 1fr;
-  row-gap: $p-2xl;
-  column-gap: $p-xl;
-
-  min-width: $min-w;
-  max-width: $max-w;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: $p-2xl;
+  width: $main-col-w;
 
   .left {
     grid-area: left;

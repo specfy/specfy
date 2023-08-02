@@ -3,7 +3,7 @@
 # ------------------
 FROM alpine:latest as deps
 
-RUN apk add --no-cache bash curl wget jq
+RUN apk add --no-cache bash jq
 
 WORKDIR /tmp
 
@@ -42,9 +42,14 @@ ARG git_hash
 ENV GIT_HASH ${git_hash:-dev}
 ENV NODE_ENV=production
 
-# Build API
+# Build
 RUN true \
+  # We need prisma first to be able to compile the emails because we use the types
   && cd pkgs/api \
+  && npm run prisma:gen \
+  && cd .. && cd emails \
+  && npm run prod:build \
+  && cd .. && cd api \
   && npm run prod:build
 
 # Clean src
@@ -53,7 +58,11 @@ RUN true \
 
 # Clean dev dependencies
 RUN true \
-  && npm prune --omit=dev
+  && npm prune --omit=dev --omit=peer
+
+# RUN du -h -d1 node_modules/ | sort -h
+# RUN du -h -d1 pkgs/ | sort -h
+# RUN du -h -d1 pkgs/emails/node_modules/ | sort -h
 
 # ---- Web ----
 # Resulting new, minimal image

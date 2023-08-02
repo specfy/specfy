@@ -1,12 +1,12 @@
 import type { ApiPerm, ApiUser } from '@specfy/api/src/types/api';
 import { IconSearch } from '@tabler/icons-react';
-import { Input, Typography } from 'antd';
 import { useEffect, useState } from 'react';
 import { useDebounce } from 'react-use';
 
 import { useListPerms, useListUser } from '../../../../api';
 import { Card } from '../../../../components/Card';
 import { Empty } from '../../../../components/Empty';
+import { Input } from '../../../../components/Form/Input';
 import { Row } from '../../../../components/Team/Row';
 import { useAuth } from '../../../../hooks/useAuth';
 import type { RouteOrg } from '../../../../types/routes';
@@ -82,20 +82,19 @@ export const SettingsTeamList: React.FC<{ params: RouteOrg }> = ({
     <div>
       <div className={cls.header}>
         <Input
-          prefix={<IconSearch />}
+          before={<IconSearch />}
+          seamless
           placeholder="Search..."
           className={cls.search}
           onChange={(e) => setSearch(e.target.value)}
-          size="large"
-        ></Input>
+          size="l"
+        />
       </div>
       <Card>
         {!searchDebounced && (
           <div className={cls.lines}>
             <div>
-              <Typography.Title level={5} className={cls.title}>
-                Owners
-              </Typography.Title>
+              <h5 className={cls.title}>Owners</h5>
               {owners.map((perm) => {
                 return (
                   <Row
@@ -115,9 +114,7 @@ export const SettingsTeamList: React.FC<{ params: RouteOrg }> = ({
 
             {false && (
               <div>
-                <Typography.Title level={5} className={cls.title}>
-                  Reviewers
-                </Typography.Title>
+                <h5 className={cls.title}>Reviewers</h5>
                 {reviewers.map((perm) => {
                   return (
                     <Row
@@ -137,9 +134,7 @@ export const SettingsTeamList: React.FC<{ params: RouteOrg }> = ({
             )}
 
             <div>
-              <Typography.Title level={5} className={cls.title}>
-                Contributors
-              </Typography.Title>
+              <h5 className={cls.title}>Contributors</h5>
               {contributors.map((perm) => {
                 return (
                   <Row
@@ -158,9 +153,7 @@ export const SettingsTeamList: React.FC<{ params: RouteOrg }> = ({
             </div>
 
             <div>
-              <Typography.Title level={5} className={cls.title}>
-                Viewers
-              </Typography.Title>
+              <h5 className={cls.title}>Viewers</h5>
               {viewers.map((perm) => {
                 return (
                   <Row

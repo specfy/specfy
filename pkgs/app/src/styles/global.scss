@@ -1,4 +1,5 @@
 @import "./theme";
+@import "./mixin";
 @import '@radix-ui/colors/amber.css';
 @import '@radix-ui/colors/blue.css';
 @import '@radix-ui/colors/bronze.css';
@@ -30,10 +31,14 @@
 
 button,
 a,
-input {
+input,
+p {
   all: unset;
 }
 
+body * {
+  box-sizing: border-box;
+}
 
 .tabler-icon {
   width: 1.2em;
@@ -54,12 +59,28 @@ input {
 
 
 :root {
-  // TEXT
+  // Text
   --text1: var(--mauve8);
   --text2: var(--mauve9);
   --text3: var(--mauve11);
   --text4: hsl(255deg 4% 44%);
   --text: var(--mauve12);
+
+  // Font
+  --font-xs: 10px;
+  --font-s: 12px;
+  --font: 14px;
+  --font-m: 16px;
+  --font-l: 20px;
+  --font-xl: 24px;
+  --font-2xl: 28px;
+  --font-3xl: 32px;
+
+  // Height
+  --h-s: 30px;
+  --h-m: 34px;
+  --h-l: 38px;
+  --h-xl: 42px;
 
   // Link
   --colorLink: var(--indigo9);
@@ -69,25 +90,54 @@ input {
   --bg2: var(--mauve2);
   --bg3: var(--mauve3);
   --bg5: var(--mauve5);
-  --bg10: #242d3c;
+  --bg10: hsl(217.5deg 25% 18.82%);
 
-  // OTHER
+  // Border
   --border1: var(--mauve2);
   --border2: var(--mauve4);
   --border3: var(--mauve7);
+  --border4: var(--mauve9);
+  --radius1: 2px;
+  --radius2: 4px;
+  --radius3: 8px;
+
+  // Padding
+  --spc-xs: 2px;
+  --spc-s: 4px;
+  --spc: 6px;
+  --spc-m: 8px;
+  --spc-l: 12px;
+  --spc-xl: 16px;
+  --spc-2xl: 20px;
+  --spc-3xl: 24px;
+  --spc-4xl: 28px;
+  --spc-5xl: 32px;
+
+  // OTHER
   --accent1: var(--indigo4);
   --accent2: var(--indigo9);
-  --primary: #242d3c;
+  --primary: hsl(217.5deg 25% 18.82%);
+  --primaryHover: #303a48;
+  --primaryText: #fff;
+
+
 
   // colors
-  --accept: hsl(151.88deg 100% 93.73%);
-  --acceptDark: hsl(152.14deg 30.11% 36.47%);
-  --decline: hsl(5.45deg 100% 95.69%);
-  --declineDark: hsl(359.52deg 100% 75.29%);
-  --merge: var(--plum5);
-  --mergeDark: var(--plum9);
-  --modified: hsl(136deg 38% 75%);
-  --modifiedDark: var(--grass9);
+  --accept1: hsl(151.88deg 100% 93.73%);
+  --accept2: hsl(152.14deg 30.11% 36.47%);
+  --decline1: hsl(5.45deg 100% 95.69%);
+  --decline2: hsl(359.52deg 100% 75.29%);
+  --decline3: hsl(0deg 56% 52%);
+  --merge1: var(--plum5);
+  --merge2: var(--plum9);
+  --modified1: hsl(136deg 38% 75%);
+  --modified2: var(--grass9);
+
+  // Shadow
+  --boxshadow1: 1px 1px 2px $gray-4;
+  --boxshadow2: 0 1px 3px 0 rgb(0 0 0 / 10%), 0 1px 2px -1px rgb(0 0 0 / 10%);
+  --boxshadow3: 0 1px 10px 0 rgb(0 0 0 / 10%), 0 1px 2px -1px rgb(0 0 0 / 10%);
+  --boxshadow-editable: -2px 0 0 0 $blue-50;
 }
 
 
@@ -106,9 +156,45 @@ button {
 }
 
 a {
+  // Buggy with Dropdown
+  // @include ring;
+
   cursor: pointer;
 
   &:hover {
     color: var(--colorLink);
   }
+}
+
+
+// Global typo
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  margin-bottom: 0;
+  font-weight: 500;
+}
+
+h1 {
+  font-size: $font-2xl;
+}
+
+h2 {
+  font-size: $font-xl;
+}
+
+h3 {
+  font-size: $font-l;
+}
+
+h4 {
+  font-size: $font-m;
+}
+
+p {
+  line-height: 1.25rem;
 }

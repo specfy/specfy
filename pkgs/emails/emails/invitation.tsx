@@ -14,33 +14,52 @@ import {
   Tailwind,
   Text,
 } from '@react-email/components';
+import type { Orgs } from '@specfy/api/src/models/orgs/model';
+import type { Users } from '@specfy/api/src/models/users/model';
 
 import { BASE_URL } from '../src/env';
 
-interface InvitationProps {
+export interface InvitationProps {
   email?: string;
   userImage?: string;
-  invitedByUsername?: string;
-  invitedByEmail?: string;
   orgName?: string;
   orgImage?: string;
   orgColor?: string;
   orgAcr?: string;
   inviteLink?: string;
+  invitedBy: Users;
+  org: Orgs;
 }
 
 export const Invitation = ({
   email = 'foobar@example.com',
   userImage,
-  invitedByUsername = 'John Doe',
-  invitedByEmail = 'john.doe@example.com',
-  orgName = 'Company',
-  orgImage,
-  orgColor = '5bb98c',
-  orgAcr = 'SB',
+  invitedBy = {
+    id: '',
+    avatarUrl: null,
+    name: 'John Doe',
+    email: 'john.doe@example.com',
+    githubLogin: null,
+    password: null,
+    emailVerifiedAt: new Date(),
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  org = {
+    id: '',
+    name: 'Acme',
+    acronym: 'AC',
+    avatarUrl: null,
+    color: 'amber',
+    flowId: null,
+    githubInstallationId: null,
+    isPersonal: false,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
   inviteLink = `${BASE_URL}/company/invite?token=`,
 }: InvitationProps) => {
-  const previewText = `Join ${orgName} on Specfy`;
+  const previewText = `Join ${org.name} on Specfy`;
 
   return (
     <Html>
@@ -60,20 +79,20 @@ export const Invitation = ({
                 />
               </Section>
               <Heading className="text-black text-[24px] font-normal text-center p-0 my-[30px] mx-0">
-                Join <strong>{orgName}</strong> on <strong>Specfy</strong>
+                Join <strong>{org.name}</strong> on <strong>Specfy</strong>
               </Heading>
               <Text className="text-black text-[14px] leading-[24px]">
                 Hello,
               </Text>
               <Text className="text-black text-[14px] leading-[24px]">
-                <strong>{invitedByUsername}</strong> (
+                <strong>{invitedBy.name}</strong> (
                 <Link
-                  href={`mailto:${invitedByEmail}`}
+                  href={`mailto:${invitedBy.email}`}
                   className="text-blue-600 no-underline"
                 >
-                  {invitedByEmail}
+                  {invitedBy.email}
                 </Link>
-                ) has invited you to the <strong>{orgName}</strong> org on{' '}
+                ) has invited you to the <strong>{org.name}</strong> org on{' '}
                 <strong>Specfy</strong>.
               </Text>
               <Section>
@@ -88,7 +107,7 @@ export const Invitation = ({
                       />
                     ) : (
                       <div
-                        className={`rounded-full w-[64px] h-[64px] bg-[#e9e8ea] flex items-center justify-center text-[#1a1523]`}
+                        className={`rounded-full w-[64px] h-[64px] bg-[#e9e8ea] text-center leading-[64px] text-[#1a1523]`}
                       >
                         You
                       </div>
@@ -103,18 +122,18 @@ export const Invitation = ({
                     />
                   </Column>
                   <Column align="left">
-                    {orgImage ? (
+                    {org.avatarUrl ? (
                       <Img
                         className="rounded-full"
-                        src={orgImage}
+                        src={org.avatarUrl}
                         width="64"
                         height="64"
                       />
                     ) : (
                       <div
-                        className={`rounded-[8px] w-[64px] h-[64px] bg-[#${orgColor}] flex items-center justify-center text-white`}
+                        className={`rounded-[8px] w-[64px] h-[64px] bg-[#b4dfc4] text-center leading-[64px] text-[#18794e]`}
                       >
-                        {orgAcr}
+                        {org.acronym}
                       </div>
                     )}
                   </Column>

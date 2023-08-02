@@ -1,6 +1,5 @@
 import type { FastifyPluginCallback } from 'fastify';
 
-import { prisma } from '../../../db/index.js';
 import { getRevision } from '../../../middlewares/getRevision.js';
 import { toApiRevision } from '../../../models/revisions/formatter.js';
 import { toApiUser } from '../../../models/users/formatter.js';
@@ -13,19 +12,12 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
     async function (req, res) {
       const rev = req.revision!;
 
-      const users = await prisma.typeHasUsers.findMany({
-        where: {
-          revisionId: rev.id,
-        },
-        include: { User: true },
-      });
-
       return res.status(200).send({
         data: {
-          ...toApiRevision(rev, users),
-          reviewers: users
-            .filter((user) => user.role === 'reviewer')
-            .map((u) => toApiUser(u.User)),
+          ...toApiRevision(rev),
+          reviewers: rev.TypeHasUsers.filter(
+            (user) => user.role === 'reviewer'
+          ).map((u) => toApiUser(u.User)),
         },
       });
     }

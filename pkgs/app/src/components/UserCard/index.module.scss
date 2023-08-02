@@ -1,9 +1,6 @@
 @import "../../styles/theme";
 
 .userCard {
-  display: flex;
-  gap: $p-l;
-
   &.small {
     font-size: $font;
   }

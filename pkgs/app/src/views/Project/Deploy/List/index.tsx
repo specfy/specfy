@@ -1,15 +1,16 @@
 import type { ApiProject, ListJobs } from '@specfy/api/src/types/api';
 import { IconChevronRight } from '@tabler/icons-react';
-import { Skeleton } from 'antd';
 import type React from 'react';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import Skeleton from 'react-loading-skeleton';
 import { Link } from 'react-router-dom';
 
 import { useListDeploys } from '../../../../api';
 import { titleSuffix } from '../../../../common/string';
 import { AvatarAuto } from '../../../../components/AvatarAuto';
 import { Container } from '../../../../components/Container';
+import { Empty } from '../../../../components/Empty';
 import { Flex } from '../../../../components/Flex';
 import { StatusTag } from '../../../../components/Job/StatusTag';
 import { Time } from '../../../../components/Time';
@@ -84,7 +85,22 @@ export const ProjectDeploysList: React.FC<{
           <h2>Deploys</h2>
         </div>
 
-        {!list && <Skeleton active title={false} />}
+        {!list && (
+          <div className={cls.list}>
+            {[1, 2, 3].map((i) => {
+              return (
+                <Flex
+                  key={i}
+                  className={cls.row}
+                  justify="space-between"
+                  align="center"
+                >
+                  <Skeleton width={200} />
+                </Flex>
+              );
+            })}
+          </div>
+        )}
 
         {list && (
           <div className={cls.list}>
@@ -93,6 +109,8 @@ export const ProjectDeploysList: React.FC<{
             })}
           </div>
         )}
+
+        {list && list.data.length <= 0 && <Empty />}
       </Container.Left2Third>
     </Container>
   );

@@ -1,6 +1,6 @@
+import * as Form from '@radix-ui/react-form';
 import type { ApiProject, FieldsErrors } from '@specfy/api/src/types/api';
 import { IconCirclesRelation } from '@tabler/icons-react';
-import { Typography, Input, Button, Modal, Form } from 'antd';
 import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
@@ -19,9 +19,14 @@ import { slugify, titleSuffix } from '../../../../common/string';
 import { Banner } from '../../../../components/Banner';
 import { CopyButton } from '../../../../components/Button/Copy';
 import { Card } from '../../../../components/Card';
+import * as Dialog from '../../../../components/Dialog';
 import { Flex } from '../../../../components/Flex';
+import { Button } from '../../../../components/Form/Button';
+import { Field } from '../../../../components/Form/Field';
+import { Input } from '../../../../components/Form/Input';
 import { GithubOrgSelect } from '../../../../components/Github/OrgSelect';
 import { GithubRepoSelect } from '../../../../components/Github/RepoSelect';
+import { Subdued } from '../../../../components/Text';
 import { useToast } from '../../../../hooks/useToast';
 import type { RouteProject } from '../../../../types/routes';
 
@@ -35,7 +40,6 @@ export const SettingsGeneral: React.FC<{
   const navigate = useNavigate();
   const { current: org } = useOrgStore();
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [waitToRead, setWaitToRead] = useState(true);
 
   // Edit
@@ -56,7 +60,8 @@ export const SettingsGeneral: React.FC<{
     return name !== proj.name || slug !== proj.slug;
   }, [name, slug]);
 
-  const handleRename = async () => {
+  const handleRename: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
     const res = await updateProject(params, { name, slug });
     if (isError(res)) {
       if (isValidationError(res)) {
@@ -77,13 +82,12 @@ export const SettingsGeneral: React.FC<{
   };
 
   // Delete modal
-  const showModal = () => {
-    setIsModalOpen(true);
-    setTimeout(() => setWaitToRead(false), 2000);
-  };
-  const cancelDelete = () => {
-    setIsModalOpen(false);
-    setWaitToRead(true);
+  const onOpenChange = (open: boolean) => {
+    if (open) {
+      setTimeout(() => setWaitToRead(false), 2000);
+    } else {
+      setWaitToRead(true);
+    }
   };
   const confirmDelete = async () => {
     await deleteProject(params);
@@ -93,13 +97,15 @@ export const SettingsGeneral: React.FC<{
   };
 
   // Github
-  const [repoId, setRepoId] = useState(proj.githubRepository);
+  const [repoId, setRepoId] = useState<string | undefined>(
+    proj.githubRepository ?? undefined
+  );
 
   const onLink = async () => {
     const res = await linkToGithubRepo({
       orgId: proj.orgId,
       projectId: proj.id,
-      repository: repoId,
+      repository: repoId || null,
     });
     if (isError(res)) {
       toast.add({ title: i18n.errorOccurred, status: 'error' });
@@ -151,52 +157,44 @@ export const SettingsGeneral: React.FC<{
 
       <div>
         <div>
-          <Typography.Title level={2}>General Settings</Typography.Title>
-          <Typography.Text type="secondary">
-            Manage your project general&apos;s settings
-          </Typography.Text>
+          <h2>General Settings</h2>
+          <Subdued>Manage your project general&apos;s settings</Subdued>
         </div>
       </div>
       <Card>
-        <Form layout="vertical" onFinish={handleRename}>
+        <Form.Root onSubmit={handleRename}>
           <Card.Content>
-            <Form.Item
-              label="Name"
-              help={errors.name?.message}
-              validateStatus={errors.name && 'error'}
-            >
+            <h3>Project Name</h3>
+            <Field name="name" label="Name" error={errors.name?.message}>
               <Input value={name} onChange={onName} />
-            </Form.Item>
-            <Form.Item
-              label="Slug"
-              help={errors.slug?.message}
-              validateStatus={errors.slug && 'error'}
-            >
+            </Field>
+            <Field name="slug" label="Slug" error={errors.slug?.message}>
               <Input
                 value={slug}
                 onChange={onSlug}
-                addonBefore={`https://app.specfy.io/${proj.orgId}/`}
+                before={`https://app.specfy.io/${proj.orgId}/`}
+                seamless
               />
-            </Form.Item>
+            </Field>
           </Card.Content>
 
           <Card.Actions>
             {nameChanged && (
-              <Button type="text" onClick={handleReset}>
+              <Button display="ghost" onClick={handleReset}>
                 reset
               </Button>
             )}
-            <Button type="primary" htmlType="submit" disabled={!nameChanged}>
+            <Button display="primary" type="submit" disabled={!nameChanged}>
               Rename
             </Button>
           </Card.Actions>
-        </Form>
+        </Form.Root>
       </Card>
 
       <Card>
-        <Form layout="vertical" onFinish={handleRename}>
+        <Form.Root onSubmit={(e) => e.preventDefault()}>
           <Card.Content>
-            <Typography.Title level={3}>Link to Github</Typography.Title>
+            <h3>Link to Github</h3>
             <p>
               Linking to a Github repository enables automatic deployment when
               you push to your repository.
@@ -215,11 +213,19 @@ export const SettingsGeneral: React.FC<{
               <Flex gap="l">
                 <GithubOrgSelect
                   onChange={() => null}
-                  defaultSelected={org!.githubInstallationId}
+                  defaultSelected={
+                    org!.githubInstallationId
+                      ? String(org!.githubInstallationId)
+                      : undefined
+                  }
                   disabled
                 />
                 <GithubRepoSelect
-                  defaultSelected={proj.githubRepository}
+                  value={
+                    proj.githubRepository
+                      ? String(proj.githubRepository)
+                      : undefined
+                  }
                   installationId={org!.githubInstallationId}
                   onChange={setRepoId}
                 />
@@ -228,12 +234,12 @@ export const SettingsGeneral: React.FC<{
           </Card.Content>
           <Card.Actions>
             {proj.githubRepository === repoId && repoId !== null ? (
-              <Button type="default" onClick={onUnlink} danger>
+              <Button display="default" onClick={onUnlink} danger>
                 Unlink
               </Button>
             ) : (
               <Button
-                type="primary"
+                display="primary"
                 disabled={proj.githubRepository === repoId}
                 onClick={onLink}
               >
@@ -241,13 +247,13 @@ export const SettingsGeneral: React.FC<{
               </Button>
             )}
           </Card.Actions>
-        </Form>
+        </Form.Root>
       </Card>
 
       <Card>
-        <Form layout="vertical" onFinish={handleRename}>
+        <Form.Root onSubmit={(e) => e.preventDefault()}>
           <Card.Content>
-            <Typography.Title level={3}>Keys</Typography.Title>
+            <h3>Keys</h3>
             <Flex gap="l" column align="flex-start">
               <div>
                 <div>Project ID</div>
@@ -255,7 +261,7 @@ export const SettingsGeneral: React.FC<{
                   readOnly
                   value={proj.id}
                   style={{ width: '350px' }}
-                  suffix={<CopyButton value={proj.id} />}
+                  after={<CopyButton value={proj.id} />}
                 />
               </div>
               <div>
@@ -264,9 +270,7 @@ export const SettingsGeneral: React.FC<{
                   readOnly
                   value={key || ''}
                   style={{ width: '350px' }}
-                  suffix={
-                    <CopyButton value={resKeys.data?.data[0].key || ''} />
-                  }
+                  after={<CopyButton value={resKeys.data?.data[0].key || ''} />}
                 />
               </div>
               {!IS_PROD && (
@@ -276,55 +280,56 @@ export const SettingsGeneral: React.FC<{
                     readOnly
                     value={manualCli}
                     style={{ width: '350px' }}
-                    suffix={<CopyButton value={manualCli || ''} />}
+                    after={<CopyButton value={manualCli || ''} />}
                   />
                 </div>
               )}
             </Flex>
           </Card.Content>
-        </Form>
+        </Form.Root>
       </Card>
 
       <Card padded>
         <div className={cls.actions}>
           <div>
-            <Typography.Title level={4}>Delete this project</Typography.Title>
-            <Typography.Text type="secondary">
-              Deleting a project can&apos;t be undone.
-            </Typography.Text>
+            <h4>Delete this project</h4>
+            <Subdued>Deleting a project can&apos;t be undone.</Subdued>
           </div>
-          <Button danger type="primary" onClick={showModal}>
-            Delete Project
-          </Button>
+
+          <Dialog.Dialog onOpenChange={onOpenChange}>
+            <Dialog.Trigger asChild>
+              <Button danger>Delete Project</Button>
+            </Dialog.Trigger>
+            <Dialog.Content>
+              <Dialog.Header>
+                <Dialog.Title>Delete this project?</Dialog.Title>
+                <Dialog.Description>
+                  Are you sure to delete this project? <br></br>This operation
+                  can&apos;t be undone.
+                </Dialog.Description>
+              </Dialog.Header>
+              <div></div>
+              <Dialog.Footer>
+                <Dialog.Close asChild>
+                  <Button key="back" display="ghost">
+                    cancel
+                  </Button>
+                </Dialog.Close>
+                <Button
+                  danger
+                  key="submit"
+                  display="primary"
+                  disabled={waitToRead}
+                  onClick={confirmDelete}
+                  loading={waitToRead}
+                >
+                  Delete Project
+                </Button>
+              </Dialog.Footer>
+            </Dialog.Content>
+          </Dialog.Dialog>
         </div>
       </Card>
-
-      <Modal
-        title="Delete this project?"
-        open={isModalOpen}
-        onOk={confirmDelete}
-        onCancel={cancelDelete}
-        footer={[
-          <Button key="back" type="text" onClick={cancelDelete}>
-            cancel
-          </Button>,
-          <Button
-            danger
-            key="submit"
-            type="primary"
-            disabled={waitToRead}
-            onClick={confirmDelete}
-            loading={waitToRead}
-          >
-            Delete Project
-          </Button>,
-        ]}
-      >
-        <p>
-          Are you sure to delete this project? <br></br>This action can&apos;t
-          be undone.
-        </p>
-      </Modal>
     </>
   );
 };

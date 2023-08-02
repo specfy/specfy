@@ -30,7 +30,12 @@ jobs:
       GITHUB_CLIENT_SECRET: ""
       GITHUB_CLIENT_PKEY: "__empty__"
       GITHUB_WEBHOOKS_SECRET: "secret"
-      APP_HOSTNAME: "localhost:3000"
+      APP_HOSTNAME: "http://localhost:3000"
+      API_HOSTNAME: "http://localhost:3000"
+      DEFAULT_ACCOUNT: ""
+      GIVE_DEFAULT_PERMS_TO_EMAIL: ""
+      RESEND_KEY: "re_"
+
 
 
     steps:
@@ -57,6 +62,12 @@ jobs:
       - name: Migrate
         run: cd pkgs/api/ && npm run migrate
 
+      - name: Build Email
+        run: cd pkgs/emails/ && npm run build
+
+      - name: Build API
+        run: cd pkgs/api/ && npm run test:build
+
       - name: Run Test API
         run: cd pkgs/api/ && npm run test
 
@@ -69,8 +80,6 @@ jobs:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./pkgs/api/coverage/cobertura-coverage.xml,./pkgs/app/coverage/cobertura-coverage.xml
 
-      - name: Build API
-        run: cd pkgs/api/ && npm run test:build
 
       - name: Build APP
         run: cd pkgs/app/ && npm run build

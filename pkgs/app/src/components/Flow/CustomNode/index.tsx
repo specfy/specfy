@@ -2,7 +2,6 @@ import type {
   ComputedNode,
   NodeData,
 } from '@specfy/api/src/models/flows/types';
-import { Tooltip } from 'antd';
 import classNames from 'classnames';
 import type { ChangeEventHandler, KeyboardEventHandler } from 'react';
 import { useMemo, useEffect, memo, useRef, useState } from 'react';
@@ -17,6 +16,7 @@ import {
 } from 'reactflow';
 
 import { ComponentIcon } from '../../Component/Icon';
+import { TooltipFull } from '../../Tooltip';
 import { TechPopover } from '../TechPopover';
 import type { OnNodesChangeSuper } from '../helpers';
 
@@ -277,13 +277,13 @@ export const PreviewNode: React.FC<{
         ) : (
           <ComponentIcon data={node.data} large />
         )}
-        <Tooltip
-          title={
+        <TooltipFull
+          msg={
             editable &&
             node.data.type === 'project' &&
             "Can't edit Project name"
           }
-          placement="top"
+          side="top"
         >
           <input
             ref={input}
@@ -294,7 +294,7 @@ export const PreviewNode: React.FC<{
             onBlur={onBlur}
             onKeyDown={onKeyDown}
           />
-        </Tooltip>
+        </TooltipFull>
       </div>
     </div>
   );

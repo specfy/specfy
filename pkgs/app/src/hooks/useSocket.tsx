@@ -1,9 +1,9 @@
 import type { ApiMe } from '@specfy/api/src/types/api';
-import { Button } from 'antd';
 import { createContext, useEffect, useMemo } from 'react';
 
 import { qcli, refreshProject } from '../common/query';
 import { socket } from '../common/socket';
+import { Button } from '../components/Form/Button';
 
 import { useToast } from './useToast';
 
@@ -57,7 +57,7 @@ export const SocketProvider: React.FC<{
           closable: false,
           action: (
             <Button
-              size="small"
+              size="s"
               onClick={() => refreshProject(job.orgId, job.projectId!, true)}
             >
               Refresh

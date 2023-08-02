@@ -1,19 +1,6 @@
 @import "../../../styles/theme";
 
 .select {
+  justify-content: space-between;
   width: 250px;
-  height: 40px;
-  margin-bottom: $p-xl;
-}
-
-.install {
-  margin-top: $p-s;
-  padding-top: $p-s;
-  border-top: 1px solid var(--border2);
-}
-
-.option {
-  display: flex;
-  gap: $p-m;
-  align-items: center;
 }

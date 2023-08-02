@@ -1,9 +1,10 @@
+import * as Form from '@radix-ui/react-form';
 import type { ApiOrg } from '@specfy/api/src/types/api';
 import { IconCirclesRelation } from '@tabler/icons-react';
-import { Typography, Input, Button, Modal, Form } from 'antd';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
+import { useLocalStorage } from 'react-use';
 
 import { deleteOrg, updateOrg, linkToGithubOrg } from '../../../../api';
 import { isError } from '../../../../api/helpers';
@@ -11,7 +12,12 @@ import { i18n } from '../../../../common/i18n';
 import { titleSuffix } from '../../../../common/string';
 import { Banner } from '../../../../components/Banner';
 import { Card } from '../../../../components/Card';
+import * as Dialog from '../../../../components/Dialog';
+import { Button } from '../../../../components/Form/Button';
+import { Field } from '../../../../components/Form/Field';
+import { Input } from '../../../../components/Form/Input';
 import { GithubOrgSelect } from '../../../../components/Github/OrgSelect';
+import { Subdued } from '../../../../components/Text';
 import { useToast } from '../../../../hooks/useToast';
 import type { RouteOrg } from '../../../../types/routes';
 
@@ -23,8 +29,8 @@ export const SettingsGeneral: React.FC<{
 }> = ({ org, params }) => {
   const toast = useToast();
   const navigate = useNavigate();
+  const [, setLastOrg] = useLocalStorage<string>('lastOrg');
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [waitToRead, setWaitToRead] = useState(true);
 
   // Edit
@@ -34,7 +40,8 @@ export const SettingsGeneral: React.FC<{
   };
   const nameChanged = name !== org.name;
 
-  const handleRename = async () => {
+  const handleRename: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
     const res = await updateOrg(params, { name: name! });
     if (isError(res)) {
       toast.add({ title: i18n.errorOccurred, status: 'error' });
@@ -53,13 +60,12 @@ export const SettingsGeneral: React.FC<{
   }, [org.name]);
 
   // Delete modal
-  const showModal = () => {
-    setIsModalOpen(true);
-    setTimeout(() => setWaitToRead(false), 2000);
-  };
-  const cancelDelete = () => {
-    setIsModalOpen(false);
-    setWaitToRead(true);
+  const onOpenChange = (open: boolean) => {
+    if (open) {
+      setTimeout(() => setWaitToRead(false), 2000);
+    } else {
+      setWaitToRead(true);
+    }
   };
 
   const confirmDelete = async () => {
@@ -70,6 +76,7 @@ export const SettingsGeneral: React.FC<{
     }
 
     toast.add({ title: 'Organization deleted', status: 'success' });
+    setLastOrg(undefined);
     navigate(`/`);
   };
 
@@ -107,9 +114,7 @@ export const SettingsGeneral: React.FC<{
       <div>
         <h2>General Settings</h2>
 
-        <Typography.Text type="secondary">
-          Manage your organization general&apos;s settings
-        </Typography.Text>
+        <Subdued>Manage your organization general&apos;s settings</Subdued>
 
         {org.isPersonal && (
           <Banner type="info">
@@ -119,43 +124,40 @@ export const SettingsGeneral: React.FC<{
       </div>
 
       <Card>
-        <Form layout="vertical" onFinish={handleRename}>
+        <Form.Root onSubmit={handleRename}>
           <Card.Content>
-            <Typography.Title level={3}>Organization Name</Typography.Title>
+            <h3>Organization Name</h3>
             <br />
-            <Form.Item
-              extra={
-                <div className={cls.desc}>
-                  The organization is accessible at{' '}
-                  <em>
-                    https://app.specfy.io/<strong>{org.id}</strong>
-                  </em>
-                </div>
-              }
-            >
+            <Field name="name">
               <Input value={name} onChange={onName} disabled={org.isPersonal} />
-            </Form.Item>
+            </Field>
+            <Subdued>
+              The organization is accessible at{' '}
+              <em>
+                https://app.specfy.io/<strong>{org.id}</strong>
+              </em>
+            </Subdued>
           </Card.Content>
 
           {!org.isPersonal && (
             <Card.Actions>
               {nameChanged && (
-                <Button type="text" onClick={handleReset}>
+                <Button display="ghost" onClick={handleReset}>
                   reset
                 </Button>
               )}
-              <Button type="primary" htmlType="submit" disabled={!nameChanged}>
+              <Button display="primary" type="submit" disabled={!nameChanged}>
                 Rename
               </Button>
             </Card.Actions>
           )}
-        </Form>
+        </Form.Root>
       </Card>
 
       <Card>
-        <Form layout="vertical" onFinish={handleRename}>
+        <Form.Root onSubmit={(e) => e.preventDefault()}>
           <Card.Content>
-            <Typography.Title level={3}>Link to Github</Typography.Title>
+            <h3>Link to Github</h3>
             <p>
               Linking to a Github organization will sync the avatar and enable
               automatic repository discovery.
@@ -163,21 +165,24 @@ export const SettingsGeneral: React.FC<{
 
             <GithubOrgSelect
               key={org.githubInstallationId}
-              emptyOption={true}
-              defaultSelected={org.githubInstallationId}
+              defaultSelected={
+                org.githubInstallationId ? String(org.githubInstallationId) : ''
+              }
               onChange={(sel) => {
-                setInstallId(sel);
+                if (sel) {
+                  setInstallId(Number(sel));
+                }
               }}
             />
           </Card.Content>
           <Card.Actions>
             {org.githubInstallationId === installId && installId !== null ? (
-              <Button type="default" onClick={onUnlink} danger>
+              <Button onClick={onUnlink} danger>
                 Unlink
               </Button>
             ) : (
               <Button
-                type="primary"
+                display="primary"
                 disabled={org.githubInstallationId === installId}
                 onClick={onLink}
               >
@@ -185,53 +190,52 @@ export const SettingsGeneral: React.FC<{
               </Button>
             )}
           </Card.Actions>
-        </Form>
+        </Form.Root>
       </Card>
 
       {!org.isPersonal && (
         <Card padded>
           <div className={cls.actions}>
             <div>
-              <Typography.Title level={4}>
-                Delete this organization
-              </Typography.Title>
-              <Typography.Text type="secondary">
-                This operation can&apos;t be undone.
-              </Typography.Text>
+              <h4>Delete this organization</h4>
+              <Subdued>This operation can&apos;t be undone.</Subdued>
             </div>
-            <Button danger type="default" onClick={showModal}>
-              Delete Organization
-            </Button>
+
+            <Dialog.Dialog onOpenChange={onOpenChange}>
+              <Dialog.Trigger asChild>
+                <Button danger>Delete Organization</Button>
+              </Dialog.Trigger>
+              <Dialog.Content>
+                <Dialog.Header>
+                  <Dialog.Title>Delete this organization?</Dialog.Title>
+                  <Dialog.Description>
+                    Are you sure to delete this organization? <br></br>This
+                    operation can&apos;t be undone.
+                  </Dialog.Description>
+                </Dialog.Header>
+                <div></div>
+                <Dialog.Footer>
+                  <Dialog.Close asChild>
+                    <Button key="back" display="ghost">
+                      cancel
+                    </Button>
+                  </Dialog.Close>
+                  <Button
+                    danger
+                    key="submit"
+                    display="primary"
+                    disabled={waitToRead}
+                    onClick={confirmDelete}
+                    loading={waitToRead}
+                  >
+                    Delete Organization
+                  </Button>
+                </Dialog.Footer>
+              </Dialog.Content>
+            </Dialog.Dialog>
           </div>
         </Card>
       )}
-
-      <Modal
-        title="Delete this organization?"
-        open={isModalOpen}
-        onOk={confirmDelete}
-        onCancel={cancelDelete}
-        footer={[
-          <Button key="back" type="text" onClick={cancelDelete}>
-            cancel
-          </Button>,
-          <Button
-            danger
-            key="submit"
-            type="primary"
-            disabled={waitToRead}
-            onClick={confirmDelete}
-            loading={waitToRead}
-          >
-            Delete Organization
-          </Button>,
-        ]}
-      >
-        <p>
-          Are you sure to delete this organization? <br></br>This operation
-          can&apos;t be undone.
-        </p>
-      </Modal>
     </>
   );
 };

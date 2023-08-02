@@ -1,10 +1,10 @@
 import type { NodeViewProps } from '@tiptap/core';
 import { NodeViewContent, NodeViewWrapper } from '@tiptap/react';
-import { Select } from 'antd';
 import { useMemo, useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
 
 import { Banner } from '../../../Banner';
+import { SelectFull } from '../../../Form/Select';
 import { EditorMenu } from '../../Menu';
 
 export const BannerView: React.FC<NodeViewProps> = ({
@@ -16,7 +16,7 @@ export const BannerView: React.FC<NodeViewProps> = ({
   const [show, setShow] = useState(false);
 
   useClickAway(ref, (e) => {
-    if ((e.target as HTMLElement).closest('.ant-select-dropdown')) {
+    if ((e.target as HTMLElement).closest('role=["listbox"]')) {
       return;
     }
 
@@ -40,12 +40,11 @@ export const BannerView: React.FC<NodeViewProps> = ({
   return (
     <NodeViewWrapper onMouseDown={() => setShow(true)} ref={ref}>
       <EditorMenu show={show}>
-        <Select
+        <SelectFull
           options={options}
-          size="small"
-          style={{ width: '100px' }}
+          size="s"
           value={node.attrs.type}
-          onChange={onChange}
+          onValueChange={onChange}
         />
       </EditorMenu>
       <Banner type={node.attrs.type}>

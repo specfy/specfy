@@ -9,7 +9,6 @@ import {
   IconExclamationCircle,
   IconX,
 } from '@tabler/icons-react';
-import { Button } from 'antd';
 import classNames from 'classnames';
 import {
   createContext,
@@ -22,6 +21,7 @@ import { Link } from 'react-router-dom';
 import type { RequireAtLeastOne } from 'type-fest';
 
 import { Flex } from '../Flex';
+import { Button } from '../Form/Button';
 import { Loading } from '../Loading';
 
 import cls from './index.module.scss';
@@ -99,7 +99,7 @@ export const Toast: React.FC<
             {link && (
               <div className={cls.show}>
                 <Link to={link} onClick={close}>
-                  <Button size="small">Show</Button>
+                  <Button size="s">Show</Button>
                 </Link>
               </div>
             )}

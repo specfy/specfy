@@ -1,6 +1,7 @@
 import { IconCheck, IconCopy } from '@tabler/icons-react';
-import { Button } from 'antd';
 import { useCallback, useState } from 'react';
+
+import { Button } from '../../Form/Button';
 
 export const CopyButton: React.FC<{ value: string }> = ({ value }) => {
   const [copied, setCopied] = useState(false);
@@ -22,10 +23,8 @@ export const CopyButton: React.FC<{ value: string }> = ({ value }) => {
   }, [value]);
 
   return (
-    <Button
-      type="ghost"
-      icon={copied ? <IconCheck /> : <IconCopy />}
-      onClick={onClick}
-    />
+    <Button display="ghost" onClick={onClick}>
+      {copied ? <IconCheck /> : <IconCopy />}
+    </Button>
   );
 };

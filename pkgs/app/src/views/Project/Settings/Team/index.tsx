@@ -1,5 +1,4 @@
 import type { ApiProject, ApiPerm, ApiUser } from '@specfy/api/src/types/api';
-import { Typography, Input } from 'antd';
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useDebounce } from 'react-use';
@@ -8,7 +7,9 @@ import { useListPermsProject, useListUser } from '../../../../api';
 import { titleSuffix } from '../../../../common/string';
 import { Card } from '../../../../components/Card';
 import { Empty } from '../../../../components/Empty';
+import { Input } from '../../../../components/Form/Input';
 import { Row } from '../../../../components/Team/Row';
+import { Subdued } from '../../../../components/Text';
 import { useAuth } from '../../../../hooks/useAuth';
 
 import cls from './index.module.scss';
@@ -83,25 +84,21 @@ export const SettingsTeam: React.FC<{
       <Helmet title={`Team - ${proj.name} ${titleSuffix}`} />
       <div className={cls.header}>
         <div>
-          <Typography.Title level={2}>Team members</Typography.Title>
-          <Typography.Text type="secondary">
-            Invite or manage your project&apos;s members.
-          </Typography.Text>
+          <h2>Team members</h2>
+          <Subdued>Invite or manage your project&apos;s members.</Subdued>
         </div>
 
         <Input
           placeholder="Search or add user..."
           className={cls.search}
           onChange={(e) => setSearch(e.target.value)}
-        ></Input>
+        />
       </div>
       <Card>
         {!searchDebounced && (
           <div className={cls.lines}>
             <div>
-              <Typography.Title level={5} className={cls.title}>
-                Owners
-              </Typography.Title>
+              <h5 className={cls.title}>Owners</h5>
               {owners.map((perm) => {
                 return (
                   <Row
@@ -121,9 +118,7 @@ export const SettingsTeam: React.FC<{
 
             {false && (
               <div>
-                <Typography.Title level={5} className={cls.title}>
-                  Reviewers
-                </Typography.Title>
+                <h5 className={cls.title}>Reviewers</h5>
                 {reviewers.map((perm) => {
                   return (
                     <Row
@@ -143,9 +138,7 @@ export const SettingsTeam: React.FC<{
             )}
 
             <div>
-              <Typography.Title level={5} className={cls.title}>
-                Contributors
-              </Typography.Title>
+              <h5 className={cls.title}>Contributors</h5>
               {contributors.map((perm) => {
                 return (
                   <Row
@@ -164,9 +157,7 @@ export const SettingsTeam: React.FC<{
             </div>
 
             <div>
-              <Typography.Title level={5} className={cls.title}>
-                Viewers
-              </Typography.Title>
+              <h5 className={cls.title}>Viewers</h5>
               {viewers.map((perm) => {
                 return (
                   <Row

@@ -4,7 +4,7 @@ import path from 'node:path';
 import { $, execa } from 'execa';
 import { Octokit } from 'octokit';
 
-import { dirname, env, isProd } from '../../../common/env.js';
+import { dirname, envs, isProd } from '../../../common/env.js';
 import { nanoid } from '../../../common/id.js';
 import { prisma } from '../../../db/index.js';
 import type { JobWithOrgProject } from '../../../models/jobs/type.js';
@@ -39,7 +39,7 @@ export class JobDeploy extends Job {
 
         const mark = this.getMark();
         const [owner, repo] = job.Project!.githubRepository!.split('/');
-        const projUrl = `${env('APP_HOSTNAME')!}/${job.orgId}/${
+        const projUrl = `${envs.APP_HOSTNAME}/${job.orgId}/${
           job.Project!.slug
         }`;
         await authClient.rest.repos.createDeploymentStatus({
@@ -118,9 +118,7 @@ export class JobDeploy extends Job {
         return;
       }
 
-      const projUrl = `${env('APP_HOSTNAME')!}/${job.orgId}/${
-        job.Project!.slug
-      }`;
+      const projUrl = `${envs.APP_HOSTNAME}/${job.orgId}/${job.Project!.slug}`;
       await authClient.rest.repos.createDeploymentStatus({
         owner,
         repo,
@@ -202,18 +200,18 @@ export class JobDeploy extends Job {
         !projConfig.stack.enabled ? '--no-stack' : '',
         config.autoLayout ? '--auto-layout' : '',
         this.folderName,
-      ];
-      const envs = {
+      ].filter(Boolean);
+      const env = {
         // Bug in node-fetch that do not resolve localhost correctly
         SPECFY_HOSTNAME: !isProd
-          ? env('API_HOSTNAME')?.replace('localhost', '127.0.0.1')
+          ? envs.API_HOSTNAME?.replace('localhost', '127.0.0.1')
           : undefined,
       };
 
       // TODO: redact secret
-      this.l.info('Executing', JSON.stringify({ args, envs }));
+      this.l.info('Executing', JSON.stringify({ args, env }));
 
-      const res = await execa('node', args, { env: envs });
+      const res = await execa('node', args, { env });
       this.l.info('Stdout', res.stdout);
 
       if (res.exitCode !== 0) {

@@ -1,4 +1,3 @@
-import { Layout } from 'antd';
 import classNames from 'classnames';
 import { useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
@@ -36,11 +35,11 @@ export const AuthLayout: React.FC<{ children?: React.ReactNode }> = ({
   }
 
   return (
-    <Layout className={cls.app}>
+    <div className={cls.app}>
       <SocketProvider user={auth.user}>
         <LayoutHeader></LayoutHeader>
-        <Layout.Content>{children ? children : <Outlet />}</Layout.Content>
+        <div>{children ? children : <Outlet />}</div>
       </SocketProvider>
-    </Layout>
+    </div>
   );
 };

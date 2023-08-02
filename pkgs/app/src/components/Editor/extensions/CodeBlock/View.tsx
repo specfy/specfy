@@ -1,6 +1,5 @@
 import type { NodeViewProps } from '@tiptap/core';
 import { NodeViewContent, NodeViewWrapper } from '@tiptap/react';
-import { Select } from 'antd';
 import classnames from 'classnames';
 import { highlight, languages } from 'prismjs';
 import { useMemo, useRef, useState } from 'react';
@@ -12,6 +11,7 @@ import 'prismjs/components/prism-css';
 import 'prismjs/components/prism-bash';
 import 'prismjs/themes/prism.css';
 
+import { SelectFull } from '../../../Form/Select';
 import { EditorMenu } from '../../Menu';
 
 import cls from './index.module.scss';
@@ -35,7 +35,7 @@ export const CodeBlockView: React.FC<NodeViewProps> = ({
   );
 
   useClickAway(ref, (e) => {
-    if ((e.target as HTMLElement).closest('.ant-select-dropdown')) {
+    if ((e.target as HTMLElement).closest('role=["listbox"]')) {
       return;
     }
 
@@ -63,12 +63,11 @@ export const CodeBlockView: React.FC<NodeViewProps> = ({
     <NodeViewWrapper onMouseDown={() => setShow(true)} ref={ref}>
       <div className={cls.wrapper}>
         <EditorMenu show={show}>
-          <Select
+          <SelectFull
             options={options}
-            size="small"
-            style={{ width: '100px' }}
+            size="s"
             value={type}
-            onChange={onChange}
+            onValueChange={onChange}
           />
         </EditorMenu>
         <div className={cls.edit} spellCheck="false">

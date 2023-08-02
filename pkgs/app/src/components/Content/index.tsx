@@ -4,7 +4,6 @@ import type {
   MarkDiff,
 } from '@specfy/api/src/types/api';
 import { IconArrowBack } from '@tabler/icons-react';
-import { Checkbox } from 'antd';
 import classnames from 'classnames';
 import { useMemo, useState } from 'react';
 import { Diff, Hunk, tokenize, markEdits } from 'react-diff-view';
@@ -17,7 +16,8 @@ import type { Payload } from '../../common/content';
 import { map } from '../../common/content';
 import { slugify } from '../../common/string';
 import { Banner } from '../Banner';
-import clsDiff from '../DiffCard/index.module.scss';
+import { Checkbox } from '../Form/Checkbox';
+import clsDiff from '../Revision/DiffCard/index.module.scss';
 
 import { ContentBlockDocument } from './BlockDocument';
 import { ContentBlockStep } from './BlockStep';
@@ -188,7 +188,8 @@ export const ContentBlock: React.FC<{
   else if (block.type === 'taskItem') {
     return (
       <li className={stl}>
-        <Checkbox checked={block.attrs.checked}>{map(block, pl)}</Checkbox>
+        <Checkbox checked={block.attrs.checked} />
+        {map(block, pl)}
       </li>
     );
   }
@@ -277,7 +278,7 @@ export const ContentBlock: React.FC<{
   // Banner
   else if (block.type === 'banner') {
     return (
-      <div className={stl}>
+      <div className={classnames(stl, cls.mb)}>
         <Banner type={block.attrs.type}>{map(block, pl)}</Banner>
       </div>
     );
@@ -320,6 +321,12 @@ export const ContentBlock: React.FC<{
   return <div>unsupported block &quot;{JSON.stringify(block)}&quot;</div>;
 };
 
+export const Presentation: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  return <div className={cls.content}>{children}</div>;
+};
+
 export const ContentDoc: React.FC<{
   doc: BlockLevelZero;
   id?: string;
@@ -338,10 +345,10 @@ export const ContentDoc: React.FC<{
   }
 
   return (
-    <>
+    <Presentation>
       {doc.content.map((blk, i) => {
         return <ContentBlock block={blk} key={i} pl={payload} />;
       })}
-    </>
+    </Presentation>
   );
 };

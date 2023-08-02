@@ -1,6 +1,4 @@
 @import "./theme";
-@import "./radix/dropdown";
-@import "./radix/navigation";
 @import "./radix/popover";
 
 
@@ -57,74 +55,4 @@
 .rx_tabsContent {
   flex-grow: 1;
   outline: none;
-}
-
-
-
-
-
-// --- Select
-.rx_selectTrigger {
-  display: inline-flex;
-  gap: 5px;
-  align-items: center;
-  justify-content: space-between;
-
-  min-width: 100px;
-  height: 40px;
-  padding: 0 $p-2xl;
-
-  color: var(--text);
-
-  background-color: white;
-  border: 1px solid var(--border2);
-  border-radius: $border-radius-s;
-
-  &[data-placeholder] {
-    color: var(--violet9);
-  }
-}
-
-.rx_selectIcon {
-  color: var(--text);
-}
-
-.rx_selectContent {
-  overflow: hidden;
-  background-color: white;
-  border-radius: 6px;
-  box-shadow: 0 10px 38px -10px rgb(22 23 24 / 35%), 0 10px 20px -15px rgb(22 23 24 / 20%);
-}
-
-.rx_selectViewport {
-  padding: 5px;
-}
-
-.rx_selectItem {
-  user-select: none;
-
-  position: relative;
-
-  display: flex;
-  align-items: center;
-
-  height: 25px;
-  padding: 0 35px 0 25px;
-
-  font-size: 13px;
-  line-height: 1;
-  color: var(--text);
-
-  border-radius: 3px;
-
-  &[data-disabled] {
-    pointer-events: none;
-    color: var(--textDisabled);
-  }
-
-  &[data-highlighted] {
-    color: var(--text);
-    background-color: var(--bg3);
-    outline: none;
-  }
 }
