@@ -102,7 +102,7 @@ export const LayoutHeader: React.FC = () => {
               <Dropdown.Separator />
               <Dropdown.Group>
                 <Dropdown.Item asChild>
-                  <Link to="/organizations/new'" className={cls.org}>
+                  <Link to="/organizations/new" className={cls.org}>
                     <IconPlus size="1em" />
                     Create organization
                   </Link>

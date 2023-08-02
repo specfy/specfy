@@ -42,10 +42,12 @@ ARG git_hash
 ENV GIT_HASH ${git_hash:-dev}
 ENV NODE_ENV=production
 
-# Build API
+# Build
 RUN true \
   && cd pkgs/api \
-  && npm run prod:build
+  && npm run prod:build \
+  && cd .. && cd emails \
+  && npm run build
 
 # Clean src
 RUN true \

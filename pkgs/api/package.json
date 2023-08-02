@@ -2,7 +2,7 @@
   "name": "@specfy/api",
   "version": "0.0.1",
   "description": "",
-  "main": "src/app.js",
+  "main": "src/app.ts",
   "type": "module",
   "scripts": {
     "--dev": "fastify start --logging-module='build/logger.js' -o -w -P build/app.js",

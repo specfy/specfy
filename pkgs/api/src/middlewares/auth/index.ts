@@ -3,7 +3,7 @@ import fastifySession from '@fastify/secure-session';
 import type { Users } from '@prisma/client';
 import type { FastifyInstance } from 'fastify';
 
-import { env } from '../../common/env.js';
+import { envs } from '../../common/env.js';
 import { unauthorized } from '../../common/errors.js';
 import { prisma } from '../../db/index.js';
 
@@ -21,7 +21,7 @@ const ALLOW_GUEST = [
   '/0/auth/local',
   '/0/github/webhooks',
 ];
-const COOKIE_SECRET = Buffer.from(env('COOKIE_SECRET')!, 'hex');
+const COOKIE_SECRET = Buffer.from(envs.COOKIE_SECRET, 'hex');
 
 export const fastifyPassport = new Authenticator();
 
@@ -45,10 +45,10 @@ export async function registerAuth(f: FastifyInstance) {
   f.addHook('preValidation', async (req) => {
     let id = req.session.get('passport')?.id;
 
-    if (!id && env('DEFAULT_ACCOUNT')) {
+    if (!id && envs.DEFAULT_ACCOUNT) {
       // In dev we can auto-load the default user
       const tmp = await prisma.users.findUnique({
-        where: { email: env('DEFAULT_ACCOUNT')! },
+        where: { email: envs.DEFAULT_ACCOUNT },
       });
       if (!tmp) {
         throw new Error('Missing default account');
@@ -83,7 +83,7 @@ export async function registerAuth(f: FastifyInstance) {
   registerLocal(f, fastifyPassport);
 
   // GITHUB OAUTH
-  if (env('GITHUB_CLIENT_ID')) {
+  if (envs.GITHUB_CLIENT_ID) {
     registerGithub(fastifyPassport);
   }
 

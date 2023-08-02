@@ -1,4 +1,4 @@
-import { env } from '../../common/env.js';
+import { envs } from '../../common/env.js';
 import type { ApiRevision } from '../../types/api/index.js';
 import { toApiUser } from '../users/formatter.js';
 
@@ -18,9 +18,7 @@ export function toApiRevision(rev: RevisionWithProject): ApiRevision {
     authors: rev.TypeHasUsers.filter((user) => user.role === 'author').map(
       (u) => toApiUser(u.User)
     ),
-    url: `${env('APP_HOSTNAME')}/${rev.orgId}/${rev.Project.slug}/revisions/${
-      rev.id
-    }`,
+    url: `${envs.APP_HOSTNAME}/${rev.orgId}/${rev.Project.slug}/revisions/${rev.id}`,
     createdAt: rev.createdAt.toISOString(),
     updatedAt: rev.updatedAt.toISOString(),
     mergedAt: rev.mergedAt ? rev.mergedAt.toISOString() : null,

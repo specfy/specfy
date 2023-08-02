@@ -24,15 +24,18 @@ export const TeamInvite: React.FC<{
   const [email, setEmail] = useState<string>('');
   const [role, setRole] = useState<ApiPerm['role']>('viewer');
   const [errors, setErrors] = useState<FieldsErrors>({});
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleInvite = async (e: any) => {
     e.preventDefault();
+    setLoading(true);
 
     const res = await createInvitation({
       email,
       role,
       orgId: org.id,
     });
+    setLoading(false);
     if (isError(res)) {
       if (isValidationError(res)) {
         setErrors(res.error.fields);
@@ -77,7 +80,7 @@ export const TeamInvite: React.FC<{
         </Form.Root>
       </Card.Content>
       <Card.Actions>
-        <Button onClick={handleInvite} display="primary">
+        <Button onClick={handleInvite} display="primary" loading={loading}>
           Invite
         </Button>
       </Card.Actions>

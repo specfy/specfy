@@ -1,11 +1,14 @@
 import type { Authenticator } from '@fastify/passport';
 import type { Users } from '@prisma/client';
+import { sendWelcome } from '@specfy/emails';
 import { Strategy as GithubStrategy } from 'passport-github2';
 
-import { env } from '../../common/env.js';
+import { resend } from '../../common/emails.js';
+import { envs } from '../../common/env.js';
 import { nanoid } from '../../common/id.js';
 import { slugify } from '../../common/string.js';
 import { prisma } from '../../db/index.js';
+import { logger } from '../../logger.js';
 import { createOrg, createUserActivity } from '../../models/index.js';
 import type { GithubAuth } from '../../types/github.js';
 
@@ -16,9 +19,9 @@ const GITHUB_SCOPES = ['user:email', 'repo'];
 export function registerGithub(passport: Authenticator) {
   const reg = new GithubStrategy(
     {
-      clientID: env('GITHUB_CLIENT_ID')!,
-      clientSecret: env('GITHUB_CLIENT_SECRET')!,
-      callbackURL: `${env('API_HOSTNAME')}/0/auth/github/cb`,
+      clientID: envs.GITHUB_CLIENT_ID!,
+      clientSecret: envs.GITHUB_CLIENT_SECRET,
+      callbackURL: `${envs.API_HOSTNAME}/0/auth/github/cb`,
       scope: GITHUB_SCOPES,
       passReqToCallback: true,
     },
@@ -54,7 +57,7 @@ export function registerGithub(passport: Authenticator) {
             data: {
               avatarUrl,
               githubLogin: profile.username,
-              name: profile.displayName || profile.username,
+              name: displayName,
             },
             where: { id: user.id },
           });
@@ -77,7 +80,7 @@ export function registerGithub(passport: Authenticator) {
         user = await tx.users.create({
           data: {
             id: nanoid(),
-            name: profile.displayName || profile.username,
+            name: displayName,
             email,
             emailVerifiedAt: new Date(),
             avatarUrl,
@@ -109,6 +112,17 @@ export function registerGithub(passport: Authenticator) {
           isPersonal: true,
         });
       });
+
+      logger.info('Sending email', { to: email, type: 'welcome' });
+      await sendWelcome(
+        resend,
+        {
+          from: 'Specfy <support@app.specfy.io>',
+          subject: 'Welcome to Specfy',
+          to: email,
+        },
+        { email, name: displayName }
+      );
 
       done(null, user);
     }

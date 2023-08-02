@@ -1,6 +1,6 @@
 import type { FastifyPluginCallback } from 'fastify';
 
-import { env } from '../../../common/env.js';
+import { envs } from '../../../common/env.js';
 import { fastifyPassport } from '../../../middlewares/auth/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 
@@ -26,16 +26,14 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         <script>
           document.addEventListener("DOMContentLoaded", function() {
             //JSON data for message
-            window.opener.postMessage("installation.done", "${env(
-              'APP_HOSTNAME'
-            )}");
+            window.opener.postMessage("installation.done", "${envs.APP_HOSTNAME}");
           });
         </script>
       </body>`);
         return;
       }
 
-      return res.redirect(env('APP_HOSTNAME')!);
+      return res.redirect(envs.APP_HOSTNAME);
     }
   );
   done();
