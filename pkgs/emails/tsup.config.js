@@ -1,6 +1,5 @@
 import { defineConfig } from 'tsup';
-export default defineConfig((options) => {
-  const isProd = options.minify;
+export default defineConfig(() => {
   return {
     entry: ['./src/index.tsx'],
     format: ['esm'],
