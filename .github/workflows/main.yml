@@ -34,7 +34,7 @@ jobs:
       API_HOSTNAME: "http://localhost:3000"
       DEFAULT_ACCOUNT: ""
       GIVE_DEFAULT_PERMS_TO_EMAIL: ""
-      RESEND_KEY: ""
+      RESEND_KEY: "re_"
 
 
 
