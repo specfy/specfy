@@ -37,7 +37,7 @@ export const Welcome: React.FC<WelcomeProps> = ({
             <Container className="border border-solid border-[#eaeaea] rounded my-[40px] p-[32px]">
               <Section className="mt-[12px]">
                 <Img
-                  src={`${BASE_URL}/public/logo.png`}
+                  src={`${BASE_URL}/logo.png`}
                   width="40"
                   height="40"
                   alt="Specfy"

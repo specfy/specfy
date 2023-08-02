@@ -19,6 +19,9 @@ data "google_secret_manager_secret_version" "GITHUB_CLIENT_PKEY" {
 data "google_secret_manager_secret_version" "GITHUB_WEBHOOKS_SECRET" {
   secret   = "GITHUB_WEBHOOKS_SECRET"
 }
+data "google_secret_manager_secret_version" "RESEND_KEY" {
+  secret   = "RESEND_KEY"
+}
 
 resource "google_cloud_run_v2_service" "main" {
   name     = "main"
@@ -76,10 +79,14 @@ resource "google_cloud_run_v2_service" "main" {
         name  = "GITHUB_WEBHOOKS_SECRET"
         value = data.google_secret_manager_secret_version.GITHUB_WEBHOOKS_SECRET.secret_data
       }
+      env {
+        name  = "RESEND_KEY"
+        value = data.google_secret_manager_secret_version.RESEND_KEY.secret_data
+      }
 
 
       env {
-        name ="APP_HOSTNAME"
+        name = "APP_HOSTNAME"
         value = "https://app.specfy.io"
       }
       env {
@@ -87,11 +94,16 @@ resource "google_cloud_run_v2_service" "main" {
         value = "https://api.specfy.io"
       }
 
-      // TODO: remove this
+      env {
+        name  = "GIVE_DEFAULT_PERMS_TO_EMAIL"
+        value = ""
+      }
+
       env {
         name  = "DEFAULT_ACCOUNT"
         value = ""
       }
+
 
       volume_mounts {
         mount_path = "/cloudsql"
