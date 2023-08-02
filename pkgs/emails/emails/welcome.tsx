@@ -13,7 +13,6 @@ import {
   Tailwind,
   Text,
 } from '@react-email/components';
-import { IconHomePlus, IconBrandDiscord, IconNews } from '@tabler/icons-react';
 
 import { BASE_URL } from '../src/env';
 
@@ -63,7 +62,28 @@ export const Welcome: React.FC<WelcomeProps> = ({
                 <Link href={`${BASE_URL}/organizations/new`}>
                   <Row className="border border-solid border-[#eaeaea] rounded-md">
                     <Column className="border border-solid border-[#fff] border-8 bg-[#fafafa] rounded-md text-center w-[80px] h-[60px]">
-                      <IconHomePlus className="stroke-[#787878]" />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="icon icon-tabler icon-tabler-home-plus"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        strokeWidth="2"
+                        stroke="#787878"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path
+                          stroke="none"
+                          d="M0 0h24v24H0z"
+                          fill="none"
+                        ></path>
+                        <path d="M19 12h2l-9 -9l-9 9h2v7a2 2 0 0 0 2 2h5.5"></path>
+                        <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2"></path>
+                        <path d="M16 19h6"></path>
+                        <path d="M19 16v6"></path>
+                      </svg>
                     </Column>
                     <Column>
                       <Heading as="h4" className="text-[#000] px-5 my-2">
@@ -80,7 +100,28 @@ export const Welcome: React.FC<WelcomeProps> = ({
                 <Link href="https://specfy.io/blog">
                   <Row className="border border-solid border-[#eaeaea] rounded-md">
                     <Column className="border border-solid border-[#fff] border-8 bg-[#fafafa] rounded-md text-center w-[80px] h-[60px]">
-                      <IconNews className="stroke-[#787878]" />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="icon icon-tabler icon-tabler-news"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        strokeWidth="2"
+                        stroke="#787878"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path
+                          stroke="none"
+                          d="M0 0h24v24H0z"
+                          fill="none"
+                        ></path>
+                        <path d="M16 6h3a1 1 0 0 1 1 1v11a2 2 0 0 1 -4 0v-13a1 1 0 0 0 -1 -1h-10a1 1 0 0 0 -1 1v12a3 3 0 0 0 3 3h11"></path>
+                        <path d="M8 8l4 0"></path>
+                        <path d="M8 12l4 0"></path>
+                        <path d="M8 16l4 0"></path>
+                      </svg>
                     </Column>
                     <Column>
                       <Heading as="h4" className="text-[#000] px-5 my-2">
@@ -97,7 +138,28 @@ export const Welcome: React.FC<WelcomeProps> = ({
                 <Link href="https://discord.gg/UGFVqu76Vj">
                   <Row className="border border-solid border-[#eaeaea] rounded-md">
                     <Column className="border border-solid border-[#fff] border-8 bg-[#fafafa] rounded-md text-center w-[80px] h-[60px]">
-                      <IconBrandDiscord className="stroke-[#787878]" />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="icon icon-tabler icon-tabler-brand-discord"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        strokeWidth="2"
+                        stroke="#787878"
+                        fill="none"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      >
+                        <path
+                          stroke="none"
+                          d="M0 0h24v24H0z"
+                          fill="none"
+                        ></path>
+                        <path d="M8 12a1 1 0 1 0 2 0a1 1 0 0 0 -2 0"></path>
+                        <path d="M14 12a1 1 0 1 0 2 0a1 1 0 0 0 -2 0"></path>
+                        <path d="M15.5 17c0 1 1.5 3 2 3c1.5 0 2.833 -1.667 3.5 -3c.667 -1.667 .5 -5.833 -1.5 -11.5c-1.457 -1.015 -3 -1.34 -4.5 -1.5l-.972 1.923a11.913 11.913 0 0 0 -4.053 0l-.975 -1.923c-1.5 .16 -3.043 .485 -4.5 1.5c-2 5.667 -2.167 9.833 -1.5 11.5c.667 1.333 2 3 3.5 3c.5 0 2 -2 2 -3"></path>
+                        <path d="M7 16.5c3.5 1 6.5 1 10 0"></path>
+                      </svg>
                     </Column>
                     <Column>
                       <Heading as="h4" className="text-[#000] px-5 my-2">

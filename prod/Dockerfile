@@ -48,7 +48,7 @@ RUN true \
   && cd pkgs/api \
   && npm run prisma:gen \
   && cd .. && cd emails \
-  && npm run build \
+  && npm run prod:build \
   && cd .. && cd api \
   && npm run prod:build
 
@@ -58,7 +58,11 @@ RUN true \
 
 # Clean dev dependencies
 RUN true \
-  && npm prune --omit=dev
+  && npm prune --omit=dev --omit=peer
+
+# RUN du -h -d1 node_modules/ | sort -h
+# RUN du -h -d1 pkgs/ | sort -h
+# RUN du -h -d1 pkgs/emails/node_modules/ | sort -h
 
 # ---- Web ----
 # Resulting new, minimal image
