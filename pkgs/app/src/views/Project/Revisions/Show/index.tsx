@@ -134,13 +134,6 @@ export const ProjectRevisionsShow: React.FC<{
     setReviewers([...rev.reviewers]);
   }, [edit, rev]);
 
-  const onChangeAuthor = (list: ApiUser[]) => {
-    setAuthors([...list]);
-  };
-  const onChangeReviewer = (list: ApiUser[]) => {
-    setReviewers([...list]);
-  };
-
   const onClickSave = async () => {
     if (!rev) {
       return;
@@ -385,23 +378,11 @@ export const ProjectRevisionsShow: React.FC<{
         <Container.Right1Third>
           <div className={cls.sidebar}>
             <SidebarBlock title="Authors">
-              <UserList
-                list={authors || rev.authors}
-                params={qp}
-                edit={edit}
-                onChange={onChangeAuthor}
-                exclude={reviewers || rev.reviewers}
-              />
+              <UserList list={authors || rev.authors} />
             </SidebarBlock>
             {false && (
               <SidebarBlock title="Reviewers">
-                <UserList
-                  list={reviewers || rev!.reviewers}
-                  params={qp}
-                  edit={edit}
-                  onChange={onChangeReviewer}
-                  exclude={authors || rev!.authors}
-                />
+                <UserList list={reviewers || rev!.reviewers} />
               </SidebarBlock>
             )}
             <SidebarBlock title="Activities">
