@@ -78,7 +78,7 @@
     "json-diff": "1.0.3",
     "lodash.debounce": "4.0.8",
     "luxon": "3.2.1",
-    "nanoid": "3.3.6",
+    "nanoid": "4.0.2",
     "prismjs": "1.29.0",
     "properties-order": "1.0.0",
     "rc-tree": "5.7.9",
