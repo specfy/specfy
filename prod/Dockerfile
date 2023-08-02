@@ -44,10 +44,13 @@ ENV NODE_ENV=production
 
 # Build
 RUN true \
+  # We need prisma first to be able to compile the emails because we use the types
   && cd pkgs/api \
-  && npm run prod:build \
+  && npm run prisma:gen \
   && cd .. && cd emails \
-  && npm run build
+  && npm run build \
+  && cd .. && cd api \
+  && npm run prod:build
 
 # Clean src
 RUN true \

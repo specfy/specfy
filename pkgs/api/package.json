@@ -9,7 +9,7 @@
     "dev": "fastify start -o -w -P build/app.js",
     "dev:built": "node build/index.js",
     "build": "prisma generate && tsc -p tsconfig.json -w",
-    "prod:build": "prisma generate && tsc -p tsconfig.json",
+    "prod:build": "prisma generate && tsc -p tsconfig.prod.json",
     "test:build": "tsc -p tsconfig.json",
     "seed": "ts-node --esm ./src/test/seed/index.ts",
     "test": "vitest",

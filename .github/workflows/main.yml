@@ -30,7 +30,12 @@ jobs:
       GITHUB_CLIENT_SECRET: ""
       GITHUB_CLIENT_PKEY: "__empty__"
       GITHUB_WEBHOOKS_SECRET: "secret"
-      APP_HOSTNAME: "localhost:3000"
+      APP_HOSTNAME: "http://localhost:3000"
+      API_HOSTNAME: "http://localhost:3000"
+      DEFAULT_ACCOUNT: ""
+      GIVE_DEFAULT_PERMS_TO_EMAIL: ""
+      RESEND_KEY: ""
+
 
 
     steps:
