@@ -9,8 +9,8 @@ import cls from './index.module.scss';
 
 export const Banner: React.FC<{
   children: React.ReactNode;
-  type: 'error' | 'info' | 'success' | 'warning';
-}> = ({ children, type }) => {
+  type?: 'error' | 'info' | 'success' | 'warning';
+}> = ({ children, type = 'info' }) => {
   return (
     <div className={classnames(cls.banner, cls[type])}>
       <div className={cls.icon}>

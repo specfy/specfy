@@ -11,7 +11,11 @@ import {
   shouldEnforceBody,
   shouldNotAllowQueryParams,
 } from '../../../test/helpers.js';
-import { seedSimpleUser, seedWithOrg } from '../../../test/seed/seed.js';
+import {
+  seedSimpleUser,
+  seedWithOrg,
+  seedWithOrgViewer,
+} from '../../../test/seed/seed.js';
 
 let t: TestSetup;
 beforeAll(async () => {
@@ -44,6 +48,20 @@ describe('POST /projects', () => {
 
   it('should enforce body validation', async () => {
     await shouldEnforceBody(t.fetch, '/0/projects', 'POST');
+  });
+
+  it('should not allow viewer', async () => {
+    const { token, org } = await seedWithOrgViewer();
+    const name = `test ${nanoid()}`;
+    const res = await t.fetch.post('/0/projects', {
+      token,
+      Body: {
+        name,
+        orgId: org.id,
+      },
+    });
+
+    expect(res.statusCode).toBe(403);
   });
 
   it('should create one project', async () => {

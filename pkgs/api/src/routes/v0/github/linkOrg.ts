@@ -25,7 +25,7 @@ function QueryVal(req: FastifyRequest) {
       installationId: z.number().positive().int().nullable(),
     })
     .strict()
-    .superRefine(valPermissions(req));
+    .superRefine(valPermissions(req, 'owner'));
 }
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {

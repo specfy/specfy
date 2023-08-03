@@ -40,12 +40,13 @@ describe('GET /me', () => {
 
     isSuccess(res.json);
     expect(res.json.data).toStrictEqual({
-      createdAt: expect.toBeIsoDate(),
       email: user.email,
       id: user.id,
       name: user.name,
       avatarUrl: null,
       token: expect.any(String),
+      perms: [],
+      createdAt: expect.toBeIsoDate(),
       updatedAt: expect.toBeIsoDate(),
     });
   });

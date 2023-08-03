@@ -78,7 +78,7 @@ Project:
     ✔ Handle error @done(23-06-21 17:05)
   ✔ Creation @done(23-03-25 23:30)
     ✔ Reserved name @done(23-07-27 11:54)
-    - Permission check
+    ✔ Permission check @done(23-08-03 11:02)
     ✔ Unit Test @done(23-04-04 17:26)
     ✔ Validation @done(23-03-28 16:11)
     - Unit Test activity
@@ -96,11 +96,11 @@ Project:
     - Unit Test activity
     ✔ Validation @done(23-03-29 14:42)
   ✔ Update @done(23-03-29 14:42)
-    - Permission check
+    ✔ Permission check @done(23-08-03 11:02)
     - Unit Test activity
     ✔ Validation @done(23-03-29 14:42)
   ✔ Delete @done(23-03-29 14:42)
-    - Permission check
+    ✔ Permission check @done(23-08-03 11:03)
     ✔ Unit test @done(23-04-04 11:20)
     ✔ Validation @done(23-03-29 14:43)
   - archivage
@@ -151,12 +151,12 @@ Permissions:
     ✔ Validation @done(23-03-30 12:06)
     - Unit Test activity
     ✔ Unit Test @done(23-04-03 16:02)
-    - Permission check
+    ✔ Permission check @done(23-08-03 11:02)
     - Activity
   ✔ Remove @done(23-03-29 15:55)
     ✔ Validation @done(23-03-30 12:06)
     ✔ Unit Test @done(23-04-03 16:02)
-    - Permission check
+    ✔ Permission check @done(23-08-03 11:02)
     - Activity
 
 
@@ -228,17 +228,17 @@ Revision:
     ✔ Unit Test @done(23-04-04 17:10)
   ✔ Edition @done(23-03-27 12:24)
     ✔ Validation @done(23-03-30 11:51)
-    - Permission
+    ✔ Permission @done(23-08-03 11:02)
     - Unit Test activity
     ✔ Unit Test @done(23-04-04 17:10)
   - Close
     ✔ Validation @done(23-03-30 11:51)
-    - Permission
+    ✔ Permission @done(23-08-03 11:02)
     - Unit Test activity
     ✔ Unit Test @done(23-04-04 17:10)
   - Lock
     ✔ Validation @done(23-03-30 11:51)
-    - Permission
+    ✔ Permission @done(23-08-03 11:02)
     - Unit Test activity
     ✔ Unit Test @done(23-04-04 17:10)
   ✔ Timeline @done(23-06-29 17:05)
@@ -331,11 +331,11 @@ Org:
       ✔ Unit test @done(23-04-24 15:10)
       ✔ Reserved name @done(23-07-27 11:28)
       ✔ Handle error @done(23-04-24 15:10)
-      - Permissions
+      ✔ Permissions @done(23-08-03 11:02)
     - Change id
     ✔ Delete @done(23-04-24 14:17)
       ✔ Unit Test @done(23-04-24 14:17)
-      - Permissions
+      ✔ Permissions @done(23-08-03 11:02)
   ✔ Switch in the UI @done(23-03-27 17:46)
   ✔ Editer le graph d'organization @done(23-07-14 12:39)
     ✔ Auto update org graph @done(23-07-07 20:45)

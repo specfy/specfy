@@ -86,13 +86,10 @@ describe('GET /invitations/:id', () => {
       },
       org: {
         id: org.id,
-        flowId: expect.any(String),
         acronym: expect.any(String),
         avatarUrl: null,
         color: expect.any(String),
-        isPersonal: false,
         name: expect.any(String),
-        githubInstallationId: null,
       },
     });
   });

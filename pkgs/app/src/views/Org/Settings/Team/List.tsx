@@ -1,6 +1,6 @@
 import type { ApiPerm, ApiUser } from '@specfy/api/src/types/api';
 import { IconSearch } from '@tabler/icons-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'react-use';
 
 import { useListPerms, useListUser } from '../../../../api';
@@ -16,7 +16,7 @@ import cls from './list.module.scss';
 export const SettingsTeamList: React.FC<{ params: RouteOrg }> = ({
   params,
 }) => {
-  const { user } = useAuth();
+  const { user, currentPerm } = useAuth();
   const p = { org_id: params.org_id };
 
   const team = useListPerms(p);
@@ -74,6 +74,9 @@ export const SettingsTeamList: React.FC<{ params: RouteOrg }> = ({
   }, [res.isLoading, searchDebounced]);
 
   // --- Actions
+  const canUpdate = useMemo(() => {
+    return currentPerm?.role === 'owner';
+  }, [currentPerm]);
   const onUpdate = () => {
     void team.refetch();
   };
@@ -103,6 +106,7 @@ export const SettingsTeamList: React.FC<{ params: RouteOrg }> = ({
                     user={perm.user}
                     perm={perm}
                     me={user!.id}
+                    canUpdate={canUpdate}
                     onUpdated={onUpdate}
                   />
                 );
@@ -123,6 +127,7 @@ export const SettingsTeamList: React.FC<{ params: RouteOrg }> = ({
                       user={perm.user}
                       perm={perm}
                       me={user!.id}
+                      canUpdate={canUpdate}
                       onUpdated={onUpdate}
                     />
                   );
@@ -143,6 +148,7 @@ export const SettingsTeamList: React.FC<{ params: RouteOrg }> = ({
                     user={perm.user}
                     perm={perm}
                     me={user!.id}
+                    canUpdate={canUpdate}
                     onUpdated={onUpdate}
                   />
                 );
@@ -162,6 +168,7 @@ export const SettingsTeamList: React.FC<{ params: RouteOrg }> = ({
                     user={perm.user}
                     perm={perm}
                     me={user!.id}
+                    canUpdate={canUpdate}
                     onUpdated={onUpdate}
                   />
                 );
@@ -185,6 +192,7 @@ export const SettingsTeamList: React.FC<{ params: RouteOrg }> = ({
                   perm={perm}
                   me={user!.id}
                   fromSearch={true}
+                  canUpdate={canUpdate}
                   onUpdated={onUpdate}
                 />
               );

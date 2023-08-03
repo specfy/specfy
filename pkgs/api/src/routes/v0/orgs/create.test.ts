@@ -53,13 +53,10 @@ describe('POST /orgs', () => {
     expect(res.statusCode).toBe(200);
     expect(res.json).toStrictEqual({
       id,
-      flowId: expect.any(String),
       name: `test ${id}`,
-      isPersonal: false,
       avatarUrl: null,
       acronym: 'TE',
       color: expect.any(String),
-      githubInstallationId: null,
     });
 
     // Should also create a permission
@@ -95,7 +92,7 @@ describe('POST /orgs', () => {
     });
   });
 
-  it('should reject forbidden name', async () => {
+  it('should reject invalid name', async () => {
     const { token } = await seedSimpleUser();
 
     // Insert one
@@ -107,7 +104,7 @@ describe('POST /orgs', () => {
 
     expect(res.json.error.fields).toStrictEqual({
       id: {
-        code: 'forbidden',
+        code: 'invalid',
         message: 'This id is not allowed',
         path: ['id'],
       },

@@ -1,10 +1,11 @@
 import type { ApiProject, ApiPerm, ApiUser } from '@specfy/api/src/types/api';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useDebounce } from 'react-use';
 
 import { useListPermsProject, useListUser } from '../../../../api';
 import { titleSuffix } from '../../../../common/string';
+import { Banner } from '../../../../components/Banner';
 import { Card } from '../../../../components/Card';
 import { Empty } from '../../../../components/Empty';
 import { Input } from '../../../../components/Form/Input';
@@ -17,7 +18,7 @@ import cls from './index.module.scss';
 export const SettingsTeam: React.FC<{
   proj: ApiProject;
 }> = ({ proj }) => {
-  const { user } = useAuth();
+  const { user, currentPerm } = useAuth();
 
   const p = { org_id: proj.orgId, project_id: proj.id };
   const team = useListPermsProject(p);
@@ -75,6 +76,9 @@ export const SettingsTeam: React.FC<{
   }, [res.isLoading, searchDebounced]);
 
   // --- Actions
+  const canUpdate = useMemo(() => {
+    return currentPerm?.role === 'owner';
+  }, [currentPerm]);
   const onUpdate = () => {
     void team.refetch();
   };
@@ -94,6 +98,9 @@ export const SettingsTeam: React.FC<{
           onChange={(e) => setSearch(e.target.value)}
         />
       </div>
+      {!canUpdate && (
+        <Banner>Only the owner can invite new people to the team</Banner>
+      )}
       <Card>
         {!searchDebounced && (
           <div className={cls.lines}>
@@ -107,6 +114,7 @@ export const SettingsTeam: React.FC<{
                     user={perm.user}
                     perm={perm}
                     me={user!.id}
+                    canUpdate={canUpdate}
                     onUpdated={onUpdate}
                   />
                 );
@@ -127,6 +135,7 @@ export const SettingsTeam: React.FC<{
                       user={perm.user}
                       perm={perm}
                       me={user!.id}
+                      canUpdate={canUpdate}
                       onUpdated={onUpdate}
                     />
                   );
@@ -147,6 +156,7 @@ export const SettingsTeam: React.FC<{
                     user={perm.user}
                     perm={perm}
                     me={user!.id}
+                    canUpdate={canUpdate}
                     onUpdated={onUpdate}
                   />
                 );
@@ -166,6 +176,7 @@ export const SettingsTeam: React.FC<{
                     user={perm.user}
                     perm={perm}
                     me={user!.id}
+                    canUpdate={canUpdate}
                     onUpdated={onUpdate}
                   />
                 );
@@ -189,6 +200,7 @@ export const SettingsTeam: React.FC<{
                   perm={perm}
                   me={user!.id}
                   fromSearch={true}
+                  canUpdate={canUpdate}
                   onUpdated={onUpdate}
                 />
               );

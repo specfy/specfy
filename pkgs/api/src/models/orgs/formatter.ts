@@ -1,8 +1,18 @@
 import type { Orgs } from '@prisma/client';
 
-import type { ApiOrg } from '../../types/api/index.js';
+import type { ApiOrg, ApiOrgPublic } from '../../types/api/index.js';
 
-export function toApiOrg(org: Orgs): ApiOrg {
+export function toApiOrgPublic(org: Orgs): ApiOrgPublic {
+  return {
+    id: org.id,
+    name: org.name,
+    avatarUrl: org.avatarUrl,
+    acronym: org.acronym,
+    color: org.color,
+  };
+}
+
+export function toApiOrgList(org: Orgs): ApiOrg {
   return {
     id: org.id,
     flowId: org.flowId!,

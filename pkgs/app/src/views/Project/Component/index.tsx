@@ -31,6 +31,7 @@ import { NotFound } from '../../../components/NotFound';
 import { Tag } from '../../../components/Tag';
 import { TooltipFull } from '../../../components/Tooltip';
 import { UpdatedAt } from '../../../components/UpdatedAt';
+import { useAuth } from '../../../hooks/useAuth';
 import { useEdit } from '../../../hooks/useEdit';
 import { useToast } from '../../../hooks/useToast';
 import type { RouteComponent } from '../../../types/routes';
@@ -40,9 +41,11 @@ import cls from './index.module.scss';
 export const ComponentView: React.FC<{
   proj: ApiProject;
 }> = ({ proj }) => {
+  const { currentPerm } = useAuth();
   const toast = useToast();
   const { getNodes, viewportInitialized } = useReactFlow();
   const navigate = useNavigate();
+  const canEdit = currentPerm?.role !== 'viewer';
 
   const [comp, setComp] = useState<ApiComponent>();
   const params = useParams<Partial<RouteComponent>>() as RouteComponent;
@@ -166,32 +169,34 @@ export const ComponentView: React.FC<{
                 >
                   {internalTypeToText[comp.type]}
                 </Tag>
-                <div>
-                  <Dropdown.Menu>
-                    <Dropdown.Trigger asChild>
-                      <Button display="ghost">
-                        <IconDotsVertical />
-                      </Button>
-                    </Dropdown.Trigger>
-                    <Dropdown.Portal>
-                      <Dropdown.Content>
-                        <Dropdown.Group>
-                          <Dropdown.Item asChild>
-                            <Button
-                              danger
-                              display="item"
-                              block
-                              onClick={() => onRemove()}
-                              size="s"
-                            >
-                              <IconTrash /> Remove
-                            </Button>
-                          </Dropdown.Item>
-                        </Dropdown.Group>
-                      </Dropdown.Content>
-                    </Dropdown.Portal>
-                  </Dropdown.Menu>
-                </div>
+                {canEdit && (
+                  <div>
+                    <Dropdown.Menu>
+                      <Dropdown.Trigger asChild>
+                        <Button display="ghost">
+                          <IconDotsVertical />
+                        </Button>
+                      </Dropdown.Trigger>
+                      <Dropdown.Portal>
+                        <Dropdown.Content>
+                          <Dropdown.Group>
+                            <Dropdown.Item asChild>
+                              <Button
+                                danger
+                                display="item"
+                                block
+                                onClick={() => onRemove()}
+                                size="s"
+                              >
+                                <IconTrash /> Remove
+                              </Button>
+                            </Dropdown.Item>
+                          </Dropdown.Group>
+                        </Dropdown.Content>
+                      </Dropdown.Portal>
+                    </Dropdown.Menu>
+                  </div>
+                )}
               </Flex>
             </Flex>
             <UpdatedAt time={comp.updatedAt} />

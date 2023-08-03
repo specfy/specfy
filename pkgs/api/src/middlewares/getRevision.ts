@@ -1,10 +1,11 @@
 import type { FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
-import { notFound, validationError } from '../common/errors.js';
+import { forbidden, notFound, validationError } from '../common/errors.js';
 import { schemaId, schemaOrgId } from '../common/validators/index.js';
 import { valPermissions } from '../common/zod.js';
 import { prisma } from '../db/index.js';
+import { checkInheritedPermissions } from '../models/perms/helpers.js';
 import type { GetRevision } from '../types/api/index.js';
 import type { PreHandler } from '../types/fastify.js';
 
@@ -16,7 +17,7 @@ export function QueryVal(req: FastifyRequest) {
       revision_id: schemaId,
     })
     .strict()
-    .superRefine(valPermissions(req));
+    .superRefine(valPermissions(req, 'viewer'));
 }
 
 export const getRevision: PreHandler<{
@@ -46,6 +47,19 @@ export const getRevision: PreHandler<{
 
   if (!proj) {
     return notFound(res);
+  }
+
+  if (req.method !== 'GET') {
+    if (
+      !checkInheritedPermissions(
+        req.perms!,
+        'contributor',
+        data.org_id,
+        data.project_id
+      )
+    ) {
+      return forbidden(res);
+    }
   }
 
   req.revision = proj;

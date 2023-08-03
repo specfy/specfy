@@ -4,6 +4,7 @@ import { forbidden, notFound } from '../../../common/errors.js';
 import { prisma } from '../../../db/index.js';
 import { noBody } from '../../../middlewares/noBody.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
+import { checkInheritedPermissions } from '../../../models/perms/helpers.js';
 import type { DeleteInvitation } from '../../../types/api/index.js';
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
@@ -24,11 +25,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       }
 
       // Check that we have the permissions to delete on this org
-      if (
-        !req.perms!.find(
-          (perm) => perm.orgId === invitation.orgId && perm.projectId === null
-        )
-      ) {
+      if (!checkInheritedPermissions(req.perms!, 'owner', invitation.orgId)) {
         return forbidden(res);
       }
 

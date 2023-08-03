@@ -87,7 +87,7 @@ describe('GET /documents/:id', () => {
     });
 
     isError(res.json);
-    expect(res.statusCode).toBe(400);
+    expect(res.statusCode).toBe(403);
   });
 
   it('should not get a document with wrong id', async () => {

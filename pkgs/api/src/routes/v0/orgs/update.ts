@@ -7,7 +7,7 @@ import { prisma } from '../../../db/index.js';
 import { getOrg } from '../../../middlewares/getOrg.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import { createOrgActivity } from '../../../models/index.js';
-import { toApiOrg } from '../../../models/orgs/formatter.js';
+import { toApiOrgPublic } from '../../../models/orgs/formatter.js';
 import { schemaOrg } from '../../../models/orgs/schema.js';
 import type { PutOrg } from '../../../types/api/index.js';
 
@@ -53,7 +53,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       }
 
       return res.status(200).send({
-        data: toApiOrg(org),
+        data: toApiOrgPublic(org),
       });
     }
   );

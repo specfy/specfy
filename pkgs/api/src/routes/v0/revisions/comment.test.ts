@@ -7,8 +7,13 @@ import {
   shouldBeProtected,
   shouldNotAllowQueryParams,
 } from '../../../test/helpers.js';
+import { seedProject } from '../../../test/seed/projects.js';
 import { seedRevision } from '../../../test/seed/revisions.js';
-import { seedSimpleUser, seedWithProject } from '../../../test/seed/seed.js';
+import {
+  seedSimpleUser,
+  seedWithOrgViewer,
+  seedWithProject,
+} from '../../../test/seed/seed.js';
 
 let t: TestSetup;
 beforeAll(async () => {
@@ -47,6 +52,20 @@ describe('GET /revisions/:revision_id/comment', () => {
     });
     isValidationError(res.json);
     expect(res.statusCode).toBe(400);
+  });
+
+  it('should not allow viewer', async () => {
+    const { token, org, owner } = await seedWithOrgViewer();
+    const project = await seedProject(owner, org);
+    const revision = await seedRevision(owner, org, project);
+
+    const comment = await t.fetch.post(`/0/revisions/${revision.id}/comment`, {
+      token,
+      Querystring: { org_id: org.id, project_id: project.id },
+      Body: { approval: false, content: { content: [], type: 'doc' } },
+    });
+
+    expect(comment.statusCode).toBe(403);
   });
 
   it('should post a comment', async () => {

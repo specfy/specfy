@@ -8,8 +8,13 @@ import {
   shouldBeProtected,
   shouldNotAllowQueryParams,
 } from '../../../test/helpers.js';
+import { seedProject } from '../../../test/seed/projects.js';
 import { seedRevision } from '../../../test/seed/revisions.js';
-import { seedSimpleUser, seedWithProject } from '../../../test/seed/seed.js';
+import {
+  seedSimpleUser,
+  seedWithOrgViewer,
+  seedWithProject,
+} from '../../../test/seed/seed.js';
 
 let t: TestSetup;
 beforeAll(async () => {
@@ -34,6 +39,20 @@ describe('PATCH /revisions/:revision_id', () => {
       Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
+  });
+
+  it('should not allow viewer', async () => {
+    const { token, org, owner } = await seedWithOrgViewer();
+    const project = await seedProject(owner, org);
+    const revision = await seedRevision(owner, org, project);
+
+    const res = await t.fetch.patch(`/0/revisions/${revision.id}`, {
+      token,
+      Querystring: { org_id: org.id, project_id: project.id },
+      Body: { status: 'closed' },
+    });
+
+    expect(res.statusCode).toBe(403);
   });
 
   it('should forbid to change status and name', async () => {

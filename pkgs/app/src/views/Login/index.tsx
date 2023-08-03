@@ -6,9 +6,8 @@ import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { authLocal } from '../../api/auth';
-import { isError, isValidationError } from '../../api/helpers';
+import { handleErrors, isError } from '../../api/helpers';
 import { API_HOSTNAME } from '../../common/envs';
-import { i18n } from '../../common/i18n';
 import { titleSuffix } from '../../common/string';
 import { Card } from '../../components/Card';
 import { Flex } from '../../components/Flex';
@@ -32,13 +31,9 @@ export const Login: React.FC = () => {
     const res = await authLocal({ email, password });
 
     if (isError(res)) {
-      if (isValidationError(res)) {
-        setErrors(res.error.fields);
-      } else {
-        toast.add({ title: i18n.errorOccurred, status: 'error' });
-      }
-      return;
+      return handleErrors(res, toast, setErrors);
     }
+
     setErrors({});
     navigate(`/`);
   };

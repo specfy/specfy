@@ -6,10 +6,11 @@ import type { FastifyPluginCallback } from 'fastify';
 
 import { forbidden } from '../../../common/errors.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
+import type { PostGithubWebhook } from '../../../models/github/types.api.js';
 import { webhookService } from '../../../services/github/index.js';
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
-  fastify.post<{ Reply: any; Body: any }>(
+  fastify.post<PostGithubWebhook>(
     '/',
     { preHandler: [noQuery] },
     async function (req, res) {

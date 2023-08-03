@@ -14,7 +14,7 @@ function QueryVal(req: FastifyRequest) {
       project_id: schemaId,
     })
     .strict()
-    .superRefine(valPermissions(req));
+    .superRefine(valPermissions(req, 'owner'));
 }
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {

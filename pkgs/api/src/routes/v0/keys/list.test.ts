@@ -2,14 +2,16 @@ import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
 import type { TestSetup } from '../../../test/each.js';
 import { setupAfterAll, setupBeforeAll } from '../../../test/each.js';
-import { isSuccess, isValidationError } from '../../../test/fetch.js';
+import { isSuccess } from '../../../test/fetch.js';
 import {
   shouldBeProtected,
   shouldNotAllowQueryParams,
 } from '../../../test/helpers.js';
+import { seedProject } from '../../../test/seed/projects.js';
 import {
   seedSimpleUser,
   seedWithOrg,
+  seedWithOrgViewer,
   seedWithProject,
 } from '../../../test/seed/seed.js';
 
@@ -38,21 +40,25 @@ describe('GET /keys', () => {
     await shouldNotAllowQueryParams(res);
   });
 
+  it('should not allow viewer', async () => {
+    const { token, org, owner } = await seedWithOrgViewer();
+    const project = await seedProject(owner, org);
+    const res = await t.fetch.get('/0/keys', {
+      token,
+      Querystring: { org_id: project.orgId, project_id: project.id },
+    });
+
+    expect(res.statusCode).toBe(403);
+  });
+
   it('should fail on wrong org', async () => {
     const { token } = await seedWithOrg();
     const res = await t.fetch.get('/0/keys', {
       token,
       Querystring: { org_id: 'ereoireor', project_id: 'djfhsdjfhskjfhsd' },
     });
-    isValidationError(res.json);
-    expect(res.json.error.form).toStrictEqual([
-      {
-        code: 'forbidden',
-        message:
-          "Targeted resource doesn't exists or you don't have the permissions",
-        path: [],
-      },
-    ]);
+
+    expect(res.statusCode).toBe(403);
   });
 
   it('should fail on wrong project', async () => {
@@ -61,15 +67,8 @@ describe('GET /keys', () => {
       token,
       Querystring: { org_id: org.id, project_id: 'djfhsdjfhskjfhsd' },
     });
-    isValidationError(res.json);
-    expect(res.json.error.form).toStrictEqual([
-      {
-        code: 'forbidden',
-        message:
-          "Targeted resource doesn't exists or you don't have the permissions",
-        path: [],
-      },
-    ]);
+
+    expect(res.statusCode).toBe(403);
   });
 
   it('should list one key for a project', async () => {

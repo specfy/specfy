@@ -3,12 +3,16 @@ import type { Orgs, Projects, Users } from '@prisma/client';
 import { nanoid } from '../../common/id.js';
 import { prisma } from '../../db/index.js';
 import { getJwtToken } from '../../models/index.js';
+import type { DBPerm } from '../../models/perms/types.js';
 
 import { seedOrg } from './orgs.js';
 import { seedProject } from './projects.js';
 import { seedUser } from './users.js';
 
-export async function seedSimpleUser(org?: Orgs): Promise<{
+export async function seedSimpleUser(
+  org?: Orgs | null,
+  role: DBPerm['role'] = 'owner'
+): Promise<{
   user: Users;
   pwd: string;
   token: string;
@@ -23,7 +27,7 @@ export async function seedSimpleUser(org?: Orgs): Promise<{
         orgId: org.id,
         projectId: null,
         userId: user.id,
-        role: 'owner',
+        role,
       },
     });
   }
@@ -42,6 +46,23 @@ export async function seedWithOrg(): Promise<{
   const token = getJwtToken(user);
 
   return { user, org, token };
+}
+
+export async function seedWithOrgViewer(): Promise<{
+  user: Users;
+  owner: Users;
+  org: Orgs;
+  token: string;
+  ownerToken: string;
+}> {
+  const { user } = await seedUser();
+  const ownerToken = getJwtToken(user);
+  const org = await seedOrg(user);
+
+  const { user: viewer } = await seedSimpleUser(org, 'viewer');
+  const token = getJwtToken(viewer);
+
+  return { user: viewer, org, token, owner: user, ownerToken };
 }
 
 export async function seedWithProject(): Promise<{

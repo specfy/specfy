@@ -142,6 +142,7 @@
 
 
   .to {
+    position: relative;
     width: 40px;
     padding: 0 $p-xl;
   }
@@ -149,13 +150,17 @@
   .direction {
     display: flex;
     justify-content: center;
-    margin-top: -5px;
+
+    margin-top: -10px;
+
     text-align: center;
+
+    background-color: transparent;
   }
 
   .english {
     position: absolute;
-    top: 12px;
+    top: 19px;
     font-size: 9px;
     color: var(--accent2);
   }

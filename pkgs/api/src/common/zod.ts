@@ -3,8 +3,9 @@ import type { RefinementCtx } from 'zod';
 import z from 'zod';
 
 import { checkInheritedPermissions } from '../models/perms/helpers.js';
+import type { DBPerm } from '../models/perms/types.js';
 
-export function valPermissions(req: FastifyRequest) {
+export function valPermissions(req: FastifyRequest, role: DBPerm['role']) {
   return (
     data: {
       org_id?: string;
@@ -27,7 +28,7 @@ export function valPermissions(req: FastifyRequest) {
       return;
     }
 
-    if (checkInheritedPermissions(req.perms!, orgId, projectId)) {
+    if (checkInheritedPermissions(req.perms!, role, orgId, projectId)) {
       return;
     }
 

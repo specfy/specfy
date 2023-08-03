@@ -9,9 +9,12 @@ import type {
 } from '../../models/documents/types.api.js';
 import type { GetFlow, PatchFlow } from '../../models/flows/types.api.js';
 import type {
+  GetGithubMembers,
   ListGithubInstallations,
   ListGithubRepos,
+  PostGithubWebhook,
   PostLinkToGithubOrg,
+  PostLinkToGithubProject,
 } from '../../models/github/types.api.js';
 import type {
   AcceptInvitation,
@@ -149,8 +152,11 @@ export interface API {
   [key: `/0/users/${string}`]: { GET: GetUser };
 
   '/0/github/installations': { GET: ListGithubInstallations };
-  '/0/github/repos': { GET: ListGithubRepos };
   '/0/github/link_org': { POST: PostLinkToGithubOrg };
+  '/0/github/link_project': { POST: PostLinkToGithubProject };
+  '/0/github/members': { GET: GetGithubMembers };
+  '/0/github/repos': { GET: ListGithubRepos };
+  '/0/github/webhooks': { POST: PostGithubWebhook };
 
   '/0/invitations': {
     GET: ListInvitations;

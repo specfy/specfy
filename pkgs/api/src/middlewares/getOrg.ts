@@ -14,7 +14,7 @@ export function QueryVal(req: FastifyRequest) {
       org_id: schemaOrgId,
     })
     .strict()
-    .superRefine(valPermissions(req));
+    .superRefine(valPermissions(req, 'owner'));
 }
 
 export const getOrg: PreHandler<{

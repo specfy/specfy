@@ -3,8 +3,7 @@ import type { ApiOrg, ApiPerm, FieldsErrors } from '@specfy/api/src/types/api';
 import { useState } from 'react';
 
 import { createInvitation } from '../../../api';
-import { isError, isValidationError } from '../../../api/helpers';
-import { i18n } from '../../../common/i18n';
+import { handleErrors, isError } from '../../../api/helpers';
 import { selectPerms } from '../../../common/perms';
 import { Card } from '../../../components/Card';
 import { useToast } from '../../../hooks/useToast';
@@ -37,12 +36,7 @@ export const TeamInvite: React.FC<{
     });
     setLoading(false);
     if (isError(res)) {
-      if (isValidationError(res)) {
-        setErrors(res.error.fields);
-      } else {
-        toast.add({ title: i18n.errorOccurred, status: 'error' });
-      }
-      return;
+      return handleErrors(res, toast, setErrors);
     }
 
     toast.add({ title: 'User invited', status: 'success' });

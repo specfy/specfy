@@ -14,8 +14,13 @@ import {
   getBlobComponent,
   seedComponent,
 } from '../../../test/seed/components.js';
+import { seedProject } from '../../../test/seed/projects.js';
 import { seedRevision } from '../../../test/seed/revisions.js';
-import { seedSimpleUser, seedWithProject } from '../../../test/seed/seed.js';
+import {
+  seedSimpleUser,
+  seedWithOrgViewer,
+  seedWithProject,
+} from '../../../test/seed/seed.js';
 import type { ApiBlobWithPrevious } from '../../../types/api/index.js';
 
 let t: TestSetup;
@@ -53,6 +58,19 @@ describe('GET /revisions/:revision_id/rebase', () => {
       Body: { random: 'world' },
     });
     await shouldNotAllowBody(res);
+  });
+
+  it('should not allow viewer', async () => {
+    const { token, org, owner } = await seedWithOrgViewer();
+    const project = await seedProject(owner, org);
+    const revision = await seedRevision(owner, org, project);
+
+    const res = await t.fetch.post(`/0/revisions/${revision.id}/rebase`, {
+      token,
+      Querystring: { org_id: org.id, project_id: project.id },
+    });
+
+    expect(res.statusCode).toBe(403);
   });
 
   it('should rebase nothing', async () => {

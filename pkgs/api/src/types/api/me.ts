@@ -1,3 +1,5 @@
+import type { Perms } from '@prisma/client';
+
 import type { Res } from './api.js';
 
 export interface ApiMe {
@@ -8,6 +10,7 @@ export interface ApiMe {
   token: string;
   createdAt: string;
   updatedAt: string;
+  perms: Array<Pick<Perms, 'orgId' | 'projectId' | 'role'>>;
 }
 
 // GET /me
@@ -22,7 +25,7 @@ export type PutMe = Res<{
   Body: {
     name: string;
   };
-  Success: { data: ApiMe };
+  Success: { data: { done: boolean } };
 }>;
 
 // DELETE /me

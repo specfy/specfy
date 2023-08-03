@@ -15,7 +15,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { createProject, linkToGithubRepo } from '../../../api';
-import { isError, isValidationError } from '../../../api/helpers';
+import { handleErrors, isError } from '../../../api/helpers';
 import { i18n } from '../../../common/i18n';
 import { socket } from '../../../common/socket';
 import { titleSuffix } from '../../../common/string';
@@ -66,12 +66,7 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
       },
     });
     if (isError(res)) {
-      if (isValidationError(res)) {
-        setErrors(res.error.fields);
-      } else {
-        toast.add({ title: i18n.errorOccurred, status: 'error' });
-      }
-      return;
+      return handleErrors(res, toast, setErrors);
     }
 
     setErrors({});

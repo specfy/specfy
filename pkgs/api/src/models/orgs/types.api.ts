@@ -5,6 +5,11 @@ import type { DBOrg } from './types.js';
 export type ApiOrg = Omit<DBOrg, 'createdAt' | 'updatedAt'> & {
   githubInstallationId: number | null;
 };
+export type ApiOrgPublic = Omit<
+  DBOrg,
+  'createdAt' | 'flowId' | 'isPersonal' | 'updatedAt'
+>;
+
 export interface ReqOrgParams {
   org_id: string;
 }

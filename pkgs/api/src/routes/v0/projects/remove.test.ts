@@ -8,7 +8,12 @@ import {
   shouldNotAllowBody,
   shouldNotAllowQueryParams,
 } from '../../../test/helpers.js';
-import { seedSimpleUser, seedWithProject } from '../../../test/seed/seed.js';
+import { seedProject } from '../../../test/seed/projects.js';
+import {
+  seedSimpleUser,
+  seedWithOrgViewer,
+  seedWithProject,
+} from '../../../test/seed/seed.js';
 
 let t: TestSetup;
 beforeAll(async () => {
@@ -43,6 +48,16 @@ describe('DELETE /projects/:org_id/:project_slug', () => {
       Body: { random: 'world' },
     });
     await shouldNotAllowBody(res);
+  });
+
+  it('should not allow viewer', async () => {
+    const { token, org, owner } = await seedWithOrgViewer();
+    const project = await seedProject(owner, org);
+    const res = await t.fetch.delete(`/0/projects/${org.id}/${project.slug}`, {
+      token,
+    });
+
+    expect(res.statusCode).toBe(403);
   });
 
   it('should delete a project', async () => {

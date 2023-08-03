@@ -5,7 +5,6 @@ import { validationError } from '../../../common/errors.js';
 import { prisma } from '../../../db/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import { createUserActivity } from '../../../models/index.js';
-import { toApiMe } from '../../../models/users/formatter.js';
 import { schemaUser } from '../../../models/users/schema.js';
 import type { PutMe } from '../../../types/api/index.js';
 
@@ -47,7 +46,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
     }
 
     return res.status(200).send({
-      data: toApiMe(user),
+      data: { done: true },
     });
   });
   done();
