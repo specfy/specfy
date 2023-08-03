@@ -1,9 +1,6 @@
 import type { ComponentType } from '@specfy/api/src/models/components/types';
 import type { ApiComponent } from '@specfy/api/src/types/api';
-import { IconPlus } from '@tabler/icons-react';
-import { Select } from 'antd';
-import type { DefaultOptionType, SelectProps } from 'antd/es/select';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { createLocal } from '../../common/components';
 import { useComponentsStore, useProjectStore } from '../../common/store';
@@ -13,18 +10,17 @@ import {
   supportedIndexed,
   supportedTypeToText,
 } from '../../common/techs';
-import { Button } from '../Form/Button';
-
-import cls from './index.module.scss';
+import type { OptionGroup, OptionValue } from '../Form/MultiSelect';
+import { MultiSelect } from '../Form/MultiSelect';
 
 export const LanguageSelect: React.FC<{
   values: string[] | null;
   onChange: (values: string[]) => void;
 }> = ({ onChange, values }) => {
-  const options = useMemo<DefaultOptionType[]>(() => {
-    const _langs: DefaultOptionType[] = [];
-    const _tools: DefaultOptionType[] = [];
-    const _cis: DefaultOptionType[] = [];
+  const options = useMemo<OptionGroup[]>(() => {
+    const _langs: OptionValue[] = [];
+    const _tools: OptionValue[] = [];
+    const _cis: OptionValue[] = [];
 
     for (const tech of supportedArray) {
       if (tech.type === 'language') {
@@ -60,18 +56,46 @@ export const LanguageSelect: React.FC<{
     ];
   }, []);
 
+  const onCreate = (opt: OptionValue) => {
+    onChange([...(values || []), opt.value]);
+  };
+
   return (
-    <Select
-      style={{ width: '100%' }}
+    <MultiSelect
       autoFocus={true}
-      mode="tags"
       allowClear
-      value={values || []}
+      multiple={true}
+      values={values || []}
       options={options}
       onChange={onChange}
+      onCreate={onCreate}
     />
   );
 };
+
+type OptionData =
+  | {
+      type: 'component';
+    }
+  | {
+      type: 'project';
+      projectId: string;
+      create: true;
+    }
+  | {
+      type: 'tech';
+      techType: string;
+      filter: string;
+      create: true;
+    };
+
+// Please lord forgive me
+// When we create a new Component we modify the storeComponents,
+// but because it's an immutable reference if I send this update to the parent it hasn't yet rerender,
+// = the storeComponents reference is not updated and it breaks.
+// What I do is store the update for the next cycle because it will (hopefully) rerender everything.
+// A better alternative would be to replace all callbacks by an EventBus and apply modification outside the components
+let afterRender: string | null = null;
 
 export const ComponentSelect: React.FC<{
   values: ApiComponent[];
@@ -100,10 +124,9 @@ export const ComponentSelect: React.FC<{
 }) => {
   const storeComponents = useComponentsStore();
   const storeProject = useProjectStore();
-  const [search, setSearch] = useState('');
 
-  const optionsComponents = useMemo<DefaultOptionType[]>(() => {
-    const tmp: DefaultOptionType[] = [];
+  const optionsComponents = useMemo<Array<OptionValue<OptionData>>>(() => {
+    const tmp: Array<OptionValue<OptionData>> = [];
     const components = Object.values(storeComponents.components);
 
     // Components
@@ -117,16 +140,16 @@ export const ComponentSelect: React.FC<{
       tmp.push({
         value: component.id,
         label: component.name,
-        filter: component.name,
+        data: { type: 'component' },
       });
     }
 
     return tmp;
   }, [storeComponents.components]);
 
-  const optionsTech = useMemo<DefaultOptionType[]>(() => {
+  const optionsTech = useMemo<Array<OptionValue<OptionData>>>(() => {
     const components = Object.values(storeComponents.components);
-    const tmp: DefaultOptionType[] = [];
+    const tmp: Array<OptionValue<OptionData>> = [];
 
     for (const supp of supportedArray) {
       if (supp.type === 'language') {
@@ -141,26 +164,25 @@ export const ComponentSelect: React.FC<{
 
       tmp.push({
         value: supp.key,
-        label: (
-          <div className={cls.sugg}>
-            <IconPlus /> Create {supportedTypeToText[supp.type]} &quot;
-            {supp.name}&quot;
-          </div>
-        ),
-        techType: supp.type,
-        filter: supp.name,
+        label: `Create ${supportedTypeToText[supp.type]} "${supp.name}"`,
+        data: {
+          type: 'tech',
+          techType: supp.type,
+          filter: supp.name,
+          create: true,
+        },
       });
     }
 
     return tmp;
   }, [storeComponents.components]);
 
-  const optionsProjects = useMemo<DefaultOptionType[]>(() => {
+  const optionsProjects = useMemo<Array<OptionValue<OptionData>>>(() => {
     if (!filter.includes('project')) {
       return [];
     }
 
-    const tmp: DefaultOptionType[] = [];
+    const tmp: Array<OptionValue<OptionData>> = [];
     const curr =
       storeComponents.current &&
       storeComponents.components[storeComponents.current];
@@ -179,8 +201,7 @@ export const ComponentSelect: React.FC<{
       tmp.push({
         value: project.id,
         label: project.name,
-        filter: project.name,
-        projectId: project.id,
+        data: { type: 'project', projectId: project.id, create: true },
       });
     }
 
@@ -188,7 +209,7 @@ export const ComponentSelect: React.FC<{
   }, [storeComponents.components]);
 
   const options = useMemo(() => {
-    const res: DefaultOptionType[] = [];
+    const res: OptionGroup[] = [];
 
     if (optionsComponents.length > 0) {
       res.push({
@@ -219,34 +240,18 @@ export const ComponentSelect: React.FC<{
     });
   }, [values]);
 
-  // Add new item
-  const handleAddItem = () => {
-    const slug = slugify(search);
-    if (storeComponents.select(slug)) {
+  const onCreate = (option: OptionValue<OptionData>) => {
+    if (!option.data) {
+      // TS pleasing
       return;
     }
 
-    createLocal(
-      { name: search, slug, type: createdAs },
-      storeProject,
-      storeComponents
-    );
-    // TODO: find a way to fix this
-  };
-
-  const onSelect: SelectProps['onSelect'] = (value, option) => {
-    // Classic component
-    if (!option.techType && !option.projectId) {
-      return onChange(multiple === false ? value : [...computed, value]);
-    }
-
     // Project
-    if (option.projectId) {
-      const proj = storeProject.projects.find(
-        (p) => p.id === option.projectId
-      )!;
+    if (option.data.type === 'project') {
+      const pId = option.data.projectId;
+      const proj = storeProject.projects.find((p) => p.id === pId)!;
       // TODO: use id to automatically add
-      createLocal(
+      const { id } = createLocal(
         {
           name: proj.name,
           slug: proj.slug,
@@ -256,64 +261,95 @@ export const ComponentSelect: React.FC<{
         storeProject,
         storeComponents
       );
+      afterRender = id;
+      return;
+    }
+    if (option.data.type === 'tech') {
+      // Tech
+      const supp = supportedIndexed[option.value!];
+
+      // TODO: use id to automatically add
+      const { id } = createLocal(
+        {
+          name: supp.name,
+          slug: supp.key,
+          type: supp.type,
+          techId: option.value as string,
+        },
+        storeProject,
+        storeComponents
+      );
+      afterRender = id;
       return;
     }
 
-    // Tech
-    const supp = supportedIndexed[option.value!];
-
-    // TODO: use id to automatically add
-    createLocal(
+    const { id } = createLocal(
       {
-        name: supp.name,
-        slug: supp.key,
-        type: supp.type,
-        techId: option.value as string,
+        name: option.value,
+        slug: slugify(option.value),
+        type: createdAs,
       },
       storeProject,
       storeComponents
     );
-    // TODO: find a way to fix this
-    // onChange([...computed, id]);
+
+    afterRender = id;
   };
 
-  const onDeSelect = (value: string) => {
-    onChange(computed.filter((val) => val !== value));
-  };
+  // Tricks to defer update, see afterRender comment
+  useEffect(() => {
+    if (!afterRender || !storeComponents.components[afterRender]) {
+      return;
+    }
+
+    onChange([...computed, afterRender]);
+    afterRender = null;
+  }, [computed, storeComponents.components]);
 
   return (
-    <Select
-      style={{ width: '100%' }}
+    <MultiSelect
       autoFocus={true}
-      showSearch
-      autoClearSearchValue={true}
-      notFoundContent={<>No results...</>}
-      searchValue={search}
-      onSearch={setSearch}
-      mode={multiple !== false ? 'multiple' : undefined}
-      allowClear
-      value={computed}
+      values={computed}
       options={options}
-      optionFilterProp="filter"
-      // onChange={onChange}
-      onSelect={onSelect}
-      onDeselect={onDeSelect}
-      dropdownRender={(menu) => {
-        return (
-          <>
-            {menu}
-            {search && (
-              <div className={cls.create}>
-                <div>
-                  <Button display="ghost" onClick={handleAddItem}>
-                    <IconPlus /> Create {createdAs} &quot;{search}&quot;
-                  </Button>
-                </div>
-              </div>
-            )}
-          </>
-        );
-      }}
+      onChange={onChange}
+      multiple={multiple !== false}
+      onCreate={onCreate}
     />
   );
+
+  // return (
+  //   <Select
+  //     style={{ width: '100%' }}
+  //     autoFocus={true}
+  //     showSearch
+  //     autoClearSearchValue={true}
+  //     notFoundContent={<>No results...</>}
+  //     searchValue={search}
+  //     onSearch={setSearch}
+  //     mode={multiple !== false ? 'multiple' : undefined}
+  //     allowClear
+  //     value={computed}
+  //     options={options}
+  //     optionFilterProp="filter"
+  //     // onChange={onChange}
+  //     onSelect={onSelect}
+  //     onDeselect={onDeSelect}
+  //     dropdownRender={(menu) => {
+  //       return (
+  //         <>
+  //           {menu}
+  //           {search && (
+  //             <div className={cls.create}>
+  //               <div>
+  //                 <Button display="ghost" onClick={handleAddItem}>
+  //                   <IconPlus /> Create {createdAs} &quot;{search}&quot;
+  //                 </Button>
+  //               </div>
+  //             </div>
+  //           )}
+  //         </>
+  //       );
+  //     }}
+  //   />
+  // );
 };

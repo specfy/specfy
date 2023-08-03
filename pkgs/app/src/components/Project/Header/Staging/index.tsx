@@ -33,7 +33,7 @@ export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
   const { documents } = useDocumentsStore();
   const staging = useStagingStore();
   const isEditing = edit.isEditing;
-  const canEdit = currentPerm?.role === 'contributor';
+  const canEdit = currentPerm?.role !== 'viewer';
 
   useDebounce(
     () => {

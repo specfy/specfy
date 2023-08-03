@@ -83,12 +83,6 @@
   >div {
     display: flex;
     justify-content: space-between;
-
-    :global(.ant-btn) {
-      width: 18px;
-      height: 18px;
-      font-size: $font-s;
-    }
   }
 }
 

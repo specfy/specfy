@@ -88,7 +88,7 @@ export const ProjectFlow: React.FC<{
     type,
     position
   ) => {
-    const id = createLocal(
+    const { id } = createLocal(
       {
         name: 'untitled',
         slug: 'untitled',

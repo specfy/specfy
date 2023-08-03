@@ -25,8 +25,7 @@ export const TeamInvite: React.FC<{
   const [errors, setErrors] = useState<FieldsErrors>({});
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handleInvite = async (e: any) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     setLoading(true);
 
     const res = await createInvitation({
@@ -47,12 +46,20 @@ export const TeamInvite: React.FC<{
       onInvite();
     }
   };
+  const onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+    handleSubmit();
+  };
+  const onClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.preventDefault();
+    handleSubmit();
+  };
 
   return (
     <Card>
       <Card.Content>
         <h3>Add team members</h3>
-        <Form.Root className={cls.form} onSubmit={handleInvite}>
+        <Form.Root className={cls.form} onSubmit={onSubmit}>
           <Field name="email" error={errors.email?.message}>
             <Input
               type="email"
@@ -74,7 +81,7 @@ export const TeamInvite: React.FC<{
         </Form.Root>
       </Card.Content>
       <Card.Actions>
-        <Button onClick={handleInvite} display="primary" loading={loading}>
+        <Button onClick={onClick} display="primary" loading={loading}>
           Invite
         </Button>
       </Card.Actions>

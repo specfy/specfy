@@ -41,11 +41,4 @@
       color: var(--accent2);
     }
   }
-
-  :global {
-    .ant-select .ant-select-selector {
-      border: none;
-      box-shadow: none !important;
-    }
-  }
 }

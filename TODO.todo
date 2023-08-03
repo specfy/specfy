@@ -12,14 +12,14 @@ Global:
   ✔ Title to all pages @done(23-06-18 17:05)
   ✔ Favicon @done(23-06-18 17:08)
   - Block refresh / quit when there are pending changes
-  - Remove antd
+  ✔ Remove antd @done(23-08-03 19:02)
     ✔ Layout @done(23-07-28 11:38)
     ✔ Checkbox @done(23-07-31 11:45)
     ✔ Input @done(23-07-31 15:58)
     ✔ Button @done(23-07-31 15:57)
     ✔ Tag @done(23-07-28 11:21)
     ✔ Typography @done(23-07-31 14:31)
-    - Select
+    ✔ Select @done(23-08-03 19:02)
     ✔ Tooltip @done(23-07-31 18:18)
     ✔ Anchor @done(23-08-01 15:29)
     ✔ Dropdown @done(23-08-01 14:24)
@@ -133,10 +133,10 @@ User:
     - Case insensitive search
     ✘ Email validation @cancelled(23-06-29 17:07)
     ✔ User search API for team @done(23-06-29 17:07)
-  - Invite
+  ✔ Invite @done(23-08-03 14:13)
     ✔ Invite new user from team @done(23-06-18 14:40)
     ✔ Invitation par email @done(23-06-18 14:40)
-    - Send email
+    ✔ Send email @done(23-08-03 14:13)
   ✔ Rename @done(23-04-24 17:01)
     ✔ Unit test @done(23-04-24 17:01)
   ✔ Suppression de compte @done(23-04-24 17:01)
@@ -175,7 +175,7 @@ Components:
   ✔ List @done(23-03-29 15:15)
     ✔ Unit Test @done(23-04-03 12:28)
     ✔ Validation @done(23-03-29 15:15)
-  - Click to create + Click to add c'est vraiment chiant
+  ✔ Click to create + Click to add c'est vraiment chiant @done(23-08-03 19:03)
   - Autocomplete supported dans la page de creation de composant
   ✔ Changer les ports @done(23-07-07 20:43)
   - Quand on change l'host on devrait bouger le composant dans le graph pour fit la boudingBox

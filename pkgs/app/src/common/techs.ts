@@ -166,7 +166,7 @@ export const supportedTypeToText: Record<TechInfo['type'], string> = {
   db: 'database',
   hosting: 'hosting',
   language: 'language',
-  messaging: 'service',
+  messaging: 'queue',
   tool: 'tool',
   sass: 'third-party',
   app: 'application',

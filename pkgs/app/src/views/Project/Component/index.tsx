@@ -162,6 +162,7 @@ export const ComponentView: React.FC<{
               </Flex>
               <Flex align="center">
                 <Tag
+                  variant="border"
                   className={classnames(
                     cls.tagType,
                     comp.type in cls && cls[comp.type as keyof typeof cls]
@@ -215,12 +216,7 @@ export const ComponentView: React.FC<{
             )}
           </div>
 
-          <ComponentDetails
-            proj={proj}
-            component={comp}
-            components={components!}
-            params={params}
-          />
+          <ComponentDetails proj={proj} component={comp} params={params} />
         </Card>
       </Container.Left2Third>
       <Container.Right1Third>

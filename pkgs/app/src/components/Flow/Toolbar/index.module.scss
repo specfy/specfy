@@ -53,20 +53,6 @@
   border-radius: $border-radius;
   box-shadow: $box-shadow2;
 
-  :global(.ant-btn) {
-    padding: 0 8px;
-    color: $gray-600;
-
-    &:disabled {
-      color: $gray-300;
-    }
-
-    &:hover {
-      color: var(--accent2);
-      background-color: $gray-50;
-    }
-  }
-
   &.dark {
     padding: $p-s $p-m $p-s $p-xl;
     font-size: $font-xs;
