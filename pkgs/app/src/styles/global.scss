@@ -32,7 +32,9 @@
 button,
 a,
 input,
-p {
+p,
+ul,
+li {
   all: unset;
 }
 
@@ -143,9 +145,13 @@ body * {
 
 // ----- Layout
 body {
+  margin: 0;
+
   // font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Noto Sans", sans-serif, BlinkMacSystemFont, Oxygen, "Open Sans", "Helvetica Neue";
   font: $font $font-text;
+  line-height: 20px;
   color: var(--text);
+
   background-color: $gray-2;
 
   -webkit-font-smoothing: antialiased;
@@ -196,5 +202,6 @@ h4 {
 }
 
 p {
+  display: block;
   line-height: 1.25rem;
 }

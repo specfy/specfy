@@ -14,9 +14,9 @@ export const Tag: React.FC<{
     <div
       className={classNames(
         cls.tag,
-        className,
+        cls[variant],
         closable && cls.closable,
-        cls[variant]
+        className
       )}
     >
       {children}
