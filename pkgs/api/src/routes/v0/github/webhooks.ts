@@ -12,7 +12,13 @@ import { webhookService } from '../../../services/github/index.js';
 const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.post<PostGithubWebhook>(
     '/',
-    { preHandler: [noQuery] },
+    {
+      preHandler: [noQuery],
+      config: {
+        // @ts-expect-error TODO: remove this after 8.0.4 is released
+        rateLimit: false,
+      },
+    },
     async function (req, res) {
       const id = req.headers['x-github-delivery'];
       if (!id || typeof id !== 'string') {

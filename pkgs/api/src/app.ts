@@ -1,6 +1,7 @@
 import path from 'node:path';
 
 import cors from '@fastify/cors';
+import rateLimit from '@fastify/rate-limit';
 import staticFiles from '@fastify/static';
 import type {
   FastifyInstance,
@@ -12,6 +13,7 @@ import { dirname } from './common/env.js';
 import { notFound, serverError } from './common/errors.js';
 import { logger } from './logger.js';
 import { AuthError } from './middlewares/auth/errors.js';
+import { registerAuth } from './middlewares/auth/index.js';
 import { routes } from './routes/routes.js';
 import { initSocket } from './socket.js';
 
@@ -66,6 +68,40 @@ export default async (f: FastifyInstance, opts: FastifyPluginOptions) => {
     }
   );
 
+  await registerAuth(f);
+
+  // it's flawed because we are not using Redis (or PG), especially with the current Cloud Run setup
+  // But should at least prevent some attack or abuse
+  await f.register(rateLimit, {
+    global: true,
+    max: 2000,
+    ban: 10,
+    timeWindow: 60 * 5 * 1000,
+    hook: 'preHandler',
+    cache: 10000,
+    allowList: [],
+    continueExceeding: true,
+    skipOnError: true,
+    addHeadersOnExceeding: {
+      'x-ratelimit-limit': true,
+      'x-ratelimit-remaining': true,
+      'x-ratelimit-reset': true,
+    },
+    addHeaders: {
+      'x-ratelimit-limit': true,
+      'x-ratelimit-remaining': true,
+      'x-ratelimit-reset': true,
+      'retry-after': true,
+    },
+    keyGenerator: (req) => {
+      if (req.user) {
+        return req.user.id;
+      }
+
+      return req.ip;
+    },
+  });
+
   // Do not touch the following lines
 
   // await start();
@@ -86,5 +122,6 @@ export default async (f: FastifyInstance, opts: FastifyPluginOptions) => {
 
 export const options: FastifyServerOptions = {
   logger,
+  trustProxy: true,
   // logger: true,
 };

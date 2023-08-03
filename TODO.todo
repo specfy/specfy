@@ -162,7 +162,7 @@ Permissions:
 
 API:
   ✔ Handle pagination correctly @done(23-03-25 23:23)
-  - Middelware: Rate Limit
+  ✔ Middelware: Rate Limit @done(23-08-03 12:31)
   ✔ Deploy @done(23-06-14 15:19)
 
 
@@ -231,12 +231,12 @@ Revision:
     ✔ Permission @done(23-08-03 11:02)
     - Unit Test activity
     ✔ Unit Test @done(23-04-04 17:10)
-  - Close
+  ✔ Close @done(23-08-03 11:54)
     ✔ Validation @done(23-03-30 11:51)
     ✔ Permission @done(23-08-03 11:02)
     - Unit Test activity
     ✔ Unit Test @done(23-04-04 17:10)
-  - Lock
+  ✔ Lock @done(23-08-03 11:54)
     ✔ Validation @done(23-03-30 11:51)
     ✔ Permission @done(23-08-03 11:02)
     - Unit Test activity
