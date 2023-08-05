@@ -73,7 +73,7 @@
     "classnames": "2.3.2",
     "cmdk": "0.2.0",
     "diff": "5.1.0",
-    "immer": "9.0.21",
+    "immer": "10.0.2",
     "jsdom": "^21.1.2",
     "json-diff": "1.0.3",
     "lodash.debounce": "4.0.8",
