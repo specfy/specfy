@@ -27,7 +27,7 @@
     "@fastify/cookie": "8.3.0",
     "@fastify/cors": "8.2.0",
     "@fastify/passport": "2.2.0",
-    "@fastify/secure-session": "6.1.0",
+    "@fastify/secure-session": "6.2.0",
     "@fastify/sensible": "5.0.0",
     "@fastify/session": "10.2.0",
     "@fastify/static": "6.10.2",
