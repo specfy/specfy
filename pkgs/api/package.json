@@ -63,7 +63,7 @@
     "@types/passport-http-bearer": "1.0.37",
     "@types/passport-jwt": "3.0.9",
     "@types/passport-local": "1.0.35",
-    "@types/validator": "13.7.17",
+    "@types/validator": "13.9.0",
     "@vitest/coverage-c8": "^0.29.8",
     "colorette": "2.0.20",
     "fastify-cli": "5.7.1",
