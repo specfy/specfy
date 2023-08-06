@@ -15,7 +15,7 @@
     "@mdx-js/react": "2.3.0",
     "@next/mdx": "13.4.12",
     "@react-spring/web": "9.7.3",
-    "@tabler/icons-react": "2.24.0",
+    "@tabler/icons-react": "2.30.0",
     "@types/mdx": "2.0.5",
     "@types/node": "20.4.1",
     "@types/react": "18.2.18",
