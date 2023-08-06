@@ -74,7 +74,7 @@
     "cmdk": "0.2.0",
     "diff": "5.1.0",
     "immer": "9.0.21",
-    "jsdom": "^21.1.2",
+    "jsdom": "^22.0.0",
     "json-diff": "1.0.3",
     "lodash.debounce": "4.0.8",
     "luxon": "3.2.1",
