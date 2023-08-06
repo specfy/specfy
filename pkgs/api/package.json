@@ -37,7 +37,7 @@
     "@specfy/stack-analyser": "1.3.6",
     "@specfy/sync": "1.0.9",
     "close-with-grace": "1.2.0",
-    "consola": "3.1.0",
+    "consola": "3.2.3",
     "env-schema": "5.2.0",
     "execa": "7.1.1",
     "fastify": "4.19.2",
