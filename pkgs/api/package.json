@@ -39,7 +39,7 @@
     "close-with-grace": "1.2.0",
     "consola": "3.1.0",
     "env-schema": "5.2.0",
-    "execa": "7.1.1",
+    "execa": "6.1.0",
     "fastify": "4.19.2",
     "fastify-plugin": "4.5.1",
     "jsonwebtoken": "9.0.1",
