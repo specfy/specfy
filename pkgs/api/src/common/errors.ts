@@ -50,7 +50,7 @@ export async function serverError(res: FastifyReply): Promise<void> {
 }
 
 export async function validationError(
-  res: FastifyReply<any>,
+  res: FastifyReply,
   data: ZodError
 ): Promise<void> {
   const fields: ResValidationError['error']['fields'] = {};
@@ -65,6 +65,9 @@ export async function validationError(
 
     if (issue.path.length <= 0) {
       form.push(fmt);
+      if (fmt.code === 'forbidden') {
+        return forbidden(res);
+      }
       continue;
     }
 

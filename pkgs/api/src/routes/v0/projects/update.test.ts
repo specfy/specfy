@@ -11,7 +11,11 @@ import {
   shouldNotAllowQueryParams,
 } from '../../../test/helpers.js';
 import { seedProject } from '../../../test/seed/projects.js';
-import { seedSimpleUser, seedWithProject } from '../../../test/seed/seed.js';
+import {
+  seedSimpleUser,
+  seedWithOrgViewer,
+  seedWithProject,
+} from '../../../test/seed/seed.js';
 
 let t: TestSetup;
 beforeAll(async () => {
@@ -36,6 +40,21 @@ describe('PUT /projects/:org_id/:project_slug', () => {
       Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
+  });
+
+  it('should not allow viewer', async () => {
+    const { token, org, owner } = await seedWithOrgViewer();
+    const project = await seedProject(owner, org);
+    const name = `New Name ${nanoid()}`;
+    const res = await t.fetch.put(`/0/projects/${org.id}/${project.slug}`, {
+      token,
+      Body: {
+        name,
+        slug: slugify(name),
+      },
+    });
+
+    expect(res.statusCode).toBe(403);
   });
 
   it('should rename', async () => {

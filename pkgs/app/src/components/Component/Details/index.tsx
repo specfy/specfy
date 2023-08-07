@@ -22,8 +22,7 @@ export const ComponentDetails: React.FC<{
   proj: ApiProject;
   params: RouteComponent;
   component: ApiComponent;
-  components: ApiComponent[];
-}> = ({ params, component, components }) => {
+}> = ({ params, component }) => {
   // TODO: Special case for project !
   // Components
   const [inComp, setInComp] = useState<ApiComponent>();
@@ -49,6 +48,7 @@ export const ComponentDetails: React.FC<{
   const storeComponents = useComponentsStore();
 
   useEffect(() => {
+    const components = Object.values(storeComponents.components);
     const list = new Map<string, ApiComponent>();
     for (const c of components) {
       list.set(c.id, c);
@@ -126,7 +126,7 @@ export const ComponentDetails: React.FC<{
     setReceive(Array.from(_receive.values()));
     setAnswer(Array.from(_answer.values()));
     setReceiveAnswer(Array.from(_receiveanswer.values()));
-  }, [components]);
+  }, [storeComponents, component]);
 
   const handleStackChange = (values: string[]) => {
     storeComponents.updateField(component.id, 'techs', [...values]);
@@ -180,7 +180,11 @@ export const ComponentDetails: React.FC<{
 
     // ---- Add edges
     const diff = values.filter((x) => !original.find((o) => o.id === x))[0];
-    const add = components.find((c) => c.id === diff)!;
+    const add = storeComponents.components[diff];
+
+    if (!add) {
+      throw new Error('Cant find component');
+    }
 
     if (isFrom) {
       const tmp: FlowEdge[] = [];
@@ -252,7 +256,10 @@ export const ComponentDetails: React.FC<{
 
   const handleInComponent = (values: string[] | string) => {
     if (typeof values === 'string') {
-      const childs = getAllChilds(components, component.id);
+      const childs = getAllChilds(
+        Object.values(storeComponents.components),
+        component.id
+      );
       for (const child of childs) {
         if (child.inComponent === component.id) {
           storeComponents.updateField(child.id, 'inComponent', null);

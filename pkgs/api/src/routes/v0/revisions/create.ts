@@ -23,7 +23,7 @@ function BodyVal(req: FastifyRequest) {
       draft: z.boolean(),
     })
     .strict()
-    .superRefine(valPermissions(req))
+    .superRefine(valPermissions(req, 'contributor'))
     .superRefine((val, ctx) => {
       const orgId = val.orgId;
       const projectId = val.projectId;

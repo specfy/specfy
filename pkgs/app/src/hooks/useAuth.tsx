@@ -7,19 +7,14 @@ import { getMe } from '../api/me';
 
 interface AuthContextInterface {
   user: ApiMe | null;
+  currentPerm: ApiMe['perms'][0] | null;
   tryLogin: () => Promise<boolean>;
   login: () => void;
   logout: () => void;
+  setCtx: (ctx: { orgId?: string; projectId?: string }) => void;
 }
 
-const AuthContext = createContext<AuthContextInterface>({
-  user: null,
-  tryLogin: () => {
-    return Promise.resolve(false);
-  },
-  login: () => {},
-  logout: () => {},
-});
+const AuthContext = createContext<AuthContextInterface>({} as any);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
@@ -28,6 +23,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const location = useLocation();
 
   const [user, setUser] = useState<ApiMe | null>(null);
+  const [ctx, setCtx] = useState<{ orgId?: string; projectId?: string }>({});
 
   const tryLogin = async () => {
     const data = await getMe();
@@ -53,15 +49,42 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     setUser(null);
     navigate('/login', { replace: true });
   };
+  const currentPerm = useMemo(() => {
+    if (!user) {
+      return null;
+    }
+    if (!ctx.orgId) {
+      return null;
+    }
+
+    const org = user!.perms.find(
+      (perm) => perm.orgId === ctx.orgId && perm.projectId === null
+    );
+    if (org?.role === 'owner') {
+      return org;
+    }
+
+    if (ctx.projectId) {
+      const proj = user!.perms.find(
+        (perm) => perm.orgId === ctx.orgId && perm.projectId === ctx.projectId
+      );
+      if (proj) {
+        return proj;
+      }
+    }
+    return org || null;
+  }, [user, ctx]);
 
   const value = useMemo(() => {
     return {
       user,
+      currentPerm,
       tryLogin: tryLogin,
       login: handleLogin,
       logout: handleLogout,
+      setCtx,
     };
-  }, [user]);
+  }, [user, currentPerm]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

@@ -47,6 +47,7 @@ import { StatusTag } from '../../../../components/Revision/StatusTag';
 import { SidebarBlock } from '../../../../components/Sidebar/Block';
 import { Time } from '../../../../components/Time';
 import { UserList } from '../../../../components/UserList';
+import { useAuth } from '../../../../hooks/useAuth';
 import { useToast } from '../../../../hooks/useToast';
 import type { BlobAndDiffs } from '../../../../types/blobs';
 import type { RouteProject, RouteRevision } from '../../../../types/routes';
@@ -58,8 +59,10 @@ export const ProjectRevisionsShow: React.FC<{
   params: RouteProject;
 }> = ({ proj, params }) => {
   // Global
+  const { currentPerm } = useAuth();
   const toast = useToast();
   const storeRevision = useRevisionStore();
+  const canEdit = currentPerm?.role !== 'viewer';
 
   const more = useParams<Partial<RouteRevision>>();
   const [rev, setRev] = useState<GetRevision['Success']['data']>();
@@ -256,59 +259,63 @@ export const ProjectRevisionsShow: React.FC<{
                   <Flex>
                     {save && <Loading />}
 
-                    <Button onClick={() => setEdit(true)}>Edit</Button>
+                    {canEdit && (
+                      <Button onClick={() => setEdit(true)}>Edit</Button>
+                    )}
 
-                    <Dropdown.Menu>
-                      <Dropdown.Trigger asChild>
-                        <Button display="ghost">
-                          <IconDotsVertical />
-                        </Button>
-                      </Dropdown.Trigger>
-                      <Dropdown.Portal>
-                        <Dropdown.Content>
-                          <Dropdown.Group>
-                            {!rev.locked ? (
-                              <Dropdown.Item asChild>
-                                <Button
-                                  display="item"
-                                  onClick={() => onMenuClick('lock')}
-                                >
-                                  <IconLock /> Lock
-                                </Button>
-                              </Dropdown.Item>
-                            ) : (
-                              <Dropdown.Item asChild>
-                                <Button
-                                  display="item"
-                                  onClick={() => onMenuClick('unlock')}
-                                >
-                                  <IconLockAccessOff /> Unlock
-                                </Button>
-                              </Dropdown.Item>
-                            )}
-                            {!rev.closedAt ? (
-                              <Dropdown.Item asChild>
-                                <Button
-                                  display="item"
-                                  onClick={() => onMenuClick('close')}
-                                >
-                                  <IconGitPullRequestClosed /> Close
-                                </Button>
-                              </Dropdown.Item>
-                            ) : (
-                              <Dropdown.Item asChild>
-                                <Button
-                                  display="item"
-                                  onClick={() => onMenuClick('reopen')}
-                                >
-                                  <IconGitPullRequestClosed /> Open
-                                </Button>
-                              </Dropdown.Item>
-                            )}
-                          </Dropdown.Group>
-                        </Dropdown.Content>
-                      </Dropdown.Portal>
-                    </Dropdown.Menu>
+                    {canEdit && (
+                      <Dropdown.Menu>
+                        <Dropdown.Trigger asChild>
+                          <Button display="ghost">
+                            <IconDotsVertical />
+                          </Button>
+                        </Dropdown.Trigger>
+                        <Dropdown.Portal>
+                          <Dropdown.Content>
+                            <Dropdown.Group>
+                              {!rev.locked ? (
+                                <Dropdown.Item asChild>
+                                  <Button
+                                    display="item"
+                                    onClick={() => onMenuClick('lock')}
+                                  >
+                                    <IconLock /> Lock
+                                  </Button>
+                                </Dropdown.Item>
+                              ) : (
+                                <Dropdown.Item asChild>
+                                  <Button
+                                    display="item"
+                                    onClick={() => onMenuClick('unlock')}
+                                  >
+                                    <IconLockAccessOff /> Unlock
+                                  </Button>
+                                </Dropdown.Item>
+                              )}
+                              {!rev.closedAt ? (
+                                <Dropdown.Item asChild>
+                                  <Button
+                                    display="item"
+                                    onClick={() => onMenuClick('close')}
+                                  >
+                                    <IconGitPullRequestClosed /> Close
+                                  </Button>
+                                </Dropdown.Item>
+                              ) : (
+                                <Dropdown.Item asChild>
+                                  <Button
+                                    display="item"
+                                    onClick={() => onMenuClick('reopen')}
+                                  >
+                                    <IconGitPullRequestClosed /> Open
+                                  </Button>
+                                </Dropdown.Item>
+                              )}
+                            </Dropdown.Group>
+                          </Dropdown.Content>
+                        </Dropdown.Portal>
+                      </Dropdown.Menu>
+                    )}
                   </Flex>
                 </div>
               )}
@@ -361,7 +368,13 @@ export const ProjectRevisionsShow: React.FC<{
             )}
 
             {checks && !edit && (
-              <Checks rev={rev} checks={checks} qp={qp} onClick={patchStatus} />
+              <Checks
+                rev={rev}
+                checks={checks}
+                qp={qp}
+                onClick={patchStatus}
+                canEdit={canEdit}
+              />
             )}
           </div>
 

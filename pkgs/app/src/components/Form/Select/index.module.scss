@@ -32,6 +32,10 @@
     height: var(--h-l);
     font-size: var(--font);
   }
+
+  &[disabled] {
+    cursor: not-allowed;
+  }
 }
 
 .icon {

@@ -16,6 +16,7 @@ import { Loading } from '../../components/Loading';
 import { NotFound } from '../../components/NotFound';
 import { ProjectHeader } from '../../components/Project/Header';
 import { Sidebar } from '../../components/Sidebar';
+import { useAuth } from '../../hooks/useAuth';
 import type { RouteProject } from '../../types/routes';
 
 import { ProjectActivity } from './Activity';
@@ -34,6 +35,7 @@ import { Tech } from './Tech';
 import cls from './index.module.scss';
 
 export const Project: React.FC = () => {
+  const { setCtx } = useAuth();
   const tmpParams = useParams<Partial<RouteProject>>();
   const params = tmpParams as RouteProject;
 
@@ -78,6 +80,8 @@ export const Project: React.FC = () => {
     if (!loading || !proj) {
       return;
     }
+
+    setCtx({ orgId: proj.orgId, projectId: proj.id });
     setLoading(getComps.isLoading || getProjects.isLoading);
   }, [loading, proj, getComps.data, getProjects.data]);
 

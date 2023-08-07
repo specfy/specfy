@@ -15,7 +15,7 @@ function QueryVal(req: FastifyRequest) {
       org_id: schemaOrgId,
     })
     .strict()
-    .superRefine(valPermissions(req));
+    .superRefine(valPermissions(req, 'viewer'));
 }
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {

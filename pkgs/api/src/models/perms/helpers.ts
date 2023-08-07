@@ -1,7 +1,7 @@
-import type { Orgs } from '@prisma/client';
+import type { Orgs, Perms } from '@prisma/client';
 import type { FastifyRequest } from 'fastify';
 
-import type { PermsWithOrg } from './types.js';
+import type { DBPerm, PermsWithOrg } from './types.js';
 
 export function getOrgFromRequest(
   req: FastifyRequest,
@@ -12,6 +12,7 @@ export function getOrgFromRequest(
 
 export function checkInheritedPermissions(
   perms: PermsWithOrg[],
+  role: DBPerm['role'],
   orgId: string,
   projectId?: string
 ) {
@@ -22,7 +23,7 @@ export function checkInheritedPermissions(
     );
   });
   if (exactMatch) {
-    return true;
+    return isRoleOrAbove(exactMatch, role);
   }
 
   if (projectId) {
@@ -30,9 +31,13 @@ export function checkInheritedPermissions(
       return perm.orgId === orgId;
     });
     if (inherited?.Org.Projects.find((project) => project.id === projectId)) {
-      return true;
+      return isRoleOrAbove(inherited, role);
     }
   }
 
   return false;
+}
+
+export function isRoleOrAbove(perm: Perms, role: DBPerm['role']) {
+  return perm.role === role || perm.role === 'owner' || role === 'viewer';
 }

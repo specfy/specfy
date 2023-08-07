@@ -7,7 +7,11 @@ import {
   shouldBeProtected,
   shouldNotAllowQueryParams,
 } from '../../../test/helpers.js';
-import { seedSimpleUser, seedWithOrg } from '../../../test/seed/seed.js';
+import {
+  seedSimpleUser,
+  seedWithOrg,
+  seedWithOrgViewer,
+} from '../../../test/seed/seed.js';
 
 let t: TestSetup;
 beforeAll(async () => {
@@ -32,6 +36,22 @@ describe('PUT /perms', () => {
       Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
+  });
+
+  it('should not allow viewer to create', async () => {
+    const { token, org, user } = await seedWithOrgViewer();
+
+    // Create permission
+    const res = await t.fetch.put('/0/perms', {
+      token,
+      Body: {
+        org_id: org.id,
+        userId: user.id,
+        role: 'contributor',
+      },
+    });
+
+    expect(res.statusCode).toBe(403);
   });
 
   it('should create a perm', async () => {

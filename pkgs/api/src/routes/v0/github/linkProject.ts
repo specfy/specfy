@@ -28,7 +28,7 @@ function QueryVal(req: FastifyRequest) {
       repository: z.string().max(250).regex(repoRegex).nullable(),
     })
     .strict()
-    .superRefine(valPermissions(req));
+    .superRefine(valPermissions(req, 'owner'));
 }
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {

@@ -1,0 +1,47 @@
+.inputs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spc);
+  padding: var(--spc);
+}
+
+.input {
+  flex-grow: 0;
+}
+
+.content {
+  z-index: 999;
+  min-width: 200px;
+}
+
+.cmd {
+  overflow: scroll;
+  max-height: 250px;
+}
+
+.group {
+  >div[cmdk-group-heading] {
+    padding: var(--spc-m);
+    font-size: var(--font-s);
+    color: var(--primary);
+  }
+}
+
+.row {
+  font-size: var(--font-s);
+  color: var(--text3);
+
+  &.focused {
+    color: var(--text);
+    background-color: var(--bg2);
+  }
+
+  &.selected {
+    color: var(--primary);
+    background-color: var(--bg3);
+  }
+
+  &[aria-selected]:not(.focused, .selected) {
+    background-color: transparent;
+  }
+}

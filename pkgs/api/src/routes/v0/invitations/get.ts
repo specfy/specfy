@@ -3,7 +3,7 @@ import type { FastifyPluginCallback } from 'fastify';
 import { forbidden } from '../../../common/errors.js';
 import { getInvitation } from '../../../middlewares/getInvitation.js';
 import { noBody } from '../../../middlewares/noBody.js';
-import { toApiOrg } from '../../../models/orgs/formatter.js';
+import { toApiOrgPublic } from '../../../models/orgs/formatter.js';
 import { toApiUser } from '../../../models/users/formatter.js';
 import type { GetInvitation } from '../../../types/api/index.js';
 
@@ -27,7 +27,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
           orgId: inv.orgId,
           role: inv.role,
           by: toApiUser(inv.User),
-          org: toApiOrg(inv.Org),
+          org: toApiOrgPublic(inv.Org),
           createdAt: inv.createdAt,
           expiresAt: inv.expiresAt,
         },

@@ -72,7 +72,7 @@ export function createLocal(
     slug: data.slug,
     description: getEmptyDoc(),
     techs: [],
-    display: { pos: pos, size },
+    display: { pos, size },
     edges: [],
     blobId: null,
     inComponent: null,
@@ -86,7 +86,7 @@ export function createLocal(
   };
 
   storeComponents.create(add);
-  return id;
+  return add;
 }
 
 /**

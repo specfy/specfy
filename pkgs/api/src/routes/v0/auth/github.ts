@@ -9,6 +9,11 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
     '/github',
     {
       preHandler: [noQuery, fastifyPassport.authenticate('github')],
+      config: {
+        rateLimit: {
+          max: 25,
+        },
+      },
     },
     function (_req, res) {
       // nothing todo
@@ -18,7 +23,14 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
 
   fastify.get<{ Reply: any; Querystring: { installation_id: number } }>(
     '/github/cb',
-    { preValidation: [fastifyPassport.authenticate('github')] },
+    {
+      preValidation: [fastifyPassport.authenticate('github')],
+      config: {
+        rateLimit: {
+          max: 25,
+        },
+      },
+    },
     function (req, res) {
       if (req.query.installation_id) {
         res.status(200).type('text/html').send(`<html><body>

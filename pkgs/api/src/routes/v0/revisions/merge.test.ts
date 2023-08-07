@@ -16,8 +16,13 @@ import {
   getBlobComponent,
   seedComponent,
 } from '../../../test/seed/components.js';
+import { seedProject } from '../../../test/seed/projects.js';
 import { seedRevision } from '../../../test/seed/revisions.js';
-import { seedSimpleUser, seedWithProject } from '../../../test/seed/seed.js';
+import {
+  seedSimpleUser,
+  seedWithOrgViewer,
+  seedWithProject,
+} from '../../../test/seed/seed.js';
 
 let t: TestSetup;
 beforeAll(async () => {
@@ -74,6 +79,28 @@ describe('POST /revisions/:revision_id/merge', () => {
       Body: { random: 'world' },
     });
     await shouldNotAllowBody(res);
+  });
+
+  it('should not allow viewer', async () => {
+    const { token, org, owner, ownerToken } = await seedWithOrgViewer();
+    const project = await seedProject(owner, org);
+    const revision = await seedRevision(owner, org, project);
+
+    // Approved
+    const comment = await t.fetch.post(`/0/revisions/${revision.id}/comment`, {
+      token: ownerToken,
+      Querystring: { org_id: org.id, project_id: project.id },
+      Body: { approval: true, content: { content: [], type: 'doc' } },
+    });
+    isSuccess(comment.json);
+
+    // Merge
+    const res = await t.fetch.post(`/0/revisions/${revision.id}/merge`, {
+      token,
+      Querystring: { org_id: org.id, project_id: project.id },
+    });
+
+    expect(res.statusCode).toBe(403);
   });
 
   it('should merge', async () => {

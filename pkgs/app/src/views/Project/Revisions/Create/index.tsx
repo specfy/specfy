@@ -129,7 +129,8 @@ export const ProjectRevisionCreate: React.FC<{
     revertAll(staging.diffs);
   };
 
-  const onSubmit = async () => {
+  const onSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault();
     const blobs: PostRevision['Body']['blobs'] = [];
     for (const diff of staging.diffs) {
       const change: ApiBlobCreate = omit(diff.blob, [

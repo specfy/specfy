@@ -13,6 +13,7 @@ import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useReactFlow, useViewport } from 'reactflow';
 
+import { useAuth } from '../../../hooks/useAuth';
 import { useEdit } from '../../../hooks/useEdit';
 import { Flex } from '../../Flex';
 import { Button } from '../../Form/Button';
@@ -53,13 +54,19 @@ const Inner: React.FC<{
 };
 
 const Readonly: React.FC = () => {
+  const { currentPerm } = useAuth();
   const edit = useEdit();
   const [label, setLabel] = useState('Read-Only');
+  const canEdit = currentPerm?.role !== 'viewer';
   const onClick = () => {
-    edit.enable(true);
+    if (canEdit) {
+      edit.enable(true);
+    }
   };
   const onMouseEnter = () => {
-    setLabel('Enable Edit');
+    if (canEdit) {
+      setLabel('Enable Edit');
+    }
   };
   const onMouseLeave = () => {
     setLabel('Read-Only');

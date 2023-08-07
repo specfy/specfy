@@ -16,6 +16,7 @@ import { seedProject } from '../../../test/seed/projects.js';
 import {
   seedSimpleUser,
   seedWithOrg,
+  seedWithOrgViewer,
   seedWithProject,
 } from '../../../test/seed/seed.js';
 
@@ -94,6 +95,17 @@ describe('PATCH /flows/:flow_id', () => {
       Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
+  });
+
+  it('should not allow viewer', async () => {
+    const { token, org } = await seedWithOrgViewer();
+    const res = await t.fetch.patch(`/0/flows/${org.flowId}`, {
+      token,
+      Querystring: { org_id: org.id },
+      Body: {} as any,
+    });
+
+    expect(res.statusCode).toBe(403);
   });
 
   it('should fail to update a flow with no nodes', async () => {

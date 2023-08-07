@@ -33,10 +33,12 @@ const TooltipFull: React.FC<
     <Tooltip delayDuration={300}>
       <TooltipTrigger asChild>{children}</TooltipTrigger>
       <TooltipPrimitive.TooltipPortal>
-        <TooltipContent sideOffset={5} {...props}>
-          <p>{msg}</p>
-          {/* <TooltipPrimitive.TooltipArrow /> */}
-        </TooltipContent>
+        {msg && (
+          <TooltipContent sideOffset={5} {...props}>
+            <p>{msg}</p>
+            {/* <TooltipPrimitive.TooltipArrow /> */}
+          </TooltipContent>
+        )}
       </TooltipPrimitive.TooltipPortal>
     </Tooltip>
   );

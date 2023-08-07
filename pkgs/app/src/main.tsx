@@ -4,7 +4,6 @@ import { BrowserRouter } from 'react-router-dom';
 
 import App from './views/App';
 
-import 'antd/dist/reset.css';
 import './styles/index.scss';
 import 'react-loading-skeleton/dist/skeleton.css';
 

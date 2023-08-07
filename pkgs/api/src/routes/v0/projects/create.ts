@@ -28,7 +28,7 @@ function ProjectVal(req: FastifyRequest) {
     })
     .strict()
     .partial({ config: true })
-    .superRefine(valPermissions(req))
+    .superRefine(valPermissions(req, 'contributor'))
     .superRefine(async (val, ctx) => {
       const org = getOrgFromRequest(req, val.orgId);
       if (!org) {

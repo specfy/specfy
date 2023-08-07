@@ -3,8 +3,7 @@ import type { ApiOrg, ApiPerm, FieldsErrors } from '@specfy/api/src/types/api';
 import { useState } from 'react';
 
 import { createInvitation } from '../../../api';
-import { isError, isValidationError } from '../../../api/helpers';
-import { i18n } from '../../../common/i18n';
+import { handleErrors, isError } from '../../../api/helpers';
 import { selectPerms } from '../../../common/perms';
 import { Card } from '../../../components/Card';
 import { useToast } from '../../../hooks/useToast';
@@ -26,8 +25,7 @@ export const TeamInvite: React.FC<{
   const [errors, setErrors] = useState<FieldsErrors>({});
   const [loading, setLoading] = useState<boolean>(false);
 
-  const handleInvite = async (e: any) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     setLoading(true);
 
     const res = await createInvitation({
@@ -37,12 +35,7 @@ export const TeamInvite: React.FC<{
     });
     setLoading(false);
     if (isError(res)) {
-      if (isValidationError(res)) {
-        setErrors(res.error.fields);
-      } else {
-        toast.add({ title: i18n.errorOccurred, status: 'error' });
-      }
-      return;
+      return handleErrors(res, toast, setErrors);
     }
 
     toast.add({ title: 'User invited', status: 'success' });
@@ -53,12 +46,20 @@ export const TeamInvite: React.FC<{
       onInvite();
     }
   };
+  const onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+    e.preventDefault();
+    handleSubmit();
+  };
+  const onClick: React.MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.preventDefault();
+    handleSubmit();
+  };
 
   return (
     <Card>
       <Card.Content>
         <h3>Add team members</h3>
-        <Form.Root className={cls.form} onSubmit={handleInvite}>
+        <Form.Root className={cls.form} onSubmit={onSubmit}>
           <Field name="email" error={errors.email?.message}>
             <Input
               type="email"
@@ -80,7 +81,7 @@ export const TeamInvite: React.FC<{
         </Form.Root>
       </Card.Content>
       <Card.Actions>
-        <Button onClick={handleInvite} display="primary" loading={loading}>
+        <Button onClick={onClick} display="primary" loading={loading}>
           Invite
         </Button>
       </Card.Actions>

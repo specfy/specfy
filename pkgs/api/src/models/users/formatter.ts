@@ -1,4 +1,4 @@
-import type { Users } from '@prisma/client';
+import type { Perms, Users } from '@prisma/client';
 
 import type { ApiMe, ApiUser, ApiUserPublic } from '../../types/api/index.js';
 
@@ -22,7 +22,7 @@ export function toApiUserPublic(user: Users): ApiUserPublic {
   };
 }
 
-export function toApiMe(user: Users): ApiMe {
+export function toApiMe(user: Users, perms: Perms[]): ApiMe {
   return {
     id: user.id,
     name: user.name,
@@ -31,5 +31,8 @@ export function toApiMe(user: Users): ApiMe {
     token: getJwtToken(user, new Date(Date.now() + 3600 * 1000)),
     createdAt: user.createdAt.toISOString(),
     updatedAt: user.updatedAt.toISOString(),
+    perms: perms.map((perm) => {
+      return { orgId: perm.orgId, projectId: perm.projectId, role: perm.role };
+    }),
   };
 }

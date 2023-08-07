@@ -14,8 +14,8 @@ import {
   seedComponent,
 } from '../../../test/seed/components.js';
 import { getBlobDocument } from '../../../test/seed/documents.js';
-import { getBlobProject } from '../../../test/seed/projects.js';
-import { seedWithProject } from '../../../test/seed/seed.js';
+import { getBlobProject, seedProject } from '../../../test/seed/projects.js';
+import { seedWithOrgViewer, seedWithProject } from '../../../test/seed/seed.js';
 
 let t: TestSetup;
 beforeAll(async () => {
@@ -52,6 +52,25 @@ describe('POST /revisions', () => {
 
   it('should enforce body validation', async () => {
     await shouldEnforceBody(t.fetch, '/0/revisions', 'POST');
+  });
+
+  it('should not allow viewer', async () => {
+    const { token, org, owner } = await seedWithOrgViewer();
+    const project = await seedProject(owner, org);
+    const name = `test ${nanoid()}`;
+    const res = await t.fetch.post('/0/revisions', {
+      token,
+      Body: {
+        blobs: [],
+        description: { content: [], type: 'doc' },
+        name: name,
+        orgId: org.id,
+        projectId: project.id,
+        draft: true,
+      },
+    });
+
+    expect(res.statusCode).toBe(403);
   });
 
   it('should create one revision', async () => {

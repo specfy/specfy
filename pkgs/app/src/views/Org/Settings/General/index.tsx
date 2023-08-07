@@ -18,6 +18,7 @@ import { Field } from '../../../../components/Form/Field';
 import { Input } from '../../../../components/Form/Input';
 import { GithubOrgSelect } from '../../../../components/Github/OrgSelect';
 import { Subdued } from '../../../../components/Text';
+import { useAuth } from '../../../../hooks/useAuth';
 import { useToast } from '../../../../hooks/useToast';
 import type { RouteOrg } from '../../../../types/routes';
 
@@ -27,9 +28,11 @@ export const SettingsGeneral: React.FC<{
   org: ApiOrg;
   params: RouteOrg;
 }> = ({ org, params }) => {
+  const { currentPerm } = useAuth();
   const toast = useToast();
   const navigate = useNavigate();
   const [, setLastOrg] = useLocalStorage<string>('lastOrg');
+  const canEdit = currentPerm?.role === 'owner';
 
   const [waitToRead, setWaitToRead] = useState(true);
 
@@ -129,7 +132,11 @@ export const SettingsGeneral: React.FC<{
             <h3>Organization Name</h3>
             <br />
             <Field name="name">
-              <Input value={name} onChange={onName} disabled={org.isPersonal} />
+              <Input
+                value={name}
+                onChange={onName}
+                disabled={org.isPersonal || !canEdit}
+              />
             </Field>
             <Subdued>
               The organization is accessible at{' '}
@@ -139,7 +146,7 @@ export const SettingsGeneral: React.FC<{
             </Subdued>
           </Card.Content>
 
-          {!org.isPersonal && (
+          {!org.isPersonal && canEdit && (
             <Card.Actions>
               {nameChanged && (
                 <Button display="ghost" onClick={handleReset}>
@@ -154,46 +161,50 @@ export const SettingsGeneral: React.FC<{
         </Form.Root>
       </Card>
 
-      <Card>
-        <Form.Root onSubmit={(e) => e.preventDefault()}>
-          <Card.Content>
-            <h3>Link to Github</h3>
-            <p>
-              Linking to a Github organization will sync the avatar and enable
-              automatic repository discovery.
-            </p>
+      {canEdit && (
+        <Card>
+          <Form.Root onSubmit={(e) => e.preventDefault()}>
+            <Card.Content>
+              <h3>Link to Github</h3>
+              <p>
+                Linking to a Github organization will sync the avatar and enable
+                automatic repository discovery.
+              </p>
 
-            <GithubOrgSelect
-              key={org.githubInstallationId}
-              defaultSelected={
-                org.githubInstallationId ? String(org.githubInstallationId) : ''
-              }
-              onChange={(sel) => {
-                if (sel) {
-                  setInstallId(Number(sel));
+              <GithubOrgSelect
+                key={org.githubInstallationId}
+                defaultSelected={
+                  org.githubInstallationId
+                    ? String(org.githubInstallationId)
+                    : ''
                 }
-              }}
-            />
-          </Card.Content>
-          <Card.Actions>
-            {org.githubInstallationId === installId && installId !== null ? (
-              <Button onClick={onUnlink} danger>
-                Unlink
-              </Button>
-            ) : (
-              <Button
-                display="primary"
-                disabled={org.githubInstallationId === installId}
-                onClick={onLink}
-              >
-                <IconCirclesRelation /> Link
-              </Button>
-            )}
-          </Card.Actions>
-        </Form.Root>
-      </Card>
+                onChange={(sel) => {
+                  if (sel) {
+                    setInstallId(Number(sel));
+                  }
+                }}
+              />
+            </Card.Content>
+            <Card.Actions>
+              {org.githubInstallationId === installId && installId !== null ? (
+                <Button onClick={onUnlink} danger>
+                  Unlink
+                </Button>
+              ) : (
+                <Button
+                  display="primary"
+                  disabled={org.githubInstallationId === installId}
+                  onClick={onLink}
+                >
+                  <IconCirclesRelation /> Link
+                </Button>
+              )}
+            </Card.Actions>
+          </Form.Root>
+        </Card>
+      )}
 
-      {!org.isPersonal && (
+      {!org.isPersonal && canEdit && (
         <Card padded>
           <div className={cls.actions}>
             <div>

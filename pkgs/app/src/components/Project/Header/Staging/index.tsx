@@ -13,6 +13,7 @@ import {
   useComponentsStore,
   useProjectStore,
 } from '../../../../common/store';
+import { useAuth } from '../../../../hooks/useAuth';
 import { useEdit } from '../../../../hooks/useEdit';
 import type {
   Allowed,
@@ -26,11 +27,13 @@ import cls from './index.module.scss';
 
 export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
   const edit = useEdit();
+  const { currentPerm } = useAuth();
   const { project } = useProjectStore();
   const { components } = useComponentsStore();
   const { documents } = useDocumentsStore();
   const staging = useStagingStore();
   const isEditing = edit.isEditing;
+  const canEdit = currentPerm?.role !== 'viewer';
 
   useDebounce(
     () => {
@@ -132,14 +135,20 @@ export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
     [project, components, documents]
   );
 
-  if (!edit.can) {
+  if (!canEdit) {
     return null;
   }
 
   return (
     <div className={cls.staging}>
       <TooltipFull
-        msg={isEditing ? 'Click to disable edition' : 'Click to enable edition'}
+        msg={
+          isEditing
+            ? 'Click to disable edition'
+            : canEdit
+            ? 'Click to enable edition'
+            : 'You are a viewer'
+        }
         side="bottom"
       >
         <button>

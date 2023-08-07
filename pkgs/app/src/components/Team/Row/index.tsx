@@ -3,6 +3,8 @@ import { IconCheck, IconPlus, IconTrash } from '@tabler/icons-react';
 import { useState } from 'react';
 
 import { removePerm, updatePerm } from '../../../api';
+import { isError } from '../../../api/helpers';
+import { i18n } from '../../../common/i18n';
 import { selectPerms } from '../../../common/perms';
 import { AvatarAuto } from '../../../components/AvatarAuto';
 import { useToast } from '../../../hooks/useToast';
@@ -18,6 +20,7 @@ interface RowProps {
   me: string;
   fromSearch?: boolean;
   perm?: ApiPerm;
+  canUpdate: boolean;
   onUpdated: () => void;
 }
 
@@ -27,6 +30,7 @@ export const Row: React.FC<RowProps> = ({
   me,
   fromSearch,
   perm,
+  canUpdate,
   onUpdated,
 }) => {
   const toast = useToast();
@@ -39,11 +43,18 @@ export const Row: React.FC<RowProps> = ({
     newRole: ApiPerm['role']
   ) => {
     setLoading(true);
-    await updatePerm({
+    const res = await updatePerm({
       ...params,
       role: newRole,
       userId,
     });
+    setLoading(false);
+    if (isError(res)) {
+      toast.add({ title: i18n.errorOccurred, status: 'error' });
+      setRole(perm?.role || 'viewer');
+      return;
+    }
+
     toast.add({
       title: `User ${action === 'add' ? 'added' : 'updated'}`,
       status: 'success',
@@ -92,10 +103,10 @@ export const Row: React.FC<RowProps> = ({
               onUpdate(user.id, 'update', v);
             }
           }}
-          disabled={perm && user.id === me ? true : false}
+          disabled={perm && user.id === me ? true : !canUpdate}
         />
 
-        {perm ? (
+        {canUpdate && perm && (
           <Button
             danger
             disabled={perm && user.id === me}
@@ -103,7 +114,9 @@ export const Row: React.FC<RowProps> = ({
           >
             <IconTrash />
           </Button>
-        ) : (
+        )}
+
+        {canUpdate && !perm && (
           <Button onClick={() => onUpdate(user.id, 'add', role)}>
             <IconPlus />
             Add

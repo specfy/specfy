@@ -87,7 +87,14 @@ export function initSocket(server: http.Server) {
       if (event.orgId && event.projectId) {
         const perms = await getSocketPerms(socket.data.user.id);
         socket.data.perms = perms;
-        if (checkInheritedPermissions(perms, event.orgId, event.projectId)) {
+        if (
+          checkInheritedPermissions(
+            perms,
+            'viewer',
+            event.orgId,
+            event.projectId
+          )
+        ) {
           void socket.join(`project-${event.projectId}`);
         }
       }

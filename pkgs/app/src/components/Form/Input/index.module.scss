@@ -32,6 +32,10 @@
         padding-left: $p-s;
       }
     }
+
+    .after {
+      padding: $p-s $p-l;
+    }
   }
 
   &.m {

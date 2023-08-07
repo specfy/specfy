@@ -6,7 +6,7 @@ import { createJobDeploy } from '../../../models/index.js';
 import { JobReason } from '../../../models/jobs/helpers.js';
 import type { TestSetup } from '../../../test/each.js';
 import { setupBeforeAll, setupAfterAll } from '../../../test/each.js';
-import { isSuccess, isValidationError } from '../../../test/fetch.js';
+import { isSuccess } from '../../../test/fetch.js';
 import {
   shouldBeProtected,
   shouldNotAllowQueryParams,
@@ -106,16 +106,7 @@ describe('GET /jobs', () => {
       Querystring: { org_id: 'eaaaa', project_id: 'aaaaaaaaaa' },
     });
 
-    isValidationError(res.json);
-    expect(res.statusCode).toBe(400);
-    expect(res.json.error.form).toStrictEqual([
-      {
-        code: 'forbidden',
-        message:
-          "Targeted resource doesn't exists or you don't have the permissions",
-        path: [],
-      },
-    ]);
+    expect(res.statusCode).toBe(403);
   });
 
   it('should list', async () => {

@@ -1,7 +1,6 @@
-import { LinkOutlined } from '@ant-design/icons';
 import type { IconType } from '@icons-pack/react-simple-icons';
 import type { DBProjectLink } from '@specfy/api/src/models/projects/types';
-import { IconPlus, IconTrash } from '@tabler/icons-react';
+import { IconLink, IconPlus, IconTrash } from '@tabler/icons-react';
 import classnames from 'classnames';
 import { useMemo, useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
@@ -30,7 +29,7 @@ const useIcon = (link: DBProjectLink) => {
         }
       }
     }
-    return LinkOutlined as IconType;
+    return IconLink as IconType;
   }, [link.url]);
 
   return icon;

@@ -103,7 +103,7 @@ export const Tech: React.FC<{
                 {techname}
               </Flex>
             </h2>
-            {info && <Tag>{info ? info.type : 'tech'}</Tag>}
+            {info && <Tag variant="border">{info ? info.type : 'tech'}</Tag>}
           </Flex>
 
           <h3>Used in</h3>

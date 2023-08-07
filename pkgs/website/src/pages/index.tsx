@@ -259,8 +259,9 @@ export default function Home() {
                 </p>
                 <div className="mt-12 pt-2">
                   <form
-                    action="https://iokp8ne2vtf.typeform.com/to/nITnXJdP"
-                    method="GET"
+                    className="launchlist-form"
+                    action="https://getlaunchlist.com/s/31vhCP"
+                    method="POST"
                   >
                     <input
                       type="email"

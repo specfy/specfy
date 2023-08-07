@@ -25,7 +25,7 @@ function QueryVal(req: FastifyRequest) {
       role: z.nativeEnum(PermType),
     })
     .strict()
-    .superRefine(valPermissions(req))
+    .superRefine(valPermissions(req, 'owner'))
     .superRefine(async (val, ctx) => {
       const count = await prisma.perms.count({
         where: {

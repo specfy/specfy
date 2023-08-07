@@ -6,8 +6,7 @@ import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 
 import { createOrg } from '../../../api';
-import { isError, isValidationError } from '../../../api/helpers';
-import { i18n } from '../../../common/i18n';
+import { handleErrors, isError } from '../../../api/helpers';
 import { slugify, titleSuffix } from '../../../common/string';
 import { Card } from '../../../components/Card';
 import { Button } from '../../../components/Form/Button';
@@ -33,12 +32,7 @@ export const OrgCreate: React.FC = () => {
       name,
     });
     if (isError(res)) {
-      if (isValidationError(res)) {
-        setErrors(res.error.fields);
-      } else {
-        toast.add({ title: i18n.errorOccurred, status: 'error' });
-      }
-      return;
+      return handleErrors(res, toast, setErrors);
     }
 
     setErrors({});

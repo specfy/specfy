@@ -11,6 +11,7 @@ import { Container } from '../../components/Container';
 import { NotFound } from '../../components/NotFound';
 import { OrgHeader } from '../../components/Org/Header';
 import { Sidebar } from '../../components/Sidebar';
+import { useAuth } from '../../hooks/useAuth';
 import type { RouteOrg } from '../../types/routes';
 import { ProjectCreate } from '../Project/Create';
 
@@ -22,6 +23,7 @@ import { OrgSettings } from './Settings';
 import cls from './index.module.scss';
 
 export const Org: React.FC = () => {
+  const { setCtx } = useAuth();
   const params = useParams<Partial<RouteOrg>>() as RouteOrg;
 
   // Data
@@ -39,6 +41,7 @@ export const Org: React.FC = () => {
   useEffect(() => {
     if (org) {
       setLastOrg(org.id);
+      setCtx({ orgId: org.id });
     }
   }, [org]);
 

@@ -8,7 +8,11 @@ import {
   shouldBeProtected,
   shouldNotAllowQueryParams,
 } from '../../../test/helpers.js';
-import { seedSimpleUser, seedWithOrg } from '../../../test/seed/seed.js';
+import {
+  seedSimpleUser,
+  seedWithOrg,
+  seedWithOrgViewer,
+} from '../../../test/seed/seed.js';
 
 let t: TestSetup;
 beforeAll(async () => {
@@ -33,6 +37,22 @@ describe('DELETE /invitations/:id', () => {
       Querystring: { random: 'world' },
     });
     await shouldNotAllowQueryParams(res);
+  });
+
+  it('should not allow viewer', async () => {
+    const { token, org, ownerToken } = await seedWithOrgViewer();
+    // Create
+    const post = await t.fetch.post('/0/invitations', {
+      token: ownerToken,
+      Body: { orgId: org.id, email: 'foobar@example.com', role: 'viewer' },
+    });
+    isSuccess(post.json);
+
+    // Delete
+    const del = await t.fetch.delete(`/0/invitations/${post.json.data.id}`, {
+      token,
+    });
+    expect(del.statusCode).toBe(403);
   });
 
   it('should delete one invitation', async () => {

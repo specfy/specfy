@@ -84,6 +84,6 @@ describe('POST /invitations', () => {
         role: 'viewer',
       },
     });
-    isValidationError(post.json);
+    expect(post.statusCode).toBe(403);
   });
 });

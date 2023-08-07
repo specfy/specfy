@@ -1,7 +1,7 @@
 import type { FastifyPluginCallback } from 'fastify';
 
 import { noQuery } from '../../../middlewares/noQuery.js';
-import { toApiOrg } from '../../../models/orgs/formatter.js';
+import { toApiOrgList } from '../../../models/orgs/formatter.js';
 import type { ListOrgs } from '../../../types/api/index.js';
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
@@ -16,7 +16,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
           continue;
         }
 
-        orgs.push(toApiOrg(perm.Org));
+        orgs.push(toApiOrgList(perm.Org));
       }
 
       return res.status(200).send({

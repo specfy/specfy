@@ -80,15 +80,7 @@ describe('GET /jobs/:job_id', () => {
       Querystring: { org_id: createOrgId(), project_id: project.id },
     });
 
-    isValidationError(res.json);
-    expect(res.json.error.form).toStrictEqual([
-      {
-        code: 'forbidden',
-        message:
-          "Targeted resource doesn't exists or you don't have the permissions",
-        path: [],
-      },
-    ]);
+    expect(res.statusCode).toBe(403);
   });
 
   it('should error on wrong project id', async () => {
@@ -99,15 +91,7 @@ describe('GET /jobs/:job_id', () => {
       Querystring: { org_id: org.id, project_id: nanoid() },
     });
 
-    isValidationError(res.json);
-    expect(res.json.error.form).toStrictEqual([
-      {
-        code: 'forbidden',
-        message:
-          "Targeted resource doesn't exists or you don't have the permissions",
-        path: [],
-      },
-    ]);
+    expect(res.statusCode).toBe(403);
   });
 
   it('should error on wrong id format', async () => {

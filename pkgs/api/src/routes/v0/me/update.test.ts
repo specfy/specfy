@@ -48,7 +48,6 @@ describe('PUT /me', () => {
 
     isSuccess(res.json);
     expect(res.statusCode).toBe(200);
-    expect(res.json.data.name).toStrictEqual(name);
   });
 
   it('should forbid other changes', async () => {

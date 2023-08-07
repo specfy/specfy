@@ -2,7 +2,7 @@ import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
 import type { TestSetup } from '../../../test/each.js';
 import { setupAfterAll, setupBeforeAll } from '../../../test/each.js';
-import { isSuccess, isValidationError } from '../../../test/fetch.js';
+import { isSuccess } from '../../../test/fetch.js';
 import {
   shouldBeProtected,
   shouldNotAllowQueryParams,
@@ -111,15 +111,7 @@ describe('GET /documents', () => {
       Querystring: { org_id: seed1.org.id, project_id: project.id },
     });
 
-    isValidationError(res.json);
-    expect(res.json.error.form).toStrictEqual([
-      {
-        code: 'forbidden',
-        message:
-          "Targeted resource doesn't exists or you don't have the permissions",
-        path: [],
-      },
-    ]);
+    expect(res.statusCode).toBe(403);
   });
 
   it('should filter by type: rfc', async () => {

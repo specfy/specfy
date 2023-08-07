@@ -71,7 +71,7 @@ export const Invitation = ({
             <Container className="border border-solid border-[#eaeaea] rounded my-[40px] p-[32px]">
               <Section className="mt-[12px]">
                 <Img
-                  src={`${BASE_URL}/public/logo.png`}
+                  src={`${BASE_URL}/logo.png`}
                   width="40"
                   height="40"
                   alt="Specfy"
@@ -115,7 +115,7 @@ export const Invitation = ({
                   </Column>
                   <Column align="center">
                     <Img
-                      src={`${BASE_URL}/public/arrow-right.png`}
+                      src={`${BASE_URL}/arrow-right.png`}
                       width="14"
                       height="14"
                       alt="invited you to"
@@ -124,7 +124,7 @@ export const Invitation = ({
                   <Column align="left">
                     {org.avatarUrl ? (
                       <Img
-                        className="rounded-full"
+                        className="rounded-4"
                         src={org.avatarUrl}
                         width="64"
                         height="64"
@@ -143,7 +143,7 @@ export const Invitation = ({
                 <Button
                   pX={20}
                   pY={12}
-                  className="bg-[#3e63dd] rounded text-white text-[12px] font-semibold no-underline text-center"
+                  className="bg-[#242d3c] rounded text-white text-[12px] font-semibold no-underline text-center"
                   href={inviteLink}
                 >
                   Join the org

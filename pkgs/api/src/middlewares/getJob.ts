@@ -16,7 +16,7 @@ export function QueryVal(req: FastifyRequest) {
       job_id: schemaId,
     })
     .strict()
-    .superRefine(valPermissions(req));
+    .superRefine(valPermissions(req, 'viewer'));
 }
 
 export const getJob: PreHandler<{

@@ -20,7 +20,7 @@ function QueryVal(req: FastifyRequest) {
     })
     .strict()
     .partial({ project_id: true })
-    .superRefine(valPermissions(req));
+    .superRefine(valPermissions(req, 'owner'));
 }
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {

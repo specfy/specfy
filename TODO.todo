@@ -12,14 +12,14 @@ Global:
   ✔ Title to all pages @done(23-06-18 17:05)
   ✔ Favicon @done(23-06-18 17:08)
   - Block refresh / quit when there are pending changes
-  - Remove antd
+  ✔ Remove antd @done(23-08-03 19:02)
     ✔ Layout @done(23-07-28 11:38)
     ✔ Checkbox @done(23-07-31 11:45)
     ✔ Input @done(23-07-31 15:58)
     ✔ Button @done(23-07-31 15:57)
     ✔ Tag @done(23-07-28 11:21)
     ✔ Typography @done(23-07-31 14:31)
-    - Select
+    ✔ Select @done(23-08-03 19:02)
     ✔ Tooltip @done(23-07-31 18:18)
     ✔ Anchor @done(23-08-01 15:29)
     ✔ Dropdown @done(23-08-01 14:24)
@@ -78,7 +78,7 @@ Project:
     ✔ Handle error @done(23-06-21 17:05)
   ✔ Creation @done(23-03-25 23:30)
     ✔ Reserved name @done(23-07-27 11:54)
-    - Permission check
+    ✔ Permission check @done(23-08-03 11:02)
     ✔ Unit Test @done(23-04-04 17:26)
     ✔ Validation @done(23-03-28 16:11)
     - Unit Test activity
@@ -96,11 +96,11 @@ Project:
     - Unit Test activity
     ✔ Validation @done(23-03-29 14:42)
   ✔ Update @done(23-03-29 14:42)
-    - Permission check
+    ✔ Permission check @done(23-08-03 11:02)
     - Unit Test activity
     ✔ Validation @done(23-03-29 14:42)
   ✔ Delete @done(23-03-29 14:42)
-    - Permission check
+    ✔ Permission check @done(23-08-03 11:03)
     ✔ Unit test @done(23-04-04 11:20)
     ✔ Validation @done(23-03-29 14:43)
   - archivage
@@ -133,10 +133,10 @@ User:
     - Case insensitive search
     ✘ Email validation @cancelled(23-06-29 17:07)
     ✔ User search API for team @done(23-06-29 17:07)
-  - Invite
+  ✔ Invite @done(23-08-03 14:13)
     ✔ Invite new user from team @done(23-06-18 14:40)
     ✔ Invitation par email @done(23-06-18 14:40)
-    - Send email
+    ✔ Send email @done(23-08-03 14:13)
   ✔ Rename @done(23-04-24 17:01)
     ✔ Unit test @done(23-04-24 17:01)
   ✔ Suppression de compte @done(23-04-24 17:01)
@@ -151,18 +151,18 @@ Permissions:
     ✔ Validation @done(23-03-30 12:06)
     - Unit Test activity
     ✔ Unit Test @done(23-04-03 16:02)
-    - Permission check
+    ✔ Permission check @done(23-08-03 11:02)
     - Activity
   ✔ Remove @done(23-03-29 15:55)
     ✔ Validation @done(23-03-30 12:06)
     ✔ Unit Test @done(23-04-03 16:02)
-    - Permission check
+    ✔ Permission check @done(23-08-03 11:02)
     - Activity
 
 
 API:
   ✔ Handle pagination correctly @done(23-03-25 23:23)
-  - Middelware: Rate Limit
+  ✔ Middelware: Rate Limit @done(23-08-03 12:31)
   ✔ Deploy @done(23-06-14 15:19)
 
 
@@ -175,7 +175,7 @@ Components:
   ✔ List @done(23-03-29 15:15)
     ✔ Unit Test @done(23-04-03 12:28)
     ✔ Validation @done(23-03-29 15:15)
-  - Click to create + Click to add c'est vraiment chiant
+  ✔ Click to create + Click to add c'est vraiment chiant @done(23-08-03 19:03)
   - Autocomplete supported dans la page de creation de composant
   ✔ Changer les ports @done(23-07-07 20:43)
   - Quand on change l'host on devrait bouger le composant dans le graph pour fit la boudingBox
@@ -228,17 +228,17 @@ Revision:
     ✔ Unit Test @done(23-04-04 17:10)
   ✔ Edition @done(23-03-27 12:24)
     ✔ Validation @done(23-03-30 11:51)
-    - Permission
+    ✔ Permission @done(23-08-03 11:02)
     - Unit Test activity
     ✔ Unit Test @done(23-04-04 17:10)
-  - Close
+  ✔ Close @done(23-08-03 11:54)
     ✔ Validation @done(23-03-30 11:51)
-    - Permission
+    ✔ Permission @done(23-08-03 11:02)
     - Unit Test activity
     ✔ Unit Test @done(23-04-04 17:10)
-  - Lock
+  ✔ Lock @done(23-08-03 11:54)
     ✔ Validation @done(23-03-30 11:51)
-    - Permission
+    ✔ Permission @done(23-08-03 11:02)
     - Unit Test activity
     ✔ Unit Test @done(23-04-04 17:10)
   ✔ Timeline @done(23-06-29 17:05)
@@ -264,6 +264,7 @@ Revision:
   ✔ Unit test @done(23-07-11 16:31)
   ✔ BUG: with seed PR, can't merge one document that supposedly doesn't exists, but that should have been caught by rebase check @done(23-07-11 14:49)
   - BUG: when merging sometimes it pops the change again in staging, this is a desync with originalStore
+  - ISSUE: diffing upload does not work because uid are always different
 
 
 Diff:
@@ -276,7 +277,7 @@ Activities:
     - Filtre:
       ✔ Org @done(23-03-29 15:09)
       ✔ Projet @done(23-04-03 12:15)
-      - Revision
+      ✔ Revision @done(23-08-07 08:48)
       - Composant
       - Document
     ✔ Validation @done(23-03-29 15:09)
@@ -331,11 +332,11 @@ Org:
       ✔ Unit test @done(23-04-24 15:10)
       ✔ Reserved name @done(23-07-27 11:28)
       ✔ Handle error @done(23-04-24 15:10)
-      - Permissions
+      ✔ Permissions @done(23-08-03 11:02)
     - Change id
     ✔ Delete @done(23-04-24 14:17)
       ✔ Unit Test @done(23-04-24 14:17)
-      - Permissions
+      ✔ Permissions @done(23-08-03 11:02)
   ✔ Switch in the UI @done(23-03-27 17:46)
   ✔ Editer le graph d'organization @done(23-07-14 12:39)
     ✔ Auto update org graph @done(23-07-07 20:45)

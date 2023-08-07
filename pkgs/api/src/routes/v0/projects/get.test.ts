@@ -73,15 +73,7 @@ describe('GET /projects/:org_id/:project_slug', () => {
       token,
     });
 
-    isValidationError(res.json);
-    expect(res.json.error.form).toStrictEqual([
-      {
-        code: 'forbidden',
-        message:
-          "Targeted resource doesn't exists or you don't have the permissions",
-        path: [],
-      },
-    ]);
+    expect(res.statusCode).toBe(403);
   });
 
   it('should error on wrong format projectId', async () => {

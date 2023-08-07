@@ -4,10 +4,12 @@ import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
 import { titleSuffix } from '../../../../common/string';
+import { Banner } from '../../../../components/Banner';
 import { Container } from '../../../../components/Container';
 import { Flex } from '../../../../components/Flex';
 import { TeamInvite } from '../../../../components/Team/Invite';
 import { Subdued } from '../../../../components/Text';
+import { useAuth } from '../../../../hooks/useAuth';
 import type { RouteOrg } from '../../../../types/routes';
 
 import { SettingsTeamList } from './List';
@@ -18,10 +20,12 @@ export const SettingsTeam: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   org,
   params,
 }) => {
+  const { currentPerm } = useAuth();
   const [tab, setTab] = useState('tab1');
   const onInvite = () => {
     setTab('tab2');
   };
+  const isOwner = currentPerm?.role === 'owner';
 
   return (
     <Container noPadding>
@@ -35,7 +39,11 @@ export const SettingsTeam: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
           </div>
         </div>
 
-        <TeamInvite org={org} onInvite={onInvite} />
+        {isOwner ? (
+          <TeamInvite org={org} onInvite={onInvite} />
+        ) : (
+          <Banner>Only the owner can invite new people to the team</Banner>
+        )}
 
         <Tabs.Root
           className="rx_tabsRoot"
@@ -47,9 +55,11 @@ export const SettingsTeam: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
             <Tabs.Trigger className="rx_tabsTrigger" value="tab1">
               Members
             </Tabs.Trigger>
-            <Tabs.Trigger className="rx_tabsTrigger" value="tab2">
-              Invitations
-            </Tabs.Trigger>
+            {isOwner && (
+              <Tabs.Trigger className="rx_tabsTrigger" value="tab2">
+                Invitations
+              </Tabs.Trigger>
+            )}
           </Tabs.List>
           <Tabs.Content className="rx_tabsContent" value="tab1">
             <SettingsTeamList params={params} />

@@ -9,7 +9,12 @@ import {
   shouldEnforceBody,
   shouldNotAllowQueryParams,
 } from '../../../test/helpers.js';
-import { seedSimpleUser, seedWithProject } from '../../../test/seed/seed.js';
+import { seedProject } from '../../../test/seed/projects.js';
+import {
+  seedSimpleUser,
+  seedWithOrgViewer,
+  seedWithProject,
+} from '../../../test/seed/seed.js';
 import type { ApiBlobCreateDocument } from '../../../types/api/index.js';
 
 let t: TestSetup;
@@ -39,6 +44,31 @@ describe('POST /revisions/upload -- General', () => {
 
   it('should enforce body validation', async () => {
     await shouldEnforceBody(t.fetch, '/0/revisions/upload', 'POST');
+  });
+
+  it('should not allow viewer', async () => {
+    const { token, org, owner } = await seedWithOrgViewer();
+    const project = await seedProject(owner, org);
+    const name = `test ${nanoid()}`;
+    const res = await t.fetch.post('/0/revisions/upload', {
+      token,
+      Body: {
+        blobs: [
+          {
+            path: '/Readme.md',
+            content: 'Hello world\n',
+          },
+        ],
+        description: { content: [], type: 'doc' },
+        name: name,
+        orgId: org.id,
+        projectId: project.id,
+        source: 'github',
+        stack: null,
+      } as any,
+    });
+
+    expect(res.statusCode).toBe(403);
   });
 });
 
@@ -151,7 +181,7 @@ describe('POST /revisions/upload -- Documents', () => {
     isValidationError(res.json);
     expect(res.json.error.fields).toStrictEqual({
       'blobs.0.path': {
-        code: 'forbidden',
+        code: 'invalid',
         message: 'Root level path ("/") is not allowed',
         path: ['blobs', 0, 'path'],
       },

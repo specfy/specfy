@@ -9,7 +9,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
     const user = req.me!;
 
     return res.status(200).send({
-      data: toApiMe(user),
+      data: toApiMe(user, req.perms!),
     });
   });
   done();

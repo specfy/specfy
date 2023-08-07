@@ -6,12 +6,19 @@ import type { FastifyPluginCallback } from 'fastify';
 
 import { forbidden } from '../../../common/errors.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
+import type { PostGithubWebhook } from '../../../models/github/types.api.js';
 import { webhookService } from '../../../services/github/index.js';
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
-  fastify.post<{ Reply: any; Body: any }>(
+  fastify.post<PostGithubWebhook>(
     '/',
-    { preHandler: [noQuery] },
+    {
+      preHandler: [noQuery],
+      config: {
+        // @ts-expect-error TODO: remove this after 8.0.4 is released
+        rateLimit: false,
+      },
+    },
     async function (req, res) {
       const id = req.headers['x-github-delivery'];
       if (!id || typeof id !== 'string') {

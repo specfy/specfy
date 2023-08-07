@@ -14,6 +14,7 @@ import { FlowDetails } from '../../../components/Flow/Details';
 import { Toolbar } from '../../../components/Flow/Toolbar';
 import { Button } from '../../../components/Form/Button';
 import { Loading } from '../../../components/Loading';
+import { useAuth } from '../../../hooks/useAuth';
 import { useToast } from '../../../hooks/useToast';
 import type { RouteOrg } from '../../../types/routes';
 
@@ -23,7 +24,9 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   org,
   params,
 }) => {
+  const { currentPerm } = useAuth();
   const toast = useToast();
+  const canEdit = currentPerm?.role !== 'viewer';
 
   const rf = useReactFlow();
   const resFlow = useGetFlow({ org_id: params.org_id, flow_id: org.flowId });
@@ -105,31 +108,33 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
               flow={flow}
               onRelationChange={() => null}
             />
-            <Toolbar left top visible>
-              <Toolbar.Inner>
-                {!editing && (
-                  <Button onClick={() => setEditing(true)} display="ghost">
-                    <IconEdit />
-                    Edit
-                  </Button>
-                )}
-                {editing && (
-                  <>
-                    <Button
-                      onClick={() => onSave()}
-                      display="ghost"
-                      loading={publishing}
-                    >
-                      <IconCheck />
-                      Publish
+            {canEdit && (
+              <Toolbar left top visible>
+                <Toolbar.Inner>
+                  {!editing && (
+                    <Button onClick={() => setEditing(true)} display="ghost">
+                      <IconEdit />
+                      Edit
                     </Button>
-                    <Button onClick={() => onCancel()} display="ghost">
-                      <IconX />
-                    </Button>
-                  </>
-                )}
-              </Toolbar.Inner>
-            </Toolbar>
+                  )}
+                  {editing && (
+                    <>
+                      <Button
+                        onClick={() => onSave()}
+                        display="ghost"
+                        loading={publishing}
+                      >
+                        <IconCheck />
+                        Publish
+                      </Button>
+                      <Button onClick={() => onCancel()} display="ghost">
+                        <IconX />
+                      </Button>
+                    </>
+                  )}
+                </Toolbar.Inner>
+              </Toolbar>
+            )}
             <Toolbar bottom visible>
               <Toolbar.Zoom />
               {/* <Toolbar.History /> */}

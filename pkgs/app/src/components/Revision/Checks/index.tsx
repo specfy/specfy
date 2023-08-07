@@ -28,8 +28,9 @@ export const Checks: React.FC<{
   rev: ApiRevision;
   checks: ListRevisionChecks['Success']['data'];
   qp: ListRevisionChecks['Querystring'];
+  canEdit: boolean;
   onClick: (status: ApiRevision['status']) => void;
-}> = ({ rev, checks, qp, onClick }) => {
+}> = ({ rev, checks, qp, canEdit, onClick }) => {
   const toast = useToast();
   const autoMerge = useSearchParam('automerge');
   const navigate = useNavigate();
@@ -104,52 +105,58 @@ export const Checks: React.FC<{
             <IconExclamationCircle /> This revision is not up to date
           </div>
           <div>
-            <Button onClick={onClickRebase} loading={rebasing}>
+            <Button
+              onClick={onClickRebase}
+              loading={rebasing}
+              disabled={!canEdit}
+            >
               Rebase
             </Button>
           </div>
         </div>
       )}
 
-      <div className={classnames(cls.checkLine, rev.merged && cls.merged)}>
-        <Button
-          display={rev.merged ? 'ghost' : 'primary'}
-          disabled={!checks.canMerge}
-          loading={merging}
-          className={classnames(
-            cls.mergeButton,
-            checks.canMerge && !rev.merged && cls.success,
-            rev.merged && cls.merged
-          )}
-          onClick={onMerge}
-        >
-          <IconGitPullRequest /> {rev.merged ? 'Merged' : 'Merge'}
-        </Button>
-        <div className={cls.mergeAction}>
-          {rev.status === 'draft' && <>This revision is still in draft</>}
-          {rev.status === 'closed' && (
-            <span>
-              This revision was closed <Time time={rev.closedAt!} />
-            </span>
-          )}
-          {rev.merged && (
-            <span>
-              <Time time={rev.mergedAt!} />
-            </span>
-          )}
-          {!rev.merged &&
-            rev.status !== 'closed' &&
-            (rev.status === 'draft' ? (
-              <Button onClick={() => onClick('waiting')}>
-                <IconEyeCheck size={16} /> Set ready for Review
-              </Button>
-            ) : (
-              <Button display="ghost" onClick={() => onClick('draft')}>
-                <IconEyeOff size={16} /> Convert to Draft
-              </Button>
-            ))}
+      {canEdit && (
+        <div className={classnames(cls.checkLine, rev.merged && cls.merged)}>
+          <Button
+            display={rev.merged ? 'ghost' : 'primary'}
+            disabled={!checks.canMerge}
+            loading={merging}
+            className={classnames(
+              cls.mergeButton,
+              checks.canMerge && !rev.merged && cls.success,
+              rev.merged && cls.merged
+            )}
+            onClick={onMerge}
+          >
+            <IconGitPullRequest /> {rev.merged ? 'Merged' : 'Merge'}
+          </Button>
+          <div className={cls.mergeAction}>
+            {rev.status === 'draft' && <>This revision is still in draft</>}
+            {rev.status === 'closed' && (
+              <span>
+                This revision was closed <Time time={rev.closedAt!} />
+              </span>
+            )}
+            {rev.merged && (
+              <span>
+                <Time time={rev.mergedAt!} />
+              </span>
+            )}
+            {!rev.merged &&
+              rev.status !== 'closed' &&
+              (rev.status === 'draft' ? (
+                <Button onClick={() => onClick('waiting')}>
+                  <IconEyeCheck size={16} /> Set ready for Review
+                </Button>
+              ) : (
+                <Button display="ghost" onClick={() => onClick('draft')}>
+                  <IconEyeOff size={16} /> Convert to Draft
+                </Button>
+              ))}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

@@ -61,11 +61,7 @@ const InternalLine: React.FC<
   const [show, setShow] = useState(false);
   const ref = useRef(null);
 
-  useClickAway(ref, (e) => {
-    if ((e.target as HTMLElement).closest('.ant-select-dropdown')) {
-      return;
-    }
-
+  useClickAway(ref, () => {
     setShow(false);
   });
 

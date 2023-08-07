@@ -69,7 +69,7 @@ function BodyVal(req: FastifyRequest) {
             if (blob.path === '/') {
               ctx.addIssue({
                 code: z.ZodIssueCode.custom,
-                params: { code: 'forbidden' },
+                params: { code: 'invalid' },
                 message: 'Root level path ("/") is not allowed',
                 path: [index, 'path'],
               });
@@ -82,7 +82,7 @@ function BodyVal(req: FastifyRequest) {
     })
     .strict()
     .partial({ autoLayout: true })
-    .superRefine(valPermissions(req));
+    .superRefine(valPermissions(req, 'contributor'));
 }
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {

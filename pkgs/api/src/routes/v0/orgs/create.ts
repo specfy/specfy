@@ -7,7 +7,7 @@ import { prisma } from '../../../db/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import { createOrg } from '../../../models/index.js';
 import { forbiddenOrgName } from '../../../models/orgs/constants.js';
-import { toApiOrg } from '../../../models/orgs/formatter.js';
+import { toApiOrgPublic } from '../../../models/orgs/formatter.js';
 import type { PostOrg } from '../../../types/api/index.js';
 
 const OrgVal = z
@@ -16,7 +16,7 @@ const OrgVal = z
       if (forbiddenOrgName.includes(val)) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
-          params: { code: 'forbidden' },
+          params: { code: 'invalid' },
           message: 'This id is not allowed',
         });
       }
@@ -50,7 +50,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         return createOrg(tx, req.me!, data);
       });
 
-      return res.status(200).send(toApiOrg(org));
+      return res.status(200).send(toApiOrgPublic(org));
     }
   );
   done();

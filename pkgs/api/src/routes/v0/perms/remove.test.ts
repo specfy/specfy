@@ -4,7 +4,7 @@ import { nanoid } from '../../../common/id.js';
 import { prisma } from '../../../db/index.js';
 import type { TestSetup } from '../../../test/each.js';
 import { setupAfterAll, setupBeforeAll } from '../../../test/each.js';
-import { isSuccess, isValidationError } from '../../../test/fetch.js';
+import { isSuccess } from '../../../test/fetch.js';
 import {
   shouldBeProtected,
   shouldNotAllowQueryParams,
@@ -12,6 +12,7 @@ import {
 import {
   seedSimpleUser,
   seedWithOrg,
+  seedWithOrgViewer,
   seedWithProject,
 } from '../../../test/seed/seed.js';
 
@@ -40,6 +41,29 @@ describe('DELETE /perms', () => {
     await shouldNotAllowQueryParams(res);
   });
 
+  it('should not allow viewer', async () => {
+    const { token, org, user } = await seedWithOrgViewer();
+
+    // Insert a permissions for the simple user
+    await prisma.perms.create({
+      data: {
+        id: nanoid(),
+        role: 'viewer',
+        userId: user.id,
+        orgId: org.id,
+      },
+    });
+
+    const res = await t.fetch.delete('/0/perms', {
+      token,
+      Body: {
+        org_id: org.id,
+        userId: user.id,
+      },
+    });
+    expect(res.statusCode).toBe(403);
+  });
+
   it('should delete own perm', async () => {
     const { token, user, org } = await seedWithOrg();
     const res = await t.fetch.delete('/0/perms', {
@@ -60,7 +84,7 @@ describe('DELETE /perms', () => {
         org_id: org.id,
       },
     });
-    isValidationError(resGet.json);
+    expect(resGet.statusCode).toBe(403);
   });
 
   it('should delete someone else perm', async () => {
