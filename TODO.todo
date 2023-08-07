@@ -264,6 +264,7 @@ Revision:
   ✔ Unit test @done(23-07-11 16:31)
   ✔ BUG: with seed PR, can't merge one document that supposedly doesn't exists, but that should have been caught by rebase check @done(23-07-11 14:49)
   - BUG: when merging sometimes it pops the change again in staging, this is a desync with originalStore
+  - ISSUE: diffing upload does not work because uid are always different
 
 
 Diff:
@@ -276,7 +277,7 @@ Activities:
     - Filtre:
       ✔ Org @done(23-03-29 15:09)
       ✔ Projet @done(23-04-03 12:15)
-      - Revision
+      ✔ Revision @done(23-08-07 08:48)
       - Composant
       - Document
     ✔ Validation @done(23-03-29 15:09)
