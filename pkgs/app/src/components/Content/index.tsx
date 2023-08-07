@@ -10,7 +10,7 @@ import { Diff, Hunk, tokenize, markEdits } from 'react-diff-view';
 import { PrismAsyncLight } from 'react-syntax-highlighter';
 import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import 'react-diff-view/style/index.css';
-import refractor from 'refractor';
+import { refractor } from 'refractor';
 
 import type { Payload } from '../../common/content';
 import { map } from '../../common/content';
