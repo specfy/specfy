@@ -72,7 +72,7 @@ WORKDIR /app/tmp
 COPY . /app/tmp
 
 # Install the dependencies
-RUN npm ci
+RUN npm install
 
 # Build the source code
 RUN true \
@@ -110,7 +110,7 @@ The output will look like this:
 => => transferring context: 68.01kB                                                                                   0.1s
 => [2/5] WORKDIR /app/tmp                                                                                             0.2s
 => [3/5] COPY . /app/tmp                                                                                              0.1s
-=> [4/5] RUN npm ci                                                                                                  47.4s
+=> [4/5] RUN npm install                                                                                              47.4s
 => [5/5] RUN true   && cd pkgs/api   && npm run prod:build                                                            8.6s
 => exporting to image                                                                                                10.3s
 => => exporting layers                                                                                               10.3s
@@ -150,7 +150,34 @@ However, one drawback is the large size of the final image, which **currently st
 
 In the next steps, we will focus on optimizing the Docker build process to reduce the image size while maintaining the necessary functionality.
 
-## 2. Using Slim or Alpine images
+## 2. .dockerignore
+
+This is the initial step. We won't go too much into details but it's very important to ignore some folders and can drastically change the build time or size. Especially if you are building locally.
+An other important aspect is to not push your [secrets in the image](https://www.bleepingcomputer.com/news/security/thousands-of-images-on-docker-hub-leak-auth-secrets-private-keys/). Even if you delete them inside, they will live in the intermediate layers.
+
+```dockerignore
+# Private keys can be in there
+**/.env
+**/personal-service-account.json
+
+# Dependencies
+**/node_modules
+
+# Useless and heavy folders
+**/build
+**/dist
+[...]
+**/.next
+**/.vercel
+**/.react-email
+
+# Other useless files in the image
+.git/
+.github/
+[...]
+```
+
+## 3. Using Slim or Alpine images
 
 First thing we can do is to use Slim or Alpine image.
 While [Alpine](https://www.docker.com/blog/how-to-use-the-alpine-docker-official-image) images are often recommended for their lightweight nature, it's important to exercise caution, especially with NodeJS applications.
@@ -168,7 +195,7 @@ WORKDIR /app/tmp
 COPY . /app/tmp
 
 # Install the dependencies
-RUN npm ci
+RUN npm install
 
 # Build the backend
 RUN true \
@@ -212,7 +239,7 @@ That was an easy step and we managed to reduce our image size by 36%. Classic di
 Additionally, the build time improved by 47% (~40seconds), amazing especially considering that it was achieved with just one line of modification.
 Please note that this base image is still ~230MB (uncompressed), so we will never reach lower than that.
 
-## 3. Multi Stage build
+## 4. Multi Stage build
 
 We now turn our attention to the multi-stage builds trick. For those unfamiliar with this concept, multi-stage builds are like **portals within a Dockerfile**.
 You can simply change the context entirely but you are allowed to keep some things with you, and only the final stage will be sent.
@@ -221,7 +248,9 @@ This is perfect to copy the compiled source and completely removes `node_modules
 <Banner type="info">Running `RUN rm -rf node_modules` will actually create a new layer of 0B and not reduce the final image size</Banner>
 
 ```dockerfile
-# Base image
+# ------------------
+# New tmp image
+# ------------------
 FROM node:18.16.1-bullseye-slim as tmp
 
 WORKDIR /app/tmp
@@ -230,14 +259,16 @@ WORKDIR /app/tmp
 COPY . /app/tmp
 
 # Install the dependencies
-RUN npm ci
+RUN npm install
 
 # Build the backend
 RUN true \
   && cd pkgs/api \
   && npm run prod:build
 
+# ------------------
 # Final image
+# ------------------
 FROM node:18.16.1-bullseye-slim as web
 
 # BONUS: Do not use root to run the app to avoid privilege escalation, container escape, etc.
@@ -292,27 +323,36 @@ This is portal we were talking about, we created a second image, where the only 
 In this example I copied all the files from the previous steps, but we still managed to **save ~300MB**, at the relative cost of few seconds of build time.
 
 
-## 4. Caching Dependencies
+## 5. Caching Dependencies
 
 You will have notice at this point, installing the dependencies is the main **bottleneck**. This step often takes around 30 seconds, even when the dependencies themselves haven't changed.
 That's because if your repo change it will invalidate all the subsequent cached layers as soon as you do `COPY . /app/tmp`
-To address this issue, we can introduce another multi-stage image to leverage caching effectively. Let's examine the updated Dockerfile:
+To address this issue, we can introduce another multi-stage image to leverage caching effectively.
+
+Let's examine the updated Dockerfile:
 
 ```dockerfile
+# ------------------
 # package.json cache
-FROM alpine:latest as deps
+# ------------------
+FROM node:18.16.1-bullseye-slim as deps
 
-RUN apk add --no-cache bash jq
+# We need JQ to clean the package.json
+RUN apt update && apt-get install -y bash jq
 
 WORKDIR /tmp
 
-# Each package.json needs to be copied manually unfortunately
+# Copy all the package.json
 COPY package.json ./
 COPY pkgs/api/package.json ./pkgs/api/package.json
-COPY pkgs/app/package.json ./pkgs/app/package.json
-COPY pkgs/website/package.json ./pkgs/website/package.json
+COPY package-lock.json  ./
 
-# Base image
+# Install every dependencies
+RUN npm install
+
+# ------------------
+# New tmp image
+# ------------------
 FROM node:18.16.1-bullseye-slim as tmp
 
 WORKDIR /app/tmp
@@ -320,11 +360,6 @@ WORKDIR /app/tmp
 # Copy and install dependencies separately from the app's code
 # To leverage Docker's cache when no dependency has changed
 COPY --from=deps /tmp ./
-
-COPY package-lock.json  ./
-
-# Install every dependencies
-RUN npm ci
 
 # Copy source code
 COPY . /app/tmp
@@ -334,7 +369,9 @@ RUN true \
   && cd pkgs/api \
   && npm run prod:build
 
+# ------------------
 # Final image
+# ------------------
 FROM node:18.16.1-bullseye-slim as web
 
 # BONUS: Do not use root to run the app
@@ -346,8 +383,6 @@ COPY --from=tmp --chown=node:node /app/tmp /app
 
 EXPOSE 8080
 ```
-
-<Banner>I prefer to execute `npm ci` on the second image for readability but it could be done in the `deps` image</Banner>
 
 In this enhanced Dockerfile, we introduce a new stage named `deps`. This stage solely copies the `package.json` files, enabling us to leverage Docker's caching mechanism effectively.
 
@@ -399,19 +434,13 @@ The result is a **significant improvement** in build time, particularly when onl
 ```bash
 [...]
 => CACHED [tmp  3/13] RUN mkdir -p ./pkgs/api/                                                                        0.0s
-=> CACHED [tmp  4/13] RUN mkdir -p ./pkgs/api/                                                                        0.0s
-=> CACHED [tmp  5/13] RUN mkdir -p ./pkgs/website/                                                                    0.0s
 => CACHED [deps 2/6] RUN apk add --no-cache bash jq                                                                   0.0s
 => CACHED [deps 3/6] COPY package.json /tmp                                                                           0.0s
 => CACHED [deps 4/6] COPY pkgs/api/package.json /tmp/api_package.json                                                 0.0s
-=> CACHED [deps 5/6] COPY pkgs/app/package.json /tmp/app_package.json                                                 0.0s
-=> CACHED [deps 6/6] COPY pkgs/website/package.json /tmp/website_package.json                                         0.0s
 => CACHED [tmp  6/13] COPY --from=deps /tmp/package.json ./package.json                                               0.0s
 => CACHED [tmp  7/13] COPY --from=deps /tmp/api_package.json ./pkgs/api/package.json                                  0.0s
-=> CACHED [tmp  8/13] COPY --from=deps /tmp/app_package.json ./pkgs/app/package.json                                  0.0s
-=> CACHED [tmp  9/13] COPY --from=deps /tmp/website_package.json ./pkgs/website/package.json                          0.0s
 => CACHED [tmp 10/13] COPY package-lock.json  ./                                                                      0.0s
-=> CACHED [tmp 11/13] RUN npm ci                                                                                      0.0s
+=> CACHED [tmp 11/13] RUN npm install                                                                                 0.0s
 => [tmp 12/13] COPY . /app/tmp                                                                                        0.1s
 => [tmp 13/13] RUN true   && cd pkgs/api   && npm run prod:build                                                      8.5s
 => CACHED [web 2/3] WORKDIR /app                                                                                      0.0s
@@ -421,13 +450,13 @@ The result is a **significant improvement** in build time, particularly when onl
 ```
 
 
-## 5. Cleaning dependencies
+## 6. Cleaning dependencies
 
 While we have made significant progress in optimizing the build time, achieving a sub-20-second build time may prove challenging due to the compilation itself that often takes 10-15 seconds.
 At this stage, we must address the issue of the image size, which currently stands at 1.32GB. This size is far from ideal and can impact deployment efficiency, resource consumption, and scalability.
 
 
-### 5.1 Removing devDependencies
+### 6.1 Removing devDependencies
 
 We can remove the development dependencies that are no longer required once the source code has been built. This step ensures that we only retain the relevant dependencies needed for running the application, while discarding tools like Typescript, Webpack, and other development-specific dependencies.
 
@@ -485,11 +514,11 @@ With a simple one-liner, we have achieved remarkable results in terms of image s
 </div>
 
 
-### 5.2 Pre-Filtering
+### 6.2 Pre-Filtering
 
 An even better approach is to avoid downloading unnecessary dependencies altogether. This is the most challenging aspect of our optimization process as it goes beyond the scope of Docker itself.
 
-To accomplish this, I have chosen to implement a bash script that removes unnecessary dependencies before the `npm ci` command is executed. Alternatively, you can also consider using a different package.json file specifically tailored for production use. Unfortunately, unlike in Ruby, there is currently no built-in way to tag dependencies and selectively install them. Therefore, we must rely on manual intervention to achieve our goal.
+To accomplish this, I have chosen to implement a bash script that removes unnecessary dependencies before the `` command is executed. Alternatively, you can also consider using a different package.json file specifically tailored for production use. Unfortunately, unlike in Ruby, there is currently no built-in way to tag dependencies and selectively install them. Therefore, we must rely on manual intervention to achieve our goal.
 
 Dependencies that can be safely removed are: formatting libraries, testing libraries, release libraries, and any other libraries that are only required during development and not at compile time.
 
@@ -513,18 +542,18 @@ done
 ```
 
 ```dockerfile
+# ------------------
 # package.json cache
-FROM alpine:latest as deps
+# ------------------
+FROM node:18.16.1-bullseye-slim as deps
 
-RUN apk add --no-cache bash jq
+RUN apt update && apt-get install -y bash jq
 
 WORKDIR /tmp
 
-# Each package.json needs to b copied manually unfortunately
+# Each package.json needs to be copied manually unfortunately
 COPY prod/clean_package_json.sh package.json ./
 COPY pkgs/api/package.json ./pkgs/api/package.json
-COPY pkgs/app/package.json ./pkgs/app/package.json
-COPY pkgs/website/package.json ./pkgs/website/package.json
 
 RUN ./clean_package_json.sh './package.json'
 RUN ./clean_package_json.sh './**/*/package.json'
@@ -538,7 +567,7 @@ We don't save on the final image size since all `devDependencies` were already i
 
 <Banner type="info"><strong>Good to know:</strong> if you don't use this technique and you increment the `version` field when you release, it will invalidate the cache every time.</Banner>
 
-## 6. Own your stack
+## 7. Own your stack
 
 The last step is much more personal because there is no low hanging fruit anymore, yet my image still weights 613MB (uncompressed).
 To further refine the image, we need to delve into the layers themselves and identify any significant dependencies that may have inadvertently made their way into the image.
@@ -639,9 +668,9 @@ Although these results are significant, there is still a sense of bittersweetnes
 
 **To remember**:
 - Modifications to the repository that are not ignored by `.dockerignore` will break the cache, necessitating a complete rebuild.
-- **Deleting files** during the build will **not save size**
+- **Deleting files** during the build will **not save size** unless you are using Multi-Staged build.
 - Utilizing a **multi-stage build** approach simplifies the process of eliminating unnecessary layers.
-- **Cleaning up dependencies** plays a crucial role
+- **Cleaning up dependencies** plays a crucial role.
 
 
 ## Final docker image
@@ -652,7 +681,7 @@ Although these results are significant, there is still a sense of bittersweetnes
 # ------------------
 FROM alpine:latest as deps
 
-RUN apk add --no-cache bash jq
+RUN apt update && apt-get install -y bash jq
 
 WORKDIR /tmp
 
@@ -663,6 +692,11 @@ COPY pkgs/api/package.json ./pkgs/api/package.json
 # Remove unnecessary dependencies
 RUN ./clean_package_json.sh './package.json'
 RUN ./clean_package_json.sh './**/*/package.json'
+
+COPY package-lock.json  ./
+
+# Install every dependencies
+RUN npm install
 
 # ------------------
 # New tmp image
@@ -675,11 +709,6 @@ WORKDIR /app/tmp
 # Copy and install dependencies separately from the app's code
 # To leverage Docker's cache when no dependency has change
 COPY --from=deps /tmp ./
-
-COPY package-lock.json  ./
-
-# Install every dependencies
-RUN npm ci
 
 # At this stage we copy back all sources and overwrite package(s).json
 # This is expected since we already installed the dependencies we have cached what was important
@@ -701,9 +730,9 @@ RUN true \
 RUN true \
   && npm prune --omit=dev --omit=peer
 
-# ---- Web ----
-# Resulting new, minimal image
-# This image must have the minimum amount of layers
+# ------------------
+# Final image
+# ------------------
 FROM node:18.16.1-bullseye-slim as web
 
 ENV PORT=8080
@@ -723,8 +752,6 @@ EXPOSE 8080
 ## Bonus
 
 Just a few points that were not covered:
-
-- I didn't mention the obvious `.dockerignore`
 
 - I saved around 2MB after removing the source code, not that impactful but it's cleaner.
 
