@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://specfy.io"><img src="https://app.specfy.io/logo-full.svg" alt="Specfy"></a>
+  <a href="https://specfy.io"><img src="https://app.specfy.io/logo-full.svg" alt="Specfy" width="400"></a>
 </p>
 <p align="center">
     <em>Open-Source Stack Intelligence Platform for your engineering team</em>
