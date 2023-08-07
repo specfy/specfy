@@ -6,7 +6,7 @@
 </p>
 <p align="center">
   <a href="https://github.com/specfy/specfy/actions/workflows/main.yml" target="_blank">
-    <img src="https://img.shields.io/github/actions/workflow/status/specfy/specfy/main.yml?branch=master" alt="Build">
+    <img src="https://img.shields.io/github/actions/workflow/status/specfy/specfy/main.yml?branch=main" alt="Build">
   </a>
   <img alt="Codecov" src="https://img.shields.io/codecov/c/github/specfy/specfy">
 </p>
