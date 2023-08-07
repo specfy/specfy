@@ -20,7 +20,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@dagrejs/dagre": "1.0.2",
     "@fastify/autoload": "5.0.0",

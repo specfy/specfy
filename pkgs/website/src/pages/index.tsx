@@ -253,9 +253,9 @@ export default function Home() {
                 </h1>
                 <p className="mt-6 text-lg leading-8 text-gray-800">
                   Specfy extract metadata from your organization&apos;s
-                  repositories and build an exhaustive infrastructure
-                  documentation that helps onboarding, and managing your stack
-                  at scale
+                  repositories and automatically build an exhaustive
+                  infrastructure documentation that helps onboarding, and
+                  managing your stack at scale
                 </p>
                 <div className="mt-12 pt-2">
                   <form

@@ -24,5 +24,6 @@
     "@specfy/api": "file:../api",
     "react-email": "1.9.4",
     "tsup": "7.1.0"
-  }
+  },
+  "license": "MIT"
 }
