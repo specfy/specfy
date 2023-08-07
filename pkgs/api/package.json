@@ -65,7 +65,7 @@
     "@types/passport-jwt": "3.0.9",
     "@types/passport-local": "1.0.35",
     "@types/validator": "13.7.17",
-    "@vitest/coverage-c8": "^0.29.8",
+    "@vitest/coverage-c8": "^0.33.0",
     "colorette": "2.0.20",
     "fastify-cli": "5.7.1",
     "prisma-json-types-generator": "2.5.0",
@@ -76,6 +76,6 @@
     "typescript": "5.1.6",
     "undici": "5.23.0",
     "utility-types": "3.10.0",
-    "vitest": "0.29.8"
+    "vitest": "0.34.1"
   }
 }
