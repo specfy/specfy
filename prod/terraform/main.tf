@@ -4,11 +4,11 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = "4.72.1"
+      version = "4.75.1"
     }
     vercel = {
       source  = "vercel/vercel"
-      version = "~> 0.14"
+      version = "~> 0.15"
     }
   }
 }
