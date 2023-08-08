@@ -268,7 +268,7 @@ export default function Home() {
                   infrastructure documentation that helps onboarding, and
                   managing your stack at scale
                 </p>
-                <div className="mt-12 pt-2">
+                <div className="mt-12 pt-2" id="waitlist">
                   <Waitlist />
                 </div>
               </div>
@@ -454,9 +454,11 @@ export default function Home() {
                   </li>
                 </ul>
 
-                <button className="mt-10 w-full ring-1 ring-slate-400 rounded p-3 transition-all hover:bg-[#0b101b] hover:text-white">
-                  Get Started
-                </button>
+                <a href="#top">
+                  <button className="mt-10 w-full ring-1 ring-slate-400 rounded p-3 transition-all hover:bg-[#0b101b] hover:text-white">
+                    Coming Soon
+                  </button>
+                </a>
               </div>
             </div>
 
@@ -486,9 +488,11 @@ export default function Home() {
                   </li>
                 </ul>
 
-                <button className="mt-10 w-full ring-1 ring-slate-600 rounded p-3 transition-all hover:bg-white hover:text-[#0b101b]">
-                  Get Started
-                </button>
+                <a href="#top">
+                  <button className="mt-10 w-full ring-1 ring-slate-600 rounded p-3 transition-all hover:bg-white hover:text-[#0b101b]">
+                    Coming Soon
+                  </button>
+                </a>
               </div>
             </div>
 
@@ -516,9 +520,11 @@ export default function Home() {
                   </li>
                 </ul>
 
-                <button className="mt-10 w-full ring-1 ring-slate-400 rounded p-3 transition-all hover:bg-[#0b101b] hover:text-white">
-                  Get Started
-                </button>
+                <a href="#top">
+                  <button className="mt-10 w-full ring-1 ring-slate-400 rounded p-3 transition-all hover:bg-[#0b101b] hover:text-white">
+                    Coming Soon
+                  </button>
+                </a>
               </div>
             </div>
           </div>
