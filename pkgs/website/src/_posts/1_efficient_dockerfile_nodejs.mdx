@@ -179,7 +179,7 @@ An other important aspect is to not push your [secrets in the image](https://www
 
 ## 3. Using Slim or Alpine images
 
-First thing we can do is to use Slim or Alpine image.
+After this basic step, we can start optimizing the build by using Slim or Alpine image.
 While [Alpine](https://www.docker.com/blog/how-to-use-the-alpine-docker-official-image) images are often recommended for their lightweight nature, it's important to exercise caution, especially with NodeJS applications.
 
 Alpine images utilize musl libc, which operates slightly differently from the regular glibc. This difference can introduce issues such as segfaults, memory problems, DNS issues, and more, particularly when working with NodeJS. For example, at my previous job Algolia, we faced DNS errors while using Alpine in the Crawler (as mentioned in my [blog post](https://www.algolia.com/blog/engineering/30-days-to-improve-our-crawler-performance-by-50-percent/)) and Segfault when using Isolated V8.
@@ -694,7 +694,7 @@ Although these results are significant, there is still a sense of bittersweetnes
 # ------------------
 # package.json cache
 # ------------------
-FROM alpine:latest as deps
+FROM node:18.16.1-bullseye-slim as deps
 
 RUN apt update && apt-get install -y bash jq
 
