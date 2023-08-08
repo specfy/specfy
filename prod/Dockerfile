@@ -1,9 +1,9 @@
 # ------------------
 # package.json cache
 # ------------------
-FROM alpine:latest as deps
+FROM node:18.16.1-bullseye-slim as deps
 
-RUN apk add --no-cache bash jq
+RUN apt update && apt-get install -y bash jq
 
 WORKDIR /tmp
 
@@ -14,6 +14,12 @@ COPY pkgs/emails/package.json ./pkgs/emails/package.json
 
 RUN ./clean_package_json.sh './package.json'
 RUN ./clean_package_json.sh './**/*/package.json'
+
+COPY package-lock.json  ./
+
+# Install every dependencies
+RUN true \
+  && npm install
 
 # ------------------
 # New tmp image
@@ -26,12 +32,6 @@ WORKDIR /app/tmp
 # Copy and install dependencies separately from the app's code
 # To leverage Docker's cache when no dependency has change
 COPY --from=deps /tmp ./
-
-COPY package-lock.json  ./
-
-# Install every dependencies
-RUN true \
-  && npm install
 
 # At this stage we copy back all sources and overwrite package(s).json
 # This is expected since we already installed the dependencies we have cached what was important
