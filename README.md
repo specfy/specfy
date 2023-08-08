@@ -30,4 +30,4 @@ Specfy extract metadata from your organization's repositories and automaticaly b
 
 ### Contributing
 
-If you've found a problem with Specfy, please open a [GitHub issue](https://github.com/specfy/specfy/issues/new/choose). To contribute to Specfy, please see the [contributing guide](./CONTRIBUTING.md). 
+If you've found a problem with Specfy, please open a [GitHub issue](https://github.com/specfy/specfy/issues/new/choose). To contribute to Specfy, please see the [contributing guide](./docs/contributing.md).
