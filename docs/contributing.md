@@ -49,5 +49,3 @@ npm run migrate:create
 # Seed development data
 npm run seed
 ```
-
-
