@@ -12,7 +12,10 @@ import {
   IconUsersPlus,
 } from '@tabler/icons-react';
 import classNames from 'classnames';
+import Head from 'next/head';
 import { useEffect, useState } from 'react';
+
+import { Waitlist } from '@/components/Waitlist';
 
 const tabsFeature = [
   {
@@ -239,6 +242,14 @@ export default function Home() {
 
   return (
     <main className="relative">
+      <Head>
+        <link
+          rel="stylesheet"
+          type="text/css"
+          href="https://prod-waitlist-widget.s3.us-east-2.amazonaws.com/getwaitlist.min.css"
+        />
+        <script src="https://prod-waitlist-widget.s3.us-east-2.amazonaws.com/getwaitlist.min.js"></script>
+      </Head>
       <div className="relative isolate overflow-hidden px-6 pt-14 lg:px-8">
         <div className="mx-auto max-w-5xl">
           <div className="py-32 sm:py-48 lg:py-56 lg:pl-2 grid grid-cols-1 lg:grid-cols-12">
@@ -258,24 +269,7 @@ export default function Home() {
                   managing your stack at scale
                 </p>
                 <div className="mt-12 pt-2">
-                  <form
-                    className="launchlist-form"
-                    action="https://getlaunchlist.com/s/31vhCP"
-                    method="POST"
-                  >
-                    <input
-                      type="email"
-                      name="email"
-                      placeholder="Enter your email"
-                      className="rounded-md w-2/4 border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
-                    />
-                    <button
-                      className="bg-[#242d3c] text-sm text-white px-4 py-2.5 rounded-lg mx-5 shadow-lg"
-                      type="submit"
-                    >
-                      Join the waitlist
-                    </button>
-                  </form>
+                  <Waitlist />
                 </div>
               </div>
             </div>
