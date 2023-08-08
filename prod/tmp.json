@@ -7,7 +7,6 @@
   "packageManager": null,
   "workspaces": [
     "pkgs/app",
-    "pkgs/api",
-    "pkgs/website"
+    "pkgs/api"
   ]
 }

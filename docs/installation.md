@@ -32,9 +32,6 @@ npm run app
 
 # Emails
 npm run emails
-
-# Website
-npm run -w @specfy/website dev
 ```
 
 Go to:
