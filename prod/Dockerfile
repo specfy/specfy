@@ -15,12 +15,6 @@ COPY pkgs/emails/package.json ./pkgs/emails/package.json
 RUN ./clean_package_json.sh './package.json'
 RUN ./clean_package_json.sh './**/*/package.json'
 
-COPY package-lock.json  ./
-
-# Install every dependencies
-RUN true \
-  && npm install
-
 # ------------------
 # New tmp image
 # ------------------
@@ -32,25 +26,33 @@ WORKDIR /app/tmp
 # Copy and install dependencies separately from the app's code
 # To leverage Docker's cache when no dependency has change
 COPY --from=deps /tmp ./
+COPY package-lock.json  ./
+
+# Install every dependencies
+RUN true \
+  && npm install
+
+RUN ls -lah ./node_modules/
 
 # At this stage we copy back all sources and overwrite package(s).json
 # This is expected since we already installed the dependencies we have cached what was important
 # At this point nothing can be cached anymore
 COPY . /app/tmp
 
+RUN ls -lah ./node_modules/
+
 ARG git_hash
 ENV GIT_HASH ${git_hash:-dev}
-ENV NODE_ENV=production
+
+# /!\ It's counter intuitive but do not set NODE_ENV=production before building, it will break some modules
+# ENV NODE_ENV=production
 
 # Build
 RUN true \
   # We need prisma first to be able to compile the emails because we use the types
-  && cd pkgs/api \
-  && npm run prisma:gen \
-  && cd .. && cd emails \
-  && npm run prod:build \
-  && cd .. && cd api \
-  && npm run prod:build
+  && npm run -w @specfy/api prisma:gen \
+  && npm run -w @specfy/emails prod:build \
+  && npm run -w @specfy/api prod:build
 
 # Clean src
 RUN true \

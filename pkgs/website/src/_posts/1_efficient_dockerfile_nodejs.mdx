@@ -2,7 +2,7 @@
 id: 1
 slug: building-efficient-dockerfile-nodejs
 title: Building efficient NodeJS Docker image
-socialImage: building-efficient-dockerfile-nodejs.png
+socialImage: posts/1/building-efficient-dockerfile-nodejs.png
 description: A step by step guide to build fast and lightweight NodeJS docker images.
 publishedAt: "2023-07-10"
 author: Samuel Bodin
@@ -13,7 +13,7 @@ authorUrl: https://www.linkedin.com/in/bodinsamuel/
 Docker is an invaluable tool for managing containers, but it can be **challenging to grasp** its inner workings, especially for newcomers. While modern hosting platforms like Vercel and Netlify often eliminate the need for writing Dockerfiles for NodeJS processes, understanding Docker optimization becomes crucial when handling your infrastructure. By achieving optimal efficiency, you can **save both time and money** in the long run.
 
 <br />
-**tl;dr** it's possible to save up to 80% of time to build and image size
+**tl;dr** it's possible to save up to 80% of time to build and image size, but the complexity is not always worth it.
 
 ## A Brief Overview of Docker's Internals
 
@@ -345,10 +345,6 @@ WORKDIR /tmp
 # Copy all the package.json
 COPY package.json ./
 COPY pkgs/api/package.json ./pkgs/api/package.json
-COPY package-lock.json  ./
-
-# Install every dependencies
-RUN npm install
 
 # ------------------
 # New tmp image
@@ -360,6 +356,10 @@ WORKDIR /app/tmp
 # Copy and install dependencies separately from the app's code
 # To leverage Docker's cache when no dependency has changed
 COPY --from=deps /tmp ./
+COPY package-lock.json  ./
+
+# Install every dependencies
+RUN npm install
 
 # Copy source code
 COPY . /app/tmp
@@ -384,7 +384,7 @@ COPY --from=tmp --chown=node:node /app/tmp /app
 EXPOSE 8080
 ```
 
-In this enhanced Dockerfile, we introduce a new stage named `deps`. This stage solely copies the `package.json` files, enabling us to leverage Docker's caching mechanism effectively.
+In this enhanced Dockerfile, we introduce a new stage named `deps`. This stage solely copies the `package.json` files, enabling us to leverage Docker's caching mechanism effectively. We'll see in a next step why we need to use a third image to achieve that.
 
 The result is a **significant improvement** in build time, particularly when only the source code has been modified. With this approach, we achieved an incredible 30 seconds reduction in build time, 50% improvement from the previous iteration and 71% improvement overall. It's important to note that these steps are now cached, except for the `npm run build` step, which can never be cached except if there is absolutely no change.
 
@@ -448,7 +448,6 @@ The result is a **significant improvement** in build time, particularly when onl
 => exporting to image                                                                                                 5.8s
 [...]
 ```
-
 
 ## 6. Cleaning dependencies
 
@@ -565,6 +564,22 @@ I have now a very small stage to manipulate the `package.json` that can be execu
 
 We don't save on the final image size since all `devDependencies` were already ignored, but we saved a few seconds (about 5 seconds or 10% decrease) on the initial install time and we save on intermediate layers size. This step is definitely far less impacting but always good to take.
 
+
+### Why we don't install on the first image?
+
+<div className="lg:flex lg:flex-row">
+  <p className="w-full lg:w-[400px] flex-shrink-0 lg:mr-4">
+    <a href="/posts/1/multi-stage-explanation.png" target="_blank"><img src="/posts/1/multi-stage-explanation.png" alt="An explanation of why use multi-stage build the way we do" /></a>
+  </p>
+  <div>
+    When we copy the package.json in the `deps` image the cache will be invalidated very often, wether a dependencies version has changed or we updated a `script` or incremented the `version`.
+    Subsequently that means the `npm install` will often be invalidated, and that's a waste of resource if we actually just modified the script field.
+
+    To leverage cache even on unrelated change, we clean the package.json and copy them in the `tmp` image. Those files will have a constant hash because we removed all fields that are not dependencies related. Docker understand that nothing has changed and can skip `npm install`
+  </div>
+</div>
+
+
 <Banner type="info"><strong>Good to know:</strong> if you don't use this technique and you increment the `version` field when you release, it will invalidate the cache every time.</Banner>
 
 ## 7. Own your stack
@@ -664,7 +679,7 @@ After implementing various optimization techniques, we achieved notable improvem
   - Regular build:  time reduction of 51 seconds, which corresponds to an impressive **73% decrease in build time**.
   - The compiled image size was reduced by 1.9GB, resulting in an **80% decrease in size**.
 
-Although these results are significant, there is still a sense of bittersweetness. It becomes apparent that many of the optimization steps undertaken should ideally be automated. Additionally, despite the achieved improvements, the final image size remains relatively large for an API.
+Although these results are significant, there is still a sense of bittersweetness. It becomes apparent that many of the optimization steps undertaken should ideally be automated. Additionally, despite the achieved improvements, the final image size remains relatively large for an API. All in all, it's a long and tedious process that can a long time to master, it's hard to explain to newcomers and quite hard to maintain.
 
 **To remember**:
 - Modifications to the repository that are not ignored by `.dockerignore` will break the cache, necessitating a complete rebuild.
@@ -693,11 +708,6 @@ COPY pkgs/api/package.json ./pkgs/api/package.json
 RUN ./clean_package_json.sh './package.json'
 RUN ./clean_package_json.sh './**/*/package.json'
 
-COPY package-lock.json  ./
-
-# Install every dependencies
-RUN npm install
-
 # ------------------
 # New tmp image
 # ------------------
@@ -709,13 +719,19 @@ WORKDIR /app/tmp
 # Copy and install dependencies separately from the app's code
 # To leverage Docker's cache when no dependency has change
 COPY --from=deps /tmp ./
+COPY package-lock.json  ./
+
+# Install every dependencies
+RUN npm install
 
 # At this stage we copy back all sources and overwrite package(s).json
 # This is expected since we already installed the dependencies we have cached what was important
 # At this point nothing can be cached anymore
 COPY . /app/tmp
 
-ENV NODE_ENV=production
+# /!\ It's counter intuitive but do not set NODE_ENV=production before building, it will break some modules
+# ENV NODE_ENV=production
+# /!\
 
 # Build API
 RUN true \
