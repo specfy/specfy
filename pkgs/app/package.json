@@ -63,7 +63,7 @@
     "@types/lodash.debounce": "4.0.7",
     "@types/luxon": "3.3.1",
     "@types/prismjs": "1.26.0",
-    "@types/react": "18.2.19",
+    "@types/react": "18.2.20",
     "@types/react-dom": "18.2.7",
     "@types/react-syntax-highlighter": "15.5.7",
     "@types/refractor": "3.0.2",
