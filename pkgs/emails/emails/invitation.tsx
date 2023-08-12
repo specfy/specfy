@@ -53,7 +53,6 @@ export const Invitation = ({
     color: 'amber',
     flowId: null,
     githubInstallationId: null,
-    isPersonal: false,
     createdAt: new Date(),
     updatedAt: new Date(),
   },

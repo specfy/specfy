@@ -16,7 +16,6 @@ export function toApiOrgList(org: Orgs): ApiOrg {
   return {
     id: org.id,
     flowId: org.flowId!,
-    isPersonal: org.isPersonal,
     name: org.name,
     avatarUrl: org.avatarUrl,
     acronym: org.acronym,

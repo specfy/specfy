@@ -118,12 +118,6 @@ export const SettingsGeneral: React.FC<{
         <h2>General Settings</h2>
 
         <Subdued>Manage your organization general&apos;s settings</Subdued>
-
-        {org.isPersonal && (
-          <Banner type="info">
-            This is your personal organization, some limitations apply.
-          </Banner>
-        )}
       </div>
 
       <Card>
@@ -132,11 +126,7 @@ export const SettingsGeneral: React.FC<{
             <h3>Organization Name</h3>
             <br />
             <Field name="name">
-              <Input
-                value={name}
-                onChange={onName}
-                disabled={org.isPersonal || !canEdit}
-              />
+              <Input value={name} onChange={onName} disabled={!canEdit} />
             </Field>
             <Subdued>
               The organization is accessible at{' '}
@@ -146,7 +136,7 @@ export const SettingsGeneral: React.FC<{
             </Subdued>
           </Card.Content>
 
-          {!org.isPersonal && canEdit && (
+          {canEdit && (
             <Card.Actions>
               {nameChanged && (
                 <Button display="ghost" onClick={handleReset}>
@@ -204,7 +194,7 @@ export const SettingsGeneral: React.FC<{
         </Card>
       )}
 
-      {!org.isPersonal && canEdit && (
+      {canEdit && (
         <Card padded>
           <div className={cls.actions}>
             <div>

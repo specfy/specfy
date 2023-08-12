@@ -252,13 +252,12 @@ model Keys {
 }
 
 model Orgs {
-  id                   String   @id @db.VarChar(36)
-  flowId               String?  @db.VarChar(15)
-  name                 String   @db.VarChar(36)
-  isPersonal           Boolean  @default(false)
-  avatarUrl            String?  @db.VarChar(1000)
-  color                String   @db.VarChar(20)
-  acronym              String   @db.VarChar(3)
+  id                   String  @id @db.VarChar(36)
+  flowId               String? @db.VarChar(15)
+  name                 String  @db.VarChar(36)
+  avatarUrl            String? @db.VarChar(1000)
+  color                String  @db.VarChar(20)
+  acronym              String  @db.VarChar(3)
   githubInstallationId Int?
   createdAt            DateTime @default(now()) @db.Timestamp(3)
   updatedAt            DateTime @updatedAt

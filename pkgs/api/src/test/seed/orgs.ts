@@ -16,13 +16,11 @@ export async function seedOrgs(
   const o1 = await createOrg(prisma, users[0], {
     id: 'acme',
     name: 'Acme',
-    isPersonal: false,
   });
 
   const o2 = await createOrg(prisma, users[0], {
     id: 'samuelbodin',
     name: "Samuel Bodin's org",
-    isPersonal: false,
   });
 
   await Promise.all([
@@ -50,7 +48,6 @@ export async function seedOrg(user: Users) {
   const org = await createOrg(prisma, user, {
     id,
     name: `Org ${id}`,
-    isPersonal: false,
   });
 
   return org;

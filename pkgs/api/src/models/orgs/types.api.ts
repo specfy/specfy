@@ -5,10 +5,7 @@ import type { DBOrg } from './types.js';
 export type ApiOrg = Omit<DBOrg, 'createdAt' | 'updatedAt'> & {
   githubInstallationId: number | null;
 };
-export type ApiOrgPublic = Omit<
-  DBOrg,
-  'createdAt' | 'flowId' | 'isPersonal' | 'updatedAt'
->;
+export type ApiOrgPublic = Omit<DBOrg, 'createdAt' | 'flowId' | 'updatedAt'>;
 
 export interface ReqOrgParams {
   org_id: string;
@@ -33,18 +30,11 @@ export type PutOrg = Res<{
   Body: {
     name: string;
   };
-  Success: { data: ApiOrg };
+  Success: { data: ApiOrgPublic };
 }>;
 
 // DELETE /:org_id
 export type DeleteOrg = Res<{
   Params: ReqOrgParams;
-  Success:
-    | never
-    | {
-        error: {
-          code: 'cant_delete';
-          reason: 'is_personal';
-        };
-      };
+  Success: never;
 }>;

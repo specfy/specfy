@@ -13,17 +13,6 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
     async function (req, res) {
       const org = req.org!;
 
-      if (org.isPersonal) {
-        // Can't delete own org
-        return res.status(400).send({
-          error: {
-            code: 'cant_delete',
-            reason: 'is_personal',
-          },
-        });
-        return;
-      }
-
       await prisma.$transaction(async (tx) => {
         await tx.activities.deleteMany({ where: { orgId: org.id } });
         await tx.comments.deleteMany({ where: { orgId: org.id } });
