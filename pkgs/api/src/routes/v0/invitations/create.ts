@@ -1,4 +1,3 @@
-import { Prisma } from '@prisma/client';
 import { sendInvitation } from '@specfy/emails';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
@@ -12,7 +11,8 @@ import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
 import { logger } from '../../../logger.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
-import { v1, EXPIRES } from '../../../models/index.js';
+import { getUsage } from '../../../models/billing/model.js';
+import { EXPIRES } from '../../../models/index.js';
 import { getOrgFromRequest } from '../../../models/perms/helpers.js';
 import { PermType } from '../../../models/perms/types.js';
 import type { PostInvitation } from '../../../types/api/index.js';
@@ -48,18 +48,13 @@ function QueryVal(req: FastifyRequest) {
         return;
       }
 
-      const max = org.isPersonal ? v1.free.org.maxUser : v1.pro.org.maxUser;
-      const check = await prisma.$queryRaw<[{ total: number }]>(
-        Prisma.sql`SELECT (SELECT COUNT(*) FROM "Perms" WHERE "orgId" = ${val.orgId} AND "projectId" IS NULL)
-         + (SELECT COUNT(*) FROM "Invitations" WHERE "orgId" = ${val.orgId}) as total LIMIT 1`
-      );
-
-      if (check[0].total > max) {
+      const usage = await getUsage(org);
+      if (usage.users.pct >= 100) {
         ctx.addIssue({
           code: z.ZodIssueCode.custom,
           params: { code: 'max' },
           message:
-            "You can't have more people in your team, contact us if you need more",
+            "You can't have more people in your team, upgrade your plan or contact us if you need more",
           path: ['email'],
         });
       }

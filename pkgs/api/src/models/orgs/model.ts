@@ -11,7 +11,14 @@ export type { Orgs } from '@prisma/client';
 export async function createOrg(
   tx: Prisma.TransactionClient,
   user: Users,
-  data: Omit<Prisma.OrgsUncheckedCreateInput, 'acronym' | 'color'>
+  data: Omit<
+    Prisma.OrgsUncheckedCreateInput,
+    | 'acronym'
+    | 'color'
+    | 'currentPlanId'
+    | 'stripeCurrentPeriodEnd'
+    | 'stripeCurrentPeriodStart'
+  >
 ): Promise<Orgs> {
   const acronym = acronymize(data.name);
   const colors = stringToColor(data.name);
@@ -48,10 +55,13 @@ export async function createOrg(
   // Add a default api key
   await createKey({ tx, user, data: { orgId: tmp.id }, activityGroupId });
 
+  const update: Prisma.OrgsUncheckedUpdateInput = {};
+
   // Finally creating the associated empty flow
   const flow = await recomputeOrgGraph({ orgId: tmp.id, tx });
+  update.flowId = flow.id;
   return await tx.orgs.update({
-    data: { flowId: flow.id },
+    data: update,
     where: { id: tmp.id },
   });
 }

@@ -28,7 +28,7 @@ export interface InvitationProps {
   orgAcr?: string;
   inviteLink?: string;
   invitedBy: Users;
-  org: Orgs;
+  org: Pick<Orgs, 'acronym' | 'avatarUrl' | 'color' | 'id' | 'name'>;
 }
 
 export const Invitation = ({
@@ -51,11 +51,6 @@ export const Invitation = ({
     acronym: 'AC',
     avatarUrl: null,
     color: 'amber',
-    flowId: null,
-    githubInstallationId: null,
-    isPersonal: false,
-    createdAt: new Date(),
-    updatedAt: new Date(),
   },
   inviteLink = `${BASE_URL}/company/invite?token=`,
 }: InvitationProps) => {

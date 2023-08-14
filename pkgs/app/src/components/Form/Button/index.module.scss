@@ -51,6 +51,16 @@
     .loading {
       color: var(--primaryText);
     }
+
+    &.danger {
+      background-color: var(--tomato9);
+      border-color: var(--tomato9);
+
+      &:hover {
+        background-color: var(--tomato11);
+        border-color: var(--tomato11);
+      }
+    }
   }
 
   &.ghost {
@@ -106,8 +116,9 @@
 
   &:disabled {
     cursor: not-allowed;
-    color: var(--text3);
-    background-color: var(--bg1);
+
+    // color: var(--text3);
+    opacity: 0.70;
   }
 
   &.block {

@@ -1,21 +1,32 @@
 import type { ApiOrg } from '@specfy/api/src/types/api';
-import { IconSettings, IconUsers } from '@tabler/icons-react';
+import {
+  IconDatabaseDollar,
+  IconSettings,
+  IconUsers,
+} from '@tabler/icons-react';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 
 import { Container } from '../../../components/Container';
 import { Flex } from '../../../components/Flex';
 import * as Menu from '../../../components/Menu';
+import { useAuth } from '../../../hooks/useAuth';
 import type { RouteOrg } from '../../../types/routes';
 
+import { SettingsBilling } from './Billing';
 import { SettingsGeneral } from './General';
 import { SettingsTeam } from './Team';
 import cls from './index.module.scss';
 
+interface MenuItem {
+  key: string;
+  label: React.ReactNode;
+}
 export const OrgSettings: React.FC<{ params: RouteOrg; org: ApiOrg }> = ({
   params,
   org,
 }) => {
+  const { currentPerm } = useAuth();
   const location = useLocation();
 
   // Menu
@@ -24,8 +35,8 @@ export const OrgSettings: React.FC<{ params: RouteOrg; org: ApiOrg }> = ({
   }, [params]);
   const [open, setOpen] = useState<string>('');
 
-  const menu = useMemo(() => {
-    return [
+  const menu = useMemo<MenuItem[]>(() => {
+    const items: MenuItem[] = [
       {
         key: 'general',
         label: (
@@ -49,11 +60,29 @@ export const OrgSettings: React.FC<{ params: RouteOrg; org: ApiOrg }> = ({
         ),
       },
     ];
-  }, []);
+
+    if (currentPerm?.role === 'owner') {
+      items.push({
+        key: 'billing',
+        label: (
+          <Link to={`${linkSelf}/billing`}>
+            <Flex gap="l">
+              <IconDatabaseDollar />
+              Billing
+            </Flex>
+          </Link>
+        ),
+      });
+    }
+
+    return items;
+  }, [currentPerm]);
 
   useEffect(() => {
     if (location.pathname.match(/team/)) {
       setOpen('team');
+    } else if (location.pathname.match(/billing/)) {
+      setOpen('billing');
     } else {
       setOpen('general');
     }
@@ -84,6 +113,10 @@ export const OrgSettings: React.FC<{ params: RouteOrg; org: ApiOrg }> = ({
           <Route
             path="/team"
             element={<SettingsTeam org={org} params={params} />}
+          />
+          <Route
+            path="/billing"
+            element={<SettingsBilling org={org} params={params} />}
           />
         </Routes>
       </Flex>

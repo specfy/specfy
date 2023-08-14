@@ -55,7 +55,7 @@ export type PostRevision = Res<{
     blobs: ApiBlobCreate[];
     draft: boolean;
   };
-  Success: Pick<ApiRevision, 'id'>;
+  Success: { data: Pick<ApiRevision, 'id'> };
 }>;
 
 // ------ POST /upload
@@ -71,7 +71,10 @@ export type PostUploadRevision = Res<{
     blobs: Array<{ path: string; content: string }>;
     stack: AnalyserJson | null;
   };
-  Success: CreateRevisionError | Pick<ApiRevision, 'id'>;
+  Error: CreateRevisionError;
+  Success: {
+    data: Pick<ApiRevision, 'id'>;
+  };
 }>;
 
 // ------ GET /:id
@@ -111,13 +114,12 @@ export type MergeRevisionError = {
 export type MergeRevision = Res<{
   Params: ParamsRevision;
   Querystring: QuerystringOrgProject;
-  Success:
-    | MergeRevisionError
-    | {
-        data: {
-          done: true;
-        };
-      };
+  Error: MergeRevisionError;
+  Success: {
+    data: {
+      done: true;
+    };
+  };
 }>;
 
 // ------ POST /:id/comment

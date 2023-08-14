@@ -73,6 +73,6 @@ export type PostLinkToGithubProject = Res<{
 export type PostGithubWebhook = Res<{
   Body: any;
   Success: {
-    data: ApiGithubRepo[];
+    done: true;
   };
 }>;

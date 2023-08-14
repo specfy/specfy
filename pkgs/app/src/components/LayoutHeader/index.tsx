@@ -86,7 +86,7 @@ export const LayoutHeader: React.FC = () => {
                   return (
                     <Dropdown.Item key={org.id} asChild>
                       <Link
-                        to="/"
+                        to={`/${org.id}`}
                         className={classNames(
                           cls.org,
                           current === org.id,

@@ -174,7 +174,7 @@ export const ProjectRevisionCreate: React.FC<{
 
     toast.add({ title: 'Revision created', status: 'success' });
     navigate(
-      `/${params.org_id}/${params.project_slug}/revisions/${res.id}?${
+      `/${params.org_id}/${params.project_slug}/revisions/${res.data.id}?${
         autoMerge ? 'automerge=true' : ''
       }`
     );

@@ -1,6 +1,12 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 
 import type { ListActivities } from '../../models/activities/types.api.js';
+import type {
+  GetBillingUsage,
+  GetSubscription,
+  PostStripeWebhook,
+  PostSubscription,
+} from '../../models/billing/types.api.js';
 import type { ListRevisionBlobs } from '../../models/blobs/types.api.js';
 import type { ListComponents } from '../../models/components/types.api.js';
 import type {
@@ -70,6 +76,13 @@ export interface API {
 
   '/0/auth/local': { POST: PostAuthLocal };
   '/0/auth/logout': { POST: PostLogout };
+
+  '/0/stripe/webhooks': { POST: PostStripeWebhook };
+  [key: `/0/stripe/${string}/subscription`]: {
+    GET: GetSubscription;
+    POST: PostSubscription;
+  };
+  [key: `/0/stripe/${string}/usage`]: { GET: GetBillingUsage };
 
   '/0/components': { GET: ListComponents };
 

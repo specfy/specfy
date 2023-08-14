@@ -3,7 +3,7 @@ import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 import { prisma } from '../../../db/index.js';
 import type { TestSetup } from '../../../test/each.js';
 import { setupAfterAll, setupBeforeAll } from '../../../test/each.js';
-import { isError, isSuccess } from '../../../test/fetch.js';
+import { isSuccess } from '../../../test/fetch.js';
 import {
   shouldBeProtected,
   shouldNotAllowBody,
@@ -83,24 +83,5 @@ describe('DELETE /orgs/:id', () => {
       },
     });
     expect(proj).toBeNull();
-  });
-
-  it('should not delete personal org', async () => {
-    const { token, org } = await seedWithOrg();
-    await prisma.orgs.update({
-      data: {
-        isPersonal: true,
-      },
-      where: {
-        id: org.id,
-      },
-    });
-
-    const res = await t.fetch.delete(`/0/orgs/${org.id}`, {
-      token,
-    });
-
-    isError(res.json);
-    expect(res.statusCode).toBe(400);
   });
 });

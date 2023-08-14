@@ -6,7 +6,7 @@ import { validationError } from '../../../common/errors.js';
 import { schemaId, schemaOrgId } from '../../../common/validators/index.js';
 import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
-import { v1 } from '../../../models/billing/model.js';
+import { v1 } from '../../../models/billing/plans.js';
 import { DocumentType } from '../../../models/documents/types.js';
 import type { Pagination, ListDocuments } from '../../../types/api/index.js';
 

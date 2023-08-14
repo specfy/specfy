@@ -5,6 +5,7 @@ import { validationError } from '../../../common/errors.js';
 import { schemaOrgId } from '../../../common/validators/index.js';
 import { prisma } from '../../../db/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
+import { createFreeSubscription } from '../../../models/billing/model.js';
 import { createOrg } from '../../../models/index.js';
 import { forbiddenOrgName } from '../../../models/orgs/constants.js';
 import { toApiOrgPublic } from '../../../models/orgs/formatter.js';
@@ -45,12 +46,15 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       }
 
       const data = val.data;
+      const me = req.me!;
 
       const org = await prisma.$transaction(async (tx) => {
-        return createOrg(tx, req.me!, data);
+        return createOrg(tx, me, data);
       });
 
-      return res.status(200).send(toApiOrgPublic(org));
+      await createFreeSubscription({ org, me });
+
+      return res.status(200).send({ data: toApiOrgPublic(org) });
     }
   );
   done();

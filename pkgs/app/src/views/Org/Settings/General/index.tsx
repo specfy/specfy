@@ -10,7 +10,6 @@ import { deleteOrg, updateOrg, linkToGithubOrg } from '../../../../api';
 import { isError } from '../../../../api/helpers';
 import { i18n } from '../../../../common/i18n';
 import { titleSuffix } from '../../../../common/string';
-import { Banner } from '../../../../components/Banner';
 import { Card } from '../../../../components/Card';
 import * as Dialog from '../../../../components/Dialog';
 import { Button } from '../../../../components/Form/Button';
@@ -118,12 +117,6 @@ export const SettingsGeneral: React.FC<{
         <h2>General Settings</h2>
 
         <Subdued>Manage your organization general&apos;s settings</Subdued>
-
-        {org.isPersonal && (
-          <Banner type="info">
-            This is your personal organization, some limitations apply.
-          </Banner>
-        )}
       </div>
 
       <Card>
@@ -132,11 +125,7 @@ export const SettingsGeneral: React.FC<{
             <h3>Organization Name</h3>
             <br />
             <Field name="name">
-              <Input
-                value={name}
-                onChange={onName}
-                disabled={org.isPersonal || !canEdit}
-              />
+              <Input value={name} onChange={onName} disabled={!canEdit} />
             </Field>
             <Subdued>
               The organization is accessible at{' '}
@@ -146,7 +135,7 @@ export const SettingsGeneral: React.FC<{
             </Subdued>
           </Card.Content>
 
-          {!org.isPersonal && canEdit && (
+          {canEdit && (
             <Card.Actions>
               {nameChanged && (
                 <Button display="ghost" onClick={handleReset}>
@@ -204,7 +193,7 @@ export const SettingsGeneral: React.FC<{
         </Card>
       )}
 
-      {!org.isPersonal && canEdit && (
+      {canEdit && (
         <Card padded>
           <div className={cls.actions}>
             <div>
@@ -219,12 +208,11 @@ export const SettingsGeneral: React.FC<{
               <Dialog.Content>
                 <Dialog.Header>
                   <Dialog.Title>Delete this organization?</Dialog.Title>
-                  <Dialog.Description>
-                    Are you sure to delete this organization? <br></br>This
-                    operation can&apos;t be undone.
-                  </Dialog.Description>
                 </Dialog.Header>
-                <div></div>
+                <Dialog.Description>
+                  Are you sure to delete this organization? <br></br>This
+                  operation can&apos;t be undone.
+                </Dialog.Description>
                 <Dialog.Footer>
                   <Dialog.Close asChild>
                     <Button key="back" display="ghost">

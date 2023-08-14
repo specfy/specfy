@@ -35,6 +35,8 @@ jobs:
       DEFAULT_ACCOUNT: ""
       GIVE_DEFAULT_PERMS_TO_EMAIL: ""
       RESEND_KEY: "re_"
+      STRIPE_KEY: ""
+      STRIPE_WEBHOOKS_SECRET: ""
 
 
 

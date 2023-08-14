@@ -22,6 +22,12 @@ data "google_secret_manager_secret_version" "GITHUB_WEBHOOKS_SECRET" {
 data "google_secret_manager_secret_version" "RESEND_KEY" {
   secret   = "RESEND_KEY"
 }
+data "google_secret_manager_secret_version" "STRIPE_KEY" {
+  secret   = "STRIPE_KEY"
+}
+data "google_secret_manager_secret_version" "STRIPE_WEBHOOKS_SECRET" {
+  secret   = "STRIPE_WEBHOOKS_SECRET"
+}
 
 resource "google_cloud_run_v2_service" "main" {
   name     = "main"
@@ -82,6 +88,14 @@ resource "google_cloud_run_v2_service" "main" {
       env {
         name  = "RESEND_KEY"
         value = data.google_secret_manager_secret_version.RESEND_KEY.secret_data
+      }
+      env {
+        name  = "STRIPE_KEY"
+        value = data.google_secret_manager_secret_version.STRIPE_KEY.secret_data
+      }
+      env {
+        name  = "STRIPE_WEBHOOKS_SECRET"
+        value = data.google_secret_manager_secret_version.STRIPE_WEBHOOKS_SECRET.secret_data
       }
 
 
