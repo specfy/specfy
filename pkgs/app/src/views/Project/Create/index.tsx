@@ -43,6 +43,7 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   const [repo, setRepo] = useState<ApiGithubRepo>();
   const [errors, setErrors] = useState<FieldsErrors>({});
   const [open, setOpen] = useState(false);
+  const [branch, setBranch] = useState('main');
   const [stackEnabled, setStackEnabled] = useState(true);
   const [stackPath, setStackpath] = useState('/');
   const [docEnabled, setDocEnabled] = useState(true);
@@ -55,6 +56,7 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
       name,
       orgId: params.org_id,
       config: {
+        branch,
         documentation: {
           enabled: docEnabled,
           path: docPath,
@@ -164,6 +166,31 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
                 align="flex-start"
                 grow
               >
+                <Flex align="flex-start" gap="xl" grow>
+                  <Flex column align="flex-start">
+                    <strong>Branch</strong>
+                    <p className={cls.desc}>
+                      Deploy when pushing to this branch
+                    </p>
+                  </Flex>
+                  <Flex
+                    column
+                    align="flex-start"
+                    gap="l"
+                    grow
+                    className={cls.inputs}
+                  >
+                    <Field name="branch" error={errors.branch?.message}>
+                      <Input
+                        type="text"
+                        value={branch}
+                        onChange={(e) => setBranch(e.target.value)}
+                        placeholder="main"
+                      />
+                    </Field>
+                  </Flex>
+                </Flex>
+
                 <Flex align="flex-start" gap="xl" grow>
                   <Flex column align="flex-start">
                     <strong>Stack</strong>

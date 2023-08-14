@@ -30,12 +30,12 @@
     }
 
     &.danger {
-      color: var(--tomato9);
-      border-color: var(--tomato9);
+      color: var(--tomato-9);
+      border-color: var(--tomato-9);
 
       &:hover {
-        color: var(--tomato11);
-        border-color: var(--tomato11);
+        color: var(--tomato-11);
+        border-color: var(--tomato-11);
       }
     }
   }
@@ -53,12 +53,12 @@
     }
 
     &.danger {
-      background-color: var(--tomato9);
-      border-color: var(--tomato9);
+      background-color: var(--tomato-9);
+      border-color: var(--tomato-9);
 
       &:hover {
-        background-color: var(--tomato11);
-        border-color: var(--tomato11);
+        background-color: var(--tomato-11);
+        border-color: var(--tomato-11);
       }
     }
   }
@@ -74,7 +74,7 @@
 
     &.danger {
       &:hover {
-        color: var(--tomato9);
+        color: var(--tomato-9);
       }
     }
   }
@@ -88,11 +88,11 @@
     }
 
     &.danger {
-      color: var(--tomato9);
+      color: var(--tomato-9);
 
       &:hover {
         color: #fff;
-        background-color: var(--tomato9);
+        background-color: var(--tomato-9);
       }
     }
   }

@@ -38,8 +38,8 @@ export const AvatarAuto: React.FC<Props> = ({
     acr = props.org.acronym;
     shape = 'square';
     style = {
-      backgroundColor: `var(--${props.org.color}6 )`,
-      color: `var(--${props.org.color}11)`,
+      backgroundColor: `var(--${props.org.color}-6 )`,
+      color: `var(--${props.org.color}-11)`,
     };
     src = props.org.avatarUrl;
   } else {

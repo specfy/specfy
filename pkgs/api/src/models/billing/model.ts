@@ -25,7 +25,8 @@ export async function getUsage(
 
   const counts = res[0];
   const plan =
-    Object.values(v1).find((p) => p.id === org.currentPlanId) || v1.free;
+    Object.values(v1).find((p) => p.id === org.currentPlanId) ||
+    (BILLING_ENABLED ? v1.free : v1.business);
 
   const usage: GetBillingUsage['Success']['data'] = {
     projects: {

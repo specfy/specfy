@@ -128,6 +128,7 @@ ws.on('push', async ({ id, payload }) => {
     id,
     repo: payload.repository.full_name,
     installId: payload.installation?.id,
+    branch: payload.ref,
   });
 
   await prisma.$transaction(async (tx) => {
@@ -136,6 +137,12 @@ ws.on('push', async ({ id, payload }) => {
     });
     await Promise.all(
       list.map((project) => {
+        const split = payload.ref.split('/');
+        const branch = split[split.length - 1];
+        if (project.config.branch === branch) {
+          return null;
+        }
+
         return createJobDeploy({
           orgId: project.orgId,
           projectId: project.id,

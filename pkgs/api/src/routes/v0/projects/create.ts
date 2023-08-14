@@ -23,6 +23,7 @@ function ProjectVal(req: FastifyRequest) {
       name: schemaProject.shape.name,
       orgId: schemaOrgId,
       config: schemaProject.shape.config.partial({
+        branch: true,
         documentation: true,
         stack: true,
       }),
@@ -66,6 +67,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
 
       const def = getDefaultConfig();
       const config: DBProject['config'] = {
+        branch: data.config?.branch || def.branch,
         documentation: {
           ...def.documentation,
           ...data.config?.documentation,

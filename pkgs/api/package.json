@@ -37,7 +37,7 @@
     "@prisma/client": "^4.12.0",
     "@specfy/emails": "file:../emails",
     "@specfy/stack-analyser": "1.4.0",
-    "@specfy/sync": "1.0.9",
+    "@specfy/sync": "1.0.10",
     "close-with-grace": "1.2.0",
     "consola": "3.2.3",
     "env-schema": "5.2.0",

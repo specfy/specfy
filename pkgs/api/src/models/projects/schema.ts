@@ -26,6 +26,7 @@ export const schemaProject = z
     githubRepository: z.string().nullable(),
     config: z
       .object({
+        branch: z.string().max(255),
         documentation: z
           .object({
             enabled: z.boolean(),

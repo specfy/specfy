@@ -30,6 +30,7 @@ export type PostProject = Res<{
   Body: Pick<ApiProject, 'name' | 'orgId'> & {
     config?:
       | {
+          branch?: string | undefined;
           documentation?: ConfigDocumentation | undefined;
           stack?: ConfigStack | undefined;
         }

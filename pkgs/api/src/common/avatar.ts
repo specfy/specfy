@@ -71,8 +71,8 @@ export function stringToColor(str: string): {
 
   const colorIndex = Math.abs(hash % palette.length);
   return {
-    backgroundColor: `var(--${palette[colorIndex]}4)`,
-    color: `var(--${palette[colorIndex]}11)`,
+    backgroundColor: `var(--${palette[colorIndex]}-4)`,
+    color: `var(--${palette[colorIndex]}-11)`,
     palette: palette[colorIndex],
   };
 }

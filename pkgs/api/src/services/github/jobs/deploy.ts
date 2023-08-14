@@ -135,9 +135,10 @@ export class JobDeploy extends Job {
 
     // Clone into a tmp folder
     this.folderName = `/tmp/specfy_clone_${job.id}_${nanoid()}`;
+    const projConfig = job.Project.config;
     try {
       const res =
-        await $`git clone https://x-access-token:${this.token}@github.com/${config.url}.git --depth 1 ${this.folderName}`;
+        await $`git clone --branch ${projConfig.branch} https://x-access-token:${this.token}@github.com/${config.url}.git --depth 1 ${this.folderName}`;
 
       if (res.exitCode !== 0) {
         this.mark('failed', 'unknown');
@@ -176,7 +177,6 @@ export class JobDeploy extends Job {
     }
 
     // Execute deploy
-    const projConfig = job.Project.config;
     try {
       const bin = path.join(
         dirname,

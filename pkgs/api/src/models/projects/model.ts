@@ -118,6 +118,7 @@ export async function createProjectActivity({
 
 export function getDefaultConfig(): DBProject['config'] {
   return {
+    branch: 'main',
     documentation: {
       enabled: true,
       path: '/docs',

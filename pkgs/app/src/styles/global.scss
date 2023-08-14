@@ -63,11 +63,11 @@ body * {
 
 :root {
   // Text
-  --text1: var(--mauve8);
-  --text2: var(--mauve9);
-  --text3: var(--mauve11);
+  --text1: var(--mauve-8);
+  --text2: var(--mauve-9);
+  --text3: var(--mauve-11);
   --text4: hsl(255deg 4% 44%);
-  --text: var(--mauve12);
+  --text: var(--mauve-12);
 
   // Font
   --font-xs: 10px;
@@ -93,20 +93,20 @@ body * {
   --h-xl: 42px;
 
   // Link
-  --colorLink: var(--indigo9);
+  --colorLink: var(--indigo-9);
 
   // BG
-  --bg1: var(--mauve1);
-  --bg2: var(--mauve2);
-  --bg3: var(--mauve3);
-  --bg5: var(--mauve5);
+  --bg1: var(--mauve-1);
+  --bg2: var(--mauve-2);
+  --bg3: var(--mauve-3);
+  --bg5: var(--mauve-5);
   --bg10: hsl(217.5deg 25% 18.82%);
 
   // Border
-  --border1: var(--mauve2);
-  --border2: var(--mauve4);
-  --border3: var(--mauve7);
-  --border4: var(--mauve9);
+  --border1: var(--mauve-2);
+  --border2: var(--mauve-4);
+  --border3: var(--mauve-7);
+  --border4: var(--mauve-9);
   --radius1: 2px;
   --radius2: 4px;
   --radius3: 8px;
@@ -124,8 +124,8 @@ body * {
   --spc-5xl: 32px;
 
   // OTHER
-  --accent1: var(--indigo4);
-  --accent2: var(--indigo9);
+  --accent1: var(--indigo-4);
+  --accent2: var(--indigo-9);
   --primary: hsl(217.5deg 25% 18.82%);
   --primaryHover: #303a48;
   --primaryText: #fff;
@@ -138,10 +138,10 @@ body * {
   --decline1: hsl(5.45deg 100% 95.69%);
   --decline2: hsl(359.52deg 100% 75.29%);
   --decline3: hsl(0deg 56% 52%);
-  --merge1: var(--plum5);
-  --merge2: var(--plum9);
+  --merge1: var(--plum-5);
+  --merge2: var(--plum-9);
   --modified1: hsl(136deg 38% 75%);
-  --modified2: var(--grass9);
+  --modified2: var(--grass-9);
 
   // Shadow
   --boxshadow1: 1px 1px 2px $gray-4;

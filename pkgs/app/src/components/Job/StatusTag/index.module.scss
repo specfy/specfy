@@ -22,44 +22,37 @@
   border-radius: 10px;
 
   &.pending {
-    // color: var(--mauve10);
-    background-color: var(--mauve3);
-    border-color: var(--mauve4);
+    background-color: var(--mauve-3);
+    border-color: var(--mauve-4);
   }
 
   &.running {
-    // color: var(--mauve10);
-    background-color: var(--mauve3);
-    border-color: var(--mauve4);
+    background-color: var(--mauve-3);
+    border-color: var(--mauve-4);
   }
 
   &.success {
-    // color: var(--grass10);
-    background-color: var(--grass8);
-    border-color: var(--grass4);
+    background-color: var(--grass-8);
+    border-color: var(--grass-4);
   }
 
   &.failed {
-    // color: var(--tomato10);
-    background-color: var(--tomato9);
-    border-color: var(--tomato4);
+    background-color: var(--tomato-9);
+    border-color: var(--tomato-4);
   }
 
   &.skipped {
-    // color: var(--mauve10);
-    background-color: var(--mauve3);
-    border-color: var(--mauve4);
+    background-color: var(--mauve-3);
+    border-color: var(--mauve-4);
   }
 
   &.cancelled {
-    // color: var(--mauve10);
-    background-color: var(--mauve3);
-    border-color: var(--mauve4);
+    background-color: var(--mauve-3);
+    border-color: var(--mauve-4);
   }
 
   &.timeout {
-    // color: var(--amber10);
-    background-color: var(--amber5);
-    border-color: var(--amber4);
+    background-color: var(--amber-5);
+    border-color: var(--amber-4);
   }
 }
