@@ -1,40 +1,84 @@
-# Contributing
+# Installation
 
-## Installation
+## Prerequisites
 
-Requires:
-
-- Docker
-- Node
+- [Node.js](https://nodejs.org/en) version >=16.x
+- [pnpm package manager](https://pnpm.io/installation) version 7
+- [Docker](https://www.docker.com/get-started/)
 
 Optional:
 
 - Ngrok
 - Terraform
 
-```sh
-nvm use
-npm install
-```
+## Setup
 
-## Launch
+1. Clone the repo
 
-```sh
-# Services
-docker compose up -d
+   ```sh
+   git clone https://github.com/specfy/specfy.git
+   ```
 
-# Backend
-npm run api
-npm run -w @specfy/api seed
+2. Navigate to the project folder
 
-# Frontend
-npm run app
+   ```sh
+   cd specfy
+   ```
 
-# Emails
-npm run emails
-```
+3. Install the required packages using pnpm.
 
-Go to:
+   ```sh
+   nvm use
+   npm install
+   ```
 
-- App [http://localhost:5173](http://localhost:5173)
-- Api [http://localhost:3000](http://localhost:3000)
+4. Create your `.env` files
+
+   ```sh
+   cp pkgs/api/.env.example pkgs/api/.env
+   ```
+
+5. Open the root `.env` file:
+
+   ```sh
+   code pkgs/api/.env
+   ```
+
+   Feel free to update `COOKIE_SECRET` and `PASSWORD_SALT`.
+
+6. Start Docker. This starts the required services like Postgres.
+
+   ```sh
+   docker compose up -d
+   ```
+
+7. Migrate and seed the database
+
+   ```sh
+   npm run -w @specfy/api migrate
+   npm run -w @specfy/api seed
+   ```
+
+8. Launch the API
+
+   ```sh
+   npm run api
+   ```
+
+    Go to [http://localhost:3000](http://localhost:3000)
+
+9. Launch the App
+
+   ```sh
+   npm run app
+   ```
+
+   Go to [http://localhost:5173](http://localhost:5173)
+
+10. Optional: Launch the mail builder
+
+   ```sh
+   npm run emails
+   ```
+
+   Go to [http://localhost:3001](http://localhost:3001)

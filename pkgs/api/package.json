@@ -33,6 +33,7 @@
     "@fastify/session": "10.2.0",
     "@fastify/static": "6.10.2",
     "@octokit/auth-app": "6.0.0",
+    "@octokit/request-error": "5.0.0",
     "@prisma/client": "^4.12.0",
     "@specfy/emails": "file:../emails",
     "@specfy/stack-analyser": "1.4.0",
