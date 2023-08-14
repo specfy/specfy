@@ -1,8 +1,8 @@
+import { prisma } from '@specfy/db';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors.js';
-import { prisma } from '../../../db/index.js';
 import { getProject } from '../../../middlewares/getProject.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import { recomputeOrgGraph } from '../../../models/flows/helpers.rebuild.js';

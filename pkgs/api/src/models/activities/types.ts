@@ -1,4 +1,4 @@
-import type { Prisma } from '@prisma/client';
+import type { Prisma } from '@specfy/db';
 
 export type DBActivityType =
   | 'Component'

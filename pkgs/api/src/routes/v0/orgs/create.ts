@@ -1,9 +1,9 @@
+import { prisma } from '@specfy/db';
 import type { FastifyPluginCallback } from 'fastify';
 import z from 'zod';
 
 import { validationError } from '../../../common/errors.js';
 import { schemaOrgId } from '../../../common/validators/index.js';
-import { prisma } from '../../../db/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import { createFreeSubscription } from '../../../models/billing/model.js';
 import { createOrg } from '../../../models/index.js';

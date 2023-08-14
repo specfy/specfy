@@ -1,4 +1,4 @@
-import type { Jobs, Prisma } from '@prisma/client';
+import type { Jobs, Prisma } from '@specfy/db';
 
 export interface JobDeployConfig {
   url: string;

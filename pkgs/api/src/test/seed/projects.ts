@@ -1,8 +1,7 @@
-import type { Orgs, Projects, Users } from '@prisma/client';
+import { nanoid, slugify } from '@specfy/core';
+import type { Orgs, Projects, Users } from '@specfy/db';
+import { prisma } from '@specfy/db';
 
-import { nanoid } from '../../common/id.js';
-import { slugify } from '../../common/string.js';
-import { prisma } from '../../db/index.js';
 import { recomputeOrgGraph } from '../../models/flows/helpers.rebuild.js';
 import {
   createProject,

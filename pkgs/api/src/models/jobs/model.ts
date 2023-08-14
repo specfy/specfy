@@ -1,8 +1,7 @@
-import type { Jobs } from '@prisma/client';
-import { Prisma } from '@prisma/client';
+import { nanoid } from '@specfy/core';
+import { Prisma } from '@specfy/db';
+import type { Jobs } from '@specfy/db';
 import type { SetNonNullable } from 'type-fest';
-
-import { nanoid } from '../../common/id.js';
 
 export async function createJobDeploy({
   tx,

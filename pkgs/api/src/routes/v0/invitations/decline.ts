@@ -1,7 +1,7 @@
+import { prisma } from '@specfy/db';
 import type { FastifyPluginCallback } from 'fastify';
 
 import { forbidden } from '../../../common/errors.js';
-import { prisma } from '../../../db/index.js';
 import { getInvitation } from '../../../middlewares/getInvitation.js';
 import { noBody } from '../../../middlewares/noBody.js';
 import type { DeclineInvitation } from '../../../types/api/index.js';

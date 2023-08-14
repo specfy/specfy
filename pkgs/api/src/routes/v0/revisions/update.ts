@@ -1,9 +1,9 @@
-import type { Prisma, TypeHasUsers } from '@prisma/client';
+import type { Prisma, TypeHasUsers } from '@specfy/db';
+import { prisma } from '@specfy/db';
 import type { FastifyPluginCallback } from 'fastify';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors.js';
-import { prisma } from '../../../db/index.js';
 import { getRevision } from '../../../middlewares/getRevision.js';
 import { createRevisionActivity } from '../../../models/index.js';
 import { schemaRevision } from '../../../models/revisions/schema.js';

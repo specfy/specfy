@@ -8,6 +8,16 @@ export default defineConfig({
   },
   triggers: [
     {
+      name: 'core:run',
+      initialRun: true,
+      interruptible: false,
+      persistent: true,
+      expression: ['match', '*.ts', 'basename'],
+      onChange: async ({ spawn }: ChangeEvent) => {
+        await spawn`npm run -w @specfy/core build`;
+      },
+    },
+    {
       name: 'api:build',
       initialRun: true,
       interruptible: false,

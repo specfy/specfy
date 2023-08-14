@@ -3,7 +3,7 @@ import {
   Viewport,
 } from '@radix-ui/react-toast';
 import * as RadixToast from '@radix-ui/react-toast';
-import { nanoid } from '@specfy/api/src/common/id';
+import { nanoid } from '@specfy/core/src/id';
 import {
   IconCircleCheck,
   IconExclamationCircle,

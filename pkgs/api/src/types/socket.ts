@@ -1,4 +1,4 @@
-import type { Users } from '@prisma/client';
+import type { Users } from '@specfy/db';
 import type { Server } from 'socket.io';
 
 import type { PermsWithOrg } from '../models/perms/types.js';

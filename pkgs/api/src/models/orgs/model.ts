@@ -1,12 +1,12 @@
-import type { Activities, Orgs, Prisma, Users } from '@prisma/client';
+import { nanoid } from '@specfy/core';
+import type { Activities, Orgs, Prisma, Users } from '@specfy/db';
 
 import { acronymize, stringToColor } from '../../common/avatar.js';
-import { nanoid } from '../../common/id.js';
 import type { ActionOrg } from '../activities/types.js';
 import { recomputeOrgGraph } from '../flows/helpers.rebuild.js';
 import { createKey } from '../keys/model.js';
 
-export type { Orgs } from '@prisma/client';
+export type { Orgs } from '@specfy/db';
 
 export async function createOrg(
   tx: Prisma.TransactionClient,

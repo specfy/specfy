@@ -1,11 +1,11 @@
-import type { Activities, Prisma, Users } from '@prisma/client';
+import { nanoid } from '@specfy/core';
+import type { Activities, Prisma, Users } from '@specfy/db';
 import JWT from 'jsonwebtoken';
 
-import { JWT_SECRET } from '../../common/auth.js';
-import { nanoid } from '../../common/id.js';
+import { JWT_SECRET } from '../../types/auth.js';
 import type { ActionUser } from '../activities/types.js';
 
-export type { Users } from '@prisma/client';
+export type { Users } from '@specfy/db';
 
 export function getJwtToken(user: Users, expiresAt?: Date): string {
   return JWT.sign(

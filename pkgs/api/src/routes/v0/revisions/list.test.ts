@@ -1,4 +1,4 @@
-import type { Orgs, Projects, Users } from '@prisma/client';
+import type { Orgs, Projects, Users } from '@specfy/db';
 import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
 import type { TestSetup } from '../../../test/each.js';

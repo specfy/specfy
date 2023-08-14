@@ -9,6 +9,8 @@ module.exports = {
     'plugin:react/jsx-runtime',
     'plugin:import/errors',
     'plugin:import/warnings',
+    'plugin:import/recommended',
+    'plugin:import/typescript',
     'plugin:prettier/recommended',
     // 'plugin:@typescript-eslint/recommended-type-checked',
     // 'plugin:@typescript-eslint/strict-type-checked',
@@ -33,18 +35,6 @@ module.exports = {
     },
     // project: './tsconfig.lint.json',
     project: false,
-  },
-  settings: {
-    'import/extensions': ['.js', '.jsx', '.ts', '.tsx'],
-
-    'import/resolver': {
-      node: {
-        extensions: ['.js', '.jsx', '.ts', '.tsx'],
-      },
-    },
-    'import/parsers': {
-      '@typescript-eslint/parser': ['.ts', '.tsx'],
-    },
   },
 
   rules: {
@@ -211,6 +201,24 @@ module.exports = {
 
     'react/prop-types': ['off'],
     'import/no-unresolved': 'off', // checked by ts
+
+    'import/order': [
+      'error',
+      {
+        groups: [
+          'builtin',
+          'external',
+          'internal',
+          'parent',
+          'sibling',
+          'index',
+        ],
+        'newlines-between': 'always',
+        alphabetize: {
+          order: 'asc',
+        },
+      },
+    ],
   },
 
   overrides: [

@@ -1,7 +1,6 @@
-import type { Projects, Prisma, Activities, Users } from '@prisma/client';
+import { nanoid, slugify } from '@specfy/core';
+import type { Projects, Prisma, Activities, Users } from '@specfy/db';
 
-import { nanoid } from '../../common/id.js';
-import { slugify } from '../../common/string.js';
 import type { ActionProject } from '../activities/types.js';
 import { createKey } from '../keys/model.js';
 

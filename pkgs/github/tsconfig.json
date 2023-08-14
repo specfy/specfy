@@ -1,0 +1,11 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./build",
+  },
+  "include": [
+    "src",
+    "../db/src/prisma.d.ts"
+  ]
+}

@@ -1,4 +1,4 @@
-import type { Policies } from '@prisma/client';
+import type { Policies } from '@specfy/db';
 
 import type { ApiPolicy } from '../../types/api/index.js';
 

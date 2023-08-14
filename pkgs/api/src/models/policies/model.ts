@@ -1,6 +1,6 @@
-import type { Policies, Users, Prisma, Activities } from '@prisma/client';
+import { nanoid } from '@specfy/core';
+import type { Policies, Users, Prisma, Activities } from '@specfy/db';
 
-import { nanoid } from '../../common/id.js';
 import type { ActionPolicy } from '../activities/types.js';
 
 export async function createPoliciesActivity({

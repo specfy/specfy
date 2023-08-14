@@ -1,7 +1,5 @@
-import { Prisma } from '@prisma/client';
-import type { Users, Orgs } from '@prisma/client';
-
-import { prisma } from '../../db/index.js';
+import type { Users, Orgs } from '@specfy/db';
+import { Prisma, prisma } from '@specfy/db';
 
 import { BILLING_ENABLED } from './constants.js';
 import { v1 } from './plans.js';

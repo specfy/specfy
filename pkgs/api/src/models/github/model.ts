@@ -1,6 +1,6 @@
-import type { Activities, Orgs, Prisma, Projects, Users } from '@prisma/client';
+import { nanoid } from '@specfy/core';
+import type { Activities, Orgs, Prisma, Projects, Users } from '@specfy/db';
 
-import { nanoid } from '../../common/id.js';
 import type { ActionGithub } from '../activities/types.js';
 
 export async function createGithubActivity({

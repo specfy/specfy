@@ -1,4 +1,3 @@
-import type { IconType } from '@icons-pack/react-simple-icons/types';
 import {
   SiApachecassandra,
   SiAmazondynamodb,
@@ -62,6 +61,7 @@ import {
   SiGnubash,
   SiCss3,
 } from '@icons-pack/react-simple-icons';
+import type { IconType } from '@icons-pack/react-simple-icons/types';
 import type { ApiComponent } from '@specfy/api/src/types/api';
 import type { AllowedKeys, TechItem } from '@specfy/stack-analyser';
 import { listTech } from '@specfy/stack-analyser/dist/common/techs.generated';

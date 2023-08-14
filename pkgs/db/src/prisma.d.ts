@@ -1,16 +1,18 @@
-import type { DBActivity } from '../models/activities/types.js';
-import type { DBBlob } from '../models/blobs/types.js';
-import type { DBComponent } from '../models/components/types.js';
-import type { DBDocument } from '../models/documents/types.js';
-import type { ComputedFlow } from '../models/flows/types.js';
-import type { JobDeployConfig, JobReason } from '../models/jobs/type.js';
-import type { DBPerm } from '../models/perms/types.js';
-import type { DBPolicy } from '../models/policies/types.js';
-import type { DBProject } from '../models/projects/types.js';
-import type { DBRevision } from '../models/revisions/types.js';
-import type { DBTypeHasUser } from '../models/typesHasUsers/types.js';
-
-import type { BlockLevelZero } from './api/index.js';
+import type { DBActivity } from '@specfy/api/src/models/activities/types.js';
+import type { DBBlob } from '@specfy/api/src/models/blobs/types.js';
+import type { DBComponent } from '@specfy/api/src/models/components/types.js';
+import type { DBDocument } from '@specfy/api/src/models/documents/types.js';
+import type { ComputedFlow } from '@specfy/api/src/models/flows/types.js';
+import type {
+  JobDeployConfig,
+  JobReason,
+} from '@specfy/api/src/models/jobs/type.js';
+import type { DBPerm } from '@specfy/api/src/models/perms/types.js';
+import type { DBPolicy } from '@specfy/api/src/models/policies/types.js';
+import type { DBProject } from '@specfy/api/src/models/projects/types.js';
+import type { DBRevision } from '@specfy/api/src/models/revisions/types.js';
+import type { DBTypeHasUser } from '@specfy/api/src/models/typesHasUsers/types.js';
+import type { BlockLevelZero } from '@specfy/api/src/types/api/index.js';
 
 declare global {
   namespace PrismaJson {

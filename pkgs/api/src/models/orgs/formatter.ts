@@ -1,4 +1,4 @@
-import type { Orgs } from '@prisma/client';
+import type { Orgs } from '@specfy/db';
 
 import type { ApiOrg, ApiOrgPublic } from '../../types/api/index.js';
 

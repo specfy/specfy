@@ -1,5 +1,4 @@
 import * as Form from '@radix-ui/react-form';
-import { omit } from '@specfy/api/src/common/object';
 import { componentsToFlow } from '@specfy/api/src/models/flows/transform';
 import type { ComputedFlow } from '@specfy/api/src/models/flows/types';
 import {
@@ -13,6 +12,7 @@ import type {
   BlockLevelZero,
   PostRevision,
 } from '@specfy/api/src/types/api';
+import { omit } from '@specfy/core/src/object';
 import {
   IconGitPullRequest,
   IconGitPullRequestDraft,

@@ -1,6 +1,6 @@
+import { prisma } from '@specfy/db';
 import { beforeAll, afterAll, describe, it, expect } from 'vitest';
 
-import { prisma } from '../../../db/index.js';
 import { createComponentBlob } from '../../../models/index.js';
 import type { TestSetup } from '../../../test/each.js';
 import { setupBeforeAll, setupAfterAll } from '../../../test/each.js';

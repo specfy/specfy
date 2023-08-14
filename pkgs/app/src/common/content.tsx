@@ -1,8 +1,8 @@
-import { nanoid } from '@specfy/api/src/common/id';
 import type {
   BlocksWithContent,
   BlockLevelZero,
 } from '@specfy/api/src/types/api';
+import { nanoid } from '@specfy/core/src/id';
 
 import { ContentBlock } from '../components/Content';
 

@@ -1,11 +1,10 @@
-import { nanoid } from '../../common/id.js';
-import { prisma } from '../../db/index.js';
-import { l as consola } from '../../logger.js';
 import {
   createGithubActivity,
   createJobDeploy,
   userGithubApp,
-} from '../../models/index.js';
+} from '@specfy/api/build/models/index.js';
+import { nanoid, l as consola } from '@specfy/core';
+import { prisma } from '@specfy/db';
 
 import { webhookService as ws } from './app.js';
 

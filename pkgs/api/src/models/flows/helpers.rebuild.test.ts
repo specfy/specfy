@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
-import type { Orgs, Projects } from '@prisma/client';
+import type { Orgs, Projects } from '@specfy/db';
 import { describe, expect, it } from 'vitest';
 
 import { getBlobComponent } from '../../test/seed/components.js';

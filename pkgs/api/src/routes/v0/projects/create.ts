@@ -1,12 +1,11 @@
+import { nanoid, slugify } from '@specfy/core';
+import { prisma } from '@specfy/db';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import z from 'zod';
 
 import { validationError } from '../../../common/errors.js';
-import { nanoid } from '../../../common/id.js';
-import { slugify } from '../../../common/string.js';
 import { schemaOrgId } from '../../../common/validators/index.js';
 import { valPermissions } from '../../../common/zod.js';
-import { prisma } from '../../../db/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import { getUsage } from '../../../models/billing/model.js';
 import { recomputeOrgGraph } from '../../../models/flows/helpers.rebuild.js';

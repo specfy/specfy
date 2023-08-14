@@ -1,4 +1,4 @@
-import type { Revisions, Prisma } from '@prisma/client';
+import type { Revisions, Prisma } from '@specfy/db';
 
 import type { ReviewWithUser } from '../reviews/types.js';
 

@@ -2,7 +2,7 @@ import type {
   ApiBlobComponent,
   ApiBlobDocument,
   ApiBlobProject,
-} from '@specfy/api/src/types/api';
+} from '../../types/api/index.js';
 
 export const flagRevisionApprovalEnabled: boolean = false;
 export const flagRevisionDescRequired: boolean = false;

@@ -1,5 +1,5 @@
-import { prisma } from '../../db/index.js';
-import { l as consola } from '../../logger.js';
+import { l as consola } from '@specfy/core';
+import { prisma } from '@specfy/db';
 
 import type { Job } from './Job.js';
 import { JobDeploy } from './jobs/deploy.js';

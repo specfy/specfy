@@ -1,4 +1,4 @@
-import type { Users } from '@prisma/client';
+import type { Users } from '@specfy/db';
 
 import type { Pagination, Res } from '../../types/api/api.js';
 

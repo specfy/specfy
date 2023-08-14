@@ -24,9 +24,7 @@
     "url": "https://github.com/specfy/specfy/issues"
   },
   "workspaces": [
-    "pkgs/app",
-    "pkgs/api",
-    "pkgs/emails"
+    "pkgs/*"
   ],
   "homepage": "https://github.com/specfy/specfy#readme",
   "devDependencies": {

@@ -1,6 +1,5 @@
 import { PrismaClient } from '@prisma/client';
-
-import { envs } from '../common/env.js';
+import { envs } from '@specfy/core';
 
 export const prisma = new PrismaClient({
   datasources: {
@@ -10,3 +9,5 @@ export const prisma = new PrismaClient({
   },
   // log: ['query', 'info', 'warn', 'error'],
 });
+
+export * from '@prisma/client';

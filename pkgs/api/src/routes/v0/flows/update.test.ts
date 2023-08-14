@@ -1,7 +1,7 @@
-import type { Orgs, Projects, Users } from '@prisma/client';
+import type { Orgs, Projects, Users } from '@specfy/db';
+import { prisma } from '@specfy/db';
 import { beforeAll, afterAll, describe, it, expect } from 'vitest';
 
-import { prisma } from '../../../db/index.js';
 import { createComponent } from '../../../models/components/model.js';
 import { recomputeOrgGraph } from '../../../models/flows/helpers.rebuild.js';
 import type { TestSetup } from '../../../test/each.js';

@@ -1,4 +1,4 @@
-import type { Components, Orgs, Projects } from '@prisma/client';
+import type { Components, Orgs, Projects } from '@specfy/db';
 import type { AnalyserJson } from '@specfy/stack-analyser';
 import { Payload } from '@specfy/stack-analyser';
 import { describe, expect, it } from 'vitest';

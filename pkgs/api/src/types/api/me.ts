@@ -1,4 +1,4 @@
-import type { Perms } from '@prisma/client';
+import type { Perms } from '@specfy/db';
 
 import type { Res } from './api.js';
 

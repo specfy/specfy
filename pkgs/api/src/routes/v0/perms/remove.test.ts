@@ -1,7 +1,7 @@
+import { nanoid } from '@specfy/core';
+import { prisma } from '@specfy/db';
 import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
-import { nanoid } from '../../../common/id.js';
-import { prisma } from '../../../db/index.js';
 import type { TestSetup } from '../../../test/each.js';
 import { setupAfterAll, setupBeforeAll } from '../../../test/each.js';
 import { isSuccess } from '../../../test/fetch.js';

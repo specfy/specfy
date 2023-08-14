@@ -1,4 +1,4 @@
-import type { Projects } from '@prisma/client';
+import type { Projects } from '@specfy/db';
 
 import type {
   FlowItemDisplay,

@@ -1,6 +1,6 @@
-import type { Activities, Keys, Prisma, Users } from '@prisma/client';
+import { nanoid } from '@specfy/core';
+import type { Activities, Keys, Prisma, Users } from '@specfy/db';
 
-import { nanoid } from '../../common/id.js';
 import type { ActionKey } from '../activities/types.js';
 
 export async function createKey({

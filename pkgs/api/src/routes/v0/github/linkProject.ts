@@ -1,4 +1,5 @@
 import { RequestError } from '@octokit/request-error';
+import { prisma } from '@specfy/db';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { Octokit } from 'octokit';
 import { z } from 'zod';
@@ -10,7 +11,6 @@ import {
 } from '../../../common/errors.js';
 import { schemaId, schemaOrgId } from '../../../common/validators/index.js';
 import { valPermissions } from '../../../common/zod.js';
-import { prisma } from '../../../db/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import {
   createGithubActivity,

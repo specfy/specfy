@@ -55,7 +55,7 @@ Optional:
 7. Migrate and seed the database
 
    ```sh
-   npm run -w @specfy/api migrate
+   npm run -w @specfy/db migrate
    npm run -w @specfy/api seed
    ```
 

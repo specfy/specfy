@@ -1,4 +1,4 @@
-import type { Invitations, Prisma } from '@prisma/client';
+import type { Invitations, Prisma } from '@specfy/db';
 
 import type { Res } from '../../types/api/api.js';
 import type { ApiOrgPublic } from '../orgs/types.api.js';

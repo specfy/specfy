@@ -4,7 +4,7 @@ import type {
   Documents,
   Prisma,
   Projects,
-} from '@prisma/client';
+} from '@specfy/db';
 
 import { sortBlobsByInsertion } from '../revisions/helpers.js';
 

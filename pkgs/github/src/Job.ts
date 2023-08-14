@@ -1,14 +1,16 @@
-import type { Jobs } from '@prisma/client';
-import type { ConsolaInstance } from 'consola';
+import { toApiJob } from '@specfy/api/build/models/jobs/formatter.js';
+import { JobReason } from '@specfy/api/build/models/jobs/helpers.js';
+import type {
+  JobMark,
+  JobWithOrgProject,
+} from '@specfy/api/build/models/jobs/type.js';
+import { toApiProject } from '@specfy/api/build/models/projects/formatter.js';
+import { io } from '@specfy/api/build/socket.js';
+import type { EventJob } from '@specfy/api/build/types/socket.js';
+import { prisma } from '@specfy/db';
+import type { Jobs } from '@specfy/db';
 import { consola } from 'consola';
-
-import { prisma } from '../../db/index.js';
-import { toApiJob } from '../../models/jobs/formatter.js';
-import { JobReason } from '../../models/jobs/helpers.js';
-import type { JobMark, JobWithOrgProject } from '../../models/jobs/type.js';
-import { toApiProject } from '../../models/projects/formatter.js';
-import { io } from '../../socket.js';
-import type { EventJob } from '../../types/socket.js';
+import type { ConsolaInstance } from 'consola';
 
 export abstract class Job {
   l: ConsolaInstance;

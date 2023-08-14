@@ -1,6 +1,6 @@
 import type { IncomingMessage, ServerResponse } from 'http';
 
-import type { Flows, Keys, Orgs, Projects, Users } from '@prisma/client';
+import type { Flows, Keys, Orgs, Projects, Users } from '@specfy/db';
 import type {
   preHandlerAsyncHookHandler,
   preHandlerHookHandler,

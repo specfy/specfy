@@ -1,4 +1,5 @@
-import { pick } from '../../common/object.js';
+import { pick } from '@specfy/core';
+
 import type { ApiActivity } from '../../types/api/index.js';
 import type { DBComponent } from '../components/types.js';
 import type { DBDocument } from '../documents/types.js';

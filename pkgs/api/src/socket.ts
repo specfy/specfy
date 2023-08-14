@@ -1,12 +1,12 @@
 import type http from 'node:http';
 
+import { nanoid } from '@specfy/core';
+import { prisma } from '@specfy/db';
 import JWT from 'jsonwebtoken';
 import { Server } from 'socket.io';
 
-import { JWT_SECRET } from './common/auth.js';
-import { nanoid } from './common/id.js';
-import { prisma } from './db/index.js';
 import { checkInheritedPermissions } from './models/perms/helpers.js';
+import { JWT_SECRET } from './types/auth.js';
 import type { PayloadAuth, SocketServer } from './types/socket.js';
 
 export let io: SocketServer;

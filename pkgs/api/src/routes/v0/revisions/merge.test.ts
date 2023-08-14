@@ -1,7 +1,7 @@
-import type { Orgs, Projects, Users } from '@prisma/client';
+import type { Orgs, Projects, Users } from '@specfy/db';
+import { prisma } from '@specfy/db';
 import { beforeAll, afterAll, describe, it, expect } from 'vitest';
 
-import { prisma } from '../../../db/index.js';
 import { createComponentBlob } from '../../../models/index.js';
 import { flagRevisionApprovalEnabled } from '../../../models/revisions/constants.js';
 import type { TestSetup } from '../../../test/each.js';

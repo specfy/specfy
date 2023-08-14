@@ -1,6 +1,6 @@
+import { prisma } from '@specfy/db';
 import type { FastifyPluginCallback } from 'fastify';
 
-import { prisma } from '../../../db/index.js';
 import { getProject } from '../../../middlewares/getProject.js';
 import { noBody } from '../../../middlewares/noBody.js';
 import { noQuery } from '../../../middlewares/noQuery.js';

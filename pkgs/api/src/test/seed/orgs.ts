@@ -1,8 +1,8 @@
-import type { Orgs, Users } from '@prisma/client';
+import { nanoid } from '@specfy/core';
+import type { Orgs, Users } from '@specfy/db';
+import { prisma } from '@specfy/db';
 import { customAlphabet } from 'nanoid/non-secure';
 
-import { nanoid } from '../../common/id.js';
-import { prisma } from '../../db/index.js';
 import { createFreeSubscription } from '../../models/billing/model.js';
 import { createOrg } from '../../models/index.js';
 

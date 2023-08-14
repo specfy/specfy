@@ -1,6 +1,6 @@
-import type { Prisma, Projects } from '@prisma/client';
+import { nanoid } from '@specfy/core';
+import type { Prisma, Projects } from '@specfy/db';
 
-import { nanoid } from '../../common/id.js';
 import type { DBComponent } from '../components/types.js';
 
 import { computeNewProjectPosition, getComponentSize } from './helpers.js';

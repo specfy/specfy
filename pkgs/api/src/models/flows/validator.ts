@@ -1,6 +1,6 @@
+import { alphabet } from '@specfy/core';
 import { z } from 'zod';
 
-import { alphabet } from '../../common/id.js';
 import { schemaId } from '../../common/validators/index.js';
 
 import { min, max, wMax, wMin, hMax, hMin } from './constants.js';

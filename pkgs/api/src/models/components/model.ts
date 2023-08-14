@@ -1,7 +1,6 @@
-import type { Prisma, Activities, Components, Users } from '@prisma/client';
+import { nanoid, slugify } from '@specfy/core';
+import type { Prisma, Activities, Components, Users } from '@specfy/db';
 
-import { nanoid } from '../../common/id.js';
-import { slugify } from '../../common/string.js';
 import type { ActionComponent } from '../activities/types.js';
 
 export async function createComponentBlob({

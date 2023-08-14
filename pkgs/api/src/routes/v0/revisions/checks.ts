@@ -1,6 +1,6 @@
+import { prisma } from '@specfy/db';
 import type { FastifyPluginCallback } from 'fastify';
 
-import { prisma } from '../../../db/index.js';
 import { getRevision } from '../../../middlewares/getRevision.js';
 import { findAllBlobsWithParent } from '../../../models/blobs/helpers.js';
 import { toApiReview } from '../../../models/reviews/formatter.js';

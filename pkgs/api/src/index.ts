@@ -1,9 +1,9 @@
+import { start, stop } from '@specfy/github';
 import closeWithGrace from 'close-with-grace';
 import Fastify from 'fastify';
 
 import appService, { options } from './app.js';
 import { envs } from './common/env.js';
-import { start, stop } from './services/github/index.js';
 
 // Require library to exit fastify process, gracefully (if possible)
 

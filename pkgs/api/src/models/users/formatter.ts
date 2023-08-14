@@ -1,4 +1,4 @@
-import type { Perms, Users } from '@prisma/client';
+import type { Perms, Users } from '@specfy/db';
 
 import type { ApiMe, ApiUser, ApiUserPublic } from '../../types/api/index.js';
 

@@ -1,0 +1,21 @@
+{
+  "name": "@specfy/github",
+  "version": "0.0.1",
+  "description": "",
+  "main": "build/index.js",
+  "typings": "build/index.d.ts",
+  "module": "build/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json -w"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@octokit/core": "5.0.0",
+    "@octokit/webhooks": "12.0.3"
+  },
+  "devDependencies": {
+    "typescript": "5.1.6"
+  }
+}

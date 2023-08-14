@@ -1,6 +1,6 @@
-import type { Orgs, Projects, Users } from '@prisma/client';
+import type { Orgs, Projects, Users } from '@specfy/db';
+import { prisma } from '@specfy/db';
 
-import { prisma } from '../../db/index.js';
 import { createJobDeploy } from '../../models/index.js';
 import { JobReason } from '../../models/jobs/helpers.js';
 

@@ -1,11 +1,11 @@
 import crypto from 'crypto';
 
 import type { Authenticator } from '@fastify/passport';
+import { prisma } from '@specfy/db';
 import type { FastifyInstance } from 'fastify';
 import { Strategy as LocalStrategy } from 'passport-local';
 
 import { envs } from '../../common/env.js';
-import { prisma } from '../../db/index.js';
 
 import { AuthError } from './errors.js';
 

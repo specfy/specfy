@@ -1,6 +1,6 @@
-import type { Prisma, Users, Activities, Revisions } from '@prisma/client';
+import { nanoid } from '@specfy/core';
+import type { Prisma, Users, Activities, Revisions } from '@specfy/db';
 
-import { nanoid } from '../../common/id.js';
 import type { ActionRevision } from '../activities/types.js';
 
 import type { ApiBlobCreate } from './types.api.js';

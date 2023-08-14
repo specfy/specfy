@@ -1,10 +1,9 @@
 import path from 'node:path';
 
-import type { Documents } from '@prisma/client';
+import { nanoid, slugify, titleCase } from '@specfy/core';
+import type { Documents } from '@specfy/db';
 import { defaultMarkdownParser } from 'prosemirror-markdown';
 
-import { nanoid } from '../../common/id.js';
-import { slugify, titleCase } from '../../common/string.js';
 import type {
   ApiBlobCreate,
   ApiBlobCreateDocument,

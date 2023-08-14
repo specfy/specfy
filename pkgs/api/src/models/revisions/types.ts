@@ -1,4 +1,4 @@
-import type { Prisma } from '@prisma/client';
+import type { Prisma } from '@specfy/db';
 
 import type { BlockLevelZero } from '../../types/api/index.js';
 

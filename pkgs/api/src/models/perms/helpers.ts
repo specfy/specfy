@@ -1,4 +1,4 @@
-import type { Orgs, Perms } from '@prisma/client';
+import type { Orgs, Perms } from '@specfy/db';
 import type { FastifyRequest } from 'fastify';
 
 import type { DBPerm, PermsWithOrg } from './types.js';

@@ -1,4 +1,5 @@
-import { prisma } from '../../db/index.js';
+import { prisma } from '@specfy/db';
+
 import { createJobDeploy, userGithubApp } from '../../models/index.js';
 
 // Publish a job in the queue

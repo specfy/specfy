@@ -1,4 +1,4 @@
-import type { Blobs, Prisma } from '@prisma/client';
+import type { Blobs, Prisma } from '@specfy/db';
 
 import type { ApiBlobCreate } from './types.api.js';
 

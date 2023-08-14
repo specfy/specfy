@@ -1,9 +1,9 @@
+import { prisma } from '@specfy/db';
 import type { FastifyPluginCallback } from 'fastify';
 import { z } from 'zod';
 
 import { acronymize, stringToColor } from '../../../common/avatar.js';
 import { validationError } from '../../../common/errors.js';
-import { prisma } from '../../../db/index.js';
 import { getOrg } from '../../../middlewares/getOrg.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import { createOrgActivity } from '../../../models/index.js';

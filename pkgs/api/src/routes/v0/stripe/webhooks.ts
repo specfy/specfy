@@ -1,9 +1,9 @@
+import { prisma } from '@specfy/db';
 import type { FastifyPluginCallback } from 'fastify';
 import type Stripe from 'stripe';
 
 import { envs } from '../../../common/env.js';
 import { forbidden } from '../../../common/errors.js';
-import { prisma } from '../../../db/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import { v1 } from '../../../models/billing/plans.js';
 import { stripe } from '../../../models/billing/stripe.js';

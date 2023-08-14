@@ -1,8 +1,8 @@
+import { prisma } from '@specfy/db';
 import { z } from 'zod';
 
 import { notFound, validationError } from '../common/errors.js';
 import { schemaId } from '../common/validators/index.js';
-import { prisma } from '../db/index.js';
 import type { GetUser } from '../types/api/index.js';
 import type { PreHandler } from '../types/fastify.js';
 

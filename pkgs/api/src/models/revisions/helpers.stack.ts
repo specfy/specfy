@@ -1,9 +1,8 @@
-import type { Components } from '@prisma/client';
+import { slugify, titleCase, pick } from '@specfy/core';
+import type { Components } from '@specfy/db';
 import type { AnalyserJson } from '@specfy/stack-analyser';
 import { tech } from '@specfy/stack-analyser';
 
-import { pick } from '../../common/object.js';
-import { slugify, titleCase } from '../../common/string.js';
 import type {
   ApiBlobCreate,
   ApiBlobCreateComponent,
