@@ -23,7 +23,7 @@ Specfy extract metadata from your organization's repositories and automaticaly b
 
 ### Getting Started
 
-- 🚀 · [Deploy](./DEPLOY.MD) your own Specfy instance
+- 🚀 · [Deploy](./docs/deploy.md) your own Specfy instance
 - 🌤️ · Setup and use [Specfy Cloud](https://specfy.io)
 - 📖 · Read our [blog](https://specfy.io/blog)
 

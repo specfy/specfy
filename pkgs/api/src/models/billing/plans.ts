@@ -1,7 +1,7 @@
 export enum PlanName {
   'free' = 'free',
   'pro' = 'pro',
-  'enterprise' = 'enterprise',
+  'business' = 'business',
 }
 
 export interface Plan {
@@ -49,7 +49,7 @@ export const v1: Record<PlanName, Plan> = {
   pro: {
     id: 'prod_02d8ykCPVkHY2JVIwX8VWUr1',
     name: 'Pro',
-    description: 'Perfect for medium sized company and fast growing company',
+    description: 'Perfect to get started and scale with your startup',
     user: {
       max: 50,
     },
@@ -70,10 +70,10 @@ export const v1: Record<PlanName, Plan> = {
     },
     features: ['Email support'],
   },
-  enterprise: {
+  business: {
     id: 'prod_03d8ykCPVkHY2JVIwX8VWUr2',
     name: 'Business',
-    description: 'Everything unlocked',
+    description: 'Fit your fast growing company',
     user: {
       max: 250,
     },
@@ -85,8 +85,8 @@ export const v1: Record<PlanName, Plan> = {
       maxDocumentSize: 9_999_999,
     },
     price: {
-      key: 'v1_enterprise',
-      amount: 20000,
+      key: 'v1_business',
+      amount: 24900,
       currency: 'usd',
     },
     deploy: {

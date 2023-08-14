@@ -4,9 +4,9 @@ Repo:
 
 Marketing Site:
   ✔ POC @done(23-03-29 12:07)
-  - Add contact
-  - Add TOS
-  - Add open source section
+  ✔ Add contact @done(23-08-14 11:52)
+  ✔ Add TOS @done(23-08-14 11:52)
+  ✔ Add open source section @done(23-08-14 11:06)
 
 ---
 
@@ -321,6 +321,9 @@ Flow:
   - Bug: Enforce to not connect to the same component twice (currently error silently in console)
   - Better auto layout algorithm
 
+
+Deploy:
+  - Skip when usage is reached
 
 -----
 
