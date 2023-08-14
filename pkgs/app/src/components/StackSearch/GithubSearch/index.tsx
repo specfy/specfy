@@ -1,4 +1,4 @@
-import { Github } from '@icons-pack/react-simple-icons';
+import { SiGithub } from '@icons-pack/react-simple-icons';
 import * as Popover from '@radix-ui/react-popover';
 import type { ApiGithubRepo } from '@specfy/api/src/types/api';
 import { IconLock, IconSelector } from '@tabler/icons-react';
@@ -112,7 +112,7 @@ export const GithubSearch = forwardRef<
           <button ref={ref} className={cls.select}>
             {pick && (
               <div className={cls.pick}>
-                {pick.id !== -1 && <Github size={'1em'} />} {pick.name}
+                {pick.id !== -1 && <SiGithub size={'1em'} />} {pick.name}
               </div>
             )}
             {!pick && 'Select repository...'} <IconSelector />
