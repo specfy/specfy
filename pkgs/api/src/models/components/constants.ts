@@ -8,7 +8,7 @@ export const componentTypes: ComponentType[] = [
   'language',
   'messaging',
   'network',
-  'sass',
+  'saas',
   'storage',
   'tool',
   'project',

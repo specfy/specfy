@@ -34,7 +34,7 @@ export const TechnicalAspects: React.FC<{
     const _techs = new Set<string>();
     const _groups: typeof groups = {
       hosting: [],
-      sass: [],
+      saas: [],
       project: [],
       service: [],
       app: [],
@@ -101,10 +101,10 @@ export const TechnicalAspects: React.FC<{
       {groups.hosting && groups.hosting.length > 0 && (
         <ComponentLine title="Hosts" comps={groups.hosting} params={params} />
       )}
-      {groups.sass && groups.sass!.length > 0 && (
+      {groups.saas && groups.saas!.length > 0 && (
         <ComponentLine
           title="Third Parties"
-          comps={groups.sass}
+          comps={groups.saas}
           params={params}
         />
       )}

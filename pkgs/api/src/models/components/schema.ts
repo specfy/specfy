@@ -26,7 +26,7 @@ export const schemaComponent = z
       'language',
       'messaging',
       'network',
-      'sass',
+      'saas',
       'storage',
       'tool',
       'project',
