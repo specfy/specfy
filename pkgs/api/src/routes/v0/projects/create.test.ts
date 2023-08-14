@@ -79,13 +79,12 @@ describe('POST /projects', () => {
     isSuccess(res.json);
     expect(res.statusCode).toBe(200);
     expect(res.json).toStrictEqual({
-      id: expect.any(String),
-      slug: slug,
+      data: { id: expect.any(String), slug: slug },
     });
 
     // Should also create a permission
     const hasPerms = await prisma.perms.count({
-      where: { orgId: org.id, projectId: res.json.id },
+      where: { orgId: org.id, projectId: res.json.data.id },
     });
     expect(hasPerms).toBe(1);
   });
@@ -114,7 +113,7 @@ describe('POST /projects', () => {
       },
     });
     isSuccess(res2.json);
-    expect(res2.json.slug.startsWith('test')).toEqual(true);
-    expect(res2.json.slug.includes(id.toLocaleLowerCase())).toEqual(true);
+    expect(res2.json.data.slug.startsWith('test')).toEqual(true);
+    expect(res2.json.data.slug.includes(id.toLocaleLowerCase())).toEqual(true);
   });
 });

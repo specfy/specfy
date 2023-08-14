@@ -16,7 +16,7 @@ export async function notFound(
   const err: ResNotFound = {
     error: {
       code: '404_not_found',
-      message,
+      reason: message,
     },
   };
   return res.status(404).send(err);

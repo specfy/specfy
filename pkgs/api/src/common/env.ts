@@ -13,6 +13,7 @@ export const config = envSchema({
   dotenv: true,
 });
 
+// TODO: use zod
 const defs = {
   API_HOSTNAME: null,
   APP_HOSTNAME: null,
@@ -29,6 +30,8 @@ const defs = {
   PASSWORD_SALT: null,
   PORT: '3000',
   RESEND_KEY: null,
+  STRIPE_KEY: null,
+  STRIPE_WEBHOOKS_SECRET: null,
 };
 
 type Key = keyof typeof defs;

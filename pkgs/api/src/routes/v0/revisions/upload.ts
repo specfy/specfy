@@ -8,11 +8,8 @@ import { schemaId, schemaOrgId } from '../../../common/validators/index.js';
 import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
-import {
-  createBlobs,
-  createRevisionActivity,
-  v1,
-} from '../../../models/index.js';
+import { v1 } from '../../../models/billing/plans.js';
+import { createBlobs, createRevisionActivity } from '../../../models/index.js';
 import {
   uploadedDocumentsToDB,
   uploadToDocuments,
@@ -28,6 +25,7 @@ import {
 import type { PostUploadRevision } from '../../../types/api/index.js';
 
 function BodyVal(req: FastifyRequest) {
+  // TODO: adapt limitation with plan
   return z
     .object({
       orgId: schemaOrgId,
@@ -225,7 +223,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
 
       if (rev) {
         return res.status(200).send({
-          id: rev.id,
+          data: { id: rev.id },
         });
       } else {
         if (res.sent) {

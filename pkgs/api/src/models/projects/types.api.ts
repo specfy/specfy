@@ -35,7 +35,7 @@ export type PostProject = Res<{
         }
       | undefined;
   };
-  Success: Pick<ApiProject, 'id' | 'slug'>;
+  Success: { data: Pick<ApiProject, 'id' | 'slug'> };
 }>;
 
 // GET /:org_id/:project_slug

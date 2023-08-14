@@ -259,8 +259,16 @@ model Orgs {
   color                String  @db.VarChar(20)
   acronym              String  @db.VarChar(3)
   githubInstallationId Int?
-  createdAt            DateTime @default(now()) @db.Timestamp(3)
-  updatedAt            DateTime @updatedAt
+
+  stripeCustomerId         String?   @unique
+  stripeSubscriptionId     String?   @unique
+  stripePriceId            String?
+  stripeCurrentPeriodStart DateTime?
+  stripeCurrentPeriodEnd   DateTime?
+  currentPlanId            String?
+
+  createdAt DateTime @default(now()) @db.Timestamp(3)
+  updatedAt DateTime @updatedAt
 
   Perms       Perms[]
   Activities  Activities[]

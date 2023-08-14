@@ -13,7 +13,8 @@
     "docker:run": "docker run --env-file ./pkgs/api/.env test node pkgs/api/build/index.js",
     "api": "turbowatch",
     "app": "npm run -w @specfy/app dev",
-    "emails": "npm run -w @specfy/emails dev"
+    "emails": "npm run -w @specfy/emails dev",
+    "listen:stripe": "stripe listen --forward-to localhost:3000/0/stripe/webhooks"
   },
   "repository": {
     "type": "git",

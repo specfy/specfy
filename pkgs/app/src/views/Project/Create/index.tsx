@@ -70,14 +70,14 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
     }
 
     setErrors({});
-    socket.emit('join', { orgId: params.org_id, projectId: res.id });
+    socket.emit('join', { orgId: params.org_id, projectId: res.data.id });
 
     toast.add({ title: 'Project created', status: 'success' });
 
     if (repo && repo.id !== -1) {
       const link = await linkToGithubRepo({
         orgId: org.id,
-        projectId: res.id,
+        projectId: res.data.id,
         repository: repo.fullName,
       });
       if (isError(link)) {
@@ -86,7 +86,7 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
       }
     }
 
-    navigate(`/${params.org_id}/${res.slug}`);
+    navigate(`/${params.org_id}/${res.data.slug}`);
   };
 
   const onPickRepo: React.ComponentProps<typeof GithubSearch>['onPick'] = (

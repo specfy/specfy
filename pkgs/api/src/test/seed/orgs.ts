@@ -3,6 +3,7 @@ import { customAlphabet } from 'nanoid/non-secure';
 
 import { nanoid } from '../../common/id.js';
 import { prisma } from '../../db/index.js';
+import { createFreeSubscription } from '../../models/billing/model.js';
 import { createOrg } from '../../models/index.js';
 
 export const createOrgId = customAlphabet('abcdefghijklmnopqrstuvwxyz', 20);
@@ -17,11 +18,13 @@ export async function seedOrgs(
     id: 'acme',
     name: 'Acme',
   });
+  await createFreeSubscription({ org: o1, me: users[0] });
 
   const o2 = await createOrg(prisma, users[0], {
     id: 'samuelbodin',
     name: "Samuel Bodin's org",
   });
+  await createFreeSubscription({ org: o2, me: users[0] });
 
   await Promise.all([
     ...users.map((u, i) => {

@@ -1,4 +1,3 @@
-export * from './billing/model.js';
 export * from './components/model.js';
 export * from './documents/model.js';
 export * from './github/model.js';

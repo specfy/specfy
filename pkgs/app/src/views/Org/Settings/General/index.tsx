@@ -10,7 +10,6 @@ import { deleteOrg, updateOrg, linkToGithubOrg } from '../../../../api';
 import { isError } from '../../../../api/helpers';
 import { i18n } from '../../../../common/i18n';
 import { titleSuffix } from '../../../../common/string';
-import { Banner } from '../../../../components/Banner';
 import { Card } from '../../../../components/Card';
 import * as Dialog from '../../../../components/Dialog';
 import { Button } from '../../../../components/Form/Button';
@@ -209,12 +208,11 @@ export const SettingsGeneral: React.FC<{
               <Dialog.Content>
                 <Dialog.Header>
                   <Dialog.Title>Delete this organization?</Dialog.Title>
-                  <Dialog.Description>
-                    Are you sure to delete this organization? <br></br>This
-                    operation can&apos;t be undone.
-                  </Dialog.Description>
                 </Dialog.Header>
-                <div></div>
+                <Dialog.Description>
+                  Are you sure to delete this organization? <br></br>This
+                  operation can&apos;t be undone.
+                </Dialog.Description>
                 <Dialog.Footer>
                   <Dialog.Close asChild>
                     <Button key="back" display="ghost">

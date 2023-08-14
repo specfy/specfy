@@ -21,7 +21,7 @@ export type ListOrgs = Res<{
 // POST /
 export type PostOrg = Res<{
   Body: Pick<ApiOrg, 'id' | 'name'>;
-  Success: ApiOrg;
+  Success: { data: ApiOrgPublic };
 }>;
 
 // PUT /:org_id

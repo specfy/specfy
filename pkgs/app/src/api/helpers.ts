@@ -1,5 +1,6 @@
 import type {
   FieldsErrors,
+  Res,
   ResErrors,
   ResValidationError,
 } from '@specfy/api/src/types/api';
@@ -7,9 +8,12 @@ import type {
 import { i18n } from '../common/i18n';
 import type { useToast } from '../hooks/useToast';
 
-export function isError(res: unknown): res is ResErrors {
-  return typeof res === 'object' && res !== null && 'error' in res;
+export function isError<TType extends Res<{ Success: any }>['Reply']>(
+  json: TType
+): json is Exclude<TType, { data: any }> {
+  return json && 'error' in (json as any);
 }
+
 export function isValidationError(res: ResErrors): res is ResValidationError {
   return res.error.code === 'validation_error';
 }
