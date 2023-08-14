@@ -31,18 +31,20 @@ export const TechSearch: React.FC<{
   const groups: Array<{ key: ComponentType; items: TechSearchItem[] }> =
     useMemo(() => {
       const _groups: Record<ComponentType, TechSearchItem[]> = {
-        sass: [],
-        db: [],
+        api: [],
         app: [],
-        hosting: [],
-        project: [],
-        tool: [],
-        messaging: [],
         ci: [],
+        db: [],
+        etl: [],
+        hosting: [],
         language: [],
+        messaging: [],
         network: [],
+        project: [],
+        saas: [],
         service: [],
         storage: [],
+        tool: [],
       };
 
       for (const tech of supportedArray) {

@@ -116,7 +116,7 @@ export const ComponentSelect: React.FC<{
     'messaging',
     'network',
     'project',
-    'sass',
+    'saas',
     'storage',
     'service',
   ],
@@ -266,7 +266,7 @@ export const ComponentSelect: React.FC<{
     }
     if (option.data.type === 'tech') {
       // Tech
-      const supp = supportedIndexed[option.value!];
+      const supp = supportedIndexed[option.value];
 
       // TODO: use id to automatically add
       const { id } = createLocal(
@@ -274,7 +274,7 @@ export const ComponentSelect: React.FC<{
           name: supp.name,
           slug: supp.key,
           type: supp.type,
-          techId: option.value as string,
+          techId: option.value,
         },
         storeProject,
         storeComponents

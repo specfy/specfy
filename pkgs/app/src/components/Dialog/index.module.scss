@@ -37,23 +37,23 @@
   display: flex;
   flex-direction: column;
   gap: var(--spc);
-  padding: var(--spc-l) var(--spc-3xl);
+  padding: var(--spc-xl) var(--spc-3xl);
 }
 
 .description {
-  color: var(--text3);
+  padding: 0 var(--spc-3xl) var(--spc-l);
 }
 
 .close {
   position: absolute;
-  top: 10px;
-  right: 10px;
+  top: 20px;
+  right: 20px;
 }
 
 .footer {
   display: flex;
   justify-content: flex-end;
-  padding: var(--spc-l) var(--spc-3xl);
+  padding: var(--spc-2xl) var(--spc-3xl);
 }
 
 

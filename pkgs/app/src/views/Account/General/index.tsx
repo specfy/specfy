@@ -119,12 +119,11 @@ export const SettingsGeneral: React.FC = () => {
             <Dialog.Content>
               <Dialog.Header>
                 <Dialog.Title>Delete your Account?</Dialog.Title>
-                <Dialog.Description>
-                  Are you sure to delete your account? <br></br>This operation
-                  can&apos;t be undone.
-                </Dialog.Description>
               </Dialog.Header>
-              <div></div>
+              <Dialog.Description>
+                Are you sure to delete your account? <br></br>This operation
+                can&apos;t be undone.
+              </Dialog.Description>
               <Dialog.Footer>
                 <Dialog.Close asChild>
                   <Button key="back" display="ghost">

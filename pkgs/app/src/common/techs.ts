@@ -64,7 +64,7 @@ import {
 } from '@icons-pack/react-simple-icons';
 import type { ApiComponent } from '@specfy/api/src/types/api';
 import type { AllowedKeys, TechItem } from '@specfy/stack-analyser';
-import { list } from '@specfy/stack-analyser/dist/common/techs';
+import { listTech } from '@specfy/stack-analyser/dist/common/techs.generated';
 
 type Extending = {
   Icon?: IconType;
@@ -148,7 +148,7 @@ const extending: Partial<Record<AllowedKeys, Extending>> = {
   'zoom': { Icon: Zoom },
 };
 
-export const supportedArray: TechInfo[] = list.map((t) => {
+export const supportedArray: TechInfo[] = listTech.map((t) => {
   if (t.key in extending) {
     return { ...t, ...extending[t.key] };
   }
@@ -163,29 +163,33 @@ Object.values(supportedArray).forEach((v) => {
 export const supportedHostname = supportedArray.filter((i) => i.regHostname);
 
 export const supportedTypeToText: Record<TechInfo['type'], string> = {
+  api: 'api',
+  app: 'application',
+  ci: 'ci',
   db: 'database',
+  etl: 'etl',
   hosting: 'hosting',
   language: 'language',
   messaging: 'queue',
-  tool: 'tool',
-  sass: 'third-party',
-  app: 'application',
-  ci: 'ci',
   network: 'network',
+  saas: 'third-party',
   storage: 'storage',
+  tool: 'tool',
 };
 
 export const internalTypeToText: Record<ApiComponent['type'], string> = {
   service: 'Service',
-  hosting: 'Hosting',
-  project: 'Project',
-  sass: 'Sass',
-  db: 'Database',
-  language: 'Language',
-  messaging: 'Messaging',
-  tool: 'Tool',
+  api: 'API',
   app: 'Application',
   ci: 'CI',
+  db: 'Database',
+  etl: 'ETL',
+  hosting: 'Hosting',
+  language: 'Language',
+  messaging: 'Messaging',
   network: 'Network',
+  project: 'Project',
+  saas: 'Saas',
   storage: 'Storage',
+  tool: 'Tool',
 };

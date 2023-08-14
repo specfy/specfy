@@ -8,6 +8,7 @@ import type {
   FastifyPluginOptions,
   FastifyServerOptions,
 } from 'fastify';
+import rawBody from 'fastify-raw-body';
 
 import { dirname } from './common/env.js';
 import { notFound, serverError } from './common/errors.js';
@@ -51,6 +52,13 @@ export default async (f: FastifyInstance, opts: FastifyPluginOptions) => {
   await f.register(staticFiles, {
     root: path.join(dirname, '..', 'public'),
     prefix: '/',
+  });
+
+  await f.register(rawBody, {
+    field: 'rawBody',
+    global: false,
+    encoding: 'utf8',
+    runFirst: true,
   });
 
   f.removeAllContentTypeParsers();

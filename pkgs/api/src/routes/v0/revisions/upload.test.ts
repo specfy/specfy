@@ -97,14 +97,17 @@ describe('POST /revisions/upload -- Documents', () => {
     isSuccess(res.json);
     expect(res.statusCode).toBe(200);
     expect(res.json).toStrictEqual({
-      id: expect.any(String),
+      data: { id: expect.any(String) },
     });
 
     // Get blobs
-    const resBlobs = await t.fetch.get(`/0/revisions/${res.json.id}/blobs`, {
-      token,
-      Querystring: { org_id: org.id, project_id: project.id },
-    });
+    const resBlobs = await t.fetch.get(
+      `/0/revisions/${res.json.data.id}/blobs`,
+      {
+        token,
+        Querystring: { org_id: org.id, project_id: project.id },
+      }
+    );
 
     isSuccess(resBlobs.json);
     expect(resBlobs.statusCode).toBe(200);
@@ -212,14 +215,17 @@ describe('POST /revisions/upload -- Documents', () => {
     isSuccess(res.json);
     expect(res.statusCode).toBe(200);
     expect(res.json).toStrictEqual({
-      id: expect.any(String),
+      data: { id: expect.any(String) },
     });
 
     // Get blobs
-    const resBlobs = await t.fetch.get(`/0/revisions/${res.json.id}/blobs`, {
-      token,
-      Querystring: { org_id: org.id, project_id: project.id },
-    });
+    const resBlobs = await t.fetch.get(
+      `/0/revisions/${res.json.data.id}/blobs`,
+      {
+        token,
+        Querystring: { org_id: org.id, project_id: project.id },
+      }
+    );
 
     isSuccess(resBlobs.json);
     expect(resBlobs.statusCode).toBe(200);
@@ -261,14 +267,17 @@ describe('POST /revisions/upload -- Documents', () => {
     isSuccess(res.json);
     expect(res.statusCode).toBe(200);
     expect(res.json).toStrictEqual({
-      id: expect.any(String),
+      data: { id: expect.any(String) },
     });
 
     // Get blobs
-    const resBlobs = await t.fetch.get(`/0/revisions/${res.json.id}/blobs`, {
-      token,
-      Querystring: { org_id: org.id, project_id: project.id },
-    });
+    const resBlobs = await t.fetch.get(
+      `/0/revisions/${res.json.data.id}/blobs`,
+      {
+        token,
+        Querystring: { org_id: org.id, project_id: project.id },
+      }
+    );
 
     isSuccess(resBlobs.json);
     expect(resBlobs.statusCode).toBe(200);
@@ -442,7 +451,7 @@ describe('POST /revisions/upload -- Stack', () => {
     isSuccess(res.json);
     expect(res.statusCode).toBe(200);
     expect(res.json).toStrictEqual({
-      id: expect.any(String),
+      data: { id: expect.any(String) },
     });
   });
 });

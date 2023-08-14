@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 import { schemaId } from '../../common/validators/index.js';
-import { v1 } from '../billing/model.js';
+import { v1 } from '../billing/plans.js';
 import { schemaComponent } from '../components/schema.js';
 import { schemaDocument } from '../documents/schema.js';
 import { schemaProject } from '../projects/schema.js';

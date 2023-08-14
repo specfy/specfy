@@ -57,7 +57,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       return null;
     }
 
-    const org = user!.perms.find(
+    const org = user.perms.find(
       (perm) => perm.orgId === ctx.orgId && perm.projectId === null
     );
     if (org?.role === 'owner') {
@@ -65,7 +65,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
 
     if (ctx.projectId) {
-      const proj = user!.perms.find(
+      const proj = user.perms.find(
         (perm) => perm.orgId === ctx.orgId && perm.projectId === ctx.projectId
       );
       if (proj) {

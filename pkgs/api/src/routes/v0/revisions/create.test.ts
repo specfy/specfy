@@ -91,7 +91,7 @@ describe('POST /revisions', () => {
     isSuccess(res.json);
     expect(res.statusCode).toBe(200);
     expect(res.json).toStrictEqual({
-      id: expect.any(String),
+      data: { id: expect.any(String) },
     });
   });
 

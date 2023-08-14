@@ -3,7 +3,6 @@ export interface DBOrg {
   flowId: string;
 
   name: string;
-  isPersonal: boolean;
   avatarUrl: string | null;
   acronym: string;
   color: string;

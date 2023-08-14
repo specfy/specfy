@@ -12,12 +12,14 @@ import { Card } from '../../../components/Card';
 import { Button } from '../../../components/Form/Button';
 import { Field } from '../../../components/Form/Field';
 import { Input } from '../../../components/Form/Input';
+import { useAuth } from '../../../hooks/useAuth';
 import { useToast } from '../../../hooks/useToast';
 
 import cls from './index.module.scss';
 
 export const OrgCreate: React.FC = () => {
   const toast = useToast();
+  const { tryLogin } = useAuth();
   const navigate = useNavigate();
 
   const [name, setName] = useState<string>('');
@@ -37,7 +39,11 @@ export const OrgCreate: React.FC = () => {
 
     setErrors({});
     toast.add({ title: 'Organization created', status: 'success' });
-    navigate(`/${res.id}`);
+    navigate(`/${res.data.id}`);
+    setTimeout(() => {
+      // Refresh permissions
+      tryLogin();
+    }, 1);
   };
 
   return (

@@ -8,8 +8,9 @@ import { schemaOrgId } from '../../../common/validators/index.js';
 import { valPermissions } from '../../../common/zod.js';
 import { prisma } from '../../../db/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
+import { getUsage } from '../../../models/billing/model.js';
 import { recomputeOrgGraph } from '../../../models/flows/helpers.rebuild.js';
-import { v1, createProject, getDefaultConfig } from '../../../models/index.js';
+import { createProject, getDefaultConfig } from '../../../models/index.js';
 import { getOrgFromRequest } from '../../../models/perms/helpers.js';
 import { forbiddenProjectSlug } from '../../../models/projects/constants.js';
 import { schemaProject } from '../../../models/projects/schema.js';
@@ -32,22 +33,18 @@ function ProjectVal(req: FastifyRequest) {
     .superRefine(async (val, ctx) => {
       const org = getOrgFromRequest(req, val.orgId);
       if (!org) {
+        // Ts Pleasing
         return;
       }
 
-      const count = await prisma.projects.count({
-        where: {
-          orgId: val.orgId,
-        },
-      });
-      const max = org.isPersonal ? v1.free.project.max : v1.pro.project.max;
-      if (count >= max) {
+      const usage = await getUsage(org);
+      if (usage.projects.pct >= 100) {
         ctx.addIssue({
           path: ['name'],
           code: z.ZodIssueCode.custom,
           params: { code: 'max' },
           message:
-            "You can't have more projects in your organization, contact us if you need more",
+            "You can't have more projects in your organization, upgrade your plan or contact us if you need more",
         });
         return;
       }
@@ -109,8 +106,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       });
 
       return res.status(200).send({
-        id: project.id,
-        slug: project.slug,
+        data: { id: project.id, slug: project.slug },
       });
     }
   );

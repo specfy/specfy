@@ -122,7 +122,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       });
 
       return res.status(200).send({
-        id: rev.id,
+        data: { id: rev.id },
       });
     }
   );

@@ -12,6 +12,13 @@ export interface ValidationError {
 
 export type FieldsErrors = Record<string, ValidationError | undefined>;
 
+export type ApiError<TCode extends string> = {
+  error: {
+    code: TCode;
+    reason?: string | undefined;
+  };
+};
+
 export interface ResValidationError {
   error: {
     code: 'validation_error';
@@ -20,30 +27,10 @@ export interface ResValidationError {
   };
 }
 
-export interface ResNotFound {
-  error: {
-    code: '404_not_found';
-    message?: string | undefined;
-  };
-}
-
-export interface ResForbidden {
-  error: {
-    code: '403_forbidden';
-  };
-}
-
-export interface ResUnauthorized {
-  error: {
-    code: '401_unauthorized';
-  };
-}
-
-export interface ResServerError {
-  error: {
-    code: '500_server_error';
-  };
-}
+export type ResNotFound = ApiError<'404_not_found'>;
+export type ResForbidden = ApiError<'403_forbidden'>;
+export type ResUnauthorized = ApiError<'401_unauthorized'>;
+export type ResServerError = ApiError<'500_server_error'>;
 
 export type ResErrors =
   | ResForbidden
@@ -56,12 +43,17 @@ export type Res<
     Params?: Record<string, any>;
     Body?: Record<string, any>;
     Querystring?: Record<string, any>;
+    Error?: ApiError<any> | never;
     Success: Record<string, any> | never;
   },
 > = {
   Params: T['Params'] extends Record<string, any> ? T['Params'] : never;
   Success: T['Success'];
-  Reply: ResErrors | T['Success'];
+  Reply:
+    | ResErrors
+    | (T['Error'] extends ApiError<any>
+        ? T['Error'] | T['Success']
+        : T['Success']);
   Body: T['Body'] extends Record<string, any> ? T['Body'] : never;
   Querystring: T['Querystring'] extends Record<string, any>
     ? T['Querystring']

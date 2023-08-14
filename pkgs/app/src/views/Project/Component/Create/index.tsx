@@ -39,7 +39,7 @@ export const ProjectComponentCreate: React.FC<{ params: RouteProject }> = ({
   const [name, setName] = useState<string>('');
   const [type, setType] = useState<ApiComponent['type']>('service');
 
-  const onFinish = async () => {
+  const onFinish = () => {
     const slug = slugify(name);
     const { id } = createLocal(
       { name, slug, type },

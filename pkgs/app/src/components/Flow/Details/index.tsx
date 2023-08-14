@@ -167,14 +167,14 @@ export const FlowDetails: React.FC<{
       if (edge.source === currNode.id) {
         f.push({
           edge,
-          source: currNode!,
+          source: currNode,
           target: flow.nodes.find((c) => c.id === edge.target)!,
         });
       } else if (edge.target === currNode.id) {
         t.push({
           edge,
           source: flow.nodes.find((c) => c.id === edge.source)!,
-          target: currNode!,
+          target: currNode,
         });
       }
     }

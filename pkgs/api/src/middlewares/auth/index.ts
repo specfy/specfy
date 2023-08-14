@@ -20,6 +20,7 @@ const ALLOW_GUEST = [
   '/0/auth/github/cb',
   '/0/auth/local',
   '/0/github/webhooks',
+  '/0/stripe/webhooks',
 ];
 const COOKIE_SECRET = Buffer.from(envs.COOKIE_SECRET, 'hex');
 

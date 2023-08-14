@@ -15,6 +15,7 @@ export default defineConfig({
     },
     env: {
       DEFAULT_ACCOUNT: '',
+      STRIPE_KEY: '',
     },
     coverage: {
       enabled: true,

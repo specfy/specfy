@@ -1,12 +1,12 @@
 import * as Avatar from '@radix-ui/react-avatar';
 import { acronymize, stringToColor } from '@specfy/api/src/common/avatar';
-import type { ApiOrg } from '@specfy/api/src/types/api';
+import type { ApiOrgPublic } from '@specfy/api/src/types/api';
 import classNames from 'classnames';
 
 import cls from './index.module.scss';
 
 interface PropsOrg {
-  org: ApiOrg;
+  org: ApiOrgPublic;
 }
 interface PropsBase {
   name: string;

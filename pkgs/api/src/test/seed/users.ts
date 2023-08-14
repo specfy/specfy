@@ -74,7 +74,7 @@ export async function seedDefaultAccount(): Promise<Users> {
   let email = envs.DEFAULT_ACCOUNT;
   if (!email) {
     console.warn('⚠️  No DEFAULT_ACCOUNT');
-    email = `${nanoid()}@default.com`;
+    email = `${nanoid()}@example.com`;
   }
 
   return await prisma.users.create({

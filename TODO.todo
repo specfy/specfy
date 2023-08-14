@@ -4,6 +4,9 @@ Repo:
 
 Marketing Site:
   ✔ POC @done(23-03-29 12:07)
+  - Add contact
+  - Add TOS
+  - Add open source section
 
 ---
 
@@ -113,6 +116,7 @@ Project:
       - Import from UI
   ✔ Automatic languages detection @done(23-06-14 15:18)
   ✔ Automatic “service” detection @done(23-06-14 15:18)
+  - Add branch in configuration and use it when receiving Deploy
   - Hide when too much tech stack on Overview
   - Socket: only subscribe to currently viewed Project
   ✔ Bug: link edition open even on readonly mode @done(23-07-27 12:10)
@@ -347,7 +351,6 @@ Org:
   ✔ Team Page @done(23-04-22 16:12)
     ✔ Display correct count @done(23-04-22 16:12)
     ✔ Invite member @done(23-06-21 17:06)
-  ✔ 1 personal @done(23-04-24 15:10)
 
   List Projects:
     ✔ Correct number of users @done(23-07-16 22:46)

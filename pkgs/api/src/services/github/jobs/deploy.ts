@@ -118,7 +118,7 @@ export class JobDeploy extends Job {
         return;
       }
 
-      const projUrl = `${envs.APP_HOSTNAME}/${job.orgId}/${job.Project!.slug}`;
+      const projUrl = `${envs.APP_HOSTNAME}/${job.orgId}/${job.Project.slug}`;
       await authClient.rest.repos.createDeploymentStatus({
         owner,
         repo,

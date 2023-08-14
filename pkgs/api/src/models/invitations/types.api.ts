@@ -1,7 +1,7 @@
 import type { Invitations, Prisma } from '@prisma/client';
 
 import type { Res } from '../../types/api/api.js';
-import type { ApiOrg } from '../orgs/types.api.js';
+import type { ApiOrgPublic } from '../orgs/types.api.js';
 import type { DBPerm } from '../perms/types.js';
 import type { ApiUser } from '../users/types.api.js';
 
@@ -43,7 +43,7 @@ export type GetInvitation = Res<{
   Success: {
     data: ApiInvitation & {
       by: ApiUser;
-      org: ApiOrg;
+      org: ApiOrgPublic;
     };
   };
 }>;
