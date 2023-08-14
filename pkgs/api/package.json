@@ -39,6 +39,8 @@
     "@specfy/emails": "file:../emails",
     "@specfy/github": "file:../github",
     "@specfy/db": "file:../db",
+    "@specfy/models": "file:../models",
+    "@specfy/socket": "file:../socket",
     "@specfy/stack-analyser": "1.4.0",
     "@specfy/sync": "1.0.10",
     "close-with-grace": "1.2.0",

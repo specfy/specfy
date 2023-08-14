@@ -1,4 +1,5 @@
 import { RequestError } from '@octokit/request-error';
+import { schemaOrgId } from '@specfy/core/src/validators/index.js';
 import type { Prisma } from '@specfy/db';
 import { prisma } from '@specfy/db';
 import { github } from '@specfy/github';
@@ -11,7 +12,6 @@ import {
   serverError,
   validationError,
 } from '../../../common/errors.js';
-import { schemaOrgId } from '../../../common/validators/index.js';
 import { valPermissions } from '../../../common/zod.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import { createGithubActivity } from '../../../models/index.js';

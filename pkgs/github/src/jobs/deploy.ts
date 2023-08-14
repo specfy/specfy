@@ -1,9 +1,9 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-import type { JobWithOrgProject } from '@specfy/api/src/models/jobs/type.js';
 import { dirname, envs, isProd, nanoid } from '@specfy/core';
 import { prisma } from '@specfy/db';
+import type { JobWithOrgProject } from '@specfy/models';
 import { $, execa } from 'execa';
 import { Octokit } from 'octokit';
 

@@ -10,7 +10,8 @@ locals {
     "GITHUB_WEBHOOKS_SECRET",
     "RESEND_KEY",
     "STRIPE_KEY",
-    "STRIPE_WEBHOOKS_SECRET"
+    "STRIPE_WEBHOOKS_SECRET",
+    "JWT_SECRET"
   ])
 }
 

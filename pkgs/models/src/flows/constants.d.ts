@@ -1,0 +1,10 @@
+export declare const min = -99999;
+export declare const max = 99999;
+export declare const wMin = 100;
+export declare const wMax = 2000;
+export declare const hMin = 40;
+export declare const hMax = 2000;
+export declare const hDef = 40;
+export declare const wDef = 130;
+export declare const hDefHost = 72;
+export declare const wDefHost = 140;

@@ -19,5 +19,5 @@ export * from '../../models/users/types.api.js';
 export * from './api.js';
 export * from './auth.js';
 export * from './endpoints.js';
-export * from './me.js';
+export * from '@specfy/models/src/users/me.js';
 export * from './root.js';

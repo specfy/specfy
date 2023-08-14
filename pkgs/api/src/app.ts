@@ -4,6 +4,7 @@ import cors from '@fastify/cors';
 import rateLimit from '@fastify/rate-limit';
 import staticFiles from '@fastify/static';
 import { logger, dirname } from '@specfy/core';
+import { initSocket } from '@specfy/socket';
 import type {
   FastifyInstance,
   FastifyPluginOptions,
@@ -15,7 +16,6 @@ import { notFound, serverError } from './common/errors.js';
 import { AuthError } from './middlewares/auth/errors.js';
 import { registerAuth } from './middlewares/auth/index.js';
 import { routes } from './routes/routes.js';
-import { initSocket } from './socket.js';
 
 import './types/auth.js';
 

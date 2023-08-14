@@ -1,8 +1,8 @@
+import { schemaId, schemaToken } from '@specfy/core/src/validators/index.js';
 import { prisma } from '@specfy/db';
 import { z } from 'zod';
 
 import { notFound, validationError } from '../common/errors.js';
-import { schemaId, schemaToken } from '../common/validators/index.js';
 import type { GetInvitation } from '../types/api/index.js';
 import type { PreHandler } from '../types/fastify.js';
 

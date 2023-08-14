@@ -1,4 +1,5 @@
 import { RequestError } from '@octokit/request-error';
+import { schemaId, schemaOrgId } from '@specfy/core/src/validators/index.js';
 import { prisma } from '@specfy/db';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { Octokit } from 'octokit';
@@ -9,7 +10,6 @@ import {
   serverError,
   validationError,
 } from '../../../common/errors.js';
-import { schemaId, schemaOrgId } from '../../../common/validators/index.js';
 import { valPermissions } from '../../../common/zod.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import {

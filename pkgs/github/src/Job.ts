@@ -1,14 +1,9 @@
-import { toApiJob } from '@specfy/api/build/models/jobs/formatter.js';
-import { JobReason } from '@specfy/api/build/models/jobs/helpers.js';
-import type {
-  JobMark,
-  JobWithOrgProject,
-} from '@specfy/api/build/models/jobs/type.js';
-import { toApiProject } from '@specfy/api/build/models/projects/formatter.js';
-import { io } from '@specfy/api/build/socket.js';
-import type { EventJob } from '@specfy/api/build/types/socket.js';
 import { prisma } from '@specfy/db';
 import type { Jobs } from '@specfy/db';
+import type { JobMark, JobWithOrgProject } from '@specfy/models';
+import { toApiProject, toApiJob, jobReason } from '@specfy/models';
+import type { EventJob } from '@specfy/socket';
+import { io } from '@specfy/socket';
 import { consola } from 'consola';
 import type { ConsolaInstance } from 'consola';
 
@@ -56,7 +51,7 @@ export abstract class Job {
         status: this.#mark?.status || 'failed',
         reason: this.#mark
           ? this.#mark
-          : { status: 'failed', code: 'unknown', reason: JobReason.unknown },
+          : { status: 'failed', code: 'unknown', reason: jobReason.unknown },
         updatedAt: new Date(),
         finishedAt: new Date(),
       },
@@ -77,7 +72,7 @@ export abstract class Job {
       _err = err instanceof Error ? err.message : '';
     }
 
-    this.#mark = { status, code, reason: JobReason[code], err: _err };
+    this.#mark = { status, code, reason: jobReason[code], err: _err };
   }
 
   abstract process(job: Jobs): Promise<void>;

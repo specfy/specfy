@@ -6,6 +6,5 @@
   },
   "include": [
     "src",
-    "../db/src/prisma.d.ts"
   ]
 }

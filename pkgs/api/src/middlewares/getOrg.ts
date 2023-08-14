@@ -1,8 +1,8 @@
+import { schemaOrgId } from '@specfy/core/src/validators/index.js';
 import type { FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
 import { notFound, validationError } from '../common/errors.js';
-import { schemaOrgId } from '../common/validators/index.js';
 import { valPermissions } from '../common/zod.js';
 import { getOrgFromRequest } from '../models/perms/helpers.js';
 import type { ReqOrgParams } from '../types/api/index.js';

@@ -1,0 +1,25 @@
+{
+  "name": "@specfy/models",
+  "version": "0.0.1",
+  "description": "",
+  "main": "build/index.js",
+  "typings": "build/index.d.ts",
+  "module": "build/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "build:watch": "tsc -p tsconfig.json -w"
+  },
+  "files": [
+    "build"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@specfy/core": "file:../core",
+    "@specfy/db": "file:../db"
+  },
+  "devDependencies": {
+    "typescript": "5.1.6"
+  }
+}

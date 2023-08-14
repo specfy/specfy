@@ -1,9 +1,9 @@
+import { schemaOrgId, schemaSlug } from '@specfy/core/src/validators/index.js';
 import { prisma } from '@specfy/db';
 import type { FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
 import { forbidden, notFound, validationError } from '../common/errors.js';
-import { schemaOrgId, schemaSlug } from '../common/validators/index.js';
 import { valPermissions } from '../common/zod.js';
 import { checkInheritedPermissions } from '../models/perms/helpers.js';
 import type { ReqProjectParams } from '../types/api/index.js';

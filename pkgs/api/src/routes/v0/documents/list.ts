@@ -1,10 +1,10 @@
+import { schemaId, schemaOrgId } from '@specfy/core/src/validators/index.js';
 import type { Prisma } from '@specfy/db';
 import { prisma } from '@specfy/db';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors.js';
-import { schemaId, schemaOrgId } from '../../../common/validators/index.js';
 import { valPermissions } from '../../../common/zod.js';
 import { v1 } from '../../../models/billing/plans.js';
 import { DocumentType } from '../../../models/documents/types.js';

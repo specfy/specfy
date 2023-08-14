@@ -1,5 +1,6 @@
 import type { Orgs, Projects, Users } from '@specfy/db';
 import { prisma } from '@specfy/db';
+import { getBlobComponent } from '@specfy/models';
 import { beforeAll, afterAll, describe, it, expect } from 'vitest';
 
 import { createComponent } from '../../../models/components/model.js';
@@ -11,7 +12,6 @@ import {
   shouldBeProtected,
   shouldNotAllowQueryParams,
 } from '../../../test/helpers.js';
-import { getBlobComponent } from '../../../test/seed/components.js';
 import { seedProject } from '../../../test/seed/projects.js';
 import {
   seedSimpleUser,

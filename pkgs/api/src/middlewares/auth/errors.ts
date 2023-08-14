@@ -1,4 +1,4 @@
-import type { ResValidationError } from '../../types/api/index.js';
+import type { ResValidationError } from '@specfy/core';
 
 export class AuthError extends Error {
   err: ResValidationError;

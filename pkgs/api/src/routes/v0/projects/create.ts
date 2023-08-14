@@ -1,10 +1,10 @@
 import { nanoid, slugify } from '@specfy/core';
+import { schemaOrgId } from '@specfy/core/src/validators/index.js';
 import { prisma } from '@specfy/db';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import z from 'zod';
 
 import { validationError } from '../../../common/errors.js';
-import { schemaOrgId } from '../../../common/validators/index.js';
 import { valPermissions } from '../../../common/zod.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import { getUsage } from '../../../models/billing/model.js';

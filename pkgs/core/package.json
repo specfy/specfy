@@ -21,7 +21,8 @@
     "nanoid": "4.0.2",
     "pino-pretty": "10.2.0",
     "pino": "8.15.0",
-    "slugify": "1.6.5"
+    "slugify": "1.6.5",
+    "zod": "3.21.4"
   },
   "devDependencies": {
     "colorette": "2.0.20",

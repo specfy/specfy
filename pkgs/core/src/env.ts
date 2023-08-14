@@ -34,6 +34,7 @@ const defs = {
   RESEND_KEY: null,
   STRIPE_KEY: null,
   STRIPE_WEBHOOKS_SECRET: null,
+  JWT_SECRET: null,
 };
 
 type Key = keyof typeof defs;

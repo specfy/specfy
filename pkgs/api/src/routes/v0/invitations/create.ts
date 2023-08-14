@@ -1,4 +1,5 @@
 import { nanoid, logger, envs } from '@specfy/core';
+import { schemaOrgId } from '@specfy/core/src/validators/index.js';
 import { prisma } from '@specfy/db';
 import { sendInvitation } from '@specfy/emails';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
@@ -6,7 +7,6 @@ import { z } from 'zod';
 
 import { resend } from '../../../common/emails.js';
 import { validationError } from '../../../common/errors.js';
-import { schemaOrgId } from '../../../common/validators/index.js';
 import { valPermissions } from '../../../common/zod.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import { getUsage } from '../../../models/billing/model.js';

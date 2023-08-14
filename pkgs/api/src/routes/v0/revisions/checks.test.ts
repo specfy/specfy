@@ -1,4 +1,5 @@
 import { prisma } from '@specfy/db';
+import { getBlobComponent } from '@specfy/models';
 import { beforeAll, afterAll, describe, it, expect } from 'vitest';
 
 import { createComponentBlob } from '../../../models/index.js';
@@ -9,10 +10,7 @@ import {
   shouldBeProtected,
   shouldNotAllowQueryParams,
 } from '../../../test/helpers.js';
-import {
-  getBlobComponent,
-  seedComponent,
-} from '../../../test/seed/components.js';
+import { seedComponent } from '../../../test/seed/components.js';
 import { seedRevision } from '../../../test/seed/revisions.js';
 import { seedSimpleUser, seedWithProject } from '../../../test/seed/seed.js';
 

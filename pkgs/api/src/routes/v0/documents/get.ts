@@ -1,9 +1,9 @@
+import { schemaId, schemaOrgId } from '@specfy/core/src/validators/index.js';
 import { prisma } from '@specfy/db';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
 import { notFound, validationError } from '../../../common/errors.js';
-import { schemaId, schemaOrgId } from '../../../common/validators/index.js';
 import { valPermissions } from '../../../common/zod.js';
 import { toApiUser } from '../../../models/users/formatter.js';
 import type { GetDocument } from '../../../types/api/index.js';
