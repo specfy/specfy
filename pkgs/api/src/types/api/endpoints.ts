@@ -52,8 +52,10 @@ import type {
   RebaseRevision,
   GetUser,
   ListUsers,
+  DeleteMe,
+  GetMe,
+  PutMe,
 } from '@specfy/models';
-import type { DeleteMe, GetMe, PutMe } from '@specfy/models/src/users/me.js';
 
 import type { PostAuthLocal, PostLogout } from './auth.js';
 import type { GetRoot } from './root.js';

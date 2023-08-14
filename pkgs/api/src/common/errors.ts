@@ -1,13 +1,12 @@
-import type { FastifyReply } from 'fastify';
-import type { ZodError } from 'zod';
-
 import type {
   ResForbidden,
   ResNotFound,
   ResServerError,
   ResUnauthorized,
   ResValidationError,
-} from '../types/api/index.js';
+} from '@specfy/core';
+import type { FastifyReply } from 'fastify';
+import type { ZodError } from 'zod';
 
 export async function notFound(
   res: FastifyReply,

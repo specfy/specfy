@@ -1,11 +1,11 @@
 import { nanoid } from '@specfy/core';
 import { prisma } from '@specfy/db';
+import { createUserActivity } from '@specfy/models';
+import type { DeleteMe } from '@specfy/models';
 import type { FastifyPluginCallback } from 'fastify';
 
 import { noBody } from '../../../middlewares/noBody.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
-import { createUserActivity } from '../../../models/index.js';
-import type { DeleteMe } from '../../../types/api/index.js';
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.delete<DeleteMe>(

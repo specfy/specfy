@@ -1,13 +1,12 @@
 import { envs } from '@specfy/core';
 import { prisma } from '@specfy/db';
+import { v1, stripe } from '@specfy/models';
+import type { PostStripeWebhook } from '@specfy/models';
 import type { FastifyPluginCallback } from 'fastify';
 import type Stripe from 'stripe';
 
 import { forbidden } from '../../../common/errors.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
-import { v1 } from '../../../models/billing/plans.js';
-import { stripe } from '../../../models/billing/stripe.js';
-import type { PostStripeWebhook } from '../../../models/billing/types.api.js';
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.post<PostStripeWebhook>(

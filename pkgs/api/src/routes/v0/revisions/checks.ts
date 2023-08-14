@@ -1,12 +1,14 @@
 import { prisma } from '@specfy/db';
+import {
+  findAllBlobsWithParent,
+  toApiReview,
+  checkReviews,
+  flagRevisionApprovalEnabled,
+} from '@specfy/models';
+import type { ListRevisionChecks } from '@specfy/models';
 import type { FastifyPluginCallback } from 'fastify';
 
 import { getRevision } from '../../../middlewares/getRevision.js';
-import { findAllBlobsWithParent } from '../../../models/blobs/helpers.js';
-import { toApiReview } from '../../../models/reviews/formatter.js';
-import { checkReviews } from '../../../models/revisions/checks.js';
-import { flagRevisionApprovalEnabled } from '../../../models/revisions/constants.js';
-import type { ListRevisionChecks } from '../../../types/api/index.js';
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.get<ListRevisionChecks>(

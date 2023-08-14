@@ -1,7 +1,6 @@
 import type { Orgs, Users } from '@specfy/db';
 import { prisma } from '@specfy/db';
-
-import { EXPIRES } from '../../models/invitations/model.js';
+import { EXPIRES } from '@specfy/models';
 
 export async function seedInvitations(users: Users[], orgs: { o1: Orgs }) {
   await prisma.invitations.create({

@@ -1,12 +1,12 @@
-import { schemaId, schemaOrgId } from '@specfy/core/src/validators/index.js';
+import { schemaId, schemaOrgId } from '@specfy/core';
 import { prisma } from '@specfy/db';
+import { checkInheritedPermissions } from '@specfy/models';
+import type { GetRevision } from '@specfy/models';
 import type { FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
 import { forbidden, notFound, validationError } from '../common/errors.js';
 import { valPermissions } from '../common/zod.js';
-import { checkInheritedPermissions } from '../models/perms/helpers.js';
-import type { GetRevision } from '../types/api/index.js';
 import type { PreHandler } from '../types/fastify.js';
 
 export function QueryVal(req: FastifyRequest) {

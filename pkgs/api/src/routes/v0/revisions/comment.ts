@@ -1,13 +1,12 @@
-import { nanoid } from '@specfy/core';
-import { schemaProseMirror } from '@specfy/core/src/validators/prosemirror.js';
+import { nanoid, schemaProseMirror } from '@specfy/core';
 import { prisma } from '@specfy/db';
+import { createRevisionActivity } from '@specfy/models';
+import type { CommentRevision } from '@specfy/models';
 import type { FastifyPluginCallback } from 'fastify';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors.js';
 import { getRevision } from '../../../middlewares/getRevision.js';
-import { createRevisionActivity } from '../../../models/index.js';
-import type { CommentRevision } from '../../../types/api/index.js';
 
 function BodyVal() {
   return z

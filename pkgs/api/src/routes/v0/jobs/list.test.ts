@@ -1,9 +1,8 @@
 import type { Orgs, Projects, Users } from '@specfy/db';
 import { prisma } from '@specfy/db';
+import { createJobDeploy, jobReason } from '@specfy/models';
 import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
-import { createJobDeploy } from '../../../models/index.js';
-import { JobReason } from '../../../models/jobs/helpers.js';
 import type { TestSetup } from '../../../test/each.js';
 import { setupBeforeAll, setupAfterAll } from '../../../test/each.js';
 import { isSuccess } from '../../../test/fetch.js';
@@ -50,7 +49,7 @@ async function seedAllStates(org: Orgs, proj: Projects, user: Users) {
         reason: {
           status: 'failed',
           code: 'org_not_installed',
-          reason: JobReason.org_not_installed,
+          reason: jobReason.org_not_installed,
         },
         tx,
       }),

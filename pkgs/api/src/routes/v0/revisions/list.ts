@@ -1,13 +1,14 @@
-import { schemaId, schemaOrgId } from '@specfy/core/src/validators/index.js';
+import { schemaId, schemaOrgId } from '@specfy/core';
+import type { Pagination } from '@specfy/core';
 import type { Prisma } from '@specfy/db';
 import { prisma } from '@specfy/db';
+import { toApiRevision } from '@specfy/models';
+import type { ListRevisions } from '@specfy/models';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors.js';
 import { valPermissions } from '../../../common/zod.js';
-import { toApiRevision } from '../../../models/revisions/formatter.js';
-import type { ListRevisions, Pagination } from '../../../types/api/index.js';
 
 function QueryVal(req: FastifyRequest) {
   return z

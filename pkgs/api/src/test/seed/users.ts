@@ -1,9 +1,9 @@
 import { nanoid, envs } from '@specfy/core';
 import type { Users } from '@specfy/db';
 import { prisma } from '@specfy/db';
+import { userGithubApp } from '@specfy/models';
 
 import { pbkdf2 } from '../../middlewares/auth/local.js';
-import { userGithubApp } from '../../models/users/model.js';
 
 /**
  * Seed users

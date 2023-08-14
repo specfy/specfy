@@ -1,15 +1,17 @@
 import { prisma } from '@specfy/db';
+import {
+  recomputeOrgGraph,
+  createProjectActivity,
+  toApiProject,
+  schemaProject,
+} from '@specfy/models';
+import type { PutProject } from '@specfy/models';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors.js';
 import { getProject } from '../../../middlewares/getProject.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
-import { recomputeOrgGraph } from '../../../models/flows/helpers.rebuild.js';
-import { createProjectActivity } from '../../../models/index.js';
-import { toApiProject } from '../../../models/projects/formatter.js';
-import { schemaProject } from '../../../models/projects/schema.js';
-import type { PutProject } from '../../../types/api/index.js';
 
 function BodyVal(req: FastifyRequest) {
   return z

@@ -1,11 +1,10 @@
 import { prisma } from '@specfy/db';
+import { findAllBlobsWithParent, createRevisionActivity } from '@specfy/models';
+import type { RebaseRevision } from '@specfy/models';
 import type { FastifyPluginCallback } from 'fastify';
 
 import { getRevision } from '../../../middlewares/getRevision.js';
 import { noBody } from '../../../middlewares/noBody.js';
-import { findAllBlobsWithParent } from '../../../models/blobs/helpers.js';
-import { createRevisionActivity } from '../../../models/index.js';
-import type { RebaseRevision } from '../../../types/api/index.js';
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.post<RebaseRevision>(

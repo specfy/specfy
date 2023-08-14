@@ -1,13 +1,12 @@
 import { nanoid, slugify } from '@specfy/core';
 import type { Orgs, Projects, Users } from '@specfy/db';
 import { prisma } from '@specfy/db';
-
-import { recomputeOrgGraph } from '../../models/flows/helpers.rebuild.js';
 import {
+  recomputeOrgGraph,
   createProject,
   getDefaultConfig,
-} from '../../models/projects/model.js';
-import type { DBProject } from '../../models/projects/types.js';
+} from '@specfy/models';
+import type { DBProject } from '@specfy/models';
 
 /**
  * Seed projects

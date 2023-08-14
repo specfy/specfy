@@ -1,12 +1,12 @@
-import { schemaOrgId } from '@specfy/core/src/validators/index.js';
+import { schemaOrgId } from '@specfy/core';
 import type { Prisma } from '@specfy/db';
 import { prisma } from '@specfy/db';
+import type { ListInvitations } from '@specfy/models';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors.js';
 import { valPermissions } from '../../../common/zod.js';
-import type { ListInvitations } from '../../../types/api/index.js';
 
 function QueryVal(req: FastifyRequest) {
   return z

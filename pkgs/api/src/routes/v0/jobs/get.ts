@@ -1,8 +1,8 @@
+import { toApiJob } from '@specfy/models';
+import type { GetJob } from '@specfy/models';
 import type { FastifyPluginCallback } from 'fastify';
 
 import { getJob } from '../../../middlewares/getJob.js';
-import { toApiJob } from '../../../models/jobs/formatter.js';
-import type { GetJob } from '../../../types/api/index.js';
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.get<GetJob>('/', { preHandler: [getJob] }, async function (req, res) {

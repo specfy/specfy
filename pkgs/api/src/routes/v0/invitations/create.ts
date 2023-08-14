@@ -1,7 +1,8 @@
-import { nanoid, logger, envs } from '@specfy/core';
-import { schemaOrgId } from '@specfy/core/src/validators/index.js';
+import { nanoid, logger, envs, schemaOrgId } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import { sendInvitation } from '@specfy/emails';
+import { getUsage, EXPIRES, getOrgFromRequest, PermType } from '@specfy/models';
+import type { PostInvitation } from '@specfy/models';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
@@ -9,11 +10,6 @@ import { resend } from '../../../common/emails.js';
 import { validationError } from '../../../common/errors.js';
 import { valPermissions } from '../../../common/zod.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
-import { getUsage } from '../../../models/billing/model.js';
-import { EXPIRES } from '../../../models/index.js';
-import { getOrgFromRequest } from '../../../models/perms/helpers.js';
-import { PermType } from '../../../models/perms/types.js';
-import type { PostInvitation } from '../../../types/api/index.js';
 
 function QueryVal(req: FastifyRequest) {
   return z

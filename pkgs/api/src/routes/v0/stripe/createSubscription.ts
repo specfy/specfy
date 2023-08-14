@@ -1,4 +1,6 @@
 import { envs } from '@specfy/core';
+import { v1, stripe } from '@specfy/models';
+import type { PostSubscription } from '@specfy/models';
 import type { FastifyPluginCallback } from 'fastify';
 import type Stripe from 'stripe';
 import { z } from 'zod';
@@ -6,9 +8,6 @@ import { z } from 'zod';
 import { validationError } from '../../../common/errors.js';
 import { getOrg } from '../../../middlewares/getOrg.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
-import { v1 } from '../../../models/billing/plans.js';
-import { stripe } from '../../../models/billing/stripe.js';
-import type { PostSubscription } from '../../../types/api/index.js';
 
 const keys = Object.values(v1).map((plan) => plan.price.key);
 function BodyVal() {

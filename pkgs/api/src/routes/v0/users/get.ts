@@ -1,9 +1,9 @@
+import { toApiUserPublic } from '@specfy/models';
+import type { GetUser } from '@specfy/models';
 import type { FastifyPluginCallback } from 'fastify';
 
 import { getUser } from '../../../middlewares/getUser.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
-import { toApiUserPublic } from '../../../models/users/formatter.js';
-import type { GetUser } from '../../../types/api/index.js';
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.get<GetUser>(

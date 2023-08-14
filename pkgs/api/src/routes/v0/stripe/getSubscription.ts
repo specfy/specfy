@@ -1,9 +1,9 @@
+import { stripe } from '@specfy/models';
+import type { GetSubscription } from '@specfy/models';
 import type { FastifyPluginCallback } from 'fastify';
 
 import { getOrg } from '../../../middlewares/getOrg.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
-import { stripe } from '../../../models/billing/stripe.js';
-import type { GetSubscription } from '../../../types/api/index.js';
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.get<GetSubscription>(

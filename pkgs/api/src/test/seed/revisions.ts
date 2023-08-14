@@ -1,7 +1,6 @@
 import { nanoid } from '@specfy/core';
 import type { Documents, Orgs, Projects, Users } from '@specfy/db';
 import { prisma } from '@specfy/db';
-
 import {
   createComponentBlob,
   createDocumentBlob,
@@ -9,13 +8,13 @@ import {
   createBlobs,
   createRevisionActivity,
   getDocumentTypeId,
-} from '../../models/index.js';
+} from '@specfy/models';
 import type {
   ApiBlobCreate,
   ApiRevision,
   BlockBanner,
   BlockLevelOne,
-} from '../../types/api/index.js';
+} from '@specfy/models';
 
 import type { ResSeedComponents } from './components.js';
 

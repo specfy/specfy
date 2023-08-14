@@ -1,8 +1,8 @@
 import { prisma } from '@specfy/db';
-import { getBlobComponent } from '@specfy/models';
+import { getBlobComponent, createComponentBlob } from '@specfy/models';
+import type { ApiBlobWithPrevious } from '@specfy/models';
 import { beforeAll, afterAll, describe, it, expect } from 'vitest';
 
-import { createComponentBlob } from '../../../models/components/model.js';
 import type { TestSetup } from '../../../test/each.js';
 import { setupBeforeAll, setupAfterAll } from '../../../test/each.js';
 import { isSuccess } from '../../../test/fetch.js';
@@ -19,7 +19,6 @@ import {
   seedWithOrgViewer,
   seedWithProject,
 } from '../../../test/seed/seed.js';
-import type { ApiBlobWithPrevious } from '../../../types/api/index.js';
 
 let t: TestSetup;
 beforeAll(async () => {

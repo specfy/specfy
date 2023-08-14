@@ -1,6 +1,5 @@
 import { prisma } from '@specfy/db';
-
-import { createJobDeploy, userGithubApp } from '../../models/index.js';
+import { createJobDeploy, userGithubApp } from '@specfy/models';
 
 // Publish a job in the queue
 (async () => {

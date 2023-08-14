@@ -1,8 +1,7 @@
 import { prisma } from '@specfy/db';
-import { getBlobComponent } from '@specfy/models';
+import { getBlobComponent, createComponentBlob } from '@specfy/models';
 import { beforeAll, afterAll, describe, it, expect } from 'vitest';
 
-import { createComponentBlob } from '../../../models/index.js';
 import type { TestSetup } from '../../../test/each.js';
 import { setupBeforeAll, setupAfterAll } from '../../../test/each.js';
 import { isSuccess } from '../../../test/fetch.js';

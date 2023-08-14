@@ -1,4 +1,5 @@
 import { nanoid } from '@specfy/core';
+import type { ApiBlobCreateDocument } from '@specfy/models';
 import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
 import type { TestSetup } from '../../../test/each.js';
@@ -15,7 +16,6 @@ import {
   seedWithOrgViewer,
   seedWithProject,
 } from '../../../test/seed/seed.js';
-import type { ApiBlobCreateDocument } from '../../../types/api/index.js';
 
 let t: TestSetup;
 beforeAll(async () => {

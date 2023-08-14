@@ -1,16 +1,18 @@
-import { nanoid } from '@specfy/core';
-import { schemaId, schemaOrgId } from '@specfy/core/src/validators/index.js';
+import { nanoid, schemaId, schemaOrgId } from '@specfy/core';
 import { prisma } from '@specfy/db';
+import {
+  schemaBlobs,
+  createBlobs,
+  createRevisionActivity,
+  schemaRevision,
+} from '@specfy/models';
+import type { PostRevision } from '@specfy/models';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors.js';
 import { valPermissions } from '../../../common/zod.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
-import { schemaBlobs } from '../../../models/blobs/schema.js';
-import { createBlobs, createRevisionActivity } from '../../../models/index.js';
-import { schemaRevision } from '../../../models/revisions/schema.js';
-import type { PostRevision } from '../../../types/api/index.js';
 
 function BodyVal(req: FastifyRequest) {
   return z

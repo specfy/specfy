@@ -1,8 +1,10 @@
 import { RequestError } from '@octokit/request-error';
-import { schemaOrgId } from '@specfy/core/src/validators/index.js';
+import { schemaOrgId } from '@specfy/core';
 import type { Prisma } from '@specfy/db';
 import { prisma } from '@specfy/db';
 import { github } from '@specfy/github';
+import { createGithubActivity, getOrgFromRequest } from '@specfy/models';
+import type { PostLinkToGithubOrg } from '@specfy/models';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { Octokit } from 'octokit';
 import { z } from 'zod';
@@ -14,9 +16,6 @@ import {
 } from '../../../common/errors.js';
 import { valPermissions } from '../../../common/zod.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
-import { createGithubActivity } from '../../../models/index.js';
-import { getOrgFromRequest } from '../../../models/perms/helpers.js';
-import type { PostLinkToGithubOrg } from '../../../types/api/index.js';
 
 function QueryVal(req: FastifyRequest) {
   return z

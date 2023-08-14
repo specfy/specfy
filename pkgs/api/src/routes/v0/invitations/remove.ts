@@ -1,11 +1,11 @@
 import { prisma } from '@specfy/db';
+import { checkInheritedPermissions } from '@specfy/models';
+import type { DeleteInvitation } from '@specfy/models';
 import type { FastifyPluginCallback } from 'fastify';
 
 import { forbidden, notFound } from '../../../common/errors.js';
 import { noBody } from '../../../middlewares/noBody.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
-import { checkInheritedPermissions } from '../../../models/perms/helpers.js';
-import type { DeleteInvitation } from '../../../types/api/index.js';
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.delete<DeleteInvitation>(
