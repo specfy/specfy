@@ -5,3 +5,8 @@ variable "envs" {
     region  = string
   })
 }
+
+// From CLI
+variable "docker_image_version" {
+  type    = string
+}

@@ -13,8 +13,10 @@ if [ "$ENV" != "prod" ] && [ "$ENV" != "staging" ]; then
   exit
 fi
 
+LAST_COMMIT_HASH=$(git rev-parse HEAD)
+
 set -ex
 
 terraform workspace select "$ENV"
 # shellcheck disable=SC2086
-terraform "$COMMAND" -var-file=env/"$ENV".tfvars $ARGS
+terraform "$COMMAND" -var-file=env/"$ENV".tfvars -var="docker_image_version=$LAST_COMMIT_HASH" $ARGS

@@ -39,6 +39,7 @@ module "google" {
   ]
 
   envs = var.envs
+  docker_image_version = var.docker_image_version
 }
 
 module "secrets" {
@@ -56,6 +57,7 @@ module "cloudbuild" {
   ]
 
   envs = var.envs
+  docker_image_version = var.docker_image_version
 }
 
 module "network" {
@@ -66,6 +68,7 @@ module "network" {
   ]
 
   envs = var.envs
+  docker_image_version = var.docker_image_version
 }
 
 module "sql" {
@@ -77,6 +80,7 @@ module "sql" {
 
   envs    = var.envs
   network = module.network.network
+  docker_image_version = var.docker_image_version
 }
 
 module "run" {
@@ -89,4 +93,5 @@ module "run" {
   envs       = var.envs
   sql        = module.sql.sql
   cloudbuild = module.cloudbuild.cloudbuild
+  docker_image_version = var.docker_image_version
 }
