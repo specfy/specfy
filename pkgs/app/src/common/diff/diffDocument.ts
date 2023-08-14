@@ -1,5 +1,5 @@
-import { IGNORED_DOCUMENT_KEYS } from '@specfy/api/src/models/revisions/constants';
-import type { ApiBlobDocument } from '@specfy/api/src/types/api';
+import type { ApiBlobDocument } from '@specfy/models';
+import { IGNORED_DOCUMENT_KEYS } from '@specfy/models/src/revisions/constants';
 import type { Editor } from '@tiptap/react';
 import { diffWordsWithSpace } from 'diff';
 

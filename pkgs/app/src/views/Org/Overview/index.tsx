@@ -1,5 +1,4 @@
-import type { ComputedFlow } from '@specfy/api/src/models/flows/types';
-import type { ApiOrg } from '@specfy/api/src/types/api';
+import type { ComputedFlow, ApiOrg } from '@specfy/models';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Skeleton from 'react-loading-skeleton';

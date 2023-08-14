@@ -6,7 +6,7 @@ import type {
   PatchRevision,
   PostRevision,
   RebaseRevision,
-} from '@specfy/api/src/types/api';
+} from '@specfy/models';
 import { useQuery } from '@tanstack/react-query';
 
 import { qcli, refreshProject } from '../common/query';

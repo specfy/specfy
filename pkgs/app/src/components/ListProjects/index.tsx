@@ -1,4 +1,4 @@
-import type { ApiProjectList } from '@specfy/api/src/types/api';
+import type { ApiProjectList } from '@specfy/models';
 import { IconPlus, IconSearch, IconUsers } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';

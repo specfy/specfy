@@ -5,8 +5,12 @@
     "outDir": "./build",
   },
   "include": [
-    "src",
+    "src"
   ],
+  "ts-node": {
+    "esm": true,
+    "files": true
+  },
   "references": [
     {
       "path": "../core"

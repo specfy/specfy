@@ -1,4 +1,3 @@
-import { flagRevisionApprovalEnabled } from '@specfy/api/src/models/revisions/constants';
 import type {
   ApiProject,
   ApiUser,
@@ -6,7 +5,8 @@ import type {
   GetRevision,
   ListRevisionBlobs,
   ListRevisionChecks,
-} from '@specfy/api/src/types/api';
+} from '@specfy/models';
+import { flagRevisionApprovalEnabled } from '@specfy/models/src/revisions/constants';
 import {
   IconDotsVertical,
   IconGitPullRequestClosed,

@@ -1,5 +1,6 @@
 import * as Form from '@radix-ui/react-form';
-import type { ApiOrg, ApiPerm, FieldsErrors } from '@specfy/api/src/types/api';
+import type { FieldsErrors } from '@specfy/core';
+import type { ApiOrg, ApiPerm } from '@specfy/models';
 import { useState } from 'react';
 
 import { createInvitation } from '../../../api';

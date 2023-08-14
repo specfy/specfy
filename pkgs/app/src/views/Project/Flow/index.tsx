@@ -1,6 +1,5 @@
-import { componentsToFlow } from '@specfy/api/src/models/flows/transform';
-import type { ComputedFlow } from '@specfy/api/src/models/flows/types';
-import type { ApiProject, ApiComponent } from '@specfy/api/src/types/api';
+import type { ComputedFlow, ApiProject, ApiComponent } from '@specfy/models';
+import { componentsToFlow } from '@specfy/models/src/flows/transform';
 import { useCallback, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 

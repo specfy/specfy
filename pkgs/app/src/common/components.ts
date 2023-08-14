@@ -1,12 +1,11 @@
+import { nanoid } from '@specfy/core/src/id';
+import type { FlowEdge, ApiComponent } from '@specfy/models';
 import {
   hDef,
   hDefHost,
   wDef,
   wDefHost,
-} from '@specfy/api/src/models/flows/constants';
-import type { FlowEdge } from '@specfy/api/src/models/flows/types';
-import type { ApiComponent } from '@specfy/api/src/types/api';
-import { nanoid } from '@specfy/core/src/id';
+} from '@specfy/models/src/flows/constants';
 
 import { getEmptyDoc } from './content';
 import type { ComponentsState, ProjectState } from './store';

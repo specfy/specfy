@@ -1,8 +1,5 @@
-import { flagRevisionApprovalEnabled } from '@specfy/api/src/models/revisions/constants';
-import type {
-  ApiRevision,
-  ListRevisionChecks,
-} from '@specfy/api/src/types/api';
+import type { ApiRevision, ListRevisionChecks } from '@specfy/models';
+import { flagRevisionApprovalEnabled } from '@specfy/models/src/revisions/constants';
 import {
   IconCircleCheckFilled,
   IconExclamationCircle,

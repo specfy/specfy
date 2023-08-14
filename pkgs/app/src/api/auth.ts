@@ -1,4 +1,4 @@
-import type { PostAuthLocal, PostLogout } from '@specfy/api/src/types/api';
+import type { PostAuthLocal, PostLogout } from '@specfy/api/src/types/api/auth';
 
 import { qcli } from '../common/query';
 

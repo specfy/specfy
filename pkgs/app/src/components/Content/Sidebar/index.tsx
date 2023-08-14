@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import type { ApiProject, DocumentSimple } from '@specfy/api/src/types/api';
+import type { ApiProject, DocumentSimple } from '@specfy/models';
 import {
   IconCircleX,
   IconSearch,

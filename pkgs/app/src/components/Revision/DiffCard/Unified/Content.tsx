@@ -1,4 +1,4 @@
-import type { BlockLevelZero, Blocks } from '@specfy/api/src/types/api';
+import type { BlockLevelZero, Blocks } from '@specfy/models';
 import classnames from 'classnames';
 import { useMemo, useState } from 'react';
 

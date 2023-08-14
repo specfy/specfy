@@ -1,4 +1,4 @@
-import type { ApiBlobWithPrevious } from '@specfy/api/src/types/api';
+import type { ApiBlobWithPrevious } from '@specfy/models';
 import { Editor } from '@tiptap/react';
 
 import { createEditorSchema } from '../../components/Editor/extensions';

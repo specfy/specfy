@@ -1,4 +1,4 @@
-import type { GetFlow, PatchFlow } from '@specfy/api/src/types/api';
+import type { GetFlow, PatchFlow } from '@specfy/models';
 import { useQuery } from '@tanstack/react-query';
 
 import { qcli } from '../common/query';

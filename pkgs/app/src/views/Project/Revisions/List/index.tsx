@@ -1,4 +1,4 @@
-import type { ApiProject, ListRevisions } from '@specfy/api/src/types/api';
+import type { ApiProject, ListRevisions } from '@specfy/models';
 import {
   IconChevronRight,
   IconCircleXFilled,

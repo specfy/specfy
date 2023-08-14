@@ -4,7 +4,7 @@ import type {
   GetCountPerms,
   ListPerms,
   PutPerm,
-} from '@specfy/api/src/types/api';
+} from '@specfy/models';
 import { useQuery } from '@tanstack/react-query';
 
 import { qcli } from '../common/query';

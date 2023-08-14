@@ -6,8 +6,6 @@ import {
 } from './helpers.document.js';
 import type { PostUploadRevision } from './types.api.js';
 
-import '../../test/helpers.js';
-
 describe('uploadToDocuments', () => {
   it('should output nothing', () => {
     const res = uploadToDocuments([]);

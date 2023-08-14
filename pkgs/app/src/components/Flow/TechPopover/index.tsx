@@ -1,5 +1,5 @@
 import * as Popover from '@radix-ui/react-popover';
-import type { NodeData } from '@specfy/api/src/models/flows/types';
+import type { NodeData } from '@specfy/models';
 import { useState } from 'react';
 
 import { ComponentIcon } from '../../Component/Icon';

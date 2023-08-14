@@ -1,4 +1,4 @@
-import type { ApiDocument, ApiProject } from '@specfy/api/src/types/api';
+import type { ApiDocument, ApiProject } from '@specfy/models';
 import { useEffect, useMemo, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { useParams } from 'react-router-dom';

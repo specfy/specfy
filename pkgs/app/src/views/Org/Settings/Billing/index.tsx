@@ -1,11 +1,11 @@
 import * as Form from '@radix-ui/react-form';
-import type { Plan } from '@specfy/api/src/models/billing/plans';
-import { v1 } from '@specfy/api/src/models/billing/plans';
 import type {
   ApiOrg,
   GetSubscription,
   UsageMetric,
-} from '@specfy/api/src/types/api';
+  Plan,
+} from '@specfy/models';
+import { v1 } from '@specfy/models/src/billing/plans';
 import { IconCircleCheckFilled, IconInfinity } from '@tabler/icons-react';
 import classNames from 'classnames';
 import { DateTime } from 'luxon';

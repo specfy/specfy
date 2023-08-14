@@ -1,4 +1,4 @@
-import type { ApiOrg } from '@specfy/api/src/types/api';
+import type { ApiOrg } from '@specfy/models';
 import { produce } from 'immer';
 import { create } from 'zustand';
 

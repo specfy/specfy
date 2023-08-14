@@ -1,6 +1,5 @@
-import { componentsToFlow } from '@specfy/api/src/models/flows/transform';
-import type { ComputedFlow } from '@specfy/api/src/models/flows/types';
-import type { ApiComponent, ApiProject } from '@specfy/api/src/types/api';
+import type { ComputedFlow, ApiComponent, ApiProject } from '@specfy/models';
+import { componentsToFlow } from '@specfy/models/src/flows/transform';
 import { IconDotsVertical, IconTrash } from '@tabler/icons-react';
 import classnames from 'classnames';
 import type React from 'react';

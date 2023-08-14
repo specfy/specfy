@@ -1,7 +1,4 @@
-import type {
-  ApiActivity,
-  ApiActivityGrouped,
-} from '@specfy/api/src/types/api';
+import type { ApiActivity, ApiActivityGrouped } from '@specfy/models';
 import type { Duration } from 'luxon';
 import { DateTime } from 'luxon';
 import { useEffect, useState } from 'react';

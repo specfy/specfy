@@ -1,4 +1,4 @@
-import type { GetUser, ListUsers } from '@specfy/api/src/types/api';
+import type { GetUser, ListUsers } from '@specfy/models';
 import { useQuery } from '@tanstack/react-query';
 
 import { fetchApi } from './fetch';

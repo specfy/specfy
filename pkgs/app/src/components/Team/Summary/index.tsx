@@ -1,4 +1,4 @@
-import type { ApiPerm, ListPerms } from '@specfy/api/src/types/api';
+import type { ApiPerm, ListPerms } from '@specfy/models';
 import { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 

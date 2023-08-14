@@ -1,4 +1,4 @@
-import type { ApiComponent } from '@specfy/api/src/types/api';
+import type { ApiComponent } from '@specfy/models';
 import { produce } from 'immer';
 import type { Connection } from 'reactflow';
 import { create } from 'zustand';

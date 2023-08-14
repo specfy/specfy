@@ -1,7 +1,4 @@
-import type {
-  ComputedEdge,
-  ComputedNode,
-} from '@specfy/api/src/models/flows/types';
+import type { ComputedEdge, ComputedNode } from '@specfy/models';
 import {
   IconArrowNarrowLeft,
   IconArrowNarrowRight,

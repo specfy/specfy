@@ -1,4 +1,4 @@
-import type { BlockLevelOne } from '@specfy/api/src/types/api';
+import type { BlockLevelOne } from '@specfy/models';
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 

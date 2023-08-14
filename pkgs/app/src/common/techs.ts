@@ -62,7 +62,7 @@ import {
   SiCss3,
 } from '@icons-pack/react-simple-icons';
 import type { IconType } from '@icons-pack/react-simple-icons/types';
-import type { ApiComponent } from '@specfy/api/src/types/api';
+import type { ApiComponent } from '@specfy/models';
 import type { AllowedKeys, TechItem } from '@specfy/stack-analyser';
 import { listTech } from '@specfy/stack-analyser/dist/common/techs.generated';
 

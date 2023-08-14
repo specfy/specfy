@@ -1,4 +1,4 @@
-import type { ListenEvents, ServerEvents } from '@specfy/api/src/types/socket';
+import type { ListenEvents, ServerEvents } from '@specfy/socket';
 import type { Socket } from 'socket.io-client';
 import { io } from 'socket.io-client';
 

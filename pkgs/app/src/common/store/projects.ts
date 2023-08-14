@@ -1,4 +1,4 @@
-import type { ApiProject, ApiProjectList } from '@specfy/api/src/types/api';
+import type { ApiProject, ApiProjectList } from '@specfy/models';
 import { produce } from 'immer';
 import { create } from 'zustand';
 

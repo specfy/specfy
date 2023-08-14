@@ -1,4 +1,4 @@
-import type { ApiDocument } from '@specfy/api/src/types/api';
+import type { ApiDocument } from '@specfy/models';
 import { IconCircleArrowRight } from '@tabler/icons-react';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';

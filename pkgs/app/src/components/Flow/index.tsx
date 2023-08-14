@@ -1,7 +1,4 @@
-import type {
-  ComputedEdge,
-  ComputedFlow,
-} from '@specfy/api/src/models/flows/types';
+import type { ComputedEdge, ComputedFlow } from '@specfy/models';
 import classNames from 'classnames';
 import type { CSSProperties } from 'react';
 import { useRef, useCallback, useState, useEffect } from 'react';

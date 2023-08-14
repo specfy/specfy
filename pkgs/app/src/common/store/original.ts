@@ -1,7 +1,4 @@
-import type {
-  ApiBlobWithPrevious,
-  ApiProject,
-} from '@specfy/api/src/types/api';
+import type { ApiBlobWithPrevious, ApiProject } from '@specfy/models';
 
 import type { Allowed, BlobAndDiffs } from '../../types/blobs';
 

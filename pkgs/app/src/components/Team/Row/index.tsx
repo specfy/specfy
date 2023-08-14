@@ -1,4 +1,4 @@
-import type { ApiPerm, ApiUser } from '@specfy/api/src/types/api';
+import type { ApiPerm, ApiUser } from '@specfy/models';
 import { IconCheck, IconPlus, IconTrash } from '@tabler/icons-react';
 import { useState } from 'react';
 

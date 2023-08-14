@@ -1,4 +1,4 @@
-import type { ApiProject, ApiPerm, ApiUser } from '@specfy/api/src/types/api';
+import type { ApiProject, ApiPerm, ApiUser } from '@specfy/models';
 import { useState, useEffect, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useDebounce } from 'react-use';

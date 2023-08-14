@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { schemaId } from './index.js';
+import { schemaId } from './schema.js';
 
 // BlockText
 const blockText = z

@@ -4,7 +4,7 @@ import type {
   ListProjects,
   PostProject,
   PutProject,
-} from '@specfy/api/src/types/api';
+} from '@specfy/models';
 import { useQuery } from '@tanstack/react-query';
 
 import { qcli } from '../common/query';

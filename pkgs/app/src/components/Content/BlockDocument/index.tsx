@@ -1,4 +1,4 @@
-import type { ApiDocument, BlockDocument } from '@specfy/api/src/types/api';
+import type { ApiDocument, BlockDocument } from '@specfy/models';
 import { IconRepeat } from '@tabler/icons-react';
 import { useMemo } from 'react';
 

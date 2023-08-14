@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import type { ApiMe } from '@specfy/api/src/types/api';
+import type { ApiMe } from '@specfy/models';
 import { useMemo, useState, createContext, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 

@@ -1,8 +1,4 @@
-import type {
-  BlockLevelZero,
-  Blocks,
-  MarkDiff,
-} from '@specfy/api/src/types/api';
+import type { BlockLevelZero, Blocks, MarkDiff } from '@specfy/models';
 import { IconArrowBack } from '@tabler/icons-react';
 import classnames from 'classnames';
 import { useMemo, useState } from 'react';

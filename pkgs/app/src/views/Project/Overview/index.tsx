@@ -1,6 +1,9 @@
-import { componentsToFlow } from '@specfy/api/src/models/flows/transform';
-import type { ComputedFlow } from '@specfy/api/src/models/flows/types';
-import type { ApiComponent, BlockLevelZero } from '@specfy/api/src/types/api';
+import type {
+  ComputedFlow,
+  ApiComponent,
+  BlockLevelZero,
+} from '@specfy/models';
+import { componentsToFlow } from '@specfy/models/src/flows/transform';
 import { useCallback, useEffect, useState } from 'react';
 
 import { useComponentsStore, useProjectStore } from '../../../common/store';

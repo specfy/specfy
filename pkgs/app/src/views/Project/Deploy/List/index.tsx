@@ -1,4 +1,4 @@
-import type { ApiProject, ListJobs } from '@specfy/api/src/types/api';
+import type { ApiProject, ListJobs } from '@specfy/models';
 import { IconChevronRight } from '@tabler/icons-react';
 import type React from 'react';
 import { useEffect, useState } from 'react';

@@ -1,4 +1,4 @@
-import type { ApiProject, BlockLevelZero } from '@specfy/api/src/types/api';
+import type { ApiProject, BlockLevelZero } from '@specfy/models';
 import classnames from 'classnames';
 
 import type {

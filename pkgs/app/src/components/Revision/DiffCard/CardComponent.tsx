@@ -1,4 +1,4 @@
-import type { ApiComponent, BlockLevelZero } from '@specfy/api/src/types/api';
+import type { ApiComponent, BlockLevelZero } from '@specfy/models';
 import classnames from 'classnames';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';

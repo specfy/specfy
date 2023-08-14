@@ -11,7 +11,7 @@
   "scripts": {
     "build": "tsup",
     "prod:build": "tsup",
-    "dev": "email dev -p 3001",
+    "__dev": "email dev -p 3001",
     "export": "email export"
   },
   "dependencies": {
