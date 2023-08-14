@@ -70,6 +70,7 @@ export type PostUploadRevision = Res<{
     source: string;
     blobs: Array<{ path: string; content: string }>;
     stack: AnalyserJson | null;
+    autoLayout?: boolean;
   };
   Error: CreateRevisionError;
   Success: {

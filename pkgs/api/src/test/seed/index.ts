@@ -1,7 +1,5 @@
-import { nanoid } from '@specfy/core';
+import { nanoid, envs } from '@specfy/core';
 import { prisma } from '@specfy/db';
-
-import { envs } from '../../common/env.js';
 
 import { seedComponents } from './components.js';
 import { seedDocs, seedPlaybook, seedRFC } from './documents.js';

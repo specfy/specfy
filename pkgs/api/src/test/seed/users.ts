@@ -1,8 +1,7 @@
-import { nanoid } from '@specfy/core';
+import { nanoid, envs } from '@specfy/core';
 import type { Users } from '@specfy/db';
 import { prisma } from '@specfy/db';
 
-import { envs } from '../../common/env.js';
 import { pbkdf2 } from '../../middlewares/auth/local.js';
 import { userGithubApp } from '../../models/users/model.js';
 

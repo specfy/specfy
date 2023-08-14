@@ -1,8 +1,8 @@
+import { envs } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import type { FastifyPluginCallback } from 'fastify';
 import type Stripe from 'stripe';
 
-import { envs } from '../../../common/env.js';
 import { forbidden } from '../../../common/errors.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import { v1 } from '../../../models/billing/plans.js';

@@ -3,7 +3,7 @@ import path from 'node:path';
 import cors from '@fastify/cors';
 import rateLimit from '@fastify/rate-limit';
 import staticFiles from '@fastify/static';
-import { logger } from '@specfy/core';
+import { logger, dirname } from '@specfy/core';
 import type {
   FastifyInstance,
   FastifyPluginOptions,
@@ -11,7 +11,6 @@ import type {
 } from 'fastify';
 import rawBody from 'fastify-raw-body';
 
-import { dirname } from './common/env.js';
 import { notFound, serverError } from './common/errors.js';
 import { AuthError } from './middlewares/auth/errors.js';
 import { registerAuth } from './middlewares/auth/index.js';

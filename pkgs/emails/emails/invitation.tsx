@@ -14,8 +14,7 @@ import {
   Tailwind,
   Text,
 } from '@react-email/components';
-import type { Orgs } from '@specfy/api/src/models/orgs/model';
-import type { Users } from '@specfy/api/src/models/users/model';
+import type { Orgs, Users } from '@specfy/db';
 
 import { BASE_URL } from '../src/env';
 

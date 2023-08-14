@@ -7,12 +7,16 @@
   "module": "build/index.js",
   "type": "module",
   "scripts": {
-    "build": "tsc -p tsconfig.json -w",
-    "prisma:gen": "dotenv -e ../../.env prisma generate",
-    "migrate": "dotenv -e ../../.env prisma db push",
+    "build": "tsc -p tsconfig.json",
+    "build:watch": "tsc -p tsconfig.json -w",
+    "db:generate": "dotenv -e ../../.env prisma generate",
+    "db:migrate": "dotenv -e ../../.env prisma db push --skip-generate",
     "migrate:create": "dotenv -e ../../.env prisma migrate dev --create-only",
     "prod:migrate": "prisma migrate deploy"
   },
+  "files": [
+    "build"
+  ],
   "author": "",
   "license": "MIT",
   "dependencies": {

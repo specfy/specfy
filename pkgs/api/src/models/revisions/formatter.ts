@@ -1,4 +1,5 @@
-import { envs } from '../../common/env.js';
+import { envs } from '@specfy/core';
+
 import type { ApiRevision } from '../../types/api/index.js';
 import { toApiUser } from '../users/formatter.js';
 

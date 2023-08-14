@@ -1,6 +1,6 @@
+import { envs } from '@specfy/core';
 import type { FastifyPluginCallback } from 'fastify';
 
-import { envs } from '../../../common/env.js';
 import { fastifyPassport } from '../../../middlewares/auth/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 

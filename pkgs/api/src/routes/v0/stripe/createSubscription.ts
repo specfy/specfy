@@ -1,8 +1,8 @@
+import { envs } from '@specfy/core';
 import type { FastifyPluginCallback } from 'fastify';
 import type Stripe from 'stripe';
 import { z } from 'zod';
 
-import { envs } from '../../../common/env.js';
 import { validationError } from '../../../common/errors.js';
 import { getOrg } from '../../../middlewares/getOrg.js';
 import { noQuery } from '../../../middlewares/noQuery.js';

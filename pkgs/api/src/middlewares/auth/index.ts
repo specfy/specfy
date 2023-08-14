@@ -1,10 +1,10 @@
 import { Authenticator } from '@fastify/passport';
 import fastifySession from '@fastify/secure-session';
+import { envs } from '@specfy/core';
 import type { Users } from '@specfy/db';
 import { prisma } from '@specfy/db';
 import type { FastifyInstance } from 'fastify';
 
-import { envs } from '../../common/env.js';
 import { unauthorized } from '../../common/errors.js';
 
 import { registerGithub } from './github.js';

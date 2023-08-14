@@ -1,11 +1,10 @@
-import { nanoid, logger } from '@specfy/core';
+import { nanoid, logger, envs } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import { sendInvitation } from '@specfy/emails';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
 import { resend } from '../../../common/emails.js';
-import { envs } from '../../../common/env.js';
 import { validationError } from '../../../common/errors.js';
 import { schemaOrgId } from '../../../common/validators/index.js';
 import { valPermissions } from '../../../common/zod.js';

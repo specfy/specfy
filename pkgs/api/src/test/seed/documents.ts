@@ -1,11 +1,10 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-import { nanoid, slugify } from '@specfy/core';
+import { nanoid, slugify, dirname } from '@specfy/core';
 import type { Orgs, Projects, Users } from '@specfy/db';
 import { prisma } from '@specfy/db';
 
-import { dirname } from '../../common/env.js';
 import type { DBDocument } from '../../models/documents/types.js';
 import { createDocument, getDocumentTypeId } from '../../models/index.js';
 import type { ApiDocument } from '../../types/api/index.js';
