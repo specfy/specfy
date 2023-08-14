@@ -116,7 +116,7 @@ Project:
       - Import from UI
   ✔ Automatic languages detection @done(23-06-14 15:18)
   ✔ Automatic “service” detection @done(23-06-14 15:18)
-  - Add branch in configuration and use it when receiving Deploy
+  ✔ Add branch in configuration and use it when receiving Deploy @done(23-08-14 18:11)
   - Hide when too much tech stack on Overview
   - Socket: only subscribe to currently viewed Project
   ✔ Bug: link edition open even on readonly mode @done(23-07-27 12:10)

@@ -55,6 +55,7 @@ describe('GET /projects/:org_id/:project_slug', () => {
       links: [],
       githubRepository: null,
       config: {
+        branch: 'main',
         documentation: {
           enabled: true,
           path: '/docs',
