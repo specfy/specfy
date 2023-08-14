@@ -33,19 +33,21 @@ export const TechnicalAspects: React.FC<{
 
     const _techs = new Set<string>();
     const _groups: typeof groups = {
-      hosting: [],
-      saas: [],
-      project: [],
-      service: [],
+      api: [],
       app: [],
       ci: [],
       db: [],
+      etl: [],
+      hosting: [],
       language: [],
       messaging: [],
       network: [],
-      tool: [],
-      storage: [],
       others: [],
+      project: [],
+      saas: [],
+      service: [],
+      storage: [],
+      tool: [],
     };
 
     for (const comp of components) {
