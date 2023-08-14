@@ -54,7 +54,6 @@ export class ApiClient {
     path: TPath extends keyof FilterObjObjWithKey<API, 'GET'>
       ? TPath
       : keyof FilterObjObjWithKey<API, 'GET'>,
-    // eslint-disable-next-line @typescript-eslint/sort-type-union-intersection-members
     opts?: {
       token?: string;
     } & (API[TPath] extends HasGet
@@ -72,7 +71,6 @@ export class ApiClient {
     path: TPath extends keyof FilterObjObjWithKey<API, 'POST'>
       ? TPath
       : keyof FilterObjObjWithKey<API, 'POST'>,
-    // eslint-disable-next-line @typescript-eslint/sort-type-union-intersection-members
     opts?: {
       token?: string;
     } & (API[TPath] extends HasPost
@@ -90,7 +88,6 @@ export class ApiClient {
     path: TPath extends keyof FilterObjObjWithKey<API, 'PUT'>
       ? TPath
       : keyof FilterObjObjWithKey<API, 'PUT'>,
-    // eslint-disable-next-line @typescript-eslint/sort-type-union-intersection-members
     opts?: {
       token?: string;
     } & (API[TPath] extends HasPut
@@ -108,7 +105,6 @@ export class ApiClient {
     path: TPath extends keyof FilterObjObjWithKey<API, 'PATCH'>
       ? TPath
       : keyof FilterObjObjWithKey<API, 'PATCH'>,
-    // eslint-disable-next-line @typescript-eslint/sort-type-union-intersection-members
     opts?: {
       token?: string;
     } & (API[TPath] extends HasPatch
@@ -126,7 +122,6 @@ export class ApiClient {
     path: TPath extends keyof FilterObjObjWithKey<API, 'DELETE'>
       ? TPath
       : keyof FilterObjObjWithKey<API, 'DELETE'>,
-    // eslint-disable-next-line @typescript-eslint/sort-type-union-intersection-members
     opts?: {
       token?: string;
     } & (API[TPath] extends HasDelete

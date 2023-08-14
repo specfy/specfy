@@ -4,12 +4,15 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/strict',
+    'plugin:@typescript-eslint/stylistic',
     'plugin:react/recommended',
     'plugin:react/jsx-runtime',
     'plugin:import/errors',
     'plugin:import/warnings',
     'plugin:prettier/recommended',
-    // 'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    // 'plugin:@typescript-eslint/recommended-type-checked',
+    // 'plugin:@typescript-eslint/strict-type-checked',
+    // 'plugin:@typescript-eslint/stylistic-type-checked',
   ],
   parser: '@typescript-eslint/parser',
   plugins: [
@@ -60,45 +63,7 @@ module.exports = {
     ],
     '@typescript-eslint/adjacent-overload-signatures': ['error'],
     '@typescript-eslint/array-type': ['error', { default: 'array-simple' }],
-    '@typescript-eslint/ban-types': [
-      'error',
-      {
-        types: {
-          String: {
-            message: 'Use `string` instead.',
-            fixWith: 'string',
-          },
-          Number: {
-            message: 'Use `number` instead.',
-            fixWith: 'number',
-          },
-          Boolean: {
-            message: 'Use `boolean` instead.',
-            fixWith: 'boolean',
-          },
-          Symbol: {
-            message: 'Use `symbol` instead.',
-            fixWith: 'symbol',
-          },
-          Object: {
-            message:
-              'The `Object` type is mostly the same as `unknown`. You probably want `Record<string, unknown>` instead. See https://github.com/typescript-eslint/typescript-eslint/pull/848',
-            fixWith: 'Record<string, unknown>',
-          },
-          '{}': {
-            message:
-              'The `{}` type is mostly the same as `unknown`. You probably want `Record<string, unknown>` instead.',
-            fixWith: 'Record<string, unknown>',
-          },
-          object: {
-            message:
-              'The `object` type is hard to use. Use `Record<string, unknown>` instead. See: https://github.com/typescript-eslint/typescript-eslint/pull/848',
-            fixWith: 'Record<string, unknown>',
-          },
-          Function: 'Use a specific function type instead, like `() => void`.',
-        },
-      },
-    ],
+    '@typescript-eslint/ban-types': ['error'],
     '@typescript-eslint/consistent-type-imports': [
       'error',
       { prefer: 'type-imports' },
@@ -182,11 +147,7 @@ module.exports = {
         ],
       },
     ],
-    '@typescript-eslint/no-array-constructor': ['error'],
     '@typescript-eslint/no-empty-interface': ['error'],
-    '@typescript-eslint/no-misused-new': ['error'],
-    '@typescript-eslint/no-namespace': ['error', { allowDeclarations: true }],
-    '@typescript-eslint/triple-slash-reference': ['error'],
     '@typescript-eslint/no-unused-vars': [
       'error',
       {
@@ -205,14 +166,12 @@ module.exports = {
     '@typescript-eslint/no-use-before-define': ['error', { functions: false }],
     '@typescript-eslint/no-useless-constructor': ['error'],
     '@typescript-eslint/no-var-requires': ['error'],
-    '@typescript-eslint/prefer-as-const': ['error'],
     '@typescript-eslint/prefer-enum-initializers': ['error'],
     '@typescript-eslint/prefer-function-type': ['error'],
     '@typescript-eslint/prefer-literal-enum-member': ['error'],
     '@typescript-eslint/prefer-namespace-keyword': ['error'],
-    '@typescript-eslint/prefer-optional-chain': ['error'],
+    '@typescript-eslint/prefer-optional-chain': ['off'],
     '@typescript-eslint/prefer-ts-expect-error': ['error'],
-    '@typescript-eslint/sort-type-union-intersection-members': ['error'],
     '@typescript-eslint/type-annotation-spacing': ['error'],
     '@typescript-eslint/unified-signatures': ['error'],
     '@typescript-eslint/no-redeclare': ['error'],
@@ -224,98 +183,13 @@ module.exports = {
     '@typescript-eslint/no-duplicate-enum-values': 'error',
     '@typescript-eslint/no-non-null-asserted-nullish-coalescing': 'error',
     '@typescript-eslint/no-unsafe-declaration-merging': 'error',
-    // '@typescript-eslint/no-unsafe-enum-comparison': 'error',
-
-    // Disable rules superset by @typescript-eslint
-    'no-redeclare': ['off'],
-    'no-undef': ['off'],
-    'no-unused-vars': ['off'],
-    'no-use-before-define': ['off'],
-    'no-shadow': ['off'],
-    camelcase: ['off'],
-    'no-array-constructor': ['off'],
-    'no-useless-constructor': ['off'],
-    'no-empty-function': 'off',
-    'no-loss-of-precision': 'off',
-    'dot-notation': 'off',
-    'no-throw-literal': 'off',
-
-    // Handled by prettier
-    '@typescript-eslint/brace-style': ['off'],
-    '@typescript-eslint/comma-dangle': ['off'],
-    '@typescript-eslint/indent': ['off'],
-    '@typescript-eslint/keyword-spacing': ['off'],
-    '@typescript-eslint/member-delimiter-style': ['off'],
-    '@typescript-eslint/no-extra-parens': ['off'],
-    '@typescript-eslint/no-extra-semi': ['off'],
-    '@typescript-eslint/quotes': ['off'],
-    '@typescript-eslint/semi': ['off'],
-    '@typescript-eslint/space-before-function-paren': ['off'],
-    '@typescript-eslint/space-infix-ops': ['off'],
-    '@typescript-eslint/class-literal-property-style': ['off'], // useless
-    '@typescript-eslint/consistent-indexed-object-style': ['off'], // Also modify type and interface
-    '@typescript-eslint/method-signature-style': ['error'],
-
-    // disabled => because will warn to every explicit "any"
-    '@typescript-eslint/no-explicit-any': ['off'],
-    '@typescript-eslint/explicit-module-boundary-types': ['off'],
-
-    // disabled => because will warn for every not typed but correctly infered type var
-    '@typescript-eslint/typedef': [
-      'off',
-      {
-        arrayDestructuring: false,
-        arrowParameter: false,
-        memberVariableDeclaration: false,
-        objectDestructuring: false,
-        parameter: false,
-        propertyDeclaration: false,
-        variableDeclaration: false,
-        variableDeclarationIgnoreFunction: false,
-      },
-    ],
 
     // To decide
     '@typescript-eslint/no-for-in-array': ['off'],
     '@typescript-eslint/prefer-for-of': ['warn'],
-
-    // Disabled => Require slow parser. Requires parserOptions.project above to enable them
-    '@typescript-eslint/no-throw-literal': ['off'],
-    '@typescript-eslint/await-thenable': ['off'],
-    '@typescript-eslint/no-base-to-string': ['off'],
-    '@typescript-eslint/no-confusing-void-expression': ['off'],
-    '@typescript-eslint/no-floating-promises': ['off'],
-    '@typescript-eslint/no-implied-eval': ['off'],
-    '@typescript-eslint/no-misused-promises': ['off'],
-    '@typescript-eslint/no-unnecessary-boolean-literal-compare': ['off'],
-    '@typescript-eslint/no-unnecessary-condition': ['off'],
-    '@typescript-eslint/no-unnecessary-qualifier': ['off'],
-    '@typescript-eslint/no-unnecessary-type-arguments': ['off'],
-    '@typescript-eslint/no-unnecessary-type-assertion': ['off'],
-    '@typescript-eslint/no-unsafe-argument': ['off'],
-    '@typescript-eslint/no-unsafe-assignment': ['off'],
-    '@typescript-eslint/no-unsafe-call': ['off'],
-    '@typescript-eslint/no-unsafe-member-access': ['off'],
-    '@typescript-eslint/no-unsafe-return': ['off'],
-    '@typescript-eslint/non-nullable-type-assertion-style': ['off'],
-    '@typescript-eslint/prefer-includes': ['off'],
-    '@typescript-eslint/prefer-nullish-coalescing': ['off'],
-    '@typescript-eslint/prefer-readonly-parameter-types': ['off'],
-    '@typescript-eslint/prefer-readonly': ['off'],
-    '@typescript-eslint/prefer-reduce-type-parameter': ['off'],
-    '@typescript-eslint/prefer-regexp-exec': ['off'],
-    '@typescript-eslint/prefer-return-this-type': ['off'],
-    '@typescript-eslint/prefer-string-starts-ends-with': ['off'],
-    '@typescript-eslint/promise-function-async': ['off'],
-    '@typescript-eslint/require-array-sort-compare': ['off'],
-    '@typescript-eslint/restrict-plus-operands': ['off'],
-    '@typescript-eslint/restrict-template-expressions': ['off'],
-    '@typescript-eslint/strict-boolean-expressions': ['off'],
-    '@typescript-eslint/switch-exhaustiveness-check': ['off'],
-    '@typescript-eslint/unbound-method': ['off'],
-    '@typescript-eslint/dot-notation': ['off'],
-    '@typescript-eslint/no-meaningless-void-operator': ['off'],
-    '@typescript-eslint/no-mixed-enums': ['off'],
+    '@typescript-eslint/no-explicit-any': ['off'], // a lof of error
+    '@typescript-eslint/no-unsafe-assignment': ['off'], // a lot of error
+    '@typescript-eslint/no-unsafe-argument': ['off'], // a lot of error
 
     // Disabled On purpose
     '@typescript-eslint/ban-ts-comment': ['off'],
@@ -331,31 +205,12 @@ module.exports = {
     '@typescript-eslint/no-this-alias': ['off'], // to complicated for the small benefits
     '@typescript-eslint/no-type-alias': ['off'],
 
-    // Import
-    'import/extensions': ['error', 'never'],
-    'import/no-cycle': 'off', // checked by ts
-    'import/no-unresolved': 'off', // checked by ts
+    // Disabled => Require slow parser. Requires parserOptions.project above to enable them
+    '@typescript-eslint/dot-notation': ['off'],
+    '@typescript-eslint/no-base-to-string': ['off'],
 
-    'import/order': [
-      'error',
-      {
-        groups: [
-          'builtin',
-          'external',
-          'internal',
-          'parent',
-          'sibling',
-          'index',
-        ],
-        'newlines-between': 'always',
-        alphabetize: {
-          order: 'asc',
-        },
-      },
-    ],
-
-    // TMP
     'react/prop-types': ['off'],
+    'import/no-unresolved': 'off', // checked by ts
   },
 
   overrides: [
@@ -368,9 +223,7 @@ module.exports = {
     },
     {
       files: ['pkgs/**/*.test.ts'],
-      rules: {
-        '@typescript-eslint/no-unsafe-assignment': ['off'],
-      },
+      rules: {},
     },
   ],
 };
