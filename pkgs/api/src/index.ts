@@ -39,6 +39,6 @@ app.listen({ host: '0.0.0.0', port: parseInt(envs.PORT, 10) }, (err) => {
   }
 });
 
-(async () => {
+void (async () => {
   await start();
 })();

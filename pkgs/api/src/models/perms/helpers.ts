@@ -16,7 +16,7 @@ export function checkInheritedPermissions(
   orgId: string,
   projectId?: string
 ) {
-  const exactMatch = perms!.find((perm) => {
+  const exactMatch = perms.find((perm) => {
     return (
       perm.orgId === orgId &&
       (projectId ? perm.projectId === projectId : perm.projectId === null)
@@ -27,7 +27,7 @@ export function checkInheritedPermissions(
   }
 
   if (projectId) {
-    const inherited = perms!.find((perm) => {
+    const inherited = perms.find((perm) => {
       return perm.orgId === orgId;
     });
     if (inherited?.Org.Projects.find((project) => project.id === projectId)) {
