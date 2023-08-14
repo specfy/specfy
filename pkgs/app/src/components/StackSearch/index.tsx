@@ -116,7 +116,7 @@ export const ComponentSelect: React.FC<{
     'messaging',
     'network',
     'project',
-    'sass',
+    'saas',
     'storage',
     'service',
   ],

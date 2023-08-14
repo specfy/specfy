@@ -131,7 +131,7 @@ export async function seedComponents(
         data: {
           id: 'jZDC3Lsc05',
           name: 'Datadog',
-          type: 'sass',
+          type: 'saas',
           orgId: o1.id,
           projectId: pAnalytics.id,
           techId: 'datadog',
@@ -153,7 +153,7 @@ export async function seedComponents(
         data: {
           id: 'jZDC3Lsc06',
           name: 'Sentry',
-          type: 'sass',
+          type: 'saas',
           orgId: o1.id,
           projectId: pAnalytics.id,
           techId: 'sentry',
@@ -175,7 +175,7 @@ export async function seedComponents(
         data: {
           id: 'jZDC3Lsc07',
           name: 'Algolia',
-          type: 'sass',
+          type: 'saas',
           orgId: o1.id,
           projectId: pAnalytics.id,
           techId: 'algolia',
