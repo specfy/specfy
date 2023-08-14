@@ -5,7 +5,7 @@ export async function fetchApi<
     Body: Record<string, any> | never;
     Querystring: Record<string, any> | never;
     Reply: Record<string, any> | never;
-  }
+  },
 >(
   path: string,
   opts?: (T['Body'] extends never

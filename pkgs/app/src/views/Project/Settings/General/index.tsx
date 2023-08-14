@@ -144,9 +144,9 @@ export const SettingsGeneral: React.FC<{
     return `SPECFY_HOSTNAME=${API_HOSTNAME.replace(
       'localhost',
       '127.0.0.1'
-    )} node ./dist/cli.js run -d docs -s / -o ${proj.orgId} -p ${proj.id} -t ${
-      resKeys.data?.data[0].key
-    }`;
+    )} node ./dist/cli.js run -d docs -s / -o ${proj.orgId} -p ${
+      proj.id
+    } -t ${resKeys.data?.data[0].key}`;
   }, [resKeys]);
 
   return (

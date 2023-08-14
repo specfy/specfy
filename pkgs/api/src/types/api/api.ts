@@ -57,7 +57,7 @@ export type Res<
     Body?: Record<string, any>;
     Querystring?: Record<string, any>;
     Success: Record<string, any> | never;
-  }
+  },
 > = {
   Params: T['Params'] extends Record<string, any> ? T['Params'] : never;
   Success: T['Success'];

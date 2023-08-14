@@ -1,7 +1,7 @@
 export function omit<
   TObj extends Record<string, any>,
   TKeys extends string = string,
-  TRes extends Omit<TObj, TKeys> = Omit<TObj, TKeys>
+  TRes extends Omit<TObj, TKeys> = Omit<TObj, TKeys>,
 >(obj: TObj, keys: TKeys[] | readonly TKeys[]): TRes {
   const copy: TRes = {} as any;
   for (const [key, value] of Object.entries(obj)) {
