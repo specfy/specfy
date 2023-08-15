@@ -6,6 +6,7 @@
 **/node_modules
 
 # Useless and heavy folders
+pkgs/app
 **/build
 **/dist
 coverage/

@@ -16,7 +16,7 @@ import {
 } from '@react-email/components';
 import type { Orgs, Users } from '@specfy/db';
 
-import { BASE_URL } from '../src/env';
+import { BASE_URL } from '../env';
 
 export interface InvitationProps {
   email?: string;

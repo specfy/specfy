@@ -9,7 +9,7 @@
     "lint:code": "eslint --ext .js,.ts,.tsx .",
     "lint:scss": "stylelint --config .stylelintrc.json  **/*.scss",
     "lint:fix": "npm run lint -- --fix",
-    "docker:build": "docker build -t test -f prod/Dockerfile .",
+    "docker:build": "docker build -t test -f prod/Dockerfile --progress=plain .",
     "docker:run": "docker run --env-file ./pkgs/api/.env test node pkgs/api/build/index.js",
     "api": "turbo dev --filter='!@specfy/app'",
     "app": "turbo dev --filter='@specfy/app'",

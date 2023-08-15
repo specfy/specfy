@@ -1,10 +1,10 @@
 import { Resend } from 'resend';
 import type { CreateEmailOptions } from 'resend/build/src/emails/interfaces';
 
-import type { InvitationProps } from '../emails/invitation';
-import { Invitation } from '../emails/invitation';
-import type { WelcomeProps } from '../emails/welcome';
-import { Welcome } from '../emails/welcome';
+import type { InvitationProps } from './emails/invitation';
+import { Invitation } from './emails/invitation';
+import type { WelcomeProps } from './emails/welcome';
+import { Welcome } from './emails/welcome';
 
 export function getResend(key: string) {
   return new Resend(key);

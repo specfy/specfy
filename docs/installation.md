@@ -30,18 +30,19 @@ Optional:
    ```sh
    nvm use
    npm install
+   npm install -g turbo
    ```
 
 4. Create your `.env` files
 
    ```sh
-   cp pkgs/api/.env.example pkgs/api/.env
+   cp .env.example .env
    ```
 
 5. Open the root `.env` file:
 
    ```sh
-   code pkgs/api/.env
+   code /.env
    ```
 
    Feel free to update `COOKIE_SECRET` and `PASSWORD_SALT`.
@@ -55,8 +56,8 @@ Optional:
 7. Migrate and seed the database
 
    ```sh
-   npm run -w @specfy/db migrate
-   npm run -w @specfy/api seed
+   turbo run migrate
+   turbo run seed
    ```
 
 8. Launch the API
