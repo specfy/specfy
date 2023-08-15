@@ -37,7 +37,7 @@ jobs:
       RESEND_KEY: "re_"
       STRIPE_KEY: ""
       STRIPE_WEBHOOKS_SECRET: ""
-
+      JWT_SECRET: "aa"
 
 
     steps:
