@@ -59,7 +59,7 @@ jobs:
         run: npm run lint
 
       - name: Build
-        run: turbo run build
+        run: npm run build
 
       # Not running test in parallel for readability
       - name: Run Test API

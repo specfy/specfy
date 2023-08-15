@@ -5,6 +5,8 @@
   "author": "Samuel Bodin",
   "type": "module",
   "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
     "lint": "npm run lint:code && npm run lint:scss",
     "lint:code": "eslint --ext .js,.ts,.tsx .",
     "lint:scss": "stylelint --config .stylelintrc.json  **/*.scss",
