@@ -1,9 +1,12 @@
-import type { Orgs, Projects, Users } from '@prisma/client';
+import type { Orgs, Projects, Users } from '@specfy/db';
+import { prisma } from '@specfy/db';
+import {
+  getBlobComponent,
+  createComponentBlob,
+  flagRevisionApprovalEnabled,
+} from '@specfy/models';
 import { beforeAll, afterAll, describe, it, expect } from 'vitest';
 
-import { prisma } from '../../../db/index.js';
-import { createComponentBlob } from '../../../models/index.js';
-import { flagRevisionApprovalEnabled } from '../../../models/revisions/constants.js';
 import type { TestSetup } from '../../../test/each.js';
 import { setupBeforeAll, setupAfterAll } from '../../../test/each.js';
 import { isError, isSuccess } from '../../../test/fetch.js';
@@ -12,10 +15,7 @@ import {
   shouldNotAllowBody,
   shouldNotAllowQueryParams,
 } from '../../../test/helpers.js';
-import {
-  getBlobComponent,
-  seedComponent,
-} from '../../../test/seed/components.js';
+import { seedComponent } from '../../../test/seed/components.js';
 import { seedProject } from '../../../test/seed/projects.js';
 import { seedRevision } from '../../../test/seed/revisions.js';
 import {

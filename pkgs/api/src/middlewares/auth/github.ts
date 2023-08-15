@@ -1,15 +1,12 @@
 import type { Authenticator } from '@fastify/passport';
-import type { Users } from '@prisma/client';
+import { nanoid, logger, slugify, envs } from '@specfy/core';
+import type { Users } from '@specfy/db';
+import { prisma } from '@specfy/db';
 import { sendWelcome } from '@specfy/emails';
+import { createOrg, createUserActivity } from '@specfy/models';
 import { Strategy as GithubStrategy } from 'passport-github2';
 
 import { resend } from '../../common/emails.js';
-import { envs } from '../../common/env.js';
-import { nanoid } from '../../common/id.js';
-import { slugify } from '../../common/string.js';
-import { prisma } from '../../db/index.js';
-import { logger } from '../../logger.js';
-import { createOrg, createUserActivity } from '../../models/index.js';
 import type { GithubAuth } from '../../types/github.js';
 
 import { AuthError } from './errors.js';

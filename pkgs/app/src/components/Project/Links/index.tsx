@@ -1,5 +1,5 @@
 import type { IconType } from '@icons-pack/react-simple-icons/types';
-import type { DBProjectLink } from '@specfy/api/src/models/projects/types';
+import type { DBProjectLink } from '@specfy/models';
 import { IconLink, IconPlus, IconTrash } from '@tabler/icons-react';
 import classnames from 'classnames';
 import { useMemo, useRef, useState } from 'react';

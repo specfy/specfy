@@ -1,7 +1,8 @@
+import { prisma } from '@specfy/db';
+import { getBlobComponent, createComponentBlob } from '@specfy/models';
+import type { ApiBlobWithPrevious } from '@specfy/models';
 import { beforeAll, afterAll, describe, it, expect } from 'vitest';
 
-import { prisma } from '../../../db/index.js';
-import { createComponentBlob } from '../../../models/components/model.js';
 import type { TestSetup } from '../../../test/each.js';
 import { setupBeforeAll, setupAfterAll } from '../../../test/each.js';
 import { isSuccess } from '../../../test/fetch.js';
@@ -10,10 +11,7 @@ import {
   shouldNotAllowBody,
   shouldNotAllowQueryParams,
 } from '../../../test/helpers.js';
-import {
-  getBlobComponent,
-  seedComponent,
-} from '../../../test/seed/components.js';
+import { seedComponent } from '../../../test/seed/components.js';
 import { seedProject } from '../../../test/seed/projects.js';
 import { seedRevision } from '../../../test/seed/revisions.js';
 import {
@@ -21,7 +19,6 @@ import {
   seedWithOrgViewer,
   seedWithProject,
 } from '../../../test/seed/seed.js';
-import type { ApiBlobWithPrevious } from '../../../types/api/index.js';
 
 let t: TestSetup;
 beforeAll(async () => {

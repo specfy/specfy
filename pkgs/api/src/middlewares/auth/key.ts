@@ -1,10 +1,9 @@
 import type { Authenticator } from '@fastify/passport';
-import type { Keys } from '@prisma/client';
+import type { Keys } from '@specfy/db';
+import { prisma } from '@specfy/db';
+import { userGithubApp } from '@specfy/models';
 import type { FastifyInstance } from 'fastify';
 import { Strategy as KeyStrategy } from 'passport-http-bearer';
-
-import { prisma } from '../../db/index.js';
-import { userGithubApp } from '../../models/users/model.js';
 
 // API KEY
 export function registerKey(fastify: FastifyInstance, passport: Authenticator) {

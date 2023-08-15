@@ -1,4 +1,4 @@
-import type { ApiDocument, ApiProject } from '@specfy/api/src/types/api';
+import type { ApiDocument, ApiProject } from '@specfy/models';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 

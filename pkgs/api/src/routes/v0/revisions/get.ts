@@ -1,9 +1,8 @@
+import { toApiRevision, toApiUser } from '@specfy/models';
+import type { GetRevision } from '@specfy/models';
 import type { FastifyPluginCallback } from 'fastify';
 
 import { getRevision } from '../../../middlewares/getRevision.js';
-import { toApiRevision } from '../../../models/revisions/formatter.js';
-import { toApiUser } from '../../../models/users/formatter.js';
-import type { GetRevision } from '../../../types/api/index.js';
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.get<GetRevision>(

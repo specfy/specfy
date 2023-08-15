@@ -1,58 +1,46 @@
 /* eslint-disable @typescript-eslint/member-ordering */
 
-import type { ListActivities } from '../../models/activities/types.api.js';
 import type {
+  ListActivities,
   GetBillingUsage,
   GetSubscription,
   PostStripeWebhook,
   PostSubscription,
-} from '../../models/billing/types.api.js';
-import type { ListRevisionBlobs } from '../../models/blobs/types.api.js';
-import type { ListComponents } from '../../models/components/types.api.js';
-import type {
+  ListRevisionBlobs,
+  ListComponents,
   GetDocument,
   ListDocuments,
-} from '../../models/documents/types.api.js';
-import type { GetFlow, PatchFlow } from '../../models/flows/types.api.js';
-import type {
+  GetFlow,
+  PatchFlow,
   GetGithubMembers,
   ListGithubInstallations,
   ListGithubRepos,
   PostGithubWebhook,
   PostLinkToGithubOrg,
   PostLinkToGithubProject,
-} from '../../models/github/types.api.js';
-import type {
   AcceptInvitation,
   DeclineInvitation,
   DeleteInvitation,
   GetInvitation,
   ListInvitations,
   PostInvitation,
-} from '../../models/invitations/types.api.js';
-import type { ListJobs, GetJob } from '../../models/jobs/type.api.js';
-import type { ListKeys } from '../../models/keys/types.api.js';
-import type {
+  ListJobs,
+  GetJob,
+  ListKeys,
   DeleteOrg,
   ListOrgs,
   PostOrg,
   PutOrg,
-} from '../../models/orgs/types.api.js';
-import type {
   DeletePerm,
   GetCountPerms,
   ListPerms,
   PutPerm,
-} from '../../models/perms/types.api.js';
-import type { ListPolicies } from '../../models/policies/types.api.js';
-import type {
+  ListPolicies,
   DeleteProject,
   GetProject,
   ListProjects,
   PostProject,
   PutProject,
-} from '../../models/projects/types.api.js';
-import type {
   CommentRevision,
   GetRevision,
   ListRevisionChecks,
@@ -62,11 +50,14 @@ import type {
   PostRevision,
   PostUploadRevision,
   RebaseRevision,
-} from '../../models/revisions/types.api.js';
-import type { GetUser, ListUsers } from '../../models/users/types.api.js';
+  GetUser,
+  ListUsers,
+  DeleteMe,
+  GetMe,
+  PutMe,
+} from '@specfy/models';
 
 import type { PostAuthLocal, PostLogout } from './auth.js';
-import type { DeleteMe, GetMe, PutMe } from './me.js';
 import type { GetRoot } from './root.js';
 
 export interface API {

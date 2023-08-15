@@ -1,4 +1,4 @@
-import type { BlockLevelZero } from '@specfy/api/src/types/api';
+import type { BlockLevelZero } from '@specfy/models';
 import { useMemo } from 'react';
 
 import type { DocumentBlobWithDiff } from '../../../types/blobs';

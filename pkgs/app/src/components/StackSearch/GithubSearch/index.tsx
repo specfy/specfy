@@ -1,6 +1,6 @@
 import { SiGithub } from '@icons-pack/react-simple-icons';
 import * as Popover from '@radix-ui/react-popover';
-import type { ApiGithubRepo } from '@specfy/api/src/types/api';
+import type { ApiGithubRepo } from '@specfy/models';
 import { IconLock, IconSelector } from '@tabler/icons-react';
 import classNames from 'classnames';
 import { forwardRef, useEffect, useRef, useState } from 'react';

@@ -1,15 +1,17 @@
+import { schemaOrgId } from '@specfy/core';
+import { prisma } from '@specfy/db';
+import {
+  createFreeSubscription,
+  createOrg,
+  forbiddenOrgName,
+  toApiOrgPublic,
+} from '@specfy/models';
+import type { PostOrg } from '@specfy/models';
 import type { FastifyPluginCallback } from 'fastify';
 import z from 'zod';
 
 import { validationError } from '../../../common/errors.js';
-import { schemaOrgId } from '../../../common/validators/index.js';
-import { prisma } from '../../../db/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
-import { createFreeSubscription } from '../../../models/billing/model.js';
-import { createOrg } from '../../../models/index.js';
-import { forbiddenOrgName } from '../../../models/orgs/constants.js';
-import { toApiOrgPublic } from '../../../models/orgs/formatter.js';
-import type { PostOrg } from '../../../types/api/index.js';
 
 const OrgVal = z
   .object({

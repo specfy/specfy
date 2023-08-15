@@ -1,28 +1,24 @@
+import { nanoid, schemaId, schemaOrgId } from '@specfy/core';
+import { prisma } from '@specfy/db';
+import {
+  v1,
+  createBlobs,
+  createRevisionActivity,
+  uploadedDocumentsToDB,
+  uploadToDocuments,
+  autoLayout,
+  uploadedStackToDB,
+  schemaRevision,
+  schemaStack,
+} from '@specfy/models';
+import type { PostUploadRevision } from '@specfy/models';
 import type { AnalyserJson } from '@specfy/stack-analyser';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors.js';
-import { nanoid } from '../../../common/id.js';
-import { schemaId, schemaOrgId } from '../../../common/validators/index.js';
 import { valPermissions } from '../../../common/zod.js';
-import { prisma } from '../../../db/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
-import { v1 } from '../../../models/billing/plans.js';
-import { createBlobs, createRevisionActivity } from '../../../models/index.js';
-import {
-  uploadedDocumentsToDB,
-  uploadToDocuments,
-} from '../../../models/revisions/helpers.document.js';
-import {
-  autoLayout,
-  uploadedStackToDB,
-} from '../../../models/revisions/helpers.stack.js';
-import {
-  schemaRevision,
-  schemaStack,
-} from '../../../models/revisions/schema.js';
-import type { PostUploadRevision } from '../../../types/api/index.js';
 
 function BodyVal(req: FastifyRequest) {
   // TODO: adapt limitation with plan

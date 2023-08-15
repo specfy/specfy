@@ -1,9 +1,8 @@
+import { checkInheritedPermissions } from '@specfy/models';
+import type { DBPerm } from '@specfy/models';
 import type { FastifyRequest } from 'fastify';
 import type { RefinementCtx } from 'zod';
 import z from 'zod';
-
-import { checkInheritedPermissions } from '../models/perms/helpers.js';
-import type { DBPerm } from '../models/perms/types.js';
 
 export function valPermissions(req: FastifyRequest, role: DBPerm['role']) {
   return (

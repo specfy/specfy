@@ -8,7 +8,7 @@ import type {
   BlockText,
   MarkDiff,
   Marks,
-} from '@specfy/api/src/types/api';
+} from '@specfy/models';
 import type { Mark } from '@tiptap/pm/model';
 import { createPatch, diffChars } from 'diff';
 import { diff_match_patch } from 'diff-match-patch';

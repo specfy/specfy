@@ -1,7 +1,7 @@
+import { prisma } from '@specfy/db';
+import { getBlobComponent, createComponentBlob } from '@specfy/models';
 import { beforeAll, afterAll, describe, it, expect } from 'vitest';
 
-import { prisma } from '../../../db/index.js';
-import { createComponentBlob } from '../../../models/index.js';
 import type { TestSetup } from '../../../test/each.js';
 import { setupBeforeAll, setupAfterAll } from '../../../test/each.js';
 import { isSuccess } from '../../../test/fetch.js';
@@ -9,10 +9,7 @@ import {
   shouldBeProtected,
   shouldNotAllowQueryParams,
 } from '../../../test/helpers.js';
-import {
-  getBlobComponent,
-  seedComponent,
-} from '../../../test/seed/components.js';
+import { seedComponent } from '../../../test/seed/components.js';
 import { seedRevision } from '../../../test/seed/revisions.js';
 import { seedSimpleUser, seedWithProject } from '../../../test/seed/seed.js';
 

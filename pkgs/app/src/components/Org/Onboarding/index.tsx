@@ -1,4 +1,4 @@
-import type { ApiOrg } from '@specfy/api/src/types/api';
+import type { ApiOrg } from '@specfy/models';
 import { IconArrowNarrowRight, IconCheck } from '@tabler/icons-react';
 import classNames from 'classnames';
 import { useEffect, useState } from 'react';

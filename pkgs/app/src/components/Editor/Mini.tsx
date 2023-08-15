@@ -1,4 +1,4 @@
-import type { BlockLevelZero } from '@specfy/api/src/types/api';
+import type { BlockLevelZero } from '@specfy/models';
 import { CharacterCount } from '@tiptap/extension-character-count';
 import { useEditor, EditorContent } from '@tiptap/react';
 import type React from 'react';

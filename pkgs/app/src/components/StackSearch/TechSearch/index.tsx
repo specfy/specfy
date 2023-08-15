@@ -1,4 +1,4 @@
-import type { ComponentType } from '@specfy/api/src/models/components/types';
+import type { ComponentType } from '@specfy/models';
 import { IconLinkOff } from '@tabler/icons-react';
 import classNames from 'classnames';
 import type { ChangeEventHandler } from 'react';

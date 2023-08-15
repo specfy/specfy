@@ -1,5 +1,5 @@
-import { IGNORED_PROJECT_KEYS } from '@specfy/api/src/models/revisions/constants';
-import type { ApiBlobProject } from '@specfy/api/src/types/api';
+import type { ApiBlobProject } from '@specfy/models';
+import { IGNORED_PROJECT_KEYS } from '@specfy/models/src//revisions/constants';
 import type { Editor } from '@tiptap/react';
 import { diffWordsWithSpace } from 'diff';
 

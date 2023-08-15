@@ -1,8 +1,4 @@
-import type {
-  ApiRevision,
-  BlockLevelZero,
-  GetRevision,
-} from '@specfy/api/src/types/api';
+import type { ApiRevision, BlockLevelZero, GetRevision } from '@specfy/models';
 import { IconCircleCheck } from '@tabler/icons-react';
 import classnames from 'classnames';
 import { useState, useEffect, useRef } from 'react';

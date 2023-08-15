@@ -1,4 +1,4 @@
-import type { ApiMe } from '@specfy/api/src/types/api';
+import type { ApiMe } from '@specfy/models';
 import { createContext, useEffect, useMemo } from 'react';
 
 import { qcli, refreshProject } from '../common/query';

@@ -1,13 +1,13 @@
-import type { Prisma } from '@prisma/client';
+import { schemaId, schemaOrgId } from '@specfy/core';
+import type { Prisma } from '@specfy/db';
+import { prisma } from '@specfy/db';
+import { toApiUser } from '@specfy/models';
+import type { ListPerms } from '@specfy/models';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors.js';
-import { schemaId, schemaOrgId } from '../../../common/validators/index.js';
 import { valPermissions } from '../../../common/zod.js';
-import { prisma } from '../../../db/index.js';
-import { toApiUser } from '../../../models/users/formatter.js';
-import type { ListPerms } from '../../../types/api/index.js';
 
 function QueryVal(req: FastifyRequest) {
   return z

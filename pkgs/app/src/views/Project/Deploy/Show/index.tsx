@@ -1,4 +1,4 @@
-import type { ApiJob, ApiProject } from '@specfy/api/src/types/api';
+import type { ApiJob, ApiProject } from '@specfy/models';
 import { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Skeleton from 'react-loading-skeleton';

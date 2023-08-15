@@ -1,10 +1,7 @@
 import * as Collapsible from '@radix-ui/react-collapsible';
 import * as Form from '@radix-ui/react-form';
-import type {
-  ApiGithubRepo,
-  ApiOrg,
-  FieldsErrors,
-} from '@specfy/api/src/types/api';
+import type { FieldsErrors } from '@specfy/core';
+import type { ApiGithubRepo, ApiOrg } from '@specfy/models';
 import {
   IconChevronDown,
   IconChevronRight,

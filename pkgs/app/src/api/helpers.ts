@@ -3,7 +3,7 @@ import type {
   Res,
   ResErrors,
   ResValidationError,
-} from '@specfy/api/src/types/api';
+} from '@specfy/core';
 
 import { i18n } from '../common/i18n';
 import type { useToast } from '../hooks/useToast';

@@ -1,4 +1,4 @@
-import type { ApiJob } from '@specfy/api/src/types/api';
+import type { ApiJob } from '@specfy/models';
 import classNames from 'classnames';
 
 import { Loading } from '../../Loading';

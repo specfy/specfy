@@ -1,7 +1,4 @@
-import type {
-  ComputedNode,
-  NodeData,
-} from '@specfy/api/src/models/flows/types';
+import type { ComputedNode, NodeData } from '@specfy/models';
 import classNames from 'classnames';
 import type { ChangeEventHandler, KeyboardEventHandler } from 'react';
 import { useMemo, useEffect, memo, useRef, useState } from 'react';

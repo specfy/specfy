@@ -1,32 +1,25 @@
-import type { Prisma } from '@prisma/client';
-import type { FastifyPluginCallback } from 'fastify';
-
-import { nanoid } from '../../../common/id.js';
-import { omit } from '../../../common/object.js';
-import { prisma } from '../../../db/index.js';
-import { getRevision } from '../../../middlewares/getRevision.js';
-import { noBody } from '../../../middlewares/noBody.js';
-import { findAllBlobsWithParent } from '../../../models/blobs/helpers.js';
-import type { DBBlob } from '../../../models/blobs/types.js';
-import { recomputeOrgGraph } from '../../../models/flows/helpers.rebuild.js';
+import { nanoid, omit } from '@specfy/core';
+import type { Prisma } from '@specfy/db';
+import { prisma } from '@specfy/db';
 import {
+  findAllBlobsWithParent,
+  recomputeOrgGraph,
   createComponentActivity,
   createDocumentActivity,
   createProjectActivity,
   createRevisionActivity,
-} from '../../../models/index.js';
-import { checkReviews } from '../../../models/revisions/checks.js';
-import {
+  checkReviews,
   flagRevisionApprovalEnabled,
   IGNORED_COMPONENT_KEYS,
   IGNORED_DOCUMENT_KEYS,
   IGNORED_PROJECT_KEYS,
-} from '../../../models/revisions/constants.js';
-import { hasProjectComponentChanges } from '../../../models/revisions/helpers.js';
-import type {
-  MergeRevision,
-  MergeRevisionError,
-} from '../../../types/api/index.js';
+  hasProjectComponentChanges,
+} from '@specfy/models';
+import type { DBBlob, MergeRevision, MergeRevisionError } from '@specfy/models';
+import type { FastifyPluginCallback } from 'fastify';
+
+import { getRevision } from '../../../middlewares/getRevision.js';
+import { noBody } from '../../../middlewares/noBody.js';
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.post<MergeRevision>(

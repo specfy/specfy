@@ -2,7 +2,7 @@ import type {
   BlockLevelOne,
   BlockLevelZero,
   BlockParagraph,
-} from '@specfy/api/src/types/api';
+} from '@specfy/models';
 import { Editor } from '@tiptap/react';
 import { describe, expect, it } from 'vitest';
 

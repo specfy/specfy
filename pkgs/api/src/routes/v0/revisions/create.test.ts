@@ -1,6 +1,7 @@
+import { nanoid } from '@specfy/core';
+import { getBlobComponent } from '@specfy/models';
 import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
-import { nanoid } from '../../../common/id.js';
 import type { TestSetup } from '../../../test/each.js';
 import { setupBeforeAll, setupAfterAll } from '../../../test/each.js';
 import { isSuccess, isValidationError } from '../../../test/fetch.js';
@@ -9,10 +10,7 @@ import {
   shouldEnforceBody,
   shouldNotAllowQueryParams,
 } from '../../../test/helpers.js';
-import {
-  getBlobComponent,
-  seedComponent,
-} from '../../../test/seed/components.js';
+import { seedComponent } from '../../../test/seed/components.js';
 import { getBlobDocument } from '../../../test/seed/documents.js';
 import { getBlobProject, seedProject } from '../../../test/seed/projects.js';
 import { seedWithOrgViewer, seedWithProject } from '../../../test/seed/seed.js';

@@ -1,4 +1,4 @@
-import type { ApiProject } from '@specfy/api/src/types/api';
+import type { ApiProject } from '@specfy/models';
 import {
   IconBox,
   IconCode,

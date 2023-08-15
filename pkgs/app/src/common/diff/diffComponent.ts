@@ -1,5 +1,5 @@
-import { IGNORED_COMPONENT_KEYS } from '@specfy/api/src/models/revisions/constants';
-import type { ApiBlobComponent } from '@specfy/api/src/types/api';
+import type { ApiBlobComponent } from '@specfy/models';
+import { IGNORED_COMPONENT_KEYS } from '@specfy/models/src/revisions/constants';
 import type { Editor } from '@tiptap/react';
 import { diffJson, diffWordsWithSpace } from 'diff';
 

@@ -1,4 +1,4 @@
-import type { ApiBlobWithPrevious } from '@specfy/api/src/types/api';
+import type { ApiBlobWithPrevious } from '@specfy/models';
 import {
   IconChevronDown,
   IconChevronRight,

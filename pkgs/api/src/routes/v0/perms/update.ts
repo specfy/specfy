@@ -1,14 +1,13 @@
+import { nanoid, schemaId, schemaOrgId } from '@specfy/core';
+import { prisma } from '@specfy/db';
+import { PermType } from '@specfy/models';
+import type { PutPerm } from '@specfy/models';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors.js';
-import { nanoid } from '../../../common/id.js';
-import { schemaId, schemaOrgId } from '../../../common/validators/index.js';
 import { valPermissions } from '../../../common/zod.js';
-import { prisma } from '../../../db/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
-import { PermType } from '../../../models/perms/types.js';
-import type { PutPerm } from '../../../types/api/index.js';
 
 function QueryVal(req: FastifyRequest) {
   return z

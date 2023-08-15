@@ -83,17 +83,3 @@ export async function shouldEnforceBody<TPath extends APIPaths>(
   expect(Object.keys(res.json.error.fields).length).toBeGreaterThan(0);
   expect(res.statusCode).toBe(400);
 }
-
-const dateReg = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/;
-
-expect.extend({
-  toBeIsoDate: (received) => {
-    if (!dateReg.test(received)) {
-      return {
-        message: () => `expected ${received} to be an ISO Date`,
-        pass: false,
-      };
-    }
-    return { pass: true, message: () => '' };
-  },
-});

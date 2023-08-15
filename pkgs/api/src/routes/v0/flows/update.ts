@@ -1,13 +1,15 @@
+import { prisma } from '@specfy/db';
+import {
+  recomputeOrgGraph,
+  schemaFlowUpdate,
+  checkInheritedPermissions,
+} from '@specfy/models';
+import type { PatchFlow } from '@specfy/models';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
 import { forbidden, validationError } from '../../../common/errors.js';
-import { prisma } from '../../../db/index.js';
 import { getFlow } from '../../../middlewares/getFlow.js';
-import { recomputeOrgGraph } from '../../../models/flows/helpers.rebuild.js';
-import { schemaFlowUpdate } from '../../../models/flows/validator.js';
-import { checkInheritedPermissions } from '../../../models/perms/helpers.js';
-import type { PatchFlow } from '../../../types/api/index.js';
 
 function BodyVal(req: FastifyRequest) {
   const flow = req.flow!;

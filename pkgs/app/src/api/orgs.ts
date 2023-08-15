@@ -1,9 +1,4 @@
-import type {
-  DeleteOrg,
-  ListOrgs,
-  PostOrg,
-  PutOrg,
-} from '@specfy/api/src/types/api';
+import type { DeleteOrg, ListOrgs, PostOrg, PutOrg } from '@specfy/models';
 import { useQuery } from '@tanstack/react-query';
 
 import { qcli } from '../common/query';

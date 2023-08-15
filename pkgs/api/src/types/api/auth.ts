@@ -1,4 +1,4 @@
-import type { Res } from './api.js';
+import type { Res } from '@specfy/core';
 
 // POST /auth/local
 export type PostAuthLocal = Res<{

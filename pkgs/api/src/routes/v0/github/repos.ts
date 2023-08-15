@@ -1,4 +1,6 @@
 import { RequestError } from '@octokit/request-error';
+import { prisma } from '@specfy/db';
+import type { ListGithubRepos } from '@specfy/models';
 import type { FastifyPluginCallback } from 'fastify';
 import { Octokit } from 'octokit';
 import { z } from 'zod';
@@ -8,8 +10,6 @@ import {
   serverError,
   validationError,
 } from '../../../common/errors.js';
-import { prisma } from '../../../db/index.js';
-import type { ListGithubRepos } from '../../../types/api/index.js';
 
 function QueryVal() {
   return z

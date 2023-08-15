@@ -1,4 +1,4 @@
-import type { ApiInvitation } from '@specfy/api/src/types/api';
+import type { ApiInvitation } from '@specfy/models';
 import { IconDotsVertical, IconTrash } from '@tabler/icons-react';
 import Skeleton from 'react-loading-skeleton';
 

@@ -1,11 +1,11 @@
-import type { Components, Orgs, Projects, Users } from '@prisma/client';
-
-import { nanoid } from '../../common/id.js';
-import { slugify } from '../../common/string.js';
-import { prisma } from '../../db/index.js';
-import type { DBComponent } from '../../models/components/types.js';
-import { recomputeOrgGraph } from '../../models/flows/helpers.rebuild.js';
-import { createComponent } from '../../models/index.js';
+import { nanoid } from '@specfy/core';
+import type { Components, Orgs, Projects, Users } from '@specfy/db';
+import { prisma } from '@specfy/db';
+import {
+  getBlobComponent,
+  recomputeOrgGraph,
+  createComponent,
+} from '@specfy/models';
 
 export type ResSeedComponents = {
   gcp: Components;
@@ -841,36 +841,4 @@ export async function seedComponent(user: Users, org: Orgs, project: Projects) {
   });
 
   return component;
-}
-
-export function getBlobComponent(org: Orgs, project: Projects): DBComponent {
-  const id = nanoid();
-  const name = `test ${id}`;
-  return {
-    id,
-    name,
-    slug: slugify(name),
-    type: 'service',
-    typeId: null,
-    orgId: org.id,
-    projectId: project.id,
-    blobId: null,
-    techId: null,
-    description: { type: 'doc', content: [] },
-    display: {
-      zIndex: 1,
-      pos: { x: 0, y: 0 },
-      size: { width: 130, height: 40 },
-    },
-    techs: [],
-    inComponent: null,
-    edges: [],
-    source: null,
-    sourceName: null,
-    sourcePath: [],
-    tags: [],
-    show: true,
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
 }

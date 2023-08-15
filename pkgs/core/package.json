@@ -1,0 +1,31 @@
+{
+  "name": "@specfy/core",
+  "version": "0.0.1",
+  "description": "",
+  "main": "build/index.js",
+  "typings": "build/index.d.ts",
+  "module": "build/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "build:watch": "tsc -p tsconfig.json -w"
+  },
+  "files": [
+    "build"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "consola": "3.2.3",
+    "env-schema": "5.2.0",
+    "nanoid": "4.0.2",
+    "pino-pretty": "10.2.0",
+    "pino": "8.15.0",
+    "slugify": "1.6.5",
+    "zod": "3.21.4"
+  },
+  "devDependencies": {
+    "colorette": "2.0.20",
+    "typescript": "5.1.6"
+  }
+}

@@ -1,4 +1,4 @@
-import type { ApiProject, ListDocuments } from '@specfy/api/src/types/api';
+import type { ApiProject, ListDocuments } from '@specfy/models';
 import {
   IconBooks,
   IconClipboardList,

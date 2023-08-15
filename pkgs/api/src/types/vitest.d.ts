@@ -8,10 +8,4 @@ declare namespace Vi {
   interface Assertion extends CustomMatchers {}
   interface AsymmetricMatchersContaining extends CustomMatchers {}
   interface ExpectStatic extends CustomMatchers {}
-  interface Assertion<T> {
-    next: Assertion<IteratorValue<T>>;
-    yields: Assertion<IteratorValue<T>>;
-
-    toBeDone: (this: Assertion<T>) => void;
-  }
 }

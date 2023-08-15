@@ -1,4 +1,4 @@
-import type { ApiUser } from '@specfy/api/src/types/api';
+import type { ApiUser } from '@specfy/models';
 
 import { Subdued } from '../Text';
 import { UserCard } from '../UserCard';

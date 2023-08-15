@@ -1,11 +1,11 @@
+import { stripe } from '@specfy/models';
+import type { CancelSubscription } from '@specfy/models';
 import type { FastifyPluginCallback } from 'fastify';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors.js';
 import { getOrg } from '../../../middlewares/getOrg.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
-import { stripe } from '../../../models/billing/stripe.js';
-import type { CancelSubscription } from '../../../types/api/index.js';
 
 function BodyVal() {
   return z

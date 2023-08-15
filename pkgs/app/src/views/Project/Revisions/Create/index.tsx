@@ -1,18 +1,18 @@
 import * as Form from '@radix-ui/react-form';
-import { omit } from '@specfy/api/src/common/object';
-import { componentsToFlow } from '@specfy/api/src/models/flows/transform';
-import type { ComputedFlow } from '@specfy/api/src/models/flows/types';
-import {
-  flagRevisionApprovalEnabled,
-  flagRevisionDescRequired,
-} from '@specfy/api/src/models/revisions/constants';
+import { omit } from '@specfy/core/src/object';
 import type {
   ApiBlobCreate,
   ApiComponent,
   ApiProject,
   BlockLevelZero,
   PostRevision,
-} from '@specfy/api/src/types/api';
+  ComputedFlow,
+} from '@specfy/models';
+import { componentsToFlow } from '@specfy/models/src/flows/transform';
+import {
+  flagRevisionApprovalEnabled,
+  flagRevisionDescRequired,
+} from '@specfy/models/src/revisions/constants';
 import {
   IconGitPullRequest,
   IconGitPullRequestDraft,

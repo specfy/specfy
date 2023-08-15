@@ -1,4 +1,4 @@
-import type { ListKeys } from '@specfy/api/src/types/api';
+import type { ListKeys } from '@specfy/models';
 import { useQuery } from '@tanstack/react-query';
 
 import { fetchApi } from './fetch';

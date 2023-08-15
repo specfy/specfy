@@ -1,8 +1,4 @@
-import type {
-  IGNORED_COMPONENT_KEYS_CONST,
-  IGNORED_DOCUMENT_KEYS_CONST,
-  IGNORED_PROJECT_KEYS_CONST,
-} from '@specfy/api/src/models/revisions/constants';
+import type { Writeable } from '@specfy/core';
 import type {
   ApiBlobComponent,
   ApiBlobDocument,
@@ -11,8 +7,12 @@ import type {
   ApiDocument,
   ApiProject,
   BlockLevelZero,
-} from '@specfy/api/src/types/api';
-import type { Writeable } from '@specfy/api/src/types/utils';
+} from '@specfy/models';
+import type {
+  IGNORED_COMPONENT_KEYS_CONST,
+  IGNORED_DOCUMENT_KEYS_CONST,
+  IGNORED_PROJECT_KEYS_CONST,
+} from '@specfy/models/src/revisions/constants';
 import type { Change } from 'diff';
 
 export type Allowed = ApiComponent | ApiDocument | ApiProject;

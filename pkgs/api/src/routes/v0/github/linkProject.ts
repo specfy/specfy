@@ -1,4 +1,12 @@
 import { RequestError } from '@octokit/request-error';
+import { schemaId, schemaOrgId } from '@specfy/core';
+import { prisma } from '@specfy/db';
+import {
+  createGithubActivity,
+  createJobDeploy,
+  getOrgFromRequest,
+} from '@specfy/models';
+import type { PostLinkToGithubProject } from '@specfy/models';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { Octokit } from 'octokit';
 import { z } from 'zod';
@@ -8,16 +16,8 @@ import {
   serverError,
   validationError,
 } from '../../../common/errors.js';
-import { schemaId, schemaOrgId } from '../../../common/validators/index.js';
 import { valPermissions } from '../../../common/zod.js';
-import { prisma } from '../../../db/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
-import {
-  createGithubActivity,
-  createJobDeploy,
-} from '../../../models/index.js';
-import { getOrgFromRequest } from '../../../models/perms/helpers.js';
-import type { PostLinkToGithubProject } from '../../../types/api/index.js';
 
 const repoRegex = /^[a-zA-Z0-9_.-]+\/[a-zA-Z0-9_.-]+$/;
 function QueryVal(req: FastifyRequest) {

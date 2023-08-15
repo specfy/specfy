@@ -1,8 +1,6 @@
-import type { Orgs, Projects, Users } from '@prisma/client';
-
-import { prisma } from '../../db/index.js';
-import { createJobDeploy } from '../../models/index.js';
-import { JobReason } from '../../models/jobs/helpers.js';
+import type { Orgs, Projects, Users } from '@specfy/db';
+import { prisma } from '@specfy/db';
+import { createJobDeploy, jobReason } from '@specfy/models';
 
 export async function seedJobs(
   users: Users[],
@@ -46,7 +44,7 @@ export async function seedJobs(
         reason: {
           status: 'failed',
           code: 'org_not_installed',
-          reason: JobReason.org_not_installed,
+          reason: jobReason.org_not_installed,
         },
         startedAt: new Date(),
         finishedAt: new Date(),

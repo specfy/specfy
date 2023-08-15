@@ -1,4 +1,4 @@
-import type { ApiOrg } from '@specfy/api/src/types/api';
+import type { ApiOrg } from '@specfy/models';
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Skeleton from 'react-loading-skeleton';

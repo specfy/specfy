@@ -1,3 +1,4 @@
+import { getBlobComponent } from '@specfy/models';
 import { beforeAll, afterAll, expect, describe, it } from 'vitest';
 
 import type { TestSetup } from '../../../../test/each.js';
@@ -7,10 +8,7 @@ import {
   shouldBeProtected,
   shouldNotAllowQueryParams,
 } from '../../../../test/helpers.js';
-import {
-  getBlobComponent,
-  seedComponent,
-} from '../../../../test/seed/components.js';
+import { seedComponent } from '../../../../test/seed/components.js';
 import { seedRevision } from '../../../../test/seed/revisions.js';
 import { seedSimpleUser, seedWithProject } from '../../../../test/seed/seed.js';
 

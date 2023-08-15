@@ -1,12 +1,11 @@
+import { prisma } from '@specfy/db';
+import { createUserActivity, schemaUser } from '@specfy/models';
+import type { PutMe } from '@specfy/models';
 import type { FastifyPluginCallback } from 'fastify';
 import { z } from 'zod';
 
 import { validationError } from '../../../common/errors.js';
-import { prisma } from '../../../db/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
-import { createUserActivity } from '../../../models/index.js';
-import { schemaUser } from '../../../models/users/schema.js';
-import type { PutMe } from '../../../types/api/index.js';
 
 function BodyVal() {
   return z

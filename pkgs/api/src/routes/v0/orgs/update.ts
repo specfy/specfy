@@ -1,15 +1,13 @@
+import { acronymize, stringToColor } from '@specfy/core';
+import { prisma } from '@specfy/db';
+import { createOrgActivity, toApiOrgPublic, schemaOrg } from '@specfy/models';
+import type { PutOrg } from '@specfy/models';
 import type { FastifyPluginCallback } from 'fastify';
 import { z } from 'zod';
 
-import { acronymize, stringToColor } from '../../../common/avatar.js';
 import { validationError } from '../../../common/errors.js';
-import { prisma } from '../../../db/index.js';
 import { getOrg } from '../../../middlewares/getOrg.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
-import { createOrgActivity } from '../../../models/index.js';
-import { toApiOrgPublic } from '../../../models/orgs/formatter.js';
-import { schemaOrg } from '../../../models/orgs/schema.js';
-import type { PutOrg } from '../../../types/api/index.js';
 
 function BodyVal() {
   return z

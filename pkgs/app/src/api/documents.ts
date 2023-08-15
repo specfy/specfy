@@ -1,4 +1,4 @@
-import type { GetDocument, ListDocuments } from '@specfy/api/src/types/api';
+import type { GetDocument, ListDocuments } from '@specfy/models';
 import { useQuery } from '@tanstack/react-query';
 
 import { addOriginal } from '../common/store';

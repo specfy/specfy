@@ -1,5 +1,4 @@
-import type { ComponentType } from '@specfy/api/src/models/components/types';
-import type { ApiComponent } from '@specfy/api/src/types/api';
+import type { ComponentType, ApiComponent } from '@specfy/models';
 import { useEffect, useState } from 'react';
 
 import { useComponentsStore } from '../../../common/store';

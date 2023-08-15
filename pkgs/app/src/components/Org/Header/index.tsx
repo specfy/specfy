@@ -1,4 +1,4 @@
-import type { ApiOrg } from '@specfy/api/src/types/api';
+import type { ApiOrg } from '@specfy/models';
 import { IconApps, IconHome, IconSettings } from '@tabler/icons-react';
 import { useState, useMemo, useEffect } from 'react';
 import { useLocation, Link, useParams } from 'react-router-dom';

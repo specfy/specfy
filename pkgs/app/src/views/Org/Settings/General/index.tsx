@@ -1,5 +1,5 @@
 import * as Form from '@radix-ui/react-form';
-import type { ApiOrg } from '@specfy/api/src/types/api';
+import type { ApiOrg } from '@specfy/models';
 import { IconCirclesRelation } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';

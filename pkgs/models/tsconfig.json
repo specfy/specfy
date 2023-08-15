@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "./src",
+    "outDir": "./build"
+  },
+  "include": [
+    "src",
+    "../api/src/types/vitest.d.ts"
+  ],
+  "exclude": [
+    "src/prisma.d.ts"
+  ]
+}

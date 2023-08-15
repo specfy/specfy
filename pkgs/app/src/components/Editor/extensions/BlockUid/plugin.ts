@@ -1,4 +1,4 @@
-import { nanoid } from '@specfy/api/src/common/id';
+import { nanoid } from '@specfy/core/src/id';
 import { Extension } from '@tiptap/core';
 import type { Node } from '@tiptap/pm/model';
 import { Plugin, PluginKey } from '@tiptap/pm/state';

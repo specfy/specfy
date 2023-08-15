@@ -1,6 +1,6 @@
+import { nanoid } from '@specfy/core';
 import { beforeAll, afterAll, describe, it, expect } from 'vitest';
 
-import { nanoid } from '../../../common/id.js';
 import type { TestSetup } from '../../../test/each.js';
 import { setupBeforeAll, setupAfterAll } from '../../../test/each.js';
 import { isSuccess, isValidationError } from '../../../test/fetch.js';

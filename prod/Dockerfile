@@ -10,7 +10,14 @@ WORKDIR /tmp
 # Copy all the package.json
 COPY prod/clean_package_json.sh package.json ./
 COPY pkgs/api/package.json ./pkgs/api/package.json
-COPY pkgs/emails/package.json ./pkgs/emails/package.json
+# COPY pkgs/app/package.json ./pkgs/app/package.json
+COPY pkgs/core/package.json ./pkgs/core/package.json
+COPY pkgs/db/package.json ./pkgs/db/package.json
+COPY pkgs/github/package.json ./pkgs/github/package.json
+# COPY pkgs/github-sync/package.json ./pkgs/github-sync/package.json
+COPY pkgs/models/package.json ./pkgs/models/package.json
+COPY pkgs/socket/package.json ./pkgs/socket/package.json
+
 
 RUN ./clean_package_json.sh './package.json'
 RUN ./clean_package_json.sh './**/*/package.json'
@@ -32,8 +39,6 @@ COPY package-lock.json  ./
 RUN true \
   && npm install
 
-RUN ls -lah ./node_modules/
-
 # At this stage we copy back all sources and overwrite package(s).json
 # This is expected since we already installed the dependencies we have cached what was important
 # At this point nothing can be cached anymore
@@ -49,10 +54,7 @@ ENV GIT_HASH ${git_hash:-dev}
 
 # Build
 RUN true \
-  # We need prisma first to be able to compile the emails because we use the types
-  && npm run -w @specfy/api prisma:gen \
-  && npm run -w @specfy/emails prod:build \
-  && npm run -w @specfy/api prod:build
+  && npx turbo run build --ignore app
 
 # Clean src
 RUN true \
