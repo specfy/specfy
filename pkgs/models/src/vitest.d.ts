@@ -5,7 +5,7 @@ interface CustomMatchers<TR = unknown> {
 }
 
 declare namespace Vi {
-  interface Assertion extends CustomMatchers {}
+  interface Assertion<T = any> extends CustomMatchers<T> {}
   interface AsymmetricMatchersContaining extends CustomMatchers {}
-  interface ExpectStatic extends CustomMatchers {}
+  interface ExpectStatic<T = any> extends CustomMatchers<T> {}
 }

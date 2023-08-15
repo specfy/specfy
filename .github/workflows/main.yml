@@ -58,28 +58,26 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Migrate
-        run: cd pkgs/api/ && npm run migrate
+      - name: Build
+        run: turbo run build
 
-      - name: Build Email
-        run: cd pkgs/emails/ && npm run build
-
-      - name: Build API
-        run: cd pkgs/api/ && npm run test:build
-
+      # Not running test in parallel for readability
       - name: Run Test API
-        run: cd pkgs/api/ && npm run test
+        run: npm run -w @specfy/api test
+
+      - name: Run Test Models
+        run: npm run -w @specfy/models test
 
       - name: Run Test APP
-        run: cd pkgs/app/ && npm run test
+        run: npm run -w @specfy/app test
+
+      # - name: Run Test Github Sync
+      #   run: npm run -w @specfy/github-sync test
 
       - name: Coverage
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./pkgs/api/coverage/cobertura-coverage.xml,./pkgs/app/coverage/cobertura-coverage.xml
+          files: ./pkgs/api/coverage/cobertura-coverage.xml,./pkgs/app/coverage/cobertura-coverage.xml,./pkgs/models/coverage/cobertura-coverage.xml
 
-
-      - name: Build APP
-        run: cd pkgs/app/ && npm run build
 

@@ -30,6 +30,12 @@
         "build",
         "^db:generate"
       ]
+    },
+    "test": {
+      "cache": false,
+      "dependsOn": [
+        "^db:generate"
+      ]
     }
   }
 }

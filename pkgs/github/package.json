@@ -7,6 +7,7 @@
   "module": "build/index.js",
   "type": "module",
   "scripts": {
+    "test": "vitest",
     "build": "tsc -p tsconfig.json",
     "build:watch": "tsc -p tsconfig.json -w"
   },
