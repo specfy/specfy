@@ -3,12 +3,12 @@
   "version": "0.0.18",
   "private": true,
   "type": "module",
-  "main": "build/index.js",
+  "main": "dist/index.js",
   "files": [
     "build"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json",
+    "build": "tsup",
     "__dev": "email dev -p 3001",
     "export": "email export"
   },
