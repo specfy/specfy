@@ -7,6 +7,7 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
+    "db:migrate": "turbo run db:migrate",
     "lint": "npm run lint:code && npm run lint:scss",
     "lint:code": "eslint --ext .js,.ts,.tsx .",
     "lint:scss": "stylelint --config .stylelintrc.json  **/*.scss",

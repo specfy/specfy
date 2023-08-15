@@ -61,6 +61,9 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Migrate
+        run: npm run db:migrate
+
       # Not running test in parallel for readability
       - name: Run Test API
         run: npm run -w @specfy/api test
