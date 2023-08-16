@@ -20,6 +20,7 @@
     "dev": "tsc -w --preserveWatchOutput",
     "build": "tsc -p tsconfig.json",
     "test": "vitest",
+    "test:ci": "vitest run",
     "lint": "eslint --ext .js,.ts,.tsx ."
   },
   "author": "",

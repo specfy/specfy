@@ -13,7 +13,8 @@
     "prod:build": "prisma generate && tsc -p tsconfig.prod.json",
     "test:build": "tsc -p tsconfig.json",
     "db:seed": "ts-node --esm ./src/test/seed/index.ts",
-    "test": "vitest"
+    "test": "vitest",
+    "test:ci": "vitest run"
   },
   "files": [
     "build"

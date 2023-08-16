@@ -32,9 +32,15 @@
     },
     "test": {
       "cache": false,
+      "persistent": true,
       "dependsOn": [
         "^db:generate"
       ]
+    },
+    "test:ci": {
+      "cache": false,
+      "persistent": false,
+      "dependsOn": []
     }
   }
 }

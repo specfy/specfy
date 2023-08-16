@@ -8,7 +8,8 @@
     "build": "tsc && vite build",
     "build:ts": "tsc -w",
     "preview": "vite preview",
-    "test": "vitest"
+    "test": "vitest",
+    "test:ci": "vitest run"
   },
   "devDependencies": {
     "@icons-pack/react-simple-icons": "8.0.1",

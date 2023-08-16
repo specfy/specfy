@@ -66,16 +66,7 @@ jobs:
 
       # Not running test in parallel for readability
       - name: Run Test API
-        run: npm run -w @specfy/api test
-
-      - name: Run Test Models
-        run: npm run -w @specfy/models test
-
-      - name: Run Test APP
-        run: npm run -w @specfy/app test
-
-      # - name: Run Test Github Sync
-      #   run: npm run -w @specfy/github-sync test
+        run: FORCE_COLOR=1 turbo run test:ci --log-prefix=none --log-order=stream --color --concurrency=1
 
       - name: Coverage
         uses: codecov/codecov-action@v3
