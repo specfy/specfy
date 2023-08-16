@@ -1,3 +1,4 @@
+/* stylelint-disable selector-class-pattern */
 @import "../../styles/theme";
 
 .userCard {
@@ -18,14 +19,14 @@
     }
   }
 
-  &.small {
+  &.s {
     .avatarEmpty {
       width: 24px;
       height: 24px;
     }
   }
 
-  &.default {
+  &.d {
     color: $gray-400;
   }
 

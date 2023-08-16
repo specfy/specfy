@@ -27,12 +27,6 @@ export const DocumentShow: React.FC<{
     return { document_id: split[0] };
   }, [params]);
 
-  useEffect(() => {
-    if (window.scrollY > 200 && doc) {
-      window.scrollTo(0, 125);
-    }
-  }, [params.document_slug]);
-
   // Load document
   const getDoc = useGetDocument({
     org_id: proj.orgId,

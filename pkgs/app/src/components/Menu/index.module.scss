@@ -4,7 +4,16 @@
 .menu {
   position: relative;
   z-index: 1;
+
   display: flex;
+  flex-direction: column;
+
+  width: 100%;
+
+  >div {
+    width: 100%;
+  }
+
 
   &[data-orientation="horizontal"] {
     .link {
@@ -42,7 +51,7 @@
 
 .list {
   display: flex;
-  gap: $p-s;
+  gap: var(--spc);
   justify-content: center;
 
   margin: 0;
@@ -54,7 +63,6 @@
 
   &[data-orientation='vertical'] {
     flex-direction: column;
-    width: 200px;
 
     .trigger,
     .link {
@@ -71,23 +79,29 @@
   position: relative;
 
   display: flex;
-  gap: $p-l;
+  gap: var(--spc-l);
   justify-content: space-between;
 
-  padding: $p-m $p-l;
+  padding: var(--spc-s) var(--spc-l) var(--spc-s) var(--spc);
 
-  color: var(--text2);
+  color: var(--text-secondary);
 
-  border-radius: $border-radius;
+  border-radius: var(--radius2);
   outline: none;
 
   &:hover {
     color: var(--text);
-    background-color: var(--bg3);
+    background-color: var(--bg2);
   }
 
   &[data-active] {
     color: var(--text);
-    background-color: var(--bg3);
+    background-color: var(--bg2);
+  }
+
+  svg {
+    width: 22px;
+    height: 22px;
+    padding: 2px;
   }
 }

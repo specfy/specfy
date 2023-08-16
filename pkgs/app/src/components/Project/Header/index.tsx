@@ -2,25 +2,91 @@ import type { ApiProject } from '@specfy/models';
 import {
   IconApps,
   IconBolt,
-  IconBook,
+  // IconBook,
+  IconChevronDown,
   IconCloudUpload,
   IconHistory,
   IconLayoutDashboard,
+  IconPlus,
   IconSettings,
 } from '@tabler/icons-react';
+import classNames from 'classnames';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import { useListRevisions } from '../../../api';
-import { useOrgStore } from '../../../common/store';
+import { useOrgStore, useProjectStore } from '../../../common/store';
 import * as Menu from '../../../components/Menu';
 import type { RouteProject } from '../../../types/routes';
+import { AvatarAuto } from '../../AvatarAuto';
 import { Badge } from '../../Badge';
+import * as Dropdown from '../../Dropdown';
 import { Flex } from '../../Flex';
 
 import cls from './index.module.scss';
 
-export const ProjectHeader: React.FC<{
+export const ProjectSwitcher: React.FC = () => {
+  const { project, projects } = useProjectStore();
+  const loc = useLocation();
+  const paths = useMemo<string>(() => {
+    if (!project) {
+      return '';
+    }
+    return loc.pathname?.replace(`/${project.orgId}/${project.slug}`, '');
+  }, [loc, project]);
+
+  if (!project) {
+    return null;
+  }
+
+  return (
+    <div>
+      <Dropdown.Menu>
+        <Dropdown.Trigger asChild>
+          <button className={cls.switcher}>
+            <div className={cls.name}>
+              <AvatarAuto name={project.name} shape="square" size="s" />
+              {project.name}
+            </div>
+            <IconChevronDown />
+          </button>
+        </Dropdown.Trigger>
+        <Dropdown.Portal>
+          <Dropdown.Content>
+            <Dropdown.Group>
+              {projects.map((item) => {
+                return (
+                  <Dropdown.Item key={item.id} asChild>
+                    <Link
+                      to={`/${item.orgId}/${item.slug}${paths}`}
+                      className={classNames(
+                        cls.org,
+                        project.id === item.id && cls.current
+                      )}
+                    >
+                      <AvatarAuto name={item.name} shape="square" /> {item.name}
+                    </Link>
+                  </Dropdown.Item>
+                );
+              })}
+            </Dropdown.Group>
+            <Dropdown.Separator />
+            <Dropdown.Group>
+              <Dropdown.Item asChild>
+                <Link to="/project/new" className={cls.org}>
+                  <IconPlus size="1em" />
+                  Create project
+                </Link>
+              </Dropdown.Item>
+            </Dropdown.Group>
+          </Dropdown.Content>
+        </Dropdown.Portal>
+      </Dropdown.Menu>
+    </div>
+  );
+};
+
+export const ProjectMenu: React.FC<{
   proj: ApiProject;
   params: RouteProject;
 }> = ({ proj, params }) => {
@@ -52,17 +118,17 @@ export const ProjectHeader: React.FC<{
           </Link>
         ),
       },
-      {
-        key: 'content',
-        label: (
-          <Link to={`${linkSelf}/content`}>
-            <Flex gap="l">
-              <IconBook />
-              Content
-            </Flex>
-          </Link>
-        ),
-      },
+      // {
+      //   key: 'content',
+      //   label: (
+      //     <Link to={`${linkSelf}/content`}>
+      //       <Flex gap="l">
+      //         <IconBook />
+      //         Content
+      //       </Flex>
+      //     </Link>
+      //   ),
+      // },
       {
         key: 'flow',
         label: (
@@ -154,8 +220,8 @@ export const ProjectHeader: React.FC<{
   }
 
   return (
-    <div className={cls.header}>
-      <Menu.Menu>
+    <>
+      <Menu.Menu orientation="vertical">
         <Menu.List>
           {menu.map((item) => {
             return (
@@ -168,6 +234,6 @@ export const ProjectHeader: React.FC<{
           })}
         </Menu.List>
       </Menu.Menu>
-    </div>
+    </>
   );
 };

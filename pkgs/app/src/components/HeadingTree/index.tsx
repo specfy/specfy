@@ -55,7 +55,10 @@ export const HeadingTree: React.FC<{ blocks: BlockLevelOne[] }> = ({
             to={item.href}
             key={item.key}
             className={cls.link}
-            onClick={() => onClick(item)}
+            onClick={(e) => {
+              e.preventDefault();
+              onClick(item);
+            }}
           >
             {item.title}
           </Link>

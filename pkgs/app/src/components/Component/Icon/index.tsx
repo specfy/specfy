@@ -25,7 +25,7 @@ export const ComponentIcon: React.FC<{
       >
         <AvatarAuto
           name={data.name || ''}
-          size={large ? 'default' : 'small'}
+          size={large ? 'd' : 's'}
           shape="square"
         />
       </div>

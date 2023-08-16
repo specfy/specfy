@@ -1,3 +1,4 @@
+/* stylelint-disable selector-class-pattern */
 @import "../../styles/theme";
 
 .avatar {
@@ -15,24 +16,31 @@
 
   border: 1px solid transparent;
 
-  &.default {
-    width: 32px;
-    height: 32px;
-    font-size: var(--font-s);
-  }
-
-  &.small {
+  &.xs {
     width: 22px;
     height: 22px;
     font-size: 8px;
   }
 
-  &.medium {
+  &.s {
+    width: 24px;
+    height: 24px;
+    font-size: 8px;
+  }
+
+  &.d {
+    width: 32px;
+    height: 32px;
+    font-size: var(--font-s);
+  }
+
+
+  &.m {
     width: 40px;
     height: 40px;
   }
 
-  &.large {
+  &.l {
     width: 48px;
     height: 48px;
   }
@@ -43,7 +51,7 @@
   }
 
   &.square {
-    border-radius: var(--radius3);
+    border-radius: var(--radius2);
   }
 
   &.circle {

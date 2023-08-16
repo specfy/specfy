@@ -108,7 +108,7 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
               onRelationChange={() => null}
             />
             {canEdit && (
-              <Toolbar left top visible>
+              <Toolbar right top visible>
                 <Toolbar.Inner>
                   {!editing && (
                     <Button onClick={() => setEditing(true)} display="ghost">

@@ -2,55 +2,19 @@
 @import "../../../styles/theme";
 @import "../../../styles/mixin";
 
-.content {
-  background-color: #fff;
 
-  .header {
-    display: flex;
-    gap: $p-m;
-    margin: $p-l $p-l;
-  }
-
-  .search {
-    flex: 1 1 0;
-    flex-grow: 1;
-    width: 100%;
-  }
-
-  &.collapsed {
-    min-width: 50px;
-    padding: $p-l 0 0 $p-l;
-    border-right: none
-  }
-}
-
-.results {
-  margin: $p-l $p-l;
-
-  .result {
-    @include button;
-
-    mark {
-      padding: 0;
-      font-weight: 600;
-      color: var(--accent2);
-      background-color: transparent;
-    }
-
-    &:focus-visible,
-    &.selected {
-      outline: 2px solid #d1c9ff;
-      outline-offset: 1px;
-    }
-  }
-}
-
-.tree {
-  margin: var(--spc) 0;
+.empty {
+  display: block;
+  padding: var(--spc) var(--spc-l) 0 11px;
+  font-size: var(--font-s);
 }
 
 
 :global {
+  .rc-tree-list-holder-inner {
+    gap: var(--spc-s);
+  }
+
   .rc-tree-treenode {
     cursor: pointer;
     display: flex;
@@ -60,7 +24,7 @@
     &:hover,
     &.rc-tree-treenode-selected {
       color: var(--primary);
-      background-color: var(--bg3);
+      background-color: var(--bg2);
     }
 
     &.rc-tree-treenode-leaf-last {
@@ -71,7 +35,12 @@
     }
 
     .rc-tree-switcher {
+      width: 18px;
+      height: 18px;
       margin-right: var(--spc);
+
+      border-radius: 100%;
+
       transition: transform 0.15s;
 
       &.rc-tree-switcher_open {

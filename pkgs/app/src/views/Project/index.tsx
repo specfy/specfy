@@ -1,9 +1,14 @@
-import type { ApiProject } from '@specfy/models';
+import type { ApiOrg, ApiProject } from '@specfy/models';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Route, Routes, useParams } from 'react-router-dom';
 
-import { useListComponents, useGetProject, useListProjects } from '../../api';
+import {
+  useListComponents,
+  useGetProject,
+  useListProjects,
+  useListOrgs,
+} from '../../api';
 import {
   useComponentsStore,
   useOrgStore,
@@ -14,8 +19,9 @@ import { Container } from '../../components/Container';
 import { ContentSidebar } from '../../components/Content/Sidebar';
 import { Loading } from '../../components/Loading';
 import { NotFound } from '../../components/NotFound';
-import { ProjectHeader } from '../../components/Project/Header';
-import { Sidebar } from '../../components/Sidebar';
+import { OrgMenu, OrgSwitcher } from '../../components/Org/Header';
+import { ProjectMenu, ProjectSwitcher } from '../../components/Project/Header';
+import * as Sidebar from '../../components/Sidebar';
 import { useAuth } from '../../hooks/useAuth';
 import type { RouteProject } from '../../types/routes';
 
@@ -40,17 +46,19 @@ export const Project: React.FC = () => {
   const params = tmpParams as RouteProject;
 
   // Stores
+  const storeOrg = useOrgStore();
   const storeProject = useProjectStore();
   const storeComponents = useComponentsStore();
-  const { current: org } = useOrgStore();
 
   // Data fetch
-  const getProjects = useListProjects({ org_id: org?.id });
+  const getOrgs = useListOrgs();
+  const [org, setOrg] = useState<ApiOrg>();
   const [proj, setProj] = useState<ApiProject>();
-  const getProj = useGetProject({
+  const getProject = useGetProject({
     org_id: org?.id,
     project_slug: params.project_slug,
   });
+  const getProjects = useListProjects({ org_id: org?.id });
   const [loading, setLoading] = useState<boolean>(true);
   const getComps = useListComponents({
     org_id: params.org_id,
@@ -58,13 +66,25 @@ export const Project: React.FC = () => {
   });
 
   useEffect(() => {
-    if (getProj.data) {
-      setProj(getProj.data.data);
-      storeProject.update(getProj.data.data);
-    } else if (getProj.error) {
+    if (!getOrgs.data) {
+      return;
+    }
+    const tmp = getOrgs.data.data.find((o) => o.id === params.org_id);
+    if (!tmp) {
+      return;
+    }
+    setOrg(tmp);
+    storeOrg.setCurrent(tmp);
+  }, [getOrgs.data, params.org_id]);
+
+  useEffect(() => {
+    if (getProject.data) {
+      setProj(getProject.data.data);
+      storeProject.update(getProject.data.data);
+    } else if (getProject.error) {
       setLoading(false);
     }
-  }, [getProj.data]);
+  }, [getProject.data, getProject.error]);
 
   useEffect(() => {
     storeProject.fill(getProjects.data?.data || []);
@@ -77,13 +97,17 @@ export const Project: React.FC = () => {
   }, [getComps.data]);
 
   useEffect(() => {
-    if (!loading || !proj) {
+    if (!loading || !proj || !org) {
       return;
     }
 
     setCtx({ orgId: proj.orgId, projectId: proj.id });
     setLoading(getComps.isLoading || getProjects.isLoading);
   }, [loading, proj, getComps.data, getProjects.data]);
+
+  useEffect(() => {
+    window.document.body.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, [params]);
 
   if (loading) {
     return (
@@ -111,16 +135,20 @@ export const Project: React.FC = () => {
       <Helmet title={`${proj.name} ${titleSuffix}`} />
 
       <div>
-        <Sidebar org={org} project={proj}>
-          <div className={cls.sidebarContent}>
+        <Sidebar.Sidebar>
+          <Sidebar.Group switcher={<OrgSwitcher />}>
+            <OrgMenu org={org} />
+          </Sidebar.Group>
+          <Sidebar.Group switcher={<ProjectSwitcher />}>
+            <ProjectMenu proj={proj} params={params} />
+          </Sidebar.Group>
+
+          <Sidebar.Group name={'Documentation'}>
             <ContentSidebar proj={proj} params={params} />
-          </div>
-        </Sidebar>
+          </Sidebar.Group>
+        </Sidebar.Sidebar>
       </div>
       <div className={cls.main}>
-        <div>
-          <ProjectHeader proj={proj} params={params} />
-        </div>
         <div className={cls.content}>
           <Routes>
             <Route path="/" element={<ProjectOverview params={params} />} />

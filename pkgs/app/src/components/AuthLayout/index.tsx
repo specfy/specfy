@@ -5,7 +5,6 @@ import { useMount } from 'react-use';
 
 import { useAuth } from '../../hooks/useAuth';
 import { SocketProvider } from '../../hooks/useSocket';
-import { LayoutHeader } from '../LayoutHeader';
 import { Loading } from '../Loading';
 
 import cls from './index.module.scss';
@@ -37,7 +36,6 @@ export const AuthLayout: React.FC<{ children?: React.ReactNode }> = ({
   return (
     <div className={cls.app}>
       <SocketProvider user={auth.user}>
-        <LayoutHeader></LayoutHeader>
         <div>{children ? children : <Outlet />}</div>
       </SocketProvider>
     </div>

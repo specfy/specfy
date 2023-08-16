@@ -1,6 +1,4 @@
 
-# Markdown Crash Test
-
 ## Benchmarking the support of Markdown with a comprehensive checklist
 
 

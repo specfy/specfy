@@ -88,11 +88,7 @@ export const ListProjects: React.FC<{ orgId: string }> = ({ orgId }) => {
                 return (
                   <Flex gap="xl" key={item.id} className={cls.item}>
                     <Link to={`/${item.orgId}/${item.slug}`} relative="path">
-                      <AvatarAuto
-                        name={item.name}
-                        size="medium"
-                        shape="square"
-                      />
+                      <AvatarAuto name={item.name} size="m" shape="square" />
                     </Link>
                     <div>
                       <Link

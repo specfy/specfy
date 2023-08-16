@@ -1,9 +1,38 @@
 @import "../../../styles/theme";
 
+.switcher {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-.header {
-  height: $height-header-project;
-  padding: $p-xl $p-2xl $p-xl $p-2xl;
-  background-color: #fff;
-  border-bottom: 1px solid var(--border2);
+  width: 100%;
+  padding: var(--spc) var(--spc-l) var(--spc) var(--spc);
+
+  font-size: var(--font-m);
+  font-weight: 600;
+
+  border: 1px solid transparent;
+  border-radius: var(--radius2);
+
+  .name {
+    display: flex;
+    gap: var(--spc-m);
+    align-items: center;
+  }
+
+  &:hover,
+  &[data-state="open"] {
+    border-color: var(--border2);
+  }
+}
+
+.org {
+  display: flex;
+  gap: $p-l;
+  align-items: center;
+  min-width: 200px;
+
+  &.current {
+    background-color: var(--bg2);
+  }
 }

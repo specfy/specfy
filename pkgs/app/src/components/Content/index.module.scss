@@ -35,8 +35,8 @@
   }
 
   h1 {
-    margin-top: var(--spc-8xl);
     margin-bottom: var(--spc-l);
+    padding-top: var(--spc-8xl);
 
     +h2 {
       margin-top: 0;
@@ -44,8 +44,8 @@
   }
 
   h2 {
-    margin-top: var(--spc-8xl);
     margin-bottom: var(--spc-l);
+    padding-top: var(--spc-8xl);
 
     +h3 {
       margin-top: 0;
@@ -53,8 +53,8 @@
   }
 
   h3 {
-    margin-top: var(--spc-7xl);
     margin-bottom: var(--spc-l);
+    padding-top: var(--spc-7xl);
 
     +h4 {
       margin-top: 0;
@@ -62,12 +62,12 @@
   }
 
   h4 {
-    margin-top: var(--spc-7xl);
     margin-bottom: var(--spc-l);
+    padding-top: var(--spc-7xl);
   }
 
   &>:first-child {
-    margin-top: 0;
+    padding-top: 0;
   }
 
 
