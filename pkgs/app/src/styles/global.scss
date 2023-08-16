@@ -69,6 +69,7 @@ body * {
   --text3: var(--mauve-11);
   --text4: hsl(255deg 4% 44%);
   --text: var(--mauve-12);
+  --text-secondary: #687181;
 
   // Font
   --font-xs: 10px;
@@ -98,7 +99,7 @@ body * {
 
   // BG
   --bg1: var(--mauve-1);
-  --bg2: var(--mauve-2);
+  --bg2: #F9FAF9;
   --bg3: var(--mauve-3);
   --bg5: var(--mauve-5);
   --bg10: hsl(217.5deg 25% 18.82%);
@@ -160,7 +161,7 @@ body {
   margin: 0;
 
   // font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Noto Sans", sans-serif, BlinkMacSystemFont, Oxygen, "Open Sans", "Helvetica Neue";
-  font: $font $font-text;
+  font: var(--font) $font-text;
   line-height: 20px;
   color: var(--text);
 

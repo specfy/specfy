@@ -64,7 +64,7 @@
   height: $height-header-project;
   padding: $p-2xl $p-l;
 
-  font-size: $font-l;
+  font-size: var(--font-l);
 
   border-bottom: 1px solid var(--border2);
 
@@ -90,7 +90,7 @@
 .logo {
   width: 42px;
   height: 42px;
-  font-size: $font;
+  font-size: var(--font);
   line-height: $line-height-3xl;
 }
 
@@ -118,7 +118,7 @@
 
   .smallOrg {
     margin: 2px 0 -4px 7px;
-    font-size: $font-xs;
+    font-size: var(--font-xs);
     color: $gray-500;
   }
 

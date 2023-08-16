@@ -22,7 +22,7 @@
     align-items: center;
 
     :global(> .tabler-icon) {
-      font-size: $font-l;
+      font-size: var(--font-l);
       color: $gray-400;
     }
   }

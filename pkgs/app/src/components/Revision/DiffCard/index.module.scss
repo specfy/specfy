@@ -9,7 +9,7 @@ $border-width: 10px;
 
   padding: $p-l $p-m;
 
-  font-size: $font-s;
+  font-size: var(--font-s);
 
   border-bottom: 1px solid $gray-200;
 }

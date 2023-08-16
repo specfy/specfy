@@ -31,7 +31,7 @@
 
 .toggle {
   cursor: pointer;
-  font-size: $font-s;
+  font-size: var(--font-s);
 }
 
 .empty {

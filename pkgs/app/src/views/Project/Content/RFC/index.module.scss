@@ -14,7 +14,7 @@
 
   margin-bottom: 0 !important;
 
-  font-size: $font-3xl !important;
+  font-size: var(--font-3xl) !important;
 
   >div {
     margin-bottom: 0 !important;
@@ -36,5 +36,5 @@
 
 .content {
   padding: $p-2xl 0 0 0;
-  font-size: $font-m;
+  font-size: var(--font-m);
 }

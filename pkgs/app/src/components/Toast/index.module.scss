@@ -17,7 +17,7 @@
   width: 220px;
   padding: $p-l $p-xl;
 
-  line-height: $font-l;
+  line-height: var(--font-l);
 
   background-color: #fff;
   border-radius: $border-radius;
@@ -39,7 +39,7 @@
 
 .icon {
   width: 20px;
-  font-size: $font-m;
+  font-size: var(--font-m);
 }
 
 .show {

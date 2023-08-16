@@ -42,7 +42,7 @@
   line-height: $line-height-s;
 
   strong {
-    font-size: $font-s;
+    font-size: var(--font-s);
     font-weight: normal;
     color: $gray-7;
   }

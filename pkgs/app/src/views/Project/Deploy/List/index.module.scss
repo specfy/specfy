@@ -24,7 +24,7 @@
   }
 
   .info {
-    font-size: $font-s;
+    font-size: var(--font-s);
     color: var(--text2)
   }
 }

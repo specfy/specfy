@@ -20,6 +20,7 @@ import type { RouteProject } from '../../../types/routes';
 import { Button } from '../../Form/Button';
 import { Input } from '../../Form/Input';
 import { Loading } from '../../Loading';
+import { Subdued } from '../../Text';
 
 import cls from './index.module.scss';
 
@@ -225,9 +226,7 @@ export const ContentSidebar: React.FC<{
           />
         </div>
       </div>
-      {tree.length <= 0 && (
-        <div className={cls.empty}>Content will appear here...</div>
-      )}
+      {tree.length <= 0 && <Subdued>No documentation uploaded</Subdued>}
       {list && (
         <div className={cls.results} ref={refList}>
           {list.map((item, i) => {

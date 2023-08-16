@@ -12,11 +12,11 @@
 }
 
 .lastUpdate {
-  font-size: $font-s;
+  font-size: var(--font-s);
   color: $gray-6;
 }
 
 .content {
   padding: $p-2xl 0 0 0;
-  font-size: $font-m;
+  font-size: var(--font-m);
 }

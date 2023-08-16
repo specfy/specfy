@@ -39,7 +39,7 @@
 }
 
 .subtitle {
-  font-size: $font-s;
+  font-size: var(--font-s);
   color: $gray-400;
 }
 

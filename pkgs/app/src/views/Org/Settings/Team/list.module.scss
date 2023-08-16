@@ -22,6 +22,6 @@
 }
 
 .empty {
-  padding: $p-2xl;
-  color: $gray-400;
+  display: block;
+  padding: var(--spc-2xl);
 }

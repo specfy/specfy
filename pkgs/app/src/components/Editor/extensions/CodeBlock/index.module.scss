@@ -33,7 +33,7 @@
       width: 100%;
 
       font-family: $font-code;
-      font-size: $font;
+      font-size: var(--font);
       text-shadow: none;
 
       background-color: transparent;

@@ -13,7 +13,7 @@
   width: 100%;
   padding: $p-m $p-xl;
 
-  font-size: $font-m;
+  font-size: var(--font-m);
 
   background-color: #fff;
   border: 1px solid var(--border3);
@@ -41,7 +41,7 @@
 
   padding: $p-l $p-2xl;
 
-  font-size: $font;
+  font-size: var(--font);
   color: var(--text4);
 
   background-color: #fff;

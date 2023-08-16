@@ -23,7 +23,7 @@
   /* stylelint-disable-next-line selector-class-pattern */
   &.s {
     height: var(--h-s);
-    padding: 0 var(--spc);
+    padding: 0 var(--spc) 0 var(--spc-l);
     font-size: var(--font-s);
   }
 

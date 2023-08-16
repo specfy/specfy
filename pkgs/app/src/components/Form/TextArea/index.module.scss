@@ -23,25 +23,25 @@
   &.s {
     height: var(--h-s);
     padding: $p-s $p-l;
-    font-size: $font-s;
+    font-size: var(--font-s);
   }
 
   &.m {
     height: var(--h-m);
     padding: $p $p-l;
-    font-size: $font;
+    font-size: var(--font);
   }
 
   &.l {
     height: var(--h-l);
     padding: $p-m $p-xl;
-    font-size: $font;
+    font-size: var(--font);
   }
 
   &.xl {
     height: var(--h-xl);
     padding: $p-l $p-xl;
-    font-size: $font-l;
+    font-size: var(--font-l);
   }
 
   &.disabled {

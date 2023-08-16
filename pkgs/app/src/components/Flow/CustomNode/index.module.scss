@@ -71,7 +71,7 @@
 
     padding: $p;
 
-    font-size: $font-s - 1px;
+    font-size: 13px;
     line-height: $line-height-s;
     color: var(--text);
     text-overflow: ellipsis;
@@ -188,7 +188,7 @@
     padding: 0 $p-xl;
 
     .label {
-      font-size: $font;
+      font-size: var(--font);
     }
   }
 
@@ -216,7 +216,7 @@
 
   width: 170px;
 
-  font-size: $font-xs;
+  font-size: var(--font-xs);
   color: var(--text1);
   text-align: center;
 }
@@ -226,7 +226,7 @@
   bottom: 0;
   left: -12px;
 
-  font-size: $font-xs;
+  font-size: var(--font-xs);
   color: var(--text1);
 
 

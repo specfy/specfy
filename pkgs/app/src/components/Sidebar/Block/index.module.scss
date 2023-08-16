@@ -11,7 +11,7 @@
 
   margin-bottom: $p-l;
 
-  font-size: $font-m;
+  font-size: var(--font-m);
   font-weight: 500;
   color: var(--text);
 }

@@ -13,7 +13,7 @@
   display: flex;
   flex-grow: 1;
   margin-bottom: 0 !important;
-  font-size: $font-3xl !important;
+  font-size: var(--font-3xl) !important;
 
   >div {
     margin-bottom: 0 !important;
@@ -26,13 +26,7 @@
   color: $gray-600
 }
 
-.headings {
-  position: absolute;
-  z-index: 1;
-  top: 0;
-}
-
 .content {
   padding: $p-2xl 0 0 0;
-  font-size: $font-m;
+  font-size: var(--font-m);
 }

@@ -112,9 +112,11 @@
     }
 
     >img {
-      width: 100%;
-      object-fit: contain;
       image-orientation: none;
+    }
+
+    p {
+      margin-bottom: var(--spc-l);
     }
   }
 

@@ -8,7 +8,7 @@
   height: 72px;
   padding: $p-xl;
 
-  font-size: $font-s;
+  font-size: var(--font-s);
 
   border-bottom: 1px solid var(--border2);
 }
@@ -19,7 +19,7 @@
   width: 40px;
   margin-right: 2px;
 
-  font-size: $font-l;
+  font-size: var(--font-l);
   text-align: center;
 
   &.badge {

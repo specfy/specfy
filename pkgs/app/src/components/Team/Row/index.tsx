@@ -104,6 +104,7 @@ export const Row: React.FC<RowProps> = ({
             }
           }}
           disabled={perm && user.id === me ? true : !canUpdate}
+          size="s"
         />
 
         {canUpdate && perm && (
@@ -111,13 +112,14 @@ export const Row: React.FC<RowProps> = ({
             danger
             disabled={perm && user.id === me}
             onClick={() => onRemove(user.id)}
+            size="s"
           >
             <IconTrash />
           </Button>
         )}
 
         {canUpdate && !perm && (
-          <Button onClick={() => onUpdate(user.id, 'add', role)}>
+          <Button onClick={() => onUpdate(user.id, 'add', role)} size="s">
             <IconPlus />
             Add
           </Button>

@@ -13,7 +13,7 @@
 }
 
 .title {
-  font-size: $font-m;
+  font-size: var(--font-m);
 }
 
 .item {
@@ -25,7 +25,7 @@
 .info {
   display: flex;
   gap: $p;
-  font-size: $font-s;
+  font-size: var(--font-s);
   color: var(--text2)
 }
 

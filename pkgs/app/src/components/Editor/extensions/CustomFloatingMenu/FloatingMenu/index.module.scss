@@ -47,7 +47,7 @@ $width: 180px;
 
   padding: $p-xs $p-xs;
 
-  font-size: $font;
+  font-size: var(--font);
   font-weight: 600;
 
   border-radius: $border-radius;
@@ -61,7 +61,7 @@ $width: 180px;
   width: 30px;
   padding: $p;
 
-  font-size: $font-m;
+  font-size: var(--font-m);
   line-height: 0;
 
   background-color: #fff;

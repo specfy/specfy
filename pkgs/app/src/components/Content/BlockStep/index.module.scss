@@ -15,11 +15,11 @@
 
   padding: $p-xl;
 
-  font-size: $font-l;
+  font-size: var(--font-l);
   font-weight: 600;
 
   svg {
-    font-size: $font;
+    font-size: var(--font);
   }
 }
 

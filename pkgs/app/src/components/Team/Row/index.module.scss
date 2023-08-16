@@ -17,7 +17,8 @@
 
 .left {
   display: flex;
-  gap: $p-l;
+  gap: var(--spc-xl);
+  align-items: center;
 }
 
 .right {
@@ -32,7 +33,7 @@
 }
 
 .sub {
-  font-size: $font-s;
+  font-size: var(--font-s);
   line-height: $line-height-s;
   color: $gray-400;
 }

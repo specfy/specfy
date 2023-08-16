@@ -15,9 +15,9 @@ $min-height: 34px;
 
   .title {
     padding-top: 2px;
-    font-size: $font-s;
+    font-size: var(--font-s);
     font-weight: 500;
-    color: var(--text);
+    color: var(--text-secondary);
   }
 
   .values {
@@ -46,7 +46,7 @@ $min-height: 34px;
   max-width: 134px;
   padding: var(--spc) var(--spc-m);
 
-  font-size: $font-s;
+  font-size: var(--font-s);
   color: var(--text);
 
   border: 1px solid var(--border2);
@@ -62,7 +62,7 @@ $min-height: 34px;
   }
 
   >svg {
-    font-size: $font-s;
+    font-size: var(--font-s);
   }
 
   .label {

@@ -19,7 +19,7 @@
 
   &.s {
     height: var(--h-s);
-    font-size: $font-s;
+    font-size: var(--font-s);
 
     .input {
       padding: $p-s $p-l;
@@ -40,7 +40,7 @@
 
   &.m {
     height: var(--h-m);
-    font-size: $font;
+    font-size: var(--font);
 
     .input {
       padding: $p $p-l;
@@ -61,7 +61,7 @@
 
   &.l {
     height: var(--h-l);
-    font-size: $font;
+    font-size: var(--font);
 
     .input {
       padding: $p-m $p-xl;
@@ -82,7 +82,7 @@
 
   &.xl {
     height: var(--h-xl);
-    font-size: $font-l;
+    font-size: var(--font-l);
 
     .input,
     .before {

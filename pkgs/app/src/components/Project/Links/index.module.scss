@@ -14,18 +14,18 @@
 
 .links {
   display: flex;
-  gap: $p-m;
+  gap: var(--spc-xl);
   margin-top: $p-l;
 }
 
 .link {
   display: inline-flex;
-  gap: $p-s;
+  gap: var(--spc);
   align-items: center;
 
-  padding: $p-xs $p;
+  padding: var(--spc-xs) 0;
 
-  color: $gray-700;
+  color: var(--text-secondary);
 
   border-radius: 10px;
 

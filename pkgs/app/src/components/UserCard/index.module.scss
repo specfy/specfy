@@ -2,7 +2,7 @@
 
 .userCard {
   &.small {
-    font-size: $font;
+    font-size: var(--font);
   }
 }
 

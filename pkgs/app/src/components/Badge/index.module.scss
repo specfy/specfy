@@ -6,7 +6,7 @@
   min-width: 20px;
   padding: 0 $p-m;
 
-  font-size: $font-s;
+  font-size: var(--font-s);
   font-weight: 500;
   line-height: $line-height;
   color: var(--text2);

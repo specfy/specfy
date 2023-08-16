@@ -8,18 +8,15 @@
   }
 
   hr {
-    margin: var(--spc-4xl) 10%;
+    margin: var(--spc-7xl) 10%;
     border: none;
-    border-top: 2px solid var(--border2);
+    border-top: 1px solid var(--border2);
   }
 
   a {
     font-weight: 600;
     color: var(--primary);
     text-decoration: none;
-
-    // text-decoration-color: var(--accent1);
-
     border-bottom: 1px solid var(--accent1);
 
     &:hover {
@@ -69,7 +66,7 @@
     margin-bottom: var(--spc-l);
   }
 
-  >:first-child {
+  &>:first-child {
     margin-top: 0;
   }
 
@@ -85,6 +82,8 @@
     font-weight: 600;
   }
 
+
+  // --- Table
   table {
     overflow: hidden;
     table-layout: fixed;
@@ -103,6 +102,7 @@
       min-width: 1em;
       padding: $p $p-l;
 
+      text-align: left;
       vertical-align: top;
 
       border: 1px solid $slate-200;
@@ -113,10 +113,10 @@
     }
 
     th {
-      padding: $p-m $p-xl;
+      padding: var(--spc-m) var(--spc-l);
 
-      font-weight: bold;
-      color: $slate-800;
+      font-weight: 600;
+      color: var(--text);
       text-align: left;
 
       background-color: $slate-100;
@@ -168,6 +168,7 @@
       padding: var(--spc-l);
     }
   }
+
 }
 
 ul.taskList {
@@ -191,6 +192,7 @@ ul.taskList {
     margin-bottom: 0;
     list-style: none;
   }
+
 }
 
 .image {
@@ -235,7 +237,7 @@ ul.taskList {
   code,
   code span {
     font-family: $font-code !important;
-    font-size: $font !important;
+    font-size: var(--font) !important;
     font-weight: inherit;
     font-style: inherit;
     font-variant-ligatures: inherit;

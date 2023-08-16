@@ -15,10 +15,10 @@
   line-height: 0;
 
   &.h1 {
-    font-size: $font-3xl;
+    font-size: var(--font-3xl);
   }
 
   &.h2 {
-    font-size: $font-xl;
+    font-size: var(--font-xl);
   }
 }

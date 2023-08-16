@@ -8,6 +8,7 @@ import { Card } from '../../../../components/Card';
 import { Empty } from '../../../../components/Empty';
 import { Input } from '../../../../components/Form/Input';
 import { Row } from '../../../../components/Team/Row';
+import { Subdued } from '../../../../components/Text';
 import { useAuth } from '../../../../hooks/useAuth';
 import type { RouteOrg } from '../../../../types/routes';
 
@@ -112,7 +113,7 @@ export const SettingsTeamList: React.FC<{ params: RouteOrg }> = ({
                 );
               })}
               {owners.length <= 0 && (
-                <div className={cls.empty}>Nothing to show...</div>
+                <Subdued className={cls.empty}>Nothing to show...</Subdued>
               )}
             </div>
 
@@ -133,7 +134,7 @@ export const SettingsTeamList: React.FC<{ params: RouteOrg }> = ({
                   );
                 })}
                 {reviewers.length <= 0 && (
-                  <div className={cls.empty}>Nothing to show...</div>
+                  <Subdued className={cls.empty}>Nothing to show...</Subdued>
                 )}
               </div>
             )}
@@ -154,7 +155,7 @@ export const SettingsTeamList: React.FC<{ params: RouteOrg }> = ({
                 );
               })}
               {contributors.length <= 0 && (
-                <div className={cls.empty}>Nothing to show...</div>
+                <Subdued className={cls.empty}>Nothing to show...</Subdued>
               )}
             </div>
 
@@ -174,7 +175,7 @@ export const SettingsTeamList: React.FC<{ params: RouteOrg }> = ({
                 );
               })}
               {viewers.length <= 0 && (
-                <div className={cls.empty}>Nothing to show...</div>
+                <Subdued className={cls.empty}>Nothing to show...</Subdued>
               )}
             </div>
           </div>

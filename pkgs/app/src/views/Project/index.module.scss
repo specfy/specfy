@@ -23,7 +23,7 @@
 
   padding: $p-xs $p-l;
 
-  font-size: $font;
+  font-size: var(--font);
   line-height: $line-height-m;
   color: $gray-9 !important;
 

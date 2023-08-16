@@ -40,7 +40,7 @@
       >span {
         width: 22px;
         height: 22px;
-        font-size: $font-s;
+        font-size: var(--font-s);
       }
     }
   }

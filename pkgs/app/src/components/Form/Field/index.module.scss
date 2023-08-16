@@ -9,13 +9,13 @@
 
 .label {
   margin-bottom: $p-s;
-  font-size: $font-s;
+  font-size: var(--font-s);
   color: var(--text3);
 }
 
 .message {
   min-height: 25px;
   padding: $p 0 0 0;
-  font-size: $font-s;
+  font-size: var(--font-s);
   color: var(--tomato-10);
 }

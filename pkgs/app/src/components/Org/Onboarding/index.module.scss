@@ -33,7 +33,7 @@
   width: 42px;
   height: 42px;
 
-  font-size: $font-2xl;
+  font-size: var(--font-2xl);
   color: white;
 
   background-color: var(--accent2);

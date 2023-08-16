@@ -26,7 +26,7 @@ $width: math.div($main-col-w, 1.5);
 
 .input {
   padding: $p-l;
-  font-size: $font-l;
+  font-size: var(--font-l);
 }
 
 .button {

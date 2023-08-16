@@ -55,7 +55,7 @@
 
   &.dark {
     padding: $p-s $p-m $p-s $p-xl;
-    font-size: $font-xs;
+    font-size: var(--font-xs);
     color: white;
     background-color: var(--bg10);
   }
@@ -70,7 +70,7 @@
 
   padding: $p-m;
 
-  font-size: $font-s;
+  font-size: var(--font-s);
 
   background-color: #fff;
   border-radius: $border-radius;
