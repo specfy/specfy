@@ -112,7 +112,7 @@ export const OrgMenu: React.FC<{ org: ApiOrg }> = () => {
 
   useEffect(() => {
     const path = location.pathname.split('/');
-    if (path[2] !== '_') {
+    if (path.length > 2 && path[2] !== '_') {
       setOpen(null);
       return;
     }

@@ -11,7 +11,6 @@ import { useReactFlow } from 'reactflow';
 import { useComponentsStore } from '../../../common/store';
 import { titleSuffix } from '../../../common/string';
 import { internalTypeToText } from '../../../common/techs';
-import { Card } from '../../../components/Card';
 import { ComponentDetails } from '../../../components/Component/Details';
 import { ComponentIcon } from '../../../components/Component/Icon';
 import { Container } from '../../../components/Container';
@@ -115,108 +114,106 @@ export const ComponentView: React.FC<{
     <Container noPadding>
       <Helmet title={`${comp.name} - ${proj.name} ${titleSuffix}`} />
 
-      <Container.Left2Third>
-        <Card padded seamless large>
-          <div className={cls.content}>
-            <Flex align="center" justify="space-between">
-              <Flex align="center" gap="l">
-                {isEditing ? (
-                  <TechPopover
-                    id={comp.id}
-                    techId={comp.techId || comp.typeId}
-                    data={comp}
-                    onNodesChange={onNodesChange}
-                  />
+      <Container.Left2Third className={cls.main}>
+        <div className={cls.content}>
+          <Flex align="center" justify="space-between">
+            <Flex align="center" gap="l">
+              {isEditing ? (
+                <TechPopover
+                  id={comp.id}
+                  techId={comp.techId || comp.typeId}
+                  data={comp}
+                  onNodesChange={onNodesChange}
+                />
+              ) : (
+                <ComponentIcon data={comp} large noEmpty />
+              )}
+
+              <TooltipFull
+                msg={
+                  isEditing &&
+                  comp.type === 'project' &&
+                  "Can't edit Project name"
+                }
+                side="top"
+              >
+                {!isEditing || comp.type === 'project' ? (
+                  <h2>
+                    <Flex gap="l">{comp.name}</Flex>
+                  </h2>
                 ) : (
-                  <ComponentIcon data={comp} large noEmpty />
+                  <FakeInput.H2
+                    size="l"
+                    value={comp.name}
+                    placeholder="Title..."
+                    onChange={(e) => {
+                      storeComponents.updateField(
+                        comp.id,
+                        'name',
+                        e.target.value
+                      );
+                    }}
+                  />
                 )}
-
-                <TooltipFull
-                  msg={
-                    isEditing &&
-                    comp.type === 'project' &&
-                    "Can't edit Project name"
-                  }
-                  side="top"
-                >
-                  {!isEditing || comp.type === 'project' ? (
-                    <h2>
-                      <Flex gap="l">{comp.name}</Flex>
-                    </h2>
-                  ) : (
-                    <FakeInput.H2
-                      size="l"
-                      value={comp.name}
-                      placeholder="Title..."
-                      onChange={(e) => {
-                        storeComponents.updateField(
-                          comp.id,
-                          'name',
-                          e.target.value
-                        );
-                      }}
-                    />
-                  )}
-                </TooltipFull>
-              </Flex>
-              <Flex align="center">
-                <Tag
-                  variant="border"
-                  className={classnames(
-                    cls.tagType,
-                    comp.type in cls && cls[comp.type as keyof typeof cls]
-                  )}
-                >
-                  {internalTypeToText[comp.type]}
-                </Tag>
-                {canEdit && (
-                  <div>
-                    <Dropdown.Menu>
-                      <Dropdown.Trigger asChild>
-                        <Button display="ghost">
-                          <IconDotsVertical />
-                        </Button>
-                      </Dropdown.Trigger>
-                      <Dropdown.Portal>
-                        <Dropdown.Content>
-                          <Dropdown.Group>
-                            <Dropdown.Item asChild>
-                              <Button
-                                danger
-                                display="item"
-                                block
-                                onClick={() => onRemove()}
-                                size="s"
-                              >
-                                <IconTrash /> Remove
-                              </Button>
-                            </Dropdown.Item>
-                          </Dropdown.Group>
-                        </Dropdown.Content>
-                      </Dropdown.Portal>
-                    </Dropdown.Menu>
-                  </div>
-                )}
-              </Flex>
+              </TooltipFull>
             </Flex>
-            <UpdatedAt time={comp.updatedAt} />
+            <Flex align="center">
+              <Tag
+                variant="border"
+                className={classnames(
+                  cls.tagType,
+                  comp.type in cls && cls[comp.type as keyof typeof cls]
+                )}
+              >
+                {internalTypeToText[comp.type]}
+              </Tag>
+              {canEdit && (
+                <div>
+                  <Dropdown.Menu>
+                    <Dropdown.Trigger asChild>
+                      <Button display="ghost">
+                        <IconDotsVertical />
+                      </Button>
+                    </Dropdown.Trigger>
+                    <Dropdown.Portal>
+                      <Dropdown.Content>
+                        <Dropdown.Group>
+                          <Dropdown.Item asChild>
+                            <Button
+                              danger
+                              display="item"
+                              block
+                              onClick={() => onRemove()}
+                              size="s"
+                            >
+                              <IconTrash /> Remove
+                            </Button>
+                          </Dropdown.Item>
+                        </Dropdown.Group>
+                      </Dropdown.Content>
+                    </Dropdown.Portal>
+                  </Dropdown.Menu>
+                </div>
+              )}
+            </Flex>
+          </Flex>
+          <UpdatedAt time={comp.updatedAt} />
 
-            {!isEditing && comp.description && (
-              <ContentDoc doc={comp.description} noPlaceholder />
-            )}
-            {isEditing && (
-              <EditorMini
-                key={comp.id}
-                doc={comp.description}
-                onUpdate={(doc) => {
-                  storeComponents.updateField(comp.id, 'description', doc);
-                }}
-              />
-            )}
-          </div>
+          {!isEditing && comp.description && (
+            <ContentDoc doc={comp.description} noPlaceholder />
+          )}
+          {isEditing && (
+            <EditorMini
+              key={comp.id}
+              doc={comp.description}
+              onUpdate={(doc) => {
+                storeComponents.updateField(comp.id, 'description', doc);
+              }}
+            />
+          )}
+        </div>
 
-          <ComponentDetails proj={proj} component={comp} params={params} />
-        </Card>
+        <ComponentDetails proj={proj} component={comp} params={params} />
       </Container.Left2Third>
       <Container.Right1Third>
         <div>

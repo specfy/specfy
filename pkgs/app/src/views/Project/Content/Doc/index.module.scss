@@ -4,20 +4,6 @@
   display: flex;
   grid-template-columns: 1fr 40px;
   align-items: center;
-
-  height: 30px;
-  margin-bottom: $p-l;
-}
-
-.title {
-  display: flex;
-  flex-grow: 1;
-  margin-bottom: 0 !important;
-  font-size: var(--font-3xl) !important;
-
-  >div {
-    margin-bottom: 0 !important;
-  }
 }
 
 .type {
@@ -29,4 +15,21 @@
 .content {
   padding: $p-2xl 0 0 0;
   font-size: var(--font-m);
+}
+
+.col1 {
+  padding-top: var(--spc-2xl);
+  background-color: #fff;
+}
+
+.col2 {
+  padding: var(--spc-6xl);
+  background-color: #fff;
+}
+
+.col3 {
+  display: flex;
+  flex-direction: column;
+  gap: $p-5xl;
+  padding: $p-2xl $p-5xl;
 }

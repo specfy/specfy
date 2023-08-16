@@ -8,13 +8,7 @@
 }
 
 .blockTitle {
-  display: flex;
-  gap: $p-l;
-  align-items: baseline;
-
-  >h5 {
-    min-width: 60px;
-  }
+  margin-bottom: var(--spc-xl);
 }
 
 .add {

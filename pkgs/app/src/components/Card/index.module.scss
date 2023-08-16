@@ -9,11 +9,11 @@
   box-shadow: $box-shadow;
 
   &.padded {
-    padding: $p-2xl;
+    padding: var(--spc-2xl) var(--spc-3xl);
   }
 
   &.large {
-    padding: $p-3xl $p-5xl;
+    padding: var(--spc-3xl) var(--spc-5xl);
   }
 
   &.seamless {
@@ -41,9 +41,9 @@
 }
 
 .content {
-  padding: $p-2xl;
+  padding: var(--spc-2xl) var(--spc-3xl);
 
   &.large {
-    padding: $p-3xl $p-5xl;
+    padding: var(--spc-3xl) var(--spc-5xl);
   }
 }

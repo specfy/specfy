@@ -43,7 +43,7 @@ export const ListProjects: React.FC<{ orgId: string }> = ({ orgId }) => {
   const brandNew = !search && empty;
 
   return (
-    <div>
+    <div className={cls.main}>
       <div className={cls.header}>
         <h2>Projects</h2>
         {!brandNew && (

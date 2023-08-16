@@ -1,5 +1,9 @@
 @import "../../../styles/theme";
 
+.main {
+  padding: var(--spc-6xl);
+}
+
 .content {
   padding-bottom: $p-xl;
 }

@@ -4,9 +4,9 @@ import {
   IconBolt,
   // IconBook,
   IconChevronDown,
+  IconCircleDot,
   IconCloudUpload,
   IconHistory,
-  IconLayoutDashboard,
   IconPlus,
   IconSettings,
 } from '@tabler/icons-react';
@@ -112,7 +112,7 @@ export const ProjectMenu: React.FC<{
         label: (
           <Link to={linkSelf}>
             <Flex gap="l">
-              <IconLayoutDashboard />
+              <IconCircleDot />
               Overview
             </Flex>
           </Link>

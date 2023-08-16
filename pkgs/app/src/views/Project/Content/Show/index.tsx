@@ -9,8 +9,6 @@ import { Flex } from '../../../../components/Flex';
 import { NotFound } from '../../../../components/NotFound';
 import type { RouteDocument } from '../../../../types/routes';
 import { Doc } from '../Doc';
-import { Playbook } from '../Playbook';
-import { RFC } from '../RFC';
 
 import cls from './index.module.scss';
 
@@ -62,26 +60,7 @@ export const DocumentShow: React.FC<{
       <div className={cls.wrapper}>
         <div className={cls.container}>
           <div></div>
-
           <NotFound />
-        </div>
-      </div>
-    );
-  }
-
-  if (doc.type === 'rfc') {
-    return (
-      <div className={cls.wrapper}>
-        <div className={cls.container}>
-          <RFC proj={proj} doc={doc} />
-        </div>
-      </div>
-    );
-  } else if (doc.type === 'doc') {
-    return (
-      <div className={cls.wrapper}>
-        <div className={cls.container}>
-          <Doc proj={proj} doc={doc} />
         </div>
       </div>
     );
@@ -90,7 +69,7 @@ export const DocumentShow: React.FC<{
   return (
     <div className={cls.wrapper}>
       <div className={cls.container}>
-        <Playbook proj={proj} doc={doc} />
+        <Doc proj={proj} doc={doc} />
       </div>
     </div>
   );

@@ -58,7 +58,7 @@ export const ProjectOverview: React.FC<{
   return (
     <Container noPadding>
       <Container.Left2Third>
-        <Card padded large seamless>
+        <div className={cls.main}>
           <h1>{project.name}</h1>
           <UpdatedAt time={project.updatedAt} />
           <div className={cls.desc}>
@@ -85,7 +85,7 @@ export const ProjectOverview: React.FC<{
             <h2>Team</h2>
             <TeamSummary org_id={params.org_id} project_id={project.id} />
           </div>
-        </Card>
+        </div>
       </Container.Left2Third>
       <Container.Right1Third>
         <div style={{ height: '350px' }}>

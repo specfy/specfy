@@ -1,5 +1,9 @@
 @import "../../../styles/theme";
 
+.main {
+  padding: var(--spc-6xl) var(--spc-6xl);
+}
+
 .block {
   margin-top: var(--spc-6xl);
 
