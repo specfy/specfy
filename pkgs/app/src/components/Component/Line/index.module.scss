@@ -23,7 +23,7 @@ $min-height: 34px;
   .values {
     display: flex;
     flex-wrap: wrap;
-    gap: $p $p;
+    gap: var(--spc-m);
     align-items: flex-start;
     justify-content: flex-start;
 
@@ -44,17 +44,21 @@ $min-height: 34px;
 
   min-width: 134px;
   max-width: 134px;
-  padding: $p-s $p-l;
+  padding: var(--spc) var(--spc-m);
 
   font-size: $font-s;
   color: var(--text);
 
   border: 1px solid var(--border2);
-  border-radius: $border-radius;
+  border-radius: var(--radius2);
 
   &:hover {
     color: var(--accent2);
     background: var(--bg2);
+
+    .icon {
+      background-color: #fff;
+    }
   }
 
   >svg {

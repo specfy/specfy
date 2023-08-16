@@ -236,7 +236,7 @@ export const mapProject: Record<ActionProject, ActivityParams> = {
         <ActivityCard>
           <Flex column align="flex-start" gap="l">
             <Flex gap="l">
-              <AvatarAuto name={act.project.name} />
+              <AvatarAuto name={act.project.name} shape="square" />
               <ProjectTarget act={act}>{act.project.name}</ProjectTarget>
             </Flex>
           </Flex>

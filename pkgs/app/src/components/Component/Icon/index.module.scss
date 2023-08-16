@@ -6,8 +6,8 @@
   align-items: center;
   justify-content: center;
 
-  width: 18px;
-  height: 18px;
+  width: 19px;
+  height: 19px;
 
   font-size: 11px;
   line-height: 14px;
@@ -20,6 +20,7 @@
   }
 
   &.service {
+    margin: 1px 1px 0 2px;
     padding: 0 1px;
 
     line-height: 16px;
