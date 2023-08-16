@@ -12,7 +12,7 @@
   &.noPadding {
     position: relative;
     gap: 0;
-    min-height: calc(100vh - $height-header-project-total);
+    min-height: 100vh;
     padding: 0;
   }
 }

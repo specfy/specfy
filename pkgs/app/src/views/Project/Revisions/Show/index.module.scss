@@ -1,75 +1,23 @@
 @import "../../../../styles/theme";
 
 .container {
-  min-height: auto !important;
+  display: flex;
 }
 
 .left {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spc-3xl);
+
   min-width: $main-col-w + 60px;
-}
-
-.main {
-  border-bottom: 1px solid var(--border2);
-}
-
-.card {
-  padding: $p-3xl $p-5xl;
-}
-
-.mainTop {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.editSave {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-
-  padding: $p-xl $p-3xl;
-
-  color: $gray-500;
-
-  border-top: 1px solid $gray-100;
-}
-
-.title {
-  margin-bottom: $p-m;
-}
-
-.subtitle {
-  font-size: var(--font-s);
-  color: $gray-400;
-}
-
-.content {
-  padding: $p-2xl 0 0 0;
-}
-
-
-.addUserBtn {
-  width: auto !important;
-  height: auto !important;
-  padding: 1px $p-m 0 $p-m !important;
-
-  line-height: $line-height-s;
-
-  background-color: transparent !important;
-}
-
-.noDiff {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 200px;
+  padding: var(--spc-3xl) var(--spc-6xl);
 }
 
 .sidebar {
   display: flex;
   flex-direction: column;
   gap: $p-3xl;
-  padding: $p-l $p-4xl;
+  padding: var(--spc-4xl) 0;
 }
 
 .staged {
@@ -79,7 +27,4 @@
   gap: $p-3xl;
 
   max-width: $main-col-w;
-  margin: $p-5xl;
-
-  background-color: var(--bg2);
 }

@@ -1,54 +1,28 @@
 import type {
   ApiProject,
   ApiUser,
-  ApiRevision,
   GetRevision,
   ListRevisionBlobs,
-  ListRevisionChecks,
 } from '@specfy/models';
 import { flagRevisionApprovalEnabled } from '@specfy/models/src/revisions/constants';
-import {
-  IconDotsVertical,
-  IconGitPullRequestClosed,
-  IconLock,
-  IconLockAccessOff,
-} from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Skeleton from 'react-loading-skeleton';
 import { useParams } from 'react-router-dom';
 
-import {
-  useListRevisionBlobs,
-  updateRevision,
-  useGetRevision,
-  useGetRevisionChecks,
-} from '../../../../api';
-import { isError } from '../../../../api/helpers';
-import { getEmptyDoc } from '../../../../common/content';
+import { useListRevisionBlobs, useGetRevision } from '../../../../api';
 import { diffTwoBlob } from '../../../../common/diff';
-import { i18n } from '../../../../common/i18n';
 import { useRevisionStore } from '../../../../common/store';
 import { titleSuffix } from '../../../../common/string';
-import { Container } from '../../../../components/Container';
-import { ContentDoc } from '../../../../components/Content';
-import * as Dropdown from '../../../../components/Dropdown';
-import { Editor } from '../../../../components/Editor';
-import { Flex } from '../../../../components/Flex';
-import { Button } from '../../../../components/Form/Button';
-import { FakeInput } from '../../../../components/Form/FakeInput';
+import { Card } from '../../../../components/Card';
+import { Empty } from '../../../../components/Empty';
 import { ListActivity } from '../../../../components/ListActivity';
-import { Loading } from '../../../../components/Loading';
 import { NotFound } from '../../../../components/NotFound';
-import { Checks } from '../../../../components/Revision/Checks';
 import { DiffCard } from '../../../../components/Revision/DiffCard';
+import { RevisionMainCard } from '../../../../components/Revision/MainCard';
 import { ReviewBar } from '../../../../components/Revision/ReviewBar';
-import { StatusTag } from '../../../../components/Revision/StatusTag';
 import { SidebarBlock } from '../../../../components/Sidebar/Block';
-import { Time } from '../../../../components/Time';
 import { UserList } from '../../../../components/UserList';
-import { useAuth } from '../../../../hooks/useAuth';
-import { useToast } from '../../../../hooks/useToast';
 import type { BlobAndDiffs } from '../../../../types/blobs';
 import type { RouteProject, RouteRevision } from '../../../../types/routes';
 
@@ -59,20 +33,18 @@ export const ProjectRevisionsShow: React.FC<{
   params: RouteProject;
 }> = ({ proj, params }) => {
   // Global
-  const { currentPerm } = useAuth();
-  const toast = useToast();
   const storeRevision = useRevisionStore();
-  const canEdit = currentPerm?.role !== 'viewer';
 
   const more = useParams<Partial<RouteRevision>>();
   const [rev, setRev] = useState<GetRevision['Success']['data']>();
   const [blobs, setBlobs] = useState<ListRevisionBlobs['Success']['data']>();
-  const [checks, setChecks] = useState<ListRevisionChecks['Success']['data']>();
   const [to] = useState(() => `/${params.org_id}/${params.project_slug}`);
   const qp: GetRevision['Querystring'] = {
     org_id: params.org_id,
     project_id: proj.id,
   };
+  const [authors, setAuthors] = useState<ApiUser[]>();
+  const [reviewers, setReviewers] = useState<ApiUser[]>();
 
   // diff
   const [computing, setComputing] = useState(true);
@@ -84,10 +56,6 @@ export const ProjectRevisionsShow: React.FC<{
     revision_id: more.revision_id!,
   });
   const resBlobs = useListRevisionBlobs({
-    ...qp,
-    revision_id: rev?.id,
-  });
-  const resChecks = useGetRevisionChecks({
     ...qp,
     revision_id: rev?.id,
   });
@@ -111,96 +79,13 @@ export const ProjectRevisionsShow: React.FC<{
   }, [resBlobs.data]);
 
   useEffect(() => {
-    if (!resChecks.data) {
-      return;
-    }
-
-    setChecks(resChecks.data.data);
-  }, [resChecks.data]);
-
-  // --------- Edit
-  const [edit, setEdit] = useState(false);
-  const [save, setSave] = useState(false);
-  const [title, setTitle] = useState('');
-  const [authors, setAuthors] = useState<ApiUser[]>();
-  const [reviewers, setReviewers] = useState<ApiUser[]>();
-  const [description, setDescription] = useState(getEmptyDoc());
-
-  useEffect(() => {
     if (!rev) {
       return;
     }
 
-    setTitle(rev.name);
-    setDescription(rev.description);
     setAuthors([...rev.authors]);
     setReviewers([...rev.reviewers]);
-  }, [edit, rev]);
-
-  const onClickSave = async () => {
-    if (!rev) {
-      return;
-    }
-
-    setSave(true);
-
-    const up = await updateRevision(
-      { ...qp, revision_id: rev.id },
-      {
-        name: title,
-        description,
-        authors: authors!.map((u) => u.id),
-        reviewers: reviewers!.map((u) => u.id),
-      }
-    );
-    setSave(false);
-
-    if (isError(up)) {
-      toast.add({ title: i18n.errorOccurred, status: 'error' });
-      return;
-    }
-
-    if (!up.data.done) {
-      toast.add({ title: 'Revision could not saved', status: 'error' });
-      return;
-    }
-
-    toast.add({ title: 'Revision updated', status: 'success' });
-    setEdit(false);
-  };
-
-  const patchStatus = async (status: ApiRevision['status']) => {
-    if (!rev) {
-      return;
-    }
-
-    setSave(true);
-    await updateRevision({ ...qp, revision_id: rev.id }, { status });
-    toast.add({ title: 'Revision updated', status: 'success' });
-    setSave(false);
-  };
-  const patchLocked = async (locked: boolean) => {
-    if (!rev) {
-      return;
-    }
-
-    setSave(true);
-    await updateRevision({ ...qp, revision_id: rev.id }, { locked });
-    toast.add({ title: 'Revision updated', status: 'success' });
-    setSave(false);
-  };
-
-  const onMenuClick = async (type: 'close' | 'lock' | 'reopen' | 'unlock') => {
-    if (type === 'lock') {
-      await patchLocked(true);
-    } else if (type === 'unlock') {
-      await patchLocked(false);
-    } else if (type === 'close') {
-      await patchStatus('closed');
-    } else if (type === 'reopen') {
-      await patchStatus('draft');
-    }
-  };
+  }, [rev]);
 
   useEffect(() => {
     if (!blobs) {
@@ -224,20 +109,15 @@ export const ProjectRevisionsShow: React.FC<{
   // --------- Content
   if (res.isLoading && !rev) {
     return (
-      <Container noPadding className={cls.container}>
-        <Container.Left2Third className={cls.left}>
-          <div className={cls.main}>
-            <div className={cls.card}>
-              <div className={cls.mainTop}>
-                <Skeleton width={150} height={40} />
-              </div>
-              <div className={cls.content}>
-                <Skeleton width={350} count={3} />
-              </div>
-            </div>
-          </div>
-        </Container.Left2Third>
-      </Container>
+      <div className={cls.container}>
+        <div className={cls.left}>
+          <Card padded>
+            <Skeleton width={150} height={40} />
+            <Skeleton width={350} count={3} />
+          </Card>
+        </div>
+        <div className={cls.sidebar}></div>
+      </div>
     );
   }
 
@@ -246,189 +126,59 @@ export const ProjectRevisionsShow: React.FC<{
   }
 
   return (
-    <div>
-      <Container noPadding className={cls.container}>
-        <Container.Left2Third className={cls.left}>
-          <Helmet title={`${rev.name} - ${proj.name} ${titleSuffix}`} />
+    <div className={cls.container}>
+      <Helmet title={`${rev.name} - ${proj.name} ${titleSuffix}`} />
 
-          <div className={cls.main}>
-            <div className={cls.card}>
-              {!edit && (
-                <div className={cls.mainTop}>
-                  <h2 className={cls.title}>{rev.name}</h2>
-                  <Flex>
-                    {save && <Loading />}
+      <div className={cls.left}>
+        <RevisionMainCard rev={rev} />
 
-                    {canEdit && (
-                      <Button onClick={() => setEdit(true)}>Edit</Button>
-                    )}
-
-                    {canEdit && (
-                      <Dropdown.Menu>
-                        <Dropdown.Trigger asChild>
-                          <Button display="ghost">
-                            <IconDotsVertical />
-                          </Button>
-                        </Dropdown.Trigger>
-                        <Dropdown.Portal>
-                          <Dropdown.Content>
-                            <Dropdown.Group>
-                              {!rev.locked ? (
-                                <Dropdown.Item asChild>
-                                  <Button
-                                    display="item"
-                                    onClick={() => onMenuClick('lock')}
-                                  >
-                                    <IconLock /> Lock
-                                  </Button>
-                                </Dropdown.Item>
-                              ) : (
-                                <Dropdown.Item asChild>
-                                  <Button
-                                    display="item"
-                                    onClick={() => onMenuClick('unlock')}
-                                  >
-                                    <IconLockAccessOff /> Unlock
-                                  </Button>
-                                </Dropdown.Item>
-                              )}
-                              {!rev.closedAt ? (
-                                <Dropdown.Item asChild>
-                                  <Button
-                                    display="item"
-                                    onClick={() => onMenuClick('close')}
-                                  >
-                                    <IconGitPullRequestClosed /> Close
-                                  </Button>
-                                </Dropdown.Item>
-                              ) : (
-                                <Dropdown.Item asChild>
-                                  <Button
-                                    display="item"
-                                    onClick={() => onMenuClick('reopen')}
-                                  >
-                                    <IconGitPullRequestClosed /> Open
-                                  </Button>
-                                </Dropdown.Item>
-                              )}
-                            </Dropdown.Group>
-                          </Dropdown.Content>
-                        </Dropdown.Portal>
-                      </Dropdown.Menu>
-                    )}
-                  </Flex>
-                </div>
-              )}
-              {edit && (
-                <FakeInput.H2
-                  size="l"
-                  value={title}
-                  placeholder="Title..."
-                  onChange={(e) => setTitle(e.target.value)}
-                />
-              )}
-
-              <div className={cls.subtitle}>
-                <StatusTag
-                  status={rev.status}
-                  locked={rev.locked}
-                  merged={rev.merged}
-                />{' '}
-                opened <Time time={rev.createdAt} />
-              </div>
-
-              <div className={cls.content}>
-                {!edit && <ContentDoc doc={rev.description} />}
-                {edit && (
-                  <Editor
-                    key={rev.id}
-                    content={description}
-                    onUpdate={setDescription}
-                    minHeight="100px"
-                  />
-                )}
-              </div>
-            </div>
-
-            {edit && (
-              <div className={cls.editSave}>
-                <Flex>
-                  <Button display="ghost" onClick={() => setEdit(false)}>
-                    cancel
-                  </Button>
-                  <Button
-                    display="primary"
-                    onClick={onClickSave}
-                    loading={save}
-                  >
-                    Save
-                  </Button>
-                </Flex>
-              </div>
-            )}
-
-            {checks && !edit && (
-              <Checks
-                rev={rev}
-                checks={checks}
-                qp={qp}
-                onClick={patchStatus}
-                canEdit={canEdit}
-              />
-            )}
-          </div>
-
-          {computing && (
-            <div>
-              <Skeleton count={3} />
-            </div>
-          )}
-
-          {flagRevisionApprovalEnabled && !edit && (
-            <ReviewBar rev={rev} qp={qp} />
-          )}
-        </Container.Left2Third>
-        <Container.Right1Third>
-          <div className={cls.sidebar}>
-            <SidebarBlock title="Authors">
-              <UserList list={authors || rev.authors} />
-            </SidebarBlock>
-            {false && (
-              <SidebarBlock title="Reviewers">
-                <UserList list={reviewers || rev!.reviewers} />
-              </SidebarBlock>
-            )}
-            <SidebarBlock title="Activities">
-              <ListActivity
-                orgId={rev.orgId}
-                projectId={rev.projectId}
-                revisionId={rev.id}
-              />
-            </SidebarBlock>
-          </div>
-        </Container.Right1Third>
-      </Container>
-
-      <div>
-        {!computing && (
-          <div className={cls.staged}>
-            {diffs.length > 0 ? (
-              diffs.map((diff) => {
-                return (
-                  <DiffCard
-                    key={diff.blob.typeId}
-                    diff={diff}
-                    url={to}
-                    onRevert={() => null}
-                    defaultHide={diffs.length > 20}
-                  />
-                );
-              })
-            ) : (
-              <div className={cls.noDiff}>Empty diff...</div>
-            )}
+        {computing && (
+          <div>
+            <Skeleton count={3} />
           </div>
         )}
+
+        {flagRevisionApprovalEnabled && <ReviewBar rev={rev} qp={qp} />}
+
+        <div>
+          {!computing && (
+            <div className={cls.staged}>
+              {diffs.length > 0 ? (
+                diffs.map((diff) => {
+                  return (
+                    <DiffCard
+                      key={diff.blob.typeId}
+                      diff={diff}
+                      url={to}
+                      onRevert={() => null}
+                      defaultHide={diffs.length > 20}
+                    />
+                  );
+                })
+              ) : (
+                <Empty title="Empty diff..." />
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className={cls.sidebar}>
+        <SidebarBlock title="Authors">
+          <UserList list={authors || rev.authors} />
+        </SidebarBlock>
+        {false && (
+          <SidebarBlock title="Reviewers">
+            <UserList list={reviewers || rev!.reviewers} />
+          </SidebarBlock>
+        )}
+        <SidebarBlock title="Activities">
+          <ListActivity
+            orgId={rev.orgId}
+            projectId={rev.projectId}
+            revisionId={rev.id}
+          />
+        </SidebarBlock>
       </div>
     </div>
   );

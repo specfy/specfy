@@ -1,20 +1,20 @@
 @import "../../../../styles/theme";
 
 .header {
-  padding: $p-3xl $p-5xl;
+  padding: var(--spc-6xl);
 }
 
 .states {
-  padding: 0 $p-5xl $p-2xl;
+  padding: 0 var(--spc-6xl) var(--spc-6xl) var(--spc-6xl);
 }
 
 .block {
   min-width: 200px;
 
   .label {
-    padding: 0 0 $p-m;
+    padding: 0 0 var(--spc-m);
     font-size: var(--font-s);
-    color: var(--text3);
+    color: var(--text-secondary);
   }
 }
 
@@ -25,7 +25,7 @@
   code,
   code span {
     font-family: $font-code !important;
-    font-size: $font !important;
+    font-size: var(--font) !important;
     font-weight: inherit;
     font-style: inherit;
     font-variant-ligatures: inherit;

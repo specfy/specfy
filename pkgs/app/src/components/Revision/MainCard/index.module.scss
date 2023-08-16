@@ -1,0 +1,36 @@
+@import "../../../styles/theme";
+
+.card {
+  padding: $p-3xl $p-5xl;
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.editSave {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  padding: $p-xl $p-3xl;
+
+  color: $gray-500;
+
+  border-top: 1px solid $gray-100;
+}
+
+.title {
+  margin-bottom: $p-m;
+}
+
+.subtitle {
+  font-size: var(--font-s);
+  color: $gray-400;
+}
+
+.content {
+  padding: $p-2xl 0 0 0;
+}

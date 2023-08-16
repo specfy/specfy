@@ -89,9 +89,7 @@ export const SettingsTeam: React.FC<{
       <div className={cls.header}>
         <div>
           <h2>Team members</h2>
-          <Subdued className={cls.empty}>
-            Invite or manage your project&apos;s members.
-          </Subdued>
+          <Subdued>Manage your project&apos;s members.</Subdued>
         </div>
 
         <Input

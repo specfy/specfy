@@ -11,7 +11,7 @@ $width: math.div($main-col-w, 1.5);
   justify-content: center;
 
   width: $width;
-  height: calc(100vh - $height-header-project-total - ($p-4xl * 2));
+  height: calc(100vh);
   margin: 0 auto;
 }
 
