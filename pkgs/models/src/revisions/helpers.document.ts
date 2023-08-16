@@ -4,7 +4,7 @@ import { nanoid, slugify, titleCase } from '@specfy/core';
 import type { Documents } from '@specfy/db';
 import { defaultMarkdownParser } from 'prosemirror-markdown';
 
-import type { BlockLevelZero, Blocks } from '../documents';
+import type { BlockLevelZero, BlockText, Blocks } from '../documents';
 import type { DBDocument } from '../documents/types.js';
 
 import type {
@@ -20,6 +20,13 @@ const allowListFilename: Record<string, string> = {
 };
 
 export type ParsedUpload = { path: string; content: BlockLevelZero };
+
+export function markdownToProseMirror(content: string): BlockLevelZero {
+  const parse: BlockLevelZero = defaultMarkdownParser.parse(content)?.toJSON();
+  parse.content.forEach(iterNode);
+
+  return parse;
+}
 
 /**
  * Prepare blobs to create, update or delete
@@ -126,11 +133,32 @@ export function correctNode(node: any) {
   }
 }
 
+const mapMarkType: Record<string, any> = {
+  strong: 'bold',
+  em: 'italic',
+};
+
+export function correctMark(node: BlockText) {
+  if (!node.marks) {
+    return;
+  }
+
+  for (const mark of node.marks) {
+    if (mapMarkType[mark.type as string]) {
+      mark.type = mapMarkType[mark.type];
+    }
+  }
+}
+
 /**
  * Iterate nodes recursively
  */
 export function iterNode(node: Blocks) {
-  if (node.type === 'text' || node.type === 'hardBreak') {
+  if (node.type === 'hardBreak') {
+    return;
+  }
+  if (node.type === 'text') {
+    correctMark(node);
     return;
   }
 
@@ -217,14 +245,9 @@ export function uploadToDocuments(
   // ---- Transform content into a ProseMirror object
   const parsed: ParsedUpload[] = [];
   for (const blob of sorted) {
-    const parse: BlockLevelZero = defaultMarkdownParser
-      .parse(blob.content)
-      ?.toJSON();
-    parse.content.forEach(iterNode);
-
     parsed.push({
       path: blob.path,
-      content: parse,
+      content: markdownToProseMirror(blob.content),
     });
   }
 

@@ -1,10 +1,11 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-import { dirname, envs, isProd, nanoid } from '@specfy/core';
+import { envs, isProd, nanoid } from '@specfy/core';
 import { prisma } from '@specfy/db';
+import { sync } from '@specfy/github-sync';
 import type { JobWithOrgProject } from '@specfy/models';
-import { $, execa } from 'execa';
+import { $ } from 'execa';
 import { Octokit } from 'octokit';
 
 import { Job } from '../Job.js';
@@ -177,51 +178,31 @@ export class JobDeploy extends Job {
 
     // Execute deploy
     try {
-      const bin = path.join(
-        dirname,
-        '../../..',
-        'node_modules/.bin/specfy-sync'
+      this.l.info(
+        'Executing',
+        JSON.stringify({ root: this.folderName, projConfig })
       );
-      const args = [
-        bin,
-        'run',
-        '--token',
-        key.id,
-        '--org',
-        job.orgId,
-        '--project',
-        job.projectId!,
-        '--doc',
-        projConfig.documentation.path,
-        !projConfig.documentation.enabled ? '--no-doc' : '',
-        '--stack',
-        projConfig.stack.path,
-        !projConfig.stack.enabled ? '--no-stack' : '',
-        config.autoLayout ? '--auto-layout' : '',
-        this.folderName,
-      ].filter(Boolean);
-      const env = {
-        // Bug in node-fetch that do not resolve localhost correctly
-        SPECFY_HOSTNAME: !isProd
+
+      await sync({
+        orgId: job.orgId,
+        projectId: job.projectId!,
+        token: key.id,
+        root: this.folderName,
+        dryRun: false,
+        stackEnabled: projConfig.stack.enabled,
+        stackPath: path.join(this.folderName, projConfig.stack.path),
+        docEnabled: projConfig.documentation.enabled,
+        docPath: path.join(this.folderName, projConfig.documentation.path),
+        autoLayout: config.autoLayout,
+        hostname: !isProd
           ? envs.API_HOSTNAME?.replace('localhost', '127.0.0.1')
-          : undefined,
-      };
+          : envs.API_HOSTNAME,
+      });
 
-      // TODO: redact secret
-      this.l.info('Executing', JSON.stringify({ args, env }));
-
-      const res = await execa('node', args, { env });
-      this.l.info('Stdout', res.stdout);
-
-      if (res.exitCode !== 0) {
-        this.mark('failed', 'unknown');
-        return;
-      }
+      this.mark('success', 'success');
     } catch (err: unknown) {
       this.mark('failed', 'failed_to_deploy', err);
       return;
     }
-
-    this.mark('success', 'success');
   }
 }

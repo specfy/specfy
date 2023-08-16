@@ -20,6 +20,7 @@
     "@specfy/core": "file:../core",
     "@specfy/db": "file:../db",
     "@specfy/socket": "file:../socket",
+    "@specfy/github-sync": "file:../github-sync",
     "@octokit/core": "5.0.0",
     "@octokit/webhooks": "12.0.3"
   },

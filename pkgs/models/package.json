@@ -18,7 +18,8 @@
   "license": "MIT",
   "dependencies": {
     "@specfy/core": "file:../core",
-    "@specfy/db": "file:../db"
+    "@specfy/db": "file:../db",
+    "@specfy/stack-analyser": "1.4.1"
   },
   "devDependencies": {
     "typescript": "5.1.6"

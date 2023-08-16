@@ -37,6 +37,10 @@ export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
 
   useDebounce(
     () => {
+      if (!project) {
+        return;
+      }
+
       let count = 0;
       const store: Allowed[] = [
         project!,
@@ -135,7 +139,7 @@ export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
     [project, components, documents]
   );
 
-  if (!canEdit) {
+  if (!canEdit || !project) {
     return null;
   }
 

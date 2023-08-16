@@ -1,7 +1,7 @@
-import type { Config } from '@specfy/sync';
 import type { RequiredDeep } from 'type-fest';
 
 import type { BlockLevelZero } from '../documents';
+import type { SyncConfig } from '../sync';
 
 export interface DBProject {
   id: string;
@@ -13,7 +13,7 @@ export interface DBProject {
   links: DBProjectLink[];
 
   githubRepository: string | null;
-  config: RequiredDeep<Omit<Config, 'orgId' | 'projectId'>>;
+  config: RequiredDeep<Omit<SyncConfig, 'orgId' | 'projectId'>>;
 
   createdAt: string;
   updatedAt: string;

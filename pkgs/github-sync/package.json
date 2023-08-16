@@ -1,0 +1,46 @@
+{
+  "name": "@specfy/github-sync",
+  "version": "0.0.1",
+  "description": "",
+  "main": "./build/index.js",
+  "typings": "./build/index.d.ts",
+  "type": "module",
+  "homepage": "https://github.com/specfy/specfy#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/specfy/specfy.git"
+  },
+  "bugs": {
+    "url": "https://github.com/specfy/specfy/issues"
+  },
+  "files": [
+    "build"
+  ],
+  "scripts": {
+    "dev": "tsc -w --preserveWatchOutput",
+    "build": "tsc -p tsconfig.json",
+    "test": "vitest",
+    "lint": "eslint --ext .js,.ts,.tsx ."
+  },
+  "author": "",
+  "license": "ISC",
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "6.3.0",
+    "@typescript-eslint/parser": "6.3.0",
+    "package-json": "8.1.1",
+    "typescript": "5.1.6",
+    "dotenv": "16.3.1"
+  },
+  "dependencies": {
+    "@specfy/stack-analyser": "1.4.1",
+    "@specfy/core": "file:../core",
+    "@specfy/models": "file:../models",
+    "consola": "3.2.3",
+    "figures": "5.0.0",
+    "kleur": "4.1.5",
+    "ora": "6.3.1"
+  }
+}

@@ -1,5 +1,6 @@
 import type { Pagination, Res } from '@specfy/core';
-import type { ConfigDocumentation, ConfigStack } from '@specfy/sync';
+
+import type { SyncConfigDocumentation, SyncConfigStack } from '../sync.js';
 
 import type { DBProject } from './types.js';
 
@@ -30,8 +31,8 @@ export type PostProject = Res<{
     config?:
       | {
           branch?: string | undefined;
-          documentation?: ConfigDocumentation | undefined;
-          stack?: ConfigStack | undefined;
+          documentation?: SyncConfigDocumentation | undefined;
+          stack?: SyncConfigStack | undefined;
         }
       | undefined;
   };

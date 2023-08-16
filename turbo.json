@@ -11,7 +11,7 @@
       "cache": false
     },
     "db:seed": {
-      "cache": true
+      "cache": false
     },
     "build": {
       "outputs": [

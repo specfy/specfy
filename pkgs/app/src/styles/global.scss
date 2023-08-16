@@ -35,7 +35,8 @@ input,
 textarea,
 p,
 ul,
-li {
+li,
+blockquote {
   all: unset;
 }
 
@@ -122,6 +123,9 @@ body * {
   --spc-3xl: 24px;
   --spc-4xl: 28px;
   --spc-5xl: 32px;
+  --spc-6xl: 38px;
+  --spc-7xl: 48px;
+  --spc-8xl: 58px;
 
   // OTHER
   --accent1: var(--indigo-4);

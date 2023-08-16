@@ -38,6 +38,7 @@ function styleDiff(block: Blocks): string {
   if (diffMark.attrs.type === 'removed') {
     return clsDiff.removed;
   }
+
   return '';
 }
 
@@ -57,42 +58,49 @@ export const ContentBlock: React.FC<{
   // Text
   else if (block.type === 'text') {
     let text = <>{block.text}</>;
-    if (block.marks) {
-      for (const mark of block.marks) {
-        if (mark.type === 'diffMark') {
-          if (mark.attrs.type === 'added') {
-            text = (
-              <span className={classnames(clsDiff.added, clsDiff.inline)}>
-                {text}
-              </span>
-            );
-          } else if (mark.attrs.type === 'formatting') {
-            text = (
-              <span className={classnames(clsDiff.formatting, clsDiff.inline)}>
-                {text}
-              </span>
-            );
-          } else {
-            text = (
-              <span className={classnames(clsDiff.removed, clsDiff.inline)}>
-                {text}
-              </span>
-            );
-          }
-        }
+    if (!block.marks) {
+      return text;
+    }
 
-        if (mark.type === 'code') {
-          return <code className="inlineCode">{text}</code>;
-        }
-
-        if (mark.type === 'bold') text = <strong>{text}</strong>;
-        if (mark.type === 'italic') text = <em>{text}</em>;
-        if (mark.type === 'link')
+    for (const mark of block.marks) {
+      if (mark.type === 'diffMark') {
+        if (mark.attrs.type === 'added') {
           text = (
-            <a href={mark.attrs.href} target="_blank" rel="noreferrer">
+            <span className={classnames(clsDiff.added, clsDiff.inline)}>
               {text}
-            </a>
+            </span>
           );
+        } else if (mark.attrs.type === 'formatting') {
+          text = (
+            <span className={classnames(clsDiff.formatting, clsDiff.inline)}>
+              {text}
+            </span>
+          );
+        } else {
+          text = (
+            <span className={classnames(clsDiff.removed, clsDiff.inline)}>
+              {text}
+            </span>
+          );
+        }
+      }
+
+      if (mark.type === 'code') {
+        return <code className={cls.inlineCode}>{text}</code>;
+      }
+
+      if (mark.type === 'bold') {
+        text = <strong>{text}</strong>;
+      } else if (mark.type === 'italic') {
+        text = <em>{text}</em>;
+      } else if (mark.type === 'link') {
+        text = (
+          <a href={mark.attrs.href} target="_blank" rel="noreferrer">
+            {text}
+          </a>
+        );
+      } else {
+        console.warn('Unknown mark', mark.type);
       }
     }
     return text;

@@ -16,3 +16,4 @@ export * from './reviews/index.js';
 export * from './revisions/index.js';
 export * from './typesHasUsers/index.js';
 export * from './users/index.js';
+export * from './sync.js';

@@ -4,8 +4,12 @@ import path from 'node:path';
 import { nanoid, slugify, dirname } from '@specfy/core';
 import type { Orgs, Projects, Users } from '@specfy/db';
 import { prisma } from '@specfy/db';
-import { createDocument, getDocumentTypeId } from '@specfy/models';
 import type { DBDocument, ApiDocument } from '@specfy/models';
+import {
+  createDocument,
+  getDocumentTypeId,
+  markdownToProseMirror,
+} from '@specfy/models';
 
 /**
  * Seed playbook
@@ -226,7 +230,12 @@ export async function seedRFC(
   const docRfc4Json = JSON.parse(
     (
       await fs.readFile(
-        path.join(dirname, '../', 'src/test/seed/document.rfc.json')
+        path.join(
+          dirname,
+          '../',
+          'api',
+          'src/test/__fixtures__/document.rfc.json'
+        )
       )
     ).toString()
   );
@@ -729,6 +738,12 @@ export async function seedDocs(
   { pAnalytics }: { pAnalytics: Projects },
   [u1]: Users[]
 ) {
+  const testmarkdown = (
+    await fs.readFile(
+      path.join(dirname, '../', 'api', 'src/test/__fixtures__/testmarkdown.md')
+    )
+  ).toString();
+
   const res = await prisma.$transaction(async (tx) => {
     const d1 = await createDocument({
       user: u1,
@@ -761,6 +776,7 @@ export async function seedDocs(
       },
       tx,
     });
+
     const d2 = await createDocument({
       user: u1,
       data: {
@@ -774,21 +790,7 @@ export async function seedDocs(
         typeId: null,
         tldr: '',
         name: 'Decisions',
-        content: {
-          content: [
-            {
-              type: 'paragraph',
-              attrs: { uid: 'UidgrRPV001' },
-              content: [
-                {
-                  type: 'text',
-                  text: 'Consequat vitae.',
-                },
-              ],
-            },
-          ],
-          type: 'doc',
-        },
+        content: markdownToProseMirror(testmarkdown),
         locked: false,
       },
       tx,
