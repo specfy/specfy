@@ -128,7 +128,7 @@ export const ComponentView: React.FC<{
                     onNodesChange={onNodesChange}
                   />
                 ) : (
-                  <ComponentIcon data={comp} large />
+                  <ComponentIcon data={comp} large noEmpty />
                 )}
 
                 <TooltipFull

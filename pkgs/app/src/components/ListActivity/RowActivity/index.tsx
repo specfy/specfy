@@ -40,6 +40,7 @@ export const RowActivity: React.FC<{
               size="small"
               colored={false}
               icon={icon}
+              shape="circle"
             />
           </Link>
         ) : (

@@ -44,7 +44,7 @@ export const ContentBlockVoteItem: React.FC<{
         <div>
           <AvatarGroup>
             {['Samuel Bodin', 'Raphael Da', 'Nico Tore'].map((name) => {
-              return <AvatarAuto key={name} name={name} />;
+              return <AvatarAuto key={name} name={name} shape="circle" />;
             })}
           </AvatarGroup>
         </div>

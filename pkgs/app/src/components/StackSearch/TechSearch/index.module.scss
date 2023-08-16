@@ -1,7 +1,7 @@
 @import "../../../styles/theme";
 
 .main {
-  width: 200px;
+  width: 250px;
 }
 
 .inputGroup {
@@ -24,7 +24,7 @@
 
 .groups {
   overflow: scroll;
-  max-height: 250px;
+  max-height: 350px;
   margin-top: $p;
 }
 
@@ -48,26 +48,38 @@
 
   display: grid;
   grid-template-columns: 20px 1fr;
-  gap: $p-l;
+  gap: var(--spc-2xl);
   align-items: center;
 
   padding: 6px $p-l;
 
-  font-size: $font-s;
+  font-size: var(--font);
   color: var(--text2);
 
   &:hover {
     color: var(--text);
     background-color: var(--bg2);
+
+    .icon {
+      background-color: #fff;
+    }
   }
 
   &.focused {
     color: var(--text);
     background-color: var(--bg3);
+
+    .icon {
+      background-color: #fff;
+    }
   }
 
   &.selected {
     color: var(--accent2);
     background-color: var(--bg3);
+
+    .icon {
+      background-color: #fff;
+    }
   }
 }

@@ -28,7 +28,7 @@ const Row: React.FC<{
     <Flex className={cls.row} justify="space-between" align="center">
       <div>
         <Flex gap="l">
-          <AvatarAuto name={item.email} />
+          <AvatarAuto name={item.email} shape="circle" />
           {item.email}
         </Flex>
       </div>

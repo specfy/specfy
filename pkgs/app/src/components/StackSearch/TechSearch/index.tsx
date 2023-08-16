@@ -8,6 +8,7 @@ import { useProjectStore } from '../../../common/store';
 import type { TechInfo } from '../../../common/techs';
 import { internalTypeToText, supportedArray } from '../../../common/techs';
 import { AvatarAuto } from '../../AvatarAuto';
+import { ComponentIcon } from '../../Component/Icon';
 import { Button } from '../../Form/Button';
 import { TooltipFull } from '../../Tooltip';
 
@@ -80,7 +81,9 @@ export const TechSearch: React.FC<{
           return {
             key,
             items: items.filter((item) => {
-              return reg.test(item.name);
+              return (
+                reg.test(item.name) || reg.test(item.key) || reg.test(item.type)
+              );
             }),
           };
         })
@@ -217,7 +220,6 @@ export const TechSearch: React.FC<{
                     );
                   }
 
-                  const Icon = item.Icon;
                   return (
                     <div
                       key={item.key}
@@ -229,7 +231,16 @@ export const TechSearch: React.FC<{
                       role="listitem"
                       onClick={() => onPick(item)}
                     >
-                      {Icon ? <Icon size="1em" /> : <span></span>}
+                      <ComponentIcon
+                        data={{
+                          name: item.name,
+                          techId: item.key,
+                          type: item.type,
+                        }}
+                        noEmpty
+                        large
+                        className={cls.icon}
+                      />
                       {item.name}
                     </div>
                   );

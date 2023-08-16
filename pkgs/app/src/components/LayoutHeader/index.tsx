@@ -120,7 +120,7 @@ export const LayoutHeader: React.FC = () => {
           <Dropdown.Menu>
             <Dropdown.Trigger asChild>
               <button>
-                <AvatarAuto name={user!.name} src={user!.avatarUrl} />
+                <AvatarAuto user={user!} />
               </button>
             </Dropdown.Trigger>
             <Dropdown.Portal>

@@ -52,14 +52,7 @@ export const TeamSummary: React.FC<Required<ListPerms['Querystring']>> = (
           <div className={cls.label}>Admin</div>
           <AvatarGroup>
             {owners.map((perm) => {
-              return (
-                <AvatarAuto
-                  key={perm.id}
-                  name={perm.user.name}
-                  src={perm.user.avatarUrl}
-                  colored={false}
-                />
-              );
+              return <AvatarAuto key={perm.id} user={perm.user} />;
             })}
           </AvatarGroup>
         </Flex>
@@ -68,14 +61,7 @@ export const TeamSummary: React.FC<Required<ListPerms['Querystring']>> = (
             <div className={cls.label}>Reviewers</div>
             <AvatarGroup>
               {reviewers.map((perm) => {
-                return (
-                  <AvatarAuto
-                    key={perm.id}
-                    name={perm.user.name}
-                    src={perm.user.avatarUrl}
-                    colored={false}
-                  />
-                );
+                return <AvatarAuto key={perm.id} user={perm.user} />;
               })}
             </AvatarGroup>
           </Flex>
@@ -85,14 +71,7 @@ export const TeamSummary: React.FC<Required<ListPerms['Querystring']>> = (
             <div className={cls.label}>Contributors</div>
             <AvatarGroup>
               {contributors.map((perm) => {
-                return (
-                  <AvatarAuto
-                    key={perm.id}
-                    name={perm.user.name}
-                    src={perm.user.avatarUrl}
-                    colored={false}
-                  />
-                );
+                return <AvatarAuto key={perm.id} user={perm.user} />;
               })}
             </AvatarGroup>
           </Flex>
@@ -102,14 +81,7 @@ export const TeamSummary: React.FC<Required<ListPerms['Querystring']>> = (
             <div className={cls.label}>Viewers</div>
             <AvatarGroup>
               {viewers.map((perm) => {
-                return (
-                  <AvatarAuto
-                    key={perm.id}
-                    name={perm.user.name}
-                    src={perm.user.avatarUrl}
-                    colored={false}
-                  />
-                );
+                return <AvatarAuto key={perm.id} user={perm.user} />;
               })}
             </AvatarGroup>
           </Flex>

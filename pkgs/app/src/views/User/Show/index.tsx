@@ -45,13 +45,7 @@ export const UserShow: React.FC = () => {
       <Helmet title={`${user.name} ${titleSuffix}`} />
       <div className={cls.main}>
         <Flex gap="l">
-          <AvatarAuto
-            name={user.name}
-            src={user.avatarUrl}
-            single={true}
-            size="xl"
-            colored={false}
-          />
+          <AvatarAuto user={user} size="xl" />
           <h4>{user.name}</h4>
         </Flex>
         <div className={cls.info}>

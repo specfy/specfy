@@ -95,7 +95,7 @@ export const Invite: React.FC = () => {
               gap="l"
               className={cls.content}
             >
-              <AvatarAuto name={user!.name} src={user?.avatarUrl} size="xl" />
+              <AvatarAuto user={user!} size="xl" />
               <IconArrowRight />
               <AvatarAuto org={inv.org} size="xl" />
             </Flex>

@@ -53,7 +53,7 @@ export const DiffCardComponent: React.FC<{
     return (
       <h4>
         <Flex gap="l">
-          <ComponentIcon data={using} large />
+          <ComponentIcon data={using} large noEmpty />
           {hasName && !diff.blob.created ? (
             <UnifiedDiff key={hasName.key} diff={hasName} />
           ) : (

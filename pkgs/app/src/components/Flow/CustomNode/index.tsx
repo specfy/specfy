@@ -100,7 +100,7 @@ const CustomNode: React.FC<NodeProps<NodeData>> = ({
         maxHeight={1000}
       />
       <div className={cls.title}>
-        <ComponentIcon data={data} />
+        <ComponentIcon data={data} noEmpty />
         <div className={cls.label}>{data.name}</div>
       </div>
 
@@ -272,7 +272,7 @@ export const PreviewNode: React.FC<{
             onNodesChange={onNodesChange}
           />
         ) : (
-          <ComponentIcon data={node.data} large />
+          <ComponentIcon data={node.data} large noEmpty />
         )}
         <TooltipFull
           msg={

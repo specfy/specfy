@@ -12,12 +12,7 @@ export const UserCard: React.FC<{
 }> = ({ user, size }) => {
   return (
     <Flex gap="l" className={classnames(cls.userCard, size && cls[size])}>
-      <AvatarAuto
-        name={user.name}
-        size={size}
-        src={user.avatarUrl}
-        colored={false}
-      />
+      <AvatarAuto user={user} size={size} />
       {user.name}
     </Flex>
   );

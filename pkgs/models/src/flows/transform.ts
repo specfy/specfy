@@ -64,8 +64,8 @@ export function getEdgeMarkers(data: EdgeData) {
   if (data.write) {
     edge.markerEnd = {
       type: 'arrowclosed' as any,
-      width: 10,
-      height: 10,
+      width: 14,
+      height: 14,
     };
   }
   return edge;

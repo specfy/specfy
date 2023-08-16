@@ -56,14 +56,7 @@ const Row: React.FC<{
           {item.authors.length > 1 && (
             <AvatarGroup>
               {item.authors.map((user) => {
-                return (
-                  <AvatarAuto
-                    key={user.id}
-                    name={user.name}
-                    colored={false}
-                    size="small"
-                  />
-                );
+                return <AvatarAuto key={user.id} user={user} size="small" />;
               })}
             </AvatarGroup>
           )}
@@ -71,8 +64,7 @@ const Row: React.FC<{
             <Flex gap="m">
               <AvatarAuto
                 key={item.authors[0].id}
-                name={item.authors[0].name}
-                colored={false}
+                user={item.authors[0]}
                 size="small"
               />
               {item.authors[0].name}

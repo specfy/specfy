@@ -1,6 +1,6 @@
 import * as Avatar from '@radix-ui/react-avatar';
 import { acronymize, stringToColor } from '@specfy/core/src/avatar';
-import type { ApiOrgPublic } from '@specfy/models';
+import type { ApiOrgPublic, ApiUser } from '@specfy/models';
 import classNames from 'classnames';
 
 import cls from './index.module.scss';
@@ -8,9 +8,11 @@ import cls from './index.module.scss';
 interface PropsOrg {
   org: ApiOrgPublic;
 }
+interface PropsUser {
+  user: Pick<ApiUser, 'name' | 'avatarUrl'>;
+}
 interface PropsBase {
   name: string;
-  shape?: 'square';
   src?: string | null;
 }
 type Props = {
@@ -19,8 +21,9 @@ type Props = {
   colored?: boolean;
   single?: boolean;
   icon?: React.ReactNode;
+  shape?: 'square' | 'circle';
   style?: { color: string; backgroundColor: string };
-} & (PropsBase | PropsOrg);
+} & (PropsBase | PropsOrg | PropsUser);
 
 export const AvatarAuto: React.FC<Props> = ({
   className,
@@ -30,7 +33,7 @@ export const AvatarAuto: React.FC<Props> = ({
   let name: string;
   let acr: string;
   let style;
-  let shape: PropsBase['shape'];
+  let shape: Props['shape'] = props.shape;
   let src: PropsBase['src'];
 
   if ('org' in props) {
@@ -42,6 +45,11 @@ export const AvatarAuto: React.FC<Props> = ({
       color: `var(--${props.org.color}-11)`,
     };
     src = props.org.avatarUrl;
+  } else if ('user' in props) {
+    shape = 'circle';
+    name = props.user.name;
+    src = props.user.avatarUrl;
+    acr = acronymize(props.user.name);
   } else {
     name = props.name;
     acr = acronymize(props.name);

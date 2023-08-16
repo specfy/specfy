@@ -17,8 +17,8 @@
 
   background-color: #fff;
   border: 1px solid $gray-100;
-  border-radius: $border-radius;
-  box-shadow: 0 2px 5px 1px rgb(0 0 0 / 6%);
+  border-radius: 1px;
+  box-shadow: 0 1px 1px 0 rgb(0 0 0 / 10%);
 
   transition: box-shadow 0.2s ease-in;
 
@@ -40,7 +40,7 @@
     // background-color: transparent;
     border-color: $indigo-100;
     border-width: 1px;
-    border-radius: $border-radius-s;
+    border-radius: 1px;
     box-shadow: none;
 
     .title {

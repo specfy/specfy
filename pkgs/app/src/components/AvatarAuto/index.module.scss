@@ -14,7 +14,6 @@
   vertical-align: middle;
 
   border: 1px solid transparent;
-  border-radius: 100%;
 
   &.default {
     width: 32px;
@@ -44,7 +43,11 @@
   }
 
   &.square {
-    border-radius: $border-radius;
+    border-radius: var(--radius3);
+  }
+
+  &.circle {
+    border-radius: 100%;
   }
 
   &.icon {
