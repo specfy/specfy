@@ -66,12 +66,11 @@ jobs:
 
       # Not running test in parallel for readability
       - name: Run Test API
-        run: FORCE_COLOR=1 turbo run test:ci --log-prefix=none --log-order=stream --color --concurrency=1
+        run: npm run test:ci
 
       - name: Coverage
         uses: codecov/codecov-action@v3
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          files: ./pkgs/api/coverage/cobertura-coverage.xml,./pkgs/app/coverage/cobertura-coverage.xml,./pkgs/models/coverage/cobertura-coverage.xml
 
 
