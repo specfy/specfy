@@ -1,10 +1,8 @@
-@import "../../styles/theme";
-
 .card {
   position: relative;
 
   background-color: #fff;
-  border: 1px solid $gray-100;
+  border: 1px solid var(--border1);
   border-radius: var(--radius2);
   box-shadow: var(--shadow1);
 
@@ -33,11 +31,8 @@
 
   padding: var(--spc-l) var(--spc-xl);
 
-  color: $gray-500;
-
-  background-color: $gray-50;
   background-color: transparent;
-  border-top: 1px solid $gray-100;
+  border-top: 1px solid var(--border1);
 }
 
 .content {

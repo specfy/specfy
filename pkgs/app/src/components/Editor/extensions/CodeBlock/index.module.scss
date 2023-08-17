@@ -1,12 +1,10 @@
-@import "../../../../styles/theme";
-
 .wrapper {
   position: relative;
 
   margin-bottom: var(--spc-l);
   padding: var(--spc-xl) var(--spc-2xl);
 
-  background-color: $gray-50;
+  background-color: var(--bg1);
   border-radius: var(--radius2);
 
   .pre,

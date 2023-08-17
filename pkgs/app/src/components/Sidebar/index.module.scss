@@ -1,5 +1,3 @@
-@import "../../styles/theme";
-
 .wrapper {
   position: sticky;
   z-index: 100;
@@ -35,7 +33,7 @@
     }
 
     .inner {
-      background-color: $gray-100;
+      background-color: var(--border1);
     }
 
     .group {

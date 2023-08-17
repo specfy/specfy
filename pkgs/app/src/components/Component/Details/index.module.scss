@@ -1,4 +1,3 @@
-@import "../../../styles/theme";
 @import "../../../styles/mixin";
 
 .details {
@@ -9,8 +8,4 @@
 
 .blockTitle {
   margin-bottom: var(--spc-xl);
-}
-
-.add {
-  color: $gray-600;
 }

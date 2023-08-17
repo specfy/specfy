@@ -132,7 +132,7 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
           </Flex>
 
           {!org.githubInstallationId && (
-            <Banner type="info">
+            <Banner type="warning">
               <Flex justify="space-between" grow>
                 <div>
                   Your organization is not linked to a Github organization.

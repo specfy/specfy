@@ -1,5 +1,3 @@
-@import "../../../styles/theme";
-
 $border-width: 10px;
 
 .header {
@@ -11,7 +9,7 @@ $border-width: 10px;
 
   font-size: var(--font-s);
 
-  border-bottom: 1px solid $gray-200;
+  border-bottom: 1px solid var(--border2);
 }
 
 .diff {
@@ -110,7 +108,7 @@ $border-width: 10px;
 
   .item {
     background-color: transparent;
-    border: 1px solid $gray-200;
+    border: 1px solid var(--border2);
   }
 
   >.added {

@@ -1,9 +1,7 @@
-@import "../../../styles/theme";
-
 .block {
   margin-bottom: var(--spc-2xl);
-  border: 1px solid $gray-200;
-  border-radius: var(--radius3);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius1);
 }
 
 .header {
@@ -13,7 +11,7 @@
   gap: var(--spc-m);
   align-items: center;
 
-  padding: var(--spc-xl);
+  padding: var(--spc-2xl) var(--spc-4xl);
 
   font-size: var(--font-l);
   font-weight: 600;
@@ -25,7 +23,7 @@
 
 .content {
   overflow: hidden;
-  padding: 0 var(--spc-xl) var(--spc-m) var(--spc-xl);
+  padding: 0 var(--spc-4xl) var(--spc-4xl) var(--spc-4xl);
 
   &.close {
     height: 0;

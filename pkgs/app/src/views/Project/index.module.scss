@@ -1,5 +1,3 @@
-@import "../../styles/theme";
-
 .project {
   display: flex;
   flex-grow: 1;
@@ -10,34 +8,6 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-}
-
-
-.links {
-  padding: var(--spc-2xl) 0;
-  border-top: 1px solid $gray-4;
-}
-
-.link {
-  display: flex;
-  gap: var(--spc-m);
-
-  padding: var(--spc-xs) var(--spc-l);
-
-  font-size: var(--font);
-  line-height: var(--lh-m);
-  ;
-  color: $gray-9 !important;
-
-  border-radius: 4px;
-
-  transition: background-color 0.25s ease-in-out;
-
-  &:hover {
-    color: $gray-10 !important;
-    text-decoration: none;
-    background-color: $gray-4 !important;
-  }
 }
 
 .content {

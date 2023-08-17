@@ -1,5 +1,3 @@
-@import "../../../../styles/theme";
-
 .header {
   padding: var(--spc-6xl);
 }
@@ -19,7 +17,7 @@
 }
 
 .logs {
-  background-color: $gray-50 !important;
+  background-color: var(--bg2) !important;
   border: none !important;
 
   code,

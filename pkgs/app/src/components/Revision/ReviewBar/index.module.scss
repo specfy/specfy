@@ -1,5 +1,3 @@
-@import "../../../styles/theme";
-
 .bar {
   position: sticky;
   z-index: 1;
@@ -34,10 +32,10 @@
 
 .reviewButton {
   &.success {
-    background-color: $green-600;
+    background-color: var(--green-9);
 
     &:hover {
-      background-color: $green-500;
+      background-color: var(--green-9);
     }
   }
 }

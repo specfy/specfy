@@ -1,5 +1,3 @@
-@import "../../styles/theme";
-
 .content {
   font-size: var(--font);
 
@@ -105,7 +103,7 @@
       text-align: left;
       vertical-align: top;
 
-      border: 1px solid $slate-200;
+      border: 1px solid var(--border2);
 
       >* {
         margin-bottom: 0;
@@ -119,7 +117,7 @@
       color: var(--text);
       text-align: left;
 
-      background-color: $slate-100;
+      background-color: var(--bg1);
     }
 
     p {
@@ -222,7 +220,7 @@ ul.taskList {
 
 .codeDiff {
   margin-bottom: var(--spc-l);
-  border: 1px solid $gray-50;
+  border: 1px solid var(--border1);
 }
 
 .code {
@@ -231,7 +229,7 @@ ul.taskList {
   margin-bottom: var(--spc-l);
   padding: var(--spc-xl) var(--spc-2xl) !important;
 
-  background-color: $gray-50 !important;
+  background-color: var(--bg2) !important;
   border: none !important;
 
   code,

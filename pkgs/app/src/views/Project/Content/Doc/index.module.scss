@@ -1,5 +1,3 @@
-@import "../../../../styles/theme";
-
 .header {
   display: flex;
   grid-template-columns: 1fr 40px;
@@ -9,7 +7,7 @@
 .type {
   padding: 0 var(--spc-l) 0 0;
   font-weight: 600;
-  color: $gray-600
+  color: var(--text-secondary);
 }
 
 .content {

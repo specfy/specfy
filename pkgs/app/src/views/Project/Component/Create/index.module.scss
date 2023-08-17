@@ -1,8 +1,4 @@
-@use "sass:math";
-
-@import "../../../../styles/theme";
-
-$width: math.div(var(--w-col), 1.5);
+$width: calc(var(--w-col) / 1.5);
 
 .form {
   display: flex;

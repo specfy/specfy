@@ -38,6 +38,8 @@ Global:
   ✔ API: Clean models and group everything together @done(23-07-14 16:41)
   - Push built image in Docker Hub
 
+SCSS:
+  - Button: use --variable instead of overwrite color/bg with !important
 
 Infrastructure:
   ✔ Terraform setup @done(23-04-19 11:10)

@@ -1,5 +1,5 @@
 /* stylelint-disable selector-class-pattern */
-@import "../../../styles/theme";
+
 @import "../../../styles/mixin";
 
 .textarea {
@@ -10,7 +10,6 @@
   min-height: 50px;
 
   line-height: var(--lh);
-  ;
   color: var(--text);
 
   background-color: #fff;

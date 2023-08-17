@@ -1,5 +1,3 @@
-@import "../../../../styles/theme";
-
 .group {
   margin-bottom: 0;
 }
@@ -10,9 +8,10 @@
 
   padding: var(--spc) var(--spc-2xl);
 
-  color: $gray-400;
+  color: var(--text-secondary);
 
-  background-color: rgba($blue-50, 0.5);
+
+  background-color: var(--indigo-2);
 }
 
 .accordion {

@@ -1,22 +1,20 @@
-@import "../../../styles/theme";
-
 .item {
-  border: 1px solid $gray-100;
+  border: 1px solid var(--border1);
   border-radius: var(--radius3);
   transition: opacity 0.25s ease-in-out;
 
 
   &.accepted {
     .result {
-      color: $emerald-500;
-      border-color: $emerald-500;
+      color: var(--green-9);
+      border-color: var(--green-8);
     }
   }
 
   &.rejected {
     .result {
-      color: $orange-500;
-      border-color: $orange-500;
+      color: var(--amber-9);
+      border-color: var(--amber-8);
     }
   }
 }
@@ -29,9 +27,6 @@
   justify-content: space-between;
 
   padding: var(--spc-l) var(--spc-xl);
-
-  color: $gray-600;
-
 }
 
 .label {
@@ -47,7 +42,7 @@
 
   padding: 0 var(--spc-m);
 
-  border: 1px solid $gray-100;
+  border: 1px solid var(--border1);
   border-radius: var(--radius3);
 }
 

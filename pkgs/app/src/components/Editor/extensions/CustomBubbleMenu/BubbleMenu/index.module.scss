@@ -1,5 +1,3 @@
-@import "../../../../../styles/theme";
-
 .menuWrapper {
   position: relative;
 }
@@ -11,7 +9,7 @@
   padding: var(--spc-s) var(--spc-m);
 
   background-color: #fff;
-  border: 1px solid $gray-3;
+  border: 1px solid var(--border2);
   border-radius: var(--radius3);
   box-shadow: var(--shadow2), 0 3px 15px -3px rgb(13 20 33 / 13%);
 
@@ -30,7 +28,7 @@
     transition: background-color 0.25s ease-in-out, color 0.25s ease-in-out;
 
     &:hover {
-      background-color: $gray-4;
+      background-color: var(--bg2);
     }
 
     &.isActive {

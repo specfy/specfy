@@ -3,6 +3,7 @@ import type { Change } from 'diff';
 import { useMemo } from 'react';
 
 import type { ComputedForDiff } from '../../../../types/blobs';
+import { Subdued } from '../../../Text';
 
 import cls from './index.module.scss';
 
@@ -66,11 +67,7 @@ export const Split: React.FC<{
                   {key in LABEL_MAP ? LABEL_MAP[key] : key}
                 </div>
               )}
-              {!left.length ? (
-                <span className={cls.empty}>Empty...</span>
-              ) : (
-                <>{left}</>
-              )}
+              {!left.length ? <Subdued>Empty...</Subdued> : <>{left}</>}
             </>
           )}
         </div>
@@ -80,11 +77,9 @@ export const Split: React.FC<{
               {key in LABEL_MAP ? LABEL_MAP[key] : key}
             </div>
           )}
-          {!right.length && left.length > 0 && (
-            <span className={cls.empty}>Deleted...</span>
-          )}
+          {!right.length && left.length > 0 && <Subdued>Deleted...</Subdued>}
           {!right.length && !left.length ? (
-            <span className={cls.empty}>Empty...</span>
+            <Subdued>Empty...</Subdued>
           ) : (
             <>{right}</>
           )}

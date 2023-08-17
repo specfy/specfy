@@ -1,5 +1,5 @@
 /* stylelint-disable selector-class-pattern */
-@import "./theme";
+
 
 table.diff {
   --diff-background-color: initial;
@@ -30,7 +30,7 @@ table.diff {
 
   .diff-gutter-col {
     width: 5ch;
-    background-color: $gray-50;
+    background-color: var(--bg2);
   }
 
   tr {
@@ -43,7 +43,7 @@ table.diff {
         padding: 0 var(--spc-m);
         padding-top: 4px;
         font-size: var(--font-s);
-        color: $gray-500;
+        color: var(--text)
       }
 
       &.diff-code {

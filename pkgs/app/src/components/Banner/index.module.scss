@@ -1,5 +1,3 @@
-@import "../../styles/theme";
-
 .banner {
   display: flex;
   align-items: center;
@@ -15,34 +13,34 @@
   }
 
   &.error {
-    border-color: $red-100;
+    border-color: var(--tomato-7);
 
     .icon {
-      color: $red-500;
+      color: var(--tomato-8);
     }
   }
 
   &.warning {
-    border-color: $yellow-100;
+    border-color: var(--amber-7);
 
     .icon {
-      color: $yellow-500;
+      color: var(--amber-8);
     }
   }
 
   &.info {
-    border-color: $blue-100;
+    border-color: var(--indigo-7);
 
     .icon {
-      color: $blue-500;
+      color: var(--indigo-8);
     }
   }
 
   &.success {
-    border-color: $green-100;
+    border-color: var(--green-7);
 
     .icon {
-      color: $green-500;
+      color: var(--green-8);
     }
   }
 }
