@@ -17,7 +17,7 @@
 
   &[data-orientation="horizontal"] {
     .link {
-      padding: $p $p-l;
+      padding: var(--spc) var(--spc-l);
 
       &::after {
         content: " ";

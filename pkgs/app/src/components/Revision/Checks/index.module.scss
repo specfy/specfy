@@ -10,7 +10,7 @@
   align-items: center;
   justify-content: space-between;
 
-  padding: $p-xl $p-5xl;
+  padding: var(--spc-xl) var(--spc-5xl);
 
   color: $gray-500;
 
@@ -18,7 +18,7 @@
 
   .label {
     display: flex;
-    gap: $p-m;
+    gap: var(--spc-m);
     align-items: center;
 
     :global(> .tabler-icon) {
@@ -50,7 +50,7 @@
   }
 
   &:last-child {
-    padding: $p-2xl $p-5xl;
+    padding: var(--spc-2xl) var(--spc-5xl);
     background-color: var(--bg1);
     border-bottom: none;
 
@@ -62,7 +62,7 @@
 
 .mergeAction {
   display: flex;
-  gap: $p-m;
+  gap: var(--spc-m);
   align-items: center;
 }
 

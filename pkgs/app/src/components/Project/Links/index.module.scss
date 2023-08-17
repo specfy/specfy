@@ -7,15 +7,15 @@
   }
 
   &.opened {
-    margin: (-$p-m) (-$p-m);
-    padding: $p-m !important;
+    margin: (-var(--spc-m)) (-var(--spc-m));
+    padding: var(--spc-m) !important;
   }
 }
 
 .links {
   display: flex;
   gap: var(--spc-xl);
-  margin-top: $p-l;
+  margin-top: var(--spc-l);
 }
 
 .link {
@@ -37,13 +37,13 @@
 .edits {
   display: flex;
   flex-direction: column;
-  gap: $p-l;
+  gap: var(--spc-l);
   align-items: flex-start;
 }
 
 .edit {
   display: flex;
-  gap: $p-m;
+  gap: var(--spc-m);
   width: 100%;
 }
 

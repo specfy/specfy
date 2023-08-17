@@ -22,19 +22,19 @@
     font-size: var(--font-s);
 
     .input {
-      padding: $p-s $p-l;
+      padding: var(--spc-s) var(--spc-l);
     }
 
     .before {
-      padding: $p-s $p-l;
+      padding: var(--spc-s) var(--spc-l);
 
       &+.input {
-        padding-left: $p-s;
+        padding-left: var(--spc-s);
       }
     }
 
     .after {
-      padding: $p-s $p-l;
+      padding: var(--spc-s) var(--spc-l);
     }
   }
 
@@ -43,19 +43,19 @@
     font-size: var(--font);
 
     .input {
-      padding: $p $p-l;
+      padding: var(--spc) var(--spc-l);
     }
 
     .before {
-      padding: $p $p $p $p-l;
+      padding: var(--spc) var(--spc) var(--spc) var(--spc-l);
 
       &+.input {
-        padding-left: $p;
+        padding-left: var(--spc);
       }
     }
 
     .after {
-      padding: $p $p-l $p $p;
+      padding: var(--spc) var(--spc-l) var(--spc) var(--spc);
     }
   }
 
@@ -64,19 +64,19 @@
     font-size: var(--font);
 
     .input {
-      padding: $p-m $p-xl;
+      padding: var(--spc-m) var(--spc-xl);
     }
 
     .before {
-      padding: $p $p $p $p-l;
+      padding: var(--spc) var(--spc) var(--spc) var(--spc-l);
 
       &+.input {
-        padding-left: $p;
+        padding-left: var(--spc);
       }
     }
 
     .after {
-      padding: $p $p-l $p $p;
+      padding: var(--spc) var(--spc-l) var(--spc) var(--spc);
     }
   }
 
@@ -86,7 +86,7 @@
 
     .input,
     .before {
-      padding: $p-l $p-xl;
+      padding: var(--spc-l) var(--spc-xl);
     }
   }
 

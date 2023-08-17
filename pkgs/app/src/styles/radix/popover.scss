@@ -42,8 +42,8 @@
 
 .rx_popoverClose {
   position: absolute;
-  top: $p;
-  right: $p;
+  top: var(--spc);
+  right: var(--spc);
 
   display: inline-flex;
   align-items: center;

@@ -8,12 +8,12 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: $p-l;
+  margin-bottom: var(--spc-l);
 }
 
 .actions {
   display: flex;
-  gap: $p-m;
+  gap: var(--spc-m);
 }
 
 .title {
@@ -21,14 +21,14 @@
 }
 
 .item {
-  padding: $p-xl $p $p-2xl $p-xl !important;
+  padding: var(--spc-xl) var(--spc) var(--spc-2xl) var(--spc-xl) !important;
   border: 1px solid var(--border2);
   border-radius: $border-radius-s;
 }
 
 .info {
   display: flex;
-  gap: $p;
+  gap: var(--spc);
   font-size: var(--font-s);
   color: var(--text2)
 }
@@ -36,6 +36,6 @@
 .list {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: $p-xl;
-  margin-top: $p-5xl;
+  gap: var(--spc-xl);
+  margin-top: var(--spc-5xl);
 }

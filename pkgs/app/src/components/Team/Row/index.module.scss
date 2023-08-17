@@ -5,7 +5,7 @@
   align-items: center;
   justify-content: space-between;
 
-  padding: $p-l $p-2xl;
+  padding: var(--spc-l) var(--spc-2xl);
 
   border-bottom: 1px solid var(--border1);
 
@@ -23,7 +23,7 @@
 
 .right {
   display: flex;
-  gap: $p-m;
+  gap: var(--spc-m);
   align-items: center;
 }
 

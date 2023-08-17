@@ -1,7 +1,7 @@
 @import "../../../styles/theme";
 
 .card {
-  padding: $p-3xl $p-5xl;
+  padding: var(--spc-3xl) var(--spc-5xl);
 }
 
 .top {
@@ -15,7 +15,7 @@
   align-items: center;
   justify-content: flex-end;
 
-  padding: $p-xl $p-3xl;
+  padding: var(--spc-xl) var(--spc-3xl);
 
   color: $gray-500;
 
@@ -23,7 +23,7 @@
 }
 
 .title {
-  margin-bottom: $p-m;
+  margin-bottom: var(--spc-m);
 }
 
 .subtitle {
@@ -32,5 +32,5 @@
 }
 
 .content {
-  padding: $p-2xl 0 0 0;
+  padding: var(--spc-2xl) 0 0 0;
 }

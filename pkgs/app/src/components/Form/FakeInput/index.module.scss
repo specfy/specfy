@@ -9,7 +9,7 @@
 }
 
 .input {
-  @include editable(4px $p-m);
+  @include editable(4px var(--spc-m));
 
   font-weight: $font-semi;
   line-height: 0;

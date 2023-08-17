@@ -1,8 +1,8 @@
 @import "../../../styles/theme";
 
 .card {
-  margin: $p-m 0 0 40px;
-  padding: $p-l $p-2xl;
+  margin: var(--spc-m) 0 0 40px;
+  padding: var(--spc-l) var(--spc-2xl);
 
   background-color: white;
   border-radius: $border-radius-s;

@@ -12,7 +12,7 @@
   display: flex;
   gap: 0;
 
-  padding: $p-s $p-m;
+  padding: var(--spc-s) var(--spc-m);
 
   background-color: #fff;
   border: 1px solid $gray-3;
@@ -22,7 +22,7 @@
   button {
     cursor: pointer;
 
-    padding: $p-s $p;
+    padding: var(--spc-s) var(--spc);
 
     font-size: var(--font);
     line-height: 0;

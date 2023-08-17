@@ -10,13 +10,13 @@
   justify-content: center;
 
   width: 100%;
-  padding: $p-4xl;
+  padding: var(--spc-4xl);
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: $p-m;
+  gap: var(--spc-m);
   justify-content: center;
 
   width: 600px;
@@ -25,8 +25,8 @@
 
 .title {
   display: flex;
-  gap: $p-m;
-  margin-top: $p-2xl;
+  gap: var(--spc-m);
+  margin-top: var(--spc-2xl);
 }
 
 .input {

@@ -24,7 +24,7 @@ $width: 180px;
   flex-direction: column;
 
   width: $width;
-  padding: $p;
+  padding: var(--spc);
 
   transition: transform 0.25s ease-in-out;
 
@@ -42,10 +42,10 @@ $width: 180px;
 
   display: grid;
   grid-template-columns: 30px auto 20px;
-  gap: $p-l;
+  gap: var(--spc-l);
   align-items: center;
 
-  padding: $p-xs $p-xs;
+  padding: var(--spc-xs) var(--spc-xs);
 
   font-size: var(--font);
   font-weight: 600;
@@ -59,7 +59,7 @@ $width: 180px;
 
 .icon {
   width: 30px;
-  padding: $p;
+  padding: var(--spc);
 
   font-size: var(--font-m);
   line-height: 0;

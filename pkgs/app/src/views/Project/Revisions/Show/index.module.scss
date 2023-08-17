@@ -16,7 +16,7 @@
 .sidebar {
   display: flex;
   flex-direction: column;
-  gap: $p-3xl;
+  gap: var(--spc-3xl);
   padding: var(--spc-4xl) 0;
 }
 
@@ -24,7 +24,7 @@
   display: flex;
   grid-area: staged;
   flex-direction: column;
-  gap: $p-3xl;
+  gap: var(--spc-3xl);
 
   max-width: $main-col-w;
 }

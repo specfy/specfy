@@ -8,14 +8,14 @@
 }
 
 .label {
-  margin-bottom: $p-s;
+  margin-bottom: var(--spc-s);
   font-size: var(--font-s);
   color: var(--text3);
 }
 
 .message {
   min-height: 25px;
-  padding: $p 0 0 0;
+  padding: var(--spc) 0 0 0;
   font-size: var(--font-s);
   color: var(--tomato-10);
 }

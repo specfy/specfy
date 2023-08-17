@@ -7,7 +7,7 @@ $width: math.div($main-col-w, 1.5);
 .form {
   display: flex;
   flex-direction: column;
-  gap: $p-m;
+  gap: var(--spc-m);
   justify-content: center;
 
   width: $width;
@@ -21,11 +21,11 @@ $width: math.div($main-col-w, 1.5);
 
 .title {
   display: flex;
-  gap: $p-m;
+  gap: var(--spc-m);
 }
 
 .input {
-  padding: $p-l;
+  padding: var(--spc-l);
   font-size: var(--font-l);
 }
 

@@ -4,10 +4,10 @@ $border-width: 10px;
 
 .header {
   display: flex;
-  gap: $p;
+  gap: var(--spc);
   align-items: center;
 
-  padding: $p-l $p-m;
+  padding: var(--spc-l) var(--spc-m);
 
   font-size: var(--font-s);
 
@@ -20,7 +20,7 @@ $border-width: 10px;
   border-left: $border-width solid transparent;
 
   .diffContent {
-    padding: 0 0 $p-4xl 0;
+    padding: 0 0 var(--spc-4xl) 0;
   }
 
   &.hide {
@@ -34,19 +34,19 @@ $border-width: 10px;
     padding-left: 0;
 
     .title {
-      padding: 0 $p-4xl;
+      padding: 0 var(--spc-4xl);
     }
   }
 }
 
 .title {
-  padding: 0 $p-4xl;
+  padding: 0 var(--spc-4xl);
 }
 
 // Diff
 .added {
-  margin: 0 (-$p-4xl) 0 (-$p-4xl - $border-width);
-  padding-left: $p-4xl;
+  margin: 0 (-var(--spc-4xl)) 0 (-var(--spc-4xl) - $border-width);
+  padding-left: var(--spc-4xl);
   background-color: $color-added;
   border-left: $border-width solid $color-added-hi;
 
@@ -63,8 +63,8 @@ $border-width: 10px;
 }
 
 .removed {
-  margin: 0 (-$p-4xl) 0 (-$p-4xl - $border-width);
-  padding-left: $p-4xl;
+  margin: 0 (-var(--spc-4xl)) 0 (-var(--spc-4xl) - $border-width);
+  padding-left: var(--spc-4xl);
 
   text-decoration: line-through;
 
@@ -81,10 +81,10 @@ $border-width: 10px;
 }
 
 .content {
-  padding: $p-2xl $p-4xl 0 $p-4xl;
+  padding: var(--spc-2xl) var(--spc-4xl) 0 var(--spc-4xl);
 
   >h3 {
-    margin-bottom: $p-2xl !important;
+    margin-bottom: var(--spc-2xl) !important;
   }
 }
 
@@ -101,11 +101,11 @@ $border-width: 10px;
 }
 
 .line {
-  padding-top: $p-xl;
+  padding-top: var(--spc-xl);
 
   >div {
-    padding-top: $p-s;
-    padding-bottom: $p-s;
+    padding-top: var(--spc-s);
+    padding-bottom: var(--spc-s);
   }
 
   .item {
@@ -135,11 +135,11 @@ $border-width: 10px;
 .techs {
   display: flex;
   flex-wrap: wrap;
-  gap: $p-m;
+  gap: var(--spc-m);
 }
 
 .data {
   display: flex;
   flex-direction: column;
-  gap: $p-m;
+  gap: var(--spc-m);
 }

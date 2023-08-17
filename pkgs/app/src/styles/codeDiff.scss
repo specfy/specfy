@@ -40,14 +40,14 @@ table.diff {
       border: none;
 
       &.diff-gutter {
-        padding: 0 $p-m;
+        padding: 0 var(--spc-m);
         padding-top: 4px;
         font-size: var(--font-s);
         color: $gray-500;
       }
 
       &.diff-code {
-        padding: 2px $p-l;
+        padding: 2px var(--spc-l);
       }
     }
   }

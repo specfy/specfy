@@ -28,7 +28,7 @@
   justify-content: space-between;
 
   height: 38px;
-  padding: $p-m $p-xl ;
+  padding: var(--spc-m) var(--spc-xl);
 
   font-size: var(--font-s);
   font-weight: 600;
@@ -42,10 +42,10 @@
   overflow: scroll;
   display: flex;
   flex-direction: column;
-  gap: $p-2xl;
+  gap: var(--spc-2xl);
 
   max-height: 500px;
-  padding: $p-l $p-xl;
+  padding: var(--spc-l) var(--spc-xl);
 }
 
 .label {
@@ -54,7 +54,7 @@
 }
 
 .empty {
-  padding: $p $p-xl;
+  padding: var(--spc) var(--spc-xl);
   font-size: var(--font-s);
   color: var(--text1);
 }
@@ -77,7 +77,7 @@
 // ---- BLOCK
 // Changeset
 .change {
-  gap: $p-s;
+  gap: var(--spc-s);
   font-size: var(--font-s);
 
   >div {
@@ -90,7 +90,7 @@
 // Main node
 .xy {
   display: flex;
-  gap: $p-l;
+  gap: var(--spc-l);
   font-size: var(--font-s);
   color: var(--text2);
 }
@@ -100,7 +100,7 @@
   display: flex;
   justify-content: center;
   min-height: 110px;
-  padding: $p-l $p-2xl $p-5xl $p-2xl;
+  padding: var(--spc-l) var(--spc-2xl) var(--spc-5xl) var(--spc-2xl);
 }
 
 // ---- BLOCK
@@ -108,7 +108,7 @@
 .relations {
   table-layout: fixed;
   width: 100%;
-  margin: 0 0 $p-l 0
+  margin: 0 0 var(--spc-l) 0
 }
 
 .relation {
@@ -125,7 +125,7 @@
   .source,
   .target {
     overflow: hidden;
-    padding: 0 $p-2xl;
+    padding: 0 var(--spc-2xl);
     text-overflow: ellipsis;
   }
 
@@ -138,7 +138,7 @@
   .to {
     position: relative;
     width: 40px;
-    padding: 0 $p-xl;
+    padding: 0 var(--spc-xl);
   }
 
   .direction {

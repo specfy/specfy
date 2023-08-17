@@ -14,15 +14,15 @@
 
 
 .links {
-  padding: $p-2xl 0;
+  padding: var(--spc-2xl) 0;
   border-top: 1px solid $gray-4;
 }
 
 .link {
   display: flex;
-  gap: $p-m;
+  gap: var(--spc-m);
 
-  padding: $p-xs $p-l;
+  padding: var(--spc-xs) var(--spc-l);
 
   font-size: var(--font);
   line-height: $line-height-m;

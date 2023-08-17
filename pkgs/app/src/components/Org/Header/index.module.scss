@@ -28,7 +28,7 @@
 
 .org {
   display: flex;
-  gap: $p-l;
+  gap: var(--spc-l);
   align-items: center;
   min-width: 200px;
 

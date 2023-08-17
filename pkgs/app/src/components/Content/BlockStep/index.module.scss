@@ -1,7 +1,7 @@
 @import "../../../styles/theme";
 
 .block {
-  margin-bottom: $p-2xl;
+  margin-bottom: var(--spc-2xl);
   border: 1px solid $gray-200;
   border-radius: $border-radius;
 }
@@ -10,10 +10,10 @@
   cursor: pointer;
 
   display: flex;
-  gap: $p-m;
+  gap: var(--spc-m);
   align-items: center;
 
-  padding: $p-xl;
+  padding: var(--spc-xl);
 
   font-size: var(--font-l);
   font-weight: 600;
@@ -25,7 +25,7 @@
 
 .content {
   overflow: hidden;
-  padding: 0 $p-xl $p-m $p-xl;
+  padding: 0 var(--spc-xl) var(--spc-m) var(--spc-xl);
 
   &.close {
     height: 0;

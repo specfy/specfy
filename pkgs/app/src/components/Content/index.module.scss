@@ -100,7 +100,7 @@
 
       box-sizing: border-box;
       min-width: 1em;
-      padding: $p $p-l;
+      padding: var(--spc) var(--spc-l);
 
       text-align: left;
       vertical-align: top;
@@ -172,15 +172,15 @@
 }
 
 ul.taskList {
-  padding-inline-start: $p;
+  padding-inline-start: var(--spc);
   list-style: none;
 
   li {
     display: flex;
-    gap: $p;
+    gap: var(--spc);
     align-items: center;
 
-    margin-bottom: $p-l;
+    margin-bottom: var(--spc-l);
     margin-left: 0;
 
     >p {
@@ -221,15 +221,15 @@ ul.taskList {
 }
 
 .codeDiff {
-  margin-bottom: $p-l;
+  margin-bottom: var(--spc-l);
   border: 1px solid $gray-50;
 }
 
 .code {
   display: flex !important;
 
-  margin-bottom: $p-l;
-  padding: $p-xl $p-2xl !important;
+  margin-bottom: var(--spc-l);
+  padding: var(--spc-xl) var(--spc-2xl) !important;
 
   background-color: $gray-50 !important;
   border: none !important;
@@ -254,18 +254,18 @@ ul.taskList {
 .vote {
   display: flex;
   flex-direction: column;
-  gap: $p-xl;
-  margin-bottom: $p-3xl;
+  gap: var(--spc-xl);
+  margin-bottom: var(--spc-3xl);
 }
 
 .added {
-  padding: 0 $p-2xl;
+  padding: 0 var(--spc-2xl);
   background-color: $color-added;
   border-left: 10px solid $color-added-hi;
 }
 
 .removed {
-  padding: 0 $p-2xl;
+  padding: 0 var(--spc-2xl);
 
   text-decoration: line-through;
 

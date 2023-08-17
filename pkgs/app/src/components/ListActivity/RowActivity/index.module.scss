@@ -28,7 +28,7 @@
 .main {
   position: relative;
   display: flex;
-  gap: $p-l;
+  gap: var(--spc-l);
 }
 
 .desc {

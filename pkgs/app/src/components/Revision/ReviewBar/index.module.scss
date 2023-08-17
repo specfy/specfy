@@ -19,16 +19,16 @@
 .actions {
   display: flex;
   flex-direction: row;
-  gap: $p-m;
+  gap: var(--spc-m);
   align-items: center;
   justify-content: flex-end;
 
   height: 58px;
-  padding: $p-2xl $p-5xl;
+  padding: var(--spc-2xl) var(--spc-5xl);
 }
 
 .text {
-  padding: $p-3xl $p-5xl;
+  padding: var(--spc-3xl) var(--spc-5xl);
   border-top: 1px solid var(--border2);
 }
 

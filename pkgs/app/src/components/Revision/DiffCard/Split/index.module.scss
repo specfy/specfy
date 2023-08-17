@@ -6,7 +6,7 @@
 
   &.withLabel:not(.isCreated) {
     .right {
-      padding-top: $p-4xl + 1px;
+      padding-top: var(--spc-4xl) + 1px;
     }
   }
 }
@@ -22,7 +22,7 @@
 
 .left,
 .right {
-  padding: $p $p-xl;
+  padding: var(--spc) var(--spc-xl);
 }
 
 .left {
@@ -40,6 +40,6 @@
 }
 
 .label {
-  padding: $p-s 0;
+  padding: var(--spc-s) 0;
   font-weight: 600;
 }

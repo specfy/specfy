@@ -7,13 +7,13 @@
 }
 
 .type {
-  padding: 0 $p-l 0 0;
+  padding: 0 var(--spc-l) 0 0;
   font-weight: 600;
   color: $gray-600
 }
 
 .content {
-  padding: $p-2xl 0 0 0;
+  padding: var(--spc-2xl) 0 0 0;
   font-size: var(--font-m);
 }
 
@@ -30,6 +30,6 @@
 .col3 {
   display: flex;
   flex-direction: column;
-  gap: $p-5xl;
-  padding: $p-2xl $p-5xl;
+  gap: var(--spc-5xl);
+  padding: var(--spc-2xl) var(--spc-5xl);
 }

@@ -2,7 +2,7 @@
 
 .searchWrapper {
   display: flex;
-  gap: $p-l;
+  gap: var(--spc-l);
   align-items: center;
   justify-content: space-between;
 

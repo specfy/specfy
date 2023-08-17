@@ -28,7 +28,7 @@
   }
 }
 
-@mixin editable($padding: $p $p-m, $margin: (-$p) (-$p-m)) {
+@mixin editable($padding: var(--spc) var(--spc-m), $margin: (-var(--spc)) (-var(--spc-m))) {
   @include focusable;
 
   cursor: text;
@@ -48,7 +48,7 @@
   cursor: pointer;
 
   display: inline-flex;
-  gap: $p-s;
+  gap: var(--spc-s);
   align-items: center;
 
   color: $gray-700;
@@ -64,10 +64,10 @@
   cursor: pointer;
 
   display: flex;
-  gap: $p-s;
+  gap: var(--spc-s);
   align-items: center;
 
-  padding: $p $p-l;
+  padding: var(--spc) var(--spc-l);
 
   color: $gray-700;
 

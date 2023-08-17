@@ -22,25 +22,25 @@
 
   &.s {
     height: var(--h-s);
-    padding: $p-s $p-l;
+    padding: var(--spc-s) var(--spc-l);
     font-size: var(--font-s);
   }
 
   &.m {
     height: var(--h-m);
-    padding: $p $p-l;
+    padding: var(--spc) var(--spc-l);
     font-size: var(--font);
   }
 
   &.l {
     height: var(--h-l);
-    padding: $p-m $p-xl;
+    padding: var(--spc-m) var(--spc-xl);
     font-size: var(--font);
   }
 
   &.xl {
     height: var(--h-xl);
-    padding: $p-l $p-xl;
+    padding: var(--spc-l) var(--spc-xl);
     font-size: var(--font-l);
   }
 

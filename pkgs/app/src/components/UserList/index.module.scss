@@ -12,14 +12,14 @@
 
 .user {
   display: flex;
-  gap: $p-m;
+  gap: var(--spc-m);
   align-items: center;
   justify-content: space-between;
 }
 
 .remove {
   width: auto !important;
-  height: $p-2xl !important;
-  padding: 1px $p-s 2px $p-s !important;
+  height: var(--spc-2xl) !important;
+  padding: 1px var(--spc-s) 2px var(--spc-s) !important;
   line-height: $line-height-s;
 }

@@ -2,7 +2,7 @@
 
 .team {
   display: inline-flex;
-  gap: $p-5xl;
+  gap: var(--spc-5xl);
 }
 
 .block {
@@ -10,7 +10,7 @@
 }
 
 .label {
-  padding: 0 0 $p-m;
+  padding: 0 0 var(--spc-m);
   font-size: var(--font-s);
   color: var(--text-secondary);
 }

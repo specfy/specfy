@@ -7,7 +7,7 @@
 .inputGroup {
   .input {
     width: 100%;
-    padding: $p-l $p-2xl $p-l $p-l;
+    padding: var(--spc-l) var(--spc-2xl) var(--spc-l) var(--spc-l);
     border-bottom: 1px solid var(--border1);
 
     &::placeholder {
@@ -17,30 +17,30 @@
 
   .actions {
     position: absolute;
-    top: $p-s;
-    right: $p-s;
+    top: var(--spc-s);
+    right: var(--spc-s);
   }
 }
 
 .groups {
   overflow: scroll;
   max-height: 350px;
-  margin-top: $p;
+  margin-top: var(--spc);
 }
 
 .group {
-  padding-top: $p-l;
+  padding-top: var(--spc-l);
   border-bottom: 1px solid var(--border1)
 }
 
 .name {
-  padding: 0 $p-l;
+  padding: 0 var(--spc-l);
   font-weight: 500;
   color: var(--text2)
 }
 
 .rows {
-  padding: $p 2px;
+  padding: var(--spc) 2px;
 }
 
 .row {
@@ -51,7 +51,7 @@
   gap: var(--spc-2xl);
   align-items: center;
 
-  padding: 6px $p-l;
+  padding: 6px var(--spc-l);
 
   font-size: var(--font);
   color: var(--text2);

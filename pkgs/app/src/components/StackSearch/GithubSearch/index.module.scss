@@ -6,12 +6,12 @@
 
 .select {
   display: flex;
-  gap: $p-l;
+  gap: var(--spc-l);
   align-items: center;
   justify-content: space-between;
 
   width: 100%;
-  padding: $p-m $p-xl;
+  padding: var(--spc-m) var(--spc-xl);
 
   font-size: var(--font-m);
 
@@ -22,12 +22,12 @@
 
 .pick {
   display: flex;
-  gap: $p-l;
+  gap: var(--spc-l);
   align-items: center;
 }
 
 .input {
-  padding: $p $p;
+  padding: var(--spc) var(--spc);
   border-color: transparent;
 }
 
@@ -35,11 +35,11 @@
   cursor: pointer;
 
   display: flex;
-  gap: $p-l;
+  gap: var(--spc-l);
   align-items: center;
 
 
-  padding: $p-l $p-2xl;
+  padding: var(--spc-l) var(--spc-2xl);
 
   font-size: var(--font);
   color: var(--text4);
@@ -59,6 +59,6 @@
 }
 
 .empty {
-  padding: $p-l $p-2xl;
+  padding: var(--spc-l) var(--spc-2xl);
   color: var(--text3);
 }

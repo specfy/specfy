@@ -9,5 +9,5 @@
 .container {
   display: grid;
   grid-template-columns: 200px 750px;
-  gap: $p-2xl;
+  gap: var(--spc-2xl);
 }

@@ -1,11 +1,11 @@
 @import "../../../../styles/theme";
 
 .list {
-  padding: $p-4xl $p-4xl;
+  padding: var(--spc-4xl) var(--spc-4xl);
 }
 
 .item {
-  padding: $p-m $p-xl;
+  padding: var(--spc-m) var(--spc-xl);
 
   .title {
     font-size: var(--font-m);
@@ -20,7 +20,7 @@
 }
 
 .categories {
-  padding: $p-4xl $p-4xl;
+  padding: var(--spc-4xl) var(--spc-4xl);
 }
 
 .category {
@@ -29,7 +29,7 @@
   min-width: 31%;
 
   // width: max-content;
-  padding: $p-xl $p-3xl;
+  padding: var(--spc-xl) var(--spc-3xl);
   border: 1px solid var(--border1);
   border-radius: $border-radius;
 

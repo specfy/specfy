@@ -4,7 +4,7 @@
 .details {
   display: flex;
   flex-direction: column;
-  gap: $p-2xl;
+  gap: var(--spc-2xl);
 }
 
 .blockTitle {

@@ -44,8 +44,8 @@
     box-shadow: none;
 
     .title {
-      gap: $p-s;
-      margin: -$p-2xl - $p-s 0 0 -4px;
+      gap: var(--spc-s);
+      margin: -var(--spc-2xl) - var(--spc-s) 0 0 -4px;
       font-weight: 600;
       color: $gray-400;
     }
@@ -69,7 +69,7 @@
     overflow: hidden;
     display: inline-block;
 
-    padding: $p;
+    padding: var(--spc);
 
     font-size: 13px;
     line-height: $line-height-s;
@@ -185,7 +185,7 @@
     width: 180px;
     height: 48px;
     margin-top: 10px;
-    padding: 0 $p-xl;
+    padding: 0 var(--spc-xl);
 
     .label {
       font-size: var(--font);

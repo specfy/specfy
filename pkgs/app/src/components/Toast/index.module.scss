@@ -8,14 +8,14 @@
 
   display: flex;
   flex-direction: column;
-  gap: $p-l;
+  gap: var(--spc-l);
 
   list-style: none;
 }
 
 .toast {
   width: 220px;
-  padding: $p-l $p-xl;
+  padding: var(--spc-l) var(--spc-xl);
 
   line-height: var(--font-l);
 
@@ -43,5 +43,5 @@
 }
 
 .show {
-  margin-top: $p-m;
+  margin-top: var(--spc-m);
 }

@@ -54,7 +54,7 @@
 
       li {
         display: flex;
-        gap: $p;
+        gap: var(--spc);
         margin-left: 0;
 
         >label {

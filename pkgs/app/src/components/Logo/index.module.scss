@@ -3,7 +3,7 @@
 .logo {
   display: grid;
   grid-template-columns: 1fr 4fr;
-  gap: $p-m;
+  gap: var(--spc-m);
   align-items: center;
 
   width: 132px;

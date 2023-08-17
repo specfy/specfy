@@ -1,7 +1,7 @@
 @import "../../styles/theme";
 
 .updatedAt {
-  margin-bottom: $p-xl;
+  margin-bottom: var(--spc-xl);
   font-size: var(--font-s);
   color: var(--text-secondary);
 }

@@ -2,7 +2,7 @@
 
 .staging {
   display: flex;
-  gap: $p-xl;
+  gap: var(--spc-xl);
   align-items: center;
   justify-content: space-between;
 

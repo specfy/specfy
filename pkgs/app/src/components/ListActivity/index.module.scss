@@ -4,9 +4,9 @@
 .groups {
   display: flex;
   flex-direction: column;
-  gap: $p-3xl;
+  gap: var(--spc-3xl);
 }
 
 .groups {
-  gap: $p-5xl;
+  gap: var(--spc-5xl);
 }

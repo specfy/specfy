@@ -9,7 +9,7 @@ $min-height: 34px;
   align-items: flex-start;
 
   min-height: $min-height;
-  margin-bottom: $p-3xl;
+  margin-bottom: var(--spc-3xl);
 
   line-height: $line-height-m;
 
@@ -39,7 +39,7 @@ $min-height: 34px;
 
 .item {
   display: inline-flex;
-  gap: $p;
+  gap: var(--spc);
   align-items: center;
 
   min-width: 134px;

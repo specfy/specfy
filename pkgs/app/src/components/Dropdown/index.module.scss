@@ -4,7 +4,7 @@
 .button {
   @include button;
 
-  padding: $p;
+  padding: var(--spc);
 }
 
 
