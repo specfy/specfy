@@ -1,5 +1,4 @@
-import { IconEdit, IconEye, IconPlus } from '@tabler/icons-react';
-import classNames from 'classnames';
+import { IconPlus } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 import { useDebounce } from 'react-use';
 
@@ -21,11 +20,10 @@ import type {
   ComponentBlobWithDiff,
 } from '../../../../types/blobs';
 import { Button } from '../../../Form/Button';
-import { TooltipFull } from '../../../Tooltip';
 
 import cls from './index.module.scss';
 
-export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
+export const Staging: React.FC<{ showBadge: boolean }> = () => {
   const edit = useEdit();
   const { currentPerm } = useAuth();
   const { project } = useProjectStore();
@@ -145,59 +143,29 @@ export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
 
   return (
     <div className={cls.staging}>
-      <TooltipFull
-        msg={
-          isEditing
-            ? 'Click to disable edition'
-            : canEdit
-            ? 'Click to enable edition'
-            : 'You are a viewer'
-        }
-        side="bottom"
-      >
-        <button>
-          {isEditing ? (
-            <div
-              className={classNames(
-                cls.edit,
-                showBadge && staging.count > 0 && cls.badge
-              )}
-              role="button"
-              tabIndex={0}
-              onClick={() => edit.enable(false)}
-            >
-              <IconEdit />
-            </div>
-          ) : (
-            <div
-              className={cls.edit}
-              role="button"
-              tabIndex={0}
-              onClick={() => edit.enable(true)}
-            >
-              <IconEye />
-            </div>
-          )}
-        </button>
-      </TooltipFull>
       {isEditing ? (
-        <Link to={`/${project!.orgId}/${project!.slug}/revisions/current`}>
-          <Button display="primary" size="l">
-            {staging.count} Changes
+        <Button onClick={() => edit.enable(false)} size="l" display="ghost">
+          Editing
+        </Button>
+      ) : (
+        <Button onClick={() => edit.enable(true)} size="l" display="ghost">
+          Viewing
+        </Button>
+      )}
+      <div className={cls.action}>
+        {staging.count > 0 && (
+          <Link to={`/${project!.orgId}/${project!.slug}/revisions/current`}>
+            <Button display="primary" size="s">
+              {staging.count} Changes
+            </Button>
+          </Link>
+        )}
+        <Link to={`/${project!.orgId}/${project!.slug}/component/new`}>
+          <Button size="s">
+            <IconPlus />
           </Button>
         </Link>
-      ) : (
-        <div>
-          <Button onClick={() => edit.enable(true)} size="l">
-            <IconEdit /> Edit
-          </Button>
-        </div>
-      )}
-      <Link to={`/${project!.orgId}/${project!.slug}/component/new`}>
-        <Button size="l">
-          <IconPlus />
-        </Button>
-      </Link>
+      </div>
     </div>
   );
 };

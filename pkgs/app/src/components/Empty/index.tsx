@@ -14,7 +14,7 @@ export const Empty: React.FC<{
         <p>Your search for &quot;{search}&quot; did not return any results</p>
       )}
       {desc && <p>{desc}</p>}
-      {action}
+      {action && <div className={cls.action}>{action}</div>}
     </div>
   );
 };

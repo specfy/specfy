@@ -143,7 +143,6 @@ export async function sync({
       'Output',
       kleur.green(file)
     );
-    console.log(stack.toJson());
   } else {
     l.log(kleur.bold().yellow(`${figures.info} Stack Skipped`));
   }

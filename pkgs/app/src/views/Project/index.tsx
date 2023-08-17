@@ -21,6 +21,7 @@ import { Loading } from '../../components/Loading';
 import { NotFound } from '../../components/NotFound';
 import { OrgMenu, OrgSwitcher } from '../../components/Org/Header';
 import { ProjectMenu, ProjectSwitcher } from '../../components/Project/Header';
+import { Staging } from '../../components/Project/Header/Staging';
 import * as Sidebar from '../../components/Sidebar';
 import { useAuth } from '../../hooks/useAuth';
 import type { RouteProject } from '../../types/routes';
@@ -127,7 +128,11 @@ export const Project: React.FC = () => {
   }
 
   if (!org || !proj) {
-    return <NotFound />;
+    return (
+      <div className={cls.project}>
+        <NotFound />
+      </div>
+    );
   }
 
   return (
@@ -140,6 +145,7 @@ export const Project: React.FC = () => {
             <OrgMenu org={org} />
           </Sidebar.Group>
           <Sidebar.Group switcher={<ProjectSwitcher />}>
+            <Staging showBadge />
             <ProjectMenu proj={proj} params={params} />
           </Sidebar.Group>
 
