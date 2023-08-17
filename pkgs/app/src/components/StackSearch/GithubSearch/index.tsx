@@ -13,7 +13,7 @@ import cls from './index.module.scss';
 function getDefault(search: string) {
   return {
     id: -1,
-    name: search,
+    name: `Create "${search}"`,
     fullName: search,
     url: '',
     private: false,
@@ -112,7 +112,13 @@ export const GithubSearch = forwardRef<
           <button ref={ref} className={cls.select}>
             {pick && (
               <div className={cls.pick}>
-                {pick.id !== -1 && <SiGithub size={'1em'} />} {pick.name}
+                {pick.id !== -1 ? (
+                  <>
+                    <SiGithub size={'1em'} /> {pick.name}{' '}
+                  </>
+                ) : (
+                  pick?.fullName
+                )}
               </div>
             )}
             {!pick && 'Select repository...'} <IconSelector />

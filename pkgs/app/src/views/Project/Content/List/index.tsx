@@ -14,7 +14,7 @@ import { useDocumentsStore } from '../../../../common/store';
 import { titleSuffix } from '../../../../common/string';
 import { Container } from '../../../../components/Container';
 import { Flex } from '../../../../components/Flex';
-import { Time } from '../../../../components/Time';
+import { UpdatedAt } from '../../../../components/UpdatedAt';
 import type { RouteProject } from '../../../../types/routes';
 
 import cls from './index.module.scss';
@@ -85,9 +85,7 @@ export const ProjectContentList: React.FC<{
                     `${TYPE_TO_TEXT[item.type]}-${item.typeId} - `}
                   {item.name}
                 </Link>
-                <div className={cls.subtitle}>
-                  Updated <Time time={item.updatedAt} />
-                </div>
+                <UpdatedAt time={item.updatedAt} />
               </div>
             );
           })}

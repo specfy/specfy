@@ -1,8 +1,6 @@
-@import "../../../styles/theme";
-
 .merge {
   background-color: #fff;
-  border-top: 1px solid $gray-100;
+  border-top: 1px solid var(--border1);
 }
 
 .checkLine {
@@ -10,73 +8,73 @@
   align-items: center;
   justify-content: space-between;
 
-  padding: $p-xl $p-5xl;
+  padding: var(--spc-xl) var(--spc-5xl);
 
-  color: $gray-500;
+  color: var(--text4);
 
   border-bottom: 1px solid var(--border1);
 
   .label {
     display: flex;
-    gap: $p-m;
+    gap: var(--spc-m);
     align-items: center;
 
     :global(> .tabler-icon) {
-      font-size: $font-l;
-      color: $gray-400;
+      font-size: var(--font-l);
+      color: var(--text);
     }
   }
 
   &.success {
     .label :global(> .tabler-icon) {
-      color: $green-600;
+      color: var(--green-8);
     }
   }
 
   &.warning {
-    color: $orange-600;
+    color: var(--amber-9);
 
     .label :global(> .tabler-icon) {
-      color: $orange-600;
+      color: var(--amber-8);
     }
   }
 
   &.danger {
-    color: $red-600;
+    color: var(--tomato-9);
 
     .label :global(> .tabler-icon) {
-      color: $red-600;
+      color: var(--tomato-8);
     }
   }
 
   &:last-child {
-    padding: $p-2xl $p-5xl;
+    padding: var(--spc-2xl) var(--spc-5xl);
     background-color: var(--bg1);
     border-bottom: none;
 
     &.merged {
-      background-color: $purple-50;
+      background-color: var(--purple-3);
     }
   }
 }
 
 .mergeAction {
   display: flex;
-  gap: $p-m;
+  gap: var(--spc-m);
   align-items: center;
 }
 
 .mergeButton {
   &.success {
     color: #fff;
-    background-color: $green-600;
+    background-color: var(--green-9);
 
     &:hover {
-      background-color: $green-500;
+      background-color: var(--green-8) !important;
     }
   }
 
   &.merged {
-    color: $purple-700;
+    color: var(--purple-10);
   }
 }

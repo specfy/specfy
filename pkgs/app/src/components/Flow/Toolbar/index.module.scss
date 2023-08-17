@@ -1,6 +1,3 @@
-@import "../../../styles/theme";
-
-
 .menu {
   pointer-events: none;
 
@@ -8,12 +5,12 @@
   z-index: 100;
 
   display: flex;
-  gap: $p-l;
+  gap: var(--spc-l);
   align-items: center;
   justify-content: flex-end;
 
   width: 100%;
-  padding: $p-l $p-l;
+  padding: var(--spc-l) var(--spc-l);
 
   opacity: 0;
 
@@ -25,7 +22,7 @@
 
   &.top {
     justify-content: flex-end;
-    padding: $p;
+    padding: var(--spc);
   }
 
   &.bottom {
@@ -50,12 +47,12 @@
   display: flex;
 
   background-color: #fff;
-  border-radius: $border-radius;
-  box-shadow: $box-shadow2;
+  border-radius: var(--radius3);
+  box-shadow: var(--shadow2);
 
   &.dark {
-    padding: $p-s $p-m $p-s $p-xl;
-    font-size: $font-xs;
+    padding: var(--spc-s) var(--spc-m) var(--spc-s) var(--spc-xl);
+    font-size: var(--font-xs);
     color: white;
     background-color: var(--bg10);
   }
@@ -68,12 +65,12 @@
   flex-direction: column;
   align-items: center;
 
-  padding: $p-m;
+  padding: var(--spc-m);
 
-  font-size: $font-s;
+  font-size: var(--font-s);
 
   background-color: #fff;
-  border-radius: $border-radius;
+  border-radius: var(--radius3);
 
   &:hover {
     background-color: var(--bg2);

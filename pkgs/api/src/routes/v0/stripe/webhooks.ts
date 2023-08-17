@@ -80,7 +80,6 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
               continue;
             }
 
-            console.log('cancelling', sub, price);
             await stripe.subscriptions.cancel(sub.id);
           }
         }
@@ -123,7 +122,6 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         const data = event.data.object as Stripe.Subscription;
         const price = data.items.data[0].price;
 
-        console.log('created', data);
         await prisma.orgs.updateMany({
           where: {
             stripeCustomerId: data.customer as string,

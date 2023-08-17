@@ -1,5 +1,3 @@
-@import "../../styles/theme";
-
 .wrapper {
   position: sticky;
   z-index: 100;
@@ -12,6 +10,10 @@
   }
 }
 
+.logo {
+  height: 24px;
+}
+
 .sidebar {
   z-index: 100;
 
@@ -22,21 +24,16 @@
 
   background-color: #fff;
 
-  transition: transform 0.25s $trst-smooth, width 0.25s $trst-smooth;
-
+  transition: transform 0.25s var(--anim-smooth), width 0.25s var(--anim-smooth);
 
   &.collapsed {
     &.sidebar {
       overflow: hidden;
-      width: 74px;
+      width: 53px;
     }
 
     .inner {
-      background-color: $gray-100;
-    }
-
-    .collapser {
-      transform: translateX(228px);
+      background-color: var(--border1);
     }
 
     .group {
@@ -51,92 +48,48 @@
   flex-direction: column;
 
   width: 250px;
-  height: 100%;
+  height: 100vh;
 
   border-right: 1px solid var(--border2);
-}
 
-.header {
-  display: flex;
-  gap: $p-m;
-  align-items: center;
-
-  height: $height-header-project;
-  padding: $p-2xl $p-l;
-
-  font-size: $font-l;
-
-  border-bottom: 1px solid var(--border2);
-
-  .label {
-    overflow: hidden;
-    display: flex;
-    gap: $p-s;
-    margin-left: 7px;
-
-    a {
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+  .header {
+    padding: var(--spc-2xl);
   }
 
-  a {
+  .content {
+    overflow: scroll;
+  }
+}
+
+.userDropdown {
+  width: 250px;
+  padding: var(--spc-xl) var(--spc-2xl);
+  line-height: var(--lh-s);
+  ;
+
+  strong {
     display: block;
-    color: $gray-800;
-    white-space: pre;
+    font-size: var(--font-m);
+    font-weight: 600;
+    line-height: var(--lh-m);
   }
-}
-
-.logo {
-  width: 42px;
-  height: 42px;
-  font-size: $font;
-  line-height: $line-height-3xl;
 }
 
 .collapser {
   position: absolute;
   z-index: 1000;
-  top: 27px;
-  right: -13px;
+  top: 20px;
+  right: -18px;
 
   opacity: 0;
   background-color: #fff;
   border: 1px solid var(--border2);
   border-radius: 10px;
-  box-shadow: $box-shadow;
+  box-shadow: var(--shadow1);
 
   transition: opacity 0.25s ease-in, transform 0.25s ease-in-out;
 
   &:hover {
     opacity: 1;
   }
-}
-
-.project {
-  overflow: hidden;
-
-  .smallOrg {
-    margin: 2px 0 -4px 7px;
-    font-size: $font-xs;
-    color: $gray-500;
-  }
-
-  .label {
-    line-height: 30px;
-  }
-}
-
-
-.content {
-  position: relative;
-
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-
-  height: 100%;
-
-  transition: opacity 0.25s $trst-smooth;
 }

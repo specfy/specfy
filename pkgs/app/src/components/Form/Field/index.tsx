@@ -26,8 +26,9 @@ export const FieldCheckbox: React.FC<{
   name: string;
   children: React.ReactNode;
   error?: string;
+  showError?: boolean;
   label: string;
-}> = ({ name, error, label, children }) => {
+}> = ({ name, error, label, children, showError = true }) => {
   return (
     <Form.Field name={name} className={classNames(cls.field)}>
       <Flex gap="l">
@@ -36,9 +37,11 @@ export const FieldCheckbox: React.FC<{
         </Form.Control>
         <Form.Label htmlFor={name}>{label}</Form.Label>
       </Flex>
-      <Form.Message className={cls.message}>
-        {error && <div>{error}</div>}{' '}
-      </Form.Message>
+      {showError && (
+        <Form.Message className={cls.message}>
+          {error && <div>{error}</div>}{' '}
+        </Form.Message>
+      )}
     </Form.Field>
   );
 };

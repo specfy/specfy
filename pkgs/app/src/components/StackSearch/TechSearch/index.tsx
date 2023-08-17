@@ -210,11 +210,7 @@ export const TechSearch: React.FC<{
                         role="listitem"
                         onClick={() => onPick(item)}
                       >
-                        <AvatarAuto
-                          name={item.name}
-                          size="small"
-                          shape="square"
-                        />
+                        <AvatarAuto name={item.name} size="s" shape="square" />
                         {item.name}
                       </div>
                     );

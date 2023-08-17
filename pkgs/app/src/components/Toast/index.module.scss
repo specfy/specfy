@@ -1,27 +1,25 @@
-@import "../../styles/theme";
-
 .portal {
   position: fixed;
   z-index: 9989892;
-  top: $height-header + 16px;
+  top: 16px;
   right: 16px;
 
   display: flex;
   flex-direction: column;
-  gap: $p-l;
+  gap: var(--spc-l);
 
   list-style: none;
 }
 
 .toast {
   width: 220px;
-  padding: $p-l $p-xl;
+  padding: var(--spc-l) var(--spc-xl);
 
-  line-height: $font-l;
+  line-height: var(--font-l);
 
   background-color: #fff;
-  border-radius: $border-radius;
-  box-shadow: $box-shadow3;
+  border-radius: var(--radius3);
+  box-shadow: var(--shadow3);
 
 
   &.success {
@@ -39,9 +37,9 @@
 
 .icon {
   width: 20px;
-  font-size: $font-m;
+  font-size: var(--font-m);
 }
 
 .show {
-  margin-top: $p-m;
+  margin-top: var(--spc-m);
 }

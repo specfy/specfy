@@ -1,25 +1,122 @@
 import type { ApiOrg } from '@specfy/models';
-import { IconApps, IconHome, IconSettings } from '@tabler/icons-react';
+import {
+  IconApps,
+  IconChevronDown,
+  IconHome,
+  IconPlus,
+  IconSettings,
+} from '@tabler/icons-react';
+import classNames from 'classnames';
 import { useState, useMemo, useEffect } from 'react';
 import { useLocation, Link, useParams } from 'react-router-dom';
 
+import { useListOrgs } from '../../../api';
+import { isError } from '../../../api/helpers';
+import { useOrgStore } from '../../../common/store';
 import * as Menu from '../../../components/Menu';
 import type { RouteOrg } from '../../../types/routes';
+import { AvatarAuto } from '../../AvatarAuto';
+import * as Dropdown from '../../Dropdown';
 import { Flex } from '../../Flex';
 
 import cls from './index.module.scss';
 
-export const OrgHeader: React.FC<{ org: ApiOrg }> = () => {
+export const OrgSwitcher: React.FC = () => {
+  const storeOrg = useOrgStore();
+
+  const params = useParams<Partial<RouteOrg>>();
+  const orgsQuery = useListOrgs();
+  const [current, setCurrent] = useState<ApiOrg>();
+
+  useEffect(() => {
+    if (!orgsQuery.data) {
+      return;
+    }
+
+    storeOrg.fill(orgsQuery.data.data);
+  }, [orgsQuery.data]);
+
+  useEffect(() => {
+    if (!orgsQuery.data || isError(orgsQuery.data)) {
+      return;
+    }
+
+    for (const org of orgsQuery.data.data) {
+      if (org.id === params.org_id) {
+        setCurrent(org);
+        storeOrg.setCurrent(org);
+        return;
+      }
+    }
+  }, [orgsQuery.data, params.org_id]);
+
+  if (!current) {
+    return null;
+  }
+
+  return (
+    <div>
+      <Dropdown.Menu>
+        <Dropdown.Trigger asChild>
+          <button className={cls.switcher}>
+            <div className={cls.name}>
+              <AvatarAuto org={current} size="s" />
+              {current.name}
+            </div>
+            <IconChevronDown />
+          </button>
+        </Dropdown.Trigger>
+        <Dropdown.Portal>
+          <Dropdown.Content>
+            <Dropdown.Group>
+              {orgsQuery.data?.data.map((org) => {
+                return (
+                  <Dropdown.Item key={org.id} asChild>
+                    <Link
+                      to={`/${org.id}`}
+                      className={classNames(
+                        cls.org,
+                        current.id === org.id && cls.current
+                      )}
+                    >
+                      <AvatarAuto org={org} /> {org.name}
+                    </Link>
+                  </Dropdown.Item>
+                );
+              })}
+            </Dropdown.Group>
+            <Dropdown.Separator />
+            <Dropdown.Group>
+              <Dropdown.Item asChild>
+                <Link to="/organizations/new" className={cls.org}>
+                  <IconPlus size="1em" />
+                  Create organization
+                </Link>
+              </Dropdown.Item>
+            </Dropdown.Group>
+          </Dropdown.Content>
+        </Dropdown.Portal>
+      </Dropdown.Menu>
+    </div>
+  );
+};
+
+export const OrgMenu: React.FC<{ org: ApiOrg }> = () => {
   const params = useParams<Partial<RouteOrg>>() as RouteOrg;
   const location = useLocation();
 
-  const [open, setOpen] = useState<string>('');
+  const [open, setOpen] = useState<string | null>(null);
   const linkSelf = useMemo(() => {
-    return `/${params.org_id}/_`;
+    return `/${params.org_id}`;
   }, [params]);
 
   useEffect(() => {
     const path = location.pathname.split('/');
+    if (path.length > 2 && path[2] !== '_') {
+      setOpen(null);
+      return;
+    }
+
     if (path[3] === 'content') {
       setOpen('content');
     } else if (path[3] === 'flow') {
@@ -43,7 +140,7 @@ export const OrgHeader: React.FC<{ org: ApiOrg }> = () => {
         key: 'home',
         label: (
           <Link to={linkSelf}>
-            <Flex gap="l">
+            <Flex gap="m">
               <IconHome />
               Home
             </Flex>
@@ -53,8 +150,8 @@ export const OrgHeader: React.FC<{ org: ApiOrg }> = () => {
       {
         key: 'flow',
         label: (
-          <Link to={`${linkSelf}/flow`}>
-            <Flex gap="l">
+          <Link to={`${linkSelf}/_/flow`}>
+            <Flex gap="m">
               <IconApps />
               Flow
             </Flex>
@@ -64,8 +161,8 @@ export const OrgHeader: React.FC<{ org: ApiOrg }> = () => {
       {
         key: 'settings',
         label: (
-          <Link to={`${linkSelf}/settings`}>
-            <Flex gap="l">
+          <Link to={`${linkSelf}/_/settings`}>
+            <Flex gap="m">
               <IconSettings />
               Settings
             </Flex>
@@ -76,8 +173,8 @@ export const OrgHeader: React.FC<{ org: ApiOrg }> = () => {
   }, [linkSelf]);
 
   return (
-    <div className={cls.header}>
-      <Menu.Menu>
+    <>
+      <Menu.Menu orientation="vertical">
         <Menu.List>
           {menu.map((item) => {
             return (
@@ -90,6 +187,6 @@ export const OrgHeader: React.FC<{ org: ApiOrg }> = () => {
           })}
         </Menu.List>
       </Menu.Menu>
-    </div>
+    </>
   );
 };

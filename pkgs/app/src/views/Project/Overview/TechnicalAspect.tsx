@@ -104,14 +104,14 @@ export const TechnicalAspects: React.FC<{
       )}
       {groups.saas && groups.saas!.length > 0 && (
         <ComponentLine
-          title="Third Parties"
+          title="Third-Parties"
           comps={groups.saas}
           params={params}
         />
       )}
       {groups.project && groups.project.length > 0 && (
         <ComponentLine
-          title="Depends on projects"
+          title="Projects"
           comps={groups.project}
           params={params}
         />

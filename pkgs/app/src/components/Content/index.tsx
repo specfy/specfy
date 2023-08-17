@@ -6,7 +6,7 @@ import { Diff, Hunk, tokenize, markEdits } from 'react-diff-view';
 import { PrismAsyncLight } from 'react-syntax-highlighter';
 import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import 'react-diff-view/style/index.css';
-import { refractor } from 'refractor';
+import refractor from 'refractor'; // do not use Refractor ^4
 
 import type { Payload } from '../../common/content';
 import { map } from '../../common/content';
@@ -83,6 +83,7 @@ export const ContentBlock: React.FC<{
             </span>
           );
         }
+        continue;
       }
 
       if (mark.type === 'code') {
@@ -100,7 +101,7 @@ export const ContentBlock: React.FC<{
           </a>
         );
       } else {
-        console.warn('Unknown mark', mark.type);
+        console.warn('Unknown mark', JSON.stringify(mark));
       }
     }
     return text;
@@ -215,18 +216,28 @@ export const ContentBlock: React.FC<{
   else if (block.type === 'table') {
     return <table className={stl}>{map(block, pl)}</table>;
   } else if (block.type === 'tableRow') {
+    if (block.content.length > 0 && block.content[0].type === 'tableHeader') {
+      return (
+        <thead>
+          <tr className={stl}>{map(block, pl)}</tr>
+        </thead>
+      );
+    }
     return <tr className={stl}>{map(block, pl)}</tr>;
   } else if (block.type === 'tableCell') {
+    const { rowspan, colspan, ...others } = block.attrs;
     return (
-      <td className={stl} {...block.attrs}>
+      <td className={stl} colSpan={colspan} rowSpan={rowspan} {...others}>
         {map(block, pl)}
       </td>
     );
   } else if (block.type === 'tableHeader') {
-    const { colwidth, ...others } = block.attrs;
+    const { colwidth, rowspan, colspan, ...others } = block.attrs;
     return (
       <th
         className={stl}
+        colSpan={colspan}
+        rowSpan={rowspan}
         {...others}
         style={colwidth ? { width: `${colwidth}px` } : undefined}
       >
@@ -242,8 +253,8 @@ export const ContentBlock: React.FC<{
         return tokenize(block.codeDiff.hunks, {
           highlight: true,
           refractor,
-          // language: block.attrs.language,
-          language: 'js',
+          language: block.attrs.language,
+          // language: 'js',
           enhancers: [markEdits(block.codeDiff.hunks, { type: 'block' })],
         });
       }, [block.attrs.uid]);

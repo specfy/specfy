@@ -89,7 +89,7 @@ export const SettingsTeam: React.FC<{
       <div className={cls.header}>
         <div>
           <h2>Team members</h2>
-          <Subdued>Invite or manage your project&apos;s members.</Subdued>
+          <Subdued>Manage your project&apos;s members.</Subdued>
         </div>
 
         <Input
@@ -120,7 +120,7 @@ export const SettingsTeam: React.FC<{
                 );
               })}
               {owners.length <= 0 && (
-                <div className={cls.empty}>Nothing to show...</div>
+                <Subdued className={cls.empty}>Nothing to show...</Subdued>
               )}
             </div>
 
@@ -141,7 +141,7 @@ export const SettingsTeam: React.FC<{
                   );
                 })}
                 {reviewers.length <= 0 && (
-                  <div className={cls.empty}>Nothing to show...</div>
+                  <Subdued className={cls.empty}>Nothing to show...</Subdued>
                 )}
               </div>
             )}
@@ -162,7 +162,7 @@ export const SettingsTeam: React.FC<{
                 );
               })}
               {contributors.length <= 0 && (
-                <div className={cls.empty}>Nothing to show...</div>
+                <Subdued className={cls.empty}>Nothing to show...</Subdued>
               )}
             </div>
 
@@ -182,7 +182,7 @@ export const SettingsTeam: React.FC<{
                 );
               })}
               {viewers.length <= 0 && (
-                <div className={cls.empty}>Nothing to show...</div>
+                <Subdued className={cls.empty}>Nothing to show...</Subdued>
               )}
             </div>
           </div>

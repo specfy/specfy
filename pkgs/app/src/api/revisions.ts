@@ -56,6 +56,12 @@ export async function updateRevision(
       project_id,
       revision_id,
     ]);
+    void qcli.refetchQueries([
+      'listActivities',
+      org_id,
+      project_id,
+      revision_id,
+    ]);
   }
 
   return json;

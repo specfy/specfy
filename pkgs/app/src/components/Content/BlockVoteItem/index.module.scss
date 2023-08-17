@@ -1,22 +1,20 @@
-@import "../../../styles/theme";
-
 .item {
-  border: 1px solid $gray-100;
-  border-radius: $border-radius;
+  border: 1px solid var(--border1);
+  border-radius: var(--radius3);
   transition: opacity 0.25s ease-in-out;
 
 
   &.accepted {
     .result {
-      color: $emerald-500;
-      border-color: $emerald-500;
+      color: var(--green-9);
+      border-color: var(--green-8);
     }
   }
 
   &.rejected {
     .result {
-      color: $orange-500;
-      border-color: $orange-500;
+      color: var(--amber-9);
+      border-color: var(--amber-8);
     }
   }
 }
@@ -28,32 +26,29 @@
   align-items: center;
   justify-content: space-between;
 
-  padding: $p-l $p-xl;
-
-  color: $gray-600;
-
+  padding: var(--spc-l) var(--spc-xl);
 }
 
 .label {
   display: flex;
-  gap: $p-m;
+  gap: var(--spc-m);
   align-items: center;
 }
 
 .result {
   display: flex;
-  gap: $p-m;
+  gap: var(--spc-m);
   align-items: center;
 
-  padding: 0 $p-m;
+  padding: 0 var(--spc-m);
 
-  border: 1px solid $gray-100;
-  border-radius: $border-radius;
+  border: 1px solid var(--border1);
+  border-radius: var(--radius3);
 }
 
 .content {
   overflow: hidden;
-  padding: 0 $p-xl $p-m $p-xl;
+  padding: 0 var(--spc-xl) var(--spc-m) var(--spc-xl);
 
   &.close {
     height: 0;

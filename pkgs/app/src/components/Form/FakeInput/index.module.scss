@@ -1,4 +1,3 @@
-@import "../../../styles/theme";
 @import "../../../styles/mixin";
 
 .fake {
@@ -9,16 +8,16 @@
 }
 
 .input {
-  @include editable(4px $p-m);
+  @include editable(4px var(--spc-m));
 
-  font-weight: $font-semi;
+  font-weight: 500;
   line-height: 0;
 
   &.h1 {
-    font-size: $font-3xl;
+    font-size: var(--font-3xl);
   }
 
   &.h2 {
-    font-size: $font-xl;
+    font-size: var(--font-xl);
   }
 }

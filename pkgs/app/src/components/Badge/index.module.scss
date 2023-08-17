@@ -1,14 +1,13 @@
-@import "../../styles/theme";
-
 .badge {
   display: inline-flex;
 
   min-width: 20px;
-  padding: 0 $p-m;
+  padding: 0 var(--spc-m);
 
-  font-size: $font-s;
+  font-size: var(--font-s);
   font-weight: 500;
-  line-height: $line-height;
+  line-height: var(--lh);
+  ;
   color: var(--text2);
   text-align: center;
 

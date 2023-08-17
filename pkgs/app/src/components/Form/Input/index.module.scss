@@ -1,6 +1,6 @@
 /* stylelint-disable rule-empty-line-before */
 /* stylelint-disable selector-class-pattern */
-@import "../../../styles/theme";
+
 @import "../../../styles/mixin";
 
 .wrapper {
@@ -10,83 +10,84 @@
   flex-grow: 1;
 
   font-size: var(--font);
-  line-height: $line-height;
+  line-height: var(--lh);
+  ;
   color: var(--text);
 
   background-color: #fff;
   border: 1px solid var(--border2);
-  border-radius: $border-radius-s;
+  border-radius: var(--radius2);
 
   &.s {
     height: var(--h-s);
-    font-size: $font-s;
+    font-size: var(--font-s);
 
     .input {
-      padding: $p-s $p-l;
+      padding: var(--spc-s) var(--spc-l);
     }
 
     .before {
-      padding: $p-s $p-l;
+      padding: var(--spc-s) var(--spc-l);
 
       &+.input {
-        padding-left: $p-s;
+        padding-left: var(--spc-s);
       }
     }
 
     .after {
-      padding: $p-s $p-l;
+      padding: var(--spc-s) var(--spc-l);
     }
   }
 
   &.m {
     height: var(--h-m);
-    font-size: $font;
+    font-size: var(--font);
 
     .input {
-      padding: $p $p-l;
+      padding: var(--spc) var(--spc-l);
     }
 
     .before {
-      padding: $p $p $p $p-l;
+      padding: var(--spc) var(--spc) var(--spc) var(--spc-l);
 
       &+.input {
-        padding-left: $p;
+        padding-left: var(--spc);
       }
     }
 
     .after {
-      padding: $p $p-l $p $p;
+      padding: var(--spc) var(--spc-l) var(--spc) var(--spc);
     }
   }
 
   &.l {
     height: var(--h-l);
-    font-size: $font;
+    font-size: var(--font);
 
     .input {
-      padding: $p-m $p-xl;
+      padding: var(--spc-m) var(--spc-xl);
     }
 
     .before {
-      padding: $p $p $p $p-l;
+      padding: var(--spc) var(--spc) var(--spc) var(--spc-l);
 
       &+.input {
-        padding-left: $p;
+        padding-left: var(--spc);
       }
     }
 
     .after {
-      padding: $p $p-l $p $p;
+      padding: var(--spc) var(--spc-l) var(--spc) var(--spc);
     }
   }
 
   &.xl {
     height: var(--h-xl);
-    font-size: $font-l;
+    font-size: var(--font-l);
 
     .input,
     .before {
-      padding: $p-l $p-xl;
+      padding: var(--spc-l) var(--spc-xl);
     }
   }
 

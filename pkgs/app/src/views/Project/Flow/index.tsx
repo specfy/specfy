@@ -131,7 +131,7 @@ export const ProjectFlow: React.FC<{
             <Toolbar.AddComponents />
           </Toolbar>
         )}
-        <Toolbar top visible>
+        <Toolbar left top visible>
           {!isEditing && <Toolbar.Readonly />}
         </Toolbar>
         <Toolbar bottom visible>

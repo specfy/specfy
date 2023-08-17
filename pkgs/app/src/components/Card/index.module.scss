@@ -1,19 +1,17 @@
-@import "../../styles/theme";
-
 .card {
   position: relative;
 
   background-color: #fff;
-  border: 1px solid $gray-100;
-  border-radius: $border-radius-s;
-  box-shadow: $box-shadow;
+  border: 1px solid var(--border1);
+  border-radius: var(--radius2);
+  box-shadow: var(--shadow1);
 
   &.padded {
-    padding: $p-2xl;
+    padding: var(--spc-2xl) var(--spc-3xl);
   }
 
   &.large {
-    padding: $p-3xl $p-5xl;
+    padding: var(--spc-3xl) var(--spc-5xl);
   }
 
   &.seamless {
@@ -31,19 +29,16 @@
   align-items: center;
   justify-content: end;
 
-  padding: $p-l $p-xl;
+  padding: var(--spc-l) var(--spc-xl);
 
-  color: $gray-500;
-
-  background-color: $gray-50;
   background-color: transparent;
-  border-top: 1px solid $gray-100;
+  border-top: 1px solid var(--border1);
 }
 
 .content {
-  padding: $p-2xl;
+  padding: var(--spc-2xl) var(--spc-3xl);
 
   &.large {
-    padding: $p-3xl $p-5xl;
+    padding: var(--spc-3xl) var(--spc-5xl);
   }
 }

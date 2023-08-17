@@ -298,7 +298,7 @@ export const ComponentDetails: React.FC<{
         !component.techId && (
           <div>
             <div className={cls.blockTitle}>
-              <h4>Stack</h4>
+              <h2>Stack</h2>
             </div>
 
             {(isEditing || component.techs.length > 0) && (
@@ -321,7 +321,7 @@ export const ComponentDetails: React.FC<{
         (is.component || is.hosting) && (
           <div>
             <div className={cls.blockTitle}>
-              <h4>Hosting</h4>
+              <h2>Hosting</h2>
             </div>
 
             {(isEditing || hosts.length > 0) && (
@@ -389,7 +389,7 @@ export const ComponentDetails: React.FC<{
         !is.hosting && (
           <div>
             <div className={cls.blockTitle}>
-              <h4>Data</h4>
+              <h2>Data</h2>
             </div>
 
             {(isEditing || readwrite.length > 0) && (

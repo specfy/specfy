@@ -1,8 +1,5 @@
-@import "../../../../styles/theme";
-
-
 .header {
-  padding: $p-3xl $p-5xl;
+  padding: var(--spc-6xl);
 }
 
 .list {
@@ -11,7 +8,7 @@
 }
 
 .row {
-  padding: $p-l $p-5xl $p-xl;
+  padding: var(--spc-l) var(--spc-6xl) var(--spc-xl);
   border-bottom: 1px solid var(--border1);
 
   .title {
@@ -24,7 +21,7 @@
   }
 
   .info {
-    font-size: $font-s;
+    font-size: var(--font-s);
     color: var(--text2)
   }
 }

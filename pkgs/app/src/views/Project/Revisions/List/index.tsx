@@ -56,7 +56,7 @@ const Row: React.FC<{
           {item.authors.length > 1 && (
             <AvatarGroup>
               {item.authors.map((user) => {
-                return <AvatarAuto key={user.id} user={user} size="small" />;
+                return <AvatarAuto key={user.id} user={user} size="s" />;
               })}
             </AvatarGroup>
           )}
@@ -65,7 +65,7 @@ const Row: React.FC<{
               <AvatarAuto
                 key={item.authors[0].id}
                 user={item.authors[0]}
-                size="small"
+                size="s"
               />
               {item.authors[0].name}
             </Flex>

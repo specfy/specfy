@@ -1,23 +1,20 @@
-@import "../../../styles/theme";
-
 .onboarding {
-  margin-bottom: $p-4xl;
-  padding: $p-4xl;
-
+  margin-bottom: var(--spc-4xl);
+  padding: var(--spc-6xl) var(--spc-6xl) var(--spc-4xl);
 }
 
 .header {
-  margin-bottom: $p-3xl;
+  margin-bottom: var(--spc-3xl);
 }
 
 .item {
   position: relative;
 
   display: flex;
-  gap: $p-xl;
+  gap: var(--spc-xl);
   align-items: center;
 
-  padding: $p-l 0;
+  padding: var(--spc-l) 0;
 
   // border-bottom: 1px solid var(--border2);
 }
@@ -33,7 +30,7 @@
   width: 42px;
   height: 42px;
 
-  font-size: $font-2xl;
+  font-size: var(--font-2xl);
   color: white;
 
   background-color: var(--accent2);

@@ -1,24 +1,22 @@
-@import "../../../styles/theme";
-
 .header {
-  padding: $p-3xl $p-5xl;
+  padding: var(--spc-3xl) var(--spc-5xl);
 
 }
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: $p-l;
+  gap: var(--spc-l);
 
-  padding: 0 $p-5xl;
-  padding-bottom: $p-l;
+  padding: 0 var(--spc-5xl);
+  padding-bottom: var(--spc-l);
 }
 
 .advanced {
-  margin-top: $p-5xl;
+  margin-top: var(--spc-5xl);
 
   .inner {
-    margin: $p-5xl 0;
+    margin: var(--spc-5xl) 0;
   }
 
   .desc {
@@ -29,5 +27,5 @@
 }
 
 .inputs {
-  padding-top: $p-3xl;
+  padding-top: var(--spc-3xl);
 }

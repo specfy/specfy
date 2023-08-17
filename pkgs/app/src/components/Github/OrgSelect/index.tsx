@@ -62,7 +62,7 @@ export const GithubOrgSelect: React.FC<{
             name={inst.name}
             src={inst.avatarUrl}
             shape="square"
-            size="small"
+            size="s"
           />
         ),
       };

@@ -1,31 +1,29 @@
-@import "../../../styles/theme";
-
 .block {
-  margin-bottom: $p-2xl;
-  border: 1px solid $gray-200;
-  border-radius: $border-radius;
+  margin-bottom: var(--spc-2xl);
+  border: 1px solid var(--border2);
+  border-radius: var(--radius1);
 }
 
 .header {
   cursor: pointer;
 
   display: flex;
-  gap: $p-m;
+  gap: var(--spc-m);
   align-items: center;
 
-  padding: $p-xl;
+  padding: var(--spc-2xl) var(--spc-4xl);
 
-  font-size: $font-l;
+  font-size: var(--font-l);
   font-weight: 600;
 
   svg {
-    font-size: $font;
+    font-size: var(--font);
   }
 }
 
 .content {
   overflow: hidden;
-  padding: 0 $p-xl $p-m $p-xl;
+  padding: 0 var(--spc-4xl) var(--spc-4xl) var(--spc-4xl);
 
   &.close {
     height: 0;

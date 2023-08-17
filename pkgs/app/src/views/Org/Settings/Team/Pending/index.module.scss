@@ -1,9 +1,7 @@
-@import "../../../../../styles/theme";
-
 .invite {
   display: flex;
   flex-direction: column;
-  gap: $p-2xl;
+  gap: var(--spc-2xl);
 }
 
 .list {
@@ -12,6 +10,6 @@
 }
 
 .row {
-  padding: $p-l $p-5xl $p-l;
+  padding: var(--spc-l) var(--spc-5xl) var(--spc-l);
   border-bottom: 1px solid var(--border1);
 }

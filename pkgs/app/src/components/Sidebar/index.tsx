@@ -1,27 +1,97 @@
-import type { ApiOrg, ApiProject } from '@specfy/models';
-import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
+import {
+  IconChevronLeft,
+  IconChevronRight,
+  IconHelp,
+  IconLogout,
+  IconSettings,
+} from '@tabler/icons-react';
 import classNames from 'classnames';
-import { useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
+import { isError } from '../../api/helpers';
+import { i18n } from '../../common/i18n';
+import { useAuth } from '../../hooks/useAuth';
+import { useToast } from '../../hooks/useToast';
 import { AvatarAuto } from '../AvatarAuto';
+import * as Dropdown from '../Dropdown';
+import { Flex } from '../Flex';
 import { Button } from '../Form/Button';
-import { Staging } from '../Project/Header/Staging';
+import { Logo } from '../Logo';
+import { Subdued } from '../Text';
 
 import cls from './index.module.scss';
 
-export const Sidebar: React.FC<{
-  org: ApiOrg;
-  project?: ApiProject;
-  children?: React.ReactElement;
-}> = ({ org, project, children }) => {
-  const linkOrg = useMemo(() => {
-    return `/${org.id}/_`;
-  }, [org]);
-  const linkProject = useMemo(() => {
-    return `/${org.id}/${project ? project.slug : ''}`;
-  }, [org]);
+const User: React.FC = () => {
+  const { user, logout } = useAuth();
+  const toast = useToast();
+  const navigate = useNavigate();
 
+  const handleLogout = async () => {
+    const res = await logout();
+    if (isError(res)) {
+      toast.add({ title: i18n.errorOccurred, status: 'error' });
+      return;
+    }
+
+    navigate(`/login`);
+  };
+
+  return (
+    <div>
+      <Dropdown.Menu>
+        <Dropdown.Trigger asChild>
+          <button>
+            <AvatarAuto user={user!} />
+          </button>
+        </Dropdown.Trigger>
+        <Dropdown.Portal>
+          <Dropdown.Content>
+            <div className={cls.userDropdown}>
+              <strong>{user!.name}</strong>
+              <Subdued>{user!.email}</Subdued>
+            </div>
+
+            <Dropdown.Separator />
+            <Dropdown.Group>
+              <Dropdown.Item asChild>
+                <Link to="/account/">
+                  <IconSettings />
+                  <div>Settings</div>
+                </Link>
+              </Dropdown.Item>
+
+              <Dropdown.Item asChild>
+                <Link to="/account/">
+                  <IconHelp />
+                  <div>Support</div>
+                </Link>
+              </Dropdown.Item>
+            </Dropdown.Group>
+
+            <Dropdown.Separator />
+
+            <Dropdown.Group>
+              <Dropdown.Item asChild>
+                <button onClick={handleLogout}>
+                  <IconLogout />
+                  <div>Logout</div>
+                </button>
+              </Dropdown.Item>
+            </Dropdown.Group>
+          </Dropdown.Content>
+        </Dropdown.Portal>
+      </Dropdown.Menu>
+    </div>
+  );
+};
+
+export * from './Block';
+export * from './Group';
+
+export const Sidebar: React.FC<{
+  children?: React.ReactNode;
+}> = ({ children }) => {
   const [collapse, setCollapse] = useState<boolean>(false);
 
   const onCollapse = () => {
@@ -37,33 +107,15 @@ export const Sidebar: React.FC<{
       </div>
       <div className={classNames(cls.sidebar, collapse && cls.collapsed)}>
         <div className={cls.inner}>
-          <div className={classNames(cls.header)}>
-            <Link to={linkOrg}>
-              <AvatarAuto size="large" org={org} className={cls.logo} />
-            </Link>
-
-            {!project && (
-              <div className={cls.label}>
-                <Link to={`/${org.id}`}>{org.name}</Link>
-              </div>
-            )}
-            {project && (
-              <div className={cls.project}>
-                <Link className={cls.smallOrg} to={`/${org.id}`}>
-                  {org.name}
-                </Link>
-                <div className={cls.label}>
-                  <Link to={linkProject}>{project.name}</Link>
-                </div>
-              </div>
-            )}
-          </div>
-
-          <div className={classNames(cls.content)}>
-            {project && <Staging showBadge={collapse} />}
-
-            {children}
-          </div>
+          <header className={cls.header}>
+            <Flex justify="space-between">
+              <Link to="/" className={cls.logo}>
+                <Logo />
+              </Link>
+              <User />
+            </Flex>
+          </header>
+          <div className={cls.content}>{children}</div>
         </div>
       </div>
     </div>

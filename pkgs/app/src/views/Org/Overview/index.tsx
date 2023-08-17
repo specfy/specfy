@@ -41,9 +41,7 @@ export const OrgOverview: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
       <Helmet title={`${org.name} ${titleSuffix}`} />
       <Container.Left2Third>
         {!done && <OrgOnboarding org={org} key={org.id} />}
-        <Card large seamless>
-          <ListProjects orgId={params.org_id}></ListProjects>
-        </Card>
+        <ListProjects orgId={params.org_id}></ListProjects>
       </Container.Left2Third>
       <Container.Right1Third>
         <div>

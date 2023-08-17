@@ -1,17 +1,13 @@
-@use "sass:math";
-
-@import "../../../../styles/theme";
-
-$width: math.div($main-col-w, 1.5);
+$width: calc(var(--w-col) / 1.5);
 
 .form {
   display: flex;
   flex-direction: column;
-  gap: $p-m;
+  gap: var(--spc-m);
   justify-content: center;
 
   width: $width;
-  height: calc(100vh - $height-header-project-total - ($p-4xl * 2));
+  height: calc(100vh);
   margin: 0 auto;
 }
 
@@ -21,12 +17,12 @@ $width: math.div($main-col-w, 1.5);
 
 .title {
   display: flex;
-  gap: $p-m;
+  gap: var(--spc-m);
 }
 
 .input {
-  padding: $p-l;
-  font-size: $font-l;
+  padding: var(--spc-l);
+  font-size: var(--font-l);
 }
 
 .button {

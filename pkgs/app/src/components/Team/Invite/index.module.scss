@@ -1,8 +1,6 @@
-@import "../../../styles/theme";
-
 .form {
   display: grid;
   grid-template-columns: 1fr 200px;
-  gap: $p-m;
-  margin: $p-l 0 0 0;
+  gap: var(--spc-m);
+  margin: var(--spc-l) 0 0 0;
 }

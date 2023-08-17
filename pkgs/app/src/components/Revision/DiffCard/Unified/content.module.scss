@@ -1,18 +1,17 @@
-@import "../../../../styles/theme";
-
 .group {
   margin-bottom: 0;
 }
 
 .unchanged {
   display: flex;
-  gap: $p-m;
+  gap: var(--spc-m);
 
-  padding: $p $p-2xl;
+  padding: var(--spc) var(--spc-2xl);
 
-  color: $gray-400;
+  color: var(--text-secondary);
 
-  background-color: rgba($blue-50, 0.5);
+
+  background-color: var(--indigo-2);
 }
 
 .accordion {
@@ -20,6 +19,6 @@
 }
 
 .unchangedContent {
-  padding: 0 0 $p-2xl 0;
+  padding: 0 0 var(--spc-2xl) 0;
 
 }

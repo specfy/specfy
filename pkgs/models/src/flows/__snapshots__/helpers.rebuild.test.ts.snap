@@ -10,9 +10,9 @@ exports[`rebuildFlow > should create a new flow 1`] = `
       },
       "id": "a->b",
       "markerEnd": {
-        "height": 10,
+        "height": 14,
         "type": "arrowclosed",
-        "width": 10,
+        "width": 14,
       },
       "source": "a",
       "sourceHandle": "sr",

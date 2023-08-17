@@ -8,7 +8,6 @@ import { useComponentsStore } from '../../../common/store';
 import { titleSuffix } from '../../../common/string';
 import type { TechInfo } from '../../../common/techs';
 import { supportedIndexed } from '../../../common/techs';
-import { Card } from '../../../components/Card';
 import { ComponentIcon } from '../../../components/Component/Icon';
 import { ComponentLine } from '../../../components/Component/Line';
 import { Container } from '../../../components/Container';
@@ -93,26 +92,20 @@ export const Tech: React.FC<{
   return (
     <Container noPadding>
       <Helmet title={`${techname} - ${proj.name} ${titleSuffix}`} />
-      <Container.Left2Third>
-        <Card padded seamless large>
-          <Flex justify="space-between" className={cls.title}>
-            <h2>
-              <Flex gap="l">
-                <ComponentIcon
-                  data={{ techId: route.tech_slug }}
-                  large
-                  noEmpty
-                />
-                {techname}
-              </Flex>
-            </h2>
-            {info && <Tag variant="border">{info ? info.type : 'tech'}</Tag>}
-          </Flex>
+      <Container.Left2Third className={cls.main}>
+        <Flex justify="space-between" className={cls.title}>
+          <h2>
+            <Flex gap="l">
+              <ComponentIcon data={{ techId: route.tech_slug }} large noEmpty />
+              {techname}
+            </Flex>
+          </h2>
+          {info && <Tag variant="border">{info ? info.type : 'tech'}</Tag>}
+        </Flex>
 
-          <h3>Used in</h3>
+        <h3>Used in</h3>
 
-          <ComponentLine title="Services" comps={usedBy} params={params} />
-        </Card>
+        <ComponentLine title="Services" comps={usedBy} params={params} />
       </Container.Left2Third>
       <Container.Right1Third>
         <div>

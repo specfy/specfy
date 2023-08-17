@@ -9,8 +9,6 @@ import { Flex } from '../../../../components/Flex';
 import { NotFound } from '../../../../components/NotFound';
 import type { RouteDocument } from '../../../../types/routes';
 import { Doc } from '../Doc';
-import { Playbook } from '../Playbook';
-import { RFC } from '../RFC';
 
 import cls from './index.module.scss';
 
@@ -26,12 +24,6 @@ export const DocumentShow: React.FC<{
     const split = params.document_slug.split('-');
     return { document_id: split[0] };
   }, [params]);
-
-  useEffect(() => {
-    if (window.scrollY > 200 && doc) {
-      window.scrollTo(0, 125);
-    }
-  }, [params.document_slug]);
 
   // Load document
   const getDoc = useGetDocument({
@@ -68,26 +60,7 @@ export const DocumentShow: React.FC<{
       <div className={cls.wrapper}>
         <div className={cls.container}>
           <div></div>
-
           <NotFound />
-        </div>
-      </div>
-    );
-  }
-
-  if (doc.type === 'rfc') {
-    return (
-      <div className={cls.wrapper}>
-        <div className={cls.container}>
-          <RFC proj={proj} doc={doc} />
-        </div>
-      </div>
-    );
-  } else if (doc.type === 'doc') {
-    return (
-      <div className={cls.wrapper}>
-        <div className={cls.container}>
-          <Doc proj={proj} doc={doc} />
         </div>
       </div>
     );
@@ -96,7 +69,7 @@ export const DocumentShow: React.FC<{
   return (
     <div className={cls.wrapper}>
       <div className={cls.container}>
-        <Playbook proj={proj} doc={doc} />
+        <Doc proj={proj} doc={doc} />
       </div>
     </div>
   );

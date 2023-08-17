@@ -1,4 +1,3 @@
-@import "../../../styles/theme";
 @import "../../../styles/mixin";
 
 .wrapper {
@@ -7,43 +6,43 @@
   }
 
   &.opened {
-    margin: (-$p-m) (-$p-m);
-    padding: $p-m !important;
+    margin: (-var(--spc-m)) (-var(--spc-m));
+    padding: var(--spc-m) !important;
   }
 }
 
 .links {
   display: flex;
-  gap: $p-m;
-  margin-top: $p-l;
+  gap: var(--spc-xl);
+  margin-top: var(--spc-l);
 }
 
 .link {
   display: inline-flex;
-  gap: $p-s;
+  gap: var(--spc);
   align-items: center;
 
-  padding: $p-xs $p;
+  padding: var(--spc-xs) 0;
 
-  color: $gray-700;
+  color: var(--text-secondary);
 
   border-radius: 10px;
 
   &:hover {
-    color: $blue-700;
+    color: var(--primary);
   }
 }
 
 .edits {
   display: flex;
   flex-direction: column;
-  gap: $p-l;
+  gap: var(--spc-l);
   align-items: flex-start;
 }
 
 .edit {
   display: flex;
-  gap: $p-m;
+  gap: var(--spc-m);
   width: 100%;
 }
 

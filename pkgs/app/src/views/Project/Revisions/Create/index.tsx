@@ -17,7 +17,7 @@ import {
   IconGitPullRequest,
   IconGitPullRequestDraft,
 } from '@tabler/icons-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 
@@ -42,8 +42,8 @@ import { FlowWrapper } from '../../../../components/Flow';
 import { Toolbar } from '../../../../components/Flow/Toolbar';
 import { Button } from '../../../../components/Form/Button';
 import { Checkbox } from '../../../../components/Form/Checkbox';
-import { FakeInput } from '../../../../components/Form/FakeInput';
 import { FieldCheckbox } from '../../../../components/Form/Field';
+import { Input } from '../../../../components/Form/Input';
 import { DiffCard } from '../../../../components/Revision/DiffCard';
 import { DiffFlow } from '../../../../components/Revision/DiffCard/Flow';
 import { useToast } from '../../../../hooks/useToast';
@@ -69,7 +69,6 @@ export const ProjectRevisionCreate: React.FC<{
   const [previousFlow, setPreviousFlow] = useState<ComputedFlow>();
 
   // Form
-  const [canSubmit, setCanSubmit] = useState<boolean>(false);
   // TODO: keep those values in Edit Mode
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<BlockLevelZero>(() =>
@@ -93,7 +92,7 @@ export const ProjectRevisionCreate: React.FC<{
   }, [staging]);
 
   // Can submit form?
-  useEffect(() => {
+  const canSubmit = useMemo(() => {
     let enoughContent = description.content.length > 0;
     if (
       description.content.length === 1 &&
@@ -104,9 +103,7 @@ export const ProjectRevisionCreate: React.FC<{
       enoughContent = false;
     }
 
-    setCanSubmit(
-      title !== '' && flagRevisionDescRequired ? enoughContent : true
-    );
+    return title !== '' && (flagRevisionDescRequired ? enoughContent : true);
   }, [title, description]);
 
   // TODO: reup this
@@ -206,13 +203,13 @@ export const ProjectRevisionCreate: React.FC<{
             <Form.Root onSubmit={onSubmit}>
               <Card.Content>
                 <Flex gap="l" column align="flex-start">
-                  <FakeInput.H1
-                    size="l"
+                  <Input
                     value={title}
+                    size="xl"
                     placeholder="Revision title..."
                     onChange={(e) => setTitle(e.target.value)}
+                    className={cls.title}
                   />
-
                   <div style={{ width: '100%' }}>
                     <Editor
                       key={'edit'}
@@ -224,8 +221,12 @@ export const ProjectRevisionCreate: React.FC<{
                 </Flex>
               </Card.Content>
               <Card.Actions>
-                <Flex gap="l">
-                  <FieldCheckbox name="autoMerge" label="Merge directly">
+                <Flex gap="l" align="center">
+                  <FieldCheckbox
+                    name="autoMerge"
+                    label="Merge directly"
+                    showError={false}
+                  >
                     <Checkbox
                       checked={autoMerge}
                       onCheckedChange={() => setAutoMerge(!autoMerge)}

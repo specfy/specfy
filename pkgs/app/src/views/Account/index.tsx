@@ -5,6 +5,7 @@ import { Link, Route, Routes, useLocation } from 'react-router-dom';
 import { Container } from '../../components/Container';
 import { Flex } from '../../components/Flex';
 import * as Menu from '../../components/Menu';
+import { Sidebar } from '../../components/Sidebar';
 
 import { SettingsGeneral } from './General';
 import cls from './index.module.scss';
@@ -40,26 +41,29 @@ export const Account: React.FC = () => {
   }, [location]);
 
   return (
-    <Container className={cls.container}>
-      <Menu.Menu orientation="vertical">
-        <Menu.List>
-          {menu.map((item) => {
-            return (
-              <Menu.Item key={item.key}>
-                <Menu.Link asChild active={open === item.key}>
-                  {item.label}
-                </Menu.Link>
-              </Menu.Item>
-            );
-          })}
-        </Menu.List>
-      </Menu.Menu>
+    <div className={cls.main}>
+      <Sidebar />
+      <Container className={cls.container}>
+        <Menu.Menu orientation="vertical">
+          <Menu.List>
+            {menu.map((item) => {
+              return (
+                <Menu.Item key={item.key}>
+                  <Menu.Link asChild active={open === item.key}>
+                    {item.label}
+                  </Menu.Link>
+                </Menu.Item>
+              );
+            })}
+          </Menu.List>
+        </Menu.Menu>
 
-      <Flex gap="2xl" column align="initial">
-        <Routes>
-          <Route path="/" element={<SettingsGeneral />} />
-        </Routes>
-      </Flex>
-    </Container>
+        <Flex gap="2xl" column align="initial">
+          <Routes>
+            <Route path="/" element={<SettingsGeneral />} />
+          </Routes>
+        </Flex>
+      </Container>
+    </div>
   );
 };

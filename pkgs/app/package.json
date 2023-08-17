@@ -96,7 +96,7 @@
     "react-syntax-highlighter": "15.5.0",
     "react-use": "17.4.0",
     "reactflow": "11.7.4",
-    "refractor": "4.8.1",
+    "refractor": "3.6.0",
     "sass": "1.64.2",
     "slugify": "1.6.6",
     "socket.io-client": "4.7.2",

@@ -20,7 +20,7 @@
 
   background-color: #fff;
   border-radius: var(--radius2);
-  box-shadow: var(--boxshadow2);
+  box-shadow: var(--shadow2);
 
   &[data-state="closed"] {
     animation-name: exit;

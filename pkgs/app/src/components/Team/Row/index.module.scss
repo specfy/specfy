@@ -1,28 +1,27 @@
-@import "../../../styles/theme";
-
 .line {
   display: flex;
   align-items: center;
   justify-content: space-between;
 
-  padding: $p-l $p-2xl;
+  padding: var(--spc-l) var(--spc-2xl);
 
   border-bottom: 1px solid var(--border1);
 
 
   &:hover {
-    background-color: rgba($gray-50, 50%);
+    background-color: var(--bg1);
   }
 }
 
 .left {
   display: flex;
-  gap: $p-l;
+  gap: var(--spc-xl);
+  align-items: center;
 }
 
 .right {
   display: flex;
-  gap: $p-m;
+  gap: var(--spc-m);
   align-items: center;
 }
 
@@ -32,7 +31,8 @@
 }
 
 .sub {
-  font-size: $font-s;
-  line-height: $line-height-s;
-  color: $gray-400;
+  font-size: var(--font-s);
+  line-height: var(--lh-s);
+  color: var(--text-secondary);
+
 }

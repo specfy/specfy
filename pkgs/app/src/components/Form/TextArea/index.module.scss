@@ -1,5 +1,5 @@
 /* stylelint-disable selector-class-pattern */
-@import "../../../styles/theme";
+
 @import "../../../styles/mixin";
 
 .textarea {
@@ -9,12 +9,12 @@
 
   min-height: 50px;
 
-  line-height: $line-height;
+  line-height: var(--lh);
   color: var(--text);
 
   background-color: #fff;
   border: 1px solid var(--border2);
-  border-radius: $border-radius-s;
+  border-radius: var(--radius2);
 
   &::placeholder {
     color: var(--text1)
@@ -22,26 +22,26 @@
 
   &.s {
     height: var(--h-s);
-    padding: $p-s $p-l;
-    font-size: $font-s;
+    padding: var(--spc-s) var(--spc-l);
+    font-size: var(--font-s);
   }
 
   &.m {
     height: var(--h-m);
-    padding: $p $p-l;
-    font-size: $font;
+    padding: var(--spc) var(--spc-l);
+    font-size: var(--font);
   }
 
   &.l {
     height: var(--h-l);
-    padding: $p-m $p-xl;
-    font-size: $font;
+    padding: var(--spc-m) var(--spc-xl);
+    font-size: var(--font);
   }
 
   &.xl {
     height: var(--h-xl);
-    padding: $p-l $p-xl;
-    font-size: $font-l;
+    padding: var(--spc-l) var(--spc-xl);
+    font-size: var(--font-l);
   }
 
   &.disabled {
