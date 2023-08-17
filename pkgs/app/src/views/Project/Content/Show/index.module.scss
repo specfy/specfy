@@ -9,7 +9,7 @@
   position: relative;
 
   display: grid;
-  grid-template-columns: 200px ($main-col-w) minmax(200px, 1fr);
+  grid-template-columns: 200px (var(--w-col)) minmax(200px, 1fr);
 
   width: 100%;
   min-height: 100vh;

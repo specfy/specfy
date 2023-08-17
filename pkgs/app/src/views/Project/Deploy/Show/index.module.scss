@@ -24,7 +24,7 @@
 
   code,
   code span {
-    font-family: $font-code !important;
+    font-family: var(--font-code) !important;
     font-size: var(--font) !important;
     font-weight: inherit;
     font-style: inherit;

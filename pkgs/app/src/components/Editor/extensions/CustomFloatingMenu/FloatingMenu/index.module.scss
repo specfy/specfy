@@ -15,7 +15,7 @@ $width: 180px;
 
   background-color: #fff;
   border: 1px solid $gray-3;
-  border-radius: $border-radius;
+  border-radius: var(--radius3);
   box-shadow: 0 3px 15px -3px rgb(13 20 33 / 13%);
 }
 
@@ -50,7 +50,7 @@ $width: 180px;
   font-size: var(--font);
   font-weight: 600;
 
-  border-radius: $border-radius;
+  border-radius: var(--radius3);
 
   &:hover {
     background-color: $gray-44;
@@ -66,7 +66,7 @@ $width: 180px;
 
   background-color: #fff;
   border: 1px solid $gray-44;
-  border-radius: $border-radius;
+  border-radius: var(--radius3);
 }
 
 .right {

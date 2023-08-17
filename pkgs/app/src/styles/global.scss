@@ -1,5 +1,3 @@
-@import "./theme";
-@import "./mixin";
 @import '@radix-ui/colors/amber.css';
 @import '@radix-ui/colors/blue.css';
 @import '@radix-ui/colors/bronze.css';
@@ -63,6 +61,11 @@ body * {
 
 
 :root {
+  // Font family
+  --font-base: system-ui, -apple-system, "Segoe UI", roboto, ubuntu, cantarell, "Noto Sans", sans-serif, blinkmacsystemfont, oxygen, "Open Sans", "Helvetica Neue";
+  --font-code: "JetBrains Mono", var(--font-base);
+  --font-text: "Inter", var(--font-base);
+
   // Text
   --text1: var(--mauve-8);
   --text2: var(--mauve-9);
@@ -80,6 +83,8 @@ body * {
   --font-xl: 24px;
   --font-2xl: 28px;
   --font-3xl: 32px;
+
+  // Line Height
   --lh-s: 16px;
   --lh: 20px;
   --lh-m: 24px;
@@ -87,6 +92,11 @@ body * {
   --lh-xl: 32px;
   --lh-2xl: 36px;
   --lh-3xl: 40px;
+
+  // Width
+  --w-col: 780px;
+  --w-min: 1024px;
+  --w-max: 1216px;
 
   // Height
   --h-s: 30px;
@@ -109,6 +119,8 @@ body * {
   --border2: var(--mauve-4);
   --border3: var(--mauve-7);
   --border4: var(--mauve-9);
+
+  // Radius
   --radius1: 2px;
   --radius2: 4px;
   --radius3: 8px;
@@ -135,8 +147,6 @@ body * {
   --primaryHover: #303a48;
   --primaryText: #fff;
 
-
-
   // colors
   --accept1: hsl(151.88deg 100% 93.73%);
   --accept2: hsl(152.14deg 30.11% 36.47%);
@@ -148,11 +158,32 @@ body * {
   --modified1: hsl(136deg 38% 75%);
   --modified2: var(--grass-9);
 
+  // Color diff
+  // Diff
+  // $color-added: rgba($lime-50, 0.5);
+  // $color-added-hi: $lime-200;
+  // $color-removed: rgba($red-50, 0.5);
+  // $color-removed-hi: $red-200;
+  // github diff
+  // $color-added: #e6ffec;
+  // $color-added-hi: #abf2bc;
+  // $color-removed: #ffebe9;
+  // $color-removed-hi: rgb(255 129 130 / 40%);
+  // github diff modified
+  --added1: rgba(#e6ffec, 0.9);
+  --added2: rgba(#e6ffec, 0.15);
+  --added3: #abf2bc;
+  --removed1: rgba(#ffebe9, 0.9);
+  --removed2: rgba(#ffebe9, 0.25);
+  --removed3: rgb(255 129 130 / 40%);
+
   // Shadow
-  --boxshadow1: 1px 1px 2px $gray-4;
-  --boxshadow2: 0 1px 3px 0 rgb(0 0 0 / 10%), 0 1px 2px -1px rgb(0 0 0 / 10%);
-  --boxshadow3: 0 1px 10px 0 rgb(0 0 0 / 10%), 0 1px 2px -1px rgb(0 0 0 / 10%);
-  --boxshadow-editable: -2px 0 0 0 $blue-50;
+  --shadow1: 1px 1px 2px var(--bg1);
+  --shadow2: 0 1px 3px 0 rgb(0 0 0 / 10%), 0 1px 2px -1px rgb(0 0 0 / 10%);
+  --shadow3: 0 1px 10px 0 rgb(0 0 0 / 10%), 0 1px 2px -1px rgb(0 0 0 / 10%);
+
+  // Transition
+  --anim-smooth: cubic-bezier(0.2, 0, 0, 1);
 }
 
 
@@ -160,12 +191,12 @@ body * {
 body {
   margin: 0;
 
-  // font-family: system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu, Cantarell, "Noto Sans", sans-serif, BlinkMacSystemFont, Oxygen, "Open Sans", "Helvetica Neue";
-  font: var(--font) $font-text;
+  font-family: var(--font-text);
+  font-size: var(--font);
   line-height: 20px;
   color: var(--text);
 
-  background-color: $gray-2;
+  background-color: var(--bg2);
 
   -webkit-font-smoothing: antialiased;
 }

@@ -10,12 +10,13 @@
   flex-grow: 1;
 
   font-size: var(--font);
-  line-height: $line-height;
+  line-height: var(--lh);
+  ;
   color: var(--text);
 
   background-color: #fff;
   border: 1px solid var(--border2);
-  border-radius: $border-radius-s;
+  border-radius: var(--radius2);
 
   &.s {
     height: var(--h-s);

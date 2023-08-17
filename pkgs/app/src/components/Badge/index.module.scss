@@ -8,7 +8,8 @@
 
   font-size: var(--font-s);
   font-weight: 500;
-  line-height: $line-height;
+  line-height: var(--lh);
+  ;
   color: var(--text2);
   text-align: center;
 

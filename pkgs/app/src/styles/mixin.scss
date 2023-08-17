@@ -37,44 +37,9 @@
   padding: $padding !important;
 
   border: none;
-  border-radius: $border-radius-s;
+  border-radius: var(--radius2);
   outline: 1px solid transparent;
 
   transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
 
-}
-
-@mixin link() {
-  cursor: pointer;
-
-  display: inline-flex;
-  gap: var(--spc-s);
-  align-items: center;
-
-  color: $gray-700;
-
-  border-radius: 10px;
-
-  &:hover {
-    color: $blue-700;
-  }
-}
-
-@mixin button() {
-  cursor: pointer;
-
-  display: flex;
-  gap: var(--spc-s);
-  align-items: center;
-
-  padding: var(--spc) var(--spc-l);
-
-  color: $gray-700;
-
-  border-radius: 10px;
-
-  &:hover {
-    color: $blue-700;
-    background: $color-hover;
-  }
 }

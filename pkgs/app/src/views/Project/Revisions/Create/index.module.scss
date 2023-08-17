@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--spc-2xl);
-  width: $main-col-w;
+  width: var(--w-col);
 
   .left {
     grid-area: left;
@@ -30,7 +30,7 @@
     padding: var(--spc-l) var(--spc-xl);
 
     background-color: #fff;
-    box-shadow: $box-shadow2;
+    box-shadow: var(--shadow2);
   }
 
   .staged {

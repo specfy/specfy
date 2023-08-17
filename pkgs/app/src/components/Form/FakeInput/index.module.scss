@@ -11,7 +11,7 @@
 .input {
   @include editable(4px var(--spc-m));
 
-  font-weight: $font-semi;
+  font-weight: 500;
   line-height: 0;
 
   &.h1 {

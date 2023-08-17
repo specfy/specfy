@@ -9,7 +9,7 @@
   flex-direction: column;
   gap: var(--spc-3xl);
 
-  min-width: $main-col-w + 60px;
+  min-width: calc(var(--w-col) + 60px);
   padding: var(--spc-3xl) var(--spc-6xl);
 }
 
@@ -26,5 +26,5 @@
   flex-direction: column;
   gap: var(--spc-3xl);
 
-  max-width: $main-col-w;
+  max-width: var(--w-col);
 }

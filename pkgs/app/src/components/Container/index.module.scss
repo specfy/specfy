@@ -5,7 +5,7 @@
   gap: var(--spc-3xl);
 
   width: 100%;
-  max-width: $main-col-w * 2;
+  max-width: calc(var(--w-col) * 2);
   padding: var(--spc-4xl) var(--spc-5xl);
 
   // margin: 0 auto; // this trigger a weird animation
@@ -27,7 +27,7 @@
 }
 
 .left {
-  min-width: $main-col-w;
+  min-width: var(--w-col);
 }
 
 .right {
@@ -37,13 +37,13 @@
 
 .center {
   justify-content: space-around;
-  min-width: $min-w;
-  max-width: $max-w;
+  min-width: var(--w-min);
+  max-width: var(--w-max);
 }
 
 .left2third {
   width: 57%;
-  min-width: $main-col-w;
+  min-width: var(--w-col);
   background-color: #fff;
 
   &.padded {

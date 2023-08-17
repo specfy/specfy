@@ -20,8 +20,8 @@
   line-height: var(--font-l);
 
   background-color: #fff;
-  border-radius: $border-radius;
-  box-shadow: $box-shadow3;
+  border-radius: var(--radius3);
+  box-shadow: var(--shadow3);
 
 
   &.success {

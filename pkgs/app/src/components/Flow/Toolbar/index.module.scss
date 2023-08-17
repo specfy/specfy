@@ -50,8 +50,8 @@
   display: flex;
 
   background-color: #fff;
-  border-radius: $border-radius;
-  box-shadow: $box-shadow2;
+  border-radius: var(--radius3);
+  box-shadow: var(--shadow2);
 
   &.dark {
     padding: var(--spc-s) var(--spc-m) var(--spc-s) var(--spc-xl);
@@ -73,7 +73,7 @@
   font-size: var(--font-s);
 
   background-color: #fff;
-  border-radius: $border-radius;
+  border-radius: var(--radius3);
 
   &:hover {
     background-color: var(--bg2);

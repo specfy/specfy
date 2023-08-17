@@ -26,8 +26,7 @@
 
   background-color: #fff;
 
-  transition: transform 0.25s $trst-smooth, width 0.25s $trst-smooth;
-
+  transition: transform 0.25s var(--anim-smooth), width 0.25s var(--anim-smooth);
 
   &.collapsed {
     &.sidebar {
@@ -67,7 +66,8 @@
 .userDropdown {
   width: 250px;
   padding: var(--spc-xl) var(--spc-2xl);
-  line-height: $line-height-s;
+  line-height: var(--lh-s);
+  ;
 
   strong {
     display: block;
@@ -87,7 +87,7 @@
   background-color: #fff;
   border: 1px solid var(--border2);
   border-radius: 10px;
-  box-shadow: $box-shadow;
+  box-shadow: var(--shadow1);
 
   transition: opacity 0.25s ease-in, transform 0.25s ease-in-out;
 

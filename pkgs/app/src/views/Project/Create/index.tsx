@@ -91,7 +91,7 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   const onPickRepo: React.ComponentProps<typeof GithubSearch>['onPick'] = (
     res
   ) => {
-    setName(res.name);
+    setName(res.id !== -1 ? res.name : res.fullName);
     setRepo(res);
   };
 

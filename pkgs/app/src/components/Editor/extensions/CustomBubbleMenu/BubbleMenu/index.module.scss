@@ -12,8 +12,8 @@
 
   background-color: #fff;
   border: 1px solid $gray-3;
-  border-radius: $border-radius;
-  box-shadow: $box-shadow2, 0 3px 15px -3px rgb(13 20 33 / 13%);
+  border-radius: var(--radius3);
+  box-shadow: var(--shadow2), 0 3px 15px -3px rgb(13 20 33 / 13%);
 
   button {
     cursor: pointer;
@@ -25,7 +25,7 @@
 
     background-color: #fff;
     border: none;
-    border-radius: $border-radius-s;
+    border-radius: var(--radius2);
 
     transition: background-color 0.25s ease-in-out, color 0.25s ease-in-out;
 

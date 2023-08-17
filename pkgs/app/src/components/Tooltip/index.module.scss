@@ -10,7 +10,7 @@
 
   background-color: var(--primary);
   border-radius: var(--radius2);
-  box-shadow: var(--boxshadow1);
+  box-shadow: var(--shadow1);
 
   &[data-state="closed"] {
     animation-name: exit;

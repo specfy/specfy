@@ -5,8 +5,8 @@
 
   background-color: #fff;
   border: 1px solid $gray-100;
-  border-radius: $border-radius-s;
-  box-shadow: $box-shadow;
+  border-radius: var(--radius2);
+  box-shadow: var(--shadow1);
 
   &.padded {
     padding: var(--spc-2xl) var(--spc-3xl);

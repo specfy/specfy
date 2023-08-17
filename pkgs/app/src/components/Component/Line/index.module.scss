@@ -11,7 +11,8 @@ $min-height: 34px;
   min-height: $min-height;
   margin-bottom: var(--spc-3xl);
 
-  line-height: $line-height-m;
+  line-height: var(--lh-m);
+  ;
 
   .title {
     padding-top: 2px;

@@ -21,5 +21,6 @@
   width: auto !important;
   height: var(--spc-2xl) !important;
   padding: 1px var(--spc-s) 2px var(--spc-s) !important;
-  line-height: $line-height-s;
+  line-height: var(--lh-s);
+  ;
 }

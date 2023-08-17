@@ -8,10 +8,10 @@
   grid-area: review;
 
   background-color: #fff;
-  box-shadow: $box-shadow;
+  box-shadow: var(--shadow1);
 
   &.opened {
-    box-shadow: $box-shadow3;
+    box-shadow: var(--shadow3);
   }
 }
 

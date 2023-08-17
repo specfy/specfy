@@ -1,7 +1,7 @@
 @import "../../../styles/theme";
 
 .main {
-  width: $main-col-w;
+  width: var(--w-col);
   margin: 0 auto;
 }
 

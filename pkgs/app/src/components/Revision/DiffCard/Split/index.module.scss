@@ -6,7 +6,7 @@
 
   &.withLabel:not(.isCreated) {
     .right {
-      padding-top: var(--spc-4xl) + 1px;
+      padding-top: calc(var(--spc-4xl) + 1px);
     }
   }
 }

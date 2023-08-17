@@ -72,7 +72,8 @@
     padding: var(--spc);
 
     font-size: 13px;
-    line-height: $line-height-s;
+    line-height: var(--lh-s);
+    ;
     color: var(--text);
     text-overflow: ellipsis;
     white-space: pre;

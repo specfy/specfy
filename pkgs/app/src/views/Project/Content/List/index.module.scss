@@ -31,7 +31,7 @@
   // width: max-content;
   padding: var(--spc-xl) var(--spc-3xl);
   border: 1px solid var(--border1);
-  border-radius: $border-radius;
+  border-radius: var(--radius3);
 
   .icon {
     font-size: var(--font-l);

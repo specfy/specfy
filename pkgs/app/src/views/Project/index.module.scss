@@ -25,7 +25,8 @@
   padding: var(--spc-xs) var(--spc-l);
 
   font-size: var(--font);
-  line-height: $line-height-m;
+  line-height: var(--lh-m);
+  ;
   color: $gray-9 !important;
 
   border-radius: 4px;

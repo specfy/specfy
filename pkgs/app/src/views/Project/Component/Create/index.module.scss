@@ -2,7 +2,7 @@
 
 @import "../../../../styles/theme";
 
-$width: math.div($main-col-w, 1.5);
+$width: math.div(var(--w-col), 1.5);
 
 .form {
   display: flex;

@@ -5,6 +5,6 @@
   padding: var(--spc-l) var(--spc-2xl);
 
   background-color: white;
-  border-radius: $border-radius-s;
-  box-shadow: $box-shadow2;
+  border-radius: var(--radius2);
+  box-shadow: var(--shadow2);
 }

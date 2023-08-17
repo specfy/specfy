@@ -3,7 +3,7 @@
 .block {
   margin-bottom: var(--spc-2xl);
   border: 1px solid $gray-200;
-  border-radius: $border-radius;
+  border-radius: var(--radius3);
 }
 
 .header {

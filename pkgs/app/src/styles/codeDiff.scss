@@ -4,28 +4,28 @@
 table.diff {
   --diff-background-color: initial;
   --diff-text-color: initial;
-  --diff-font-family: #{$font-code};
+  --diff-font-family: var(--font-code);
   --diff-selection-background-color: #b3d7ff;
   --diff-selection-text-color: var(--diff-text-color);
   --diff-gutter-selected-background-color: #fffce0;
   --diff-gutter-selected-text-color: var(--diff-text-color);
-  --diff-gutter-insert-background-color: #{$color-added-hi};
+  --diff-gutter-insert-background-color: var(--added3);
   --diff-gutter-insert-text-color: var(--diff-text-color);
-  --diff-code-insert-background-color: #{$color-added-low};
+  --diff-code-insert-background-color: var(--added1);
   --diff-code-insert-text-color: var(--diff-text-color);
-  --diff-code-insert-edit-background-color: #{$color-added-hi};
+  --diff-code-insert-edit-background-color: var(--added3);
   --diff-code-insert-edit-text-color: var(--diff-text-color);
-  --diff-gutter-delete-background-color: #{$color-removed-hi};
+  --diff-gutter-delete-background-color: var(--removed3);
   --diff-gutter-delete-text-color: var(--diff-text-color);
-  --diff-code-delete-background-color: #{$color-removed-low};
+  --diff-code-delete-background-color: var(--removed1);
   --diff-code-delete-text-color: var(--diff-text-color);
-  --diff-code-delete-edit-background-color: #{$color-removed-hi};
+  --diff-code-delete-edit-background-color: var(--removed3);
   --diff-code-delete-edit-text-color: var(--diff-text-color);
   --diff-code-selected-background-color: #fffce0;
   --diff-code-selected-text-color: var(--diff-text-color);
   --diff-omit-gutter-line-color: #cb2a1d;
 
-  font-family: $font-code;
+  font-family: var(--font-code);
   font-size: var(--font);
 
   .diff-gutter-col {

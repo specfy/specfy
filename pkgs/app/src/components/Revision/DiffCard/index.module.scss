@@ -47,19 +47,19 @@ $border-width: 10px;
 .added {
   margin: 0 (-var(--spc-4xl)) 0 (-var(--spc-4xl) - $border-width);
   padding-left: var(--spc-4xl);
-  background-color: $color-added;
-  border-left: $border-width solid $color-added-hi;
+  background-color: var(--added2);
+  border-left: $border-width solid var(--added3);
 
   &.inline {
     margin: 0;
     padding-left: 0;
-    background-color: $color-added-hi;
+    background-color: var(--added3);
     border-left: none;
   }
 }
 
 .formatting {
-  border-bottom: 1px solid $color-added-hi;
+  border-bottom: 1px solid var(--added3);
 }
 
 .removed {
@@ -69,13 +69,13 @@ $border-width: 10px;
   text-decoration: line-through;
 
   opacity: 0.7;
-  background-color: $color-removed;
-  border-left: $border-width solid $color-removed-hi;
+  background-color: var(--removed2);
+  border-left: $border-width solid var(--removed3);
 
   &.inline {
     margin: 0;
     padding-left: 0;
-    background-color: $color-removed-hi;
+    background-color: var(--removed3);
     border-left: none;
   }
 }
@@ -117,7 +117,7 @@ $border-width: 10px;
     background-color: transparent;
 
     .item {
-      background-color: $color-added-low;
+      background-color: var(--added1);
       border-color: transparent;
     }
   }
@@ -126,7 +126,7 @@ $border-width: 10px;
     background-color: transparent;
 
     .item {
-      background-color: $color-removed-low;
+      background-color: var(--removed1);
       border-color: transparent;
     }
   }

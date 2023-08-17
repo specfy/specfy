@@ -7,7 +7,7 @@
   padding: var(--spc-xl) var(--spc-2xl);
 
   background-color: $gray-50;
-  border-radius: $border-radius-s;
+  border-radius: var(--radius2);
 
   .pre,
   .code {
@@ -32,7 +32,7 @@
 
       width: 100%;
 
-      font-family: $font-code;
+      font-family: var(--font-code);
       font-size: var(--font);
       text-shadow: none;
 

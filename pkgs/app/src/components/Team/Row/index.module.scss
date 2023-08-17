@@ -34,6 +34,7 @@
 
 .sub {
   font-size: var(--font-s);
-  line-height: $line-height-s;
+  line-height: var(--lh-s);
+  ;
   color: $gray-400;
 }

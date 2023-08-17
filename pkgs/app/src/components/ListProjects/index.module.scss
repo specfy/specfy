@@ -21,9 +21,9 @@
 }
 
 .item {
-  padding: var(--spc-xl) var(--spc) var(--spc-2xl) var(--spc-xl) !important;
+  padding: var(--spc-xl) var(--spc) var(--spc-xl) var(--spc-xl) !important;
   border: 1px solid var(--border2);
-  border-radius: $border-radius-s;
+  border-radius: var(--radius2);
 }
 
 .info {

@@ -2,9 +2,22 @@
 @import "../../styles/mixin";
 
 .button {
-  @include button;
+  cursor: pointer;
+
+  display: flex;
+  gap: var(--spc-s);
+  align-items: center;
 
   padding: var(--spc);
+
+  color: var(--text4);
+
+  border-radius: 10px;
+
+  &:hover {
+    color: var(--primary);
+    background: var(--bg2);
+  }
 }
 
 
@@ -17,8 +30,8 @@
   min-width: 100px;
 
   background-color: white;
-  border-radius: $border-radius;
-  box-shadow: var(--boxshadow2);
+  border-radius: var(--radius3);
+  box-shadow: var(--shadow2);
 
   animation-duration: 400ms;
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
