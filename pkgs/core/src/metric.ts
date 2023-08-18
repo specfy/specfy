@@ -8,7 +8,7 @@ ddMetrics.init({
   defaultTags: [`env:${process.env.NODE_ENV}`],
   reporter:
     envs.DD_API_KEY !== ''
-      ? new ddMetrics.reporters.DatadogReporter()
+      ? new ddMetrics.reporters.DatadogReporter(envs.DD_API_KEY)
       : new ddMetrics.reporters.NullReporter(),
 });
 
