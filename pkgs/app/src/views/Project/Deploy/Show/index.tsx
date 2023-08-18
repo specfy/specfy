@@ -63,7 +63,7 @@ export const ProjectDeploysShow: React.FC<{
       }
       tmp.push(`end - ${deploy.finishedAt}`);
     }
-    return tmp;
+    return tmp.join('\r\n');
   }, [deploy]);
 
   // --------- Content
@@ -127,7 +127,7 @@ export const ProjectDeploysShow: React.FC<{
           showLineNumbers={true}
           className={cls.logs}
         >
-          {logs.join('\r\n')}
+          {logs}
         </PrismAsyncLight>
       </Container.Left2Third>
     </Container>
