@@ -15,8 +15,7 @@ npm run lint:scss
 ## Test
 
 ```sh
-npm run -w @specfy/api test
-npm run -w @specfy/app test
+npm run test
 ```
 
 NB: Running tests will truncate the Database.
@@ -38,14 +37,5 @@ it('should fail to get an user', async () => {
 ## Database
 
 ```sh
-cd pkgs/api
-
-# Apply all migration
-npm run prod:migrate
-
-# Create migration
-npm run migrate:create
-
-# Seed development data
-npm run seed
+npm run db:migrate
 ```

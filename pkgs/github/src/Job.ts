@@ -1,3 +1,4 @@
+import { metrics } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import type { Jobs } from '@specfy/db';
 import type { JobMark, JobWithOrgProject } from '@specfy/models';
@@ -24,6 +25,9 @@ export abstract class Job {
   async start() {
     const job = this.#job;
     const l = this.l;
+
+    metrics.increment('jobs.loop.start');
+
     l.info('Job start', { id: job.id });
     const evt: EventJob = {
       job: toApiJob(job),
@@ -63,6 +67,8 @@ export abstract class Job {
 
     evt.job = toApiJob({ ...jobUpdated, User: job.User });
     io.to(`project-${job.projectId}`).emit('job.finish', evt);
+
+    metrics.increment('jobs.loop.end');
   }
 
   mark(status: JobMark['status'], code: JobMark['code'], err?: unknown) {

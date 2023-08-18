@@ -80,7 +80,7 @@ ENV NODE_ENV=production
 # - OpenSSL is here to handle HTTPS requests correctly
 # - Git is to be able to clone repositories
 RUN true \
-  && apt update && apt-get install -y bash openssl git \
+  && apt update && apt-get install -y bash openssl git ca-certificates \
   && rm -rf /var/lib/apt/lists/* \
   && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false
 
@@ -89,6 +89,7 @@ USER node
 
 WORKDIR /app/specfy
 
+# Code
 COPY --from=tmp --chown=node:node /app/tmp /app/specfy
 
 EXPOSE 8080

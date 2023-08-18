@@ -1,4 +1,4 @@
-import { l as consola } from '@specfy/core';
+import { l as consola, metrics } from '@specfy/core';
 import { prisma } from '@specfy/db';
 
 import type { Job } from './Job.js';
@@ -21,6 +21,7 @@ export function listen() {
   l.info('Starting');
 
   interval = setInterval(async () => {
+    metrics.increment('jobs.loop');
     await prisma.$transaction(async (tx) => {
       const next = await tx.jobs.findFirst({
         where: {

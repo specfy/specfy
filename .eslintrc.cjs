@@ -202,7 +202,7 @@ module.exports = {
     'react/prop-types': ['off'],
     'import/no-unresolved': 'off', // checked by ts
 
-    'import/extensions': ['error', 'never'],
+    'import/extensions': ['error', 'always'],
     'import/order': [
       'error',
       {
