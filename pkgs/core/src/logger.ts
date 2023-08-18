@@ -1,23 +1,18 @@
 import { sep } from 'node:path';
-import { formatWithOptions } from 'node:util';
 
-import * as c from 'colorette';
-import type { LogLevel, LogType } from 'consola';
-import { createConsola } from 'consola';
+import type { Level, LoggerOptions } from 'pino';
 import { pino } from 'pino';
 
 import { isProd } from './env.js';
 
-export const TYPE_COLOR_MAP: { [k in LogType]?: keyof typeof c } = {
-  info: 'cyan',
-  fail: 'red',
-  success: 'green',
-  ready: 'green',
-  start: 'magenta',
-};
-export const LEVEL_COLOR_MAP: { [k in LogLevel]?: keyof typeof c } = {
-  0: 'red',
-  1: 'yellow',
+// https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#LogSeverity
+const levelToSeverity: Record<string, string> = {
+  trace: 'DEBUG',
+  debug: 'DEBUG',
+  info: 'INFO',
+  warn: 'WARNING',
+  error: 'ERROR',
+  fatal: 'CRITICAL',
 };
 
 export function parseStack(stack: string) {
@@ -31,33 +26,53 @@ export function parseStack(stack: string) {
   return lines;
 }
 
-export const logger = pino({
+export const options: LoggerOptions = {
   level: 'info',
   timestamp: true,
-  base: {},
-  formatters: {
-    level(label) {
-      return { level: label };
-    },
+  base: {
+    serviceContext: { service: 'specfy' },
   },
+  formatters: isProd
+    ? {
+        level(label) {
+          const pinoLevel = label as Level;
+          const severity = levelToSeverity[label] ?? 'INFO';
+          // `@type` property tells Error Reporting to track even if there is no `stack_trace`
+          // you might want to make this an option the plugin, in our case we do want error reporting for all errors, with or without a stack
+          const typeProp =
+            pinoLevel === 'error' || pinoLevel === 'fatal'
+              ? {
+                  '@type':
+                    'type.googleapis.com/google.devtools.clouderrorreporting.v1beta1.ReportedErrorEvent',
+                }
+              : {};
+          return { severity, ...typeProp };
+        },
+      }
+    : {
+        level(label) {
+          return { level: label };
+        },
+      },
   hooks: {
     // By default pino does Sprintf instead we merge objects.
     logMethod(args, method) {
-      const final: Record<string, any> = { msg: '', data: {} };
+      const final: Record<string, any> = { message: '', data: {} };
 
       args.reverse().forEach((m) => {
         if (typeof m === 'string') {
-          final.msg += m;
+          final.message += m;
         } else if (typeof m === 'object' && m instanceof Error) {
           final.err = m;
+          final.stack_trace = m.stack;
         } else if (!m) {
-          final.msg = m;
+          final.message = m;
         } else if (m.err || m.error) {
           final.err = m.err || m.error;
         } else if (m.req) {
-          final.msg = `#${m.req.id} <- ${m.req.method} ${m.req.url}`;
+          final.message = `#${m.req.id} <- ${m.req.method} ${m.req.url}`;
         } else if (m.res) {
-          final.msg = `#${m.res.request.id} -> ${m.res.statusCode}`;
+          final.message = `#${m.res.request.id} -> ${m.res.statusCode}`;
         } else {
           final.data = { ...final.data, ...m };
         }
@@ -65,77 +80,33 @@ export const logger = pino({
       method.apply(this, [final as unknown as string]);
     },
   },
-  // prettifier: !isProd,
-  transport: {
+  messageKey: 'message',
+};
+
+if (!isProd) {
+  options.transport = {
     target: 'pino-pretty',
     options: {
       colorize: true,
       singleLine: true,
-      messageFormat: '[{svc}] \x1B[37m{msg}',
+      messageFormat: '[{svc}] \x1B[37m{message}',
       translateTime: 'HH:MM',
-      ignore: 'svc',
+      ignore: 'svc,serviceContext,message',
     },
-  },
-});
-
-function formatStack(stack: string) {
-  return parseStack(stack)
-    .map(
-      (line) =>
-        '  ' +
-        line
-          .replace(/^at +/, (m) => c.gray(m))
-          .replace(/\((.+)\)/, (_, m) => `(${c.cyan(m)})`)
-    )
-    .join('\n');
+  };
 }
 
-export const l = createConsola({
-  reporters: isProd
-    ? [
-        {
-          log: (logObj) => {
-            console.log(JSON.stringify(logObj));
-          },
-        },
-      ]
-    : [
-        {
-          log: (obj) => {
-            const typeColor: keyof typeof c =
-              TYPE_COLOR_MAP[obj.type] || LEVEL_COLOR_MAP[obj.level] || 'gray';
+export const l = pino(options);
+export type Logger = typeof l;
 
-            let line = '';
-            if (obj.args.length > 0) {
-              // Render errors first
-              const args = obj.args.map((arg) => {
-                if (arg && typeof arg.stack === 'string') {
-                  return arg.message + '\n' + formatStack(arg.stack);
-                }
-                return arg;
-              });
-
-              if (typeof args[0] === 'string') {
-                // Try to format on the same line if possible
-                line = formatWithOptions({ colors: true }, ...args);
-              } else {
-                // Print object on a different line for readability
-                line = `\n${formatWithOptions({ colors: true }, ...args)}`;
-              }
-            }
-            if (obj.type === 'trace') {
-              const _err = new Error('Trace: ' + obj.message);
-              line += formatStack(_err.stack || '');
-            }
-
-            console.log(
-              obj.tag && c.blue(`[${obj.tag}]`),
-              // @ts-expect-error
-              // eslint-disable-next-line import/namespace
-              c[typeColor as any](obj.type),
-              line
-            );
-          },
-        },
-      ],
-});
+// function formatStack(stack: string) {
+//   return parseStack(stack)
+//     .map(
+//       (line) =>
+//         '  ' +
+//         line
+//           .replace(/^at +/, (m) => c.gray(m))
+//           .replace(/\((.+)\)/, (_, m) => `(${c.cyan(m)})`)
+//     )
+//     .join('\n');
+// }

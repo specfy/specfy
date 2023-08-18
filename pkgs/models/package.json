@@ -10,7 +10,7 @@
     "test": "vitest",
     "test:ci": "vitest run",
     "build": "tsc -p tsconfig.json",
-    "build:watch": "tsc -p tsconfig.json -w"
+    "build:watch": "tsc -p tsconfig.json -w --preserveWatchOutput"
   },
   "files": [
     "build"

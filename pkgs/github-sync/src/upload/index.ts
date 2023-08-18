@@ -173,7 +173,7 @@ export async function merge({
   });
 
   if (res.status !== 200) {
-    l.log('');
+    l.info('');
     l.error(JSON.stringify((await res.json()).error, null, 2));
     throw new Error("Can't merge");
   }

@@ -1,3 +1,4 @@
+import { l } from '@specfy/core';
 import type { Users, Orgs } from '@specfy/db';
 import { Prisma, prisma } from '@specfy/db';
 
@@ -65,7 +66,7 @@ export async function createFreeSubscription({
     return;
   }
 
-  console.log('Subscribing org to default Free plan');
+  l.info('Subscribing org to default Free plan');
   const search = await stripe.customers.search({
     query: `metadata["orgId"]:"${org.id}"`,
   });

@@ -22,6 +22,14 @@
         "^db:generate"
       ]
     },
+    "build:watch": {
+      "outputs": [
+        "build/**"
+      ],
+      "dependsOn": [
+        "^db:generate"
+      ]
+    },
     "dev": {
       "persistent": true,
       "cache": false,

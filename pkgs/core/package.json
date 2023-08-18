@@ -8,7 +8,7 @@
   "type": "module",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "build:watch": "tsc -p tsconfig.json -w"
+    "build:watch": "tsc -p tsconfig.json -w --preserveWatchOutput"
   },
   "files": [
     "build"
@@ -16,7 +16,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "consola": "3.2.3",
     "datadog-metrics": "0.11.0",
     "env-schema": "5.2.0",
     "nanoid": "4.0.2",

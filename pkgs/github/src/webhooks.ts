@@ -1,4 +1,4 @@
-import { nanoid, l as consola } from '@specfy/core';
+import { nanoid, l as logger } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import {
   createGithubActivity,
@@ -8,7 +8,7 @@ import {
 
 import { webhookService as ws } from './app.js';
 
-const l = consola.create({}).withTag('github webhook');
+const l = logger.child({ svc: 'github-webhook' });
 
 export function listen() {
   ws.onAny(({ id, payload, name }) => {

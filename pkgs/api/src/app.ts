@@ -3,7 +3,7 @@ import path from 'node:path';
 import cors from '@fastify/cors';
 import rateLimit from '@fastify/rate-limit';
 import staticFiles from '@fastify/static';
-import { logger, dirname } from '@specfy/core';
+import { l, dirname } from '@specfy/core';
 import { initSocket } from '@specfy/socket';
 import type {
   FastifyInstance,
@@ -128,7 +128,7 @@ export default async (f: FastifyInstance, opts: FastifyPluginOptions) => {
 };
 
 export const options: FastifyServerOptions = {
-  logger,
+  logger: l.child({ svc: 'api' }),
   trustProxy: true,
   // logger: true,
 };

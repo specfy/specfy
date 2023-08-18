@@ -1,4 +1,4 @@
-import { envs } from '@specfy/core';
+import { envs, l } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import { v1, stripe } from '@specfy/models';
 import type { PostStripeWebhook } from '@specfy/models';
@@ -38,7 +38,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         return forbidden(res);
       }
 
-      console.log('[stripe-hook]', event.type);
+      l.info('[stripe-hook]', event.type);
 
       /**
        * Please note the field `Metadata` is not persisted on every webhook

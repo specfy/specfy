@@ -1,5 +1,5 @@
 import type { Authenticator } from '@fastify/passport';
-import { nanoid, logger, slugify, envs } from '@specfy/core';
+import { nanoid, l, slugify, envs } from '@specfy/core';
 import type { Users } from '@specfy/db';
 import { prisma } from '@specfy/db';
 import { sendWelcome } from '@specfy/emails';
@@ -110,7 +110,7 @@ export function registerGithub(passport: Authenticator) {
       });
 
       if (!process.env.VITEST) {
-        logger.info('Sending email', { to: email, type: 'welcome' });
+        l.info('Sending email', { to: email, type: 'welcome' });
         await sendWelcome(
           resend,
           {

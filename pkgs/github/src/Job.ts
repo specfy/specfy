@@ -1,21 +1,20 @@
-import { metrics } from '@specfy/core';
+import type { Logger } from '@specfy/core';
+import { l as logger, metrics } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import type { Jobs } from '@specfy/db';
 import type { JobMark, JobWithOrgProject } from '@specfy/models';
 import { toApiProject, toApiJob, jobReason } from '@specfy/models';
 import type { EventJob } from '@specfy/socket';
 import { io } from '@specfy/socket';
-import { consola } from 'consola';
-import type { ConsolaInstance } from 'consola';
 
 export abstract class Job {
-  l: ConsolaInstance;
+  l: Logger;
   #job: JobWithOrgProject;
   #mark?: JobMark;
 
   constructor(job: JobWithOrgProject) {
     this.#job = job;
-    this.l = consola.create({}).withTag('job');
+    this.l = logger.child({ svc: 'jobs', tag: job.id });
   }
 
   getMark() {

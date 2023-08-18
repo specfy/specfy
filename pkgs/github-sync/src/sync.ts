@@ -64,13 +64,13 @@ export async function sync({
 
   const baseUrl = `${hostname}/0`;
 
-  l.log('');
+  l.info('');
 
   // ------- Documentation
   let docs: TransformedFile[] = [];
   if (docEnabled) {
-    l.log('-- Documentation');
-    l.log(
+    l.info('-- Documentation');
+    l.info(
       kleur.bold().magenta(`${figures.triangleRight} Syncing`),
       kleur.cyan(docPath)
     );
@@ -100,25 +100,25 @@ export async function sync({
     spinnerParsing.succeed('Parsed');
 
     // Log
-    l.log(
+    l.info(
       kleur.bold().blue(`${figures.arrowRight}`),
       'Found',
       list.length,
       'files'
     );
-    l.log(list.map((file) => file.fp));
-    l.log('');
+    l.info(list.map((file) => file.fp));
+    l.info('');
   } else {
-    l.log(kleur.bold().yellow(`${figures.info} Documentation Skipped`));
+    l.info(kleur.bold().yellow(`${figures.info} Documentation Skipped`));
   }
 
   // ------- Stack
   let stack: Payload | null = null;
   if (stackEnabled) {
-    l.log('');
-    l.log('-- Stack');
+    l.info('');
+    l.info('-- Stack');
 
-    l.log(
+    l.info(
       kleur.bold().magenta(`${figures.triangleRight} Syncing`),
       kleur.cyan(stackPath)
     );
@@ -138,13 +138,13 @@ export async function sync({
     // output to folder for debug / manual review
     const file = path.join(root, 'stack.json');
     await fs.writeFile(file, JSON.stringify(stack.toJson(root), undefined, 2));
-    l.log(
+    l.info(
       kleur.bold().blue(`${figures.arrowRight}`),
       'Output',
       kleur.green(file)
     );
   } else {
-    l.log(kleur.bold().yellow(`${figures.info} Stack Skipped`));
+    l.info(kleur.bold().yellow(`${figures.info} Stack Skipped`));
   }
 
   if (!docEnabled && !stackEnabled) {
@@ -153,15 +153,15 @@ export async function sync({
   }
 
   // --- Upload
-  l.log('');
-  l.log('-- Deploy');
+  l.info('');
+  l.info('-- Deploy');
   const spinnerUploading = ora(`Uploading`).start();
   const body = prepBody({ orgId, projectId, docs, stack, autoLayout, baseUrl });
 
   if (dryRun) {
     spinnerUploading.stopAndPersist({ text: 'Uploaded (dry-run)' });
-    l.log('');
-    l.log(util.inspect(body, false, 10, true));
+    l.info('');
+    l.info(util.inspect(body, false, 10, true));
     return;
   }
 
@@ -173,14 +173,14 @@ export async function sync({
       resUp.error.reason === 'no_diff'
     ) {
       spinnerUploading.succeed('Uploaded');
-      l.log(kleur.bold().blue(`${figures.info} No diff with production`));
+      l.info(kleur.bold().blue(`${figures.info} No diff with production`));
 
       throw new Error();
     }
 
     spinnerUploading.fail('Uploaded');
 
-    l.log('');
+    l.info('');
     l.error(kleur.red('Failed to upload, received:'));
     l.error(JSON.stringify(resUp.error, null, 2));
 
@@ -193,8 +193,8 @@ export async function sync({
   const get = await resGet.json();
   spinnerUploading.succeed('Uploaded');
 
-  l.log('');
-  l.log('> Revision created:', kleur.underline(get.data.url));
+  l.info('');
+  l.info('> Revision created:', kleur.underline(get.data.url));
 
   // --- Deduping
   const spinnerDedup = ora(`Closing old revisions`).start();
