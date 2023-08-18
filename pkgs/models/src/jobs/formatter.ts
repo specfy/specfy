@@ -1,6 +1,6 @@
 import { toApiUser } from '../users/formatter.js';
 
-import type { ApiJob } from './types.api';
+import type { ApiJob } from './types.api.js';
 import type { JobWithUser } from './types.js';
 
 export function toApiJob(job: JobWithUser): ApiJob {

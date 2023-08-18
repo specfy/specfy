@@ -1,6 +1,7 @@
 import { v1 } from './plans.js';
 import { stripe } from './stripe.js';
 
+// ts-node --esm ./src/billing/seed.ts
 (async () => {
   await Promise.all(
     Object.entries(v1).map(async ([, value]) => {

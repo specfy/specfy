@@ -1,7 +1,7 @@
 import { nanoid, slugify } from '@specfy/core';
 import type { Orgs, Projects } from '@specfy/db';
 
-import type { DBComponent } from './types';
+import type { DBComponent } from './types.js';
 
 export function getBlobComponent(org: Orgs, project: Projects): DBComponent {
   const id = nanoid();

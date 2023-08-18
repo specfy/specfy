@@ -2,9 +2,9 @@ import type { ListenEvents, ServerEvents } from '@specfy/socket';
 import type { Socket } from 'socket.io-client';
 import { io } from 'socket.io-client';
 
-const URL = 'http://localhost:3000';
+import { API_HOSTNAME } from './envs';
 
-export const socket: Socket<ServerEvents, ListenEvents> = io(URL, {
+export const socket: Socket<ServerEvents, ListenEvents> = io(API_HOSTNAME, {
   path: '/ws',
   transports: ['websocket'],
   reconnectionDelay: 1000,

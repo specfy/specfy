@@ -173,6 +173,8 @@ module.exports = {
     '@typescript-eslint/no-duplicate-enum-values': 'error',
     '@typescript-eslint/no-non-null-asserted-nullish-coalescing': 'error',
     '@typescript-eslint/no-unsafe-declaration-merging': 'error',
+    'require-extensions/require-extensions': 'error',
+    'require-extensions/require-index': 'off',
 
     // To decide
     '@typescript-eslint/no-for-in-array': ['off'],
@@ -202,7 +204,7 @@ module.exports = {
     'react/prop-types': ['off'],
     'import/no-unresolved': 'off', // checked by ts
 
-    'import/extensions': ['error', 'always'],
+    'import/extensions': ['error', 'never'],
     'import/order': [
       'error',
       {
@@ -224,15 +226,10 @@ module.exports = {
 
   overrides: [
     {
-      files: ['pkgs/api/src/**/*.ts'],
+      files: ['pkgs/app/**/*.tsx', 'pkgs/app/**/*.ts'],
       rules: {
-        'require-extensions/require-extensions': 'error',
-        'require-extensions/require-index': 'error',
+        'require-extensions/require-extensions': 'off',
       },
-    },
-    {
-      files: ['pkgs/**/*.test.ts'],
-      rules: {},
     },
   ],
 };
