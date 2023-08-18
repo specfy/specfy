@@ -1,4 +1,4 @@
-import { nanoid } from '@specfy/core';
+import { l, nanoid } from '@specfy/core';
 import { Prisma } from '@specfy/db';
 import type { Jobs } from '@specfy/db';
 import type { SetNonNullable } from 'type-fest';
@@ -17,6 +17,7 @@ export async function createJobDeploy({
   > & {
     tx: Prisma.TransactionClient;
   }) {
+  l.info('Creating deploy job', { orgId, projectId, config });
   const job = await tx.jobs.create({
     data: {
       id: nanoid(),
