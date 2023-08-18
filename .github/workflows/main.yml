@@ -38,6 +38,7 @@ jobs:
       STRIPE_KEY: ""
       STRIPE_WEBHOOKS_SECRET: ""
       JWT_SECRET: "aa"
+      DD_API_KEY: ""
 
 
     steps:
