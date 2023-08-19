@@ -35,7 +35,7 @@
     "@swc/core": "^1.3.68",
     "@tabler/icons": "2.30.0",
     "@tabler/icons-react": "2.30.0",
-    "@tanstack/react-query": "4.32.6",
+    "@tanstack/react-query": "4.33.0",
     "@tiptap/extension-blockquote": "2.0.4",
     "@tiptap/extension-bold": "2.0.4",
     "@tiptap/extension-bullet-list": "2.0.4",
