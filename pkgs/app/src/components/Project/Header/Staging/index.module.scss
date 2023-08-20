@@ -1,28 +1,19 @@
-@import "../../../../styles/theme";
-
 .staging {
   display: flex;
-  gap: $p-xl;
+  gap: var(--spc-xl);
   align-items: center;
+  justify-content: space-between;
 
-  height: 72px;
-  padding: $p-xl;
+  height: 62px;
+  padding: 0 var(--spc-m) 0 1px;
 
-  font-size: $font-s;
+  font-size: var(--font);
 
+  border-top: 1px solid var(--border2);
   border-bottom: 1px solid var(--border2);
 }
 
-.edit {
-  cursor: pointer;
-
-  width: 40px;
-  margin-right: 2px;
-
-  font-size: $font-l;
-  text-align: center;
-
-  &.badge {
-    color: var(--accent2);
-  }
+.action {
+  display: flex;
+  gap: var(--spc-m)
 }

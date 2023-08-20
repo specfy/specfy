@@ -21,13 +21,13 @@ export default defineConfig({
     headers: {
       // To sync with vercel.json
       'Content-Security-Policy': [
-        "default-src 'self' *.specfy.io specfy.io vercel.com *.vercel.com *.github.com localhost:*",
-        "script-src 'unsafe-eval' 'unsafe-inline' *.specfy.io specfy.io *.vercel.com *.vercel-scripts.com www.google.com www.googletagmanager.com www.google-analytics.com www.gstatic.com *.googleapis.com *.github.com localhost:*",
-        "style-src 'self' 'unsafe-inline' *.googleapis.com *.github.com localhost:*",
+        "default-src 'self' *.specfy.io specfy.io vercel.com *.vercel.com *.github.com localhost:* *.jsdelivr.net",
+        "script-src 'unsafe-eval' 'unsafe-inline' *.specfy.io specfy.io *.vercel.com *.vercel-scripts.com www.google.com www.googletagmanager.com www.google-analytics.com www.gstatic.com *.googleapis.com *.github.com localhost:* *.jsdelivr.net",
+        "style-src 'self' 'unsafe-inline' *.googleapis.com *.github.com localhost:* *.jsdelivr.net",
         "connect-src data: 'self' *",
-        "font-src 'self' *.specfy.io *.gstatic.com",
+        "font-src 'self' *.specfy.io *.gstatic.com *.jsdelivr.net",
         "img-src 'self' blob: data: *.specfy.io *",
-        'child-src  *.github.com github.com localhost:* specfy.io *.specfy.io',
+        'child-src  *.github.com github.com localhost:* specfy.io *.specfy.io *.jsdelivr.net',
         "media-src 'self' *.github.com",
       ].join(';'),
     },

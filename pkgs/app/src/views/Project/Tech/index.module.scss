@@ -1,5 +1,7 @@
-@import "../../../styles/theme";
+.main {
+  padding: var(--spc-6xl);
+}
 
 .title {
-  margin-bottom: $p-2xl;
+  margin-bottom: var(--spc-2xl);
 }

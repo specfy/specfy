@@ -1,11 +1,15 @@
-@import "../../../styles/theme";
+.main {
+  padding: var(--spc-6xl) var(--spc-6xl);
+}
 
 .block {
-  margin-top: $p-5xl;
-  padding-top: $p-5xl;
-  border-top: 1px solid var(--border1);
+  margin-top: var(--spc-6xl);
 
-  h4 {
-    margin-bottom: $p-l;
+  h2 {
+    margin-bottom: var(--spc-xl);
   }
+}
+
+.desc {
+  margin: var(--spc-3xl) 0;
 }

@@ -1,48 +1,46 @@
-@import "../../styles/theme";
-
 .banner {
   display: flex;
   align-items: center;
 
-  padding: $p-xl;
+  padding: var(--spc-xl);
 
   background-color: #fff;
   border: 1px solid var(--border2);
-  border-radius: $border-radius-s;
+  border-radius: var(--radius2);
 
   p:last-of-type {
     margin-block-end: 0;
   }
 
   &.error {
-    border-color: $red-100;
+    border-color: var(--tomato-8);
 
     .icon {
-      color: $red-500;
+      color: var(--tomato-9);
     }
   }
 
   &.warning {
-    border-color: $yellow-100;
+    border-color: var(--amber-8);
 
     .icon {
-      color: $yellow-500;
+      color: var(--amber-9);
     }
   }
 
   &.info {
-    border-color: $blue-100;
+    border-color: var(--indigo-8);
 
     .icon {
-      color: $blue-500;
+      color: var(--indigo-9);
     }
   }
 
   &.success {
-    border-color: $green-100;
+    border-color: var(--green-8);
 
     .icon {
-      color: $green-500;
+      color: var(--green-9);
     }
   }
 }

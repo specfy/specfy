@@ -1,5 +1,3 @@
-@import "../../../styles/theme";
-
 .block {
   position: relative;
 }
@@ -9,9 +7,9 @@
   align-items: center;
   justify-content: space-between;
 
-  margin-bottom: $p-l;
+  margin-bottom: var(--spc-l);
 
-  font-size: $font-m;
+  font-size: var(--font-m);
   font-weight: 500;
   color: var(--text);
 }

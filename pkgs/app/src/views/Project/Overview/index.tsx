@@ -58,10 +58,10 @@ export const ProjectOverview: React.FC<{
   return (
     <Container noPadding>
       <Container.Left2Third>
-        <Card padded large seamless>
-          <h2>{project.name}</h2>
+        <div className={cls.main}>
+          <h1>{project.name}</h1>
           <UpdatedAt time={project.updatedAt} />
-          <div>
+          <div className={cls.desc}>
             {!isEditing && <ContentDoc doc={project.description} />}
             {isEditing && (
               <EditorMini
@@ -76,16 +76,16 @@ export const ProjectOverview: React.FC<{
 
           {components && components.length > 0 && (
             <div className={cls.block}>
-              <h4>Technical Aspect</h4>
+              <h2>Technical Aspect</h2>
               <TechnicalAspects params={params} />
             </div>
           )}
 
           <div className={cls.block}>
-            <h4>Team</h4>
+            <h2>Team</h2>
             <TeamSummary org_id={params.org_id} project_id={project.id} />
           </div>
-        </Card>
+        </div>
       </Container.Left2Third>
       <Container.Right1Third>
         <div style={{ height: '350px' }}>

@@ -1,79 +1,22 @@
-@import "../../../styles/theme";
-
 .group {
-  padding: 0 0 $p-xl 0;
-  font-size: $font-s;
-  border-bottom: 1px solid var(--border1);
+  display: flex;
+  flex-direction: column;
+  padding: 0 0 var(--spc-2xl) 0;
+  font-size: var(--font);
 
   .head {
-    cursor: pointer;
-
-    display: grid;
-    grid-template-columns: 5fr 20px 0;
-    gap: $p-m;
-    align-items: center;
-    justify-content: space-between;
-
-    padding: $p-xl $p-xl;
-
-    font-weight: 500;
-
-    &:hover {
-      background-color: $gray-50;
-    }
-
-    .chevron {
-      padding-top: 1px;
-    }
-
-    .actions {
-      display: flex;
-      align-items: end;
-    }
+    margin-bottom: var(--spc-s);
+    padding: 0 var(--spc-l) 0 14px;
   }
 
-
-  &.small {
-    padding-bottom: 0;
-
-    .head {
-      padding: $p-m $p-xl;
-      font-weight: normal;
-      color: $gray-500;
-    }
+  .name {
+    padding: 0 var(--spc-l) 0 var(--spc-m);
+    font-size: var(--font-s);
+    color: var(--text-secondary);
   }
 
   .sub {
-    overflow: hidden;
+    padding: 0 var(--spc-l);
     transition: height 0.25s ease-in-out;
-  }
-
-  &.hide {
-    padding-bottom: 0;
-
-    .sub {
-      height: 0;
-    }
-  }
-
-  .link {
-    display: flex;
-    gap: $p-m;
-
-    padding: $p $p-xl;
-
-    color: $gray-700;
-
-    border-left: 4px solid transparent;
-
-    &:hover {
-      color: 1;
-      background-color: $gray-50;
-    }
-
-    &.selected {
-      background-color: var(--bg2);
-      border-left-color: var(--accent2);
-    }
   }
 }

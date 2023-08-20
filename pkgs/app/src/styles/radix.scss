@@ -1,6 +1,4 @@
-@import "./theme";
 @import "./radix/popover";
-
 
 
 // ---- TABS
@@ -12,7 +10,7 @@
 .rx_tabsList {
   display: flex;
   flex-shrink: 0;
-  margin-bottom: $p-l;
+  margin-bottom: var(--spc-l);
   border-bottom: 1px solid var(--border2);
 }
 

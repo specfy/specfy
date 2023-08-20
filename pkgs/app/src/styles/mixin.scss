@@ -1,6 +1,3 @@
-@import "./theme";
-
-
 @mixin ring() {
   transition: box-shadow .15s;
 
@@ -19,16 +16,16 @@
 
 @mixin focusable() {
   &:hover {
-    outline: 1px solid $blue-100;
+    outline: 1px solid var(--indigo-8);
   }
 
   &:focus {
-    outline: 1px solid $blue-400;
+    outline: 1px solid var(--indigo-8);
     box-shadow: rgb(0 0 0 / 9%) 0 1px 4px;
   }
 }
 
-@mixin editable($padding: $p $p-m, $margin: (-$p) (-$p-m)) {
+@mixin editable($padding: var(--spc) var(--spc-m), $margin: (-var(--spc)) (-var(--spc-m))) {
   @include focusable;
 
   cursor: text;
@@ -37,44 +34,9 @@
   padding: $padding !important;
 
   border: none;
-  border-radius: $border-radius-s;
+  border-radius: var(--radius2);
   outline: 1px solid transparent;
 
   transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
 
-}
-
-@mixin link() {
-  cursor: pointer;
-
-  display: inline-flex;
-  gap: $p-s;
-  align-items: center;
-
-  color: $gray-700;
-
-  border-radius: 10px;
-
-  &:hover {
-    color: $blue-700;
-  }
-}
-
-@mixin button() {
-  cursor: pointer;
-
-  display: flex;
-  gap: $p-s;
-  align-items: center;
-
-  padding: $p $p-l;
-
-  color: $gray-700;
-
-  border-radius: 10px;
-
-  &:hover {
-    color: $blue-700;
-    background: $color-hover;
-  }
 }

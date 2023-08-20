@@ -17,7 +17,7 @@ interface PropsBase {
 }
 type Props = {
   className?: string;
-  size?: 'default' | 'large' | 'medium' | 'small' | 'xl';
+  size?: 'd' | 'l' | 'm' | 's' | 'xs' | 'xl';
   colored?: boolean;
   single?: boolean;
   icon?: React.ReactNode;
@@ -27,7 +27,7 @@ type Props = {
 
 export const AvatarAuto: React.FC<Props> = ({
   className,
-  size = 'default',
+  size = 'd',
   ...props
 }) => {
   let name: string;

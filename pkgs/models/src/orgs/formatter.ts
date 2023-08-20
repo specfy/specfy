@@ -1,6 +1,6 @@
 import type { Orgs } from '@specfy/db';
 
-import type { ApiOrg, ApiOrgPublic } from './types.api';
+import type { ApiOrg, ApiOrgPublic } from './types.api.js';
 
 export function toApiOrgPublic(org: Orgs): ApiOrgPublic {
   return {

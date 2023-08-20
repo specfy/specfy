@@ -3,7 +3,7 @@ import { produce } from 'immer';
 import type { Connection } from 'reactflow';
 import { create } from 'zustand';
 
-import { findOriginal } from './original';
+import { original } from './original';
 
 export interface ComponentsState {
   current: string | null;
@@ -77,7 +77,7 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
     );
   },
   revert: (id) => {
-    const item = findOriginal<ApiComponent>(id);
+    const item = original.find<ApiComponent>(id);
     set(
       produce((state: ComponentsState) => {
         if (!item) delete state.components[id];
@@ -87,7 +87,7 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
   },
   revertField: (id, field) => {
     const comp = get().components[id];
-    const item = findOriginal<ApiComponent>(comp.id)!;
+    const item = original.find<ApiComponent>(comp.id)!;
     get().updateField(id, field, item[field]);
   },
   remove: (id) => {

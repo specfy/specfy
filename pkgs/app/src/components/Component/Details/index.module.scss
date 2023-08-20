@@ -1,22 +1,11 @@
-@import "../../../styles/theme";
 @import "../../../styles/mixin";
 
 .details {
   display: flex;
   flex-direction: column;
-  gap: $p-2xl;
+  gap: var(--spc-2xl);
 }
 
 .blockTitle {
-  display: flex;
-  gap: $p-l;
-  align-items: baseline;
-
-  >h5 {
-    min-width: 60px;
-  }
-}
-
-.add {
-  color: $gray-600;
+  margin-bottom: var(--spc-xl);
 }

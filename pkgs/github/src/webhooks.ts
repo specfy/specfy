@@ -1,4 +1,4 @@
-import { nanoid, l as consola } from '@specfy/core';
+import { nanoid, l as logger } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import {
   createGithubActivity,
@@ -8,7 +8,7 @@ import {
 
 import { webhookService as ws } from './app.js';
 
-const l = consola.create({}).withTag('webhook');
+const l = logger.child({ svc: 'github-webhook' });
 
 export function listen() {
   ws.onAny(({ id, payload, name }) => {
@@ -123,11 +123,14 @@ export function listen() {
 }
 
 ws.on('push', async ({ id, payload }) => {
+  const split = payload.ref.split('/');
+  const branch = split[split.length - 1];
+
   l.info(`repository push`, {
     id,
     repo: payload.repository.full_name,
     installId: payload.installation?.id,
-    branch: payload.ref,
+    branch,
   });
 
   await prisma.$transaction(async (tx) => {
@@ -136,9 +139,7 @@ ws.on('push', async ({ id, payload }) => {
     });
     await Promise.all(
       list.map((project) => {
-        const split = payload.ref.split('/');
-        const branch = split[split.length - 1];
-        if (project.config.branch === branch) {
+        if (project.config.branch !== branch) {
           return null;
         }
 

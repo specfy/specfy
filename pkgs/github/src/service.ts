@@ -1,4 +1,4 @@
-import { l as consola } from '@specfy/core';
+import { l as logger, metrics } from '@specfy/core';
 import { prisma } from '@specfy/db';
 
 import type { Job } from './Job.js';
@@ -6,7 +6,7 @@ import { JobDeploy } from './jobs/deploy.js';
 
 let interval: NodeJS.Timeout;
 const running: Job[] = [];
-const l = consola.create({}).withTag('deploy');
+const l = logger.child({ svc: 'jobs' });
 
 export async function off() {
   l.info('Exiting');
@@ -20,7 +20,9 @@ export async function off() {
 export function listen() {
   l.info('Starting');
 
+  // TODO: replace this with a queue and/or Listen/notify
   interval = setInterval(async () => {
+    metrics.increment('jobs.loop');
     await prisma.$transaction(async (tx) => {
       const next = await tx.jobs.findFirst({
         where: {

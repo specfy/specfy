@@ -1,12 +1,10 @@
-@import "../../../../styles/theme";
-
 .searchWrapper {
   display: flex;
-  gap: $p-l;
+  gap: var(--spc-l);
   align-items: center;
   justify-content: space-between;
 
-  padding: $p-3xl $p-5xl;
+  padding: var(--spc-6xl);
 
   .placeholderReset {
     pointer-events: none;
@@ -20,7 +18,7 @@
 }
 
 .row {
-  padding: $p-l $p-5xl $p-xl;
+  padding: var(--spc-l) var(--spc-6xl) var(--spc-xl) var(--spc-6xl);
   border-bottom: 1px solid var(--border1);
 
   .title {
@@ -33,7 +31,7 @@
   }
 
   .info {
-    font-size: $font-s;
+    font-size: var(--font-s);
     color: var(--text2)
   }
 }

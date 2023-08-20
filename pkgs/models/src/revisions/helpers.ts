@@ -41,7 +41,7 @@ export async function hasProjectComponentChanges(
   // If a component that was modified has an edge to a project component we need to recompute
   return (
     components.find((component) => {
-      return (component.edges as DBComponent['edges']).find((edge) =>
+      return (component.edges as unknown as DBComponent['edges']).find((edge) =>
         componentIds.includes(edge.target)
       );
     }) !== undefined

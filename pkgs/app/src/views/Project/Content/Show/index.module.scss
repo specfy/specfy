@@ -1,5 +1,3 @@
-@import "../../../../styles/theme";
-
 .wrapper {
   display: flex;
   width: 100%;
@@ -9,24 +7,8 @@
   position: relative;
 
   display: grid;
-  grid-template-columns: 200px ($main-col-w) minmax(200px, 1fr);
+  grid-template-columns: 200px (var(--w-col)) minmax(200px, 1fr);
 
   width: 100%;
   min-height: 100vh;
-}
-
-.col1 {
-  background-color: #fff;
-}
-
-.col2 {
-  padding: $p-4xl $p-3xl;
-  background-color: #fff;
-}
-
-.col3 {
-  display: flex;
-  flex-direction: column;
-  gap: $p-5xl;
-  padding: $p-2xl $p-5xl;
 }

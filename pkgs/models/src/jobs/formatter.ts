@@ -1,6 +1,6 @@
 import { toApiUser } from '../users/formatter.js';
 
-import type { ApiJob } from './types.api';
+import type { ApiJob } from './types.api.js';
 import type { JobWithUser } from './types.js';
 
 export function toApiJob(job: JobWithUser): ApiJob {
@@ -13,6 +13,7 @@ export function toApiJob(job: JobWithUser): ApiJob {
     status: job.status,
     config: job.config,
     reason: job.reason,
+    // logs: job.logs,
     createdAt: job.createdAt.toISOString(),
     updatedAt: job.updatedAt.toISOString(),
     startedAt: job.startedAt?.toISOString() || null,

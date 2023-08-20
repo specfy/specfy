@@ -28,7 +28,7 @@ export const ComponentItem: React.FC<{
       to={`/${comp.orgId}/${comp.projectId}/c/${comp.id}-${comp.slug}`}
     >
       <div className={classnames(cls.item, className)}>
-        <ComponentIcon data={comp} noEmpty />
+        <ComponentIcon data={comp} noEmpty className={cls.icon} />
         <div className={cls.label}>{comp.name}</div>
       </div>
     </Link>
@@ -46,7 +46,7 @@ export const TechItem: React.FC<{
   return (
     <Link to={`/${params.org_id}/${params.project_slug}/t/${slug}`}>
       <div className={classnames(cls.item, className)}>
-        <ComponentIcon data={{ techId }} noEmpty />
+        <ComponentIcon data={{ techId }} noEmpty className={cls.icon} />
         <div className={cls.label}>{supp?.name || techId}</div>
       </div>
     </Link>
@@ -120,7 +120,9 @@ export const ComponentLine: React.FC<Line & { comps?: ApiComponent[] }> = ({
             to={`/${params.org_id}/${params.project_slug}/c/${c.id}-${c.slug}`}
           >
             <div className={classnames(cls.item)}>
-              <ComponentIcon data={c} noEmpty />
+              <div className={cls.icon}>
+                <ComponentIcon data={c} noEmpty />
+              </div>
               <div className={cls.label}>{c.name}</div>
             </div>
           </Link>

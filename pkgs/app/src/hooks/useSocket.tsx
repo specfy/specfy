@@ -35,6 +35,7 @@ export const SocketProvider: React.FC<{
     socket.on('job.start', (data) => {
       const job = data.job;
       qcli.invalidateQueries(['listJobs', job.orgId, job.projectId]);
+      qcli.invalidateQueries(['getJob', job.orgId, job.projectId, job.id]);
       toast.add({
         id: job.id,
         title: `Deploy #${job.typeId}`,
@@ -47,6 +48,7 @@ export const SocketProvider: React.FC<{
       setTimeout(() => {
         const job = data.job;
         qcli.invalidateQueries(['listJobs', job.orgId, job.projectId]);
+        qcli.invalidateQueries(['getJob', job.orgId, job.projectId, job.id]);
         toast.update({
           id: job.id,
           status: job.status === 'failed' ? 'error' : 'success',

@@ -1,5 +1,3 @@
-@import "../../../styles/theme";
-
 .trigger {
   display: inline-flex;
   gap: 5px;
@@ -14,7 +12,7 @@
 
   background-color: white;
   border: 1px solid var(--border2);
-  border-radius: $border-radius-s;
+  border-radius: var(--radius2);
 
   &[data-placeholder] {
     color: var(--text3);
@@ -23,7 +21,7 @@
   /* stylelint-disable-next-line selector-class-pattern */
   &.s {
     height: var(--h-s);
-    padding: 0 var(--spc);
+    padding: 0 var(--spc) 0 var(--spc-l);
     font-size: var(--font-s);
   }
 

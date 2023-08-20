@@ -42,7 +42,7 @@ const Row: React.FC<{
           )}{' '}
           ·{' '}
           <Flex gap="m">
-            <AvatarAuto user={deploy.user} size="small" />
+            <AvatarAuto user={deploy.user} size="s" />
             {deploy.user.name}
           </Flex>
         </Flex>

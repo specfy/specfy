@@ -1,4 +1,4 @@
-import { nanoid, logger, envs, schemaOrgId } from '@specfy/core';
+import { nanoid, l, envs, schemaOrgId } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import { sendInvitation } from '@specfy/emails';
 import { getUsage, EXPIRES, getOrgFromRequest, PermType } from '@specfy/models';
@@ -91,7 +91,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       if (!process.env.VITEST) {
         const link = `${envs.APP_HOSTNAME}/invite?invitation_id=${created.id}&token=${created.token}`;
         const org = getOrgFromRequest(req, body.orgId)!;
-        logger.info('Sending email', { to: body.email, type: 'invitation' });
+        l.info('Sending email', { to: body.email, type: 'invitation' });
         await sendInvitation(
           resend,
           {

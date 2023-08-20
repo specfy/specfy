@@ -1,5 +1,3 @@
-@import "../../../../../styles/theme";
-
 $width: 180px;
 
 .container {
@@ -14,8 +12,8 @@ $width: 180px;
   max-height: 225px;
 
   background-color: #fff;
-  border: 1px solid $gray-3;
-  border-radius: $border-radius;
+  border: 1px solid var(--border2);
+  border-radius: var(--radius3);
   box-shadow: 0 3px 15px -3px rgb(13 20 33 / 13%);
 }
 
@@ -24,7 +22,7 @@ $width: 180px;
   flex-direction: column;
 
   width: $width;
-  padding: $p;
+  padding: var(--spc);
 
   transition: transform 0.25s ease-in-out;
 
@@ -42,31 +40,31 @@ $width: 180px;
 
   display: grid;
   grid-template-columns: 30px auto 20px;
-  gap: $p-l;
+  gap: var(--spc-l);
   align-items: center;
 
-  padding: $p-xs $p-xs;
+  padding: var(--spc-xs) var(--spc-xs);
 
-  font-size: $font;
+  font-size: var(--font);
   font-weight: 600;
 
-  border-radius: $border-radius;
+  border-radius: var(--radius3);
 
   &:hover {
-    background-color: $gray-44;
+    background-color: var(--bg2);
   }
 }
 
 .icon {
   width: 30px;
-  padding: $p;
+  padding: var(--spc);
 
-  font-size: $font-m;
+  font-size: var(--font-m);
   line-height: 0;
 
   background-color: #fff;
-  border: 1px solid $gray-44;
-  border-radius: $border-radius;
+  border: 1px solid var(--border2);
+  border-radius: var(--radius3);
 }
 
 .right {

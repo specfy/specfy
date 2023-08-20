@@ -17,7 +17,13 @@ export function initSocket(server: http.Server) {
     serveClient: false,
     cookie: false,
     cors: {
-      origin: ['http://localhost:3000', 'http://localhost:5173'],
+      origin: [
+        'http://localhost:3000',
+        'http://localhost:5173',
+        'https://app.specfy.io',
+        'https://api.specfy.io',
+        'https://www.specfy.io',
+      ],
     },
   });
 

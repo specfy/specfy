@@ -1,10 +1,8 @@
-@import "../../../../styles/theme";
-
 .container {
   display: flex;
   flex-direction: column;
-  gap: $p-2xl;
-  width: $main-col-w;
+  gap: var(--spc-2xl);
+  width: var(--w-col);
 
   .left {
     grid-area: left;
@@ -27,16 +25,25 @@
     justify-content: space-between;
 
     height: 50px;
-    padding: $p-l $p-xl;
+    padding: var(--spc-l) var(--spc-xl);
 
     background-color: #fff;
-    box-shadow: $box-shadow2;
+    box-shadow: var(--shadow2);
   }
 
   .staged {
     display: flex;
     grid-area: staged;
     flex-direction: column;
-    gap: $p-xl;
+    gap: var(--spc-xl);
+  }
+}
+
+.title {
+  width: 100%;
+  margin: 0 0 0 -10px;
+
+  input {
+    padding-left: 10px !important;
   }
 }

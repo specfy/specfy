@@ -11,7 +11,8 @@ locals {
     "RESEND_KEY",
     "STRIPE_KEY",
     "STRIPE_WEBHOOKS_SECRET",
-    "JWT_SECRET"
+    "JWT_SECRET",
+    "DD_API_KEY"
   ])
 }
 

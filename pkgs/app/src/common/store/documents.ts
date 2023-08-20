@@ -6,7 +6,7 @@ import { create } from 'zustand';
 import { getEmptyDoc } from '../content';
 import { slugify } from '../string';
 
-import { findOriginal } from './original';
+import { original } from './original';
 
 export interface DocumentsState {
   documents: Record<string, ApiDocument>;
@@ -81,7 +81,7 @@ export const useDocumentsStore = create<DocumentsState>()((set, get) => ({
     );
   },
   revert: (id) => {
-    const item = findOriginal<ApiDocument>(id);
+    const item = original.find<ApiDocument>(id);
     set(
       produce((state: DocumentsState) => {
         if (!item) delete state.documents[id];
@@ -91,7 +91,7 @@ export const useDocumentsStore = create<DocumentsState>()((set, get) => ({
   },
   revertField: (id, field) => {
     const doc = get().documents[id];
-    const item = findOriginal<ApiDocument>(doc.id)!;
+    const item = original.find<ApiDocument>(doc.id)!;
     get().updateField(id, field, item[field]);
   },
   remove: (id) => {

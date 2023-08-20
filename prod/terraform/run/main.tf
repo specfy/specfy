@@ -31,6 +31,9 @@ data "google_secret_manager_secret_version" "STRIPE_WEBHOOKS_SECRET" {
 data "google_secret_manager_secret_version" "JWT_SECRET" {
   secret   = "JWT_SECRET"
 }
+data "google_secret_manager_secret_version" "DD_API_KEY" {
+  secret   = "DD_API_KEY"
+}
 
 
 resource "google_cloud_run_v2_service" "main" {
@@ -104,6 +107,10 @@ resource "google_cloud_run_v2_service" "main" {
       env {
         name  = "JWT_SECRET"
         value = data.google_secret_manager_secret_version.JWT_SECRET.secret_data
+      }
+      env {
+        name  = "DD_API_KEY"
+        value = data.google_secret_manager_secret_version.DD_API_KEY.secret_data
       }
 
 

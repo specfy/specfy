@@ -1,4 +1,4 @@
-import type { BlockLevelZero } from './types.prosemirror';
+import type { BlockLevelZero } from './types.prosemirror.js';
 
 export enum DocumentType {
   'pb' = 'pb',

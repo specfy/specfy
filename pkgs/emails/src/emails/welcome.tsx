@@ -14,7 +14,7 @@ import {
   Text,
 } from '@react-email/components';
 
-import { BASE_URL } from '../env';
+import { BASE_URL } from '../env.js';
 
 export interface WelcomeProps {
   name: string;

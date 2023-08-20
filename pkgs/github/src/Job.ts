@@ -1,20 +1,25 @@
+import type { Logger } from '@specfy/core';
+import { l as defaultLogger, metrics } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import type { Jobs } from '@specfy/db';
 import type { JobMark, JobWithOrgProject } from '@specfy/models';
 import { toApiProject, toApiJob, jobReason } from '@specfy/models';
 import type { EventJob } from '@specfy/socket';
 import { io } from '@specfy/socket';
-import { consola } from 'consola';
-import type { ConsolaInstance } from 'consola';
 
 export abstract class Job {
-  l: ConsolaInstance;
+  l: Logger;
   #job: JobWithOrgProject;
   #mark?: JobMark;
+  // #logs: string;
 
   constructor(job: JobWithOrgProject) {
     this.#job = job;
-    this.l = consola.create({}).withTag('job');
+    // this.#logs = `/tmp/specfy_logs_${job.id}_${nanoid()}.log`;
+    this.l = defaultLogger;
+
+    // Unsatisfying solution right now
+    // this.l = createFileLogger({ svc: 'jobs', jobId: job.id }, this.#logs);
   }
 
   getMark() {
@@ -24,6 +29,9 @@ export abstract class Job {
   async start() {
     const job = this.#job;
     const l = this.l;
+
+    metrics.increment('jobs.loop.start');
+
     l.info('Job start', { id: job.id });
     const evt: EventJob = {
       job: toApiJob(job),
@@ -52,6 +60,7 @@ export abstract class Job {
         reason: this.#mark
           ? this.#mark
           : { status: 'failed', code: 'unknown', reason: jobReason.unknown },
+        // logs: this.#logs, // TODO: store the file maybe?
         updatedAt: new Date(),
         finishedAt: new Date(),
       },
@@ -63,13 +72,15 @@ export abstract class Job {
 
     evt.job = toApiJob({ ...jobUpdated, User: job.User });
     io.to(`project-${job.projectId}`).emit('job.finish', evt);
+
+    metrics.increment('jobs.loop.end');
   }
 
   mark(status: JobMark['status'], code: JobMark['code'], err?: unknown) {
     let _err: string | undefined;
     if (err) {
-      this.l.error(err);
       _err = err instanceof Error ? err.message : '';
+      this.l.error(_err || 'Error', err);
     }
 
     this.#mark = { status, code, reason: jobReason[code], err: _err };

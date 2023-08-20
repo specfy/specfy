@@ -1,7 +1,6 @@
 .empty {
   display: flex;
   flex-direction: column;
-  gap: var(--spc);
   align-items: center;
   justify-content: center;
 
@@ -10,4 +9,8 @@
 
 .icon {
   font-size: var(--font-2xl);
+}
+
+.action {
+  margin-top: var(--spc-xl);
 }

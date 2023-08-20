@@ -2,7 +2,7 @@ import type { ApiProject, ApiProjectList } from '@specfy/models';
 import { produce } from 'immer';
 import { create } from 'zustand';
 
-import { findOriginal } from './original';
+import { original } from './original';
 
 export interface ProjectState {
   projects: ApiProjectList[];
@@ -34,7 +34,7 @@ export const useProjectStore = create<ProjectState>()((set, get) => ({
   },
   revertField: (field) => {
     const proj = get().project!;
-    const item = findOriginal<ApiProject>(proj.id)!;
+    const item = original.find<ApiProject>(proj.id)!;
     set({ project: { ...proj, [field]: item[field] } });
   },
 }));

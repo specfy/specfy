@@ -1,10 +1,9 @@
+import Editor from '@monaco-editor/react';
 import type { ApiJob, ApiProject } from '@specfy/models';
 import { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Skeleton from 'react-loading-skeleton';
 import { useParams } from 'react-router-dom';
-import { PrismAsyncLight } from 'react-syntax-highlighter';
-import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
 import { useGetDeploy } from '../../../../api';
 import { titleSuffix } from '../../../../common/string';
@@ -41,27 +40,50 @@ export const ProjectDeploysShow: React.FC<{
     setDeploy(res.data.data);
   }, [res]);
 
-  const logs = useMemo(() => {
-    const tmp: string[] = [];
+  useEffect(() => {
     if (!deploy) {
-      return tmp;
+      return;
     }
 
-    tmp.push(`Created - ${deploy.createdAt}`);
+    let interval: any;
+    if (!deploy?.finishedAt) {
+      interval = setInterval(() => {
+        res.refetch();
+      }, 5000);
+    }
+
+    return () => {
+      if (interval) {
+        clearInterval(interval);
+      }
+    };
+  }, []);
+
+  const logs = useMemo(() => {
+    if (!deploy) {
+      return [];
+    }
+
+    const tmp: string[] = [];
+    tmp.push(`Created ["${deploy.createdAt}"]`);
     tmp.push(`Job [id: "${deploy.id}"]`);
     tmp.push(`Org [id: "${deploy.orgId}"]`);
     tmp.push(`Project [id: "${deploy.projectId}"]`);
     tmp.push('Configuration =>');
     tmp.push(JSON.stringify(deploy.config, null, 2));
     if (deploy.startedAt) {
-      tmp.push(`Processing`);
+      tmp.push(`Processing ["${deploy.startedAt}"]`);
     }
     if (deploy.finishedAt) {
-      tmp.push(`Status [code: "${deploy.status}"]`);
       if (deploy.reason && deploy.status !== 'success') {
-        tmp.push(JSON.stringify(deploy.reason, null, 2));
+        tmp.push(
+          `Error [code: "${deploy.reason.code}"] ${deploy.reason.reason}`
+        );
+        tmp.push(deploy.reason.err!);
       }
-      tmp.push(`end - ${deploy.finishedAt}`);
+      tmp.push(`Status ["${deploy.status}"]`);
+
+      tmp.push(`Finished ["${deploy.finishedAt}"]  `);
     }
     return tmp;
   }, [deploy]);
@@ -108,7 +130,7 @@ export const ProjectDeploysShow: React.FC<{
           <div className={cls.block}>
             <div className={cls.label}>Source</div>
             <Flex gap="m">
-              <AvatarAuto user={deploy.user} size="small" />
+              <AvatarAuto user={deploy.user} size="s" />
               {deploy.user.name}
             </Flex>
           </div>
@@ -120,15 +142,20 @@ export const ProjectDeploysShow: React.FC<{
             </Banner>
           </div>
         )}
-        <PrismAsyncLight
-          language="log"
-          style={prism}
-          wrapLines={true}
-          showLineNumbers={true}
+        <Editor
           className={cls.logs}
-        >
-          {logs.join('\r\n')}
-        </PrismAsyncLight>
+          height={`${logs.length * 34}px`}
+          defaultLanguage="json"
+          value={logs.join('\r\n')}
+          options={{
+            readOnly: true,
+            minimap: { enabled: false },
+            scrollBeyondLastLine: false,
+            // lineNumbers: 'off',
+            fontSize: 14,
+            // wordWrap: 'on',
+          }}
+        />
       </Container.Left2Third>
     </Container>
   );

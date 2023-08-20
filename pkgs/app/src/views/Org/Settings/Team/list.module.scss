@@ -1,19 +1,16 @@
-@import "../../../../styles/theme";
-
-
 .header {
-  padding: 0 0 $p-l 0;
+  padding: 0 0 var(--spc-l) 0;
 }
 
 .lines {
   display: flex;
   flex-direction: column;
-  gap: $p-3xl;
+  gap: var(--spc-3xl);
 }
 
 .title {
   margin-bottom: 0 !important;
-  padding: $p-m $p-2xl $p-m $p-2xl;
+  padding: var(--spc-m) var(--spc-2xl) var(--spc-m) var(--spc-2xl);
   border-bottom: 1px solid var(--border2);
 }
 
@@ -22,6 +19,6 @@
 }
 
 .empty {
-  padding: $p-2xl;
-  color: $gray-400;
+  display: block;
+  padding: var(--spc-2xl);
 }

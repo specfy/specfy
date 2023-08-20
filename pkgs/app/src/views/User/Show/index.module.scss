@@ -1,12 +1,10 @@
-@import "../../../styles/theme";
-
 .main {
-  width: $main-col-w;
+  width: var(--w-col);
   margin: 0 auto;
 }
 
 .info {
-  margin: $p-5xl 0 0 0;
-  padding: $p-5xl 0 0 $p-2xl;
+  margin: var(--spc-5xl) 0 0 0;
+  padding: var(--spc-5xl) 0 0 var(--spc-2xl);
   border-top: 1px solid var(--border2);
 }

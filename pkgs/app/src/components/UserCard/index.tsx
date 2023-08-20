@@ -8,7 +8,7 @@ import cls from './index.module.scss';
 
 export const UserCard: React.FC<{
   user: ApiUser;
-  size?: 'default' | 'small';
+  size?: 'd' | 's';
 }> = ({ user, size }) => {
   return (
     <Flex gap="l" className={classnames(cls.userCard, size && cls[size])}>

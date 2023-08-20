@@ -3,7 +3,7 @@ import classnames from 'classnames';
 import { useMemo, useState } from 'react';
 
 import type { Payload } from '../../../../common/content';
-import { ContentBlock } from '../../../Content';
+import { ContentBlock, Presentation } from '../../../Content';
 
 import cls from './content.module.scss';
 
@@ -72,16 +72,17 @@ export const UnifiedContent: React.FC<{ doc: BlockLevelZero; id: string }> = ({
   }, [doc]);
 
   return (
-    <>
+    <Presentation>
       {grouped.map(({ blocks, unchanged }, a) => {
         const comp = blocks.map((blk, i) => {
           return <ContentBlock block={blk} key={i} pl={payload} />;
         });
+
         if (unchanged) {
           return <Unchanged key={a}>{comp}</Unchanged>;
         }
         return <div key={a}>{comp}</div>;
       })}
-    </>
+    </Presentation>
   );
 };

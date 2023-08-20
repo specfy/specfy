@@ -1,5 +1,3 @@
-@import "../../styles/theme";
-
 .container {
   display: flex;
   align-items: center;
@@ -16,11 +14,11 @@
 
 .logo {
   display: flex;
-  margin-bottom: $p-2xl;
+  margin-bottom: var(--spc-2xl);
 }
 
 .oauth {
-  margin-bottom: $p-3xl;
-  padding: $p-3xl 0;
-  border-bottom: 1px solid $gray-100;
+  margin-bottom: var(--spc-3xl);
+  padding: var(--spc-3xl) 0;
+  border-bottom: 1px solid var(--border1);
 }

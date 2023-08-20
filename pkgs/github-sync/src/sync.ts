@@ -3,7 +3,8 @@ import path from 'node:path';
 import timer from 'node:timers/promises';
 import util from 'node:util';
 
-import { l } from '@specfy/core';
+import type { Logger } from '@specfy/core';
+import { l as defaultLogger } from '@specfy/core';
 import type { Payload } from '@specfy/stack-analyser';
 import {
   flatten,
@@ -45,6 +46,7 @@ export async function sync({
   dryRun,
   autoLayout,
   hostname = 'https://api.specfy.io',
+  logger = defaultLogger,
 }: {
   root: string;
   token: string;
@@ -57,20 +59,22 @@ export async function sync({
   dryRun: boolean;
   autoLayout: boolean;
   hostname?: string;
+  logger?: Logger;
 }) {
   if (!(await checkPaths(docPath, stackPath))) {
     throw new Error('Invalid path');
   }
+  const l = logger;
 
   const baseUrl = `${hostname}/0`;
 
-  l.log('');
+  l.info('');
 
   // ------- Documentation
   let docs: TransformedFile[] = [];
   if (docEnabled) {
-    l.log('-- Documentation');
-    l.log(
+    l.info('-- Documentation');
+    l.info(
       kleur.bold().magenta(`${figures.triangleRight} Syncing`),
       kleur.cyan(docPath)
     );
@@ -100,25 +104,25 @@ export async function sync({
     spinnerParsing.succeed('Parsed');
 
     // Log
-    l.log(
+    l.info(
       kleur.bold().blue(`${figures.arrowRight}`),
       'Found',
       list.length,
       'files'
     );
-    l.log(list.map((file) => file.fp));
-    l.log('');
+    l.info(list.map((file) => file.fp));
+    l.info('');
   } else {
-    l.log(kleur.bold().yellow(`${figures.info} Documentation Skipped`));
+    l.info(kleur.bold().yellow(`${figures.info} Documentation Skipped`));
   }
 
   // ------- Stack
   let stack: Payload | null = null;
   if (stackEnabled) {
-    l.log('');
-    l.log('-- Stack');
+    l.info('');
+    l.info('-- Stack');
 
-    l.log(
+    l.info(
       kleur.bold().magenta(`${figures.triangleRight} Syncing`),
       kleur.cyan(stackPath)
     );
@@ -138,14 +142,13 @@ export async function sync({
     // output to folder for debug / manual review
     const file = path.join(root, 'stack.json');
     await fs.writeFile(file, JSON.stringify(stack.toJson(root), undefined, 2));
-    l.log(
+    l.info(
       kleur.bold().blue(`${figures.arrowRight}`),
       'Output',
       kleur.green(file)
     );
-    console.log(stack.toJson());
   } else {
-    l.log(kleur.bold().yellow(`${figures.info} Stack Skipped`));
+    l.info(kleur.bold().yellow(`${figures.info} Stack Skipped`));
   }
 
   if (!docEnabled && !stackEnabled) {
@@ -154,19 +157,19 @@ export async function sync({
   }
 
   // --- Upload
-  l.log('');
-  l.log('-- Deploy');
+  l.info('');
+  l.info('-- Deploy');
   const spinnerUploading = ora(`Uploading`).start();
   const body = prepBody({ orgId, projectId, docs, stack, autoLayout, baseUrl });
 
   if (dryRun) {
     spinnerUploading.stopAndPersist({ text: 'Uploaded (dry-run)' });
-    l.log('');
-    l.log(util.inspect(body, false, 10, true));
+    l.info('');
+    l.info(util.inspect(body, false, 10, true));
     return;
   }
 
-  const resUp = await upload({ body, token, baseUrl });
+  const resUp = await upload({ body, token, baseUrl, logger });
   if ('error' in resUp) {
     // There is nothing to commit
     if (
@@ -174,14 +177,14 @@ export async function sync({
       resUp.error.reason === 'no_diff'
     ) {
       spinnerUploading.succeed('Uploaded');
-      l.log(kleur.bold().blue(`${figures.info} No diff with production`));
+      l.info(kleur.bold().blue(`${figures.info} No diff with production`));
 
       throw new Error();
     }
 
     spinnerUploading.fail('Uploaded');
 
-    l.log('');
+    l.info('');
     l.error(kleur.red('Failed to upload, received:'));
     l.error(JSON.stringify(resUp.error, null, 2));
 
@@ -190,12 +193,19 @@ export async function sync({
 
   const id = resUp.data.id;
 
-  const resGet = await getRevision({ id, orgId, projectId, token, baseUrl });
+  const resGet = await getRevision({
+    id,
+    orgId,
+    projectId,
+    token,
+    baseUrl,
+    logger,
+  });
   const get = await resGet.json();
   spinnerUploading.succeed('Uploaded');
 
-  l.log('');
-  l.log('> Revision created:', kleur.underline(get.data.url));
+  l.info('');
+  l.info('> Revision created:', kleur.underline(get.data.url));
 
   // --- Deduping
   const spinnerDedup = ora(`Closing old revisions`).start();
@@ -205,10 +215,11 @@ export async function sync({
     projectId,
     token,
     baseUrl,
+    logger,
   });
   spinnerDedup.succeed(`Closing old revisions (${count})`);
 
   const spinnerMerge = ora(`Merging`).start();
-  await merge({ id, orgId, projectId, token, baseUrl });
+  await merge({ id, orgId, projectId, token, baseUrl, logger });
   spinnerMerge.succeed(`Merged`);
 }

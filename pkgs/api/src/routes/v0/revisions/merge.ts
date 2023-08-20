@@ -1,4 +1,4 @@
-import { nanoid, omit } from '@specfy/core';
+import { l, nanoid, omit } from '@specfy/core';
 import type { Prisma } from '@specfy/db';
 import { prisma } from '@specfy/db';
 import {
@@ -228,7 +228,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
           // If so we recompute every relationships an update the Projects' edges
           await recomputeOrgGraph({ orgId: rev.orgId, tx });
         } else {
-          console.log('Merged', { rev: rev.id, hasChangedProjects });
+          l.info('Merged', { rev: rev.id, hasChangedProjects });
         }
       });
 

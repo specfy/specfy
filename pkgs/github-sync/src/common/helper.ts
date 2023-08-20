@@ -12,14 +12,14 @@ export async function checkPaths(
   try {
     const stat = await fs.stat(stackPath);
     if (!stat.isDirectory()) {
-      l.log(
+      l.info(
         kleur.bold().red(figures.cross),
         `Path "${stackPath}" is not a folder`
       );
       return false;
     }
   } catch (e) {
-    l.log(
+    l.info(
       kleur.bold().red(figures.cross),
       `Path "${stackPath}" does not exist`
     );
@@ -30,14 +30,14 @@ export async function checkPaths(
   try {
     const stat = await fs.stat(docPath);
     if (!stat.isDirectory()) {
-      l.log(
+      l.info(
         kleur.bold().red(figures.cross),
         `Path "${docPath}" is not a folder`
       );
       return false;
     }
   } catch (e) {
-    l.log(kleur.bold().red(figures.cross), `Path "${docPath}" does not exist`);
+    l.info(kleur.bold().red(figures.cross), `Path "${docPath}" does not exist`);
     return false;
   }
 
@@ -45,8 +45,8 @@ export async function checkPaths(
 }
 
 export function checkNothingMsg() {
-  l.log('');
-  l.log(
+  l.info('');
+  l.info(
     kleur
       .bold()
       .cyan(

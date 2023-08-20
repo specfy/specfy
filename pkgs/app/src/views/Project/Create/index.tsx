@@ -91,7 +91,7 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   const onPickRepo: React.ComponentProps<typeof GithubSearch>['onPick'] = (
     res
   ) => {
-    setName(res.name);
+    setName(res.id !== -1 ? res.name : res.fullName);
     setRepo(res);
   };
 
@@ -132,7 +132,7 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
           </Flex>
 
           {!org.githubInstallationId && (
-            <Banner type="info">
+            <Banner type="warning">
               <Flex justify="space-between" grow>
                 <div>
                   Your organization is not linked to a Github organization.

@@ -198,24 +198,26 @@ const AddComponents: React.FC = () => {
           />
         </div>
       </div>
-      <div
-        className={cls.add}
-        onDragStart={(event) => onDragStart(event, 'service')}
-        draggable
-        role="button"
-        tabIndex={0}
-      >
-        <IconCode /> Service
-      </div>
-      <div
-        className={cls.add}
-        onDragStart={(event) => onDragStart(event, 'hosting')}
-        draggable
-        role="button"
-        tabIndex={0}
-      >
-        <IconBox /> Host
-      </div>
+      <Flex column>
+        <div
+          className={cls.add}
+          onDragStart={(event) => onDragStart(event, 'service')}
+          draggable
+          role="button"
+          tabIndex={0}
+        >
+          <IconCode /> Service
+        </div>
+        <div
+          className={cls.add}
+          onDragStart={(event) => onDragStart(event, 'hosting')}
+          draggable
+          role="button"
+          tabIndex={0}
+        >
+          <IconBox /> Host
+        </div>
+      </Flex>
     </div>
   );
 };

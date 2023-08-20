@@ -3,6 +3,7 @@ import { IconHeartFilled, IconThumbDown } from '@tabler/icons-react';
 import classnames from 'classnames';
 import { useState } from 'react';
 
+import { Presentation } from '..';
 import type { Payload } from '../../../common/content';
 import { map } from '../../../common/content';
 import { AvatarAuto, AvatarGroup } from '../../AvatarAuto';
@@ -50,7 +51,7 @@ export const ContentBlockVoteItem: React.FC<{
         </div>
       </div>
       <div className={classnames(cls.content, !open && cls.close)}>
-        {map(block, pl)}
+        <Presentation>{map(block, pl)}</Presentation>
       </div>
     </div>
   );

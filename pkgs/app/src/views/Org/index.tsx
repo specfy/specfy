@@ -6,11 +6,12 @@ import { Route, Routes, useParams } from 'react-router-dom';
 import { useLocalStorage } from 'react-use';
 
 import { useListOrgs } from '../../api';
+import { useOrgStore } from '../../common/store';
 import { titleSuffix } from '../../common/string';
 import { Container } from '../../components/Container';
 import { NotFound } from '../../components/NotFound';
-import { OrgHeader } from '../../components/Org/Header';
-import { Sidebar } from '../../components/Sidebar';
+import { OrgMenu, OrgSwitcher } from '../../components/Org/Header';
+import * as Sidebar from '../../components/Sidebar';
 import { useAuth } from '../../hooks/useAuth';
 import type { RouteOrg } from '../../types/routes';
 import { ProjectCreate } from '../Project/Create';
@@ -27,15 +28,22 @@ export const Org: React.FC = () => {
   const params = useParams<Partial<RouteOrg>>() as RouteOrg;
 
   // Data
+  const storeOrg = useOrgStore();
   const getOrgs = useListOrgs();
   const [org, setOrg] = useState<ApiOrg>();
 
   const [, setLastOrg] = useLocalStorage('lastOrg');
 
   useEffect(() => {
-    if (getOrgs.data) {
-      setOrg(getOrgs.data.data.find((o) => o.id === params.org_id));
+    if (!getOrgs.data) {
+      return;
     }
+    const tmp = getOrgs.data.data.find((o) => o.id === params.org_id);
+    if (!tmp) {
+      return;
+    }
+    setOrg(tmp);
+    storeOrg.setCurrent(tmp);
   }, [getOrgs.data, params.org_id]);
 
   useEffect(() => {
@@ -81,13 +89,14 @@ export const Org: React.FC = () => {
     <div className={cls.org}>
       <Helmet title={`${org.name} ${titleSuffix}`} />
       <div>
-        <Sidebar org={org} />
+        <Sidebar.Sidebar>
+          <Sidebar.Group switcher={<OrgSwitcher />}>
+            <OrgMenu org={org} />
+          </Sidebar.Group>
+        </Sidebar.Sidebar>
       </div>
 
       <div className={cls.main} key={params.org_id}>
-        <div>
-          <OrgHeader org={org} />
-        </div>
         <Container noPadding className={cls.container}>
           <Routes>
             <Route

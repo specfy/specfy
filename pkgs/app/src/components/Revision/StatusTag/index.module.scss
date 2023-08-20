@@ -1,26 +1,24 @@
-@import "../../../styles/theme";
-
 div.merged {
-  color: $purple-700 !important;
-  background-color: $purple-100 !important;
+  color: var(--purple-9) !important;
+  background-color: var(--purple-3) !important;
 }
 
 div.closed {
-  color: $rose-700 !important;
-  background-color: $rose-100 !important;
+  color: var(--tomato-9) !important;
+  background-color: var(--tomato-4) !important;
 }
 
 div.draft {
-  color: $gray-600 !important;
-  background-color: $gray-100 !important;
+  color: var(--text4) !important;
+  background-color: var(--border1) !important;
 }
 
 div.approved {
-  color: $green-700 !important;
-  background-color: $green-100 !important;
+  color: var(--green-12) !important;
+  background-color: var(--green-3) !important;
 }
 
 div.waiting {
-  color: $sky-700 !important;
-  background-color: $sky-100 !important;
+  color: var(--sky-12) !important;
+  background-color: var(--sky-3) !important;
 }

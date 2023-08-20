@@ -8,7 +8,7 @@ import type {
 import { useQuery } from '@tanstack/react-query';
 
 import { qcli } from '../common/query';
-import { addOriginal } from '../common/store';
+import { original } from '../common/store';
 
 import { fetchApi } from './fetch';
 import { APIError, isError } from './helpers';
@@ -95,7 +95,7 @@ export function useGetProject(opts: Partial<GetProject['Params']>) {
       if (res.status !== 200 || isError(json)) {
         throw new APIError({ res, json });
       } else {
-        addOriginal(json.data);
+        original.add(json.data);
       }
 
       return json;

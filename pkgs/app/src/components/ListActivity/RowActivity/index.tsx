@@ -37,7 +37,7 @@ export const RowActivity: React.FC<{
               name={act.user.name}
               src={act.user.avatarUrl}
               single={true}
-              size="small"
+              size="s"
               colored={false}
               icon={icon}
               shape="circle"

@@ -1,13 +1,10 @@
-import { IconEdit, IconEye, IconPlus } from '@tabler/icons-react';
-import classNames from 'classnames';
+import { IconPlus } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 import { useDebounce } from 'react-use';
 
 import { diffTwoBlob } from '../../../../common/diff';
 import {
-  originalStore,
-  findOriginal,
-  allowedType,
+  original,
   useStagingStore,
   useDocumentsStore,
   useComponentsStore,
@@ -21,11 +18,10 @@ import type {
   ComponentBlobWithDiff,
 } from '../../../../types/blobs';
 import { Button } from '../../../Form/Button';
-import { TooltipFull } from '../../../Tooltip';
 
 import cls from './index.module.scss';
 
-export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
+export const Staging: React.FC<{ showBadge: boolean }> = () => {
   const edit = useEdit();
   const { currentPerm } = useAuth();
   const { project } = useProjectStore();
@@ -53,16 +49,16 @@ export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
 
       // Find added and modified
       for (const item of store) {
-        const original = findOriginal(item.id)!;
+        const ori = original.find(item.id)!;
 
         const bd: BlobAndDiffs = {
           blob: {
             id: '',
-            created: !original,
+            created: !ori,
             deleted: false,
-            parentId: original ? original.blobId : null,
-            previous: (original as any) || null,
-            type: allowedType(item) as any,
+            parentId: ori ? ori.blobId : null,
+            previous: (ori as any) || null,
+            type: original.allowedType(item) as any,
             typeId: item.id,
             current: item as any, // Can't fix this
             createdAt: '',
@@ -94,7 +90,7 @@ export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
       }
 
       // Find deleted
-      for (const item of originalStore) {
+      for (const item of original.store) {
         // ignore others item
         if ('projectId' in item && item.projectId !== project!.id) {
           continue;
@@ -113,7 +109,7 @@ export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
             created: false,
             deleted: true,
             parentId: item.blobId,
-            type: allowedType(item) as any,
+            type: original.allowedType(item) as any,
             typeId: item.id,
             current: item as any,
             previous: item as any,
@@ -145,59 +141,29 @@ export const Staging: React.FC<{ showBadge: boolean }> = ({ showBadge }) => {
 
   return (
     <div className={cls.staging}>
-      <TooltipFull
-        msg={
-          isEditing
-            ? 'Click to disable edition'
-            : canEdit
-            ? 'Click to enable edition'
-            : 'You are a viewer'
-        }
-        side="bottom"
-      >
-        <button>
-          {isEditing ? (
-            <div
-              className={classNames(
-                cls.edit,
-                showBadge && staging.count > 0 && cls.badge
-              )}
-              role="button"
-              tabIndex={0}
-              onClick={() => edit.enable(false)}
-            >
-              <IconEdit />
-            </div>
-          ) : (
-            <div
-              className={cls.edit}
-              role="button"
-              tabIndex={0}
-              onClick={() => edit.enable(true)}
-            >
-              <IconEye />
-            </div>
-          )}
-        </button>
-      </TooltipFull>
       {isEditing ? (
-        <Link to={`/${project!.orgId}/${project!.slug}/revisions/current`}>
-          <Button display="primary" size="l">
-            {staging.count} Changes
+        <Button onClick={() => edit.enable(false)} size="l" display="ghost">
+          Editing
+        </Button>
+      ) : (
+        <Button onClick={() => edit.enable(true)} size="l" display="ghost">
+          Viewing
+        </Button>
+      )}
+      <div className={cls.action}>
+        {staging.count > 0 && (
+          <Link to={`/${project!.orgId}/${project!.slug}/revisions/current`}>
+            <Button display="primary" size="s">
+              {staging.count} Changes
+            </Button>
+          </Link>
+        )}
+        <Link to={`/${project!.orgId}/${project!.slug}/component/new`}>
+          <Button size="s">
+            <IconPlus />
           </Button>
         </Link>
-      ) : (
-        <div>
-          <Button onClick={() => edit.enable(true)} size="l">
-            <IconEdit /> Edit
-          </Button>
-        </div>
-      )}
-      <Link to={`/${project!.orgId}/${project!.slug}/component/new`}>
-        <Button size="l">
-          <IconPlus />
-        </Button>
-      </Link>
+      </div>
     </div>
   );
 };

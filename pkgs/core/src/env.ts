@@ -35,6 +35,7 @@ const defs = {
   STRIPE_KEY: null,
   STRIPE_WEBHOOKS_SECRET: null,
   JWT_SECRET: null,
+  DD_API_KEY: '',
 };
 
 type Key = keyof typeof defs;

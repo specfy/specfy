@@ -1,5 +1,3 @@
-@import "../../../styles/theme";
-
 .row {
   position: relative;
 
@@ -28,14 +26,14 @@
 .main {
   position: relative;
   display: flex;
-  gap: $p-l;
+  gap: var(--spc-l);
 }
 
 .desc {
   flex-grow: 1;
   align-items: center;
-  font-size: $font-s;
-  color: var(--text2);
+  font-size: var(--font-s);
+  color: var(--text-secondary);
 
   a:not(.username) {
     font-weight: 500;
@@ -47,8 +45,8 @@
 
   width: 70px;
 
-  font-size: $font-s;
-  color: $gray-400;
+  font-size: var(--font-s);
+  color: var(--text-secondary);
   text-align: right;
 }
 
@@ -64,7 +62,7 @@
   width: 8px;
   height: 8px;
 
-  font-size: $font-2xl;
+  font-size: var(--font-2xl);
   color: white;
 
   background-color: var(--bg5);
@@ -78,5 +76,5 @@
 
 .target {
   color: var(--colorLink);
-  border-radius: $border-radius-s;
+  border-radius: var(--radius2);
 }

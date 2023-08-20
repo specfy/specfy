@@ -1,0 +1,33 @@
+.card {
+  padding: var(--spc-3xl) var(--spc-5xl);
+}
+
+.top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.editSave {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  padding: var(--spc-xl) var(--spc-3xl);
+
+  border-top: 1px solid var(--border1);
+}
+
+.title {
+  margin-bottom: var(--spc-m);
+}
+
+.subtitle {
+  font-size: var(--font-s);
+  color: var(--text-secondary);
+
+}
+
+.content {
+  padding: var(--spc-2xl) 0 0 0;
+}

@@ -1,8 +1,6 @@
-@import "../../../styles/theme";
-
 .team {
   display: inline-flex;
-  gap: $p-5xl;
+  gap: var(--spc-5xl);
 }
 
 .block {
@@ -10,7 +8,7 @@
 }
 
 .label {
-  padding: 0 0 $p-m;
-  font-size: $font-s;
-  color: var(--text3);
+  padding: 0 0 var(--spc-m);
+  font-size: var(--font-s);
+  color: var(--text-secondary);
 }

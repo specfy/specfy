@@ -1,13 +1,11 @@
-@import "../../../../styles/theme";
-
 .wrapper {
   position: relative;
 
-  margin-bottom: $p-l;
-  padding: $p-xl $p-2xl;
+  margin-bottom: var(--spc-l);
+  padding: var(--spc-xl) var(--spc-2xl);
 
-  background-color: $gray-50;
-  border-radius: $border-radius-s;
+  background-color: var(--bg1);
+  border-radius: var(--radius2);
 
   .pre,
   .code {
@@ -32,8 +30,8 @@
 
       width: 100%;
 
-      font-family: $font-code;
-      font-size: $font;
+      font-family: var(--font-code);
+      font-size: var(--font);
       text-shadow: none;
 
       background-color: transparent;
@@ -44,7 +42,7 @@
 .edit {
   position: absolute;
   z-index: 1;
-  top: $p-xl;
+  top: var(--spc-xl);
 
   width: 100%;
 
@@ -59,5 +57,5 @@
   pointer-events: none;
   position: relative;
   z-index: 2;
-  padding-bottom: $p-xl;
+  padding-bottom: var(--spc-xl);
 }

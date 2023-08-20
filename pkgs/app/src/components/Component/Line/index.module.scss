@@ -1,29 +1,29 @@
-@import "../../../styles/theme";
 @import "../../../styles/mixin";
 
 $min-height: 34px;
 
 .line {
   display: grid;
-  grid-template-columns: 150px auto;
+  grid-template-columns: 140px auto;
   align-items: flex-start;
 
   min-height: $min-height;
-  margin-bottom: $p-3xl;
+  margin-bottom: var(--spc-3xl);
 
-  line-height: $line-height-m;
+  line-height: var(--lh-m);
+  ;
 
   .title {
     padding-top: 2px;
-    font-size: $font-s;
+    font-size: var(--font-s);
     font-weight: 500;
-    color: var(--text);
+    color: var(--text-secondary);
   }
 
   .values {
     display: flex;
     flex-wrap: wrap;
-    gap: $p $p;
+    gap: var(--spc-m);
     align-items: flex-start;
     justify-content: flex-start;
 
@@ -39,26 +39,30 @@ $min-height: 34px;
 
 .item {
   display: inline-flex;
-  gap: $p;
+  gap: var(--spc);
   align-items: center;
 
   min-width: 134px;
   max-width: 134px;
-  padding: $p-s $p-l;
+  padding: var(--spc) var(--spc-m);
 
-  font-size: $font-s;
+  font-size: var(--font-s);
   color: var(--text);
 
   border: 1px solid var(--border2);
-  border-radius: $border-radius;
+  border-radius: var(--radius2);
 
   &:hover {
     color: var(--accent2);
     background: var(--bg2);
+
+    .icon {
+      background-color: #fff;
+    }
   }
 
   >svg {
-    font-size: $font-s;
+    font-size: var(--font-s);
   }
 
   .label {
