@@ -82,7 +82,7 @@
     "jsdom": "^22.0.0",
     "json-diff": "1.0.6",
     "lodash.debounce": "4.0.8",
-    "luxon": "3.3.0",
+    "luxon": "3.4.0",
     "nanoid": "4.0.2",
     "prismjs": "1.29.0",
     "properties-order": "1.0.0",
