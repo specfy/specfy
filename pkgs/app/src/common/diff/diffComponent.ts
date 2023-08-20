@@ -61,10 +61,14 @@ export function diffComponent(
     if (key === 'edges') {
       const prev = blob.previous?.[key] ? blob.previous[key] : [];
       const value = blob.current[key];
+      const change = diffObjectsArray(prev, value, 'target');
+      if (change.changes <= 0) {
+        continue;
+      }
 
       diffs.push({
         key,
-        diff: diffObjectsArray(prev, value, 'target'),
+        diff: change,
       });
       continue;
     }
@@ -81,10 +85,15 @@ export function diffComponent(
     if (key === 'display') {
       const value = blob.current[key];
       const prev = blob.previous?.[key] ? blob.previous[key] : {};
+      const change = diffJson(prev, value);
+      if (change.length <= 1) {
+        // When 1 it's the same json
+        continue;
+      }
 
       diffs.push({
         key,
-        diff: diffJson(prev, value),
+        diff: change,
       });
       continue;
     }

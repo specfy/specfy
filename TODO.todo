@@ -270,7 +270,7 @@ Revision:
   - Path in diff card header is wrong with nested documents
   ✔ Unit test @done(23-07-11 16:31)
   ✔ BUG: with seed PR, can't merge one document that supposedly doesn't exists, but that should have been caught by rebase check @done(23-07-11 14:49)
-  - BUG: when merging sometimes it pops the change again in staging, this is a desync with originalStore
+  ✔ BUG: when merging sometimes it pops the change again in staging, this is a desync with originalStore @done(23-08-20 16:10)
   - ISSUE: diffing upload does not work because uid are always different
   - Display modified graph in a Revision
 
