@@ -25,7 +25,7 @@ function getHost(id: string, host: string | null = null): ComponentForFlow {
 }
 
 describe('layout', () => {
-  it('should output vertically when no host', () => {
+  it('should output 3 components ', () => {
     const layout = computeLayout({
       edges: [],
       nodes: [
@@ -35,29 +35,11 @@ describe('layout', () => {
       ],
     });
 
-    expect(layout).toStrictEqual({
-      height: 140,
-      width: 140,
-      x: 0,
-      y: 0,
-      nodes: [
-        {
-          id: 'a',
-          pos: { x: 20, y: 20 },
-          size: { width: 100, height: 20 },
-        },
-        {
-          id: 'b',
-          pos: { x: 20, y: 60 },
-          size: { width: 100, height: 20 },
-        },
-        {
-          id: 'c',
-          pos: { x: 20, y: 100 },
-          size: { width: 100, height: 20 },
-        },
-      ],
-    });
+    /**
+     *      **A**   **B**
+     *      **C**
+     */
+    expect(layout).toMatchSnapshot();
   });
 
   it('should compute a tree', () => {
@@ -70,41 +52,85 @@ describe('layout', () => {
       createNode(getComp('f')),
     ]);
 
-    expect(tree).toStrictEqual([
-      {
-        id: 'a',
-        childs: [
-          {
-            id: 'b',
-            childs: [
-              {
-                id: 'c',
-                childs: [
-                  {
-                    id: 'd',
-                    parentId: 'c',
-                    childs: [],
-                  },
-                ],
-                parentId: 'b',
-              },
-            ],
-            parentId: 'a',
-          },
-          {
-            id: 'e',
-            parentId: 'a',
-            childs: [],
-          },
-        ],
-        parentId: null,
-      },
-      {
-        id: 'f',
-        parentId: null,
-        childs: [],
-      },
-    ]);
+    expect(tree).toMatchSnapshot();
+  });
+
+  it('should compute a layout', () => {
+    const layout = computeLayout({
+      edges: [],
+      nodes: [
+        createNode(getHost('a')),
+        createNode(getHost('b', 'a')),
+        createNode(getHost('c', 'b')),
+        createNode(getComp('d', 'c')),
+        createNode(getComp('e', 'a')),
+        createNode(getComp('f')),
+      ],
+    });
+
+    /**
+         +-----------------------------------------+
+         |                                       A |   -----------
+         | +-----------------------+   -------     |   f
+         | |                     B |   e           |
+         | |  +---------------+    |               |
+         | |  | ------      C |    |               |
+         | |  | d             |    |               |
+         | |  +---------------+    |               |
+         | |                       |               |
+         | +-----------------------+               |
+         +-----------------------------------------+
+     */
+    expect(layout).toMatchSnapshot();
+  });
+
+  it('should put 4 hosts in columns', () => {
+    const layout = computeLayout({
+      edges: [],
+      nodes: [
+        createNode(getHost('a')),
+        createNode(getHost('b')),
+        createNode(getHost('c')),
+        createNode(getHost('d')),
+      ],
+    });
+
+    /**
+          +----------+   +----------+
+          |A         |   |B         |
+          +----------+   +----------+
+
+          +----------+   +----------+
+          |C         |   |D         |
+          +----------+   +----------+
+     */
+    expect(layout).toMatchSnapshot();
+  });
+
+  it('should put components in columns', () => {
+    const layout = computeLayout({
+      edges: [],
+      nodes: [
+        createNode(getComp('a')),
+        createNode(getComp('b')),
+        createNode(getComp('c')),
+        createNode(getComp('d')),
+        createNode(getComp('e')),
+      ],
+    });
+
+    /**
+           +----------+   +----------+
+           |    A     |   |    B     |
+           +----------+   +----------+
+           +----------+   +----------+
+           |    C     |   |    D     |
+           +----------+   +----------+
+           +----------+
+           |    E     |
+           +----------+
+     */
+    expect(layout).toMatchSnapshot();
   });
 
   it('should put host inside host', () => {
@@ -113,24 +139,7 @@ describe('layout', () => {
       nodes: [createNode(getHost('a')), createNode(getHost('b', 'a'))],
     });
 
-    expect(layout).toStrictEqual({
-      height: 100,
-      width: 180,
-      x: 0,
-      y: 0,
-      nodes: [
-        {
-          id: 'b',
-          pos: { x: 20, y: 20 },
-          size: { width: 100, height: 20 },
-        },
-        {
-          id: 'a',
-          pos: { x: 20, y: 20 },
-          size: { width: 140, height: 60 },
-        },
-      ],
-    });
+    expect(layout).toMatchSnapshot();
   });
 
   it('should put component inside host', () => {
@@ -145,40 +154,6 @@ describe('layout', () => {
       ],
     });
 
-    const snap = [
-      {
-        id: 'c',
-        pos: { x: 20, y: 20 },
-        size: { width: 100, height: 20 },
-      },
-      {
-        id: 'b',
-        pos: { x: 20, y: 20 },
-        size: { width: 140, height: 60 },
-      },
-      {
-        id: 'd',
-        pos: { x: 20, y: 100 },
-        size: { width: 100, height: 20 },
-      },
-      {
-        id: 'a',
-        pos: { x: 20, y: 20 },
-        size: { width: 180, height: 140 },
-      },
-      {
-        id: 'f',
-        pos: { x: 20, y: 180 },
-        size: { width: 100, height: 20 },
-      },
-    ];
-    expect(layout.nodes).toEqual(snap);
-    expect(layout).toEqual({
-      x: 0,
-      y: 0,
-      width: 220,
-      height: 220,
-      nodes: snap,
-    });
+    expect(layout).toMatchSnapshot();
   });
 });
