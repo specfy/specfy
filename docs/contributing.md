@@ -1,6 +1,6 @@
 # Contributing
 
-- [Install](./installation.md) the project
+Follow the **[installation](./installation.md)** procedure.
 
 ## Lint
 
