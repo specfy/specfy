@@ -17,6 +17,10 @@ export class JobDeploy extends Job {
   token?: string;
 
   async teardown(job: JobWithOrgProject): Promise<void> {
+    const l = this.l;
+
+    l.info('Cleaning');
+
     // Clean up source code when we are done
     if (this.folderName) {
       try {
@@ -37,6 +41,7 @@ export class JobDeploy extends Job {
           auth: this.token,
         });
 
+        l.info('Updating Github deployment status');
         const mark = this.getMark();
         const [owner, repo] = job.Project!.githubRepository!.split('/');
         const projUrl = `${envs.APP_HOSTNAME}/${job.orgId}/${
@@ -58,6 +63,7 @@ export class JobDeploy extends Job {
 
   async process(job: JobWithOrgProject): Promise<void> {
     const config = job.config;
+    const l = this.l;
 
     if (!job.Org || !job.Project) {
       this.mark('failed', 'missing_dependencies');
@@ -79,6 +85,7 @@ export class JobDeploy extends Job {
 
     // Acquire a special short lived token that allow us to clone the repository
     try {
+      l.info('Getting temporary token from github');
       const auth = await github.octokit.rest.apps.createInstallationAccessToken(
         {
           installation_id: job.Org.githubInstallationId,
@@ -99,6 +106,8 @@ export class JobDeploy extends Job {
 
     // Notify Github that we started deploying
     try {
+      l.info('Creating Github deployment in Github');
+
       const authClient = new Octokit({
         auth: this.token,
       });
@@ -106,17 +115,25 @@ export class JobDeploy extends Job {
         owner,
         repo,
         ref,
-        environment: `Production – ${job.Org.id}/${job.Project.slug}`,
+        environment: `Production – specfy.io/${job.Org.id}/${job.Project.slug}`,
         production_environment: true,
         auto_merge: false,
         required_contexts: [],
       });
       if (res.status === 201) {
         this.deployId = res.data.id;
+
+        l.info(
+          `Deployment available: https://github.com/${owner}/${repo}/deployments/${encodeURIComponent(
+            res.data.environment
+          )}`
+        );
       } else {
         this.mark('failed', 'failed_to_start_github_deployment');
         return;
       }
+
+      l.info('Updating deployment status');
 
       const projUrl = `${envs.APP_HOSTNAME}/${job.orgId}/${job.Project.slug}`;
       await authClient.rest.repos.createDeploymentStatus({
@@ -126,7 +143,7 @@ export class JobDeploy extends Job {
         state: 'in_progress',
         auto_inactive: true,
         environment_url: projUrl,
-        log_url: `${projUrl}/jobs/${job.id}`,
+        log_url: `${projUrl}/deploys/${job.id}`,
       });
     } catch (err) {
       this.mark('failed', 'failed_to_start_github_deployment', err);
@@ -137,6 +154,7 @@ export class JobDeploy extends Job {
     this.folderName = `/tmp/specfy_clone_${job.id}_${nanoid()}`;
     const projConfig = job.Project.config;
     try {
+      l.info('Cloning repository');
       const res =
         await $`git clone --branch ${projConfig.branch} https://x-access-token:${this.token}@github.com/${config.url}.git --depth 1 ${this.folderName}`;
 
@@ -151,18 +169,18 @@ export class JobDeploy extends Job {
       return;
     }
 
-    // Checkout at the correct ref
-    try {
-      const res = await $`git checkout ${ref}`;
+    // // Checkout at the correct ref
+    // try {
+    //   const res = await $`cd folder && git checkout ${ref}`;
 
-      if (res.exitCode !== 0) {
-        this.mark('failed', 'unknown');
-        return;
-      }
-    } catch (err: unknown) {
-      this.mark('failed', 'failed_to_checkout', err);
-      return;
-    }
+    //   if (res.exitCode !== 0) {
+    //     this.mark('failed', 'unknown');
+    //     return;
+    //   }
+    // } catch (err: unknown) {
+    //   this.mark('failed', 'failed_to_checkout', err);
+    //   return;
+    // }
 
     const key = await prisma.keys.findFirst({
       where: {
@@ -179,8 +197,8 @@ export class JobDeploy extends Job {
     // Execute deploy
     try {
       this.l.info(
-        'Executing',
-        JSON.stringify({ root: this.folderName, projConfig })
+        JSON.stringify({ root: this.folderName, projConfig }),
+        'Start sync with configuration'
       );
 
       await sync({
@@ -197,6 +215,7 @@ export class JobDeploy extends Job {
         hostname: !isProd
           ? envs.API_HOSTNAME?.replace('localhost', '127.0.0.1')
           : envs.API_HOSTNAME,
+        logger: this.l,
       });
 
       this.mark('success', 'success');

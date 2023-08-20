@@ -1,4 +1,5 @@
-import { l } from '@specfy/core';
+import type { Logger } from '@specfy/core';
+import { l as defaultLogger } from '@specfy/core';
 import type { PostUploadRevision } from '@specfy/models';
 import type { Payload } from '@specfy/stack-analyser';
 
@@ -11,6 +12,7 @@ interface Params {
   projectId: string;
   token: string;
   baseUrl: string;
+  logger?: Logger;
 }
 
 export function prepBody({
@@ -47,11 +49,12 @@ export async function upload({
   body,
   token,
   baseUrl,
+  logger = defaultLogger,
 }: Omit<Params, 'orgId' | 'projectId'> & {
   body: PostUploadRevision['Body'];
 }): Promise<{ error: any } | { data: { id: string } }> {
   const endpoint = `${baseUrl}/revisions/upload`;
-  l.info('Uploading to', endpoint);
+  logger.info('Uploading to', { endpoint });
   const res = await fetch(endpoint, {
     method: 'POST',
     body: JSON.stringify(body),
@@ -72,11 +75,12 @@ export async function getRevision({
   projectId,
   token,
   baseUrl,
+  logger = defaultLogger,
 }: Params & {
   id: string;
 }) {
   const endpoint = `${baseUrl}/revisions/${id}?org_id=${orgId}&project_id=${projectId}`;
-  l.info('Getting revision', endpoint);
+  logger.info('Getting revision', { endpoint });
   const res = await fetch(endpoint, {
     method: 'GET',
     headers: {
@@ -85,7 +89,7 @@ export async function getRevision({
   });
 
   if (res.status !== 200) {
-    l.error(JSON.stringify(await res.json(), null, 2));
+    logger.error(JSON.stringify(await res.json(), null, 2));
     throw new Error("Can't get the revision");
   }
 
@@ -98,6 +102,7 @@ export async function closeOldRevisions({
   id,
   token,
   baseUrl,
+  logger = defaultLogger,
 }: Params & {
   id: string;
 }) {
@@ -108,7 +113,7 @@ export async function closeOldRevisions({
     status: 'opened',
   });
   const endpoint = `${baseUrl}/revisions?${usp.toString()}`;
-  l.info('Listing revisions', endpoint);
+  logger.info('Listing revisions', { endpoint });
 
   const res = await fetch(endpoint, {
     method: 'GET',
@@ -118,7 +123,7 @@ export async function closeOldRevisions({
   });
 
   if (res.status !== 200) {
-    l.error("Can't list old revisions");
+    logger.error("Can't list old revisions");
     return;
   }
 
@@ -144,7 +149,7 @@ export async function closeOldRevisions({
     );
 
     if (up.status !== 200) {
-      l.error("Can't lock previous revision");
+      logger.error("Can't lock previous revision");
       return;
     }
     count += 1;
@@ -159,11 +164,12 @@ export async function merge({
   id,
   token,
   baseUrl,
+  logger = defaultLogger,
 }: Params & {
   id: string;
 }) {
   const endpoint = `${baseUrl}/revisions/${id}/merge?org_id=${orgId}&project_id=${projectId}`;
-  l.info('Merging revision', endpoint);
+  logger.info('Merging revision', { endpoint });
 
   const res = await fetch(endpoint, {
     method: 'POST',
@@ -173,8 +179,8 @@ export async function merge({
   });
 
   if (res.status !== 200) {
-    l.info('');
-    l.error(JSON.stringify((await res.json()).error, null, 2));
+    logger.info('');
+    logger.error(JSON.stringify((await res.json()).error, null, 2));
     throw new Error("Can't merge");
   }
 }

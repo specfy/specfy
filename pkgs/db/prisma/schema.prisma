@@ -217,6 +217,7 @@ model Jobs {
   config Json       @db.Json
   /// [PrismaJobsReason]
   reason Json?      @db.Json
+  // logs   String?
 
   createdAt  DateTime  @default(now()) @db.Timestamp(3)
   startedAt  DateTime? @db.Timestamp(3)

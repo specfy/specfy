@@ -3,7 +3,8 @@ import path from 'node:path';
 import timer from 'node:timers/promises';
 import util from 'node:util';
 
-import { l } from '@specfy/core';
+import type { Logger } from '@specfy/core';
+import { l as defaultLogger } from '@specfy/core';
 import type { Payload } from '@specfy/stack-analyser';
 import {
   flatten,
@@ -45,6 +46,7 @@ export async function sync({
   dryRun,
   autoLayout,
   hostname = 'https://api.specfy.io',
+  logger = defaultLogger,
 }: {
   root: string;
   token: string;
@@ -57,10 +59,12 @@ export async function sync({
   dryRun: boolean;
   autoLayout: boolean;
   hostname?: string;
+  logger?: Logger;
 }) {
   if (!(await checkPaths(docPath, stackPath))) {
     throw new Error('Invalid path');
   }
+  const l = logger;
 
   const baseUrl = `${hostname}/0`;
 
@@ -165,7 +169,7 @@ export async function sync({
     return;
   }
 
-  const resUp = await upload({ body, token, baseUrl });
+  const resUp = await upload({ body, token, baseUrl, logger });
   if ('error' in resUp) {
     // There is nothing to commit
     if (
@@ -189,7 +193,14 @@ export async function sync({
 
   const id = resUp.data.id;
 
-  const resGet = await getRevision({ id, orgId, projectId, token, baseUrl });
+  const resGet = await getRevision({
+    id,
+    orgId,
+    projectId,
+    token,
+    baseUrl,
+    logger,
+  });
   const get = await resGet.json();
   spinnerUploading.succeed('Uploaded');
 
@@ -204,10 +215,11 @@ export async function sync({
     projectId,
     token,
     baseUrl,
+    logger,
   });
   spinnerDedup.succeed(`Closing old revisions (${count})`);
 
   const spinnerMerge = ora(`Merging`).start();
-  await merge({ id, orgId, projectId, token, baseUrl });
+  await merge({ id, orgId, projectId, token, baseUrl, logger });
   spinnerMerge.succeed(`Merged`);
 }

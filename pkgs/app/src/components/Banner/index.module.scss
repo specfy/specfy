@@ -13,34 +13,34 @@
   }
 
   &.error {
-    border-color: var(--tomato-7);
+    border-color: var(--tomato-8);
 
     .icon {
-      color: var(--tomato-8);
+      color: var(--tomato-9);
     }
   }
 
   &.warning {
-    border-color: var(--amber-7);
+    border-color: var(--amber-8);
 
     .icon {
-      color: var(--amber-8);
+      color: var(--amber-9);
     }
   }
 
   &.info {
-    border-color: var(--indigo-7);
+    border-color: var(--indigo-8);
 
     .icon {
-      color: var(--indigo-8);
+      color: var(--indigo-9);
     }
   }
 
   &.success {
-    border-color: var(--green-7);
+    border-color: var(--green-8);
 
     .icon {
-      color: var(--green-8);
+      color: var(--green-9);
     }
   }
 }

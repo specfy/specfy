@@ -14,6 +14,7 @@ export type ApiJob = Pick<
   updatedAt: string;
   startedAt: string | null;
   finishedAt: string | null;
+  // logs: string | null;
   user: ApiUser;
 };
 

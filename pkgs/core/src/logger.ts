@@ -99,6 +99,24 @@ if (!isProd) {
 export const l = pino(options);
 export type Logger = typeof l;
 
+export function createFileLogger(
+  bindings: pino.Bindings,
+  dest: string
+): Logger {
+  return pino({
+    ...options,
+    base: {
+      ...options.base,
+      ...bindings,
+    },
+    transport: {
+      level: 'info',
+      target: 'pino/file',
+      options: { destination: dest },
+    },
+  });
+}
+
 // function formatStack(stack: string) {
 //   return parseStack(stack)
 //     .map(

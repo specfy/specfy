@@ -34,7 +34,7 @@ export async function createComponent({
   data: Omit<Prisma.ComponentsUncheckedCreateInput, 'blobId' | 'slug'>;
   user: Users;
   tx: Prisma.TransactionClient;
-}) {
+}): Promise<Components> {
   const body: Prisma.ComponentsUncheckedCreateInput = {
     show: true,
     tags: [],

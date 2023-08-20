@@ -13,6 +13,7 @@
   },
   "devDependencies": {
     "@icons-pack/react-simple-icons": "8.0.1",
+    "@monaco-editor/react": "4.5.1",
     "@radix-ui/colors": "2.0.1",
     "@radix-ui/react-avatar": "1.0.3",
     "@radix-ui/react-checkbox": "1.0.4",

@@ -10,7 +10,7 @@ export async function createJobDeploy({
   config,
   userId,
   ...rest
-}: Partial<Jobs> &
+}: Omit<Partial<Jobs>, 'logs'> &
   SetNonNullable<
     Pick<Jobs, 'config' | 'orgId' | 'projectId' | 'userId'>,
     'projectId' | 'userId'

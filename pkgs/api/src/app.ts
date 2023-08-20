@@ -49,7 +49,7 @@ export default async (f: FastifyInstance, opts: FastifyPluginOptions) => {
   });
 
   await f.register(staticFiles, {
-    root: path.join(dirname, '..', 'public'),
+    root: path.join(dirname, '..', 'api/src/public'),
     prefix: '/',
   });
 

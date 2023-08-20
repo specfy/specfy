@@ -11,7 +11,7 @@
     "build:watch": "tsc -p tsconfig.json -w --preserveWatchOutput",
     "db:generate": "dotenv -e ../../.env prisma generate",
     "db:migrate": "dotenv -e ../../.env prisma db push --skip-generate",
-    "migrate:create": "dotenv -e ../../.env prisma migrate dev --create-only",
+    "db:migrate:create": "dotenv -e ../../.env prisma migrate dev --create-only",
     "prod:migrate": "prisma migrate deploy"
   },
   "files": [
