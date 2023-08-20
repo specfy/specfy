@@ -4,9 +4,7 @@ import { useDebounce } from 'react-use';
 
 import { diffTwoBlob } from '../../../../common/diff';
 import {
-  originalStore,
-  findOriginal,
-  allowedType,
+  original,
   useStagingStore,
   useDocumentsStore,
   useComponentsStore,
@@ -51,16 +49,16 @@ export const Staging: React.FC<{ showBadge: boolean }> = () => {
 
       // Find added and modified
       for (const item of store) {
-        const original = findOriginal(item.id)!;
+        const ori = original.find(item.id)!;
 
         const bd: BlobAndDiffs = {
           blob: {
             id: '',
-            created: !original,
+            created: !ori,
             deleted: false,
-            parentId: original ? original.blobId : null,
-            previous: (original as any) || null,
-            type: allowedType(item) as any,
+            parentId: ori ? ori.blobId : null,
+            previous: (ori as any) || null,
+            type: original.allowedType(item) as any,
             typeId: item.id,
             current: item as any, // Can't fix this
             createdAt: '',
@@ -92,7 +90,7 @@ export const Staging: React.FC<{ showBadge: boolean }> = () => {
       }
 
       // Find deleted
-      for (const item of originalStore) {
+      for (const item of original.store) {
         // ignore others item
         if ('projectId' in item && item.projectId !== project!.id) {
           continue;
@@ -111,7 +109,7 @@ export const Staging: React.FC<{ showBadge: boolean }> = () => {
             created: false,
             deleted: true,
             parentId: item.blobId,
-            type: allowedType(item) as any,
+            type: original.allowedType(item) as any,
             typeId: item.id,
             current: item as any,
             previous: item as any,

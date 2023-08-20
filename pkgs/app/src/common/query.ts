@@ -1,5 +1,7 @@
 import { QueryClient } from '@tanstack/react-query';
 
+import { original } from './store';
+
 export const qcli = new QueryClient({
   defaultOptions: {
     queries: {
@@ -17,6 +19,7 @@ export async function refreshProject(
   projectId: string,
   force: boolean = false
 ) {
+  original.cleanProject(projectId);
   const queries = [
     ['listRevisions', orgId, projectId],
     ['getRevision', orgId, projectId],

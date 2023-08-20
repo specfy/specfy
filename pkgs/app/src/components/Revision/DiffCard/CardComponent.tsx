@@ -4,7 +4,7 @@ import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
 import {
-  findOriginal,
+  original,
   useRevisionStore,
   useComponentsStore,
 } from '../../../common/store';
@@ -44,7 +44,7 @@ export const DiffCardComponent: React.FC<{
         : (inRevision.current as ApiComponent);
     }
 
-    return findOriginal(id)!;
+    return original.find(id)!;
   };
 
   const Title = useMemo(() => {

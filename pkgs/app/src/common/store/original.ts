@@ -6,27 +6,40 @@ import { useComponentsStore } from './components';
 import { useDocumentsStore } from './documents';
 import { useProjectStore } from './projects';
 
-export const originalStore: Allowed[] = [];
+export const original = {
+  store: [] as Allowed[],
+  add,
+  find,
+  cleanProject,
+  allowedType,
+  revertAll,
+};
 
-export function addOriginal(value: Allowed) {
-  const exists = originalStore.findIndex((val) => {
+function add(value: Allowed) {
+  const exists = original.store.findIndex((val) => {
     return val.id === value.id;
   });
   if (exists > -1) {
-    originalStore[exists] = JSON.parse(JSON.stringify(value));
+    original.store[exists] = JSON.parse(JSON.stringify(value));
     return;
   }
 
-  originalStore.push(JSON.parse(JSON.stringify(value)));
+  original.store.push(JSON.parse(JSON.stringify(value)));
 }
 
-export function findOriginal<T extends Allowed>(id: string): T | undefined {
-  return originalStore.find<T>((val): val is T => {
+function find<T extends Allowed>(id: string): T | undefined {
+  return original.store.find<T>((val): val is T => {
     return val.id === id;
   });
 }
 
-export function allowedType(item: Allowed): ApiBlobWithPrevious['type'] {
+function cleanProject<T extends Allowed>(projectId: string): void {
+  original.store = original.store.filter<T>((val): val is T => {
+    return 'projectId' in val ? val.projectId === projectId : true;
+  });
+}
+
+function allowedType(item: Allowed): ApiBlobWithPrevious['type'] {
   if ('links' in item) {
     return 'project';
   } else if ('content' in item) {
@@ -35,7 +48,7 @@ export function allowedType(item: Allowed): ApiBlobWithPrevious['type'] {
   return 'component';
 }
 
-export function revertAll(diffs: BlobAndDiffs[]) {
+function revertAll(diffs: BlobAndDiffs[]) {
   /* eslint-disable @typescript-eslint/no-use-before-define */
   const project = useProjectStore.getState();
   const components = useComponentsStore.getState();
@@ -44,7 +57,7 @@ export function revertAll(diffs: BlobAndDiffs[]) {
 
   for (const diff of diffs) {
     if (diff.blob.type === 'project') {
-      project.update(findOriginal<ApiProject>(diff.blob.typeId)!);
+      project.update(find<ApiProject>(diff.blob.typeId)!);
     } else if (diff.blob.type === 'component') {
       components.revert(diff.blob.typeId);
     } else if (diff.blob.type === 'document') {
