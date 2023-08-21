@@ -58,7 +58,7 @@
     "prosemirror-markdown": "1.11.2",
     "socket.io": "4.7.2",
     "stripe": "12.17.0",
-    "zod": "3.21.4"
+    "zod": "3.22.2"
   },
   "devDependencies": {
     "@types/node": "18.16.19",
