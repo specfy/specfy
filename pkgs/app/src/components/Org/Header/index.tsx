@@ -1,6 +1,7 @@
 import type { ApiOrg } from '@specfy/models';
 import {
   IconApps,
+  IconChartLine,
   IconChevronDown,
   IconHome,
   IconPlus,
@@ -129,6 +130,8 @@ export const OrgMenu: React.FC<{ org: ApiOrg }> = () => {
       setOpen('team');
     } else if (path[3] === 'policies') {
       setOpen('policies');
+    } else if (path[3] === 'report') {
+      setOpen('report');
     } else {
       setOpen('home');
     }
@@ -156,6 +159,18 @@ export const OrgMenu: React.FC<{ org: ApiOrg }> = () => {
               Flow
             </Flex>
           </Link>
+        ),
+      },
+      {
+        key: 'report',
+        label: (
+          <Flex justify="space-between" grow={1}>
+            <Flex gap="m">
+              <IconChartLine />
+              Report
+            </Flex>
+            <div className={cls.coming}>coming soon</div>
+          </Flex>
         ),
       },
       {
