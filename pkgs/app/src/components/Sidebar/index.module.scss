@@ -14,6 +14,13 @@
   height: 24px;
 }
 
+.beta {
+  position: absolute;
+  top: 34px;
+  right: 88px;
+  font-size: var(--font-xs);
+}
+
 .sidebar {
   z-index: 100;
 
@@ -53,6 +60,7 @@
   border-right: 1px solid var(--border2);
 
   .header {
+    position: relative;
     padding: var(--spc-2xl);
   }
 
