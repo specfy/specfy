@@ -44,7 +44,7 @@ export const GithubRepoSelect: React.FC<{
     setSelected(
       value ? String(res.data.find((v) => v.fullName === value)!.id) : undefined
     );
-  }, [value]);
+  }, [value, res.data]);
 
   useEffect(() => {
     if (!selected) {

@@ -88,17 +88,17 @@ export const ProjectOverview: React.FC<{
         </div>
       </Container.Left2Third>
       <Container.Right1Third>
-        <div style={{ height: '350px' }}>
+        <FlowWrapper key={project.id} columnMode>
           {flow && (
-            <FlowWrapper style={{ height: '350px' }} key={project.id}>
+            <>
               <Flow flow={flow} readonly />
               <Toolbar bottom>
                 <Toolbar.Fullscreen project={project} />
                 <Toolbar.Zoom />
               </Toolbar>
-            </FlowWrapper>
+            </>
           )}
-        </div>
+        </FlowWrapper>
 
         <Card padded seamless transparent>
           <ListActivity orgId={params.org_id} projectId={project.id} />

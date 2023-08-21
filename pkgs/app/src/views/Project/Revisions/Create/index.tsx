@@ -253,7 +253,7 @@ export const ProjectRevisionCreate: React.FC<{
         <div className={cls.staged}>
           <div className={cls.staged}>
             {flow && (
-              <FlowWrapper style={{ height: '350px' }}>
+              <FlowWrapper style={{ height: '400px' }}>
                 <DiffFlow next={flow} prev={previousFlow!} />
 
                 <Toolbar bottom>

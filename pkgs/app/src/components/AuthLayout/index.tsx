@@ -1,11 +1,13 @@
 import classNames from 'classnames';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { useMount } from 'react-use';
 
 import { useAuth } from '../../hooks/useAuth';
 import { SocketProvider } from '../../hooks/useSocket';
+import { Flex } from '../Flex';
 import { Loading } from '../Loading';
+import { Subdued } from '../Text';
 
 import cls from './index.module.scss';
 
@@ -14,17 +16,33 @@ export const AuthLayout: React.FC<{ children?: React.ReactNode }> = ({
 }) => {
   const [wait, setWait] = useState(true);
   const auth = useAuth();
+  const [showHint, setShowHint] = useState(false);
 
   useMount(async () => {
     // TODO: make sure this is correct
     await auth.tryLogin();
     setWait(false);
   });
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setShowHint(true);
+    }, 5000);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, []);
 
   if (wait) {
     return (
       <div className={classNames(cls.app, cls.loading)}>
-        <Loading />
+        <Flex column>
+          <Loading />
+          <Subdued className={classNames(cls.hint, showHint && cls.show)}>
+            This is taking longer than expected.
+            <br /> Please refresh this page or contact us, support@specfy.io
+          </Subdued>
+        </Flex>
       </div>
     );
   }

@@ -111,6 +111,7 @@ export const Sidebar: React.FC<{
             <Flex justify="space-between">
               <Link to="/" className={cls.logo}>
                 <Logo />
+                <div className={cls.beta}>beta</div>
               </Link>
               <User />
             </Flex>

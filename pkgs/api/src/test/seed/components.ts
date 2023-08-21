@@ -10,9 +10,9 @@ import {
 export type ResSeedComponents = {
   gcp: Components;
   api: Components;
-  worker: Components;
+  processor: Components;
   pg: Components;
-  manager: Components;
+  aggregator: Components;
   gce: Components;
 };
 
@@ -47,11 +47,25 @@ export async function seedComponents(
           orgId: o1.id,
           projectId: pAnalytics.id,
           techId: 'gcp',
-          description: { type: 'doc', content: [] },
+          description: {
+            type: 'doc',
+            content: [
+              {
+                type: 'paragraph',
+                attrs: { uid: nanoid() },
+                content: [
+                  {
+                    type: 'text',
+                    text: 'GCP is hosting all our core services and is not currently managed manually by team, with Terraform. It was decided to use GCP to have access to BigQuery, also the team was more proficient with the tooling.',
+                  },
+                ],
+              },
+            ],
+          },
           display: {
             zIndex: 1,
-            pos: { x: -80, y: 20 },
-            size: { width: 490, height: 370 },
+            pos: { x: -210, y: 20 },
+            size: { width: 610, height: 400 },
           },
           techs: [],
           inComponent: null,
@@ -72,8 +86,8 @@ export async function seedComponents(
           description: { type: 'doc', content: [] },
           display: {
             zIndex: 2,
-            pos: { x: 20, y: 250 },
-            size: { width: 150, height: 55 },
+            pos: { x: 20, y: 220 },
+            size: { width: 200, height: 80 },
           },
           techs: [],
           inComponent: gcp.id,
@@ -94,11 +108,32 @@ export async function seedComponents(
           description: { type: 'doc', content: [] },
           display: {
             zIndex: 2,
-            pos: { x: 200, y: 30 },
-            size: { width: 240, height: 300 },
+            pos: { x: 270, y: 40 },
+            size: { width: 290, height: 300 },
           },
           techs: [],
           inComponent: gcp.id,
+          edges: [],
+        },
+        user: users[0],
+        tx,
+      });
+
+      const vercel = await createComponent({
+        data: {
+          id: 'jZDC3Ls103',
+          name: 'Vercel',
+          type: 'hosting',
+          orgId: o1.id,
+          projectId: pAnalytics.id,
+          techId: 'vercel',
+          description: { type: 'doc', content: [] },
+          display: {
+            zIndex: 2,
+            pos: { x: 200, y: -100 },
+            size: { width: 180, height: 80 },
+          },
+          techs: [],
           edges: [],
         },
         user: users[0],
@@ -113,10 +148,65 @@ export async function seedComponents(
           orgId: o1.id,
           projectId: pAnalytics.id,
           techId: 'postgresql',
-          description: { type: 'doc', content: [] },
+          description: {
+            type: 'doc',
+            content: [
+              {
+                type: 'paragraph',
+                attrs: { uid: nanoid() },
+                content: [
+                  {
+                    type: 'text',
+                    text: 'This database stores all the pipelines configuration, users info, jobs metadata, etc... This is the source of truth of the system, if it crashes or need to be restarted we can reboot from the state stored in database.',
+                  },
+                ],
+              },
+            ],
+          },
           display: {
             zIndex: 3,
             pos: { x: 20, y: 130 },
+            size: { width: 130, height: 40 },
+          },
+          inComponent: gcp.id,
+          edges: [],
+          techs: [],
+        },
+        user: users[0],
+        tx,
+      });
+
+      const bq = await createComponent({
+        data: {
+          id: 'jZDC3Ls104',
+          name: 'BigQuery',
+          type: 'db',
+          orgId: o1.id,
+          projectId: pAnalytics.id,
+          techId: 'biqquery',
+          description: {
+            type: 'doc',
+            content: [
+              {
+                type: 'paragraph',
+                attrs: { uid: nanoid() },
+                content: [
+                  {
+                    type: 'text',
+                    text: 'We store all computed metrics here. We are currently creating one table per day and keep a rolling 360days of metrics. ',
+                  },
+                  { type: 'hardBreak' },
+                  {
+                    type: 'text',
+                    text: 'Current table is backup hourly, with a final dump at 1:00 UTC. To be compliant with GDPR, when the retention period is over, the outdated tables and backups are wiped for ever.',
+                  },
+                ],
+              },
+            ],
+          },
+          display: {
+            zIndex: 3,
+            pos: { x: 20, y: 320 },
             size: { width: 130, height: 40 },
           },
           inComponent: gcp.id,
@@ -135,10 +225,24 @@ export async function seedComponents(
           orgId: o1.id,
           projectId: pAnalytics.id,
           techId: 'datadog',
-          description: { type: 'doc', content: [] },
+          description: {
+            type: 'doc',
+            content: [
+              {
+                type: 'paragraph',
+                attrs: { uid: nanoid() },
+                content: [
+                  {
+                    type: 'text',
+                    text: "We store all processing metrics and span here. Datadog is configured with a central agent, meaning it won't push servers metrics, those information can be found in Stackdriver.",
+                  },
+                ],
+              },
+            ],
+          },
           display: {
             zIndex: 3,
-            pos: { x: 450, y: 190 },
+            pos: { x: 460, y: 260 },
             size: { width: 130, height: 40 },
           },
           inComponent: null,
@@ -160,7 +264,7 @@ export async function seedComponents(
           description: { type: 'doc', content: [] },
           display: {
             zIndex: 3,
-            pos: { x: 450, y: 250 },
+            pos: { x: 450, y: 330 },
             size: { width: 130, height: 40 },
           },
           inComponent: null,
@@ -179,10 +283,24 @@ export async function seedComponents(
           orgId: o1.id,
           projectId: pAnalytics.id,
           techId: 'algolia',
-          description: { type: 'doc', content: [] },
+          description: {
+            type: 'doc',
+            content: [
+              {
+                type: 'paragraph',
+                attrs: { uid: nanoid() },
+                content: [
+                  {
+                    type: 'text',
+                    text: 'We use Algolia to store and search User and Pipeline information. This is more relevant and faster than using Postgres.',
+                  },
+                ],
+              },
+            ],
+          },
           display: {
             zIndex: 3,
-            pos: { x: 450, y: 310 },
+            pos: { x: 480, y: -33 },
             size: { width: 130, height: 40 },
           },
           inComponent: null,
@@ -201,7 +319,21 @@ export async function seedComponents(
           orgId: o1.id,
           projectId: pAnalytics.id,
           techId: 'redis',
-          description: { type: 'doc', content: [] },
+          description: {
+            type: 'doc',
+            content: [
+              {
+                type: 'paragraph',
+                attrs: { uid: nanoid() },
+                content: [
+                  {
+                    type: 'text',
+                    text: "Redis is used to store users' sessions and rate limit metrics.",
+                  },
+                ],
+              },
+            ],
+          },
           display: {
             zIndex: 3,
             pos: { x: 20, y: 60 },
@@ -223,11 +355,25 @@ export async function seedComponents(
           orgId: o1.id,
           projectId: pAnalytics.id,
           techId: 'elasticsearch',
-          description: { type: 'doc', content: [] },
+          description: {
+            type: 'doc',
+            content: [
+              {
+                type: 'paragraph',
+                attrs: { uid: nanoid() },
+                content: [
+                  {
+                    type: 'text',
+                    text: 'Elasticsearch is storing raw logs from the aggregation and processing. It is accessed by the Frontend through the API to display real-time metrics.',
+                  },
+                ],
+              },
+            ],
+          },
           display: {
             zIndex: 3,
-            pos: { x: 20, y: 10 },
-            size: { width: 130, height: 40 },
+            pos: { x: 20, y: 20 },
+            size: { width: 150, height: 40 },
           },
           inComponent: gce.id,
           edges: [],
@@ -245,7 +391,21 @@ export async function seedComponents(
           orgId: o1.id,
           projectId: pAnalytics.id,
           techId: 'rabbitmq',
-          description: { type: 'doc', content: [] },
+          description: {
+            type: 'doc',
+            content: [
+              {
+                type: 'paragraph',
+                attrs: { uid: nanoid() },
+                content: [
+                  {
+                    type: 'text',
+                    text: 'This message queue is used to distribute metrics processing evenly across the infrastructure.',
+                  },
+                ],
+              },
+            ],
+          },
           display: {
             zIndex: 3,
             pos: { x: 100, y: 190 },
@@ -270,7 +430,7 @@ export async function seedComponents(
           description: { type: 'doc', content: [] },
           display: {
             zIndex: 3,
-            pos: { x: 450, y: 90 },
+            pos: { x: 480, y: 140 },
             size: { width: 130, height: 40 },
           },
           inComponent: null,
@@ -292,7 +452,7 @@ export async function seedComponents(
           description: { type: 'doc', content: [] },
           display: {
             zIndex: 3,
-            pos: { x: 450, y: 40 },
+            pos: { x: 480, y: 80 },
             size: { width: 130, height: 40 },
           },
           inComponent: null,
@@ -319,7 +479,12 @@ export async function seedComponents(
                 content: [
                   {
                     type: 'text',
-                    text: 'Morbi sit amet porttitor justo, quis sagittis nulla. Donec et ullamcorper dolor. Maecenas pharetra imperdiet nulla nec commodo.',
+                    text: "The API is serving request to the Frontend. It's the central piece that also allows Users to control and monitor their metrics pipeline.",
+                  },
+                  { type: 'hardBreak' },
+                  {
+                    type: 'text',
+                    text: "It's also reaching internal Billing and Dashboard uses it to display status to the end customers, be careful when making breaking changes",
                   },
                 ],
               },
@@ -327,7 +492,7 @@ export async function seedComponents(
           },
           display: {
             zIndex: 3,
-            pos: { x: 40, y: 70 },
+            pos: { x: 50, y: 40 },
             size: { width: 130, height: 40 },
           },
           inComponent: kube.id,
@@ -413,13 +578,27 @@ export async function seedComponents(
           type: 'service',
           orgId: o1.id,
           projectId: pAnalytics.id,
-          description: { type: 'doc', content: [] },
+          description: {
+            type: 'doc',
+            content: [
+              {
+                type: 'paragraph',
+                attrs: { uid: nanoid() },
+                content: [
+                  {
+                    type: 'text',
+                    text: 'The Frontend, often referred to Admin or Dashboard in the documentation, displays the pipeline current state, allows Users to fine-tune the aggregation and processing.',
+                  },
+                ],
+              },
+            ],
+          },
           display: {
             zIndex: 4,
-            pos: { x: 70, y: 10 },
+            pos: { x: 20, y: 20 },
             size: { width: 130, height: 40 },
           },
-          inComponent: kube.id,
+          inComponent: vercel.id,
           edges: [
             {
               target: api.id,
@@ -437,14 +616,6 @@ export async function seedComponents(
               portSource: 'sr',
               portTarget: 'tl',
             },
-            {
-              target: sentry.id,
-              read: false,
-              write: true,
-              vertices: [{ x: 400, y: 230 }],
-              portSource: 'sr',
-              portTarget: 'tl',
-            },
           ],
           techs: ['react', 'typescript', 'webpack'],
         },
@@ -452,10 +623,10 @@ export async function seedComponents(
         tx,
       });
 
-      const manager = await createComponent({
+      const aggregator = await createComponent({
         data: {
           id: 'jZDC3Lsc14',
-          name: 'Manager',
+          name: 'Aggregator',
           type: 'service',
           orgId: o1.id,
           projectId: pAnalytics.id,
@@ -468,7 +639,7 @@ export async function seedComponents(
                 content: [
                   {
                     type: 'text',
-                    text: 'Donec et ullamcorper dolor. Maecenas pharetra imperdiet nulla nec commodo.',
+                    text: 'This service buffer all metrics coming from external services and create rolling aggregation.',
                   },
                 ],
               },
@@ -476,8 +647,8 @@ export async function seedComponents(
           },
           display: {
             zIndex: 3,
-            pos: { x: 100, y: 130 },
-            size: { width: 130, height: 40 },
+            pos: { x: 100, y: 125 },
+            size: { width: 140, height: 40 },
           },
           inComponent: kube.id,
           edges: [
@@ -536,10 +707,10 @@ export async function seedComponents(
         tx,
       });
 
-      const worker = await createComponent({
+      const processor = await createComponent({
         data: {
           id: 'jZDC3Lsc15',
-          name: 'Worker',
+          name: 'Processor',
           type: 'service',
           orgId: o1.id,
           projectId: pAnalytics.id,
@@ -552,7 +723,7 @@ export async function seedComponents(
                 content: [
                   {
                     type: 'text',
-                    text: 'Maecenas pharetra imperdiet nulla nec commodo.',
+                    text: 'The Processor takes aggregated metrics from the Aggregator and compute avg, min, max, sum, count, etc.',
                   },
                 ],
               },
@@ -604,6 +775,14 @@ export async function seedComponents(
               vertices: [],
               portSource: 'sr',
               portTarget: 'tl',
+            },
+            {
+              target: bq.id,
+              read: false,
+              write: true,
+              vertices: [],
+              portSource: 'sl',
+              portTarget: 'tr',
             },
           ],
           techs: ['nodejs', 'typescript'],
@@ -809,7 +988,7 @@ export async function seedComponents(
         tx,
       });
 
-      return { api, gcp, worker, manager, pg, gce };
+      return { api, gcp, processor, aggregator, pg, gce };
     },
     { timeout: 20000 }
   );

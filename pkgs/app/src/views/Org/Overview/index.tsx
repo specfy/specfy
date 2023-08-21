@@ -45,7 +45,7 @@ export const OrgOverview: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
       </Container.Left2Third>
       <Container.Right1Third>
         <div>
-          <FlowWrapper>
+          <FlowWrapper columnMode>
             {!flow ? (
               <div style={{ margin: '20px' }}>
                 <Skeleton count={3} />

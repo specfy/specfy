@@ -122,3 +122,13 @@
 .highlightToGroup {
   outline: 1px dashed var(--accent2);
 }
+
+.columnMode {
+  height: 400px;
+}
+
+@media (width >=1900px) {
+  .columnMode {
+    height: 500px;
+  }
+}

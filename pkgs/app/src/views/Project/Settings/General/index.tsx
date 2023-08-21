@@ -160,12 +160,19 @@ export const SettingsGeneral: React.FC<{
           <Subdued>Manage your project general&apos;s settings</Subdued>
         </div>
       </div>
+
       <Card>
-        <Form.Root onSubmit={handleRename}>
+        <Form.Root onSubmit={handleRename} className={cls.main}>
           <Card.Content>
             <h3>Project Name</h3>
             <Field name="name" label="Name" error={errors.name?.message}>
-              <Input value={name} onChange={onName} disabled={!canEdit} />
+              <Input
+                value={name}
+                onChange={onName}
+                disabled={!canEdit}
+                size="l"
+                style={{ width: '400px' }}
+              />
             </Field>
             <Field name="slug" label="Slug" error={errors.slug?.message}>
               <Input
@@ -174,6 +181,7 @@ export const SettingsGeneral: React.FC<{
                 before={`https://app.specfy.io/${proj.orgId}/`}
                 seamless
                 disabled={!canEdit}
+                style={{ width: '400px' }}
               />
             </Field>
           </Card.Content>
@@ -195,46 +203,48 @@ export const SettingsGeneral: React.FC<{
 
       {canEdit && (
         <Card>
-          <Form.Root onSubmit={(e) => e.preventDefault()}>
+          <Form.Root onSubmit={(e) => e.preventDefault()} className={cls.main}>
             <Card.Content>
               <h3>Link to Github</h3>
+
+              <Field name="github">
+                {!org!.githubInstallationId ? (
+                  <Banner type="info">
+                    <Flex justify="space-between">
+                      First, link your Specfy organization to a Github
+                      organization.
+                      <Link to={`/${org!.id}/_/settings`}>
+                        <Button>Settings</Button>
+                      </Link>
+                    </Flex>
+                  </Banner>
+                ) : (
+                  <Flex gap="l">
+                    <GithubOrgSelect
+                      onChange={() => null}
+                      defaultSelected={
+                        org!.githubInstallationId
+                          ? String(org!.githubInstallationId)
+                          : undefined
+                      }
+                      disabled
+                    />
+                    <GithubRepoSelect
+                      value={
+                        proj.githubRepository
+                          ? String(proj.githubRepository)
+                          : undefined
+                      }
+                      installationId={org!.githubInstallationId}
+                      onChange={setRepoId}
+                    />
+                  </Flex>
+                )}
+              </Field>
               <p>
                 Linking to a Github repository enables automatic deployment when
                 you push to your repository.
               </p>
-
-              {!org!.githubInstallationId ? (
-                <Banner type="info">
-                  <Flex justify="space-between">
-                    First, link your Specfy organization to a Github
-                    organization.
-                    <Link to={`/${org!.id}/_/settings`}>
-                      <Button>Settings</Button>
-                    </Link>
-                  </Flex>
-                </Banner>
-              ) : (
-                <Flex gap="l">
-                  <GithubOrgSelect
-                    onChange={() => null}
-                    defaultSelected={
-                      org!.githubInstallationId
-                        ? String(org!.githubInstallationId)
-                        : undefined
-                    }
-                    disabled
-                  />
-                  <GithubRepoSelect
-                    value={
-                      proj.githubRepository
-                        ? String(proj.githubRepository)
-                        : undefined
-                    }
-                    installationId={org!.githubInstallationId}
-                    onChange={setRepoId}
-                  />
-                </Flex>
-              )}
             </Card.Content>
             <Card.Actions>
               {proj.githubRepository === repoId && repoId !== null ? (
@@ -257,21 +267,19 @@ export const SettingsGeneral: React.FC<{
 
       {canEdit && (
         <Card>
-          <Form.Root onSubmit={(e) => e.preventDefault()}>
+          <Form.Root onSubmit={(e) => e.preventDefault()} className={cls.main}>
             <Card.Content>
               <h3>Keys</h3>
               <Flex gap="l" column align="flex-start">
-                <div>
-                  <div>Project ID</div>
+                <Field name="project" label="Project ID">
                   <Input
                     readOnly
                     value={proj.id}
                     style={{ width: '350px' }}
                     after={<CopyButton value={proj.id} />}
                   />
-                </div>
-                <div>
-                  <div>Api Key</div>
+                </Field>
+                <Field name="apikey" label="Api Key">
                   <Input
                     readOnly
                     value={key || ''}
@@ -280,17 +288,16 @@ export const SettingsGeneral: React.FC<{
                       <CopyButton value={resKeys.data?.data[0].key || ''} />
                     }
                   />
-                </div>
+                </Field>
                 {!IS_PROD && (
-                  <div>
-                    <div>Manual deploy command</div>
+                  <Field name="cli" label="Manual deploy command">
                     <Input
                       readOnly
                       value={manualCli}
-                      style={{ width: '350px' }}
+                      style={{ width: '450px' }}
                       after={<CopyButton value={manualCli || ''} />}
                     />
-                  </div>
+                  </Field>
                 )}
               </Flex>
             </Card.Content>
@@ -303,7 +310,7 @@ export const SettingsGeneral: React.FC<{
           <div className={cls.actions}>
             <div>
               <h4>Delete this project</h4>
-              <Subdued>Deleting a project can&apos;t be undone.</Subdued>
+              <p>Deleting a project can&apos;t be undone.</p>
             </div>
 
             <Dialog.Dialog onOpenChange={onOpenChange}>

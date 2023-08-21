@@ -33,8 +33,8 @@
   }
 
   .header {
-    height: 150px;
-    padding: var(--spc-4xl) 0;
+    height: 180px;
+    padding: var(--spc-5xl) 0;
     text-align: center;
   }
 
@@ -47,11 +47,15 @@
     font-size: var(--font-2xl);
     font-weight: 600;
     text-align: center;
+  }
 
-    .unit {
-      font-size: var(--font-l);
-      color: var(--text3);
-    }
+  .unit {
+    font-size: var(--font);
+    color: var(--text3);
+  }
+
+  .strike {
+    text-decoration: line-through;
   }
 
   .points {

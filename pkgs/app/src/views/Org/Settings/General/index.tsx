@@ -10,6 +10,7 @@ import { deleteOrg, updateOrg, linkToGithubOrg } from '../../../../api';
 import { isError } from '../../../../api/helpers';
 import { i18n } from '../../../../common/i18n';
 import { titleSuffix } from '../../../../common/string';
+import { CopyButton } from '../../../../components/Button/Copy';
 import { Card } from '../../../../components/Card';
 import * as Dialog from '../../../../components/Dialog';
 import { Button } from '../../../../components/Form/Button';
@@ -118,21 +119,26 @@ export const SettingsGeneral: React.FC<{
 
         <Subdued>Manage your organization general&apos;s settings</Subdued>
       </div>
-
       <Card>
-        <Form.Root onSubmit={handleRename}>
+        <Form.Root onSubmit={handleRename} className={cls.main}>
           <Card.Content>
             <h3>Organization Name</h3>
-            <br />
             <Field name="name">
-              <Input value={name} onChange={onName} disabled={!canEdit} />
+              <Input
+                value={name}
+                onChange={onName}
+                disabled={!canEdit}
+                style={{ width: '300px' }}
+                size="l"
+              />
             </Field>
-            <Subdued>
+            <p>
               The organization is accessible at{' '}
               <em>
                 https://app.specfy.io/<strong>{org.id}</strong>
               </em>
-            </Subdued>
+              <CopyButton value={`https://app.specfy.io/${org.id}`} size="s" />
+            </p>
           </Card.Content>
 
           {canEdit && (
@@ -152,27 +158,28 @@ export const SettingsGeneral: React.FC<{
 
       {canEdit && (
         <Card>
-          <Form.Root onSubmit={(e) => e.preventDefault()}>
+          <Form.Root onSubmit={(e) => e.preventDefault()} className={cls.main}>
             <Card.Content>
               <h3>Link to Github</h3>
+              <Field name="name">
+                <GithubOrgSelect
+                  key={org.githubInstallationId}
+                  defaultSelected={
+                    org.githubInstallationId
+                      ? String(org.githubInstallationId)
+                      : ''
+                  }
+                  onChange={(sel) => {
+                    if (sel) {
+                      setInstallId(Number(sel));
+                    }
+                  }}
+                />
+              </Field>
               <p>
                 Linking to a Github organization will sync the avatar and enable
                 automatic repository discovery.
               </p>
-
-              <GithubOrgSelect
-                key={org.githubInstallationId}
-                defaultSelected={
-                  org.githubInstallationId
-                    ? String(org.githubInstallationId)
-                    : ''
-                }
-                onChange={(sel) => {
-                  if (sel) {
-                    setInstallId(Number(sel));
-                  }
-                }}
-              />
             </Card.Content>
             <Card.Actions>
               {org.githubInstallationId === installId && installId !== null ? (
@@ -198,7 +205,7 @@ export const SettingsGeneral: React.FC<{
           <div className={cls.actions}>
             <div>
               <h4>Delete this organization</h4>
-              <Subdued>This operation can&apos;t be undone.</Subdued>
+              <p>This operation can&apos;t be undone.</p>
             </div>
 
             <Dialog.Dialog onOpenChange={onOpenChange}>

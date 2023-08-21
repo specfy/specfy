@@ -9,3 +9,25 @@
   justify-content: center;
   font-size: var(--font-xl);
 }
+
+.hint {
+  transform: translateY(20px);
+
+  margin: var(--spc-4xl) 0;
+
+  font-size: var(--font-s);
+  text-align: center;
+
+  opacity: 0;
+
+  &.show {
+    animation: appears 0.9s forwards;
+  }
+}
+
+@keyframes appears {
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

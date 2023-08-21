@@ -34,3 +34,14 @@
     background-color: var(--bg2);
   }
 }
+
+.coming {
+  padding: 0 var(--spc-s);
+
+  font-size: var(--font-xs);
+  line-height: var(--lh-s);
+  color: var(--amber-10);
+
+  background-color: var(--amber-3);
+  border-radius: var(--radius2);
+}

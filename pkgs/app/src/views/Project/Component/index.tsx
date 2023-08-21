@@ -216,17 +216,17 @@ export const ComponentView: React.FC<{
         <ComponentDetails proj={proj} component={comp} params={params} />
       </Container.Left2Third>
       <Container.Right1Third>
-        <div>
+        <FlowWrapper key={proj.id} columnMode>
           {flow && (
-            <FlowWrapper style={{ height: '350px' }}>
+            <>
               <Flow flow={flow} highlight={comp.id} readonly />
               <Toolbar bottom>
                 <Toolbar.Fullscreen project={proj} />
                 <Toolbar.Zoom />
               </Toolbar>
-            </FlowWrapper>
+            </>
           )}
-        </div>
+        </FlowWrapper>
       </Container.Right1Third>
     </Container>
   );
