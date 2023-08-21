@@ -31,7 +31,7 @@
     "@fastify/rate-limit": "8.0.3",
     "@fastify/secure-session": "6.1.0",
     "@fastify/sensible": "5.2.0",
-    "@fastify/session": "10.2.0",
+    "@fastify/session": "10.4.0",
     "@fastify/static": "6.10.2",
     "@octokit/auth-app": "6.0.0",
     "@octokit/core": "5.0.0",
