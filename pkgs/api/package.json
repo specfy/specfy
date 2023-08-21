@@ -57,7 +57,7 @@
     "passport-local": "1.0.0",
     "prosemirror-markdown": "1.11.2",
     "socket.io": "4.7.2",
-    "stripe": "12.17.0",
+    "stripe": "12.18.0",
     "zod": "3.22.2"
   },
   "devDependencies": {
