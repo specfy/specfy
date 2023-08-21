@@ -24,7 +24,7 @@ export const ProjectFlow: React.FC<{
   proj: ApiProject;
   params: RouteProject;
 }> = ({ proj }) => {
-  const { isEditing } = useEdit();
+  const { isEditing, enable } = useEdit();
   const storeComponents = useComponentsStore();
   const storeProjects = useProjectStore();
   const [flow, setFlow] = useState<ComputedFlow>();
@@ -132,7 +132,7 @@ export const ProjectFlow: React.FC<{
           </Toolbar>
         )}
         <Toolbar left top visible>
-          {!isEditing && <Toolbar.Readonly />}
+          {!isEditing && <Toolbar.Readonly onClick={() => enable(true)} />}
         </Toolbar>
         <Toolbar bottom visible>
           <Toolbar.Zoom />

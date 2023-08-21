@@ -1,5 +1,5 @@
 import type { ComputedFlow, ApiOrg, PatchFlow } from '@specfy/models';
-import { IconCheck, IconEdit, IconX } from '@tabler/icons-react';
+import { IconCheck, IconX } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useReactFlow } from 'reactflow';
@@ -99,7 +99,7 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
               keepHighlightOnSelect={true}
               readonly={!editing}
               deletable={false}
-              connectable={true}
+              connectable={false}
             />
 
             <FlowDetails
@@ -108,14 +108,11 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
               onRelationChange={() => null}
             />
             {canEdit && (
-              <Toolbar right top visible>
+              <Toolbar left top visible>
+                {!editing && (
+                  <Toolbar.Readonly onClick={() => setEditing(true)} />
+                )}
                 <Toolbar.Inner>
-                  {!editing && (
-                    <Button onClick={() => setEditing(true)} display="ghost">
-                      <IconEdit />
-                      Edit
-                    </Button>
-                  )}
                   {editing && (
                     <>
                       <Button

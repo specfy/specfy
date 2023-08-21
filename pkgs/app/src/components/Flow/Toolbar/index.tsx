@@ -9,12 +9,11 @@ import {
 } from '@tabler/icons-react';
 import classnames from 'classnames';
 import type React from 'react';
-import { useRef, useState } from 'react';
+import { useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useReactFlow, useViewport } from 'reactflow';
 
 import { useAuth } from '../../../hooks/useAuth';
-import { useEdit } from '../../../hooks/useEdit';
 import { Flex } from '../../Flex';
 import { Button } from '../../Form/Button';
 import { TooltipFull } from '../../Tooltip';
@@ -53,32 +52,19 @@ const Inner: React.FC<{
   return <div className={cls.toolbar}>{children}</div>;
 };
 
-const Readonly: React.FC = () => {
+const Readonly: React.FC<{ onClick: () => void }> = ({ onClick }) => {
   const { currentPerm } = useAuth();
-  const edit = useEdit();
-  const [label, setLabel] = useState('Read-Only');
-  const canEdit = currentPerm?.role !== 'viewer';
-  const onClick = () => {
-    if (canEdit) {
-      edit.enable(true);
+  const label = useMemo(() => {
+    return currentPerm?.role !== 'viewer' ? 'Click to edit' : 'Read-Only';
+  }, [currentPerm]);
+  const handleClick = () => {
+    if (currentPerm?.role !== 'viewer') {
+      onClick();
     }
-  };
-  const onMouseEnter = () => {
-    if (canEdit) {
-      setLabel('Enable Edit');
-    }
-  };
-  const onMouseLeave = () => {
-    setLabel('Read-Only');
   };
 
   return (
-    <div
-      className={classnames(cls.toolbar, cls.dark)}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
-      onClick={onClick}
-    >
+    <div className={classnames(cls.toolbar, cls.dark)} onClick={handleClick}>
       <button title="Click to enable edition">
         <Flex gap="m">
           {label}
