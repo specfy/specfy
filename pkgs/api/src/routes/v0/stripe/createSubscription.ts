@@ -1,5 +1,5 @@
 import { envs } from '@specfy/core';
-import { v1, stripe } from '@specfy/models';
+import { v1, stripe, betaTrialEnd } from '@specfy/models';
 import type { PostSubscription } from '@specfy/models';
 import type { FastifyPluginCallback } from 'fastify';
 import type Stripe from 'stripe';
@@ -47,6 +47,12 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         });
       }
 
+      const trial = Math.round(
+        Date.now() + 86400 * 3 * 1000 < betaTrialEnd.getTime()
+          ? betaTrialEnd.getTime() / 1000
+          : new Date(Date.now() + 86400 * 14 * 1000).getTime() / 1000
+      );
+
       if (org.stripeCustomerId && org.stripeSubscriptionId) {
         const sub = await stripe.subscriptions.retrieve(
           org.stripeSubscriptionId
@@ -62,6 +68,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
                 price: prices.data[0].id,
               },
             ],
+            trial_end: trial,
           });
           return res.status(200).send({
             data: {
@@ -86,6 +93,9 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         client_reference_id: org.id,
         allow_promotion_codes: true,
         tax_id_collection: { enabled: true },
+        subscription_data: {
+          trial_end: trial,
+        },
         metadata: {
           // Note: metadata are not persisted correctly https://stackoverflow.com/a/75722808/1163666
           userId: me.id,

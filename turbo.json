@@ -23,6 +23,7 @@
       ]
     },
     "build:watch": {
+      "persistent": true,
       "outputs": [
         "build/**"
       ],
@@ -34,7 +35,6 @@
       "persistent": true,
       "cache": false,
       "dependsOn": [
-        "build",
         "^db:generate"
       ]
     },

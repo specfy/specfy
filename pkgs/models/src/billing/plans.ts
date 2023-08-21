@@ -25,6 +25,8 @@ export interface Plan {
   features: string[];
 }
 
+export const betaTrialEnd = new Date('2023-12-01T11:59:59Z');
+
 export const v1: Record<PlanName, Plan> = {
   free: {
     id: 'prod_01d8ykCPVkHY2JVIwX8VWUr0',

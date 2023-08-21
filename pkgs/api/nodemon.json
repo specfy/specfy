@@ -1,0 +1,17 @@
+{
+  "watch": [
+    "build/",
+    "../core/build",
+    "../db/build",
+    "../github-sync/build",
+    "../github/build",
+    "../models/build",
+    "../socket/build",
+    "../../.env"
+  ],
+  "ext": "js",
+  "ignore": [
+    "src/"
+  ],
+  "delay": 2500
+}

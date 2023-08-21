@@ -17,8 +17,8 @@
     "build"
   ],
   "scripts": {
-    "dev": "tsc -w --preserveWatchOutput",
     "build": "tsc -p tsconfig.json",
+    "build:watch": "tsc -w --preserveWatchOutput",
     "test": "vitest",
     "test:ci": "vitest run",
     "lint": "eslint --ext .js,.ts,.tsx ."

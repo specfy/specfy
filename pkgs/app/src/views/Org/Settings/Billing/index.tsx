@@ -70,8 +70,16 @@ export const PlanCard: React.FC<{
       <header className={cls.header}>
         <h4 className={cls.name}>{plan.name} </h4>
         <h3 className={cls.price}>
-          ${plan.price.amount / 100} <span className={cls.unit}>/ mo</span>
+          <span className={classNames(plan.price.amount > 0 && cls.strike)}>
+            ${plan.price.amount / 100}
+          </span>{' '}
+          <span className={cls.unit}>/ mo</span>
         </h3>
+        {plan.price.amount > 0 && (
+          <h3 className={cls.price}>
+            Free <span className={cls.unit}> beta</span>
+          </h3>
+        )}
         {isCurrent && <Tag variant="border">Current Plan</Tag>}
       </header>
       <div className={cls.points}>
@@ -86,8 +94,11 @@ export const PlanCard: React.FC<{
           </li>
           <li className={cls.point}>
             <IconCircleCheckFilled className={cls.included} />
-            {plan.deploy.max === Infinity ? 'Unlimited' : plan.deploy.max}{' '}
-            Deploy
+            {plan.deploy.max === Infinity ? (
+              'Unlimited deploy'
+            ) : (
+              <>{plan.deploy.max} Deploys /month</>
+            )}
           </li>
           {plan.features.map((feature, i) => {
             return (
@@ -250,7 +261,7 @@ const Usage: React.FC<{
         <div>
           <Flex column align="flex-end" gap="l">
             <div>
-              Plan: <strong>{currentPlan?.name}</strong>{' '}
+              Plan: <strong>{currentPlan?.name || 'Free'}</strong>{' '}
             </div>
             {sub?.cancelAt && (
               <Tag>
