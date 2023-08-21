@@ -1,4 +1,5 @@
 import type { ApiProject, ApiPerm, ApiUser } from '@specfy/models';
+import { IconSearch } from '@tabler/icons-react';
 import { useState, useEffect, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useDebounce } from 'react-use';
@@ -92,11 +93,15 @@ export const SettingsTeam: React.FC<{
           <Subdued>Manage your project&apos;s members.</Subdued>
         </div>
 
-        <Input
-          placeholder="Search or add user..."
-          className={cls.search}
-          onChange={(e) => setSearch(e.target.value)}
-        />
+        <div>
+          <Input
+            before={<IconSearch />}
+            seamless
+            placeholder="Search or add user..."
+            className={cls.search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+        </div>
       </div>
       {!canUpdate && (
         <Banner>Only the owner can invite new people to the team</Banner>

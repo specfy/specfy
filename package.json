@@ -18,7 +18,8 @@
     "api": "turbo dev --filter='!@specfy/app'",
     "app": "turbo dev --filter='@specfy/app'",
     "emails": "turbo dev --filter='@specfy/emails'",
-    "listen:stripe": "stripe listen --forward-to localhost:3000/0/stripe/webhooks"
+    "listen:stripe": "stripe listen --forward-to localhost:3000/0/stripe/webhooks",
+    "tf": "cd ./prod/terraform/ && ./run.sh"
   },
   "repository": {
     "type": "git",

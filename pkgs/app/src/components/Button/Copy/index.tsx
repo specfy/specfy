@@ -1,9 +1,13 @@
 import { IconCheck, IconCopy } from '@tabler/icons-react';
 import { useCallback, useState } from 'react';
 
+import type { ButtonProps } from '../../Form/Button';
 import { Button } from '../../Form/Button';
 
-export const CopyButton: React.FC<{ value: string }> = ({ value }) => {
+export const CopyButton: React.FC<{ value: string } & ButtonProps> = ({
+  value,
+  ...props
+}) => {
   const [copied, setCopied] = useState(false);
   const onClick = useCallback(async () => {
     let timeout: any;
@@ -23,7 +27,7 @@ export const CopyButton: React.FC<{ value: string }> = ({ value }) => {
   }, [value]);
 
   return (
-    <Button display="ghost" onClick={onClick}>
+    <Button display="ghost" onClick={onClick} {...props}>
       {copied ? <IconCheck /> : <IconCopy />}
     </Button>
   );
