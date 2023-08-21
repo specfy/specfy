@@ -504,9 +504,13 @@ export const Flow: React.FC<{
 export const FlowWrapper: React.FC<{
   children: React.ReactNode;
   style?: CSSProperties;
-}> = ({ children, style }) => {
+  columnMode?: boolean;
+}> = ({ children, style, columnMode }) => {
   return (
-    <div className={cls.container} style={style}>
+    <div
+      className={classNames(cls.container, columnMode && cls.columnMode)}
+      style={style}
+    >
       {children}
     </div>
   );

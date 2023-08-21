@@ -27,8 +27,10 @@
 .info {
   display: flex;
   gap: var(--spc);
+
   font-size: var(--font-s);
-  color: var(--text2)
+  color: var(--text2);
+  white-space: nowrap;
 }
 
 .list {

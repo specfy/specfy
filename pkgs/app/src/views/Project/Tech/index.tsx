@@ -108,17 +108,17 @@ export const Tech: React.FC<{
         <ComponentLine title="Services" comps={usedBy} params={params} />
       </Container.Left2Third>
       <Container.Right1Third>
-        <div>
+        <FlowWrapper columnMode>
           {flow && (
-            <FlowWrapper style={{ height: '350px' }}>
+            <>
               <Flow flow={flow} readonly />
               <Toolbar bottom>
                 <Toolbar.Fullscreen project={proj} />
                 <Toolbar.Zoom />
               </Toolbar>
-            </FlowWrapper>
+            </>
           )}
-        </div>
+        </FlowWrapper>
       </Container.Right1Third>
     </Container>
   );

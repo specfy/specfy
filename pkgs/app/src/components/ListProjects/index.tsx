@@ -86,7 +86,7 @@ export const ListProjects: React.FC<{ orgId: string }> = ({ orgId }) => {
             {!empty &&
               list.map((item) => {
                 return (
-                  <Flex gap="xl" key={item.id} className={cls.item}>
+                  <Flex gap="l" key={item.id} className={cls.item}>
                     <Link to={`/${item.orgId}/${item.slug}`} relative="path">
                       <AvatarAuto name={item.name} size="m" shape="square" />
                     </Link>

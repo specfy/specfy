@@ -3,7 +3,7 @@
   gap: var(--spc-3xl);
 
   width: 100%;
-  max-width: calc(var(--w-col) * 2);
+  max-width: calc(var(--w-col) * 2.2);
   padding: var(--spc-4xl) var(--spc-5xl);
 
   // margin: 0 auto; // this trigger a weird animation
@@ -42,6 +42,7 @@
 .left2third {
   width: 57%;
   min-width: var(--w-col);
+  max-width: var(--w-col);
   background-color: #fff;
 
   &.padded {
@@ -53,4 +54,22 @@
   width: calc(100% - 57%);
   background-color: var(--bg2);
   border-left: 1px solid var(--border2);
+}
+
+
+@media (width <=1650px) {
+  .left2third {
+    width: 50%;
+    min-width: 650px;
+  }
+
+  .right1third {
+    width: 50%;
+  }
+}
+
+@media (width >=1900px) {
+  .right1third {
+    width: 50%;
+  }
 }
