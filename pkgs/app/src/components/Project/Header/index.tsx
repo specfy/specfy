@@ -73,7 +73,10 @@ export const ProjectSwitcher: React.FC = () => {
             <Dropdown.Separator />
             <Dropdown.Group>
               <Dropdown.Item asChild>
-                <Link to="/project/new" className={cls.org}>
+                <Link
+                  to={`/${project.orgId}/_/project/new`}
+                  className={cls.org}
+                >
                   <IconPlus size="1em" />
                   Create project
                 </Link>

@@ -35,7 +35,7 @@ function find<T extends Allowed>(id: string): T | undefined {
 
 function cleanProject<T extends Allowed>(projectId: string): void {
   original.store = original.store.filter<T>((val): val is T => {
-    return 'projectId' in val ? val.projectId === projectId : true;
+    return 'projectId' in val ? val.projectId !== projectId : true;
   });
 }
 

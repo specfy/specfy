@@ -26,7 +26,7 @@ const nodeTypes: NodeTypes = {
 };
 
 let movingHandle: 'source' | 'target';
-let movingEdge: ComputedEdge;
+let movingEdge: ComputedEdge | undefined;
 
 export const Flow: React.FC<{
   flow: ComputedFlow;
@@ -358,7 +358,7 @@ export const Flow: React.FC<{
       console.error('Edge changed but no function was registered');
       return;
     }
-
+    movingEdge = undefined;
     // We change the target and sourceHandle
     onEdgesChange([
       {
@@ -395,6 +395,7 @@ export const Flow: React.FC<{
         conn.source === movingEdge.source && conn.sourceHandle!.startsWith('s')
       );
     }
+
     return (
       conn.target === movingEdge.target && conn.targetHandle!.startsWith('t')
     );
@@ -409,6 +410,7 @@ export const Flow: React.FC<{
     const exists = edges.find(
       (edge) => edge.target === conn.target && edge.source === conn.source
     );
+    movingEdge = undefined;
     if (exists) {
       // Adding an edge that already exists (e.g: same or different handle but same source / target)
       onEdgesChange([

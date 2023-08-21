@@ -1,8 +1,12 @@
+import { hDefHost, wDefHost } from './constants.js';
 import type { ComputedFlow, Layout, Tree } from './types.js';
 
-const paddingY = 20;
-const paddingX = 20;
-const paddingHost = 20;
+const paddingY = 30;
+const paddingX = 30;
+const paddingCompX = 100;
+const paddingHost = 30;
+const hostsPerRow = 2;
+const compsPerRow = 2;
 
 /**
  * Compute a nested tree representing Flow.nodes .
@@ -24,6 +28,7 @@ export function computeTree(
       id: node.id,
       parentId,
       childs: computeTree(nodes, node.id),
+      isHost: node.data.type === 'hosting',
     });
   }
 
@@ -55,12 +60,13 @@ export function computeTreeLayout(
 ): Layout {
   let y = 20;
   let w = 0;
-  const x = paddingHost;
+  let h = 0;
+  let x = paddingHost;
   const subs: Array<{ id: string; layout: Layout }> = [];
 
   // Compute aggregate (host) first
   for (const tree of trees) {
-    if (tree.childs.length <= 0) {
+    if (!tree.isHost) {
       continue;
     }
     subs.push({ id: tree.id, layout: computeTreeLayout(tree.childs, nodes) });
@@ -69,7 +75,18 @@ export function computeTreeLayout(
   const layout: Layout = { nodes: [], height: 0, width: 0, y: 0, x: 0 };
 
   // Place host first on the layout
-  for (const sub of subs) {
+  for (let index = 0; index < subs.length; index++) {
+    const sub = subs[index];
+    if (index > 0 && index % hostsPerRow === 0) {
+      // Go back to the start of the line
+      y = h;
+      x = paddingHost;
+    } else if (index > 0) {
+      // Add on the right of the previous element
+      const prev = layout.nodes[layout.nodes.length - 1];
+      x = prev.pos.x + prev.size.width + paddingX;
+    }
+
     layout.nodes.push(...sub.layout.nodes);
 
     const node = nodes.find((n) => n.id === sub.id)!;
@@ -81,13 +98,24 @@ export function computeTreeLayout(
 
     // increase the BB
     w = Math.max(w, x + sub.layout.width + paddingX);
-    y += sub.layout.height + paddingY;
+    h = Math.max(h, y + sub.layout.height + paddingY);
   }
 
   // Then place the components
-  for (const tree of trees) {
-    if (tree.childs.length > 0) {
+  for (let index = 0; index < trees.length; index++) {
+    const tree = trees[index];
+    if (tree.isHost) {
       continue;
+    }
+
+    if (index > 0 && index % compsPerRow === 0) {
+      // Go back to the start of the line
+      y = h;
+      x = paddingHost;
+    } else if (index > 0) {
+      // Add on the right of the previous element
+      const prev = layout.nodes[layout.nodes.length - 1];
+      x = prev.pos.x + prev.size.width + paddingCompX;
     }
 
     const node = nodes.find((n) => n.id === tree.id)!;
@@ -98,13 +126,13 @@ export function computeTreeLayout(
     });
 
     // increase the BB
-    y += node.data.originalSize.height + paddingY;
-    w = Math.max(w, x + node.data.originalSize.width + paddingX);
+    h = Math.max(h, y + node.data.originalSize.height + paddingY);
+    w = Math.max(w, x + node.data.originalSize.width + paddingCompX);
   }
 
   // Update the Bounding Box
-  layout.height = y;
-  layout.width = w;
+  layout.height = Math.max(hDefHost, h);
+  layout.width = Math.max(wDefHost, w);
 
   return layout;
 }

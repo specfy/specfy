@@ -20,6 +20,7 @@ export interface Tree {
   id: string;
   parentId: string | null;
   childs: Tree[];
+  isHost: boolean;
 }
 
 export type ComponentForFlow = Pick<

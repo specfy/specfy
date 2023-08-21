@@ -320,8 +320,8 @@ Flow:
   - Bug: Fix drop in host that do not place a the correct spot sometimes
   - Bug: Ungroup should not send the component somewhere else
   ✔ When connecting a Project we should update the Project edges @done(23-07-07 20:45)
-  - Bug: Enforce to not connect to the same component twice (currently error silently in console)
-  - Better auto layout algorithm
+  ✔ Bug: Enforce to not connect to the same component twice (currently error silently in console) @done(23-08-20 16:55)
+  ✔ Better auto layout algorithm @done(23-08-20 19:14)
 
 
 Deploy:

@@ -1,0 +1,386 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`layout > should compute a layout 1`] = `
+{
+  "height": 222,
+  "nodes": [
+    {
+      "id": "d",
+      "pos": {
+        "x": 30,
+        "y": 20,
+      },
+      "size": {
+        "height": 20,
+        "width": 100,
+      },
+    },
+    {
+      "id": "c",
+      "pos": {
+        "x": 30,
+        "y": 20,
+      },
+      "size": {
+        "height": 72,
+        "width": 230,
+      },
+    },
+    {
+      "id": "b",
+      "pos": {
+        "x": 30,
+        "y": 20,
+      },
+      "size": {
+        "height": 122,
+        "width": 290,
+      },
+    },
+    {
+      "id": "e",
+      "pos": {
+        "x": 420,
+        "y": 20,
+      },
+      "size": {
+        "height": 20,
+        "width": 100,
+      },
+    },
+    {
+      "id": "a",
+      "pos": {
+        "x": 30,
+        "y": 20,
+      },
+      "size": {
+        "height": 172,
+        "width": 620,
+      },
+    },
+    {
+      "id": "f",
+      "pos": {
+        "x": 750,
+        "y": 20,
+      },
+      "size": {
+        "height": 20,
+        "width": 100,
+      },
+    },
+  ],
+  "width": 950,
+  "x": 0,
+  "y": 0,
+}
+`;
+
+exports[`layout > should compute a tree 1`] = `
+[
+  {
+    "childs": [
+      {
+        "childs": [
+          {
+            "childs": [
+              {
+                "childs": [],
+                "id": "d",
+                "isHost": false,
+                "parentId": "c",
+              },
+            ],
+            "id": "c",
+            "isHost": true,
+            "parentId": "b",
+          },
+        ],
+        "id": "b",
+        "isHost": true,
+        "parentId": "a",
+      },
+      {
+        "childs": [],
+        "id": "e",
+        "isHost": false,
+        "parentId": "a",
+      },
+    ],
+    "id": "a",
+    "isHost": true,
+    "parentId": null,
+  },
+  {
+    "childs": [],
+    "id": "f",
+    "isHost": false,
+    "parentId": null,
+  },
+]
+`;
+
+exports[`layout > should output 3 components  1`] = `
+{
+  "height": 120,
+  "nodes": [
+    {
+      "id": "a",
+      "pos": {
+        "x": 30,
+        "y": 20,
+      },
+      "size": {
+        "height": 20,
+        "width": 100,
+      },
+    },
+    {
+      "id": "b",
+      "pos": {
+        "x": 230,
+        "y": 20,
+      },
+      "size": {
+        "height": 20,
+        "width": 100,
+      },
+    },
+    {
+      "id": "c",
+      "pos": {
+        "x": 30,
+        "y": 70,
+      },
+      "size": {
+        "height": 20,
+        "width": 100,
+      },
+    },
+  ],
+  "width": 430,
+  "x": 0,
+  "y": 0,
+}
+`;
+
+exports[`layout > should put 4 hosts in columns 1`] = `
+{
+  "height": 224,
+  "nodes": [
+    {
+      "id": "a",
+      "pos": {
+        "x": 30,
+        "y": 20,
+      },
+      "size": {
+        "height": 72,
+        "width": 140,
+      },
+    },
+    {
+      "id": "b",
+      "pos": {
+        "x": 200,
+        "y": 20,
+      },
+      "size": {
+        "height": 72,
+        "width": 140,
+      },
+    },
+    {
+      "id": "c",
+      "pos": {
+        "x": 30,
+        "y": 122,
+      },
+      "size": {
+        "height": 72,
+        "width": 140,
+      },
+    },
+    {
+      "id": "d",
+      "pos": {
+        "x": 200,
+        "y": 122,
+      },
+      "size": {
+        "height": 72,
+        "width": 140,
+      },
+    },
+  ],
+  "width": 370,
+  "x": 0,
+  "y": 0,
+}
+`;
+
+exports[`layout > should put component inside host 1`] = `
+{
+  "height": 172,
+  "nodes": [
+    {
+      "id": "c",
+      "pos": {
+        "x": 30,
+        "y": 20,
+      },
+      "size": {
+        "height": 20,
+        "width": 100,
+      },
+    },
+    {
+      "id": "b",
+      "pos": {
+        "x": 30,
+        "y": 20,
+      },
+      "size": {
+        "height": 72,
+        "width": 230,
+      },
+    },
+    {
+      "id": "d",
+      "pos": {
+        "x": 360,
+        "y": 20,
+      },
+      "size": {
+        "height": 20,
+        "width": 100,
+      },
+    },
+    {
+      "id": "a",
+      "pos": {
+        "x": 30,
+        "y": 20,
+      },
+      "size": {
+        "height": 122,
+        "width": 560,
+      },
+    },
+    {
+      "id": "f",
+      "pos": {
+        "x": 690,
+        "y": 20,
+      },
+      "size": {
+        "height": 20,
+        "width": 100,
+      },
+    },
+  ],
+  "width": 890,
+  "x": 0,
+  "y": 0,
+}
+`;
+
+exports[`layout > should put components in columns 1`] = `
+{
+  "height": 170,
+  "nodes": [
+    {
+      "id": "a",
+      "pos": {
+        "x": 30,
+        "y": 20,
+      },
+      "size": {
+        "height": 20,
+        "width": 100,
+      },
+    },
+    {
+      "id": "b",
+      "pos": {
+        "x": 230,
+        "y": 20,
+      },
+      "size": {
+        "height": 20,
+        "width": 100,
+      },
+    },
+    {
+      "id": "c",
+      "pos": {
+        "x": 30,
+        "y": 70,
+      },
+      "size": {
+        "height": 20,
+        "width": 100,
+      },
+    },
+    {
+      "id": "d",
+      "pos": {
+        "x": 230,
+        "y": 70,
+      },
+      "size": {
+        "height": 20,
+        "width": 100,
+      },
+    },
+    {
+      "id": "e",
+      "pos": {
+        "x": 30,
+        "y": 120,
+      },
+      "size": {
+        "height": 20,
+        "width": 100,
+      },
+    },
+  ],
+  "width": 430,
+  "x": 0,
+  "y": 0,
+}
+`;
+
+exports[`layout > should put host inside host 1`] = `
+{
+  "height": 172,
+  "nodes": [
+    {
+      "id": "b",
+      "pos": {
+        "x": 30,
+        "y": 20,
+      },
+      "size": {
+        "height": 72,
+        "width": 140,
+      },
+    },
+    {
+      "id": "a",
+      "pos": {
+        "x": 30,
+        "y": 20,
+      },
+      "size": {
+        "height": 122,
+        "width": 200,
+      },
+    },
+  ],
+  "width": 260,
+  "x": 0,
+  "y": 0,
+}
+`;
