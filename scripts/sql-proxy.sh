@@ -5,7 +5,7 @@ DIR="$(pwd)"
 
 PGSQL_CREDS_PATH=$DIR
 PGSQL_CREDS_FILENAME="personal-service-account.json"
-GCP_INSTANCE="specfy:us-central1:specfy"
+GCP_INSTANCE="specfy-prod2:us-central1:specfy-prod2"
 
 echo ""
 echo "----"

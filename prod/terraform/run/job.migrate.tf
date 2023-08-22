@@ -1,10 +1,11 @@
 resource "google_cloud_run_v2_job" "migrate" {
-  name         = "main"
+  name         = "migrate"
   location     = var.envs.region
   launch_stage = "BETA"
 
   template {
     parallelism = 1
+    task_count = 1
     template {
       max_retries = 0
 

@@ -19,7 +19,7 @@ provider "google" {
 }
 
 data "google_billing_account" "specfy" {
-  display_name = "Specfy"
+  display_name = var.envs.billingAccount
   open         = true
 }
 
@@ -92,6 +92,8 @@ module "run" {
 
   envs       = var.envs
   sql        = module.sql.sql
-  cloudbuild = module.cloudbuild.cloudbuild
+  cloudbuild = {
+    mainImage = module.cloudbuild.cloudbuild.mainImage
+  }
   docker_image_version = var.docker_image_version
 }

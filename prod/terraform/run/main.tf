@@ -48,6 +48,7 @@ resource "google_cloud_run_v2_service" "main" {
       max_instance_count = 2
     }
 
+
     containers {
       image = var.cloudbuild.mainImage
       command = [
@@ -138,6 +139,14 @@ resource "google_cloud_run_v2_service" "main" {
       volume_mounts {
         mount_path = "/cloudsql"
         name       = "cloudsql"
+      }
+      resources {
+        limits = {
+          memory = "512Mi"
+          cpu = "1000m"
+        }
+        cpu_idle = false
+        startup_cpu_boost = true
       }
     }
 

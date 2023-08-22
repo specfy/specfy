@@ -3,6 +3,10 @@ variable "envs" {
     env     = string
     project = string
     region  = string
+    billingAccount = string
+    dns = object({
+      enabled = bool
+    })
   })
 }
 

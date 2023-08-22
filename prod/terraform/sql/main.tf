@@ -29,10 +29,14 @@ resource "google_sql_database_instance" "specfy" {
   }
 }
 
+data "google_secret_manager_secret_version" "DB_PASSWORD" {
+  secret   = "DB_PASSWORD"
+}
+
 resource "google_sql_user" "main" {
   instance = google_sql_database_instance.specfy.name
   type     = "BUILT_IN"
 
   name     = "main"
-  password = "foobarfoobar" // TODO: use vault
+  password = data.google_secret_manager_secret_version.DB_PASSWORD.secret_data
 }
