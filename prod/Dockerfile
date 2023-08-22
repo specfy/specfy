@@ -1,7 +1,7 @@
 # ------------------
 # package.json cache
 # ------------------
-FROM node:18.16.1-bullseye-slim as deps
+FROM node:18.17.1-bullseye-slim as deps
 
 RUN apt update && apt-get install -y bash jq
 
@@ -25,7 +25,7 @@ RUN ./clean_package_json.sh './**/*/package.json'
 # ------------------
 # New tmp image
 # ------------------
-FROM node:18.16.1-bullseye-slim AS tmp
+FROM node:18.17.1-bullseye-slim AS tmp
 
 # Setup the app WORKDIR
 WORKDIR /app/tmp
@@ -62,7 +62,7 @@ RUN true \
 
 # Clean dev dependencies
 RUN true \
-  && npm prune --omit=dev --omit=peer
+  && npm prune --omit=dev --omit=peer --omit=optional
 
 # RUN du -h -d1 node_modules/ | sort -h
 # RUN du -h -d1 pkgs/ | sort -h
@@ -71,7 +71,7 @@ RUN true \
 # ---- Web ----
 # Resulting new, minimal image
 # This image must have the minimum amount of layers
-FROM node:18.16.1-bullseye-slim as web
+FROM node:18.17.1-bullseye-slim as web
 
 ENV PORT=8080
 ENV NODE_ENV=production

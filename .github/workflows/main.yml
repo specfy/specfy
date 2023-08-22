@@ -7,14 +7,14 @@ on:
 
 jobs:
   ci:
-    container: node:18.16.1
+    container: node:18.17.1
     runs-on: ubuntu-latest
     timeout-minutes: 15
     services:
       postgres:
         env:
           POSTGRES_PASSWORD: postgres
-        image: postgres:15.3-alpine
+        image: postgres:15.4-alpine
         options: >-
           --health-cmd pg_isready
           --health-interval 10s

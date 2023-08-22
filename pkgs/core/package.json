@@ -22,7 +22,7 @@
     "pino": "8.15.0",
     "pino-pretty": "10.2.0",
     "slugify": "1.6.5",
-    "zod": "3.21.4"
+    "zod": "3.22.2"
   },
   "devDependencies": {
     "typescript": "5.1.6"
