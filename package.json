@@ -5,10 +5,12 @@
   "author": "Samuel Bodin",
   "type": "module",
   "scripts": {
+    "test": "turbo run test",
     "build": "turbo run build",
     "dev": "turbo run dev",
     "test:ci": "turbo run test:ci",
     "db:migrate": "turbo run db:migrate",
+    "db:seed": "turbo run db:seed",
     "lint": "npm run lint:code && npm run lint:scss",
     "lint:code": "eslint --ext .js,.ts,.tsx .",
     "lint:scss": "stylelint --config .stylelintrc.json  **/*.scss",
@@ -19,7 +21,8 @@
     "app": "turbo dev --filter='@specfy/app'",
     "emails": "turbo dev --filter='@specfy/emails'",
     "listen:stripe": "stripe listen --forward-to localhost:3000/0/stripe/webhooks",
-    "tf": "cd ./prod/terraform/ && ./run.sh"
+    "tf": "cd ./prod/terraform/ && ./run.sh",
+    "clean": "rm -rf pkgs/*/{dist,build,.turbo,tsconfig.tsbuildinfo,coverage} && rm -rf node_modules/.cache"
   },
   "repository": {
     "type": "git",

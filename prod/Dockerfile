@@ -62,7 +62,7 @@ RUN true \
 
 # Clean dev dependencies
 RUN true \
-  && npm prune --omit=dev --omit=peer
+  && npm prune --omit=dev --omit=peer --omit=optional
 
 # RUN du -h -d1 node_modules/ | sort -h
 # RUN du -h -d1 pkgs/ | sort -h
