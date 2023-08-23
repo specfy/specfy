@@ -5,7 +5,7 @@ resource "google_cloud_run_v2_job" "migrate" {
 
   template {
     parallelism = 1
-    task_count = 1
+    task_count  = 1
     template {
       max_retries = 0
 

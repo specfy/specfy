@@ -38,7 +38,7 @@ module "google" {
     google_project.specfy
   ]
 
-  envs = var.envs
+  envs                 = var.envs
   docker_image_version = var.docker_image_version
 }
 
@@ -56,7 +56,7 @@ module "cloudbuild" {
     module.secrets
   ]
 
-  envs = var.envs
+  envs                 = var.envs
   docker_image_version = var.docker_image_version
 }
 
@@ -67,7 +67,7 @@ module "network" {
     module.google
   ]
 
-  envs = var.envs
+  envs                 = var.envs
   docker_image_version = var.docker_image_version
 }
 
@@ -78,8 +78,8 @@ module "sql" {
     module.network
   ]
 
-  envs    = var.envs
-  network = module.network.network
+  envs                 = var.envs
+  network              = module.network.network
   docker_image_version = var.docker_image_version
 }
 
@@ -90,8 +90,8 @@ module "run" {
     module.sql
   ]
 
-  envs       = var.envs
-  sql        = module.sql.sql
+  envs = var.envs
+  sql  = module.sql.sql
   cloudbuild = {
     mainImage = module.cloudbuild.cloudbuild.mainImage
   }

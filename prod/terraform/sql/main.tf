@@ -26,11 +26,61 @@ resource "google_sql_database_instance" "specfy" {
       day  = 1
       hour = 6
     }
+
+    backup_configuration {
+      enabled    = true
+      start_time = "08:00"
+      location   = "us"
+      backup_retention_settings {
+        retained_backups = 10
+      }
+    }
+
+    database_flags {
+      name  = "max_connections"
+      value = "100"
+    }
+    database_flags {
+      name  = "shared_buffers"
+      value = "28000"
+    }
+    database_flags {
+      name  = "maintenance_work_mem"
+      value = "62500"
+    }
+    database_flags {
+      name  = "checkpoint_completion_target"
+      value = "0.9"
+    }
+    database_flags {
+      name  = "wal_buffers"
+      value = "1000"
+    }
+    database_flags {
+      name  = "default_statistics_target"
+      value = "100"
+    }
+    database_flags {
+      name  = "random_page_cost"
+      value = "1.1"
+    }
+    database_flags {
+      name  = "work_mem"
+      value = "6553"
+    }
+    database_flags {
+      name  = "huge_pages"
+      value = "off"
+    }
+    database_flags {
+      name  = "min_wal_size"
+      value = "500"
+    }
   }
 }
 
 data "google_secret_manager_secret_version" "DB_PASSWORD" {
-  secret   = "DB_PASSWORD"
+  secret = "DB_PASSWORD"
 }
 
 resource "google_sql_user" "main" {

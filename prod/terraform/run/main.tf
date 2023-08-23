@@ -1,38 +1,38 @@
 data "google_secret_manager_secret_version" "PASSWORD_SALT" {
-  secret   = "PASSWORD_SALT"
+  secret = "PASSWORD_SALT"
 }
 data "google_secret_manager_secret_version" "COOKIE_SECRET" {
-  secret   = "COOKIE_SECRET"
+  secret = "COOKIE_SECRET"
 }
 data "google_secret_manager_secret_version" "GITHUB_CLIENT_APPID" {
-  secret   = "GITHUB_CLIENT_APPID"
+  secret = "GITHUB_CLIENT_APPID"
 }
 data "google_secret_manager_secret_version" "GITHUB_CLIENT_ID" {
-  secret   = "GITHUB_CLIENT_ID"
+  secret = "GITHUB_CLIENT_ID"
 }
 data "google_secret_manager_secret_version" "GITHUB_CLIENT_SECRET" {
-  secret   = "GITHUB_CLIENT_SECRET"
+  secret = "GITHUB_CLIENT_SECRET"
 }
 data "google_secret_manager_secret_version" "GITHUB_CLIENT_PKEY" {
-  secret   = "GITHUB_CLIENT_PKEY"
+  secret = "GITHUB_CLIENT_PKEY"
 }
 data "google_secret_manager_secret_version" "GITHUB_WEBHOOKS_SECRET" {
-  secret   = "GITHUB_WEBHOOKS_SECRET"
+  secret = "GITHUB_WEBHOOKS_SECRET"
 }
 data "google_secret_manager_secret_version" "RESEND_KEY" {
-  secret   = "RESEND_KEY"
+  secret = "RESEND_KEY"
 }
 data "google_secret_manager_secret_version" "STRIPE_KEY" {
-  secret   = "STRIPE_KEY"
+  secret = "STRIPE_KEY"
 }
 data "google_secret_manager_secret_version" "STRIPE_WEBHOOKS_SECRET" {
-  secret   = "STRIPE_WEBHOOKS_SECRET"
+  secret = "STRIPE_WEBHOOKS_SECRET"
 }
 data "google_secret_manager_secret_version" "JWT_SECRET" {
-  secret   = "JWT_SECRET"
+  secret = "JWT_SECRET"
 }
 data "google_secret_manager_secret_version" "DD_API_KEY" {
-  secret   = "DD_API_KEY"
+  secret = "DD_API_KEY"
 }
 
 
@@ -117,11 +117,11 @@ resource "google_cloud_run_v2_service" "main" {
 
 
       env {
-        name = "APP_HOSTNAME"
+        name  = "APP_HOSTNAME"
         value = "https://app.specfy.io"
       }
       env {
-        name = "API_HOSTNAME"
+        name  = "API_HOSTNAME"
         value = "https://api.specfy.io"
       }
 
@@ -143,9 +143,9 @@ resource "google_cloud_run_v2_service" "main" {
       resources {
         limits = {
           memory = "512Mi"
-          cpu = "1000m"
+          cpu    = "1000m"
         }
-        cpu_idle = false
+        cpu_idle          = false
         startup_cpu_boost = true
       }
     }
