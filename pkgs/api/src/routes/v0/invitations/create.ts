@@ -95,8 +95,6 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         await sendInvitation(
           resend,
           {
-            from: 'Specfy <support@app.specfy.io>',
-            subject: `Join ${org.name} on Specfy`,
             to: body.email,
           },
           {

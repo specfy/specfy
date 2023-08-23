@@ -12,22 +12,26 @@ export function getResend(key: string) {
 
 export async function sendWelcome(
   resend: Resend,
-  data: Omit<CreateEmailOptions, 'text'>,
+  data: Omit<CreateEmailOptions, 'text' | 'from' | 'subject'>,
   props: WelcomeProps
 ) {
   await resend.sendEmail({
     ...data,
+    from: 'Specfy <support@app.specfy.io>',
+    subject: 'Welcome to Specfy',
     react: <Welcome {...props} />,
   });
 }
 
 export async function sendInvitation(
   resend: Resend,
-  data: Omit<CreateEmailOptions, 'text'>,
+  data: Omit<CreateEmailOptions, 'text' | 'from' | 'subject'>,
   props: InvitationProps
 ) {
   await resend.sendEmail({
     ...data,
+    from: 'Specfy <support@app.specfy.io>',
+    subject: `Join ${props.org.name} on Specfy`,
     react: <Invitation {...props} />,
   });
 }

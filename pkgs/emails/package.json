@@ -9,6 +9,7 @@
   ],
   "scripts": {
     "build": "tsup",
+    "build:watch": "tsup --watch",
     "__dev": "email dev -p 3001",
     "export": "email export"
   },

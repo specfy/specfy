@@ -1,9 +1,9 @@
 import type { Authenticator } from '@fastify/passport';
-import { nanoid, l, slugify, envs } from '@specfy/core';
+import { nanoid, l, envs } from '@specfy/core';
 import type { Users } from '@specfy/db';
 import { prisma } from '@specfy/db';
 import { sendWelcome } from '@specfy/emails';
-import { createOrg, createUserActivity } from '@specfy/models';
+import { createUserActivity } from '@specfy/models';
 import { Strategy as GithubStrategy } from 'passport-github2';
 
 import { resend } from '../../common/emails.js';
@@ -102,11 +102,6 @@ export function registerGithub(passport: Authenticator) {
           orgId: null,
           tx,
         });
-
-        await createOrg(tx, user, {
-          id: slugify(`${profile.displayName} ${nanoid().substring(0, 5)}`),
-          name: `${profile.displayName || profile.username}`,
-        });
       });
 
       if (!process.env.VITEST) {
@@ -114,8 +109,6 @@ export function registerGithub(passport: Authenticator) {
         await sendWelcome(
           resend,
           {
-            from: 'Specfy <support@app.specfy.io>',
-            subject: 'Welcome to Specfy',
             to: email,
           },
           { email, name: displayName }
