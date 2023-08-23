@@ -32,7 +32,7 @@ import {
 
 // eslint-disable-next-line import/extensions
 import '@specfy/stack-analyser/dist/rules/index.js';
-rules.loadAllRules();
+rules.loadAll();
 
 export async function sync({
   root,

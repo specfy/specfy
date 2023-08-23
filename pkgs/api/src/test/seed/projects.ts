@@ -90,7 +90,7 @@ export async function seedProjects(
           },
           links: [
             { title: 'Github', url: 'https://github.com/specfy' },
-            { title: 'Slack', url: 'https://slack.com/foobar' },
+            { title: 'Discord', url: 'https://discord.gg/G4wunEQmZc' },
           ],
           config: getDefaultConfig(),
         },

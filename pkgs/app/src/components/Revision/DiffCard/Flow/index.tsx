@@ -27,6 +27,7 @@ const fieldsNode: Array<keyof ComputedNode> = [
   'position',
   'width',
   'height',
+  'parentNode',
 ];
 const fieldsEdge: Array<keyof ComputedEdge> = [
   'data',
