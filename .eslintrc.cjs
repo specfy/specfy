@@ -229,6 +229,7 @@ module.exports = {
       files: ['pkgs/app/**/*.tsx', 'pkgs/app/**/*.ts'],
       rules: {
         'require-extensions/require-extensions': 'off',
+        'import/no-internal-modules': ['off'],
       },
     },
   ],

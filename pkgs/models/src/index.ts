@@ -2,6 +2,7 @@ export * from './activities/index.js';
 export * from './billing/index.js';
 export * from './blobs/index.js';
 export * from './components/index.js';
+export * from './demo/index.js';
 export * from './documents/index.js';
 export * from './feedbacks/index.js';
 export * from './flows/index.js';

@@ -5,6 +5,7 @@ import Skeleton from 'react-loading-skeleton';
 import { useLocalStorage } from 'react-use';
 
 import { useListProjects, useGetFlow } from '../../../api';
+import { i18n } from '../../../common/i18n';
 import { titleSuffix } from '../../../common/string';
 import { Card } from '../../../components/Card';
 import { Container } from '../../../components/Container';
@@ -32,8 +33,15 @@ export const OrgOverview: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
     setFlow(resFlow.data.data.flow);
   }, [resFlow]);
 
+  if (res.error) {
+    return <div>{i18n.criticalErrorOccurred}</div>;
+  }
   if (res.isLoading) {
-    return null;
+    return (
+      <div style={{ width: '300px' }}>
+        <Skeleton count={3} />
+      </div>
+    );
   }
 
   return (

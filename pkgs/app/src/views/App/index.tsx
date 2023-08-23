@@ -18,6 +18,7 @@ import { Account } from '../Account';
 import { Homepage } from '../Homepage';
 import { Invite } from '../Invite';
 import { Login } from '../Login';
+import { Onboarding } from '../Onboarding';
 import { Org } from '../Org';
 import { OrgCreate } from '../Org/Create';
 import { Project } from '../Project';
@@ -38,6 +39,7 @@ const App: React.FC = () => {
                     <Route path="/login" element={<Login />} />
                     <Route element={<AuthLayout></AuthLayout>}>
                       <Route path="/" element={<Homepage />} />
+                      <Route path="/onboarding" element={<Onboarding />} />
 
                       <Route path="/invite" element={<Invite />} />
                       <Route path="/account" element={<Account />} />

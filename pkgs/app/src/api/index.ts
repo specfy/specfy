@@ -3,6 +3,7 @@ export * from './auth';
 export * from './blobs';
 export * from './comments';
 export * from './components';
+export * from './demo';
 export * from './documents';
 export * from './feedbacks';
 export * from './flows';

@@ -3,6 +3,7 @@ import type { FastifyPluginAsync } from 'fastify';
 import activities from './v0/activities/index.js';
 import auth from './v0/auth/index.js';
 import components from './v0/components/index.js';
+import demo from './v0/demo/index.js';
 import documents from './v0/documents/index.js';
 import feedbacks from './v0/feedbacks/index.js';
 import flows from './v0/flows/index.js';
@@ -23,8 +24,8 @@ import users from './v0/users/index.js';
 export const routes: FastifyPluginAsync = async (f) => {
   await f.register(activities, { prefix: '/0' });
   await f.register(auth, { prefix: '/0' });
-  await f.register(stripe, { prefix: '/0' });
   await f.register(components, { prefix: '/0' });
+  await f.register(demo, { prefix: '/0' });
   await f.register(documents, { prefix: '/0' });
   await f.register(feedbacks, { prefix: '/0' });
   await f.register(flows, { prefix: '/0' });
@@ -38,6 +39,7 @@ export const routes: FastifyPluginAsync = async (f) => {
   await f.register(policies, { prefix: '/0' });
   await f.register(projects, { prefix: '/0' });
   await f.register(revisions, { prefix: '/0' });
+  await f.register(stripe, { prefix: '/0' });
   await f.register(users, { prefix: '/0' });
 
   await f.register(root, { prefix: '/0' });

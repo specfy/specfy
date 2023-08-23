@@ -1,0 +1,29 @@
+.header {
+  position: relative;
+  padding: var(--spc-2xl);
+}
+
+.logo {
+  height: 24px;
+}
+
+.beta {
+  position: absolute;
+  top: 34px;
+  right: 88px;
+  font-size: var(--font-xs);
+}
+
+.userDropdown {
+  width: 250px;
+  padding: var(--spc-xl) var(--spc-2xl);
+  line-height: var(--lh-s);
+  ;
+
+  strong {
+    display: block;
+    font-size: var(--font-m);
+    font-weight: 600;
+    line-height: var(--lh-m);
+  }
+}

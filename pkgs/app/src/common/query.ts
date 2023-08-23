@@ -9,7 +9,11 @@ export const qcli = new QueryClient({
       refetchOnWindowFocus: false,
       refetchOnMount: true,
       staleTime: 60 * 1000 * 5,
-      retry: false,
+      retry: 3,
+      retryDelay: (attemptIndex) => {
+        console.log(attemptIndex);
+        return Math.min(2000 * 2 ** attemptIndex, 30000);
+      },
     },
   },
 });

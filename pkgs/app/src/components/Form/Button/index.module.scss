@@ -112,8 +112,9 @@
   }
 
   &.l {
+    gap: var(--spc-l);
     height: var(--h-l);
-    padding: var(--spc-m) var(--spc-l);
+    padding: var(--spc-m) var(--spc-l)
   }
 
   &:disabled {

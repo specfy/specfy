@@ -10,17 +10,6 @@
   }
 }
 
-.logo {
-  height: 24px;
-}
-
-.beta {
-  position: absolute;
-  top: 34px;
-  right: 88px;
-  font-size: var(--font-xs);
-}
-
 .sidebar {
   z-index: 100;
 
@@ -60,27 +49,8 @@
   width: 250px;
   height: 100vh;
 
-  .header {
-    position: relative;
-    padding: var(--spc-2xl);
-  }
-
   .content {
     overflow: scroll;
-  }
-}
-
-.userDropdown {
-  width: 250px;
-  padding: var(--spc-xl) var(--spc-2xl);
-  line-height: var(--lh-s);
-  ;
-
-  strong {
-    display: block;
-    font-size: var(--font-m);
-    font-weight: 600;
-    line-height: var(--lh-m);
   }
 }
 

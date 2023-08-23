@@ -791,7 +791,7 @@ export async function seedComponents(
         tx,
       });
 
-      // --- Others to create some edes in Org graph
+      // --- Component in others Projects to create edges in Org graph
       const display = getBlobComponent(o1, pDash).display;
       // Dashboard
       const p01 = await createComponent({
