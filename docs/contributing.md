@@ -1,6 +1,16 @@
 # Contributing
 
+## Installation
+
 Follow the **[installation](./installation.md)** procedure.
+
+## Continuous Build
+
+```sh
+npm run build:watch
+npm run api
+npm run app
+```
 
 ## Lint
 

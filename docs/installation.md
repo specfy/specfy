@@ -13,19 +13,19 @@ Optional:
 
 ## Setup
 
-1. Clone the repo
+01. Clone the repo
 
    ```sh
    git clone https://github.com/specfy/specfy.git
    ```
 
-2. Navigate to the project folder
+02. Navigate to the project folder
 
    ```sh
    cd specfy
    ```
 
-3. Install the required packages using pnpm.
+03. Install the required packages using pnpm.
 
    ```sh
    nvm use
@@ -33,13 +33,13 @@ Optional:
    npm install -g turbo
    ```
 
-4. Create your `.env` files
+04. Create your `.env` files
 
    ```sh
    cp .env.example .env
    ```
 
-5. Open the root `.env` file:
+05. Open the root `.env` file:
 
    ```sh
    code /.env
@@ -47,28 +47,34 @@ Optional:
 
    Feel free to update `COOKIE_SECRET` and `PASSWORD_SALT`.
 
-6. Start Docker. This starts the required services like Postgres.
+06. Start Docker. This starts the required services like Postgres.
 
    ```sh
    docker compose up -d
    ```
 
-7. Migrate and seed the database
+07. Migrate and seed the database
 
    ```sh
    turbo run migrate
    turbo run seed
    ```
 
-8. Launch the API
+08. Build
+
+   ```sh
+   npm run build
+   ```
+
+09. Launch the API
 
    ```sh
    npm run api
    ```
 
-    Go to [http://localhost:3000](http://localhost:3000)
+   Go to [http://localhost:3000](http://localhost:3000)
 
-9. Launch the App
+10. Launch the App
 
    ```sh
    npm run app
@@ -76,10 +82,12 @@ Optional:
 
    Go to [http://localhost:5173](http://localhost:5173)
 
-10. Optional: Launch the mail builder
+11. Optional: Launch the mail builder
 
    ```sh
    npm run emails
    ```
 
    Go to [http://localhost:3001](http://localhost:3001)
+
+12. Done.
