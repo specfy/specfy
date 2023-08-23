@@ -1,8 +1,8 @@
-import * as Popover from '@radix-ui/react-popover';
 import type { NodeData } from '@specfy/models';
 import { useState } from 'react';
 
 import { ComponentIcon } from '../../Component/Icon';
+import * as Popover from '../../Popover';
 import type { TechSearchItem } from '../../StackSearch/TechSearch';
 import { TechSearch } from '../../StackSearch/TechSearch';
 import type { OnNodesChangeSuper } from '../helpers';
@@ -27,18 +27,15 @@ export const TechPopover: React.FC<{
   };
 
   return (
-    <Popover.Root onOpenChange={onOpenChange} open={open}>
+    <Popover.Popover onOpenChange={onOpenChange} open={open}>
       <Popover.Trigger asChild>
         <button className={cls.iconEdit}>
           <ComponentIcon data={data} large noEmpty />
         </button>
       </Popover.Trigger>
-      <Popover.Portal>
-        <Popover.Content className="rx_popoverContent" sideOffset={5}>
-          <TechSearch selected={techId} onPick={onTechChange} />
-          <Popover.Arrow className="rx_popoverArrow" />
-        </Popover.Content>
-      </Popover.Portal>
-    </Popover.Root>
+      <Popover.Content sideOffset={5}>
+        <TechSearch selected={techId} onPick={onTechChange} />
+      </Popover.Content>
+    </Popover.Popover>
   );
 };

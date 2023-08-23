@@ -1,5 +1,4 @@
 import { SiGithub } from '@icons-pack/react-simple-icons';
-import * as Popover from '@radix-ui/react-popover';
 import type { ApiGithubRepo } from '@specfy/models';
 import { IconLock, IconSelector } from '@tabler/icons-react';
 import classNames from 'classnames';
@@ -7,6 +6,7 @@ import { forwardRef, useEffect, useRef, useState } from 'react';
 
 import { useGetGithubRepos } from '../../../api';
 import { Input } from '../../Form/Input';
+import * as Popover from '../../Popover';
 
 import cls from './index.module.scss';
 
@@ -107,7 +107,7 @@ export const GithubSearch = forwardRef<
 
   return (
     <div>
-      <Popover.Root open={open} onOpenChange={setOpen}>
+      <Popover.Popover open={open} onOpenChange={setOpen}>
         <Popover.Trigger asChild>
           <button ref={ref} className={cls.select}>
             {pick && (
@@ -124,38 +124,32 @@ export const GithubSearch = forwardRef<
             {!pick && 'Select repository...'} <IconSelector />
           </button>
         </Popover.Trigger>
-        <Popover.Portal>
-          <Popover.Content
-            className={classNames('rx_popoverContent', cls.content)}
-            align="start"
-            sideOffset={10}
-          >
-            <Input
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              onKeyDown={handleKeyPress}
-              className={cls.input}
-              autoFocus
-              placeholder={!installationId ? 'Type Project name' : 'Search...'}
-            />
-            <div ref={refList}>
-              {list.map((repo, i) => {
-                return (
-                  <div
-                    key={repo.id}
-                    role="listitem"
-                    tabIndex={0}
-                    onClick={() => onClick(repo)}
-                    className={classNames(cls.row, focus === i && cls.focused)}
-                  >
-                    {repo.name} {repo.private && <IconLock />}
-                  </div>
-                );
-              })}
-            </div>
-          </Popover.Content>
-        </Popover.Portal>
-      </Popover.Root>
+        <Popover.Content className={cls.content} align="start" sideOffset={10}>
+          <Input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            onKeyDown={handleKeyPress}
+            className={cls.input}
+            autoFocus
+            placeholder={!installationId ? 'Type Project name' : 'Search...'}
+          />
+          <div ref={refList}>
+            {list.map((repo, i) => {
+              return (
+                <div
+                  key={repo.id}
+                  role="listitem"
+                  tabIndex={0}
+                  onClick={() => onClick(repo)}
+                  className={classNames(cls.row, focus === i && cls.focused)}
+                >
+                  {repo.name} {repo.private && <IconLock />}
+                </div>
+              );
+            })}
+          </div>
+        </Popover.Content>
+      </Popover.Popover>
     </div>
   );
 });

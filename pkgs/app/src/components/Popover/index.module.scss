@@ -1,4 +1,4 @@
-.rx_popoverContent {
+.content {
   will-change: transform, opacity;
 
   z-index: 1000;
@@ -34,11 +34,11 @@
 }
 
 
-.rx_popoverArrow {
+.arrow {
   fill: white;
 }
 
-.rx_popoverClose {
+.close {
   position: absolute;
   top: var(--spc);
   right: var(--spc);
