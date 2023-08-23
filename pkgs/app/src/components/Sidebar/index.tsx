@@ -15,6 +15,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { useToast } from '../../hooks/useToast';
 import { AvatarAuto } from '../AvatarAuto';
 import * as Dropdown from '../Dropdown';
+import { Feedback } from '../Feedback';
 import { Flex } from '../Flex';
 import { Button } from '../Form/Button';
 import { Logo } from '../Logo';
@@ -117,6 +118,9 @@ export const Sidebar: React.FC<{
             </Flex>
           </header>
           <div className={cls.content}>{children}</div>
+        </div>
+        <div className={cls.bottom}>
+          <Feedback />
         </div>
       </div>
     </div>

@@ -4,6 +4,7 @@ export * from './blobs';
 export * from './comments';
 export * from './components';
 export * from './documents';
+export * from './feedbacks';
 export * from './flows';
 export * from './github';
 export * from './invitations';

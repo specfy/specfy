@@ -55,6 +55,7 @@ import type {
   DeleteMe,
   GetMe,
   PutMe,
+  PostFeedback,
 } from '@specfy/models';
 
 import type { PostAuthLocal, PostLogout } from './auth.js';
@@ -79,6 +80,8 @@ export interface API {
 
   '/0/documents': { GET: ListDocuments };
   [key: `/0/documents/${string}`]: { GET: GetDocument };
+
+  '/0/feedbacks': { POST: PostFeedback };
 
   [key: `/0/flows/${string}`]: { GET: GetFlow; PATCH: PatchFlow };
 

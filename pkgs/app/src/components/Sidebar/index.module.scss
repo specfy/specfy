@@ -33,6 +33,11 @@
 
   transition: transform 0.25s var(--anim-smooth), width 0.25s var(--anim-smooth);
 
+  border-right: 1px solid var(--border2);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
   &.collapsed {
     &.sidebar {
       overflow: hidden;
@@ -56,8 +61,6 @@
 
   width: 250px;
   height: 100vh;
-
-  border-right: 1px solid var(--border2);
 
   .header {
     position: relative;
@@ -100,4 +103,8 @@
   &:hover {
     opacity: 1;
   }
+}
+
+.bottom {
+  padding: var(--spc-l)
 }

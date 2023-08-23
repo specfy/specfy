@@ -161,6 +161,15 @@ model Documents {
   @@index([orgId, projectId], map: "idx_document_orgid_projectid")
 }
 
+model Feedbacks {
+  id        String   @id @db.VarChar(15)
+  userId    String   @db.VarChar(15)
+  orgId     String?  @db.VarChar(36)
+  feedback  String   @db.VarChar
+  referer   String   @db.VarChar(2000)
+  createdAt DateTime @default(now()) @db.Timestamp(3)
+}
+
 model Flows {
   id        String   @id @db.VarChar(15)
   orgId     String   @db.VarChar(36)
