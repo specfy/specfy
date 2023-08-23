@@ -96,29 +96,30 @@ type OptionData =
 // A better alternative would be to replace all callbacks by an EventBus and apply modification outside the components
 let afterRender: string | null = null;
 
+export const defaultFilterSelect: ComponentType[] = [
+  'app',
+  'ci',
+  'db',
+  'messaging',
+  'network',
+  'project',
+  'saas',
+  'storage',
+  'service',
+];
 export const ComponentSelect: React.FC<{
   values: ApiComponent[];
   createdAs: 'hosting' | 'service';
   filter?: ComponentType[];
   current?: ApiComponent;
   multiple?: false;
-  onChange: (values: string[] | string) => void;
+  onChange: (values: string[]) => void;
 }> = ({
   onChange,
   values,
   current,
   multiple,
-  filter = [
-    'app',
-    'ci',
-    'db',
-    'messaging',
-    'network',
-    'project',
-    'saas',
-    'storage',
-    'service',
-  ],
+  filter = defaultFilterSelect,
   createdAs,
 }) => {
   const storeComponents = useComponentsStore();

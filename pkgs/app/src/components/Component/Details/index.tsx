@@ -6,7 +6,11 @@ import { getAllChilds, positionEdge } from '../../../common/components';
 import { useComponentsStore } from '../../../common/store';
 import { useEdit } from '../../../hooks/useEdit';
 import type { RouteComponent } from '../../../types/routes';
-import { ComponentSelect, LanguageSelect } from '../../StackSearch';
+import {
+  ComponentSelect,
+  LanguageSelect,
+  defaultFilterSelect,
+} from '../../StackSearch';
 import { ComponentLine, ComponentLineTech } from '../Line';
 
 import cls from './index.module.scss';
@@ -24,7 +28,6 @@ export const ComponentDetails: React.FC<{
 }> = ({ params, component }) => {
   // TODO: Special case for project !
   // Components
-  const [inComp, setInComp] = useState<ApiComponent>();
   const [hosts, setHosts] = useState<ApiComponent[]>([]);
   const [contains, setContains] = useState<ApiComponent[]>([]);
   const [read, setRead] = useState<ApiComponent[]>([]);
@@ -35,7 +38,7 @@ export const ComponentDetails: React.FC<{
   const [receiveAnswer, setReceiveAnswer] = useState<ApiComponent[]>([]);
   const is = useMemo<IsType>(() => {
     return {
-      component: component.type === 'service',
+      component: component.type !== 'hosting' && component.type !== 'project',
       hosting: component.type === 'hosting',
       project: component.type === 'project',
     };
@@ -77,11 +80,6 @@ export const ComponentDetails: React.FC<{
         }
         l = list.get(l.inComponent)!;
       }
-    }
-    if (_in && _in.type !== 'hosting') {
-      setInComp(_in);
-    } else {
-      setInComp(undefined);
     }
 
     // Find contains
@@ -253,41 +251,32 @@ export const ComponentDetails: React.FC<{
     storeComponents.updateField(add.id, 'edges', tmp);
   };
 
-  const handleInComponent = (values: string[] | string) => {
-    if (typeof values === 'string') {
-      const childs = getAllChilds(
-        Object.values(storeComponents.components),
-        component.id
-      );
-      for (const child of childs) {
-        if (child.inComponent === component.id) {
-          storeComponents.updateField(child.id, 'inComponent', null);
-        }
-      }
+  /**
+   * Handle changing "Contains"
+   */
+  const handleContains = (values: string[]) => {
+    const isRemove = contains.length > values.length;
+    if (isRemove) {
+      const diff = contains.filter((x) => !values.includes(x.id))[0];
+      storeComponents.updateField(diff.id, 'inComponent', null);
+      // TODO: move outside HOST
+      return;
     }
 
+    // TODO: move inside HOST
+    const diff = values.filter((x) => !contains.find((o) => o.id === x))[0];
+    storeComponents.updateField(diff, 'inComponent', component.id);
+  };
+
+  /**
+   * Handle changing "Host"
+   */
+  const handleHost = (values: string[]) => {
+    // TODO: move inside/outside HOST
     storeComponents.updateField(
       component.id,
       'inComponent',
-      (values as string) || null
-    );
-  };
-
-  const handleContains = (values: string[] | string) => {
-    for (const value of values) {
-      if (value === component.inComponent) {
-        storeComponents.updateField(component.id, 'inComponent', null);
-      }
-
-      storeComponents.updateField(value, 'inComponent', component.id);
-    }
-  };
-
-  const handleHost = (values: string[] | string) => {
-    storeComponents.updateField(
-      component.id,
-      'inComponent',
-      (values as string) || null
+      values.length > 0 ? values[0] : null
     );
   };
 
@@ -317,7 +306,7 @@ export const ComponentDetails: React.FC<{
           </div>
         )}
 
-      {(isEditing || hosts.length > 0 || inComp || contains.length > 0) &&
+      {(isEditing || hosts.length > 0 || contains.length > 0) &&
         (is.component || is.hosting) && (
           <div>
             <div className={cls.blockTitle}>
@@ -342,7 +331,7 @@ export const ComponentDetails: React.FC<{
               </ComponentLine>
             )}
 
-            {(isEditing || contains.length > 0) && (
+            {is.hosting && (isEditing || contains.length > 0) && (
               <ComponentLine
                 title="Contains"
                 comps={contains}
@@ -352,27 +341,13 @@ export const ComponentDetails: React.FC<{
                 <ComponentSelect
                   current={component}
                   values={contains}
-                  filter={is.hosting ? ['service', 'hosting'] : ['service']}
+                  filter={
+                    is.hosting
+                      ? [...defaultFilterSelect, 'hosting']
+                      : defaultFilterSelect
+                  }
                   createdAs="service"
                   onChange={(res) => handleContains(res)}
-                />
-              </ComponentLine>
-            )}
-
-            {(isEditing || inComp) && (
-              <ComponentLine
-                title="Run inside"
-                comps={inComp && [inComp]}
-                params={params}
-                editing={isEditing}
-              >
-                <ComponentSelect
-                  current={component}
-                  values={inComp ? [inComp] : []}
-                  multiple={false}
-                  filter={['service']}
-                  createdAs="service"
-                  onChange={(res) => handleInComponent(res)}
                 />
               </ComponentLine>
             )}
