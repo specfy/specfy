@@ -3,7 +3,9 @@ import classNames from 'classnames';
 import { useState } from 'react';
 
 import { Feedback } from '../Feedback';
+import { Flex } from '../Flex';
 import { Button } from '../Form/Button';
+import { Help } from '../Help';
 
 import { Header } from './Header';
 import cls from './index.module.scss';
@@ -32,9 +34,10 @@ export const Sidebar: React.FC<{
           <Header />
           <div className={cls.content}>{children}</div>
         </div>
-        <div className={cls.bottom}>
+        <Flex className={cls.bottom} gap="m">
           <Feedback />
-        </div>
+          <Help />
+        </Flex>
       </div>
     </div>
   );

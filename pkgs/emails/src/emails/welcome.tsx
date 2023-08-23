@@ -135,7 +135,7 @@ export const Welcome: React.FC<WelcomeProps> = ({
                 </Link>
               </Section>
               <Section className="mt-[12px] mb-[24px] border">
-                <Link href="https://discord.gg/UGFVqu76Vj">
+                <Link href="https://discord.gg/96cDXvT8NV">
                   <Row className="border border-solid border-[#eaeaea] rounded-md">
                     <Column className="border border-solid border-[#fff] border-8 bg-[#fafafa] rounded-md text-center w-[80px] h-[60px]">
                       <svg
