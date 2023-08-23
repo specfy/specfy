@@ -1,4 +1,4 @@
-import { IconPlus } from '@tabler/icons-react';
+import { IconEdit, IconEye, IconPlus } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 import { useDebounce } from 'react-use';
 
@@ -143,11 +143,11 @@ export const Staging: React.FC<{ showBadge: boolean }> = () => {
     <div className={cls.staging}>
       {isEditing ? (
         <Button onClick={() => edit.enable(false)} size="l" display="ghost">
-          Editing
+          <IconEdit /> Editing
         </Button>
       ) : (
         <Button onClick={() => edit.enable(true)} size="l" display="ghost">
-          Viewing
+          <IconEye /> Viewing
         </Button>
       )}
       <div className={cls.action}>
