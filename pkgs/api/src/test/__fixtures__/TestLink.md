@@ -7,12 +7,13 @@
 
 ### Relative
 
-- Relative link to TestLinkRelative [go](./TestLinkRelative.md)
-- Absolute link to TestLinkRelative [go](/TestLinkRelative.md)
+- Relative link to `./TestLinkRelative.md` [go](./TestLinkRelative.md)
+- Absolute link to `/TestLinkRelative.md` [go](/TestLinkRelative.md)
+- Relative link to `TestLinkRelative.md` [go](TestLinkRelative.md)
 
 ### Nested
 
-- Relative link to nested/TestLinkNest [go](./nested/TestLinkNested.md)
+- Relative link to `./nested/TestLinkNested` [go](./nested/TestLinkNested.md)
 
 ### Repo link
 

@@ -10,6 +10,7 @@
     "dev": "turbo run dev",
     "test:ci": "turbo run test:ci",
     "db:migrate": "turbo run db:migrate",
+    "db:migrate:create": "npm run -w @specfy/db db:migrate:create",
     "db:seed": "turbo run db:seed",
     "lint": "npm run lint:code && npm run lint:scss",
     "lint:code": "eslint --ext .js,.ts,.tsx .",
