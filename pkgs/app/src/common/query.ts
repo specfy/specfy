@@ -11,7 +11,6 @@ export const qcli = new QueryClient({
       staleTime: 60 * 1000 * 5,
       retry: 3,
       retryDelay: (attemptIndex) => {
-        console.log(attemptIndex);
         return Math.min(2000 * 2 ** attemptIndex, 30000);
       },
     },

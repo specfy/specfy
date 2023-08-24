@@ -1,4 +1,5 @@
 export * from './activities/index.js';
+export * from './ai/index.js';
 export * from './billing/index.js';
 export * from './blobs/index.js';
 export * from './components/index.js';

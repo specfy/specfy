@@ -12,7 +12,8 @@ locals {
     "STRIPE_KEY",
     "STRIPE_WEBHOOKS_SECRET",
     "JWT_SECRET",
-    "DD_API_KEY"
+    "DD_API_KEY",
+    "OPENAI_KEY"
   ])
 }
 

@@ -34,7 +34,9 @@ data "google_secret_manager_secret_version" "JWT_SECRET" {
 data "google_secret_manager_secret_version" "DD_API_KEY" {
   secret = "DD_API_KEY"
 }
-
+data "google_secret_manager_secret_version" "OPENAI_KEY" {
+  secret = "OPENAI_KEY"
+}
 
 resource "google_cloud_run_v2_service" "main" {
   name     = "main"
@@ -112,6 +114,10 @@ resource "google_cloud_run_v2_service" "main" {
       env {
         name  = "DD_API_KEY"
         value = data.google_secret_manager_secret_version.DD_API_KEY.secret_data
+      }
+      env {
+        name  = "OPENAI_KEY"
+        value = data.google_secret_manager_secret_version.OPENAI_KEY.secret_data
       }
 
 

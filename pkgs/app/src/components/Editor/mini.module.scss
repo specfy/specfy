@@ -1,4 +1,16 @@
+/* stylelint-disable rule-empty-line-before */
 @import "../../styles/mixin";
+
+.wrapper {
+
+  &:focus-within,
+  &.showToolbar {
+    .toolbar {
+      pointer-events: initial;
+      opacity: 1;
+    }
+  }
+}
 
 .mini {
   position: relative;
@@ -6,6 +18,7 @@
 
 .editor {
   min-height: 30px;
+  background-color: #fff;
 
   :global {
 
@@ -36,4 +49,118 @@
       }
     }
   }
+}
+
+// .animate::after {
+//   // background-repeat: no-repeat;
+//   // background-position: 100% 50%;
+//   // background-size: 200% 200%;
+
+//   content: '';
+
+//   position: absolute;
+//   z-index: 1;
+//   top: 0;
+//   left: 0;
+
+//   // transform: translateX(100%);
+
+//   width: 100%;
+//   height: 220px;
+
+//   // background: linear-gradient(-45deg, #dfafe3, #fff);
+//   background: linear-gradient(-45deg, rgb(255 255 255 / 0%) 30%, hsl(217.5deg 25% 18.82% / 20%) 50%, rgb(128 186 232 / 0%) 70%, rgb(125 185 232 / 0%) 100%);
+
+//   animation: slide 1.5s forwards;
+// }
+
+
+// @keyframes slide {
+//   0% {
+//     transform: translate(-100%, 0%);
+//   }
+
+//   100% {
+//     transform: translate(100%, 0%);
+//   }
+// }
+.animWrapper {
+  --borderWidth: 2px;
+
+  position: relative;
+  z-index: 0;
+  border-radius: var(--borderWidth);
+
+  &:focus {
+    .toolbar {
+      pointer-events: initial;
+      opacity: 1;
+    }
+  }
+}
+
+.loading::before,
+.finish::before {
+  content: '';
+
+  position: absolute;
+  z-index: -1;
+  top: calc(-1 * var(--borderWidth));
+  left: calc(-1 * var(--borderWidth));
+
+  width: calc(100% + var(--borderWidth) * 2);
+  height: calc(100% + var(--borderWidth) * 2);
+
+  background: linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82);
+  background: linear-gradient(60deg, #a166ab 30%, hsl(217.5deg 25% 18.82% / 20%) 50%, rgb(128 186 232 / 0%) 70%, rgb(125 185 232 / 0%) 100%);
+  background-size: 300% 300%;
+  border-radius: calc(2 * var(--borderWidth));
+
+  animation: loading 3s ease alternate infinite;
+}
+
+
+@keyframes loading {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.finish::before {
+  animation: finish 1.5s ease alternate forwards;
+}
+
+@keyframes finish {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 100%;
+  }
+
+  100% {
+    background-position: 200% 200%;
+  }
+}
+
+.toolbar {
+  pointer-events: none;
+
+  position: absolute;
+  z-index: 1;
+  top: -32px;
+  right: 0;
+
+  opacity: 0;
+
+  transition: opacity 0.25s ease-in-out;
 }

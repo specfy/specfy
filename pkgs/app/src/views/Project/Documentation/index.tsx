@@ -12,7 +12,6 @@ export const ProjectDocumentation: React.FC<{
   const params = useParams<Partial<RouteDocumentation>>() as RouteDocumentation;
 
   const hasDoc = useMemo(() => {
-    console.log('params', params);
     return params['*'] !== '';
   }, [params]);
 

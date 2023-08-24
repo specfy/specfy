@@ -47,9 +47,12 @@ export const ProjectOverview: React.FC<{
     setFlow(tmp);
   }, [components]);
 
-  const onUpdate = useCallback((doc: BlockLevelZero) => {
-    update({ ...project!, description: doc });
-  }, []);
+  const onUpdate = useCallback(
+    (doc: BlockLevelZero) => {
+      update({ ...project!, description: doc });
+    },
+    [project, update]
+  );
 
   if (!project) {
     return null;

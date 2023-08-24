@@ -58,6 +58,7 @@ import type {
   PostFeedback,
   PostDemo,
   GetDocumentBySlug,
+  PostAiOperation,
 } from '@specfy/models';
 
 import type { PostAuthLocal, PostLogout } from './auth.js';
@@ -67,6 +68,8 @@ export interface API {
   '/0/': { GET: GetRoot };
 
   '/0/activities': { GET: ListActivities };
+
+  '/0/ai': { POST: PostAiOperation };
 
   '/0/auth/local': { POST: PostAuthLocal };
   '/0/auth/logout': { POST: PostLogout };
