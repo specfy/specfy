@@ -132,7 +132,7 @@ describe('POST /revisions/upload -- Documents', () => {
           orgId: org.id,
           parentId: null,
           projectId: project.id,
-          slug: 'readme',
+          slug: 'Readme',
           source: 'github',
           sourcePath: '/Readme.md',
           tldr: '',

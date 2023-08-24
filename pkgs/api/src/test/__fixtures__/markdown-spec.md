@@ -1,6 +1,4 @@
-
-## Benchmarking the support of Markdown with a comprehensive checklist
-
+# Markdown Specification
 
 **You're working on a project featuring Markdown?**
 

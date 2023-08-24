@@ -44,13 +44,15 @@ export async function createDocument({
   user,
   tx,
 }: {
-  data: Omit<Prisma.DocumentsUncheckedCreateInput, 'blobId' | 'slug'>;
+  data: Omit<Prisma.DocumentsUncheckedCreateInput, 'blobId' | 'slug'> & {
+    slug?: string;
+  };
   user: Users;
   tx: Prisma.TransactionClient;
 }) {
   const body: Prisma.DocumentsUncheckedCreateInput = {
     ...data,
-    slug: slugify(data.name),
+    slug: data.slug ?? slugify(data.name),
     id: data.id || nanoid(),
     blobId: null,
   };

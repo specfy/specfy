@@ -1,7 +1,7 @@
 import { schemaId, schemaOrgId } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import { toApiDocument } from '@specfy/models';
-import type { GetDocument } from '@specfy/models';
+import type { GetDocumentBySlug } from '@specfy/models';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
@@ -13,25 +13,25 @@ function QueryVal(req: FastifyRequest) {
     .object({
       org_id: schemaOrgId,
       project_id: schemaId,
-      document_id: schemaId,
+      slug: z.string().max(250),
     })
     .strict()
     .superRefine(valPermissions(req, 'viewer'));
 }
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
-  fastify.get<GetDocument>('/:document_id', async function (req, res) {
-    const val = QueryVal(req).safeParse({ ...req.query, ...req.params });
+  fastify.get<GetDocumentBySlug>('/', async function (req, res) {
+    const val = QueryVal(req).safeParse({ ...req.query });
     if (!val.success) {
       return validationError(res, val.error);
     }
 
-    const query: GetDocument['QP'] = val.data;
+    const query: GetDocumentBySlug['Querystring'] = val.data;
     const doc = await prisma.documents.findFirst({
       where: {
-        id: query.document_id,
         orgId: query.org_id,
         projectId: query.project_id,
+        slug: query.slug,
       },
     });
 

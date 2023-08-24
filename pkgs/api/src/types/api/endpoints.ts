@@ -57,6 +57,7 @@ import type {
   PutMe,
   PostFeedback,
   PostDemo,
+  GetDocumentBySlug,
 } from '@specfy/models';
 
 import type { PostAuthLocal, PostLogout } from './auth.js';
@@ -82,6 +83,7 @@ export interface API {
   '/0/demo': { POST: PostDemo };
 
   '/0/documents': { GET: ListDocuments };
+  '/0/documents/by_slug': { GET: GetDocumentBySlug };
   [key: `/0/documents/${string}`]: { GET: GetDocument };
 
   '/0/feedbacks': { POST: PostFeedback };

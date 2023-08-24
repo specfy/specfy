@@ -1,3 +1,18 @@
+.wrapper {
+  display: flex;
+  width: 100%;
+}
+
+.container {
+  position: relative;
+
+  display: grid;
+  grid-template-columns: 200px (var(--w-col)) minmax(200px, 1fr);
+
+  width: 100%;
+  min-height: 100vh;
+}
+
 .header {
   display: flex;
   grid-template-columns: 1fr 40px;

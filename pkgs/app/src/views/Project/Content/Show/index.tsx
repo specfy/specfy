@@ -8,7 +8,6 @@ import { useDocumentsStore } from '../../../../common/store';
 import { Flex } from '../../../../components/Flex';
 import { NotFound } from '../../../../components/NotFound';
 import type { RouteDocument } from '../../../../types/routes';
-import { Doc } from '../Doc';
 
 import cls from './index.module.scss';
 
@@ -68,9 +67,7 @@ export const DocumentShow: React.FC<{
 
   return (
     <div className={cls.wrapper}>
-      <div className={cls.container}>
-        <Doc proj={proj} doc={doc} />
-      </div>
+      <div className={cls.container}>null</div>
     </div>
   );
 };

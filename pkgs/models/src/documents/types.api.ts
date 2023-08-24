@@ -46,3 +46,11 @@ export type GetDocument = Res<{
     data: ApiDocument;
   };
 }>;
+
+// GET /by_slug
+export type GetDocumentBySlug = Res<{
+  Querystring: QuerystringOrgProject & { slug: string };
+  Success: {
+    data: ApiDocument;
+  };
+}>;

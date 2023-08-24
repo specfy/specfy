@@ -125,7 +125,7 @@ Project:
   ✔ Bug: team display use colored avatar @done(23-07-14 13:17)
   - Better Documentation tree in the Sidebar
     - Not everything open by default
-    - Clicking a folder should not close it
+    ✔ Clicking a folder should not close it @done(23-08-24 09:50)
 
 
 User:

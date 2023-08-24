@@ -1,4 +1,8 @@
-import type { GetDocument, ListDocuments } from '@specfy/models';
+import type {
+  GetDocument,
+  GetDocumentBySlug,
+  ListDocuments,
+} from '@specfy/models';
 import { useQuery } from '@tanstack/react-query';
 
 import { original } from '../common/store';
@@ -40,6 +44,30 @@ export function useGetDocument(
         `/documents/${opts.document_id}`,
         {
           qp: { org_id: opts.org_id, project_id: opts.project_id },
+        }
+      );
+
+      if (res.status !== 200 || isError(json)) {
+        throw new APIError({ res, json });
+      }
+
+      original.add(json.data);
+      return json;
+    },
+  });
+}
+export function useGetDocumentBySlug(opts: GetDocumentBySlug['Querystring']) {
+  return useQuery({
+    enabled: Boolean(opts.slug),
+    queryKey: ['getDocument', opts.org_id, opts.project_id, opts.slug],
+    retry() {
+      return false;
+    },
+    queryFn: async (): Promise<GetDocumentBySlug['Success']> => {
+      const { json, res } = await fetchApi<GetDocumentBySlug>(
+        `/documents/by_slug`,
+        {
+          qp: opts,
         }
       );
 

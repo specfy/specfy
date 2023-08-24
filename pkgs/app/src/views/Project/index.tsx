@@ -29,9 +29,9 @@ import type { RouteProject } from '../../types/routes';
 import { ProjectActivity } from './Activity';
 import { ComponentView } from './Component';
 import { ProjectComponentCreate } from './Component/Create';
-import { ProjectContentIndex } from './Content';
 import { ProjectDeploysList } from './Deploy/List';
 import { ProjectDeploysShow } from './Deploy/Show';
+import { ProjectDocumentation } from './Documentation';
 import { ProjectFlow } from './Flow';
 import { ProjectOverview } from './Overview';
 import { ProjectRevisionCreate } from './Revisions/Create';
@@ -106,10 +106,6 @@ export const Project: React.FC = () => {
     setLoading(getComps.isLoading || getProjects.isLoading);
   }, [loading, proj, getComps.data, getProjects.data]);
 
-  useEffect(() => {
-    window.document.body.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, [params]);
-
   if (loading) {
     return (
       <div className={cls.project}>
@@ -159,10 +155,6 @@ export const Project: React.FC = () => {
           <Routes>
             <Route path="/" element={<ProjectOverview params={params} />} />
             <Route
-              path="/content/*"
-              element={<ProjectContentIndex proj={proj} params={params} />}
-            />
-            <Route
               path="/flow"
               element={<ProjectFlow proj={proj} params={params} />}
             />
@@ -205,6 +197,10 @@ export const Project: React.FC = () => {
             <Route
               path="/deploys/:job_id"
               element={<ProjectDeploysShow proj={proj} params={params} />}
+            />
+            <Route
+              path="/doc/*"
+              element={<ProjectDocumentation proj={proj} />}
             />
             <Route path="*" element={<NotFound />} />
           </Routes>

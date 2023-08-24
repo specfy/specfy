@@ -3,6 +3,7 @@ import { IconArrowBack } from '@tabler/icons-react';
 import classnames from 'classnames';
 import { useMemo, useState } from 'react';
 import { Diff, Hunk, tokenize, markEdits } from 'react-diff-view';
+import { Link } from 'react-router-dom';
 import { PrismAsyncLight } from 'react-syntax-highlighter';
 import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
 import 'react-diff-view/style/index.css';
@@ -95,11 +96,45 @@ export const ContentBlock: React.FC<{
       } else if (mark.type === 'italic') {
         text = <em>{text}</em>;
       } else if (mark.type === 'link') {
-        text = (
-          <a href={mark.attrs.href} target="_blank" rel="noreferrer">
-            {text}
-          </a>
-        );
+        if (
+          new URL(mark.attrs.href, window.location.href).host ===
+          window.location.host
+        ) {
+          // react-router-dom does not compute ./ correctly it tries to add "./link" to the current path instead of removing the last filename
+          text = (
+            <Link
+              to={
+                mark.attrs.href.startsWith('./')
+                  ? `.${mark.attrs.href}`
+                  : mark.attrs.href
+              }
+              onClick={(e) => {
+                if (mark.attrs.href.startsWith('#')) {
+                  e.preventDefault();
+                  const id = mark.attrs.href.substring(1);
+                  const target = document.getElementById(id);
+                  if (!target) {
+                    return;
+                  }
+
+                  target.scrollIntoView({ behavior: 'smooth' });
+                  setTimeout(() => {
+                    // Should probably update state instead
+                    window.location.hash = id;
+                  }, 500);
+                }
+              }}
+            >
+              {text}
+            </Link>
+          );
+        } else {
+          text = (
+            <a href={mark.attrs.href} target="_blank" rel="noreferrer">
+              {text}
+            </a>
+          );
+        }
       } else {
         console.warn('Unknown mark', JSON.stringify(mark));
       }
@@ -123,6 +158,7 @@ export const ContentBlock: React.FC<{
     if (!block.content || block.content.length === 0) {
       return null;
     }
+
     const id = `h-${slugify(block.content.map((e) => e.text).join(''))}`;
     const els = map(block, pl);
     if (block.attrs.level === 1)

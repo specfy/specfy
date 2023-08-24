@@ -3,3 +3,4 @@ export * from './types.api.js';
 export * from './types.js';
 export * from './types.prosemirror.js';
 export * from './schema.js';
+export * from './formatter.js';

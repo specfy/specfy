@@ -1,0 +1,107 @@
+import { nanoid } from '@specfy/core';
+import { describe, beforeAll, it, afterAll, expect } from 'vitest';
+
+import { setupAfterAll, setupBeforeAll } from '../../../test/each.js';
+import type { TestSetup } from '../../../test/each.js';
+import { isError, isSuccess } from '../../../test/fetch.js';
+import {
+  shouldBeNotFound,
+  shouldBeProtected,
+  shouldNotAllowQueryParams,
+} from '../../../test/helpers.js';
+import { seedDocument } from '../../../test/seed/documents.js';
+import { seedWithProject } from '../../../test/seed/seed.js';
+
+let t: TestSetup;
+beforeAll(async () => {
+  t = await setupBeforeAll();
+});
+
+afterAll(async () => {
+  await setupAfterAll(t);
+});
+
+describe('GET /documents/by_slug', () => {
+  it('should be protected', async () => {
+    const res = await t.fetch.get(`/0/documents/by_slug`);
+    await shouldBeProtected(res);
+  });
+
+  it('should not allow query params', async () => {
+    const { token } = await seedWithProject();
+    const res = await t.fetch.get(`/0/documents/by_slug`, {
+      token,
+      // @ts-expect-error
+      Querystring: { random: 'world' },
+    });
+    await shouldNotAllowQueryParams(res);
+  });
+
+  it('should get a document', async () => {
+    const { token, project, org, user } = await seedWithProject();
+    const document = await seedDocument(user, org, project);
+    const res = await t.fetch.get(`/0/documents/by_slug`, {
+      token,
+      Querystring: {
+        org_id: org.id,
+        project_id: project.id,
+        slug: document.slug,
+      },
+    });
+
+    isSuccess(res.json);
+    expect(res.statusCode).toBe(200);
+    expect(res.json.data).toStrictEqual({
+      approvedBy: [],
+      authors: [],
+      blobId: expect.any(String),
+      content: {
+        content: [],
+        type: 'doc',
+      },
+      id: document.id,
+      locked: false,
+      name: document.name,
+      orgId: org.id,
+      projectId: project.id,
+      reviewers: [],
+      slug: document.slug,
+      tldr: '',
+      type: 'rfc',
+      typeId: document.typeId,
+      parentId: null,
+      source: null,
+      sourcePath: null,
+      createdAt: expect.toBeIsoDate(),
+      updatedAt: expect.toBeIsoDate(),
+    });
+  });
+
+  it('should not get a document with wrong org', async () => {
+    const seed1 = await seedWithProject();
+    const { token, project, org, user } = await seedWithProject();
+    const document = await seedDocument(user, org, project);
+    const res = await t.fetch.get(`/0/documents/by_slug`, {
+      token,
+      Querystring: {
+        org_id: seed1.org.id,
+        project_id: seed1.project.id,
+        slug: document.slug,
+      },
+    });
+
+    isError(res.json);
+    expect(res.statusCode).toBe(403);
+  });
+
+  it('should not get a document with wrong id', async () => {
+    const { token, project, org, user } = await seedWithProject();
+    await seedDocument(user, org, project);
+    const res = await t.fetch.get(`/0/documents/by_slug`, {
+      token,
+      Querystring: { org_id: org.id, project_id: project.id, slug: nanoid() },
+    });
+
+    shouldBeNotFound(res);
+  });
+});

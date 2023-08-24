@@ -1,21 +1,22 @@
+import type { Projects } from '@specfy/db';
 import { describe, expect, it } from 'vitest';
 
-import {
-  uploadedDocumentsToDB,
-  uploadToDocuments,
-} from './helpers.document.js';
+import { DocumentsParser, uploadedDocumentsToDB } from './helpers.document.js';
 import type { PostUploadRevision } from './types.api.js';
 
-describe('uploadToDocuments', () => {
+describe('parser()', () => {
   it('should output nothing', () => {
-    const res = uploadToDocuments([]);
+    const parser = new DocumentsParser([], {} as Projects);
+    const res = parser.parse();
     expect(res).toStrictEqual([]);
   });
 
   it('should create a document with a title', () => {
-    const res = uploadToDocuments([
-      { content: '# My Title', path: '/README.md' },
-    ]);
+    const parser = new DocumentsParser(
+      [{ content: '# My Title', path: '/README.md' }],
+      {} as Projects
+    );
+    const res = parser.parse();
     expect(res).toMatchObject([
       {
         content: {
@@ -42,10 +43,14 @@ describe('uploadToDocuments', () => {
   });
 
   it('should match create an empty folder', () => {
-    const res = uploadToDocuments([
-      { content: '# My Title', path: '/README.md' },
-      { content: '# My Foobar', path: '/nested/foobar.md' },
-    ]);
+    const parser = new DocumentsParser(
+      [
+        { content: '# My Title', path: '/README.md' },
+        { content: '# My Foobar', path: '/nested/foobar.md' },
+      ],
+      {} as Projects
+    );
+    const res = parser.parse();
 
     expect(res).toMatchObject([
       {
@@ -68,10 +73,14 @@ describe('uploadToDocuments', () => {
   });
 
   it('should handle deep folder', () => {
-    const res = uploadToDocuments([
-      { content: '# My Title', path: '/README.md' },
-      { content: '# My Foobar', path: '/very/nested/folder/foobar.md' },
-    ]);
+    const parser = new DocumentsParser(
+      [
+        { content: '# My Title', path: '/README.md' },
+        { content: '# My Foobar', path: '/very/nested/folder/foobar.md' },
+      ],
+      {} as Projects
+    );
+    const res = parser.parse();
 
     expect(res).toMatchObject([
       {
@@ -96,6 +105,51 @@ describe('uploadToDocuments', () => {
       },
     ]);
   });
+
+  it('should not change absolute link', () => {
+    const parser = new DocumentsParser(
+      [{ content: '[a link](https://example.com)', path: '/README.md' }],
+      {} as Projects
+    );
+    const res = parser.parse();
+
+    expect(
+      (res as any)[0].content.content[0].content?.[0].marks?.[0].attrs.href
+    ).toMatchObject('https://example.com');
+  });
+  it('should add header prefix to relative (same link)', () => {
+    const parser = new DocumentsParser(
+      [{ content: '[a link](#foobar)', path: '/README.md' }],
+      {} as Projects
+    );
+    const res = parser.parse();
+
+    expect(
+      (res as any)[0].content.content[0].content?.[0].marks?.[0].attrs.href
+    ).toMatchObject('#h-foobar');
+  });
+  it('should remove .md from relative link', () => {
+    const parser = new DocumentsParser(
+      [
+        {
+          content: '[1link](./1.md) [2link](../2.md) [3link](/3.md)',
+          path: '/README.md',
+        },
+      ],
+      { orgId: 'acme', slug: 'hello' } as Projects
+    );
+    const res = parser.parse();
+
+    expect(
+      (res as any)[0].content.content[0].content?.[0].marks?.[0].attrs.href
+    ).toMatchObject('./1');
+    expect(
+      (res as any)[0].content.content[0].content?.[2].marks?.[0].attrs.href
+    ).toMatchObject('../2');
+    expect(
+      (res as any)[0].content.content[0].content?.[4].marks?.[0].attrs.href
+    ).toMatchObject('/3');
+  });
 });
 
 describe('uploadedDocumentsToDB', () => {
@@ -110,7 +164,8 @@ describe('uploadedDocumentsToDB', () => {
   };
 
   it('should output nothing', () => {
-    const res = uploadedDocumentsToDB(uploadToDocuments([]), [], payload);
+    const parser = new DocumentsParser([], {} as Projects);
+    const res = uploadedDocumentsToDB(parser.parse(), [], payload);
 
     expect(res).toStrictEqual({
       blobs: [],
@@ -119,11 +174,11 @@ describe('uploadedDocumentsToDB', () => {
   });
 
   it('should output a readme', () => {
-    const res = uploadedDocumentsToDB(
-      uploadToDocuments([{ content: '# My Title', path: '/README.md' }]),
-      [],
-      payload
+    const parser = new DocumentsParser(
+      [{ content: '# My Title', path: '/README.md' }],
+      {} as Projects
     );
+    const res = uploadedDocumentsToDB(parser.parse(), [], payload);
 
     expect(res).toStrictEqual({
       deleted: [],
@@ -146,7 +201,7 @@ describe('uploadedDocumentsToDB', () => {
             orgId: 'a',
             parentId: null,
             projectId: 'b',
-            slug: 'readme',
+            slug: 'README',
             source: 'github',
             sourcePath: '/README.md',
             tldr: '',
@@ -161,14 +216,14 @@ describe('uploadedDocumentsToDB', () => {
   });
 
   it('should handle nested doc', () => {
-    const res = uploadedDocumentsToDB(
-      uploadToDocuments([
+    const parser = new DocumentsParser(
+      [
         { content: '# My Title', path: '/README.md' },
         { content: '# My Foobar', path: '/very/nested/folder/foobar.md' },
-      ]),
-      [],
-      payload
+      ],
+      {} as Projects
     );
+    const res = uploadedDocumentsToDB(parser.parse(), [], payload);
 
     expect(res.blobs).toHaveLength(5);
     expect(res.blobs[0].current.parentId).toBeNull();
@@ -179,14 +234,14 @@ describe('uploadedDocumentsToDB', () => {
   });
 
   it('should handle unordered files', () => {
-    const res = uploadedDocumentsToDB(
-      uploadToDocuments([
+    const parser = new DocumentsParser(
+      [
         { content: '# My Foobar', path: '/folder/foobar.md' },
         { content: '# My Title', path: '/folder' },
-      ]),
-      [],
-      payload
+      ],
+      {} as Projects
     );
+    const res = uploadedDocumentsToDB(parser.parse(), [], payload);
 
     expect(res.blobs).toHaveLength(2);
   });

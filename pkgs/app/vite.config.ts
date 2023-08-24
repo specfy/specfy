@@ -1,6 +1,7 @@
 import react from '@vitejs/plugin-react-swc';
 import { defineConfig } from 'vite';
 import { checker } from 'vite-plugin-checker';
+import pluginRewriteAll from 'vite-plugin-rewrite-all';
 import sassDts from 'vite-plugin-sass-dts';
 
 // https://vitejs.dev/config/
@@ -11,6 +12,7 @@ export default defineConfig({
     checker({
       typescript: true,
     }),
+    pluginRewriteAll(),
   ],
   css: {
     modules: {

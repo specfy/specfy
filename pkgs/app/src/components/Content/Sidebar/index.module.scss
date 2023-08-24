@@ -27,13 +27,6 @@
       background-color: var(--bg2);
     }
 
-    &.rc-tree-treenode-leaf-last {
-      .rc-tree-switcher {
-        pointer-events: none;
-        opacity: 0;
-      }
-    }
-
     .rc-tree-switcher {
       width: 18px;
       height: 18px;
@@ -45,6 +38,11 @@
 
       &.rc-tree-switcher_open {
         transform: rotate(90deg);
+      }
+
+      &.rc-tree-switcher-noop {
+        pointer-events: none;
+        opacity: 0;
       }
 
       &:hover {

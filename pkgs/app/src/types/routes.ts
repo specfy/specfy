@@ -14,6 +14,10 @@ export type RouteComponent = RouteProject & {
   component_slug: string;
 };
 
+export type RouteDocumentation = RouteProject & {
+  '*': string;
+};
+
 export type RouteDocument = RouteProject & {
   document_slug: string;
 };

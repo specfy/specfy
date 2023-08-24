@@ -18,7 +18,7 @@ interface Item {
   key: string;
   title: string;
   href: string;
-  children: Item[];
+  children?: Item[];
 }
 
 function buildDocHierarchy(
@@ -32,13 +32,17 @@ function buildDocHierarchy(
     if (doc.parentId !== parentId) {
       continue;
     }
-
-    node.push({
-      key: doc.id,
+    const def: Item = {
+      key: doc.slug,
       title: doc.name,
-      href: `/${proj.orgId}/${proj.slug}/content/${doc.id}-${doc.slug}`,
-      children: buildDocHierarchy(docs, doc.id, proj),
-    });
+      href: `/${proj.orgId}/${proj.slug}/doc/${doc.slug}`,
+    };
+
+    const children = buildDocHierarchy(docs, doc.id, proj);
+    if (children.length > 0) {
+      def.children = children;
+    }
+    node.push(def);
   }
 
   return node;
@@ -72,22 +76,26 @@ export const ContentSidebar: React.FC<{
   }, [res.data, deleted]);
 
   useEffect(() => {
-    const split = location.pathname.split('/');
-    if (split.length <= 4) {
+    const split = location.pathname.replace(
+      `/${proj.orgId}/${proj.slug}/doc/`,
+      ''
+    );
+    if (split === '') {
       setSelected([]);
       return;
     }
 
-    setSelected([split[4].split('-')[0]]);
+    setSelected([split]);
   }, [location]);
 
   const onSelect: TreeProps['onSelect'] = (keys) => {
     if (keys[0] === 'rfc') {
       return;
     }
+
     for (const item of res.data!.data) {
-      if (item.id === keys[0]) {
-        navigate(`/${proj.orgId}/${proj.slug}/content/${item.id}-${item.slug}`);
+      if (item.slug === keys[0]) {
+        navigate(`/${proj.orgId}/${proj.slug}/doc/${item.slug}`);
       }
     }
   };

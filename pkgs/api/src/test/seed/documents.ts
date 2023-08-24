@@ -4,11 +4,14 @@ import path from 'node:path';
 import { nanoid, slugify, dirname } from '@specfy/core';
 import type { Orgs, Projects, Users } from '@specfy/db';
 import { prisma } from '@specfy/db';
+import { FSProvider, listing, transform } from '@specfy/github-sync';
+import type { ProviderFile } from '@specfy/github-sync';
 import type { DBDocument, ApiDocument } from '@specfy/models';
 import {
   createDocument,
   getDocumentTypeId,
-  markdownToProseMirror,
+  DocumentsParser,
+  uploadedDocumentsToDB,
 } from '@specfy/models';
 
 /**
@@ -738,12 +741,6 @@ export async function seedDocs(
   { pAnalytics }: { pAnalytics: Projects },
   [u1]: Users[]
 ) {
-  const testmarkdown = (
-    await fs.readFile(
-      path.join(dirname, '../', 'api', 'src/test/__fixtures__/testmarkdown.md')
-    )
-  ).toString();
-
   const res = await prisma.$transaction(async (tx) => {
     const d1 = await createDocument({
       user: u1,
@@ -777,58 +774,49 @@ export async function seedDocs(
       tx,
     });
 
-    const d2 = await createDocument({
-      user: u1,
-      data: {
-        id: 'z2grRPVYnx',
-        orgId: o1.id,
-        projectId: pAnalytics.id,
-        source: 'github',
-        sourcePath: '/docs/decisions/README.md',
-        parentId: null,
-        type: 'doc',
-        typeId: null,
-        tldr: '',
-        name: 'Decisions',
-        content: markdownToProseMirror(testmarkdown),
-        locked: false,
-      },
-      tx,
-    });
-    const d3 = await createDocument({
-      user: u1,
-      data: {
-        id: 'z3grRPVYnx',
-        orgId: o1.id,
-        projectId: pAnalytics.id,
-        source: 'github',
-        sourcePath: '/docs/deicisions/Nested.md',
-        parentId: d2.id,
-        type: 'doc',
-        typeId: null,
-        tldr: '',
-        name: 'Using Specfy to host our Documentation',
-        content: {
-          content: [
-            {
-              type: 'paragraph',
-              attrs: { uid: 'UidgrRPV001' },
-              content: [
-                {
-                  type: 'text',
-                  text: 'Consequat vitae.',
-                },
-              ],
-            },
-          ],
-          type: 'doc',
-        },
-        locked: false,
-      },
-      tx,
+    // --- Upload fixtures with sync to emulate an actual upload
+    const fixturePath = path.join(dirname, '../', 'api/src/test/__fixtures__');
+    const list: ProviderFile[] = [];
+    const provider = new FSProvider({
+      path: fixturePath,
+      ignorePaths: [],
     });
 
-    return { d1, d2, d3 };
+    await listing(
+      {
+        provider,
+        acc: list,
+      },
+      '/'
+    );
+    const docs = await transform(provider, list);
+    const parser = new DocumentsParser(
+      docs.map((doc) => {
+        return {
+          path: doc.fp,
+          content: doc.content,
+        };
+      }),
+      pAnalytics
+    );
+    const parsed = parser.parse();
+    const clean = uploadedDocumentsToDB(parsed, [], {
+      orgId: o1.id,
+      projectId: pAnalytics.id,
+      source: 'fixtures',
+    });
+
+    await Promise.all(
+      clean.blobs.map(async (blob) => {
+        return await createDocument({
+          user: u1,
+          data: blob.current,
+          tx,
+        });
+      })
+    );
+
+    return { d1 };
   });
 
   return res;

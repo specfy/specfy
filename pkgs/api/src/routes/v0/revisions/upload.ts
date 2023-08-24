@@ -5,11 +5,11 @@ import {
   createBlobs,
   createRevisionActivity,
   uploadedDocumentsToDB,
-  uploadToDocuments,
   autoLayout,
   uploadedStackToDB,
   schemaRevision,
   schemaStack,
+  DocumentsParser,
 } from '@specfy/models';
 import type { PostUploadRevision } from '@specfy/models';
 import type { AnalyserJson } from '@specfy/stack-analyser';
@@ -91,7 +91,12 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
 
       // TODO: validate all ids
       const data = val.data;
-      const parsed = data.blobs ? uploadToDocuments(data.blobs) : [];
+
+      const project = await prisma.projects.findUnique({
+        where: { id: data.projectId },
+      });
+      const parser = new DocumentsParser(data.blobs || [], project!);
+      const parsed = parser.parse();
 
       const rev = await prisma.$transaction(
         async (tx) => {

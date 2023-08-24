@@ -141,7 +141,7 @@ model Documents {
   type       String   @db.VarChar(25)
   typeId     Int?
   name       String   @db.VarChar(100)
-  slug       String   @db.VarChar(100)
+  slug       String   @db.VarChar(250)
   tldr       String   @db.VarChar(500)
   /// [PrismaProseMirror]
   content    Json     @db.Json

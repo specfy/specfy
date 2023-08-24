@@ -45,6 +45,10 @@ export const HeadingTree: React.FC<{ blocks: BlockLevelOne[] }> = ({
     }
 
     target.scrollIntoView({ behavior: 'smooth' });
+    setTimeout(() => {
+      // Should probably update state instead
+      window.location.hash = id;
+    }, 500);
   };
 
   return (
