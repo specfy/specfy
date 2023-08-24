@@ -1,4 +1,4 @@
-import { IconHelp, IconLogout, IconSettings } from '@tabler/icons-react';
+import { IconLogout, IconSettings } from '@tabler/icons-react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { isError } from '../../../api/helpers';
@@ -49,13 +49,6 @@ const User: React.FC = () => {
                 <Link to="/account/">
                   <IconSettings />
                   <div>Settings</div>
-                </Link>
-              </Dropdown.Item>
-
-              <Dropdown.Item asChild>
-                <Link to="/account/">
-                  <IconHelp />
-                  <div>Support</div>
                 </Link>
               </Dropdown.Item>
             </Dropdown.Group>

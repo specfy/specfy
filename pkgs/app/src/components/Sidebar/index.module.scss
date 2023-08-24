@@ -44,8 +44,8 @@
 }
 
 .inner {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-rows: 72px 1fr 55px;
   width: 250px;
   height: 100vh;
 

@@ -33,11 +33,11 @@ export const Sidebar: React.FC<{
         <div className={cls.inner}>
           <Header />
           <div className={cls.content}>{children}</div>
+          <Flex className={cls.bottom} gap="m">
+            <Feedback />
+            <Help />
+          </Flex>
         </div>
-        <Flex className={cls.bottom} gap="m">
-          <Feedback />
-          <Help />
-        </Flex>
       </div>
     </div>
   );
