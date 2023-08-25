@@ -1,7 +1,7 @@
 import type { BlockLevelZero } from '@specfy/models';
 import { CharacterCount } from '@tiptap/extension-character-count';
 import { useEditor, EditorContent } from '@tiptap/react';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { removeEmptyContent } from '../../common/content';
 import { Presentation } from '../Content';
@@ -20,7 +20,7 @@ export interface Props {
 
 const schema = createEditorSchema();
 
-export const Editor: React.FC<Props> = (props) => {
+const Safe: React.FC<Props> = (props) => {
   const editor = useEditor({
     extensions: [
       ...schema.extensions,
@@ -59,6 +59,22 @@ export const Editor: React.FC<Props> = (props) => {
           style={{ minHeight: props.minHeight }}
         />
       </Presentation>
+    </div>
+  );
+};
+
+/**
+ * It is wrapped to avoid re-render on each key stroke.
+ * There might be a better solution.
+ */
+export const Editor: React.FC<Props> = (props) => {
+  const doc = useMemo(() => {
+    return props.content;
+  }, []);
+
+  return (
+    <div>
+      <Safe {...props} content={doc} />
     </div>
   );
 };

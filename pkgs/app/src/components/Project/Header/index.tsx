@@ -53,7 +53,7 @@ export const ProjectSwitcher: React.FC = () => {
         </Dropdown.Trigger>
         <Dropdown.Portal>
           <Dropdown.Content>
-            <Dropdown.Group>
+            <Dropdown.Group className={cls.content}>
               {projects.map((item) => {
                 return (
                   <Dropdown.Item key={item.id} asChild>

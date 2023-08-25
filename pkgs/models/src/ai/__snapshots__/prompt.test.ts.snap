@@ -3,7 +3,7 @@
 exports[`aiPromptProjectDescription > should output the prompt 1`] = `
 [
   {
-    "content": "You describe a technical project for an engineer and non technical people.
+    "content": "You describe a technical project for an engineer.
 3 paragraphs maximum
 DO NOT use adjective, superlative or adverb.
 Details why it exists in one paragraph with a line break at end

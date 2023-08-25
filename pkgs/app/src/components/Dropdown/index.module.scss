@@ -30,7 +30,7 @@
 
   background-color: white;
   border-radius: var(--radius3);
-  box-shadow: var(--shadow2);
+  box-shadow: var(--shadow3);
 
   animation-duration: 400ms;
   animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
@@ -74,6 +74,8 @@
 }
 
 .item {
+  cursor: pointer;
+
   display: flex;
   gap: var(--spc-m);
   align-items: center;

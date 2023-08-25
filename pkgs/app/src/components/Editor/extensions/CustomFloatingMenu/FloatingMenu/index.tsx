@@ -6,7 +6,7 @@ import {
   IconHeading,
   IconCaretRight,
   IconCheckbox,
-  IconTable,
+  // IconTable,
   IconCode,
 } from '@tabler/icons-react';
 import type { Editor } from '@tiptap/core';
@@ -137,7 +137,7 @@ export const FloatingMenu: React.FC<{ editor: Editor }> = ({ editor }) => {
           </div>
           <div>Code Block</div>
         </div>
-        <div
+        {/* <div
           className={cls.item}
           onClick={() => {
             editor
@@ -152,7 +152,7 @@ export const FloatingMenu: React.FC<{ editor: Editor }> = ({ editor }) => {
             <IconTable size="1em" />
           </div>
           <div>Table</div>
-        </div>
+        </div> */}
         <div
           className={cls.item}
           onClick={() => {

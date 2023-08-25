@@ -5,12 +5,12 @@ import classNames from 'classnames';
 import type React from 'react';
 import { useMemo, useEffect, useState } from 'react';
 
-import { removeEmptyContent } from '../../common/content';
+import { removeEmptyContent } from '../../../common/content';
+import { AIToolbar } from '../AiToolbar';
+import { createMiniEditorSchema } from '../extensions';
+import { BubbleMenu } from '../extensions/CustomBubbleMenu/BubbleMenu';
 
-import { AIToolbar } from './AiToolbar';
-import { createMiniEditorSchema } from './extensions';
-import { BubbleMenu } from './extensions/CustomBubbleMenu/BubbleMenu';
-import cls from './mini.module.scss';
+import cls from './index.module.scss';
 
 const schema = createMiniEditorSchema();
 
@@ -86,11 +86,14 @@ const Editor: React.FC<{
   );
 };
 
+/**
+ * It is wrapped to avoid re-render on each key stroke.
+ * There might be a better solution.
+ */
 export const EditorMini: React.FC<{
   doc: BlockLevelZero;
   onUpdate: (content: BlockLevelZero) => void;
 }> = ({ doc, onUpdate }) => {
-  // To prevent rerender
   const content = useMemo(() => {
     return doc;
   }, []);

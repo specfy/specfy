@@ -117,6 +117,19 @@
     p {
       margin-bottom: var(--spc-l);
     }
+
+    code {
+      padding: 1px 0.375rem;
+
+      font-family: var(--font-code);
+      font-size: var(--font);
+      color: #eb5757;
+      overflow-wrap: break-word;
+
+      background-color: var(--bg2);
+      border: 1px solid var(--border2);
+      border-radius: var(--radius2);
+    }
   }
 
 

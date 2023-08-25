@@ -34,3 +34,8 @@
     background-color: var(--bg2);
   }
 }
+
+.content {
+  overflow-y: scroll;
+  max-height: 200px;
+}
