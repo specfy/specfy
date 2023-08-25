@@ -2,13 +2,22 @@ import type { Res } from '@specfy/core';
 
 // POST /ai
 export type AiOperationRewrite = {
-  orgId: string;
   type: 'rewrite';
   text: string;
 };
+export type AiOperationProjectDescription = {
+  type: 'projectDescription';
+};
+
 export type PostAiOperation = Res<{
-  Body: AiOperationRewrite;
+  Body: {
+    orgId: string;
+    projectId?: string | undefined;
+    operation: AiOperationRewrite | AiOperationProjectDescription;
+  };
   Success: {
-    data: { text: string };
+    data: {
+      text: string;
+    };
   };
 }>;

@@ -1,4 +1,5 @@
 import type { ComponentType } from '@specfy/models';
+import { internalTypeToText } from '@specfy/models/src/components/constants';
 import { IconLinkOff } from '@tabler/icons-react';
 import classNames from 'classnames';
 import type { ChangeEventHandler } from 'react';
@@ -6,7 +7,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 
 import { useProjectStore } from '../../../common/store';
 import type { TechInfo } from '../../../common/techs';
-import { internalTypeToText, supportedArray } from '../../../common/techs';
+import { supportedArray } from '../../../common/techs';
 import { AvatarAuto } from '../../AvatarAuto';
 import { ComponentIcon } from '../../Component/Icon';
 import { Button } from '../../Form/Button';

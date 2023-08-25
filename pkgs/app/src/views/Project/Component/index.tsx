@@ -1,4 +1,5 @@
 import type { ComputedFlow, ApiComponent, ApiProject } from '@specfy/models';
+import { internalTypeToText } from '@specfy/models/src/components/constants';
 import { componentsToFlow } from '@specfy/models/src/flows/transform';
 import { IconDotsVertical, IconTrash } from '@tabler/icons-react';
 import classnames from 'classnames';
@@ -10,7 +11,6 @@ import { useReactFlow } from 'reactflow';
 
 import { useComponentsStore } from '../../../common/store';
 import { titleSuffix } from '../../../common/string';
-import { internalTypeToText } from '../../../common/techs';
 import { ComponentDetails } from '../../../components/Component/Details';
 import { ComponentIcon } from '../../../components/Component/Icon';
 import { Container } from '../../../components/Container';

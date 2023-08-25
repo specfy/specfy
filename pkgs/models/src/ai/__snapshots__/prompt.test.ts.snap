@@ -1,0 +1,41 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`aiPromptProjectDescription > should output the prompt 1`] = `
+[
+  {
+    "content": "You describe a technical project for an engineer and non technical people.
+3 paragraphs maximum
+DO NOT use adjective, superlative or adverb.
+Details why it exists in one paragraph with a line break at end
+Details briefly how it works
+Use the list of technologies to describe how it works. Choose only the most relevant ones",
+    "role": "system",
+  },
+  {
+    "content": "Project name is \\"Analytics\\"
+
+The list of technologies that is used in this project:
+Hosting: GCP, GCE
+Service: Aggregator
+Saas: Algolia
+Database: Postgres
+Messaging: SQS
+Depends on internal product: Billing
+  ",
+    "role": "user",
+  },
+]
+`;
+
+exports[`aiPromptRewrite > should output the prompt 1`] = `
+[
+  {
+    "content": "You rewrite content you are provided with for an engineer. Do not use adverb or subjective language.",
+    "role": "system",
+  },
+  {
+    "content": "Specfy is an awesome platform",
+    "role": "user",
+  },
+]
+`;

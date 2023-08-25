@@ -1,6 +1,11 @@
-import { envs, schemaOrgId } from '@specfy/core';
+import { envs, schemaId, schemaOrgId } from '@specfy/core';
+import { prisma } from '@specfy/db';
 import type { PostAiOperation } from '@specfy/models';
-import { aiRewrite } from '@specfy/models';
+import {
+  aiCompletion,
+  aiPromptProjectDescription,
+  aiPromptRewrite,
+} from '@specfy/models';
 import { aiStream } from '@specfy/models/src/ai/openai.js';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
@@ -17,11 +22,29 @@ function BodyVal(req: FastifyRequest) {
   return z
     .object({
       orgId: schemaOrgId,
-      type: z.enum(['rewrite']),
-      text: z.string().min(1).max(1000),
+      projectId: schemaId.optional(),
+      operation: z.discriminatedUnion('type', [
+        z.object({
+          type: z.literal('rewrite'),
+          text: z.string().min(1).max(1000),
+        }),
+        z.object({
+          type: z.literal('projectDescription'),
+        }),
+      ]),
     })
     .strict()
-    .superRefine(valPermissions(req, 'viewer'));
+    .superRefine(valPermissions(req, 'viewer'))
+    .superRefine((val, ctx) => {
+      if (!val.projectId && val.operation.type === 'projectDescription') {
+        ctx.addIssue({
+          path: ['projectId'],
+          code: z.ZodIssueCode.custom,
+          message: "projectId is required for operation 'projectDescription'",
+        });
+      }
+    });
+
   // TODO: implement usage
   // .superRefine(async (val, ctx) => {
   //   const org = getOrgFromRequest(req, val.orgId);
@@ -63,10 +86,35 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         return serverError(res);
       }
 
-      const data = val.data;
+      const data: PostAiOperation['Body'] = val.data;
+      const op = data.operation;
 
-      if (data.type === 'rewrite') {
-        const rewrite = await aiRewrite(data.text);
+      if (op.type === 'rewrite') {
+        const rewrite = await aiCompletion({
+          orgId: data.orgId,
+          messages: aiPromptRewrite({ text: op.text }),
+        });
+        await aiStream(res, rewrite);
+        return;
+      }
+
+      if (op.type === 'projectDescription') {
+        const project = await prisma.projects.findUnique({
+          where: { id: data.projectId! },
+          select: { name: true },
+        });
+        const components = await prisma.components.findMany({
+          where: { orgId: data.orgId, projectId: data.projectId! },
+          select: { name: true, type: true, techId: true },
+        });
+        if (!project) {
+          return serverError(res);
+        }
+
+        const rewrite = await aiCompletion({
+          orgId: data.orgId,
+          messages: aiPromptProjectDescription({ project, components }),
+        });
         await aiStream(res, rewrite);
         return;
       }

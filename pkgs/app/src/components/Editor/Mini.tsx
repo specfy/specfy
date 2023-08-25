@@ -1,18 +1,13 @@
 import type { BlockLevelZero } from '@specfy/models';
-import { IconWand } from '@tabler/icons-react';
 import { CharacterCount } from '@tiptap/extension-character-count';
-import { useEditor, EditorContent, generateJSON } from '@tiptap/react';
+import { useEditor, EditorContent } from '@tiptap/react';
 import classNames from 'classnames';
 import type React from 'react';
 import { useMemo, useEffect, useState } from 'react';
 
-import { aiOperation, aiStream } from '../../api/ai';
 import { removeEmptyContent } from '../../common/content';
-import { i18n } from '../../common/i18n';
-import { useToast } from '../../hooks/useToast';
-import { Button } from '../Form/Button';
-import { TooltipFull } from '../Tooltip';
 
+import { AIToolbar } from './AiToolbar';
 import { createMiniEditorSchema } from './extensions';
 import { BubbleMenu } from './extensions/CustomBubbleMenu/BubbleMenu';
 import cls from './mini.module.scss';
@@ -25,10 +20,8 @@ const Editor: React.FC<{
   limit?: number;
   onUpdate: (content: BlockLevelZero) => void;
 }> = ({ content, limit, minHeight, onUpdate }) => {
-  const toast = useToast();
   const [aiLoading, setAiLoading] = useState(false);
-  const [rewriting, setRewriting] = useState('');
-  const [animate, setAnimate] = useState<boolean>(false);
+  const [finalAnimation, setFinalAnimation] = useState<boolean>(false);
   const editor = useEditor({
     extensions: [
       ...schema.extensions,
@@ -57,72 +50,30 @@ const Editor: React.FC<{
     editor.commands.setContent(content);
   }, [content]);
 
-  useEffect(() => {
-    if (!rewriting || !editor) {
-      return;
-    }
-
-    editor!
-      .chain()
-      .focus()
-      .setContent(
-        generateJSON(rewriting, editor!.extensionManager.extensions),
-        false
-      )
-      .scrollIntoView()
-      .focus()
-      .run();
-  }, [rewriting]);
-
-  const onRewrite = async () => {
-    setAiLoading(true);
-    const text = editor!.getText()!;
-    const res = await aiOperation({ orgId: 'acme', type: 'rewrite', text });
-    if (!res.ok) {
-      toast.add({ title: i18n.errorOccurred, status: 'error' });
-      return;
-    }
-
-    editor?.chain().focus().setContent('', true).run();
-    aiStream({
-      res,
-      onAppend: (chunk) => {
-        setRewriting((prev) => `${prev}${chunk}`);
-      },
-      onFinish: () => {
-        setAnimate(true);
-        setAiLoading(false);
-
-        // We manually send an update at the end to avoid triggering Staging to often
-        setTimeout(() => {
-          onUpdate(removeEmptyContent(editor!.getJSON() as any));
-        }, 100);
-      },
-    });
-  };
-
   return (
     <div
       className={classNames(
         cls.wrapper,
-        (aiLoading || animate) && cls.showToolbar
+        (aiLoading || finalAnimation) && cls.showToolbar
       )}
     >
       {editor && <BubbleMenu editor={editor} />}
-      <div className={cls.toolbar}>
-        <TooltipFull msg="Improve the style of content with AI. Nothing will be added or deleted.">
-          <Button onClick={onRewrite} loading={aiLoading} size="s">
-            <IconWand /> Rewrite
-          </Button>
-        </TooltipFull>
-      </div>
+      <AIToolbar
+        className={cls.toolbar}
+        editor={editor}
+        onStart={() => setAiLoading(true)}
+        onEnd={() => {
+          setAiLoading(false);
+          setFinalAnimation(true);
+        }}
+      />
       <div
         className={classNames(
           cls.animWrapper,
           aiLoading && cls.loading,
-          animate && cls.finish
+          finalAnimation && cls.finish
         )}
-        onAnimationEnd={() => setAnimate(false)}
+        onAnimationEnd={() => setFinalAnimation(false)}
       >
         <EditorContent
           editor={editor}

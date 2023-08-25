@@ -1,4 +1,4 @@
-import { envs, l } from '@specfy/core';
+import { envs, l as logger } from '@specfy/core';
 import type { FastifyReply } from 'fastify';
 import OpenAI from 'openai';
 import type { Stream } from 'openai/streaming';
@@ -7,25 +7,22 @@ export const openai = new OpenAI({
   apiKey: envs.OPENAI_KEY || '',
 });
 
-export async function aiRewrite(
-  text: string
-): Promise<Stream<OpenAI.Chat.Completions.ChatCompletionChunk>> {
-  l.info('Generating a rewrite');
+const l = logger.child({ svc: 'ai' });
+
+export async function aiCompletion({
+  orgId,
+  messages,
+}: {
+  orgId: string;
+  messages: OpenAI.Chat.Completions.CreateChatCompletionRequestMessage[];
+}): Promise<Stream<OpenAI.Chat.Completions.ChatCompletionChunk>> {
+  l.info({ orgId }, 'Completion start');
   const res = await openai.chat.completions.create({
-    messages: [
-      {
-        role: 'system',
-        content:
-          'You rewrite content you are provided with for a professional american technical engineer. Do not use adverb or subjective language.',
-      },
-      {
-        role: 'user',
-        content: text,
-      },
-    ],
+    messages,
     stream: true,
     model: 'gpt-3.5-turbo',
     max_tokens: 2000,
+    user: orgId,
   });
 
   return res;
@@ -46,12 +43,13 @@ export async function aiStream(
     const content = part.choices[0].delta.content || '';
 
     if (content) {
+      console.log('content', content, '---', JSON.stringify({ content }));
       res.raw.write(`data: ${JSON.stringify({ content })}`);
       res.raw.write('\n\n');
     }
   }
 
-  l.info('Rewrite done');
+  l.info('Completion done');
 
   res.raw.end();
 }

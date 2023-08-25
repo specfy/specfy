@@ -7,12 +7,10 @@ import type {
   ApiDocument,
   ApiProject,
   BlockLevelZero,
-} from '@specfy/models';
-import type {
   IGNORED_COMPONENT_KEYS_CONST,
   IGNORED_DOCUMENT_KEYS_CONST,
   IGNORED_PROJECT_KEYS_CONST,
-} from '@specfy/models/src/revisions/constants';
+} from '@specfy/models';
 import type { Change } from 'diff';
 
 export type Allowed = ApiComponent | ApiDocument | ApiProject;

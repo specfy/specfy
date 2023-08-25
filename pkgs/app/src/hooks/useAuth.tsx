@@ -5,13 +5,18 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 import { getMe } from '../api/me';
 
+interface CTX {
+  orgId?: string;
+  projectId?: string;
+}
 interface AuthContextInterface {
   user: ApiMe | null;
+  ctx: CTX;
   currentPerm: ApiMe['perms'][0] | null;
   tryLogin: () => Promise<boolean>;
   login: () => void;
   logout: () => void;
-  setCtx: (ctx: { orgId?: string; projectId?: string }) => void;
+  setCtx: (ctx: CTX) => void;
 }
 
 const AuthContext = createContext<AuthContextInterface>({} as any);
@@ -23,7 +28,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const location = useLocation();
 
   const [user, setUser] = useState<ApiMe | null>(null);
-  const [ctx, setCtx] = useState<{ orgId?: string; projectId?: string }>({});
+  const [ctx, setCtx] = useState<CTX>({});
 
   const tryLogin = async () => {
     const data = await getMe();
@@ -78,13 +83,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const value = useMemo(() => {
     return {
       user,
+      ctx,
       currentPerm,
       tryLogin: tryLogin,
       login: handleLogin,
       logout: handleLogout,
       setCtx,
     };
-  }, [user, currentPerm]);
+  }, [user, currentPerm, ctx]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

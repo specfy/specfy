@@ -1,14 +1,11 @@
 import type { ComponentType, ApiComponent } from '@specfy/models';
+import { supportedTypeToText } from '@specfy/models/src/components/constants';
 import { useEffect, useMemo } from 'react';
 
 import { createLocal } from '../../common/components';
 import { useComponentsStore, useProjectStore } from '../../common/store';
 import { slugify } from '../../common/string';
-import {
-  supportedArray,
-  supportedIndexed,
-  supportedTypeToText,
-} from '../../common/techs';
+import { supportedArray, supportedIndexed } from '../../common/techs';
 import type { OptionGroup, OptionValue } from '../Form/MultiSelect';
 import { MultiSelect } from '../Form/MultiSelect';
 

@@ -66,7 +66,6 @@ import {
   SiSupabase,
 } from '@icons-pack/react-simple-icons';
 import type { IconType } from '@icons-pack/react-simple-icons/types';
-import type { ApiComponent } from '@specfy/models';
 import type { AllowedKeys, TechItem } from '@specfy/stack-analyser';
 import { listTech } from '@specfy/stack-analyser/dist/common/techs.generated';
 
@@ -192,35 +191,3 @@ Object.values(supportedArray).forEach((v) => {
 });
 
 export const supportedHostname = supportedArray.filter((i) => i.regHostname);
-
-export const supportedTypeToText: Record<TechInfo['type'], string> = {
-  api: 'api',
-  app: 'application',
-  ci: 'ci',
-  db: 'database',
-  etl: 'etl',
-  hosting: 'hosting',
-  language: 'language',
-  messaging: 'queue',
-  network: 'network',
-  saas: 'third-party',
-  storage: 'storage',
-  tool: 'tool',
-};
-
-export const internalTypeToText: Record<ApiComponent['type'], string> = {
-  service: 'Service',
-  api: 'API',
-  app: 'Application',
-  ci: 'CI',
-  db: 'Database',
-  etl: 'ETL',
-  hosting: 'Hosting',
-  language: 'Language',
-  messaging: 'Messaging',
-  network: 'Network',
-  project: 'Project',
-  saas: 'Saas',
-  storage: 'Storage',
-  tool: 'Tool',
-};

@@ -1,4 +1,5 @@
 import type { ApiComponent } from '@specfy/models';
+import { internalTypeToText } from '@specfy/models/src/components/constants';
 import { IconCircleArrowRight } from '@tabler/icons-react';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
@@ -7,7 +8,6 @@ import { useNavigate } from 'react-router-dom';
 import { createLocal } from '../../../../common/components';
 import { useComponentsStore, useProjectStore } from '../../../../common/store';
 import { slugify, titleSuffix } from '../../../../common/string';
-import { internalTypeToText } from '../../../../common/techs';
 import { Button } from '../../../../components/Form/Button';
 import { Input } from '../../../../components/Form/Input';
 import { SelectFull } from '../../../../components/Form/Select';

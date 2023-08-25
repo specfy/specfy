@@ -102,9 +102,14 @@ export const Project: React.FC = () => {
       return;
     }
 
-    setCtx({ orgId: proj.orgId, projectId: proj.id });
     setLoading(getComps.isLoading || getProjects.isLoading);
   }, [loading, proj, getComps.data, getProjects.data]);
+  useEffect(() => {
+    if (!proj) {
+      return;
+    }
+    setCtx({ orgId: proj.orgId, projectId: proj.id });
+  }, [proj]);
 
   if (loading) {
     return (

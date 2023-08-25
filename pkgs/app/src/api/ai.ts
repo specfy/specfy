@@ -5,6 +5,7 @@ import { API_HOSTNAME } from '../common/envs';
 export async function aiOperation(
   body: PostAiOperation['Body']
 ): Promise<Response> {
+  console.debug('AI stream start');
   const res = await fetch(new URL(`${API_HOSTNAME}/0/ai`), {
     method: 'POST',
     body: JSON.stringify(body),
