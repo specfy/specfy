@@ -5,8 +5,8 @@ import {
   aiCompletion,
   aiPromptProjectDescription,
   aiPromptRewrite,
+  aiStream,
 } from '@specfy/models';
-import { aiStream } from '@specfy/models/src/ai/openai.js';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 

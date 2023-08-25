@@ -13,11 +13,11 @@ COPY pkgs/api/package.json ./pkgs/api/package.json
 # COPY pkgs/app/package.json ./pkgs/app/package.json
 COPY pkgs/core/package.json ./pkgs/core/package.json
 COPY pkgs/db/package.json ./pkgs/db/package.json
+COPY pkgs/emails/package.json ./pkgs/emails/package.json
 COPY pkgs/github/package.json ./pkgs/github/package.json
 COPY pkgs/github-sync/package.json ./pkgs/github-sync/package.json
 COPY pkgs/models/package.json ./pkgs/models/package.json
 COPY pkgs/socket/package.json ./pkgs/socket/package.json
-
 
 RUN ./clean_package_json.sh './package.json'
 RUN ./clean_package_json.sh './**/*/package.json'
@@ -44,7 +44,7 @@ RUN true \
 # At this point nothing can be cached anymore
 COPY . /app/tmp
 
-RUN ls -lah ./node_modules/
+# RUN ls -lah ./node_modules/
 
 ARG git_hash
 ENV GIT_HASH ${git_hash:-dev}

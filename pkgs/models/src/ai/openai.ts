@@ -43,7 +43,6 @@ export async function aiStream(
     const content = part.choices[0].delta.content || '';
 
     if (content) {
-      console.log('content', content, '---', JSON.stringify({ content }));
       res.raw.write(`data: ${JSON.stringify({ content })}`);
       res.raw.write('\n\n');
     }
