@@ -1,13 +1,12 @@
 import type { BlockLevelZero } from '@specfy/models';
 import { IconWand } from '@tabler/icons-react';
 import { CharacterCount } from '@tiptap/extension-character-count';
-import { useEditor, EditorContent } from '@tiptap/react';
+import { useEditor, EditorContent, generateJSON } from '@tiptap/react';
 import classNames from 'classnames';
 import type React from 'react';
 import { useMemo, useEffect, useState } from 'react';
 
-import { aiOperation } from '../../api/ai';
-import { isError } from '../../api/helpers';
+import { aiOperation, aiStream } from '../../api/ai';
 import { removeEmptyContent } from '../../common/content';
 import { i18n } from '../../common/i18n';
 import { useToast } from '../../hooks/useToast';
@@ -28,6 +27,7 @@ const Editor: React.FC<{
 }> = ({ content, limit, minHeight, onUpdate }) => {
   const toast = useToast();
   const [aiLoading, setAiLoading] = useState(false);
+  const [rewriting, setRewriting] = useState('');
   const [animate, setAnimate] = useState<boolean>(false);
   const editor = useEditor({
     extensions: [
@@ -36,7 +36,6 @@ const Editor: React.FC<{
         limit,
       }),
     ],
-
     onUpdate: (e) => {
       onUpdate(removeEmptyContent(e.editor.getJSON() as any));
     },
@@ -47,34 +46,59 @@ const Editor: React.FC<{
             content: [{ type: 'paragraph' }],
           }
         : content,
+    editable: !aiLoading,
   });
 
   useEffect(() => {
-    if (!editor || editor.isDestroyed) return;
+    if (!editor || editor.isDestroyed) {
+      return;
+    }
 
     editor.commands.setContent(content);
   }, [content]);
+
+  useEffect(() => {
+    if (!rewriting || !editor) {
+      return;
+    }
+
+    editor!
+      .chain()
+      .focus()
+      .setContent(
+        generateJSON(rewriting, editor!.extensionManager.extensions),
+        false
+      )
+      .scrollIntoView()
+      .focus()
+      .run();
+  }, [rewriting]);
 
   const onRewrite = async () => {
     setAiLoading(true);
     const text = editor!.getText()!;
     const res = await aiOperation({ orgId: 'acme', type: 'rewrite', text });
-    setAiLoading(false);
-    if (isError(res)) {
+    if (!res.ok) {
       toast.add({ title: i18n.errorOccurred, status: 'error' });
       return;
     }
 
-    editor!.commands.setContent(
-      `<p>${res.data.text
-        .replace('\n\n', '\n')
-        .split('\n')
-        .join('</p><p>')}</p>`
-    );
-    setAnimate(true);
-    setTimeout(() => {
-      onUpdate(removeEmptyContent(editor!.getJSON() as any));
-    }, 100);
+    editor?.chain().focus().setContent('', true).run();
+    aiStream({
+      res,
+      onAppend: (chunk) => {
+        setRewriting((prev) => `${prev}${chunk}`);
+      },
+      onFinish: () => {
+        setAnimate(true);
+        setAiLoading(false);
+
+        // We manually send an update at the end to avoid triggering Staging to often
+        setTimeout(() => {
+          onUpdate(removeEmptyContent(editor!.getJSON() as any));
+        }, 100);
+      },
+    });
   };
 
   return (
@@ -86,7 +110,7 @@ const Editor: React.FC<{
     >
       {editor && <BubbleMenu editor={editor} />}
       <div className={cls.toolbar}>
-        <TooltipFull msg="Rewrite content with AI">
+        <TooltipFull msg="Improve the style of content with AI. Nothing will be added or deleted.">
           <Button onClick={onRewrite} loading={aiLoading} size="s">
             <IconWand /> Rewrite
           </Button>
@@ -104,6 +128,7 @@ const Editor: React.FC<{
           editor={editor}
           className={cls.editor}
           style={{ minHeight }}
+          readOnly={aiLoading}
         />
       </div>
     </div>

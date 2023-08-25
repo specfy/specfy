@@ -1,6 +1,7 @@
 import { envs, schemaOrgId } from '@specfy/core';
 import type { PostAiOperation } from '@specfy/models';
 import { aiRewrite } from '@specfy/models';
+import { aiStream } from '@specfy/models/src/ai/openai.js';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
@@ -66,7 +67,8 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
 
       if (data.type === 'rewrite') {
         const rewrite = await aiRewrite(data.text);
-        return res.status(200).send({ data: { text: rewrite.content } });
+        await aiStream(res, rewrite);
+        return;
       }
 
       return notFound(res);
