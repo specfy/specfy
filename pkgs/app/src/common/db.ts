@@ -1,3 +1,4 @@
+import type { AiOperationType } from '@specfy/models';
 import type { Table } from 'dexie';
 import Dexie from 'dexie';
 
@@ -7,7 +8,9 @@ export interface AICompletion {
   projectId: string;
   title: string;
   content: string;
+  type: AiOperationType;
   createdAt: string;
+  startedAt: string | null;
 }
 
 export class MySubClassedDexie extends Dexie {

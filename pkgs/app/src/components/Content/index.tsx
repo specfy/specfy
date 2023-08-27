@@ -372,10 +372,11 @@ export const ContentBlock: React.FC<{
   return <div>unsupported block &quot;{JSON.stringify(block)}&quot;</div>;
 };
 
-export const Presentation: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
-  return <div className={cls.content}>{children}</div>;
+export const Presentation: React.FC<{
+  children: React.ReactNode;
+  size?: 'm' | 'l';
+}> = ({ children, size = 'm' }) => {
+  return <div className={classnames(cls.content, cls[size])}>{children}</div>;
 };
 
 export const ContentDoc: React.FC<{
@@ -394,19 +395,17 @@ export const ContentDoc: React.FC<{
       return null;
     }
     return (
-      <Presentation>
-        <div className={cls.placeholder}>
-          {placeholder ?? 'Write something ...'}
-        </div>
-      </Presentation>
+      <div className={cls.placeholder}>
+        {placeholder ?? 'Write something ...'}
+      </div>
     );
   }
 
   return (
-    <Presentation>
+    <>
       {doc.content.map((blk, i) => {
         return <ContentBlock block={blk} key={i} pl={payload} />;
       })}
-    </Presentation>
+    </>
   );
 };

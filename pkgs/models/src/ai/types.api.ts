@@ -12,14 +12,16 @@ export type AiOperationProjectOnboarding = {
   type: 'project.onboarding';
 };
 
+export type AiOperationAll =
+  | AiOperationRewrite
+  | AiOperationProjectDescription
+  | AiOperationProjectOnboarding;
+export type AiOperationType = Pick<AiOperationAll, 'type'>['type'];
 export type PostAiOperation = Res<{
   Body: {
     orgId: string;
     projectId?: string | undefined;
-    operation:
-      | AiOperationRewrite
-      | AiOperationProjectDescription
-      | AiOperationProjectOnboarding;
+    operation: AiOperationAll;
   };
   Success: {
     data: {

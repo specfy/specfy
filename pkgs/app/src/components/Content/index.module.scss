@@ -1,6 +1,10 @@
+/* stylelint-disable selector-class-pattern */
 .content {
-  font-size: var(--font);
-  line-height: var(--lh-m);
+  --content-font: var(--font);
+  --content-lh: var(--lh-m);
+
+  font-size: var(--content-font);
+  line-height: var(--content-lh);
 
   .mb {
     margin-bottom: var(--spc-l);
@@ -73,8 +77,8 @@
   p {
     min-height: 22px;
     margin-bottom: var(--spc-l);
-    font-size: var(--font);
-    line-height: var(--lh-m);
+    font-size: var(--content-font);
+    line-height: var(--content-lh);
   }
 
   strong {
@@ -133,6 +137,7 @@
 
     >li {
       display: list-item;
+      min-height: var(--lh-l);
       margin-left: var(--spc-xl);
       list-style-type: disc;
 
@@ -168,6 +173,16 @@
     }
   }
 
+
+  &.m {
+    --content-font: var(--font);
+    --content-lh: var(--lh-m);
+  }
+
+  &.l {
+    --content-font: var(--font-m);
+    --content-lh: var(--lh-l);
+  }
 }
 
 ul.taskList {

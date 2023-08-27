@@ -208,7 +208,7 @@ export const Project: React.FC = () => {
               path="/doc/*"
               element={<ProjectDocumentation proj={proj} />}
             />
-            <Route path="/assistant" element={<ProjectAssistant />} />
+            <Route path="/assistant/*" element={<ProjectAssistant />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>

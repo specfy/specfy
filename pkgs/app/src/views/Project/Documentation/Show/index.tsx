@@ -89,11 +89,13 @@ export const ProjectDocumentationShow: React.FC<{
 
           <div className={cls.content}>
             {typeof content == 'string' ? (
-              <Presentation>
+              <Presentation size="l">
                 <ReactMarkdown>{content}</ReactMarkdown>
               </Presentation>
             ) : (
-              <ContentDoc doc={content} placeholder="Nothing to show." />
+              <Presentation size="l">
+                <ContentDoc doc={content} placeholder="Nothing to show." />
+              </Presentation>
             )}
           </div>
         </div>

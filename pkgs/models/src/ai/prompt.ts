@@ -66,14 +66,59 @@ export function aiPromptProjectOnboarding(opts: {
   return [
     {
       role: 'system',
-      content: `You are technical documentation assistant, with the information provided write a typical README.md that you would find in Github.
-Write 4 sections:
-1. A general introduction for project titled Overview
-2. A Get Started section, bullet point sentences with one emoji per line. Use the list of document provided, ONLY use what you would find in a README (e.g: installation, guidelines, deployment, contributing, etc.)
+      content: `You are technical writer. With the information provided write a README.md that you would find in Github.
+Split in 4 sections:
+1. An Overview section
+2. A Get Started section, bullet point sentences with one emoji per line. Use the list of documents provided, ONLY use what you would find in a README (e.g: installation, guidelines, deployment, contributing, etc.)
 3. A Technology section, highlighting 3-5 relevant technologies in the list, with a quick sentence how about what they do and the link
-4. A next step section, only use generic advices and the links in the last list
+4. A next step section, write use generic advices and use the links in the last list
 
+If the provided information needed to write a section are not enough then simply write: "Insufficient information.". The writer should refrain using links that were not provided by the user.
+End the content with encouraging words with emojis.
 Output in markdown`,
+    },
+    {
+      role: 'user',
+      content: `Project name is Analytics
+The Analytics project collects data from various sources, processes it, and presents it in dashboards and reports. These outputs show key indicators and trends for the business.
+
+Technologies:
+Hosting: GCP http://localhost:5173/acme/analytics/c/undefined-gcp, GCE http://localhost:5173/acme/analytics/c/undefined-gce
+Database: Postgres http://localhost:5173/acme/analytics/c/undefined-postgres
+Depends on internal product: Billing http://localhost:5173/acme/analytics/c/undefined-billing
+
+Documentation:
+http://localhost:5173/acme/analytics/doc/readme: README
+http://localhost:5173/acme/analytics/doc/docs/contributing: Contributing
+http://localhost:5173/acme/analytics/doc/docs/installation: Installation
+http://localhost:5173/acme/analytics/doc/docs/deploy: Deploy
+http://localhost:5173/acme/analytics/doc/docs/deploy.terraform: Deploy With Terraform
+http://localhost:5173/acme/analytics/doc/docs/foobar: Foobar
+
+Links:
+Github: https://github.com/specfy/specfy
+Discord: https://discord.gg/foobar
+Infrastructure Flow: http://localhost:5173/acme/analytics/flow`,
+    },
+    {
+      role: 'assistant',
+      content: `# Overview
+The Analytics project collects data from various sources, processes it, and presents it in dashboards and reports. These outputs show key indicators and trends for the business. The project also employs machine learning and statistical methods to analyze data, helping businesses make data-based decisions.
+
+# Get Started
+- 📥 **Installation**: Clone the repository from [Github](https://github.com/specfy/specfy)
+
+# Technology
+The Analytics project utilizes the following technologies:
+- The project is hosted on [GCP](http://localhost:5173/acme/analytics/c/jZDC3Lsc01-gcp)
+- We are using [Postgres](http://localhost:5173/acme/analytics/c/jZDC3Lsc04-postgresql) as the main Database
+- You would want to checkout out [Billing](http://localhost:5173/acme/analytics/c/undefined-billing) project.
+
+# Next Steps
+To further explore the project, you can:
+- Check the [Github repository](https://github.com/specfy/specfy)
+- Join our community on the [Discord](https://discord.gg/foobar)
+- Follow the infrastructure flow [here](http://localhost:5173/acme/analytics/flow) to understand the project's architecture.`,
     },
     {
       role: 'user',

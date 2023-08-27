@@ -6,7 +6,7 @@ import type {
 import { IconRepeat } from '@tabler/icons-react';
 import { useMemo } from 'react';
 
-import { ContentDoc } from '..';
+import { ContentDoc, Presentation } from '..';
 import { useGetDocument } from '../../../api';
 import type { Payload } from '../../../common/content';
 import { useDocumentsStore, useProjectStore } from '../../../common/store';
@@ -74,7 +74,9 @@ export const ContentBlockDocument: React.FC<{
 
   return (
     <div id={data.slug}>
-      <ContentDoc doc={content} pl={pl} />
+      <Presentation>
+        <ContentDoc doc={content} pl={pl} />
+      </Presentation>
     </div>
   );
 };

@@ -3,23 +3,11 @@
 }
 
 .main {
-  padding: 0 var(--spc-6xl);
+  padding: 0 var(--spc-6xl) var(--spc-6xl);
 }
 
-.input {
-  position: absolute;
-  bottom: 0;
-  width: 100%;
-  padding: var(--spc-6xl) var(--spc-6xl);
-}
-
-.button {
-  width: 100%;
-  padding: var(--spc-l);
-
-  border: 1px solid var(--border2);
-  border-radius: var(--radius2);
-  box-shadow: var(--shadow2);
+.banner {
+  margin: 0 var(--spc-6xl) var(--spc-xl);
 }
 
 .blocs {
@@ -39,10 +27,6 @@
   &:hover {
     border-color: var(--purple-8);
   }
-}
-
-.back {
-  margin: calc(-1 * var(--spc-l)) 0 var(--spc-m) calc(-1 * var(--spc-l));
 }
 
 .sidebar {
