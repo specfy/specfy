@@ -6,7 +6,7 @@ export type AiOperationRewrite = {
   text: string;
 };
 export type AiOperationProjectDescription = {
-  type: 'projectDescription';
+  type: 'project.description';
 };
 
 export type PostAiOperation = Res<{

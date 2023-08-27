@@ -18,7 +18,7 @@ import { TooltipFull } from '../../Tooltip';
 export interface AIToolbarProps {
   className?: string;
   editor: Editor | null;
-  tools?: Array<'projectDescription' | 'rewrite'>;
+  tools?: Array<'project.description' | 'rewrite'>;
   onStart: () => void;
   onEnd: (success: boolean) => void;
 }
@@ -108,7 +108,7 @@ export const AIToolbar: React.FC<AIToolbarProps> = ({
         <Dropdown.Portal>
           <Dropdown.Content>
             <Dropdown.Group>
-              {tools.includes('projectDescription') && (
+              {tools.includes('project.description') && (
                 <TooltipFull
                   msg="Describe the project from all the information Specfy have."
                   side="right"

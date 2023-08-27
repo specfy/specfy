@@ -43,7 +43,7 @@ function BodyVal(req: FastifyRequest) {
         ctx.addIssue({
           path: ['projectId'],
           code: z.ZodIssueCode.custom,
-          message: "projectId is required for operation 'projectDescription'",
+          message: "projectId is required for operation 'project.description'",
         });
       }
     });

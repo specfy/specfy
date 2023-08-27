@@ -70,7 +70,7 @@ export const ProjectOverview: React.FC<{
               <EditorMini
                 key={project.id}
                 doc={project.description}
-                aiTools={['projectDescription', 'rewrite']}
+                aiTools={['project.description', 'rewrite']}
                 onUpdate={onUpdate}
               />
             )}
