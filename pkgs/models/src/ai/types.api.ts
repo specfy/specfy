@@ -8,12 +8,18 @@ export type AiOperationRewrite = {
 export type AiOperationProjectDescription = {
   type: 'project.description';
 };
+export type AiOperationProjectOnboarding = {
+  type: 'project.onboarding';
+};
 
 export type PostAiOperation = Res<{
   Body: {
     orgId: string;
     projectId?: string | undefined;
-    operation: AiOperationRewrite | AiOperationProjectDescription;
+    operation:
+      | AiOperationRewrite
+      | AiOperationProjectDescription
+      | AiOperationProjectOnboarding;
   };
   Success: {
     data: {

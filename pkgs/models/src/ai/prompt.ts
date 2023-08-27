@@ -46,7 +46,7 @@ Use the list of technologies to describe how it works. Choose only the most rele
     },
     {
       role: 'user',
-      content: `Project name is "${opts.project.name}"
+      content: `Project name is ${opts.project.name}
 
 ${componentsToPrompt(opts.components)}
   `,
@@ -83,13 +83,14 @@ Output in HTML without the body tag`,
     },
     {
       role: 'user',
-      content: `Project name: "${opts.project.name}"
-      ${prosemirrorToText(opts.project.description)}
+      content: `Project name is ${opts.project.name}
+${prosemirrorToText(opts.project.description)}
 
 ${componentsToPrompt(opts.components, true)}
 
 ${documentsToPrompt(opts.documents)}
 
+Links:
 ${opts.project.links.map((link) => {
   return `${link.title}: ${link.url}`;
 })}

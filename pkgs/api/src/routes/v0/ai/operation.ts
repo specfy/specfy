@@ -4,6 +4,7 @@ import type { PostAiOperation } from '@specfy/models';
 import {
   aiCompletion,
   aiPromptProjectDescription,
+  aiPromptProjectOnboarding,
   aiPromptRewrite,
   aiStream,
 } from '@specfy/models';
@@ -119,6 +120,41 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         const rewrite = await aiCompletion({
           orgId: data.orgId,
           messages: aiPromptProjectDescription({ project, components }),
+        });
+        await aiStream(res, rewrite);
+        return;
+      }
+
+      if (op.type === 'project.onboarding') {
+        const project = await prisma.projects.findUnique({
+          where: { id: data.projectId! },
+          select: {
+            name: true,
+            description: true,
+            slug: true,
+            orgId: true,
+            links: true,
+          },
+        });
+        const components = await prisma.components.findMany({
+          where: { orgId: data.orgId, projectId: data.projectId! },
+          select: { name: true, type: true, techId: true, slug: true },
+        });
+        const documents = await prisma.documents.findMany({
+          where: { orgId: data.orgId, projectId: data.projectId! },
+          select: { name: true, slug: true },
+        });
+        if (!project) {
+          return serverError(res);
+        }
+
+        const rewrite = await aiCompletion({
+          orgId: data.orgId,
+          messages: aiPromptProjectOnboarding({
+            project,
+            components,
+            documents,
+          }),
         });
         await aiStream(res, rewrite);
         return;

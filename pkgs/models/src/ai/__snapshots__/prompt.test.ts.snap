@@ -12,7 +12,7 @@ Use the list of technologies to describe how it works. Choose only the most rele
     "role": "system",
   },
   {
-    "content": "Project name is \\"Analytics\\"
+    "content": "Project name is Analytics
 
 Technologies:
 Hosting: GCP, GCE
@@ -30,33 +30,47 @@ Depends on internal product: Billing
 exports[`aiPromptProjectOnboarding > should output the prompt 1`] = `
 [
   {
-    "content": "You are technical documentation assistant, you are given a description, a file tree of the documentation and a list of technology. Output in an HTML format only what is inside the body tag. Documentation link are HTML, prepend the URL with \\"http://localhost:5173/acme/analytics/doc/\\"
-1. Write a general introduction for project
-2. A list of task to be ready to code on this project, only pick the relevant documentation link that would be interesting for an onboarding
-3. Highlight important details about the technology",
+    "content": "You are technical documentation assistant, you are given a description, a list of files for the documentation, a list of technologies used in the project and a list of link.
+Write 4 sections:
+1. A general introduction for project titled Onboarding
+2. A list of steps in english based on the documentation, only pick the relevant link that would be interesting for an onboarding with explanation. Select one relevant emoji per step.
+Prepend the link with the url \\"http://localhost:5173/acme/analytics/doc/\\"
+Following this pattern:
+<li>{emoji} <strong>{name of the step}</strong>: {explanation} {link with the name}</li>
+3. Highlight the most important technologies from the list and explain what they do in one sentence. Maximum 5.
+Link this resource by prepending this url \\"http://localhost:5173/acme/analytics/c/\\" to the id
+Following this pattern:
+<li><strong>{name of the technology}</strong>: {explanation} {link with the name}</li>
+4. Next steps in bullet point. Use the links if any.
+
+Output in HTML without the body tag",
     "role": "system",
   },
   {
-    "content": "Project name: \\"Analytics\\"
+    "content": "Project name is Analytics
 The Analytics project collects data from various sources, processes it, and presents it in dashboards and reports. These outputs show key indicators and trends for the business.
 The project also employs machine learning and statistical methods to analyze data. This analysis helps in predicting trends and making recommendations based on past data. This project assists businesses in making data-based decisions.
 
 
 
-Documentation:
-/readme: README
-/docs/contributing: Contributing
-/docs/installation: Installation
-/docs/deploy: Deploy
-/docs/deploy.terraform: Deploy With Terraform
-
 Technologies:
-Hosting: GCP, GCE
-Service: Aggregator
-Saas: Algolia
-Database: Postgres
-Messaging: SQS
-Depends on internal product: Billing
+Hosting: GCP (id: gcp), GCE (id: gce)
+Service: Aggregator (id: aggr)
+Saas: Algolia (id: algolia)
+Database: Postgres (id: postgres)
+Messaging: SQS (id: sqs)
+Depends on internal product: Billing (id: billing)
+
+Documentation:
+/readme : README
+/docs/contributing : Contributing
+/docs/installation : Installation
+/docs/deploy : Deploy
+/docs/deploy.terraform : Deploy With Terraform
+
+Links:
+Github: https://github.com/specfy/specfy
+Infrastructure Flow: http://localhost:5173/acme/analytics/flow
 ",
     "role": "user",
   },
