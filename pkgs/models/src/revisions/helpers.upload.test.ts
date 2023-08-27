@@ -45,10 +45,9 @@ describe('uploadedDocumentsToDB', () => {
           typeId: expect.any(String),
           current: {
             blobId: null,
-            content: {
-              content: [],
-              type: 'doc',
-            },
+            content: JSON.stringify({ type: 'doc', content: [] }),
+            format: 'pm',
+            hash: 'e725106e8694ce174f209dd90839e682c1219c1f77c4c451ca8093de5f8d9950',
             id: expect.any(String),
             locked: false,
             name: 'Readme',

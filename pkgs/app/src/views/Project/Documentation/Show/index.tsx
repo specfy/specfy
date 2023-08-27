@@ -2,11 +2,12 @@ import type { ApiDocument, ApiProject, BlockLevelZero } from '@specfy/models';
 import { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Skeleton from 'react-loading-skeleton';
+import ReactMarkdown from 'react-markdown';
 import { useParams } from 'react-router-dom';
 
 import { useGetDocumentBySlug } from '../../../../api';
 import { titleSuffix } from '../../../../common/string';
-import { ContentDoc } from '../../../../components/Content';
+import { ContentDoc, Presentation } from '../../../../components/Content';
 import { Flex } from '../../../../components/Flex';
 import { HeadingTree } from '../../../../components/HeadingTree';
 import { NotFound } from '../../../../components/NotFound';
@@ -88,7 +89,9 @@ export const ProjectDocumentationShow: React.FC<{
 
           <div className={cls.content}>
             {typeof content == 'string' ? (
-              content
+              <Presentation>
+                <ReactMarkdown>{content}</ReactMarkdown>
+              </Presentation>
             ) : (
               <ContentDoc doc={content} placeholder="Nothing to show." />
             )}

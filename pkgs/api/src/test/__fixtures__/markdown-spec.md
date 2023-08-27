@@ -1,4 +1,4 @@
-# Markdown Specification
+# ProseMirror Parsed Markdown
 
 **You're working on a project featuring Markdown?**
 

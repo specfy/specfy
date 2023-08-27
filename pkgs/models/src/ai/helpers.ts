@@ -12,7 +12,7 @@ import type { ComponentForPrompt } from './types.js';
  */
 export function componentsToPrompt(
   components: ComponentForPrompt[],
-  withId: boolean = false
+  withUrl?: string
 ): string {
   const groups: Partial<Record<ComponentType, ComponentForPrompt[]>> = {};
   for (const component of components) {
@@ -28,11 +28,21 @@ ${Object.entries(groups)
   .map(([key, items]) => {
     if (key === 'project') {
       return `Depends on internal product: ${items
-        .map((item) => `${item.name}${withId ? ` (id: ${item.slug})` : ''}`)
+        .map(
+          (item) =>
+            `${item.name}${
+              withUrl ? ` ${withUrl}/c/${item.id}-${item.slug}` : ''
+            }`
+        )
         .join(', ')}`;
     }
     return `${internalTypeToText[key as ComponentType]}: ${items
-      .map((item) => `${item.name}${withId ? ` (id: ${item.slug})` : ''}`)
+      .map(
+        (item) =>
+          `${item.name}${
+            withUrl ? ` ${withUrl}/c/${item.id}-${item.slug}` : ''
+          }`
+      )
       .join(', ')}`;
   })
   .join('\n')}`;
@@ -45,12 +55,13 @@ ${Object.entries(groups)
  * /docs/contributing: Contributing
  */
 export function documentsToPrompt(
-  documents: Array<Pick<Documents, 'name' | 'slug'>>
+  documents: Array<Pick<Documents, 'name' | 'slug'>>,
+  baseUrl: string
 ): string {
   return `Documentation:
 ${documents
   .map((doc) => {
-    return `/${doc.slug} : ${doc.name}`;
+    return `${baseUrl}/doc/${doc.slug}: ${doc.name}`;
   })
   .join('\n')}`;
 }

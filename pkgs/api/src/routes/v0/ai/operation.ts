@@ -111,7 +111,13 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         });
         const components = await prisma.components.findMany({
           where: { orgId: data.orgId, projectId: data.projectId! },
-          select: { name: true, type: true, techId: true, slug: true },
+          select: {
+            id: true,
+            name: true,
+            type: true,
+            techId: true,
+            slug: true,
+          },
         });
         if (!project) {
           return serverError(res);
@@ -138,7 +144,13 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         });
         const components = await prisma.components.findMany({
           where: { orgId: data.orgId, projectId: data.projectId! },
-          select: { name: true, type: true, techId: true, slug: true },
+          select: {
+            id: true,
+            name: true,
+            type: true,
+            techId: true,
+            slug: true,
+          },
         });
         const documents = await prisma.documents.findMany({
           where: { orgId: data.orgId, projectId: data.projectId! },
@@ -150,6 +162,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
 
         const rewrite = await aiCompletion({
           orgId: data.orgId,
+          maxTokens: 2500,
           messages: aiPromptProjectOnboarding({
             project,
             components,

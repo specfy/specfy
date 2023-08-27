@@ -31,19 +31,14 @@ exports[`aiPromptProjectOnboarding > should output the prompt 1`] = `
 [
   {
     "content": "You are technical documentation assistant, you are given a description, a list of files for the documentation, a list of technologies used in the project and a list of link.
+With those information write a typical README that you would find in Github.
 Write 4 sections:
-1. A general introduction for project titled Onboarding
-2. A list of steps in english based on the documentation, only pick the relevant link that would be interesting for an onboarding with explanation. Select one relevant emoji per step.
-Prepend the link with the url \\"http://localhost:5173/acme/analytics/doc/\\"
-Following this pattern:
-<li>{emoji} <strong>{name of the step}</strong>: {explanation} {link with the name}</li>
-3. Highlight the most important technologies from the list and explain what they do in one sentence. Maximum 5.
-Link this resource by prepending this url \\"http://localhost:5173/acme/analytics/c/\\" to the id
-Following this pattern:
-<li><strong>{name of the technology}</strong>: {explanation} {link with the name}</li>
-4. Next steps in bullet point. Use the links if any.
+1. A general introduction for project titled Overview
+2. A Get Started section, bullet point sentences and one emoji per line. Use the list of document provided, ONLY use what you would find in a README (e.g: installation, guidelines, deployment, contributing, etc.)
+3. A Technology section, highlighting 3-5 relevant technologies in the list, with a quick sentence how about what they do and the link
+4. A next step section, only use generic advices and the links in the last list
 
-Output in HTML without the body tag",
+Output in markdown",
     "role": "system",
   },
   {
@@ -54,19 +49,19 @@ The project also employs machine learning and statistical methods to analyze dat
 
 
 Technologies:
-Hosting: GCP (id: gcp), GCE (id: gce)
-Service: Aggregator (id: aggr)
-Saas: Algolia (id: algolia)
-Database: Postgres (id: postgres)
-Messaging: SQS (id: sqs)
-Depends on internal product: Billing (id: billing)
+Hosting: GCP http://localhost:5173/acme/analytics/c/undefined-gcp, GCE http://localhost:5173/acme/analytics/c/undefined-gce
+Service: Aggregator http://localhost:5173/acme/analytics/c/undefined-aggr
+Saas: Algolia http://localhost:5173/acme/analytics/c/undefined-algolia
+Database: Postgres http://localhost:5173/acme/analytics/c/undefined-postgres
+Messaging: SQS http://localhost:5173/acme/analytics/c/undefined-sqs
+Depends on internal product: Billing http://localhost:5173/acme/analytics/c/undefined-billing
 
 Documentation:
-/readme : README
-/docs/contributing : Contributing
-/docs/installation : Installation
-/docs/deploy : Deploy
-/docs/deploy.terraform : Deploy With Terraform
+http://localhost:5173/acme/analytics/doc/readme: README
+http://localhost:5173/acme/analytics/doc/docs/contributing: Contributing
+http://localhost:5173/acme/analytics/doc/docs/installation: Installation
+http://localhost:5173/acme/analytics/doc/docs/deploy: Deploy
+http://localhost:5173/acme/analytics/doc/docs/deploy.terraform: Deploy With Terraform
 
 Links:
 Github: https://github.com/specfy/specfy

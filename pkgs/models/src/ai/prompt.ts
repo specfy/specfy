@@ -66,29 +66,23 @@ export function aiPromptProjectOnboarding(opts: {
   return [
     {
       role: 'system',
-      content: `You are technical documentation assistant, you are given a description, a list of files for the documentation, a list of technologies used in the project and a list of link.
+      content: `You are technical documentation assistant, with the information provided write a typical README.md that you would find in Github.
 Write 4 sections:
-1. A general introduction for project titled Onboarding
-2. A list of steps in english based on the documentation, only pick the relevant link that would be interesting for an onboarding with explanation. Select one relevant emoji per step.
-Prepend the link with the url "${url}/doc/"
-Following this pattern:
-<li>{emoji} <strong>{name of the step}</strong>: {explanation} {link with the name}</li>
-3. Highlight the most important technologies from the list and explain what they do in one sentence. Maximum 5.
-Link this resource by prepending this url "${url}/c/" to the id
-Following this pattern:
-<li><strong>{name of the technology}</strong>: {explanation} {link with the name}</li>
-4. Next steps in bullet point. Use the links if any.
+1. A general introduction for project titled Overview
+2. A Get Started section, bullet point sentences with one emoji per line. Use the list of document provided, ONLY use what you would find in a README (e.g: installation, guidelines, deployment, contributing, etc.)
+3. A Technology section, highlighting 3-5 relevant technologies in the list, with a quick sentence how about what they do and the link
+4. A next step section, only use generic advices and the links in the last list
 
-Output in HTML without the body tag`,
+Output in markdown`,
     },
     {
       role: 'user',
       content: `Project name is ${opts.project.name}
 ${prosemirrorToText(opts.project.description)}
 
-${componentsToPrompt(opts.components, true)}
+${componentsToPrompt(opts.components, url)}
 
-${documentsToPrompt(opts.documents)}
+${documentsToPrompt(opts.documents, url)}
 
 Links:
 ${opts.project.links.map((link) => {

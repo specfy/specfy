@@ -12,18 +12,20 @@ const l = logger.child({ svc: 'ai' });
 export async function aiCompletion({
   orgId,
   messages,
+  maxTokens = 2000,
 }: {
   orgId: string;
   messages: OpenAI.Chat.Completions.CreateChatCompletionRequestMessage[];
+  maxTokens?: number;
 }): Promise<Stream<OpenAI.Chat.Completions.ChatCompletionChunk>> {
   l.info({ orgId }, 'Completion start');
   const res = await openai.chat.completions.create({
     messages,
     stream: true,
     model: 'gpt-3.5-turbo',
-    max_tokens: 2000,
+    max_tokens: maxTokens,
     user: orgId,
-    temperature: 0.3,
+    temperature: 0.7,
   });
 
   return res;

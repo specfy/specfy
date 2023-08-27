@@ -40,9 +40,12 @@
 }
 
 .left2third {
+  position: relative;
+
   width: 57%;
   min-width: var(--w-col);
   max-width: var(--w-col);
+
   background-color: #fff;
 
   &.padded {
