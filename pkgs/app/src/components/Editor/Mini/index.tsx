@@ -6,6 +6,7 @@ import type React from 'react';
 import { useMemo, useEffect, useState } from 'react';
 
 import { removeEmptyContent } from '../../../common/content';
+import type { AIToolbarProps } from '../AiToolbar';
 import { AIToolbar } from '../AiToolbar';
 import { createMiniEditorSchema } from '../extensions';
 import { BubbleMenu } from '../extensions/CustomBubbleMenu/BubbleMenu';
@@ -14,12 +15,20 @@ import cls from './index.module.scss';
 
 const schema = createMiniEditorSchema();
 
-const Editor: React.FC<{
+export interface MiniEditorProps {
   content: BlockLevelZero;
   minHeight?: string;
   limit?: number;
+  aiTools?: AIToolbarProps['tools'];
   onUpdate: (content: BlockLevelZero) => void;
-}> = ({ content, limit, minHeight, onUpdate }) => {
+}
+const Editor: React.FC<MiniEditorProps> = ({
+  content,
+  limit,
+  minHeight,
+  aiTools,
+  onUpdate,
+}) => {
   const [aiLoading, setAiLoading] = useState(false);
   const [finalAnimation, setFinalAnimation] = useState<boolean>(false);
   const editor = useEditor({
@@ -61,6 +70,7 @@ const Editor: React.FC<{
       <AIToolbar
         className={cls.toolbar}
         editor={editor}
+        tools={aiTools}
         onStart={() => setAiLoading(true)}
         onEnd={() => {
           setAiLoading(false);
@@ -79,7 +89,6 @@ const Editor: React.FC<{
           editor={editor}
           className={cls.editor}
           style={{ minHeight }}
-          readOnly={aiLoading}
         />
       </div>
     </div>
@@ -90,17 +99,18 @@ const Editor: React.FC<{
  * It is wrapped to avoid re-render on each key stroke.
  * There might be a better solution.
  */
-export const EditorMini: React.FC<{
-  doc: BlockLevelZero;
-  onUpdate: (content: BlockLevelZero) => void;
-}> = ({ doc, onUpdate }) => {
+export const EditorMini: React.FC<
+  {
+    doc: BlockLevelZero;
+  } & Omit<MiniEditorProps, 'content'>
+> = ({ doc, ...props }) => {
   const content = useMemo(() => {
     return doc;
   }, []);
 
   return (
     <div className={cls.mini}>
-      <Editor content={content} onUpdate={onUpdate} />
+      <Editor content={content} {...props} />
     </div>
   );
 };

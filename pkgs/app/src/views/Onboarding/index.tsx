@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { createDemo } from '../../api';
 import { isError } from '../../api/helpers';
 import { i18n } from '../../common/i18n';
+import { titleSuffix } from '../../common/string';
 import { Card } from '../../components/Card';
 import { Container } from '../../components/Container';
 import { Flex } from '../../components/Flex';
@@ -35,7 +36,7 @@ export const Onboarding: React.FC = () => {
 
   return (
     <div>
-      <Helmet title={`Onboarding`} />
+      <Helmet title={`Onboarding ${titleSuffix}`} />
       <div style={{ width: '250px', position: 'absolute' }}>
         <Header />
       </div>

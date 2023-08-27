@@ -1,4 +1,4 @@
-import { IconWand, IconRefresh, IconRepeat } from '@tabler/icons-react';
+import { IconWand, IconRefresh, IconSparkles } from '@tabler/icons-react';
 import type { Editor } from '@tiptap/react';
 import { generateJSON } from '@tiptap/react';
 import classNames from 'classnames';
@@ -15,12 +15,20 @@ import { TooltipFull } from '../../Tooltip';
 
 // import cls from './index.module.scss';
 
-export const AIToolbar: React.FC<{
+export interface AIToolbarProps {
   className?: string;
   editor: Editor | null;
+  tools?: Array<'projectDescription' | 'rewrite'>;
   onStart: () => void;
   onEnd: (success: boolean) => void;
-}> = ({ className, editor, onStart, onEnd }) => {
+}
+export const AIToolbar: React.FC<AIToolbarProps> = ({
+  className,
+  editor,
+  tools = ['rewrite'],
+  onStart,
+  onEnd,
+}) => {
   const { ctx } = useAuth();
   const toast = useToast();
   const [loading, setLoading] = useState(false);
@@ -76,7 +84,7 @@ export const AIToolbar: React.FC<{
     void op({
       orgId: ctx.orgId!,
       projectId: ctx.projectId,
-      operation: { type: 'projectDescription' },
+      operation: { type: 'project.description' },
     });
   };
   const onRewrite = async () => {
@@ -100,23 +108,27 @@ export const AIToolbar: React.FC<{
         <Dropdown.Portal>
           <Dropdown.Content>
             <Dropdown.Group>
-              <TooltipFull
-                msg="Describe the project from all the information Specfy have."
-                side="right"
-              >
-                <Dropdown.Item onClick={onGenerate}>
-                  <IconRefresh />
-                  Generate
-                </Dropdown.Item>
-              </TooltipFull>
-              <TooltipFull
-                msg="Improve the formulation, nothing will be added or deleted."
-                side="right"
-              >
-                <Dropdown.Item onClick={onRewrite}>
-                  <IconRepeat /> Rewrite
-                </Dropdown.Item>
-              </TooltipFull>
+              {tools.includes('projectDescription') && (
+                <TooltipFull
+                  msg="Describe the project from all the information Specfy have."
+                  side="right"
+                >
+                  <Dropdown.Item onClick={onGenerate}>
+                    <IconRefresh />
+                    Generate
+                  </Dropdown.Item>
+                </TooltipFull>
+              )}
+              {tools.includes('rewrite') && (
+                <TooltipFull
+                  msg="Improve the formulation, nothing will be added or deleted."
+                  side="right"
+                >
+                  <Dropdown.Item onClick={onRewrite}>
+                    <IconSparkles /> Rewrite
+                  </Dropdown.Item>
+                </TooltipFull>
+              )}
             </Dropdown.Group>
           </Dropdown.Content>
         </Dropdown.Portal>

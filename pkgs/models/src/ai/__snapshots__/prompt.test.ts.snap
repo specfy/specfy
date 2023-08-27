@@ -14,7 +14,7 @@ Use the list of technologies to describe how it works. Choose only the most rele
   {
     "content": "Project name is \\"Analytics\\"
 
-The list of technologies that is used in this project:
+Technologies:
 Hosting: GCP, GCE
 Service: Aggregator
 Saas: Algolia
@@ -22,6 +22,42 @@ Database: Postgres
 Messaging: SQS
 Depends on internal product: Billing
   ",
+    "role": "user",
+  },
+]
+`;
+
+exports[`aiPromptProjectOnboarding > should output the prompt 1`] = `
+[
+  {
+    "content": "You are technical documentation assistant, you are given a description, a file tree of the documentation and a list of technology. Output in an HTML format only what is inside the body tag. Documentation link are HTML, prepend the URL with \\"http://localhost:5173/acme/analytics/doc/\\"
+1. Write a general introduction for project
+2. A list of task to be ready to code on this project, only pick the relevant documentation link that would be interesting for an onboarding
+3. Highlight important details about the technology",
+    "role": "system",
+  },
+  {
+    "content": "Project name: \\"Analytics\\"
+The Analytics project collects data from various sources, processes it, and presents it in dashboards and reports. These outputs show key indicators and trends for the business.
+The project also employs machine learning and statistical methods to analyze data. This analysis helps in predicting trends and making recommendations based on past data. This project assists businesses in making data-based decisions.
+
+
+
+Documentation:
+/readme: README
+/docs/contributing: Contributing
+/docs/installation: Installation
+/docs/deploy: Deploy
+/docs/deploy.terraform: Deploy With Terraform
+
+Technologies:
+Hosting: GCP, GCE
+Service: Aggregator
+Saas: Algolia
+Database: Postgres
+Messaging: SQS
+Depends on internal product: Billing
+",
     "role": "user",
   },
 ]

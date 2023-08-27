@@ -10,6 +10,6 @@
     "../api/src/types/vitest.d.ts"
   ],
   "exclude": [
-    "src/prisma.d.ts"
+    // "src/prisma.d.ts"
   ]
 }

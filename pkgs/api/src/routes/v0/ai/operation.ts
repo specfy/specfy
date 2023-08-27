@@ -29,14 +29,17 @@ function BodyVal(req: FastifyRequest) {
           text: z.string().min(1).max(1000),
         }),
         z.object({
-          type: z.literal('projectDescription'),
+          type: z.literal('project.description'),
+        }),
+        z.object({
+          type: z.literal('project.onboarding'),
         }),
       ]),
     })
     .strict()
     .superRefine(valPermissions(req, 'viewer'))
     .superRefine((val, ctx) => {
-      if (!val.projectId && val.operation.type === 'projectDescription') {
+      if (!val.projectId && val.operation.type === 'project.description') {
         ctx.addIssue({
           path: ['projectId'],
           code: z.ZodIssueCode.custom,
@@ -86,6 +89,8 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         return serverError(res);
       }
 
+      // TODO: cache those DB queries
+      // TODO: cache those AI results
       const data: PostAiOperation['Body'] = val.data;
       const op = data.operation;
 
@@ -98,14 +103,14 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         return;
       }
 
-      if (op.type === 'projectDescription') {
+      if (op.type === 'project.description') {
         const project = await prisma.projects.findUnique({
           where: { id: data.projectId! },
           select: { name: true },
         });
         const components = await prisma.components.findMany({
           where: { orgId: data.orgId, projectId: data.projectId! },
-          select: { name: true, type: true, techId: true },
+          select: { name: true, type: true, techId: true, slug: true },
         });
         if (!project) {
           return serverError(res);

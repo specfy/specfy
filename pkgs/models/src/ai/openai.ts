@@ -23,6 +23,7 @@ export async function aiCompletion({
     model: 'gpt-3.5-turbo',
     max_tokens: 2000,
     user: orgId,
+    temperature: 0.3,
   });
 
   return res;
