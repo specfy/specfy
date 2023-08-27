@@ -164,6 +164,76 @@ describe('POST /revisions', () => {
     expect(res.statusCode).toBe(200);
   });
 
+  it('should allow new markdown document', async () => {
+    const { token, org, project } = await seedWithProject();
+    const name = `test ${nanoid()}`;
+    const blobDoc = getBlobDocument(org, project);
+    blobDoc.format = 'md';
+    blobDoc.content = '# hello';
+
+    const res = await t.fetch.post('/0/revisions', {
+      token,
+      Body: {
+        blobs: [
+          {
+            type: 'document',
+            typeId: blobDoc.id,
+            created: true,
+            deleted: false,
+            parentId: null,
+            current: blobDoc,
+          },
+        ],
+        description: { content: [], type: 'doc' },
+        name: name,
+        orgId: org.id,
+        projectId: project.id,
+        draft: true,
+      },
+    });
+
+    isSuccess(res.json);
+    expect(res.statusCode).toBe(200);
+  });
+
+  it('should reject an invalid prosemirror format', async () => {
+    const { token, org, project } = await seedWithProject();
+    const name = `test ${nanoid()}`;
+    const blobDoc = getBlobDocument(org, project);
+    blobDoc.content = '# hello';
+
+    const res = await t.fetch.post('/0/revisions', {
+      token,
+      Body: {
+        blobs: [
+          {
+            type: 'document',
+            typeId: blobDoc.id,
+            created: true,
+            deleted: false,
+            parentId: null,
+            current: blobDoc,
+          },
+        ],
+        description: { content: [], type: 'doc' },
+        name: name,
+        orgId: org.id,
+        projectId: project.id,
+        draft: true,
+      },
+    });
+
+    isValidationError(res.json);
+    expect(res.statusCode).toBe(400);
+    expect(res.json.error.fields).toStrictEqual({
+      'blobs.0.current': {
+        code: 'invalid',
+        message: "A ProseMirror 'format' expect a valid JSON in 'content'",
+        path: ['blobs', 0, 'current'],
+      },
+    });
+  });
+
   it('should disallow created and deleted', async () => {
     const { token, org, project } = await seedWithProject();
     const name = `test ${nanoid()}`;

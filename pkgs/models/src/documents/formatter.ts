@@ -25,6 +25,8 @@ export function toApiDocument(
     name: p.name,
     slug: p.slug,
     tldr: p.tldr,
+    format: p.format,
+    hash: p.hash,
     content: p.content,
     authors: users
       .filter((user) => user.role === 'author')

@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 
 import { nanoid, slugify, dirname } from '@specfy/core';
-import type { Orgs, Projects, Users } from '@specfy/db';
+import type { Documents, Orgs, Projects, Users } from '@specfy/db';
 import { prisma } from '@specfy/db';
 import { FSProvider, listing, transform } from '@specfy/github-sync';
 import type { ProviderFile } from '@specfy/github-sync';
@@ -33,7 +33,8 @@ export async function seedPlaybook(
         typeId: 1,
         tldr: '',
         name: 'SSH to Production',
-        content: {
+        format: 'pm',
+        content: JSON.stringify({
           content: [
             {
               type: 'codeBlock',
@@ -50,7 +51,7 @@ export async function seedPlaybook(
             },
           ],
           type: 'doc',
-        },
+        }),
         locked: false,
       },
       tx,
@@ -67,7 +68,8 @@ export async function seedPlaybook(
         typeId: 2,
         tldr: '',
         name: 'Restart Production',
-        content: {
+        format: 'pm',
+        content: JSON.stringify({
           type: 'doc',
           content: [
             {
@@ -96,7 +98,7 @@ export async function seedPlaybook(
               ],
             },
           ],
-        },
+        }),
         locked: false,
       },
     });
@@ -112,7 +114,8 @@ export async function seedPlaybook(
         typeId: 3,
         tldr: '',
         name: 'Deploy',
-        content: {
+        format: 'pm',
+        content: JSON.stringify({
           content: [
             {
               type: 'paragraph',
@@ -203,7 +206,7 @@ export async function seedPlaybook(
             },
           ],
           type: 'doc',
-        },
+        }),
         locked: false,
       },
     });
@@ -228,7 +231,7 @@ export async function seedRFC(
   { o1 }: { o1: Orgs },
   { pAnalytics }: { pAnalytics: Projects },
   [u1, u2]: Users[]
-) {
+): Promise<{ d1: Documents }> {
   // to avoid import it in tests too
   const docRfc4Json = JSON.parse(
     (
@@ -255,7 +258,8 @@ export async function seedRFC(
         typeId: 1,
         name: 'API definition',
         tldr: 'Donec eget porttitor nisi. Proin ac augue bibendum, posuere dui vel, volutpat ligula.',
-        content: {
+        format: 'pm',
+        content: JSON.stringify({
           type: 'doc',
           content: [
             {
@@ -662,7 +666,7 @@ export async function seedRFC(
               attrs: { level: 4, uid: 'UidgrRPV047' },
             },
           ],
-        },
+        }),
         locked: true,
       },
     });
@@ -677,7 +681,8 @@ export async function seedRFC(
         typeId: 2,
         name: 'Frontend definition',
         tldr: 'Donec eget porttitor nisi. Proin ac augue bibendum, posuere dui vel, volutpat ligula.',
-        content: { type: 'doc', content: [] },
+        format: 'pm',
+        content: JSON.stringify({ type: 'doc', content: [] }),
         locked: false,
       },
     });
@@ -692,7 +697,8 @@ export async function seedRFC(
         typeId: 3,
         name: 'Use of Oauth2 in authentication system',
         tldr: 'Donec eget porttitor nisi. Proin ac augue bibendum, posuere dui vel, volutpat ligula.',
-        content: { type: 'doc', content: [] },
+        format: 'pm',
+        content: JSON.stringify({ type: 'doc', content: [] }),
         locked: false,
       },
     });
@@ -707,7 +713,8 @@ export async function seedRFC(
         typeId: 4,
         name: 'API Global Specification',
         tldr: 'Donec eget porttitor nisi. Proin ac augue bibendum, posuere dui vel, volutpat ligula.',
-        content: docRfc4Json,
+        format: 'pm',
+        content: JSON.stringify(docRfc4Json),
         locked: false,
       },
     });
@@ -740,7 +747,7 @@ export async function seedDocs(
   { o1 }: { o1: Orgs },
   { pAnalytics }: { pAnalytics: Projects },
   [u1]: Users[]
-) {
+): Promise<Documents> {
   const res = await prisma.$transaction(async (tx) => {
     const d1 = await createDocument({
       user: u1,
@@ -754,21 +761,8 @@ export async function seedDocs(
         typeId: null,
         tldr: '',
         name: 'README',
-        content: {
-          content: [
-            {
-              type: 'paragraph',
-              attrs: { uid: 'UidgrRPV001' },
-              content: [
-                {
-                  type: 'text',
-                  text: 'Ut semper eros ipsum, eget rutrum nisi consequat vitae.',
-                },
-              ],
-            },
-          ],
-          type: 'doc',
-        },
+        format: 'md',
+        content: `Ut semper eros ipsum, eget rutrum nisi consequat vitae.`,
         locked: false,
       },
       tx,
@@ -816,7 +810,7 @@ export async function seedDocs(
       })
     );
 
-    return { d1 };
+    return d1;
   });
 
   return res;
@@ -844,7 +838,8 @@ export async function seedDocument(
       }),
       name: `Document ${id}`,
       tldr: '',
-      content: { type: 'doc', content: [] },
+      format: 'pm',
+      content: JSON.stringify({ type: 'doc', content: [] }),
       locked: false,
     },
   });
@@ -867,7 +862,9 @@ export function getBlobDocument(org: Orgs, project: Projects): DBDocument {
     parentId: null,
     locked: false,
     tldr: '',
-    content: { type: 'doc', content: [] },
+    format: 'pm',
+    hash: '756ba80325207f73cf5e26f8abb05d5d188168b3269471cd471e00dca2a565f4',
+    content: JSON.stringify({ type: 'doc', content: [] }),
     source: null,
     sourcePath: null,
     createdAt: new Date().toISOString(),

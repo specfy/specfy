@@ -5,7 +5,7 @@ import { prosemirrorToText } from './prosemirrorToText.js';
 describe('prosemirrorToText', () => {
   it('should output nothing', () => {
     const res = prosemirrorToText({ type: 'doc', content: [] });
-    expect(res).toEqual('');
+    expect(res).toEqual('\n');
   });
   it('should output a text', () => {
     const res = prosemirrorToText({
@@ -27,6 +27,6 @@ describe('prosemirrorToText', () => {
         },
       ],
     });
-    expect(res).toEqual('FooBar');
+    expect(res).toEqual('FooBar\n\n');
   });
 });

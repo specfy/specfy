@@ -21,6 +21,15 @@
     },
     {
       "path": "../db"
+    },
+    {
+      "path": "../models"
+    },
+    {
+      "path": "../github-sync"
+    },
+    {
+      "path": "../socket"
     }
   ],
 }

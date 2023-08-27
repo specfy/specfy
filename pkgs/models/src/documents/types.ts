@@ -1,29 +1,12 @@
-import type { BlockLevelZero } from './types.prosemirror.js';
+import type { Documents } from '@specfy/db';
 
 export enum DocumentType {
   'pb' = 'pb',
   'rfc' = 'rfc',
   'doc' = 'doc',
 }
-export interface DBDocument {
-  id: string;
-  orgId: string;
-  projectId: string;
-  blobId: string | null;
-
+export type DBDocument = Omit<Documents, 'createdAt' | 'updatedAt'> & {
   type: keyof typeof DocumentType;
-  typeId: number | null;
-
-  source: string | null;
-  sourcePath: string | null;
-  parentId: string | null;
-
-  name: string;
-  slug: string;
-  tldr: string;
-  content: BlockLevelZero;
-  locked: boolean;
-
   createdAt: string;
   updatedAt: string;
-}
+};

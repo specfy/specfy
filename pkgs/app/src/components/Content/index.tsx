@@ -383,7 +383,8 @@ export const ContentDoc: React.FC<{
   id?: string;
   pl?: Payload;
   noPlaceholder?: true;
-}> = ({ doc, id, pl, noPlaceholder }) => {
+  placeholder?: string;
+}> = ({ doc, id, pl, noPlaceholder, placeholder }) => {
   const [payload] = useState<Payload>(() => {
     return pl || { displayed: [id!] };
   });
@@ -392,7 +393,13 @@ export const ContentDoc: React.FC<{
     if (noPlaceholder) {
       return null;
     }
-    return <div className={cls.placeholder}>Write something ...</div>;
+    return (
+      <Presentation>
+        <div className={cls.placeholder}>
+          {placeholder ?? 'Write something ...'}
+        </div>
+      </Presentation>
+    );
   }
 
   return (

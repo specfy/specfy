@@ -129,25 +129,34 @@ model Components {
   Blob    Blobs?   @relation(fields: [blobId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
+enum DocumentFormat {
+  // Markdown
+  md
+  // Promsemirror
+  pm
+}
+
 model Documents {
-  id         String   @id @db.VarChar(15)
-  orgId      String   @db.VarChar(36)
-  projectId  String   @db.VarChar(15)
-  blobId     String?  @db.VarChar(15)
-  source     String?  @db.VarChar(15)
-  sourcePath String?  @db.VarChar(255)
-  parentId   String?  @db.VarChar(15)
+  id         String         @id @db.VarChar(15)
+  orgId      String         @db.VarChar(36)
+  projectId  String         @db.VarChar(15)
+  blobId     String?        @db.VarChar(15)
+  source     String?        @db.VarChar(15)
+  sourcePath String?        @db.VarChar(255)
+  parentId   String?        @db.VarChar(15)
   /// [PrismaDocumentsType]
-  type       String   @db.VarChar(25)
+  type       String         @db.VarChar(25)
   typeId     Int?
-  name       String   @db.VarChar(100)
-  slug       String   @db.VarChar(250)
-  tldr       String   @db.VarChar(500)
+  name       String         @db.VarChar(100)
+  slug       String         @db.VarChar(250)
+  tldr       String         @db.VarChar(500)
   /// [PrismaProseMirror]
-  content    Json     @db.Json
-  locked     Boolean  @default(false)
-  createdAt  DateTime @default(now()) @db.Timestamp(3)
-  updatedAt  DateTime @updatedAt
+  format     DocumentFormat
+  content    String
+  hash       String         @db.VarChar(64)
+  locked     Boolean        @default(false)
+  createdAt  DateTime       @default(now()) @db.Timestamp(3)
+  updatedAt  DateTime       @updatedAt
 
   Org      Orgs       @relation(fields: [orgId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   Project  Projects   @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: NoAction)

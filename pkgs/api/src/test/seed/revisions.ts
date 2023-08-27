@@ -192,7 +192,8 @@ export async function seedRevisions(
         }),
         id: nanoid(),
         name: 'Use RabbitMQ to publish jobs',
-        content: {
+        format: 'pm',
+        content: JSON.stringify({
           type: 'doc',
           content: [
             {
@@ -211,16 +212,14 @@ export async function seedRevisions(
               ],
             },
           ],
-        },
+        }),
       },
       data: { created: true },
       tx,
     });
 
     // --Update RFC
-    const content: BlockLevelOne[] = JSON.parse(
-      JSON.stringify(rfcs.d1.content.content)
-    );
+    const content: BlockLevelOne[] = JSON.parse(rfcs.d1.content).content;
 
     // Modify title
     content[2] = {
@@ -274,10 +273,11 @@ export async function seedRevisions(
     const blob6 = await createDocumentBlob({
       blob: {
         ...rfcs.d1,
-        content: {
+        format: 'pm',
+        content: JSON.stringify({
           type: 'doc',
           content: content.filter(Boolean),
-        },
+        }),
       },
       tx,
     });

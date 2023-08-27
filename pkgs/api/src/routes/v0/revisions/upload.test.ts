@@ -138,23 +138,9 @@ describe('POST /revisions/upload -- Documents', () => {
           tldr: '',
           type: 'doc',
           typeId: null,
-          content: {
-            type: 'doc',
-            content: [
-              {
-                type: 'paragraph',
-                attrs: {
-                  uid: expect.any(String),
-                },
-                content: [
-                  {
-                    text: 'Hello world',
-                    type: 'text',
-                  },
-                ],
-              },
-            ],
-          },
+          format: 'pm',
+          hash: expect.any(String),
+          content: expect.any(String),
         },
       },
     ]);

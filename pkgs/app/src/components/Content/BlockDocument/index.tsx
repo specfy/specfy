@@ -1,4 +1,8 @@
-import type { ApiDocument, BlockDocument } from '@specfy/models';
+import type {
+  BlockLevelZero,
+  ApiDocument,
+  BlockDocument,
+} from '@specfy/models';
 import { IconRepeat } from '@tabler/icons-react';
 import { useMemo } from 'react';
 
@@ -21,6 +25,13 @@ export const ContentBlockDocument: React.FC<{
     project_id: storeProject.project!.id,
     document_id: block.attrs.id,
   });
+
+  const content = useMemo<BlockLevelZero>(() => {
+    if (!doc.data) {
+      return;
+    }
+    return JSON.parse(doc.data.data.content);
+  }, [doc.data]);
 
   const isCircular = useMemo(() => {
     if (!doc.data) {
@@ -63,7 +74,7 @@ export const ContentBlockDocument: React.FC<{
 
   return (
     <div id={data.slug}>
-      <ContentDoc doc={data.content} pl={pl} />
+      <ContentDoc doc={content} pl={pl} />
     </div>
   );
 };

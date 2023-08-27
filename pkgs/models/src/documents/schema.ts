@@ -19,7 +19,9 @@ export const schemaDocument = z
     name: z.string().min(2).max(100),
     slug: schemaSlug,
     tldr: z.string().max(500),
-    content: schemaProseMirror,
+    format: z.enum(['md', 'pm']),
+    content: z.string(),
+    hash: z.string().length(64),
     locked: z.boolean(),
 
     parentId: schemaId.nullable(),
@@ -29,4 +31,22 @@ export const schemaDocument = z
     createdAt: z.string().datetime(),
     updatedAt: z.string().datetime(),
   })
-  .strict();
+  .strict()
+  .superRefine((val, ctx) => {
+    if (val.format === 'pm') {
+      try {
+        const parsed = schemaProseMirror.safeParse(JSON.parse(val.content));
+        if (!parsed.success) {
+          for (const err of parsed.error.errors) {
+            ctx.addIssue(err);
+          }
+        }
+      } catch (e) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          params: { code: 'invalid' },
+          message: "A ProseMirror 'format' expect a valid JSON in 'content'",
+        });
+      }
+    }
+  });

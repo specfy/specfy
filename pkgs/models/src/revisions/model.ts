@@ -2,6 +2,7 @@ import { nanoid } from '@specfy/core';
 import type { Prisma, Users, Activities, Revisions } from '@specfy/db';
 
 import type { ActionRevision } from '../activities/types.js';
+import { hashDocument } from '../documents/index.js';
 
 import type { ApiBlobCreate } from './types.api.js';
 
@@ -39,6 +40,9 @@ export async function createBlobs(
   const ids: string[] = [];
 
   for (const blob of blobs) {
+    if (blob.type === 'document') {
+      blob.current.hash = hashDocument(blob.current.content);
+    }
     const b = await tx.blobs.create({
       data: {
         id: nanoid(),

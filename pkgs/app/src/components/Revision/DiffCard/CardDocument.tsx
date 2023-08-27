@@ -27,11 +27,19 @@ export const DiffCardDocument: React.FC<{
     );
   }, [diff]);
 
+  const content = useMemo<BlockLevelZero | string>(() => {
+    return using.format === 'pm' ? JSON.parse(using.content) : using.content;
+  }, []);
+
   if (diff.blob.deleted || diff.blob.created) {
     return (
       <div className={cls.content}>
         {Title}
-        <ContentDoc doc={using.content} id={diff.blob.typeId} noPlaceholder />
+        {typeof content == 'string' ? (
+          content
+        ) : (
+          <ContentDoc doc={content} id={diff.blob.typeId} noPlaceholder />
+        )}
       </div>
     );
   }

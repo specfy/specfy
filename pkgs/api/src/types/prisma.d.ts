@@ -1,7 +1,6 @@
 import type {
   DBBlob,
   DBComponent,
-  DBDocument,
   ComputedFlow,
   JobDeployConfig,
   JobReason,
@@ -12,6 +11,7 @@ import type {
   DBTypeHasUser,
   BlockLevelZero,
   DBActivity,
+  DocumentType,
 } from '@specfy/models';
 
 // Not sure why I need to copy paste this but I can't include it
@@ -34,7 +34,7 @@ declare global {
     type PrismaComponentsTags = DBComponent['tags'];
 
     // Documents
-    type PrismaDocumentsType = DBDocument['type'];
+    type PrismaDocumentsType = keyof typeof DocumentType;
 
     // Flows
     type PrismaFlowsFlow = ComputedFlow;

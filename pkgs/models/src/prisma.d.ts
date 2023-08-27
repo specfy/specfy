@@ -1,7 +1,6 @@
 import type {
   DBBlob,
   DBComponent,
-  DBDocument,
   ComputedFlow,
   JobDeployConfig,
   JobReason,
@@ -12,6 +11,7 @@ import type {
   DBTypeHasUser,
   BlockLevelZero,
   DBActivity,
+  DocumentType,
 } from './index.js';
 
 declare global {
@@ -33,7 +33,7 @@ declare global {
     type PrismaComponentsTags = DBComponent['tags'];
 
     // Documents
-    type PrismaDocumentsType = DBDocument['type'];
+    type PrismaDocumentsType = keyof typeof DocumentType;
 
     // Flows
     type PrismaFlowsFlow = ComputedFlow;

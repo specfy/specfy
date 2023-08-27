@@ -4,7 +4,12 @@ import { nanoid, titleCase } from '@specfy/core';
 import type { Projects } from '@specfy/db';
 import { defaultMarkdownParser } from 'prosemirror-markdown';
 
-import type { BlockLevelZero, BlockText, Blocks } from '../documents';
+import {
+  hashDocument,
+  type BlockLevelZero,
+  type BlockText,
+  type Blocks,
+} from '../documents/index.js';
 import type { PostUploadRevision } from '../revisions/types.api.js';
 
 import {
@@ -102,6 +107,7 @@ export class DocumentsParser {
     for (const blob of sorted) {
       parsed.push({
         path: blob.path,
+        hash: hashDocument(blob.content),
         content: this.markdownToProseMirror(blob.content),
       });
     }

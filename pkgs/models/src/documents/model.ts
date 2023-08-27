@@ -1,3 +1,5 @@
+import { createHash } from 'node:crypto';
+
 import { nanoid, slugify } from '@specfy/core';
 import type { Prisma, Activities, Documents, Users } from '@specfy/db';
 
@@ -44,7 +46,10 @@ export async function createDocument({
   user,
   tx,
 }: {
-  data: Omit<Prisma.DocumentsUncheckedCreateInput, 'blobId' | 'slug'> & {
+  data: Omit<
+    Prisma.DocumentsUncheckedCreateInput,
+    'blobId' | 'slug' | 'hash'
+  > & {
     slug?: string;
   };
   user: Users;
@@ -55,6 +60,9 @@ export async function createDocument({
     slug: data.slug ?? slugify(data.name),
     id: data.id || nanoid(),
     blobId: null,
+    hash: createHash('sha256')
+      .update(JSON.stringify(data.content))
+      .digest('hex'),
   };
   const blob = await createDocumentBlob({
     blob: body,

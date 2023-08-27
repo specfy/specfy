@@ -8,20 +8,21 @@ import {
 } from '@specfy/models';
 import type { DBProject } from '@specfy/models';
 
+interface ResSeedProjects {
+  pDash: Projects;
+  pAnalytics: Projects;
+  pFront: Projects;
+  pAPI: Projects;
+  pBilling: Projects;
+}
 /**
  * Seed projects
  */
 export async function seedProjects(
   { o1 }: { o1: Orgs },
   users: Users[]
-): Promise<{
-  pDash: Projects;
-  pAnalytics: Projects;
-  pFront: Projects;
-  pAPI: Projects;
-  pBilling: Projects;
-}> {
-  const res = await prisma.$transaction(
+): Promise<ResSeedProjects> {
+  const res: ResSeedProjects = await prisma.$transaction(
     async (tx) => {
       const pDash = await createProject({
         data: {

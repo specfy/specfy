@@ -47,6 +47,7 @@ export const IGNORED_DOCUMENT_KEYS_CONST = [
   'typeId',
   'source',
   'sourcePath',
+  'hash',
 ] as const;
 export const IGNORED_DOCUMENT_KEYS: ReadonlyArray<
   keyof NonNullable<ApiBlobDocument['current']>

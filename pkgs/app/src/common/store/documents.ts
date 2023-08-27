@@ -47,7 +47,9 @@ export const useDocumentsStore = create<DocumentsState>()((set, get) => ({
       blobId: '',
       name: data.name,
       slug: slugify(data.name),
-      content: getEmptyDoc(),
+      format: 'pm',
+      content: JSON.stringify(getEmptyDoc()),
+      hash: '756ba80325207f73cf5e26f8abb05d5d188168b3269471cd471e00dca2a565f4', // placeholder
       authors: [],
       approvedBy: [],
       reviewers: [],

@@ -1,6 +1,6 @@
 import type { Documents } from '@specfy/db';
 
-import { internalTypeToText, type ComponentType } from '../components';
+import { internalTypeToText, type ComponentType } from '../components/index.js';
 
 import type { ComponentForPrompt } from './types.js';
 

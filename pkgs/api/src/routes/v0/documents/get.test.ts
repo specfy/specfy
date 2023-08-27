@@ -55,10 +55,9 @@ describe('GET /documents/:id', () => {
       approvedBy: [],
       authors: [],
       blobId: expect.any(String),
-      content: {
-        content: [],
-        type: 'doc',
-      },
+      content: '{"type":"doc","content":[]}',
+      format: 'pm',
+      hash: 'dd0535957e7b32214a5ffd8ad2d0001e0537625e5a651bee204d8460b0972f71',
       id: document.id,
       locked: false,
       name: document.name,

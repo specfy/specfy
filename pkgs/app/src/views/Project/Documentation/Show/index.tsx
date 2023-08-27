@@ -1,5 +1,5 @@
-import type { ApiDocument, ApiProject } from '@specfy/models';
-import { useEffect, useState } from 'react';
+import type { ApiDocument, ApiProject, BlockLevelZero } from '@specfy/models';
+import { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Skeleton from 'react-loading-skeleton';
 import { useParams } from 'react-router-dom';
@@ -36,6 +36,13 @@ export const ProjectDocumentationShow: React.FC<{
     setDoc(getDoc.data.data);
   }, [getDoc.data]);
 
+  const content = useMemo<BlockLevelZero | string>(() => {
+    if (!doc) {
+      return;
+    }
+    return doc.format === 'pm' ? JSON.parse(doc.content) : doc.content;
+  }, [doc]);
+
   if (getDoc.isLoading && !doc) {
     return (
       <div className={cls.wrapper}>
@@ -67,7 +74,11 @@ export const ProjectDocumentationShow: React.FC<{
         <Helmet title={`${doc.name} - ${proj.name} ${titleSuffix}`} />
 
         <div className={cls.col1}>
-          <HeadingTree blocks={doc.content.content}></HeadingTree>
+          {typeof content == 'string' ? (
+            <></>
+          ) : (
+            <HeadingTree blocks={content.content}></HeadingTree>
+          )}
         </div>
         <div className={cls.col2}>
           <div className={cls.header}>
@@ -76,7 +87,11 @@ export const ProjectDocumentationShow: React.FC<{
           <UpdatedAt time={doc.updatedAt} />
 
           <div className={cls.content}>
-            <ContentDoc doc={doc.content} />
+            {typeof content == 'string' ? (
+              content
+            ) : (
+              <ContentDoc doc={content} placeholder="Nothing to show." />
+            )}
           </div>
         </div>
 
