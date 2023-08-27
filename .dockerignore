@@ -54,6 +54,8 @@ CONTRIBUTING.md
 **/*.spec.ts
 **/*.spec.js
 **/*.perf.ts
+**/__snapshots__/
+**/__fixtures__/
 renovate.json
 **/jest*
 **/.DS_Store

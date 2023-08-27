@@ -21,3 +21,4 @@ export * from './revisions/index.js';
 export * from './sync.js';
 export * from './typesHasUsers/index.js';
 export * from './users/index.js';
+export * from './helpers.js';

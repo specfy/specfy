@@ -105,16 +105,16 @@ Infrastructure Flow: http://localhost:5173/acme/analytics/flow`,
       content: `# Overview
 The Analytics project collects data from various sources, processes it, and presents it in dashboards and reports. These outputs show key indicators and trends for the business. The project also employs machine learning and statistical methods to analyze data, helping businesses make data-based decisions.
 
-# Get Started
+## Get Started
 - 📥 **Installation**: Clone the repository from [Github](https://github.com/specfy/specfy)
 
-# Technology
+## Technology
 The Analytics project utilizes the following technologies:
 - The project is hosted on [GCP](http://localhost:5173/acme/analytics/c/jZDC3Lsc01-gcp)
 - We are using [Postgres](http://localhost:5173/acme/analytics/c/jZDC3Lsc04-postgresql) as the main Database
 - You would want to checkout out [Billing](http://localhost:5173/acme/analytics/c/undefined-billing) project.
 
-# Next Steps
+## Next Steps
 To further explore the project, you can:
 - Check the [Github repository](https://github.com/specfy/specfy)
 - Join our community on the [Discord](https://discord.gg/foobar)

@@ -8,6 +8,7 @@ import type { AICompletion } from '../../../../common/db';
 import { db } from '../../../../common/db';
 import { i18n } from '../../../../common/i18n';
 import { useProjectStore } from '../../../../common/store';
+import { CopyButton } from '../../../../components/Button/Copy';
 import { Presentation } from '../../../../components/Content';
 import { Flex } from '../../../../components/Flex';
 import { Button } from '../../../../components/Form/Button';
@@ -114,7 +115,13 @@ export const ProjectAssistantShow: React.FC = () => {
           </Button>
         </Link>
 
-        {loading && <Loading />}
+        {loading ? (
+          <Loading />
+        ) : (
+          <span>
+            <CopyButton value={md}>Copy markdown</CopyButton>
+          </span>
+        )}
       </Flex>
 
       <Presentation size="l">

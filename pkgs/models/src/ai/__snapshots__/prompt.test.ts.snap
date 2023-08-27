@@ -37,8 +37,8 @@ Split in 4 sections:
 3. A Technology section, highlighting 3-5 relevant technologies in the list, with a quick sentence how about what they do and the link
 4. A next step section, write use generic advices and use the links in the last list
 
-If the provided information needed to write a section are not enough then simply write: \\"Insufficient information.\\"
-
+If the provided information needed to write a section are not enough then simply write: \\"Insufficient information.\\". The writer should refrain using links that were not provided by the user.
+End the content with encouraging words with emojis.
 Output in markdown",
     "role": "system",
   },
@@ -69,16 +69,16 @@ Infrastructure Flow: http://localhost:5173/acme/analytics/flow",
     "content": "# Overview
 The Analytics project collects data from various sources, processes it, and presents it in dashboards and reports. These outputs show key indicators and trends for the business. The project also employs machine learning and statistical methods to analyze data, helping businesses make data-based decisions.
 
-# Get Started
+## Get Started
 - 📥 **Installation**: Clone the repository from [Github](https://github.com/specfy/specfy)
 
-# Technology
+## Technology
 The Analytics project utilizes the following technologies:
 - The project is hosted on [GCP](http://localhost:5173/acme/analytics/c/jZDC3Lsc01-gcp)
 - We are using [Postgres](http://localhost:5173/acme/analytics/c/jZDC3Lsc04-postgresql) as the main Database
 - You would want to checkout out [Billing](http://localhost:5173/acme/analytics/c/undefined-billing) project.
 
-# Next Steps
+## Next Steps
 To further explore the project, you can:
 - Check the [Github repository](https://github.com/specfy/specfy)
 - Join our community on the [Discord](https://discord.gg/foobar)
@@ -93,12 +93,12 @@ The project also employs machine learning and statistical methods to analyze dat
 
 
 Technologies:
-Hosting: GCP http://localhost:5173/acme/analytics/c/undefined-gcp, GCE http://localhost:5173/acme/analytics/c/undefined-gce
-Service: Aggregator http://localhost:5173/acme/analytics/c/undefined-aggr
-Saas: Algolia http://localhost:5173/acme/analytics/c/undefined-algolia
-Database: Postgres http://localhost:5173/acme/analytics/c/undefined-postgres
-Messaging: SQS http://localhost:5173/acme/analytics/c/undefined-sqs
-Depends on internal product: Billing http://localhost:5173/acme/analytics/c/undefined-billing
+Hosting: GCP http://localhost:5173/acme/analytics/c/1-gcp, GCE http://localhost:5173/acme/analytics/c/2-gce
+Service: Aggregator http://localhost:5173/acme/analytics/c/3-aggr
+Saas: Algolia http://localhost:5173/acme/analytics/c/4-algolia
+Database: Postgres http://localhost:5173/acme/analytics/c/5-postgres
+Messaging: SQS http://localhost:5173/acme/analytics/c/6-sqs
+Depends on internal product: Billing http://localhost:5173/acme/analytics/c/7-billing
 
 Documentation:
 http://localhost:5173/acme/analytics/doc/readme: README

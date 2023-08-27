@@ -6,6 +6,7 @@ import { Button } from '../../Form/Button';
 
 export const CopyButton: React.FC<{ value: string } & ButtonProps> = ({
   value,
+  children,
   ...props
 }) => {
   const [copied, setCopied] = useState(false);
@@ -28,7 +29,7 @@ export const CopyButton: React.FC<{ value: string } & ButtonProps> = ({
 
   return (
     <Button display="ghost" onClick={onClick} {...props}>
-      {copied ? <IconCheck /> : <IconCopy />}
+      {copied ? <IconCheck /> : <IconCopy />} {children}
     </Button>
   );
 };

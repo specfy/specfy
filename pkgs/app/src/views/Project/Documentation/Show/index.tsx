@@ -6,6 +6,7 @@ import ReactMarkdown from 'react-markdown';
 import { useParams } from 'react-router-dom';
 
 import { useGetDocumentBySlug } from '../../../../api';
+import { useDocumentsStore } from '../../../../common/store';
 import { titleSuffix } from '../../../../common/string';
 import { ContentDoc, Presentation } from '../../../../components/Content';
 import { Flex } from '../../../../components/Flex';
@@ -21,6 +22,7 @@ export const ProjectDocumentationShow: React.FC<{
 }> = ({ proj }) => {
   const params = useParams<Partial<RouteDocumentation>>() as RouteDocumentation;
   const [doc, setDoc] = useState<ApiDocument>();
+  const documentsStore = useDocumentsStore();
 
   // Load document
   const getDoc = useGetDocumentBySlug({
@@ -34,6 +36,7 @@ export const ProjectDocumentationShow: React.FC<{
       return;
     }
 
+    documentsStore.add([getDoc.data.data]);
     setDoc(getDoc.data.data);
   }, [getDoc.data]);
 

@@ -12,7 +12,7 @@
     "build:watch": "tsc -p tsconfig.json -w --preserveWatchOutput",
     "prod:build": "prisma generate && tsc -p tsconfig.prod.json",
     "test:build": "tsc -p tsconfig.json",
-    "db:seed": "node ./build/test/seed/index.ts",
+    "db:seed": "node ./build/test/seed/index.js",
     "test": "vitest",
     "test:ci": "vitest run"
   },

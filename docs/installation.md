@@ -3,7 +3,6 @@
 ## Prerequisites
 
 - [Node.js](https://nodejs.org/en) version >=16.x
-- [pnpm package manager](https://pnpm.io/installation) version 7
 - [Docker](https://www.docker.com/get-started/)
 
 Optional:
@@ -92,7 +91,6 @@ Optional:
 
 12. Done.
 
-
 ## Secrets
 
 To run this project, locally or in production, you will need a few secrets.
@@ -103,11 +101,11 @@ You will need a [Github](https://github.com) app to allow oauth.
 
 Configuration:
 
-- Callback: https://api.specfy.io/0/auth/github/cb
+- Callback: <https://api.specfy.io/0/auth/github/cb>
 - [x] Identifying >Request user authorization (OAuth) during installation
 - [x] Post installation > Redirect on update
 - [x] Webhook > Active
-  - Callback: https://api.specfy.io/0/github/webhooks
+  - Callback: <https://api.specfy.io/0/github/webhooks>
 
 Permissions:
 

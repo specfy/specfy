@@ -4,15 +4,8 @@ import path from 'node:path';
 import { nanoid, slugify, dirname } from '@specfy/core';
 import type { Documents, Orgs, Projects, Users } from '@specfy/db';
 import { prisma } from '@specfy/db';
-import { FSProvider, listing, transform } from '@specfy/github-sync';
-import type { ProviderFile } from '@specfy/github-sync';
 import type { DBDocument, ApiDocument } from '@specfy/models';
-import {
-  createDocument,
-  getDocumentTypeId,
-  DocumentsParser,
-  uploadedDocumentsToDB,
-} from '@specfy/models';
+import { createDocument, getDocumentTypeId, syncFolder } from '@specfy/models';
 
 /**
  * Seed playbook
@@ -770,45 +763,7 @@ export async function seedDocs(
 
     // --- Upload fixtures with sync to emulate an actual upload
     const fixturePath = path.join(dirname, '../', 'api/src/test/__fixtures__');
-    const list: ProviderFile[] = [];
-    const provider = new FSProvider({
-      path: fixturePath,
-      ignorePaths: [],
-    });
-
-    await listing(
-      {
-        provider,
-        acc: list,
-      },
-      '/'
-    );
-    const docs = await transform(provider, list);
-    const parser = new DocumentsParser(
-      docs.map((doc) => {
-        return {
-          path: doc.fp,
-          content: doc.content,
-        };
-      }),
-      pAnalytics
-    );
-    const parsed = parser.parse();
-    const clean = uploadedDocumentsToDB(parsed, [], {
-      orgId: o1.id,
-      projectId: pAnalytics.id,
-      source: 'fixtures',
-    });
-
-    await Promise.all(
-      clean.blobs.map(async (blob) => {
-        return await createDocument({
-          user: u1,
-          data: blob.current,
-          tx,
-        });
-      })
-    );
+    await syncFolder(fixturePath, pAnalytics, u1, tx);
 
     return d1;
   });

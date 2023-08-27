@@ -1,8 +1,11 @@
-import { nanoid } from '@specfy/core';
+import path from 'node:path';
+
+import { dirname, nanoid } from '@specfy/core';
 import type { Orgs, Prisma, Users } from '@specfy/db';
 
 import { createComponent } from '../components/model.js';
 import { recomputeOrgGraph } from '../flows/index.js';
+import { syncFolder } from '../helpers.js';
 import { createProject, getDefaultConfig } from '../projects/index.js';
 
 export async function createDemo(
@@ -32,6 +35,77 @@ export async function createDemo(
         ],
       },
       config: getDefaultConfig(),
+    },
+    user,
+    tx,
+  });
+  const aws = await createComponent({
+    data: {
+      id: nanoid(),
+      name: 'AWS',
+      type: 'hosting',
+      orgId: org.id,
+      projectId: pDash.id,
+      techId: 'aws',
+      description: { type: 'doc', content: [] },
+      display: {
+        zIndex: 1,
+        pos: { x: -210, y: 20 },
+        size: { width: 200, height: 80 },
+      },
+      techs: [],
+      inComponent: null,
+      edges: [],
+    },
+    user,
+    tx,
+  });
+  const s3 = await createComponent({
+    data: {
+      id: nanoid(),
+      name: 'S3',
+      type: 'storage',
+      orgId: org.id,
+      projectId: pDash.id,
+      techId: 'aws.s3',
+      description: { type: 'doc', content: [] },
+      display: {
+        zIndex: 1,
+        pos: { x: 20, y: 20 },
+        size: { width: 120, height: 40 },
+      },
+      techs: [],
+      inComponent: aws.id,
+      edges: [],
+    },
+    user,
+    tx,
+  });
+  await createComponent({
+    data: {
+      id: nanoid(),
+      name: 'Backend',
+      type: 'service',
+      orgId: org.id,
+      projectId: pDash.id,
+      description: { type: 'doc', content: [] },
+      display: {
+        zIndex: 3,
+        pos: { x: 50, y: 40 },
+        size: { width: 130, height: 40 },
+      },
+      inComponent: null,
+      edges: [
+        {
+          target: s3.id,
+          read: true,
+          write: true,
+          vertices: [],
+          portSource: 'sl',
+          portTarget: 'tr',
+        },
+      ],
+      techs: ['golang'],
     },
     user,
     tx,
@@ -98,8 +172,58 @@ export async function createDemo(
     user,
     tx,
   });
+  const stripe = await createComponent({
+    data: {
+      id: nanoid(),
+      name: 'Stripe',
+      type: 'saas',
+      orgId: org.id,
+      projectId: pDash.id,
+      techId: 'stripe',
+      description: { type: 'doc', content: [] },
+      display: {
+        zIndex: 1,
+        pos: { x: 20, y: 20 },
+        size: { width: 120, height: 40 },
+      },
+      techs: [],
+      inComponent: null,
+      edges: [],
+    },
+    user,
+    tx,
+  });
+  await createComponent({
+    data: {
+      id: nanoid(),
+      name: 'Backend',
+      type: 'service',
+      orgId: org.id,
+      projectId: pDash.id,
+      description: { type: 'doc', content: [] },
+      display: {
+        zIndex: 3,
+        pos: { x: 50, y: 40 },
+        size: { width: 130, height: 40 },
+      },
+      inComponent: null,
+      edges: [
+        {
+          target: stripe.id,
+          read: true,
+          write: true,
+          vertices: [],
+          portSource: 'sl',
+          portTarget: 'tr',
+        },
+      ],
+      techs: ['rust'],
+    },
+    user,
+    tx,
+  });
 
-  // ------ Components
+  // ------ Components for Analytics
   const gcp = await createComponent({
     data: {
       id: nanoid(),
@@ -244,7 +368,7 @@ export async function createDemo(
       type: 'db',
       orgId: org.id,
       projectId: pAnalytics.id,
-      techId: 'biqquery',
+      techId: 'gcp.biqquery',
       description: {
         type: 'doc',
         content: [
@@ -626,7 +750,7 @@ export async function createDemo(
           portTarget: 'tl',
         },
       ],
-      techs: ['nodejs', 'typescript', 'bash', 'AtlasDB'],
+      techs: ['nodejs', 'typescript', 'bash', 'prisma'],
     },
     user,
     tx,
@@ -888,4 +1012,8 @@ export async function createDemo(
     },
     tx,
   });
+
+  // --- Upload fixtures with sync to emulate an actual upload
+  const fixturePath = path.join(dirname, '../', 'models/src/demo/content');
+  await syncFolder(fixturePath, pAnalytics, user, tx);
 }
