@@ -1,4 +1,4 @@
-import type { PreHandler } from '@specfy/models/src/fastify.js';
+import type { PreHandler } from '@specfy/models/src/fastify';
 import type { FastifyPluginCallback } from 'fastify';
 import { z } from 'zod';
 

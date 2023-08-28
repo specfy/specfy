@@ -1,7 +1,7 @@
 import { schemaId, schemaToken } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import type { GetInvitation } from '@specfy/models';
-import type { PreHandler } from '@specfy/models/src/fastify.js';
+import type { PreHandler } from '@specfy/models/src/fastify';
 import { z } from 'zod';
 
 import { notFound, validationError } from '../common/errors.js';

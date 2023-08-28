@@ -2,7 +2,7 @@ import { schemaId, schemaOrgId } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import { checkInheritedPermissions } from '@specfy/models';
 import type { GetRevision } from '@specfy/models';
-import type { PreHandler } from '@specfy/models/src/fastify.js';
+import type { PreHandler } from '@specfy/models/src/fastify';
 import type { FastifyRequest } from 'fastify';
 import { z } from 'zod';
 

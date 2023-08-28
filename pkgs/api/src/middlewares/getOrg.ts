@@ -1,7 +1,7 @@
 import { schemaOrgId } from '@specfy/core';
 import { getOrgFromRequest } from '@specfy/models';
 import type { ReqOrgParams } from '@specfy/models';
-import type { PreHandler } from '@specfy/models/src/fastify.js';
+import type { PreHandler } from '@specfy/models/src/fastify';
 import type { FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
