@@ -1,11 +1,13 @@
 import { nanoid } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import type { PostDemo } from '@specfy/models';
-import { createDemo, createOrg, toApiOrgList } from '@specfy/models';
+import { createOrg, toApiOrgList } from '@specfy/models';
 import type { FastifyPluginCallback } from 'fastify';
 
 import { noBody } from '../../../middlewares/noBody.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
+
+import { createDemo } from './createDemo.js';
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.post<PostDemo>(

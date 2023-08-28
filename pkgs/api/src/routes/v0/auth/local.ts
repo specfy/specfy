@@ -1,3 +1,4 @@
+import type { PreHandler } from '@specfy/models/src/fastify.js';
 import type { FastifyPluginCallback } from 'fastify';
 import { z } from 'zod';
 
@@ -5,7 +6,6 @@ import { validationError } from '../../../common/errors.js';
 import { fastifyPassport } from '../../../middlewares/auth/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 import type { PostAuthLocal } from '../../../types/api/auth.js';
-import type { PreHandler } from '../../../types/fastify.js';
 
 const obj = z
   .object({

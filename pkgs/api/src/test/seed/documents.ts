@@ -4,8 +4,9 @@ import path from 'node:path';
 import { nanoid, slugify, dirname } from '@specfy/core';
 import type { Documents, Orgs, Projects, Users } from '@specfy/db';
 import { prisma } from '@specfy/db';
+import { syncFolder } from '@specfy/github-sync';
 import type { DBDocument, ApiDocument } from '@specfy/models';
-import { createDocument, getDocumentTypeId, syncFolder } from '@specfy/models';
+import { createDocument, getDocumentTypeId } from '@specfy/models';
 
 /**
  * Seed playbook

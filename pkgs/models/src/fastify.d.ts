@@ -2,17 +2,16 @@ import type { IncomingMessage, ServerResponse } from 'http';
 
 import type { Flows, Keys, Orgs, Projects, Users } from '@specfy/db';
 import type {
-  JobWithUser,
-  PermsWithOrg,
-  RevisionWithProject,
-  InvitationsWithOrgAndUser,
-} from '@specfy/models';
-import type {
   preHandlerAsyncHookHandler,
   preHandlerHookHandler,
   RawServerDefault,
 } from 'fastify';
 import type { RouteGenericInterface } from 'fastify/types/route';
+
+import type { InvitationsWithOrgAndUser } from './invitations';
+import type { JobWithUser } from './jobs';
+import type { PermsWithOrg } from './perms';
+import type { RevisionWithProject } from './revisions';
 
 export type PreHandler<T extends RouteGenericInterface = any> =
   preHandlerAsyncHookHandler<

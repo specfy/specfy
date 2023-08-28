@@ -2,11 +2,13 @@ import path from 'node:path';
 
 import { dirname, nanoid } from '@specfy/core';
 import type { Orgs, Prisma, Users } from '@specfy/db';
-
-import { createComponent } from '../components/model.js';
-import { recomputeOrgGraph } from '../flows/index.js';
-import { syncFolder } from '../helpers.js';
-import { createProject, getDefaultConfig } from '../projects/index.js';
+import { syncFolder } from '@specfy/github-sync';
+import {
+  createComponent,
+  recomputeOrgGraph,
+  createProject,
+  getDefaultConfig,
+} from '@specfy/models';
 
 export async function createDemo(
   tx: Prisma.TransactionClient,

@@ -211,7 +211,7 @@ export class JobDeploy extends Job {
         stackPath: path.join(this.folderName, projConfig.stack.path),
         docEnabled: projConfig.documentation.enabled,
         docPath: path.join(this.folderName, projConfig.documentation.path),
-        autoLayout: config.autoLayout,
+        autoLayout: config.autoLayout === true,
         hostname: !isProd
           ? envs.API_HOSTNAME?.replace('localhost', '127.0.0.1')
           : envs.API_HOSTNAME,

@@ -7,7 +7,9 @@ export function getOrgFromRequest(
   req: FastifyRequest,
   orgId: string
 ): Orgs | undefined {
-  return req.perms!.find((p) => p.orgId === orgId && p.projectId === null)?.Org;
+  return req.perms!.find(
+    (perm) => perm.orgId === orgId && perm.projectId === null
+  )?.Org;
 }
 
 export function checkInheritedPermissions(

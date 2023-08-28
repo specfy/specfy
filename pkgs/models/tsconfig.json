@@ -9,7 +9,13 @@
     "src",
     "../api/src/types/vitest.d.ts"
   ],
-  "exclude": [
-    // "src/prisma.d.ts"
+  "exclude": [],
+  "references": [
+    {
+      "path": "../core"
+    },
+    {
+      "path": "../db"
+    }
   ]
 }

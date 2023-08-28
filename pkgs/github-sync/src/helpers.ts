@@ -1,10 +1,14 @@
 import type { Prisma, Projects, Users } from '@specfy/db';
-import { FSProvider, listing, transform } from '@specfy/github-sync';
-import type { ProviderFile } from '@specfy/github-sync';
+import {
+  createDocument,
+  DocumentsParser,
+  uploadedDocumentsToDB,
+} from '@specfy/models';
+import { FSProvider } from '@specfy/stack-analyser';
 
-import { createDocument } from './documents/index.js';
-import { DocumentsParser } from './prosemirror/index.js';
-import { uploadedDocumentsToDB } from './revisions/index.js';
+import { listing } from './listing/index.js';
+import type { ProviderFile } from './provider/base.js';
+import { transform } from './transform/index.js';
 
 export async function syncFolder(
   folder: string,

@@ -6,7 +6,9 @@
     "declaration": true
   },
   "include": [
-    "src"
+    "src",
+    "../models/src/prisma.d.ts",
+    "../models/src/fastify.d.ts"
   ],
   "ts-node": {
     "esm": true,

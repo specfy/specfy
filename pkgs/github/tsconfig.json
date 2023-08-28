@@ -7,5 +7,20 @@
   },
   "include": [
     "src",
+    "../models/src/prisma.d.ts"
+  ],
+  "references": [
+    {
+      "path": "../core"
+    },
+    {
+      "path": "../db"
+    },
+    {
+      "path": "../github-sync"
+    },
+    {
+      "path": "../socket"
+    },
   ]
 }
