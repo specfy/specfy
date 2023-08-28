@@ -4,10 +4,10 @@ import {
   DocumentsParser,
   uploadedDocumentsToDB,
 } from '@specfy/models';
-import { FSProvider } from '@specfy/stack-analyser';
 
 import { listing } from './listing/index.js';
 import type { ProviderFile } from './provider/base.js';
+import { FSProvider } from './provider/fs.js';
 import { transform } from './transform/index.js';
 
 export async function syncFolder(

@@ -1,6 +1,7 @@
 import type {
   DeleteProject,
   GetProject,
+  GetProjectBySlug,
   ListProjects,
   PostProject,
   PutProject,
@@ -31,29 +32,29 @@ export async function createProject(
 }
 
 export async function updateProject(
-  opts: PutProject['Params'],
+  opts: PutProject['QP'],
   data: PutProject['Body']
 ): Promise<PutProject['Reply']> {
   const { res, json } = await fetchApi<PutProject>(
-    `/projects/${opts.org_id}/${opts.project_slug}`,
-    { body: data },
+    `/projects/${opts.project_id}`,
+    { body: data, qp: { org_id: opts.org_id } },
     'PUT'
   );
 
   if (res.status === 200) {
     void qcli.invalidateQueries(['listProjects', opts.org_id]);
-    void qcli.invalidateQueries(['getProject', opts.org_id, opts.project_slug]);
+    void qcli.invalidateQueries(['getProject', opts.org_id]);
   }
 
   return json;
 }
 
 export async function deleteProject(
-  opts: DeleteProject['Params']
+  opts: DeleteProject['QP']
 ): Promise<DeleteProject['Reply']> {
   const { res, json } = await fetchApi<DeleteProject>(
-    `/projects/${opts.org_id}/${opts.project_slug}`,
-    undefined,
+    `/projects/${opts.project_id}`,
+    { qp: { org_id: opts.org_id } },
     'DELETE'
   );
 
@@ -83,13 +84,39 @@ export function useListProjects(opts: Partial<ListProjects['Querystring']>) {
   });
 }
 
-export function useGetProject(opts: Partial<GetProject['Params']>) {
+export function useGetProject(opts: Partial<GetProject['QP']>) {
   return useQuery({
     enabled: Boolean(opts.org_id),
-    queryKey: ['getProject', opts.org_id, opts.project_slug],
+    queryKey: ['getProject', opts.org_id, opts.project_id],
     queryFn: async (): Promise<GetProject['Success']> => {
       const { json, res } = await fetchApi<GetProject>(
-        `/projects/${opts.org_id}/${opts.project_slug}`
+        `/projects/${opts.project_id}`,
+        { qp: { org_id: opts.org_id! } }
+      );
+
+      if (res.status !== 200 || isError(json)) {
+        throw new APIError({ res, json });
+      } else {
+        original.add(json.data);
+      }
+
+      return json;
+    },
+  });
+}
+
+export function useGetProjectBySlug(
+  opts: Partial<GetProjectBySlug['Querystring']>
+) {
+  return useQuery({
+    enabled: Boolean(opts.org_id),
+    queryKey: ['getProject', opts.org_id, opts.slug],
+    queryFn: async (): Promise<GetProjectBySlug['Success']> => {
+      const { json, res } = await fetchApi<GetProjectBySlug>(
+        `/projects/by_slug`,
+        {
+          qp: { org_id: opts.org_id!, slug: opts.slug! },
+        }
       );
 
       if (res.status !== 200 || isError(json)) {

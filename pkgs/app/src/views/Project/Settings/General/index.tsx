@@ -1,23 +1,15 @@
 import * as Form from '@radix-ui/react-form';
 import type { FieldsErrors } from '@specfy/core';
 import type { ApiProject } from '@specfy/models';
-import { IconCirclesRelation } from '@tabler/icons-react';
 import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-import {
-  deleteProject,
-  updateProject,
-  linkToGithubRepo,
-} from '../../../../api';
+import { deleteProject, updateProject } from '../../../../api';
 import { handleErrors, isError } from '../../../../api/helpers';
 import { useListKeys } from '../../../../api/keys';
 import { API_HOSTNAME, IS_PROD } from '../../../../common/envs';
-import { i18n } from '../../../../common/i18n';
-import { useOrgStore } from '../../../../common/store';
 import { slugify, titleSuffix } from '../../../../common/string';
-import { Banner } from '../../../../components/Banner';
 import { CopyButton } from '../../../../components/Button/Copy';
 import { Card } from '../../../../components/Card';
 import * as Dialog from '../../../../components/Dialog';
@@ -25,8 +17,6 @@ import { Flex } from '../../../../components/Flex';
 import { Button } from '../../../../components/Form/Button';
 import { Field } from '../../../../components/Form/Field';
 import { Input } from '../../../../components/Form/Input';
-import { GithubOrgSelect } from '../../../../components/Github/OrgSelect';
-import { GithubRepoSelect } from '../../../../components/Github/RepoSelect';
 import { Subdued } from '../../../../components/Text';
 import { useAuth } from '../../../../hooks/useAuth';
 import { useToast } from '../../../../hooks/useToast';
@@ -41,7 +31,6 @@ export const SettingsGeneral: React.FC<{
   const { currentPerm } = useAuth();
   const toast = useToast();
   const navigate = useNavigate();
-  const { current: org } = useOrgStore();
   const canEdit = currentPerm?.role === 'owner';
 
   const [waitToRead, setWaitToRead] = useState(true);
@@ -66,7 +55,13 @@ export const SettingsGeneral: React.FC<{
 
   const handleRename: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    const res = await updateProject(params, { name, slug });
+    const res = await updateProject(
+      {
+        project_id: proj.id,
+        org_id: proj.orgId,
+      },
+      { name, slug }
+    );
     if (isError(res)) {
       return handleErrors(res, toast, setErrors);
     }
@@ -89,43 +84,13 @@ export const SettingsGeneral: React.FC<{
     }
   };
   const confirmDelete = async () => {
-    await deleteProject(params);
+    await deleteProject({
+      project_id: proj.id,
+      org_id: proj.orgId,
+    });
     toast.add({ title: 'Project deleted', status: 'success' });
 
     navigate(`/${params.org_id}`);
-  };
-
-  // Github
-  const [repoId, setRepoId] = useState<string | undefined>(
-    proj.githubRepository ?? undefined
-  );
-
-  const onLink = async () => {
-    const res = await linkToGithubRepo({
-      orgId: proj.orgId,
-      projectId: proj.id,
-      repository: repoId || null,
-    });
-    if (isError(res)) {
-      toast.add({ title: i18n.errorOccurred, status: 'error' });
-      return;
-    }
-
-    toast.add({ title: 'Project linked to Github', status: 'success' });
-  };
-
-  const onUnlink = async () => {
-    const res = await linkToGithubRepo({
-      orgId: proj.orgId,
-      projectId: proj.id,
-      repository: null,
-    });
-    if (isError(res)) {
-      toast.add({ title: i18n.errorOccurred, status: 'error' });
-      return;
-    }
-
-    toast.add({ title: 'Successfully unlinked', status: 'success' });
   };
 
   // Keys
@@ -200,70 +165,6 @@ export const SettingsGeneral: React.FC<{
           )}
         </Form.Root>
       </Card>
-
-      {canEdit && (
-        <Card>
-          <Form.Root onSubmit={(e) => e.preventDefault()} className={cls.main}>
-            <Card.Content>
-              <h3>Link to Github</h3>
-
-              <Field name="github">
-                {!org!.githubInstallationId ? (
-                  <Banner type="info">
-                    <Flex justify="space-between">
-                      First, link your Specfy organization to a Github
-                      organization.
-                      <Link to={`/${org!.id}/_/settings`}>
-                        <Button>Settings</Button>
-                      </Link>
-                    </Flex>
-                  </Banner>
-                ) : (
-                  <Flex gap="l">
-                    <GithubOrgSelect
-                      onChange={() => null}
-                      defaultSelected={
-                        org!.githubInstallationId
-                          ? String(org!.githubInstallationId)
-                          : undefined
-                      }
-                      disabled
-                    />
-                    <GithubRepoSelect
-                      value={
-                        proj.githubRepository
-                          ? String(proj.githubRepository)
-                          : undefined
-                      }
-                      installationId={org!.githubInstallationId}
-                      onChange={setRepoId}
-                    />
-                  </Flex>
-                )}
-              </Field>
-              <p>
-                Linking to a Github repository enables automatic deployment when
-                you push to your repository.
-              </p>
-            </Card.Content>
-            <Card.Actions>
-              {proj.githubRepository === repoId && repoId !== null ? (
-                <Button display="default" onClick={onUnlink} danger>
-                  Unlink
-                </Button>
-              ) : (
-                <Button
-                  display="primary"
-                  disabled={proj.githubRepository === repoId}
-                  onClick={onLink}
-                >
-                  <IconCirclesRelation /> Link
-                </Button>
-              )}
-            </Card.Actions>
-          </Form.Root>
-        </Card>
-      )}
 
       {canEdit && (
         <Card>

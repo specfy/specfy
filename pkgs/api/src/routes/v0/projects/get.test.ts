@@ -2,9 +2,8 @@ import { beforeAll, afterAll, describe, it, expect } from 'vitest';
 
 import type { TestSetup } from '../../../test/each.js';
 import { setupBeforeAll, setupAfterAll } from '../../../test/each.js';
-import { isSuccess, isValidationError } from '../../../test/fetch.js';
+import { isSuccess } from '../../../test/fetch.js';
 import {
-  shouldBeNotFound,
   shouldBeProtected,
   shouldNotAllowQueryParams,
 } from '../../../test/helpers.js';
@@ -19,15 +18,15 @@ afterAll(async () => {
   await setupAfterAll(t);
 });
 
-describe('GET /projects/:org_id/:project_slug', () => {
+describe('GET /projects/:project_id', () => {
   it('should be protected', async () => {
-    const res = await t.fetch.get('/0/projects/foo/bar');
+    const res = await t.fetch.get('/0/projects/bar');
     await shouldBeProtected(res);
   });
 
   it('should not allow query params', async () => {
     const { token } = await seedSimpleUser();
-    const res = await t.fetch.get('/0/projects/foo/bar', {
+    const res = await t.fetch.get('/0/projects/bar', {
       token,
       // @ts-expect-error
       Querystring: { random: 'world' },
@@ -36,9 +35,10 @@ describe('GET /projects/:org_id/:project_slug', () => {
   });
 
   it('should get a project', async () => {
-    const { token, org, project } = await seedWithProject();
-    const res = await t.fetch.get(`/0/projects/${org.id}/${project.slug}`, {
+    const { token, project } = await seedWithProject();
+    const res = await t.fetch.get(`/0/projects/${project.id}`, {
       token,
+      Querystring: { org_id: project.orgId },
     });
 
     isSuccess(res.json);
@@ -70,35 +70,21 @@ describe('GET /projects/:org_id/:project_slug', () => {
 
   it('should error on wrong orgId', async () => {
     const { token, project } = await seedWithProject();
-    const res = await t.fetch.get(`/0/projects/foobar/${project.slug}`, {
+    const res = await t.fetch.get(`/0/projects/${project.id}`, {
       token,
+      Querystring: { org_id: 'foobar' },
     });
 
     expect(res.statusCode).toBe(403);
   });
 
-  it('should error on wrong format projectId', async () => {
-    const { token, org } = await seedWithProject();
-    const res = await t.fetch.get(`/0/projects/${org.id}/foI0bar`, {
+  it('should 403 on unknown project', async () => {
+    const { token, project } = await seedWithProject();
+    const res = await t.fetch.get(`/0/projects/foobar`, {
       token,
+      Querystring: { org_id: project.orgId },
     });
 
-    isValidationError(res.json);
-    expect(res.json.error.fields).toStrictEqual({
-      project_slug: {
-        code: 'invalid_string',
-        message: 'Should only be lowercase letters, numbers and hyphen',
-        path: ['project_slug'],
-      },
-    });
-  });
-
-  it('should 404 on unknown project', async () => {
-    const { token, org } = await seedWithProject();
-    const res = await t.fetch.get(`/0/projects/${org.id}/foobar`, {
-      token,
-    });
-
-    shouldBeNotFound(res);
+    expect(res.statusCode).toBe(403);
   });
 });

@@ -1,5 +1,5 @@
 import type { ApiProject } from '@specfy/models';
-import { IconSettings, IconUsers } from '@tabler/icons-react';
+import { IconBrandGithub, IconSettings, IconUsers } from '@tabler/icons-react';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 
@@ -11,6 +11,7 @@ import * as Menu from '../../../components/Menu';
 import type { RouteProject } from '../../../types/routes';
 
 import { SettingsGeneral } from './General';
+import { SettingsSync } from './Sync';
 import { SettingsTeam } from './Team';
 import cls from './index.module.scss';
 
@@ -44,6 +45,17 @@ export const ProjectSettings: React.FC<{
         ),
       },
       {
+        key: 'sync',
+        label: (
+          <Link to={`${linkSelf}/sync`}>
+            <Flex gap="l">
+              <IconBrandGithub />
+              Github Sync
+            </Flex>
+          </Link>
+        ),
+      },
+      {
         key: 'team',
         label: (
           <Link to={`${linkSelf}/team`}>
@@ -61,6 +73,8 @@ export const ProjectSettings: React.FC<{
   useEffect(() => {
     if (location.pathname.match(/team/)) {
       setOpen('team');
+    } else if (location.pathname.match(/sync/)) {
+      setOpen('sync');
     } else {
       setOpen('general');
     }
@@ -88,6 +102,7 @@ export const ProjectSettings: React.FC<{
             path="/"
             element={<SettingsGeneral proj={proj} params={params} />}
           />
+          <Route path="/sync" element={<SettingsSync proj={proj} />} />
           <Route path="/team" element={<SettingsTeam proj={proj} />} />
         </Routes>
       </Flex>

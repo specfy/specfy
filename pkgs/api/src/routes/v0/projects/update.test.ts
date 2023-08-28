@@ -25,15 +25,15 @@ afterAll(async () => {
   await setupAfterAll(t);
 });
 
-describe('PUT /projects/:org_id/:project_slug', () => {
+describe('PUT /projects/:project_id', () => {
   it('should be protected', async () => {
-    const res = await t.fetch.put('/0/projects/foo/bar');
+    const res = await t.fetch.put('/0/projects/bar');
     await shouldBeProtected(res);
   });
 
   it('should not allow query params', async () => {
     const { token } = await seedSimpleUser();
-    const res = await t.fetch.put('/0/projects/foo/bar', {
+    const res = await t.fetch.put('/0/projects/bar', {
       token,
       // @ts-expect-error
       Querystring: { random: 'world' },
@@ -45,8 +45,9 @@ describe('PUT /projects/:org_id/:project_slug', () => {
     const { token, org, owner } = await seedWithOrgViewer();
     const project = await seedProject(owner, org);
     const name = `New Name ${nanoid()}`;
-    const res = await t.fetch.put(`/0/projects/${org.id}/${project.slug}`, {
+    const res = await t.fetch.put(`/0/projects/${project.id}`, {
       token,
+      Querystring: { org_id: org.id },
       Body: {
         name,
         slug: slugify(name),
@@ -60,8 +61,9 @@ describe('PUT /projects/:org_id/:project_slug', () => {
     const { token, org, project } = await seedWithProject();
 
     const name = `New Name ${nanoid()}`;
-    const res = await t.fetch.put(`/0/projects/${org.id}/${project.slug}`, {
+    const res = await t.fetch.put(`/0/projects/${project.id}`, {
       token,
+      Querystring: { org_id: org.id },
       Body: {
         name,
         slug: slugify(name),
@@ -74,18 +76,17 @@ describe('PUT /projects/:org_id/:project_slug', () => {
     expect(res.json.data.slug).toStrictEqual(slugify(name));
 
     // We check if old slug is not accessible anymore
-    const res2 = await t.fetch.get(`/0/projects/${org.id}/${project.slug}`, {
+    const res2 = await t.fetch.get(`/0/projects/by_slug`, {
       token,
+      Querystring: { org_id: org.id, slug: project.slug },
     });
     shouldBeNotFound(res2);
 
     // We check if new slug is accessible
-    const res3 = await t.fetch.get(
-      `/0/projects/${org.id}/${res.json.data.slug}`,
-      {
-        token,
-      }
-    );
+    const res3 = await t.fetch.get(`/0/projects/by_slug`, {
+      token,
+      Querystring: { org_id: org.id, slug: res.json.data.slug },
+    });
     isSuccess(res3.json);
   });
 
@@ -93,8 +94,9 @@ describe('PUT /projects/:org_id/:project_slug', () => {
     const { token, user, org, project } = await seedWithProject();
     const seed2 = await seedProject(user, org);
 
-    const res = await t.fetch.put(`/0/projects/${org.id}/${seed2.slug}`, {
+    const res = await t.fetch.put(`/0/projects/${seed2.id}`, {
       token,
+      Querystring: { org_id: org.id },
       Body: {
         name: 'foobar',
         slug: project.slug,
@@ -115,8 +117,9 @@ describe('PUT /projects/:org_id/:project_slug', () => {
   it('should forbid other changes', async () => {
     const { token, org, project } = await seedWithProject();
 
-    const res = await t.fetch.put(`/0/projects/${org.id}/${project.slug}`, {
+    const res = await t.fetch.put(`/0/projects/${project.id}`, {
       token,
+      Querystring: { org_id: org.id },
       Body: {
         // @ts-expect-error
         edges: [],
@@ -125,5 +128,28 @@ describe('PUT /projects/:org_id/:project_slug', () => {
 
     isValidationError(res.json);
     expect(res.statusCode).toBe(400);
+  });
+
+  it('should update config', async () => {
+    const { token, org, project } = await seedWithProject();
+
+    const config = {
+      branch: 'top',
+      stack: { enabled: false, path: '/tip/top' },
+      documentation: { enabled: false, path: '/foobar' },
+    };
+    const res = await t.fetch.put(`/0/projects/${project.id}`, {
+      token,
+      Querystring: { org_id: org.id },
+      Body: {
+        config,
+      },
+    });
+
+    isSuccess(res.json);
+    expect(res.statusCode).toBe(200);
+    expect(res.json.data.config).toStrictEqual({
+      ...config,
+    });
   });
 });

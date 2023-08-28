@@ -1,7 +1,11 @@
-import { schemaOrgId, schemaSlug } from '@specfy/core';
+import { schemaId, schemaOrgId } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import { checkInheritedPermissions } from '@specfy/models';
-import type { ReqProjectParams } from '@specfy/models';
+import type {
+  GetProject,
+  ReqProjectParams,
+  ReqProjectQuery,
+} from '@specfy/models';
 import type { PreHandler } from '@specfy/models/src/fastify';
 import type { FastifyRequest } from 'fastify';
 import { z } from 'zod';
@@ -13,7 +17,7 @@ export function QueryVal(req: FastifyRequest) {
   return z
     .object({
       org_id: schemaOrgId,
-      project_slug: schemaSlug,
+      project_id: schemaId,
     })
     .strict()
     .superRefine(valPermissions(req, 'viewer'));
@@ -21,17 +25,16 @@ export function QueryVal(req: FastifyRequest) {
 
 export const getProject: PreHandler<{
   Params: ReqProjectParams;
+  Querystring: ReqProjectQuery;
 }> = async (req, res) => {
-  const val = QueryVal(req).safeParse(req.params);
+  const val = QueryVal(req).safeParse({ ...req.params, ...req.query });
   if (!val.success) {
     return validationError(res, val.error);
   }
 
-  const params: ReqProjectParams = val.data;
-  const proj = await prisma.projects.findUnique({
-    where: {
-      orgId_slug: { orgId: params.org_id, slug: params.project_slug },
-    },
+  const params: GetProject['QP'] = val.data;
+  const proj = await prisma.projects.findFirst({
+    where: { id: params.project_id, orgId: params.org_id },
   });
 
   if (!proj) {

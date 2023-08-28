@@ -10,8 +10,10 @@ export type ApiProjectList = Omit<
   'blobId' | 'config' | 'description' | 'links'
 > & { users: number };
 export interface ReqProjectParams {
+  project_id: string;
+}
+export interface ReqProjectQuery {
   org_id: string;
-  project_slug: string;
 }
 
 // GET /
@@ -39,21 +41,33 @@ export type PostProject = Res<{
   Success: { data: Pick<ApiProject, 'id' | 'slug'> };
 }>;
 
-// GET /:org_id/:project_slug
+// GET /:project_id
 export type GetProject = Res<{
   Params: ReqProjectParams;
+  Querystring: ReqProjectQuery;
+  Success: { data: ApiProject };
+}>;
+// GET /by_slug
+export type GetProjectBySlug = Res<{
+  Querystring: ReqProjectQuery & { slug: string };
   Success: { data: ApiProject };
 }>;
 
-// POST /:org_id/:project_slug
+// POST /:project_id
 export type PutProject = Res<{
   Params: ReqProjectParams;
-  Body: Pick<ApiProject, 'name' | 'slug'>;
+  Querystring: ReqProjectQuery;
+  Body: {
+    name?: string | undefined;
+    slug?: string | undefined;
+    config?: ApiProject['config'] | undefined;
+  };
   Success: { data: ApiProject };
 }>;
 
-// DELETE /:org_id/:project_slug
+// DELETE /:project_id
 export type DeleteProject = Res<{
   Params: ReqProjectParams;
+  Querystring: ReqProjectQuery;
   Success: never;
 }>;

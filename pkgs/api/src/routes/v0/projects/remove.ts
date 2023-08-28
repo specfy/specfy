@@ -5,12 +5,11 @@ import type { FastifyPluginCallback } from 'fastify';
 
 import { getProject } from '../../../middlewares/getProject.js';
 import { noBody } from '../../../middlewares/noBody.js';
-import { noQuery } from '../../../middlewares/noQuery.js';
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.delete<DeleteProject>(
     '/',
-    { preHandler: [noQuery, noBody, getProject] },
+    { preHandler: [noBody, getProject] },
     async function (req, res) {
       const project = req.project!;
 

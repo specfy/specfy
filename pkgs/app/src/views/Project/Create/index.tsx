@@ -1,7 +1,7 @@
 import * as Collapsible from '@radix-ui/react-collapsible';
 import * as Form from '@radix-ui/react-form';
 import type { FieldsErrors } from '@specfy/core';
-import type { ApiGithubRepo, ApiOrg } from '@specfy/models';
+import type { ApiProject, ApiGithubRepo, ApiOrg } from '@specfy/models';
 import {
   IconChevronDown,
   IconChevronRight,
@@ -20,9 +20,8 @@ import { Banner } from '../../../components/Banner';
 import { Container } from '../../../components/Container';
 import { Flex } from '../../../components/Flex';
 import { Button } from '../../../components/Form/Button';
-import { Checkbox } from '../../../components/Form/Checkbox';
-import { Field, FieldCheckbox } from '../../../components/Form/Field';
-import { Input } from '../../../components/Form/Input';
+import { Field } from '../../../components/Form/Field';
+import { SyncConfiguration } from '../../../components/Project/SyncConfiguration';
 import { GithubSearch } from '../../../components/StackSearch/GithubSearch';
 import { useToast } from '../../../hooks/useToast';
 import type { RouteOrg } from '../../../types/routes';
@@ -40,11 +39,7 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   const [repo, setRepo] = useState<ApiGithubRepo>();
   const [errors, setErrors] = useState<FieldsErrors>({});
   const [open, setOpen] = useState(false);
-  const [branch, setBranch] = useState('main');
-  const [stackEnabled, setStackEnabled] = useState(true);
-  const [stackPath, setStackpath] = useState('/');
-  const [docEnabled, setDocEnabled] = useState(true);
-  const [docPath, setDocPath] = useState('/docs');
+  const [config, setConfig] = useState<ApiProject['config']>();
 
   const onFinish: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
@@ -52,17 +47,7 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
     const res = await createProject({
       name,
       orgId: params.org_id,
-      config: {
-        branch,
-        documentation: {
-          enabled: docEnabled,
-          path: docPath,
-        },
-        stack: {
-          enabled: stackEnabled,
-          path: stackPath,
-        },
-      },
+      config,
     });
     if (isError(res)) {
       return handleErrors(res, toast, setErrors);
@@ -156,111 +141,7 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
             </Collapsible.Trigger>
 
             <Collapsible.Content>
-              <Flex
-                className={cls.inner}
-                column
-                gap="2xl"
-                align="flex-start"
-                grow
-              >
-                <Flex align="flex-start" gap="xl" grow>
-                  <Flex column align="flex-start">
-                    <strong>Branch</strong>
-                    <p className={cls.desc}>
-                      Deploy when pushing to this branch
-                    </p>
-                  </Flex>
-                  <Flex
-                    column
-                    align="flex-start"
-                    gap="l"
-                    grow
-                    className={cls.inputs}
-                  >
-                    <Field name="branch" error={errors.branch?.message}>
-                      <Input
-                        type="text"
-                        value={branch}
-                        onChange={(e) => setBranch(e.target.value)}
-                        placeholder="main"
-                      />
-                    </Field>
-                  </Flex>
-                </Flex>
-
-                <Flex align="flex-start" gap="xl" grow>
-                  <Flex column align="flex-start">
-                    <strong>Stack</strong>
-                    <p className={cls.desc}>
-                      Automatically analyze and upload your stack
-                    </p>
-                  </Flex>
-                  <Flex
-                    column
-                    align="flex-start"
-                    gap="l"
-                    grow
-                    className={cls.inputs}
-                  >
-                    <Flex gap="l">
-                      <FieldCheckbox name="checkStackEnabled" label="Enabled">
-                        <Checkbox
-                          checked={stackEnabled}
-                          onCheckedChange={() => setStackEnabled(!stackEnabled)}
-                        />
-                      </FieldCheckbox>
-                    </Flex>
-
-                    <Field
-                      name="stackPath"
-                      label="Path"
-                      error={errors.stackPath?.message}
-                    >
-                      <Input
-                        type="text"
-                        value={stackPath}
-                        onChange={(e) => setStackpath(e.target.value)}
-                        disabled={!stackEnabled}
-                        placeholder="Path to analyze, e.g: '/'"
-                      />
-                    </Field>
-                  </Flex>
-                </Flex>
-
-                <Flex align="flex-start" gap="xl" grow>
-                  <Flex column align="flex-start">
-                    <strong>Documentation</strong>
-                    <p className={cls.desc}>Upload your markdown files</p>
-                  </Flex>
-                  <Flex
-                    column
-                    align="flex-start"
-                    gap="l"
-                    grow
-                    className={cls.inputs}
-                  >
-                    <FieldCheckbox name="checkDocEnabled" label="Enabled">
-                      <Checkbox
-                        checked={docEnabled}
-                        onCheckedChange={() => setDocEnabled(!docEnabled)}
-                      />
-                    </FieldCheckbox>
-                    <Field
-                      name="docPath"
-                      label="Path"
-                      error={errors.docPath?.message}
-                    >
-                      <Input
-                        type="text"
-                        value={docPath}
-                        onChange={(e) => setDocPath(e.target.value)}
-                        disabled={!docEnabled}
-                        placeholder="Path to analyze, e.g: '/'"
-                      />
-                    </Field>
-                  </Flex>
-                </Flex>
-              </Flex>
+              <SyncConfiguration errors={errors} onChange={setConfig} />
             </Collapsible.Content>
           </Collapsible.Root>
         </Form.Root>

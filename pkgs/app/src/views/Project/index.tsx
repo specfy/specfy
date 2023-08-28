@@ -5,9 +5,9 @@ import { Route, Routes, useParams } from 'react-router-dom';
 
 import {
   useListComponents,
-  useGetProject,
   useListProjects,
   useListOrgs,
+  useGetProjectBySlug,
 } from '../../api';
 import {
   useComponentsStore,
@@ -56,9 +56,9 @@ export const Project: React.FC = () => {
   const getOrgs = useListOrgs();
   const [org, setOrg] = useState<ApiOrg>();
   const [proj, setProj] = useState<ApiProject>();
-  const getProject = useGetProject({
+  const getProject = useGetProjectBySlug({
     org_id: org?.id,
-    project_slug: params.project_slug,
+    slug: params.project_slug,
   });
   const getProjects = useListProjects({ org_id: org?.id });
   const [loading, setLoading] = useState<boolean>(true);

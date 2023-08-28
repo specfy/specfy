@@ -59,6 +59,7 @@ import type {
   PostDemo,
   GetDocumentBySlug,
   PostAiOperation,
+  GetProjectBySlug,
 } from '@specfy/models';
 
 import type { PostAuthLocal, PostLogout } from './auth.js';
@@ -122,10 +123,9 @@ export interface API {
 
   '/0/policies': { GET: ListPolicies };
 
-  '/0/projects': {
-    GET: ListProjects;
-    POST: PostProject;
-  };
+  '/0/projects': { GET: ListProjects; POST: PostProject };
+  // @ts-expect-error
+  '/0/projects/by_slug': { GET: GetProjectBySlug };
   [key: `/0/projects/${string}`]: {
     GET: GetProject;
     PUT: PutProject;

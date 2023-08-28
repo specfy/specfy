@@ -11,7 +11,6 @@ import { z } from 'zod';
 
 import { validationError } from '../../../common/errors.js';
 import { getProject } from '../../../middlewares/getProject.js';
-import { noQuery } from '../../../middlewares/noQuery.js';
 
 function BodyVal(req: FastifyRequest) {
   return z
@@ -35,14 +34,16 @@ function BodyVal(req: FastifyRequest) {
           message: `This slug is already used`,
         });
       }),
+      config: schemaProject.shape.config,
     })
-    .strict();
+    .strict()
+    .partial({ name: true, slug: true, config: true });
 }
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.put<PutProject>(
     '/',
-    { preHandler: [noQuery, getProject] },
+    { preHandler: [getProject] },
     async function (req, res) {
       const val = await BodyVal(req).safeParseAsync(req.body);
       if (!val.success) {
@@ -52,10 +53,10 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       const data: PutProject['Body'] = val.data;
       let project = req.project!;
 
-      if (data.name) {
+      if (data.name && data.slug) {
         project = await prisma.$transaction(async (tx) => {
           const tmp = await tx.projects.update({
-            data: { name: data.name, slug: data.slug },
+            data: { name: data.name!, slug: data.slug! },
             where: { id: project.id },
           });
           await createProjectActivity({
@@ -66,6 +67,15 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
           });
 
           await recomputeOrgGraph({ orgId: tmp.orgId, tx });
+
+          return tmp;
+        });
+      } else if (data.config) {
+        project = await prisma.$transaction(async (tx) => {
+          const tmp = await tx.projects.update({
+            data: { config: data.config! },
+            where: { id: project.id },
+          });
 
           return tmp;
         });

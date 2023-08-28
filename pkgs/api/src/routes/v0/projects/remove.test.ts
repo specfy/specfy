@@ -24,15 +24,15 @@ afterAll(async () => {
   await setupAfterAll(t);
 });
 
-describe('DELETE /projects/:org_id/:project_slug', () => {
+describe('DELETE /projects/:project_id', () => {
   it('should be protected', async () => {
-    const res = await t.fetch.delete('/0/projects/foo/bar');
+    const res = await t.fetch.delete('/0/projects/bar');
     await shouldBeProtected(res);
   });
 
   it('should not allow query params', async () => {
     const { token } = await seedSimpleUser();
-    const res = await t.fetch.delete('/0/projects/foo/bar', {
+    const res = await t.fetch.delete('/0/projects/bar', {
       token,
       // @ts-expect-error
       Querystring: { random: 'world' },
@@ -42,7 +42,7 @@ describe('DELETE /projects/:org_id/:project_slug', () => {
 
   it('should not allow body', async () => {
     const { token } = await seedSimpleUser();
-    const res = await t.fetch.delete('/0/projects/foo/bar', {
+    const res = await t.fetch.delete('/0/projects/bar', {
       token,
       // @ts-expect-error
       Body: { random: 'world' },
@@ -53,8 +53,9 @@ describe('DELETE /projects/:org_id/:project_slug', () => {
   it('should not allow viewer', async () => {
     const { token, org, owner } = await seedWithOrgViewer();
     const project = await seedProject(owner, org);
-    const res = await t.fetch.delete(`/0/projects/${org.id}/${project.slug}`, {
+    const res = await t.fetch.delete(`/0/projects/${project.id}`, {
       token,
+      Querystring: { org_id: org.id },
     });
 
     expect(res.statusCode).toBe(403);
@@ -62,18 +63,20 @@ describe('DELETE /projects/:org_id/:project_slug', () => {
 
   it('should delete a project', async () => {
     const { token, org, project } = await seedWithProject();
-    const res = await t.fetch.delete(`/0/projects/${org.id}/${project.slug}`, {
+    const res = await t.fetch.delete(`/0/projects/${project.id}`, {
       token,
+      Querystring: { org_id: org.id },
     });
 
     isSuccess(res.json);
     expect(res.statusCode).toBe(204);
 
     // Check that it's indeed deleted
-    const resGet = await t.fetch.get(`/0/projects/${org.id}/${project.slug}`, {
+    const resGet = await t.fetch.get(`/0/projects/${project.id}`, {
       token,
+      Querystring: { org_id: org.id },
     });
     isError(resGet.json);
-    expect(resGet.statusCode).toBe(404);
+    expect(resGet.statusCode).toBe(403);
   });
 });

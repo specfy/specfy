@@ -30,7 +30,7 @@ export function checkInheritedPermissions(
 
   if (projectId) {
     const inherited = perms.find((perm) => {
-      return perm.orgId === orgId;
+      return perm.orgId === orgId && perm.projectId === null;
     });
     if (inherited?.Org.Projects.find((project) => project.id === projectId)) {
       return isRoleOrAbove(inherited, role);
