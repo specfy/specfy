@@ -1016,6 +1016,6 @@ export async function createDemo(
   });
 
   // --- Upload fixtures with sync to emulate an actual upload
-  const fixturePath = path.join(dirname, '../', 'models/src/demo/content');
+  const fixturePath = path.join(dirname, '../../', '_demo_content');
   await syncFolder(fixturePath, pAnalytics as any, user, tx);
 }

@@ -4,8 +4,8 @@ The Analytics project collects data from various sources, processes it, and pres
 
 ## Get Started
 
-- 📥 **Installation**: Please refer to the [Installation](/Installation.md) document for detailed instructions on how to install and set up the Analytics project.
-- 📚 **Contributing**: If you would like to contribute to the Analytics project, please read the [Contributing](/Contributing.md) guidelines.
+- 📥 **Installation**: Please refer to the [Installation](./Installation.md) document for detailed instructions on how to install and set up the Analytics project.
+- 📚 **Contributing**: If you would like to contribute to the Analytics project, please read the [Contributing](./Contributing.md) guidelines.
 
 ## Technology
 
