@@ -74,8 +74,8 @@ export const Header: React.FC = () => {
   return (
     <header className={cls.header}>
       <Flex justify="space-between">
-        <Link to="/" className={cls.logo}>
-          <Logo />
+        <Link to="/">
+          <Logo className={cls.logo} />
           <div className={cls.beta}>beta</div>
         </Link>
         <User />

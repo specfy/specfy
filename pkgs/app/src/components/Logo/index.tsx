@@ -1,10 +1,15 @@
+import classNames from 'classnames';
+
 import cls from './index.module.scss';
 
-export const Logo: React.FC<{ color?: 'white' }> = ({ color }) => {
+export const Logo: React.FC<{ color?: 'white'; className?: string }> = ({
+  color,
+  className,
+}) => {
   const fill = color || 'black';
 
   return (
-    <div className={cls.logo}>
+    <div className={classNames(cls.logo, className)}>
       <svg
         viewBox="0 0 200 200"
         fill="none"

@@ -1,17 +1,17 @@
 .logo {
-  display: grid;
-  grid-template-columns: 1fr 4fr;
-  gap: var(--spc-m);
-  align-items: center;
+  --logo-height: 32px;
 
+  display: flex;
+  align-items: center;
   width: 132px;
   height: 100%;
 
   >svg {
-    height: inherit;
+    height: var(--logo-height);
   }
 }
 
 .icon {
+  margin-right: var(--spc-m);
   font-size: inherit;
 }
