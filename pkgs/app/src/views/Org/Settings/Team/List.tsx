@@ -87,7 +87,6 @@ export const SettingsTeamList: React.FC<{ params: RouteOrg }> = ({
       <div className={cls.header}>
         <Input
           before={<IconSearch />}
-          seamless
           placeholder="Search..."
           className={cls.search}
           onChange={(e) => setSearch(e.target.value)}

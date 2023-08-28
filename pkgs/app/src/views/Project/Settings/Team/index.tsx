@@ -96,7 +96,6 @@ export const SettingsTeam: React.FC<{
         <div>
           <Input
             before={<IconSearch />}
-            seamless
             placeholder="Search or add user..."
             className={cls.search}
             onChange={(e) => setSearch(e.target.value)}

@@ -1,94 +1,70 @@
-/* stylelint-disable rule-empty-line-before */
 /* stylelint-disable selector-class-pattern */
 
 @import "../../../styles/mixin";
 
 .wrapper {
+  --input-height: var(--h-m);
+  --input-font: var(--font);
+  --input-padding: var(--spc) var(--spc-l);
+  --input-lh: var(--lh);
+  --input-before-padding: var(--spc) var(--spc) var(--spc) var(--spc-l);
+  --input-after-padding: var(--spc) var(--spc-l) var(--spc) var(--spc);
+
   @include ringWithin;
 
   display: flex;
   flex-grow: 1;
 
-  font-size: var(--font);
-  line-height: var(--lh);
-  ;
+  height: var(--input-height);
+
+  font-size: var(--input-font);
+  line-height: var(--input-lh);
   color: var(--text);
 
   background-color: #fff;
   border: 1px solid var(--border2);
   border-radius: var(--radius2);
 
+  .input {
+    width: 100%;
+    padding: var(--input-padding);
+  }
+
+  .before {
+    padding: var(--input-before-padding);
+
+    &+.input {
+      padding-left: var(--spc-s);
+    }
+  }
+
+  .after {
+    padding: var(--input-after-padding);
+  }
+
   &.s {
-    height: var(--h-s);
-    font-size: var(--font-s);
-
-    .input {
-      padding: var(--spc-s) var(--spc-l);
-    }
-
-    .before {
-      padding: var(--spc-s) var(--spc-l);
-
-      &+.input {
-        padding-left: var(--spc-s);
-      }
-    }
-
-    .after {
-      padding: var(--spc-s) var(--spc-l);
-    }
+    --input-font: var(--font-s);
+    --input-height: var(--h-s);
+    --input-before-padding: var(--spc) var(--spc) var(--spc) var(--spc-l);
+    --input-after-padding: var(--spc) var(--spc-l) var(--spc) var(--spc);
   }
 
   &.m {
-    height: var(--h-m);
-    font-size: var(--font);
-
-    .input {
-      padding: var(--spc) var(--spc-l);
-    }
-
-    .before {
-      padding: var(--spc) var(--spc) var(--spc) var(--spc-l);
-
-      &+.input {
-        padding-left: var(--spc);
-      }
-    }
-
-    .after {
-      padding: var(--spc) var(--spc-l) var(--spc) var(--spc);
-    }
+    --input-height: var(--h-m);
   }
 
   &.l {
-    height: var(--h-l);
-    font-size: var(--font);
-
-    .input {
-      padding: var(--spc-m) var(--spc-xl);
-    }
-
-    .before {
-      padding: var(--spc) var(--spc) var(--spc) var(--spc-l);
-
-      &+.input {
-        padding-left: var(--spc);
-      }
-    }
-
-    .after {
-      padding: var(--spc) var(--spc-l) var(--spc) var(--spc);
-    }
+    --input-font: var(--font);
+    --input-height: var(--h-xl);
+    --input-before-padding: var(--spc) var(--spc) var(--spc) var(--spc-l);
+    --input-after-padding: var(--spc) var(--spc-l) var(--spc) var(--spc);
   }
 
   &.xl {
-    height: var(--h-xl);
-    font-size: var(--font-l);
-
-    .input,
-    .before {
-      padding: var(--spc-l) var(--spc-xl);
-    }
+    --input-font: var(--font-m);
+    --input-height: var(--h-2xl);
+    --input-before-padding: var(--spc-l) var(--spc-xl);
+    --input-after-padding: var(--spc-l) var(--spc-xl);
   }
 
   &.disabled {
@@ -103,10 +79,13 @@
   }
 
   &.seamless {
+    .before {
+      padding-right: 0;
+    }
 
-    .before,
     .after {
-      background-color: transparent;
+      padding-right: 0;
+      padding-left: 0;
     }
   }
 }
@@ -123,11 +102,10 @@
 .before,
 .after {
   display: flex;
+  flex-shrink: 0;
   align-items: center;
 
   min-width: 34px;
 
   color: var(--text3);
-
-  background-color: var(--bg2)
 }

@@ -55,7 +55,6 @@ export const ListProjects: React.FC<{ orgId: string }> = ({ orgId }) => {
             </Link>
             <Input
               before={<IconSearch />}
-              seamless
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search..."
             />

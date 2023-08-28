@@ -177,6 +177,7 @@ export const SettingsGeneral: React.FC<{
                     readOnly
                     value={proj.id}
                     style={{ width: '350px' }}
+                    seamless
                     after={<CopyButton value={proj.id} />}
                   />
                 </Field>
@@ -185,6 +186,7 @@ export const SettingsGeneral: React.FC<{
                     readOnly
                     value={key || ''}
                     style={{ width: '350px' }}
+                    seamless
                     after={
                       <CopyButton value={resKeys.data?.data[0].key || ''} />
                     }
@@ -196,6 +198,7 @@ export const SettingsGeneral: React.FC<{
                       readOnly
                       value={manualCli}
                       style={{ width: '450px' }}
+                      seamless
                       after={<CopyButton value={manualCli || ''} />}
                     />
                   </Field>

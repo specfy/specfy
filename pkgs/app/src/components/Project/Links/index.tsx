@@ -57,7 +57,6 @@ const LinkEdit: React.FC<{
         value={link.title}
         size="s"
         before={Icon && <Icon size="1em" />}
-        seamless
         className={cls.label}
         placeholder="Label"
         onChange={(e) => {

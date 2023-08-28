@@ -153,7 +153,6 @@ export const ProjectRevisionsList: React.FC<{
             <Input
               before={<IconSearch />}
               onChange={handleInput}
-              seamless
               value={search}
               after={
                 <button
