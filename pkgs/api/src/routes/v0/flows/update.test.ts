@@ -40,14 +40,14 @@ async function linkTwoProjects(
   return await prisma.$transaction(async (tx) => {
     const a = await createComponent({
       data: {
-        ...getBlobComponent(org, project),
+        ...getBlobComponent(project),
       },
       user,
       tx,
     });
     const b = await createComponent({
       data: {
-        ...getBlobComponent(org, project),
+        ...getBlobComponent(project),
         type: 'project',
         typeId: project2.id,
         edges: [

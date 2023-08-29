@@ -36,7 +36,7 @@ afterAll(async () => {
 async function revisionWithBlob(user: Users, org: Orgs, project: Projects) {
   // Create a component
   const component = await seedComponent(user, org, project);
-  const blob = { ...getBlobComponent(org, project), id: component.id };
+  const blob = { ...getBlobComponent(project), id: component.id };
 
   // Modifies it in a revision
   const revision = await seedRevision(user, org, project, undefined, [
@@ -186,7 +186,7 @@ describe('POST /revisions/:revision_id/merge', () => {
     const { revision, component } = await revisionWithBlob(user, org, project);
 
     // Modifies the component in the main channel
-    const blob2 = { ...getBlobComponent(org, project), id: component.id };
+    const blob2 = { ...getBlobComponent(project), id: component.id };
     const newBlob = await createComponentBlob({
       blob: blob2 as any,
       tx: prisma,

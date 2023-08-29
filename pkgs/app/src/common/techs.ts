@@ -64,6 +64,8 @@ import {
   SiAtlassian,
   SiZendesk,
   SiSupabase,
+  SiAuth0,
+  SiOpenai,
 } from '@icons-pack/react-simple-icons';
 import type { IconType } from '@icons-pack/react-simple-icons/types';
 import type { AllowedKeys, TechItem } from '@specfy/stack-analyser';
@@ -79,6 +81,7 @@ const extending: Partial<Record<AllowedKeys, Extending>> = {
   atlassian: { Icon: SiAtlassian },
   algolia: { Icon: SiAlgolia },
   alibabacloud: { Icon: SiAlibabacloud },
+  auth0: { Icon: SiAuth0 },
   'aws.dynamodb': { Icon: SiAmazondynamodb },
   'aws.s3': { Icon: SiAmazonaws },
   'aws.ec2': { Icon: SiAmazonaws },
@@ -149,6 +152,7 @@ const extending: Partial<Record<AllowedKeys, Extending>> = {
   netlify: { Icon: SiNetlify, regHostname: /^(www.)?netlify.com$/ },
   newrelic: { Icon: SiNewrelic },
   nodejs: { Icon: SiNodedotjs },
+  openai: { Icon: SiOpenai },
   oraclecloud: { Icon: SiOracle },
   ovh: { Icon: SiOvh },
   php: { Icon: SiPhp },

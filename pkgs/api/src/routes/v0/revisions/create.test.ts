@@ -128,7 +128,7 @@ describe('POST /revisions', () => {
   it('should allow with new blob', async () => {
     const { token, org, project } = await seedWithProject();
     const name = `test ${nanoid()}`;
-    const blobComp = getBlobComponent(org, project);
+    const blobComp = getBlobComponent(project);
     const blobDoc = getBlobDocument(org, project);
 
     const res = await t.fetch.post('/0/revisions', {
@@ -237,7 +237,7 @@ describe('POST /revisions', () => {
   it('should disallow created and deleted', async () => {
     const { token, org, project } = await seedWithProject();
     const name = `test ${nanoid()}`;
-    const blob = getBlobComponent(org, project);
+    const blob = getBlobComponent(project);
 
     const res = await t.fetch.post('/0/revisions', {
       token,
@@ -276,7 +276,7 @@ describe('POST /revisions', () => {
 
     // Create a component
     const component = await seedComponent(user, org, project);
-    const blob = { ...getBlobComponent(org, project), id: component.id };
+    const blob = { ...getBlobComponent(project), id: component.id };
 
     const name = `test ${nanoid()}`;
 
@@ -307,7 +307,7 @@ describe('POST /revisions', () => {
   it('should disallow blob wrong org/project ', async () => {
     const { token, org, project } = await seedWithProject();
     const name = `test ${nanoid()}`;
-    const blob = getBlobComponent(org, project);
+    const blob = getBlobComponent(project);
 
     const res = await t.fetch.post('/0/revisions', {
       token,

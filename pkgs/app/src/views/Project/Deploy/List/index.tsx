@@ -112,9 +112,9 @@ export const ProjectDeploysList: React.FC<{
               msg={
                 !proj.githubRepository
                   ? 'Project is not linked to any Github repository'
-                  : 'Manually trigger a new deployment from your repository to Specfy'
+                  : ''
               }
-              side="right"
+              side="bottom"
               size="s"
             >
               <Button

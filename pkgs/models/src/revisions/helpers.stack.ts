@@ -22,6 +22,7 @@ const changing: Array<keyof Components> = [
   'techId',
   'techs',
   'name',
+  'inComponent',
 ];
 
 export interface StackToDB {
@@ -29,6 +30,64 @@ export interface StackToDB {
   blobs: ApiBlobCreateComponent[];
   unchanged: string[];
 }
+
+/**
+ * When we receive a stack Payload, each component have id, name, tech and sourcePath
+ * that we can use to differentiate and potentially find the component already in DB that matches.
+ * In most case the naive triple check is enough. But in some cases sourcePath check is mandatory.
+ * e.g:
+ *  two components named API with tech null in a different place
+ *
+ * - We can't use a perfect hash because any sourcePath change would break the mv scenario.
+ * - The rename scenario is the most probable however it's very hard to differentiate a rename from a delete + new
+ *
+ * So right now if we have an API component that is renamed Api and no tech or sourcePath changes, it will be recreated until better algo.
+ */
+export function findPrev(
+  child: AnalyserJson,
+  prevs: Components[],
+  source: string
+) {
+  const matches = [];
+  // Naive match that should fit 99% use case
+  // We don't check the path yet because it can be a mv case if there is only one match
+  for (const prev of prevs) {
+    if (
+      prev.sourceName === child.name &&
+      prev.techId === child.tech &&
+      prev.source === source
+    ) {
+      matches.push(prev);
+    }
+  }
+
+  if (matches.length <= 1) {
+    return matches[0];
+  }
+
+  // Second step, multiple components match.
+  // We need to adapt the heuristic and check old path
+  // If nothing match perfectly it's going to be recreated
+  // But we don't want to pick the wrong one
+  for (const match of matches) {
+    if (!match.sourcePath) {
+      // This would be weird but TS pleasing
+      continue;
+    }
+
+    for (const path of match.sourcePath) {
+      if (child.path.includes(path)) {
+        // We matched a path, there is 99.99% chance we found the right one
+        // There is still a chance multiple would have match
+        // but at this point it's either an acceptable edge case or someone crafting a payload
+        return match;
+      }
+    }
+  }
+
+  return null;
+}
+
 /**
  * Prepare blobs to create, update or delete
  */
@@ -42,13 +101,7 @@ export function uploadedStackToDB(
 
   const idsMap: Record<string, string> = {};
   const blobs: ApiBlobCreateComponent[] = parsed.childs.map((child) => {
-    const prev = prevs.find((p) => {
-      return (
-        p.sourceName === child.name &&
-        p.techId === child.tech &&
-        p.source === data.source
-      );
-    });
+    const prev = findPrev(child, prevs, data.source);
 
     let current: DBComponent;
     if (prev) {
@@ -59,13 +112,14 @@ export function uploadedStackToDB(
         sourcePath: child.path,
         techId: child.tech,
         techs: child.techs,
+        inComponent: child.inComponent,
       };
 
       // Store changed ids
       idsMap[child.id] = current.id;
       idsMap[current.id] = current.id;
     } else {
-      // TODO: try to place new components without overlapping and without autolayout
+      // TODO: try to place new components without overlapping and without auto layout
       const type: ComponentType = child.tech
         ? tech.indexed[child.tech].type
         : 'service';
@@ -124,7 +178,10 @@ export function uploadedStackToDB(
         return false;
       }
       return !parsed.childs.find(
-        (child) => child.name === p.sourceName && child.tech === p.techId
+        (child) =>
+          child.name === p.sourceName &&
+          ((child.tech !== null && child.tech === p.techId) ||
+            (child.tech === null && p.techId === null))
       );
     })
     .map((prev) => {
@@ -146,17 +203,23 @@ export function uploadedStackToDB(
 
     if (blob.current.inComponent) {
       if (idsMap[blob.current.inComponent] === undefined) {
-        throw new Error('Component host does not exists anymore');
+        // Host was deleted
+        blob.current.inComponent = null;
+      } else {
+        blob.current.inComponent = idsMap[blob.current.inComponent];
       }
-      blob.current.inComponent = idsMap[blob.current.inComponent];
     }
 
-    blob.current.edges.forEach((edge) => {
+    const newEdges = [];
+    for (const edge of blob.current.edges) {
       if (idsMap[edge.target] === undefined) {
-        throw new Error('Edge does not exists anymore');
+        // edge and component was deleted
+        continue;
       }
       edge.target = idsMap[edge.target];
-    });
+      newEdges.push(edge);
+    }
+    blob.current.edges = newEdges;
   });
 
   // Detect unchanged blobs

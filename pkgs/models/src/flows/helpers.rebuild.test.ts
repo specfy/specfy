@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
-import type { Orgs, Projects } from '@specfy/db';
+import type { Projects } from '@specfy/db';
 import { describe, expect, it } from 'vitest';
 
 import { getBlobComponent } from '../components';
@@ -7,7 +7,6 @@ import { getBlobComponent } from '../components';
 import { computeRelationsToProjects, rebuildFlow } from './helpers.rebuild.js';
 
 describe('computeRelationsToProjects', () => {
-  const org = { id: 'org' } as Orgs;
   const project1 = { id: 'project1' } as Projects;
   const project2 = { id: 'project2' } as Projects;
 
@@ -17,7 +16,7 @@ describe('computeRelationsToProjects', () => {
   });
 
   it('should output relation to', () => {
-    const comp = getBlobComponent(org, project1);
+    const comp = getBlobComponent(project1);
 
     const relations = computeRelationsToProjects({
       components: [
@@ -27,7 +26,7 @@ describe('computeRelationsToProjects', () => {
           typeId: project2.id,
         },
         {
-          ...getBlobComponent(org, project1),
+          ...getBlobComponent(project1),
           edges: [
             {
               portSource: 'sb',
@@ -57,12 +56,12 @@ describe('computeRelationsToProjects', () => {
   });
 
   it('should output relation from', () => {
-    const comp = getBlobComponent(org, project1);
+    const comp = getBlobComponent(project1);
 
     const relations = computeRelationsToProjects({
       components: [
         {
-          ...getBlobComponent(org, project1),
+          ...getBlobComponent(project1),
           type: 'project',
           typeId: project2.id,
           edges: [
@@ -95,8 +94,8 @@ describe('computeRelationsToProjects', () => {
   });
 
   it('should output one relations from', () => {
-    const comp1 = getBlobComponent(org, project1);
-    const comp2 = getBlobComponent(org, project1);
+    const comp1 = getBlobComponent(project1);
+    const comp2 = getBlobComponent(project1);
 
     const relations = computeRelationsToProjects({
       components: [
@@ -111,7 +110,7 @@ describe('computeRelationsToProjects', () => {
           typeId: project2.id,
         },
         {
-          ...getBlobComponent(org, project1),
+          ...getBlobComponent(project1),
           edges: [
             {
               portSource: 'sb',

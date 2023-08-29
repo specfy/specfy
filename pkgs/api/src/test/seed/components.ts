@@ -792,11 +792,11 @@ export async function seedComponents(
       });
 
       // --- Component in others Projects to create edges in Org graph
-      const display = getBlobComponent(o1, pDash).display;
+      const display = getBlobComponent(pDash).display;
       // Dashboard
       const p01 = await createComponent({
         data: {
-          ...getBlobComponent(o1, pDash),
+          ...getBlobComponent(pDash),
           type: 'project',
           name: pAPI.name,
           typeId: pAPI.id,
@@ -806,7 +806,7 @@ export async function seedComponents(
       });
       const p02 = await createComponent({
         data: {
-          ...getBlobComponent(o1, pDash),
+          ...getBlobComponent(pDash),
           type: 'project',
           name: pBilling.name,
           typeId: pBilling.id,
@@ -820,7 +820,7 @@ export async function seedComponents(
       });
       await createComponent({
         data: {
-          ...getBlobComponent(o1, pDash),
+          ...getBlobComponent(pDash),
           name: 'api',
           display: {
             ...display,
@@ -855,7 +855,7 @@ export async function seedComponents(
       // Frontend
       const p31 = await createComponent({
         data: {
-          ...getBlobComponent(o1, pFront),
+          ...getBlobComponent(pFront),
           type: 'project',
           name: pDash.name,
           typeId: pDash.id,
@@ -865,7 +865,7 @@ export async function seedComponents(
       });
       await createComponent({
         data: {
-          ...getBlobComponent(o1, pFront),
+          ...getBlobComponent(pFront),
           name: 'api',
           display: {
             ...display,
@@ -889,7 +889,7 @@ export async function seedComponents(
       // Billing
       const p51 = await createComponent({
         data: {
-          ...getBlobComponent(o1, pBilling),
+          ...getBlobComponent(pBilling),
           name: 'api',
           display: {
             ...display,
@@ -901,7 +901,7 @@ export async function seedComponents(
       });
       await createComponent({
         data: {
-          ...getBlobComponent(o1, pBilling),
+          ...getBlobComponent(pBilling),
           type: 'project',
           name: pAnalytics.name,
           typeId: pAnalytics.id,
@@ -923,7 +923,7 @@ export async function seedComponents(
       // API
       const pAPI1 = await createComponent({
         data: {
-          ...getBlobComponent(o1, pAPI),
+          ...getBlobComponent(pAPI),
           type: 'project',
           name: pAnalytics.name,
           typeId: pAnalytics.id,
@@ -933,7 +933,7 @@ export async function seedComponents(
       });
       await createComponent({
         data: {
-          ...getBlobComponent(o1, pAPI),
+          ...getBlobComponent(pAPI),
           name: 'API',
           display: {
             ...display,
