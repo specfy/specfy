@@ -10,7 +10,7 @@
   "scripts": {
     "build": "tsup",
     "build:watch": "tsup --watch",
-    "__dev": "email dev -p 3001",
+    "__dev": "dotenv -e ../../.env npx email dev -p 3001 -d src/emails",
     "export": "email export"
   },
   "dependencies": {
