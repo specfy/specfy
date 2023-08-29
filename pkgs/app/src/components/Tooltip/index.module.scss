@@ -3,7 +3,7 @@
 
   overflow: hidden;
 
-  padding: var(--spc) var(--spc-l);
+  padding: var(--spc-s) var(--spc-l);
 
   font-size: var(--font-s);
   color: var(--primaryText);
@@ -11,6 +11,11 @@
   background-color: var(--primary);
   border-radius: var(--radius2);
   box-shadow: var(--shadow1);
+
+  /* stylelint-disable-next-line selector-class-pattern */
+  &.s {
+    padding: var(--spc-xs) var(--spc-l);
+  }
 
   &[data-state="closed"] {
     animation-name: exit;

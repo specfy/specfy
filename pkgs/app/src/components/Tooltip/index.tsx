@@ -8,15 +8,19 @@ const TooltipProvider = TooltipPrimitive.Provider;
 const Tooltip = TooltipPrimitive.Root;
 const TooltipTrigger = TooltipPrimitive.Trigger;
 
+type Props = {
+  size?: 's';
+};
+
 const TooltipContent = forwardRef<
-  React.ElementRef<typeof TooltipPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
->(({ className, sideOffset = 4, ...props }, ref) => {
+  React.ElementRef<typeof TooltipPrimitive.Content> & Props,
+  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content> & Props
+>(({ className, sideOffset = 4, size, ...props }, ref) => {
   return (
     <TooltipPrimitive.Content
       ref={ref}
       sideOffset={sideOffset}
-      className={cn(cls.content, className)}
+      className={cn(cls.content, size && cls[size], className)}
       {...props}
     />
   );
@@ -27,7 +31,7 @@ const TooltipFull: React.FC<
   React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content> & {
     children: React.ReactNode;
     msg: boolean | string;
-  }
+  } & Props
 > = ({ children, msg, ...props }) => {
   return (
     <Tooltip delayDuration={300}>

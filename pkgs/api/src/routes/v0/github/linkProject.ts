@@ -41,11 +41,11 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         return validationError(res, val.error);
       }
 
-      const user = req.me!;
+      const me = req.me!;
       const body = val.data;
       const org = getOrgFromRequest(req, body.orgId)!;
       const accounts = await prisma.accounts.findFirst({
-        where: { userId: user.id },
+        where: { userId: me.id },
       });
 
       if (body.repository) {
@@ -104,7 +104,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
           await createJobDeploy({
             orgId: body.orgId,
             projectId: body.projectId,
-            userId: user.id,
+            userId: me.id,
             config: {
               url: body.repository,
               autoLayout: true,
@@ -118,7 +118,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
             org,
             project: proj,
             tx,
-            user,
+            user: me,
           });
         }
       });

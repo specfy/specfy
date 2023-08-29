@@ -37,11 +37,11 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         return validationError(res, val.error);
       }
 
-      const user = req.me!;
+      const me = req.me!;
       const body: PostLinkToGithubOrg['Body'] = val.data;
       const org = getOrgFromRequest(req, body.orgId)!;
       const accounts = await prisma.accounts.findFirst({
-        where: { userId: user.id },
+        where: { userId: me.id },
       });
 
       if (body.installationId) {
@@ -90,7 +90,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
             action: !body.installationId ? 'Github.unlinked' : 'Github.linked',
             org,
             tx,
-            user,
+            user: me,
           });
         }
       });
