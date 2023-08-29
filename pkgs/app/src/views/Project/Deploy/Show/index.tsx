@@ -1,4 +1,3 @@
-import Editor from '@monaco-editor/react';
 import type { ApiJob, ApiProject } from '@specfy/models';
 import { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
@@ -9,6 +8,7 @@ import { useGetDeploy } from '../../../../api';
 import { titleSuffix } from '../../../../common/string';
 import { AvatarAuto } from '../../../../components/AvatarAuto';
 import { Banner } from '../../../../components/Banner';
+import { CodeHighlighter } from '../../../../components/CodeHighlighter';
 import { Container } from '../../../../components/Container';
 import { Flex } from '../../../../components/Flex';
 import { StatusTag } from '../../../../components/Job/StatusTag';
@@ -142,20 +142,9 @@ export const ProjectDeploysShow: React.FC<{
             </Banner>
           </div>
         )}
-        <Editor
-          className={cls.logs}
-          height={`${logs.length * 34}px`}
-          defaultLanguage="json"
-          value={logs.join('\r\n')}
-          options={{
-            readOnly: true,
-            minimap: { enabled: false },
-            scrollBeyondLastLine: false,
-            // lineNumbers: 'off',
-            fontSize: 14,
-            // wordWrap: 'on',
-          }}
-        />
+        <div className={cls.logs}>
+          <CodeHighlighter language="log" code={logs.join('\r\n')} />
+        </div>
       </Container.Left2Third>
     </Container>
   );

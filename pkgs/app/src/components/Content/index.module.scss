@@ -234,35 +234,6 @@ ul.taskList {
   border-radius: var(--radius2);
 }
 
-.codeDiff {
-  margin-bottom: var(--spc-l);
-  border: 1px solid var(--border1);
-}
-
-.code {
-  display: flex !important;
-
-  margin-bottom: var(--spc-l);
-  padding: var(--spc-xl) var(--spc-2xl) !important;
-
-  background-color: var(--bg2) !important;
-  border: none !important;
-
-  code,
-  code span {
-    font-family: var(--font-code) !important;
-    font-size: var(--font) !important;
-    font-weight: inherit;
-    font-style: inherit;
-    font-variant-ligatures: inherit;
-    line-height: inherit;
-    text-shadow: none !important;
-    text-rendering: inherit;
-    letter-spacing: inherit;
-
-    -webkit-font-smoothing: antialiased;
-  }
-}
 
 
 .vote {

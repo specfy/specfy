@@ -1,13 +1,8 @@
 import type { BlockLevelZero, Blocks, MarkDiff } from '@specfy/models';
 import { IconArrowBack } from '@tabler/icons-react';
 import classnames from 'classnames';
-import { useMemo, useState } from 'react';
-import { Diff, Hunk, tokenize, markEdits } from 'react-diff-view';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { PrismAsyncLight } from 'react-syntax-highlighter';
-import { prism } from 'react-syntax-highlighter/dist/esm/styles/prism';
-import 'react-diff-view/style/index.css';
-import refractor from 'refractor'; // do not use Refractor ^4
 
 import type { Payload } from '../../common/content';
 import { map } from '../../common/content';
@@ -16,6 +11,7 @@ import { Banner } from '../Banner';
 import { Checkbox } from '../Form/Checkbox';
 import clsDiff from '../Revision/DiffCard/index.module.scss';
 
+import { BlockCode } from './BlockCode';
 import { ContentBlockDocument } from './BlockDocument';
 import { ContentBlockStep } from './BlockStep';
 import { ContentBlockVoteItem } from './BlockVoteItem';
@@ -284,44 +280,9 @@ export const ContentBlock: React.FC<{
 
   // CodeBlock
   else if (block.type === 'codeBlock') {
-    if (block.codeDiff) {
-      const tokens = useMemo(() => {
-        return tokenize(block.codeDiff.hunks, {
-          highlight: true,
-          refractor,
-          language: block.attrs.language,
-          // language: 'js',
-          enhancers: [markEdits(block.codeDiff.hunks, { type: 'block' })],
-        });
-      }, [block.attrs.uid]);
-
-      return (
-        <div className={cls.codeDiff}>
-          <Diff
-            diffType="modify"
-            hunks={block.codeDiff.hunks}
-            viewType="unified"
-            tokens={tokens}
-          >
-            {(hunks) =>
-              hunks.map((hunk) => <Hunk key={hunk.content} hunk={hunk} />)
-            }
-          </Diff>
-        </div>
-      );
-    }
-
     return (
-      <div className={stl}>
-        <PrismAsyncLight
-          language={block.attrs.language}
-          style={prism}
-          wrapLines={true}
-          showLineNumbers={false}
-          className={cls.code}
-        >
-          {block.content?.[0].text}
-        </PrismAsyncLight>
+      <div className={classnames(stl, cls.mb)}>
+        <BlockCode block={block} />
       </div>
     );
   }
@@ -396,7 +357,7 @@ export const ContentDoc: React.FC<{
     }
     return (
       <div className={cls.placeholder}>
-        {placeholder ?? 'Write something ...'}
+        {placeholder ?? 'Write something...'}
       </div>
     );
   }
