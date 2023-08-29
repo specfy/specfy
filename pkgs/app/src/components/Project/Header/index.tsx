@@ -199,7 +199,7 @@ export const ProjectMenu: React.FC<{
   }, [linkSelf, revisions]);
 
   useEffect(() => {
-    if (location.pathname.match(/content|rfc/)) {
+    if (location.pathname.match(/content|rfc|doc/)) {
       setOpen('content');
     } else if (location.pathname.match(/\/c\/|\/t\//)) {
       setOpen('overview');
