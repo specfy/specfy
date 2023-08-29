@@ -17,7 +17,7 @@ export async function sendWelcome(
 ) {
   await resend.sendEmail({
     ...data,
-    from: 'Specfy <support@app.specfy.io>',
+    from: 'Specfy <support@specfy.io>',
     subject: 'Welcome to Specfy',
     react: <Welcome {...props} />,
   });
@@ -30,7 +30,7 @@ export async function sendInvitation(
 ) {
   await resend.sendEmail({
     ...data,
-    from: 'Specfy <support@app.specfy.io>',
+    from: 'Specfy <support@specfy.io>',
     subject: `Join ${props.org.name} on Specfy`,
     react: <Invitation {...props} />,
   });

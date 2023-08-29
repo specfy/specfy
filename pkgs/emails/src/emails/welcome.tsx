@@ -25,7 +25,7 @@ export const Welcome: React.FC<WelcomeProps> = ({
   name = 'John Doe',
   email = 'john.doe@example.com',
 }) => {
-  const previewText = `Welcome to Specfy`;
+  const previewText = `Hello ${name}, let's get started!`;
 
   return (
     <Html>

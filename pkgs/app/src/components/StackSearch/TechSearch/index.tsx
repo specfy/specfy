@@ -246,6 +246,21 @@ export const TechSearch: React.FC<{
             </div>
           );
         })}
+        {!filtered.find((group) => group.items.length > 0) && (
+          <div className={cls.empty}>
+            No results for &quot;{search}&quot;
+            <div>
+              Missing something?{' '}
+              <a
+                href="https://github.com/specfy/stack-analyser/issues/new?assignees=bodinsamuel&labels=tech+request&projects=&template=technology-request.md&title=%5BTECH%5D+Add+__NAME__"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Submit a request
+              </a>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
