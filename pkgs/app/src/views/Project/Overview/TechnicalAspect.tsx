@@ -1,13 +1,14 @@
 import type { ComponentType, ApiComponent } from '@specfy/models';
 import { useEffect, useState } from 'react';
 
-import { useComponentsStore } from '../../../common/store';
 import {
   ComponentLine,
   ComponentLineTech,
 } from '../../../components/Component/Line';
 import { Subdued } from '../../../components/Text';
 import type { RouteProject } from '../../../types/routes';
+
+import { useComponentsStore } from '@/common/store';
 
 export const TechnicalAspects: React.FC<{
   params: RouteProject;

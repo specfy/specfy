@@ -1,10 +1,11 @@
 import type { ApiProject } from '@specfy/models';
 import { Helmet } from 'react-helmet-async';
 
-import { titleSuffix } from '../../../common/string';
 import { Container } from '../../../components/Container';
 import { ListActivity } from '../../../components/ListActivity';
 import type { RouteProject } from '../../../types/routes';
+
+import { titleSuffix } from '@/common/string';
 
 export const ProjectActivity: React.FC<{
   proj: ApiProject;

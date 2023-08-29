@@ -5,8 +5,6 @@ import Skeleton from 'react-loading-skeleton';
 import { useLocalStorage } from 'react-use';
 
 import { useListProjects, useGetFlow } from '../../../api';
-import { i18n } from '../../../common/i18n';
-import { titleSuffix } from '../../../common/string';
 import { Card } from '../../../components/Card';
 import { Container } from '../../../components/Container';
 import { Flow, FlowWrapper } from '../../../components/Flow';
@@ -15,6 +13,9 @@ import { ListActivity } from '../../../components/ListActivity';
 import { ListProjects } from '../../../components/ListProjects';
 import { OrgOnboarding } from '../../../components/Org/Onboarding';
 import type { RouteOrg } from '../../../types/routes';
+
+import { i18n } from '@/common/i18n';
+import { titleSuffix } from '@/common/string';
 
 export const OrgOverview: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   org,

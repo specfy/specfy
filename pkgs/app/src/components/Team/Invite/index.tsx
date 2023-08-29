@@ -5,7 +5,6 @@ import { useState } from 'react';
 
 import { createInvitation } from '../../../api';
 import { handleErrors, isError } from '../../../api/helpers';
-import { selectPerms } from '../../../common/perms';
 import { Card } from '../../../components/Card';
 import { useToast } from '../../../hooks/useToast';
 import { Button } from '../../Form/Button';
@@ -14,6 +13,8 @@ import { Input } from '../../Form/Input';
 import { SelectFull } from '../../Form/Select';
 
 import cls from './index.module.scss';
+
+import { selectPerms } from '@/common/perms';
 
 export const TeamInvite: React.FC<{
   org: ApiOrg;

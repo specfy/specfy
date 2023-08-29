@@ -6,7 +6,6 @@ import type {
 import { componentsToFlow } from '@specfy/models/src/flows/transform';
 import { useCallback, useEffect, useState } from 'react';
 
-import { useComponentsStore, useProjectStore } from '../../../common/store';
 import { Card } from '../../../components/Card';
 import { Container } from '../../../components/Container';
 import { ContentDoc } from '../../../components/Content';
@@ -22,6 +21,8 @@ import type { RouteProject } from '../../../types/routes';
 
 import { TechnicalAspects } from './TechnicalAspect';
 import cls from './index.module.scss';
+
+import { useComponentsStore, useProjectStore } from '@/common/store';
 
 export const ProjectOverview: React.FC<{
   params: RouteProject;

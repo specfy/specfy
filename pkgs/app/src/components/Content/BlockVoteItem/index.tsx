@@ -4,11 +4,12 @@ import classnames from 'classnames';
 import { useState } from 'react';
 
 import { Presentation } from '..';
-import type { Payload } from '../../../common/content';
-import { map } from '../../../common/content';
 import { AvatarAuto, AvatarGroup } from '../../AvatarAuto';
 
 import cls from './index.module.scss';
+
+import type { Payload } from '@/common/content';
+import { map } from '@/common/content';
 
 export const ContentBlockVoteItem: React.FC<{
   block: BlockVoteItem;

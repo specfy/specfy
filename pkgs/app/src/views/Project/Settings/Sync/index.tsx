@@ -8,9 +8,6 @@ import { Link } from 'react-router-dom';
 
 import { linkToGithubRepo, updateProject } from '../../../../api';
 import { handleErrors, isError } from '../../../../api/helpers';
-import { i18n } from '../../../../common/i18n';
-import { useOrgStore } from '../../../../common/store';
-import { titleSuffix } from '../../../../common/string';
 import { Banner } from '../../../../components/Banner';
 import { Card } from '../../../../components/Card';
 import { Flex } from '../../../../components/Flex';
@@ -23,6 +20,10 @@ import { Subdued } from '../../../../components/Text';
 import { useToast } from '../../../../hooks/useToast';
 
 import cls from './index.module.scss';
+
+import { i18n } from '@/common/i18n';
+import { useOrgStore } from '@/common/store';
+import { titleSuffix } from '@/common/string';
 
 export const SettingsSync: React.FC<{
   proj: ApiProject;

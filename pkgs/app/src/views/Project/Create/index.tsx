@@ -13,9 +13,6 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { createProject, linkToGithubRepo } from '../../../api';
 import { handleErrors, isError } from '../../../api/helpers';
-import { i18n } from '../../../common/i18n';
-import { socket } from '../../../common/socket';
-import { titleSuffix } from '../../../common/string';
 import { Banner } from '../../../components/Banner';
 import { Container } from '../../../components/Container';
 import { Flex } from '../../../components/Flex';
@@ -27,6 +24,10 @@ import { useToast } from '../../../hooks/useToast';
 import type { RouteOrg } from '../../../types/routes';
 
 import cls from './index.module.scss';
+
+import { i18n } from '@/common/i18n';
+import { socket } from '@/common/socket';
+import { titleSuffix } from '@/common/string';
 
 export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   org,

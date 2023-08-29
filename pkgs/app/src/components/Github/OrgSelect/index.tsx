@@ -3,8 +3,6 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
 import { useGetGithubInstallations } from '../../../api';
-import { GITHUB_APP } from '../../../common/envs';
-import { Popup } from '../../../common/popup';
 import { useToast } from '../../../hooks/useToast';
 import { AvatarAuto } from '../../AvatarAuto';
 import { CommandItem } from '../../Command';
@@ -13,6 +11,9 @@ import type { ComboboxOption } from '../../Form/Combobox';
 import { Combobox } from '../../Form/Combobox';
 
 import cls from './index.module.scss';
+
+import { GITHUB_APP } from '@/common/envs';
+import { Popup } from '@/common/popup';
 
 export const GithubOrgSelect: React.FC<{
   defaultSelected?: string;

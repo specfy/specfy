@@ -9,8 +9,6 @@ import { Helmet } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useReactFlow } from 'reactflow';
 
-import { useComponentsStore } from '../../../common/store';
-import { titleSuffix } from '../../../common/string';
 import { ComponentDetails } from '../../../components/Component/Details';
 import { ComponentIcon } from '../../../components/Component/Icon';
 import { Container } from '../../../components/Container';
@@ -35,6 +33,9 @@ import { useToast } from '../../../hooks/useToast';
 import type { RouteComponent } from '../../../types/routes';
 
 import cls from './index.module.scss';
+
+import { useComponentsStore } from '@/common/store';
+import { titleSuffix } from '@/common/string';
 
 export const ComponentView: React.FC<{
   proj: ApiProject;

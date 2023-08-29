@@ -8,8 +8,6 @@ import { useLocalStorage } from 'react-use';
 
 import { deleteOrg, updateOrg, linkToGithubOrg } from '../../../../api';
 import { isError } from '../../../../api/helpers';
-import { i18n } from '../../../../common/i18n';
-import { titleSuffix } from '../../../../common/string';
 import { CopyButton } from '../../../../components/Button/Copy';
 import { Card } from '../../../../components/Card';
 import * as Dialog from '../../../../components/Dialog';
@@ -23,6 +21,9 @@ import { useToast } from '../../../../hooks/useToast';
 import type { RouteOrg } from '../../../../types/routes';
 
 import cls from './index.module.scss';
+
+import { i18n } from '@/common/i18n';
+import { titleSuffix } from '@/common/string';
 
 export const SettingsGeneral: React.FC<{
   org: ApiOrg;

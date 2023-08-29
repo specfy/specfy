@@ -6,9 +6,6 @@ import { Helmet } from 'react-helmet-async';
 import { Link, Route, Routes, useNavigate, useParams } from 'react-router-dom';
 
 import { useListDocuments } from '../../../api';
-import { db } from '../../../common/db';
-import { useComponentsStore, useProjectStore } from '../../../common/store';
-import { titleSuffix } from '../../../common/string';
 import { Banner } from '../../../components/Banner';
 import { Container } from '../../../components/Container';
 import { Button } from '../../../components/Form/Button';
@@ -17,6 +14,10 @@ import { Time } from '../../../components/Time';
 
 import { ProjectAssistantShow } from './Show';
 import cls from './index.module.scss';
+
+import { db } from '@/common/db';
+import { useComponentsStore, useProjectStore } from '@/common/store';
+import { titleSuffix } from '@/common/string';
 
 const History: React.FC = () => {
   const { project } = useProjectStore();

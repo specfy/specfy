@@ -6,12 +6,13 @@ import type React from 'react';
 import { useState, useCallback, useEffect } from 'react';
 
 import { aiOperation, aiStream } from '../../../api/ai';
-import { i18n } from '../../../common/i18n';
 import { useAuth } from '../../../hooks/useAuth';
 import { useToast } from '../../../hooks/useToast';
 import * as Dropdown from '../../Dropdown';
 import { Button } from '../../Form/Button';
 import { TooltipFull } from '../../Tooltip';
+
+import { i18n } from '@/common/i18n';
 
 // import cls from './index.module.scss';
 

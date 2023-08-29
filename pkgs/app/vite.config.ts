@@ -1,3 +1,5 @@
+import path from 'node:path';
+
 import react from '@vitejs/plugin-react-swc';
 import { defineConfig } from 'vite';
 import { checker } from 'vite-plugin-checker';
@@ -44,11 +46,8 @@ export default defineConfig({
     // 'process.platform': '',
   },
   resolve: {
-    alias: [
-      {
-        find: /^colors\/safe$/,
-        replacement: 'src/color.safe.ts',
-      },
-    ],
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
   },
 });

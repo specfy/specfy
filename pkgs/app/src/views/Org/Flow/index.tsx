@@ -6,8 +6,6 @@ import { useReactFlow } from 'reactflow';
 
 import { updateFlow, useGetFlow } from '../../../api';
 import { isError } from '../../../api/helpers';
-import { i18n } from '../../../common/i18n';
-import { titleSuffix } from '../../../common/string';
 import { Flow, FlowWrapper } from '../../../components/Flow';
 import { FlowDetails } from '../../../components/Flow/Details';
 import { Toolbar } from '../../../components/Flow/Toolbar';
@@ -18,6 +16,9 @@ import { useToast } from '../../../hooks/useToast';
 import type { RouteOrg } from '../../../types/routes';
 
 import cls from './index.module.scss';
+
+import { i18n } from '@/common/i18n';
+import { titleSuffix } from '@/common/string';
 
 export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   org,

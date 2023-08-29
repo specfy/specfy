@@ -19,8 +19,6 @@ import {
   useGetSubscription,
   useGetUsage,
 } from '../../../../api/stripe';
-import { i18n } from '../../../../common/i18n';
-import { titleSuffix } from '../../../../common/string';
 import { Card } from '../../../../components/Card';
 import * as Dialog from '../../../../components/Dialog';
 import { Flex } from '../../../../components/Flex';
@@ -36,6 +34,9 @@ import { useToast } from '../../../../hooks/useToast';
 import type { RouteOrg } from '../../../../types/routes';
 
 import cls from './index.module.scss';
+
+import { i18n } from '@/common/i18n';
+import { titleSuffix } from '@/common/string';
 
 const plans = Object.values(v1);
 

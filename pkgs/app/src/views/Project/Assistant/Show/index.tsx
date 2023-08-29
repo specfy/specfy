@@ -4,10 +4,6 @@ import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
 import { Link, useParams } from 'react-router-dom';
 
 import { aiOperation, aiStream } from '../../../../api/ai';
-import type { AICompletion } from '../../../../common/db';
-import { db } from '../../../../common/db';
-import { i18n } from '../../../../common/i18n';
-import { useProjectStore } from '../../../../common/store';
 import { CopyButton } from '../../../../components/Button/Copy';
 import { Presentation } from '../../../../components/Content';
 import { Flex } from '../../../../components/Flex';
@@ -17,6 +13,11 @@ import { Subdued } from '../../../../components/Text';
 import { useToast } from '../../../../hooks/useToast';
 
 import cls from './index.module.scss';
+
+import { db } from '@/common/db';
+import type { AICompletion } from '@/common/db';
+import { i18n } from '@/common/i18n';
+import { useProjectStore } from '@/common/store';
 
 export const ProjectAssistantShow: React.FC = () => {
   const toast = useToast();

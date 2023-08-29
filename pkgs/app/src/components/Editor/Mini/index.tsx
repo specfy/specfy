@@ -5,13 +5,14 @@ import classNames from 'classnames';
 import type React from 'react';
 import { useMemo, useEffect, useState } from 'react';
 
-import { removeEmptyContent } from '../../../common/content';
 import type { AIToolbarProps } from '../AiToolbar';
 import { AIToolbar } from '../AiToolbar';
 import { createMiniEditorSchema } from '../extensions';
 import { BubbleMenu } from '../extensions/CustomBubbleMenu/BubbleMenu';
 
 import cls from './index.module.scss';
+
+import { removeEmptyContent } from '@/common/content';
 
 const schema = createMiniEditorSchema();
 

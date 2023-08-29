@@ -3,9 +3,6 @@ import { componentsToFlow } from '@specfy/models/src/flows/transform';
 import { useCallback, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
-import { createLocal } from '../../../common/components';
-import { useComponentsStore, useProjectStore } from '../../../common/store';
-import { titleSuffix } from '../../../common/string';
 import { Flow, FlowWrapper } from '../../../components/Flow';
 import { FlowDetails } from '../../../components/Flow/Details';
 import { Toolbar } from '../../../components/Flow/Toolbar';
@@ -19,6 +16,10 @@ import { useEdit } from '../../../hooks/useEdit';
 import type { RouteProject } from '../../../types/routes';
 
 import cls from './index.module.scss';
+
+import { createLocal } from '@/common/components';
+import { useComponentsStore, useProjectStore } from '@/common/store';
+import { titleSuffix } from '@/common/string';
 
 export const ProjectFlow: React.FC<{
   proj: ApiProject;

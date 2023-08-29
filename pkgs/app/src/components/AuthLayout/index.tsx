@@ -3,13 +3,13 @@ import { useEffect, useState } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 import { useMount } from 'react-use';
 
-import { useAuth } from '../../hooks/useAuth';
-import { SocketProvider } from '../../hooks/useSocket';
-import { Flex } from '../Flex';
-import { Loading } from '../Loading';
-import { Subdued } from '../Text';
-
 import cls from './index.module.scss';
+
+import { Flex } from '@/components/Flex';
+import { Loading } from '@/components/Loading';
+import { Subdued } from '@/components/Text';
+import { useAuth } from '@/hooks/useAuth';
+import { SocketProvider } from '@/hooks/useSocket';
 
 export const AuthLayout: React.FC<{ children?: React.ReactNode }> = ({
   children,

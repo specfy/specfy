@@ -15,7 +15,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import { useListRevisions } from '../../../api';
-import { useOrgStore, useProjectStore } from '../../../common/store';
 import * as Menu from '../../../components/Menu';
 import type { RouteProject } from '../../../types/routes';
 import { AvatarAuto } from '../../AvatarAuto';
@@ -24,6 +23,8 @@ import * as Dropdown from '../../Dropdown';
 import { Flex } from '../../Flex';
 
 import cls from './index.module.scss';
+
+import { useOrgStore, useProjectStore } from '@/common/store';
 
 export const ProjectSwitcher: React.FC = () => {
   const { project, projects } = useProjectStore();

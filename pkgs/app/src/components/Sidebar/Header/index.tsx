@@ -2,7 +2,6 @@ import { IconLogout, IconSettings } from '@tabler/icons-react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { isError } from '../../../api/helpers';
-import { i18n } from '../../../common/i18n';
 import { useAuth } from '../../../hooks/useAuth';
 import { useToast } from '../../../hooks/useToast';
 import { AvatarAuto } from '../../AvatarAuto';
@@ -12,6 +11,8 @@ import { Logo } from '../../Logo';
 import { Subdued } from '../../Text';
 
 import cls from './index.module.scss';
+
+import { i18n } from '@/common/i18n';
 
 const User: React.FC = () => {
   const { user, logout } = useAuth();

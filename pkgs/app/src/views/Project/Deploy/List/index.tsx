@@ -8,8 +8,6 @@ import { Link } from 'react-router-dom';
 
 import { createJob, useListDeploys } from '../../../../api';
 import { isError } from '../../../../api/helpers';
-import { i18n } from '../../../../common/i18n';
-import { titleSuffix } from '../../../../common/string';
 import { AvatarAuto } from '../../../../components/AvatarAuto';
 import { Container } from '../../../../components/Container';
 import { Empty } from '../../../../components/Empty';
@@ -22,6 +20,9 @@ import { useToast } from '../../../../hooks/useToast';
 import type { RouteProject } from '../../../../types/routes';
 
 import cls from './index.module.scss';
+
+import { i18n } from '@/common/i18n';
+import { titleSuffix } from '@/common/string';
 
 const Row: React.FC<{
   deploy: ListJobs['Success']['data'][0];

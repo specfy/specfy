@@ -5,13 +5,14 @@ import classnames from 'classnames';
 import { useMemo, useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
 
-import { useProjectStore } from '../../../common/store';
-import { supportedHostname } from '../../../common/techs';
 import { useEdit } from '../../../hooks/useEdit';
 import { Button } from '../../Form/Button';
 import { Input } from '../../Form/Input';
 
 import cls from './index.module.scss';
+
+import { useProjectStore } from '@/common/store';
+import { supportedHostname } from '@/common/techs';
 
 const useIcon = (link: DBProjectLink) => {
   const icon = useMemo<IconType | undefined>(() => {

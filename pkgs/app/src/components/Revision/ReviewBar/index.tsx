@@ -6,14 +6,15 @@ import { useClickAway } from 'react-use';
 
 import { createComment } from '../../../api';
 import { isError } from '../../../api/helpers';
-import { getEmptyDoc } from '../../../common/content';
-import { i18n } from '../../../common/i18n';
 import { useToast } from '../../../hooks/useToast';
 import { Editor } from '../../Editor';
 import { Flex } from '../../Flex';
 import { Button } from '../../Form/Button';
 
 import cls from './index.module.scss';
+
+import { getEmptyDoc } from '@/common/content';
+import { i18n } from '@/common/i18n';
 
 export const ReviewBar: React.FC<{
   rev: ApiRevision;

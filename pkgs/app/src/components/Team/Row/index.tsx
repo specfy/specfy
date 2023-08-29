@@ -4,8 +4,6 @@ import { useState } from 'react';
 
 import { removePerm, updatePerm } from '../../../api';
 import { isError } from '../../../api/helpers';
-import { i18n } from '../../../common/i18n';
-import { selectPerms } from '../../../common/perms';
 import { AvatarAuto } from '../../../components/AvatarAuto';
 import { useToast } from '../../../hooks/useToast';
 import { Button } from '../../Form/Button';
@@ -13,6 +11,9 @@ import { SelectFull } from '../../Form/Select';
 import { Loading } from '../../Loading';
 
 import cls from './index.module.scss';
+
+import { i18n } from '@/common/i18n';
+import { selectPerms } from '@/common/perms';
 
 interface RowProps {
   params: { org_id: string; project_id?: string };
