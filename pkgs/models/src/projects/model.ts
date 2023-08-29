@@ -120,7 +120,7 @@ export function getDefaultConfig(): DBProject['config'] {
     branch: 'main',
     documentation: {
       enabled: true,
-      path: '/docs',
+      path: '/',
     },
     stack: {
       enabled: true,

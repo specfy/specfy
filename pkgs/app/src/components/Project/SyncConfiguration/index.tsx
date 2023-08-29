@@ -24,9 +24,7 @@ export const SyncConfiguration: React.FC<{
       ? config!.documentation.enabled
       : true
   );
-  const [docPath, setDocPath] = useState(
-    config?.documentation?.path || '/docs'
-  );
+  const [docPath, setDocPath] = useState(config?.documentation?.path || '/');
 
   useEffect(() => {
     onChange({
