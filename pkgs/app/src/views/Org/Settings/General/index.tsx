@@ -1,6 +1,6 @@
 import * as Form from '@radix-ui/react-form';
 import type { ApiOrg } from '@specfy/models';
-import { IconCirclesRelation } from '@tabler/icons-react';
+import { IconLink, IconLinkOff } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
@@ -85,12 +85,15 @@ export const SettingsGeneral: React.FC<{
 
   // Github
   const [installId, setInstallId] = useState(org.githubInstallationId);
+  const [loadingLink, setLoadingLink] = useState(false);
 
   const onLink = async () => {
+    setLoadingLink(true);
     const res = await linkToGithubOrg({
       installationId: installId!,
       orgId: org.id,
     });
+    setLoadingLink(false);
     if (isError(res)) {
       toast.add({ title: i18n.errorOccurred, status: 'error' });
       return;
@@ -183,16 +186,17 @@ export const SettingsGeneral: React.FC<{
             </Card.Content>
             <Card.Actions>
               {org.githubInstallationId === installId && installId !== null ? (
-                <Button onClick={onUnlink} danger>
-                  Unlink
+                <Button onClick={onUnlink} danger loading={loadingLink}>
+                  <IconLinkOff /> Unlink
                 </Button>
               ) : (
                 <Button
                   display="primary"
                   disabled={org.githubInstallationId === installId}
                   onClick={onLink}
+                  loading={loadingLink}
                 >
-                  <IconCirclesRelation /> Link
+                  <IconLink /> Link
                 </Button>
               )}
             </Card.Actions>

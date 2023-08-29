@@ -27,6 +27,7 @@ export const GithubOrgSelect: React.FC<{
     () => defaultSelected
   );
   const [ready, setReady] = useState<boolean>(false);
+  const [selectFirst, setSelectFirst] = useState<boolean>(false);
 
   useEffect(() => {
     if (!resInstall.data || resInstall.isFetching || ready) {
@@ -40,6 +41,14 @@ export const GithubOrgSelect: React.FC<{
       !resInstall.data.find((inst) => String(inst.id) === selected)
     ) {
       setSelected(String(defaultSelected));
+    }
+    if (
+      selectFirst &&
+      !selected &&
+      !defaultSelected &&
+      resInstall.data.length === 1
+    ) {
+      setSelected(String(resInstall.data[0].id));
     }
 
     setReady(true);
@@ -84,6 +93,7 @@ export const GithubOrgSelect: React.FC<{
         onClose: () => {
           setReady(false);
           ref.current = null;
+          setSelectFirst(true);
           void resInstall.refetch();
 
           if (onClose) {
