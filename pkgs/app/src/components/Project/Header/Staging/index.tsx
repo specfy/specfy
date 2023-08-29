@@ -1,5 +1,6 @@
 import { IconEdit, IconEye, IconPlus } from '@tabler/icons-react';
-import { Link } from 'react-router-dom';
+import { useCallback } from 'react';
+import { Link, useBeforeUnload } from 'react-router-dom';
 import { useDebounce } from 'react-use';
 
 import { diffTwoBlob } from '../../../../common/diff';
@@ -133,6 +134,19 @@ export const Staging: React.FC<{ showBadge: boolean }> = () => {
     },
     150,
     [project, components, documents]
+  );
+
+  // On reload or quit page block
+  useBeforeUnload(
+    useCallback(
+      (e: BeforeUnloadEvent) => {
+        if (staging.count > 0) {
+          e.preventDefault();
+          e.returnValue = '';
+        }
+      },
+      [staging.count]
+    )
   );
 
   if (!canEdit || !project) {

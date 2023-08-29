@@ -82,6 +82,9 @@ export const Project: React.FC = () => {
   useEffect(() => {
     if (getProject.data) {
       setProj(getProject.data.data);
+      if (storeProject.project?.id === getProject.data.data.id) {
+        return;
+      }
       storeProject.update(getProject.data.data);
     } else if (getProject.error) {
       setLoading(false);
