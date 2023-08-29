@@ -66,7 +66,7 @@ export function aiPromptProjectOnboarding(opts: {
   return [
     {
       role: 'system',
-      content: `You are technical writer. With the information provided write a README.md that you would find in Github.
+      content: `You are technical writer. With the information provided write a README.md that you would find in GitHub.
 Split in 4 sections:
 1. An Overview section
 2. A Get Started section, bullet point sentences with one emoji per line. Use the list of documents provided, ONLY use what you would find in a README (e.g: installation, guidelines, deployment, contributing, etc.)
@@ -96,7 +96,7 @@ http://localhost:5173/acme/analytics/doc/docs/deploy.terraform: Deploy With Terr
 http://localhost:5173/acme/analytics/doc/docs/foobar: Foobar
 
 Links:
-Github: https://github.com/specfy/specfy
+GitHub: https://github.com/specfy/specfy
 Discord: https://discord.gg/foobar
 Infrastructure Flow: http://localhost:5173/acme/analytics/flow`,
     },
@@ -106,7 +106,7 @@ Infrastructure Flow: http://localhost:5173/acme/analytics/flow`,
 The Analytics project collects data from various sources, processes it, and presents it in dashboards and reports. These outputs show key indicators and trends for the business. The project also employs machine learning and statistical methods to analyze data, helping businesses make data-based decisions.
 
 ## Get Started
-- 📥 **Installation**: Clone the repository from [Github](https://github.com/specfy/specfy)
+- 📥 **Installation**: Clone the repository from [GitHub](https://github.com/specfy/specfy)
 
 ## Technology
 The Analytics project utilizes the following technologies:
@@ -116,7 +116,7 @@ The Analytics project utilizes the following technologies:
 
 ## Next Steps
 To further explore the project, you can:
-- Check the [Github repository](https://github.com/specfy/specfy)
+- Check the [GitHub repository](https://github.com/specfy/specfy)
 - Join our community on the [Discord](https://discord.gg/foobar)
 - Follow the infrastructure flow [here](http://localhost:5173/acme/analytics/flow) to understand the project's architecture.`,
     },

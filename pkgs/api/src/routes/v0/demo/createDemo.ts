@@ -139,7 +139,7 @@ export async function createDemo(
         ],
       },
       links: [
-        { title: 'Github', url: 'https://github.com/specfy' },
+        { title: 'GitHub', url: 'https://github.com/specfy' },
         { title: 'Discord', url: 'https://discord.gg/96cDXvT8NV' },
       ],
       config: getDefaultConfig(),

@@ -41,7 +41,7 @@ export class JobDeploy extends Job {
           auth: this.token,
         });
 
-        l.info('Updating Github deployment status');
+        l.info('Updating GitHub deployment status');
         const mark = this.getMark();
         const [owner, repo] = job.Project!.githubRepository!.split('/');
         const projUrl = `${envs.APP_HOSTNAME}/${job.orgId}/${
@@ -56,7 +56,7 @@ export class JobDeploy extends Job {
           log_url: `${projUrl}/jobs/${job.id}`,
         });
       } catch (err) {
-        this.l.error('Cant update Github deployment status', err);
+        this.l.error('Cant update GitHub deployment status', err);
       }
     }
   }
@@ -104,9 +104,9 @@ export class JobDeploy extends Job {
       return;
     }
 
-    // Notify Github that we started deploying
+    // Notify GitHub that we started deploying
     try {
-      l.info('Creating Github deployment in Github');
+      l.info('Creating GitHub deployment in GitHub');
 
       const authClient = new Octokit({
         auth: this.token,

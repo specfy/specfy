@@ -1,7 +1,7 @@
 import type { Authenticator } from '@fastify/passport';
 import type { Keys } from '@specfy/db';
 import { prisma } from '@specfy/db';
-import { userGithubApp } from '@specfy/models';
+import { userGitHubApp } from '@specfy/models';
 import type { FastifyInstance } from 'fastify';
 import { Strategy as KeyStrategy } from 'passport-http-bearer';
 
@@ -38,7 +38,7 @@ export function registerKey(fastify: FastifyInstance, passport: Authenticator) {
         return;
       }
 
-      req.me = userGithubApp;
+      req.me = userGitHubApp;
       req.key = key;
       req.perms = [
         {

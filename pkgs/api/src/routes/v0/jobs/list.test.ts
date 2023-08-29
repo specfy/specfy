@@ -144,7 +144,7 @@ describe('GET /jobs', () => {
     });
     expect(res.json.data[3].reason).toStrictEqual({
       code: 'org_not_installed',
-      reason: 'Specfy App is not installed on the Github organization',
+      reason: 'Specfy App is not installed on the GitHub organization',
       status: 'failed',
     });
   });

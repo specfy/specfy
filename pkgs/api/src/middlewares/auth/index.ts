@@ -7,7 +7,7 @@ import type { FastifyInstance } from 'fastify';
 
 import { unauthorized } from '../../common/errors.js';
 
-import { registerGithub } from './github.js';
+import { registerGitHub } from './github.js';
 import { registerJwt } from './jwt.js';
 import { registerKey } from './key.js';
 import { registerLocal } from './local.js';
@@ -85,7 +85,7 @@ export async function registerAuth(f: FastifyInstance) {
 
   // GITHUB OAUTH
   if (envs.GITHUB_CLIENT_ID) {
-    registerGithub(fastifyPassport);
+    registerGitHub(fastifyPassport);
   }
 
   fastifyPassport.registerUserSerializer(async (user: Users) => {

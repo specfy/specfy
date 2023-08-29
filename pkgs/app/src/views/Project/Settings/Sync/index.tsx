@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
-import { linkToGithubRepo, updateProject } from '../../../../api';
+import { linkToGitHubRepo, updateProject } from '../../../../api';
 import { handleErrors, isError } from '../../../../api/helpers';
 import { i18n } from '../../../../common/i18n';
 import { useOrgStore } from '../../../../common/store';
@@ -16,8 +16,8 @@ import { Card } from '../../../../components/Card';
 import { Flex } from '../../../../components/Flex';
 import { Button } from '../../../../components/Form/Button';
 import { Field } from '../../../../components/Form/Field';
-import { GithubOrgSelect } from '../../../../components/Github/OrgSelect';
-import { GithubRepoSelect } from '../../../../components/Github/RepoSelect';
+import { GitHubOrgSelect } from '../../../../components/GitHub/OrgSelect';
+import { GitHubRepoSelect } from '../../../../components/GitHub/RepoSelect';
 import { SyncConfiguration } from '../../../../components/Project/SyncConfiguration';
 import { Subdued } from '../../../../components/Text';
 import { useToast } from '../../../../hooks/useToast';
@@ -37,7 +37,7 @@ export const SettingsSync: React.FC<{
   );
 
   const onLink = async () => {
-    const res = await linkToGithubRepo({
+    const res = await linkToGitHubRepo({
       orgId: proj.orgId,
       projectId: proj.id,
       repository: repoId || null,
@@ -47,11 +47,11 @@ export const SettingsSync: React.FC<{
       return;
     }
 
-    toast.add({ title: 'Project linked to Github', status: 'success' });
+    toast.add({ title: 'Project linked to GitHub', status: 'success' });
   };
 
   const onUnlink = async () => {
-    const res = await linkToGithubRepo({
+    const res = await linkToGitHubRepo({
       orgId: proj.orgId,
       projectId: proj.id,
       repository: null,
@@ -86,7 +86,7 @@ export const SettingsSync: React.FC<{
 
       <div>
         <div>
-          <h2>Github Sync</h2>
+          <h2>GitHub Sync</h2>
           <Subdued>Manage your project sync&apos;s settings</Subdued>
         </div>
       </div>
@@ -94,13 +94,13 @@ export const SettingsSync: React.FC<{
       <Card>
         <Form.Root onSubmit={(e) => e.preventDefault()} className={cls.main}>
           <Card.Content>
-            <h3>Link to Github</h3>
+            <h3>Link to GitHub</h3>
 
             <Field name="github">
               {!org!.githubInstallationId ? (
                 <Banner type="info">
                   <Flex justify="space-between">
-                    First, link your Specfy organization to a Github
+                    First, link your Specfy organization to a GitHub
                     organization.
                     <Link to={`/${org!.id}/_/settings`}>
                       <Button>Settings</Button>
@@ -109,7 +109,7 @@ export const SettingsSync: React.FC<{
                 </Banner>
               ) : (
                 <Flex gap="l">
-                  <GithubOrgSelect
+                  <GitHubOrgSelect
                     onChange={() => null}
                     defaultSelected={
                       org!.githubInstallationId
@@ -118,7 +118,7 @@ export const SettingsSync: React.FC<{
                     }
                     disabled
                   />
-                  <GithubRepoSelect
+                  <GitHubRepoSelect
                     value={
                       proj.githubRepository
                         ? String(proj.githubRepository)
@@ -131,7 +131,7 @@ export const SettingsSync: React.FC<{
               )}
             </Field>
             <p>
-              Linking to a Github repository enables automatic deployment when
+              Linking to a GitHub repository enables automatic deployment when
               you push to your repository.
             </p>
           </Card.Content>

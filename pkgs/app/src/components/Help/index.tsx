@@ -1,4 +1,4 @@
-import { SiDiscord, SiGithub } from '@icons-pack/react-simple-icons';
+import { SiDiscord, SiGitHub } from '@icons-pack/react-simple-icons';
 import { IconHelp, IconMail } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 
@@ -47,7 +47,7 @@ export const Help: React.FC = () => {
           <Flex gap="l">
             <Link to="https://github.com/specfy/specfy" target="_blank">
               <Button size="s">
-                <SiGithub size="1em" /> Check our Github
+                <SiGitHub size="1em" /> Check our GitHub
               </Button>
             </Link>
             <Link to="https://discord.gg/96cDXvT8NV" target="_blank">

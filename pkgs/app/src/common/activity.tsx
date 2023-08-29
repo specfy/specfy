@@ -2,7 +2,7 @@ import type {
   ActionAll,
   ActionComponent,
   ActionDocument,
-  ActionGithub,
+  ActionGitHub,
   ActionKey,
   ActionOrg,
   ActionPolicy,
@@ -137,23 +137,23 @@ export const mapComponent: Record<ActionComponent, ActivityParams> = {
   },
 };
 
-export const mapGithub: Record<ActionGithub, ActivityParams> = {
-  'Github.linked': {
+export const mapGitHub: Record<ActionGitHub, ActivityParams> = {
+  'GitHub.linked': {
     Target: () => null,
     Text: ({ act, user }) => {
       if (act.project) {
-        return <>{user} linked project to a Github repository</>;
+        return <>{user} linked project to a GitHub repository</>;
       }
-      return <>{user} linked org to a Github organization</>;
+      return <>{user} linked org to a GitHub organization</>;
     },
   },
-  'Github.unlinked': {
+  'GitHub.unlinked': {
     Target: () => null,
     Text: ({ act, user }) => {
       if (act.project) {
-        return <>{user} unlinked project from Github</>;
+        return <>{user} unlinked project from GitHub</>;
       }
-      return <>{user} unlinked org from Github</>;
+      return <>{user} unlinked org from GitHub</>;
     },
   },
 };
@@ -501,7 +501,7 @@ export const mapRevision: Record<ActionRevision, ActivityParams> = {
 export const mapActivites: Record<ActionAll, ActivityParams> = {
   ...mapDocument,
   ...mapComponent,
-  ...mapGithub,
+  ...mapGitHub,
   ...mapOrg,
   ...mapPolicy,
   ...mapProject,

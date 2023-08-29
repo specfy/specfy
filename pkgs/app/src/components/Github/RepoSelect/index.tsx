@@ -2,7 +2,7 @@ import { IconPlus } from '@tabler/icons-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-import { useGetGithubRepos } from '../../../api';
+import { useGetGitHubRepos } from '../../../api';
 import { GITHUB_APP } from '../../../common/envs';
 import { Popup } from '../../../common/popup';
 import { useToast } from '../../../hooks/useToast';
@@ -13,7 +13,7 @@ import { Combobox } from '../../Form/Combobox';
 
 import cls from './index.module.scss';
 
-export const GithubRepoSelect: React.FC<{
+export const GitHubRepoSelect: React.FC<{
   installationId: number;
   value: string | undefined;
   onChange: (selected: string | undefined) => void;
@@ -21,7 +21,7 @@ export const GithubRepoSelect: React.FC<{
   const toast = useToast();
   const ref = useRef<Popup | null>(null);
   const [selected, setSelected] = useState<string | undefined>();
-  const res = useGetGithubRepos(
+  const res = useGetGitHubRepos(
     {
       installation_id: installationId,
     },
@@ -81,7 +81,7 @@ export const GithubRepoSelect: React.FC<{
 
   return (
     <Combobox
-      placeholder="Select a Github repository"
+      placeholder="Select a GitHub repository"
       options={options}
       value={selected}
       onChange={setSelected}

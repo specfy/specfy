@@ -1,53 +1,53 @@
 import type { Res } from '@specfy/core';
 
 // GET /github/repos
-export interface ApiGithubRepo {
+export interface ApiGitHubRepo {
   id: number;
   name: string;
   fullName: string;
   url: string;
   private: boolean;
 }
-export type ListGithubRepos = Res<{
+export type ListGitHubRepos = Res<{
   Querystring: {
     installation_id?: number;
   };
   Success: {
-    data: ApiGithubRepo[];
+    data: ApiGitHubRepo[];
   };
 }>;
 
 // GET /github/installations
-export interface ApiGithubInstallation {
+export interface ApiGitHubInstallation {
   id: number;
   name: string;
   avatarUrl: string;
   url: string;
 }
-export type ListGithubInstallations = Res<{
+export type ListGitHubInstallations = Res<{
   Success: {
-    data: ApiGithubInstallation[];
+    data: ApiGitHubInstallation[];
   };
 }>;
 
 // GET /github/members
-export interface ApiGithubMember {
+export interface ApiGitHubMember {
   id: number;
   name: string;
   avatarUrl: string;
   url: string;
 }
-export type GetGithubMembers = Res<{
+export type GetGitHubMembers = Res<{
   Querystring: {
     org: string;
   };
   Success: {
-    data: ApiGithubMember[];
+    data: ApiGitHubMember[];
   };
 }>;
 
 // POST /github/link_org
-export type PostLinkToGithubOrg = Res<{
+export type PostLinkToGitHubOrg = Res<{
   Body: {
     orgId: string;
     installationId: number | null;
@@ -58,7 +58,7 @@ export type PostLinkToGithubOrg = Res<{
 }>;
 
 // POST /github/link_project
-export type PostLinkToGithubProject = Res<{
+export type PostLinkToGitHubProject = Res<{
   Body: {
     orgId: string;
     projectId: string;
@@ -70,7 +70,7 @@ export type PostLinkToGithubProject = Res<{
 }>;
 
 // POST /github/webhooks
-export type PostGithubWebhook = Res<{
+export type PostGitHubWebhook = Res<{
   Body: any;
   Success: {
     done: true;

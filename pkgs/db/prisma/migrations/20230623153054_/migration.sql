@@ -6,7 +6,7 @@ ALTER TYPE "JobsStatus"
 ALTER TABLE "Jobs"
   ADD COLUMN "reason" VARCHAR(250);
 
--- Default user for Github App
+-- Default user for GitHub App
 INSERT INTO "public"."Users"(
   "id",
   "name",
@@ -17,7 +17,7 @@ INSERT INTO "public"."Users"(
   "updatedAt")
 VALUES (
   'githubapp',
-  'Github App',
+  'GitHub App',
   '/github-mark.png',
   'support+githubapp@specfy.io',
   NOW(),

@@ -22,7 +22,7 @@ The Analytics project utilizes the following technologies:
 
 To further explore the Analytics project, you can:
 
-- Check the [Specfy Github repository](https://github.com/specfy/specfy) for the latest updates and codebase.
+- Check the [Specfy GitHub repository](https://github.com/specfy/specfy) for the latest updates and codebase.
 - Join our community on [Discord](https://discord.gg/96cDXvT8NV) to connect with other contributors and ask questions.
 - Dive into the project's documentation links provided above to gain a deeper understanding of specific topics and functionalities.
 

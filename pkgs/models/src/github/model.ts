@@ -1,9 +1,9 @@
 import { nanoid } from '@specfy/core';
 import type { Activities, Orgs, Prisma, Projects, Users } from '@specfy/db';
 
-import type { ActionGithub } from '../activities/types.js';
+import type { ActionGitHub } from '../activities/types.js';
 
-export async function createGithubActivity({
+export async function createGitHubActivity({
   user,
   action,
   org,
@@ -12,7 +12,7 @@ export async function createGithubActivity({
   activityGroupId = null,
 }: {
   user: Users;
-  action: ActionGithub;
+  action: ActionGitHub;
   org: Orgs;
   project?: Projects;
   tx: Prisma.TransactionClient;

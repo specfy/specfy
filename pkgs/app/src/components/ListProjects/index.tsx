@@ -68,7 +68,7 @@ export const ListProjects: React.FC<{ orgId: string }> = ({ orgId }) => {
           {brandNew && (
             <Empty
               title="No projects, yet!"
-              desc="Create a project manually or from Github."
+              desc="Create a project manually or from GitHub."
               action={
                 <Link to={`/${orgId}/_/project/new`}>
                   <Button display="primary">

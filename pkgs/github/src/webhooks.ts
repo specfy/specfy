@@ -1,9 +1,9 @@
 import { nanoid, l as logger } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import {
-  createGithubActivity,
+  createGitHubActivity,
   createJobDeploy,
-  userGithubApp,
+  userGitHubApp,
 } from '@specfy/models';
 
 import { webhookService as ws } from './app.js';
@@ -60,11 +60,11 @@ export function listen() {
       const activityGroupId = nanoid();
       await Promise.all(
         list.map((org) => {
-          return createGithubActivity({
-            action: 'Github.unlinked',
+          return createGitHubActivity({
+            action: 'GitHub.unlinked',
             org,
             tx,
-            user: userGithubApp,
+            user: userGitHubApp,
             activityGroupId,
           });
         })
@@ -106,12 +106,12 @@ export function listen() {
         const activityGroupId = nanoid();
         await Promise.all(
           list.map((project) => {
-            return createGithubActivity({
-              action: 'Github.unlinked',
+            return createGitHubActivity({
+              action: 'GitHub.unlinked',
               org: project.Org,
               project,
               tx,
-              user: userGithubApp,
+              user: userGitHubApp,
               activityGroupId,
             });
           })
@@ -146,7 +146,7 @@ ws.on('push', async ({ id, payload }) => {
         return createJobDeploy({
           orgId: project.orgId,
           projectId: project.id,
-          userId: userGithubApp.id,
+          userId: userGitHubApp.id,
           config: {
             url: project.githubRepository!,
             hook: {

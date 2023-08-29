@@ -1,7 +1,7 @@
 import { nanoid, envs } from '@specfy/core';
 import type { Users } from '@specfy/db';
 import { prisma } from '@specfy/db';
-import { userGithubApp } from '@specfy/models';
+import { userGitHubApp } from '@specfy/models';
 
 import { pbkdf2 } from '../../middlewares/auth/local.js';
 
@@ -62,7 +62,7 @@ export async function seedUsers(): Promise<Users[]> {
       },
     }),
     await prisma.users.create({
-      data: userGithubApp,
+      data: userGitHubApp,
     }),
   ]);
 

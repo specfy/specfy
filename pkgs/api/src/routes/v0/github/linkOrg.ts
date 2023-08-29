@@ -3,8 +3,8 @@ import { schemaOrgId } from '@specfy/core';
 import type { Prisma } from '@specfy/db';
 import { prisma } from '@specfy/db';
 import { github } from '@specfy/github';
-import { createGithubActivity, getOrgFromRequest } from '@specfy/models';
-import type { PostLinkToGithubOrg } from '@specfy/models';
+import { createGitHubActivity, getOrgFromRequest } from '@specfy/models';
+import type { PostLinkToGitHubOrg } from '@specfy/models';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { Octokit } from 'octokit';
 import { z } from 'zod';
@@ -28,7 +28,7 @@ function QueryVal(req: FastifyRequest) {
 }
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
-  fastify.post<PostLinkToGithubOrg>(
+  fastify.post<PostLinkToGitHubOrg>(
     '/',
     { preHandler: noQuery },
     async function (req, res) {
@@ -38,7 +38,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       }
 
       const user = req.me!;
-      const body: PostLinkToGithubOrg['Body'] = val.data;
+      const body: PostLinkToGitHubOrg['Body'] = val.data;
       const org = getOrgFromRequest(req, body.orgId)!;
       const accounts = await prisma.accounts.findFirst({
         where: { userId: user.id },
@@ -86,8 +86,8 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
           },
         });
         if (body.installationId !== org.githubInstallationId) {
-          await createGithubActivity({
-            action: !body.installationId ? 'Github.unlinked' : 'Github.linked',
+          await createGitHubActivity({
+            action: !body.installationId ? 'GitHub.unlinked' : 'GitHub.linked',
             org,
             tx,
             user,

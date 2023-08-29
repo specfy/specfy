@@ -67,7 +67,7 @@ export const OrgOnboarding: React.FC<{ org: ApiOrg }> = ({ org }) => {
           {!link ? <div className={cls.donut}></div> : <IconCheck />}
         </div>
         <div className={cls.desc}>
-          <div>Link your Github organization</div>
+          <div>Link your GitHub organization</div>
           <div className={cls.sub}>
             Sync your projects, avatar, team members
           </div>
@@ -89,7 +89,7 @@ export const OrgOnboarding: React.FC<{ org: ApiOrg }> = ({ org }) => {
         <div className={cls.desc}>
           <div>Create your first project</div>
           <div className={cls.sub}>
-            Deploy documentation and track the stack of a Github repository
+            Deploy documentation and track the stack of a GitHub repository
           </div>
         </div>
         <div>

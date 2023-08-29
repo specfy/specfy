@@ -2,7 +2,7 @@ import { IconPlus } from '@tabler/icons-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-import { useGetGithubInstallations } from '../../../api';
+import { useGetGitHubInstallations } from '../../../api';
 import { GITHUB_APP } from '../../../common/envs';
 import { Popup } from '../../../common/popup';
 import { useToast } from '../../../hooks/useToast';
@@ -14,7 +14,7 @@ import { Combobox } from '../../Form/Combobox';
 
 import cls from './index.module.scss';
 
-export const GithubOrgSelect: React.FC<{
+export const GitHubOrgSelect: React.FC<{
   defaultSelected?: string;
   disabled?: boolean;
   onChange: (selected: string | undefined) => void;
@@ -22,7 +22,7 @@ export const GithubOrgSelect: React.FC<{
 }> = ({ defaultSelected, disabled, onChange, onClose }) => {
   const toast = useToast();
   const ref = useRef<Popup | null>(null);
-  const resInstall = useGetGithubInstallations();
+  const resInstall = useGetGitHubInstallations();
   const [selected, setSelected] = useState<string | undefined>(
     () => defaultSelected
   );
@@ -101,7 +101,7 @@ export const GithubOrgSelect: React.FC<{
 
   return (
     <Combobox
-      placeholder="Select a Github organization"
+      placeholder="Select a GitHub organization"
       options={options}
       value={selected}
       onChange={setSelected}
@@ -111,7 +111,7 @@ export const GithubOrgSelect: React.FC<{
         <CommandItem onSelect={triggerInstall}>
           <Button size="s" display="ghost" onClick={triggerInstall}>
             <IconPlus />
-            Add Github Organization
+            Add GitHub Organization
           </Button>
         </CommandItem>
       }
