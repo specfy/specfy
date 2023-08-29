@@ -511,7 +511,7 @@ describe('POST /revisions/upload -- Stack', () => {
     });
   });
 
-  it.only('should handle component with the same name but different', async () => {
+  it('should handle component with the same name but different', async () => {
     const { token, org, project } = await seedWithProject();
     const name = `test ${nanoid()}`;
     const res = await t.fetch.post('/0/revisions/upload', {
