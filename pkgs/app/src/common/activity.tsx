@@ -19,8 +19,6 @@ import { Flex } from '../components/Flex';
 import { ActivityCard } from '../components/ListActivity/Details';
 import { StatusTag } from '../components/Revision/StatusTag';
 
-import { TYPE_TO_READABLE } from './document';
-
 export type ActivityContext = {
   orgId: string;
   projectId?: string;
@@ -45,6 +43,17 @@ export type ActivityParams = {
 export const DocumentTarget: React.FC<{
   act: ApiActivity;
 }> = ({ act }) => {
+  if (act.targetDocument?.type === 'doc') {
+    return (
+      <Link
+        to={`/${act.orgId}/${act.project!.slug}/doc/${
+          act.targetDocument!.slug
+        }`}
+      >
+        {act.targetDocument!.name}
+      </Link>
+    );
+  }
   return (
     <Link
       to={`/${act.orgId}/${act.project!.slug}/content/${
@@ -58,25 +67,25 @@ export const DocumentTarget: React.FC<{
 export const mapDocument: Record<ActionDocument, ActivityParams> = {
   'Document.created': {
     Target: DocumentTarget,
-    Text: ({ user, act }) => (
+    Text: ({ user, target }) => (
       <>
-        {user} created a new {TYPE_TO_READABLE[act.targetDocument!.type]}{' '}
+        {user} created a new document {target}
       </>
     ),
   },
   'Document.deleted': {
     Target: DocumentTarget,
-    Text: ({ user, act }) => (
+    Text: ({ user, target }) => (
       <>
-        {user} deleted {TYPE_TO_READABLE[act.targetDocument!.type]}{' '}
+        {user} deleted a document {target}
       </>
     ),
   },
   'Document.updated': {
     Target: DocumentTarget,
-    Text: ({ user, act }) => (
+    Text: ({ user, target }) => (
       <>
-        {user} updated {TYPE_TO_READABLE[act.targetDocument!.type]}{' '}
+        {user} updated a document {target}
       </>
     ),
   },

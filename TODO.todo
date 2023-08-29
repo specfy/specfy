@@ -39,7 +39,7 @@ Global:
   - Push built image in Docker Hub
 
 SCSS:
-  - Button: use --variable instead of overwrite color/bg with !important
+  ✔ Button: use --variable instead of overwrite color/bg with !important @done(23-08-28 17:04)
 
 Infrastructure:
   ✔ Terraform setup @done(23-04-19 11:10)
@@ -62,14 +62,14 @@ Auth:
   ✔ Standard Email / Password @done(23-04-21 19:21)
   ✔ Register @done(23-06-29 17:06)
     ✔ Should create a default org @done(23-04-24 11:47)
-    - Onboarding instead of a default org
+    ✔ Onboarding instead of a default org @done(23-08-28 17:04)
   ✔ Logout @done(23-04-22 15:19)
 
 
 Homepage:
   ✔ Redirect first item @done(23-03-27 17:51)
   ✔ Reopen last open @done(23-04-24 21:33)
-  - Put something here?
+  ✔ Put something here? @done(23-08-28 17:04)
 
 
 Project:
@@ -92,7 +92,6 @@ Project:
     ✔ Better UX with Github first @done(23-07-27 12:07)
       ✔ Advanced mode @done(23-07-27 12:03)
       ✔ Use configuration @done(23-07-27 12:07)
-      - Sync configuration
   ✔ List @done(23-03-29 12:19)
     ✔ Unit test @done(23-04-04 17:26)
     - Unit Test activity
@@ -123,8 +122,8 @@ Project:
   - Socket: only subscribe to currently viewed Project
   ✔ Bug: link edition open even on readonly mode @done(23-07-27 12:10)
   ✔ Bug: team display use colored avatar @done(23-07-14 13:17)
-  - Better Documentation tree in the Sidebar
-    - Not everything open by default
+  ✔ Better Documentation tree in the Sidebar @done(23-08-28 17:05)
+    ✔ Not everything open by default @done(23-08-28 17:05)
     ✔ Clicking a folder should not close it @done(23-08-24 09:50)
 
 
@@ -212,14 +211,14 @@ Documents:
     ✔ Validation @done(23-03-29 15:56)
     ✔ Unit Test @done(23-04-03 15:01)
   ✔ List other content on the left / right @done(23-03-25 23:23)
-  - Better home page
+  ✘ Better home page @cancelled(23-08-28 17:06)
   ✔ Creer @started(23-03-25 23:28) @done(23-03-25 23:28) @lasted(41s)
-    - Unit Test
+    ✔ Unit Test @done(23-08-28 17:06)
   ✔ editer @done(23-03-25 23:28)
-    - Unit Test
+    ✔ Unit Test @done(23-08-28 17:06)
   ✔ supprimer @done(23-03-25 23:28)
     ✔ Delete in UI should clean store but not really, and should not fetch document again from api @done(23-04-25 10:40)
-    - Unit Test
+    ✔ Unit Test @done(23-08-28 17:06)
   ✔ Type: RFC @done(23-03-25 23:28)
   ✔ Type: Playbook @done(23-03-25 23:28)
   ✔ [x]  Bloc réutilisable ou Page special qui peut importer d’autre doc (pour les procédures surtout) @done(23-03-25 23:27)
