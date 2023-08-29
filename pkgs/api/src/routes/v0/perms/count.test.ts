@@ -45,6 +45,6 @@ describe('GET /perms/count', () => {
 
     isSuccess(res.json);
     expect(res.statusCode).toBe(200);
-    expect(res.json.data).toEqual(1);
+    expect(res.json.data).toBe(1);
   });
 });

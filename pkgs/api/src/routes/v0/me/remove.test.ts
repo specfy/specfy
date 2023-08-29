@@ -60,6 +60,6 @@ describe('DELETE /me', () => {
       token,
     });
     isSuccess(resGet.json);
-    expect(resGet.json.data.name).toStrictEqual('Deleted Account');
+    expect(resGet.json.data.name).toBe('Deleted Account');
   });
 });

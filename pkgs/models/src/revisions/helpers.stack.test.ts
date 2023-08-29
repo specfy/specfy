@@ -96,7 +96,7 @@ describe('findPrev', () => {
     expect(res!.name).toBe(old.name);
   });
 
-  it('should differentiate match same source, same name, same tech null but different path ', () => {
+  it('should differentiate match same source, same name, same tech null but different path', () => {
     const oldA = {
       ...getBlobComponent({ id: 'foo', orgId: 'bar' }),
       sourceName: 'a',
@@ -164,8 +164,8 @@ describe('uploadedStackToDB', () => {
     );
     expect(res2.blobs).toHaveLength(2);
     expect(res2.deleted).toHaveLength(0);
-    expect(res2.blobs[0].typeId).toEqual(res.blobs[0].typeId);
-    expect(res2.blobs[1].typeId).toEqual(res.blobs[1].typeId);
+    expect(res2.blobs[0].typeId).toBe(res.blobs[0].typeId);
+    expect(res2.blobs[1].typeId).toBe(res.blobs[1].typeId);
     expect(res2.unchanged).toStrictEqual([
       res2.blobs[0].typeId,
       res2.blobs[1].typeId,
@@ -216,9 +216,9 @@ describe('uploadedStackToDB', () => {
       { source: 'github' } as PostUploadRevision['Body']
     );
     expect(res2.blobs).toHaveLength(2);
-    expect(res2.blobs[0].typeId).toEqual(up.id);
-    expect(res2.blobs[0].current.id).toEqual(up.id);
-    expect(res2.blobs[1].current.edges[0].target).toEqual(up.id);
+    expect(res2.blobs[0].typeId).toBe(up.id);
+    expect(res2.blobs[0].current.id).toBe(up.id);
+    expect(res2.blobs[1].current.edges[0].target).toBe(up.id);
     expect(res2.unchanged).toStrictEqual([res2.blobs[0].typeId]);
   });
 
@@ -249,7 +249,7 @@ describe('uploadedStackToDB', () => {
     );
     expect(res2.blobs).toHaveLength(0);
     expect(res2.deleted).toHaveLength(1);
-    expect(res2.deleted[0].typeId).toEqual(up.id);
+    expect(res2.deleted[0].typeId).toBe(up.id);
     expect(res2.unchanged).toStrictEqual([]);
   });
 
@@ -290,7 +290,7 @@ describe('uploadedStackToDB', () => {
     expect(res2.blobs).toHaveLength(1);
     expect(res2.blobs[0].current.edges).toStrictEqual([]);
     expect(res2.deleted).toHaveLength(1);
-    expect(res2.deleted[0].typeId).toEqual(b.id);
+    expect(res2.deleted[0].typeId).toBe(b.id);
     expect(res2.unchanged).toStrictEqual([]);
   });
 
@@ -353,7 +353,7 @@ describe('uploadedStackToDB', () => {
     expect(res2.blobs).toHaveLength(1);
     expect(res2.deleted).toHaveLength(1);
     expect(res2.blobs[0].current.inComponent).toBeNull();
-    expect(res2.deleted[0].typeId).toEqual(b.id);
+    expect(res2.deleted[0].typeId).toBe(b.id);
     expect(res2.unchanged).toStrictEqual([]);
   });
 

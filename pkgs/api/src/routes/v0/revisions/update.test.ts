@@ -87,7 +87,7 @@ describe('PATCH /revisions/:revision_id', () => {
       Querystring: { org_id: org.id, project_id: project.id },
     });
     isSuccess(get.json);
-    expect(get.json.data.status).toStrictEqual('closed');
+    expect(get.json.data.status).toBe('closed');
     expect(get.json.data.closedAt).toBeTruthy();
   });
 
@@ -110,7 +110,7 @@ describe('PATCH /revisions/:revision_id', () => {
       Querystring: { org_id: org.id, project_id: project.id },
     });
     isSuccess(get.json);
-    expect(get.json.data.locked).toStrictEqual(true);
+    expect(get.json.data.locked).toBe(true);
   });
 
   it('should reopen a revision', async () => {
@@ -134,7 +134,7 @@ describe('PATCH /revisions/:revision_id', () => {
       Querystring: { org_id: org.id, project_id: project.id },
     });
     isSuccess(get.json);
-    expect(get.json.data.status).toStrictEqual('draft');
+    expect(get.json.data.status).toBe('draft');
     expect(get.json.data.closedAt).toBeNull();
   });
 
@@ -163,7 +163,7 @@ describe('PATCH /revisions/:revision_id', () => {
       Querystring: { org_id: org.id, project_id: project.id },
     });
     isSuccess(get.json);
-    expect(get.json.data.name).toStrictEqual('hello');
+    expect(get.json.data.name).toBe('hello');
     expect(get.json.data.description.content).toHaveLength(1);
   });
 

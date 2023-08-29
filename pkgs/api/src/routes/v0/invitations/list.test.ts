@@ -112,7 +112,7 @@ describe('GET /invitations', () => {
     isSuccess(res1.json);
     expect(res1.statusCode).toBe(200);
     expect(res1.json.data).toHaveLength(1);
-    expect(res1.json.data[0].email).toStrictEqual('foobar1@example.com');
+    expect(res1.json.data[0].email).toBe('foobar1@example.com');
 
     // Second user receive only it's own org
     const res2 = await t.fetch.get('/0/invitations', {
@@ -122,6 +122,6 @@ describe('GET /invitations', () => {
     isSuccess(res2.json);
     expect(res2.statusCode).toBe(200);
     expect(res2.json.data).toHaveLength(1);
-    expect(res2.json.data[0].email).toStrictEqual('foobar2@example.com');
+    expect(res2.json.data[0].email).toBe('foobar2@example.com');
   });
 });

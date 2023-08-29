@@ -25,7 +25,7 @@ function getHost(id: string, host: string | null = null): ComponentForFlow {
 }
 
 describe('layout', () => {
-  it('should output 3 components ', () => {
+  it('should output 3 components', () => {
     const layout = computeLayout({
       edges: [],
       nodes: [

@@ -304,7 +304,7 @@ describe('POST /revisions', () => {
     isSuccess(res.json);
   });
 
-  it('should disallow blob wrong org/project ', async () => {
+  it('should disallow blob wrong org/project', async () => {
     const { token, org, project } = await seedWithProject();
     const name = `test ${nanoid()}`;
     const blob = getBlobComponent(project);
@@ -352,7 +352,7 @@ describe('POST /revisions', () => {
     });
   });
 
-  it('should disallow editing an other project ', async () => {
+  it('should disallow editing an other project', async () => {
     const { token, org, project } = await seedWithProject();
     const name = `test ${nanoid()}`;
     const blob = getBlobProject(org);
