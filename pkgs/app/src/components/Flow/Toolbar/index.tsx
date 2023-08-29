@@ -125,6 +125,7 @@ const Fullscreen: React.FC<{ project: ApiProject }> = ({ project }) => {
 };
 
 const AddComponents: React.FC = () => {
+  const { zoom } = useViewport();
   const previewService = useRef<HTMLDivElement>(null);
   const previewHosting = useRef<HTMLDivElement>(null);
 
@@ -148,40 +149,45 @@ const AddComponents: React.FC = () => {
     <div className={cls.toolbar}>
       <div
         style={{
-          transform: 'translate(-10000px, -10000px)',
+          transform: `translate(-10000px, -10000px)`,
           position: 'absolute',
           pointerEvents: 'none',
         }}
       >
         <div ref={previewService}>
-          <PreviewNode
-            info={false}
-            node={{
-              id: '',
-              data: {
-                name: 'service',
-                type: 'service',
-                techId: null,
-                typeId: null,
-                originalSize: {} as any,
-              },
-            }}
-          />
+          <div style={{ transform: `scale(${Math.max(0.2, zoom - 0.15)})` }}>
+            <PreviewNode
+              info={false}
+              node={{
+                id: '',
+                data: {
+                  name: 'service',
+                  type: 'service',
+                  techId: null,
+                  typeId: null,
+                  originalSize: {} as any,
+                },
+              }}
+            />
+          </div>
         </div>
         <div ref={previewHosting}>
-          <PreviewNode
-            info={false}
-            node={{
-              id: '',
-              data: {
-                name: 'hosting',
-                type: 'hosting',
-                techId: null,
-                typeId: null,
-                originalSize: {} as any,
-              },
-            }}
-          />
+          <div style={{ transform: `scale(${Math.max(0.2, zoom - 0.15)})` }}>
+            <PreviewNode
+              info={false}
+              forceDisplay="hosting"
+              node={{
+                id: '',
+                data: {
+                  name: 'hosting',
+                  type: 'hosting',
+                  techId: null,
+                  typeId: null,
+                  originalSize: {} as any,
+                },
+              }}
+            />
+          </div>
         </div>
       </div>
       <Flex column>
