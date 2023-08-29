@@ -121,7 +121,7 @@ exports[`layout > should compute a tree 1`] = `
 ]
 `;
 
-exports[`layout > should output 3 components  1`] = `
+exports[`layout > should output 3 components 1`] = `
 {
   "height": 120,
   "nodes": [
