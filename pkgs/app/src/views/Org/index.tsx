@@ -42,6 +42,7 @@ export const Org: React.FC = () => {
     if (!tmp) {
       return;
     }
+
     setOrg(tmp);
     storeOrg.setCurrent(tmp);
   }, [getOrgs.data, params.org_id]);

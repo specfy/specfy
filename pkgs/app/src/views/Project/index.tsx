@@ -73,6 +73,7 @@ export const Project: React.FC = () => {
     }
     const tmp = getOrgs.data.data.find((o) => o.id === params.org_id);
     if (!tmp) {
+      setLoading(false);
       return;
     }
     setOrg(tmp);
