@@ -91,7 +91,7 @@ export const OrgCreate: React.FC = () => {
                 disabled={!name || name.length < 4 || !id || id.length < 4}
                 className={cls.button}
                 type="submit"
-                size="l"
+                size="xl"
                 loading={loading}
               >
                 Create <IconCircleArrowRight />

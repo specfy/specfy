@@ -133,7 +133,7 @@ export const SettingsGeneral: React.FC<{
                 onChange={onName}
                 disabled={!canEdit}
                 style={{ width: '300px' }}
-                size="l"
+                size="m"
               />
             </Field>
             <p>

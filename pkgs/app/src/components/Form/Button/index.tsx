@@ -9,7 +9,7 @@ import cls from './index.module.scss';
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   asChild?: boolean;
-  size?: 'l' | 'm' | 's';
+  size?: 'xl' | 'l' | 'm' | 's';
   display?: 'default' | 'ghost' | 'item' | 'primary';
   danger?: boolean;
   loading?: boolean;
@@ -39,13 +39,14 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           cls[size],
           danger && cls.danger,
           block && cls.block,
+          loading && cls.loading,
           className
         )}
         ref={ref}
         {...props}
         disabled={props.disabled || loading === true}
       >
-        {loading && <Loading className={cls.loading} />}
+        {loading && <Loading className={cls.loader} />}
         {props.children}
       </Comp>
     );
