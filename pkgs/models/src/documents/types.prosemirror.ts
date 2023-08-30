@@ -199,6 +199,7 @@ export interface BlockCodeBlock {
     oldMode: string;
     oldPath: string;
     oldRevision: string;
+    type?: 'modify';
   };
 }
 
