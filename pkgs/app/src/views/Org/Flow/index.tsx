@@ -2,6 +2,7 @@ import type { ComputedFlow, ApiOrg, PatchFlow } from '@specfy/models';
 import { IconCheck, IconX } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
+import { useLocalStorage } from 'react-use';
 import { useReactFlow } from 'reactflow';
 
 import { updateFlow, useGetFlow } from '../../../api';
@@ -19,6 +20,7 @@ import cls from './index.module.scss';
 
 import { i18n } from '@/common/i18n';
 import { titleSuffix } from '@/common/string';
+import { Banner } from '@/components/Banner';
 
 export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   org,
@@ -27,6 +29,7 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   const { currentPerm } = useAuth();
   const toast = useToast();
   const canEdit = currentPerm?.role !== 'viewer';
+  const [introRead, setIntroRead] = useLocalStorage(`org.flow.intro`, false);
 
   const rf = useReactFlow();
   const resFlow = useGetFlow({ org_id: params.org_id, flow_id: org.flowId });
@@ -94,6 +97,19 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
       {flow && (
         <>
           <FlowWrapper>
+            {!introRead && (
+              <div className={cls.intro}>
+                <Banner
+                  type="primary"
+                  size="s"
+                  onClose={() => setIntroRead(true)}
+                >
+                  Your organization flow is automatically generated based on
+                  your projects. <br />
+                  You can only modify the projects position and edges placement.
+                </Banner>
+              </div>
+            )}
             <Flow
               flow={flow}
               downlightOther={false}
@@ -113,8 +129,9 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
                 {!editing && (
                   <Toolbar.Readonly onClick={() => setEditing(true)} />
                 )}
-                <Toolbar.Inner>
-                  {editing && (
+
+                {editing && (
+                  <Toolbar.Inner>
                     <>
                       <Button
                         onClick={() => onSave()}
@@ -128,8 +145,9 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
                         <IconX />
                       </Button>
                     </>
-                  )}
-                </Toolbar.Inner>
+                  </Toolbar.Inner>
+                )}
+                <Toolbar.Help on={() => setIntroRead(false)} />
               </Toolbar>
             )}
             <Toolbar bottom visible>

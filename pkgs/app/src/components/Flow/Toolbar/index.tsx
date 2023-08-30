@@ -2,6 +2,7 @@ import type { ApiProject } from '@specfy/models';
 import {
   IconBox,
   IconCode,
+  IconLifebuoy,
   IconLock,
   IconMaximize,
   IconZoomIn,
@@ -104,6 +105,18 @@ const ToolbarZoom: React.FC = () => {
       <TooltipFull msg="Zoom In (Cmd +)" side="top">
         <Button display="ghost" onClick={handleZoomIn}>
           <IconZoomIn />
+        </Button>
+      </TooltipFull>
+    </div>
+  );
+};
+
+const ToolbarHelp: React.FC<{ on: () => void }> = ({ on }) => {
+  return (
+    <div className={cls.toolbar}>
+      <TooltipFull msg="Need help?">
+        <Button display="ghost" onClick={on}>
+          <IconLifebuoy />
         </Button>
       </TooltipFull>
     </div>
@@ -220,6 +233,7 @@ export type ToolbarProps = typeof Container & {
   Readonly: typeof Readonly;
   AddComponents: typeof AddComponents;
   Inner: typeof Inner;
+  Help: typeof ToolbarHelp;
 };
 
 export const Toolbar = Container as ToolbarProps;
@@ -228,3 +242,4 @@ Toolbar.Fullscreen = Fullscreen;
 Toolbar.Readonly = Readonly;
 Toolbar.AddComponents = AddComponents;
 Toolbar.Inner = Inner;
+Toolbar.Help = ToolbarHelp;

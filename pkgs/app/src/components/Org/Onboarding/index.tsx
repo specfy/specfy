@@ -14,7 +14,7 @@ import cls from './index.module.scss';
 export const OrgOnboarding: React.FC<{ org: ApiOrg }> = ({ org }) => {
   const projects = useListProjects({ org_id: org.id });
   const perms = useListPerms({ org_id: org.id });
-  const [done, setDone] = useLocalStorage(`orgOnboarding-${org.id}`, false);
+  const [done, setDone] = useLocalStorage(`org.onboarding[${org.id}]`, false);
 
   const [link] = useState(org.githubInstallationId);
   const [project, setProject] = useState(false);

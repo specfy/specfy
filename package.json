@@ -23,7 +23,7 @@
     "emails": "turbo dev --filter='@specfy/emails'",
     "listen:stripe": "stripe listen --forward-to localhost:3000/0/stripe/webhooks",
     "tf": "cd ./prod/terraform/ && ./run.sh",
-    "clean": "rm -rf pkgs/*/{dist,build,.turbo,tsconfig.tsbuildinfo,coverage} && rm -rf node_modules/.cache"
+    "clean": "rm -rf pkgs/*/{dist,build,.turbo,tsconfig.tsbuildinfo,coverage,.react-email} && rm -rf node_modules/.cache"
   },
   "repository": {
     "type": "git",

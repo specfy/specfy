@@ -24,7 +24,7 @@ export const OrgOverview: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   const res = useListProjects({ org_id: params.org_id });
   const resFlow = useGetFlow({ org_id: params.org_id, flow_id: org.flowId });
   const [flow, setFlow] = useState<ComputedFlow>();
-  const [done] = useLocalStorage(`orgOnboarding-${org.id}`, false);
+  const [done] = useLocalStorage(`org.onboarding[${org.id}]`, false);
 
   useEffect(() => {
     if (!resFlow.data) {
