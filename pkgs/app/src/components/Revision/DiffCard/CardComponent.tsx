@@ -67,7 +67,7 @@ export const DiffCardComponent: React.FC<{
         <ContentDoc
           doc={using.description}
           id={diff.blob.typeId}
-          noPlaceholder
+          placeholder={false}
         />
         {using.techs.length > 0 && (
           <div className={cls.line}>

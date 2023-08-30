@@ -17,6 +17,8 @@ import { ContentBlockStep } from './BlockStep';
 import { ContentBlockVoteItem } from './BlockVoteItem';
 import cls from './index.module.scss';
 
+import { useAuth } from '@/hooks/useAuth';
+
 function styleDiff(block: Blocks): string {
   if (!block.marks || block.marks.length <= 0) {
     return '';
@@ -340,26 +342,28 @@ export const Presentation: React.FC<{
   return <div className={classnames(cls.content, cls[size])}>{children}</div>;
 };
 
+export const Placeholder: React.FC<{ text?: string }> = ({ text }) => {
+  const { currentPerm } = useAuth();
+
+  return (
+    <div className={cls.placeholder}>
+      {currentPerm?.role === 'viewer' ? '' : text ?? 'Write something...'}
+    </div>
+  );
+};
+
 export const ContentDoc: React.FC<{
   doc: BlockLevelZero;
   id?: string;
   pl?: Payload;
-  noPlaceholder?: true;
-  placeholder?: string;
-}> = ({ doc, id, pl, noPlaceholder, placeholder }) => {
+  placeholder?: React.ReactNode;
+}> = ({ doc, id, pl, placeholder }) => {
   const [payload] = useState<Payload>(() => {
     return pl || { displayed: [id!] };
   });
 
   if (doc.content.length <= 0) {
-    if (noPlaceholder) {
-      return null;
-    }
-    return (
-      <div className={cls.placeholder}>
-        {placeholder ?? 'Write something...'}
-      </div>
-    );
+    return placeholder;
   }
 
   return (

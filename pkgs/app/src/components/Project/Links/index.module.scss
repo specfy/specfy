@@ -2,7 +2,7 @@
 
 .wrapper {
   &.clickToEdit {
-    @include editable(0, 0);
+    @include editable;
   }
 
   &.opened {

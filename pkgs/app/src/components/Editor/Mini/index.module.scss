@@ -13,8 +13,11 @@
 }
 
 .mini {
+  @include editable;
+
   position: relative;
   margin: -6px -8px;
+  padding: 6px 8px;
 }
 
 .editor {
@@ -26,12 +29,17 @@
     // stylelint-disable selector-class-pattern
     .ProseMirror-focused:focus {
       outline: none;
+      box-shadow: none;
     }
 
     .ProseMirror {
-      @include editable;
-
       min-height: inherit;
+
+      &:focus,
+      &:hover {
+        outline: none;
+        box-shadow: none;
+      }
 
       p:last-child {
         margin-bottom: 0;

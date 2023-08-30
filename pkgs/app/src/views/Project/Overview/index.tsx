@@ -8,7 +8,7 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { Card } from '../../../components/Card';
 import { Container } from '../../../components/Container';
-import { ContentDoc } from '../../../components/Content';
+import { ContentDoc, Placeholder } from '../../../components/Content';
 import { EditorMini } from '../../../components/Editor/Mini';
 import { Flow, FlowWrapper } from '../../../components/Flow';
 import { Toolbar } from '../../../components/Flow/Toolbar';
@@ -66,7 +66,12 @@ export const ProjectOverview: React.FC<{
           <h1>{project.name}</h1>
           <UpdatedAt time={project.updatedAt} />
           <div className={cls.desc}>
-            {!isEditing && <ContentDoc doc={project.description} />}
+            {!isEditing && (
+              <ContentDoc
+                doc={project.description}
+                placeholder={<Placeholder />}
+              />
+            )}
             {isEditing && (
               <EditorMini
                 key={project.id}

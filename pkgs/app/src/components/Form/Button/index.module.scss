@@ -60,6 +60,9 @@
     --btn-color: var(--text3);
     --btn-border: transparent;
     --btn-hvr-color: var(--text);
+
+    border-color: transparent;
+    border-radius: 0;
   }
 
   &.danger {
@@ -76,6 +79,17 @@
       --btn-bg: var(--tomato-9);
       --btn-border: var(--tomato-9);
       --btn-hvr-bg: var(--tomato-10);
+    }
+
+    &.item {
+      --btn-border: transparent;
+      --btn-hvr-color: #fff;
+      --btn-hvr-bg: var(--tomato-10);
+
+      &:hover {
+        color: #fff;
+        background-color: var(--tomato-10);
+      }
     }
   }
 

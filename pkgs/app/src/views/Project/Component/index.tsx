@@ -12,7 +12,7 @@ import { useReactFlow } from 'reactflow';
 import { ComponentDetails } from '../../../components/Component/Details';
 import { ComponentIcon } from '../../../components/Component/Icon';
 import { Container } from '../../../components/Container';
-import { ContentDoc } from '../../../components/Content';
+import { ContentDoc, Placeholder } from '../../../components/Content';
 import * as Dropdown from '../../../components/Dropdown';
 import { EditorMini } from '../../../components/Editor/Mini';
 import { Flex } from '../../../components/Flex';
@@ -36,6 +36,7 @@ import cls from './index.module.scss';
 
 import { useComponentsStore } from '@/common/store';
 import { titleSuffix } from '@/common/string';
+import { Editable } from '@/components/Form/Editable';
 
 export const ComponentView: React.FC<{
   proj: ApiProject;
@@ -117,8 +118,8 @@ export const ComponentView: React.FC<{
 
       <Container.Left2Third className={cls.main}>
         <div className={cls.content}>
-          <Flex align="center" justify="space-between">
-            <Flex align="center" gap="l">
+          <Flex align="center" justify="space-between" gap="l">
+            <Flex align="center" gap="l" grow>
               {isEditing ? (
                 <TechPopover
                   id={comp.id}
@@ -127,7 +128,9 @@ export const ComponentView: React.FC<{
                   onNodesChange={onNodesChange}
                 />
               ) : (
-                <ComponentIcon data={comp} large noEmpty />
+                <Editable inline>
+                  <ComponentIcon data={comp} large noEmpty />
+                </Editable>
               )}
 
               <TooltipFull
@@ -139,9 +142,11 @@ export const ComponentView: React.FC<{
                 side="top"
               >
                 {!isEditing || comp.type === 'project' ? (
-                  <h2>
-                    <Flex gap="l">{comp.name}</Flex>
-                  </h2>
+                  <Editable>
+                    <h2>
+                      <Flex gap="l">{comp.name}</Flex>
+                    </h2>
+                  </Editable>
                 ) : (
                   <FakeInput.H2
                     size="l"
@@ -201,7 +206,12 @@ export const ComponentView: React.FC<{
           <UpdatedAt time={comp.updatedAt} />
 
           {!isEditing && comp.description && (
-            <ContentDoc doc={comp.description} noPlaceholder />
+            <Editable padded>
+              <ContentDoc
+                doc={comp.description}
+                placeholder={<Placeholder />}
+              />
+            </Editable>
           )}
           {isEditing && (
             <EditorMini
