@@ -31,17 +31,12 @@ export function listen() {
         orderBy: {
           createdAt: 'asc',
         },
-        include: {
-          Org: true,
-          Project: true,
-          User: true,
-        },
       });
       if (!next) {
         return;
       }
 
-      await tx.jobs.update({
+      const full = await tx.jobs.update({
         data: {
           status: 'running',
           startedAt: new Date(),
@@ -50,9 +45,14 @@ export function listen() {
         where: {
           id: next.id,
         },
+        include: {
+          Org: true,
+          Project: true,
+          User: true,
+        },
       });
 
-      const job = new JobDeploy(next);
+      const job = new JobDeploy(full);
       running.push(job);
       (() => job.start())();
     });

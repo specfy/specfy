@@ -40,6 +40,8 @@ import { ProjectRevisionsList } from './Revisions/List';
 import { ProjectRevisionsShow } from './Revisions/Show';
 import { ProjectSettings } from './Settings';
 import { Tech } from './Tech';
+import { ProjectWelcome } from './Welcome';
+import { ProjectEvents } from './events';
 import cls from './index.module.scss';
 
 export const Project: React.FC = () => {
@@ -144,6 +146,7 @@ export const Project: React.FC = () => {
   return (
     <div className={cls.project}>
       <Helmet title={`${proj.name} ${titleSuffix}`} />
+      <ProjectEvents />
 
       <div>
         <Sidebar.Sidebar>
@@ -208,6 +211,7 @@ export const Project: React.FC = () => {
               path="/deploys/:job_id"
               element={<ProjectDeploysShow proj={proj} params={params} />}
             />
+            <Route path="/welcome" element={<ProjectWelcome />} />
             <Route
               path="/doc/*"
               element={<ProjectDocumentation proj={proj} />}

@@ -82,20 +82,20 @@ export const Toast: React.FC<
       onOpenChange={close}
       onClick={close}
     >
-      <Flex gap="l" align="flex-start" justify="space-between">
-        <Flex gap="l" align="flex-start">
-          {(loading || status) && (
-            <div className={cls.icon}>
-              {loading && <Loading />}
-              {status === 'success' && <IconCircleCheck />}
-              {status === 'error' && <IconExclamationCircle />}
-            </div>
+      <Flex gap="l" align="flex-start">
+        {(loading || status) && (
+          <div className={cls.icon}>
+            {loading && <Loading />}
+            {status === 'success' && <IconCircleCheck />}
+            {status === 'error' && <IconExclamationCircle />}
+          </div>
+        )}
+        <div>
+          {title && <RadixToast.Title>{title}</RadixToast.Title>}
+          {message && (
+            <RadixToast.Description>{message}</RadixToast.Description>
           )}
-          <div>
-            {title && <RadixToast.Title>{title}</RadixToast.Title>}
-            {message && (
-              <RadixToast.Description>{message}</RadixToast.Description>
-            )}
+          <Flex gap="m">
             {link && (
               <div className={cls.show}>
                 <Link to={link} onClick={close}>
@@ -104,14 +104,14 @@ export const Toast: React.FC<
               </div>
             )}
             {action && <div className={cls.show}>{action}</div>}
-          </div>
-        </Flex>
-        <RadixToast.Close>
-          <span>
-            <IconX />
-          </span>
-        </RadixToast.Close>
+          </Flex>
+        </div>
       </Flex>
+      <RadixToast.Close className={cls.close}>
+        <span>
+          <IconX />
+        </span>
+      </RadixToast.Close>
     </RadixToast.Root>
   );
 };

@@ -24,7 +24,7 @@ import cls from './index.module.scss';
 import { i18n } from '@/common/i18n';
 import { titleSuffix } from '@/common/string';
 
-const Row: React.FC<{
+export const Row: React.FC<{
   deploy: ListJobs['Success']['data'][0];
   params: RouteProject;
 }> = ({ deploy, params }) => {

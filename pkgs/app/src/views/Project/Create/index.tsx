@@ -59,7 +59,8 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
 
     toast.add({ title: 'Project created', status: 'success' });
 
-    if (repo && repo.id !== -1) {
+    const hasGithub = repo && repo.id !== -1;
+    if (hasGithub) {
       const link = await linkToGithubRepo({
         orgId: org.id,
         projectId: res.data.id,
@@ -71,7 +72,9 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
       }
     }
 
-    navigate(`/${params.org_id}/${res.data.slug}`);
+    navigate(
+      `/${params.org_id}/${res.data.slug}${hasGithub ? '/welcome' : ''}`
+    );
   };
 
   const onPickRepo: React.ComponentProps<typeof GithubSearch>['onPick'] = (
