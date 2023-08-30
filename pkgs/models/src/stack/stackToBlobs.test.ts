@@ -4,124 +4,18 @@ import { Payload } from '@specfy/stack-analyser';
 import { describe, expect, it } from 'vitest';
 
 import { getBlobComponent } from '../components/index.js';
+import type { PostUploadRevision } from '../revisions/index.js';
 
-import { findPrev, uploadedStackToDB } from './helpers.stack.js';
-import type { PostUploadRevision } from './types.api.js';
+import { stackToBlobs } from './stackToBlobs.js';
 
 function getDefault(): AnalyserJson {
   return new Payload({ name: 'default', folderPath: '/' }).toJson();
 }
 
-describe('findPrev', () => {
-  it('should not match different', () => {
-    const res = findPrev(
-      { ...getDefault(), name: 'a' },
-      [getBlobComponent({ id: 'foo', orgId: 'bar' }) as unknown as Components],
-      'github'
-    );
-    expect(res).toBeUndefined();
-  });
-
-  it('should match equal', () => {
-    const old = {
-      ...getBlobComponent({ id: 'foo', orgId: 'bar' }),
-      sourceName: 'a',
-      source: 'github',
-    } as unknown as Components;
-    const res = findPrev({ ...getDefault(), name: 'a' }, [old], 'github');
-    expect(res!.name).toBe(old.name);
-  });
-
-  it('should not match same name but different source', () => {
-    const old = {
-      ...getBlobComponent({ id: 'foo', orgId: 'bar' }),
-      sourceName: 'a',
-      source: 'foobar',
-    } as unknown as Components;
-    const res = findPrev({ ...getDefault(), name: 'a' }, [old], 'github');
-    expect(res).toBeUndefined();
-  });
-
-  it('should not match same source but different name', () => {
-    const old = {
-      ...getBlobComponent({ id: 'foo', orgId: 'bar' }),
-      sourceName: 'a',
-      source: 'github',
-    } as unknown as Components;
-    const res = findPrev({ ...getDefault(), name: 'b' }, [old], 'github');
-    expect(res).toBeUndefined();
-  });
-
-  it('should not match same source, same name but different tech', () => {
-    const old = {
-      ...getBlobComponent({ id: 'foo', orgId: 'bar' }),
-      sourceName: 'a',
-      source: 'github',
-    } as unknown as Components;
-    const res = findPrev(
-      { ...getDefault(), name: 'a', tech: 'algolia' },
-      [old],
-      'github'
-    );
-    expect(res).toBeUndefined();
-  });
-
-  it('should match same source, same name, same tech', () => {
-    const old = {
-      ...getBlobComponent({ id: 'foo', orgId: 'bar' }),
-      techId: 'algolia',
-      sourceName: 'a',
-      source: 'github',
-    } as unknown as Components;
-    const res = findPrev(
-      { ...getDefault(), name: 'a', tech: 'algolia' },
-      [old],
-      'github'
-    );
-    expect(res!.name).toBe(old.name);
-  });
-
-  it('should match same source, same name, same tech null but different path (a potential rename)', () => {
-    const old = {
-      ...getBlobComponent({ id: 'foo', orgId: 'bar' }),
-      sourceName: 'a',
-      sourcePath: ['/src/a/package.json'],
-      source: 'github',
-    } as unknown as Components;
-    const res = findPrev(
-      { ...getDefault(), name: 'a', path: ['/package.json'] },
-      [old],
-      'github'
-    );
-    expect(res!.name).toBe(old.name);
-  });
-
-  it('should differentiate match same source, same name, same tech null but different path', () => {
-    const oldA = {
-      ...getBlobComponent({ id: 'foo', orgId: 'bar' }),
-      sourceName: 'a',
-      sourcePath: ['/src/a/package.json'],
-      source: 'github',
-    } as unknown as Components;
-    const oldB = {
-      ...getBlobComponent({ id: 'foo', orgId: 'bar' }),
-      sourceName: 'a',
-      sourcePath: ['/src/b/package.json'],
-      source: 'github',
-    } as unknown as Components;
-    const res = findPrev(
-      { ...getDefault(), name: 'a', path: ['/src/b/package.json'] },
-      [oldA, oldB],
-      'github'
-    );
-    expect(res!.id).toBe(oldB.id);
-  });
-});
-
-describe('uploadedStackToDB', () => {
+describe('stackToBlobs', () => {
   it('should output new blobs once and nothing the second', () => {
     // New upload
-    const res = uploadedStackToDB(
+    const res = stackToBlobs(
       {
         ...getDefault(),
         childs: [
@@ -151,7 +45,7 @@ describe('uploadedStackToDB', () => {
     expect(snap).toMatchSnapshot();
 
     // Re-upload
-    const res2 = uploadedStackToDB(
+    const res2 = stackToBlobs(
       {
         ...getDefault(),
         childs: [
@@ -179,7 +73,7 @@ describe('uploadedStackToDB', () => {
       name: 'coucou',
       tech: 'algolia',
     };
-    const first = uploadedStackToDB(
+    const first = stackToBlobs(
       {
         ...getDefault(),
         childs: [up],
@@ -194,7 +88,7 @@ describe('uploadedStackToDB', () => {
       name: 'coucou',
       tech: 'algolia',
     };
-    const res2 = uploadedStackToDB(
+    const res2 = stackToBlobs(
       {
         ...getDefault(),
         childs: [
@@ -229,7 +123,7 @@ describe('uploadedStackToDB', () => {
       name: 'coucou',
       tech: 'algolia',
     };
-    const first = uploadedStackToDB(
+    const first = stackToBlobs(
       {
         ...getDefault(),
         childs: [up],
@@ -239,7 +133,7 @@ describe('uploadedStackToDB', () => {
     );
 
     // Re-upload
-    const res2 = uploadedStackToDB(
+    const res2 = stackToBlobs(
       {
         ...getDefault(),
         childs: [],
@@ -262,7 +156,7 @@ describe('uploadedStackToDB', () => {
       read: true,
       write: true,
     });
-    const first = uploadedStackToDB(
+    const first = stackToBlobs(
       {
         ...getDefault(),
         name: 'coucou',
@@ -277,7 +171,7 @@ describe('uploadedStackToDB', () => {
 
     // Re-upload, we loose B and the associated edge
     a.edges = [];
-    const res2 = uploadedStackToDB(
+    const res2 = stackToBlobs(
       {
         ...getDefault(),
         name: 'coucou',
@@ -301,7 +195,7 @@ describe('uploadedStackToDB', () => {
       name: 'coucou',
       tech: 'algolia',
     };
-    const res = uploadedStackToDB(
+    const res = stackToBlobs(
       {
         ...getDefault(),
         childs: [up],
@@ -325,7 +219,7 @@ describe('uploadedStackToDB', () => {
     const a = { ...getDefault(), name: 'a' };
     const b = { ...getDefault(), name: 'b' };
     a.inComponent = b.id;
-    const first = uploadedStackToDB(
+    const first = stackToBlobs(
       {
         ...getDefault(),
         name: 'coucou',
@@ -340,7 +234,7 @@ describe('uploadedStackToDB', () => {
 
     // Re-upload, we loose B
     a.inComponent = null;
-    const res2 = uploadedStackToDB(
+    const res2 = stackToBlobs(
       {
         ...getDefault(),
         name: 'coucou',
@@ -360,7 +254,7 @@ describe('uploadedStackToDB', () => {
   it('should detect adding an host', () => {
     // New upload
     const a = { ...getDefault(), name: 'a' };
-    const first = uploadedStackToDB(
+    const first = stackToBlobs(
       {
         ...getDefault(),
         name: 'coucou',
@@ -376,7 +270,7 @@ describe('uploadedStackToDB', () => {
     // Re-upload, we add B and it's an host of A
     const b = { ...getDefault(), name: 'b' };
     a.inComponent = b.id;
-    const res2 = uploadedStackToDB(
+    const res2 = stackToBlobs(
       {
         ...getDefault(),
         name: 'coucou',
@@ -393,7 +287,7 @@ describe('uploadedStackToDB', () => {
   });
 });
 
-describe('Unsupported edge cases', () => {
+describe('edge cases', () => {
   it('should not confuse component with the same name', () => {
     // New upload
     const a: AnalyserJson = {
@@ -406,7 +300,7 @@ describe('Unsupported edge cases', () => {
       name: 'a',
       path: ['/cmd/api/main.go'],
     };
-    const first = uploadedStackToDB(
+    const first = stackToBlobs(
       {
         ...getDefault(),
         name: 'coucou',
@@ -421,7 +315,7 @@ describe('Unsupported edge cases', () => {
     expect(first.blobs).toHaveLength(2);
 
     // Upload again no change
-    const res2 = uploadedStackToDB(
+    const res2 = stackToBlobs(
       {
         ...getDefault(),
         name: 'coucou',
@@ -435,4 +329,220 @@ describe('Unsupported edge cases', () => {
     expect(res2.deleted).toHaveLength(0);
     expect(res2.unchanged).toStrictEqual([a.id, b.id]);
   });
+
+  it('should not confuse component with the same path', () => {
+    // New upload
+    const b: AnalyserJson = {
+      ...getDefault(),
+      name: 'b',
+      path: ['/package.json'],
+    };
+    const first = stackToBlobs(
+      {
+        ...getDefault(),
+        name: 'coucou',
+        tech: 'algolia',
+        childs: [b],
+      },
+      [],
+      {
+        source: 'github',
+      } as PostUploadRevision['Body']
+    );
+    expect(first.blobs).toHaveLength(1);
+
+    // Upload again but a is coming before b
+    // It's a new component with the same path, we should avoid detecting a rename
+    const a: AnalyserJson = {
+      ...getDefault(),
+      name: 'a',
+      path: ['/package.json'],
+    };
+    const res2 = stackToBlobs(
+      {
+        ...getDefault(),
+        name: 'coucou',
+        tech: 'algolia',
+        childs: [a, b],
+      },
+      first.blobs.map((blob) => blob.current as unknown as Components),
+      { source: 'github' } as PostUploadRevision['Body']
+    );
+    expect(res2.blobs).toHaveLength(2);
+    expect(res2.blobs[0].created).toBe(true);
+    expect(res2.deleted).toHaveLength(0);
+    expect(res2.unchanged).toStrictEqual([b.id]);
+  });
+
+  it('should handle two rename (same order)', () => {
+    // New upload
+    const a: AnalyserJson = {
+      ...getDefault(),
+      name: 'a',
+      path: ['/cmd'],
+    };
+    const b: AnalyserJson = {
+      ...getDefault(),
+      name: 'b',
+      path: ['/src'],
+    };
+    const first = stackToBlobs(
+      {
+        ...getDefault(),
+        name: 'coucou',
+        tech: 'algolia',
+        childs: [a, b],
+      },
+      [],
+      {
+        source: 'github',
+      } as PostUploadRevision['Body']
+    );
+    expect(first.blobs).toHaveLength(2);
+
+    // Upload again both components are renamed but there are staying in the same folder
+    const c: AnalyserJson = {
+      ...getDefault(),
+      name: 'c',
+      path: ['/cmd'],
+    };
+    const d: AnalyserJson = {
+      ...getDefault(),
+      name: 'd',
+      path: ['/src'],
+    };
+    const res2 = stackToBlobs(
+      {
+        ...getDefault(),
+        name: 'coucou',
+        tech: 'algolia',
+        childs: [c, d],
+      },
+      first.blobs.map((blob) => blob.current as unknown as Components),
+      { source: 'github' } as PostUploadRevision['Body']
+    );
+    expect(res2.blobs).toHaveLength(2);
+    expect(res2.blobs[0].created).toBe(false);
+    expect(res2.blobs[0].typeId).toBe(a.id);
+    expect(res2.blobs[1].created).toBe(false);
+    expect(res2.blobs[1].typeId).toBe(b.id);
+    expect(res2.deleted).toHaveLength(0);
+    expect(res2.unchanged).toStrictEqual([]);
+  });
+
+  it('should handle one folder rename (different order)', () => {
+    // New upload
+    const a: AnalyserJson = {
+      ...getDefault(),
+      name: 'a',
+      path: ['/cmd'],
+    };
+    const b: AnalyserJson = {
+      ...getDefault(),
+      name: 'b',
+      path: ['/src'],
+    };
+    const first = stackToBlobs(
+      {
+        ...getDefault(),
+        name: 'coucou',
+        tech: 'algolia',
+        childs: [a, b],
+      },
+      [],
+      {
+        source: 'github',
+      } as PostUploadRevision['Body']
+    );
+    expect(first.blobs).toHaveLength(2);
+
+    // Upload again a folder is mv, so it will be matched after
+    const c: AnalyserJson = {
+      ...getDefault(),
+      name: 'a',
+      path: ['/z'],
+    };
+    const d: AnalyserJson = {
+      ...getDefault(),
+      name: 'b',
+      path: ['/src'],
+    };
+    const res2 = stackToBlobs(
+      {
+        ...getDefault(),
+        name: 'coucou',
+        tech: 'algolia',
+        childs: [d, c],
+      },
+      first.blobs.map((blob) => blob.current as unknown as Components),
+      { source: 'github' } as PostUploadRevision['Body']
+    );
+    expect(res2.blobs).toHaveLength(2);
+    expect(res2.blobs[0].created).toBe(false);
+    expect(res2.blobs[0].typeId).toBe(b.id);
+    expect(res2.blobs[1].created).toBe(false);
+    expect(res2.blobs[1].typeId).toBe(a.id);
+    expect(res2.deleted).toHaveLength(0);
+    expect(res2.unchanged).toStrictEqual([b.id]);
+  });
 });
+
+// ('impossible', () => {
+
+// ('should handle two rename (different order)', () => {
+//   // New upload
+//   const a: AnalyserJson = {
+//     ...getDefault(),
+//     name: 'a',
+//     path: ['/cmd'],
+//   };
+//   const b: AnalyserJson = {
+//     ...getDefault(),
+//     name: 'b',
+//     path: ['/src'],
+//   };
+//   const first = stackToBlobs(
+//     {
+//       ...getDefault(),
+//       name: 'coucou',
+//       tech: 'algolia',
+//       childs: [a, b],
+//     },
+//     [],
+//     {
+//       source: 'github',
+//     } as PostUploadRevision['Body']
+//   );
+//   expect(first.blobs).toHaveLength(2);
+
+//   // Upload again both components are renamed but there are staying in the same folder
+//   const c: AnalyserJson = {
+//     ...getDefault(),
+//     name: 'c',
+//     path: ['/z'],
+//   };
+//   const d: AnalyserJson = {
+//     ...getDefault(),
+//     name: 'd',
+//     path: ['/a'],
+//   };
+//   const res2 = stackToBlobs(
+//     {
+//       ...getDefault(),
+//       name: 'coucou',
+//       tech: 'algolia',
+//       childs: [c, d],
+//     },
+//     first.blobs.map((blob) => blob.current as unknown as Components),
+//     { source: 'github' } as PostUploadRevision['Body']
+//   );
+//   console.log(res2);
+//   expect(res2.blobs).toHaveLength(2);
+//   expect(res2.blobs[0].created).toBe(false);
+//   expect(res2.blobs[0].typeId).toBe(b.id);
+//   expect(res2.blobs[1].created).toBe(false);
+//   expect(res2.blobs[1].typeId).toBe(a.id);
+//   expect(res2.deleted).toHaveLength(0);
+//   expect(res2.unchanged).toStrictEqual([]);
+// });
+// })

@@ -5,11 +5,11 @@ import {
   createBlobs,
   createRevisionActivity,
   uploadedDocumentsToDB,
-  autoLayout,
-  uploadedStackToDB,
   schemaRevision,
   schemaStack,
   DocumentsParser,
+  autoLayout,
+  stackToBlobs,
 } from '@specfy/models';
 import type { PostUploadRevision } from '@specfy/models';
 import type { AnalyserJson } from '@specfy/stack-analyser';
@@ -138,7 +138,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
               take: 1000,
               skip: 0,
             });
-            const components = uploadedStackToDB(
+            const components = stackToBlobs(
               data.stack as AnalyserJson,
               prevsComponents,
               data as PostUploadRevision['Body']

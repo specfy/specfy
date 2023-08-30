@@ -1,18 +1,19 @@
-import { slugify, titleCase, pick } from '@specfy/core';
+import { slugify, pick } from '@specfy/core';
 import type { Components } from '@specfy/db';
 import type { AnalyserJson } from '@specfy/stack-analyser';
 import { tech } from '@specfy/stack-analyser';
 
 import type { ComponentType, DBComponent } from '../components/types.js';
 import { getComponentSize } from '../flows/helpers.js';
-import { computeLayout } from '../flows/layout.js';
-import { componentsToFlow } from '../flows/transform.js';
-
 import type {
   ApiBlobCreate,
   ApiBlobCreateComponent,
   PostUploadRevision,
-} from './types.api.js';
+} from '../revisions';
+import { findPerfectMatch, findPrevious } from '../stack/index.js';
+
+import { getTitle } from './helpers.js';
+import type { StackToBlobs } from './types.js';
 
 const changing: Array<keyof Components> = [
   'edges',
@@ -25,89 +26,48 @@ const changing: Array<keyof Components> = [
   'inComponent',
 ];
 
-export interface StackToDB {
-  deleted: ApiBlobCreate[];
-  blobs: ApiBlobCreateComponent[];
-  unchanged: string[];
-}
-
-/**
- * When we receive a stack Payload, each component have id, name, tech and sourcePath
- * that we can use to differentiate and potentially find the component already in DB that matches.
- * In most case the naive triple check is enough. But in some cases sourcePath check is mandatory.
- * e.g:
- *  two components named API with tech null in a different place
- *
- * - We can't use a perfect hash because any sourcePath change would break the mv scenario.
- * - The rename scenario is the most probable however it's very hard to differentiate a rename from a delete + new
- *
- * So right now if we have an API component that is renamed Api and no tech or sourcePath changes, it will be recreated until better algo.
- */
-export function findPrev(
-  child: AnalyserJson,
-  prevs: Components[],
-  source: string
-) {
-  const matches = [];
-  // Naive match that should fit 99% use case
-  // We don't check the path yet because it can be a mv case if there is only one match
-  for (const prev of prevs) {
-    if (
-      prev.sourceName === child.name &&
-      prev.techId === child.tech &&
-      prev.source === source
-    ) {
-      matches.push(prev);
-    }
-  }
-
-  if (matches.length <= 1) {
-    return matches[0];
-  }
-
-  // Second step, multiple components match.
-  // We need to adapt the heuristic and check old path
-  // If nothing match perfectly it's going to be recreated
-  // But we don't want to pick the wrong one
-  for (const match of matches) {
-    if (!match.sourcePath) {
-      // This would be weird but TS pleasing
-      continue;
-    }
-
-    for (const path of match.sourcePath) {
-      if (child.path.includes(path)) {
-        // We matched a path, there is 99.99% chance we found the right one
-        // There is still a chance multiple would have match
-        // but at this point it's either an acceptable edge case or someone crafting a payload
-        return match;
-      }
-    }
-  }
-
-  return null;
-}
-
 /**
  * Prepare blobs to create, update or delete
  */
-export function uploadedStackToDB(
+export function stackToBlobs(
   parsed: AnalyserJson,
   prevs: Components[],
   data: PostUploadRevision['Body']
-): StackToDB {
+): StackToBlobs {
   const now = new Date().toISOString();
   const unchanged: string[] = [];
+  const source = data.source;
 
+  // Find perfect matches first so we don't confuse them later in rename or mv
+  const prevIdUsed: string[] = [];
+  const perfectMatches = new Map<string, Components>();
+  for (const child of parsed.childs) {
+    const perfect = findPerfectMatch({ child, prevs, source });
+    if (perfect) {
+      prevIdUsed.push(perfect.id);
+      perfectMatches.set(child.id, perfect);
+    }
+  }
+
+  //
   const idsMap: Record<string, string> = {};
-  const blobs: ApiBlobCreateComponent[] = parsed.childs.map((child) => {
-    const prev = findPrev(child, prevs, data.source);
+  const blobs: ApiBlobCreateComponent[] = [];
+  for (const child of parsed.childs) {
+    let prev: Components | null = null;
+    if (perfectMatches.has(child.id)) {
+      prev = perfectMatches.get(child.id)!;
+    } else {
+      prev = findPrevious({ child, prevs, source, prevIdUsed });
+      if (prev) {
+        prevIdUsed.push(prev.id);
+      }
+    }
 
     let current: DBComponent;
     if (prev) {
       current = {
         ...(prev as unknown as DBComponent),
-        source: data.source,
+        source,
         sourceName: child.name,
         sourcePath: child.path,
         techId: child.tech,
@@ -162,27 +122,19 @@ export function uploadedStackToDB(
 
     current.name = getTitle(current.name);
 
-    return {
+    blobs.push({
       created: !prev,
       deleted: false,
       parentId: prev ? prev.blobId : null,
       type: 'component',
       typeId: current.id,
       current,
-    };
-  });
+    });
+  }
 
   const deleted: ApiBlobCreate[] = prevs
     .filter((p) => {
-      if (p.source !== data.source) {
-        return false;
-      }
-      return !parsed.childs.find(
-        (child) =>
-          child.name === p.sourceName &&
-          ((child.tech !== null && child.tech === p.techId) ||
-            (child.tech === null && p.techId === null))
-      );
+      return !prevIdUsed.includes(p.id) && p.source === source;
     })
     .map((prev) => {
       return {
@@ -195,7 +147,7 @@ export function uploadedStackToDB(
       };
     });
 
-  // ---- Find ids that has changed
+  // ---- Apply post compilation change (e.g: deleted hosts, deleted edges, etc.)
   blobs.forEach((blob) => {
     if (blob.deleted) {
       return;
@@ -237,26 +189,13 @@ export function uploadedStackToDB(
     }
   }
 
+  // Fail safe
+  if (
+    blobs.length + deleted.length + unchanged.length >
+    prevs.length + parsed.childs.length
+  ) {
+    throw new Error('More output than input');
+  }
+
   return { blobs, deleted, unchanged };
-}
-
-const scoped = /^@[a-zA-Z0-9_-]+\/.*$/;
-function getTitle(title: string): string {
-  let name = title;
-  if (scoped.test(name)) {
-    name = name.split('/')[1];
-  }
-
-  return titleCase(name.replaceAll('-', ' '));
-}
-
-export function autoLayout(stack: StackToDB) {
-  const nodes = stack.blobs.map((b) => b.current);
-  const layout = computeLayout(componentsToFlow(nodes));
-
-  for (const node of nodes) {
-    const rel = layout.nodes.find((l) => l.id === node.id)!;
-    node.display.pos = rel.pos;
-    node.display.size = rel.size;
-  }
 }
