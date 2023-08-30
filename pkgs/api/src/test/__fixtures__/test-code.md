@@ -89,3 +89,21 @@ FROM node:18.17.1-bullseye-slim as deps
 
 RUN apt update && apt-get install -y bash jq
 ```
+
+## Diff
+
+```diff
+diff --git a/pkgs/models/src/flows/__snapshots__/layout.test.ts.snap b/pkgs/models/src/flows/__snapshots__/layout.test.ts.snap
+index 5fbb1892..0656b6b8 100644
+--- a/pkgs/models/src/flows/__snapshots__/layout.test.ts.snap
++++ b/pkgs/models/src/flows/__snapshots__/layout.test.ts.snap
+@@ -121,7 +121,7 @@ exports[`layout > should compute a tree 1`] = `
+ ]
+ `;
+
+-exports[`layout > should output 3 components  1`] = `
++exports[`layout > should output 3 components 1`] = `
+ {
+   "height": 120,
+   "nodes": [
+```

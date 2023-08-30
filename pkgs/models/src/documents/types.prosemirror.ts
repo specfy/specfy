@@ -1,5 +1,3 @@
-import type { FileData } from 'react-diff-view';
-
 import type { ApiDocument } from './types.api.js';
 
 export interface BlockDefaultAttrs {
@@ -174,7 +172,34 @@ export interface BlockCodeBlock {
   content: BlockText[];
   attrs: BlockDefaultAttrs & { language: string };
   marks?: MarkDiff[];
-  codeDiff?: FileData;
+  codeDiff?: {
+    hunks: Array<{
+      changes: Array<{
+        content: string;
+        type: 'delete' | 'insert' | 'normal';
+        isDelete?: true;
+        isInsert?: true;
+        isNormal?: true;
+        lineNumber?: number;
+        newLineNumber?: number;
+        oldLineNumber?: number;
+      }>;
+      content: string;
+      isPlain: false;
+      newLines: number;
+      newStart: number;
+      oldLines: number;
+      oldStart: number;
+    }>;
+    newEndingNewLine: boolean;
+    newMode: string;
+    newPath: string;
+    newRevision: string;
+    oldEndingNewLine: boolean;
+    oldMode: string;
+    oldPath: string;
+    oldRevision: string;
+  };
 }
 
 // ----- Step

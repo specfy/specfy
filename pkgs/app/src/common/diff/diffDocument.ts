@@ -39,15 +39,15 @@ export function diffDocument(
     }
 
     if (key === 'content') {
-      const prev = blob.previous?.[key] ? blob.previous[key] : {};
+      const prev = blob.previous?.[key] ? blob.previous[key] : '';
       const value = blob.current[key];
 
       diffs.push({
         key,
         diff: diffEditor(
           editor.schema,
-          prev ? JSON.parse(JSON.stringify(prev)) : getEmptyDoc(true),
-          value ? JSON.parse(JSON.stringify(value)) : getEmptyDoc(true)
+          prev ? JSON.parse(prev) : getEmptyDoc(true),
+          value ? JSON.parse(value) : getEmptyDoc(true)
         ),
       });
       continue;
