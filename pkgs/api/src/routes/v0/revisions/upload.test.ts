@@ -4,7 +4,7 @@ import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
 import type { TestSetup } from '../../../test/each.js';
 import { setupBeforeAll, setupAfterAll } from '../../../test/each.js';
-import { isSuccess, isValidationError } from '../../../test/fetch.js';
+import { isError, isSuccess, isValidationError } from '../../../test/fetch.js';
 import {
   shouldBeProtected,
   shouldEnforceBody,
@@ -70,6 +70,30 @@ describe('POST /revisions/upload -- General', () => {
 
     expect(res.statusCode).toBe(403);
   });
+
+  it('should handle no change', async () => {
+    const { token, org, project } = await seedWithProject();
+    const name = `test ${nanoid()}`;
+    const res = await t.fetch.post('/0/revisions/upload', {
+      token,
+      Body: {
+        blobs: [],
+        description: { content: [], type: 'doc' },
+        name: name,
+        orgId: org.id,
+        projectId: project.id,
+        source: 'github',
+        stack: null,
+      },
+    });
+
+    isError(res.json);
+    expect(res.statusCode).toBe(400);
+    expect(res.json.error).toStrictEqual({
+      code: 'cant_create',
+      reason: 'no_diff',
+    });
+  });
 });
 
 describe('POST /revisions/upload -- Documents', () => {
@@ -97,7 +121,7 @@ describe('POST /revisions/upload -- Documents', () => {
     isSuccess(res.json);
     expect(res.statusCode).toBe(200);
     expect(res.json).toStrictEqual({
-      data: { id: expect.any(String) },
+      data: { id: expect.any(String), stats: {} },
     });
 
     // Get blobs
@@ -201,7 +225,7 @@ describe('POST /revisions/upload -- Documents', () => {
     isSuccess(res.json);
     expect(res.statusCode).toBe(200);
     expect(res.json).toStrictEqual({
-      data: { id: expect.any(String) },
+      data: { id: expect.any(String), stats: {} },
     });
 
     // Get blobs
@@ -253,7 +277,7 @@ describe('POST /revisions/upload -- Documents', () => {
     isSuccess(res.json);
     expect(res.statusCode).toBe(200);
     expect(res.json).toStrictEqual({
-      data: { id: expect.any(String) },
+      data: { id: expect.any(String), stats: {} },
     });
 
     // Get blobs
@@ -440,7 +464,17 @@ describe('POST /revisions/upload -- Stack', () => {
     isSuccess(res.json);
     expect(res.statusCode).toBe(200);
     expect(res.json).toStrictEqual({
-      data: { id: expect.any(String) },
+      data: {
+        id: expect.any(String),
+        stats: {
+          stack: {
+            created: 2,
+            deleted: 0,
+            modified: 0,
+            unchanged: 0,
+          },
+        },
+      },
     });
   });
 

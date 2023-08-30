@@ -26,6 +26,12 @@ describe('stackToBlobs', () => {
       [],
       { source: 'github' } as PostUploadRevision['Body']
     );
+    expect(res.stats).toStrictEqual({
+      created: 2,
+      deleted: 0,
+      modified: 0,
+      unchanged: 0,
+    });
     expect(res.blobs).toHaveLength(2);
     expect(res.deleted).toHaveLength(0);
     const snap = res.blobs.map((b) => {
@@ -56,6 +62,13 @@ describe('stackToBlobs', () => {
       res.blobs.map((b) => b.current as unknown as Components),
       { source: 'github' } as PostUploadRevision['Body']
     );
+
+    expect(res2.stats).toStrictEqual({
+      created: 0,
+      deleted: 0,
+      modified: 0,
+      unchanged: 2,
+    });
     expect(res2.blobs).toHaveLength(2);
     expect(res2.deleted).toHaveLength(0);
     expect(res2.blobs[0].typeId).toBe(res.blobs[0].typeId);
@@ -141,6 +154,12 @@ describe('stackToBlobs', () => {
       first.blobs.map((b) => b.current as unknown as Components),
       { source: 'github' } as PostUploadRevision['Body']
     );
+    expect(res2.stats).toStrictEqual({
+      created: 0,
+      deleted: 1,
+      modified: 0,
+      unchanged: 0,
+    });
     expect(res2.blobs).toHaveLength(0);
     expect(res2.deleted).toHaveLength(1);
     expect(res2.deleted[0].typeId).toBe(up.id);

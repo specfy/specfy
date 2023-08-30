@@ -179,7 +179,8 @@ export async function sync({
       spinnerUploading.succeed('Uploaded');
       l.info(kleur.bold().blue(`${figures.info} No diff with production`));
 
-      throw new Error();
+      // It's perfectly okay that there is no diff, could be that we have found nothing or just nothing has changed
+      return;
     }
 
     spinnerUploading.fail('Uploaded');
@@ -188,7 +189,12 @@ export async function sync({
     l.error(kleur.red('Failed to upload, received:'));
     l.error(JSON.stringify(resUp.error, null, 2));
 
-    throw new Error();
+    throw new Error('Failed to upload');
+  }
+
+  if (resUp.data.stats.stack && resUp.data.stats.stack?.deleted > 1) {
+    l.error(resUp.data.stats, kleur.red('Fail Safe: too many deletion'));
+    throw new Error('Too many deletion in the revision');
   }
 
   const id = resUp.data.id;

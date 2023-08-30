@@ -11,12 +11,12 @@ import {
   autoLayout,
   stackToBlobs,
 } from '@specfy/models';
-import type { PostUploadRevision } from '@specfy/models';
+import type { PostUploadRevision, StackToBlobs } from '@specfy/models';
 import type { AnalyserJson } from '@specfy/stack-analyser';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
 
-import { validationError } from '../../../common/errors.js';
+import { TransactionError, validationError } from '../../../common/errors.js';
 import { valPermissions } from '../../../common/zod.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 
@@ -98,6 +98,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       const parser = new DocumentsParser(data.blobs || [], project!);
       const parsed = parser.parse();
 
+      let statsStack: StackToBlobs['stats'] | undefined;
       const rev = await prisma.$transaction(
         async (tx) => {
           const blobsIds: string[] = [];
@@ -159,16 +160,13 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
               tx
             );
             blobsIds.push(...idsBlobsComponents);
+            statsStack = components.stats;
           }
 
           if (blobsIds.length <= 0) {
-            return res.status(400).send({
-              error: {
-                code: 'cant_create',
-                reason: 'no_diff',
-              },
+            throw new TransactionError<PostUploadRevision['Errors']>({
+              error: { code: 'cant_create', reason: 'no_diff' },
             });
-            return;
           }
 
           // ---- Create Revision
@@ -224,7 +222,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
 
       if (rev) {
         return res.status(200).send({
-          data: { id: rev.id },
+          data: { id: rev.id, stats: { stack: statsStack } },
         });
       } else {
         if (res.sent) {

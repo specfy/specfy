@@ -1,6 +1,6 @@
 import { titleCase } from '@specfy/core';
 
-import { componentsToFlow, computeLayout } from '../flows';
+import { componentsToFlow, computeLayout } from '../flows/index.js';
 
 import type { StackToBlobs } from './types.js';
 

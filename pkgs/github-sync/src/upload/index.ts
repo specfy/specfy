@@ -52,7 +52,7 @@ export async function upload({
   logger = defaultLogger,
 }: Omit<Params, 'orgId' | 'projectId'> & {
   body: PostUploadRevision['Body'];
-}): Promise<{ error: any } | { data: { id: string } }> {
+}): Promise<PostUploadRevision['Reply']> {
   const endpoint = `${baseUrl}/revisions/upload`;
   logger.info('Uploading to', { endpoint });
   const res = await fetch(endpoint, {

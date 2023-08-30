@@ -175,8 +175,11 @@ export function stackToBlobs(
   });
 
   // Detect unchanged blobs
+  const stats = { created: 0, modified: 0, deleted: 0, unchanged: 0 };
+  stats.deleted = deleted.length;
   for (const blob of blobs) {
     if (blob.created) {
+      stats.created += 1;
       continue;
     }
 
@@ -186,6 +189,9 @@ export function stackToBlobs(
       JSON.stringify(pick(blob.current, changing))
     ) {
       unchanged.push(prev.id);
+      stats.unchanged += 1;
+    } else {
+      stats.created += 1;
     }
   }
 
@@ -197,5 +203,5 @@ export function stackToBlobs(
     throw new Error('More output than input');
   }
 
-  return { blobs, deleted, unchanged };
+  return { blobs, deleted, unchanged, stats };
 }
