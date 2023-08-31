@@ -4,7 +4,6 @@ import Skeleton from 'react-loading-skeleton';
 import { useParams } from 'react-router-dom';
 
 import { useGetUser } from '../../../api';
-import { titleSuffix } from '../../../common/string';
 import { AvatarAuto } from '../../../components/AvatarAuto';
 import { Container } from '../../../components/Container';
 import { Flex } from '../../../components/Flex';
@@ -12,6 +11,8 @@ import { NotFound } from '../../../components/NotFound';
 import type { RouteUser } from '../../../types/routes';
 
 import cls from './index.module.scss';
+
+import { titleSuffix } from '@/common/string';
 
 export const UserShow: React.FC = () => {
   const tmpParams = useParams<Partial<RouteUser>>();

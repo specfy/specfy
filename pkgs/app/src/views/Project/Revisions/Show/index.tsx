@@ -11,9 +11,6 @@ import Skeleton from 'react-loading-skeleton';
 import { useParams } from 'react-router-dom';
 
 import { useListRevisionBlobs, useGetRevision } from '../../../../api';
-import { diffTwoBlob } from '../../../../common/diff';
-import { useRevisionStore } from '../../../../common/store';
-import { titleSuffix } from '../../../../common/string';
 import { Card } from '../../../../components/Card';
 import { Empty } from '../../../../components/Empty';
 import { ListActivity } from '../../../../components/ListActivity';
@@ -27,6 +24,10 @@ import type { BlobAndDiffs } from '../../../../types/blobs';
 import type { RouteProject, RouteRevision } from '../../../../types/routes';
 
 import cls from './index.module.scss';
+
+import { diffTwoBlob } from '@/common/diff';
+import { useRevisionStore } from '@/common/store';
+import { titleSuffix } from '@/common/string';
 
 export const ProjectRevisionsShow: React.FC<{
   proj: ApiProject;

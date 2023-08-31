@@ -1,7 +1,7 @@
 import type { ApiProjectList } from '@specfy/models';
 import { IconPlus, IconSearch, IconUsers } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { useListProjects } from '../../api';
 import { useProjectStore } from '../../common/store';
@@ -15,11 +15,14 @@ import { Time } from '../Time';
 
 import cls from './index.module.scss';
 
+import { TryDemo } from '@/views/Onboarding';
+
 export const ListProjects: React.FC<{ orgId: string }> = ({ orgId }) => {
   const getProjects = useListProjects({ org_id: orgId });
   const storeProjects = useProjectStore();
   const [list, setList] = useState<ApiProjectList[]>();
   const [search, setSearch] = useState<string>('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     storeProjects.fill(getProjects.data?.data || []);
@@ -70,11 +73,16 @@ export const ListProjects: React.FC<{ orgId: string }> = ({ orgId }) => {
               title="No projects, yet!"
               desc="Create a project manually or from GitHub."
               action={
-                <Link to={`/${orgId}/_/project/new`}>
-                  <Button display="primary">
-                    <IconPlus /> Create a new Project
-                  </Button>
-                </Link>
+                <Flex column gap="xl">
+                  <Link to={`/${orgId}/_/project/new`}>
+                    <Button display="primary">
+                      <IconPlus /> Create a new Project
+                    </Button>
+                  </Link>
+                  <div>
+                    <TryDemo />
+                  </div>
+                </Flex>
               }
             />
           )}
@@ -84,17 +92,20 @@ export const ListProjects: React.FC<{ orgId: string }> = ({ orgId }) => {
           <div className={cls.list}>
             {!empty &&
               list.map((item) => {
+                const link = `/${item.orgId}/${item.slug}`;
                 return (
-                  <Flex gap="l" key={item.id} className={cls.item}>
-                    <Link to={`/${item.orgId}/${item.slug}`} relative="path">
+                  <div
+                    key={item.id}
+                    className={cls.item}
+                    onClick={() => navigate(link)}
+                    role="button"
+                    tabIndex={0}
+                  >
+                    <Link to={link} relative="path">
                       <AvatarAuto name={item.name} size="m" shape="square" />
                     </Link>
-                    <div>
-                      <Link
-                        to={`/${item.orgId}/${item.slug}`}
-                        relative="path"
-                        className={cls.title}
-                      >
+                    <div className={cls.content}>
+                      <Link to={link} relative="path" className={cls.title}>
                         {item.name}
                       </Link>
 
@@ -108,7 +119,7 @@ export const ListProjects: React.FC<{ orgId: string }> = ({ orgId }) => {
                         </div>
                       </div>
                     </div>
-                  </Flex>
+                  </div>
                 );
               })}
           </div>

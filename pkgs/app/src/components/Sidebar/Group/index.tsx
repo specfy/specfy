@@ -10,7 +10,8 @@ export const Group: React.FC<{
   return (
     <div className={classNames(cls.group)}>
       <div className={cls.head} role="button" tabIndex={0}>
-        {name ? <div className={cls.name}>{name}</div> : switcher}
+        {name && <div className={cls.name}>{name}</div>}
+        {switcher}
       </div>
       <div className={cls.sub}>{children}</div>
     </div>

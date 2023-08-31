@@ -8,16 +8,20 @@
 }
 
 .input {
-  @include editable(4px var(--spc-m));
+  @include editable;
 
   font-weight: 500;
   line-height: 0;
 
   &.h1 {
+    --input-padding: 0;
+
     font-size: var(--font-3xl);
   }
 
   &.h2 {
-    font-size: var(--font-xl);
+    --input-padding: 0;
+    --input-font: var(--font-xl);
+    --input-height: 36px;
   }
 }

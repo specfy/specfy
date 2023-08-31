@@ -120,43 +120,43 @@ export function listen() {
       await Promise.all(p);
     });
   });
-}
 
-ws.on('push', async ({ id, payload }) => {
-  const split = payload.ref.split('/');
-  const branch = split[split.length - 1];
+  ws.on('push', async ({ id, payload }) => {
+    const split = payload.ref.split('/');
+    const branch = split[split.length - 1];
 
-  l.info(`repository push`, {
-    id,
-    repo: payload.repository.full_name,
-    installId: payload.installation?.id,
-    branch,
-  });
-
-  await prisma.$transaction(async (tx) => {
-    const list = await tx.projects.findMany({
-      where: { githubRepository: payload.repository.full_name },
+    l.info(`repository push`, {
+      id,
+      repo: payload.repository.full_name,
+      installId: payload.installation?.id,
+      branch,
     });
-    await Promise.all(
-      list.map((project) => {
-        if (project.config.branch !== branch) {
-          return null;
-        }
 
-        return createJobDeploy({
-          orgId: project.orgId,
-          projectId: project.id,
-          userId: userGitHubApp.id,
-          config: {
-            url: project.githubRepository!,
-            hook: {
-              id,
-              ref: payload.ref,
+    await prisma.$transaction(async (tx) => {
+      const list = await tx.projects.findMany({
+        where: { githubRepository: payload.repository.full_name },
+      });
+      await Promise.all(
+        list.map((project) => {
+          if (project.config.branch !== branch) {
+            return null;
+          }
+
+          return createJobDeploy({
+            orgId: project.orgId,
+            projectId: project.id,
+            userId: userGitHubApp.id,
+            config: {
+              url: project.githubRepository!,
+              hook: {
+                id,
+                ref: payload.ref,
+              },
             },
-          },
-          tx,
-        });
-      })
-    );
+            tx,
+          });
+        })
+      );
+    });
   });
-});
+}

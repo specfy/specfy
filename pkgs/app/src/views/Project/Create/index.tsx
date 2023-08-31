@@ -13,9 +13,6 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { createProject, linkToGitHubRepo } from '../../../api';
 import { handleErrors, isError } from '../../../api/helpers';
-import { i18n } from '../../../common/i18n';
-import { socket } from '../../../common/socket';
-import { titleSuffix } from '../../../common/string';
 import { Banner } from '../../../components/Banner';
 import { Container } from '../../../components/Container';
 import { Flex } from '../../../components/Flex';
@@ -27,6 +24,10 @@ import { useToast } from '../../../hooks/useToast';
 import type { RouteOrg } from '../../../types/routes';
 
 import cls from './index.module.scss';
+
+import { i18n } from '@/common/i18n';
+import { socket } from '@/common/socket';
+import { titleSuffix } from '@/common/string';
 
 export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   org,
@@ -58,7 +59,8 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
 
     toast.add({ title: 'Project created', status: 'success' });
 
-    if (repo && repo.id !== -1) {
+    const hasGitHub = repo && repo.id !== -1;
+    if (hasGitHub) {
       const link = await linkToGitHubRepo({
         orgId: org.id,
         projectId: res.data.id,
@@ -70,7 +72,9 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
       }
     }
 
-    navigate(`/${params.org_id}/${res.data.slug}`);
+    navigate(
+      `/${params.org_id}/${res.data.slug}${hasGithub ? '/welcome' : ''}`
+    );
   };
 
   const onPickRepo: React.ComponentProps<typeof GitHubSearch>['onPick'] = (

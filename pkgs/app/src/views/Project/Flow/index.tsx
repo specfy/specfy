@@ -3,9 +3,6 @@ import { componentsToFlow } from '@specfy/models/src/flows/transform';
 import { useCallback, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
-import { createLocal } from '../../../common/components';
-import { useComponentsStore, useProjectStore } from '../../../common/store';
-import { titleSuffix } from '../../../common/string';
 import { Flow, FlowWrapper } from '../../../components/Flow';
 import { FlowDetails } from '../../../components/Flow/Details';
 import { Toolbar } from '../../../components/Flow/Toolbar';
@@ -19,6 +16,11 @@ import { useEdit } from '../../../hooks/useEdit';
 import type { RouteProject } from '../../../types/routes';
 
 import cls from './index.module.scss';
+
+import { createLocal } from '@/common/components';
+import { useComponentsStore, useProjectStore } from '@/common/store';
+import { titleSuffix } from '@/common/string';
+import { Feedback } from '@/components/Feedback';
 
 export const ProjectFlow: React.FC<{
   proj: ApiProject;
@@ -127,12 +129,27 @@ export const ProjectFlow: React.FC<{
           onRelationChange={onRelationChange}
         />
         {isEditing && (
-          <Toolbar left visible>
+          <Toolbar left center visible>
             <Toolbar.AddComponents />
           </Toolbar>
         )}
         <Toolbar left top visible>
           {!isEditing && <Toolbar.Readonly onClick={() => enable(true)} />}
+          <Toolbar.Help>
+            <div>
+              <p>
+                Your project flow is automatically kept up to date when you push
+                a commit in your repository. Deleted nodes and connections found
+                on Github will be added back.
+              </p>
+              <p>
+                Only contributors can modify this flow. Modifications are always
+                saved in a revision.
+              </p>
+            </div>
+            <br />
+            <Feedback />
+          </Toolbar.Help>
         </Toolbar>
         <Toolbar bottom visible>
           <Toolbar.Zoom />

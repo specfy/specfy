@@ -1,4 +1,7 @@
+import { fileURLToPath, URL } from 'node:url';
+
 import react from '@vitejs/plugin-react-swc';
+// import { visualizer } from 'rollup-plugin-visualizer';
 import { defineConfig } from 'vite';
 import { checker } from 'vite-plugin-checker';
 import pluginRewriteAll from 'vite-plugin-rewrite-all';
@@ -13,6 +16,7 @@ export default defineConfig({
       typescript: true,
     }),
     pluginRewriteAll(),
+    // visualizer(),
   ],
   css: {
     modules: {
@@ -46,8 +50,13 @@ export default defineConfig({
   resolve: {
     alias: [
       {
+        // Needed for json-diff
         find: /^colors\/safe$/,
         replacement: 'src/color.safe.ts',
+      },
+      {
+        find: '@',
+        replacement: fileURLToPath(new URL('./src', import.meta.url)),
       },
     ],
   },

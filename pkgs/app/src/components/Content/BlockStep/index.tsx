@@ -3,11 +3,12 @@ import { IconCaretDown, IconCaretRight } from '@tabler/icons-react';
 import classnames from 'classnames';
 import { useEffect, useRef, useState } from 'react';
 
-import type { Payload } from '../../../common/content';
-import { map } from '../../../common/content';
 import { ContentBlockDocument } from '../BlockDocument';
 
 import cls from './index.module.scss';
+
+import type { Payload } from '@/common/content';
+import { map } from '@/common/content';
 
 export const ContentBlockStep: React.FC<{ block: BlockStep; pl: Payload }> = ({
   block,

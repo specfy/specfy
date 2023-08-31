@@ -10,10 +10,10 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
     '/',
     { preHandler: [noQuery] },
     async function (req, res) {
-      const user = req.me!;
+      const me = req.me!;
 
       const accounts = await prisma.accounts.findFirst({
-        where: { userId: user.id },
+        where: { userId: me.id },
       });
       const octokit = new Octokit({
         auth: accounts!.accessToken,

@@ -25,7 +25,7 @@ export async function seedRevisions(
   { o1 }: { o1: Orgs },
   { pAnalytics }: { pAnalytics: Projects },
   users: Users[],
-  rfcs: Record<string, Documents>,
+  rfcs: { d1: Documents; d2: Documents },
   components: ResSeedComponents
 ) {
   const res = await prisma.$transaction(async (tx) => {

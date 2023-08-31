@@ -122,7 +122,7 @@ describe('GET /revisions/:revision_id/checks', () => {
 
     // Create a component
     const component = await seedComponent(user, org, project);
-    const blob = { ...getBlobComponent(org, project), id: component.id };
+    const blob = { ...getBlobComponent(project), id: component.id };
 
     // Modifies it in a revision
     const revision = await seedRevision(user, org, project, undefined, [
@@ -137,7 +137,7 @@ describe('GET /revisions/:revision_id/checks', () => {
     ]);
 
     // Modifies the component in the main channel
-    const blob2 = { ...getBlobComponent(org, project), id: component.id };
+    const blob2 = { ...getBlobComponent(project), id: component.id };
     const newBlob = await createComponentBlob({
       blob: blob2 as any,
       tx: prisma,
@@ -167,7 +167,7 @@ describe('GET /revisions/:revision_id/checks', () => {
 
     // Create a component
     const component = await seedComponent(user, org, project);
-    const blob = { ...getBlobComponent(org, project), id: component.id };
+    const blob = { ...getBlobComponent(project), id: component.id };
 
     // Modifies it in a revision
     const revision = await seedRevision(user, org, project, undefined, [
@@ -182,7 +182,7 @@ describe('GET /revisions/:revision_id/checks', () => {
     ]);
 
     // Delete the component in the main channel
-    const blob2 = { ...getBlobComponent(org, project), id: component.id };
+    const blob2 = { ...getBlobComponent(project), id: component.id };
     await createComponentBlob({
       blob: blob2 as any,
       data: { deleted: true },

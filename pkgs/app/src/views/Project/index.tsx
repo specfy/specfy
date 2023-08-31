@@ -40,6 +40,8 @@ import { ProjectRevisionsList } from './Revisions/List';
 import { ProjectRevisionsShow } from './Revisions/Show';
 import { ProjectSettings } from './Settings';
 import { Tech } from './Tech';
+import { ProjectWelcome } from './Welcome';
+import { ProjectEvents } from './events';
 import cls from './index.module.scss';
 
 export const Project: React.FC = () => {
@@ -73,6 +75,7 @@ export const Project: React.FC = () => {
     }
     const tmp = getOrgs.data.data.find((o) => o.id === params.org_id);
     if (!tmp) {
+      setLoading(false);
       return;
     }
     setOrg(tmp);
@@ -82,6 +85,9 @@ export const Project: React.FC = () => {
   useEffect(() => {
     if (getProject.data) {
       setProj(getProject.data.data);
+      if (storeProject.project?.id === getProject.data.data.id) {
+        return;
+      }
       storeProject.update(getProject.data.data);
     } else if (getProject.error) {
       setLoading(false);
@@ -140,13 +146,14 @@ export const Project: React.FC = () => {
   return (
     <div className={cls.project}>
       <Helmet title={`${proj.name} ${titleSuffix}`} />
+      <ProjectEvents />
 
       <div>
         <Sidebar.Sidebar>
-          <Sidebar.Group switcher={<OrgSwitcher />}>
-            <OrgMenu org={org} />
+          <Sidebar.Group switcher={<OrgSwitcher />} name="Org">
+            <OrgMenu />
           </Sidebar.Group>
-          <Sidebar.Group switcher={<ProjectSwitcher />}>
+          <Sidebar.Group switcher={<ProjectSwitcher />} name="Project">
             <Staging showBadge />
             <ProjectMenu proj={proj} params={params} />
           </Sidebar.Group>
@@ -204,6 +211,7 @@ export const Project: React.FC = () => {
               path="/deploys/:job_id"
               element={<ProjectDeploysShow proj={proj} params={params} />}
             />
+            <Route path="/welcome" element={<ProjectWelcome />} />
             <Route
               path="/doc/*"
               element={<ProjectDocumentation proj={proj} />}

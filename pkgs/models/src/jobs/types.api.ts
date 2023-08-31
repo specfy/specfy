@@ -30,6 +30,23 @@ export type ListJobs = Res<{
   };
 }>;
 
+// ------ POST /
+export type CreateJobError = {
+  error: {
+    code: 'failed_to_create_job';
+    reason: 'no_project' | 'no_project_repository' | 'server_error';
+  };
+};
+export type PostJob = Res<{
+  Body: {
+    orgId: string;
+    projectId: string;
+    type: Jobs['type'];
+  };
+  Error: CreateJobError;
+  Success: { data: ApiJob };
+}>;
+
 // ------ GET /:job_id
 export type GetJob = Res<{
   Querystring: {

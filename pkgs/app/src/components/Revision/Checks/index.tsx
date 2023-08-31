@@ -14,12 +14,13 @@ import { useMount, useSearchParam } from 'react-use';
 
 import { mergeRevision, rebaseRevision } from '../../../api';
 import { isError } from '../../../api/helpers';
-import { i18n } from '../../../common/i18n';
 import { useToast } from '../../../hooks/useToast';
 import { Button } from '../../Form/Button';
 import { Time } from '../../Time';
 
 import cls from './index.module.scss';
+
+import { i18n } from '@/common/i18n';
 
 export const Checks: React.FC<{
   rev: ApiRevision;

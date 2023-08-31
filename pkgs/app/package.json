@@ -3,6 +3,18 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/specfy/specfy.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/specfy/specfy/issues"
+  },
+  "homepage": "https://github.com/specfy/specfy#readme",
+  "description": "",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -31,7 +43,7 @@
     "@specfy/core": "file:../core",
     "@specfy/models": "file:../models",
     "@specfy/socket": "file:../socket",
-    "@specfy/stack-analyser": "1.4.2",
+    "@specfy/stack-analyser": "1.4.3",
     "@swc/core": "^1.3.68",
     "@tabler/icons": "2.31.0",
     "@tabler/icons-react": "2.31.0",
@@ -109,17 +121,5 @@
     "vite-plugin-sass-dts": "1.3.9",
     "vitest": "0.29.8",
     "zustand": "4.4.1"
-  },
-  "main": "index.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/specfy/specfy.git"
-  },
-  "author": "",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/specfy/specfy/issues"
-  },
-  "homepage": "https://github.com/specfy/specfy#readme",
-  "description": ""
+  }
 }

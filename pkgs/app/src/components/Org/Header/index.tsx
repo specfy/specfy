@@ -13,7 +13,6 @@ import { useLocation, Link, useParams } from 'react-router-dom';
 
 import { useListOrgs } from '../../../api';
 import { isError } from '../../../api/helpers';
-import { useOrgStore } from '../../../common/store';
 import * as Menu from '../../../components/Menu';
 import type { RouteOrg } from '../../../types/routes';
 import { AvatarAuto } from '../../AvatarAuto';
@@ -21,6 +20,8 @@ import * as Dropdown from '../../Dropdown';
 import { Flex } from '../../Flex';
 
 import cls from './index.module.scss';
+
+import { useOrgStore } from '@/common/store';
 
 export const OrgSwitcher: React.FC = () => {
   const storeOrg = useOrgStore();
@@ -102,7 +103,7 @@ export const OrgSwitcher: React.FC = () => {
   );
 };
 
-export const OrgMenu: React.FC<{ org: ApiOrg }> = () => {
+export const OrgMenu: React.FC = () => {
   const params = useParams<Partial<RouteOrg>>() as RouteOrg;
   const location = useLocation();
 

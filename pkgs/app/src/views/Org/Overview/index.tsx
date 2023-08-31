@@ -5,8 +5,6 @@ import Skeleton from 'react-loading-skeleton';
 import { useLocalStorage } from 'react-use';
 
 import { useListProjects, useGetFlow } from '../../../api';
-import { i18n } from '../../../common/i18n';
-import { titleSuffix } from '../../../common/string';
 import { Card } from '../../../components/Card';
 import { Container } from '../../../components/Container';
 import { Flow, FlowWrapper } from '../../../components/Flow';
@@ -16,6 +14,9 @@ import { ListProjects } from '../../../components/ListProjects';
 import { OrgOnboarding } from '../../../components/Org/Onboarding';
 import type { RouteOrg } from '../../../types/routes';
 
+import { i18n } from '@/common/i18n';
+import { titleSuffix } from '@/common/string';
+
 export const OrgOverview: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   org,
   params,
@@ -23,7 +24,7 @@ export const OrgOverview: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   const res = useListProjects({ org_id: params.org_id });
   const resFlow = useGetFlow({ org_id: params.org_id, flow_id: org.flowId });
   const [flow, setFlow] = useState<ComputedFlow>();
-  const [done] = useLocalStorage(`orgOnboarding-${org.id}`, false);
+  const [done] = useLocalStorage(`org.onboarding[${org.id}]`, false);
 
   useEffect(() => {
     if (!resFlow.data) {

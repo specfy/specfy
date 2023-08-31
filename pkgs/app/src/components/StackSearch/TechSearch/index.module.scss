@@ -81,3 +81,8 @@
     }
   }
 }
+
+.empty {
+  padding: 0 var(--spc-xl) var(--spc-l);
+  font-size: var(--font-s);
+}

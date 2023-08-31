@@ -8,7 +8,6 @@ import {
   useListInvitations,
 } from '../../../../../api';
 import { isError } from '../../../../../api/helpers';
-import { i18n } from '../../../../../common/i18n';
 import { AvatarAuto } from '../../../../../components/AvatarAuto';
 import { Card } from '../../../../../components/Card';
 import * as Dropdown from '../../../../../components/Dropdown';
@@ -19,6 +18,8 @@ import { useToast } from '../../../../../hooks/useToast';
 import type { RouteOrg } from '../../../../../types/routes';
 
 import cls from './index.module.scss';
+
+import { i18n } from '@/common/i18n';
 
 const Row: React.FC<{
   item: ApiInvitation;

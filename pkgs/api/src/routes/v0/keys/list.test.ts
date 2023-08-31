@@ -84,6 +84,6 @@ describe('GET /keys', () => {
         createdAt: expect.toBeIsoDate(),
       },
     ]);
-    expect(res.json.data[0].key.startsWith('spfy_')).toEqual(true);
+    expect(res.json.data[0].key.startsWith('spfy_')).toBe(true);
   });
 });

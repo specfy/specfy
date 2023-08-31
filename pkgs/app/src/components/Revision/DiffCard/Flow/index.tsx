@@ -12,10 +12,11 @@ import {
   useNodesState,
 } from 'reactflow';
 
-import { isDiffSimple } from '../../../../common/diff/helpers';
 import CustomNode from '../../../Flow/CustomNode';
 
 import cls from './index.module.scss';
+
+import { isDiffSimple } from '@/common/diff/helpers';
 
 const nodeTypes: NodeTypes = {
   custom: CustomNode,

@@ -7,7 +7,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { createOrg } from '../../../api';
 import { handleErrors, isError } from '../../../api/helpers';
-import { slugify, titleSuffix } from '../../../common/string';
 import { Card } from '../../../components/Card';
 import { Container } from '../../../components/Container';
 import { Button } from '../../../components/Form/Button';
@@ -18,6 +17,8 @@ import { useAuth } from '../../../hooks/useAuth';
 import { useToast } from '../../../hooks/useToast';
 
 import cls from './index.module.scss';
+
+import { slugify, titleSuffix } from '@/common/string';
 
 export const OrgCreate: React.FC = () => {
   const toast = useToast();
@@ -90,7 +91,7 @@ export const OrgCreate: React.FC = () => {
                 disabled={!name || name.length < 4 || !id || id.length < 4}
                 className={cls.button}
                 type="submit"
-                size="l"
+                size="xl"
                 loading={loading}
               >
                 Create <IconCircleArrowRight />

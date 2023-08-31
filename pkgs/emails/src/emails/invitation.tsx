@@ -16,7 +16,7 @@ import {
 } from '@react-email/components';
 import type { Orgs, Users } from '@specfy/db';
 
-import { BASE_URL } from '../env.js';
+import { APP_HOSTNAME } from '../env.js';
 
 export interface InvitationProps {
   email?: string;
@@ -51,7 +51,7 @@ export const Invitation = ({
     avatarUrl: null,
     color: 'amber',
   },
-  inviteLink = `${BASE_URL}/company/invite?token=`,
+  inviteLink = `${APP_HOSTNAME}/company/invite?token=`,
 }: InvitationProps) => {
   const previewText = `Join ${org.name} on Specfy`;
 
@@ -65,7 +65,7 @@ export const Invitation = ({
             <Container className="border border-solid border-[#eaeaea] rounded my-[40px] p-[32px]">
               <Section className="mt-[12px]">
                 <Img
-                  src={`${BASE_URL}/logo.png`}
+                  src={`${APP_HOSTNAME}/logo.png`}
                   width="40"
                   height="40"
                   alt="Specfy"
@@ -109,7 +109,7 @@ export const Invitation = ({
                   </Column>
                   <Column align="center">
                     <Img
-                      src={`${BASE_URL}/arrow-right.png`}
+                      src={`${APP_HOSTNAME}/arrow-right.png`}
                       width="14"
                       height="14"
                       alt="invited you to"

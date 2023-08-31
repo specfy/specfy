@@ -49,6 +49,7 @@ export type Res<
 > = {
   Params: T['Params'] extends Record<string, any> ? T['Params'] : never;
   Success: T['Success'];
+  Errors: T['Error'];
   Reply:
     | ResErrors
     | (T['Error'] extends ApiError<any>

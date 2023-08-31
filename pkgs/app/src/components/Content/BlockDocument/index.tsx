@@ -8,9 +8,10 @@ import { useMemo } from 'react';
 
 import { ContentDoc, Presentation } from '..';
 import { useGetDocument } from '../../../api';
-import type { Payload } from '../../../common/content';
-import { useDocumentsStore, useProjectStore } from '../../../common/store';
 import { Loading } from '../../Loading';
+
+import type { Payload } from '@/common/content';
+import { useDocumentsStore, useProjectStore } from '@/common/store';
 
 export const ContentBlockDocument: React.FC<{
   block: BlockDocument;

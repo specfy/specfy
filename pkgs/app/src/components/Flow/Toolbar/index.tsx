@@ -2,6 +2,7 @@ import type { ApiProject } from '@specfy/models';
 import {
   IconBox,
   IconCode,
+  IconLifebuoy,
   IconLock,
   IconMaximize,
   IconZoomIn,
@@ -21,14 +22,17 @@ import { PreviewNode } from '../CustomNode';
 
 import cls from './index.module.scss';
 
+import * as Popover from '@/components/Popover';
+
 const Container: React.FC<{
   top?: true;
   left?: true;
   right?: true;
   bottom?: true;
+  center?: true;
   visible?: boolean;
   children: React.ReactNode;
-}> = ({ children, top, left, right, bottom, visible }) => {
+}> = ({ children, top, left, right, bottom, center, visible }) => {
   return (
     <div
       className={classnames(
@@ -37,7 +41,8 @@ const Container: React.FC<{
         left && cls.left,
         right && cls.right,
         bottom && cls.bottom,
-        visible && cls.visible
+        visible && cls.visible,
+        center && cls.center
       )}
       data-toolbar
     >
@@ -110,6 +115,24 @@ const ToolbarZoom: React.FC = () => {
   );
 };
 
+const ToolbarHelp: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  return (
+    <div className={cls.toolbar}>
+      <Popover.Popover>
+        <Popover.Trigger asChild>
+          <Button display="ghost">
+            <IconLifebuoy />
+          </Button>
+        </Popover.Trigger>
+        <Popover.Content className={cls.help}>
+          <h3>Need help?</h3>
+          {children}
+        </Popover.Content>
+      </Popover.Popover>
+    </div>
+  );
+};
+
 const Fullscreen: React.FC<{ project: ApiProject }> = ({ project }) => {
   return (
     <div className={cls.toolbar}>
@@ -125,6 +148,7 @@ const Fullscreen: React.FC<{ project: ApiProject }> = ({ project }) => {
 };
 
 const AddComponents: React.FC = () => {
+  const { zoom } = useViewport();
   const previewService = useRef<HTMLDivElement>(null);
   const previewHosting = useRef<HTMLDivElement>(null);
 
@@ -148,40 +172,45 @@ const AddComponents: React.FC = () => {
     <div className={cls.toolbar}>
       <div
         style={{
-          transform: 'translate(-10000px, -10000px)',
+          transform: `translate(-10000px, -10000px)`,
           position: 'absolute',
           pointerEvents: 'none',
         }}
       >
         <div ref={previewService}>
-          <PreviewNode
-            info={false}
-            node={{
-              id: '',
-              data: {
-                name: 'service',
-                type: 'service',
-                techId: null,
-                typeId: null,
-                originalSize: {} as any,
-              },
-            }}
-          />
+          <div style={{ transform: `scale(${Math.max(0.2, zoom - 0.15)})` }}>
+            <PreviewNode
+              info={false}
+              node={{
+                id: '',
+                data: {
+                  name: 'service',
+                  type: 'service',
+                  techId: null,
+                  typeId: null,
+                  originalSize: {} as any,
+                },
+              }}
+            />
+          </div>
         </div>
         <div ref={previewHosting}>
-          <PreviewNode
-            info={false}
-            node={{
-              id: '',
-              data: {
-                name: 'hosting',
-                type: 'hosting',
-                techId: null,
-                typeId: null,
-                originalSize: {} as any,
-              },
-            }}
-          />
+          <div style={{ transform: `scale(${Math.max(0.2, zoom - 0.15)})` }}>
+            <PreviewNode
+              info={false}
+              forceDisplay="hosting"
+              node={{
+                id: '',
+                data: {
+                  name: 'hosting',
+                  type: 'hosting',
+                  techId: null,
+                  typeId: null,
+                  originalSize: {} as any,
+                },
+              }}
+            />
+          </div>
         </div>
       </div>
       <Flex column>
@@ -214,6 +243,7 @@ export type ToolbarProps = typeof Container & {
   Readonly: typeof Readonly;
   AddComponents: typeof AddComponents;
   Inner: typeof Inner;
+  Help: typeof ToolbarHelp;
 };
 
 export const Toolbar = Container as ToolbarProps;
@@ -222,3 +252,4 @@ Toolbar.Fullscreen = Fullscreen;
 Toolbar.Readonly = Readonly;
 Toolbar.AddComponents = AddComponents;
 Toolbar.Inner = Inner;
+Toolbar.Help = ToolbarHelp;

@@ -13,6 +13,7 @@ import 'prismjs/components/prism-rust';
 import 'prismjs/components/prism-scss';
 import 'prismjs/components/prism-sql';
 import 'prismjs/components/prism-docker';
+import 'prismjs/components/prism-diff';
 
 import cls from './index.module.scss';
 

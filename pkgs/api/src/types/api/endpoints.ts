@@ -60,6 +60,7 @@ import type {
   GetDocumentBySlug,
   PostAiOperation,
   GetProjectBySlug,
+  PostJob,
 } from '@specfy/models';
 
 import type { PostAuthLocal, PostLogout } from './auth.js';
@@ -94,7 +95,7 @@ export interface API {
 
   [key: `/0/flows/${string}`]: { GET: GetFlow; PATCH: PatchFlow };
 
-  '/0/jobs': { GET: ListJobs };
+  '/0/jobs': { GET: ListJobs; POST: PostJob };
   [key: `/0/jobs/${string}`]: { GET: GetJob };
 
   '/0/keys': { GET: ListKeys };

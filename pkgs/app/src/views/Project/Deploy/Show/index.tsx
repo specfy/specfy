@@ -5,7 +5,6 @@ import Skeleton from 'react-loading-skeleton';
 import { useParams } from 'react-router-dom';
 
 import { useGetDeploy } from '../../../../api';
-import { titleSuffix } from '../../../../common/string';
 import { AvatarAuto } from '../../../../components/AvatarAuto';
 import { Banner } from '../../../../components/Banner';
 import { CodeHighlighter } from '../../../../components/CodeHighlighter';
@@ -17,6 +16,8 @@ import { Time } from '../../../../components/Time';
 import type { RouteJob, RouteProject } from '../../../../types/routes';
 
 import cls from './index.module.scss';
+
+import { titleSuffix } from '@/common/string';
 
 export const ProjectDeploysShow: React.FC<{
   proj: ApiProject;

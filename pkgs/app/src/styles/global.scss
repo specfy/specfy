@@ -27,6 +27,8 @@
 @import '@radix-ui/colors/violet.css';
 @import '@radix-ui/colors/yellow.css';
 
+@import './mixin';
+
 button,
 a,
 input,
@@ -103,7 +105,7 @@ body * {
   --h-s: 30px;
   --h-m: 34px;
   --h-l: 38px;
-  --h-xl: 42px;
+  --h-xl: 48px;
 
   // Link
   --colorLink: var(--indigo-9);
@@ -209,7 +211,7 @@ button {
 
 a {
   // Buggy with Dropdown
-  // @include ring;
+  @include ring;
 
   cursor: pointer;
 

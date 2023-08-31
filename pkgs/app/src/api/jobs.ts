@@ -1,8 +1,26 @@
-import type { GetJob, ListJobs } from '@specfy/models';
+import type { GetJob, ListJobs, PostJob } from '@specfy/models';
 import { useQuery } from '@tanstack/react-query';
+
+import { qcli } from '../common/query';
 
 import { fetchApi } from './fetch';
 import { APIError, isError } from './helpers';
+
+export async function createJob(
+  data: PostJob['Body']
+): Promise<PostJob['Reply']> {
+  const { res, json } = await fetchApi<PostJob>(
+    '/jobs',
+    { body: data },
+    'POST'
+  );
+
+  if (res.status === 200) {
+    qcli.refetchQueries(['listJobs', data.orgId, data.projectId]);
+  }
+
+  return json;
+}
 
 export function useListDeploys(opts: ListJobs['Querystring']) {
   return useQuery({

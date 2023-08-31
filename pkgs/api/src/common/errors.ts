@@ -1,4 +1,5 @@
 import type {
+  ApiError,
   ResForbidden,
   ResNotFound,
   ResServerError,
@@ -83,4 +84,12 @@ export async function validationError(
   return res.status(400).send(err);
 }
 
-export class TransactionError extends Error {}
+export class TransactionError<TErrors extends ApiError<string>> extends Error {
+  err: ApiError<string>;
+
+  constructor(err: TErrors) {
+    super(err.error.code);
+
+    this.err = err;
+  }
+}

@@ -30,7 +30,9 @@ const schema = z.object({
   GITHUB_WEBHOOKS_SECRET: z.string().nonempty(),
   GIVE_DEFAULT_PERMS_TO_EMAIL: z.string().optional(),
   JWT_SECRET: z.string().nonempty(),
-  NODE_ENV: z.enum(['production', 'dev', 'test']).default('dev'),
+  NODE_ENV: z
+    .enum(['production', 'development', 'test'])
+    .default('development'),
   OPENAI_KEY: z.string().optional(),
   PASSWORD_SALT: z.string().nonempty(),
   PORT: z.string().default('3000'),

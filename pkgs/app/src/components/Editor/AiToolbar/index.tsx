@@ -6,12 +6,13 @@ import type React from 'react';
 import { useState, useCallback, useEffect } from 'react';
 
 import { aiOperation, aiStream } from '../../../api/ai';
-import { i18n } from '../../../common/i18n';
 import { useAuth } from '../../../hooks/useAuth';
 import { useToast } from '../../../hooks/useToast';
 import * as Dropdown from '../../Dropdown';
 import { Button } from '../../Form/Button';
 import { TooltipFull } from '../../Tooltip';
+
+import { i18n } from '@/common/i18n';
 
 // import cls from './index.module.scss';
 
@@ -34,34 +35,37 @@ export const AIToolbar: React.FC<AIToolbarProps> = ({
   const [loading, setLoading] = useState(false);
   const [rewriting, setRewriting] = useState('');
 
-  const op = useCallback(async (data: Parameters<typeof aiOperation>[0]) => {
-    setLoading(true);
-    setRewriting('');
-    onStart();
-    const res = await aiOperation(data);
-    if (!res.ok) {
-      toast.add({ title: i18n.errorOccurred, status: 'error' });
-      onEnd(false);
-      setLoading(false);
-      return;
-    }
-
-    editor?.chain().focus().setContent('', true).run();
-    aiStream({
-      res,
-      onAppend: (chunk) => {
-        setRewriting((prev) => `${prev}${chunk.replace(/\n/g, '<br />')}`);
-      },
-      onFinish: () => {
+  const op = useCallback(
+    async (data: Parameters<typeof aiOperation>[0]) => {
+      setLoading(true);
+      setRewriting('');
+      onStart();
+      const res = await aiOperation(data);
+      if (!res.ok) {
+        toast.add({ title: i18n.errorOccurred, status: 'error' });
+        onEnd(false);
         setLoading(false);
+        return;
+      }
 
-        // We manually send an update at the end to avoid triggering Staging to often
-        setTimeout(() => {
-          onEnd(true);
-        }, 100);
-      },
-    });
-  }, []);
+      editor?.chain().focus().setContent('', true).run();
+      aiStream({
+        res,
+        onAppend: (chunk) => {
+          setRewriting((prev) => `${prev}${chunk.replace(/\n/g, '<br />')}`);
+        },
+        onFinish: () => {
+          setLoading(false);
+
+          // We manually send an update at the end to avoid triggering Staging to often
+          setTimeout(() => {
+            onEnd(true);
+          }, 100);
+        },
+      });
+    },
+    [onStart, onEnd]
+  );
 
   useEffect(() => {
     if (!rewriting || !editor) {

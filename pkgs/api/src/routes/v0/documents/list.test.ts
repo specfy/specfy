@@ -128,7 +128,7 @@ describe('GET /documents', () => {
     expect(res.json.data[0].id).toStrictEqual(document1.id);
   });
 
-  it('should filter by type: rfc', async () => {
+  it('should filter by type: pb', async () => {
     const { token, project, org, user } = await seedWithProject();
     await seedDocument(user, org, project, 'rfc');
     const document2 = await seedDocument(user, org, project, 'pb');

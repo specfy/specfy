@@ -61,6 +61,14 @@ exports[`POST /revisions/upload -- Stack > should validate stack 1`] = `
           "path",
         ],
       },
+      "stack.reason": {
+        "code": "invalid_type",
+        "message": "Required",
+        "path": [
+          "stack",
+          "reason",
+        ],
+      },
       "stack.tech": {
         "code": "invalid_type",
         "message": "Required",

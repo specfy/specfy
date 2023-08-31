@@ -2,6 +2,13 @@
 @import "../../../styles/mixin";
 
 .btn {
+  --btn-bg: #fff;
+  --btn-color: var(--text);
+  --btn-border: var(--border2);
+  --btn-hvr-color: var(--primary);
+  --btn-hvr-border: var(--border2);
+  --btn-hvr-bg: var(--bg2);
+
   @include ring;
 
   display: inline-flex;
@@ -9,9 +16,11 @@
   gap: var(--spc);
   align-items: center;
 
+  color: var(--btn-color);
   white-space: nowrap;
 
-  border: 1px solid var(--border2);
+  background-color: var(--btn-bg);
+  border: 1px solid var(--btn-border);
   border-radius: var(--radius2);
 
   transition-timing-function: ease-in-out;
@@ -19,82 +28,67 @@
   transition-property: background-color, box-shadow, border-color, color;
 
   &:hover {
-    background-color: var(--bg2);
+    color: var(--btn-hvr-color);
+    background-color: var(--btn-hvr-bg);
+    border-color: var(--btn-hvr-border);
   }
 
   // Colors / Type
   &.default {
-    background-color: #fff;
-
-    &:hover {
-      color: var(--text);
-      border-color: var(--border4);
-    }
-
-    &.danger {
-      color: var(--tomato-9);
-      border-color: var(--tomato-9);
-
-      &:hover {
-        color: var(--tomato-11);
-        border-color: var(--tomato-11);
-      }
-    }
+    --btn-color: var(--text);
   }
 
   &.primary {
-    color: var(--primaryText);
-    background-color: var(--primary);
+    --btn-color: var(--primaryText);
+    --btn-bg: var(--primary);
+    --btn-hvr-bg: var(--primaryHover);
+    --btn-hvr-color: var(--primaryText);
 
-    &:hover:not([disabled]) {
-      background-color: var(--primaryHover);
-    }
-
-    .loading {
+    .loader {
       color: var(--primaryText);
-    }
-
-    &.danger {
-      background-color: var(--tomato-9);
-      border-color: var(--tomato-9);
-
-      &:hover {
-        background-color: var(--tomato-11);
-        border-color: var(--tomato-11);
-      }
     }
   }
 
   &.ghost {
-    color: var(--text3);
-    background-color: transparent;
-    border-color: transparent;
-
-    &:hover {
-      color: var(--text);
-    }
-
-    &.danger {
-      &:hover {
-        color: var(--tomato-9);
-      }
-    }
+    --btn-color: var(--text3);
+    --btn-bg: transparent;
+    --btn-border: transparent;
+    --btn-hvr-color: var(--text);
   }
 
   &.item {
-    color: var(--text3);
-    border-color: transparent;
+    --btn-color: var(--text3);
+    --btn-border: transparent;
+    --btn-hvr-color: var(--text);
 
-    &:hover {
-      color: var(--text);
+    border-color: transparent;
+    border-radius: 0;
+  }
+
+  &.danger {
+    --btn-color: var(--tomato-9);
+    --btn-bg: #fff;
+    --btn-border: var(--tomato-8);
+    --btn-hvr-color: var(--tomato-9);
+    --btn-hvr-border: var(--tomato-9);
+    --btn-hvr-bg: #fff;
+
+    &.primary {
+      --btn-color: #fff;
+      --btn-hvr-color: #fff;
+      --btn-bg: var(--tomato-9);
+      --btn-border: var(--tomato-9);
+      --btn-hvr-bg: var(--tomato-10);
     }
 
-    &.danger {
-      color: var(--tomato-9);
+    &.item {
+      --btn-border: transparent;
+      --btn-hvr-color: #fff;
+      --btn-hvr-bg: var(--tomato-10);
 
       &:hover {
         color: #fff;
-        background-color: var(--tomato-9);
+        background-color: var(--tomato-10);
       }
     }
   }
@@ -117,6 +111,12 @@
     padding: var(--spc-m) var(--spc-l)
   }
 
+  &.xl {
+    gap: var(--spc-l);
+    height: var(--h-xl);
+    padding: var(--spc-2xl) var(--spc-xl)
+  }
+
   &:disabled {
     cursor: not-allowed;
 
@@ -128,5 +128,11 @@
     align-items: center;
     justify-content: center;
     width: 100%;
+  }
+
+  &.loading {
+    svg+svg {
+      display: none;
+    }
   }
 }

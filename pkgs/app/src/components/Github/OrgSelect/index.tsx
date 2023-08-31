@@ -2,9 +2,9 @@ import { IconPlus } from '@tabler/icons-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-import { useGetGitHubInstallations } from '../../../api';
 import { GITHUB_APP } from '../../../common/envs';
 import { Popup } from '../../../common/popup';
+import { useGetGitHubInstallations } from '../../../api';
 import { useToast } from '../../../hooks/useToast';
 import { AvatarAuto } from '../../AvatarAuto';
 import { CommandItem } from '../../Command';
@@ -13,6 +13,9 @@ import type { ComboboxOption } from '../../Form/Combobox';
 import { Combobox } from '../../Form/Combobox';
 
 import cls from './index.module.scss';
+
+import { GITHUB_APP } from '@/common/envs';
+import { Popup } from '@/common/popup';
 
 export const GitHubOrgSelect: React.FC<{
   defaultSelected?: string;
@@ -27,6 +30,7 @@ export const GitHubOrgSelect: React.FC<{
     () => defaultSelected
   );
   const [ready, setReady] = useState<boolean>(false);
+  const [selectFirst, setSelectFirst] = useState<boolean>(false);
 
   useEffect(() => {
     if (!resInstall.data || resInstall.isFetching || ready) {
@@ -40,6 +44,14 @@ export const GitHubOrgSelect: React.FC<{
       !resInstall.data.find((inst) => String(inst.id) === selected)
     ) {
       setSelected(String(defaultSelected));
+    }
+    if (
+      selectFirst &&
+      !selected &&
+      !defaultSelected &&
+      resInstall.data.length === 1
+    ) {
+      setSelected(String(resInstall.data[0].id));
     }
 
     setReady(true);
@@ -84,6 +96,7 @@ export const GitHubOrgSelect: React.FC<{
         onClose: () => {
           setReady(false);
           ref.current = null;
+          setSelectFirst(true);
           void resInstall.refetch();
 
           if (onClose) {

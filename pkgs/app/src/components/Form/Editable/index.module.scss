@@ -1,0 +1,14 @@
+@import "../../../styles/mixin";
+
+.editable {
+  @include editable;
+
+  &:not(.inline) {
+    flex-grow: 1;
+  }
+
+  &.padded {
+    margin: -6px -8px;
+    padding: 6px 8px;
+  }
+}

@@ -58,7 +58,7 @@ describe('GET /projects/:project_id', () => {
         branch: 'main',
         documentation: {
           enabled: true,
-          path: '/docs',
+          path: '/',
         },
         stack: {
           enabled: true,

@@ -7,12 +7,13 @@ import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { useListDocuments } from '../../../api';
-import { useDocumentsStore } from '../../../common/store';
 import type { RouteProject } from '../../../types/routes';
 import { Loading } from '../../Loading';
 import { Subdued } from '../../Text';
 
 import cls from './index.module.scss';
+
+import { useDocumentsStore } from '@/common/store';
 
 interface Item {
   key: string;

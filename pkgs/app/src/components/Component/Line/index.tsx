@@ -4,11 +4,12 @@ import { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useClickAway } from 'react-use';
 
-import { supportedIndexed } from '../../../common/techs';
 import type { RouteProject } from '../../../types/routes';
 import { ComponentIcon } from '../Icon';
 
 import cls from './index.module.scss';
+
+import { supportedIndexed } from '@/common/techs';
 
 export interface Line {
   title: string;

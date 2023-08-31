@@ -225,7 +225,7 @@ export async function seedRFC(
   { o1 }: { o1: Orgs },
   { pAnalytics }: { pAnalytics: Projects },
   [u1, u2]: Users[]
-): Promise<{ d1: Documents }> {
+): Promise<{ d1: Documents; d2: Documents }> {
   // to avoid import it in tests too
   const docRfc4Json = JSON.parse(
     (

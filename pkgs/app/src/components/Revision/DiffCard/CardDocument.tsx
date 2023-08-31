@@ -38,7 +38,7 @@ export const DiffCardDocument: React.FC<{
         {typeof content == 'string' ? (
           content
         ) : (
-          <ContentDoc doc={content} id={diff.blob.typeId} noPlaceholder />
+          <ContentDoc doc={content} id={diff.blob.typeId} placeholder={false} />
         )}
       </div>
     );

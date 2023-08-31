@@ -66,9 +66,9 @@ describe('parser()', () => {
       },
     ]);
     // @ts-expect-error Expect no content in fake folder
-    expect(res[1].content.content[0].content[0].text).toEqual('Nested');
+    expect(res[1].content.content[0].content[0].text).toBe('Nested');
     // @ts-expect-error Expect our content
-    expect(res[2].content.content[0].content[0].text).toEqual('My Foobar');
+    expect(res[2].content.content[0].content[0].text).toBe('My Foobar');
   });
 
   it('should handle deep folder', () => {

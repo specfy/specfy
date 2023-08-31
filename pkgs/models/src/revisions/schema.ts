@@ -53,6 +53,7 @@ const schemaStackBase = z
         z.tuple([z.string().max(100), z.string().max(100), z.string().max(100)])
       )
       .max(1000),
+    reason: z.array(z.string()).max(500),
   })
   .strict();
 
@@ -60,7 +61,28 @@ type IntermediataStackSchema = z.infer<typeof schemaStackBase> & {
   childs: IntermediataStackSchema[];
 };
 
-export const schemaStack: z.ZodType<IntermediataStackSchema> =
-  schemaStackBase.extend({
+export const schemaStack: z.ZodType<IntermediataStackSchema> = schemaStackBase
+  .extend({
     childs: z.lazy(() => schemaStack.array()),
+  })
+  .superRefine((val, ctx) => {
+    const hashs = new Map<string, string>();
+    for (let index = 0; index < val.childs.length; index++) {
+      const child = val.childs[index];
+
+      const hash = [child.name, child.tech, child.path.join('|')].join('||');
+      if (hashs.has(hash)) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          params: { code: 'exists' },
+          message: `${child.id} is already defined by ${hashs.get(
+            hash
+          )!} (fingerprint: ${hash})`,
+          path: ['childs', index],
+        });
+        continue;
+      }
+
+      hashs.set(hash, child.id);
+    }
   });

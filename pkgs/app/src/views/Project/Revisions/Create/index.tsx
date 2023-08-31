@@ -23,15 +23,6 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { createRevision } from '../../../../api';
 import { isError } from '../../../../api/helpers';
-import { getEmptyDoc } from '../../../../common/content';
-import { proposeTitle } from '../../../../common/diff';
-import { i18n } from '../../../../common/i18n';
-import {
-  original,
-  useComponentsStore,
-  useStagingStore,
-} from '../../../../common/store';
-import { titleSuffix } from '../../../../common/string';
 import { Card } from '../../../../components/Card';
 import { Container } from '../../../../components/Container';
 import { Editor } from '../../../../components/Editor';
@@ -49,6 +40,12 @@ import { useToast } from '../../../../hooks/useToast';
 import type { RouteProject } from '../../../../types/routes';
 
 import cls from './index.module.scss';
+
+import { getEmptyDoc } from '@/common/content';
+import { proposeTitle } from '@/common/diff';
+import { i18n } from '@/common/i18n';
+import { original, useComponentsStore, useStagingStore } from '@/common/store';
+import { titleSuffix } from '@/common/string';
 
 export const ProjectRevisionCreate: React.FC<{
   proj: ApiProject;

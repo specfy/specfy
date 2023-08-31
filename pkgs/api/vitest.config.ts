@@ -1,15 +1,15 @@
 // eslint-disable-next-line import/no-unresolved
+import path from 'node:path';
+
 import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
     environment: 'node',
-    // include: ['build/**/*.test.js'],
     include: ['src/**/*.test.ts'],
     exclude: ['build/**'],
-    globalSetup: 'src/test/vitest.global.ts',
-    setupFiles: 'src/test/vitest.setup.ts',
-    // setupFiles: 'src/test/vitest.each.ts',
+    globalSetup: path.resolve(__dirname, './src/test/vitest.global.ts'),
+    setupFiles: path.resolve(__dirname, './src/test/vitest.setup.ts'),
     clearMocks: true,
     coverage: {
       enabled: true,
@@ -17,8 +17,5 @@ export default defineConfig({
       exclude: ['src/test/seed/**.ts'],
     },
   },
-  json: {
-    // namedExports: true,
-    // stringify: true,
-  },
+  json: {},
 });

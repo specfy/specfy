@@ -14,8 +14,6 @@ import { useParams } from 'react-router-dom';
 
 import { updateRevision, useGetRevisionChecks } from '../../../api';
 import { isError } from '../../../api/helpers';
-import { getEmptyDoc } from '../../../common/content';
-import { i18n } from '../../../common/i18n';
 import { Card } from '../../../components/Card';
 import { ContentDoc } from '../../../components/Content';
 import * as Dropdown from '../../../components/Dropdown';
@@ -32,6 +30,9 @@ import { useToast } from '../../../hooks/useToast';
 import type { RouteRevision } from '../../../types/routes';
 
 import cls from './index.module.scss';
+
+import { getEmptyDoc } from '@/common/content';
+import { i18n } from '@/common/i18n';
 
 export const RevisionMainCard: React.FC<{ rev: ApiRevision }> = ({ rev }) => {
   const { currentPerm } = useAuth();

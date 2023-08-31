@@ -3,11 +3,6 @@ import classnames from 'classnames';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
-import {
-  original,
-  useRevisionStore,
-  useComponentsStore,
-} from '../../../common/store';
 import type {
   ComponentBlobWithDiff,
   DiffObjectsArray,
@@ -23,6 +18,8 @@ import { Split } from './Split';
 import { UnifiedDiff } from './Unified';
 import { UnifiedContent } from './Unified/Content';
 import cls from './index.module.scss';
+
+import { original, useRevisionStore, useComponentsStore } from '@/common/store';
 
 export const DiffCardComponent: React.FC<{
   diff: ComponentBlobWithDiff;
@@ -70,7 +67,7 @@ export const DiffCardComponent: React.FC<{
         <ContentDoc
           doc={using.description}
           id={diff.blob.typeId}
-          noPlaceholder
+          placeholder={false}
         />
         {using.techs.length > 0 && (
           <div className={cls.line}>

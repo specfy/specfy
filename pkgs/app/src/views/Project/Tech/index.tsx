@@ -4,10 +4,6 @@ import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 
-import { useComponentsStore } from '../../../common/store';
-import { titleSuffix } from '../../../common/string';
-import type { TechInfo } from '../../../common/techs';
-import { supportedIndexed } from '../../../common/techs';
 import { ComponentIcon } from '../../../components/Component/Icon';
 import { ComponentLine } from '../../../components/Component/Line';
 import { Container } from '../../../components/Container';
@@ -20,6 +16,11 @@ import { Tag } from '../../../components/Tag';
 import type { RouteProject, RouteTech } from '../../../types/routes';
 
 import cls from './index.module.scss';
+
+import { useComponentsStore } from '@/common/store';
+import { titleSuffix } from '@/common/string';
+import { supportedIndexed } from '@/common/techs';
+import type { TechInfo } from '@/common/techs';
 
 export const Tech: React.FC<{
   proj: ApiProject;

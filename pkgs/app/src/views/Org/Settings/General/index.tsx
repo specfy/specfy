@@ -1,6 +1,6 @@
 import * as Form from '@radix-ui/react-form';
 import type { ApiOrg } from '@specfy/models';
-import { IconCirclesRelation } from '@tabler/icons-react';
+import { IconLink, IconLinkOff } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
@@ -8,8 +8,6 @@ import { useLocalStorage } from 'react-use';
 
 import { deleteOrg, updateOrg, linkToGitHubOrg } from '../../../../api';
 import { isError } from '../../../../api/helpers';
-import { i18n } from '../../../../common/i18n';
-import { titleSuffix } from '../../../../common/string';
 import { CopyButton } from '../../../../components/Button/Copy';
 import { Card } from '../../../../components/Card';
 import * as Dialog from '../../../../components/Dialog';
@@ -23,6 +21,9 @@ import { useToast } from '../../../../hooks/useToast';
 import type { RouteOrg } from '../../../../types/routes';
 
 import cls from './index.module.scss';
+
+import { i18n } from '@/common/i18n';
+import { titleSuffix } from '@/common/string';
 
 export const SettingsGeneral: React.FC<{
   org: ApiOrg;
@@ -85,12 +86,15 @@ export const SettingsGeneral: React.FC<{
 
   // GitHub
   const [installId, setInstallId] = useState(org.githubInstallationId);
+  const [loadingLink, setLoadingLink] = useState(false);
 
   const onLink = async () => {
+    setLoadingLink(true);
     const res = await linkToGitHubOrg({
       installationId: installId!,
       orgId: org.id,
     });
+    setLoadingLink(false);
     if (isError(res)) {
       toast.add({ title: i18n.errorOccurred, status: 'error' });
       return;
@@ -129,7 +133,7 @@ export const SettingsGeneral: React.FC<{
                 onChange={onName}
                 disabled={!canEdit}
                 style={{ width: '300px' }}
-                size="l"
+                size="m"
               />
             </Field>
             <p>
@@ -183,16 +187,17 @@ export const SettingsGeneral: React.FC<{
             </Card.Content>
             <Card.Actions>
               {org.githubInstallationId === installId && installId !== null ? (
-                <Button onClick={onUnlink} danger>
-                  Unlink
+                <Button onClick={onUnlink} danger loading={loadingLink}>
+                  <IconLinkOff /> Unlink
                 </Button>
               ) : (
                 <Button
                   display="primary"
                   disabled={org.githubInstallationId === installId}
                   onClick={onLink}
+                  loading={loadingLink}
                 >
-                  <IconCirclesRelation /> Link
+                  <IconLink /> Link
                 </Button>
               )}
             </Card.Actions>

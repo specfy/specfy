@@ -6,8 +6,6 @@ import ReactMarkdown from 'react-markdown';
 import { useParams } from 'react-router-dom';
 
 import { useGetDocumentBySlug } from '../../../../api';
-import { useDocumentsStore } from '../../../../common/store';
-import { titleSuffix } from '../../../../common/string';
 import { ContentDoc, Presentation } from '../../../../components/Content';
 import { Flex } from '../../../../components/Flex';
 import { HeadingTree } from '../../../../components/HeadingTree';
@@ -16,6 +14,9 @@ import { UpdatedAt } from '../../../../components/UpdatedAt';
 import type { RouteDocumentation } from '../../../../types/routes';
 
 import cls from './index.module.scss';
+
+import { useDocumentsStore } from '@/common/store';
+import { titleSuffix } from '@/common/string';
 
 export const ProjectDocumentationShow: React.FC<{
   proj: ApiProject;

@@ -12,6 +12,7 @@ module.exports = {
     'plugin:import/recommended',
     'plugin:import/typescript',
     'plugin:prettier/recommended',
+    'plugin:vitest/recommended',
     // 'plugin:@typescript-eslint/recommended-type-checked',
     // 'plugin:@typescript-eslint/strict-type-checked',
     // 'plugin:@typescript-eslint/stylistic-type-checked',
@@ -24,6 +25,7 @@ module.exports = {
     'jsx-a11y',
     'import',
     'require-extensions',
+    'vitest',
   ],
   root: true,
   parserOptions: {
@@ -222,6 +224,8 @@ module.exports = {
         },
       },
     ],
+
+    'vitest/expect-expect': ['off'],
   },
 
   overrides: [

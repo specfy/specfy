@@ -12,6 +12,8 @@
 }
 
 .toast {
+  position: relative;
+
   width: 220px;
   padding: var(--spc-l) var(--spc-xl);
 
@@ -42,4 +44,10 @@
 
 .show {
   margin-top: var(--spc-m);
+}
+
+.close {
+  position: absolute;
+  top: var(--spc-l);
+  right: var(--spc-m);
 }

@@ -4,7 +4,7 @@ import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
 import type { TestSetup } from '../../../test/each.js';
 import { setupBeforeAll, setupAfterAll } from '../../../test/each.js';
-import { isSuccess, isValidationError } from '../../../test/fetch.js';
+import { isError, isSuccess, isValidationError } from '../../../test/fetch.js';
 import {
   shouldBeProtected,
   shouldEnforceBody,
@@ -70,6 +70,30 @@ describe('POST /revisions/upload -- General', () => {
 
     expect(res.statusCode).toBe(403);
   });
+
+  it('should handle no change', async () => {
+    const { token, org, project } = await seedWithProject();
+    const name = `test ${nanoid()}`;
+    const res = await t.fetch.post('/0/revisions/upload', {
+      token,
+      Body: {
+        blobs: [],
+        description: { content: [], type: 'doc' },
+        name: name,
+        orgId: org.id,
+        projectId: project.id,
+        source: 'github',
+        stack: null,
+      },
+    });
+
+    isError(res.json);
+    expect(res.statusCode).toBe(400);
+    expect(res.json.error).toStrictEqual({
+      code: 'cant_create',
+      reason: 'no_diff',
+    });
+  });
 });
 
 describe('POST /revisions/upload -- Documents', () => {
@@ -97,7 +121,7 @@ describe('POST /revisions/upload -- Documents', () => {
     isSuccess(res.json);
     expect(res.statusCode).toBe(200);
     expect(res.json).toStrictEqual({
-      data: { id: expect.any(String) },
+      data: { id: expect.any(String), stats: {} },
     });
 
     // Get blobs
@@ -201,7 +225,7 @@ describe('POST /revisions/upload -- Documents', () => {
     isSuccess(res.json);
     expect(res.statusCode).toBe(200);
     expect(res.json).toStrictEqual({
-      data: { id: expect.any(String) },
+      data: { id: expect.any(String), stats: {} },
     });
 
     // Get blobs
@@ -253,7 +277,7 @@ describe('POST /revisions/upload -- Documents', () => {
     isSuccess(res.json);
     expect(res.statusCode).toBe(200);
     expect(res.json).toStrictEqual({
-      data: { id: expect.any(String) },
+      data: { id: expect.any(String), stats: {} },
     });
 
     // Get blobs
@@ -389,6 +413,7 @@ describe('POST /revisions/upload -- Stack', () => {
           languages: {},
           edges: [],
           dependencies: [],
+          reason: [],
           childs: [
             {
               id: '90uaaV0QPN2D',
@@ -401,6 +426,7 @@ describe('POST /revisions/upload -- Stack', () => {
               techs: [],
               languages: {},
               dependencies: [['docker', 'redis', '8.0.0-alpine']],
+              reason: [],
             },
             {
               id: 'rjiySzaZm26h',
@@ -428,6 +454,7 @@ describe('POST /revisions/upload -- Stack', () => {
                 ['npm', 'openapi-enforcer', '1.21.0'],
                 ['npm', 'uuid', '8.3.2'],
               ],
+              reason: [],
             },
           ],
         },
@@ -437,7 +464,143 @@ describe('POST /revisions/upload -- Stack', () => {
     isSuccess(res.json);
     expect(res.statusCode).toBe(200);
     expect(res.json).toStrictEqual({
-      data: { id: expect.any(String) },
+      data: {
+        id: expect.any(String),
+        stats: {
+          stack: {
+            created: 2,
+            deleted: 0,
+            modified: 0,
+            unchanged: 0,
+          },
+        },
+      },
     });
+  });
+
+  it('should refuse same component twice', async () => {
+    const { token, org, project } = await seedWithProject();
+    const name = `test ${nanoid()}`;
+    const res = await t.fetch.post('/0/revisions/upload', {
+      token,
+      Body: {
+        blobs: [],
+        description: { content: [], type: 'doc' },
+        name: name,
+        orgId: org.id,
+        projectId: project.id,
+        source: 'github',
+        stack: {
+          id: '10uaaV0QPN2D',
+          name: 'root',
+          path: ['/'],
+          tech: null,
+          techs: [],
+          inComponent: null,
+          languages: {},
+          edges: [],
+          dependencies: [],
+          reason: [],
+          childs: [
+            {
+              id: '90uaaV0QPN2D',
+              name: 'redis',
+              path: ['/analytics/docker-compose.yml'],
+              tech: 'redis',
+              edges: [],
+              inComponent: null,
+              childs: [],
+              techs: [],
+              languages: {},
+              dependencies: [],
+              reason: [],
+            },
+            {
+              id: '80AeEV0QzMeR',
+              name: 'redis',
+              path: ['/analytics/docker-compose.yml'],
+              tech: 'redis',
+              edges: [],
+              inComponent: null,
+              childs: [],
+              techs: [],
+              languages: {},
+              dependencies: [],
+              reason: [],
+            },
+          ],
+        },
+      },
+    });
+
+    isValidationError(res.json);
+    expect(res.statusCode).toBe(400);
+    expect(res.json.error.fields).toStrictEqual({
+      'stack.childs.1': {
+        code: 'exists',
+        message:
+          '80AeEV0QzMeR is already defined by 90uaaV0QPN2D (fingerprint: redis||redis||/analytics/docker-compose.yml)',
+        path: ['stack', 'childs', 1],
+      },
+    });
+  });
+
+  it('should handle component with the same name but different', async () => {
+    const { token, org, project } = await seedWithProject();
+    const name = `test ${nanoid()}`;
+    const res = await t.fetch.post('/0/revisions/upload', {
+      token,
+      Body: {
+        blobs: [],
+        description: { content: [], type: 'doc' },
+        name: name,
+        orgId: org.id,
+        projectId: project.id,
+        source: 'github',
+        stack: {
+          id: '10uaaV0QPN2D',
+          name: 'root',
+          path: ['/'],
+          tech: null,
+          techs: [],
+          inComponent: null,
+          languages: {},
+          edges: [],
+          dependencies: [],
+          reason: [],
+          childs: [
+            {
+              id: '90uaaV0QPN2D',
+              name: 'API',
+              path: ['/pkgs/api/package.json'],
+              tech: null,
+              edges: [],
+              inComponent: null,
+              childs: [],
+              techs: [],
+              languages: {},
+              dependencies: [],
+              reason: [],
+            },
+            {
+              id: '80AeEV0QzMeR',
+              name: 'API',
+              path: ['/cmd/api/main.go'],
+              tech: null,
+              edges: [],
+              inComponent: null,
+              childs: [],
+              techs: [],
+              languages: {},
+              dependencies: [],
+              reason: [],
+            },
+          ],
+        },
+      },
+    });
+
+    isSuccess(res.json);
+    expect(res.statusCode).toBe(200);
   });
 });

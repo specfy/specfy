@@ -9,15 +9,16 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
 import { useListDocuments } from '../../../../api';
-import { TYPE_TO_TEXT } from '../../../../common/document';
-import { useDocumentsStore } from '../../../../common/store';
-import { titleSuffix } from '../../../../common/string';
 import { Container } from '../../../../components/Container';
 import { Flex } from '../../../../components/Flex';
 import { UpdatedAt } from '../../../../components/UpdatedAt';
 import type { RouteProject } from '../../../../types/routes';
 
 import cls from './index.module.scss';
+
+import { TYPE_TO_TEXT } from '@/common/document';
+import { useDocumentsStore } from '@/common/store';
+import { titleSuffix } from '@/common/string';
 
 export const ProjectContentList: React.FC<{
   proj: ApiProject;

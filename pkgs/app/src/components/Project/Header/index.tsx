@@ -15,7 +15,6 @@ import { useEffect, useMemo, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import { useListRevisions } from '../../../api';
-import { useOrgStore, useProjectStore } from '../../../common/store';
 import * as Menu from '../../../components/Menu';
 import type { RouteProject } from '../../../types/routes';
 import { AvatarAuto } from '../../AvatarAuto';
@@ -25,6 +24,8 @@ import { Flex } from '../../Flex';
 
 import cls from './index.module.scss';
 
+import { useOrgStore, useProjectStore } from '@/common/store';
+
 export const ProjectSwitcher: React.FC = () => {
   const { project, projects } = useProjectStore();
   const loc = useLocation();
@@ -32,7 +33,12 @@ export const ProjectSwitcher: React.FC = () => {
     if (!project) {
       return '';
     }
-    return loc.pathname?.replace(`/${project.orgId}/${project.slug}`, '');
+    const fp = loc.pathname?.replace(`/${project.orgId}/${project.slug}`, '');
+    const slash = fp.match(/\//g);
+    if (slash && slash.length > 1) {
+      return '';
+    }
+    return fp;
   }, [loc, project]);
 
   if (!project) {
@@ -199,7 +205,7 @@ export const ProjectMenu: React.FC<{
   }, [linkSelf, revisions]);
 
   useEffect(() => {
-    if (location.pathname.match(/content|rfc/)) {
+    if (location.pathname.match(/content|rfc|doc/)) {
       setOpen('content');
     } else if (location.pathname.match(/\/c\/|\/t\//)) {
       setOpen('overview');

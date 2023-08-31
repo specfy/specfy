@@ -1,9 +1,11 @@
 import { nanoid, slugify } from '@specfy/core';
-import type { Orgs, Projects } from '@specfy/db';
+import type { Projects } from '@specfy/db';
 
 import type { DBComponent } from './types.js';
 
-export function getBlobComponent(org: Orgs, project: Projects): DBComponent {
+export function getBlobComponent(
+  project: Pick<Projects, 'orgId' | 'id'>
+): DBComponent {
   const id = nanoid();
   const name = `test ${id}`;
   return {
@@ -12,7 +14,7 @@ export function getBlobComponent(org: Orgs, project: Projects): DBComponent {
     slug: slugify(name),
     type: 'service',
     typeId: null,
-    orgId: org.id,
+    orgId: project.orgId,
     projectId: project.id,
     blobId: null,
     techId: null,

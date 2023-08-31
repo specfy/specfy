@@ -112,7 +112,7 @@ describe('POST /projects', () => {
       },
     });
     isSuccess(res2.json);
-    expect(res2.json.data.slug.startsWith('test')).toEqual(true);
-    expect(res2.json.data.slug.includes(id.toLocaleLowerCase())).toEqual(true);
+    expect(res2.json.data.slug.startsWith('test')).toBe(true);
+    expect(res2.json.data.slug.includes(id.toLocaleLowerCase())).toBe(true);
   });
 });

@@ -55,7 +55,7 @@ describe('GET /revisions/:revision_id/blobs', () => {
   it('should list one blob', async () => {
     const { token, org, project, user } = await seedWithProject();
 
-    const blob = getBlobComponent(org, project);
+    const blob = getBlobComponent(project);
     const revision = await seedRevision(user, org, project, undefined, [
       {
         parentId: null,
@@ -96,7 +96,7 @@ describe('GET /revisions/:revision_id/blobs', () => {
 
     // Create a component
     const component = await seedComponent(user, org, project);
-    const blob = { ...getBlobComponent(org, project), id: component.id };
+    const blob = { ...getBlobComponent(project), id: component.id };
 
     // Modifies it in a revision
     const revision = await seedRevision(user, org, project, undefined, [

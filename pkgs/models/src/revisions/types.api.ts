@@ -14,6 +14,7 @@ import type {
 } from '../blobs/types.js';
 import type { BlockLevelZero } from '../documents/types.prosemirror.js';
 import type { ApiReview } from '../reviews/types.api.js';
+import type { StackToBlobs } from '../stack/types.js';
 import type { ApiUser } from '../users/types.api.js';
 
 import type { DBRevision } from './types.js';
@@ -74,7 +75,9 @@ export type PostUploadRevision = Res<{
   };
   Error: CreateRevisionError;
   Success: {
-    data: Pick<ApiRevision, 'id'>;
+    data: Pick<ApiRevision, 'id'> & {
+      stats: { stack: StackToBlobs['stats'] | undefined };
+    };
   };
 }>;
 

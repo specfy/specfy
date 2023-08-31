@@ -8,11 +8,13 @@
   <a href="https://github.com/specfy/specfy/actions/workflows/main.yml" target="_blank">
     <img src="https://img.shields.io/github/actions/workflow/status/specfy/specfy/main.yml?branch=main" alt="Build">
   </a>
-  <img alt="Codecov" src="https://img.shields.io/codecov/c/github/specfy/specfy">
+  <a href="https://codecov.io/gh/specfy/specfy" >
+    <img alt="Codecov" src="https://img.shields.io/codecov/c/github/specfy/specfy">
+  </a>
 </p>
 
-Specfy extract metadata from your organization's repositories and automaticaly build an exhaustive infrastructure documentation that helps onboarding, and managing your stack at scale.
-
+Always up-to-date infrastructure graph and stack documentation.
+Specfy extract metadata from your organization's repositories and automatically build an exhaustive infrastructure documentation that helps communication between your engineers and makes decision-making easier.
 
 <p align="center" border="10">
   <a href="https://specfy.io" target="_blank">
@@ -25,9 +27,8 @@ Specfy extract metadata from your organization's repositories and automaticaly b
 
 - 🌤️ · Setup and use [Specfy Cloud](https://specfy.io)
 - 📖 · Read our [blog](https://specfy.io/blog)
-- 🚀 · [Contribute](./docs/contributing.md) to Specfy
+- 💪🏻 · [Contribute](./docs/contributing.md) to Specfy
 - 🚀 · [Deploy](./docs/deploy.md) your own Specfy instance
-
 
 ### Contributing
 

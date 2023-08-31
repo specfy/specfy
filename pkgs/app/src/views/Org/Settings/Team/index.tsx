@@ -3,7 +3,6 @@ import type { ApiOrg } from '@specfy/models';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
-import { titleSuffix } from '../../../../common/string';
 import { Banner } from '../../../../components/Banner';
 import { Container } from '../../../../components/Container';
 import { Flex } from '../../../../components/Flex';
@@ -15,6 +14,8 @@ import type { RouteOrg } from '../../../../types/routes';
 import { SettingsTeamList } from './List';
 import { SettingsTeamPending } from './Pending';
 import cls from './index.module.scss';
+
+import { titleSuffix } from '@/common/string';
 
 export const SettingsTeam: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   org,

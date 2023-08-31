@@ -1,18 +1,19 @@
-import { slugify, titleCase, pick } from '@specfy/core';
+import { slugify, pick } from '@specfy/core';
 import type { Components } from '@specfy/db';
 import type { AnalyserJson } from '@specfy/stack-analyser';
 import { tech } from '@specfy/stack-analyser';
 
 import type { ComponentType, DBComponent } from '../components/types.js';
 import { getComponentSize } from '../flows/helpers.js';
-import { computeLayout } from '../flows/layout.js';
-import { componentsToFlow } from '../flows/transform.js';
-
 import type {
   ApiBlobCreate,
   ApiBlobCreateComponent,
   PostUploadRevision,
-} from './types.api.js';
+} from '../revisions';
+import { findPerfectMatch, findPrevious } from '../stack/index.js';
+
+import { getTitle } from './helpers.js';
+import type { StackToBlobs } from './types.js';
 
 const changing: Array<keyof Components> = [
   'edges',
@@ -22,50 +23,63 @@ const changing: Array<keyof Components> = [
   'techId',
   'techs',
   'name',
+  'inComponent',
 ];
 
-export interface StackToDB {
-  deleted: ApiBlobCreate[];
-  blobs: ApiBlobCreateComponent[];
-  unchanged: string[];
-}
 /**
  * Prepare blobs to create, update or delete
  */
-export function uploadedStackToDB(
+export function stackToBlobs(
   parsed: AnalyserJson,
   prevs: Components[],
   data: PostUploadRevision['Body']
-): StackToDB {
+): StackToBlobs {
   const now = new Date().toISOString();
   const unchanged: string[] = [];
+  const source = data.source;
 
+  // Find perfect matches first so we don't confuse them later in rename or mv
+  const prevIdUsed: string[] = [];
+  const perfectMatches = new Map<string, Components>();
+  for (const child of parsed.childs) {
+    const perfect = findPerfectMatch({ child, prevs, source });
+    if (perfect) {
+      prevIdUsed.push(perfect.id);
+      perfectMatches.set(child.id, perfect);
+    }
+  }
+
+  //
   const idsMap: Record<string, string> = {};
-  const blobs: ApiBlobCreateComponent[] = parsed.childs.map((child) => {
-    const prev = prevs.find((p) => {
-      return (
-        p.sourceName === child.name &&
-        p.techId === child.tech &&
-        p.source === data.source
-      );
-    });
+  const blobs: ApiBlobCreateComponent[] = [];
+  for (const child of parsed.childs) {
+    let prev: Components | null = null;
+    if (perfectMatches.has(child.id)) {
+      prev = perfectMatches.get(child.id)!;
+    } else {
+      prev = findPrevious({ child, prevs, source, prevIdUsed });
+      if (prev) {
+        prevIdUsed.push(prev.id);
+      }
+    }
 
     let current: DBComponent;
     if (prev) {
       current = {
         ...(prev as unknown as DBComponent),
-        source: data.source,
+        source,
         sourceName: child.name,
         sourcePath: child.path,
         techId: child.tech,
         techs: child.techs,
+        inComponent: child.inComponent,
       };
 
       // Store changed ids
       idsMap[child.id] = current.id;
       idsMap[current.id] = current.id;
     } else {
-      // TODO: try to place new components without overlapping and without autolayout
+      // TODO: try to place new components without overlapping and without auto layout
       const type: ComponentType = child.tech
         ? tech.indexed[child.tech].type
         : 'service';
@@ -108,24 +122,19 @@ export function uploadedStackToDB(
 
     current.name = getTitle(current.name);
 
-    return {
+    blobs.push({
       created: !prev,
       deleted: false,
       parentId: prev ? prev.blobId : null,
       type: 'component',
       typeId: current.id,
       current,
-    };
-  });
+    });
+  }
 
   const deleted: ApiBlobCreate[] = prevs
     .filter((p) => {
-      if (p.source !== data.source) {
-        return false;
-      }
-      return !parsed.childs.find(
-        (child) => child.name === p.sourceName && child.tech === p.techId
-      );
+      return !prevIdUsed.includes(p.id) && p.source === source;
     })
     .map((prev) => {
       return {
@@ -138,7 +147,7 @@ export function uploadedStackToDB(
       };
     });
 
-  // ---- Find ids that has changed
+  // ---- Apply post compilation change (e.g: deleted hosts, deleted edges, etc.)
   blobs.forEach((blob) => {
     if (blob.deleted) {
       return;
@@ -146,22 +155,31 @@ export function uploadedStackToDB(
 
     if (blob.current.inComponent) {
       if (idsMap[blob.current.inComponent] === undefined) {
-        throw new Error('Component host does not exists anymore');
+        // Host was deleted
+        blob.current.inComponent = null;
+      } else {
+        blob.current.inComponent = idsMap[blob.current.inComponent];
       }
-      blob.current.inComponent = idsMap[blob.current.inComponent];
     }
 
-    blob.current.edges.forEach((edge) => {
+    const newEdges = [];
+    for (const edge of blob.current.edges) {
       if (idsMap[edge.target] === undefined) {
-        throw new Error('Edge does not exists anymore');
+        // edge and component was deleted
+        continue;
       }
       edge.target = idsMap[edge.target];
-    });
+      newEdges.push(edge);
+    }
+    blob.current.edges = newEdges;
   });
 
   // Detect unchanged blobs
+  const stats = { created: 0, modified: 0, deleted: 0, unchanged: 0 };
+  stats.deleted = deleted.length;
   for (const blob of blobs) {
     if (blob.created) {
+      stats.created += 1;
       continue;
     }
 
@@ -171,29 +189,19 @@ export function uploadedStackToDB(
       JSON.stringify(pick(blob.current, changing))
     ) {
       unchanged.push(prev.id);
+      stats.unchanged += 1;
+    } else {
+      stats.created += 1;
     }
   }
 
-  return { blobs, deleted, unchanged };
-}
-
-const scoped = /^@[a-zA-Z0-9_-]+\/.*$/;
-function getTitle(title: string): string {
-  let name = title;
-  if (scoped.test(name)) {
-    name = name.split('/')[1];
+  // Fail safe
+  if (
+    blobs.length + deleted.length + unchanged.length >
+    prevs.length + parsed.childs.length
+  ) {
+    throw new Error('More output than input');
   }
 
-  return titleCase(name.replaceAll('-', ' '));
-}
-
-export function autoLayout(stack: StackToDB) {
-  const nodes = stack.blobs.map((b) => b.current);
-  const layout = computeLayout(componentsToFlow(nodes));
-
-  for (const node of nodes) {
-    const rel = layout.nodes.find((l) => l.id === node.id)!;
-    node.display.pos = rel.pos;
-    node.display.size = rel.size;
-  }
+  return { blobs, deleted, unchanged, stats };
 }

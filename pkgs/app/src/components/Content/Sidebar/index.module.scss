@@ -18,7 +18,6 @@
   .rc-tree-treenode {
     cursor: pointer;
     display: flex;
-    padding: var(--spc) 0 var(--spc) var(--spc-l);
     white-space: nowrap;
 
     &:hover,
@@ -30,14 +29,17 @@
     .rc-tree-switcher {
       width: 18px;
       height: 18px;
-      margin-right: var(--spc);
-
+      margin: var(--spc) var(--spc-s) var(--spc) var(--spc);
       border-radius: 100%;
 
-      transition: transform 0.15s;
+      >svg {
+        transition: transform 0.15s;
+      }
 
       &.rc-tree-switcher_open {
-        transform: rotate(90deg);
+        >svg {
+          transform: rotate(90deg);
+        }
       }
 
       &.rc-tree-switcher-noop {
@@ -53,6 +55,9 @@
     .rc-tree-node-content-wrapper {
       overflow: hidden;
       flex-grow: 1;
+
+      padding: var(--spc) 0 var(--spc) var(--spc);
+
       text-overflow: ellipsis;
       white-space: nowrap;
     }

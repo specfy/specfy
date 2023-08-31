@@ -222,8 +222,9 @@ export const PreviewNode: React.FC<{
   >;
   info?: boolean;
   editable?: boolean;
+  forceDisplay?: 'hosting' | 'node';
   onNodesChange?: OnNodesChangeSuper;
-}> = ({ node, info = true, editable = false, onNodesChange }) => {
+}> = ({ node, info = true, editable = false, forceDisplay, onNodesChange }) => {
   const input = useRef<HTMLInputElement>(null);
   const [value, setValue] = useState(node.data.name);
 
@@ -250,7 +251,13 @@ export const PreviewNode: React.FC<{
   };
 
   return (
-    <div className={classNames(cls.node, cls.preview)}>
+    <div
+      className={classNames(
+        cls.node,
+        cls.preview,
+        forceDisplay === 'hosting' && cls.hosting
+      )}
+    >
       {info && (
         <>
           <div className={cls.pos}>

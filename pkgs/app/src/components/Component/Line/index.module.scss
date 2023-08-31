@@ -5,13 +5,13 @@ $min-height: 34px;
 .line {
   display: grid;
   grid-template-columns: 140px auto;
+  gap: var(--spc);
   align-items: flex-start;
 
   min-height: $min-height;
   margin-bottom: var(--spc-3xl);
 
   line-height: var(--lh-m);
-  ;
 
   .title {
     padding-top: 2px;
@@ -31,8 +31,6 @@ $min-height: 34px;
 
     &.clickToEdit {
       @include editable;
-
-      margin: -5px -8px;
     }
   }
 }

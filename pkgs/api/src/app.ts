@@ -12,7 +12,7 @@ import type {
 } from 'fastify';
 import rawBody from 'fastify-raw-body';
 
-import { notFound, serverError } from './common/errors.js';
+import { TransactionError, notFound, serverError } from './common/errors.js';
 import { AuthError } from './middlewares/auth/errors.js';
 import { registerAuth } from './middlewares/auth/index.js';
 import { routes } from './routes/routes.js';
@@ -36,6 +36,8 @@ export default async (f: FastifyInstance, opts: FastifyPluginOptions) => {
 
   f.setErrorHandler(function (error, _req, res) {
     if (error instanceof AuthError) {
+      return res.status(400).send(error.err);
+    } else if (error instanceof TransactionError) {
       return res.status(400).send(error.err);
     } else {
       console.error(error);

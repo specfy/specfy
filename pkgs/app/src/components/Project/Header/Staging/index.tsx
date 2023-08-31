@@ -1,15 +1,8 @@
 import { IconEdit, IconEye, IconPlus } from '@tabler/icons-react';
-import { Link } from 'react-router-dom';
+import { useCallback } from 'react';
+import { Link, useBeforeUnload } from 'react-router-dom';
 import { useDebounce } from 'react-use';
 
-import { diffTwoBlob } from '../../../../common/diff';
-import {
-  original,
-  useStagingStore,
-  useDocumentsStore,
-  useComponentsStore,
-  useProjectStore,
-} from '../../../../common/store';
 import { useAuth } from '../../../../hooks/useAuth';
 import { useEdit } from '../../../../hooks/useEdit';
 import type {
@@ -20,6 +13,15 @@ import type {
 import { Button } from '../../../Form/Button';
 
 import cls from './index.module.scss';
+
+import { diffTwoBlob } from '@/common/diff';
+import {
+  original,
+  useStagingStore,
+  useDocumentsStore,
+  useComponentsStore,
+  useProjectStore,
+} from '@/common/store';
 
 export const Staging: React.FC<{ showBadge: boolean }> = () => {
   const edit = useEdit();
@@ -133,6 +135,19 @@ export const Staging: React.FC<{ showBadge: boolean }> = () => {
     },
     150,
     [project, components, documents]
+  );
+
+  // On reload or quit page block
+  useBeforeUnload(
+    useCallback(
+      (e: BeforeUnloadEvent) => {
+        if (staging.count > 0) {
+          e.preventDefault();
+          e.returnValue = '';
+        }
+      },
+      [staging.count]
+    )
   );
 
   if (!canEdit || !project) {
