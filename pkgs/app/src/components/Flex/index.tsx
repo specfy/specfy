@@ -1,4 +1,4 @@
-import type { CSSProperties } from 'react';
+import { forwardRef, type CSSProperties } from 'react';
 
 interface FlexProps {
   children?: any;
@@ -44,9 +44,10 @@ const gap: Record<Exclude<FlexProps['gap'], undefined>, string> = {
   '2xl': '48px',
 };
 
-export const Flex: React.FC<FlexProps> = (props) => {
+export const Flex = forwardRef<HTMLDivElement, FlexProps>((props, ref) => {
   return (
     <div
+      ref={ref}
       className={props.className}
       style={{
         display: props.child ? 'block' : 'flex',
@@ -65,4 +66,6 @@ export const Flex: React.FC<FlexProps> = (props) => {
       {props.children}
     </div>
   );
-};
+});
+
+Flex.displayName = 'Flex';

@@ -16,9 +16,10 @@ import { useToast } from '../../hooks/useToast';
 
 import cls from './index.module.scss';
 
-export const Onboarding: React.FC = () => {
+export const TryDemo: React.FC = () => {
   const navigate = useNavigate();
   const toast = useToast();
+
   const [loading, setLoading] = useState<boolean>(false);
 
   const onClickDemo = async () => {
@@ -34,6 +35,23 @@ export const Onboarding: React.FC = () => {
     navigate(`/${res.data.id}`);
   };
 
+  return (
+    <Flex column gap="s">
+      <p>Want to try without setup?</p>
+      <Button
+        className={cls.action}
+        size="m"
+        onClick={onClickDemo}
+        loading={loading}
+      >
+        <IconColorSwatch />
+        Try the demo
+      </Button>
+    </Flex>
+  );
+};
+
+export const Onboarding: React.FC = () => {
   return (
     <div>
       <Helmet title={`Onboarding ${titleSuffix}`} />
@@ -57,18 +75,7 @@ export const Onboarding: React.FC = () => {
                   </Button>
                 </Link>
               </div>
-              <div>
-                <p>Want to try without setup?</p>
-                <Button
-                  className={cls.action}
-                  size="m"
-                  onClick={onClickDemo}
-                  loading={loading}
-                >
-                  <IconColorSwatch />
-                  Try the demo
-                </Button>
-              </div>
+              <TryDemo />
             </Flex>
           </Card>
         </div>

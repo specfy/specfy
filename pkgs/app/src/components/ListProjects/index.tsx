@@ -7,12 +7,15 @@ import { useListProjects } from '../../api';
 import { useProjectStore } from '../../common/store';
 import { AvatarAuto } from '../AvatarAuto';
 import { Empty } from '../Empty';
+import { Flex } from '../Flex';
 import { Button } from '../Form/Button';
 import { Input } from '../Form/Input';
 import { Loading } from '../Loading';
 import { Time } from '../Time';
 
 import cls from './index.module.scss';
+
+import { TryDemo } from '@/views/Onboarding';
 
 export const ListProjects: React.FC<{ orgId: string }> = ({ orgId }) => {
   const getProjects = useListProjects({ org_id: orgId });
@@ -70,11 +73,16 @@ export const ListProjects: React.FC<{ orgId: string }> = ({ orgId }) => {
               title="No projects, yet!"
               desc="Create a project manually or from Github."
               action={
-                <Link to={`/${orgId}/_/project/new`}>
-                  <Button display="primary">
-                    <IconPlus /> Create a new Project
-                  </Button>
-                </Link>
+                <Flex column gap="xl">
+                  <Link to={`/${orgId}/_/project/new`}>
+                    <Button display="primary">
+                      <IconPlus /> Create a new Project
+                    </Button>
+                  </Link>
+                  <div>
+                    <TryDemo />
+                  </div>
+                </Flex>
               }
             />
           )}
