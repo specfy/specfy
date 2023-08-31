@@ -56,6 +56,15 @@
   }
 }
 
+.menuContent {
+  a {
+    &:focus-visible {
+      // Fix an issue that focus is always visible even when not navigating with keyboard
+      box-shadow: none !important;
+    }
+  }
+}
+
 .menuArrow {
   fill: white;
 }

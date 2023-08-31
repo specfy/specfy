@@ -27,6 +27,8 @@
 @import '@radix-ui/colors/violet.css';
 @import '@radix-ui/colors/yellow.css';
 
+@import './mixin';
+
 button,
 a,
 input,
@@ -209,7 +211,7 @@ button {
 
 a {
   // Buggy with Dropdown
-  // @include ring;
+  @include ring;
 
   cursor: pointer;
 
