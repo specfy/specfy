@@ -1,3 +1,4 @@
+import { logEvent } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import type { DeleteOrg } from '@specfy/models';
 import type { FastifyPluginCallback } from 'fastify';
@@ -24,6 +25,8 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         await tx.projects.deleteMany({ where: { orgId: org.id } });
         await tx.orgs.delete({ where: { id: org.id } });
       });
+
+      logEvent('orgs.deleted', { orgId: org.id });
 
       return res.status(204).send();
     }

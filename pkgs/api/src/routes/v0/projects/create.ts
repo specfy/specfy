@@ -1,4 +1,4 @@
-import { nanoid, slugify, schemaOrgId } from '@specfy/core';
+import { nanoid, slugify, schemaOrgId, logEvent } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import {
   getUsage,
@@ -105,6 +105,11 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         await recomputeOrgGraph({ orgId: data.orgId, tx });
 
         return tmp;
+      });
+
+      logEvent('projects.created', {
+        orgId: project.id,
+        projectId: project.id,
       });
 
       return res.status(200).send({

@@ -1,4 +1,4 @@
-import { envs } from '@specfy/core';
+import { envs, logEvent } from '@specfy/core';
 import { v1, stripe, betaTrialEnd } from '@specfy/models';
 import type { PostSubscription } from '@specfy/models';
 import type { FastifyPluginCallback } from 'fastify';
@@ -70,6 +70,8 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
             ],
             trial_end: trial,
           });
+
+          logEvent('stripe.updated', { orgId: org.id });
           return res.status(200).send({
             data: {
               url: billingUrl,
@@ -112,6 +114,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       }
       const stripeSession = await stripe.checkout.sessions.create(options);
 
+      logEvent('stripe.checkout', { orgId: org.id });
       return res.status(200).send({
         data: {
           url: stripeSession.url!,

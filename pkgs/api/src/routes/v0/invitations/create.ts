@@ -1,4 +1,4 @@
-import { nanoid, l, envs, schemaOrgId } from '@specfy/core';
+import { nanoid, l, envs, schemaOrgId, logEvent } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import { sendInvitation } from '@specfy/emails';
 import { getUsage, EXPIRES, getOrgFromRequest, PermType } from '@specfy/models';
@@ -105,6 +105,8 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
           }
         );
       }
+
+      logEvent('invitation.created', { orgId: body.orgId });
 
       return res.status(200).send({
         data: { token: created.token, id: created.id },

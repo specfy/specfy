@@ -1,4 +1,4 @@
-import { nanoid } from '@specfy/core';
+import { logEvent, nanoid } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import { createUserActivity } from '@specfy/models';
 import type { AcceptInvitation } from '@specfy/models';
@@ -42,6 +42,8 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
           where: { id: inv.id },
         });
       });
+
+      logEvent('invitation.accepted', { orgId: inv.orgId });
 
       return res.status(200).send({
         done: true,

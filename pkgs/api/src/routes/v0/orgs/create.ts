@@ -1,4 +1,4 @@
-import { schemaOrgId } from '@specfy/core';
+import { logEvent, schemaOrgId } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import {
   createFreeSubscription,
@@ -55,6 +55,8 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       });
 
       await createFreeSubscription({ org, me });
+
+      logEvent('orgs.created', { orgId: org.id });
 
       return res.status(200).send({ data: toApiOrgPublic(org) });
     }

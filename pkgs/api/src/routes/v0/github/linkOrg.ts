@@ -1,5 +1,5 @@
 import { RequestError } from '@octokit/request-error';
-import { schemaOrgId } from '@specfy/core';
+import { logEvent, schemaOrgId } from '@specfy/core';
 import type { Prisma } from '@specfy/db';
 import { prisma } from '@specfy/db';
 import { github } from '@specfy/github';
@@ -94,6 +94,8 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
           });
         }
       });
+
+      logEvent('github.link', { orgId: org.id });
 
       return res.status(200).send({
         done: true,

@@ -1,3 +1,4 @@
+import { logEvent } from '@specfy/core';
 import { stripe } from '@specfy/models';
 import type { CancelSubscription } from '@specfy/models';
 import type { FastifyPluginCallback } from 'fastify';
@@ -57,6 +58,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         },
       });
 
+      logEvent('stripe.cancel', { orgId: org.id });
       return res.status(204).send();
     }
   );
