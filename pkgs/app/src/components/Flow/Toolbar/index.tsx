@@ -22,14 +22,17 @@ import { PreviewNode } from '../CustomNode';
 
 import cls from './index.module.scss';
 
+import * as Popover from '@/components/Popover';
+
 const Container: React.FC<{
   top?: true;
   left?: true;
   right?: true;
   bottom?: true;
+  center?: true;
   visible?: boolean;
   children: React.ReactNode;
-}> = ({ children, top, left, right, bottom, visible }) => {
+}> = ({ children, top, left, right, bottom, center, visible }) => {
   return (
     <div
       className={classnames(
@@ -38,7 +41,8 @@ const Container: React.FC<{
         left && cls.left,
         right && cls.right,
         bottom && cls.bottom,
-        visible && cls.visible
+        visible && cls.visible,
+        center && cls.center
       )}
       data-toolbar
     >
@@ -111,14 +115,20 @@ const ToolbarZoom: React.FC = () => {
   );
 };
 
-const ToolbarHelp: React.FC<{ on: () => void }> = ({ on }) => {
+const ToolbarHelp: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <div className={cls.toolbar}>
-      <TooltipFull msg="Need help?">
-        <Button display="ghost" onClick={on}>
-          <IconLifebuoy />
-        </Button>
-      </TooltipFull>
+      <Popover.Popover>
+        <Popover.Trigger asChild>
+          <Button display="ghost">
+            <IconLifebuoy />
+          </Button>
+        </Popover.Trigger>
+        <Popover.Content className={cls.help}>
+          <h3>Need help?</h3>
+          {children}
+        </Popover.Content>
+      </Popover.Popover>
     </div>
   );
 };

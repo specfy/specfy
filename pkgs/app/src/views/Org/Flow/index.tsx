@@ -21,6 +21,7 @@ import cls from './index.module.scss';
 import { i18n } from '@/common/i18n';
 import { titleSuffix } from '@/common/string';
 import { Banner } from '@/components/Banner';
+import { Feedback } from '@/components/Feedback';
 
 export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   org,
@@ -147,7 +148,21 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
                     </>
                   </Toolbar.Inner>
                 )}
-                <Toolbar.Help on={() => setIntroRead(false)} />
+                <Toolbar.Help>
+                  <div>
+                    <p>
+                      Your organization flow is automatically generated based on
+                      your projects. You can only modify the projects position
+                      and edges placement.
+                    </p>
+                    <p>
+                      Only contributors can modify this flow. History of
+                      modifications is not saved at this moment.
+                    </p>
+                  </div>
+                  <br />
+                  <Feedback />
+                </Toolbar.Help>
               </Toolbar>
             )}
             <Toolbar bottom visible>
