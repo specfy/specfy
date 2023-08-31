@@ -92,7 +92,7 @@ export const Org: React.FC = () => {
       <div>
         <Sidebar.Sidebar>
           <Sidebar.Group switcher={<OrgSwitcher />}>
-            <OrgMenu org={org} />
+            <OrgMenu />
           </Sidebar.Group>
         </Sidebar.Sidebar>
       </div>

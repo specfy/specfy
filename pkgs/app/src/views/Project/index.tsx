@@ -150,10 +150,10 @@ export const Project: React.FC = () => {
 
       <div>
         <Sidebar.Sidebar>
-          <Sidebar.Group switcher={<OrgSwitcher />}>
-            <OrgMenu org={org} />
+          <Sidebar.Group switcher={<OrgSwitcher />} name="Org">
+            <OrgMenu />
           </Sidebar.Group>
-          <Sidebar.Group switcher={<ProjectSwitcher />}>
+          <Sidebar.Group switcher={<ProjectSwitcher />} name="Project">
             <Staging showBadge />
             <ProjectMenu proj={proj} params={params} />
           </Sidebar.Group>

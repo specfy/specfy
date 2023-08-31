@@ -103,7 +103,7 @@ export const OrgSwitcher: React.FC = () => {
   );
 };
 
-export const OrgMenu: React.FC<{ org: ApiOrg }> = () => {
+export const OrgMenu: React.FC = () => {
   const params = useParams<Partial<RouteOrg>>() as RouteOrg;
   const location = useLocation();
 
