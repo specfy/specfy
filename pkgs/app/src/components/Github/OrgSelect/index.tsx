@@ -2,8 +2,6 @@ import { IconPlus } from '@tabler/icons-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-import { GITHUB_APP } from '../../../common/envs';
-import { Popup } from '../../../common/popup';
 import { useGetGitHubInstallations } from '../../../api';
 import { useToast } from '../../../hooks/useToast';
 import { AvatarAuto } from '../../AvatarAuto';
