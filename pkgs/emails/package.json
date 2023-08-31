@@ -19,7 +19,7 @@
     "resend": "1.0.0"
   },
   "devDependencies": {
-    "@types/react": "18.2.20",
+    "@types/react": "18.2.21",
     "@specfy/db": "file:../db",
     "react-email": "1.9.4",
     "tsup": "7.2.0"
