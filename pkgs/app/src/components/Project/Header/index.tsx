@@ -33,7 +33,12 @@ export const ProjectSwitcher: React.FC = () => {
     if (!project) {
       return '';
     }
-    return loc.pathname?.replace(`/${project.orgId}/${project.slug}`, '');
+    const fp = loc.pathname?.replace(`/${project.orgId}/${project.slug}`, '');
+    const slash = fp.match(/\//g);
+    if (slash && slash.length > 1) {
+      return '';
+    }
+    return fp;
   }, [loc, project]);
 
   if (!project) {
