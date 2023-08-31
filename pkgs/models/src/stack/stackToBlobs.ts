@@ -5,6 +5,7 @@ import { tech } from '@specfy/stack-analyser';
 
 import type { ComponentType, DBComponent } from '../components/types.js';
 import { getComponentSize } from '../flows/helpers.js';
+import type { FlowEdge } from '../flows/types.js';
 import type {
   ApiBlobCreate,
   ApiBlobCreateComponent,
@@ -49,8 +50,10 @@ export function stackToBlobs(
     }
   }
 
-  //
+  // new/old -> new
   const idsMap: Record<string, string> = {};
+  // new -> old
+  const idsMapReverse: Record<string, string> = {};
   const blobs: ApiBlobCreateComponent[] = [];
   for (const child of parsed.childs) {
     let prev: Components | null = null;
@@ -76,6 +79,7 @@ export function stackToBlobs(
       };
 
       // Store changed ids
+      idsMapReverse[current.id] = child.id;
       idsMap[child.id] = current.id;
       idsMap[current.id] = current.id;
     } else {
@@ -103,6 +107,7 @@ export function stackToBlobs(
             portSource: 'sr',
             portTarget: 'tl',
             vertices: [],
+            source,
           };
         }),
         inComponent: child.inComponent,
@@ -162,16 +167,24 @@ export function stackToBlobs(
       }
     }
 
-    const newEdges = [];
-    for (const edge of blob.current.edges) {
-      if (idsMap[edge.target] === undefined) {
-        // edge and component was deleted
-        continue;
-      }
-      edge.target = idsMap[edge.target];
-      newEdges.push(edge);
+    if (!blob.created) {
+      const next = parsed.childs.find(
+        (child) => child.id === idsMapReverse[blob.typeId]
+      )!.edges;
+      blob.current.edges = mergeEdges({
+        prev: blob.current.edges,
+        next,
+        source,
+        idsMap,
+      });
+    } else {
+      blob.current.edges = mergeEdges({
+        prev: [],
+        next: blob.current.edges,
+        source,
+        idsMap,
+      });
     }
-    blob.current.edges = newEdges;
   });
 
   // Detect unchanged blobs
@@ -191,7 +204,7 @@ export function stackToBlobs(
       unchanged.push(prev.id);
       stats.unchanged += 1;
     } else {
-      stats.created += 1;
+      stats.modified += 1;
     }
   }
 
@@ -204,4 +217,56 @@ export function stackToBlobs(
   }
 
   return { blobs, deleted, unchanged, stats };
+}
+
+function mergeEdges({
+  prev,
+  next,
+  source,
+  idsMap,
+}: {
+  prev: FlowEdge[];
+  next: AnalyserJson['edges'];
+  source: string;
+  idsMap: Record<string, string>;
+}): FlowEdge[] {
+  const edges: FlowEdge[] = [];
+
+  // Find old edges and deleted edges
+  for (const edge of prev) {
+    if (edge.source !== source) {
+      // It's not the same source
+      // even if it could be the same exact edge, the user put it there so leave them the ownership
+      continue;
+    }
+
+    const exist = next.find((v) => idsMap[v.target] === edge.target);
+    if (!exist) {
+      // deleted on the repo
+      continue;
+    }
+
+    // We don't trust the read/write prop
+    edges.push(edge);
+  }
+
+  // Find new edges
+  for (const edge of next) {
+    const exist = prev.find((v) => v.target === idsMap[edge.target]);
+    if (exist) {
+      // Already handled before
+      continue;
+    }
+
+    edges.push({
+      ...edge,
+      target: idsMap[edge.target],
+      portSource: 'sr',
+      portTarget: 'tl',
+      vertices: [],
+      source,
+    });
+  }
+
+  return edges;
 }
