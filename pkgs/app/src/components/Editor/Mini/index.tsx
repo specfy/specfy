@@ -3,7 +3,7 @@ import { CharacterCount } from '@tiptap/extension-character-count';
 import { useEditor, EditorContent } from '@tiptap/react';
 import classNames from 'classnames';
 import type React from 'react';
-import { useMemo, useEffect, useState } from 'react';
+import { useMemo, useEffect, useState, useCallback } from 'react';
 
 import type { AIToolbarProps } from '../AiToolbar';
 import { AIToolbar } from '../AiToolbar';
@@ -59,6 +59,11 @@ const Editor: React.FC<MiniEditorProps> = ({
 
     editor.commands.setContent(content);
   }, [content]);
+  const onEnd = useCallback(() => {
+    setAiLoading(false);
+    setFinalAnimation(true);
+    onUpdate(removeEmptyContent(editor!.getJSON() as any));
+  }, [editor]);
 
   return (
     <div
@@ -73,10 +78,7 @@ const Editor: React.FC<MiniEditorProps> = ({
         editor={editor}
         tools={aiTools}
         onStart={() => setAiLoading(true)}
-        onEnd={() => {
-          setAiLoading(false);
-          setFinalAnimation(true);
-        }}
+        onEnd={onEnd}
       />
       <div
         className={classNames(
