@@ -21,6 +21,8 @@ import { useToast } from '../../hooks/useToast';
 
 import cls from './index.module.scss';
 
+import { Header } from '@/components/Sidebar/Header';
+
 export const Invite: React.FC = () => {
   const toast = useToast();
   const navigate = useNavigate();
@@ -35,6 +37,9 @@ export const Invite: React.FC = () => {
   if (!invitationId || !token || res.error) {
     return (
       <Flex align="center" justify="center" className={cls.container} column>
+        <div className={cls.header}>
+          <Header />
+        </div>
         <NotFound
           title="Invitation not found"
           message="The invitation does not exists or is expired"
@@ -80,7 +85,11 @@ export const Invite: React.FC = () => {
     <Flex align="center" justify="center" className={cls.container} column>
       <Helmet title={`Join ${inv.org.name} ${titleSuffix}`} />
 
-      <div>
+      <div className={cls.header}>
+        <Header />
+      </div>
+
+      <div className={cls.centered}>
         <Card>
           <Card.Content large>
             <h2>Join an organization</h2>
