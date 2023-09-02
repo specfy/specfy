@@ -31,6 +31,7 @@ declare global {
     type PrismaComponentsEdges = DBComponent['edges'];
     type PrismaComponentsSourcePath = DBComponent['sourcePath'];
     type PrismaComponentsTags = DBComponent['tags'];
+    type PrismaComponentsInComponent = DBComponent['inComponent'];
 
     // Documents
     type PrismaDocumentsType = keyof typeof DocumentType;

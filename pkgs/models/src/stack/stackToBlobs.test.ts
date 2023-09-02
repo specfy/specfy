@@ -144,38 +144,6 @@ describe('stackToBlobs', () => {
 
     expect(res.deleted).toHaveLength(0);
   });
-
-  it('should detect loosing an host', () => {
-    // New upload
-    const a = { ...getDefault(), name: 'a' };
-    const b = { ...getDefault(), name: 'b' };
-    a.inComponent = b.id;
-    const first = short([a, b]);
-
-    // Re-upload, we loose B
-    const c = { ...getDefault(), name: 'a' };
-    const res2 = short([c], first);
-    expect(res2.blobs).toHaveLength(1);
-    expect(res2.deleted).toHaveLength(1);
-    expect(res2.blobs[0].current.inComponent).toBeNull();
-    expect(res2.deleted[0].typeId).toBe(b.id);
-    expect(res2.unchanged).toStrictEqual([]);
-  });
-
-  it('should detect adding an host', () => {
-    // New upload
-    const a = { ...getDefault(), name: 'a' };
-    const first = short([a]);
-
-    // Re-upload, we add B and it's an host of A
-    const b = { ...getDefault(), name: 'b' };
-    const c = { ...getDefault(), name: 'a', inComponent: b.id };
-    const res2 = short([b, c], first);
-    expect(res2.blobs).toHaveLength(2);
-    expect(res2.deleted).toHaveLength(0);
-    expect(res2.blobs[1].current.inComponent).toBe(res2.blobs[0].current.id);
-    expect(res2.unchanged).toStrictEqual([]);
-  });
 });
 
 describe('edge cases', () => {
@@ -369,6 +337,176 @@ describe('edges', () => {
     expect(res2.blobs[0].current.id).toBe(up.id);
     expect(res2.blobs[1].current.edges[0].target).toBe(up.id);
     expect(res2.unchanged).toStrictEqual([res2.blobs[0].typeId]);
+  });
+
+  it('should keep manual edges', () => {
+    const a = { ...getDefault(), name: 'a' };
+    const b = { ...getDefault(), name: 'b' };
+    const first = short([a, b]);
+
+    // Manually add an edge
+    first.blobs[0].current.edges = [
+      {
+        target: a.id,
+        read: true,
+        write: true,
+        portSource: 'sr',
+        portTarget: 'tl',
+        vertices: [],
+      },
+    ];
+
+    // Re-upload should not remove the edge
+    const c = { ...getDefault(), name: 'a' };
+    const d = { ...getDefault(), name: 'b' };
+    const res2 = short([c, d], first);
+    expect(res2.blobs).toHaveLength(2);
+    expect(res2.blobs[0].current.edges).toHaveLength(1);
+    expect(res2.stats).toStrictEqual({
+      created: 0,
+      deleted: 0,
+      modified: 0,
+      unchanged: 2,
+    });
+  });
+});
+
+describe('inComponent', () => {
+  it('should detect loosing an host', () => {
+    // New upload
+    const a = { ...getDefault(), name: 'a' };
+    const b = { ...getDefault(), name: 'b' };
+    a.inComponent = b.id;
+    const first = short([a, b]);
+
+    // Re-upload, we loose B
+    const c = { ...getDefault(), name: 'a' };
+    const res2 = short([c], first);
+    expect(res2.blobs).toHaveLength(1);
+    expect(res2.deleted).toHaveLength(1);
+    expect(res2.blobs[0].current.inComponent).toStrictEqual({
+      id: null,
+      source: 'github',
+    });
+    expect(res2.deleted[0].typeId).toBe(b.id);
+    expect(res2.unchanged).toStrictEqual([]);
+  });
+
+  it('should detect adding an host', () => {
+    // New upload
+    const a = { ...getDefault(), name: 'a' };
+    const first = short([a]);
+
+    // Re-upload, we add B and it's an host of A
+    const b = { ...getDefault(), name: 'b' };
+    const c = { ...getDefault(), name: 'a', inComponent: b.id };
+    const res2 = short([b, c], first);
+    expect(res2.blobs).toHaveLength(2);
+    expect(res2.deleted).toHaveLength(0);
+    expect(res2.blobs[1].current.inComponent).toStrictEqual({
+      id: res2.blobs[0].current.id,
+      source: 'github',
+    });
+    expect(res2.unchanged).toStrictEqual([]);
+  });
+
+  it('should not override an host', () => {
+    // New upload
+    const a = { ...getDefault(), name: 'a' };
+    const b = { ...getDefault(), name: 'b' };
+    const first = short([a, b]);
+    expect(first.blobs[0].current.inComponent).toStrictEqual({
+      id: null,
+      source: 'github',
+    });
+
+    // Manual modification
+    first.blobs[0].current.inComponent['id'] = first.blobs[1].typeId;
+    first.blobs[0].current.inComponent['source'] = undefined;
+
+    // Re-upload, we add B and it's an host of A
+    const c = { ...getDefault(), name: 'a' };
+    const d = { ...getDefault(), name: 'b' };
+    const res2 = short([c, d], first);
+    expect(res2.blobs).toHaveLength(2);
+    expect(res2.blobs[0].current.inComponent).toStrictEqual({
+      id: b.id,
+      source: undefined,
+    });
+    expect(res2.unchanged).toStrictEqual([a.id, b.id]);
+  });
+});
+
+describe('techs', () => {
+  it('should add new techs', () => {
+    const a: AnalyserJson = { ...getDefault(), name: 'a', techs: ['algolia'] };
+    const first = short([a]);
+    expect(first.blobs[0].current.techs).toStrictEqual([
+      {
+        id: 'algolia',
+        source: 'github',
+      },
+    ]);
+
+    const b: AnalyserJson = {
+      ...getDefault(),
+      name: 'a',
+      techs: ['algolia', 'openai'],
+    };
+    const res2 = short([b], first);
+    expect(res2.blobs[0].current.techs).toStrictEqual([
+      {
+        id: 'algolia',
+        source: 'github',
+      },
+      {
+        id: 'openai',
+        source: 'github',
+      },
+    ]);
+    expect(res2.stats).toStrictEqual({
+      created: 0,
+      deleted: 0,
+      modified: 1,
+      unchanged: 0,
+    });
+  });
+
+  it('should remove techs', () => {
+    const a: AnalyserJson = { ...getDefault(), name: 'a', techs: ['algolia'] };
+    const first = short([a]);
+    expect(first.blobs[0].current.techs).toStrictEqual([
+      {
+        id: 'algolia',
+        source: 'github',
+      },
+    ]);
+
+    const b: AnalyserJson = { ...getDefault(), name: 'a', techs: [] };
+    const res2 = short([b], first);
+    expect(res2.blobs[0].current.techs).toStrictEqual([]);
+    expect(res2.stats).toStrictEqual({
+      created: 0,
+      deleted: 0,
+      modified: 1,
+      unchanged: 0,
+    });
+  });
+
+  it('should not add twice the same tech', () => {
+    const a: AnalyserJson = { ...getDefault(), name: 'a', techs: [] };
+    const first = short([a]);
+    first.blobs[0].current.techs = [{ id: 'algolia' }];
+
+    const b: AnalyserJson = { ...getDefault(), name: 'a', techs: ['algolia'] };
+    const res2 = short([b], first);
+    expect(res2.blobs[0].current.techs).toStrictEqual([{ id: 'algolia' }]);
+    expect(res2.stats).toStrictEqual({
+      created: 0,
+      deleted: 0,
+      modified: 0,
+      unchanged: 1,
+    });
   });
 });
 

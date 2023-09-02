@@ -78,7 +78,11 @@ export const DiffCardComponent: React.FC<{
             <div className={cls.techs}>
               {using.techs.map((techId) => {
                 return (
-                  <TechItem key={techId} techId={techId} params={params} />
+                  <TechItem
+                    key={techId.id}
+                    techId={techId.id}
+                    params={params}
+                  />
                 );
               })}
             </div>
@@ -106,9 +110,9 @@ export const DiffCardComponent: React.FC<{
           </div>
         )}
 
-        {using.inComponent &&
+        {using.inComponent.id &&
           (() => {
-            const comp = getComponent(using.inComponent);
+            const comp = getComponent(using.inComponent.id);
             return (
               <div className={classnames(cls.line)}>
                 <h4>Host</h4>
@@ -173,11 +177,10 @@ export const DiffCardComponent: React.FC<{
               {(d.diff as DiffObjectsArray<ApiComponent['techs'][0]>).added.map(
                 (tech) => {
                   return (
-                    <div key={tech} className={cls.added}>
+                    <div key={tech.id} className={cls.added}>
                       <TechItem
                         className={cls.item}
-                        key={tech}
-                        techId={tech}
+                        techId={tech.id}
                         params={params}
                       />
                     </div>
@@ -188,11 +191,10 @@ export const DiffCardComponent: React.FC<{
                 d.diff as DiffObjectsArray<ApiComponent['techs'][0]>
               ).deleted.map((tech) => {
                 return (
-                  <div key={tech} className={cls.removed}>
+                  <div key={tech.id} className={cls.removed}>
                     <TechItem
                       className={cls.item}
-                      key={tech}
-                      techId={tech}
+                      techId={tech.id}
                       params={params}
                     />
                   </div>
@@ -253,10 +255,11 @@ export const DiffCardComponent: React.FC<{
         }
 
         if (d.key === 'inComponent') {
-          const newComp = using.inComponent && getComponent(using.inComponent);
+          const newComp =
+            using.inComponent.id && getComponent(using.inComponent.id);
           const oldComp =
-            diff.blob.previous?.inComponent &&
-            getComponent(diff.blob.previous.inComponent);
+            diff.blob.previous?.inComponent.id &&
+            getComponent(diff.blob.previous.inComponent.id);
           return (
             <div key={d.key} className={classnames(cls.line)}>
               <h4>Host</h4>

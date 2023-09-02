@@ -16,3 +16,5 @@ export const schemaSlug = z.string().min(2).max(36).regex(slug, {
 });
 
 export const schemaToken = z.string().min(32).max(32).regex(token);
+
+export const schemaSource = z.literal('github');

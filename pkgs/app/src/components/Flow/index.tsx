@@ -466,13 +466,13 @@ export const Flow: React.FC<{
         elevateEdgesOnSelect={true}
         elevateNodesOnSelect={true}
         selectionMode={SelectionMode.Partial}
-        // // --- Events that are bubble
-        // // Edges
+        // --- Events that are bubble
+        // Edges
         onEdgeUpdateStart={onEdgeUpdateStart}
         onEdgeUpdate={onEdgeUpdate}
         onConnect={onAddEdge}
         isValidConnection={isValidConnection}
-        // // Drag
+        // Drag
         onInit={setReactFlowInstance}
         onDragOver={onDragOver}
         onDrop={onDrop}

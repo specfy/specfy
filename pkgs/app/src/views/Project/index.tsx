@@ -9,6 +9,7 @@ import {
   useListOrgs,
   useGetProjectBySlug,
 } from '../../api';
+import type { ComponentsState } from '../../common/store';
 import {
   useComponentsStore,
   useOrgStore,
@@ -52,7 +53,6 @@ export const Project: React.FC = () => {
   // Stores
   const storeOrg = useOrgStore();
   const storeProject = useProjectStore();
-  const storeComponents = useComponentsStore();
 
   // Data fetch
   const getOrgs = useListOrgs();
@@ -100,7 +100,12 @@ export const Project: React.FC = () => {
 
   useEffect(() => {
     if (getComps.data) {
-      storeComponents.fill(getComps.data);
+      const map: ComponentsState['components'] = {};
+      for (const value of getComps.data) {
+        map[value.id] = value;
+      }
+      // Store is updated outside the state to avoid rerendering the whole view on each update
+      useComponentsStore.setState({ components: map });
     }
   }, [getComps.data]);
 

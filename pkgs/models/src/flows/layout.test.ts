@@ -8,7 +8,7 @@ function getComp(id: string, host: string | null = null): ComponentForFlow {
   return {
     id,
     edges: [],
-    inComponent: host,
+    inComponent: { id: host },
     type: 'service',
     typeId: null,
     name: id,

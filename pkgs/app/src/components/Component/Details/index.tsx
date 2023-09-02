@@ -57,7 +57,7 @@ export const ComponentDetails: React.FC<{
       list.set(c.id, c);
     }
 
-    const inVal = component.inComponent;
+    const inVal = component.inComponent.id;
     const _in = inVal && list.get(inVal);
 
     const _hosts: ApiComponent[] = [];
@@ -76,10 +76,10 @@ export const ComponentDetails: React.FC<{
         if (l.type === 'hosting') {
           _hosts.push(l);
         }
-        if (!l.inComponent) {
+        if (!l.inComponent.id) {
           break;
         }
-        l = list.get(l.inComponent)!;
+        l = list.get(l.inComponent.id)!;
       }
     }
 
@@ -126,7 +126,7 @@ export const ComponentDetails: React.FC<{
     setReceiveAnswer(Array.from(_receiveanswer.values()));
   }, [storeComponents, component]);
 
-  const handleStackChange = (values: string[]) => {
+  const handleStackChange = (values: ApiComponent['techs']) => {
     storeComponents.updateField(component.id, 'techs', [...values]);
   };
 
@@ -259,14 +259,14 @@ export const ComponentDetails: React.FC<{
     const isRemove = contains.length > values.length;
     if (isRemove) {
       const diff = contains.filter((x) => !values.includes(x.id))[0];
-      storeComponents.updateField(diff.id, 'inComponent', null);
+      storeComponents.updateField(diff.id, 'inComponent', { id: null });
       // TODO: move outside HOST
       return;
     }
 
     // TODO: move inside HOST
     const diff = values.filter((x) => !contains.find((o) => o.id === x))[0];
-    storeComponents.updateField(diff, 'inComponent', component.id);
+    storeComponents.updateField(diff, 'inComponent', { id: component.id });
   };
 
   /**
@@ -274,11 +274,9 @@ export const ComponentDetails: React.FC<{
    */
   const handleHost = (values: string[]) => {
     // TODO: move inside/outside HOST
-    storeComponents.updateField(
-      component.id,
-      'inComponent',
-      values.length > 0 ? values[0] : null
-    );
+    storeComponents.updateField(component.id, 'inComponent', {
+      id: values.length > 0 ? values[0] : null,
+    });
   };
 
   return (

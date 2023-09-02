@@ -22,6 +22,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
             email: `${nanoid()}@deleted.specfy.io`,
             password: null,
             emailVerifiedAt: null,
+            githubLogin: null,
           },
           where: {
             id: me.id,

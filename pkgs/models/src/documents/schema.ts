@@ -3,6 +3,7 @@ import {
   schemaOrgId,
   schemaSlug,
   schemaProseMirror,
+  schemaSource,
 } from '@specfy/core';
 import { z } from 'zod';
 
@@ -25,7 +26,7 @@ export const schemaDocument = z
     locked: z.boolean(),
 
     parentId: schemaId.nullable(),
-    source: z.string().max(100).nullable(),
+    source: schemaSource.nullable(),
     sourcePath: z.string().max(255).nullable(),
 
     createdAt: z.string().datetime(),

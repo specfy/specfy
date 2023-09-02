@@ -3,6 +3,7 @@ import {
   schemaSlug,
   schemaOrgId,
   schemaProseMirror,
+  schemaSource,
 } from '@specfy/core';
 import { z } from 'zod';
 
@@ -16,35 +17,46 @@ export const schemaComponent = z
     blobId: schemaId.nullable(),
     techId: z.string().nonempty().nullable(), // TODO: do something about that?
 
+    // TODO: sync this list
     // Can't find a way to sync them
     // type: z.enum([...componentTypes]),
     type: z.enum([
+      'api',
       'app',
       'ci',
       'db',
+      'etl',
       'hosting',
       'language',
       'messaging',
       'network',
+      'project',
       'saas',
+      'service',
       'storage',
       'tool',
-      'project',
-      'service',
     ]),
     typeId: schemaId.nullable(),
 
     name: z.string().min(2).max(100),
     slug: schemaSlug,
     description: schemaProseMirror,
-    techs: z.string().max(25).array(), // TODO: do something about that?
+    techs: z.array(
+      z
+        .object({ id: z.string().max(35), source: schemaSource })
+        .strict()
+        .partial({ source: true })
+    ),
 
     display: schemaDisplay,
     edges: schemaEdges,
 
-    inComponent: schemaId.nullable(),
+    inComponent: z
+      .object({ id: schemaId.nullable(), source: schemaSource })
+      .strict()
+      .partial({ source: true }),
 
-    source: z.string().max(100).nullable(),
+    source: schemaSource.nullable(),
     sourceName: z.string().max(100).nullable(),
     sourcePath: z.array(z.string().max(500)).max(50).nullable(),
 

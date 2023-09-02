@@ -1,6 +1,6 @@
 import type { ComponentType, ApiComponent } from '@specfy/models';
 import { supportedTypeToText } from '@specfy/models/src/components/constants';
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 
 import { createLocal } from '../../common/components';
 import { useComponentsStore, useProjectStore } from '../../common/store';
@@ -10,8 +10,8 @@ import type { OptionGroup, OptionValue } from '../Form/MultiSelect';
 import { MultiSelect } from '../Form/MultiSelect';
 
 export const LanguageSelect: React.FC<{
-  values: string[] | null;
-  onChange: (values: string[]) => void;
+  values: ApiComponent['techs'];
+  onChange: (values: ApiComponent['techs']) => void;
 }> = ({ onChange, values }) => {
   const options = useMemo<OptionGroup[]>(() => {
     const _langs: OptionValue[] = [];
@@ -53,17 +53,39 @@ export const LanguageSelect: React.FC<{
   }, []);
 
   const onCreate = (opt: OptionValue) => {
-    onChange([...(values || []), opt.value]);
+    onChange([...(values || []), { id: opt.value }]);
   };
+
+  const computedValues = useMemo(() => {
+    return values.map((tech) => {
+      return tech.id;
+    });
+  }, [values]);
+
+  const onChangeResolve = useCallback(
+    (items: string[]) => {
+      const computed: ApiComponent['techs'] = [];
+      for (const item of items) {
+        const prev = values.find((tech) => tech.id === item);
+        if (prev) {
+          computed.push(prev);
+        } else {
+          computed.push({ id: item });
+        }
+      }
+      onChange(computed);
+    },
+    [onChange, values]
+  );
 
   return (
     <MultiSelect
       autoFocus={true}
       allowClear
       multiple={true}
-      values={values || []}
+      values={computedValues}
       options={options}
-      onChange={onChange}
+      onChange={onChangeResolve}
       onCreate={onCreate}
     />
   );
@@ -94,9 +116,11 @@ type OptionData =
 let afterRender: string | null = null;
 
 export const defaultFilterSelect: ComponentType[] = [
+  'api',
   'app',
   'ci',
   'db',
+  'etl',
   'messaging',
   'network',
   'project',
