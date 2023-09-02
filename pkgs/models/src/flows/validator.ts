@@ -48,8 +48,10 @@ export const schemaEdges = z.array(
       ),
       portSource: schemaPortSource,
       portTarget: schemaPortTarget,
+      source: z.string().max(100),
     })
     .strict()
+    .partial({ source: true })
 );
 
 export const schemaFlowUpdate = z

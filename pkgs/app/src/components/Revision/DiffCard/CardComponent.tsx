@@ -10,7 +10,7 @@ import type {
 import type { RouteProject } from '../../../types/routes';
 import { ComponentIcon } from '../../Component/Icon';
 import { ComponentItem, TechItem } from '../../Component/Line';
-import { ContentDoc } from '../../Content';
+import { ContentDoc, Presentation } from '../../Content';
 import { Flex } from '../../Flex';
 import { PreviewNode } from '../../Flow/CustomNode';
 
@@ -64,11 +64,14 @@ export const DiffCardComponent: React.FC<{
   if (diff.blob.deleted || diff.blob.created) {
     return (
       <div className={cls.content}>
-        <ContentDoc
-          doc={using.description}
-          id={diff.blob.typeId}
-          placeholder={false}
-        />
+        {Title}
+        <Presentation>
+          <ContentDoc
+            doc={using.description}
+            id={diff.blob.typeId}
+            placeholder={false}
+          />
+        </Presentation>
         {using.techs.length > 0 && (
           <div className={cls.line}>
             <h4>Stack</h4>

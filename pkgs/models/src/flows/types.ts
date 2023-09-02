@@ -92,5 +92,5 @@ export interface FlowEdge {
   vertices: Array<{ x: number; y: number }>;
   portSource: 'sb' | 'sl' | 'sr' | 'st';
   portTarget: 'tb' | 'tl' | 'tr' | 'tt';
-  source?: string;
+  source?: string | undefined;
 }

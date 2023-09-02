@@ -19,7 +19,7 @@ import { i18n } from '@/common/i18n';
 export interface AIToolbarProps {
   className?: string;
   editor: Editor | null;
-  tools?: Array<'project.description' | 'rewrite'>;
+  tools?: Array<'project.description' | 'rewrite'> | false;
   onStart: () => void;
   onEnd: (success: boolean) => void;
 }
@@ -99,6 +99,9 @@ export const AIToolbar: React.FC<AIToolbarProps> = ({
       operation: { type: 'rewrite', text },
     });
   };
+  if (!tools) {
+    return null;
+  }
 
   return (
     <div className={classNames(className)}>
@@ -124,10 +127,7 @@ export const AIToolbar: React.FC<AIToolbarProps> = ({
                 </TooltipFull>
               )}
               {tools.includes('rewrite') && (
-                <TooltipFull
-                  msg="Improve the formulation, nothing will be added or deleted."
-                  side="right"
-                >
+                <TooltipFull msg="Improve the formulation." side="right">
                   <Dropdown.Item onClick={onRewrite}>
                     <IconSparkles /> Rewrite
                   </Dropdown.Item>

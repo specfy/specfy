@@ -40,9 +40,10 @@
 }
 
 .title {
-  width: 100%;
+  width: calc(100%);
+}
 
-  input {
-    padding-left: 10px !important;
-  }
+.editor {
+  margin: 0;
+  padding: 10px 14px;
 }

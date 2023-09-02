@@ -15,7 +15,7 @@ import { useParams } from 'react-router-dom';
 import { updateRevision, useGetRevisionChecks } from '../../../api';
 import { isError } from '../../../api/helpers';
 import { Card } from '../../../components/Card';
-import { ContentDoc } from '../../../components/Content';
+import { ContentDoc, Presentation } from '../../../components/Content';
 import * as Dropdown from '../../../components/Dropdown';
 import { Editor } from '../../../components/Editor';
 import { Flex } from '../../../components/Flex';
@@ -239,7 +239,11 @@ export const RevisionMainCard: React.FC<{ rev: ApiRevision }> = ({ rev }) => {
         </div>
 
         <div className={cls.content}>
-          {!edit && <ContentDoc doc={rev.description} />}
+          {!edit && (
+            <Presentation>
+              <ContentDoc doc={rev.description} />
+            </Presentation>
+          )}
           {edit && (
             <Editor
               key={rev.id}

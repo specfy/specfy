@@ -72,6 +72,7 @@ export const AvatarAuto: React.FC<Props> = ({
         shape && cls[shape],
         props.icon && cls.icon
       )}
+      data-avatar
     >
       {props.icon}
       <Avatar.Image className={cls.image} src={src!} alt={name!} />

@@ -175,6 +175,8 @@ const AddComponents: React.FC = () => {
           transform: `translate(-10000px, -10000px)`,
           position: 'absolute',
           pointerEvents: 'none',
+          display: 'flex',
+          gap: '40px',
         }}
       >
         <div ref={previewService}>

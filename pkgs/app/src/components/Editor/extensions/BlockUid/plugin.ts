@@ -18,14 +18,15 @@ export const BlockUid = Extension.create({
         key: new PluginKey('blockUid'),
         appendTransaction: (transactions, _prevState, nextState) => {
           const tr = nextState.tr;
-          const { text } = nextState.schema.nodes;
+          const { text, hardBreak } = nextState.schema.nodes;
           let modified = false;
           if (transactions.some((transaction) => transaction.docChanged)) {
             // Adds a unique id to a node
             nextState.doc.descendants((node, pos) => {
-              if (node.type === text) {
+              if (node.type === text || node.type === hardBreak) {
                 return;
               }
+
               if (!isNodeHasAttribute(node, attrName)) {
                 tr.setNodeAttribute(pos, attrName, nanoid());
                 modified = true;
