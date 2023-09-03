@@ -1,3 +1,5 @@
+$transition: 0.25s ease-in-out;
+
 .group {
   display: flex;
   flex-direction: column;
@@ -13,10 +15,31 @@
     padding: 0 var(--spc-l) 0 var(--spc-m);
     font-size: var(--font-s);
     color: var(--text-secondary);
+    transition: opacity $transition;
   }
 
   .sub {
     padding: 0 var(--spc-l);
     transition: height 0.25s ease-in-out;
+  }
+
+  span[data-avatar],
+  svg {
+    transition: margin-right $transition;
+  }
+
+  &.collapsed {
+    .name {
+      opacity: 0;
+    }
+
+
+    svg {
+      margin-right: var(--spc-2xl);
+    }
+
+    span[data-avatar] {
+      margin-right: var(--spc-l);
+    }
   }
 }

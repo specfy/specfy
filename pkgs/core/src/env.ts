@@ -39,6 +39,7 @@ const schema = z.object({
   RESEND_KEY: z.string().optional(),
   STRIPE_KEY: z.string().optional(),
   STRIPE_WEBHOOKS_SECRET: z.string().nonempty(),
+  LOGSNAG_KEY: z.string().optional(),
 });
 
 export const envs = schema.parse(process.env);

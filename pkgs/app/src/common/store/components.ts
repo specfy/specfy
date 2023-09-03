@@ -99,8 +99,8 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
         continue;
       }
 
-      if (copy.inComponent === id) {
-        copy.inComponent = null;
+      if (copy.inComponent.id === id) {
+        copy.inComponent = { id: null };
       }
 
       // Remove any edges pointing toward this component

@@ -1,4 +1,4 @@
-import { nanoid } from '@specfy/core';
+import { logEvent, nanoid } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import { createUserActivity } from '@specfy/models';
 import type { DeleteMe } from '@specfy/models';
@@ -12,31 +12,34 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
     '/',
     { preHandler: [noQuery, noBody] },
     async function (req, res) {
-      const user = req.me!;
+      const me = req.me!;
 
       await prisma.$transaction(async (tx) => {
-        await tx.accounts.deleteMany({ where: { userId: user.id } });
+        await tx.accounts.deleteMany({ where: { userId: me.id } });
         await tx.users.update({
           data: {
             name: 'Deleted Account',
             email: `${nanoid()}@deleted.specfy.io`,
             password: null,
             emailVerifiedAt: null,
+            githubLogin: null,
           },
           where: {
-            id: user.id,
+            id: me.id,
           },
         });
         await createUserActivity({
-          user,
+          user: me,
           action: 'User.deleted',
-          target: user,
+          target: me,
           orgId: null,
           tx,
         });
 
         // TODO: maybe delete permissions too?
       });
+
+      logEvent('account.deleted', { userId: me.id });
 
       await req.logOut();
 

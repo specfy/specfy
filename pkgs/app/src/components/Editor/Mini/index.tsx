@@ -105,14 +105,15 @@ const Editor: React.FC<MiniEditorProps> = ({
 export const EditorMini: React.FC<
   {
     doc: BlockLevelZero;
+    className?: string;
   } & Omit<MiniEditorProps, 'content'>
-> = ({ doc, ...props }) => {
+> = ({ doc, className, ...props }) => {
   const content = useMemo(() => {
     return doc;
   }, []);
 
   return (
-    <div className={cls.mini}>
+    <div className={classNames(cls.mini, className)}>
       <Editor content={content} {...props} />
     </div>
   );

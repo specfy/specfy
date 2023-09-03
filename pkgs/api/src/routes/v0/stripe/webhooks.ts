@@ -1,4 +1,4 @@
-import { envs, l } from '@specfy/core';
+import { envs, l, logEvent } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import { v1, stripe } from '@specfy/models';
 import type { PostStripeWebhook } from '@specfy/models';
@@ -84,6 +84,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
           }
         }
 
+        logEvent('stripe.subscribed', { orgId: data.metadata!.orgId });
         return res.status(200).send({
           done: true,
         });
@@ -145,19 +146,30 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       if (event.type === 'customer.subscription.deleted') {
         const data = event.data.object as Stripe.Subscription;
 
-        await prisma.orgs.updateMany({
-          where: {
-            stripeSubscriptionId: data.id,
-          },
-          data: {
-            stripePriceId: null,
-            stripeSubscriptionId: null,
-            currentPlanId: null,
-            stripeCurrentPeriodStart: null,
-            stripeCurrentPeriodEnd: null,
-          },
+        const orgs = await prisma.$transaction(async (tx) => {
+          const list = await tx.orgs.findMany({
+            where: {
+              stripeSubscriptionId: data.id,
+            },
+          });
+          await tx.orgs.updateMany({
+            where: {
+              stripeSubscriptionId: data.id,
+            },
+            data: {
+              stripePriceId: null,
+              stripeSubscriptionId: null,
+              currentPlanId: null,
+              stripeCurrentPeriodStart: null,
+              stripeCurrentPeriodEnd: null,
+            },
+          });
+          return list;
         });
 
+        for (const org of orgs) {
+          logEvent('stripe.deleted', { orgId: org.id });
+        }
         return res.status(200).send({
           done: true,
         });

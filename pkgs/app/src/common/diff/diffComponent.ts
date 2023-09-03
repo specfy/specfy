@@ -1,4 +1,4 @@
-import type { ApiBlobComponent } from '@specfy/models';
+import type { ApiBlobComponent, InComponent } from '@specfy/models';
 import { IGNORED_COMPONENT_KEYS } from '@specfy/models/src/revisions/constants';
 import type { Editor } from '@tiptap/react';
 import { diffJson, diffWordsWithSpace } from 'diff';
@@ -58,10 +58,11 @@ export function diffComponent(
       });
       continue;
     }
-    if (key === 'edges') {
+    if (key === 'edges' || key === 'techs') {
       const prev = blob.previous?.[key] ? blob.previous[key] : [];
       const value = blob.current[key];
-      const change = diffObjectsArray(prev, value, 'target');
+      // TODO: fix as any
+      const change = diffObjectsArray(prev as any, value as any, 'target');
       if (change.changes <= 0) {
         continue;
       }
@@ -72,7 +73,7 @@ export function diffComponent(
       });
       continue;
     }
-    if (key === 'techs' || key === 'tags') {
+    if (key === 'tags') {
       const prev = blob.previous?.[key] ? blob.previous[key] : [];
       const value = blob.current[key];
 
@@ -94,6 +95,21 @@ export function diffComponent(
       diffs.push({
         key,
         diff: change,
+      });
+      continue;
+    }
+    if (key === 'inComponent') {
+      const value = blob.current[key];
+      const prev: InComponent = blob.previous?.[key]
+        ? blob.previous[key]
+        : { id: null };
+      if (value.id === prev!.id) {
+        continue;
+      }
+
+      diffs.push({
+        key,
+        diff: 'modified',
       });
       continue;
     }

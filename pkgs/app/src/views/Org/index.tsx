@@ -54,7 +54,7 @@ export const Org: React.FC = () => {
     }
   }, [org]);
 
-  if (getOrgs.isLoading || (org && params.org_id !== org?.id)) {
+  if (!getOrgs.data || (org && params.org_id !== org?.id)) {
     return (
       <div className={cls.org}>
         <div></div>
@@ -91,8 +91,8 @@ export const Org: React.FC = () => {
       <Helmet title={`${org.name} ${titleSuffix}`} />
       <div>
         <Sidebar.Sidebar>
-          <Sidebar.Group switcher={<OrgSwitcher />}>
-            <OrgMenu org={org} />
+          <Sidebar.Group switcher={<OrgSwitcher />} name="Org">
+            <OrgMenu />
           </Sidebar.Group>
         </Sidebar.Sidebar>
       </div>

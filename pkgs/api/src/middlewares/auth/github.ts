@@ -1,5 +1,5 @@
 import type { Authenticator } from '@fastify/passport';
-import { nanoid, l, envs } from '@specfy/core';
+import { nanoid, l, envs, logEvent } from '@specfy/core';
 import type { Users } from '@specfy/db';
 import { prisma } from '@specfy/db';
 import { sendWelcome } from '@specfy/emails';
@@ -68,6 +68,8 @@ export function registerGithub(passport: Authenticator) {
           where: { userId: user.id, provider: 'github' },
         });
 
+        logEvent('account.login', { userId: user.id });
+
         done(null, user);
         return;
       }
@@ -103,6 +105,8 @@ export function registerGithub(passport: Authenticator) {
           tx,
         });
       });
+
+      logEvent('account.register', { userId: user!.id });
 
       if (!process.env.VITEST) {
         l.info('Sending email', { to: email, type: 'welcome' });

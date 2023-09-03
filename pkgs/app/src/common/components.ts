@@ -19,7 +19,7 @@ export function getAllChilds(
 ): ApiComponent[] {
   const tmp = [];
   for (const component of components) {
-    if (component.inComponent === id) {
+    if (component.inComponent.id === id) {
       tmp.push(component);
       tmp.push(...getAllChilds(components, component.id));
     }
@@ -74,7 +74,7 @@ export function createLocal(
     display: { pos, size },
     edges: [],
     blobId: null,
-    inComponent: null,
+    inComponent: { id: null },
     show: true,
     tags: [],
     source: null,

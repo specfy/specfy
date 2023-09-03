@@ -6,7 +6,6 @@ export default defineConfig({
     environment: 'node',
     include: ['src/**/*.test.ts'],
     clearMocks: true,
-    env: {},
     coverage: {
       enabled: true,
       reporter: ['cobertura'],

@@ -25,7 +25,7 @@ export function getBlobComponent(
       size: { width: 130, height: 40 },
     },
     techs: [],
-    inComponent: null,
+    inComponent: { id: null },
     edges: [],
     source: null,
     sourceName: null,

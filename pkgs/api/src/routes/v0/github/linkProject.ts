@@ -1,5 +1,5 @@
 import { RequestError } from '@octokit/request-error';
-import { schemaId, schemaOrgId } from '@specfy/core';
+import { logEvent, schemaId, schemaOrgId } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import {
   createGithubActivity,
@@ -122,6 +122,15 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
           });
         }
       });
+
+      logEvent(
+        body.repository ? 'github.link_project' : 'github.unlink_project',
+        {
+          userId: me.id,
+          orgId: org.id,
+          projectId: body.projectId,
+        }
+      );
 
       return res.status(200).send({
         done: true,

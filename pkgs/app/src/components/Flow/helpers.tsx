@@ -123,14 +123,14 @@ export const onNodesChangeProject: (
         const comp = store.select(change.id)!;
         store.update({
           ...comp,
-          inComponent: change.parentId,
+          inComponent: { id: change.parentId },
           display: {
             ...comp.display,
             pos: change.position,
           },
         });
       } else if (change.type === 'ungroup') {
-        store.updateField(change.id, 'inComponent', null);
+        store.updateField(change.id, 'inComponent', { id: null });
       } else if (change.type === 'rename') {
         store.updateField(change.id, 'name', change.name);
       } else if (change.type === 'tech') {

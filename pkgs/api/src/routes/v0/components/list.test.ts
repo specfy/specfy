@@ -51,7 +51,7 @@ describe('GET /components', () => {
         projectId: project.id,
         name: component.name,
         slug: component.slug,
-        inComponent: null,
+        inComponent: { id: null },
         techs: [],
         techId: null,
         type: 'service',

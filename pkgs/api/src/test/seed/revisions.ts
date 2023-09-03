@@ -103,7 +103,7 @@ export async function seedRevisions(
           pos: { x: -10, y: 90 },
           size: { width: 130, height: 40 },
         },
-        inComponent: components.gce.id,
+        inComponent: { id: components.gce.id },
         techs: [],
         edges: [
           {
@@ -134,7 +134,7 @@ export async function seedRevisions(
       portTarget: 'tl',
     });
     edges[0].write = false;
-    const techs = ['golang', ...components.api.techs];
+    const techs = [{ id: 'golang' }, ...components.api.techs];
     techs.pop();
 
     const blob3 = await createComponentBlob({
@@ -156,7 +156,7 @@ export async function seedRevisions(
             },
           ],
         },
-        inComponent: components.gce.id,
+        inComponent: { id: components.gce.id },
         display: {
           zIndex: 3,
           pos: { x: 190, y: 110 },

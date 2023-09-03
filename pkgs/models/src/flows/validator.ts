@@ -1,4 +1,4 @@
-import { alphabet, schemaId } from '@specfy/core';
+import { alphabet, schemaId, schemaSource } from '@specfy/core';
 import { z } from 'zod';
 
 import { min, max, wMax, wMin, hMax, hMin } from './constants.js';
@@ -48,8 +48,10 @@ export const schemaEdges = z.array(
       ),
       portSource: schemaPortSource,
       portTarget: schemaPortTarget,
+      source: schemaSource,
     })
     .strict()
+    .partial({ source: true })
 );
 
 export const schemaFlowUpdate = z

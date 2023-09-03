@@ -18,7 +18,7 @@ export function createNodeFromProject(
     name: project.name,
     type: 'project',
     display: display,
-    inComponent: null,
+    inComponent: { id: null },
     techId: null,
     typeId: null,
   });
@@ -44,9 +44,9 @@ export function createNode(
     },
   };
 
-  if (component.inComponent) {
+  if (component.inComponent.id) {
     node.extent = 'parent';
-    node.parentNode = component.inComponent;
+    node.parentNode = component.inComponent.id;
   }
 
   return node;
@@ -81,13 +81,13 @@ export function componentsToFlow(components: ComponentForFlow[]): ComputedFlow {
   const done: string[] = [];
 
   let i = 0;
-  while (i < 9999) {
+  while (i < 999) {
     i += 1;
     if (hosts.length <= 0) {
       break;
     }
     const host = hosts.shift()!;
-    if (host.inComponent && !done.includes(host.inComponent)) {
+    if (host.inComponent.id && !done.includes(host.inComponent.id)) {
       hosts.push(host);
       continue;
     }
@@ -95,7 +95,7 @@ export function componentsToFlow(components: ComponentForFlow[]): ComputedFlow {
     nodes.push(createNode(host));
     done.push(host.id);
   }
-  if (i >= 9999) {
+  if (i >= 998) {
     throw new Error("Can't compute host");
   }
 

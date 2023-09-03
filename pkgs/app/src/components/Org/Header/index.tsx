@@ -103,7 +103,7 @@ export const OrgSwitcher: React.FC = () => {
   );
 };
 
-export const OrgMenu: React.FC<{ org: ApiOrg }> = () => {
+export const OrgMenu: React.FC = () => {
   const params = useParams<Partial<RouteOrg>>() as RouteOrg;
   const location = useLocation();
 
@@ -144,7 +144,7 @@ export const OrgMenu: React.FC<{ org: ApiOrg }> = () => {
         key: 'home',
         label: (
           <Link to={linkSelf}>
-            <Flex gap="m">
+            <Flex gap="l">
               <IconHome />
               Home
             </Flex>
@@ -155,7 +155,7 @@ export const OrgMenu: React.FC<{ org: ApiOrg }> = () => {
         key: 'flow',
         label: (
           <Link to={`${linkSelf}/_/flow`}>
-            <Flex gap="m">
+            <Flex gap="l">
               <IconApps />
               Flow
             </Flex>
@@ -166,7 +166,7 @@ export const OrgMenu: React.FC<{ org: ApiOrg }> = () => {
         key: 'report',
         label: (
           <Flex justify="space-between" grow={1}>
-            <Flex gap="m">
+            <Flex gap="l">
               <IconChartLine />
               Report
             </Flex>
@@ -178,7 +178,7 @@ export const OrgMenu: React.FC<{ org: ApiOrg }> = () => {
         key: 'settings',
         label: (
           <Link to={`${linkSelf}/_/settings`}>
-            <Flex gap="m">
+            <Flex gap="l">
               <IconSettings />
               Settings
             </Flex>

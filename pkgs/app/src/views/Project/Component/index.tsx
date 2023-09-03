@@ -12,7 +12,11 @@ import { useReactFlow } from 'reactflow';
 import { ComponentDetails } from '../../../components/Component/Details';
 import { ComponentIcon } from '../../../components/Component/Icon';
 import { Container } from '../../../components/Container';
-import { ContentDoc, Placeholder } from '../../../components/Content';
+import {
+  ContentDoc,
+  Placeholder,
+  Presentation,
+} from '../../../components/Content';
 import * as Dropdown from '../../../components/Dropdown';
 import { EditorMini } from '../../../components/Editor/Mini';
 import { Flex } from '../../../components/Flex';
@@ -207,10 +211,12 @@ export const ComponentView: React.FC<{
 
           {!isEditing && comp.description && (
             <Editable padded>
-              <ContentDoc
-                doc={comp.description}
-                placeholder={<Placeholder />}
-              />
+              <Presentation>
+                <ContentDoc
+                  doc={comp.description}
+                  placeholder={<Placeholder />}
+                />
+              </Presentation>
             </Editable>
           )}
           {isEditing && (

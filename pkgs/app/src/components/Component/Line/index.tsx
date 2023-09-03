@@ -91,15 +91,15 @@ const InternalLine: React.FC<
 
 export const ComponentLineTech: React.FC<
   Line & {
-    techs: string[] | null;
+    techs: ApiComponent['techs'];
   }
 > = ({ techs, params, ...rest }) => {
   return (
     <InternalLine
       {...rest}
       params={params}
-      items={techs?.map((techId) => {
-        return <TechItem key={techId} techId={techId} params={params} />;
+      items={techs.map((tech) => {
+        return <TechItem key={tech.id} techId={tech.id} params={params} />;
       })}
     />
   );

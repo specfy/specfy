@@ -15,7 +15,7 @@ export const TechnicalAspects: React.FC<{
 }> = ({ params }) => {
   const storeComponents = useComponentsStore();
   const [components, setComponents] = useState<ApiComponent[]>();
-  const [techs, setTechs] = useState<string[]>([]);
+  const [techs, setTechs] = useState<ApiComponent['techs']>([]);
   const [empty, setEmtpy] = useState<boolean>(false);
   const [groups, setGroups] = useState<Record<
     ComponentType | 'others',
@@ -52,8 +52,8 @@ export const TechnicalAspects: React.FC<{
 
     for (const comp of components) {
       if (comp.techs) {
-        for (const t of comp.techs) {
-          _techs.add(t);
+        for (const tech of comp.techs) {
+          _techs.add(tech.id);
         }
       }
 
@@ -74,7 +74,13 @@ export const TechnicalAspects: React.FC<{
     }
 
     setGroups(_groups);
-    setTechs(Array.from(_techs.values()).sort());
+    setTechs(
+      Array.from(_techs.values())
+        .sort()
+        .map((id) => {
+          return { id };
+        })
+    );
     setEmtpy(
       !(Object.keys(_groups) as Array<keyof typeof _groups>).find(
         (k) => _groups[k]!.length > 0

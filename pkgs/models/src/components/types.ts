@@ -5,6 +5,8 @@ import type { FlowEdge, FlowItemDisplay } from '../flows/types.js';
 
 export type ComponentType = TechType | 'project' | 'service';
 
+export type InComponent = { id: string | null; source?: string | undefined };
+export type ComponentTech = { id: string; source?: string | undefined };
 export interface DBComponent {
   id: string;
   orgId: string;
@@ -19,12 +21,12 @@ export interface DBComponent {
   name: string;
   slug: string;
   description: BlockLevelZero;
-  techs: string[];
+  techs: ComponentTech[];
 
   display: FlowItemDisplay;
   edges: FlowEdge[];
 
-  inComponent: string | null;
+  inComponent: InComponent;
 
   source: string | null;
   sourceName: string | null;

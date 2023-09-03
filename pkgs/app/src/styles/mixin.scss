@@ -16,11 +16,10 @@
 
 @mixin focusable() {
   &:hover {
-    outline: 1px solid var(--indigo-8);
+    box-shadow: var(--indigo-8) 0 0 2px;
   }
 
   &:focus {
-    outline: 1px solid var(--indigo-8);
     box-shadow: rgb(0 0 0 / 9%) 0 1px 4px;
   }
 }
@@ -29,17 +28,11 @@
   @include focusable;
 
   cursor: text;
-
   border: none;
   border-radius: var(--radius2);
-  outline: 1px solid transparent;
-
-  transition: border-color 0.15s ease-in-out 0s, box-shadow 0.15s ease-in-out 0s;
-
+  transition: box-shadow 0.15s ease-in-out 0s;
 
   &:focus-within {
-    outline: 1px solid var(--indigo-8);
     box-shadow: rgb(0 0 0 / 9%) 0 1px 4px;
   }
-
 }
