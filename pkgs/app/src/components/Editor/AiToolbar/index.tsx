@@ -107,7 +107,7 @@ export const AIToolbar: React.FC<AIToolbarProps> = ({
     <div className={classNames(className)}>
       <Dropdown.Menu>
         <Dropdown.Trigger asChild>
-          <Button loading={loading} size="s">
+          <Button loading={loading} size="s" display="ghost">
             <IconWand /> AI
           </Button>
         </Dropdown.Trigger>
