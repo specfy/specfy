@@ -112,7 +112,7 @@ export const ProjectOverview: React.FC<{
             <>
               <Flow flow={flow} readonly />
               <Toolbar bottom>
-                <Toolbar.Fullscreen project={project} />
+                <Toolbar.Fullscreen to={`${project.orgId}/${project.slug}`} />
                 <Toolbar.Zoom />
               </Toolbar>
             </>

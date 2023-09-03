@@ -118,7 +118,7 @@ export const Tech: React.FC<{
             <>
               <Flow flow={flow} readonly />
               <Toolbar bottom>
-                <Toolbar.Fullscreen project={proj} />
+                <Toolbar.Fullscreen to={`${proj.orgId}/${proj.slug}`} />
                 <Toolbar.Zoom />
               </Toolbar>
             </>

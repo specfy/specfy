@@ -1,4 +1,3 @@
-import type { ApiProject } from '@specfy/models';
 import {
   IconBox,
   IconCode,
@@ -133,11 +132,11 @@ const ToolbarHelp: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   );
 };
 
-const Fullscreen: React.FC<{ project: ApiProject }> = ({ project }) => {
+const Fullscreen: React.FC<{ to: string }> = ({ to }) => {
   return (
     <div className={cls.toolbar}>
       <TooltipFull msg="Fullscreen" side="top">
-        <Link to={`/${project.orgId}/${project.slug}/flow`}>
+        <Link to={`/${to}/flow`}>
           <Button display="ghost">
             <IconMaximize />
           </Button>

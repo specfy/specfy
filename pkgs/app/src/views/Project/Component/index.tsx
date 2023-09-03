@@ -238,7 +238,7 @@ export const ComponentView: React.FC<{
             <>
               <Flow flow={flow} highlight={comp.id} readonly />
               <Toolbar bottom>
-                <Toolbar.Fullscreen project={proj} />
+                <Toolbar.Fullscreen to={`${proj.orgId}/${proj.slug}`} />
                 <Toolbar.Zoom />
               </Toolbar>
             </>
