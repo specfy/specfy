@@ -44,6 +44,11 @@ export async function recomputeOrgGraph({
     });
 
     for (const [projectId, rel] of Object.entries(rels)) {
+      if (projectId === project.id) {
+        // Ignore accidental self link
+        continue;
+      }
+
       if (rel.from.read || rel.from.write) {
         if (!relations[projectId]) {
           relations[projectId] = {};

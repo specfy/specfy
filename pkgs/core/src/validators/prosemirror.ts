@@ -44,7 +44,10 @@ const blockText = z
 const blockHardBreak = z
   .object({
     type: z.literal('hardBreak'),
-    // attrs: z.object({ uid: schemaId }).strict(),
+    attrs: z
+      .object({ uid: schemaId.nullable() })
+      .strict()
+      .partial({ uid: true }),
   })
   .strict();
 
