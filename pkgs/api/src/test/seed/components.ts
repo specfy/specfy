@@ -184,7 +184,7 @@ export async function seedComponents(
           type: 'db',
           orgId: o1.id,
           projectId: pAnalytics.id,
-          techId: 'biqquery',
+          techId: 'gcp.bigquery',
           description: {
             type: 'doc',
             content: [

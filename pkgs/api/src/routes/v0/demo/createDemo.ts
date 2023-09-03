@@ -371,7 +371,7 @@ export async function createDemo(
       type: 'db',
       orgId: org.id,
       projectId: pAnalytics.id,
-      techId: 'gcp.biqquery',
+      techId: 'gcp.bigquery',
       description: {
         type: 'doc',
         content: [

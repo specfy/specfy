@@ -1,4 +1,5 @@
 import type { ApiComponent, BlockLevelZero } from '@specfy/models';
+import { IconArrowRight } from '@tabler/icons-react';
 import classnames from 'classnames';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
@@ -20,6 +21,7 @@ import { UnifiedContent } from './Unified/Content';
 import cls from './index.module.scss';
 
 import { original, useRevisionStore, useComponentsStore } from '@/common/store';
+import { supportedIndexed } from '@/common/techs';
 
 export const DiffCardComponent: React.FC<{
   diff: ComponentBlobWithDiff;
@@ -48,7 +50,7 @@ export const DiffCardComponent: React.FC<{
     const hasName = diff.diffs.find((d) => d.key === 'name');
 
     return (
-      <h4>
+      <h4 className={cls.cardTitle}>
         <Flex gap="l">
           <ComponentIcon data={using} large noEmpty />
           {hasName && !diff.blob.created ? (
@@ -149,22 +151,66 @@ export const DiffCardComponent: React.FC<{
         }
 
         if (d.key === 'display') {
+          const prev = diff.blob.previous!;
           return (
-            <div key={d.key}>
-              <Flex style={{ margin: '40px 0 20px 0' }} justify="center">
-                <div style={{ margin: '15px 60px 0 -50px' }}>
-                  Display changed
+            <div key={d.key} className={classnames(cls.spaced)}>
+              <h4>Display</h4>
+              <Flex gap="2xl">
+                <div style={{ paddingLeft: '70px' }} className={cls.removed}>
+                  <PreviewNode
+                    node={{
+                      id: prev.id,
+                      data: { ...prev, originalSize: prev.display.size },
+                      positionAbsolute: prev.display.pos,
+                      height: prev.display.size.height,
+                      width: prev.display.size.width,
+                    }}
+                    info={true}
+                  />
                 </div>
-                <PreviewNode
-                  node={{
-                    id: using.id,
-                    data: { ...using, originalSize: using.display.size },
-                    positionAbsolute: using.display.pos,
-                    height: using.display.size.height,
-                    width: using.display.size.width,
-                  }}
-                  info={true}
-                />
+                <div>
+                  <IconArrowRight />
+                </div>
+                <div style={{ paddingLeft: '70px' }} className={cls.added}>
+                  <PreviewNode
+                    node={{
+                      id: using.id,
+                      data: { ...using, originalSize: using.display.size },
+                      positionAbsolute: using.display.pos,
+                      height: using.display.size.height,
+                      width: using.display.size.width,
+                    }}
+                    info={true}
+                  />
+                </div>
+              </Flex>
+            </div>
+          );
+        }
+
+        if (d.key === 'techId') {
+          const prev = diff.blob.previous!;
+          return (
+            <div key={d.key} className={classnames(cls.spaced)}>
+              <h4>Technology</h4>
+              <Flex style={{ margin: '10px 0 0 0' }} gap="2xl">
+                <Flex gap="l" className={cls.removed}>
+                  <ComponentIcon data={prev} large />
+                  {prev.techId && prev.techId in supportedIndexed
+                    ? supportedIndexed[prev.techId].name
+                    : ''}
+                  {!prev.techId && 'Service'}
+                </Flex>
+                <div>
+                  <IconArrowRight />
+                </div>
+                <Flex gap="l" className={cls.added}>
+                  <ComponentIcon data={using} large noEmpty />
+                  {using.techId && using.techId in supportedIndexed
+                    ? supportedIndexed[using.techId].name
+                    : ''}
+                  {!using.techId && 'Service'}
+                </Flex>
               </Flex>
             </div>
           );
