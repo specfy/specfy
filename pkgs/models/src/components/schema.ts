@@ -21,6 +21,7 @@ export const schemaComponent = z
     // Can't find a way to sync them
     // type: z.enum([...componentTypes]),
     type: z.enum([
+      'analytics',
       'api',
       'app',
       'ci',

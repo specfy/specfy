@@ -15,6 +15,7 @@ export async function createDemo(
   org: Orgs,
   user: Users
 ): Promise<void> {
+  // ---- Dashboard
   const pDash = await createProject({
     data: {
       id: nanoid(),
@@ -113,6 +114,7 @@ export async function createDemo(
     tx,
   });
 
+  // ---- Analytics
   const pAnalytics = await createProject({
     data: {
       id: nanoid(),
@@ -148,6 +150,7 @@ export async function createDemo(
     tx,
   });
 
+  // ---- Billing
   const pBilling = await createProject({
     data: {
       id: nanoid(),
@@ -180,12 +183,12 @@ export async function createDemo(
       name: 'Stripe',
       type: 'saas',
       orgId: org.id,
-      projectId: pDash.id,
+      projectId: pBilling.id,
       techId: 'stripe',
       description: { type: 'doc', content: [] },
       display: {
         zIndex: 1,
-        pos: { x: 20, y: 20 },
+        pos: { x: -16, y: -39 },
         size: { width: 120, height: 40 },
       },
       techs: [],
@@ -201,7 +204,7 @@ export async function createDemo(
       name: 'Backend',
       type: 'service',
       orgId: org.id,
-      projectId: pDash.id,
+      projectId: pBilling.id,
       description: { type: 'doc', content: [] },
       display: {
         zIndex: 3,
@@ -215,8 +218,8 @@ export async function createDemo(
           read: true,
           write: true,
           vertices: [],
-          portSource: 'sl',
-          portTarget: 'tr',
+          portSource: 'st',
+          portTarget: 'tb',
         },
       ],
       techs: [{ id: 'rust' }],

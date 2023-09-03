@@ -116,6 +116,7 @@ type OptionData =
 let afterRender: string | null = null;
 
 export const defaultFilterSelect: ComponentType[] = [
+  'analytics',
   'api',
   'app',
   'ci',

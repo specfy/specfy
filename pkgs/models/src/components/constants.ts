@@ -16,6 +16,7 @@ export const componentTypes: ComponentType[] = [
 ];
 
 export const supportedTypeToText: Record<ComponentType, string> = {
+  analytics: 'analytics',
   api: 'api',
   app: 'application',
   ci: 'ci',
@@ -34,6 +35,7 @@ export const supportedTypeToText: Record<ComponentType, string> = {
 
 export const internalTypeToText: Record<ComponentType, string> = {
   service: 'Service',
+  analytics: 'Analytics',
   api: 'API',
   app: 'Application',
   ci: 'CI',
