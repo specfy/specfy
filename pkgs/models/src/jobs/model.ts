@@ -33,7 +33,7 @@ export async function createJobDeploy({
     },
   });
 
-  logEvent('jobs.created', { orgId, projectId });
+  logEvent('jobs.created', { orgId, projectId, userId });
 
   return job;
 }

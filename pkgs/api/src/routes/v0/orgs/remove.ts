@@ -13,6 +13,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
     { preHandler: [noQuery, noBody, getOrg] },
     async function (req, res) {
       const org = req.org!;
+      const me = req.me!;
 
       await prisma.$transaction(async (tx) => {
         await tx.activities.deleteMany({ where: { orgId: org.id } });
@@ -26,7 +27,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         await tx.orgs.delete({ where: { id: org.id } });
       });
 
-      logEvent('orgs.deleted', { orgId: org.id });
+      logEvent('orgs.deleted', { userId: me.id, orgId: org.id });
 
       return res.status(204).send();
     }

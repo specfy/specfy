@@ -106,7 +106,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         );
       }
 
-      logEvent('invitation.created', { orgId: body.orgId });
+      logEvent('invitation.created', { userId: me.id, orgId: body.orgId });
 
       return res.status(200).send({
         data: { token: created.token, id: created.id },

@@ -123,10 +123,14 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         }
       });
 
-      logEvent(body.repository ? 'github.link' : 'github.unlink', {
-        orgId: org.id,
-        projectId: body.projectId,
-      });
+      logEvent(
+        body.repository ? 'github.link_project' : 'github.unlink_project',
+        {
+          userId: me.id,
+          orgId: org.id,
+          projectId: body.projectId,
+        }
+      );
 
       return res.status(200).send({
         done: true,

@@ -56,7 +56,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
 
       await createFreeSubscription({ org, me });
 
-      logEvent('orgs.created', { orgId: org.id });
+      logEvent('orgs.created', { userId: me.id, orgId: org.id });
 
       return res.status(200).send({ data: toApiOrgPublic(org) });
     }

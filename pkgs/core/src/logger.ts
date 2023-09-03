@@ -4,7 +4,6 @@ import type { Level, LoggerOptions } from 'pino';
 import { pino } from 'pino';
 
 import { isProd } from './env.js';
-import { metrics } from './metric.js';
 
 // https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#LogSeverity
 const levelToSeverity: Record<string, string> = {
@@ -118,15 +117,6 @@ export function createFileLogger(
   });
 }
 
-const eventLogger = l.child({ svc: 'event' });
-export function logEvent(name: string, obj?: any) {
-  if (process.env.VITEST) {
-    return;
-  }
-
-  eventLogger.info(obj, name);
-  metrics.increment('github.link');
-}
 // function formatStack(stack: string) {
 //   return parseStack(stack)
 //     .map(

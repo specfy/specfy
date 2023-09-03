@@ -62,6 +62,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         return validationError(res, val.error);
       }
 
+      const me = req.me!;
       const data: PostProject['Body'] = val.data;
       let slug = slugify(data.name);
 
@@ -108,6 +109,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       });
 
       logEvent('projects.created', {
+        userId: me.id,
         orgId: project.id,
         projectId: project.id,
       });

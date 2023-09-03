@@ -38,6 +38,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         return validationError(res, val.error);
       }
 
+      const me = req.me!;
       const org = req.org!;
       const data = val.data;
 
@@ -58,7 +59,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         },
       });
 
-      logEvent('stripe.cancel', { orgId: org.id });
+      logEvent('stripe.cancel', { userId: me.id, orgId: org.id });
       return res.status(204).send();
     }
   );

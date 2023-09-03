@@ -95,7 +95,10 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         }
       });
 
-      logEvent('github.link', { orgId: org.id });
+      logEvent(body.installationId ? 'github.link_org' : 'github.unlink_org', {
+        userId: me.id,
+        orgId: org.id,
+      });
 
       return res.status(200).send({
         done: true,

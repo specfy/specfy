@@ -13,6 +13,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
     { preHandler: [noBody, getProject] },
     async function (req, res) {
       const project = req.project!;
+      const me = req.me!;
 
       // TODO: delete all edges to this project in each Project
       // TODO: delete all edges to this project in each components
@@ -33,6 +34,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       });
 
       logEvent('projects.deleted', {
+        userId: me.id,
         orgId: project.id,
         projectId: project.id,
       });

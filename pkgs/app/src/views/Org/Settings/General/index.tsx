@@ -3,8 +3,6 @@ import type { ApiOrg } from '@specfy/models';
 import { IconLink, IconLinkOff } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { useNavigate } from 'react-router-dom';
-import { useLocalStorage } from 'react-use';
 
 import { deleteOrg, updateOrg, linkToGithubOrg } from '../../../../api';
 import { isError } from '../../../../api/helpers';
@@ -31,8 +29,6 @@ export const SettingsGeneral: React.FC<{
 }> = ({ org, params }) => {
   const { currentPerm } = useAuth();
   const toast = useToast();
-  const navigate = useNavigate();
-  const [, setLastOrg] = useLocalStorage<string>('lastOrg');
   const canEdit = currentPerm?.role === 'owner';
 
   const [waitToRead, setWaitToRead] = useState(true);
@@ -80,8 +76,7 @@ export const SettingsGeneral: React.FC<{
     }
 
     toast.add({ title: 'Organization deleted', status: 'success' });
-    setLastOrg(undefined);
-    navigate(`/`);
+    window.location.href = '/';
   };
 
   // Github

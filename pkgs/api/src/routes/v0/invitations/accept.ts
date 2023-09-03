@@ -14,9 +14,9 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
     { preHandler: [noBody, getInvitation] },
     async function (req, res) {
       const inv = req.invitation!;
-      const user = req.me!;
+      const me = req.me!;
 
-      if (user.email !== inv.email) {
+      if (me.email !== inv.email) {
         return forbidden(res);
       }
 
@@ -26,7 +26,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
             id: nanoid(),
             orgId: inv.orgId,
             projectId: null,
-            userId: user.id,
+            userId: me.id,
             role: inv.role,
           },
         });
@@ -34,7 +34,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         await createUserActivity({
           user: inv.User,
           action: 'User.added',
-          target: user,
+          target: me,
           orgId: inv.orgId,
           tx,
         });
@@ -43,7 +43,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         });
       });
 
-      logEvent('invitation.accepted', { orgId: inv.orgId });
+      logEvent('invitation.accepted', { userId: me.id, orgId: inv.orgId });
 
       return res.status(200).send({
         done: true,

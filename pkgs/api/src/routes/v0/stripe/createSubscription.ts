@@ -71,7 +71,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
             trial_end: trial,
           });
 
-          logEvent('stripe.updated', { orgId: org.id });
+          logEvent('stripe.updated', { userId: me.id, orgId: org.id });
           return res.status(200).send({
             data: {
               url: billingUrl,
@@ -114,7 +114,6 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       }
       const stripeSession = await stripe.checkout.sessions.create(options);
 
-      logEvent('stripe.checkout', { orgId: org.id });
       return res.status(200).send({
         data: {
           url: stripeSession.url!,
