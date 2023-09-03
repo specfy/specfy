@@ -21,6 +21,7 @@ export function createNodeFromProject(
     inComponent: { id: null },
     techId: null,
     typeId: null,
+    source: null,
   });
 }
 
@@ -36,6 +37,7 @@ export function createNode(
       techId: component.techId,
       typeId: component.typeId,
       originalSize: component.display.size,
+      source: component.source,
     },
     position: { ...component.display.pos },
     style: {

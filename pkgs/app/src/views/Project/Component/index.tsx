@@ -1,7 +1,11 @@
 import type { ComputedFlow, ApiComponent, ApiProject } from '@specfy/models';
 import { internalTypeToText } from '@specfy/models/src/components/constants';
 import { componentsToFlow } from '@specfy/models/src/flows/transform';
-import { IconDotsVertical, IconTrash } from '@tabler/icons-react';
+import {
+  IconDotsVertical,
+  IconTrash,
+  IconPackageImport,
+} from '@tabler/icons-react';
 import classnames from 'classnames';
 import type React from 'react';
 import { useEffect, useState } from 'react';
@@ -124,17 +128,30 @@ export const ComponentView: React.FC<{
         <div className={cls.content}>
           <Flex align="center" justify="space-between" gap="l">
             <Flex align="center" gap="l" grow>
-              {isEditing ? (
-                <TechPopover
-                  id={comp.id}
-                  techId={comp.techId || comp.typeId}
-                  data={comp}
-                  onNodesChange={onNodesChange}
-                />
+              {comp.source ? (
+                <TooltipFull
+                  msg={`This component is managed by: ${comp.source}`}
+                  side="bottom"
+                >
+                  <div>
+                    <ComponentIcon data={comp} large noEmpty />
+                  </div>
+                </TooltipFull>
               ) : (
-                <Editable inline>
-                  <ComponentIcon data={comp} large noEmpty />
-                </Editable>
+                <div>
+                  {isEditing ? (
+                    <TechPopover
+                      id={comp.id}
+                      techId={comp.techId || comp.typeId}
+                      data={comp}
+                      onNodesChange={onNodesChange}
+                    />
+                  ) : (
+                    <Editable inline>
+                      <ComponentIcon data={comp} large noEmpty />
+                    </Editable>
+                  )}
+                </div>
               )}
 
               <TooltipFull
@@ -167,21 +184,31 @@ export const ComponentView: React.FC<{
                 )}
               </TooltipFull>
             </Flex>
-            <Flex align="center">
-              <Tag
-                variant="border"
-                className={classnames(
-                  cls.tagType,
-                  comp.type in cls && cls[comp.type as keyof typeof cls]
+            <Flex align="center" gap="m">
+              <Flex gap="l">
+                {comp.source && (
+                  <TooltipFull
+                    msg={`This component is managed by: ${comp.source}`}
+                    side="bottom"
+                  >
+                    <IconPackageImport />
+                  </TooltipFull>
                 )}
-              >
-                {internalTypeToText[comp.type]}
-              </Tag>
+                <Tag
+                  variant="border"
+                  className={classnames(
+                    cls.tagType,
+                    comp.type in cls && cls[comp.type as keyof typeof cls]
+                  )}
+                >
+                  {internalTypeToText[comp.type]}
+                </Tag>
+              </Flex>
               {canEdit && (
                 <div>
                   <Dropdown.Menu>
                     <Dropdown.Trigger asChild>
-                      <Button display="ghost">
+                      <Button display="ghost" size="s">
                         <IconDotsVertical />
                       </Button>
                     </Dropdown.Trigger>

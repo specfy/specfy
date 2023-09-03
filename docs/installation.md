@@ -52,11 +52,10 @@ Optional:
    docker compose up -d
    ```
 
-07. Migrate and seed the database
+07. Migrate the database
 
    ```sh
-   turbo run migrate
-   turbo run seed
+   turbo run db:migrate
    ```
 
 08. Build
@@ -81,7 +80,13 @@ Optional:
 
    Go to [http://localhost:5173](http://localhost:5173)
 
-11. Optional: Launch the mail builder
+11. Optional: Seed the Database
+
+   ```sh
+   turbo run db:seed
+   ```
+
+12. Optional: Launch the mail builder
 
    ```sh
    npm run emails
@@ -89,13 +94,13 @@ Optional:
 
    Go to [http://localhost:3001](http://localhost:3001)
 
-12. Done.
+14. ✅ Done.
 
 ## Secrets
 
 To run this project, locally or in production, you will need a few secrets.
 
-### Github App
+### Creating the Github App
 
 You will need a [Github](https://github.com) app to allow oauth.
 
@@ -117,7 +122,7 @@ Webhooks:
 
 - Meta, Member, Membership, Organization, Public, Push, Repository, Team, Team add
 
-### Others
+### Others Secrets
 
 - [Resend](https://resend.com) key to send email
 - [Stripe](https://stripe.com) key to allow billing

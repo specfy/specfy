@@ -74,7 +74,6 @@ import {
   SiSquarespace,
   SiTwilio,
   SiAirtable,
-  SiGoogle,
   SiAdobe,
   SiShopify,
   SiHubspot,
@@ -84,6 +83,7 @@ import {
   SiCirrusci,
   SiCypress,
   SiGitlab,
+  SiGoogleanalytics,
 } from '@icons-pack/react-simple-icons';
 import type { IconType } from '@icons-pack/react-simple-icons/types';
 import type { AllowedKeys, TechItem } from '@specfy/stack-analyser';
@@ -164,7 +164,7 @@ const extending: Partial<Record<AllowedKeys, Extending>> = {
   gitlab: { Icon: SiGitlab },
   'gitlab.ci': { Icon: SiGitlab },
   golang: { Icon: SiGo },
-  googleanalytics: { Icon: SiGoogle },
+  googleanalytics: { Icon: SiGoogleanalytics },
   grafana: { Icon: SiGrafana },
   heroku: { Icon: SiHeroku },
   hubspot: { Icon: SiHubspot },
