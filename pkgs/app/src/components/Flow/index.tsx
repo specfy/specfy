@@ -290,32 +290,11 @@ export const Flow: React.FC<{
       });
     });
 
-    // The only way to get the absolute position
-    const tmp = getNode(last)!;
-
-    // Then we compute new relative position compared to host
-    const pos = node.position;
-    const position = {
-      x:
-        pos.x < tmp.position.x
-          ? 0
-          : pos.x + node.width! > tmp.position.x + tmp.width!
-          ? tmp.width! - node.width!
-          : pos.x - tmp.position.x,
-      y:
-        pos.y < tmp.position.y
-          ? 0
-          : pos.y + node.height! > tmp.position.y + tmp.height!
-          ? tmp.height! - node.height!
-          : pos.y - tmp.position.y,
-    };
-
     onNodesChange!([
       {
         type: 'group',
         id: node.id,
-        parentId: tmp.id,
-        position,
+        parentId: last,
       },
     ]);
   };

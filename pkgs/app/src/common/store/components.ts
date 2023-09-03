@@ -1,4 +1,5 @@
 import type { ApiComponent } from '@specfy/models';
+import { getAbsolutePosition } from '@specfy/models/src/flows/transform';
 import { produce } from 'immer';
 import type { Connection } from 'reactflow';
 import { create } from 'zustand';
@@ -91,32 +92,37 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
     get().updateField(id, field, item[field]);
   },
   remove: (id) => {
-    const components = Object.values(get().components);
-    const map: ComponentsState['components'] = {};
+    set(
+      produce((state: ComponentsState) => {
+        const unmodified = Object.values(state.components);
+        const components = Object.values(state.components);
+        const map: ComponentsState['components'] = {};
 
-    for (const copy of components) {
-      if (copy.id === id) {
-        continue;
-      }
+        for (const copy of components) {
+          if (copy.id === id) {
+            continue;
+          }
 
-      if (copy.inComponent.id === id) {
-        copy.inComponent = { id: null };
-      }
+          if (copy.inComponent.id === id) {
+            copy.inComponent = { id: null };
+            copy.display.pos = getAbsolutePosition(copy, unmodified);
+          }
 
-      // Remove any edges pointing toward this component
-      const edges: ApiComponent['edges'] = [];
-      for (const edge of copy.edges) {
-        if (edge.target === id) {
-          continue;
+          // Remove any edges pointing toward this component
+          const edges: ApiComponent['edges'] = [];
+          for (const edge of copy.edges) {
+            if (edge.target === id) {
+              continue;
+            }
+
+            edges.push(edge);
+          }
+
+          map[copy.id] = { ...copy, edges };
         }
-
-        edges.push(edge);
-      }
-
-      map[copy.id] = { ...copy, edges };
-    }
-
-    set({ components: map });
+        delete state.components[id];
+      })
+    );
   },
   addEdge: (connection) => {
     const components = Object.values(get().components);
