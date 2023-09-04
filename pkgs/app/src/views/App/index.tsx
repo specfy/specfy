@@ -22,6 +22,7 @@ import { Onboarding } from '../Onboarding';
 import { Org } from '../Org';
 import { OrgCreate } from '../Org/Create';
 import { Project } from '../Project';
+import { Public } from '../Public';
 import { User } from '../User';
 
 const App: React.FC = () => {
@@ -37,6 +38,7 @@ const App: React.FC = () => {
                 <HelmetProvider>
                   <Routes>
                     <Route path="/login" element={<Login />} />
+                    <Route path="/public" element={<Public />} />
                     <Route element={<AuthLayout></AuthLayout>}>
                       <Route path="/" element={<Homepage />} />
                       <Route path="/onboarding" element={<Onboarding />} />

@@ -114,7 +114,10 @@ const ToolbarZoom: React.FC = () => {
   );
 };
 
-const ToolbarHelp: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const ToolbarHelp: React.FC<{ title?: string; children: React.ReactNode }> = ({
+  title = 'Need help?',
+  children,
+}) => {
   return (
     <div className={cls.toolbar}>
       <Popover.Popover>
@@ -124,7 +127,7 @@ const ToolbarHelp: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           </Button>
         </Popover.Trigger>
         <Popover.Content className={cls.help}>
-          <h3>Need help?</h3>
+          <h3>{title}</h3>
           {children}
         </Popover.Content>
       </Popover.Popover>
