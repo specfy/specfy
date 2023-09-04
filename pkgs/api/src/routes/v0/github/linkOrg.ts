@@ -1,5 +1,5 @@
 import { RequestError } from '@octokit/request-error';
-import { logEvent, schemaOrgId } from '@specfy/core';
+import { logEvent, schemaOrgId, sentry } from '@specfy/core';
 import type { Prisma } from '@specfy/db';
 import { prisma } from '@specfy/db';
 import { github } from '@specfy/github';
@@ -58,6 +58,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         } catch (e: unknown) {
           if (e instanceof RequestError) {
             console.error(e);
+            sentry.captureException(e);
             return notFound(res);
           }
 

@@ -1,7 +1,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-import { envs, isProd, nanoid } from '@specfy/core';
+import { envs, isProd, nanoid, sentry } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import { sync } from '@specfy/github-sync';
 import type { JobWithOrgProject } from '@specfy/models';
@@ -29,9 +29,11 @@ export class JobDeploy extends Job {
           await fs.rm(this.folderName, { force: true, recursive: true });
         } catch (err: unknown) {
           this.mark('failed', 'failed_to_cleanup', err);
+          sentry.captureException(err);
         }
-      } catch {
+      } catch (err) {
         // do nothing on fs.access, we just couldn't git clone
+        sentry.captureException(err);
       }
     }
 
@@ -57,6 +59,7 @@ export class JobDeploy extends Job {
         });
       } catch (err) {
         this.l.error('Cant update Github deployment status', err);
+        sentry.captureException(err);
       }
     }
   }
@@ -101,6 +104,7 @@ export class JobDeploy extends Job {
       this.token = auth.data.token;
     } catch (err: unknown) {
       this.mark('failed', 'cant_auth_github', err);
+      sentry.captureException(err);
       return;
     }
 
@@ -147,6 +151,7 @@ export class JobDeploy extends Job {
       });
     } catch (err) {
       this.mark('failed', 'failed_to_start_github_deployment', err);
+      sentry.captureException(err);
       return;
     }
 
@@ -166,6 +171,7 @@ export class JobDeploy extends Job {
       await fs.access(this.folderName);
     } catch (err: unknown) {
       this.mark('failed', 'failed_to_clone', err);
+      sentry.captureException(err);
       return;
     }
 
@@ -221,6 +227,7 @@ export class JobDeploy extends Job {
       this.mark('success', 'success');
     } catch (err: unknown) {
       this.mark('failed', 'failed_to_deploy', err);
+      sentry.captureException(err);
       return;
     }
   }

@@ -1,4 +1,4 @@
-import { envs, l, logEvent } from '@specfy/core';
+import { envs, l, logEvent, sentry } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import { v1, stripe } from '@specfy/models';
 import type { PostStripeWebhook } from '@specfy/models';
@@ -35,6 +35,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         );
       } catch (err) {
         console.error('[stripe-hook] Signature does not match');
+        sentry.captureException(err);
         return forbidden(res);
       }
 

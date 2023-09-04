@@ -412,7 +412,7 @@ const flow: ComputedFlow = {
 export const Public: React.FC = () => {
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
-      <Helmet title={`Flow - ${titleSuffix}`} />
+      <Helmet title={`Demo Flow ${titleSuffix}`} />
 
       <FlowWrapper>
         <Flow

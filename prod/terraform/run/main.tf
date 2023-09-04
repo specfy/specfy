@@ -40,6 +40,10 @@ data "google_secret_manager_secret_version" "OPENAI_KEY" {
 data "google_secret_manager_secret_version" "LOGSNAG_KEY" {
   secret = "LOGSNAG_KEY"
 }
+data "google_secret_manager_secret_version" "SENTRY_DSN" {
+  secret = "SENTRY_DSN"
+}
+
 
 resource "google_cloud_run_v2_service" "main" {
   name     = "main"
@@ -125,6 +129,10 @@ resource "google_cloud_run_v2_service" "main" {
       env {
         name  = "LOGSNAG_KEY"
         value = data.google_secret_manager_secret_version.LOGSNAG_KEY.secret_data
+      }
+      env {
+        name = "SENTRY_DSN"
+        value = data.google_secret_manager_secret_version.SENTRY_DSN.secret_data
       }
 
 

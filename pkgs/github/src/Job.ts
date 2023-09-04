@@ -1,5 +1,5 @@
 import type { Logger } from '@specfy/core';
-import { l as defaultLogger, metrics } from '@specfy/core';
+import { l as defaultLogger, metrics, sentry } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import type { Jobs } from '@specfy/db';
 import type { JobMark, JobWithOrgProject } from '@specfy/models';
@@ -45,12 +45,14 @@ export abstract class Job {
     } catch (err: unknown) {
       l.error('Uncaught error during job', err);
       this.mark('failed', 'unknown', err);
+      sentry.captureException(err);
     } finally {
       // Clean after ourself
       try {
         await this.teardown(job);
       } catch (err: unknown) {
         this.mark('failed', 'failed_to_teardown', err);
+        // sentry.captureException(err); DO NOT capture it might be the reason it failed first
       }
     }
 
