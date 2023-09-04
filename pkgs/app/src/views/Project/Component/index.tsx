@@ -45,6 +45,7 @@ import cls from './index.module.scss';
 import { useComponentsStore } from '@/common/store';
 import { titleSuffix } from '@/common/string';
 import { Editable } from '@/components/Form/Editable';
+import { Loading } from '@/components/Loading';
 
 export const ComponentView: React.FC<{
   proj: ApiProject;
@@ -55,6 +56,7 @@ export const ComponentView: React.FC<{
   const navigate = useNavigate();
   const canEdit = currentPerm?.role !== 'viewer';
 
+  const [loading, setLoading] = useState<boolean>(true);
   const [comp, setComp] = useState<ApiComponent>();
   const params = useParams<Partial<RouteComponent>>() as RouteComponent;
 
@@ -74,16 +76,11 @@ export const ComponentView: React.FC<{
   }, [params.component_slug]);
 
   useEffect(() => {
+    setLoading(false);
     setComponents(Object.values(storeComponents.components));
     const curr = storeComponents.select(storeComponents.current!);
     setComp(curr);
   }, [storeComponents]);
-
-  useEffect(() => {
-    if (!comp) {
-      return;
-    }
-  }, [comp?.techId]);
 
   useEffect(() => {
     const nodes = getNodes();
@@ -116,6 +113,9 @@ export const ComponentView: React.FC<{
     onNodesChangeProject(storeComponents)(changes);
   };
 
+  if (loading) {
+    return <Loading />;
+  }
   if (!comp) {
     return <NotFound />;
   }

@@ -18,6 +18,7 @@ import { useToast } from '../../../hooks/useToast';
 
 import cls from './index.module.scss';
 
+import { qcli } from '@/common/query';
 import { slugify, titleSuffix } from '@/common/string';
 
 export const OrgCreate: React.FC = () => {
@@ -45,11 +46,12 @@ export const OrgCreate: React.FC = () => {
 
     setErrors({});
     toast.add({ title: 'Organization created', status: 'success' });
-    navigate(`/${res.data.id}`);
+    await qcli.refetchQueries(['listOrgs']);
     setTimeout(() => {
       // Refresh permissions
       tryLogin();
     }, 1);
+    navigate(`/${res.data.id}`);
   };
 
   return (

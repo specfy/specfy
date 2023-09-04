@@ -11,21 +11,7 @@ $width: calc(var(--w-col) / 1.5);
   margin: 0 auto;
 }
 
-.type {
-  width: $width;
-}
-
 .title {
   display: flex;
   gap: var(--spc-m);
-}
-
-.input {
-  padding: var(--spc-l);
-  font-size: var(--font-l);
-}
-
-.button {
-  width: 48px !important;
-  height: 48px;
 }

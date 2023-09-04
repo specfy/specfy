@@ -110,7 +110,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
 
       logEvent('projects.created', {
         userId: me.id,
-        orgId: project.id,
+        orgId: project.orgId,
         projectId: project.id,
       });
 
