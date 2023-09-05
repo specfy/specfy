@@ -106,6 +106,17 @@ describe('POST /jobs', () => {
     expect(res.json.data).toStrictEqual({
       config: {
         url: 'test',
+        project: {
+          branch: 'main',
+          documentation: {
+            enabled: true,
+            path: '/',
+          },
+          stack: {
+            enabled: true,
+            path: '/',
+          },
+        },
       },
       createdAt: expect.toBeIsoDate(),
       updatedAt: expect.toBeIsoDate(),
