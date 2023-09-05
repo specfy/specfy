@@ -157,9 +157,8 @@ export class JobDeploy extends Job {
 
     // Clone into a tmp folder
     this.folderName = `/tmp/specfy_clone_${job.id}_${nanoid()}`;
-    const projConfig = job.Project.config;
+    const projConfig = config.project || job.Project.config;
     try {
-      l.info('Cloning repository');
       const res =
         await $`git clone --branch ${projConfig.branch} https://x-access-token:${this.token}@github.com/${config.url}.git --depth 1 ${this.folderName}`;
 

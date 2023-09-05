@@ -1,5 +1,7 @@
 import type { Jobs, Prisma } from '@specfy/db';
 
+import type { DBProject } from '../projects';
+
 export interface JobDeployConfig {
   url: string;
   autoLayout?: boolean;
@@ -7,6 +9,7 @@ export interface JobDeployConfig {
     id: string;
     ref: string;
   };
+  project: DBProject['config'];
 }
 
 export type JobWithOrgProject = Prisma.JobsGetPayload<{

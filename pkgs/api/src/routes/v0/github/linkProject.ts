@@ -109,6 +109,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
             config: {
               url: body.repository,
               autoLayout: true,
+              project: proj.config,
             },
             tx,
           });

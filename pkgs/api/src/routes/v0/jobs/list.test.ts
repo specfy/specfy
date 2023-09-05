@@ -23,13 +23,14 @@ afterAll(async () => {
 
 async function seedAllStates(org: Orgs, proj: Projects, user: Users) {
   await prisma.$transaction(async (tx) => {
+    const config = { url: 'specfy/sync', project: proj.config };
     await Promise.all([
       createJobDeploy({
         orgId: org.id,
         projectId: proj.id,
         userId: user.id,
         status: 'cancelled',
-        config: { url: 'specfy/sync' },
+        config,
         tx,
       }),
       createJobDeploy({
@@ -37,7 +38,7 @@ async function seedAllStates(org: Orgs, proj: Projects, user: Users) {
         projectId: proj.id,
         userId: user.id,
         status: 'skipped',
-        config: { url: 'specfy/sync' },
+        config,
         tx,
       }),
       createJobDeploy({
@@ -45,7 +46,7 @@ async function seedAllStates(org: Orgs, proj: Projects, user: Users) {
         projectId: proj.id,
         userId: user.id,
         status: 'failed',
-        config: { url: 'specfy/sync' },
+        config,
         reason: {
           status: 'failed',
           code: 'org_not_installed',
@@ -58,7 +59,7 @@ async function seedAllStates(org: Orgs, proj: Projects, user: Users) {
         projectId: proj.id,
         userId: user.id,
         status: 'timeout',
-        config: { url: 'specfy/sync' },
+        config,
         tx,
       }),
       createJobDeploy({
@@ -66,7 +67,7 @@ async function seedAllStates(org: Orgs, proj: Projects, user: Users) {
         projectId: proj.id,
         userId: user.id,
         status: 'running',
-        config: { url: 'specfy/sync' },
+        config,
         startedAt: new Date(),
         tx,
       }),
@@ -75,7 +76,7 @@ async function seedAllStates(org: Orgs, proj: Projects, user: Users) {
         projectId: proj.id,
         userId: user.id,
         status: 'success',
-        config: { url: 'specfy/sync' },
+        config,
         tx,
       }),
     ]);
