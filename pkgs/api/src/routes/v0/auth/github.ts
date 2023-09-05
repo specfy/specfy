@@ -24,16 +24,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.get<{ Reply: any; Querystring: { installation_id: number } }>(
     '/github/cb',
     {
-      preValidation: [
-        fastifyPassport.authenticate('github', async (_req, res, err) => {
-          if (err) {
-            // When people are modifiying the GitHub permissions directly in GitHub it redirects here
-            // But sometimes the token is invalid or what not so better be sure to redirect them instead of getting a 500
-            res.redirect(`${envs.APP_HOSTNAME}?err`);
-            return;
-          }
-        }),
-      ],
+      preValidation: [fastifyPassport.authenticate('github')],
       config: {
         rateLimit: {
           max: 25,
