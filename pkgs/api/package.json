@@ -69,7 +69,7 @@
     "nodemon": "3.0.1",
     "prisma-json-types-generator": "2.5.0",
     "react-diff-view": "3.0.3",
-    "reactflow": "11.8.2",
+    "reactflow": "11.8.3",
     "ts-node": "10.9.1",
     "type-fest": "4.2.0",
     "typescript": "5.1.6",
