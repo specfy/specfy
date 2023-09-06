@@ -6,7 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import { authLocal } from '../../api/auth';
 import { handleErrors, isError } from '../../api/helpers';
-import { API_HOSTNAME } from '../../common/envs';
+import { API_HOSTNAME, IS_PROD } from '../../common/envs';
 import { titleSuffix } from '../../common/string';
 import { Card } from '../../components/Card';
 import { Flex } from '../../components/Flex';
@@ -64,38 +64,40 @@ export const Login: React.FC = () => {
             Sign in with GitHub
           </Button>
         </div>
-        <Card padded>
-          <Form.Root onSubmit={onFinish}>
-            <Flex gap="l" column>
-              <Field label="Email" name="email" error={errors.email?.message}>
-                <Input
-                  type="email"
-                  placeholder="you@email.com"
-                  size="l"
-                  required
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                />
-              </Field>
-              <Field
-                label="Password"
-                name="password"
-                error={errors.password?.message}
-              >
-                <Input
-                  type="password"
-                  size="l"
-                  required
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                />
-              </Field>
-              <Button display="primary" size="l" block type="submit">
-                Sign in
-              </Button>
-            </Flex>
-          </Form.Root>
-        </Card>
+        {!IS_PROD && (
+          <Card padded>
+            <Form.Root onSubmit={onFinish}>
+              <Flex gap="l" column>
+                <Field label="Email" name="email" error={errors.email?.message}>
+                  <Input
+                    type="email"
+                    placeholder="you@email.com"
+                    size="l"
+                    required
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </Field>
+                <Field
+                  label="Password"
+                  name="password"
+                  error={errors.password?.message}
+                >
+                  <Input
+                    type="password"
+                    size="l"
+                    required
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </Field>
+                <Button display="primary" size="l" block type="submit">
+                  Sign in
+                </Button>
+              </Flex>
+            </Form.Root>
+          </Card>
+        )}
       </div>
     </div>
   );
