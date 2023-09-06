@@ -17,7 +17,7 @@ INSERT INTO "public"."Users"(
   "updatedAt")
 VALUES (
   'githubapp',
-  'GitHub App',
+  'Github App',
   '/github-mark.png',
   'support+githubapp@specfy.io',
   NOW(),

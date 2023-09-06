@@ -116,7 +116,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         }
         if (body.repository !== proj.githubRepository) {
           await createGitHubActivity({
-            action: !body.repository ? 'GitHub.unlinked' : 'GitHub.linked',
+            action: !body.repository ? 'Github.unlinked' : 'Github.linked',
             org,
             project: proj,
             tx,

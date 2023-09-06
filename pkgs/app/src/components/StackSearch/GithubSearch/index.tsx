@@ -1,4 +1,4 @@
-import { SiGitHub } from '@icons-pack/react-simple-icons';
+import { SiGithub } from '@icons-pack/react-simple-icons';
 import type { ApiGitHubRepo } from '@specfy/models';
 import { IconLock, IconSelector } from '@tabler/icons-react';
 import classNames from 'classnames';
@@ -114,7 +114,7 @@ export const GitHubSearch = forwardRef<
               <div className={cls.pick}>
                 {pick.id !== -1 ? (
                   <>
-                    <SiGitHub size={'1em'} /> {pick.name}{' '}
+                    <SiGithub size={'1em'} /> {pick.name}{' '}
                   </>
                 ) : (
                   pick?.fullName

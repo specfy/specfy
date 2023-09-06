@@ -138,7 +138,7 @@ export const mapComponent: Record<ActionComponent, ActivityParams> = {
 };
 
 export const mapGitHub: Record<ActionGitHub, ActivityParams> = {
-  'GitHub.linked': {
+  'Github.linked': {
     Target: () => null,
     Text: ({ act, user }) => {
       if (act.project) {
@@ -147,7 +147,7 @@ export const mapGitHub: Record<ActionGitHub, ActivityParams> = {
       return <>{user} linked org to a GitHub organization</>;
     },
   },
-  'GitHub.unlinked': {
+  'Github.unlinked': {
     Target: () => null,
     Text: ({ act, user }) => {
       if (act.project) {

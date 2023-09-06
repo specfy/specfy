@@ -88,7 +88,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         });
         if (body.installationId !== org.githubInstallationId) {
           await createGitHubActivity({
-            action: !body.installationId ? 'GitHub.unlinked' : 'GitHub.linked',
+            action: !body.installationId ? 'Github.unlinked' : 'Github.linked',
             org,
             tx,
             user: me,

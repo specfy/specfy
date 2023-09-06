@@ -1,4 +1,4 @@
-import { SiGitHub } from '@icons-pack/react-simple-icons';
+import { SiGithub } from '@icons-pack/react-simple-icons';
 import { Helmet } from 'react-helmet-async';
 import Skeleton from 'react-loading-skeleton';
 import { useParams } from 'react-router-dom';
@@ -53,7 +53,7 @@ export const UserShow: React.FC = () => {
           {user.githubLogin && (
             <a href="">
               <Flex gap="l">
-                <SiGitHub />@{user.githubLogin}
+                <SiGithub />@{user.githubLogin}
               </Flex>
             </a>
           )}

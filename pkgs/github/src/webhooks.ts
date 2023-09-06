@@ -61,7 +61,7 @@ export function listen() {
       await Promise.all(
         list.map((org) => {
           return createGitHubActivity({
-            action: 'GitHub.unlinked',
+            action: 'Github.unlinked',
             org,
             tx,
             user: userGitHubApp,
@@ -107,7 +107,7 @@ export function listen() {
         await Promise.all(
           list.map((project) => {
             return createGitHubActivity({
-              action: 'GitHub.unlinked',
+              action: 'Github.unlinked',
               org: project.Org,
               project,
               tx,
