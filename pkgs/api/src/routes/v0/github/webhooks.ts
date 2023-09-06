@@ -3,14 +3,14 @@ import type {
   WebhookEventName,
 } from '@octokit/webhooks-types';
 import { webhookService } from '@specfy/github';
-import type { PostGithubWebhook } from '@specfy/models';
+import type { PostGitHubWebhook } from '@specfy/models';
 import type { FastifyPluginCallback } from 'fastify';
 
 import { forbidden } from '../../../common/errors.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
-  fastify.post<PostGithubWebhook>(
+  fastify.post<PostGitHubWebhook>(
     '/',
     {
       preHandler: [noQuery],

@@ -1,7 +1,7 @@
 import { RequestError } from '@octokit/request-error';
 import { sentry } from '@specfy/core';
 import { prisma } from '@specfy/db';
-import type { GetGithubMembers } from '@specfy/models';
+import type { GetGitHubMembers } from '@specfy/models';
 import type { FastifyPluginCallback } from 'fastify';
 import { Octokit } from 'octokit';
 import { z } from 'zod';
@@ -21,7 +21,7 @@ function QueryVal() {
 }
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
-  fastify.get<GetGithubMembers>('/', async function (req, res) {
+  fastify.get<GetGitHubMembers>('/', async function (req, res) {
     const val = QueryVal().safeParse(req.query);
     if (!val.success) {
       return validationError(res, val.error);

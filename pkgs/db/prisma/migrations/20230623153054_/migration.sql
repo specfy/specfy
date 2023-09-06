@@ -6,7 +6,7 @@ ALTER TYPE "JobsStatus"
 ALTER TABLE "Jobs"
   ADD COLUMN "reason" VARCHAR(250);
 
--- Default user for Github App
+-- Default user for GitHub App
 INSERT INTO "public"."Users"(
   "id",
   "name",

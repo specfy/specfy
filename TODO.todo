@@ -57,8 +57,8 @@ Infrastructure:
 Auth:
   ✔ JWT @done(23-03-31 16:14)
   ✔ Default in dev @done(23-03-31 16:33)
-  ✔ Github Oauth @done(23-04-21 19:19)
-    ✔ Github oauth prod app @done(23-04-21 19:22)
+  ✔ GitHub Oauth @done(23-04-21 19:19)
+    ✔ GitHub oauth prod app @done(23-04-21 19:22)
   ✔ Standard Email / Password @done(23-04-21 19:21)
   ✔ Register @done(23-06-29 17:06)
     ✔ Should create a default org @done(23-04-24 11:47)
@@ -89,7 +89,7 @@ Project:
     ✔ Validation @done(23-03-28 16:11)
     - Unit Test activity
     ✔ Enforce slug @done(23-03-28 16:11)
-    ✔ Better UX with Github first @done(23-07-27 12:07)
+    ✔ Better UX with GitHub first @done(23-07-27 12:07)
       ✔ Advanced mode @done(23-07-27 12:03)
       ✔ Use configuration @done(23-07-27 12:07)
   ✔ List @done(23-03-29 12:19)
@@ -112,7 +112,7 @@ Project:
   ✔ Perms @done(23-07-07 20:42)
     ✔ Perms should inherit org if none (e.g: you have been added to an already existing org or new project is created not by you) @done(23-07-07 20:42)
   ✔ Edition “inline” @done(23-03-25 23:26)
-  ✔ Connect: Github @done(23-06-14 15:18)
+  ✔ Connect: GitHub @done(23-06-14 15:18)
     ✔ Import @done(23-06-14 15:18)
       - Import from UI
   ✔ Automatic languages detection @done(23-06-14 15:18)
@@ -201,7 +201,7 @@ Documents:
     - Support table
     - Image base path
     - Link base path
-  ✔ Image should not be full size by default to be equivalent to Github @done(23-07-17 12:19)
+  ✔ Image should not be full size by default to be equivalent to GitHub @done(23-07-17 12:19)
   - Display outgoing link differently
   ✔ List documents @done(23-03-29 14:47)
     ✔ Search @done(23-03-29 15:55)

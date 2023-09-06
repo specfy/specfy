@@ -4,17 +4,17 @@ import type { Users } from '@specfy/db';
 import { prisma } from '@specfy/db';
 import { sendWelcome } from '@specfy/emails';
 import { createUserActivity } from '@specfy/models';
-import { Strategy as GithubStrategy } from 'passport-github2';
+import { Strategy as GitHubStrategy } from 'passport-github2';
 
 import { resend } from '../../common/emails.js';
-import type { GithubAuth } from '../../types/github.js';
+import type { GitHubAuth } from '../../types/github.js';
 
 import { AuthError } from './errors.js';
 
 const GITHUB_SCOPES = ['user:email', 'repo'];
 
-export function registerGithub(passport: Authenticator) {
-  const reg = new GithubStrategy(
+export function registerGitHub(passport: Authenticator) {
+  const reg = new GitHubStrategy(
     {
       clientID: envs.GITHUB_CLIENT_ID!,
       clientSecret: envs.GITHUB_CLIENT_SECRET,
@@ -26,7 +26,7 @@ export function registerGithub(passport: Authenticator) {
       _req: unknown,
       accessToken: string,
       _refreshToken: string,
-      profile: GithubAuth,
+      profile: GitHubAuth,
       done: (err: Error | null, user?: Users | null) => void
     ) {
       const emails = profile.emails;

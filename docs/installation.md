@@ -100,9 +100,9 @@ Optional:
 
 To run this project, locally or in production, you will need a few secrets.
 
-### Creating the Github App
+### Creating the GitHub App
 
-You will need a [Github](https://github.com) app to allow oauth.
+You will need a [GitHub](https://github.com) app to allow oauth.
 
 Configuration:
 

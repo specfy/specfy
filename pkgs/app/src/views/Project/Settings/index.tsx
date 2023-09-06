@@ -50,7 +50,7 @@ export const ProjectSettings: React.FC<{
           <Link to={`${linkSelf}/sync`}>
             <Flex gap="l">
               <IconBrandGithub />
-              Github Sync
+              GitHub Sync
             </Flex>
           </Link>
         ),

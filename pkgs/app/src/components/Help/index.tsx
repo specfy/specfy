@@ -47,7 +47,7 @@ export const Help: React.FC = () => {
           <Flex gap="l">
             <Link to="https://github.com/specfy/specfy" target="_blank">
               <Button size="s">
-                <SiGithub size="1em" /> Check our Github
+                <SiGithub size="1em" /> Check our GitHub
               </Button>
             </Link>
             <Link to="https://discord.gg/96cDXvT8NV" target="_blank">

@@ -46,9 +46,9 @@ export async function createUserActivity({
   });
 }
 
-export const userGithubApp: Users = {
+export const userGitHubApp: Users = {
   id: 'githubapp',
-  name: 'Github App',
+  name: 'GitHub App',
   email: 'support+githubapp@specfy.io',
   githubLogin: null,
   password: null,

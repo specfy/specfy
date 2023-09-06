@@ -1,7 +1,7 @@
 import { RequestError } from '@octokit/request-error';
 import { sentry } from '@specfy/core';
 import { prisma } from '@specfy/db';
-import type { ListGithubRepos } from '@specfy/models';
+import type { ListGitHubRepos } from '@specfy/models';
 import type { FastifyPluginCallback } from 'fastify';
 import { Octokit } from 'octokit';
 import { z } from 'zod';
@@ -22,7 +22,7 @@ function QueryVal() {
 }
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
-  fastify.get<ListGithubRepos>('/', async function (req, res) {
+  fastify.get<ListGitHubRepos>('/', async function (req, res) {
     const val = QueryVal().safeParse(req.query);
     if (!val.success) {
       return validationError(res, val.error);
@@ -34,7 +34,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
     let repos: Awaited<
       ReturnType<Octokit['rest']['repos']['listForAuthenticatedUser']>
     >['data'] = [];
-    const data: ListGithubRepos['Success']['data'] = [];
+    const data: ListGitHubRepos['Success']['data'] = [];
     const accounts = await prisma.accounts.findFirst({
       where: { userId: user.id },
     });

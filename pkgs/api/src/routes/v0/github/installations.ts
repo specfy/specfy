@@ -1,12 +1,12 @@
 import { prisma } from '@specfy/db';
-import type { ListGithubInstallations } from '@specfy/models';
+import type { ListGitHubInstallations } from '@specfy/models';
 import type { FastifyPluginCallback } from 'fastify';
 import { Octokit } from 'octokit';
 
 import { noQuery } from '../../../middlewares/noQuery.js';
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
-  fastify.get<ListGithubInstallations>(
+  fastify.get<ListGitHubInstallations>(
     '/',
     { preHandler: [noQuery] },
     async function (req, res) {
@@ -23,7 +23,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
           per_page: 50,
         });
 
-      const data: ListGithubInstallations['Success']['data'] = [];
+      const data: ListGitHubInstallations['Success']['data'] = [];
       for (const inst of list.data.installations) {
         if (!inst.account) {
           continue;

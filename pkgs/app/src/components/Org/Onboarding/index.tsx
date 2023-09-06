@@ -62,7 +62,7 @@ export const OrgOnboarding: React.FC<{ org: ApiOrg }> = ({ org }) => {
       </Flex>
 
       <OnboardingRow
-        title="Link your Github organization"
+        title="Link your GitHub organization"
         desc="Sync your projects, avatar, team members"
         done={link !== null}
         action={
@@ -76,7 +76,7 @@ export const OrgOnboarding: React.FC<{ org: ApiOrg }> = ({ org }) => {
 
       <OnboardingRow
         title="Create your first project"
-        desc="Deploy documentation and track the stack of a Github repository"
+        desc="Deploy documentation and track the stack of a GitHub repository"
         done={project}
         action={
           <Link to={`/${org.id}/_/project/new`}>

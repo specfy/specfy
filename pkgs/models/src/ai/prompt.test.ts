@@ -55,7 +55,7 @@ describe('aiPromptProjectOnboarding', () => {
         name: 'Analytics',
         slug: 'analytics',
         orgId: 'acme',
-        links: [{ title: 'Github', url: 'https://github.com/specfy/specfy' }],
+        links: [{ title: 'GitHub', url: 'https://github.com/specfy/specfy' }],
         description: {
           type: 'doc',
           content: [

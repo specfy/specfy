@@ -1,7 +1,7 @@
 import * as Collapsible from '@radix-ui/react-collapsible';
 import * as Form from '@radix-ui/react-form';
 import type { FieldsErrors } from '@specfy/core';
-import type { ApiProject, ApiGithubRepo, ApiOrg } from '@specfy/models';
+import type { ApiProject, ApiGitHubRepo, ApiOrg } from '@specfy/models';
 import {
   IconChevronDown,
   IconChevronRight,
@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { createProject, linkToGithubRepo } from '../../../api';
+import { createProject, linkToGitHubRepo } from '../../../api';
 import { handleErrors, isError } from '../../../api/helpers';
 import { Banner } from '../../../components/Banner';
 import { Container } from '../../../components/Container';
@@ -19,7 +19,7 @@ import { Flex } from '../../../components/Flex';
 import { Button } from '../../../components/Form/Button';
 import { Field } from '../../../components/Form/Field';
 import { SyncConfiguration } from '../../../components/Project/SyncConfiguration';
-import { GithubSearch } from '../../../components/StackSearch/GithubSearch';
+import { GitHubSearch } from '../../../components/StackSearch/GitHubSearch';
 import { useToast } from '../../../hooks/useToast';
 import type { RouteOrg } from '../../../types/routes';
 
@@ -37,7 +37,7 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   const navigate = useNavigate();
 
   const [name, setName] = useState<string>('');
-  const [repo, setRepo] = useState<ApiGithubRepo>();
+  const [repo, setRepo] = useState<ApiGitHubRepo>();
   const [errors, setErrors] = useState<FieldsErrors>({});
   const [open, setOpen] = useState(false);
   const [config, setConfig] = useState<ApiProject['config']>();
@@ -59,9 +59,9 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
 
     toast.add({ title: 'Project created', status: 'success' });
 
-    const hasGithub = repo && repo.id !== -1;
-    if (hasGithub) {
-      const link = await linkToGithubRepo({
+    const hasGitHub = repo && repo.id !== -1;
+    if (hasGitHub) {
+      const link = await linkToGitHubRepo({
         orgId: org.id,
         projectId: res.data.id,
         repository: repo.fullName,
@@ -73,11 +73,11 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
     }
 
     navigate(
-      `/${params.org_id}/${res.data.slug}${hasGithub ? '/welcome' : ''}`
+      `/${params.org_id}/${res.data.slug}${hasGitHub ? '/welcome' : ''}`
     );
   };
 
-  const onPickRepo: React.ComponentProps<typeof GithubSearch>['onPick'] = (
+  const onPickRepo: React.ComponentProps<typeof GitHubSearch>['onPick'] = (
     res
   ) => {
     setName(res.id !== -1 ? res.name : res.fullName);
@@ -106,7 +106,7 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
         <Form.Root onSubmit={onFinish} className={cls.form}>
           <Flex align="flex-start" gap="l">
             <Field name="name" error={errors.name?.message} key="fi">
-              <GithubSearch
+              <GitHubSearch
                 key="project"
                 installationId={org.githubInstallationId}
                 onPick={onPickRepo}
@@ -124,7 +124,7 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
             <Banner type="warning">
               <Flex justify="space-between" grow>
                 <div>
-                  Your organization is not linked to a Github organization.
+                  Your organization is not linked to a GitHub organization.
                 </div>
                 <Link to={`/${org.id}/_/settings`}>
                   <Button display="default">Settings</Button>

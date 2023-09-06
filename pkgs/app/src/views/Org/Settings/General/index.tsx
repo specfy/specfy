@@ -4,7 +4,7 @@ import { IconLink, IconLinkOff } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
-import { deleteOrg, updateOrg, linkToGithubOrg } from '../../../../api';
+import { deleteOrg, updateOrg, linkToGitHubOrg } from '../../../../api';
 import { isError } from '../../../../api/helpers';
 import { CopyButton } from '../../../../components/Button/Copy';
 import { Card } from '../../../../components/Card';
@@ -12,7 +12,7 @@ import * as Dialog from '../../../../components/Dialog';
 import { Button } from '../../../../components/Form/Button';
 import { Field } from '../../../../components/Form/Field';
 import { Input } from '../../../../components/Form/Input';
-import { GithubOrgSelect } from '../../../../components/Github/OrgSelect';
+import { GitHubOrgSelect } from '../../../../components/GitHub/OrgSelect';
 import { Subdued } from '../../../../components/Text';
 import { useAuth } from '../../../../hooks/useAuth';
 import { useToast } from '../../../../hooks/useToast';
@@ -79,13 +79,13 @@ export const SettingsGeneral: React.FC<{
     window.location.href = '/';
   };
 
-  // Github
+  // GitHub
   const [installId, setInstallId] = useState(org.githubInstallationId);
   const [loadingLink, setLoadingLink] = useState(false);
 
   const onLink = async () => {
     setLoadingLink(true);
-    const res = await linkToGithubOrg({
+    const res = await linkToGitHubOrg({
       installationId: installId!,
       orgId: org.id,
     });
@@ -95,10 +95,10 @@ export const SettingsGeneral: React.FC<{
       return;
     }
 
-    toast.add({ title: 'Organization linked to Github', status: 'success' });
+    toast.add({ title: 'Organization linked to GitHub', status: 'success' });
   };
   const onUnlink = async () => {
-    const res = await linkToGithubOrg({
+    const res = await linkToGitHubOrg({
       installationId: null,
       orgId: org.id,
     });
@@ -159,9 +159,9 @@ export const SettingsGeneral: React.FC<{
         <Card>
           <Form.Root onSubmit={(e) => e.preventDefault()} className={cls.main}>
             <Card.Content>
-              <h3>Link to Github</h3>
+              <h3>Link to GitHub</h3>
               <Field name="name">
-                <GithubOrgSelect
+                <GitHubOrgSelect
                   key={org.githubInstallationId}
                   defaultSelected={
                     org.githubInstallationId
@@ -176,7 +176,7 @@ export const SettingsGeneral: React.FC<{
                 />
               </Field>
               <p>
-                Linking to a Github organization will sync the avatar and enable
+                Linking to a GitHub organization will sync the avatar and enable
                 automatic repository discovery.
               </p>
             </Card.Content>

@@ -1,10 +1,10 @@
 import { SiGithub } from '@icons-pack/react-simple-icons';
-import type { ApiGithubRepo } from '@specfy/models';
+import type { ApiGitHubRepo } from '@specfy/models';
 import { IconLock, IconSelector } from '@tabler/icons-react';
 import classNames from 'classnames';
 import { forwardRef, useEffect, useRef, useState } from 'react';
 
-import { useGetGithubRepos } from '../../../api';
+import { useGetGitHubRepos } from '../../../api';
 import { Input } from '../../Form/Input';
 import * as Popover from '../../Popover';
 
@@ -19,22 +19,22 @@ function getDefault(search: string) {
     private: false,
   };
 }
-export const GithubSearch = forwardRef<
+export const GitHubSearch = forwardRef<
   HTMLButtonElement,
   {
     installationId?: number | null;
-    onPick: (repo: ApiGithubRepo) => void;
+    onPick: (repo: ApiGitHubRepo) => void;
   }
->(function GithubSearch({ installationId, onPick }, ref) {
+>(function GitHubSearch({ installationId, onPick }, ref) {
   const [open, setOpen] = useState(false);
-  const [list, setList] = useState<ApiGithubRepo[]>([]);
+  const [list, setList] = useState<ApiGitHubRepo[]>([]);
 
   const [focus, setFocus] = useState<number>(0);
   const [search, setSearch] = useState('');
   const refList = useRef<HTMLDivElement>(null);
-  const [pick, setPick] = useState<ApiGithubRepo>();
+  const [pick, setPick] = useState<ApiGitHubRepo>();
 
-  const res = useGetGithubRepos(
+  const res = useGetGitHubRepos(
     {
       installation_id: installationId || undefined,
     },
@@ -97,7 +97,7 @@ export const GithubSearch = forwardRef<
     }
   }, [focus]);
 
-  const onClick = (repo: ApiGithubRepo) => {
+  const onClick = (repo: ApiGitHubRepo) => {
     setSearch(repo.name);
     onPick(repo);
     setPick(repo);

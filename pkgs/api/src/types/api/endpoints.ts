@@ -12,12 +12,12 @@ import type {
   ListDocuments,
   GetFlow,
   PatchFlow,
-  GetGithubMembers,
-  ListGithubInstallations,
-  ListGithubRepos,
-  PostGithubWebhook,
-  PostLinkToGithubOrg,
-  PostLinkToGithubProject,
+  GetGitHubMembers,
+  ListGitHubInstallations,
+  ListGitHubRepos,
+  PostGitHubWebhook,
+  PostLinkToGitHubOrg,
+  PostLinkToGitHubProject,
   AcceptInvitation,
   DeclineInvitation,
   DeleteInvitation,
@@ -167,12 +167,12 @@ export interface API {
   '/0/users': { GET: ListUsers };
   [key: `/0/users/${string}`]: { GET: GetUser };
 
-  '/0/github/installations': { GET: ListGithubInstallations };
-  '/0/github/link_org': { POST: PostLinkToGithubOrg };
-  '/0/github/link_project': { POST: PostLinkToGithubProject };
-  '/0/github/members': { GET: GetGithubMembers };
-  '/0/github/repos': { GET: ListGithubRepos };
-  '/0/github/webhooks': { POST: PostGithubWebhook };
+  '/0/github/installations': { GET: ListGitHubInstallations };
+  '/0/github/link_org': { POST: PostLinkToGitHubOrg };
+  '/0/github/link_project': { POST: PostLinkToGitHubProject };
+  '/0/github/members': { GET: GetGitHubMembers };
+  '/0/github/repos': { GET: ListGitHubRepos };
+  '/0/github/webhooks': { POST: PostGitHubWebhook };
 
   '/0/invitations': {
     GET: ListInvitations;

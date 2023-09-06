@@ -2,11 +2,11 @@ import { RequestError } from '@octokit/request-error';
 import { logEvent, schemaId, schemaOrgId, sentry } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import {
-  createGithubActivity,
+  createGitHubActivity,
   createJobDeploy,
   getOrgFromRequest,
 } from '@specfy/models';
-import type { PostLinkToGithubProject } from '@specfy/models';
+import type { PostLinkToGitHubProject } from '@specfy/models';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { Octokit } from 'octokit';
 import { z } from 'zod';
@@ -32,7 +32,7 @@ function QueryVal(req: FastifyRequest) {
 }
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
-  fastify.post<PostLinkToGithubProject>(
+  fastify.post<PostLinkToGitHubProject>(
     '/',
     { preHandler: noQuery },
     async function (req, res) {
@@ -84,11 +84,11 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         let links = proj.links;
         if (body.repository) {
           links.push({
-            title: 'Github',
+            title: 'GitHub',
             url: `https://github.com/${body.repository}`,
           });
         } else {
-          links = links.filter((link) => link.title === 'Github');
+          links = links.filter((link) => link.title === 'GitHub');
         }
 
         await tx.projects.update({
@@ -115,7 +115,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
           });
         }
         if (body.repository !== proj.githubRepository) {
-          await createGithubActivity({
+          await createGitHubActivity({
             action: !body.repository ? 'Github.unlinked' : 'Github.linked',
             org,
             project: proj,

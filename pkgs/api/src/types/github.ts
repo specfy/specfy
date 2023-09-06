@@ -1,4 +1,4 @@
-export interface GithubAuth {
+export interface GitHubAuth {
   id: string;
   nodeId: string;
   displayName: string;
@@ -7,11 +7,11 @@ export interface GithubAuth {
   photos?: Array<{ value: string }> | null;
   provider: string;
   _raw: string;
-  _json: GithubAuthProfile;
+  _json: GitHubAuthProfile;
   emails?: Array<{ value: string }> | null;
 }
 
-export interface GithubAuthProfile {
+export interface GitHubAuthProfile {
   login: string;
   id: number;
   node_id: string;
