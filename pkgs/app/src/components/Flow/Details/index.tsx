@@ -142,7 +142,6 @@ export const FlowDetails: React.FC<{
   // Useful if we resize or delete it in the flow
   useDebounce(
     () => {
-      console.log('henlo??');
       if (!currNode) {
         return;
       }

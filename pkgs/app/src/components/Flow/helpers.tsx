@@ -117,7 +117,12 @@ export const onNodesChangeProject: (
   return (changes) => {
     for (const change of changes) {
       if (change.type === 'remove') {
-        store.remove(change.id);
+        const comp = store.select(change.id)!;
+        if (comp.source) {
+          store.setVisibility(change.id);
+        } else {
+          store.remove(change.id);
+        }
       } else if (change.type === 'position') {
         if (change.position) {
           const comp = store.select(change.id)!;

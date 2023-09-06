@@ -34,7 +34,6 @@ import { onNodesChangeProject } from '../../../components/Flow/helpers';
 import { Button } from '../../../components/Form/Button';
 import { FakeInput } from '../../../components/Form/FakeInput';
 import { NotFound } from '../../../components/NotFound';
-import { Tag } from '../../../components/Tag';
 import { TooltipFull } from '../../../components/Tooltip';
 import { UpdatedAt } from '../../../components/UpdatedAt';
 import { useAuth } from '../../../hooks/useAuth';
@@ -269,16 +268,16 @@ export const ComponentView: React.FC<{
             </Flex>
           </Flex>
           <Flex gap="m" align="flex-start">
-            <UpdatedAt time={comp.updatedAt} />
-            <Tag
-              variant="border"
+            <div
               className={classnames(
                 cls.tagType,
                 comp.type in cls && cls[comp.type as keyof typeof cls]
               )}
             >
               {internalTypeToText[comp.type]}
-            </Tag>
+            </div>
+            ·
+            <UpdatedAt time={comp.updatedAt} />
           </Flex>
 
           {!isEditing && comp.description && (
