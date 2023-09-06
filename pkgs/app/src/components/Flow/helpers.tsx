@@ -30,6 +30,10 @@ export type NodeChangeSuper =
   | {
       id: string;
       type: 'ungroup';
+    }
+  | {
+      id: string;
+      type: 'visibility';
     };
 
 export type OnNodesChangeSuper = (changes: NodeChangeSuper[]) => void;
@@ -185,6 +189,8 @@ export const onNodesChangeProject: (
             size: change.dimensions,
           },
         });
+      } else if (change.type === 'visibility') {
+        store.setVisibility(change.id);
       }
     }
   };

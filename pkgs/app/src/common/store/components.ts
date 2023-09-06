@@ -22,6 +22,7 @@ export interface ComponentsState {
   revert: (id: string) => void;
   revertField: (id: string, field: keyof ApiComponent) => void;
   remove: (id: string) => void;
+  setVisibility: (id: string) => void;
   addEdge: (edge: Connection) => void;
   updateEdge: (
     source: string,
@@ -91,18 +92,63 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
     const item = original.find<ApiComponent>(comp.id)!;
     get().updateField(id, field, item[field]);
   },
-  remove: (id) => {
+  setVisibility: (id) => {
     set(
       produce((state: ComponentsState) => {
-        const unmodified = Object.values(state.components);
         const components = Object.values(state.components);
-        const map: ComponentsState['components'] = {};
+
+        const src = components.find((c) => c.id === id);
+        if (!src) {
+          return;
+        }
+
+        const visible = !src.show;
+        src.show = visible;
+
+        // Hide all outgoing edges
+        for (const edge of src.edges) {
+          edge.show = visible;
+        }
 
         for (const copy of components) {
           if (copy.id === id) {
             continue;
           }
 
+          // Hide any incoming edges
+          for (const edge of copy.edges) {
+            if (edge.target !== id) {
+              continue;
+            }
+
+            edge.show = visible;
+          }
+        }
+      })
+    );
+  },
+  remove: (id) => {
+    set(
+      produce((state: ComponentsState) => {
+        const unmodified = Object.values(state.components);
+        const components = Object.values(state.components);
+
+        const src = components.find((c) => c.id === id);
+        if (!src) {
+          return;
+        }
+
+        if (src.source) {
+          throw new Error('cant delete a managed component');
+          return;
+        }
+
+        for (const copy of components) {
+          if (copy.id === id) {
+            continue;
+          }
+
+          // Ungroup components that might be inside this host
           if (copy.inComponent.id === id) {
             copy.inComponent = { id: null };
             copy.display.pos = getAbsolutePosition(copy, unmodified);
@@ -118,8 +164,9 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
             edges.push(edge);
           }
 
-          map[copy.id] = { ...copy, edges };
+          copy.edges = edges;
         }
+
         delete state.components[id];
       })
     );
@@ -192,26 +239,32 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
     set({ components: map });
   },
   removeEdge: (source, target) => {
-    const components = Object.values(get().components);
-    const map: ComponentsState['components'] = {};
+    set(
+      produce((state: ComponentsState) => {
+        const components = Object.values(state.components);
 
-    for (const copy of components) {
-      if (copy.id !== source) {
-        map[copy.id] = { ...copy };
-        continue;
-      }
+        console.log('removing', source, target);
 
-      const edges: ApiComponent['edges'] = [];
-      for (const edge of copy.edges) {
-        if (edge.target === target) {
-          continue;
+        for (const copy of components) {
+          if (copy.id !== source) {
+            continue;
+          }
+
+          const edges: ApiComponent['edges'] = [];
+          for (const edge of copy.edges) {
+            if (edge.target !== target) {
+              continue;
+            }
+            if (edge.source) {
+              edge.show = false;
+              edges.push(edge);
+              continue;
+            }
+          }
+
+          copy.edges = edges;
         }
-
-        edges.push(edge);
-      }
-      map[copy.id] = { ...copy, edges };
-    }
-
-    set({ components: map });
+      })
+    );
   },
 }));

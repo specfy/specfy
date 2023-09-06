@@ -5,6 +5,8 @@ import {
   IconDotsVertical,
   IconTrash,
   IconPackageImport,
+  IconEyeOff,
+  IconEye,
 } from '@tabler/icons-react';
 import classnames from 'classnames';
 import type React from 'react';
@@ -113,6 +115,16 @@ export const ComponentView: React.FC<{
     onNodesChangeProject(storeComponents)(changes);
   };
 
+  const onVisibility = (show: boolean) => {
+    edit.enable(true);
+    // storeComponents.updateField(comp!.id, 'show', show);
+    onNodesChange([{ type: 'visibility', id: comp!.id }]);
+    toast.add({
+      title: show ? 'Component is visible' : 'Component will be hidden',
+      status: 'success',
+    });
+  };
+
   if (loading) {
     return <Loading />;
   }
@@ -186,6 +198,14 @@ export const ComponentView: React.FC<{
             </Flex>
             <Flex align="center" gap="m">
               <Flex gap="l">
+                {!comp.show && (
+                  <TooltipFull
+                    msg={`This component is hidden in the Flow`}
+                    side="bottom"
+                  >
+                    <IconEyeOff />
+                  </TooltipFull>
+                )}
                 {comp.source && (
                   <TooltipFull
                     msg={`This component is managed by: ${comp.source}`}
@@ -194,15 +214,6 @@ export const ComponentView: React.FC<{
                     <IconPackageImport />
                   </TooltipFull>
                 )}
-                <Tag
-                  variant="border"
-                  className={classnames(
-                    cls.tagType,
-                    comp.type in cls && cls[comp.type as keyof typeof cls]
-                  )}
-                >
-                  {internalTypeToText[comp.type]}
-                </Tag>
               </Flex>
               {canEdit && (
                 <div>
@@ -216,16 +227,39 @@ export const ComponentView: React.FC<{
                       <Dropdown.Content>
                         <Dropdown.Group>
                           <Dropdown.Item asChild>
-                            <Button
-                              danger
-                              display="item"
-                              block
-                              onClick={() => onRemove()}
-                              size="s"
+                            <TooltipFull
+                              msg="Hide or show the component in the Flow"
+                              side="right"
                             >
-                              <IconTrash /> Remove
-                            </Button>
+                              <Button
+                                display="item"
+                                onClick={() => onVisibility(!comp.show)}
+                                size="s"
+                              >
+                                {comp.show ? (
+                                  <>
+                                    <IconEyeOff /> Hide
+                                  </>
+                                ) : (
+                                  <>
+                                    <IconEye /> Show
+                                  </>
+                                )}
+                              </Button>
+                            </TooltipFull>
                           </Dropdown.Item>
+                          {!comp.source && (
+                            <Dropdown.Item asChild>
+                              <Button
+                                danger
+                                display="item"
+                                onClick={() => onRemove()}
+                                size="s"
+                              >
+                                <IconTrash /> Remove
+                              </Button>
+                            </Dropdown.Item>
+                          )}
                         </Dropdown.Group>
                       </Dropdown.Content>
                     </Dropdown.Portal>
@@ -234,7 +268,18 @@ export const ComponentView: React.FC<{
               )}
             </Flex>
           </Flex>
-          <UpdatedAt time={comp.updatedAt} />
+          <Flex gap="m" align="flex-start">
+            <UpdatedAt time={comp.updatedAt} />
+            <Tag
+              variant="border"
+              className={classnames(
+                cls.tagType,
+                comp.type in cls && cls[comp.type as keyof typeof cls]
+              )}
+            >
+              {internalTypeToText[comp.type]}
+            </Tag>
+          </Flex>
 
           {!isEditing && comp.description && (
             <Editable padded>

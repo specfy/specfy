@@ -1,8 +1,12 @@
-import type { ComputedFlow, EdgeData } from '@specfy/models';
-import { IconTrash } from '@tabler/icons-react';
+import type { ComputedFlow, ComputedNode, EdgeData } from '@specfy/models';
+import {
+  IconEye,
+  IconEyeOff,
+  IconPackageImport,
+  IconTrash,
+} from '@tabler/icons-react';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'react-use';
-import type { Node } from 'reactflow';
 import { useEdges, useNodes, useOnSelectionChange } from 'reactflow';
 
 import { Button } from '../../Form/Button';
@@ -13,6 +17,9 @@ import type { OnNodesChangeSuper } from '../helpers';
 import type { Relation } from './EdgeRelation';
 import { EdgeRelation } from './EdgeRelation';
 import cls from './index.module.scss';
+
+import { Flex } from '@/components/Flex';
+import { TooltipFull } from '@/components/Tooltip';
 
 /**
  * TODO: hamburger menu
@@ -95,7 +102,7 @@ export const FlowDetails: React.FC<{
   const nodes = useNodes();
   const edges = useEdges<EdgeData>();
 
-  const [currNode, setNode] = useState<Node | null>(null);
+  const [currNode, setNode] = useState<ComputedNode | null>(null);
   const [from, setFrom] = useState<Relation[]>([]);
   const [to, setTo] = useState<Relation[]>([]);
   const [relation, setRelation] = useState<Relation | null>(null);
@@ -114,7 +121,7 @@ export const FlowDetails: React.FC<{
         setNode(null);
       } else {
         // Only one
-        setNode(nodes.find((n) => n.id === nds[0].id)!);
+        setNode((nodes as ComputedNode[]).find((n) => n.id === nds[0].id)!);
       }
 
       // Edges
@@ -135,11 +142,12 @@ export const FlowDetails: React.FC<{
   // Useful if we resize or delete it in the flow
   useDebounce(
     () => {
+      console.log('henlo??');
       if (!currNode) {
         return;
       }
 
-      const find = nodes.find((n) => n.id === currNode.id);
+      const find = (nodes as ComputedNode[]).find((n) => n.id === currNode.id);
       if (!find) {
         return;
       }
@@ -215,6 +223,11 @@ export const FlowDetails: React.FC<{
       onNodesChange([{ id: currNode!.id, type: 'ungroup' }]);
     }
   };
+  const visibilityComponent = () => {
+    if (onNodesChange) {
+      onNodesChange([{ id: currNode!.id, type: 'visibility' }]);
+    }
+  };
 
   return (
     <div className={cls.composition}>
@@ -223,13 +236,41 @@ export const FlowDetails: React.FC<{
           <div className={cls.block}>
             <div className={cls.title}>
               {currNode.data.type === 'hosting' ? 'Hosting' : 'Component'}
-              {!readonly && (
-                <div>
-                  <Button size="s" display="ghost" onClick={deleteComponent}>
-                    <IconTrash />
-                  </Button>
-                </div>
-              )}
+              <Flex gap="m">
+                {currNode.data.source && (
+                  <TooltipFull
+                    msg={`This component is managed by: ${currNode.data.source}`}
+                    side="bottom"
+                  >
+                    <IconPackageImport />
+                  </TooltipFull>
+                )}
+
+                <Flex>
+                  {!readonly && (
+                    <Button
+                      size="s"
+                      display="ghost"
+                      onClick={visibilityComponent}
+                    >
+                      {currNode.hidden ? (
+                        <>
+                          <IconEyeOff />
+                        </>
+                      ) : (
+                        <>
+                          <IconEye />
+                        </>
+                      )}
+                    </Button>
+                  )}
+                  {!readonly && !currNode.data.source && (
+                    <Button size="s" display="ghost" onClick={deleteComponent}>
+                      <IconTrash />
+                    </Button>
+                  )}
+                </Flex>
+              </Flex>
             </div>
             <div className={cls.preview}>
               <PreviewNode

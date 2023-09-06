@@ -1,6 +1,7 @@
 import type { ApiComponent } from '@specfy/models';
+import { IconEyeOff } from '@tabler/icons-react';
 import classnames from 'classnames';
-import { useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useClickAway } from 'react-use';
 
@@ -10,6 +11,7 @@ import { ComponentIcon } from '../Icon';
 import cls from './index.module.scss';
 
 import { supportedIndexed } from '@/common/techs';
+import { Button } from '@/components/Form/Button';
 
 export interface Line {
   title: string;
@@ -18,24 +20,32 @@ export interface Line {
   children?: React.ReactElement;
 }
 
+/**
+ * Display one component item (e.g: db, service, saas, etc.)
+ */
 export const ComponentItem: React.FC<{
   comp: ApiComponent;
   params: RouteProject;
   className?: string;
-}> = ({ comp, className }) => {
+}> = ({ comp, params, className }) => {
   return (
     <Link
       key={comp.id}
-      to={`/${comp.orgId}/${comp.projectId}/c/${comp.id}-${comp.slug}`}
+      to={`/${comp.orgId}/${params.project_slug}/c/${comp.id}-${comp.slug}`}
     >
       <div className={classnames(cls.item, className)}>
-        <ComponentIcon data={comp} noEmpty className={cls.icon} />
+        <div className={cls.icon}>
+          <ComponentIcon data={comp} noEmpty />
+        </div>
         <div className={cls.label}>{comp.name}</div>
       </div>
     </Link>
   );
 };
 
+/**
+ * Display one tech item (e.g: language, tool)
+ */
 export const TechItem: React.FC<{
   techId: string;
   params: RouteProject;
@@ -54,9 +64,12 @@ export const TechItem: React.FC<{
   );
 };
 
+/**
+ * Handle internal behavior, aka click to edit
+ */
 const InternalLine: React.FC<
   Line & {
-    items?: React.ReactElement[];
+    items?: React.ReactNode;
   }
 > = ({ title, editing, children, items }) => {
   const [show, setShow] = useState(false);
@@ -89,6 +102,58 @@ const InternalLine: React.FC<
   );
 };
 
+const VisibilityLine: React.FC<Line & { comps?: ApiComponent[] }> = ({
+  params,
+  comps,
+}) => {
+  const [show, setShow] = useState(false);
+  const group = useMemo(() => {
+    const tmp: { visible: ApiComponent[]; hidden: ApiComponent[] } = {
+      visible: [],
+      hidden: [],
+    };
+    if (!comps) {
+      return tmp;
+    }
+
+    for (const comp of comps) {
+      tmp[comp.show ? 'visible' : 'hidden'].push(comp);
+    }
+
+    return tmp;
+  }, [comps]);
+
+  return (
+    <div className={classnames(cls.values)}>
+      {group.visible.map((comp) => {
+        return <ComponentItem comp={comp} params={params} key={comp.id} />;
+      })}
+      {group.hidden.length > 0 && !show && (
+        <Button
+          size="l"
+          onClick={() => setShow(true)}
+          className={cls.hidden}
+          display="ghost"
+        >
+          <IconEyeOff />
+          {group.hidden.length}
+        </Button>
+      )}
+
+      {show && (
+        <>
+          {group.hidden.map((comp) => {
+            return <ComponentItem comp={comp} params={params} key={comp.id} />;
+          })}
+        </>
+      )}
+    </div>
+  );
+};
+
+/**
+ * Display a line of technology (e.g: languages, tools, etc.)
+ */
 export const ComponentLineTech: React.FC<
   Line & {
     techs: ApiComponent['techs'];
@@ -105,30 +170,17 @@ export const ComponentLineTech: React.FC<
   );
 };
 
-export const ComponentLine: React.FC<Line & { comps?: ApiComponent[] }> = ({
-  comps,
-  params,
-  ...rest
-}) => {
+/**
+ * Display a line of components (e.g: services, databases, saas, etc.)
+ */
+export const ComponentLine: React.FC<Line & { comps?: ApiComponent[] }> = (
+  opts
+) => {
   return (
     <InternalLine
-      {...rest}
-      params={params}
-      items={comps?.map((c) => {
-        return (
-          <Link
-            key={c.id}
-            to={`/${params.org_id}/${params.project_slug}/c/${c.id}-${c.slug}`}
-          >
-            <div className={classnames(cls.item)}>
-              <div className={cls.icon}>
-                <ComponentIcon data={c} noEmpty />
-              </div>
-              <div className={cls.label}>{c.name}</div>
-            </div>
-          </Link>
-        );
-      })}
+      {...opts}
+      params={opts.params}
+      items={<VisibilityLine {...opts} />}
     />
   );
 };

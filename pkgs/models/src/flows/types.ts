@@ -34,6 +34,7 @@ export type ComponentForFlow = Pick<
   | 'type'
   | 'typeId'
   | 'source'
+  | 'show'
 >;
 
 export interface NodeData {
@@ -95,4 +96,5 @@ export interface FlowEdge {
   portSource: 'sb' | 'sl' | 'sr' | 'st';
   portTarget: 'tb' | 'tl' | 'tr' | 'tt';
   source?: string | undefined;
+  show?: boolean;
 }

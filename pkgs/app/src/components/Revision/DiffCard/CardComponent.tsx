@@ -1,5 +1,5 @@
 import type { ApiComponent, BlockLevelZero } from '@specfy/models';
-import { IconArrowRight } from '@tabler/icons-react';
+import { IconArrowRight, IconEye, IconEyeOff } from '@tabler/icons-react';
 import classnames from 'classnames';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
@@ -29,7 +29,8 @@ export const DiffCardComponent: React.FC<{
   const params = useParams<Partial<RouteProject>>() as RouteProject;
   const storeComponents = useComponentsStore();
   const storeRevision = useRevisionStore();
-  const using = diff.blob.current;
+  const next = diff.blob.current;
+  const prev = diff.blob.previous!;
 
   const getComponent = (id: string): ApiComponent => {
     if (storeComponents.components[id]) {
@@ -52,11 +53,11 @@ export const DiffCardComponent: React.FC<{
     return (
       <h4 className={cls.cardTitle}>
         <Flex gap="l">
-          <ComponentIcon data={using} large noEmpty />
+          <ComponentIcon data={next} large noEmpty />
           {hasName && !diff.blob.created ? (
             <UnifiedDiff key={hasName.key} diff={hasName} />
           ) : (
-            using.name || ''
+            next.name || ''
           )}
         </Flex>
       </h4>
@@ -69,16 +70,16 @@ export const DiffCardComponent: React.FC<{
         {Title}
         <Presentation>
           <ContentDoc
-            doc={using.description}
+            doc={next.description}
             id={diff.blob.typeId}
             placeholder={false}
           />
         </Presentation>
-        {using.techs.length > 0 && (
+        {next.techs.length > 0 && (
           <div className={cls.line}>
             <h4>Stack</h4>
             <div className={cls.techs}>
-              {using.techs.map((techId) => {
+              {next.techs.map((techId) => {
                 return (
                   <TechItem
                     key={techId.id}
@@ -91,11 +92,11 @@ export const DiffCardComponent: React.FC<{
           </div>
         )}
 
-        {using.edges.length > 0 && (
+        {next.edges.length > 0 && (
           <div className={classnames(cls.line)}>
             <h4>Data</h4>
             <div className={classnames(cls.data)}>
-              {using.edges.map((edge) => {
+              {next.edges.map((edge) => {
                 const comp = getComponent(edge.target);
                 return (
                   <div key={edge.target}>
@@ -112,9 +113,9 @@ export const DiffCardComponent: React.FC<{
           </div>
         )}
 
-        {using.inComponent.id &&
+        {next.inComponent.id &&
           (() => {
-            const comp = getComponent(using.inComponent.id);
+            const comp = getComponent(next.inComponent.id);
             return (
               <div className={classnames(cls.line)}>
                 <h4>Host</h4>
@@ -140,6 +141,41 @@ export const DiffCardComponent: React.FC<{
           return null;
         }
 
+        if (d.key === 'show') {
+          return (
+            <div key={d.key} className={classnames(cls.spaced)}>
+              <h4>Visibility</h4>
+              <Flex style={{ margin: '10px 0 0 0' }} gap="2xl">
+                <Flex gap="l" className={cls.removed}>
+                  {prev.show ? (
+                    <>
+                      <IconEye /> Visible
+                    </>
+                  ) : (
+                    <>
+                      <IconEyeOff /> Hidden
+                    </>
+                  )}
+                </Flex>
+                <div>
+                  <IconArrowRight />
+                </div>
+                <Flex gap="l" className={cls.added}>
+                  {next.show ? (
+                    <>
+                      <IconEye /> Visible
+                    </>
+                  ) : (
+                    <>
+                      <IconEyeOff /> Hidden
+                    </>
+                  )}
+                </Flex>
+              </Flex>
+            </div>
+          );
+        }
+
         if (d.key === 'description') {
           return (
             <UnifiedContent
@@ -151,7 +187,6 @@ export const DiffCardComponent: React.FC<{
         }
 
         if (d.key === 'display') {
-          const prev = diff.blob.previous!;
           return (
             <div key={d.key} className={classnames(cls.spaced)}>
               <h4>Display</h4>
@@ -174,11 +209,11 @@ export const DiffCardComponent: React.FC<{
                 <div style={{ paddingLeft: '70px' }} className={cls.added}>
                   <PreviewNode
                     node={{
-                      id: using.id,
-                      data: { ...using, originalSize: using.display.size },
-                      positionAbsolute: using.display.pos,
-                      height: using.display.size.height,
-                      width: using.display.size.width,
+                      id: next.id,
+                      data: { ...next, originalSize: next.display.size },
+                      positionAbsolute: next.display.pos,
+                      height: next.display.size.height,
+                      width: next.display.size.width,
                     }}
                     info={true}
                   />
@@ -189,7 +224,6 @@ export const DiffCardComponent: React.FC<{
         }
 
         if (d.key === 'techId') {
-          const prev = diff.blob.previous!;
           return (
             <div key={d.key} className={classnames(cls.spaced)}>
               <h4>Technology</h4>
@@ -205,11 +239,11 @@ export const DiffCardComponent: React.FC<{
                   <IconArrowRight />
                 </div>
                 <Flex gap="l" className={cls.added}>
-                  <ComponentIcon data={using} large noEmpty />
-                  {using.techId && using.techId in supportedIndexed
-                    ? supportedIndexed[using.techId].name
+                  <ComponentIcon data={next} large noEmpty />
+                  {next.techId && next.techId in supportedIndexed
+                    ? supportedIndexed[next.techId].name
                     : ''}
-                  {!using.techId && 'Service'}
+                  {!next.techId && 'Service'}
                 </Flex>
               </Flex>
             </div>
@@ -302,10 +336,9 @@ export const DiffCardComponent: React.FC<{
 
         if (d.key === 'inComponent') {
           const newComp =
-            using.inComponent.id && getComponent(using.inComponent.id);
+            next.inComponent.id && getComponent(next.inComponent.id);
           const oldComp =
-            diff.blob.previous?.inComponent.id &&
-            getComponent(diff.blob.previous.inComponent.id);
+            prev.inComponent.id && getComponent(prev.inComponent.id);
           return (
             <div key={d.key} className={classnames(cls.spaced)}>
               <h4>Host</h4>
@@ -336,7 +369,7 @@ export const DiffCardComponent: React.FC<{
           );
         }
 
-        return <Split key={d.key} diff={d} created={!diff.blob.previous} />;
+        return <Split key={d.key} diff={d} created={!prev} />;
       })}
     </div>
   );
