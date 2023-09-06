@@ -8,6 +8,7 @@ export async function seedJobs(
   { pAnalytics }: { pAnalytics: Projects }
 ) {
   await prisma.$transaction(async (tx) => {
+    const config = { url: 'specfy/sync', project: pAnalytics.config };
     await Promise.all([
       createJobDeploy({
         id: '53QoA4sTeI01',
@@ -16,7 +17,7 @@ export async function seedJobs(
         userId: users[0].id,
         typeId: 1,
         status: 'cancelled',
-        config: { url: 'specfy/sync' },
+        config,
         startedAt: new Date(),
         finishedAt: new Date(),
         tx,
@@ -28,7 +29,7 @@ export async function seedJobs(
         userId: users[0].id,
         typeId: 2,
         status: 'skipped',
-        config: { url: 'specfy/sync' },
+        config,
         startedAt: new Date(),
         finishedAt: new Date(),
         tx,
@@ -40,7 +41,7 @@ export async function seedJobs(
         userId: users[0].id,
         typeId: 3,
         status: 'failed',
-        config: { url: 'specfy/sync' },
+        config,
         reason: {
           status: 'failed',
           code: 'org_not_installed',
@@ -57,7 +58,7 @@ export async function seedJobs(
         userId: users[0].id,
         typeId: 4,
         status: 'timeout',
-        config: { url: 'specfy/sync' },
+        config,
         startedAt: new Date(),
         finishedAt: new Date(),
         tx,
@@ -69,7 +70,7 @@ export async function seedJobs(
         userId: users[0].id,
         typeId: 5,
         status: 'running',
-        config: { url: 'specfy/sync' },
+        config,
         startedAt: new Date(),
         tx,
       }),
@@ -80,7 +81,7 @@ export async function seedJobs(
         userId: users[0].id,
         typeId: 6,
         status: 'success',
-        config: { url: 'specfy/sync' },
+        config,
         startedAt: new Date(),
         finishedAt: new Date(),
         tx,
@@ -93,7 +94,7 @@ export async function seedJob(user: Users, org: Orgs, project: Projects) {
   return createJobDeploy({
     orgId: org.id,
     projectId: project.id,
-    config: { url: 'hello' },
+    config: { url: 'hello', project: project.config },
     userId: user.id,
     tx: prisma,
   });

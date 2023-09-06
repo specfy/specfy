@@ -18,10 +18,10 @@ export function computeNewProjectPosition(flow: ComputedFlow): {
   return { x: global.x, y: global.y - (hDef + 10) };
 }
 
-const iconSize = 21;
-const padding = 6 * 2;
+const iconSize = 22;
+const padding = 12 * 2 + 6 * 2; // Outer + Inner
 const gap = 2;
-const char = 6;
+const char = 8;
 export function computeWidth(name: string, min: number, max: number) {
   return Math.min(
     max,

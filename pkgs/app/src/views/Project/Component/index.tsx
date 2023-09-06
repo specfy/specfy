@@ -1,7 +1,11 @@
 import type { ComputedFlow, ApiComponent, ApiProject } from '@specfy/models';
 import { internalTypeToText } from '@specfy/models/src/components/constants';
 import { componentsToFlow } from '@specfy/models/src/flows/transform';
-import { IconDotsVertical, IconTrash } from '@tabler/icons-react';
+import {
+  IconDotsVertical,
+  IconTrash,
+  IconPackageImport,
+} from '@tabler/icons-react';
 import classnames from 'classnames';
 import type React from 'react';
 import { useEffect, useState } from 'react';
@@ -41,6 +45,7 @@ import cls from './index.module.scss';
 import { useComponentsStore } from '@/common/store';
 import { titleSuffix } from '@/common/string';
 import { Editable } from '@/components/Form/Editable';
+import { Loading } from '@/components/Loading';
 
 export const ComponentView: React.FC<{
   proj: ApiProject;
@@ -51,6 +56,7 @@ export const ComponentView: React.FC<{
   const navigate = useNavigate();
   const canEdit = currentPerm?.role !== 'viewer';
 
+  const [loading, setLoading] = useState<boolean>(true);
   const [comp, setComp] = useState<ApiComponent>();
   const params = useParams<Partial<RouteComponent>>() as RouteComponent;
 
@@ -70,16 +76,11 @@ export const ComponentView: React.FC<{
   }, [params.component_slug]);
 
   useEffect(() => {
+    setLoading(false);
     setComponents(Object.values(storeComponents.components));
     const curr = storeComponents.select(storeComponents.current!);
     setComp(curr);
   }, [storeComponents]);
-
-  useEffect(() => {
-    if (!comp) {
-      return;
-    }
-  }, [comp?.techId]);
 
   useEffect(() => {
     const nodes = getNodes();
@@ -112,6 +113,9 @@ export const ComponentView: React.FC<{
     onNodesChangeProject(storeComponents)(changes);
   };
 
+  if (loading) {
+    return <Loading />;
+  }
   if (!comp) {
     return <NotFound />;
   }
@@ -124,17 +128,30 @@ export const ComponentView: React.FC<{
         <div className={cls.content}>
           <Flex align="center" justify="space-between" gap="l">
             <Flex align="center" gap="l" grow>
-              {isEditing ? (
-                <TechPopover
-                  id={comp.id}
-                  techId={comp.techId || comp.typeId}
-                  data={comp}
-                  onNodesChange={onNodesChange}
-                />
+              {comp.source ? (
+                <TooltipFull
+                  msg={`This component is managed by: ${comp.source}`}
+                  side="bottom"
+                >
+                  <div>
+                    <ComponentIcon data={comp} large noEmpty />
+                  </div>
+                </TooltipFull>
               ) : (
-                <Editable inline>
-                  <ComponentIcon data={comp} large noEmpty />
-                </Editable>
+                <div>
+                  {isEditing ? (
+                    <TechPopover
+                      id={comp.id}
+                      techId={comp.techId || comp.typeId}
+                      data={comp}
+                      onNodesChange={onNodesChange}
+                    />
+                  ) : (
+                    <Editable inline>
+                      <ComponentIcon data={comp} large noEmpty />
+                    </Editable>
+                  )}
+                </div>
               )}
 
               <TooltipFull
@@ -167,21 +184,31 @@ export const ComponentView: React.FC<{
                 )}
               </TooltipFull>
             </Flex>
-            <Flex align="center">
-              <Tag
-                variant="border"
-                className={classnames(
-                  cls.tagType,
-                  comp.type in cls && cls[comp.type as keyof typeof cls]
+            <Flex align="center" gap="m">
+              <Flex gap="l">
+                {comp.source && (
+                  <TooltipFull
+                    msg={`This component is managed by: ${comp.source}`}
+                    side="bottom"
+                  >
+                    <IconPackageImport />
+                  </TooltipFull>
                 )}
-              >
-                {internalTypeToText[comp.type]}
-              </Tag>
+                <Tag
+                  variant="border"
+                  className={classnames(
+                    cls.tagType,
+                    comp.type in cls && cls[comp.type as keyof typeof cls]
+                  )}
+                >
+                  {internalTypeToText[comp.type]}
+                </Tag>
+              </Flex>
               {canEdit && (
                 <div>
                   <Dropdown.Menu>
                     <Dropdown.Trigger asChild>
-                      <Button display="ghost">
+                      <Button display="ghost" size="s">
                         <IconDotsVertical />
                       </Button>
                     </Dropdown.Trigger>
@@ -238,7 +265,7 @@ export const ComponentView: React.FC<{
             <>
               <Flow flow={flow} highlight={comp.id} readonly />
               <Toolbar bottom>
-                <Toolbar.Fullscreen project={proj} />
+                <Toolbar.Fullscreen to={`${proj.orgId}/${proj.slug}`} />
                 <Toolbar.Zoom />
               </Toolbar>
             </>

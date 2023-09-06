@@ -53,6 +53,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
             userId: me.id,
             config: {
               url: proj.githubRepository,
+              project: proj.config,
             },
             tx,
           });

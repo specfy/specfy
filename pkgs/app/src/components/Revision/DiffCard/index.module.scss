@@ -51,11 +51,10 @@ $border-width: 10px;
 
 // Diff
 .added {
-  margin: 0 (calc(-1 * var(--spc-4xl))) 0 calc(-1 * var(--spc-4xl) - $border-width);
+  // margin: 0 (calc(-1 * var(--spc-4xl))) 0 calc(-1 * var(--spc-4xl) - $border-width);
   padding-left: var(--spc-4xl);
   background-color: var(--added2);
   border-left: $border-width solid var(--added3);
-
 
   &.inline {
     margin: 0;
@@ -70,7 +69,7 @@ $border-width: 10px;
 }
 
 .removed {
-  margin: 0 (-var(--spc-4xl)) 0 (-var(--spc-4xl) - $border-width);
+  // margin: 0 calc(-1 * var(--spc-4xl)) 0 calc(-1 * var(--spc-4xl) - $border-width);
   padding-left: var(--spc-4xl);
 
   text-decoration: line-through;

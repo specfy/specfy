@@ -14,7 +14,8 @@ locals {
     "JWT_SECRET",
     "DD_API_KEY",
     "OPENAI_KEY",
-    "LOGSNAG_KEY"
+    "LOGSNAG_KEY",
+    "SENTRY_DSN"
   ])
 }
 

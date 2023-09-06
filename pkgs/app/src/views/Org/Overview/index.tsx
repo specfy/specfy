@@ -63,6 +63,7 @@ export const OrgOverview: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
               <Flow flow={flow} readonly />
             )}
             <Toolbar bottom>
+              <Toolbar.Fullscreen to={`${org.id}/_`} />
               <Toolbar.Zoom />
             </Toolbar>
           </FlowWrapper>

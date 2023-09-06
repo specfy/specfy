@@ -3,7 +3,13 @@ import path from 'node:path';
 import cors from '@fastify/cors';
 import rateLimit from '@fastify/rate-limit';
 import staticFiles from '@fastify/static';
-import { l as defaultLogger, dirname, envs, metrics } from '@specfy/core';
+import {
+  l as defaultLogger,
+  dirname,
+  envs,
+  metrics,
+  sentry,
+} from '@specfy/core';
 import { initSocket } from '@specfy/socket';
 import type {
   FastifyInstance,
@@ -57,7 +63,7 @@ export default async (f: FastifyInstance, opts: FastifyPluginOptions) => {
     } else if (error instanceof TransactionError) {
       return res.status(400).send(error.err);
     } else {
-      console.error(error);
+      sentry.captureException(error);
       // fastify will use parent error handler to handle this
       return serverError(res);
     }

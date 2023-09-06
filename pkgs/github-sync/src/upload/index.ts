@@ -5,7 +5,7 @@ import type { Payload } from '@specfy/stack-analyser';
 
 import type { TransformedFile } from '../transform/index.js';
 
-const title = 'fix(documentation): sync from git';
+const title = 'fix: sync from git';
 
 interface Params {
   orgId: string;

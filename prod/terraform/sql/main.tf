@@ -6,7 +6,7 @@ resource "google_sql_database_instance" "specfy" {
   deletion_protection = "true"
 
   settings {
-    tier              = "db-f1-micro"
+    tier              = var.envs.sql.machine
     activation_policy = "ALWAYS"
 
     ip_configuration {
@@ -42,7 +42,7 @@ resource "google_sql_database_instance" "specfy" {
     }
     database_flags {
       name  = "shared_buffers"
-      value = "28000"
+      value = "58152"
     }
     database_flags {
       name  = "maintenance_work_mem"

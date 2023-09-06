@@ -1,3 +1,4 @@
+import { sentry } from '@specfy/core';
 import type { Prisma, TypeHasUsers } from '@specfy/db';
 import { prisma } from '@specfy/db';
 import { createRevisionActivity, schemaRevision } from '@specfy/models';
@@ -200,7 +201,8 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
             });
           }
         });
-      } catch (e) {
+      } catch (err) {
+        sentry.captureException(err);
         res.status(500).send({
           data: {
             done: false,

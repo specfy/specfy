@@ -307,26 +307,31 @@ export const DiffCardComponent: React.FC<{
             diff.blob.previous?.inComponent.id &&
             getComponent(diff.blob.previous.inComponent.id);
           return (
-            <div key={d.key} className={classnames(cls.line)}>
+            <div key={d.key} className={classnames(cls.spaced)}>
               <h4>Host</h4>
-              {newComp && (
-                <div className={cls.added}>
-                  <ComponentItem
-                    className={cls.item}
-                    comp={newComp}
-                    params={params}
-                  />
+              <Flex style={{ margin: '10px 0 0 0' }} gap="2xl">
+                {oldComp && (
+                  <Flex gap="l" className={cls.removed}>
+                    <ComponentItem
+                      className={cls.item}
+                      comp={oldComp}
+                      params={params}
+                    />
+                  </Flex>
+                )}
+                <div>
+                  <IconArrowRight />
                 </div>
-              )}
-              {oldComp && (
-                <div className={cls.removed}>
-                  <ComponentItem
-                    className={cls.item}
-                    comp={oldComp}
-                    params={params}
-                  />
-                </div>
-              )}
+                {newComp && (
+                  <Flex gap="l" className={cls.added}>
+                    <ComponentItem
+                      className={cls.item}
+                      comp={newComp}
+                      params={params}
+                    />
+                  </Flex>
+                )}
+              </Flex>
             </div>
           );
         }

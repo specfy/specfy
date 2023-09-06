@@ -1,5 +1,5 @@
 import { RequestError } from '@octokit/request-error';
-import { logEvent, schemaId, schemaOrgId } from '@specfy/core';
+import { logEvent, schemaId, schemaOrgId, sentry } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import {
   createGithubActivity,
@@ -63,6 +63,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         } catch (e: unknown) {
           if (e instanceof RequestError) {
             console.error(e);
+            sentry.captureException(e);
             return notFound(res);
           }
 
@@ -108,6 +109,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
             config: {
               url: body.repository,
               autoLayout: true,
+              project: proj.config,
             },
             tx,
           });

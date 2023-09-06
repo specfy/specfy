@@ -40,6 +40,7 @@ const schema = z.object({
   STRIPE_KEY: z.string().optional(),
   STRIPE_WEBHOOKS_SECRET: z.string().nonempty(),
   LOGSNAG_KEY: z.string().optional(),
+  SENTRY_DSN: z.string().optional(),
 });
 
 export const envs = schema.parse(process.env);

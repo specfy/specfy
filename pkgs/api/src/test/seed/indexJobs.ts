@@ -16,7 +16,7 @@ import { createJobDeploy, userGithubApp } from '@specfy/models';
     orgId: res.orgId,
     projectId: res.id,
     userId: userGithubApp.id,
-    config: { url: 'specfy/specfy', autoLayout: false },
+    config: { url: 'specfy/specfy', autoLayout: false, project: res.config },
     tx: prisma,
   });
 

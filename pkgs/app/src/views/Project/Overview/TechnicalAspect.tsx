@@ -33,6 +33,7 @@ export const TechnicalAspects: React.FC<{
 
     const _techs = new Set<string>();
     const _groups: typeof groups = {
+      analytics: [],
       api: [],
       app: [],
       ci: [],
