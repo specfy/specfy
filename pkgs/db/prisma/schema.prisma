@@ -110,7 +110,8 @@ model Components {
   techs       Json    @default("[]") @db.Json
   /// [PrismaComponentsDisplay]
   display     Json    @db.Json
-  inComponent String? @db.VarChar(15)
+  /// [PrismaComponentsInComponent]
+  inComponent Json    @db.Json
   /// [PrismaComponentsEdges]
   edges       Json    @db.Json
   source      String? @db.VarChar(15)

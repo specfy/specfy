@@ -20,7 +20,7 @@
   "dependencies": {
     "@specfy/core": "file:../core",
     "@specfy/db": "file:../db",
-    "@specfy/stack-analyser": "1.4.3",
+    "@specfy/stack-analyser": "1.4.9",
     "openai": "4.2.0"
   },
   "devDependencies": {

@@ -24,7 +24,10 @@ exports[`stackToBlobs > should output new blobs once and nothing the second 1`] 
       },
       "edges": [],
       "id": Any<String>,
-      "inComponent": null,
+      "inComponent": {
+        "id": null,
+        "source": "github",
+      },
       "name": "A",
       "orgId": undefined,
       "projectId": undefined,
@@ -72,7 +75,10 @@ exports[`stackToBlobs > should output new blobs once and nothing the second 1`] 
       },
       "edges": [],
       "id": Any<String>,
-      "inComponent": null,
+      "inComponent": {
+        "id": null,
+        "source": "github",
+      },
       "name": "B",
       "orgId": undefined,
       "projectId": undefined,

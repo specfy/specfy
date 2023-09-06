@@ -9,7 +9,7 @@ export const Logo: React.FC<{ color?: 'white'; className?: string }> = ({
   const fill = color || 'black';
 
   return (
-    <div className={classNames(cls.logo, className)}>
+    <div className={classNames(cls.logo, className)} data-logo>
       <svg
         viewBox="0 0 200 200"
         fill="none"

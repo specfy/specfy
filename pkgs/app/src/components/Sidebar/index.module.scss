@@ -24,21 +24,27 @@
   background-color: #fff;
   border-right: 1px solid var(--border2);
 
-  transition: transform 0.25s var(--anim-smooth), width 0.25s var(--anim-smooth);
+  transition: transform 0.25s var(--anim-smooth), width 0.25s var(--anim-smooth), background-color 0.25s var(--anim-smooth);
 
   &.collapsed {
     &.sidebar {
       overflow: hidden;
-      width: 53px;
+      width: 60px;
     }
 
     .inner {
-      background-color: var(--border1);
+      background-color: var(--bg2);
     }
 
     .group {
       pointer-events: none;
       opacity: 0;
+    }
+
+    div[data-logo] {
+      svg:nth-child(2) {
+        opacity: 0;
+      }
     }
   }
 }

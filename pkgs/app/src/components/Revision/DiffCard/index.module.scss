@@ -41,9 +41,17 @@ $border-width: 10px;
   padding: 0 var(--spc-4xl);
 }
 
+.cardTitle {
+  padding: 0 0 var(--spc-4xl) 0;
+}
+
+.spaced {
+  padding: 0 0 var(--spc-2xl) 0;
+}
+
 // Diff
 .added {
-  margin: 0 (-var(--spc-4xl)) 0 (-var(--spc-4xl) - $border-width);
+  // margin: 0 (calc(-1 * var(--spc-4xl))) 0 calc(-1 * var(--spc-4xl) - $border-width);
   padding-left: var(--spc-4xl);
   background-color: var(--added2);
   border-left: $border-width solid var(--added3);
@@ -61,7 +69,7 @@ $border-width: 10px;
 }
 
 .removed {
-  margin: 0 (-var(--spc-4xl)) 0 (-var(--spc-4xl) - $border-width);
+  // margin: 0 calc(-1 * var(--spc-4xl)) 0 calc(-1 * var(--spc-4xl) - $border-width);
   padding-left: var(--spc-4xl);
 
   text-decoration: line-through;

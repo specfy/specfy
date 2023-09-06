@@ -1,4 +1,4 @@
-import { envs } from '@specfy/core';
+import { envs, logEvent } from '@specfy/core';
 import { v1, stripe, betaTrialEnd } from '@specfy/models';
 import type { PostSubscription } from '@specfy/models';
 import type { FastifyPluginCallback } from 'fastify';
@@ -70,6 +70,8 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
             ],
             trial_end: trial,
           });
+
+          logEvent('stripe.updated', { userId: me.id, orgId: org.id });
           return res.status(200).send({
             data: {
               url: billingUrl,

@@ -1,6 +1,5 @@
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 import classNames from 'classnames';
-import { useState } from 'react';
 
 import { Feedback } from '../Feedback';
 import { Flex } from '../Flex';
@@ -10,26 +9,32 @@ import { Help } from '../Help';
 import { Header } from './Header';
 import cls from './index.module.scss';
 
+import { useGlobal } from '@/common/store/global';
+
 export * from './Block';
 export * from './Group';
 
 export const Sidebar: React.FC<{
   children?: React.ReactNode;
 }> = ({ children }) => {
-  const [collapse, setCollapse] = useState<boolean>(false);
+  const { sidebarCollapsed, update } = useGlobal();
 
   const onCollapse = () => {
-    setCollapse(!collapse);
+    update('sidebarCollapsed', !sidebarCollapsed);
   };
 
   return (
     <div className={cls.wrapper}>
-      <div className={classNames(cls.collapser, collapse && cls.collapsed)}>
+      <div
+        className={classNames(cls.collapser, sidebarCollapsed && cls.collapsed)}
+      >
         <Button size="s" display="ghost" onClick={onCollapse}>
-          {collapse ? <IconChevronRight /> : <IconChevronLeft />}
+          {sidebarCollapsed ? <IconChevronRight /> : <IconChevronLeft />}
         </Button>
       </div>
-      <div className={classNames(cls.sidebar, collapse && cls.collapsed)}>
+      <div
+        className={classNames(cls.sidebar, sidebarCollapsed && cls.collapsed)}
+      >
         <div className={cls.inner}>
           <Header />
           <div className={cls.content}>{children}</div>

@@ -152,6 +152,7 @@ export function listen() {
                 id,
                 ref: payload.ref,
               },
+              project: project.config,
             },
             tx,
           });

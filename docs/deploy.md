@@ -1,5 +1,10 @@
 # Deploy
 
+
+![app specfy io_public](https://github.com/specfy/specfy/assets/1637651/fecfb292-e2e3-4ad4-93dd-714a1fc20b1a)
+*Map of the current infrastucture*
+
+
 ## Deploy using Terraform
 
 Read [Deploy with Terraform](./deploy.terraform.md)

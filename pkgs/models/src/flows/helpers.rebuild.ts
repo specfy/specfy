@@ -1,4 +1,3 @@
-import { nanoid } from '@specfy/core';
 import type { Prisma, Projects } from '@specfy/db';
 
 import type { DBComponent } from '../components/types.js';
@@ -25,6 +24,19 @@ export async function recomputeOrgGraph({
   updates?: OrgFlowUpdates;
   tx: Prisma.TransactionClient;
 }) {
+  const org = await tx.orgs.findUnique({
+    where: {
+      id: orgId,
+    },
+    select: {
+      flowId: true,
+    },
+  });
+  if (!org || !org.flowId) {
+    console.error('Failed to find org or flowId is empty');
+    return;
+  }
+
   const projects = await tx.projects.findMany({
     where: { orgId: orgId },
     select: { id: true, name: true },
@@ -44,6 +56,11 @@ export async function recomputeOrgGraph({
     });
 
     for (const [projectId, rel] of Object.entries(rels)) {
+      if (projectId === project.id) {
+        // Ignore accidental self link
+        continue;
+      }
+
       if (rel.from.read || rel.from.write) {
         if (!relations[projectId]) {
           relations[projectId] = {};
@@ -60,9 +77,13 @@ export async function recomputeOrgGraph({
   }
 
   // Try to find the old snapshot to keep the position and display
-  const snapshot = await tx.flows.findFirst({
-    where: { orgId: orgId },
+  const snapshot = await tx.flows.findUnique({
+    where: { id: org.flowId },
   });
+  if (!snapshot) {
+    console.error('Failed to find org Snapshot');
+    return;
+  }
 
   const newFlow = rebuildFlow({
     oldFlow: snapshot?.flow,
@@ -71,15 +92,9 @@ export async function recomputeOrgGraph({
     updates,
   });
 
-  if (snapshot) {
-    return await tx.flows.update({
-      where: { id: snapshot.id },
-      data: { flow: newFlow },
-    });
-  }
-
-  return await tx.flows.create({
-    data: { id: nanoid(), orgId, flow: newFlow },
+  return await tx.flows.update({
+    where: { id: snapshot.id },
+    data: { flow: newFlow },
   });
 }
 

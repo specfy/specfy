@@ -13,7 +13,9 @@ locals {
     "STRIPE_WEBHOOKS_SECRET",
     "JWT_SECRET",
     "DD_API_KEY",
-    "OPENAI_KEY"
+    "OPENAI_KEY",
+    "LOGSNAG_KEY",
+    "SENTRY_DSN"
   ])
 }
 

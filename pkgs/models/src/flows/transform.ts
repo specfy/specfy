@@ -1,5 +1,7 @@
 import type { Projects } from '@specfy/db';
 
+import type { DBComponent } from '../components/types.js';
+
 import type {
   FlowItemDisplay,
   ComponentForFlow,
@@ -18,9 +20,10 @@ export function createNodeFromProject(
     name: project.name,
     type: 'project',
     display: display,
-    inComponent: null,
+    inComponent: { id: null },
     techId: null,
     typeId: null,
+    source: null,
   });
 }
 
@@ -36,6 +39,7 @@ export function createNode(
       techId: component.techId,
       typeId: component.typeId,
       originalSize: component.display.size,
+      source: component.source,
     },
     position: { ...component.display.pos },
     style: {
@@ -44,9 +48,9 @@ export function createNode(
     },
   };
 
-  if (component.inComponent) {
+  if (component.inComponent.id) {
     node.extent = 'parent';
-    node.parentNode = component.inComponent;
+    node.parentNode = component.inComponent.id;
   }
 
   return node;
@@ -81,13 +85,13 @@ export function componentsToFlow(components: ComponentForFlow[]): ComputedFlow {
   const done: string[] = [];
 
   let i = 0;
-  while (i < 9999) {
+  while (i < 999) {
     i += 1;
     if (hosts.length <= 0) {
       break;
     }
     const host = hosts.shift()!;
-    if (host.inComponent && !done.includes(host.inComponent)) {
+    if (host.inComponent.id && !done.includes(host.inComponent.id)) {
       hosts.push(host);
       continue;
     }
@@ -95,7 +99,7 @@ export function componentsToFlow(components: ComponentForFlow[]): ComputedFlow {
     nodes.push(createNode(host));
     done.push(host.id);
   }
-  if (i >= 9999) {
+  if (i >= 998) {
     throw new Error("Can't compute host");
   }
 
@@ -125,4 +129,45 @@ export function componentsToFlow(components: ComponentForFlow[]): ComputedFlow {
   }
 
   return { edges, nodes };
+}
+
+export function getAbsolutePosition(
+  component: DBComponent,
+  components: DBComponent[]
+) {
+  let x = 0;
+  let y = 0;
+  let host: DBComponent | undefined = component;
+
+  do {
+    if (host) {
+      x += host.display.pos.x;
+      y += host.display.pos.y;
+
+      host = host.inComponent.id
+        ? components.find((c) => c.id === host?.inComponent.id)
+        : undefined;
+    }
+  } while (host);
+
+  return { x, y };
+}
+
+export function placeInsideHost(
+  component: DBComponent,
+  idHost: string,
+  components: DBComponent[]
+) {
+  const host = components.find((c) => c.id === idHost);
+  if (!host) {
+    return { x: 0, y: 0 };
+  }
+
+  const absComp = getAbsolutePosition(component, components);
+  const absHost = getAbsolutePosition(host, components);
+
+  const x = Math.abs(absHost.x - absComp.x);
+  const y = Math.abs(absHost.y - absComp.y);
+
+  return { x, y };
 }

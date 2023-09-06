@@ -144,7 +144,7 @@ export const OrgMenu: React.FC = () => {
         key: 'home',
         label: (
           <Link to={linkSelf}>
-            <Flex gap="m">
+            <Flex gap="l">
               <IconHome />
               Home
             </Flex>
@@ -155,7 +155,7 @@ export const OrgMenu: React.FC = () => {
         key: 'flow',
         label: (
           <Link to={`${linkSelf}/_/flow`}>
-            <Flex gap="m">
+            <Flex gap="l">
               <IconApps />
               Flow
             </Flex>
@@ -166,7 +166,7 @@ export const OrgMenu: React.FC = () => {
         key: 'report',
         label: (
           <Flex justify="space-between" grow={1}>
-            <Flex gap="m">
+            <Flex gap="l">
               <IconChartLine />
               Report
             </Flex>
@@ -178,7 +178,7 @@ export const OrgMenu: React.FC = () => {
         key: 'settings',
         label: (
           <Link to={`${linkSelf}/_/settings`}>
-            <Flex gap="m">
+            <Flex gap="l">
               <IconSettings />
               Settings
             </Flex>

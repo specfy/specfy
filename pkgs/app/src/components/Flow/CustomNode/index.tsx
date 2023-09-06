@@ -271,15 +271,28 @@ export const PreviewNode: React.FC<{
         </>
       )}
       <div className={cls.title}>
-        {editable ? (
-          <TechPopover
-            id={node.id}
-            techId={node.data.techId || node.data.typeId}
-            data={node.data}
-            onNodesChange={onNodesChange}
-          />
+        {node.data.source ? (
+          <TooltipFull
+            msg={`This component is managed by: ${node.data.source}`}
+            side="bottom"
+          >
+            <div>
+              <ComponentIcon data={node.data} large noEmpty />
+            </div>
+          </TooltipFull>
         ) : (
-          <ComponentIcon data={node.data} large noEmpty />
+          <div>
+            {editable ? (
+              <TechPopover
+                id={node.id}
+                techId={node.data.techId || node.data.typeId}
+                data={node.data}
+                onNodesChange={onNodesChange}
+              />
+            ) : (
+              <ComponentIcon data={node.data} large noEmpty />
+            )}
+          </div>
         )}
         <TooltipFull
           msg={
@@ -287,7 +300,7 @@ export const PreviewNode: React.FC<{
             node.data.type === 'project' &&
             "Can't edit Project name"
           }
-          side="top"
+          side="bottom"
         >
           <input
             ref={input}

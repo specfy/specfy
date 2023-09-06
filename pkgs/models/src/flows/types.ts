@@ -33,6 +33,7 @@ export type ComponentForFlow = Pick<
   | 'techId'
   | 'type'
   | 'typeId'
+  | 'source'
 >;
 
 export interface NodeData {
@@ -42,6 +43,7 @@ export interface NodeData {
   originalSize: ComponentForFlow['display']['size'];
   typeId: ApiComponent['typeId'];
   moving?: boolean | 'source' | 'target';
+  source?: ApiComponent['source'];
 }
 
 export interface EdgeData {
@@ -92,4 +94,5 @@ export interface FlowEdge {
   vertices: Array<{ x: number; y: number }>;
   portSource: 'sb' | 'sl' | 'sr' | 'st';
   portTarget: 'tb' | 'tl' | 'tr' | 'tt';
+  source?: string | undefined;
 }

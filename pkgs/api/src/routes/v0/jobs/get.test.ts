@@ -51,6 +51,17 @@ describe('GET /jobs/:job_id', () => {
     expect(res.json.data).toStrictEqual({
       config: {
         url: 'hello',
+        project: {
+          branch: 'main',
+          documentation: {
+            enabled: true,
+            path: '/',
+          },
+          stack: {
+            enabled: true,
+            path: '/',
+          },
+        },
       },
       id: expect.any(String),
       orgId: project.orgId,

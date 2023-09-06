@@ -8,7 +8,11 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { Card } from '../../../components/Card';
 import { Container } from '../../../components/Container';
-import { ContentDoc, Placeholder } from '../../../components/Content';
+import {
+  ContentDoc,
+  Placeholder,
+  Presentation,
+} from '../../../components/Content';
 import { EditorMini } from '../../../components/Editor/Mini';
 import { Flow, FlowWrapper } from '../../../components/Flow';
 import { Toolbar } from '../../../components/Flow/Toolbar';
@@ -69,10 +73,12 @@ export const ProjectOverview: React.FC<{
           <div className={cls.desc}>
             {!isEditing && (
               <Editable padded>
-                <ContentDoc
-                  doc={project.description}
-                  placeholder={<Placeholder />}
-                />
+                <Presentation>
+                  <ContentDoc
+                    doc={project.description}
+                    placeholder={<Placeholder />}
+                  />
+                </Presentation>
               </Editable>
             )}
             {isEditing && (
@@ -106,7 +112,7 @@ export const ProjectOverview: React.FC<{
             <>
               <Flow flow={flow} readonly />
               <Toolbar bottom>
-                <Toolbar.Fullscreen project={project} />
+                <Toolbar.Fullscreen to={`${project.orgId}/${project.slug}`} />
                 <Toolbar.Zoom />
               </Toolbar>
             </>

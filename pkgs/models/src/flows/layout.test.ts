@@ -8,12 +8,13 @@ function getComp(id: string, host: string | null = null): ComponentForFlow {
   return {
     id,
     edges: [],
-    inComponent: host,
+    inComponent: { id: host },
     type: 'service',
     typeId: null,
     name: id,
     techId: null,
     display: { pos: { x: 0, y: 0 }, size: { width: 100, height: 20 } },
+    source: null,
   };
 }
 

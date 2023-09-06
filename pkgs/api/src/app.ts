@@ -3,7 +3,13 @@ import path from 'node:path';
 import cors from '@fastify/cors';
 import rateLimit from '@fastify/rate-limit';
 import staticFiles from '@fastify/static';
-import { l, dirname } from '@specfy/core';
+import {
+  l as defaultLogger,
+  dirname,
+  envs,
+  metrics,
+  sentry,
+} from '@specfy/core';
 import { initSocket } from '@specfy/socket';
 import type {
   FastifyInstance,
@@ -19,7 +25,24 @@ import { routes } from './routes/routes.js';
 
 import './types/auth.js';
 
+function urlToTag(str: string) {
+  return new URL(str, envs.API_HOSTNAME).pathname.replaceAll(':', '_');
+}
+const l = defaultLogger.child({ svc: 'api' });
 export default async (f: FastifyInstance, opts: FastifyPluginOptions) => {
+  f.addHook('onRequest', (req, _res, done) => {
+    l.info(`#${req.id} <- ${req.method} ${req.url}`);
+    metrics.increment('api.call', 1, [
+      `path:${urlToTag(req.url).substring(0, 50)}}`,
+      `method:${req.method.substring(0, 10)}`,
+    ]);
+    done();
+  });
+  f.addHook('onResponse', (_, res, done) => {
+    l.info(`#${res.request.id} -> ${res.statusCode}`);
+    done();
+  });
+
   await f.register(cors, {
     // Important for cookies to work
     origin: [
@@ -40,7 +63,7 @@ export default async (f: FastifyInstance, opts: FastifyPluginOptions) => {
     } else if (error instanceof TransactionError) {
       return res.status(400).send(error.err);
     } else {
-      console.error(error);
+      sentry.captureException(error);
       // fastify will use parent error handler to handle this
       return serverError(res);
     }
@@ -111,26 +134,13 @@ export default async (f: FastifyInstance, opts: FastifyPluginOptions) => {
     },
   });
 
-  // Do not touch the following lines
-
-  // await start();
-
-  // Autoload breaks fastify
-  // This loads all plugins defined in plugins
-  // those should be support plugins that are reused
-  // through your application
-  // f.register(fastifyAutoload, {
-  //   dir: path.join(__dirname, 'plugins'),
-  //   options: Object.assign({}, opts),
-  // });
-
   await routes(f, opts);
 
   initSocket(f.server);
 };
 
 export const options: FastifyServerOptions = {
-  logger: l.child({ svc: 'api' }),
+  // logger: l.child({ svc: 'api' }),
   trustProxy: true,
-  // logger: true,
+  logger: false,
 };

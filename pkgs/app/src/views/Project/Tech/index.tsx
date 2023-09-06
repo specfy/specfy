@@ -46,6 +46,7 @@ export const Tech: React.FC<{
       return;
     }
 
+    // Determine if tech is an actual tech or a "random" string
     let name;
     if (route.tech_slug && route.tech_slug in supportedIndexed) {
       name = supportedIndexed[route.tech_slug].name;
@@ -54,6 +55,7 @@ export const Tech: React.FC<{
       setInfo(undefined);
     }
 
+    // Find used by
     const tmp = [];
     for (const comp of components) {
       if (!comp.techs) {
@@ -61,9 +63,11 @@ export const Tech: React.FC<{
       }
 
       for (const _tech of comp.techs) {
-        if (_tech.toLocaleLowerCase() === route.tech_slug) {
+        if (_tech.id.toLocaleLowerCase() === route.tech_slug) {
           tmp.push(comp);
-          if (!name) name = _tech;
+          if (!name) {
+            name = _tech.id;
+          }
         }
       }
     }
@@ -114,7 +118,7 @@ export const Tech: React.FC<{
             <>
               <Flow flow={flow} readonly />
               <Toolbar bottom>
-                <Toolbar.Fullscreen project={proj} />
+                <Toolbar.Fullscreen to={`${proj.orgId}/${proj.slug}`} />
                 <Toolbar.Zoom />
               </Toolbar>
             </>

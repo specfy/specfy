@@ -31,6 +31,7 @@ const Editor: React.FC<MiniEditorProps> = ({
   onUpdate,
 }) => {
   const [aiLoading, setAiLoading] = useState(false);
+  const [focus, setFocus] = useState(false);
   const [finalAnimation, setFinalAnimation] = useState<boolean>(false);
   const editor = useEditor({
     extensions: [
@@ -69,8 +70,10 @@ const Editor: React.FC<MiniEditorProps> = ({
     <div
       className={classNames(
         cls.wrapper,
-        (aiLoading || finalAnimation) && cls.showToolbar
+        (aiLoading || finalAnimation || focus) && cls.showToolbar
       )}
+      onFocus={() => setFocus(true)}
+      onBlur={() => setFocus(false)}
     >
       {editor && <BubbleMenu editor={editor} />}
       <AIToolbar
@@ -105,14 +108,15 @@ const Editor: React.FC<MiniEditorProps> = ({
 export const EditorMini: React.FC<
   {
     doc: BlockLevelZero;
+    className?: string;
   } & Omit<MiniEditorProps, 'content'>
-> = ({ doc, ...props }) => {
+> = ({ doc, className, ...props }) => {
   const content = useMemo(() => {
     return doc;
   }, []);
 
   return (
-    <div className={cls.mini}>
+    <div className={classNames(cls.mini, className)}>
       <Editor content={content} {...props} />
     </div>
   );

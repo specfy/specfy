@@ -1,4 +1,3 @@
-import type { ApiProject } from '@specfy/models';
 import {
   IconBox,
   IconCode,
@@ -115,7 +114,10 @@ const ToolbarZoom: React.FC = () => {
   );
 };
 
-const ToolbarHelp: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const ToolbarHelp: React.FC<{ title?: string; children: React.ReactNode }> = ({
+  title = 'Need help?',
+  children,
+}) => {
   return (
     <div className={cls.toolbar}>
       <Popover.Popover>
@@ -125,7 +127,7 @@ const ToolbarHelp: React.FC<{ children: React.ReactNode }> = ({ children }) => {
           </Button>
         </Popover.Trigger>
         <Popover.Content className={cls.help}>
-          <h3>Need help?</h3>
+          <h3>{title}</h3>
           {children}
         </Popover.Content>
       </Popover.Popover>
@@ -133,11 +135,11 @@ const ToolbarHelp: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   );
 };
 
-const Fullscreen: React.FC<{ project: ApiProject }> = ({ project }) => {
+const Fullscreen: React.FC<{ to: string }> = ({ to }) => {
   return (
     <div className={cls.toolbar}>
       <TooltipFull msg="Fullscreen" side="top">
-        <Link to={`/${project.orgId}/${project.slug}/flow`}>
+        <Link to={`/${to}/flow`}>
           <Button display="ghost">
             <IconMaximize />
           </Button>
@@ -175,6 +177,8 @@ const AddComponents: React.FC = () => {
           transform: `translate(-10000px, -10000px)`,
           position: 'absolute',
           pointerEvents: 'none',
+          display: 'flex',
+          gap: '40px',
         }}
       >
         <div ref={previewService}>

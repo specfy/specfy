@@ -121,6 +121,7 @@ export const MultiSelect: React.FC<{
         return;
       }
 
+      // Backspace to delete previous
       // Not executed well enough, it should highlight first then delete
       // if (e.key === 'Delete' || e.key === 'Backspace') {
       //   if (input.value === '') {

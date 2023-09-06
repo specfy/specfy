@@ -1,5 +1,5 @@
 import { RequestError } from '@octokit/request-error';
-import { schemaOrgId } from '@specfy/core';
+import { logEvent, schemaOrgId, sentry } from '@specfy/core';
 import type { Prisma } from '@specfy/db';
 import { prisma } from '@specfy/db';
 import { github } from '@specfy/github';
@@ -58,6 +58,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         } catch (e: unknown) {
           if (e instanceof RequestError) {
             console.error(e);
+            sentry.captureException(e);
             return notFound(res);
           }
 
@@ -93,6 +94,11 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
             user: me,
           });
         }
+      });
+
+      logEvent(body.installationId ? 'github.link_org' : 'github.unlink_org', {
+        userId: me.id,
+        orgId: org.id,
       });
 
       return res.status(200).send({

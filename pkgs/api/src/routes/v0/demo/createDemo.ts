@@ -15,6 +15,7 @@ export async function createDemo(
   org: Orgs,
   user: Users
 ): Promise<void> {
+  // ---- Dashboard
   const pDash = await createProject({
     data: {
       id: nanoid(),
@@ -56,7 +57,7 @@ export async function createDemo(
         size: { width: 200, height: 80 },
       },
       techs: [],
-      inComponent: null,
+      inComponent: { id: null },
       edges: [],
     },
     user,
@@ -77,7 +78,7 @@ export async function createDemo(
         size: { width: 120, height: 40 },
       },
       techs: [],
-      inComponent: aws.id,
+      inComponent: { id: aws.id },
       edges: [],
     },
     user,
@@ -96,7 +97,7 @@ export async function createDemo(
         pos: { x: 50, y: 40 },
         size: { width: 130, height: 40 },
       },
-      inComponent: null,
+      inComponent: { id: null },
       edges: [
         {
           target: s3.id,
@@ -107,12 +108,13 @@ export async function createDemo(
           portTarget: 'tr',
         },
       ],
-      techs: ['golang'],
+      techs: [{ id: 'golang' }],
     },
     user,
     tx,
   });
 
+  // ---- Analytics
   const pAnalytics = await createProject({
     data: {
       id: nanoid(),
@@ -148,6 +150,7 @@ export async function createDemo(
     tx,
   });
 
+  // ---- Billing
   const pBilling = await createProject({
     data: {
       id: nanoid(),
@@ -180,16 +183,16 @@ export async function createDemo(
       name: 'Stripe',
       type: 'saas',
       orgId: org.id,
-      projectId: pDash.id,
+      projectId: pBilling.id,
       techId: 'stripe',
       description: { type: 'doc', content: [] },
       display: {
         zIndex: 1,
-        pos: { x: 20, y: 20 },
+        pos: { x: -16, y: -39 },
         size: { width: 120, height: 40 },
       },
       techs: [],
-      inComponent: null,
+      inComponent: { id: null },
       edges: [],
     },
     user,
@@ -201,25 +204,25 @@ export async function createDemo(
       name: 'Backend',
       type: 'service',
       orgId: org.id,
-      projectId: pDash.id,
+      projectId: pBilling.id,
       description: { type: 'doc', content: [] },
       display: {
         zIndex: 3,
         pos: { x: 50, y: 40 },
         size: { width: 130, height: 40 },
       },
-      inComponent: null,
+      inComponent: { id: null },
       edges: [
         {
           target: stripe.id,
           read: true,
           write: true,
           vertices: [],
-          portSource: 'sl',
-          portTarget: 'tr',
+          portSource: 'st',
+          portTarget: 'tb',
         },
       ],
-      techs: ['rust'],
+      techs: [{ id: 'rust' }],
     },
     user,
     tx,
@@ -255,7 +258,7 @@ export async function createDemo(
         size: { width: 610, height: 400 },
       },
       techs: [],
-      inComponent: null,
+      inComponent: { id: null },
       edges: [],
     },
     user,
@@ -277,7 +280,7 @@ export async function createDemo(
         size: { width: 200, height: 80 },
       },
       techs: [],
-      inComponent: gcp.id,
+      inComponent: { id: gcp.id },
       edges: [],
     },
     user,
@@ -299,7 +302,7 @@ export async function createDemo(
         size: { width: 290, height: 300 },
       },
       techs: [],
-      inComponent: gcp.id,
+      inComponent: { id: gcp.id },
       edges: [],
     },
     user,
@@ -314,6 +317,7 @@ export async function createDemo(
       orgId: org.id,
       projectId: pAnalytics.id,
       techId: 'vercel',
+      inComponent: { id: null },
       description: { type: 'doc', content: [] },
       display: {
         zIndex: 2,
@@ -355,7 +359,7 @@ export async function createDemo(
         pos: { x: 20, y: 130 },
         size: { width: 130, height: 40 },
       },
-      inComponent: gcp.id,
+      inComponent: { id: gcp.id },
       edges: [],
       techs: [],
     },
@@ -370,7 +374,7 @@ export async function createDemo(
       type: 'db',
       orgId: org.id,
       projectId: pAnalytics.id,
-      techId: 'gcp.biqquery',
+      techId: 'gcp.bigquery',
       description: {
         type: 'doc',
         content: [
@@ -396,7 +400,7 @@ export async function createDemo(
         pos: { x: 20, y: 320 },
         size: { width: 130, height: 40 },
       },
-      inComponent: gcp.id,
+      inComponent: { id: gcp.id },
       edges: [],
       techs: [],
     },
@@ -432,7 +436,7 @@ export async function createDemo(
         pos: { x: 460, y: 260 },
         size: { width: 130, height: 40 },
       },
-      inComponent: null,
+      inComponent: { id: null },
       edges: [],
       techs: [],
     },
@@ -454,7 +458,7 @@ export async function createDemo(
         pos: { x: 450, y: 330 },
         size: { width: 130, height: 40 },
       },
-      inComponent: null,
+      inComponent: { id: null },
       edges: [],
       techs: [],
     },
@@ -490,7 +494,7 @@ export async function createDemo(
         pos: { x: 480, y: -33 },
         size: { width: 130, height: 40 },
       },
-      inComponent: null,
+      inComponent: { id: null },
       edges: [],
       techs: [],
     },
@@ -526,7 +530,7 @@ export async function createDemo(
         pos: { x: 20, y: 60 },
         size: { width: 130, height: 40 },
       },
-      inComponent: gcp.id,
+      inComponent: { id: gcp.id },
       edges: [],
       techs: [],
     },
@@ -562,7 +566,7 @@ export async function createDemo(
         pos: { x: 20, y: 20 },
         size: { width: 150, height: 40 },
       },
-      inComponent: gce.id,
+      inComponent: { id: gce.id },
       edges: [],
       techs: [],
     },
@@ -598,7 +602,7 @@ export async function createDemo(
         pos: { x: 100, y: 190 },
         size: { width: 130, height: 40 },
       },
-      inComponent: kube.id,
+      inComponent: { id: kube.id },
       edges: [],
       techs: [],
     },
@@ -620,7 +624,7 @@ export async function createDemo(
         pos: { x: 480, y: 140 },
         size: { width: 130, height: 40 },
       },
-      inComponent: null,
+      inComponent: { id: null },
       edges: [],
       techs: [],
     },
@@ -642,7 +646,7 @@ export async function createDemo(
         pos: { x: 480, y: 80 },
         size: { width: 130, height: 40 },
       },
-      inComponent: null,
+      inComponent: { id: null },
       edges: [],
       techs: [],
     },
@@ -682,7 +686,7 @@ export async function createDemo(
         pos: { x: 50, y: 40 },
         size: { width: 130, height: 40 },
       },
-      inComponent: kube.id,
+      inComponent: { id: kube.id },
       edges: [
         {
           target: redis.id,
@@ -752,7 +756,12 @@ export async function createDemo(
           portTarget: 'tl',
         },
       ],
-      techs: ['nodejs', 'typescript', 'bash', 'prisma'],
+      techs: [
+        { id: 'nodejs' },
+        { id: 'typescript' },
+        { id: 'bash' },
+        { id: 'prisma' },
+      ],
     },
     user,
     tx,
@@ -785,7 +794,7 @@ export async function createDemo(
         pos: { x: 20, y: 20 },
         size: { width: 130, height: 40 },
       },
-      inComponent: vercel.id,
+      inComponent: { id: vercel.id },
       edges: [
         {
           target: api.id,
@@ -804,7 +813,7 @@ export async function createDemo(
           portTarget: 'tl',
         },
       ],
-      techs: ['react', 'typescript', 'webpack'],
+      techs: [{ id: 'react' }, { id: 'typescript' }, { id: 'webpack' }],
     },
     user,
     tx,
@@ -837,7 +846,7 @@ export async function createDemo(
         pos: { x: 100, y: 125 },
         size: { width: 140, height: 40 },
       },
-      inComponent: kube.id,
+      inComponent: { id: kube.id },
       edges: [
         {
           target: pg.id,
@@ -888,7 +897,7 @@ export async function createDemo(
           portTarget: 'tl',
         },
       ],
-      techs: ['nodejs', 'typescript'],
+      techs: [{ id: 'nodejs' }, { id: 'typescript' }],
     },
     user,
     tx,
@@ -921,7 +930,7 @@ export async function createDemo(
         pos: { x: 100, y: 250 },
         size: { width: 130, height: 40 },
       },
-      inComponent: kube.id,
+      inComponent: { id: kube.id },
       edges: [
         {
           target: pg.id,
@@ -972,7 +981,7 @@ export async function createDemo(
           portTarget: 'tr',
         },
       ],
-      techs: ['nodejs', 'typescript'],
+      techs: [{ id: 'nodejs' }, { id: 'typescript' }],
     },
     user,
     tx,

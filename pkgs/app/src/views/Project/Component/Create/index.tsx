@@ -1,5 +1,3 @@
-import type { ApiComponent } from '@specfy/models';
-import { internalTypeToText } from '@specfy/models/src/components/constants';
 import { IconCircleArrowRight } from '@tabler/icons-react';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
@@ -7,7 +5,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { Button } from '../../../../components/Form/Button';
 import { Input } from '../../../../components/Form/Input';
-import { SelectFull } from '../../../../components/Form/Select';
 import type { RouteProject } from '../../../../types/routes';
 
 import cls from './index.module.scss';
@@ -23,27 +20,12 @@ export const ProjectComponentCreate: React.FC<{ params: RouteProject }> = ({
   const storeComponents = useComponentsStore();
   const storeProject = useProjectStore();
 
-  const [options] = useState(() => {
-    const tmp = [];
-
-    for (const [value, label] of Object.entries(internalTypeToText)) {
-      if (value === 'project') {
-        continue;
-      }
-
-      tmp.push({ value, label });
-    }
-
-    return tmp;
-  });
-
   const [name, setName] = useState<string>('');
-  const [type, setType] = useState<ApiComponent['type']>('service');
 
   const onFinish = () => {
     const slug = slugify(name);
     const { id } = createLocal(
-      { name, slug, type },
+      { name, slug, type: 'service' },
       storeProject,
       storeComponents
     );
@@ -66,13 +48,6 @@ export const ProjectComponentCreate: React.FC<{ params: RouteProject }> = ({
       />
       <h4>Create Component</h4>
 
-      <SelectFull
-        placeholder="Select a type"
-        size="l"
-        options={options}
-        value={type}
-        onValueChange={(v: any) => setType(v)}
-      />
       <div className={cls.title}>
         <Input
           size="l"
@@ -83,11 +58,11 @@ export const ProjectComponentCreate: React.FC<{ params: RouteProject }> = ({
         <Button
           display="primary"
           disabled={!name || name.length < 2}
-          className={cls.button}
           onClick={onFinish}
           type="submit"
+          size="xl"
         >
-          <IconCircleArrowRight />
+          <IconCircleArrowRight /> Create
         </Button>
       </div>
     </form>

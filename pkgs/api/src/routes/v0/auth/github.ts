@@ -31,14 +31,18 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         },
       },
     },
-    function (req, res) {
+    (req, res) => {
       if (req.query.installation_id) {
         res.status(200).type('text/html').send(`<html><body>
         Redirecting...
         <script>
           document.addEventListener("DOMContentLoaded", function() {
-            //JSON data for message
-            window.opener.postMessage("installation.done", "${envs.APP_HOSTNAME}");
+            if (window.opener) {
+              //JSON data for message
+              window.opener.postMessage("installation.done", "${envs.APP_HOSTNAME}");
+            } else {
+              window.location.href = "${envs.APP_HOSTNAME}"
+            }
           });
         </script>
       </body>`);

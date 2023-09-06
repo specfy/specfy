@@ -22,6 +22,7 @@ export async function linkToGitHubOrg(
 
   if (res.status === 200) {
     void qcli.invalidateQueries(['listOrgs']);
+    void qcli.invalidateQueries(['getGithubRepos', data.installationId]);
   }
 
   return json;

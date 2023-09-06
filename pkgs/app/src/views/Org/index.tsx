@@ -30,6 +30,7 @@ export const Org: React.FC = () => {
   // Data
   const storeOrg = useOrgStore();
   const getOrgs = useListOrgs();
+  const [loading, setLoading] = useState<boolean>(true);
   const [org, setOrg] = useState<ApiOrg>();
 
   const [, setLastOrg] = useLocalStorage('lastOrg');
@@ -38,13 +39,16 @@ export const Org: React.FC = () => {
     if (!getOrgs.data) {
       return;
     }
+
     const tmp = getOrgs.data.data.find((o) => o.id === params.org_id);
     if (!tmp) {
+      setLoading(false);
       return;
     }
 
     setOrg(tmp);
     storeOrg.setCurrent(tmp);
+    setLoading(false);
   }, [getOrgs.data, params.org_id]);
 
   useEffect(() => {
@@ -54,7 +58,7 @@ export const Org: React.FC = () => {
     }
   }, [org]);
 
-  if (!getOrgs.data || (org && params.org_id !== org?.id)) {
+  if ((org && params.org_id !== org?.id) || loading) {
     return (
       <div className={cls.org}>
         <div></div>

@@ -7,4 +7,8 @@ envs = {
   dns = {
     enabled = true
   }
+
+  sql = {
+    machine = "db-custom-1-3840"
+  }
 }

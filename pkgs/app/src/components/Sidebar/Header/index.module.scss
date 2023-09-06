@@ -1,6 +1,7 @@
 .header {
   position: relative;
-  padding: var(--spc-2xl);
+  margin-left: 1px;
+  padding: var(--spc-2xl)
 }
 
 .logo {
@@ -18,7 +19,6 @@
   width: 250px;
   padding: var(--spc-xl) var(--spc-2xl);
   line-height: var(--lh-s);
-  ;
 
   strong {
     display: block;

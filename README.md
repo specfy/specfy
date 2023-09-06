@@ -18,10 +18,11 @@ Specfy extract metadata from your organization's repositories and automatically 
 
 <p align="center" border="10">
   <a href="https://specfy.io" target="_blank">
-    <img src="https://github.com/specfy/specfy/assets/1637651/0bf6472c-df15-4634-871a-02349680e4c6" alt="Build">
+    <img src="https://github.com/specfy/specfy/assets/1637651/d33e47e5-a3af-4b86-84ef-58fab76a541a" alt="Build">
   </a>
 </p>
 <em>Specfy's project view</em>
+
 
 ### Getting Started
 

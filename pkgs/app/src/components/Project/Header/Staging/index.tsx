@@ -85,8 +85,7 @@ export const Staging: React.FC<{ showBadge: boolean }> = () => {
           if (has) hasGraphChanged = true;
         }
 
-        // clean.push(diff.clean);
-        count += original ? diffs.length : 1;
+        count += ori ? diffs.length : 1;
         bd.diffs = diffs;
         bds.push(bd);
       }

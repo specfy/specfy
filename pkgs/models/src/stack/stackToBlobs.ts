@@ -1,10 +1,11 @@
 import { slugify, pick } from '@specfy/core';
 import type { Components } from '@specfy/db';
 import type { AnalyserJson } from '@specfy/stack-analyser';
-import { tech } from '@specfy/stack-analyser';
+import { tech as techList } from '@specfy/stack-analyser';
 
 import type { ComponentType, DBComponent } from '../components/types.js';
 import { getComponentSize } from '../flows/helpers.js';
+import type { FlowEdge } from '../flows/types.js';
 import type {
   ApiBlobCreate,
   ApiBlobCreateComponent,
@@ -49,8 +50,10 @@ export function stackToBlobs(
     }
   }
 
-  //
+  // new/old -> new
   const idsMap: Record<string, string> = {};
+  // new -> old
+  const idsMapReverse: Record<string, string> = {};
   const blobs: ApiBlobCreateComponent[] = [];
   for (const child of parsed.childs) {
     let prev: Components | null = null;
@@ -71,17 +74,20 @@ export function stackToBlobs(
         sourceName: child.name,
         sourcePath: child.path,
         techId: child.tech,
-        techs: child.techs,
-        inComponent: child.inComponent,
+        techs: mergeTechs({ prev: prev.techs, next: child.techs, source }),
       };
+      if (prev.inComponent.source === source) {
+        current.inComponent = { id: child.inComponent, source };
+      }
 
       // Store changed ids
+      idsMapReverse[current.id] = child.id;
       idsMap[child.id] = current.id;
       idsMap[current.id] = current.id;
     } else {
       // TODO: try to place new components without overlapping and without auto layout
       const type: ComponentType = child.tech
-        ? tech.indexed[child.tech].type
+        ? techList.indexed[child.tech].type
         : 'service';
       current = {
         id: child.id,
@@ -103,15 +109,18 @@ export function stackToBlobs(
             portSource: 'sr',
             portTarget: 'tl',
             vertices: [],
+            source,
           };
         }),
-        inComponent: child.inComponent,
+        inComponent: { id: child.inComponent, source },
         description: { type: 'doc', content: [] },
         source: data.source,
         sourceName: child.name,
         sourcePath: child.path,
         techId: child.tech,
-        techs: child.techs,
+        techs: child.techs.map((id) => {
+          return { id, source };
+        }),
         tags: ['github'],
         show: true,
         createdAt: now,
@@ -153,25 +162,39 @@ export function stackToBlobs(
       return;
     }
 
-    if (blob.current.inComponent) {
-      if (idsMap[blob.current.inComponent] === undefined) {
+    if (
+      blob.current.inComponent.id &&
+      blob.current.inComponent.source === source
+    ) {
+      if (idsMap[blob.current.inComponent.id] === undefined) {
         // Host was deleted
-        blob.current.inComponent = null;
+        blob.current.inComponent = { id: null, source };
       } else {
-        blob.current.inComponent = idsMap[blob.current.inComponent];
+        blob.current.inComponent = {
+          id: idsMap[blob.current.inComponent.id],
+          source,
+        };
       }
     }
 
-    const newEdges = [];
-    for (const edge of blob.current.edges) {
-      if (idsMap[edge.target] === undefined) {
-        // edge and component was deleted
-        continue;
-      }
-      edge.target = idsMap[edge.target];
-      newEdges.push(edge);
+    if (!blob.created) {
+      const next = parsed.childs.find(
+        (child) => child.id === idsMapReverse[blob.typeId]
+      )!.edges;
+      blob.current.edges = mergeEdges({
+        prev: blob.current.edges,
+        next,
+        source,
+        idsMap,
+      });
+    } else {
+      blob.current.edges = mergeEdges({
+        prev: [],
+        next: blob.current.edges,
+        source,
+        idsMap,
+      });
     }
-    blob.current.edges = newEdges;
   });
 
   // Detect unchanged blobs
@@ -191,7 +214,7 @@ export function stackToBlobs(
       unchanged.push(prev.id);
       stats.unchanged += 1;
     } else {
-      stats.created += 1;
+      stats.modified += 1;
     }
   }
 
@@ -204,4 +227,113 @@ export function stackToBlobs(
   }
 
   return { blobs, deleted, unchanged, stats };
+}
+
+/**
+ * Merge techs
+ */
+
+function mergeTechs({
+  prev,
+  next,
+  source,
+}: {
+  prev: Components['techs'];
+  next: AnalyserJson['techs'];
+  source: string;
+}): DBComponent['techs'] {
+  if (prev.length <= 0) {
+    return next.map((id) => ({ id, source }));
+  }
+
+  const techs: DBComponent['techs'] = [];
+  for (const tech of prev) {
+    if (tech.source !== source) {
+      // It's not the same source
+      techs.push(tech);
+      continue;
+    }
+
+    const exist = next.find((id) => id === tech.id);
+    if (!exist) {
+      // Deleted on the repo
+      continue;
+    }
+
+    // Found before and after
+    techs.push(tech);
+  }
+
+  // Find new edges
+  for (const tech of next) {
+    const exist = prev.find((v) => v.id === tech);
+    if (exist) {
+      // Already handled before
+      continue;
+    }
+
+    techs.push({
+      id: tech,
+      source,
+    });
+  }
+
+  return techs;
+}
+
+/**
+ * Merge edges from prev to next
+ */
+function mergeEdges({
+  prev,
+  next,
+  source,
+  idsMap,
+}: {
+  prev: FlowEdge[];
+  next: AnalyserJson['edges'];
+  source: string;
+  idsMap: Record<string, string>;
+}): FlowEdge[] {
+  const edges: FlowEdge[] = [];
+
+  // Find old edges and deleted edges
+  for (const edge of prev) {
+    if (edge.source !== source) {
+      // It's not the same source
+      // even if it could be the same exact edge, the user put it there so leave them the ownership
+      edges.push(edge);
+      continue;
+    }
+
+    const exist = next.find((v) => idsMap[v.target] === edge.target);
+    if (!exist) {
+      // Deleted on the repo
+      continue;
+    }
+
+    // Found before and after
+    // NB: We don't update the read/write prop
+    edges.push(edge);
+  }
+
+  // Find new edges
+  for (const edge of next) {
+    const exist = prev.find((v) => v.target === idsMap[edge.target]);
+    if (exist) {
+      // Already handled before
+      continue;
+    }
+
+    edges.push({
+      ...edge,
+      target: idsMap[edge.target],
+      portSource: 'sr',
+      portTarget: 'tl',
+      vertices: [],
+      source,
+    });
+  }
+
+  return edges;
 }

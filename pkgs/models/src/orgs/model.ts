@@ -2,7 +2,6 @@ import { nanoid, acronymize, stringToColor } from '@specfy/core';
 import type { Activities, Orgs, Prisma, Users } from '@specfy/db';
 
 import type { ActionOrg } from '../activities/types.js';
-import { recomputeOrgGraph } from '../flows/helpers.rebuild.js';
 import { createKey } from '../keys/model.js';
 
 export type { Orgs } from '@specfy/db';
@@ -54,13 +53,13 @@ export async function createOrg(
   // Add a default api key
   await createKey({ tx, user, data: { orgId: tmp.id }, activityGroupId });
 
-  const update: Prisma.OrgsUncheckedUpdateInput = {};
-
   // Finally creating the associated empty flow
-  const flow = await recomputeOrgGraph({ orgId: tmp.id, tx });
-  update.flowId = flow.id;
+  const flow = await tx.flows.create({
+    data: { id: nanoid(), orgId: tmp.id, flow: { nodes: [], edges: [] } },
+  });
+
   return await tx.orgs.update({
-    data: update,
+    data: { flowId: flow.id },
     where: { id: tmp.id },
   });
 }

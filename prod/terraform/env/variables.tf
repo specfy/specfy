@@ -7,6 +7,9 @@ variable "envs" {
     dns = object({
       enabled = bool
     })
+    sql = object({
+      machine = string
+    })
   })
 }
 

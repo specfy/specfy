@@ -29,15 +29,14 @@
         "build/**"
       ],
       "dependsOn": [
-        "^db:generate"
+        "^db:generate",
+        "^build"
       ]
     },
     "dev": {
       "persistent": true,
       "cache": false,
-      "dependsOn": [
-        "^db:generate"
-      ]
+      "dependsOn": []
     },
     "test": {
       "cache": false,

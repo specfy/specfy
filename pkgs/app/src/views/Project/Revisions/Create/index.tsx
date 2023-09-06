@@ -25,7 +25,6 @@ import { createRevision } from '../../../../api';
 import { isError } from '../../../../api/helpers';
 import { Card } from '../../../../components/Card';
 import { Container } from '../../../../components/Container';
-import { Editor } from '../../../../components/Editor';
 import { Empty } from '../../../../components/Empty';
 import { Flex } from '../../../../components/Flex';
 import { FlowWrapper } from '../../../../components/Flow';
@@ -46,6 +45,7 @@ import { proposeTitle } from '@/common/diff';
 import { i18n } from '@/common/i18n';
 import { original, useComponentsStore, useStagingStore } from '@/common/store';
 import { titleSuffix } from '@/common/string';
+import { EditorMini } from '@/components/Editor/Mini';
 
 export const ProjectRevisionCreate: React.FC<{
   proj: ApiProject;
@@ -201,17 +201,19 @@ export const ProjectRevisionCreate: React.FC<{
                 <Flex gap="l" column align="flex-start">
                   <Input
                     value={title}
-                    size="xl"
+                    size="l"
                     placeholder="Revision title..."
                     onChange={(e) => setTitle(e.target.value)}
                     className={cls.title}
                   />
                   <div style={{ width: '100%' }}>
-                    <Editor
+                    <EditorMini
                       key={'edit'}
-                      content={description}
+                      doc={description}
                       onUpdate={setDescription}
                       minHeight="100px"
+                      aiTools={false}
+                      className={cls.editor}
                     />
                   </div>
                 </Flex>

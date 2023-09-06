@@ -8,8 +8,8 @@
     "build"
   ],
   "scripts": {
-    "build": "tsup",
-    "build:watch": "tsup --watch",
+    "build": "tsc -p tsconfig.json && tsup",
+    "build:watch": "tsc -p tsconfig.json; (tsc -p tsconfig.json -w --preserveWatchOutput & tsup --watch)",
     "__dev": "dotenv -e ../../.env npx email dev -p 3001 -d src/emails",
     "export": "email export"
   },
@@ -19,8 +19,8 @@
     "resend": "1.0.0"
   },
   "devDependencies": {
-    "@types/react": "18.2.20",
     "@specfy/db": "file:../db",
+    "@types/react": "18.2.20",
     "react-email": "1.9.4",
     "tsup": "7.2.0"
   },

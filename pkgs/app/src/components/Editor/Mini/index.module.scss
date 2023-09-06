@@ -129,14 +129,14 @@
 }
 
 .toolbar {
-  // pointer-events: none;
+  pointer-events: none;
 
   position: absolute;
   z-index: 1;
   top: -32px;
   right: 0;
 
-  // opacity: 0;
+  opacity: 0;
 
   transition: opacity 0.25s ease-in-out;
 }

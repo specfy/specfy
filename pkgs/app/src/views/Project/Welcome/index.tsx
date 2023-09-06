@@ -32,7 +32,6 @@ export const ProjectWelcome: React.FC = () => {
   useEventBus(
     'job.finish',
     (data) => {
-      console.log(data.job.id, job?.id);
       if (data.job.id !== job?.id) {
         return;
       }

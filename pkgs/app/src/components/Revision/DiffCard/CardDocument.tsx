@@ -2,7 +2,7 @@ import type { BlockLevelZero } from '@specfy/models';
 import { useMemo } from 'react';
 
 import type { DocumentBlobWithDiff } from '../../../types/blobs';
-import { ContentDoc } from '../../Content';
+import { ContentDoc, Presentation } from '../../Content';
 
 import { Split } from './Split';
 import { UnifiedDiff } from './Unified';
@@ -35,11 +35,17 @@ export const DiffCardDocument: React.FC<{
     return (
       <div className={cls.content}>
         {Title}
-        {typeof content == 'string' ? (
-          content
-        ) : (
-          <ContentDoc doc={content} id={diff.blob.typeId} placeholder={false} />
-        )}
+        <Presentation>
+          {typeof content == 'string' ? (
+            content
+          ) : (
+            <ContentDoc
+              doc={content}
+              id={diff.blob.typeId}
+              placeholder={false}
+            />
+          )}
+        </Presentation>
       </div>
     );
   }

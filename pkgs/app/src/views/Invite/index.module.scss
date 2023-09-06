@@ -1,9 +1,18 @@
 .container {
+  position: relative;
   width: 100vw;
+  height: 100vh;
+}
 
-  >div {
-    width: 500px;
-  }
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 250px;
+}
+
+.centered {
+  width: 500px;
 }
 
 .content {

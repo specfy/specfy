@@ -1,3 +1,7 @@
+import {
+  getAbsolutePosition,
+  placeInsideHost,
+} from '@specfy/models/src/flows/transform';
 import classNames from 'classnames';
 import type { Connection, Edge, EdgeChange, Node, NodeChange } from 'reactflow';
 
@@ -12,7 +16,6 @@ export type NodeChangeSuper =
       id: string;
       type: 'group';
       parentId: string;
-      position: { x: number; y: number };
     }
   | {
       id: string;
@@ -123,14 +126,26 @@ export const onNodesChangeProject: (
         const comp = store.select(change.id)!;
         store.update({
           ...comp,
-          inComponent: change.parentId,
+          inComponent: { id: change.parentId },
           display: {
             ...comp.display,
-            pos: change.position,
+            pos: placeInsideHost(
+              comp,
+              change.parentId,
+              Object.values(store.components)
+            ),
           },
         });
       } else if (change.type === 'ungroup') {
-        store.updateField(change.id, 'inComponent', null);
+        const comp = store.select(change.id)!;
+        store.update({
+          ...comp,
+          inComponent: { id: null },
+          display: {
+            ...comp.display,
+            pos: getAbsolutePosition(comp, Object.values(store.components)),
+          },
+        });
       } else if (change.type === 'rename') {
         store.updateField(change.id, 'name', change.name);
       } else if (change.type === 'tech') {
