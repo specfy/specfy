@@ -1,5 +1,5 @@
 import type { ApiProject } from '@specfy/models';
-import { IconBrandGitHub, IconSettings, IconUsers } from '@tabler/icons-react';
+import { IconBrandGithub, IconSettings, IconUsers } from '@tabler/icons-react';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 
@@ -49,7 +49,7 @@ export const ProjectSettings: React.FC<{
         label: (
           <Link to={`${linkSelf}/sync`}>
             <Flex gap="l">
-              <IconBrandGitHub />
+              <IconBrandGithub />
               GitHub Sync
             </Flex>
           </Link>

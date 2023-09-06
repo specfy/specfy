@@ -73,7 +73,7 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
     }
 
     navigate(
-      `/${params.org_id}/${res.data.slug}${hasGithub ? '/welcome' : ''}`
+      `/${params.org_id}/${res.data.slug}${hasGitHub ? '/welcome' : ''}`
     );
   };
 
