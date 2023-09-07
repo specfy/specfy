@@ -5,6 +5,8 @@ import {
   IconDotsVertical,
   IconTrash,
   IconPackageImport,
+  IconEyeOff,
+  IconEye,
 } from '@tabler/icons-react';
 import classnames from 'classnames';
 import type React from 'react';
@@ -32,7 +34,6 @@ import { onNodesChangeProject } from '../../../components/Flow/helpers';
 import { Button } from '../../../components/Form/Button';
 import { FakeInput } from '../../../components/Form/FakeInput';
 import { NotFound } from '../../../components/NotFound';
-import { Tag } from '../../../components/Tag';
 import { TooltipFull } from '../../../components/Tooltip';
 import { UpdatedAt } from '../../../components/UpdatedAt';
 import { useAuth } from '../../../hooks/useAuth';
@@ -113,6 +114,16 @@ export const ComponentView: React.FC<{
     onNodesChangeProject(storeComponents)(changes);
   };
 
+  const onVisibility = () => {
+    edit.enable(true);
+    // storeComponents.updateField(comp!.id, 'show', show);
+    onNodesChange([{ type: 'visibility', id: comp!.id }]);
+    toast.add({
+      title: !comp!.show ? 'Component is visible' : 'Component will be hidden',
+      status: 'success',
+    });
+  };
+
   if (loading) {
     return <Loading />;
   }
@@ -186,6 +197,14 @@ export const ComponentView: React.FC<{
             </Flex>
             <Flex align="center" gap="m">
               <Flex gap="l">
+                {!comp.show && (
+                  <TooltipFull
+                    msg={`This component is hidden in the Flow`}
+                    side="bottom"
+                  >
+                    <IconEyeOff />
+                  </TooltipFull>
+                )}
                 {comp.source && (
                   <TooltipFull
                     msg={`This component is managed by: ${comp.source}`}
@@ -194,15 +213,6 @@ export const ComponentView: React.FC<{
                     <IconPackageImport />
                   </TooltipFull>
                 )}
-                <Tag
-                  variant="border"
-                  className={classnames(
-                    cls.tagType,
-                    comp.type in cls && cls[comp.type as keyof typeof cls]
-                  )}
-                >
-                  {internalTypeToText[comp.type]}
-                </Tag>
               </Flex>
               {canEdit && (
                 <div>
@@ -212,29 +222,61 @@ export const ComponentView: React.FC<{
                         <IconDotsVertical />
                       </Button>
                     </Dropdown.Trigger>
-                    <Dropdown.Portal>
-                      <Dropdown.Content>
-                        <Dropdown.Group>
+                    <Dropdown.Content>
+                      <Dropdown.Group>
+                        <Dropdown.Item asChild>
+                          <TooltipFull
+                            msg="Hide or show the component in the Flow"
+                            side="right"
+                          >
+                            <Button
+                              display="item"
+                              onClick={onVisibility}
+                              size="s"
+                            >
+                              {comp.show ? (
+                                <>
+                                  <IconEyeOff /> Hide
+                                </>
+                              ) : (
+                                <>
+                                  <IconEye /> Show
+                                </>
+                              )}
+                            </Button>
+                          </TooltipFull>
+                        </Dropdown.Item>
+                        {!comp.source && (
                           <Dropdown.Item asChild>
                             <Button
                               danger
                               display="item"
-                              block
-                              onClick={() => onRemove()}
+                              onClick={onRemove}
                               size="s"
                             >
                               <IconTrash /> Remove
                             </Button>
                           </Dropdown.Item>
-                        </Dropdown.Group>
-                      </Dropdown.Content>
-                    </Dropdown.Portal>
+                        )}
+                      </Dropdown.Group>
+                    </Dropdown.Content>
                   </Dropdown.Menu>
                 </div>
               )}
             </Flex>
           </Flex>
-          <UpdatedAt time={comp.updatedAt} />
+          <Flex gap="m" align="flex-start">
+            <div
+              className={classnames(
+                cls.tagType,
+                comp.type in cls && cls[comp.type as keyof typeof cls]
+              )}
+            >
+              {internalTypeToText[comp.type]}
+            </div>
+            ·
+            <UpdatedAt time={comp.updatedAt} />
+          </Flex>
 
           {!isEditing && comp.description && (
             <Editable padded>

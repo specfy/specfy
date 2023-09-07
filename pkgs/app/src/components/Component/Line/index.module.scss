@@ -69,3 +69,15 @@ $min-height: 34px;
     white-space: nowrap;
   }
 }
+
+.hidden {
+  --btn-color: var(--text2) !important;
+
+  gap: var(--spc-s) !important;
+  padding: var(--spc-m) var(--spc-m) !important;
+  font-size: var(--font-s);
+
+  >svg {
+    width: 1em;
+  }
+}

@@ -3,6 +3,7 @@
   z-index: 1;
   right: 0;
 
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
 
@@ -101,55 +102,7 @@
 // Relation
 .relations {
   table-layout: fixed;
+  border-collapse: collapse;
   width: 100%;
-  margin: 0 0 var(--spc-l) 0
-}
-
-.relation {
-  height: 35px;
-
-  &:hover {
-    background-color: var(--bg2);
-  }
-
-  .target {
-    text-align: right;
-  }
-
-  .source,
-  .target {
-    overflow: hidden;
-    padding: 0 var(--spc-2xl);
-    text-overflow: ellipsis;
-  }
-
-  .source {
-    width: 40%;
-    text-align: left;
-  }
-
-
-  .to {
-    position: relative;
-    width: 40px;
-    padding: 0 var(--spc-xl);
-  }
-
-  .direction {
-    display: flex;
-    justify-content: center;
-
-    margin-top: -10px;
-
-    text-align: center;
-
-    background-color: transparent;
-  }
-
-  .english {
-    position: absolute;
-    top: 19px;
-    font-size: 9px;
-    color: var(--accent2);
-  }
+  margin: 0 0 var(--spc-l) 0;
 }

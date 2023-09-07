@@ -87,7 +87,6 @@ const CustomNode: React.FC<NodeProps<NodeData>> = ({
         cls.node,
         selected && cls.selected,
         data.type === 'hosting' && cls.hosting,
-        // isConnecting && cls.isConnecting,
         disableHandle && cls.disableHandle
       )}
     >

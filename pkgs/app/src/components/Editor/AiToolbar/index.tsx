@@ -112,30 +112,28 @@ export const AIToolbar: React.FC<AIToolbarProps> = ({
           </Button>
         </Dropdown.Trigger>
 
-        <Dropdown.Portal>
-          <Dropdown.Content>
-            <Dropdown.Group>
-              {tools.includes('project.description') && (
-                <TooltipFull
-                  msg="Describe the project from all the information Specfy have."
-                  side="right"
-                >
-                  <Dropdown.Item onClick={onGenerate}>
-                    <IconRefresh />
-                    Generate
-                  </Dropdown.Item>
-                </TooltipFull>
-              )}
-              {tools.includes('rewrite') && (
-                <TooltipFull msg="Improve the formulation." side="right">
-                  <Dropdown.Item onClick={onRewrite}>
-                    <IconSparkles /> Rewrite
-                  </Dropdown.Item>
-                </TooltipFull>
-              )}
-            </Dropdown.Group>
-          </Dropdown.Content>
-        </Dropdown.Portal>
+        <Dropdown.Content>
+          <Dropdown.Group>
+            {tools.includes('project.description') && (
+              <TooltipFull
+                msg="Describe the project from all the information Specfy have."
+                side="right"
+              >
+                <Dropdown.Item onClick={onGenerate}>
+                  <IconRefresh />
+                  Generate
+                </Dropdown.Item>
+              </TooltipFull>
+            )}
+            {tools.includes('rewrite') && (
+              <TooltipFull msg="Improve the formulation." side="right">
+                <Dropdown.Item onClick={onRewrite}>
+                  <IconSparkles /> Rewrite
+                </Dropdown.Item>
+              </TooltipFull>
+            )}
+          </Dropdown.Group>
+        </Dropdown.Content>
       </Dropdown.Menu>
     </div>
   );

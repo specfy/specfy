@@ -33,6 +33,7 @@ exports[`rebuildFlow > should create a new flow 1`] = `
         "type": "project",
         "typeId": null,
       },
+      "hidden": false,
       "id": "a",
       "position": {
         "x": 0,
@@ -56,6 +57,7 @@ exports[`rebuildFlow > should create a new flow 1`] = `
         "type": "project",
         "typeId": null,
       },
+      "hidden": false,
       "id": "b",
       "position": {
         "x": 0,

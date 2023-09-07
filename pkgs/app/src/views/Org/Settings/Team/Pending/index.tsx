@@ -43,23 +43,21 @@ const Row: React.FC<{
                 <IconDotsVertical />
               </Button>
             </Dropdown.Trigger>
-            <Dropdown.Portal>
-              <Dropdown.Content>
-                <Dropdown.Group>
-                  <Dropdown.Item asChild>
-                    <Button
-                      danger
-                      display="item"
-                      block
-                      onClick={() => onRemove(item)}
-                      size="s"
-                    >
-                      <IconTrash /> Remove
-                    </Button>
-                  </Dropdown.Item>
-                </Dropdown.Group>
-              </Dropdown.Content>
-            </Dropdown.Portal>
+            <Dropdown.Content>
+              <Dropdown.Group>
+                <Dropdown.Item asChild>
+                  <Button
+                    danger
+                    display="item"
+                    block
+                    onClick={() => onRemove(item)}
+                    size="s"
+                  >
+                    <IconTrash /> Remove
+                  </Button>
+                </Dropdown.Item>
+              </Dropdown.Group>
+            </Dropdown.Content>
           </Dropdown.Menu>
         </div>
       </Flex>

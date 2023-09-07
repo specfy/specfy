@@ -68,36 +68,34 @@ export const OrgSwitcher: React.FC = () => {
             <IconChevronDown />
           </button>
         </Dropdown.Trigger>
-        <Dropdown.Portal>
-          <Dropdown.Content>
-            <Dropdown.Group>
-              {orgsQuery.data?.data.map((org) => {
-                return (
-                  <Dropdown.Item key={org.id} asChild>
-                    <Link
-                      to={`/${org.id}`}
-                      className={classNames(
-                        cls.org,
-                        current.id === org.id && cls.current
-                      )}
-                    >
-                      <AvatarAuto org={org} /> {org.name}
-                    </Link>
-                  </Dropdown.Item>
-                );
-              })}
-            </Dropdown.Group>
-            <Dropdown.Separator />
-            <Dropdown.Group>
-              <Dropdown.Item asChild>
-                <Link to="/organizations/new" className={cls.org}>
-                  <IconPlus size="1em" />
-                  Create organization
-                </Link>
-              </Dropdown.Item>
-            </Dropdown.Group>
-          </Dropdown.Content>
-        </Dropdown.Portal>
+        <Dropdown.Content>
+          <Dropdown.Group>
+            {orgsQuery.data?.data.map((org) => {
+              return (
+                <Dropdown.Item key={org.id} asChild>
+                  <Link
+                    to={`/${org.id}`}
+                    className={classNames(
+                      cls.org,
+                      current.id === org.id && cls.current
+                    )}
+                  >
+                    <AvatarAuto org={org} /> {org.name}
+                  </Link>
+                </Dropdown.Item>
+              );
+            })}
+          </Dropdown.Group>
+          <Dropdown.Separator />
+          <Dropdown.Group>
+            <Dropdown.Item asChild>
+              <Link to="/organizations/new" className={cls.org}>
+                <IconPlus size="1em" />
+                Create organization
+              </Link>
+            </Dropdown.Item>
+          </Dropdown.Group>
+        </Dropdown.Content>
       </Dropdown.Menu>
     </div>
   );

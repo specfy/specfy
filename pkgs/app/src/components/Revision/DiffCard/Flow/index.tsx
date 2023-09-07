@@ -29,11 +29,13 @@ const fieldsNode: Array<keyof ComputedNode> = [
   'width',
   'height',
   'parentNode',
+  'hidden',
 ];
 const fieldsEdge: Array<keyof ComputedEdge> = [
   'data',
   'sourceHandle',
   'targetHandle',
+  'hidden',
 ];
 
 export const DiffFlow: React.FC<{
@@ -50,7 +52,7 @@ export const DiffFlow: React.FC<{
     const edgesChanged = new Map<string, 'created' | 'modified'>();
     const edgesDeleted: ComputedEdge[] = [];
 
-    // Diff nodes
+    // ---- Diff nodes
     for (const node of prev.nodes) {
       const newNode = next.nodes.find((n) => n.id === node.id);
       if (!newNode) {
@@ -69,7 +71,7 @@ export const DiffFlow: React.FC<{
       nodesChanged.set(node.id, 'created');
     }
 
-    // Diff edges
+    // ---- Diff edges
     for (const edge of prev.edges) {
       const newEdge = next.edges.find((n) => n.id === edge.id);
       if (!newEdge) {
@@ -101,6 +103,7 @@ export const DiffFlow: React.FC<{
           change === 'modified' && cls.nodeModified,
           !change && cls.unmodified
         );
+        node.hidden = change ? false : node.hidden;
 
         return node;
       });
@@ -131,6 +134,7 @@ export const DiffFlow: React.FC<{
           change === 'modified' && cls.edgeModified,
           !change && cls.unmodified
         );
+        edge.hidden = change ? false : edge.hidden;
         return edge;
       });
 

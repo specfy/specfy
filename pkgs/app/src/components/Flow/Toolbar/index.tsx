@@ -69,7 +69,7 @@ const Readonly: React.FC<{ onClick: () => void }> = ({ onClick }) => {
 
   return (
     <div className={classnames(cls.toolbar, cls.dark)} onClick={handleClick}>
-      <button title="Click to enable edition">
+      <button>
         <Flex gap="m">
           {label}
           <IconLock />

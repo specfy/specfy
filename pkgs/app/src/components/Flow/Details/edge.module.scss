@@ -1,0 +1,64 @@
+/* stylelint-disable rule-empty-line-before */
+.relation {
+  height: 35px;
+
+  &:hover {
+    background-color: var(--bg2);
+  }
+
+  &.hidden {
+
+    .source,
+    .target,
+    .to {
+      opacity: 0.3;
+    }
+  }
+}
+
+.target {
+  width: 40%;
+  text-align: right;
+}
+
+.source,
+.target {
+  overflow: hidden;
+  padding: 0 var(--spc-2xl);
+  font-size: var(--font-xs);
+  text-overflow: ellipsis;
+}
+
+.source {
+  width: 35%;
+  text-align: left;
+}
+
+
+.to {
+  position: relative;
+  width: 40px;
+  padding: 0 var(--spc-xl);
+}
+
+.direction {
+  display: flex;
+  justify-content: center;
+
+  margin-top: -10px;
+
+  text-align: center;
+
+  background-color: transparent;
+}
+
+.english {
+  position: absolute;
+  top: 19px;
+  font-size: 9px;
+  color: var(--accent2);
+}
+
+.action {
+  width: 30px;
+}

@@ -1,9 +1,12 @@
+import { diffJson } from 'diff';
+
 import type { DiffObjectsArray } from '../../types/blobs';
 
 export function diffObjectsArray<T>(
   arrayA: T[],
   arrayB: T[],
-  id: keyof T
+  id: keyof T,
+  deep: boolean = false
 ): DiffObjectsArray<T> {
   const idsA = arrayA.map((el) => el[id]);
   const idsB = arrayB.map((el) => el[id]);
@@ -13,8 +16,19 @@ export function diffObjectsArray<T>(
   const modified: T[] = [];
   const unchanged: T[] = [];
 
+  // Find same and deleted
   for (const a of arrayA) {
     if (idsB.includes(a[id])) {
+      if (deep) {
+        const change = diffJson(
+          a as any,
+          arrayB.find((b) => b[id] === a[id]) as any
+        );
+        if (change.length > 1) {
+          modified.push(a);
+          continue;
+        }
+      }
       unchanged.push(a);
       continue;
     }
@@ -22,6 +36,7 @@ export function diffObjectsArray<T>(
     deleted.push(a);
   }
 
+  // Find created
   for (const b of arrayB) {
     if (idsA.includes(b[id])) {
       continue;
@@ -47,6 +62,7 @@ export function diffStringArray<T>(
   const deleted: T[] = [];
   const unchanged: T[] = [];
 
+  // Find same and deleted
   for (const a of arrayA) {
     if (arrayB.includes(a)) {
       unchanged.push(a);
@@ -56,6 +72,7 @@ export function diffStringArray<T>(
     deleted.push(a);
   }
 
+  // Find created
   for (const b of arrayB) {
     if (arrayA.includes(b)) {
       continue;

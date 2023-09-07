@@ -1,7 +1,12 @@
-.nodeCreated,
-.nodeModified {
+/* stylelint-disable selector-class-pattern */
+.nodeCreated {
   border-radius: 6px;
   box-shadow: 0 0 2px 0 var(--modified1);
+}
+
+.nodeModified {
+  border-radius: 6px;
+  box-shadow: 0 0 2px 0 var(--amber-10);
 }
 
 .nodeDeleted {
@@ -9,11 +14,8 @@
   box-shadow: 0 0 2px 0 var(--decline2);
 }
 
-.edgeCreated,
-.edgeModified {
+.edgeCreated {
   :global {
-
-    /* stylelint-disable-next-line selector-class-pattern */
     .react-flow__edge-path {
       stroke: var(--modified1);
       stroke-dasharray: 2;
@@ -22,10 +24,18 @@
   }
 }
 
+.edgeModified {
+  :global {
+    .react-flow__edge-path {
+      stroke: var(--amber-10);
+      stroke-dasharray: 2;
+      stroke-width: 2px;
+    }
+  }
+}
+
 .edgeDeleted {
   :global {
-
-    /* stylelint-disable-next-line selector-class-pattern */
     .react-flow__edge-path {
       stroke: var(--decline2);
       stroke-dasharray: 2;

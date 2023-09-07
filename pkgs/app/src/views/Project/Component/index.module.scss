@@ -7,27 +7,22 @@
 }
 
 .tagType {
+  font-size: var(--font-s);
   color: var(--text3);
-  background-color: #fff;
-  border: 1px solid var(--border2) !important;
 
   &.service {
     color: var(--service);
-    border-color: var(--service) !important;
   }
 
   &.saas {
     color: var(--plum-9);
-    border-color: var(--plum-9) !important;
   }
 
   &.project {
     color: var(--amber-10);
-    border-color: var(--amber-9) !important;
   }
 
   &.hosting {
     color: var(--indigo-9);
-    border-color: var(--indigo-9) !important;
   }
 }

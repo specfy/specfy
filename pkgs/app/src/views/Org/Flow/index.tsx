@@ -120,11 +120,7 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
               connectable={true}
             />
 
-            <FlowDetails
-              readonly={true}
-              flow={flow}
-              onRelationChange={() => null}
-            />
+            <FlowDetails readonly={true} flow={flow} />
             {canEdit && (
               <Toolbar left top visible>
                 {!editing && (

@@ -1,18 +1,25 @@
-import type { ComputedFlow, EdgeData } from '@specfy/models';
-import { IconTrash } from '@tabler/icons-react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import type { ComputedFlow, ComputedNode, EdgeData } from '@specfy/models';
+import {
+  IconEye,
+  IconEyeOff,
+  IconPackageImport,
+  IconTrash,
+} from '@tabler/icons-react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'react-use';
-import type { Node } from 'reactflow';
 import { useEdges, useNodes, useOnSelectionChange } from 'reactflow';
 
 import { Button } from '../../Form/Button';
 import { Tag } from '../../Tag';
 import { PreviewNode } from '../CustomNode';
-import type { OnNodesChangeSuper } from '../helpers';
+import type { OnEdgesChangeSuper, OnNodesChangeSuper } from '../helpers';
 
 import type { Relation } from './EdgeRelation';
 import { EdgeRelation } from './EdgeRelation';
 import cls from './index.module.scss';
+
+import { Flex } from '@/components/Flex';
+import { TooltipFull } from '@/components/Tooltip';
 
 /**
  * TODO: hamburger menu
@@ -90,12 +97,12 @@ export const FlowDetails: React.FC<{
   readonly: boolean;
   // Events
   onNodesChange?: OnNodesChangeSuper;
-  onRelationChange: (type: 'delete' | 'update', relation: Relation) => void;
-}> = ({ flow, readonly, onNodesChange, onRelationChange }) => {
+  onEdgesChange?: OnEdgesChangeSuper;
+}> = ({ flow, readonly, onNodesChange, onEdgesChange }) => {
   const nodes = useNodes();
   const edges = useEdges<EdgeData>();
 
-  const [currNode, setNode] = useState<Node | null>(null);
+  const [currNode, setNode] = useState<ComputedNode | null>(null);
   const [from, setFrom] = useState<Relation[]>([]);
   const [to, setTo] = useState<Relation[]>([]);
   const [relation, setRelation] = useState<Relation | null>(null);
@@ -114,7 +121,7 @@ export const FlowDetails: React.FC<{
         setNode(null);
       } else {
         // Only one
-        setNode(nodes.find((n) => n.id === nds[0].id)!);
+        setNode((nodes as ComputedNode[]).find((n) => n.id === nds[0].id)!);
       }
 
       // Edges
@@ -139,7 +146,7 @@ export const FlowDetails: React.FC<{
         return;
       }
 
-      const find = nodes.find((n) => n.id === currNode.id);
+      const find = (nodes as ComputedNode[]).find((n) => n.id === currNode.id);
       if (!find) {
         return;
       }
@@ -188,23 +195,6 @@ export const FlowDetails: React.FC<{
     return flow.nodes.find((c) => c.id === currNode.parentNode);
   }, [currNode]);
 
-  const onRelationDirection = useCallback(
-    (rel: Relation) => {
-      if (rel.edge.data!.write && rel.edge.data!.read) {
-        rel.edge.data!.write = false;
-      } else if (!rel.edge.data!.write && rel.edge.data!.read) {
-        rel.edge.data!.read = false;
-        rel.edge.data!.write = true;
-      } else {
-        rel.edge.data!.read = true;
-        rel.edge.data!.write = true;
-      }
-
-      onRelationChange('update', rel);
-    },
-    [nodes]
-  );
-
   const deleteComponent = () => {
     if (onNodesChange) {
       onNodesChange([{ id: currNode!.id, type: 'remove' }]);
@@ -215,6 +205,21 @@ export const FlowDetails: React.FC<{
       onNodesChange([{ id: currNode!.id, type: 'ungroup' }]);
     }
   };
+  const visibilityComponent = () => {
+    if (onNodesChange) {
+      onNodesChange([{ id: currNode!.id, type: 'visibility' }]);
+    }
+  };
+  const deleteEdge = () => {
+    if (onEdgesChange) {
+      onEdgesChange([{ id: relation!.edge.id, type: 'remove' }]);
+    }
+  };
+  const visibilityEdge = () => {
+    if (onEdgesChange) {
+      onEdgesChange([{ id: relation!.edge.id, type: 'visibility' }]);
+    }
+  };
 
   return (
     <div className={cls.composition}>
@@ -223,13 +228,41 @@ export const FlowDetails: React.FC<{
           <div className={cls.block}>
             <div className={cls.title}>
               {currNode.data.type === 'hosting' ? 'Hosting' : 'Component'}
-              {!readonly && (
-                <div>
-                  <Button size="s" display="ghost" onClick={deleteComponent}>
-                    <IconTrash />
-                  </Button>
-                </div>
-              )}
+              <Flex gap="m">
+                {currNode.data.source && (
+                  <TooltipFull
+                    msg={`This component is managed by: ${currNode.data.source}`}
+                    side="bottom"
+                  >
+                    <IconPackageImport />
+                  </TooltipFull>
+                )}
+
+                <Flex>
+                  {!readonly && (
+                    <Button
+                      size="s"
+                      display="ghost"
+                      onClick={visibilityComponent}
+                    >
+                      {currNode.hidden ? (
+                        <>
+                          <IconEyeOff />
+                        </>
+                      ) : (
+                        <>
+                          <IconEye />
+                        </>
+                      )}
+                    </Button>
+                  )}
+                  {!readonly && !currNode.data.source && (
+                    <Button size="s" display="ghost" onClick={deleteComponent}>
+                      <IconTrash />
+                    </Button>
+                  )}
+                </Flex>
+              </Flex>
             </div>
             <div className={cls.preview}>
               <PreviewNode
@@ -268,7 +301,7 @@ export const FlowDetails: React.FC<{
                           key={rel.edge.id}
                           {...rel}
                           readonly={readonly}
-                          onDirection={onRelationDirection}
+                          onEdgesChange={onEdgesChange}
                         />
                       );
                     })}
@@ -292,7 +325,7 @@ export const FlowDetails: React.FC<{
                           key={rel.edge.id}
                           {...rel}
                           readonly={readonly}
-                          onDirection={onRelationDirection}
+                          onEdgesChange={onEdgesChange}
                         />
                       );
                     })}
@@ -307,13 +340,46 @@ export const FlowDetails: React.FC<{
       )}
       {relation && (
         <div className={cls.block}>
-          <div className={cls.title}>Edge</div>
+          <div className={cls.title}>
+            Edge
+            <Flex gap="m">
+              {relation.edge.data!.source && (
+                <TooltipFull
+                  msg={`This edge is managed by: ${relation.edge.data!.source}`}
+                  side="bottom"
+                >
+                  <IconPackageImport />
+                </TooltipFull>
+              )}
+
+              <Flex>
+                {!readonly && (
+                  <Button size="s" display="ghost" onClick={visibilityEdge}>
+                    {relation.edge.hidden ? (
+                      <>
+                        <IconEyeOff />
+                      </>
+                    ) : (
+                      <>
+                        <IconEye />
+                      </>
+                    )}
+                  </Button>
+                )}
+                {!readonly && !relation.edge.data!.source && (
+                  <Button size="s" display="ghost" onClick={deleteEdge}>
+                    <IconTrash />
+                  </Button>
+                )}
+              </Flex>
+            </Flex>
+          </div>
           <table className={cls.relations}>
             <tbody>
               <EdgeRelation
                 {...relation}
                 readonly={readonly}
-                onDirection={onRelationDirection}
+                onEdgesChange={onEdgesChange}
               />
             </tbody>
           </table>

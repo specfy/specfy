@@ -1,4 +1,4 @@
-import type { ApiComponent } from '@specfy/models';
+import type { ApiComponent, FlowEdge } from '@specfy/models';
 import { getAbsolutePosition } from '@specfy/models/src/flows/transform';
 import { produce } from 'immer';
 import type { Connection } from 'reactflow';
@@ -22,11 +22,12 @@ export interface ComponentsState {
   revert: (id: string) => void;
   revertField: (id: string, field: keyof ApiComponent) => void;
   remove: (id: string) => void;
+  setVisibility: (id: string) => void;
   addEdge: (edge: Connection) => void;
   updateEdge: (
     source: string,
     target: string,
-    update: Partial<ApiComponent['edges'][0]>
+    update: Partial<FlowEdge> | ((edge: FlowEdge) => FlowEdge)
   ) => void;
   removeEdge: (source: string, target: string) => void;
 }
@@ -91,21 +92,67 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
     const item = original.find<ApiComponent>(comp.id)!;
     get().updateField(id, field, item[field]);
   },
-  remove: (id) => {
+  setVisibility: (id) => {
     set(
       produce((state: ComponentsState) => {
-        const unmodified = Object.values(state.components);
         const components = Object.values(state.components);
-        const map: ComponentsState['components'] = {};
+
+        const src = components.find((c) => c.id === id);
+        if (!src) {
+          return;
+        }
+
+        const visible = !src.show;
+        src.show = visible;
+
+        // Hide all outgoing edges
+        for (const edge of src.edges) {
+          edge.show = visible;
+        }
 
         for (const copy of components) {
           if (copy.id === id) {
             continue;
           }
 
+          // Hide any incoming edges
+          const edges: ApiComponent['edges'] = [];
+          for (const edge of copy.edges) {
+            if (edge.target === id) {
+              edge.show = visible;
+            }
+
+            edges.push(edge);
+          }
+          copy.edges = edges;
+        }
+      })
+    );
+  },
+  remove: (id) => {
+    set(
+      produce((state: ComponentsState) => {
+        const unmodified = Object.values(state.components);
+        const components = Object.values(state.components);
+
+        const src = components.find((c) => c.id === id);
+        if (!src) {
+          return;
+        }
+
+        if (src.source) {
+          throw new Error('cant delete a managed component');
+        }
+
+        for (const copy of components) {
+          if (copy.id === id) {
+            continue;
+          }
+
+          // Ungroup components that might be inside this host
           if (copy.inComponent.id === id) {
-            copy.inComponent = { id: null };
             copy.display.pos = getAbsolutePosition(copy, unmodified);
+            copy.inComponent = { id: null };
           }
 
           // Remove any edges pointing toward this component
@@ -118,100 +165,94 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
             edges.push(edge);
           }
 
-          map[copy.id] = { ...copy, edges };
+          copy.edges = edges;
         }
+
         delete state.components[id];
       })
     );
   },
   addEdge: (connection) => {
-    const components = Object.values(get().components);
-    const map: ComponentsState['components'] = {};
+    set(
+      produce((state: ComponentsState) => {
+        const components = Object.values(state.components);
 
-    for (const copy of components) {
-      if (copy.id !== connection.source) {
-        map[copy.id] = copy;
-        continue;
-      }
+        for (const copy of components) {
+          if (copy.id !== connection.source) {
+            continue;
+          }
 
-      // already exist
-      const exists = copy.edges.findIndex(
-        (edge) => edge.target === connection.target
-      );
-      if (exists > -1) {
-        map[copy.id] = {
-          ...copy,
-          edges: [...copy.edges],
-        };
-        map[copy.id].edges[exists].portTarget = connection.targetHandle as any;
-        continue;
-      }
+          // already exist
+          const exists = copy.edges.findIndex(
+            (edge) => edge.target === connection.target
+          );
+          if (exists > -1) {
+            copy.edges[exists].portTarget = connection.targetHandle as any;
+            continue;
+          }
 
-      map[copy.id] = {
-        ...copy,
-        edges: [
-          ...copy.edges,
-          {
+          copy.edges.push({
             target: connection.target!,
             portSource: connection.sourceHandle as any,
             portTarget: connection.targetHandle as any,
             read: true,
             write: true,
             vertices: [],
-          },
-        ],
-      };
-    }
-    set({ components: map });
+          });
+        }
+      })
+    );
   },
   updateEdge: (source, target, update) => {
-    const components = Object.values(get().components);
-    const map: ComponentsState['components'] = {};
+    set(
+      produce((state: ComponentsState) => {
+        const components = Object.values(state.components);
 
-    for (const copy of components) {
-      if (copy.id !== source) {
-        map[copy.id] = { ...copy };
-        continue;
-      }
+        for (const copy of components) {
+          if (copy.id !== source) {
+            continue;
+          }
 
-      const edges: ApiComponent['edges'] = [];
-      for (const edge of copy.edges) {
-        if (edge.target !== target) {
-          edges.push(edge);
-          continue;
+          for (let index = 0; index < copy.edges.length; index++) {
+            const edge = copy.edges[index];
+            if (edge.target !== target) {
+              continue;
+            }
+            if (typeof update === 'function') {
+              copy.edges[index] = update(edge);
+            } else {
+              copy.edges[index] = { ...edge, ...update };
+            }
+          }
         }
-
-        edges.push({
-          ...edge,
-          ...update,
-        });
-      }
-      map[copy.id] = { ...copy, edges };
-    }
-
-    set({ components: map });
+      })
+    );
   },
   removeEdge: (source, target) => {
-    const components = Object.values(get().components);
-    const map: ComponentsState['components'] = {};
+    set(
+      produce((state: ComponentsState) => {
+        const components = Object.values(state.components);
 
-    for (const copy of components) {
-      if (copy.id !== source) {
-        map[copy.id] = { ...copy };
-        continue;
-      }
+        for (const copy of components) {
+          if (copy.id !== source) {
+            continue;
+          }
 
-      const edges: ApiComponent['edges'] = [];
-      for (const edge of copy.edges) {
-        if (edge.target === target) {
-          continue;
+          const map: FlowEdge[] = [];
+          for (const edge of copy.edges) {
+            if (edge.target !== target) {
+              map.push(edge);
+              continue;
+            }
+            if (edge.source) {
+              edge.show = false;
+              map.push(edge);
+              continue;
+            }
+          }
+          copy.edges = map;
         }
-
-        edges.push(edge);
-      }
-      map[copy.id] = { ...copy, edges };
-    }
-
-    set({ components: map });
+      })
+    );
   },
 }));

@@ -13,7 +13,13 @@ import {
   updateEdge,
   SelectionMode,
 } from 'reactflow';
-import type { NodeTypes, ReactFlowInstance, ReactFlowProps } from 'reactflow';
+import type {
+  NodeTypes,
+  OnEdgesChange,
+  OnNodesChange,
+  ReactFlowInstance,
+  ReactFlowProps,
+} from 'reactflow';
 
 import 'reactflow/dist/style.css';
 import CustomNode from './CustomNode';
@@ -96,7 +102,9 @@ export const Flow: React.FC<{
           find.targetHandle = edge.targetHandle;
           find.sourceHandle = edge.sourceHandle;
           find.data = edge.data;
+          find.hidden = edge.hidden;
         }
+
         find.deletable = !readonly && deletable;
         find.updatable = !readonly && connectable;
 
@@ -115,6 +123,7 @@ export const Flow: React.FC<{
           find.extent = node.extent;
           find.position = node.position;
           find.data = node.data;
+          find.hidden = node.hidden;
         }
         find.deletable = !readonly && deletable;
         find.draggable = !readonly;
@@ -126,6 +135,26 @@ export const Flow: React.FC<{
       });
     });
   }, [readonly, flow]);
+
+  // --- Updates changes
+  const middlewareNodesChange: OnNodesChange = (changes) => {
+    if (changes[0].type !== 'remove') {
+      // dimensions/position/select needs to be applied right away to avoid flickering
+      handleNodesChange(changes);
+    }
+    if (onNodesChange) {
+      onNodesChange(changes);
+    }
+  };
+  const middlewareEdgesChange: OnEdgesChange = (changes) => {
+    if (changes[0].type !== 'remove') {
+      // dimensions/position/select needs to be applied right away to avoid flickering
+      handleEdgesChange(changes);
+    }
+    if (onEdgesChange) {
+      onEdgesChange(changes);
+    }
+  };
 
   // --- Highlighting
   const setHighlightNode = (id: string) => {
@@ -458,15 +487,8 @@ export const Flow: React.FC<{
         onNodeDrag={onNodeDrag}
         onNodeDragStop={onNodeDragStop}
         // Global
-        onNodesChange={(changes) => {
-          // Useful for resize
-          handleNodesChange(changes);
-          if (onNodesChange) onNodesChange(changes);
-        }}
-        onEdgesChange={(changes) => {
-          handleEdgesChange(changes);
-          if (onEdgesChange) onEdgesChange(changes);
-        }}
+        onNodesChange={middlewareNodesChange}
+        onEdgesChange={middlewareEdgesChange}
       >
         <Background id="1" gap={10} color="#c5c7ca" />
         <Background

@@ -49,7 +49,10 @@ const blockHardBreak = z
       .strict()
       .partial({ uid: true }),
   })
-  .strict();
+  .strict()
+  .partial({
+    attrs: true,
+  });
 
 // BlockParagraph
 const blockParagraph = z
