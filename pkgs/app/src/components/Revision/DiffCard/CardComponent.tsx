@@ -346,15 +346,16 @@ export const DiffCardComponent: React.FC<{
             <div key={d.key} className={classnames(cls.spaced)}>
               <h4>Host</h4>
               <Flex style={{ margin: '10px 0 0 0' }} gap="2xl">
-                {oldComp && (
-                  <Flex gap="l" className={cls.removed}>
+                <Flex gap="l" className={cls.removed}>
+                  {oldComp && (
                     <ComponentItem
                       className={cls.item}
                       comp={oldComp}
                       params={params}
                     />
-                  </Flex>
-                )}
+                  )}
+                  no host
+                </Flex>
                 <div>
                   <IconArrowRight />
                 </div>

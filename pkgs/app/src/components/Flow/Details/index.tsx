@@ -210,6 +210,16 @@ export const FlowDetails: React.FC<{
       onNodesChange([{ id: currNode!.id, type: 'visibility' }]);
     }
   };
+  const deleteEdge = () => {
+    if (onEdgesChange) {
+      onEdgesChange([{ id: relation!.edge.id, type: 'remove' }]);
+    }
+  };
+  const visibilityEdge = () => {
+    if (onEdgesChange) {
+      onEdgesChange([{ id: relation!.edge.id, type: 'visibility' }]);
+    }
+  };
 
   return (
     <div className={cls.composition}>
@@ -330,7 +340,40 @@ export const FlowDetails: React.FC<{
       )}
       {relation && (
         <div className={cls.block}>
-          <div className={cls.title}>Edge</div>
+          <div className={cls.title}>
+            Edge
+            <Flex gap="m">
+              {relation.edge.data!.source && (
+                <TooltipFull
+                  msg={`This edge is managed by: ${relation.edge.data!.source}`}
+                  side="bottom"
+                >
+                  <IconPackageImport />
+                </TooltipFull>
+              )}
+
+              <Flex>
+                {!readonly && (
+                  <Button size="s" display="ghost" onClick={visibilityEdge}>
+                    {relation.edge.hidden ? (
+                      <>
+                        <IconEyeOff />
+                      </>
+                    ) : (
+                      <>
+                        <IconEye />
+                      </>
+                    )}
+                  </Button>
+                )}
+                {!readonly && !relation.edge.data!.source && (
+                  <Button size="s" display="ghost" onClick={deleteEdge}>
+                    <IconTrash />
+                  </Button>
+                )}
+              </Flex>
+            </Flex>
+          </div>
           <table className={cls.relations}>
             <tbody>
               <EdgeRelation

@@ -97,5 +97,5 @@ export interface FlowEdge {
   portSource: 'sb' | 'sl' | 'sr' | 'st';
   portTarget: 'tb' | 'tl' | 'tr' | 'tt';
   source?: string | undefined;
-  show?: boolean;
+  show?: boolean | undefined;
 }

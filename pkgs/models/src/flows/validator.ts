@@ -49,9 +49,10 @@ export const schemaEdges = z.array(
       portSource: schemaPortSource,
       portTarget: schemaPortTarget,
       source: schemaSource,
+      show: z.boolean(),
     })
     .strict()
-    .partial({ source: true })
+    .partial({ source: true, show: true })
 );
 
 export const schemaFlowUpdate = z
@@ -62,10 +63,8 @@ export const schemaFlowUpdate = z
         .object({
           sourceHandle: schemaPortSource,
           targetHandle: schemaPortTarget,
-          source: schemaSource,
         })
         .strict()
-        .partial({ source: true })
     ),
     nodes: z.record(schemaId, z.object({ display: schemaDisplay }).strict()),
   })

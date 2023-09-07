@@ -88,6 +88,10 @@ export const ComponentDetails: React.FC<{
     setContains(getAllChilds(components, component.id));
 
     for (const edge of component.edges) {
+      if (edge.show === false) {
+        continue;
+      }
+
       if (edge.read && edge.write) {
         _readwrite.set(edge.target, list.get(edge.target)!);
       } else if (edge.write) {

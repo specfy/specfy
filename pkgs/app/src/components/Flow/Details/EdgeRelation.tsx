@@ -96,42 +96,44 @@ export const EdgeRelation: React.FC<
         </TooltipFull>
       </td>
       {target && <td className={cls.target}>{target.data.name}</td>}
-      <td className={cls.action}>
-        <Dropdown.Menu>
-          <Dropdown.Trigger asChild>
-            <Button size="s" display="ghost">
-              <IconDotsVertical />
-            </Button>
-          </Dropdown.Trigger>
-          <Dropdown.Content>
-            <Dropdown.Item asChild>
-              <TooltipFull
-                msg="Hide or show the component in the Flow"
-                side="right"
-              >
-                <Button display="item" onClick={onVisibility} size="s">
-                  {!edge.hidden ? (
-                    <>
-                      <IconEyeOff /> Hide
-                    </>
-                  ) : (
-                    <>
-                      <IconEye /> Show
-                    </>
-                  )}
-                </Button>
-              </TooltipFull>
-            </Dropdown.Item>
-            {!edge.data?.source && (
+      {!readonly && (
+        <td className={cls.action}>
+          <Dropdown.Menu>
+            <Dropdown.Trigger asChild>
+              <Button size="s" display="ghost">
+                <IconDotsVertical />
+              </Button>
+            </Dropdown.Trigger>
+            <Dropdown.Content>
               <Dropdown.Item asChild>
-                <Button danger display="item" onClick={onRemove} size="s">
-                  <IconTrash /> Remove
-                </Button>
+                <TooltipFull
+                  msg="Hide or show the component in the Flow"
+                  side="right"
+                >
+                  <Button display="item" onClick={onVisibility} size="s">
+                    {!edge.hidden ? (
+                      <>
+                        <IconEyeOff /> Hide
+                      </>
+                    ) : (
+                      <>
+                        <IconEye /> Show
+                      </>
+                    )}
+                  </Button>
+                </TooltipFull>
               </Dropdown.Item>
-            )}
-          </Dropdown.Content>
-        </Dropdown.Menu>
-      </td>
+              {!edge.data?.source && (
+                <Dropdown.Item asChild>
+                  <Button danger display="item" onClick={onRemove} size="s">
+                    <IconTrash /> Remove
+                  </Button>
+                </Dropdown.Item>
+              )}
+            </Dropdown.Content>
+          </Dropdown.Menu>
+        </td>
+      )}
     </tr>
   );
 };
