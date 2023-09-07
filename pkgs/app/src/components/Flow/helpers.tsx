@@ -52,6 +52,16 @@ export type EdgeChangeSuper =
   | {
       type: 'create';
       conn: Connection;
+    }
+  | {
+      type: 'direction';
+      id: string;
+      read: boolean;
+      write: boolean;
+    }
+  | {
+      type: 'visibility';
+      id: string;
     };
 export type OnEdgesChangeSuper = (changes: EdgeChangeSuper[]) => void;
 
@@ -111,6 +121,9 @@ export function highlightNode({
   return { nodes: upNodes, edges: upEdges };
 }
 
+/**
+ * Central function to handle all node changes (in a project).
+ */
 export const onNodesChangeProject: (
   store: ComponentsState
 ) => OnNodesChangeSuper = (store) => {
@@ -196,6 +209,59 @@ export const onNodesChangeProject: (
         });
       } else if (change.type === 'visibility') {
         store.setVisibility(change.id);
+      }
+    }
+  };
+};
+
+/**
+ * Central function to handle all edge changes (in a project).
+ */
+export const onEdgesChangeProject: (
+  store: ComponentsState
+) => OnEdgesChangeSuper = (store) => {
+  return (changes) => {
+    for (const change of changes) {
+      switch (change.type) {
+        case 'remove': {
+          const [source, target] = change.id.split('->');
+          store.removeEdge(source, target);
+          break;
+        }
+
+        case 'changeTarget': {
+          store.updateEdge(change.source, change.oldTarget, {
+            portSource: change.newSourceHandle as any,
+            target: change.newTarget,
+            portTarget: change.newTargetHandle as any,
+          });
+          break;
+        }
+
+        case 'create': {
+          store.addEdge(change.conn);
+          break;
+        }
+
+        case 'direction': {
+          const [source, target] = change.id.split('->');
+          store.updateEdge(source, target, {
+            write: change.write,
+            read: change.read,
+          });
+          break;
+        }
+
+        case 'visibility': {
+          const [source, target] = change.id.split('->');
+          store.updateEdge(source, target, (st) => {
+            st.show =
+              st.show === true || typeof st.show === 'undefined' ? false : true;
+            console.log('changing visibility', source, target, st.show);
+            return st;
+          });
+          break;
+        }
       }
     }
   };

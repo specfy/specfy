@@ -10,7 +10,10 @@ import type {
   OnEdgesChangeSuper,
   OnNodesChangeSuper,
 } from '../../../components/Flow/helpers';
-import { onNodesChangeProject } from '../../../components/Flow/helpers';
+import {
+  onEdgesChangeProject,
+  onNodesChangeProject,
+} from '../../../components/Flow/helpers';
 import { Loading } from '../../../components/Loading';
 import { useEdit } from '../../../hooks/useEdit';
 import type { RouteProject } from '../../../types/routes';
@@ -54,36 +57,9 @@ export const ProjectFlow: React.FC<{
     [components]
   );
   const onEdgesChange = useCallback<OnEdgesChangeSuper>(
-    (changes) => {
-      for (const change of changes) {
-        if (change.type === 'remove') {
-          const [source, target] = change.id.split('->');
-          storeComponents.removeEdge(source, target);
-        } else if (change.type === 'changeTarget') {
-          storeComponents.updateEdge(change.source, change.oldTarget, {
-            portSource: change.newSourceHandle as any,
-            target: change.newTarget,
-            portTarget: change.newTargetHandle as any,
-          });
-        } else if (change.type === 'create') {
-          storeComponents.addEdge(change.conn);
-        }
-      }
-    },
+    (changes) => onEdgesChangeProject(storeComponents)(changes),
     [components]
   );
-
-  // TODO: replace this with onEdgesChange
-  const onRelationChange: React.ComponentProps<
-    typeof FlowDetails
-  >['onRelationChange'] = useCallback((type, rel) => {
-    if (type === 'update') {
-      storeComponents.updateEdge(rel.edge.source, rel.edge.target, {
-        write: rel.edge.data!.write,
-        read: rel.edge.data!.read,
-      });
-    }
-  }, []);
 
   const onCreateNode: React.ComponentProps<typeof Flow>['onCreateNode'] = (
     type,
@@ -126,7 +102,7 @@ export const ProjectFlow: React.FC<{
           flow={flow}
           readonly={!isEditing}
           onNodesChange={onNodesChange}
-          onRelationChange={onRelationChange}
+          onEdgesChange={onEdgesChange}
         />
         {isEditing && (
           <Toolbar left center visible>

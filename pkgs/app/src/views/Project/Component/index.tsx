@@ -114,12 +114,12 @@ export const ComponentView: React.FC<{
     onNodesChangeProject(storeComponents)(changes);
   };
 
-  const onVisibility = (show: boolean) => {
+  const onVisibility = () => {
     edit.enable(true);
     // storeComponents.updateField(comp!.id, 'show', show);
     onNodesChange([{ type: 'visibility', id: comp!.id }]);
     toast.add({
-      title: show ? 'Component is visible' : 'Component will be hidden',
+      title: !comp!.show ? 'Component is visible' : 'Component will be hidden',
       status: 'success',
     });
   };
@@ -222,46 +222,44 @@ export const ComponentView: React.FC<{
                         <IconDotsVertical />
                       </Button>
                     </Dropdown.Trigger>
-                    <Dropdown.Portal>
-                      <Dropdown.Content>
-                        <Dropdown.Group>
-                          <Dropdown.Item asChild>
-                            <TooltipFull
-                              msg="Hide or show the component in the Flow"
-                              side="right"
+                    <Dropdown.Content>
+                      <Dropdown.Group>
+                        <Dropdown.Item asChild>
+                          <TooltipFull
+                            msg="Hide or show the component in the Flow"
+                            side="right"
+                          >
+                            <Button
+                              display="item"
+                              onClick={onVisibility}
+                              size="s"
                             >
-                              <Button
-                                display="item"
-                                onClick={() => onVisibility(!comp.show)}
-                                size="s"
-                              >
-                                {comp.show ? (
-                                  <>
-                                    <IconEyeOff /> Hide
-                                  </>
-                                ) : (
-                                  <>
-                                    <IconEye /> Show
-                                  </>
-                                )}
-                              </Button>
-                            </TooltipFull>
+                              {comp.show ? (
+                                <>
+                                  <IconEyeOff /> Hide
+                                </>
+                              ) : (
+                                <>
+                                  <IconEye /> Show
+                                </>
+                              )}
+                            </Button>
+                          </TooltipFull>
+                        </Dropdown.Item>
+                        {!comp.source && (
+                          <Dropdown.Item asChild>
+                            <Button
+                              danger
+                              display="item"
+                              onClick={onRemove}
+                              size="s"
+                            >
+                              <IconTrash /> Remove
+                            </Button>
                           </Dropdown.Item>
-                          {!comp.source && (
-                            <Dropdown.Item asChild>
-                              <Button
-                                danger
-                                display="item"
-                                onClick={() => onRemove()}
-                                size="s"
-                              >
-                                <IconTrash /> Remove
-                              </Button>
-                            </Dropdown.Item>
-                          )}
-                        </Dropdown.Group>
-                      </Dropdown.Content>
-                    </Dropdown.Portal>
+                        )}
+                      </Dropdown.Group>
+                    </Dropdown.Content>
                   </Dropdown.Menu>
                 </div>
               )}

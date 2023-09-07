@@ -57,39 +57,34 @@ export const ProjectSwitcher: React.FC = () => {
             <IconChevronDown />
           </button>
         </Dropdown.Trigger>
-        <Dropdown.Portal>
-          <Dropdown.Content>
-            <Dropdown.Group className={cls.content}>
-              {projects.map((item) => {
-                return (
-                  <Dropdown.Item key={item.id} asChild>
-                    <Link
-                      to={`/${item.orgId}/${item.slug}${paths}`}
-                      className={classNames(
-                        cls.org,
-                        project.id === item.id && cls.current
-                      )}
-                    >
-                      <AvatarAuto name={item.name} shape="square" /> {item.name}
-                    </Link>
-                  </Dropdown.Item>
-                );
-              })}
-            </Dropdown.Group>
-            <Dropdown.Separator />
-            <Dropdown.Group>
-              <Dropdown.Item asChild>
-                <Link
-                  to={`/${project.orgId}/_/project/new`}
-                  className={cls.org}
-                >
-                  <IconPlus size="1em" />
-                  Create project
-                </Link>
-              </Dropdown.Item>
-            </Dropdown.Group>
-          </Dropdown.Content>
-        </Dropdown.Portal>
+        <Dropdown.Content>
+          <Dropdown.Group className={cls.content}>
+            {projects.map((item) => {
+              return (
+                <Dropdown.Item key={item.id} asChild>
+                  <Link
+                    to={`/${item.orgId}/${item.slug}${paths}`}
+                    className={classNames(
+                      cls.org,
+                      project.id === item.id && cls.current
+                    )}
+                  >
+                    <AvatarAuto name={item.name} shape="square" /> {item.name}
+                  </Link>
+                </Dropdown.Item>
+              );
+            })}
+          </Dropdown.Group>
+          <Dropdown.Separator />
+          <Dropdown.Group>
+            <Dropdown.Item asChild>
+              <Link to={`/${project.orgId}/_/project/new`} className={cls.org}>
+                <IconPlus size="1em" />
+                Create project
+              </Link>
+            </Dropdown.Item>
+          </Dropdown.Group>
+        </Dropdown.Content>
       </Dropdown.Menu>
     </div>
   );

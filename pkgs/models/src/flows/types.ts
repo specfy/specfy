@@ -50,6 +50,7 @@ export interface NodeData {
 export interface EdgeData {
   read: boolean;
   write: boolean;
+  source?: FlowEdge['source'];
 }
 
 export type ComputedNode = Node<NodeData>;

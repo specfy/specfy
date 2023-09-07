@@ -288,7 +288,7 @@ export const DiffCardComponent: React.FC<{
           const change = d.diff as DiffObjectsArray<ApiComponent['edges'][0]>;
           return (
             <div key={d.key} className={classnames(cls.line)}>
-              <h4>Data</h4>
+              <h4>Connections</h4>
               {change.added.map((edge) => {
                 const comp = getComponent(edge.target);
                 return (
@@ -326,7 +326,10 @@ export const DiffCardComponent: React.FC<{
                       className={cls.item}
                       comp={comp}
                       params={params}
-                    />
+                    />{' '}
+                    <span className={classnames(cls.added, cls.inline)}>
+                      (display)
+                    </span>
                   </div>
                 );
               })}

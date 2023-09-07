@@ -37,35 +37,33 @@ const User: React.FC = () => {
             <AvatarAuto user={user!} />
           </button>
         </Dropdown.Trigger>
-        <Dropdown.Portal>
-          <Dropdown.Content>
-            <div className={cls.userDropdown}>
-              <strong>{user!.name}</strong>
-              <Subdued>{user!.email}</Subdued>
-            </div>
+        <Dropdown.Content>
+          <div className={cls.userDropdown}>
+            <strong>{user!.name}</strong>
+            <Subdued>{user!.email}</Subdued>
+          </div>
 
-            <Dropdown.Separator />
-            <Dropdown.Group>
-              <Dropdown.Item asChild>
-                <Link to="/account/">
-                  <IconSettings />
-                  <div>Settings</div>
-                </Link>
-              </Dropdown.Item>
-            </Dropdown.Group>
+          <Dropdown.Separator />
+          <Dropdown.Group>
+            <Dropdown.Item asChild>
+              <Link to="/account/">
+                <IconSettings />
+                <div>Settings</div>
+              </Link>
+            </Dropdown.Item>
+          </Dropdown.Group>
 
-            <Dropdown.Separator />
+          <Dropdown.Separator />
 
-            <Dropdown.Group>
-              <Dropdown.Item asChild>
-                <button onClick={handleLogout}>
-                  <IconLogout />
-                  <div>Logout</div>
-                </button>
-              </Dropdown.Item>
-            </Dropdown.Group>
-          </Dropdown.Content>
-        </Dropdown.Portal>
+          <Dropdown.Group>
+            <Dropdown.Item asChild>
+              <button onClick={handleLogout}>
+                <IconLogout />
+                <div>Logout</div>
+              </button>
+            </Dropdown.Item>
+          </Dropdown.Group>
+        </Dropdown.Content>
       </Dropdown.Menu>
     </div>
   );

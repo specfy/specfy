@@ -1,4 +1,9 @@
-import type { ApiBlobComponent, InComponent } from '@specfy/models';
+import type {
+  ApiBlobComponent,
+  ApiComponent,
+  FlowEdge,
+  InComponent,
+} from '@specfy/models';
 import { IGNORED_COMPONENT_KEYS } from '@specfy/models/src/revisions/constants';
 import type { Editor } from '@tiptap/react';
 import { diffJson, diffWordsWithSpace } from 'diff';
@@ -58,11 +63,35 @@ export function diffComponent(
       });
       continue;
     }
-    if (key === 'edges' || key === 'techs') {
+    if (key === 'edges') {
       const prev = blob.previous?.[key] ? blob.previous[key] : [];
       const value = blob.current[key];
       // TODO: fix as any
-      const change = diffObjectsArray(prev as any, value as any, 'target');
+      const change = diffObjectsArray<FlowEdge>(
+        prev as any,
+        value as any,
+        'target',
+        true
+      );
+      if (change.changes <= 0) {
+        continue;
+      }
+
+      diffs.push({
+        key,
+        diff: change,
+      });
+      continue;
+    }
+    if (key === 'techs') {
+      const prev = blob.previous?.[key] ? blob.previous[key] : [];
+      const value = blob.current[key];
+      // TODO: fix as any
+      const change = diffObjectsArray<ApiComponent['techs'][0]>(
+        prev as any,
+        value as any,
+        'id'
+      );
       if (change.changes <= 0) {
         continue;
       }

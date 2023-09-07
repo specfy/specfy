@@ -27,7 +27,7 @@ export interface ComponentsState {
   updateEdge: (
     source: string,
     target: string,
-    update: Partial<ApiComponent['edges'][0]>
+    update: Partial<FlowEdge> | ((edge: FlowEdge) => FlowEdge)
   ) => void;
   removeEdge: (source: string, target: string) => void;
 }
@@ -218,7 +218,11 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
             if (edge.target !== target) {
               continue;
             }
-            copy.edges[index] = { ...edge, ...update };
+            if (typeof update === 'function') {
+              copy.edges[index] = update(edge);
+            } else {
+              copy.edges[index] = { ...edge, ...update };
+            }
           }
         }
       })

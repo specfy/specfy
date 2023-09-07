@@ -5,14 +5,14 @@ import {
   IconPackageImport,
   IconTrash,
 } from '@tabler/icons-react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'react-use';
 import { useEdges, useNodes, useOnSelectionChange } from 'reactflow';
 
 import { Button } from '../../Form/Button';
 import { Tag } from '../../Tag';
 import { PreviewNode } from '../CustomNode';
-import type { OnNodesChangeSuper } from '../helpers';
+import type { OnEdgesChangeSuper, OnNodesChangeSuper } from '../helpers';
 
 import type { Relation } from './EdgeRelation';
 import { EdgeRelation } from './EdgeRelation';
@@ -97,8 +97,8 @@ export const FlowDetails: React.FC<{
   readonly: boolean;
   // Events
   onNodesChange?: OnNodesChangeSuper;
-  onRelationChange: (type: 'delete' | 'update', relation: Relation) => void;
-}> = ({ flow, readonly, onNodesChange, onRelationChange }) => {
+  onEdgesChange?: OnEdgesChangeSuper;
+}> = ({ flow, readonly, onNodesChange, onEdgesChange }) => {
   const nodes = useNodes();
   const edges = useEdges<EdgeData>();
 
@@ -194,23 +194,6 @@ export const FlowDetails: React.FC<{
 
     return flow.nodes.find((c) => c.id === currNode.parentNode);
   }, [currNode]);
-
-  const onRelationDirection = useCallback(
-    (rel: Relation) => {
-      if (rel.edge.data!.write && rel.edge.data!.read) {
-        rel.edge.data!.write = false;
-      } else if (!rel.edge.data!.write && rel.edge.data!.read) {
-        rel.edge.data!.read = false;
-        rel.edge.data!.write = true;
-      } else {
-        rel.edge.data!.read = true;
-        rel.edge.data!.write = true;
-      }
-
-      onRelationChange('update', rel);
-    },
-    [nodes]
-  );
 
   const deleteComponent = () => {
     if (onNodesChange) {
@@ -308,7 +291,7 @@ export const FlowDetails: React.FC<{
                           key={rel.edge.id}
                           {...rel}
                           readonly={readonly}
-                          onDirection={onRelationDirection}
+                          onEdgesChange={onEdgesChange}
                         />
                       );
                     })}
@@ -332,7 +315,7 @@ export const FlowDetails: React.FC<{
                           key={rel.edge.id}
                           {...rel}
                           readonly={readonly}
-                          onDirection={onRelationDirection}
+                          onEdgesChange={onEdgesChange}
                         />
                       );
                     })}
@@ -353,7 +336,7 @@ export const FlowDetails: React.FC<{
               <EdgeRelation
                 {...relation}
                 readonly={readonly}
-                onDirection={onRelationDirection}
+                onEdgesChange={onEdgesChange}
               />
             </tbody>
           </table>

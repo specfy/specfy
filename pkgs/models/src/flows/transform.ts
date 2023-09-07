@@ -122,7 +122,7 @@ export function componentsToFlow(components: ComponentForFlow[]): ComputedFlow {
         target: edge.target,
         sourceHandle: edge.portSource,
         targetHandle: edge.portTarget,
-        data: { read: edge.read, write: edge.write },
+        data: { read: edge.read, write: edge.write, source: edge.source },
         hidden: edge.show === false,
         ...getEdgeMarkers(edge),
         // type: 'floating',

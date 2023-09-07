@@ -20,8 +20,10 @@ export const EditProvider: React.FC<{ children: React.ReactNode }> = ({
     const tmp: EditContextInterface = {
       isEditing: enabled,
       enable: (val) => {
-        setPrev(enabled);
-        setEnabled(val);
+        if (val !== enabled) {
+          setPrev(enabled);
+          setEnabled(val);
+        }
       },
       prev: () => {
         return prev;
