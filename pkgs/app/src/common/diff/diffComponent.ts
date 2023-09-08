@@ -142,7 +142,7 @@ export function diffComponent(
       });
       continue;
     }
-    if (key === 'show') {
+    if (key === 'show' || key === 'techId') {
       diffs.push({
         key,
         diff: 'modified',

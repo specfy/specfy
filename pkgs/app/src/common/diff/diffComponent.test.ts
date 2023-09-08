@@ -334,14 +334,7 @@ describe('techId', () => {
     expect(diff).toHaveLength(1);
     expect(diff[0]).toMatchObject({
       key: 'techId',
-      diff: [
-        {
-          added: true,
-          count: 1,
-          removed: undefined,
-          value: 'algolia',
-        },
-      ],
+      diff: 'modified',
     });
   });
 
@@ -353,14 +346,7 @@ describe('techId', () => {
     expect(diff).toHaveLength(1);
     expect(diff[0]).toMatchObject({
       key: 'techId',
-      diff: [
-        {
-          added: undefined,
-          count: 1,
-          removed: true,
-          value: 'algolia',
-        },
-      ],
+      diff: 'modified',
     });
   });
 });
