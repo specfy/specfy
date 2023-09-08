@@ -1,4 +1,4 @@
-import { getBlobComponent } from '@specfy/models';
+import { getBlobComponent } from '@specfy/models/src/components/test.utils.js';
 import { beforeAll, afterAll, expect, describe, it } from 'vitest';
 
 import type { TestSetup } from '../../../../test/each.js';

@@ -155,7 +155,7 @@ export function diffComponent(
     const prev = blob.previous?.[key] ? blob.previous[key] : '';
     diffs.push({
       key,
-      diff: diffWordsWithSpace(prev || '', `${value}`),
+      diff: diffWordsWithSpace(prev || '', `${value || ''}`),
     });
   }
 

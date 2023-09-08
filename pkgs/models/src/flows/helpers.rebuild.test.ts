@@ -2,7 +2,7 @@
 import type { Projects } from '@specfy/db';
 import { describe, expect, it } from 'vitest';
 
-import { getBlobComponent } from '../components';
+import { getBlobComponent } from '../components/test.utils.js';
 
 import { computeRelationsToProjects, rebuildFlow } from './helpers.rebuild.js';
 

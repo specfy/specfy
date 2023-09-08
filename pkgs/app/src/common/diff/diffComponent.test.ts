@@ -1,4 +1,4 @@
-import { getApiBlobComponent } from '@specfy/models/src/components/test.helper';
+import { getApiBlobComponent } from '@specfy/models/src/components/test.utils';
 import { Editor } from '@tiptap/react';
 import { describe, expect, it } from 'vitest';
 
@@ -95,6 +95,33 @@ describe('edges', () => {
         deleted: [],
         modified: [{ source: 'a' }],
         changes: 1,
+      },
+    });
+  });
+});
+
+describe('description', () => {
+  it('should find diff', () => {
+    const a = getApiBlobComponent({ id: 'a', orgId: 'b' });
+    a.previous = JSON.parse(JSON.stringify(a.current));
+    a.current.description = {
+      type: 'doc',
+      content: [{ type: 'paragraph', content: [], attrs: { uid: 'a' } }],
+    };
+    const diff = diffComponent(editor, a);
+    expect(diff).toHaveLength(1);
+    expect(diff[0]).toMatchObject({
+      key: 'description',
+      diff: {
+        type: 'doc',
+        content: [
+          {
+            type: 'paragraph',
+            attrs: { uid: 'a' },
+            content: [],
+            marks: [{ attrs: { type: 'added' }, type: 'diffMark' }],
+          },
+        ],
       },
     });
   });
@@ -267,6 +294,73 @@ describe('show', () => {
     expect(diff[0]).toMatchObject({
       key: 'show',
       diff: 'modified',
+    });
+  });
+});
+
+describe('name', () => {
+  it('should find diff', () => {
+    const a = getApiBlobComponent({ id: 'a', orgId: 'b' });
+    a.previous = JSON.parse(JSON.stringify(a.current));
+    a.current.name = 'hello';
+    const diff = diffComponent(editor, a);
+    expect(diff).toHaveLength(1);
+    expect(diff[0]).toMatchObject({
+      key: 'name',
+      diff: [
+        {
+          added: undefined,
+          count: 3,
+          removed: true,
+          // value: 'test xDf8lIDzlyJP',
+        },
+        {
+          added: true,
+          count: 1,
+          removed: undefined,
+          value: 'hello',
+        },
+      ],
+    });
+  });
+});
+
+describe('techId', () => {
+  it('should find diff added', () => {
+    const a = getApiBlobComponent({ id: 'a', orgId: 'b' });
+    a.previous = JSON.parse(JSON.stringify(a.current));
+    a.current.techId = 'algolia';
+    const diff = diffComponent(editor, a);
+    expect(diff).toHaveLength(1);
+    expect(diff[0]).toMatchObject({
+      key: 'techId',
+      diff: [
+        {
+          added: true,
+          count: 1,
+          removed: undefined,
+          value: 'algolia',
+        },
+      ],
+    });
+  });
+
+  it('should find diff remove', () => {
+    const a = getApiBlobComponent({ id: 'a', orgId: 'b' });
+    a.previous = JSON.parse(JSON.stringify(a.current));
+    a.previous!.techId = 'algolia';
+    const diff = diffComponent(editor, a);
+    expect(diff).toHaveLength(1);
+    expect(diff[0]).toMatchObject({
+      key: 'techId',
+      diff: [
+        {
+          added: undefined,
+          count: 1,
+          removed: true,
+          value: 'algolia',
+        },
+      ],
     });
   });
 });

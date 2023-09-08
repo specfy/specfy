@@ -1,5 +1,6 @@
 import { nanoid } from '@specfy/core';
-import { getBlobComponent } from '@specfy/models';
+import { getBlobComponent } from '@specfy/models/src/components/test.utils';
+import { getBlobProject } from '@specfy/models/src/projects/test.utils';
 import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
 import type { TestSetup } from '../../../test/each.js';
@@ -12,7 +13,7 @@ import {
 } from '../../../test/helpers.js';
 import { seedComponent } from '../../../test/seed/components.js';
 import { getBlobDocument } from '../../../test/seed/documents.js';
-import { getBlobProject, seedProject } from '../../../test/seed/projects.js';
+import { seedProject } from '../../../test/seed/projects.js';
 import { seedWithOrgViewer, seedWithProject } from '../../../test/seed/seed.js';
 
 let t: TestSetup;

@@ -1,12 +1,8 @@
-import { nanoid, slugify } from '@specfy/core';
+import { nanoid } from '@specfy/core';
 import type { Orgs, Projects, Users } from '@specfy/db';
 import { prisma } from '@specfy/db';
-import {
-  recomputeOrgGraph,
-  createProject,
-  getDefaultConfig,
-} from '@specfy/models';
-import type { DBProject } from '@specfy/models';
+import { recomputeOrgGraph, createProject } from '@specfy/models';
+import { getBlobProject } from '@specfy/models/src/projects/test.utils';
 
 interface ResSeedProjects {
   pDash: Projects;
@@ -26,10 +22,9 @@ export async function seedProjects(
     async (tx) => {
       const pDash = await createProject({
         data: {
+          ...getBlobProject(o1),
           id: 'b01tMzwd5A',
           name: 'Dashboard',
-          orgId: o1.id,
-          links: [],
           description: {
             type: 'doc',
             content: [
@@ -45,30 +40,22 @@ export async function seedProjects(
               },
             ],
           },
-          config: getDefaultConfig(),
         },
         user: users[0],
         tx,
       });
 
       const pFront = await createProject({
-        data: {
-          id: 'b02tMzwd5A',
-          name: 'Frontend',
-          orgId: o1.id,
-          links: [],
-          description: { type: 'doc', content: [] },
-          config: getDefaultConfig(),
-        },
+        data: { ...getBlobProject(o1), id: 'b02tMzwd5A', name: 'Frontend' },
         user: users[0],
         tx,
       });
 
       const pAnalytics = await createProject({
         data: {
+          ...getBlobProject(o1),
           id: 'b03tMzwd5A',
           name: 'Analytics',
-          orgId: o1.id,
           description: {
             type: 'doc',
             content: [
@@ -93,34 +80,19 @@ export async function seedProjects(
             { title: 'GitHub', url: 'https://github.com/specfy' },
             { title: 'Discord', url: 'https://discord.gg/96cDXvT8NV' },
           ],
-          config: getDefaultConfig(),
         },
         user: users[0],
         tx,
       });
 
       const pAPI = await createProject({
-        data: {
-          id: 'b04tMzwd5A',
-          name: 'API',
-          orgId: o1.id,
-          links: [],
-          description: { type: 'doc', content: [] },
-          config: getDefaultConfig(),
-        },
+        data: { ...getBlobProject(o1), id: 'b04tMzwd5A', name: 'API' },
         user: users[0],
         tx,
       });
 
       const pBilling = await createProject({
-        data: {
-          id: 'b05tMzwd5A',
-          name: 'Billing',
-          orgId: o1.id,
-          links: [],
-          description: { type: 'doc', content: [] },
-          config: getDefaultConfig(),
-        },
+        data: { ...getBlobProject(o1), id: 'b05tMzwd5A', name: 'Billing' },
         user: users[0],
         tx,
       });
@@ -202,35 +174,10 @@ export async function seedProjects(
 export async function seedProject(user: Users, org: Orgs) {
   const id = nanoid();
   const project = await createProject({
-    data: {
-      id,
-      name: `Project ${id}`,
-      orgId: org.id,
-      links: [],
-      description: { type: 'doc', content: [] },
-      config: getDefaultConfig(),
-    },
+    data: { ...getBlobProject(org), id, name: `Project ${id}` },
     tx: prisma,
     user,
   });
 
   return project;
-}
-
-export function getBlobProject(org: Orgs): DBProject {
-  const id = nanoid();
-  const name = `test ${id}`;
-  return {
-    id,
-    name,
-    slug: slugify(name),
-    blobId: null,
-    orgId: org.id,
-    links: [],
-    description: { type: 'doc', content: [] },
-    githubRepository: null,
-    config: getDefaultConfig(),
-    createdAt: new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-  };
 }

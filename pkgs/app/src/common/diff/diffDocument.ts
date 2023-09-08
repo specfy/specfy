@@ -42,14 +42,21 @@ export function diffDocument(
       const prev = blob.previous?.[key] ? blob.previous[key] : '';
       const value = blob.current[key];
 
-      diffs.push({
-        key,
-        diff: diffEditor(
-          editor.schema,
-          prev ? JSON.parse(prev) : getEmptyDoc(true),
-          value ? JSON.parse(value) : getEmptyDoc(true)
-        ),
-      });
+      if (blob.current.format === 'pm') {
+        diffs.push({
+          key,
+          diff: diffEditor(
+            editor.schema,
+            prev ? JSON.parse(prev) : getEmptyDoc(true),
+            value ? JSON.parse(value) : getEmptyDoc(true)
+          ),
+        });
+      } else {
+        diffs.push({
+          key,
+          diff: diffWordsWithSpace(prev, value),
+        });
+      }
       continue;
     }
 
@@ -58,7 +65,7 @@ export function diffDocument(
     const prev = blob.previous?.[key] ? blob.previous[key] : '';
     diffs.push({
       key,
-      diff: diffWordsWithSpace(prev || '', `${value}`),
+      diff: diffWordsWithSpace(prev || '', `${value || ''}`),
     });
   }
 

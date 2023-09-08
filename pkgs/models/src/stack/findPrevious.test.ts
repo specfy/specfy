@@ -3,7 +3,7 @@ import type { AnalyserJson } from '@specfy/stack-analyser';
 import { Payload } from '@specfy/stack-analyser';
 import { describe, expect, it } from 'vitest';
 
-import { getBlobComponent } from '../components/index.js';
+import { getBlobComponent } from '../components/test.utils.js';
 
 import { findPerfectMatch, findPrevious } from './findPrevious.js';
 
