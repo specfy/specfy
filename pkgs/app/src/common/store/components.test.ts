@@ -170,6 +170,26 @@ describe('setVisibility', () => {
       edges: [{ target: 'a', show: !val }],
     });
   });
+
+  it('should not show outgoing edge if the target is hidden', () => {
+    const state = store.getState();
+    state.create({
+      id: 'a',
+      edges: [{ target: 'b', show: false }],
+      show: false,
+    } as unknown as ApiComponent);
+    state.create({
+      id: 'b',
+      edges: [],
+      show: false,
+    } as unknown as ApiComponent);
+    state.setVisibility('a');
+    expect(state.select('a')).toStrictEqual({
+      id: 'a',
+      show: true,
+      edges: [{ target: 'b', show: false }],
+    });
+  });
 });
 
 describe('remove', () => {

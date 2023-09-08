@@ -107,7 +107,10 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
 
         // Hide all outgoing edges
         for (const edge of src.edges) {
-          edge.show = visible;
+          // Do not modify edge if target is hidden
+          if (components.find((c) => c.id === edge.target)?.show) {
+            edge.show = visible;
+          }
         }
 
         for (const copy of components) {
