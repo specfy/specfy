@@ -1,5 +1,7 @@
 import { nanoid } from '@specfy/core';
-import type { ApiBlobCreateDocument } from '@specfy/models';
+import { prisma } from '@specfy/db';
+import { createComponent, type ApiBlobCreateDocument } from '@specfy/models';
+import { getBlobComponent } from '@specfy/models/src/components/test.utils.js';
 import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
 import type { TestSetup } from '../../../test/each.js';
@@ -16,6 +18,20 @@ import {
   seedWithOrgViewer,
   seedWithProject,
 } from '../../../test/seed/seed.js';
+
+function getDefaultStack() {
+  return {
+    path: ['/'],
+    tech: null,
+    techs: [],
+    inComponent: null,
+    languages: {},
+    edges: [],
+    dependencies: [],
+    reason: [],
+    childs: [],
+  };
+}
 
 let t: TestSetup;
 beforeAll(async () => {
@@ -405,28 +421,17 @@ describe('POST /revisions/upload -- Stack', () => {
         source: 'github',
         stack: {
           id: '10uaaV0QPN2D',
+          ...getDefaultStack(),
           name: 'root',
           path: ['/'],
-          tech: null,
-          techs: [],
-          inComponent: null,
-          languages: {},
-          edges: [],
-          dependencies: [],
-          reason: [],
           childs: [
             {
               id: '90uaaV0QPN2D',
+              ...getDefaultStack(),
               name: 'redis',
               path: ['/analytics/docker-compose.yml'],
               tech: 'redis',
-              edges: [],
-              inComponent: null,
-              childs: [],
-              techs: [],
-              languages: {},
               dependencies: [['docker', 'redis', '8.0.0-alpine']],
-              reason: [],
             },
             {
               id: 'rjiySzaZm26h',
@@ -492,41 +497,23 @@ describe('POST /revisions/upload -- Stack', () => {
         source: 'github',
         stack: {
           id: '10uaaV0QPN2D',
+          ...getDefaultStack(),
           name: 'root',
           path: ['/'],
-          tech: null,
-          techs: [],
-          inComponent: null,
-          languages: {},
-          edges: [],
-          dependencies: [],
-          reason: [],
           childs: [
             {
               id: '90uaaV0QPN2D',
+              ...getDefaultStack(),
               name: 'redis',
               path: ['/analytics/docker-compose.yml'],
               tech: 'redis',
-              edges: [],
-              inComponent: null,
-              childs: [],
-              techs: [],
-              languages: {},
-              dependencies: [],
-              reason: [],
             },
             {
               id: '80AeEV0QzMeR',
+              ...getDefaultStack(),
               name: 'redis',
               path: ['/analytics/docker-compose.yml'],
               tech: 'redis',
-              edges: [],
-              inComponent: null,
-              childs: [],
-              techs: [],
-              languages: {},
-              dependencies: [],
-              reason: [],
             },
           ],
         },
@@ -559,41 +546,21 @@ describe('POST /revisions/upload -- Stack', () => {
         source: 'github',
         stack: {
           id: '10uaaV0QPN2D',
+          ...getDefaultStack(),
           name: 'root',
           path: ['/'],
-          tech: null,
-          techs: [],
-          inComponent: null,
-          languages: {},
-          edges: [],
-          dependencies: [],
-          reason: [],
           childs: [
             {
               id: '90uaaV0QPN2D',
+              ...getDefaultStack(),
               name: 'API',
               path: ['/pkgs/api/package.json'],
-              tech: null,
-              edges: [],
-              inComponent: null,
-              childs: [],
-              techs: [],
-              languages: {},
-              dependencies: [],
-              reason: [],
             },
             {
               id: '80AeEV0QzMeR',
+              ...getDefaultStack(),
               name: 'API',
               path: ['/cmd/api/main.go'],
-              tech: null,
-              edges: [],
-              inComponent: null,
-              childs: [],
-              techs: [],
-              languages: {},
-              dependencies: [],
-              reason: [],
             },
           ],
         },
@@ -602,5 +569,54 @@ describe('POST /revisions/upload -- Stack', () => {
 
     isSuccess(res.json);
     expect(res.statusCode).toBe(200);
+  });
+
+  it('should not recreate unmodified blob', async () => {
+    const { token, org, project, user } = await seedWithProject();
+    const name = `test ${nanoid()}`;
+    const comp = getBlobComponent(project);
+    await createComponent({
+      data: {
+        ...comp,
+        name: 'redis',
+        techId: 'redis',
+        source: 'github',
+        sourceName: 'redis',
+        sourcePath: ['/docker-compose.yml'],
+      },
+      tx: prisma,
+      user,
+    });
+
+    // Same body
+    const res2 = await t.fetch.post('/0/revisions/upload', {
+      token,
+      Body: {
+        blobs: [],
+        description: { content: [], type: 'doc' },
+        name: name,
+        orgId: org.id,
+        projectId: project.id,
+        source: 'github',
+        stack: {
+          id: nanoid(),
+          name: 'root',
+          ...getDefaultStack(),
+          childs: [
+            {
+              id: nanoid(),
+              ...getDefaultStack(),
+              name: 'redis',
+              tech: 'redis',
+              path: ['/docker-compose.yml'],
+            },
+          ],
+        },
+      },
+    });
+
+    expect(res2.json).toStrictEqual({
+      error: { code: 'cant_create', reason: 'no_diff' },
+    });
   });
 });

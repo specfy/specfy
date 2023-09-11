@@ -1,3 +1,4 @@
+import { isDiffSimple } from '@specfy/core/src/diff';
 import type {
   ApiBlobComponent,
   ApiComponent,
@@ -15,7 +16,6 @@ import type {
 import { getEmptyDoc } from '../content';
 
 import { diffObjectsArray, diffStringArray } from './array';
-import { isDiffSimple } from './helpers';
 import { diffEditor } from './prosemirror';
 
 export function diffComponent(

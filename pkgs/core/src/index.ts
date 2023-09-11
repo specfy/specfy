@@ -1,6 +1,7 @@
 export * from './api.js';
 export * from './avatar.js';
 export * from './env.js';
+export * from './diff.js';
 export * from './id.js';
 export * from './logEvent.js';
 export * from './logger.js';
