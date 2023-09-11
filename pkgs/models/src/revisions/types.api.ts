@@ -17,6 +17,7 @@ import type { ApiReview } from '../reviews/types.api.js';
 import type { StackToBlobs } from '../stack/types.js';
 import type { ApiUser } from '../users/types.api.js';
 
+import type { DocsToBlobs } from './helpers.upload.js';
 import type { DBRevision } from './types.js';
 
 export type ApiRevision = DBRevision & {
@@ -76,7 +77,10 @@ export type PostUploadRevision = Res<{
   Error: CreateRevisionError;
   Success: {
     data: Pick<ApiRevision, 'id'> & {
-      stats: { stack: StackToBlobs['stats'] | undefined };
+      stats: {
+        stack: StackToBlobs['stats'] | undefined;
+        docs: DocsToBlobs['stats'] | undefined;
+      };
     };
   };
 }>;

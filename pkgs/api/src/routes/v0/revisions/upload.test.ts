@@ -137,7 +137,17 @@ describe('POST /revisions/upload -- Documents', () => {
     isSuccess(res.json);
     expect(res.statusCode).toBe(200);
     expect(res.json).toStrictEqual({
-      data: { id: expect.any(String), stats: {} },
+      data: {
+        id: expect.any(String),
+        stats: {
+          docs: {
+            created: 1,
+            deleted: 0,
+            modified: 0,
+            unchanged: 0,
+          },
+        },
+      },
     });
 
     // Get blobs
@@ -241,7 +251,17 @@ describe('POST /revisions/upload -- Documents', () => {
     isSuccess(res.json);
     expect(res.statusCode).toBe(200);
     expect(res.json).toStrictEqual({
-      data: { id: expect.any(String), stats: {} },
+      data: {
+        id: expect.any(String),
+        stats: {
+          docs: {
+            created: 2,
+            deleted: 0,
+            modified: 0,
+            unchanged: 0,
+          },
+        },
+      },
     });
 
     // Get blobs
@@ -293,7 +313,17 @@ describe('POST /revisions/upload -- Documents', () => {
     isSuccess(res.json);
     expect(res.statusCode).toBe(200);
     expect(res.json).toStrictEqual({
-      data: { id: expect.any(String), stats: {} },
+      data: {
+        id: expect.any(String),
+        stats: {
+          docs: {
+            created: 2,
+            deleted: 0,
+            modified: 0,
+            unchanged: 0,
+          },
+        },
+      },
     });
 
     // Get blobs
@@ -472,6 +502,12 @@ describe('POST /revisions/upload -- Stack', () => {
       data: {
         id: expect.any(String),
         stats: {
+          docs: {
+            created: 0,
+            deleted: 0,
+            modified: 0,
+            unchanged: 0,
+          },
           stack: {
             created: 2,
             deleted: 0,

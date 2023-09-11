@@ -1,6 +1,6 @@
 import path from 'node:path';
 
-import { nanoid, titleCase } from '@specfy/core';
+import { isDiffObjSimple, nanoid, pick, titleCase } from '@specfy/core';
 import type { Documents } from '@specfy/db';
 
 import type { DBDocument } from '../documents/types.js';
@@ -16,6 +16,25 @@ import type {
   PostUploadRevision,
 } from './types.api.js';
 
+const changing: Array<keyof Documents> = [
+  'slug',
+  'format',
+  'hash',
+  'sourcePath',
+];
+
+export interface DocsToBlobs {
+  deleted: ApiBlobCreate[];
+  blobs: ApiBlobCreateDocument[];
+  unchanged: string[];
+  stats: {
+    created: number;
+    modified: number;
+    deleted: number;
+    unchanged: number;
+  };
+}
+
 /**
  * Prepare blobs to create, update or delete
  */
@@ -23,8 +42,9 @@ export function uploadedDocumentsToDB(
   parsed: ParsedUpload[],
   prevs: Documents[],
   data: Pick<PostUploadRevision['Body'], 'orgId' | 'source' | 'projectId'>
-): { deleted: ApiBlobCreate[]; blobs: ApiBlobCreateDocument[] } {
+): DocsToBlobs {
   const now = new Date().toISOString();
+  const unchanged: string[] = [];
 
   // ---- Find new or updated blobs
   const blobs: ApiBlobCreateDocument[] = parsed.map((doc) => {
@@ -101,5 +121,23 @@ export function uploadedDocumentsToDB(
       };
     });
 
-  return { deleted, blobs };
+  // Detect unchanged blobs
+  const stats = { created: 0, modified: 0, deleted: 0, unchanged: 0 };
+  stats.deleted = deleted.length;
+  for (const blob of blobs) {
+    if (blob.created) {
+      stats.created += 1;
+      continue;
+    }
+
+    const prev = prevs.find((p) => p.id === blob.typeId)!;
+    if (isDiffObjSimple(pick(prev, changing), pick(blob.current, changing))) {
+      stats.modified += 1;
+    } else {
+      stats.unchanged += 1;
+      unchanged.push(prev.id);
+    }
+  }
+
+  return { blobs, deleted, unchanged, stats };
 }
