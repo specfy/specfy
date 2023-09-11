@@ -42,7 +42,6 @@ export function getBlobComponent(
 export function getApiBlobComponent(
   project: Pick<Projects, 'orgId' | 'id'>
 ): ApiBlobComponent {
-  const id = nanoid();
   const comp = getBlobComponent(project);
   return {
     id: nanoid(),
@@ -50,7 +49,7 @@ export function getApiBlobComponent(
     current: comp,
     deleted: false,
     type: 'component',
-    typeId: id,
+    typeId: comp.id,
     previous: null,
     parentId: null,
     createdAt: new Date().toISOString(),

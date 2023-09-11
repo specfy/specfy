@@ -1,11 +1,8 @@
 import { nanoid } from '@specfy/core';
 import type { Components, Orgs, Projects, Users } from '@specfy/db';
 import { prisma } from '@specfy/db';
-import {
-  getBlobComponent,
-  recomputeOrgGraph,
-  createComponent,
-} from '@specfy/models';
+import { recomputeOrgGraph, createComponent } from '@specfy/models';
+import { getBlobComponent } from '@specfy/models/src/components/test.utils';
 
 export type ResSeedComponents = {
   gcp: Components;

@@ -142,7 +142,7 @@ export function diffComponent(
       });
       continue;
     }
-    if (key === 'show') {
+    if (key === 'show' || key === 'techId') {
       diffs.push({
         key,
         diff: 'modified',
@@ -155,7 +155,7 @@ export function diffComponent(
     const prev = blob.previous?.[key] ? blob.previous[key] : '';
     diffs.push({
       key,
-      diff: diffWordsWithSpace(prev || '', `${value}`),
+      diff: diffWordsWithSpace(prev || '', `${value || ''}`),
     });
   }
 
