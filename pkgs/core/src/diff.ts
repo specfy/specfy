@@ -11,6 +11,9 @@ export function isDiffSimple(
   ) {
     return a !== b;
   }
+  if (typeA === null && typeB === null) {
+    return false;
+  }
 
   return JSON.stringify(a) !== JSON.stringify(b);
 }
@@ -21,11 +24,14 @@ export function isDiffObjSimple(
 ): boolean {
   const diff = Object.keys(a).reduce((result, key) => {
     if (!(key in b)) {
+      // Diff in b
       result.push(key);
     } else if (!isDiffSimple(a[key], b[key])) {
+      // No diff
       const resultKeyIndex = result.indexOf(key);
       result.splice(resultKeyIndex, 1);
     }
+
     return result;
   }, Object.keys(b));
 

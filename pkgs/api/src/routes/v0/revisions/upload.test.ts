@@ -578,7 +578,7 @@ describe('POST /revisions/upload -- Stack', () => {
     await createComponent({
       data: {
         ...comp,
-        name: 'redis',
+        name: 'Redis',
         techId: 'redis',
         source: 'github',
         sourceName: 'redis',

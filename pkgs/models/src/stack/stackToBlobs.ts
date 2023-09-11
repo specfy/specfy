@@ -208,10 +208,10 @@ export function stackToBlobs(
 
     const prev = prevs.find((p) => p.id === blob.typeId)!;
     if (isDiffObjSimple(pick(prev, changing), pick(blob.current, changing))) {
-      unchanged.push(prev.id);
-      stats.unchanged += 1;
-    } else {
       stats.modified += 1;
+    } else {
+      stats.unchanged += 1;
+      unchanged.push(prev.id);
     }
   }
 
