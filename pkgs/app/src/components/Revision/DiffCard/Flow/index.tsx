@@ -1,3 +1,4 @@
+import { isDiffSimple } from '@specfy/core/src/diff';
 import { pick } from '@specfy/core/src/object';
 import type { ComputedEdge, ComputedFlow, ComputedNode } from '@specfy/models';
 import classNames from 'classnames';
@@ -15,8 +16,6 @@ import {
 import CustomNode from '../../../Flow/CustomNode';
 
 import cls from './index.module.scss';
-
-import { isDiffSimple } from '@/common/diff/helpers';
 
 const nodeTypes: NodeTypes = {
   custom: CustomNode,

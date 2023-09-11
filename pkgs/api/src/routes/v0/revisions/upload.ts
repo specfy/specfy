@@ -11,7 +11,11 @@ import {
   autoLayout,
   stackToBlobs,
 } from '@specfy/models';
-import type { PostUploadRevision, StackToBlobs } from '@specfy/models';
+import type {
+  DocsToBlobs,
+  PostUploadRevision,
+  StackToBlobs,
+} from '@specfy/models';
 import type { AnalyserJson } from '@specfy/stack-analyser';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
@@ -99,6 +103,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       const parsed = parser.parse();
 
       let statsStack: StackToBlobs['stats'] | undefined;
+      let statsDocs: DocsToBlobs['stats'] | undefined;
       const rev = await prisma.$transaction(
         async (tx) => {
           const blobsIds: string[] = [];
@@ -123,10 +128,16 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
 
             // Insert in db
             const blobs = await createBlobs(
-              [...documents.blobs, ...documents.deleted],
+              [
+                ...documents.blobs.filter((b) => {
+                  return !documents.unchanged.includes(b.typeId);
+                }),
+                ...documents.deleted,
+              ],
               tx
             );
             blobsIds.push(...blobs);
+            statsDocs = documents.stats;
           }
 
           // ---- Handle stack
@@ -222,7 +233,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
 
       if (rev) {
         return res.status(200).send({
-          data: { id: rev.id, stats: { stack: statsStack } },
+          data: { id: rev.id, stats: { stack: statsStack, docs: statsDocs } },
         });
       } else {
         if (res.sent) {

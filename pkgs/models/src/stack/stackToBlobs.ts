@@ -1,4 +1,4 @@
-import { slugify, pick } from '@specfy/core';
+import { slugify, pick, isDiffObjSimple } from '@specfy/core';
 import type { Components } from '@specfy/db';
 import type { AnalyserJson } from '@specfy/stack-analyser';
 import { tech as techList } from '@specfy/stack-analyser';
@@ -207,14 +207,11 @@ export function stackToBlobs(
     }
 
     const prev = prevs.find((p) => p.id === blob.typeId)!;
-    if (
-      JSON.stringify(pick(prev, changing)) ===
-      JSON.stringify(pick(blob.current, changing))
-    ) {
-      unchanged.push(prev.id);
-      stats.unchanged += 1;
-    } else {
+    if (isDiffObjSimple(pick(prev, changing), pick(blob.current, changing))) {
       stats.modified += 1;
+    } else {
+      stats.unchanged += 1;
+      unchanged.push(prev.id);
     }
   }
 

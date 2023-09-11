@@ -1,4 +1,4 @@
-import type { Projects } from '@specfy/db';
+import type { Documents, Projects } from '@specfy/db';
 import { describe, expect, it } from 'vitest';
 
 import { DocumentsParser } from '../prosemirror/index.js';
@@ -24,6 +24,13 @@ describe('uploadedDocumentsToDB', () => {
     expect(res).toStrictEqual({
       blobs: [],
       deleted: [],
+      stats: {
+        created: 0,
+        deleted: 0,
+        modified: 0,
+        unchanged: 0,
+      },
+      unchanged: [],
     });
   });
 
@@ -65,6 +72,13 @@ describe('uploadedDocumentsToDB', () => {
           },
         },
       ],
+      stats: {
+        created: 1,
+        deleted: 0,
+        modified: 0,
+        unchanged: 0,
+      },
+      unchanged: [],
     });
   });
 
@@ -97,5 +111,59 @@ describe('uploadedDocumentsToDB', () => {
     const res = uploadedDocumentsToDB(parser.parse(), [], payload);
 
     expect(res.blobs).toHaveLength(2);
+  });
+
+  it('should detect unchanged doc', () => {
+    const parser = new DocumentsParser(
+      [{ content: '# My Foobar', path: '/foobar.md' }],
+      {} as Projects
+    );
+    const res = uploadedDocumentsToDB(parser.parse(), [], payload);
+    expect(res.blobs).toHaveLength(1);
+
+    // Re upload
+    const parser2 = new DocumentsParser(
+      [{ content: '# My Foobar', path: '/foobar.md' }],
+      {} as Projects
+    );
+    const res2 = uploadedDocumentsToDB(
+      parser2.parse(),
+      res.blobs.map((b) => b.current as unknown as Documents),
+      payload
+    );
+    expect(res2.blobs).toHaveLength(1);
+    expect(res2.stats).toStrictEqual({
+      created: 0,
+      deleted: 0,
+      modified: 0,
+      unchanged: 1,
+    });
+    expect(res2.unchanged).toStrictEqual([res.blobs[0].typeId]);
+  });
+
+  it('should detect deleted doc', () => {
+    const parser = new DocumentsParser(
+      [{ content: '# My Foobar', path: '/foobar.md' }],
+      {} as Projects
+    );
+    const res = uploadedDocumentsToDB(parser.parse(), [], payload);
+    expect(res.blobs).toHaveLength(1);
+
+    // Re upload
+    const parser2 = new DocumentsParser([], {} as Projects);
+    const res2 = uploadedDocumentsToDB(
+      parser2.parse(),
+      res.blobs.map((b) => b.current as unknown as Documents),
+      payload
+    );
+    expect(res2.blobs).toHaveLength(0);
+    expect(res2.deleted).toHaveLength(1);
+    expect(res2.stats).toStrictEqual({
+      created: 0,
+      deleted: 1,
+      modified: 0,
+      unchanged: 0,
+    });
+    expect(res2.unchanged).toStrictEqual([]);
   });
 });
