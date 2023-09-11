@@ -14,7 +14,7 @@ exports[`stackToBlobs > should output new blobs once and nothing the second 1`] 
       "display": {
         "pos": {
           "x": 0,
-          "y": 0,
+          "y": -60,
         },
         "size": {
           "height": 40,
@@ -65,7 +65,7 @@ exports[`stackToBlobs > should output new blobs once and nothing the second 1`] 
       "display": {
         "pos": {
           "x": 0,
-          "y": 0,
+          "y": -120,
         },
         "size": {
           "height": 40,

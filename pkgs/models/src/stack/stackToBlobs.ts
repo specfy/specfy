@@ -27,6 +27,23 @@ const changing: Array<keyof Components> = [
   'inComponent',
 ];
 
+function getBoundingBox(blobs: ApiBlobCreateComponent[]): {
+  x: number;
+  y: number;
+} {
+  const global = { x: 0, y: 0 };
+  for (const component of blobs) {
+    if (component.deleted) {
+      continue;
+    }
+
+    global.x = Math.min(component.current.display.pos.x, global.x);
+    global.y = Math.min(component.current.display.pos.y, global.y);
+  }
+
+  return global;
+}
+
 /**
  * Prepare blobs to create, update or delete
  */
@@ -194,6 +211,11 @@ export function stackToBlobs(
         source,
         idsMap,
       });
+      const bb = getBoundingBox(blobs);
+      blob.current.display.pos = {
+        x: bb.x,
+        y: bb.y - blob.current.display.size.height - 20,
+      };
     }
   });
 

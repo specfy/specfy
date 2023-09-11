@@ -79,6 +79,23 @@ describe('stackToBlobs', () => {
     ]);
   });
 
+  it('should add new component without overlapping', () => {
+    // New upload
+    const a: AnalyserJson = { ...getDefault(), name: 'a' };
+    const res = short([a]);
+    expect(res.blobs).toHaveLength(1);
+    expect(res.blobs[0].current.display.pos).toStrictEqual({ x: 0, y: -60 });
+
+    // Re-upload
+    const c: AnalyserJson = { ...getDefault(), name: 'a' };
+    const b: AnalyserJson = { ...getDefault(), name: 'b' };
+    const res2 = short([c, b], res);
+
+    expect(res2.blobs).toHaveLength(2);
+    expect(res2.blobs[0].current.display.pos).toStrictEqual({ x: 0, y: -60 });
+    expect(res2.blobs[1].current.display.pos).toStrictEqual({ x: 0, y: -120 });
+  });
+
   it('should detect deleted', () => {
     // New upload
     const up: AnalyserJson = {

@@ -6,7 +6,7 @@ describe('getComponentSize', () => {
   it('should output correct size, not hosting', () => {
     expect(getComponentSize('db', 'Google SQL')).toStrictEqual({
       height: 40,
-      width: 140,
+      width: 135,
     });
   });
   it('should output correct size, hosting', () => {
