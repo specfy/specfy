@@ -23,7 +23,7 @@ import cls from './index.module.scss';
 
 import { Header } from '@/components/Sidebar/Header';
 
-export const Invite: React.FC = () => {
+const Invite: React.FC = () => {
   const toast = useToast();
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -122,3 +122,5 @@ export const Invite: React.FC = () => {
     </Flex>
   );
 };
+
+export default Invite;

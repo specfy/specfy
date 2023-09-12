@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "@icons-pack/react-simple-icons": "8.0.1",
+    "@loadable/component": "5.15.3",
     "@radix-ui/colors": "2.0.1",
     "@radix-ui/react-avatar": "1.0.3",
     "@radix-ui/react-checkbox": "1.0.4",
@@ -77,6 +78,7 @@
     "@types/diff": "5.0.3",
     "@types/diff-match-patch": "1.0.32",
     "@types/json-diff": "1.0.0",
+    "@types/loadable__component": "5.13.5",
     "@types/lodash.debounce": "4.0.7",
     "@types/luxon": "3.3.2",
     "@types/prismjs": "1.26.0",

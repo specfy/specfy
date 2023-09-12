@@ -11,11 +11,10 @@ import { Flex } from '../Flex';
 import { Button } from '../Form/Button';
 import { Input } from '../Form/Input';
 import { Loading } from '../Loading';
+import { TryDemo } from '../Onboarding/TryDemo';
 import { Time } from '../Time';
 
 import cls from './index.module.scss';
-
-import { TryDemo } from '@/views/Onboarding';
 
 export const ListProjects: React.FC<{ orgId: string }> = ({ orgId }) => {
   const getProjects = useListProjects({ org_id: orgId });

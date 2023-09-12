@@ -409,7 +409,7 @@ const flow: ComputedFlow = {
   ],
 };
 
-export const Public: React.FC = () => {
+const Public: React.FC = () => {
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
       <Helmet title={`Demo Flow ${titleSuffix}`} />
@@ -447,3 +447,5 @@ export const Public: React.FC = () => {
     </div>
   );
 };
+
+export default Public;

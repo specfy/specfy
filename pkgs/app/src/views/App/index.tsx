@@ -1,6 +1,6 @@
+import loadable from '@loadable/component';
 import { TooltipProvider } from '@radix-ui/react-tooltip';
 import { QueryClientProvider } from '@tanstack/react-query';
-import type React from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { HelmetProvider } from 'react-helmet-async';
 // import { ReactQueryDevtools } from 'react-query/devtools';
@@ -14,16 +14,17 @@ import { NotFound } from '../../components/NotFound';
 import { ToastProvider } from '../../components/Toast';
 import { AuthProvider } from '../../hooks/useAuth';
 import { EditProvider } from '../../hooks/useEdit';
-import { Account } from '../Account';
-import { Homepage } from '../Homepage';
-import { Invite } from '../Invite';
 import { Login } from '../Login';
-import { Onboarding } from '../Onboarding';
 import { Org } from '../Org';
 import { OrgCreate } from '../Org/Create';
 import { Project } from '../Project';
-import { Public } from '../Public';
-import { User } from '../User';
+
+const Account = loadable(() => import('../Account'));
+const Homepage = loadable(() => import('../Homepage'));
+const Invite = loadable(() => import('../Invite'));
+const Onboarding = loadable(() => import('../Onboarding'));
+const User = loadable(() => import('../User'));
+const Public = loadable(() => import('../Public'));
 
 const App: React.FC = () => {
   return (
@@ -44,7 +45,7 @@ const App: React.FC = () => {
                       <Route path="/onboarding" element={<Onboarding />} />
 
                       <Route path="/invite" element={<Invite />} />
-                      <Route path="/account" element={<Account />} />
+                      <Route path="/account/*" element={<Account />} />
                       <Route path="/organizations" element={<NotFound />} />
                       <Route path="/user/*" element={<User />} />
                       <Route path="/organizations/*" element={<OrgCreate />} />

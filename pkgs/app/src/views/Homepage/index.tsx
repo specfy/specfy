@@ -4,7 +4,7 @@ import { useLocalStorage } from 'react-use';
 
 import { useListOrgs } from '../../api';
 
-export const Homepage: React.FC = () => {
+const Homepage: React.FC = () => {
   const orgsQuery = useListOrgs();
   const [lastOrg] = useLocalStorage<string>('lastOrg');
 
@@ -34,3 +34,5 @@ export const Homepage: React.FC = () => {
 
   return <Navigate to={`/${redirect.id}`}></Navigate>;
 };
+
+export default Homepage;

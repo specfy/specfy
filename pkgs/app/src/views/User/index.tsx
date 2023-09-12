@@ -4,7 +4,7 @@ import { NotFound } from '../../components/NotFound';
 
 import { UserShow } from './Show';
 
-export const User: React.FC = () => {
+const User: React.FC = () => {
   return (
     <Routes>
       <Route path="/:user_id" element={<UserShow />} />
@@ -12,3 +12,5 @@ export const User: React.FC = () => {
     </Routes>
   );
 };
+
+export default User;

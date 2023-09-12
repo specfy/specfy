@@ -10,7 +10,7 @@ import { Sidebar } from '../../components/Sidebar';
 import { SettingsGeneral } from './General';
 import cls from './index.module.scss';
 
-export const Account: React.FC = () => {
+const Account: React.FC = () => {
   const location = useLocation();
 
   // Menu
@@ -67,3 +67,5 @@ export const Account: React.FC = () => {
     </div>
   );
 };
+
+export default Account;
