@@ -2,6 +2,7 @@ import { fileURLToPath, URL } from 'node:url';
 
 import react from '@vitejs/plugin-react-swc';
 // import { visualizer } from 'rollup-plugin-visualizer';
+import { webpackStats } from 'rollup-plugin-webpack-stats';
 import { defineConfig } from 'vite';
 import { checker } from 'vite-plugin-checker';
 import pluginRewriteAll from 'vite-plugin-rewrite-all';
@@ -16,6 +17,7 @@ export default defineConfig({
       typescript: true,
     }),
     pluginRewriteAll(),
+    webpackStats(),
     // visualizer(),
   ],
   css: {

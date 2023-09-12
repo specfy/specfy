@@ -75,4 +75,10 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
-
+      # Send bundle stats and build information to RelativeCI
+      - name: Send bundle stats to RelativeCI
+        uses: relative-ci/agent-action@v2
+        with:
+          webpackStatsFile: ./pkgs/app/dist/webpack-stats.json
+          key: ${{ secrets.RELATIVE_CI_KEY }}
+          token: ${{ secrets.PERSONAL_GITHUB_TOKEN }}
