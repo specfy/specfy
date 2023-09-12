@@ -28,7 +28,6 @@ export const IGNORED_PROJECT_KEYS: ReadonlyArray<
 
 export const IGNORED_COMPONENT_KEYS_CONST = [
   ...IGNORED_KEYS,
-  'orgId',
   'projectId',
   'type',
   'typeId',
@@ -39,6 +38,7 @@ export const IGNORED_COMPONENT_KEYS_CONST = [
 export const IGNORED_COMPONENT_KEYS: ReadonlyArray<
   keyof NonNullable<ApiBlobComponent['current']>
 > = IGNORED_COMPONENT_KEYS_CONST;
+export const IGNORED_COMPONENT_KEYS_MERGE = [...IGNORED_KEYS, 'projectId'];
 
 export const IGNORED_DOCUMENT_KEYS_CONST = [
   ...IGNORED_KEYS,

@@ -160,7 +160,15 @@ export async function sync({
   l.info('');
   l.info('-- Deploy');
   const spinnerUploading = ora(`Uploading`).start();
-  const body = prepBody({ orgId, projectId, docs, stack, autoLayout, baseUrl });
+  const body = prepBody({
+    orgId,
+    projectId,
+    docs,
+    stack,
+    autoLayout,
+    baseUrl,
+    root,
+  });
 
   if (dryRun) {
     spinnerUploading.stopAndPersist({ text: 'Uploaded (dry-run)' });

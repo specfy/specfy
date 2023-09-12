@@ -21,8 +21,10 @@ export function prepBody({
   docs,
   stack,
   autoLayout,
+  root,
 }: Omit<Params, 'token'> & {
   docs: TransformedFile[];
+  root: string;
   stack?: Payload | null;
   autoLayout?: boolean | null;
 }): PostUploadRevision['Body'] {
@@ -40,7 +42,7 @@ export function prepBody({
         content: doc.content,
       };
     }),
-    stack: stack?.toJson() || null,
+    stack: stack?.toJson(root) || null,
     autoLayout: autoLayout === true,
   };
 }

@@ -14,6 +14,7 @@ import {
   IGNORED_DOCUMENT_KEYS,
   IGNORED_PROJECT_KEYS,
   hasProjectComponentChanges,
+  IGNORED_COMPONENT_KEYS_MERGE,
 } from '@specfy/models';
 import type { DBBlob, MergeRevision, MergeRevisionError } from '@specfy/models';
 import type { FastifyPluginCallback } from 'fastify';
@@ -136,7 +137,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
                 .current as Prisma.ComponentsUncheckedUpdateInput;
               const up = await tx.components.update({
                 data: {
-                  ...omit(curr, IGNORED_COMPONENT_KEYS),
+                  ...omit(curr, IGNORED_COMPONENT_KEYS_MERGE),
                   blobId: item.blob.id,
                 },
                 where: { id: blob.typeId },
