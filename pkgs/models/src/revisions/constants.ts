@@ -15,6 +15,13 @@ const IGNORED_KEYS = [
   'blobId',
   'orgId',
 ] as const;
+const IGNORED_KEYS_MERGE = [
+  'id',
+  'createdAt',
+  'updatedAt',
+  'blobId',
+  'orgId',
+] as const;
 
 export const IGNORED_PROJECT_KEYS_CONST = [
   ...IGNORED_KEYS,
@@ -38,7 +45,10 @@ export const IGNORED_COMPONENT_KEYS_CONST = [
 export const IGNORED_COMPONENT_KEYS: ReadonlyArray<
   keyof NonNullable<ApiBlobComponent['current']>
 > = IGNORED_COMPONENT_KEYS_CONST;
-export const IGNORED_COMPONENT_KEYS_MERGE = [...IGNORED_KEYS, 'projectId'];
+export const IGNORED_COMPONENT_KEYS_MERGE = [
+  ...IGNORED_KEYS_MERGE,
+  'projectId',
+];
 
 export const IGNORED_DOCUMENT_KEYS_CONST = [
   ...IGNORED_KEYS,
@@ -52,3 +62,4 @@ export const IGNORED_DOCUMENT_KEYS_CONST = [
 export const IGNORED_DOCUMENT_KEYS: ReadonlyArray<
   keyof NonNullable<ApiBlobDocument['current']>
 > = IGNORED_DOCUMENT_KEYS_CONST;
+export const IGNORED_DOCUMENT_KEYS_MERGE = [...IGNORED_KEYS_MERGE, 'projectId'];

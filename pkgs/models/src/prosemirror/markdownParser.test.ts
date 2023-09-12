@@ -18,6 +18,7 @@ describe('parser()', () => {
     const res = parser.parse();
     expect(res).toMatchObject([
       {
+        hash: 'e725106e8694ce174f209dd90839e682c1219c1f77c4c451ca8093de5f8d9950',
         content: {
           content: [
             {

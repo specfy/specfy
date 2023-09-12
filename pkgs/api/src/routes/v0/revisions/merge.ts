@@ -10,11 +10,10 @@ import {
   createRevisionActivity,
   checkReviews,
   flagRevisionApprovalEnabled,
-  IGNORED_COMPONENT_KEYS,
-  IGNORED_DOCUMENT_KEYS,
   IGNORED_PROJECT_KEYS,
   hasProjectComponentChanges,
   IGNORED_COMPONENT_KEYS_MERGE,
+  IGNORED_DOCUMENT_KEYS_MERGE,
 } from '@specfy/models';
 import type { DBBlob, MergeRevision, MergeRevisionError } from '@specfy/models';
 import type { FastifyPluginCallback } from 'fastify';
@@ -186,7 +185,10 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
             } else if (item.parent) {
               const up = await tx.documents.update({
                 data: {
-                  ...omit(item.blob.current as any, IGNORED_DOCUMENT_KEYS),
+                  ...omit(
+                    item.blob.current as any,
+                    IGNORED_DOCUMENT_KEYS_MERGE
+                  ),
                   blobId: item.blob.id,
                 },
                 where: { id: blob.typeId },
