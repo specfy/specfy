@@ -242,7 +242,7 @@ export const DiffCardComponent: React.FC<{
                   <ComponentIcon data={next} large noEmpty />
                   {next.techId && next.techId in supportedIndexed
                     ? supportedIndexed[next.techId].name
-                    : ''}
+                    : next.name}
                   {!next.techId && 'Service'}
                 </Flex>
               </Flex>

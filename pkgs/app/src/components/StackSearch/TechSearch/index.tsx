@@ -1,4 +1,4 @@
-import type { ComponentType } from '@specfy/models';
+import type { ApiProjectList, ComponentType } from '@specfy/models';
 import { internalTypeToText } from '@specfy/models/src/components/constants';
 import { IconLinkOff } from '@tabler/icons-react';
 import classNames from 'classnames';
@@ -15,11 +15,18 @@ import cls from './index.module.scss';
 import { useProjectStore } from '@/common/store';
 import { supportedArray } from '@/common/techs';
 import type { TechInfo } from '@/common/techs';
+import type { OptionValue, OptionGroup } from '@/components/Form/MultiSelect';
 
-export type TechSearchItem = { selected?: boolean } & (
-  | TechInfo
-  | { type: 'project'; key: string; name: string }
-);
+export type TechSearchItem =
+  | {
+      type: 'project';
+      project: ApiProjectList;
+    }
+  | {
+      type: 'tech';
+      tech: TechInfo;
+    }
+  | { type: 'create'; label: string };
 
 export const TechSearch: React.FC<{
   selected?: string | null;
@@ -28,72 +35,91 @@ export const TechSearch: React.FC<{
   const storeProject = useProjectStore();
   const [search, setSearch] = useState('');
   const [focus, setFocus] = useState<number>(0);
-  const [currGroup, setCurrGroup] = useState<ComponentType>();
+  const [currGroup, setCurrGroup] = useState<string>();
   const refList = useRef<HTMLDivElement>(null);
 
-  const groups: Array<{ key: ComponentType; items: TechSearchItem[] }> =
-    useMemo(() => {
-      const _groups: Record<ComponentType, TechSearchItem[]> = {
-        analytics: [],
-        api: [],
-        app: [],
-        ci: [],
-        db: [],
-        etl: [],
-        hosting: [],
-        language: [],
-        messaging: [],
-        network: [],
-        project: [],
-        saas: [],
-        service: [],
-        storage: [],
-        tool: [],
-      };
+  const groups = useMemo<Array<OptionGroup<TechSearchItem>>>(() => {
+    const _groups: Record<ComponentType, Array<OptionValue<TechSearchItem>>> = {
+      analytics: [],
+      api: [],
+      app: [],
+      ci: [],
+      db: [],
+      etl: [],
+      hosting: [],
+      language: [],
+      messaging: [],
+      network: [],
+      project: [],
+      saas: [],
+      service: [],
+      storage: [],
+      tool: [],
+    };
 
-      for (const tech of supportedArray) {
-        if (tech.key === selected) {
-          _groups[tech.type].push({
-            ...tech,
-            selected: true,
-          });
-        } else {
-          _groups[tech.type].push(tech);
-        }
+    for (const tech of supportedArray) {
+      if (tech.type === 'language' || tech.type === 'tool') {
+        continue;
       }
-
-      for (const proj of storeProject.projects) {
-        _groups.project.push({
-          type: 'project',
-          key: proj.id,
-          name: proj.name,
-          selected: proj.id === selected,
-        });
-      }
-
-      return Object.entries(_groups).map(([key, items]) => {
-        return { key: key as ComponentType, items };
+      _groups[tech.type].push({
+        label: tech.name,
+        value: tech.key,
+        data: {
+          type: 'tech',
+          tech,
+        },
       });
-    }, [selected]);
+    }
 
-  const filtered: Array<{ key: ComponentType; items: TechSearchItem[] }> =
-    useMemo(() => {
-      const reg = new RegExp(`${search}`, 'i');
-      return groups
-        .map(({ key, items }) => {
-          return {
-            key,
-            items: items.filter((item) => {
-              return (
-                reg.test(item.name) || reg.test(item.key) || reg.test(item.type)
-              );
-            }),
-          };
-        })
-        .filter((entry) => {
-          return entry.items.length > 0;
-        });
-    }, [search]);
+    for (const project of storeProject.projects) {
+      _groups.project.push({
+        label: project.name,
+        value: project.id,
+        data: {
+          type: 'project',
+          project,
+        },
+      });
+    }
+
+    return Object.entries(_groups).map(([key, items]) => {
+      return { label: key, options: items };
+    });
+  }, [selected]);
+
+  const filtered = useMemo<OptionGroup[]>(() => {
+    const reg = new RegExp(`${search}`, 'i');
+    const copy = groups
+      .map(({ label, options }) => {
+        if (reg.test(label)) {
+          return { label, options };
+        }
+        return {
+          label,
+          options: options.filter((item) => {
+            return (
+              reg.test(item.label) ||
+              reg.test(item.value) ||
+              reg.test(item.data!.type)
+            );
+          }),
+        };
+      })
+      .filter((entry) => {
+        return entry.options.length > 0;
+      });
+    copy.push({
+      label: 'Other',
+      options: [
+        {
+          label: `Create "${search}"`,
+          value: search,
+          data: { type: 'create', label: search },
+        },
+      ],
+    });
+    return copy;
+  }, [search]);
 
   const onChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setSearch(e.target.value);
@@ -106,15 +132,15 @@ export const TechSearch: React.FC<{
       e.preventDefault();
       if (!currGroup) {
         if (filtered.length > 0) {
-          setCurrGroup(filtered[0].key);
+          setCurrGroup(filtered[0].label);
           setFocus(0);
         }
         return;
       }
 
-      const index = filtered.findIndex((f) => f.key === currGroup);
+      const index = filtered.findIndex((f) => f.label === currGroup);
       const tmp = filtered[index];
-      if (focus < tmp.items.length - 1) {
+      if (focus < tmp.options.length - 1) {
         // Still in the same group
         setFocus(focus + 1);
         return;
@@ -122,11 +148,11 @@ export const TechSearch: React.FC<{
 
       if (index === filtered.length - 1) {
         // Reset
-        setCurrGroup(filtered[0].key);
+        setCurrGroup(filtered[0].label);
         setFocus(0);
       } else {
         // Next group
-        setCurrGroup(filtered[index + 1].key);
+        setCurrGroup(filtered[index + 1].label);
         setFocus(0);
       }
       return;
@@ -142,14 +168,14 @@ export const TechSearch: React.FC<{
         return;
       }
 
-      const index = filtered.findIndex((f) => f.key === currGroup);
+      const index = filtered.findIndex((f) => f.label === currGroup);
       if (index === 0) {
         return;
       }
 
       // Next group
-      setCurrGroup(filtered[index - 1].key);
-      setFocus(filtered[index - 1].items.length - 1);
+      setCurrGroup(filtered[index - 1].label);
+      setFocus(filtered[index - 1].options.length - 1);
       return;
     }
 
@@ -158,8 +184,8 @@ export const TechSearch: React.FC<{
         return;
       }
 
-      const index = filtered.findIndex((f) => f.key === currGroup);
-      onPick(filtered[index].items[focus]);
+      const index = filtered.findIndex((f) => f.label === currGroup);
+      onPick(filtered[index].options[focus].data);
     }
   };
 
@@ -193,54 +219,59 @@ export const TechSearch: React.FC<{
 
       <div className={cls.groups} ref={refList}>
         {filtered.map((group) => {
-          if (group.items.length <= 0) {
+          if (group.options.length <= 0) {
             return null;
           }
+
           return (
-            <div key={group.key} className={cls.group}>
-              <div className={cls.name}>{internalTypeToText[group.key]}</div>
+            <div key={group.label} className={cls.group}>
+              <div className={cls.name}>
+                {internalTypeToText[group.label as ComponentType]}
+              </div>
               <div className={cls.rows} role="list">
-                {group.items.map((item, i) => {
-                  if (item.type === 'project') {
+                {group.options.map((item, i) => {
+                  if (item.data.type === 'project') {
                     return (
                       <div
-                        key={item.key}
+                        key={item.label}
                         className={classNames(
                           cls.row,
-                          item.selected && cls.selected,
-                          currGroup === group.key && focus === i && cls.focused
+                          selected === item.value && cls.selected,
+                          currGroup === group.label &&
+                            focus === i &&
+                            cls.focused
                         )}
                         role="listitem"
-                        onClick={() => onPick(item)}
+                        onClick={() => onPick(item.data)}
                       >
-                        <AvatarAuto name={item.name} size="s" shape="square" />
-                        {item.name}
+                        <AvatarAuto name={item.label} size="s" shape="square" />
+                        {item.label}
                       </div>
                     );
                   }
 
                   return (
                     <div
-                      key={item.key}
+                      key={item.value}
                       className={classNames(
                         cls.row,
-                        item.selected && cls.selected,
-                        currGroup === group.key && focus === i && cls.focused
+                        selected === item.value && cls.selected,
+                        currGroup === group.label && focus === i && cls.focused
                       )}
                       role="listitem"
-                      onClick={() => onPick(item)}
+                      onClick={() => onPick(item.data)}
                     >
                       <ComponentIcon
                         data={{
-                          name: item.name,
-                          techId: item.key,
-                          type: item.type,
+                          name: item.label,
+                          techId: item.value,
+                          type: item.data.type,
                         }}
                         noEmpty
                         large
                         className={cls.icon}
                       />
-                      {item.name}
+                      {item.label}
                     </div>
                   );
                 })}
@@ -248,7 +279,7 @@ export const TechSearch: React.FC<{
             </div>
           );
         })}
-        {!filtered.find((group) => group.items.length > 0) && (
+        {!filtered.find((group) => group.options.length > 0) && (
           <div className={cls.empty}>
             No results for &quot;{search}&quot;
             <div>

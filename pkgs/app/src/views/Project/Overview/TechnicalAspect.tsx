@@ -1,4 +1,4 @@
-import type { ComponentType, ApiComponent } from '@specfy/models';
+import type { ApiComponent } from '@specfy/models';
 import { useEffect, useState } from 'react';
 
 import {
@@ -10,6 +10,18 @@ import type { RouteProject } from '../../../types/routes';
 
 import { useComponentsStore } from '@/common/store';
 
+const groupTech = ['tool', 'language'];
+const groupData = [
+  'app',
+  'db',
+  'messaging',
+  'etl',
+  'analytics',
+  'api',
+  'storage',
+  'network',
+];
+
 export const TechnicalAspects: React.FC<{
   params: RouteProject;
 }> = ({ params }) => {
@@ -18,7 +30,7 @@ export const TechnicalAspects: React.FC<{
   const [techs, setTechs] = useState<ApiComponent['techs']>([]);
   const [empty, setEmtpy] = useState<boolean>(false);
   const [groups, setGroups] = useState<Record<
-    ComponentType | 'others',
+    'saas' | 'hosting' | 'data' | 'project' | 'service',
     ApiComponent[]
   > | null>(null);
 
@@ -33,22 +45,11 @@ export const TechnicalAspects: React.FC<{
 
     const _techs = new Set<string>();
     const _groups: typeof groups = {
-      analytics: [],
-      api: [],
-      app: [],
-      ci: [],
-      db: [],
-      etl: [],
+      data: [],
       hosting: [],
-      language: [],
-      messaging: [],
-      network: [],
-      others: [],
       project: [],
       saas: [],
       service: [],
-      storage: [],
-      tool: [],
     };
 
     for (const comp of components) {
@@ -58,20 +59,24 @@ export const TechnicalAspects: React.FC<{
         }
       }
 
-      if (comp.type === 'ci' || comp.type === 'tool') {
+      if (groupTech.includes(comp.type)) {
         _techs.add(comp.techId!);
         continue;
       }
-      if (
-        comp.type === 'app' ||
-        comp.type === 'db' ||
-        comp.type === 'messaging'
-      ) {
-        _groups.others.push(comp);
-        continue;
-      }
 
-      _groups[comp.type].push(comp);
+      if (groupData.includes(comp.type)) {
+        _groups.data.push(comp);
+      } else if (
+        comp.type === 'hosting' ||
+        comp.type === 'project' ||
+        comp.type === 'service'
+      ) {
+        _groups[comp.type].push(comp);
+      } else if (comp.type === 'saas' || comp.type === 'ci') {
+        _groups.saas.push(comp);
+      } else {
+        throw new Error('unknown tech type');
+      }
     }
 
     setGroups(_groups);
@@ -104,8 +109,8 @@ export const TechnicalAspects: React.FC<{
           params={params}
         />
       )}
-      {groups.others && groups.others.length > 0 && (
-        <ComponentLine title="Data" comps={groups.others} params={params} />
+      {groups.data && groups.data.length > 0 && (
+        <ComponentLine title="Data" comps={groups.data} params={params} />
       )}
       {groups.hosting && groups.hosting.length > 0 && (
         <ComponentLine title="Hosts" comps={groups.hosting} params={params} />

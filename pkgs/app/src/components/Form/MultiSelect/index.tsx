@@ -9,9 +9,9 @@ import { Input } from '../Input';
 
 import cls from './index.module.scss';
 
-export type OptionGroup = {
+export type OptionGroup<TData extends Record<string, any> = any> = {
   label: string;
-  options: OptionValue[];
+  options: Array<OptionValue<TData>>;
 };
 export type OptionValue<TData extends Record<string, any> = any> = {
   label: string;
@@ -70,6 +70,9 @@ export const MultiSelect: React.FC<{
     const reg = new RegExp(`${search}`, 'i');
     const copy: OptionGroup[] = options
       .map((opt) => {
+        if (reg.test(opt.label)) {
+          return opt;
+        }
         return {
           label: opt.label,
           options: opt.options.filter((item) => {

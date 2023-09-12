@@ -2,7 +2,7 @@ import { nanoid } from '@specfy/core';
 import type { Orgs, Projects, Users } from '@specfy/db';
 import { prisma } from '@specfy/db';
 import { recomputeOrgGraph, createProject } from '@specfy/models';
-import { getBlobProject } from '@specfy/models/src/projects/test.utils';
+import { getBlobProject } from '@specfy/models/src/projects/test.utils.js';
 
 interface ResSeedProjects {
   pDash: Projects;

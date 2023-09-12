@@ -172,6 +172,7 @@ export const onNodesChangeProject: (
         store.updateField(change.id, 'name', change.name);
       } else if (change.type === 'tech') {
         const comp = store.select(change.id)!;
+
         if (!change.tech) {
           store.update({
             ...comp,
@@ -182,20 +183,27 @@ export const onNodesChangeProject: (
         } else if (change.tech.type === 'project') {
           store.update({
             ...comp,
-            typeId: change.tech.key,
+            typeId: change.tech.project.id,
             type: 'project',
             techId: null,
-            name: change.tech.name,
+            name: change.tech.project.name,
           });
-        } else {
+        } else if (change.tech.type === 'tech') {
           store.update({
             ...comp,
-            techId: change.tech.key,
-            type: change.tech.type,
+            techId: change.tech.tech.key,
+            type: change.tech.tech.type,
             name:
               comp.name === 'untitled' || !comp.name
-                ? change.tech.name
+                ? change.tech.tech.name
                 : comp.name,
+          });
+        } else if (change.tech.type === 'create') {
+          store.update({
+            ...comp,
+            techId: 'unknown',
+            type: 'api',
+            name: change.tech.label,
           });
         }
       } else if (change.type === 'dimensions' && change.dimensions) {
