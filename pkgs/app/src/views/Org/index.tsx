@@ -23,7 +23,7 @@ import { OrgOverview } from './Overview';
 import { OrgSettings } from './Settings';
 import cls from './index.module.scss';
 
-export const Org: React.FC = () => {
+const Org: React.FC = () => {
   const { setCtx } = useAuth();
   const params = useParams<Partial<RouteOrg>>() as RouteOrg;
 
@@ -135,3 +135,5 @@ export const Org: React.FC = () => {
     </div>
   );
 };
+
+export default Org;

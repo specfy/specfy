@@ -45,7 +45,7 @@ import { ProjectWelcome } from './Welcome';
 import { ProjectEvents } from './events';
 import cls from './index.module.scss';
 
-export const Project: React.FC = () => {
+const Project: React.FC = () => {
   const { setCtx } = useAuth();
   const tmpParams = useParams<Partial<RouteProject>>();
   const params = tmpParams as RouteProject;
@@ -229,3 +229,5 @@ export const Project: React.FC = () => {
     </div>
   );
 };
+
+export default Project;

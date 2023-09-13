@@ -15,9 +15,6 @@ import { ToastProvider } from '../../components/Toast';
 import { AuthProvider } from '../../hooks/useAuth';
 import { EditProvider } from '../../hooks/useEdit';
 import { Login } from '../Login';
-import { Org } from '../Org';
-import { OrgCreate } from '../Org/Create';
-import { Project } from '../Project';
 
 const Account = loadable(() => import('../Account'));
 const Homepage = loadable(() => import('../Homepage'));
@@ -25,6 +22,9 @@ const Invite = loadable(() => import('../Invite'));
 const Onboarding = loadable(() => import('../Onboarding'));
 const User = loadable(() => import('../User'));
 const Public = loadable(() => import('../Public'));
+const Org = loadable(() => import('../Org'));
+const OrgCreate = loadable(() => import('../Org/Create'));
+const Project = loadable(() => import('../Project'));
 
 const App: React.FC = () => {
   return (

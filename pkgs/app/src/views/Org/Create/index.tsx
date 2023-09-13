@@ -21,7 +21,7 @@ import cls from './index.module.scss';
 import { qcli } from '@/common/query';
 import { slugify, titleSuffix } from '@/common/string';
 
-export const OrgCreate: React.FC = () => {
+const OrgCreate: React.FC = () => {
   const toast = useToast();
   const { tryLogin } = useAuth();
   const navigate = useNavigate();
@@ -118,3 +118,5 @@ export const OrgCreate: React.FC = () => {
     </div>
   );
 };
+
+export default OrgCreate;
