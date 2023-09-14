@@ -1,6 +1,6 @@
 import { schemaOrgId, schemaId } from '@specfy/core';
 import { prisma } from '@specfy/db';
-import { createJobDeploy, toApiJob } from '@specfy/models';
+import { createJobDeploy, toApiJobList } from '@specfy/models';
 import type { PostJob } from '@specfy/models';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import z from 'zod';
@@ -72,7 +72,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       }
 
       return res.status(200).send({
-        data: toApiJob({ ...job, User: me }),
+        data: toApiJobList({ ...job, User: me }),
       });
     }
   );

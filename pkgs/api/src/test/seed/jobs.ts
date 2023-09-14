@@ -1,3 +1,7 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+
+import { dirname, nanoid } from '@specfy/core';
 import type { Orgs, Projects, Users } from '@specfy/db';
 import { prisma } from '@specfy/db';
 import { createJobDeploy, jobReason } from '@specfy/models';
@@ -87,6 +91,21 @@ export async function seedJobs(
         tx,
       }),
     ]);
+
+    const logs = await fs.readFile(
+      path.join(dirname, '../api/src/test/__fixtures__/log-deploy-success.json')
+    );
+    await tx.jobs.update({
+      data: {
+        Log: {
+          create: {
+            id: nanoid(),
+            content: logs.toString(),
+          },
+        },
+      },
+      where: { id: '53QoA4sTeI06' },
+    });
   });
 }
 

@@ -63,8 +63,8 @@ export const options: LoggerOptions = {
         if (typeof m === 'string') {
           final.message += m;
         } else if (typeof m === 'object' && m instanceof Error) {
-          final.err = m;
-          final.stack_trace = m.stack;
+          final.err = m.message;
+          // final.stack_trace = m.stack;
         } else if (!m) {
           final.message = m;
         } else if (m.err || m.error) {
@@ -83,39 +83,23 @@ export const options: LoggerOptions = {
   messageKey: 'message',
 };
 
+const pretty = {
+  level: 'info',
+  target: 'pino-pretty',
+  options: {
+    colorize: true,
+    singleLine: true,
+    messageFormat: '[{svc}] \x1B[37m{message}',
+    translateTime: 'HH:MM',
+    ignore: 'svc,serviceContext,message',
+  },
+};
 if (!isProd) {
-  options.transport = {
-    target: 'pino-pretty',
-    options: {
-      colorize: true,
-      singleLine: true,
-      messageFormat: '[{svc}] \x1B[37m{message}',
-      translateTime: 'HH:MM',
-      ignore: 'svc,serviceContext,message',
-    },
-  };
+  options.transport = pretty;
 }
 
 export const l = pino(options);
 export type Logger = typeof l;
-
-export function createFileLogger(
-  bindings: pino.Bindings,
-  dest: string
-): Logger {
-  return pino({
-    ...options,
-    base: {
-      ...options.base,
-      ...bindings,
-    },
-    transport: {
-      level: 'info',
-      target: 'pino/file',
-      options: { destination: dest },
-    },
-  });
-}
 
 // function formatStack(stack: string) {
 //   return parseStack(stack)
@@ -128,3 +112,24 @@ export function createFileLogger(
 //     )
 //     .join('\n');
 // }
+
+export function createFileLogger(
+  bindings: pino.Bindings,
+  dest: string
+): Logger {
+  return pino({
+    ...options,
+    base: { ...options.base, ...bindings },
+    formatters: undefined as any,
+    transport: {
+      targets: [
+        isProd ? { level: 'info', target: 'pino/file', options: {} } : pretty,
+        {
+          level: 'info',
+          target: 'pino/file',
+          options: { destination: dest },
+        },
+      ],
+    },
+  });
+}

@@ -5,7 +5,7 @@ import type { ApiUser } from '../users/types.api.js';
 
 import type { JobReason } from './types.js';
 
-export type ApiJob = Pick<
+type ApiJobBase = Pick<
   Jobs,
   'config' | 'id' | 'orgId' | 'projectId' | 'status' | 'type' | 'typeId'
 > & {
@@ -14,20 +14,15 @@ export type ApiJob = Pick<
   updatedAt: string;
   startedAt: string | null;
   finishedAt: string | null;
-  // logs: string | null;
   user: ApiUser;
 };
+export type ApiJobList = ApiJobBase;
+export type ApiJob = ApiJobBase & { logs: string };
 
 // ------ GET /
 export type ListJobs = Res<{
-  Querystring: {
-    org_id: string;
-    project_id: string;
-  };
-  Success: {
-    data: ApiJob[];
-    pagination: Pagination;
-  };
+  Querystring: { org_id: string; project_id: string };
+  Success: { data: ApiJobList[]; pagination: Pagination };
 }>;
 
 // ------ POST /
@@ -44,7 +39,7 @@ export type PostJob = Res<{
     type: Jobs['type'];
   };
   Error: CreateJobError;
-  Success: { data: ApiJob };
+  Success: { data: ApiJobList };
 }>;
 
 // ------ GET /:job_id
@@ -53,10 +48,6 @@ export type GetJob = Res<{
     org_id: string;
     project_id: string;
   };
-  Params: {
-    job_id: string;
-  };
-  Success: {
-    data: ApiJob;
-  };
+  Params: { job_id: string };
+  Success: { data: ApiJob };
 }>;

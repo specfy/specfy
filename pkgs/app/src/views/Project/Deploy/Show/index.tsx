@@ -19,6 +19,18 @@ import cls from './index.module.scss';
 
 import { titleSuffix } from '@/common/string';
 
+type LogLine = {
+  level: 30;
+  time: number;
+  message: string;
+  data: Record<string, any>;
+};
+const codeToLevel = {
+  30: 'INFO',
+  40: 'WARN',
+  50: 'ERROR',
+};
+
 export const ProjectDeploysShow: React.FC<{
   proj: ApiProject;
   params: RouteProject;
@@ -67,20 +79,27 @@ export const ProjectDeploysShow: React.FC<{
 
     const tmp: string[] = [];
     tmp.push(`Created ["${deploy.createdAt}"]`);
-    tmp.push(`Job [id: "${deploy.id}"]`);
-    tmp.push(`Org [id: "${deploy.orgId}"]`);
-    tmp.push(`Project [id: "${deploy.projectId}"]`);
-    tmp.push('Configuration =>');
-    tmp.push(JSON.stringify(deploy.config, null, 2));
-    if (deploy.startedAt) {
-      tmp.push(`Processing ["${deploy.startedAt}"]`);
+
+    const split = deploy.logs.split('\n');
+    for (const l of split) {
+      if (l === '') {
+        continue;
+      }
+      try {
+        const line: LogLine = JSON.parse(l);
+        tmp.push(`${codeToLevel[line.level]} ${line.message}`);
+        if (line.data && Object.keys(line.data).length > 0) {
+          tmp.push(JSON.stringify(line.data, null, 2));
+        }
+      } catch (e) {
+        console.error(e);
+      }
     }
+
     if (deploy.finishedAt) {
       if (deploy.reason && deploy.status !== 'success') {
-        tmp.push(
-          `Error [code: "${deploy.reason.code}"] ${deploy.reason.reason}`
-        );
-        tmp.push(deploy.reason.err!);
+        tmp.push(`ERROR [code: "${deploy.reason.code}"]`);
+        tmp.push(`ERROR ${deploy.reason.reason}`);
       }
       tmp.push(`Status ["${deploy.status}"]`);
 

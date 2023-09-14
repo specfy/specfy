@@ -56,7 +56,7 @@ export async function upload({
   body: PostUploadRevision['Body'];
 }): Promise<PostUploadRevision['Reply']> {
   const endpoint = `${baseUrl}/revisions/upload`;
-  logger.info('Uploading to', { endpoint });
+  logger.info(`POST ${endpoint}`);
   const res = await fetch(endpoint, {
     method: 'POST',
     body: JSON.stringify(body),
@@ -82,7 +82,7 @@ export async function getRevision({
   id: string;
 }) {
   const endpoint = `${baseUrl}/revisions/${id}?org_id=${orgId}&project_id=${projectId}`;
-  logger.info('Getting revision', { endpoint });
+  logger.info(`GET ${endpoint}`);
   const res = await fetch(endpoint, {
     method: 'GET',
     headers: {
@@ -115,7 +115,7 @@ export async function closeOldRevisions({
     status: 'opened',
   });
   const endpoint = `${baseUrl}/revisions?${usp.toString()}`;
-  logger.info('Listing revisions', { endpoint });
+  logger.info(`GET ${endpoint}`);
 
   const res = await fetch(endpoint, {
     method: 'GET',
@@ -171,7 +171,7 @@ export async function merge({
   id: string;
 }) {
   const endpoint = `${baseUrl}/revisions/${id}/merge?org_id=${orgId}&project_id=${projectId}`;
-  logger.info('Merging revision', { endpoint });
+  logger.info(`POST ${endpoint}`);
 
   const res = await fetch(endpoint, {
     method: 'POST',

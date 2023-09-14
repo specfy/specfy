@@ -1,0 +1,38 @@
+{"level":30,"time":1694693615847,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"Job start","data":{"id":"IlvHCKFbkiza","orgId":"acme","projectId":"lduAoo0LT6VS"}}
+{"level":30,"time":1694693615851,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"Configuration","data":{"ref":"main","job":{"url":"specfy/Demo","autoLayout":true,"project":{"branch":"main","documentation":{"enabled":true,"path":"/"},"stack":{"enabled":true,"path":"/"}}}}}
+{"level":30,"time":1694693615851,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"Getting temporary token from GitHub","data":{}}
+{"level":30,"time":1694693616134,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"Creating GitHub deployment in GitHub","data":{}}
+{"level":30,"time":1694693617172,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"Deployment available: https://github.com/specfy/Demo/deployments","data":{}}
+{"level":30,"time":1694693617172,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"Updating deployment status","data":{}}
+{"level":30,"time":1694693618294,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"Cloning repository","data":{}}
+{"level":30,"time":1694693619079,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"","data":{}}
+{"level":30,"time":1694693619079,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"-- Documentation","data":{}}
+{"level":30,"time":1694693619079,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"▶ Syncing /tmp/specfy_clone_IlvHCKFbkiza_nZt1P0U9C4rG/","data":{}}
+{"level":30,"time":1694693619079,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"Listing...","data":{}}
+{"level":30,"time":1694693619080,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"Listed ✔","data":{}}
+{"level":30,"time":1694693619080,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"Parsing...","data":{}}
+{"level":30,"time":1694693619081,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"Parsed ✔","data":{}}
+{"level":30,"time":1694693619081,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"→ Found 4 files","data":{"files":["/README.md","/docs/Contributing.md","/docs/Installation.md","/docs/Introducion.md"]}}
+{"level":30,"time":1694693619081,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"","data":{}}
+{"level":30,"time":1694693619081,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"","data":{}}
+{"level":30,"time":1694693619081,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"-- Stack","data":{}}
+{"level":30,"time":1694693619081,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"▶ Syncing: /tmp/specfy_clone_IlvHCKFbkiza_nZt1P0U9C4rG/","data":{}}
+{"level":30,"time":1694693619081,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"Analyzing...","data":{}}
+{"level":30,"time":1694693619103,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"Analyzed ✔","data":{}}
+{"level":30,"time":1694693619104,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"","data":{}}
+{"level":30,"time":1694693619104,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"-- Deploy","data":{}}
+{"level":30,"time":1694693619104,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"Uploading to Specfy...","data":{}}
+{"level":30,"time":1694693619104,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"POST http://127.0.0.1:3000/0/revisions/upload","data":{}}
+{"level":30,"time":1694693619251,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"GET http://127.0.0.1:3000/0/revisions/1egjNFZIgEj2?org_id=acme&project_id=lduAoo0LT6VS","data":{}}
+{"level":30,"time":1694693619263,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"Uploaded ✔","data":{}}
+{"level":30,"time":1694693619263,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"","data":{}}
+{"level":30,"time":1694693619263,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"▶ Revision created: http://localhost:5173/acme/demo/revisions/1egjNFZIgEj2","data":{}}
+{"level":30,"time":1694693619263,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"","data":{}}
+{"level":30,"time":1694693619263,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"Closing old revisions","data":{}}
+{"level":30,"time":1694693619264,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"GET http://127.0.0.1:3000/0/revisions?org_id=acme&project_id=lduAoo0LT6VS&search=fix%3A+sync+from+git&status=opened","data":{}}
+{"level":30,"time":1694693619280,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"Closed (0) ✔","data":{}}
+{"level":30,"time":1694693619280,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"Merging","data":{}}
+{"level":30,"time":1694693619280,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"POST http://127.0.0.1:3000/0/revisions/1egjNFZIgEj2/merge?org_id=acme&project_id=lduAoo0LT6VS","data":{}}
+{"level":30,"time":1694693619382,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"Merged ✔","data":{}}
+{"level":30,"time":1694693619382,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"Cleaning","data":{}}
+{"level":30,"time":1694693619386,"serviceContext":{"service":"specfy"},"svc":"jobs","jobId":"IlvHCKFbkiza","message":"Updating GitHub deployment status","data":{}}
