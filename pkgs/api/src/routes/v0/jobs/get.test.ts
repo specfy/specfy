@@ -69,6 +69,7 @@ describe('GET /jobs/:job_id', () => {
       reason: null,
       status: 'pending',
       type: 'deploy',
+      logs: '',
       typeId: expect.any(Number),
       user: {
         avatarUrl: null,
