@@ -1,0 +1,93 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`sync > should break if path does not exists 1`] = `
+[
+  [
+    "✘ Path for documentation \\"/tmp/fdokfldkjlkgs/\\" does not exist",
+  ],
+]
+`;
+
+exports[`sync > should fail to upload 1`] = `
+[
+  [
+    "",
+  ],
+  [
+    "-- Documentation",
+  ],
+  [
+    "▶ Syncing /Users/samuelbodin/code/specfy/pkgs/api/src/test/__fixtures__/",
+  ],
+  [
+    "Listing...",
+  ],
+  [
+    "Listed ✔",
+  ],
+  [
+    "Parsing...",
+  ],
+  [
+    "Parsed ✔",
+  ],
+  [
+    "→ Found 5 files",
+    {
+      "files": [
+        "/TestLink.md",
+        "/TestLinkRelative.md",
+        "/markdown-spec.md",
+        "/nested/TestLinkNested.md",
+        "/test-code.md",
+      ],
+    },
+  ],
+  [
+    "",
+  ],
+  [
+    "ℹ Stack Skipped",
+  ],
+  [
+    "",
+  ],
+  [
+    "-- Deploy",
+  ],
+  [
+    "Uploading to Specfy...",
+  ],
+  [
+    "POST https://api.specfy.io/0/revisions/upload",
+  ],
+  [
+    "Uploaded ✘",
+  ],
+  [
+    "{
+  \\"code\\": \\"401_unauthorized\\"
+}",
+  ],
+]
+`;
+
+exports[`sync > should stop if nothing is enabled 1`] = `
+[
+  [
+    "",
+  ],
+  [
+    "ℹ Documentation Skipped",
+  ],
+  [
+    "ℹ Stack Skipped",
+  ],
+  [
+    "",
+  ],
+  [
+    "⚠ Nothing to do, did you mean to disable everything?",
+  ],
+]
+`;

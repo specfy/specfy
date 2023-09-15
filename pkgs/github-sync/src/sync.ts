@@ -3,6 +3,7 @@ import path from 'node:path';
 
 import type { Logger } from '@specfy/core';
 import { l as defaultLogger } from '@specfy/core';
+import type { JobMark } from '@specfy/models';
 import type { Payload } from '@specfy/stack-analyser';
 import {
   flatten,
@@ -30,6 +31,28 @@ import {
 import '@specfy/stack-analyser/dist/rules/index.js';
 rules.loadAll();
 
+export interface SyncOptions {
+  root: string;
+  token: string;
+  orgId: string;
+  projectId: string;
+  docEnabled: boolean;
+  docPath: string;
+  stackEnabled: boolean;
+  stackPath: string;
+  autoLayout: boolean;
+  hostname?: string;
+  logger?: Logger;
+}
+
+export class ErrorSync extends Error {
+  code: JobMark['code'];
+  constructor(code: JobMark['code']) {
+    super(code);
+    this.code = code;
+  }
+}
+
 export async function sync({
   root,
   token,
@@ -42,24 +65,19 @@ export async function sync({
   autoLayout,
   hostname = 'https://api.specfy.io',
   logger = defaultLogger,
-}: {
-  root: string;
-  token: string;
-  orgId: string;
-  projectId: string;
-  docEnabled: boolean;
-  docPath: string;
-  stackEnabled: boolean;
-  stackPath: string;
-  autoLayout: boolean;
-  hostname?: string;
-  logger?: Logger;
-}) {
-  if (!(await checkPaths(docPath, stackPath))) {
-    throw new Error('Invalid path');
+}: SyncOptions) {
+  const paths = await checkPaths({
+    docEnabled,
+    docPath,
+    stackEnabled,
+    stackPath,
+    logger,
+  });
+  if (!paths) {
+    throw new ErrorSync('sync_invalid_path');
   }
-  const l = logger;
 
+  const l = logger;
   const baseUrl = `${hostname}/0`;
 
   l.info('');
@@ -130,7 +148,7 @@ export async function sync({
   }
 
   if (!docEnabled && !stackEnabled) {
-    checkNothingMsg();
+    checkNothingMsg(logger);
     return;
   }
 
@@ -163,17 +181,28 @@ export async function sync({
     }
 
     l.error(`Uploaded ${figures.cross}`);
+    if (resUp.error.code === 'validation_error') {
+      for (const err of resUp.error.form) {
+        l.error(`[${err.code}] ${err.message}`);
+      }
+      for (const [key, err] of Object.entries(resUp.error.fields)) {
+        l.error(`[${err?.code}] ${err!.message} (in "${key}")`);
+      }
 
-    l.info('');
-    l.error('Failed to upload, received:');
+      const form = resUp.error.form;
+      if (form.length > 0 && form[0].code === 'too_many_documents') {
+        throw new ErrorSync('too_many_documents');
+      }
+      throw new ErrorSync('failed_to_upload');
+    }
+
     l.error(JSON.stringify(resUp.error, null, 2));
-
-    throw new Error('Failed to upload');
+    throw new ErrorSync('failed_to_upload');
   }
 
   if (resUp.data.stats.stack && resUp.data.stats.stack?.deleted > 1) {
     l.error(resUp.data.stats, 'Fail Safe: too many deletion');
-    throw new Error('Too many deletion in the revision');
+    throw new ErrorSync('fail_safe_too_many_deletion');
   }
 
   const id = resUp.data.id;

@@ -78,7 +78,10 @@ export const ProjectDeploysShow: React.FC<{
     }
 
     const tmp: string[] = [];
-    tmp.push(`Created ["${deploy.createdAt}"]`);
+    tmp.push(`Created: "${deploy.createdAt}"`);
+    if (deploy.startedAt) {
+      tmp.push(`Started: "${deploy.startedAt}"`);
+    }
 
     const split = deploy.logs.split('\n');
     for (const l of split) {
@@ -97,13 +100,13 @@ export const ProjectDeploysShow: React.FC<{
     }
 
     if (deploy.finishedAt) {
+      tmp.push(`---`);
+      tmp.push(`Finished: "${deploy.finishedAt}"`);
+      tmp.push(`Status: "${deploy.status}"`);
       if (deploy.reason && deploy.status !== 'success') {
-        tmp.push(`ERROR [code: "${deploy.reason.code}"]`);
-        tmp.push(`ERROR ${deploy.reason.reason}`);
+        tmp.push(`Code: "${deploy.reason.code}"`);
+        tmp.push(`${deploy.reason.reason}`);
       }
-      tmp.push(`Status ["${deploy.status}"]`);
-
-      tmp.push(`Finished ["${deploy.finishedAt}"]  `);
     }
     return tmp;
   }, [deploy]);
@@ -156,9 +159,10 @@ export const ProjectDeploysShow: React.FC<{
           </div>
         </Flex>
         {deploy.status === 'failed' && deploy.reason && (
-          <div className={cls.header}>
+          <div className={cls.banner}>
             <Banner type="error">
-              {deploy.reason.reason} (code: {deploy.reason.code})
+              {deploy.reason.reason} <br />
+              (code: {deploy.reason.code})
             </Banner>
           </div>
         )}

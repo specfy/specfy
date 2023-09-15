@@ -3,7 +3,7 @@ import path from 'node:path';
 
 import { envs, isProd, nanoid, sentry } from '@specfy/core';
 import { prisma } from '@specfy/db';
-import { sync } from '@specfy/github-sync';
+import { sync, ErrorSync } from '@specfy/github-sync';
 import type { JobWithOrgProject } from '@specfy/models';
 import { $ } from 'execa';
 import { Octokit } from 'octokit';
@@ -68,7 +68,7 @@ export class JobDeploy extends Job {
 
     // Notify GitHub that we started deploying
     try {
-      l.info('Creating GitHub deployment in GitHub');
+      l.info('Creating deployment in GitHub');
 
       const authClient = new Octokit({
         auth: this.token,
@@ -93,7 +93,7 @@ export class JobDeploy extends Job {
         return;
       }
 
-      l.info('Updating deployment status');
+      l.info('Updating GitHub deployment status');
 
       const projUrl = `${envs.APP_HOSTNAME}/${job.orgId}/${job.Project.slug}`;
       await authClient.rest.repos.createDeploymentStatus({
@@ -114,7 +114,7 @@ export class JobDeploy extends Job {
     // Clone into a tmp folder
     this.folderName = `/tmp/specfy_clone_${job.id}_${nanoid()}`;
     try {
-      l.info('Cloning repository');
+      l.info('Cloning repository...');
       const res =
         await $`git clone --branch ${projConfig.branch} https://x-access-token:${this.token}@github.com/${config.url}.git --depth 1 ${this.folderName}`;
 
@@ -162,7 +162,11 @@ export class JobDeploy extends Job {
 
       this.mark('success', 'success');
     } catch (err: unknown) {
-      this.mark('failed', 'failed_to_deploy', err);
+      if (err instanceof ErrorSync) {
+        this.mark('failed', err.code);
+      } else {
+        this.mark('failed', 'failed_to_deploy', err);
+      }
       sentry.captureException(err);
       return;
     }

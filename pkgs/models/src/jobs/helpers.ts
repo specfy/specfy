@@ -11,7 +11,14 @@ export const jobReason: Record<JobCode, string> = {
   failed_to_teardown: 'Failed to clean after execution',
   failed_to_checkout: 'Failed to checkout repository at the commit ref',
   failed_to_start_github_deployment: 'Failed to reach GitHub deployment API',
+  failed_to_upload: 'Failed to upload to Specfy API',
+  sync_invalid_path:
+    'A path set in the configuration does not exists on this repository',
   no_api_key: 'No API Key available to deploy',
   unknown: 'An unknown error occured',
   success: 'Success',
+  fail_safe_too_many_deletion:
+    'Deploy was successful, but requires the deletion of more than 1 resources. You can merge manually to resolve this issue.',
+  too_many_documents:
+    'Too many documents uploaded, check the logs and your plan limits or disable documentation upload',
 };

@@ -29,7 +29,11 @@ export type JobCode =
   | 'org_not_installed'
   | 'project_not_installed'
   | 'success'
-  | 'unknown';
+  | 'unknown'
+  | 'sync_invalid_path'
+  | 'too_many_documents'
+  | 'failed_to_upload'
+  | 'fail_safe_too_many_deletion';
 
 export interface JobMark {
   status: Jobs['status'];
