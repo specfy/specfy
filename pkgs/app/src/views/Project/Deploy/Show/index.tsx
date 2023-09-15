@@ -19,6 +19,18 @@ import cls from './index.module.scss';
 
 import { titleSuffix } from '@/common/string';
 
+type LogLine = {
+  level: 30;
+  time: number;
+  message: string;
+  data: Record<string, any>;
+};
+const codeToLevel = {
+  30: 'INFO',
+  40: 'WARN',
+  50: 'ERROR',
+};
+
 export const ProjectDeploysShow: React.FC<{
   proj: ApiProject;
   params: RouteProject;
@@ -66,25 +78,35 @@ export const ProjectDeploysShow: React.FC<{
     }
 
     const tmp: string[] = [];
-    tmp.push(`Created ["${deploy.createdAt}"]`);
-    tmp.push(`Job [id: "${deploy.id}"]`);
-    tmp.push(`Org [id: "${deploy.orgId}"]`);
-    tmp.push(`Project [id: "${deploy.projectId}"]`);
-    tmp.push('Configuration =>');
-    tmp.push(JSON.stringify(deploy.config, null, 2));
+    tmp.push(`Created: "${deploy.createdAt}"`);
     if (deploy.startedAt) {
-      tmp.push(`Processing ["${deploy.startedAt}"]`);
+      tmp.push(`Started: "${deploy.startedAt}"`);
     }
-    if (deploy.finishedAt) {
-      if (deploy.reason && deploy.status !== 'success') {
-        tmp.push(
-          `Error [code: "${deploy.reason.code}"] ${deploy.reason.reason}`
-        );
-        tmp.push(deploy.reason.err!);
-      }
-      tmp.push(`Status ["${deploy.status}"]`);
 
-      tmp.push(`Finished ["${deploy.finishedAt}"]  `);
+    const split = deploy.logs.split('\n');
+    for (const l of split) {
+      if (l === '') {
+        continue;
+      }
+      try {
+        const line: LogLine = JSON.parse(l);
+        tmp.push(`${codeToLevel[line.level]} ${line.message}`);
+        if (line.data && Object.keys(line.data).length > 0) {
+          tmp.push(JSON.stringify(line.data, null, 2));
+        }
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    if (deploy.finishedAt) {
+      tmp.push(`---`);
+      tmp.push(`Finished: "${deploy.finishedAt}"`);
+      tmp.push(`Status: "${deploy.status}"`);
+      if (deploy.reason && deploy.status !== 'success') {
+        tmp.push(`Code: "${deploy.reason.code}"`);
+        tmp.push(`${deploy.reason.reason}`);
+      }
     }
     return tmp;
   }, [deploy]);
@@ -137,9 +159,10 @@ export const ProjectDeploysShow: React.FC<{
           </div>
         </Flex>
         {deploy.status === 'failed' && deploy.reason && (
-          <div className={cls.header}>
+          <div className={cls.banner}>
             <Banner type="error">
-              {deploy.reason.reason} (code: {deploy.reason.code})
+              {deploy.reason.reason} <br />
+              (code: {deploy.reason.code})
             </Banner>
           </div>
         )}

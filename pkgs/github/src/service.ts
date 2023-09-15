@@ -18,7 +18,7 @@ export async function off() {
 }
 
 export function listen() {
-  l.info('Starting');
+  l.info('Service Starting');
 
   // TODO: replace this with a queue and/or Listen/notify
   interval = setInterval(async () => {
@@ -52,9 +52,13 @@ export function listen() {
         },
       });
 
-      const job = new JobDeploy(full);
-      running.push(job);
-      (() => job.start())();
+      try {
+        const job = new JobDeploy(full);
+        running.push(job);
+        (() => job.start())();
+      } catch (e) {
+        l.error(e);
+      }
     });
   }, 5000);
 }

@@ -1,9 +1,12 @@
+import fs from 'node:fs/promises';
+import { setTimeout } from 'node:timers/promises';
+
 import type { Logger } from '@specfy/core';
-import { l as defaultLogger, metrics, sentry } from '@specfy/core';
+import { createFileLogger, metrics, nanoid, sentry } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import type { Jobs } from '@specfy/db';
 import type { JobMark, JobWithOrgProject } from '@specfy/models';
-import { toApiProject, toApiJob, jobReason } from '@specfy/models';
+import { toApiProject, jobReason, toApiJobList } from '@specfy/models';
 import type { EventJob } from '@specfy/socket';
 import { io } from '@specfy/socket';
 
@@ -11,15 +14,15 @@ export abstract class Job {
   l: Logger;
   #job: JobWithOrgProject;
   #mark?: JobMark;
-  // #logs: string;
+  #logs: string;
 
   constructor(job: JobWithOrgProject) {
     this.#job = job;
-    // this.#logs = `/tmp/specfy_logs_${job.id}_${nanoid()}.log`;
-    this.l = defaultLogger;
+    this.#logs = `/tmp/specfy_logs_${job.id}_${nanoid()}.log`;
 
+    console.log('logging to', this.#logs);
     // Unsatisfying solution right now
-    // this.l = createFileLogger({ svc: 'jobs', jobId: job.id }, this.#logs);
+    this.l = createFileLogger({ svc: 'jobs', jobId: job.id }, this.#logs);
   }
 
   getMark() {
@@ -32,9 +35,13 @@ export abstract class Job {
 
     metrics.increment('jobs.loop.start');
 
-    l.info('Job start', { id: job.id });
+    l.info('Job start', {
+      id: job.id,
+      orgId: job.orgId,
+      projectId: job.projectId,
+    });
     const evt: EventJob = {
-      job: toApiJob(job),
+      job: toApiJobList(job),
       project: toApiProject(job.Project!),
     };
 
@@ -56,15 +63,24 @@ export abstract class Job {
       }
     }
 
+    l.flush();
+    await setTimeout(200);
+
+    const logs = await fs.readFile(this.#logs);
     const jobUpdated = await prisma.jobs.update({
       data: {
         status: this.#mark?.status || 'failed',
         reason: this.#mark
           ? this.#mark
           : { status: 'failed', code: 'unknown', reason: jobReason.unknown },
-        // logs: this.#logs, // TODO: store the file maybe?
         updatedAt: new Date(),
         finishedAt: new Date(),
+        Log: {
+          create: {
+            id: nanoid(),
+            content: logs.toString(),
+          },
+        },
       },
       where: {
         id: job.id,
@@ -72,7 +88,7 @@ export abstract class Job {
     });
     l.info('Job end', { id: job.id, mark: this.#mark });
 
-    evt.job = toApiJob({ ...jobUpdated, User: job.User });
+    evt.job = toApiJobList({ ...jobUpdated, User: job.User });
     io.to(`project-${job.projectId}`).emit('job.finish', evt);
 
     metrics.increment('jobs.loop.end');
