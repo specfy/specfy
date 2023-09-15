@@ -7,8 +7,8 @@ import type { SyncOptions } from './sync.js';
 import { ErrorSync, sync } from './sync.js';
 
 function getLogger() {
-  const msgs: any[] = [];
-  const log = (...args: any) => msgs.push(args);
+  const msgs: Array<Array<string | object>> = [];
+  const log = (...args: string[]) => msgs.push(args);
   const logger: Logger = {
     info: log,
     error: log,
@@ -69,6 +69,15 @@ describe('sync', () => {
         stackEnabled: false,
       })
     ).rejects.toThrowError(new ErrorSync('failed_to_upload'));
+
+    // Clean snapshot
+    msgs.forEach((row) =>
+      row.forEach((msg, i) => {
+        if (typeof msg === 'string') {
+          row[i] = msg.replace(root, '');
+        }
+      })
+    );
     expect(msgs).toMatchSnapshot();
   });
 });
