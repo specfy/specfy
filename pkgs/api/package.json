@@ -23,7 +23,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@dagrejs/dagre": "1.0.2",
     "@fastify/autoload": "5.7.1",
     "@fastify/cookie": "9.0.4",
     "@fastify/cors": "8.3.0",
@@ -44,7 +43,6 @@
     "@specfy/socket": "file:../socket",
     "@specfy/stack-analyser": "1.5.0",
     "close-with-grace": "1.2.0",
-    "execa": "7.2.0",
     "fastify": "4.21.0",
     "fastify-plugin": "4.5.1",
     "fastify-raw-body": "4.2.2",
@@ -55,7 +53,6 @@
     "passport-jwt": "4.0.1",
     "passport-local": "1.0.0",
     "prosemirror-markdown": "1.11.2",
-    "socket.io": "4.7.2",
     "stripe": "12.18.0",
     "zod": "3.22.2"
   },
@@ -67,14 +64,12 @@
     "@types/passport-local": "1.0.35",
     "fastify-cli": "5.8.0",
     "nodemon": "3.0.1",
-    "prisma-json-types-generator": "2.5.0",
     "react-diff-view": "3.0.3",
     "reactflow": "11.8.3",
     "ts-node": "10.9.1",
     "type-fest": "4.2.0",
     "typescript": "5.1.6",
     "undici": "5.23.0",
-    "utility-types": "3.10.0",
-    "vitest": "0.29.8"
+    "utility-types": "3.10.0"
   }
 }
