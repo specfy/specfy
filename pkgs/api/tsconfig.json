@@ -8,7 +8,8 @@
   "include": [
     "src",
     "../models/src/prisma.d.ts",
-    "../models/src/fastify.d.ts"
+    "../models/src/fastify.d.ts",
+    "src/test/vitest.d.ts"
   ],
   "ts-node": {
     "esm": true,
