@@ -38,8 +38,11 @@ Configuration =>
   "url": "specfy/sync"
 }
 Processing ["2023-08-28T13:14:10.158Z"]
-Status ["success"]
+Status: "success"
 Finished ["2023-08-28T13:14:10.158Z"]
+INFO foobar
+ERROR Got 5 errors
+WARN This a fair warning true / false
 ```
 
 ## Css

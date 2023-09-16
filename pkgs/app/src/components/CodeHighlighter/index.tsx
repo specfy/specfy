@@ -23,12 +23,15 @@ export const CodeHighlighter: React.FC<{ language: string; code: string }> = ({
 }) => {
   useEffect(() => {
     Prism.highlightAll();
-  }, []);
+  }, [code]);
 
   return (
     <div className={cls.code}>
       <pre>
-        <code className={`language-${language}`}>{code}</code>
+        <code
+          className={`language-${language}`}
+          dangerouslySetInnerHTML={{ __html: code }}
+        ></code>
       </pre>
     </div>
   );

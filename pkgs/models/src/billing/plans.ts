@@ -36,10 +36,10 @@ export const v1: Record<PlanName, Plan> = {
       max: 5,
     },
     project: {
-      max: 3,
+      max: 10,
     },
     upload: {
-      maxDocuments: 25,
+      maxDocuments: 50,
       maxDocumentSize: 1_999_999,
     },
     deploy: {

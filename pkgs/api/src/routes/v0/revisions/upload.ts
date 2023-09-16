@@ -1,7 +1,6 @@
 import { nanoid, schemaId, schemaOrgId } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import {
-  v1,
   createBlobs,
   createRevisionActivity,
   uploadedDocumentsToDB,
@@ -10,6 +9,8 @@ import {
   DocumentsParser,
   autoLayout,
   stackToBlobs,
+  getOrgFromRequest,
+  getCurrentPlan,
 } from '@specfy/models';
 import type {
   DocsToBlobs,
@@ -25,7 +26,6 @@ import { valPermissions } from '../../../common/zod.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 
 function BodyVal(req: FastifyRequest) {
-  // TODO: adapt limitation with plan
   return z
     .object({
       orgId: schemaOrgId,
@@ -40,12 +40,11 @@ function BodyVal(req: FastifyRequest) {
           z
             .object({
               path: z.string().max(255),
-              content: z.string().max(v1.pro.upload.maxDocumentSize),
+              content: z.string(),
             })
             .strict()
         )
         .min(0)
-        .max(v1.pro.upload.maxDocuments)
         .nullable()
         .superRefine((blobs, ctx) => {
           if (!blobs) {
@@ -80,7 +79,32 @@ function BodyVal(req: FastifyRequest) {
     })
     .strict()
     .partial({ autoLayout: true })
-    .superRefine(valPermissions(req, 'contributor'));
+    .superRefine(valPermissions(req, 'contributor'))
+    .superRefine((val, ctx) => {
+      const plan = getCurrentPlan(getOrgFromRequest(req, val.orgId)!);
+      if (val.blobs && val.blobs.length > 0) {
+        if (val.blobs.length > plan.upload.maxDocuments) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            params: { code: 'too_many_documents' },
+            message: `Your plan allows up to ${plan.upload.maxDocuments} documents, ${val.blobs.length} uploaded`,
+          });
+        }
+
+        for (let index = 0; index < val.blobs.length; index++) {
+          const blob = val.blobs[index];
+          if (blob.content.length > plan.upload.maxDocumentSize) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.too_big,
+              type: 'string',
+              path: ['blobs', index, 'content'],
+              inclusive: true,
+              maximum: plan.upload.maxDocumentSize,
+            });
+          }
+        }
+      }
+    });
 }
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {

@@ -3,10 +3,17 @@ import type { Users, Orgs } from '@specfy/db';
 import { Prisma, prisma } from '@specfy/db';
 
 import { BILLING_ENABLED } from './constants.js';
+import type { Plan } from './plans.js';
 import { v1 } from './plans.js';
 import { stripe } from './stripe.js';
 import type { GetBillingUsage } from './types.api.js';
 
+export function getCurrentPlan(org: Orgs): Plan {
+  return (
+    Object.values(v1).find((p) => p.id === org.currentPlanId) ||
+    (BILLING_ENABLED ? v1.free : v1.business)
+  );
+}
 export async function getUsage(
   org: Orgs
 ): Promise<GetBillingUsage['Success']['data']> {
@@ -23,9 +30,7 @@ export async function getUsage(
   );
 
   const counts = res[0];
-  const plan =
-    Object.values(v1).find((p) => p.id === org.currentPlanId) ||
-    (BILLING_ENABLED ? v1.free : v1.business);
+  const plan = getCurrentPlan(org);
 
   const usage: GetBillingUsage['Success']['data'] = {
     projects: {

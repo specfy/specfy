@@ -1,4 +1,4 @@
-import type { ApiJob } from '@specfy/models';
+import type { ApiJobList } from '@specfy/models';
 import { useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { useNavigate } from 'react-router-dom';
@@ -16,7 +16,7 @@ import { useEventBus } from '@/hooks/useEventBus';
 
 export const ProjectWelcome: React.FC = () => {
   const { project } = useProjectStore();
-  const [job, setJob] = useState<ApiJob>();
+  const [job, setJob] = useState<ApiJobList>();
   const navigate = useNavigate();
 
   useEventBus(

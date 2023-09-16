@@ -1,3 +1,4 @@
+/* stylelint-disable selector-class-pattern */
 .code {
   display: flex !important;
 
@@ -26,5 +27,27 @@
     letter-spacing: inherit;
 
     -webkit-font-smoothing: antialiased;
+  }
+
+  :global {
+    .language-log {
+      .token.error {
+        font-weight: 500;
+        color: var(--tomato-9);
+      }
+
+      .token.keyword {
+        color: var(--blue-9);
+      }
+
+      .token.property {
+        color: var(--purple-9);
+      }
+
+      .token.url {
+        color: var(--indigo-10);
+        text-decoration: underline;
+      }
+    }
   }
 }
