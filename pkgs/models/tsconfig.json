@@ -6,8 +6,7 @@
     "declaration": true
   },
   "include": [
-    "src",
-    "../api/src/types/vitest.d.ts"
+    "src"
   ],
   "exclude": [],
   "references": [

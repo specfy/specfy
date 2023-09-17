@@ -18,7 +18,8 @@
   "dependencies": {
     "@specfy/core": "file:../core",
     "@specfy/db": "file:../db",
-    "@specfy/models": "file:../models"
+    "@specfy/models": "file:../models",
+    "socket.io": "4.7.2"
   },
   "devDependencies": {
     "typescript": "5.1.6"
