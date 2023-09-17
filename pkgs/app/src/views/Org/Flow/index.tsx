@@ -1,4 +1,4 @@
-import type { ComputedFlow, ApiOrg, PatchFlow } from '@specfy/models';
+import type { ApiOrg, PatchFlow } from '@specfy/models';
 import { IconCheck, IconX } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
@@ -19,9 +19,14 @@ import type { RouteOrg } from '../../../types/routes';
 import cls from './index.module.scss';
 
 import { i18n } from '@/common/i18n';
+import { useFlowStore } from '@/common/store';
 import { titleSuffix } from '@/common/string';
 import { Banner } from '@/components/Banner';
 import { Feedback } from '@/components/Feedback';
+import type {
+  OnEdgesChangeSuper,
+  OnNodesChangeSuper,
+} from '@/components/Flow/helpers';
 
 export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   org,
@@ -34,17 +39,22 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
 
   const rf = useReactFlow();
   const resFlow = useGetFlow({ org_id: params.org_id, flow_id: org.flowId });
-  const [flow, setFlow] = useState<ComputedFlow>();
+  const store = useFlowStore();
+  const [ready, setReady] = useState<boolean>(false);
   const [editing, setEditing] = useState<boolean>(false);
   const [publishing, setPublishing] = useState<boolean>(false);
 
   useEffect(() => {
     if (!resFlow.data) {
+      if (resFlow.error) {
+        setReady(true);
+      }
       return;
     }
 
-    setFlow(resFlow.data.data.flow);
-  }, [resFlow]);
+    store.setCurrent(resFlow.data.data.flow);
+    setReady(true);
+  }, [resFlow.data]);
 
   const onSave = async () => {
     setPublishing(true);
@@ -88,14 +98,22 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
     setEditing(false);
   };
 
-  if (resFlow.isLoading) {
+  const onNodesChange: OnNodesChangeSuper = (changes) => {
+    store.updateNode(changes);
+  };
+
+  const onEdgesChange: OnEdgesChangeSuper = (changes) => {
+    store.updateEdge(changes);
+  };
+
+  if (!ready) {
     return <Loading />;
   }
 
   return (
     <div className={cls.flow}>
       <Helmet title={`Flow - ${org.name} ${titleSuffix}`} />
-      {flow && (
+      {store.flow && (
         <>
           <FlowWrapper>
             {!introRead && (
@@ -112,15 +130,17 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
               </div>
             )}
             <Flow
-              flow={flow}
+              flow={store.flow}
               downlightOther={false}
               keepHighlightOnSelect={true}
               readonly={!editing}
               deletable={false}
-              connectable={true}
+              connectable={false}
+              onEdgesChange={onEdgesChange}
+              onNodesChange={onNodesChange}
             />
 
-            <FlowDetails readonly={true} flow={flow} />
+            <FlowDetails readonly={true} flow={store.flow} />
             {canEdit && (
               <Toolbar left top visible>
                 {!editing && (
