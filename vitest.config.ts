@@ -15,6 +15,7 @@ export default defineConfig({
       enabled: true,
       all: true,
       reporter: ['cobertura'],
+      provider: 'v8',
     },
     setupFiles: ['dotenv/config'],
   },

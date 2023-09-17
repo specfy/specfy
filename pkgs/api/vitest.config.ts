@@ -15,6 +15,7 @@ export default defineConfig({
       enabled: true,
       reporter: ['cobertura'],
       exclude: ['src/test/seed/**.ts'],
+      provider: 'v8',
     },
   },
   json: {},
