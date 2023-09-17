@@ -136,6 +136,11 @@ export const Flow: React.FC<{
           connectable: isConnectable,
           focusable: true,
           selectable: true,
+          parentNode: node.parentNode,
+          extent: node.extent,
+          position: node.position,
+          data: node.data,
+          hidden: node.hidden,
         };
       });
     });

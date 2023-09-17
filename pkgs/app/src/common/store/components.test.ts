@@ -1,8 +1,13 @@
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
+import type { ComputedEdge } from '@specfy/models';
 import { type ApiComponent } from '@specfy/models';
 import { describe, it, expect, afterEach } from 'vitest';
 
-import { useComponentsStore as store } from './components';
+import {
+  handleEdgeChange,
+  handleNodeChange,
+  useComponentsStore as store,
+} from './components';
 import { original } from './original';
 
 afterEach(() => {
@@ -308,5 +313,83 @@ describe('removeEdge', () => {
     state.removeEdge('a', 'b');
     expect(state.select('a')?.edges).toHaveLength(1);
     expect(state.select('a')?.edges[0].show).toBe(false);
+  });
+});
+
+describe('handleNodeChange: remove', () => {
+  it('should remove', () => {
+    const state = store.getState();
+    state.create({ id: 'a', source: null } as unknown as ApiComponent);
+    handleNodeChange(state, { type: 'remove', id: 'a' });
+
+    expect(state.select('a')).toBeUndefined();
+  });
+  it('should hide', () => {
+    const state = store.getState();
+    state.create({
+      id: 'a',
+      source: 'github',
+      edges: [],
+    } as unknown as ApiComponent);
+    handleNodeChange(state, { type: 'remove', id: 'a' });
+
+    expect(state.select('a')).toBeDefined();
+    expect(state.select('a')?.show).toBe(false);
+  });
+});
+
+describe('handleEdgeChange: changeTarget', () => {
+  it('should unhide edge when updating', () => {
+    const state = store.getState();
+    const edge: ComputedEdge = {
+      id: `a->b`,
+      source: 'a',
+      target: 'b',
+      sourceHandle: 'sl',
+      targetHandle: 'tr',
+    };
+
+    state.create({
+      id: 'a',
+      source: null,
+      edges: [edge],
+    } as unknown as ApiComponent);
+    state.create({ id: 'b', source: null } as unknown as ApiComponent);
+
+    handleEdgeChange(state, { type: 'visibility', id: `a->b` });
+    expect(state.select('a')!.edges[0].show).toBe(false);
+    handleEdgeChange(state, {
+      type: 'changeTarget',
+      id: `a->b`,
+      source: 'a',
+      oldTarget: 'b',
+      newTarget: 'b',
+      newSourceHandle: 'sb',
+      newTargetHandle: 'tt',
+    });
+
+    expect(state.select('a')!.edges[0]).toStrictEqual({
+      id: 'a->b',
+      portSource: 'sb',
+      portTarget: 'tt',
+      show: true,
+      source: 'a',
+      sourceHandle: 'sl',
+      target: 'b',
+      targetHandle: 'tr',
+    });
+  });
+
+  it('should hide', () => {
+    const state = store.getState();
+    state.create({
+      id: 'a',
+      source: 'github',
+      edges: [],
+    } as unknown as ApiComponent);
+    handleNodeChange(state, { type: 'remove', id: 'a' });
+
+    expect(state.select('a')).toBeDefined();
+    expect(state.select('a')?.show).toBe(false);
   });
 });

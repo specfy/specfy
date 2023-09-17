@@ -1,10 +1,20 @@
 import type { ApiComponent, FlowEdge } from '@specfy/models';
-import { getAbsolutePosition } from '@specfy/models/src/flows/transform';
+import {
+  getAbsolutePosition,
+  placeInsideHost,
+} from '@specfy/models/src/flows/transform';
 import { produce } from 'immer';
 import type { Connection } from 'reactflow';
 import { create } from 'zustand';
 
 import { original } from './original';
+
+import type {
+  EdgeChangeSuper,
+  NodeChangeSuper,
+  OnEdgesChangeSuper,
+  OnNodesChangeSuper,
+} from '@/components/Flow/helpers';
 
 export interface ComponentsState {
   current: string | null;
@@ -102,7 +112,7 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
           return;
         }
 
-        const visible = !src.show;
+        const visible = src.show === false;
         src.show = visible;
 
         // Hide all outgoing edges
@@ -221,10 +231,11 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
             if (edge.target !== target) {
               continue;
             }
+
             if (typeof update === 'function') {
               copy.edges[index] = update(edge);
             } else {
-              copy.edges[index] = { ...edge, ...update };
+              copy.edges[index] = { ...edge, ...update, show: true };
             }
           }
         }
@@ -259,3 +270,197 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
     );
   },
 }));
+
+/**
+ * Central function to handle all node changes (in a project).
+ */
+export const onNodesChangeProject: (
+  store: ComponentsState
+) => OnNodesChangeSuper = (store) => {
+  return (changes) => {
+    for (const change of changes) {
+      handleNodeChange(store, change);
+    }
+  };
+};
+
+/**
+ * Central function to handle all edge changes (in a project).
+ */
+export const onEdgesChangeProject: (
+  store: ComponentsState
+) => OnEdgesChangeSuper = (store) => {
+  return (changes) => {
+    for (const change of changes) {
+      handleEdgeChange(store, change);
+    }
+  };
+};
+
+export function handleNodeChange(
+  store: ComponentsState,
+  change: NodeChangeSuper
+) {
+  switch (change.type) {
+    case 'remove': {
+      const comp = store.select(change.id)!;
+      if (comp.source) {
+        store.setVisibility(change.id);
+      } else {
+        store.remove(change.id);
+      }
+      break;
+    }
+
+    case 'position': {
+      if (change.position) {
+        const comp = store.select(change.id)!;
+        store.updateField(change.id, 'display', {
+          ...comp.display,
+          pos: change.position,
+        });
+      }
+      break;
+    }
+
+    case 'group': {
+      const comp = store.select(change.id)!;
+      store.update({
+        ...comp,
+        inComponent: { id: change.parentId },
+        display: {
+          ...comp.display,
+          pos: placeInsideHost(
+            comp,
+            change.parentId,
+            Object.values(store.components)
+          ),
+        },
+      });
+      break;
+    }
+
+    case 'ungroup': {
+      const comp = store.select(change.id)!;
+      store.update({
+        ...comp,
+        inComponent: { id: null },
+        display: {
+          ...comp.display,
+          pos: getAbsolutePosition(comp, Object.values(store.components)),
+        },
+      });
+      break;
+    }
+
+    case 'rename': {
+      store.updateField(change.id, 'name', change.name);
+      break;
+    }
+
+    case 'tech': {
+      const comp = store.select(change.id)!;
+
+      if (!change.tech) {
+        store.update({
+          ...comp,
+          typeId: null,
+          techId: null,
+          type: 'service',
+        });
+      } else if (change.tech.type === 'project') {
+        store.update({
+          ...comp,
+          typeId: change.tech.project.id,
+          type: 'project',
+          techId: null,
+          name: change.tech.project.name,
+        });
+      } else if (change.tech.type === 'tech') {
+        store.update({
+          ...comp,
+          techId: change.tech.tech.key,
+          type: change.tech.tech.type,
+          name:
+            comp.name === 'untitled' || !comp.name
+              ? change.tech.tech.name
+              : comp.name,
+        });
+      } else if (change.tech.type === 'create') {
+        store.update({
+          ...comp,
+          techId: 'unknown',
+          type: 'api',
+          name: change.tech.label,
+        });
+      }
+      break;
+    }
+
+    case 'dimensions': {
+      if (!change.dimensions) {
+        break;
+      }
+      const comp = store.select(change.id)!;
+      store.update({
+        ...comp,
+        display: {
+          ...comp.display,
+          size: change.dimensions,
+        },
+      });
+      break;
+    }
+
+    case 'visibility': {
+      store.setVisibility(change.id);
+      break;
+    }
+  }
+}
+
+export function handleEdgeChange(
+  store: ComponentsState,
+  change: EdgeChangeSuper
+) {
+  switch (change.type) {
+    case 'remove': {
+      const [source, target] = change.id.split('->');
+      store.removeEdge(source, target);
+      break;
+    }
+
+    case 'changeTarget': {
+      store.updateEdge(change.source, change.oldTarget, {
+        portSource: change.newSourceHandle as any,
+        target: change.newTarget,
+        portTarget: change.newTargetHandle as any,
+      });
+      break;
+    }
+
+    case 'create': {
+      store.addEdge(change.conn);
+      break;
+    }
+
+    case 'direction': {
+      const [source, target] = change.id.split('->');
+      store.updateEdge(source, target, {
+        write: change.write,
+        read: change.read,
+      });
+      break;
+    }
+
+    case 'visibility': {
+      const [source, target] = change.id.split('->');
+      store.updateEdge(source, target, (st) => {
+        st.show =
+          st.show === true || typeof st.show === 'undefined' ? false : true;
+        return st;
+      });
+      break;
+    }
+  }
+}
