@@ -50,11 +50,7 @@ const schemaStackBase = z
       .max(50),
     dependencies: z
       .array(
-        z.tuple([
-          z.string().max(100),
-          z.string().max(100),
-          z.string().max(100).nullable(),
-        ])
+        z.tuple([z.string().max(100), z.string().max(100), z.string().max(100)])
       )
       .max(1000),
     reason: z.array(z.string()).max(500),
