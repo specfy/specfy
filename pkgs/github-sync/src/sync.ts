@@ -142,7 +142,7 @@ export async function sync({
     const file = path.join(root, 'stack.json');
     await fs.writeFile(file, JSON.stringify(stack.toJson(root), undefined, 2));
     // l.info(`${figures.arrowRight} Output`);
-    // l.info('Stack', stack.toJson(root));
+    l.info('Stack', stack.toJson(root));
   } else {
     l.warn(`${figures.info} Stack Skipped`);
   }
