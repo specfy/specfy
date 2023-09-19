@@ -22,6 +22,7 @@ import type {
 } from 'reactflow';
 
 import 'reactflow/dist/style.css';
+
 import CustomNode from './CustomNode';
 import { onDragComputeNewHandle } from './floatingEdge';
 import type { OnEdgesChangeSuper, OnNodesChangeSuper } from './helpers';

@@ -49,7 +49,7 @@ export const v1: Record<PlanName, Plan> = {
     features: [],
   },
   pro: {
-    id: 'prod_02d8ykCPVkHY2JVIwX8VWUr1',
+    id: 'prod_04d8ykCPVkHY2JVIwX8VWUr1',
     name: 'Pro',
     description: 'Perfect to get started and scale with your startup',
     user: {
@@ -63,8 +63,8 @@ export const v1: Record<PlanName, Plan> = {
       maxDocumentSize: 9_999_999,
     },
     price: {
-      key: 'v1_pro',
-      amount: 2000,
+      key: 'v1.1_pro',
+      amount: 20000,
       currency: 'usd',
     },
     deploy: {
@@ -73,7 +73,7 @@ export const v1: Record<PlanName, Plan> = {
     features: ['Email support'],
   },
   business: {
-    id: 'prod_03d8ykCPVkHY2JVIwX8VWUr2',
+    id: 'prod_05d8ykCPVkHY2JVIwX8VWUr2',
     name: 'Business',
     description: 'Fit your fast growing company',
     user: {
@@ -87,8 +87,8 @@ export const v1: Record<PlanName, Plan> = {
       maxDocumentSize: 9_999_999,
     },
     price: {
-      key: 'v1_business',
-      amount: 24900,
+      key: 'v1.1_business',
+      amount: 64900,
       currency: 'usd',
     },
     deploy: {
