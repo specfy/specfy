@@ -51,9 +51,9 @@ const schemaStackBase = z
     dependencies: z
       .array(
         z.tuple([
-          z.string().max(100),
-          z.string().max(100),
-          z.string().max(100).nullable(),
+          z.string().max(50),
+          z.string().max(500),
+          z.string().max(500).nullable(),
         ])
       )
       .max(1000),
