@@ -30,6 +30,7 @@ export const schemaComponent = z
       'hosting',
       'language',
       'messaging',
+      'monitoring',
       'network',
       'project',
       'saas',

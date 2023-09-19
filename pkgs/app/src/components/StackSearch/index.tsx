@@ -122,6 +122,7 @@ export const defaultFilterSelect: ComponentType[] = [
   'ci',
   'db',
   'etl',
+  'monitoring',
   'messaging',
   'network',
   'project',

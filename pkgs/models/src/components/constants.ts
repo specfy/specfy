@@ -25,16 +25,16 @@ export const supportedTypeToText: Record<ComponentType, string> = {
   hosting: 'hosting',
   language: 'language',
   messaging: 'queue',
+  monitoring: 'monitoring',
   network: 'network',
+  project: 'project',
   saas: 'third-party',
+  service: 'service',
   storage: 'storage',
   tool: 'tool',
-  project: 'project',
-  service: 'service',
 };
 
 export const internalTypeToText: Record<ComponentType, string> = {
-  service: 'Service',
   analytics: 'Analytics',
   api: 'API',
   app: 'Application',
@@ -44,9 +44,11 @@ export const internalTypeToText: Record<ComponentType, string> = {
   hosting: 'Hosting',
   language: 'Language',
   messaging: 'Messaging',
+  monitoring: 'Monitoring',
   network: 'Network',
   project: 'Project',
   saas: 'Saas',
+  service: 'Service',
   storage: 'Storage',
   tool: 'Tool',
 };

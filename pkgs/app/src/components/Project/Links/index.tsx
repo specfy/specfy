@@ -1,4 +1,4 @@
-import type { IconType } from '@icons-pack/react-simple-icons/types';
+import type { LoadableComponent } from '@loadable/component';
 import type { DBProjectLink } from '@specfy/models';
 import { IconLink, IconPlus, IconTrash } from '@tabler/icons-react';
 import classnames from 'classnames';
@@ -15,7 +15,7 @@ import { useProjectStore } from '@/common/store';
 import { supportedHostname } from '@/common/techs';
 
 const useIcon = (link: DBProjectLink) => {
-  const icon = useMemo<IconType | undefined>(() => {
+  const icon = useMemo<LoadableComponent<any> | undefined>(() => {
     let url: URL | undefined;
     try {
       url = new URL(link.url);
@@ -30,7 +30,7 @@ const useIcon = (link: DBProjectLink) => {
         }
       }
     }
-    return IconLink as IconType;
+    return IconLink as any;
   }, [link.url]);
 
   return icon;

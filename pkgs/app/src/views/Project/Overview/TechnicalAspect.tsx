@@ -1,4 +1,4 @@
-import type { ApiComponent } from '@specfy/models';
+import type { ApiComponent, ComponentType } from '@specfy/models';
 import { useEffect, useState } from 'react';
 
 import {
@@ -10,16 +10,17 @@ import type { RouteProject } from '../../../types/routes';
 
 import { useComponentsStore } from '@/common/store';
 
-const groupTech = ['tool', 'language'];
-const groupData = [
-  'app',
-  'db',
-  'messaging',
-  'etl',
+const groupTech: ComponentType[] = ['tool', 'language'];
+const groupData: ComponentType[] = [
   'analytics',
   'api',
-  'storage',
+  'app',
+  'db',
+  'etl',
+  'messaging',
+  'monitoring',
   'network',
+  'storage',
 ];
 
 export const TechnicalAspects: React.FC<{
