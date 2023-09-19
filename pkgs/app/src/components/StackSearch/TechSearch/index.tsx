@@ -49,6 +49,7 @@ export const TechSearch: React.FC<{
       hosting: [],
       language: [],
       messaging: [],
+      monitoring: [],
       network: [],
       project: [],
       saas: [],
