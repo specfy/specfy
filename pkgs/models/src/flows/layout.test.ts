@@ -1,21 +1,18 @@
 import { describe, expect, it } from 'vitest';
 
+import { getBlobComponent } from '../components/test.utils.js';
+
 import { computeLayout, computeTree } from './layout.js';
 import { createNode } from './transform.js';
 import type { ComponentForFlow } from './types.js';
 
 function getComp(id: string, host: string | null = null): ComponentForFlow {
   return {
+    ...getBlobComponent({ id: 'project', orgId: 'acme' }),
     id,
-    edges: [],
     inComponent: { id: host },
-    type: 'service',
-    typeId: null,
     name: id,
-    techId: null,
     display: { pos: { x: 0, y: 0 }, size: { width: 100, height: 20 } },
-    source: null,
-    show: true,
   };
 }
 

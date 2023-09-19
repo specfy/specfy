@@ -20,7 +20,6 @@ export abstract class Job {
     this.#job = job;
     this.#logs = `/tmp/specfy_logs_${job.id}_${nanoid()}.log`;
 
-    console.log('logging to', this.#logs);
     // Unsatisfying solution right now
     this.l = createFileLogger({ svc: 'jobs', jobId: job.id }, this.#logs);
   }

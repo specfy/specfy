@@ -30,7 +30,6 @@ import { Flow, FlowWrapper } from '../../../components/Flow';
 import { TechPopover } from '../../../components/Flow/TechPopover';
 import { Toolbar } from '../../../components/Flow/Toolbar';
 import type { OnNodesChangeSuper } from '../../../components/Flow/helpers';
-import { onNodesChangeProject } from '../../../components/Flow/helpers';
 import { Button } from '../../../components/Form/Button';
 import { FakeInput } from '../../../components/Form/FakeInput';
 import { NotFound } from '../../../components/NotFound';
@@ -43,7 +42,7 @@ import type { RouteComponent } from '../../../types/routes';
 
 import cls from './index.module.scss';
 
-import { useComponentsStore } from '@/common/store';
+import { onNodesChangeProject, useComponentsStore } from '@/common/store';
 import { titleSuffix } from '@/common/string';
 import { Editable } from '@/components/Form/Editable';
 import { Loading } from '@/components/Loading';

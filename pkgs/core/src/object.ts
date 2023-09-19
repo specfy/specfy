@@ -24,3 +24,9 @@ export function pick<T extends Record<string, any>, K extends keyof T>(
     keys.filter((key) => key in obj).map((key) => [key, obj[key]])
   ) as Pick<T, K>;
 }
+
+export function flip<TData extends Record<string, any>>(data: TData) {
+  return Object.fromEntries(
+    Object.entries(data).map(([key, value]) => [value, key])
+  );
+}

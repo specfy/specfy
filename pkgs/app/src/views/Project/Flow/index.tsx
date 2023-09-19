@@ -10,10 +10,6 @@ import type {
   OnEdgesChangeSuper,
   OnNodesChangeSuper,
 } from '../../../components/Flow/helpers';
-import {
-  onEdgesChangeProject,
-  onNodesChangeProject,
-} from '../../../components/Flow/helpers';
 import { Loading } from '../../../components/Loading';
 import { useEdit } from '../../../hooks/useEdit';
 import type { RouteProject } from '../../../types/routes';
@@ -21,7 +17,12 @@ import type { RouteProject } from '../../../types/routes';
 import cls from './index.module.scss';
 
 import { createLocal } from '@/common/components';
-import { useComponentsStore, useProjectStore } from '@/common/store';
+import {
+  onEdgesChangeProject,
+  onNodesChangeProject,
+  useComponentsStore,
+  useProjectStore,
+} from '@/common/store';
 import { titleSuffix } from '@/common/string';
 import { Feedback } from '@/components/Feedback';
 

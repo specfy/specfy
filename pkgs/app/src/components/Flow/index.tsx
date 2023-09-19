@@ -23,6 +23,7 @@ import type {
 
 import 'reactflow/dist/style.css';
 import CustomNode from './CustomNode';
+import { onDragComputeNewHandle } from './floatingEdge';
 import type { OnEdgesChangeSuper, OnNodesChangeSuper } from './helpers';
 import { highlightNode } from './helpers';
 import cls from './index.module.scss';
@@ -91,24 +92,27 @@ export const Flow: React.FC<{
 
   // We changed the parent page
   useEffect(() => {
+    const isDeletable = !readonly && deletable;
+    const isConnectable = !readonly && connectable;
     setEdges((prev) => {
       return flow.edges.map((edge) => {
         const id = `${edge.source}->${edge.target}`;
         let find = prev.find((n) => n.id === id);
         if (!find) {
           find = edge;
-        } else {
-          // Reflect updates
-          find.targetHandle = edge.targetHandle;
-          find.sourceHandle = edge.sourceHandle;
-          find.data = edge.data;
-          find.hidden = edge.hidden;
+          find.deletable = isDeletable;
+          find.updatable = isConnectable;
+          return find;
         }
-
-        find.deletable = !readonly && deletable;
-        find.updatable = !readonly && connectable;
-
-        return find;
+        return {
+          ...find,
+          targetHandle: edge.targetHandle,
+          sourceHandle: edge.sourceHandle,
+          data: edge.data,
+          hidden: edge.hidden,
+          deletable: isDeletable,
+          updatable: isConnectable,
+        };
       });
     });
 
@@ -117,21 +121,27 @@ export const Flow: React.FC<{
         let find = prev.find((n) => n.id === node.id);
         if (!find) {
           find = node;
-        } else {
-          // Reflect updates
-          find.parentNode = node.parentNode;
-          find.extent = node.extent;
-          find.position = node.position;
-          find.data = node.data;
-          find.hidden = node.hidden;
+          find.deletable = isDeletable;
+          find.draggable = !readonly;
+          find.connectable = isConnectable;
+          find.focusable = true;
+          find.selectable = true;
+          return find;
         }
-        find.deletable = !readonly && deletable;
-        find.draggable = !readonly;
-        find.connectable = !readonly && connectable;
-        find.focusable = true;
-        find.selectable = true;
 
-        return find;
+        return {
+          ...find,
+          deletable: isDeletable,
+          draggable: !readonly,
+          connectable: isConnectable,
+          focusable: true,
+          selectable: true,
+          parentNode: node.parentNode,
+          extent: node.extent,
+          position: node.position,
+          data: node.data,
+          hidden: node.hidden,
+        };
       });
     });
   }, [readonly, flow]);
@@ -273,6 +283,11 @@ export const Flow: React.FC<{
         chains.push(par);
         par = getNode(par)?.parentNode;
       }
+    }
+
+    const edgeUpdates = onDragComputeNewHandle(node, edges, getNode);
+    if (edgeUpdates.length > 0) {
+      onEdgesChange!(edgeUpdates);
     }
 
     setNodes((nds) => {
