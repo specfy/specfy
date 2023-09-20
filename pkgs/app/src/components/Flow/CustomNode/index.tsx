@@ -1,4 +1,5 @@
 import type { ComputedNode, NodeData } from '@specfy/models';
+import { IconEye, IconLayersDifference, IconTrash } from '@tabler/icons-react';
 import classNames from 'classnames';
 import type { ChangeEventHandler, KeyboardEventHandler } from 'react';
 import { useMemo, useEffect, memo, useRef, useState } from 'react';
@@ -10,6 +11,7 @@ import {
   Handle,
   Position,
   NodeResizer,
+  NodeToolbar,
 } from 'reactflow';
 
 import { ComponentIcon } from '../../Component/Icon';
@@ -18,6 +20,9 @@ import { TechPopover } from '../TechPopover';
 import type { OnNodesChangeSuper } from '../helpers';
 
 import cls from './index.module.scss';
+
+import { handleNodeChange, useComponentsStore } from '@/common/store';
+import { useEdit } from '@/hooks/useEdit';
 
 const connectionNodeIdSelector = (state: ReactFlowState) =>
   state.connectionNodeId;
@@ -28,6 +33,10 @@ const CustomNode: React.FC<NodeProps<NodeData>> = ({
   selected,
   isConnectable,
 }) => {
+  const { isEditing } = useEdit();
+  const parent = useStore((state: ReactFlowState) => {
+    return state.nodeInternals.get(id)?.parentNode;
+  });
   const updateNodeInternals = useUpdateNodeInternals();
   const connectionNodeId = useStore(connectionNodeIdSelector);
   const isConnecting = !!connectionNodeId;
@@ -98,6 +107,60 @@ const CustomNode: React.FC<NodeProps<NodeData>> = ({
         maxWidth={1000}
         maxHeight={1000}
       />
+      {isEditing && (
+        <NodeToolbar
+          style={{ width: `${data.originalSize.width}px` }}
+          position={Position.Bottom}
+          align={'start'}
+          offset={5}
+          className={cls.toolbar}
+        >
+          {parent && (
+            <TooltipFull msg="Ungroup" side="bottom">
+              <button
+                className={cls.button}
+                onClick={() =>
+                  handleNodeChange(useComponentsStore.getState(), {
+                    type: 'ungroup',
+                    id,
+                  })
+                }
+              >
+                <IconLayersDifference />
+              </button>
+            </TooltipFull>
+          )}
+          <TooltipFull msg="Hide" side="bottom">
+            <button
+              className={cls.button}
+              onClick={() =>
+                handleNodeChange(useComponentsStore.getState(), {
+                  type: 'visibility',
+                  id,
+                })
+              }
+            >
+              <IconEye />
+            </button>
+          </TooltipFull>
+          {!data.source && (
+            <TooltipFull msg="Delete" side="bottom">
+              <button
+                className={cls.button}
+                onClick={() =>
+                  handleNodeChange(useComponentsStore.getState(), {
+                    type: 'remove',
+                    id,
+                  })
+                }
+              >
+                <IconTrash />
+              </button>
+            </TooltipFull>
+          )}
+        </NodeToolbar>
+      )}
+
       <div className={cls.title}>
         <ComponentIcon data={data} noEmpty />
         <div className={cls.label}>{data.name}</div>

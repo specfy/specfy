@@ -269,3 +269,22 @@
     }
   }
 }
+
+.toolbar {
+  display: flex;
+  gap: var(--spc-s)
+}
+
+.button {
+  padding: 4px 6px;
+
+  font-size: var(--font-s);
+  color: var(--primary);
+
+  background-color: var(--bg1);
+  border: 1px solid var(--border2);
+
+  &:hover {
+    background-color: #fff;
+  }
+}
