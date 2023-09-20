@@ -1,6 +1,6 @@
 @import "../../../styles/mixin";
 
-$min-height: 34px;
+$min-height: 42px;
 
 .line {
   display: grid;
@@ -15,7 +15,7 @@ $min-height: 34px;
 
   .title {
     padding-top: 2px;
-    font-size: var(--font-s);
+    font-size: var(--font);
     font-weight: 500;
     color: var(--text-secondary);
   }
@@ -80,4 +80,11 @@ $min-height: 34px;
   >svg {
     width: 1em;
   }
+}
+
+.empty {
+  pointer-events: none;
+  padding: var(--spc-xs) var(--spc-l);
+  font-size: var(--font-s);
+  color: var(--text1);
 }

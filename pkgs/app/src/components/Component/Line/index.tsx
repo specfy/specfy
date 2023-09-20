@@ -17,7 +17,7 @@ export interface Line {
   title: string;
   params: RouteProject;
   editing?: boolean;
-  children?: React.ReactElement;
+  children?: React.ReactNode;
 }
 
 /**
@@ -122,6 +122,10 @@ const VisibilityLine: React.FC<Line & { comps?: ApiComponent[] }> = ({
 
     return tmp;
   }, [comps]);
+
+  if (comps && comps.length <= 0) {
+    return <div className={cls.empty}>Empty</div>;
+  }
 
   return (
     <div className={classnames(cls.values)}>
