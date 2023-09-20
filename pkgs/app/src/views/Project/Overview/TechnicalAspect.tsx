@@ -105,29 +105,47 @@ export const TechnicalAspects: React.FC<{
 
       {groups.service.length > 0 && (
         <ComponentLine
-          title="Services"
+          title="Service"
+          titlePlural="Services"
           comps={groups.service}
           params={params}
+          count={true}
         />
       )}
       {groups.data && groups.data.length > 0 && (
-        <ComponentLine title="Data" comps={groups.data} params={params} />
+        <ComponentLine
+          title="Data store"
+          titlePlural="Data stores"
+          comps={groups.data}
+          params={params}
+          count={true}
+        />
       )}
       {groups.hosting && groups.hosting.length > 0 && (
-        <ComponentLine title="Hosts" comps={groups.hosting} params={params} />
+        <ComponentLine
+          title="Host"
+          titlePlural="Hosts"
+          comps={groups.hosting}
+          params={params}
+          count={true}
+        />
       )}
       {groups.saas && groups.saas!.length > 0 && (
         <ComponentLine
-          title="Third-Parties"
+          title="Third-Party"
+          titlePlural="Third-Parties"
           comps={groups.saas}
           params={params}
+          count={true}
         />
       )}
       {groups.project && groups.project.length > 0 && (
         <ComponentLine
-          title="Projects"
+          title="Project"
+          titlePlural="Projects"
           comps={groups.project}
           params={params}
+          count={true}
         />
       )}
 

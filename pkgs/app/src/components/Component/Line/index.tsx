@@ -15,6 +15,7 @@ import { Button } from '@/components/Form/Button';
 
 export interface Line {
   title: string;
+  titlePlural?: string;
   params: RouteProject;
   editing?: boolean;
   children?: React.ReactNode;
@@ -70,8 +71,9 @@ export const TechItem: React.FC<{
 const InternalLine: React.FC<
   Line & {
     items?: React.ReactNode;
+    count: number | null;
   }
-> = ({ title, editing, children, items }) => {
+> = ({ title, titlePlural, editing, children, items, count }) => {
   const [show, setShow] = useState(false);
   const ref = useRef(null);
 
@@ -88,7 +90,12 @@ const InternalLine: React.FC<
 
   return (
     <div className={cls.line} ref={ref}>
-      <div className={cls.title}>{title}</div>
+      <div className={cls.title}>
+        {count !== null && (
+          <div style={{ fontSize: '22px', fontWeight: 500 }}>{count}</div>
+        )}
+        {titlePlural && count && count > 1 ? titlePlural : title}
+      </div>
       <div
         className={classnames(cls.values, editing && cls.clickToEdit)}
         onClick={handleClick}
@@ -102,26 +109,13 @@ const InternalLine: React.FC<
   );
 };
 
-const VisibilityLine: React.FC<Line & { comps?: ApiComponent[] }> = ({
-  params,
-  comps,
-}) => {
+const VisibilityLine: React.FC<
+  Line & {
+    comps?: ApiComponent[];
+    groups: { visible: ApiComponent[]; hidden: ApiComponent[] };
+  }
+> = ({ params, comps, groups }) => {
   const [show, setShow] = useState(false);
-  const group = useMemo(() => {
-    const tmp: { visible: ApiComponent[]; hidden: ApiComponent[] } = {
-      visible: [],
-      hidden: [],
-    };
-    if (!comps) {
-      return tmp;
-    }
-
-    for (const comp of comps) {
-      tmp[comp.show ? 'visible' : 'hidden'].push(comp);
-    }
-
-    return tmp;
-  }, [comps]);
 
   if (comps && comps.length <= 0) {
     return <div className={cls.empty}>Empty</div>;
@@ -129,10 +123,10 @@ const VisibilityLine: React.FC<Line & { comps?: ApiComponent[] }> = ({
 
   return (
     <div className={classnames(cls.values)}>
-      {group.visible.map((comp) => {
+      {groups.visible.map((comp) => {
         return <ComponentItem comp={comp} params={params} key={comp.id} />;
       })}
-      {group.hidden.length > 0 && !show && (
+      {groups.hidden.length > 0 && !show && (
         <Button
           size="l"
           onClick={() => setShow(true)}
@@ -140,13 +134,13 @@ const VisibilityLine: React.FC<Line & { comps?: ApiComponent[] }> = ({
           display="ghost"
         >
           <IconEyeOff />
-          {group.hidden.length}
+          {groups.hidden.length}
         </Button>
       )}
 
       {show && (
         <>
-          {group.hidden.map((comp) => {
+          {groups.hidden.map((comp) => {
             return <ComponentItem comp={comp} params={params} key={comp.id} />;
           })}
         </>
@@ -204,6 +198,7 @@ export const ComponentLineTech: React.FC<
     <InternalLine
       {...opts}
       params={opts.params}
+      count={null}
       items={<TechVisibilityLine {...opts} />}
     />
   );
@@ -212,14 +207,31 @@ export const ComponentLineTech: React.FC<
 /**
  * Display a line of components (e.g: services, databases, saas, etc.)
  */
-export const ComponentLine: React.FC<Line & { comps?: ApiComponent[] }> = (
-  opts
-) => {
+export const ComponentLine: React.FC<
+  Line & { comps?: ApiComponent[]; count?: boolean }
+> = (opts) => {
+  const groups = useMemo(() => {
+    const tmp: { visible: ApiComponent[]; hidden: ApiComponent[] } = {
+      visible: [],
+      hidden: [],
+    };
+    if (!opts.comps) {
+      return tmp;
+    }
+
+    for (const comp of opts.comps) {
+      tmp[comp.show ? 'visible' : 'hidden'].push(comp);
+    }
+
+    return tmp;
+  }, [opts.comps]);
+
   return (
     <InternalLine
       {...opts}
       params={opts.params}
-      items={<VisibilityLine {...opts} />}
+      count={opts.count ? groups.visible.length : null}
+      items={<VisibilityLine {...opts} groups={groups} />}
     />
   );
 };
