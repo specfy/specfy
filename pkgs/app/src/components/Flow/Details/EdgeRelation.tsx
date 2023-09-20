@@ -107,7 +107,11 @@ export const EdgeRelation: React.FC<
             <Dropdown.Content>
               <Dropdown.Item asChild>
                 <TooltipFull
-                  msg="Hide or show the component in the Flow"
+                  msg={
+                    edge.hidden
+                      ? 'Show the connection in the Flow'
+                      : 'Hide the connection in the Flow'
+                  }
                   side="right"
                 >
                   <Button display="item" onClick={onVisibility} size="s">
