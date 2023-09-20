@@ -314,7 +314,7 @@ export const Flow: React.FC<{
 
     // Find potential hosts
     nodes.forEach((nd) => {
-      if (nd.className?.includes(cls.highlightToGroup)) {
+      if (nd.className?.includes(cls.highlightToGroup) && !nd.hidden) {
         last = nd.id;
       }
     });
