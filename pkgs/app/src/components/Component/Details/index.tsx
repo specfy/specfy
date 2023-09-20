@@ -27,7 +27,6 @@ export const ComponentDetails: React.FC<{
   params: RouteComponent;
   component: ApiComponent;
 }> = ({ params, component }) => {
-  // TODO: Special case for project !
   // Components
   const [hosts, setHosts] = useState<ApiComponent[]>([]);
   const [contains, setContains] = useState<ApiComponent[]>([]);

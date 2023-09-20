@@ -432,7 +432,10 @@ describe('handleEdgeChange: remove', () => {
 });
 
 describe('handleEdgeChange: changeTarget', () => {
-  it('should unhide edge when updating', () => {
+  it('should keep edge hidden when updating', () => {
+    // We don't want an edge to appear when moving around a component that was also hidden
+    // unless it was specified
+
     const state = store.getState();
     const edge: ComputedEdge = {
       id: `a->b`,
@@ -465,11 +468,24 @@ describe('handleEdgeChange: changeTarget', () => {
       id: 'a->b',
       portSource: 'sb',
       portTarget: 'tt',
-      show: true,
+      show: false,
       source: 'a',
       sourceHandle: 'sl',
       target: 'b',
       targetHandle: 'tr',
     });
+
+    // ... unless it was specified
+    handleEdgeChange(state, {
+      type: 'changeTarget',
+      id: `a->b`,
+      source: 'a',
+      oldTarget: 'b',
+      newTarget: 'b',
+      newSourceHandle: 'sb',
+      newTargetHandle: 'tt',
+      show: true,
+    });
+    expect(state.select('a')!.edges[0].show).toBe(true);
   });
 });

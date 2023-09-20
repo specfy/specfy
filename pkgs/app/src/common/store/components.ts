@@ -235,7 +235,11 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
             if (typeof update === 'function') {
               copy.edges[index] = update(edge);
             } else {
-              copy.edges[index] = { ...edge, ...update, show: true };
+              copy.edges[index] = {
+                ...edge,
+                ...update,
+                show: update.show || edge.show,
+              };
             }
           }
         }
@@ -435,6 +439,7 @@ export function handleEdgeChange(
         portSource: change.newSourceHandle as any,
         target: change.newTarget,
         portTarget: change.newTargetHandle as any,
+        show: change.show,
       });
       break;
     }

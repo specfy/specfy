@@ -392,6 +392,7 @@ export const Flow: React.FC<{
         oldTarget: prevEdge.target,
         newTarget: newEdge.target!,
         newTargetHandle: newEdge.targetHandle!,
+        show: true,
       },
     ]);
   };
@@ -445,6 +446,7 @@ export const Flow: React.FC<{
           newTarget: conn.target!,
           newTargetHandle: conn.targetHandle!,
           oldTarget: conn.target!,
+          show: true, // In might have been hidden and the person think it doesn't exists
         },
       ]);
       return;

@@ -43,6 +43,7 @@ export type EdgeChangeSuper =
       oldTarget: string;
       newTarget: string;
       newTargetHandle: string;
+      show?: boolean;
     }
   | {
       type: 'create';
