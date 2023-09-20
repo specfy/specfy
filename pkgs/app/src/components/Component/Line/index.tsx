@@ -1,5 +1,5 @@
 import type { ApiComponent } from '@specfy/models';
-import { IconEyeOff } from '@tabler/icons-react';
+import { IconEyeOff, IconPlus } from '@tabler/icons-react';
 import classnames from 'classnames';
 import { useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -155,21 +155,56 @@ const VisibilityLine: React.FC<Line & { comps?: ApiComponent[] }> = ({
   );
 };
 
+const TechVisibilityLine: React.FC<
+  Line & { techs: ApiComponent['techs']; max?: number }
+> = ({ params, techs, max = 9 }) => {
+  const [show, setShow] = useState(false);
+  const group = useMemo(() => {
+    return { visible: techs.slice(0, max), hidden: techs.slice(max) };
+  }, [techs]);
+
+  return (
+    <div className={classnames(cls.values)}>
+      {group.visible.map((tech) => {
+        return <TechItem key={tech.id} techId={tech.id} params={params} />;
+      })}
+      {group.hidden.length > 0 && !show && (
+        <Button
+          size="l"
+          onClick={() => setShow(true)}
+          className={cls.hidden}
+          display="ghost"
+        >
+          <IconPlus />
+          {group.hidden.length}
+        </Button>
+      )}
+
+      {show && (
+        <>
+          {group.hidden.map((tech) => {
+            return <TechItem key={tech.id} techId={tech.id} params={params} />;
+          })}
+        </>
+      )}
+    </div>
+  );
+};
+
 /**
  * Display a line of technology (e.g: languages, tools, etc.)
  */
 export const ComponentLineTech: React.FC<
   Line & {
     techs: ApiComponent['techs'];
+    max?: number;
   }
-> = ({ techs, params, ...rest }) => {
+> = (opts) => {
   return (
     <InternalLine
-      {...rest}
-      params={params}
-      items={techs.map((tech) => {
-        return <TechItem key={tech.id} techId={tech.id} params={params} />;
-      })}
+      {...opts}
+      params={opts.params}
+      items={<TechVisibilityLine {...opts} />}
     />
   );
 };
