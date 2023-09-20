@@ -8,4 +8,4 @@ export const hMax = 2000;
 export const hDef = 40;
 export const wDef = 130;
 export const hDefHost = 72;
-export const wDefHost = 140;
+export const wDefHost = 200;
