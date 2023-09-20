@@ -79,12 +79,14 @@ export function computeTreeLayout(
     const sub = subs[index];
     if (index > 0 && index % hostsPerRow === 0) {
       // Go back to the start of the line
-      y = h;
+      y = h + 20;
       x = paddingHost;
     } else if (index > 0) {
       // Add on the right of the previous element
       const prev = layout.nodes[layout.nodes.length - 1];
       x = prev.pos.x + prev.size.width + paddingX;
+    } else if (index === 0) {
+      y += 20; // compensate icon and name being outside the node
     }
 
     layout.nodes.push(...sub.layout.nodes);

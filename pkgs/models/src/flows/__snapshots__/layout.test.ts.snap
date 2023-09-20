@@ -2,7 +2,7 @@
 
 exports[`layout > should compute a layout 1`] = `
 {
-  "height": 222,
+  "height": 282,
   "nodes": [
     {
       "id": "d",
@@ -19,7 +19,7 @@ exports[`layout > should compute a layout 1`] = `
       "id": "c",
       "pos": {
         "x": 30,
-        "y": 20,
+        "y": 40,
       },
       "size": {
         "height": 72,
@@ -30,10 +30,10 @@ exports[`layout > should compute a layout 1`] = `
       "id": "b",
       "pos": {
         "x": 30,
-        "y": 20,
+        "y": 40,
       },
       "size": {
-        "height": 122,
+        "height": 142,
         "width": 290,
       },
     },
@@ -41,7 +41,7 @@ exports[`layout > should compute a layout 1`] = `
       "id": "e",
       "pos": {
         "x": 420,
-        "y": 20,
+        "y": 40,
       },
       "size": {
         "height": 20,
@@ -52,10 +52,10 @@ exports[`layout > should compute a layout 1`] = `
       "id": "a",
       "pos": {
         "x": 30,
-        "y": 20,
+        "y": 40,
       },
       "size": {
-        "height": 172,
+        "height": 212,
         "width": 620,
       },
     },
@@ -63,7 +63,7 @@ exports[`layout > should compute a layout 1`] = `
       "id": "f",
       "pos": {
         "x": 750,
-        "y": 20,
+        "y": 40,
       },
       "size": {
         "height": 20,
@@ -167,54 +167,54 @@ exports[`layout > should output 3 components 1`] = `
 
 exports[`layout > should put 4 hosts in columns 1`] = `
 {
-  "height": 224,
+  "height": 264,
   "nodes": [
     {
       "id": "a",
       "pos": {
         "x": 30,
-        "y": 20,
+        "y": 40,
       },
       "size": {
         "height": 72,
-        "width": 140,
+        "width": 200,
       },
     },
     {
       "id": "b",
       "pos": {
-        "x": 200,
-        "y": 20,
+        "x": 260,
+        "y": 40,
       },
       "size": {
         "height": 72,
-        "width": 140,
+        "width": 200,
       },
     },
     {
       "id": "c",
       "pos": {
         "x": 30,
-        "y": 122,
+        "y": 162,
       },
       "size": {
         "height": 72,
-        "width": 140,
+        "width": 200,
       },
     },
     {
       "id": "d",
       "pos": {
-        "x": 200,
-        "y": 122,
+        "x": 260,
+        "y": 162,
       },
       "size": {
         "height": 72,
-        "width": 140,
+        "width": 200,
       },
     },
   ],
-  "width": 370,
+  "width": 490,
   "x": 0,
   "y": 0,
 }
@@ -222,7 +222,7 @@ exports[`layout > should put 4 hosts in columns 1`] = `
 
 exports[`layout > should put component inside host 1`] = `
 {
-  "height": 172,
+  "height": 212,
   "nodes": [
     {
       "id": "c",
@@ -239,7 +239,7 @@ exports[`layout > should put component inside host 1`] = `
       "id": "b",
       "pos": {
         "x": 30,
-        "y": 20,
+        "y": 40,
       },
       "size": {
         "height": 72,
@@ -250,7 +250,7 @@ exports[`layout > should put component inside host 1`] = `
       "id": "d",
       "pos": {
         "x": 360,
-        "y": 20,
+        "y": 40,
       },
       "size": {
         "height": 20,
@@ -261,10 +261,10 @@ exports[`layout > should put component inside host 1`] = `
       "id": "a",
       "pos": {
         "x": 30,
-        "y": 20,
+        "y": 40,
       },
       "size": {
-        "height": 122,
+        "height": 142,
         "width": 560,
       },
     },
@@ -272,7 +272,7 @@ exports[`layout > should put component inside host 1`] = `
       "id": "f",
       "pos": {
         "x": 690,
-        "y": 20,
+        "y": 40,
       },
       "size": {
         "height": 20,
@@ -354,32 +354,32 @@ exports[`layout > should put components in columns 1`] = `
 
 exports[`layout > should put host inside host 1`] = `
 {
-  "height": 172,
+  "height": 212,
   "nodes": [
     {
       "id": "b",
       "pos": {
         "x": 30,
-        "y": 20,
+        "y": 40,
       },
       "size": {
         "height": 72,
-        "width": 140,
+        "width": 200,
       },
     },
     {
       "id": "a",
       "pos": {
         "x": 30,
-        "y": 20,
+        "y": 40,
       },
       "size": {
-        "height": 122,
-        "width": 200,
+        "height": 142,
+        "width": 260,
       },
     },
   ],
-  "width": 260,
+  "width": 320,
   "x": 0,
   "y": 0,
 }

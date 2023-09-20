@@ -33,11 +33,10 @@ export function computeNewProjectPosition(flow: ComputedFlow): {
 const iconSize = 22;
 const padding = 12 * 2 + 6 * 2; // Outer + Inner
 const gap = 2;
-const char = 7.5;
+const char = 7.5; // it's an average since all characters are not similar in size
 export function computeWidth(name: string, min: number, max: number) {
-  return Math.min(
-    max,
-    Math.max(min, name.length * char + padding + iconSize + gap)
+  return Math.round(
+    Math.min(max, Math.max(min, name.length * char + padding + iconSize + gap))
   ); // icon + gap + padding
 }
 
@@ -45,11 +44,14 @@ export function getComponentSize(
   type: ApiComponent['type'],
   name: ApiComponent['name']
 ): ApiComponent['display']['size'] {
+  if (type === 'hosting') {
+    return {
+      height: hDefHost,
+      width: computeWidth(name, wDefHost, wMax) * 1.2,
+    };
+  }
   return {
-    height: type === 'hosting' ? hDefHost : hDef,
-    width:
-      type === 'hosting'
-        ? computeWidth(name, wDefHost, wMax)
-        : computeWidth(name, wDef, wMax),
+    height: hDef,
+    width: computeWidth(name, wDef, wMax),
   };
 }

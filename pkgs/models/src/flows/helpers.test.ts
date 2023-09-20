@@ -12,7 +12,7 @@ describe('getComponentSize', () => {
   it('should output correct size, hosting', () => {
     expect(getComponentSize('hosting', 'Kubernetes')).toStrictEqual({
       height: 72,
-      width: 140,
+      width: 240,
     });
   });
 });
