@@ -47,14 +47,105 @@ import { titleSuffix } from '@/common/string';
 import { Editable } from '@/components/Form/Editable';
 import { Loading } from '@/components/Loading';
 
+const Header: React.FC<{
+  comp: ApiComponent;
+  proj: ApiProject;
+}> = ({ comp, proj }) => {
+  const toast = useToast();
+  const edit = useEdit();
+  const storeComponents = useComponentsStore();
+  const { currentPerm } = useAuth();
+  const canEdit = currentPerm?.role !== 'viewer';
+  const navigate = useNavigate();
+
+  const onRemove = () => {
+    edit.enable(true);
+    storeComponents.remove(comp!.id);
+    toast.add({ title: 'Component deleted', status: 'success' });
+    navigate(`/${proj.orgId}/${proj.slug}`);
+  };
+
+  const onVisibility = () => {
+    edit.enable(true);
+    // storeComponents.updateField(comp!.id, 'show', show);
+    onNodesChangeProject(storeComponents)([
+      { type: 'visibility', id: comp!.id },
+    ]);
+    toast.add({
+      title: !comp!.show ? 'Component is visible' : 'Component will be hidden',
+      status: 'success',
+    });
+  };
+
+  return (
+    <Flex align="center">
+      <Flex>
+        {!comp.show && (
+          <TooltipFull msg={`This component is hidden`} side="bottom">
+            <Button size="s" display="ghost" onClick={onVisibility}>
+              <IconEyeOff />
+            </Button>
+          </TooltipFull>
+        )}
+        {comp.source && (
+          <TooltipFull
+            msg={`This component is managed by: ${comp.source}`}
+            side="bottom"
+          >
+            <Button size="s" display="ghost">
+              <IconPackageImport />
+            </Button>
+          </TooltipFull>
+        )}
+      </Flex>
+      {canEdit && (
+        <div>
+          <Dropdown.Menu>
+            <Dropdown.Trigger asChild>
+              <Button display="ghost" size="s">
+                <IconDotsVertical />
+              </Button>
+            </Dropdown.Trigger>
+            <Dropdown.Content>
+              <Dropdown.Group>
+                <Dropdown.Item asChild>
+                  <TooltipFull
+                    msg="Hide or show the component in the Flow"
+                    side="right"
+                  >
+                    <Button display="item" onClick={onVisibility} size="s">
+                      {comp.show ? (
+                        <>
+                          <IconEyeOff /> Hide
+                        </>
+                      ) : (
+                        <>
+                          <IconEye /> Show
+                        </>
+                      )}
+                    </Button>
+                  </TooltipFull>
+                </Dropdown.Item>
+                {!comp.source && (
+                  <Dropdown.Item asChild>
+                    <Button danger display="item" onClick={onRemove} size="s">
+                      <IconTrash /> Remove
+                    </Button>
+                  </Dropdown.Item>
+                )}
+              </Dropdown.Group>
+            </Dropdown.Content>
+          </Dropdown.Menu>
+        </div>
+      )}
+    </Flex>
+  );
+};
+
 export const ComponentView: React.FC<{
   proj: ApiProject;
 }> = ({ proj }) => {
-  const { currentPerm } = useAuth();
-  const toast = useToast();
   const { getNodes, viewportInitialized } = useReactFlow();
-  const navigate = useNavigate();
-  const canEdit = currentPerm?.role !== 'viewer';
 
   const [loading, setLoading] = useState<boolean>(true);
   const [comp, setComp] = useState<ApiComponent>();
@@ -102,25 +193,8 @@ export const ComponentView: React.FC<{
     setFlow(componentsToFlow(components));
   }, [components]);
 
-  const onRemove = () => {
-    edit.enable(true);
-    storeComponents.remove(comp!.id);
-    toast.add({ title: 'Component deleted', status: 'success' });
-    navigate(`/${params.org_id}/${params.project_slug}`);
-  };
-
   const onNodesChange: OnNodesChangeSuper = (changes) => {
     onNodesChangeProject(storeComponents)(changes);
-  };
-
-  const onVisibility = () => {
-    edit.enable(true);
-    // storeComponents.updateField(comp!.id, 'show', show);
-    onNodesChange([{ type: 'visibility', id: comp!.id }]);
-    toast.add({
-      title: !comp!.show ? 'Component is visible' : 'Component will be hidden',
-      status: 'success',
-    });
   };
 
   if (loading) {
@@ -194,75 +268,7 @@ export const ComponentView: React.FC<{
                 )}
               </TooltipFull>
             </Flex>
-            <Flex align="center" gap="m">
-              <Flex gap="l">
-                {!comp.show && (
-                  <TooltipFull
-                    msg={`This component is hidden in the Flow`}
-                    side="bottom"
-                  >
-                    <IconEyeOff />
-                  </TooltipFull>
-                )}
-                {comp.source && (
-                  <TooltipFull
-                    msg={`This component is managed by: ${comp.source}`}
-                    side="bottom"
-                  >
-                    <IconPackageImport />
-                  </TooltipFull>
-                )}
-              </Flex>
-              {canEdit && (
-                <div>
-                  <Dropdown.Menu>
-                    <Dropdown.Trigger asChild>
-                      <Button display="ghost" size="s">
-                        <IconDotsVertical />
-                      </Button>
-                    </Dropdown.Trigger>
-                    <Dropdown.Content>
-                      <Dropdown.Group>
-                        <Dropdown.Item asChild>
-                          <TooltipFull
-                            msg="Hide or show the component in the Flow"
-                            side="right"
-                          >
-                            <Button
-                              display="item"
-                              onClick={onVisibility}
-                              size="s"
-                            >
-                              {comp.show ? (
-                                <>
-                                  <IconEyeOff /> Hide
-                                </>
-                              ) : (
-                                <>
-                                  <IconEye /> Show
-                                </>
-                              )}
-                            </Button>
-                          </TooltipFull>
-                        </Dropdown.Item>
-                        {!comp.source && (
-                          <Dropdown.Item asChild>
-                            <Button
-                              danger
-                              display="item"
-                              onClick={onRemove}
-                              size="s"
-                            >
-                              <IconTrash /> Remove
-                            </Button>
-                          </Dropdown.Item>
-                        )}
-                      </Dropdown.Group>
-                    </Dropdown.Content>
-                  </Dropdown.Menu>
-                </div>
-              )}
-            </Flex>
+            <Header comp={comp} proj={proj} />
           </Flex>
           <Flex gap="m" align="flex-start">
             <div
