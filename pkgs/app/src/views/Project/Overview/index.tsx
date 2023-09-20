@@ -76,7 +76,9 @@ export const ProjectOverview: React.FC<{
                 <Presentation>
                   <ContentDoc
                     doc={project.description}
-                    placeholder={<Placeholder />}
+                    placeholder={
+                      <Placeholder text="Write something about this project, why it exists, what does it do and how" />
+                    }
                   />
                 </Presentation>
               </Editable>
@@ -87,6 +89,7 @@ export const ProjectOverview: React.FC<{
                 doc={project.description}
                 aiTools={['project.description', 'rewrite']}
                 onUpdate={onUpdate}
+                placeholder="Write something about this project, why it exists, what does it do and how"
               />
             )}
           </div>

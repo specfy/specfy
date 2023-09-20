@@ -150,9 +150,6 @@ export function createMiniEditorSchema() {
       Italic,
       HardBreak,
       Code,
-      Placeholder.configure({
-        placeholder: 'Write something …',
-      }),
       History.configure({
         depth: 100,
       }),

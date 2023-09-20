@@ -282,7 +282,9 @@ export const ComponentView: React.FC<{
               <Presentation>
                 <ContentDoc
                   doc={comp.description}
-                  placeholder={<Placeholder />}
+                  placeholder={
+                    <Placeholder text="Explain why it exists and how it works" />
+                  }
                 />
               </Presentation>
             </Editable>
@@ -291,6 +293,7 @@ export const ComponentView: React.FC<{
             <EditorMini
               key={comp.id}
               doc={comp.description}
+              placeholder="Explain why it exists and how it works"
               onUpdate={(doc) => {
                 storeComponents.updateField(comp.id, 'description', doc);
               }}

@@ -1,5 +1,6 @@
 import type { BlockLevelZero } from '@specfy/models';
 import { CharacterCount } from '@tiptap/extension-character-count';
+import { Placeholder } from '@tiptap/extension-placeholder';
 import { useEditor, EditorContent } from '@tiptap/react';
 import classNames from 'classnames';
 import type React from 'react';
@@ -21,6 +22,7 @@ export interface MiniEditorProps {
   minHeight?: string;
   limit?: number;
   aiTools?: AIToolbarProps['tools'];
+  placeholder?: string;
   onUpdate: (content: BlockLevelZero) => void;
 }
 const Editor: React.FC<MiniEditorProps> = ({
@@ -28,6 +30,7 @@ const Editor: React.FC<MiniEditorProps> = ({
   limit,
   minHeight,
   aiTools,
+  placeholder,
   onUpdate,
 }) => {
   const [aiLoading, setAiLoading] = useState(false);
@@ -38,6 +41,9 @@ const Editor: React.FC<MiniEditorProps> = ({
       ...schema.extensions,
       CharacterCount.configure({
         limit,
+      }),
+      Placeholder.configure({
+        placeholder: placeholder || 'Write something …',
       }),
     ],
     onUpdate: (e) => {
