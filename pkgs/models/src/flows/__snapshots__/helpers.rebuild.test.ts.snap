@@ -26,7 +26,7 @@ exports[`rebuildFlow > should create a new flow 1`] = `
         "name": "A",
         "originalSize": {
           "height": 40,
-          "width": 130,
+          "width": 100,
         },
         "source": null,
         "techId": null,
@@ -41,7 +41,7 @@ exports[`rebuildFlow > should create a new flow 1`] = `
       },
       "style": {
         "height": "40px",
-        "width": "130px",
+        "width": "100px",
       },
       "type": "custom",
     },
@@ -50,7 +50,7 @@ exports[`rebuildFlow > should create a new flow 1`] = `
         "name": "B",
         "originalSize": {
           "height": 40,
-          "width": 130,
+          "width": 100,
         },
         "source": null,
         "techId": null,
@@ -65,7 +65,7 @@ exports[`rebuildFlow > should create a new flow 1`] = `
       },
       "style": {
         "height": "40px",
-        "width": "130px",
+        "width": "100px",
       },
       "type": "custom",
     },

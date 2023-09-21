@@ -18,7 +18,7 @@ exports[`stackToBlobs > should output new blobs once and nothing the second 1`] 
         },
         "size": {
           "height": 40,
-          "width": 130,
+          "width": 100,
         },
         "zIndex": 1,
       },
@@ -69,7 +69,7 @@ exports[`stackToBlobs > should output new blobs once and nothing the second 1`] 
         },
         "size": {
           "height": 40,
-          "width": 130,
+          "width": 100,
         },
         "zIndex": 1,
       },

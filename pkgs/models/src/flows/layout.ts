@@ -1,5 +1,6 @@
 import { hDefHost, wDefHost } from './constants.js';
-import type { ComputedFlow, Layout, Tree } from './types.js';
+import { getBestHandlePosition } from './helpers.edges.js';
+import type { ComputedFlow, Layout, LayoutEdge, Tree } from './types.js';
 
 const paddingY = 30;
 const paddingX = 30;
@@ -51,6 +52,8 @@ export function computeLayout(flow: ComputedFlow): Layout {
 
   const layout = computeTreeLayout(trees, flow.nodes);
 
+  layout.edges = computeLayoutEdges(flow, layout);
+
   return layout;
 }
 
@@ -72,7 +75,14 @@ export function computeTreeLayout(
     subs.push({ id: tree.id, layout: computeTreeLayout(tree.childs, nodes) });
   }
 
-  const layout: Layout = { nodes: [], height: 0, width: 0, y: 0, x: 0 };
+  const layout: Layout = {
+    nodes: [],
+    edges: [],
+    height: 0,
+    width: 0,
+    y: 0,
+    x: 0,
+  };
 
   // Place host first on the layout
   for (let index = 0; index < subs.length; index++) {
@@ -137,6 +147,33 @@ export function computeTreeLayout(
   layout.width = Math.max(wDefHost, w);
 
   return layout;
+}
+
+export function computeLayoutEdges(
+  flow: ComputedFlow,
+  layout: Layout
+): LayoutEdge[] {
+  const edges: LayoutEdge[] = [];
+  for (const edge of flow.edges) {
+    const a = layout.nodes.find((n) => n.id === edge.source);
+    const b = layout.nodes.find((n) => n.id === edge.target);
+    if (!a || !b) {
+      console.error('failed to find target or source');
+      continue;
+    }
+
+    const handles = getBestHandlePosition(
+      { ...a.size, positionAbsolute: a.pos },
+      { ...b.size, positionAbsolute: b.pos }
+    );
+    edges.push({
+      id: edge.id,
+      sourceHandle: handles.newSource,
+      targetHandle: handles.newTarget,
+    });
+  }
+
+  return edges;
 }
 
 /**

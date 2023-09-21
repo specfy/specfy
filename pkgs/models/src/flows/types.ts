@@ -7,9 +7,15 @@ export interface LayoutNode {
   pos: { x: number; y: number };
   size: { width: number; height: number };
 }
+export interface LayoutEdge {
+  id: string;
+  sourceHandle: HandlePosition;
+  targetHandle: HandlePosition;
+}
 
 export interface Layout {
   nodes: LayoutNode[];
+  edges: LayoutEdge[];
   x: number;
   y: number;
   width: number;
@@ -99,3 +105,5 @@ export interface FlowEdge {
   source?: string | undefined;
   show?: boolean | undefined;
 }
+
+export type HandlePosition = 'left' | 'right' | 'top' | 'bottom';

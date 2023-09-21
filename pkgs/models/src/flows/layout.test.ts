@@ -156,3 +156,26 @@ describe('layout', () => {
     expect(layout).toMatchSnapshot();
   });
 });
+
+describe('edges', () => {
+  it('should output 3 components with edge', () => {
+    const layout = computeLayout({
+      edges: [
+        { id: 'b->c', source: 'b', target: 'c' },
+        { id: 'a->c', source: 'a', target: 'c' },
+      ],
+      nodes: [
+        createNode(getComp('a')),
+        createNode(getComp('b')),
+        createNode(getComp('c')),
+      ],
+    });
+
+    /**
+     *      **A**    **B**
+     *         |    /
+     *      **C**
+     */
+    expect(layout).toMatchSnapshot();
+  });
+});
