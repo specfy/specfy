@@ -415,6 +415,21 @@ export function handleNodeChange(
       });
       break;
     }
+    case 'size+pos': {
+      if (!change.dimensions) {
+        break;
+      }
+      const comp = store.select(change.id)!;
+      store.update({
+        ...comp,
+        display: {
+          ...comp.display,
+          size: change.dimensions,
+          pos: change.position,
+        },
+      });
+      break;
+    }
 
     case 'visibility': {
       store.setVisibility(change.id);

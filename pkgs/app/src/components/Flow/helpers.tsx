@@ -29,6 +29,12 @@ export type NodeChangeSuper =
   | {
       id: string;
       type: 'visibility';
+    }
+  | {
+      id: string;
+      type: 'size+pos';
+      dimensions: { width: number; height: number };
+      position: { x: number; y: number };
     };
 
 export type OnNodesChangeSuper = (changes: NodeChangeSuper[]) => void;

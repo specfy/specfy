@@ -141,6 +141,7 @@ export const Flow: React.FC<{
           position: node.position,
           data: node.data,
           hidden: node.hidden,
+          style: node.style,
         };
       });
     });
@@ -251,8 +252,97 @@ export const Flow: React.FC<{
 
   // --- Grouping
   // We move the node around
-  const onNodeDrag: ReactFlowProps['onNodeDrag'] = (_, node) => {
+  const onNodeDrag: ReactFlowProps['onNodeDrag'] = (evt, node) => {
     const intersections = getIntersectingNodes(node).map((n) => n.id);
+
+    if (node.parentNode) {
+      const par = getNode(node.parentNode)!;
+      if (evt.movementX > 0) {
+        // Push right
+        const xR = node.position.x + node.width!;
+        const diff = xR > par.width! - 20;
+
+        if (diff) {
+          onNodesChange!([
+            {
+              type: 'dimensions',
+              id: node.parentNode,
+              dimensions: {
+                height: par.height!,
+                width:
+                  par.width! + Math.max(xR - (par.width! - 20), evt.movementX),
+              },
+            },
+          ]);
+        }
+      } else if (evt.movementX < 0) {
+        // Push bot
+        const diff = node.position.x < 20;
+        const incr = Math.round(
+          Math.max(5, Math.abs(evt.movementX), 10 - node.position.x)
+        );
+
+        if (diff) {
+          onNodesChange!([
+            {
+              type: 'size+pos',
+              id: node.parentNode,
+              dimensions: {
+                width: par.width! + incr,
+                height: par.height!,
+              },
+              position: {
+                x: par.position.x - incr,
+                y: par.position.y,
+              },
+            },
+          ]);
+        }
+      }
+      if (evt.movementY > 0) {
+        // Push bot
+        const yB = node.position.y + node.height!;
+        const diff = yB > par.height! - 20;
+
+        if (diff) {
+          onNodesChange!([
+            {
+              type: 'dimensions',
+              id: node.parentNode,
+              dimensions: {
+                width: par.width!,
+                height:
+                  par.height! +
+                  Math.max(yB - (par.height! - 20), evt.movementY),
+              },
+            },
+          ]);
+        }
+      } else if (evt.movementY < 0) {
+        // Push bot
+        const diff = node.position.y < 20;
+        const incr = Math.round(
+          Math.max(5, Math.abs(evt.movementY), 10 - node.position.y)
+        );
+
+        if (diff) {
+          onNodesChange!([
+            {
+              type: 'size+pos',
+              id: node.parentNode,
+              dimensions: {
+                width: par.width!,
+                height: par.height! + incr,
+              },
+              position: {
+                x: par.position.x,
+                y: par.position.y - incr,
+              },
+            },
+          ]);
+        }
+      }
+    }
 
     const exclude: string[] = [node.id];
 
