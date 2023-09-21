@@ -126,12 +126,18 @@ describe('revertField', () => {
 describe('setVisibility', () => {
   it('should hide a component', () => {
     const state = store.getState();
-    state.create({ id: 'a', edges: [], show: true } as unknown as ApiComponent);
+    state.create({
+      id: 'a',
+      edges: [],
+      show: true,
+      inComponent: { id: null },
+    } as unknown as ApiComponent);
     state.setVisibility('a');
     expect(state.select('a')).toStrictEqual({
       id: 'a',
       show: false,
       edges: [],
+      inComponent: { id: null },
     });
   });
 
@@ -141,12 +147,14 @@ describe('setVisibility', () => {
       id: 'a',
       edges: [],
       show: false,
+      inComponent: { id: null },
     } as unknown as ApiComponent);
     state.setVisibility('a');
     expect(state.select('a')).toStrictEqual({
       id: 'a',
       show: true,
       edges: [],
+      inComponent: { id: null },
     });
   });
 
@@ -156,22 +164,26 @@ describe('setVisibility', () => {
       id: 'a',
       edges: [{ target: 'b' }],
       show: val,
+      inComponent: { id: null },
     } as unknown as ApiComponent);
     state.create({
       id: 'b',
       edges: [{ target: 'a' }],
       show: true,
+      inComponent: { id: null },
     } as unknown as ApiComponent);
     state.setVisibility('a');
     expect(state.select('a')).toStrictEqual({
       id: 'a',
       show: !val,
       edges: [{ target: 'b', show: !val }],
+      inComponent: { id: null },
     });
     expect(state.select('b')).toStrictEqual({
       id: 'b',
       show: true,
       edges: [{ target: 'a', show: !val }],
+      inComponent: { id: null },
     });
   });
 
@@ -181,18 +193,71 @@ describe('setVisibility', () => {
       id: 'a',
       edges: [{ target: 'b', show: false }],
       show: false,
+      inComponent: { id: null },
     } as unknown as ApiComponent);
     state.create({
       id: 'b',
       edges: [],
       show: false,
+      inComponent: { id: null },
     } as unknown as ApiComponent);
     state.setVisibility('a');
     expect(state.select('a')).toStrictEqual({
       id: 'a',
       show: true,
       edges: [{ target: 'b', show: false }],
+      inComponent: { id: null },
     });
+  });
+
+  it('should hide hosts and its nested component', () => {
+    const state = store.getState();
+    state.create({
+      id: 'a',
+      edges: [],
+      show: true,
+      inComponent: { id: null },
+    } as unknown as ApiComponent);
+    state.create({
+      id: 'b',
+      edges: [],
+      show: true,
+      inComponent: { id: 'a' },
+    } as unknown as ApiComponent);
+    state.setVisibility('a');
+    expect(state.select('b')).toStrictEqual({
+      id: 'b',
+      show: false,
+      inComponent: { id: 'a' },
+      edges: [],
+    });
+  });
+
+  it('should hide hosts and its nested hosts + component', () => {
+    const state = store.getState();
+    state.create({
+      id: 'a',
+      edges: [],
+      show: true,
+      type: 'hosting',
+      inComponent: { id: null },
+    } as unknown as ApiComponent);
+    state.create({
+      id: 'b',
+      edges: [],
+      show: true,
+      type: 'hosting',
+      inComponent: { id: 'a' },
+    } as unknown as ApiComponent);
+    state.create({
+      id: 'c',
+      edges: [],
+      show: true,
+      inComponent: { id: 'b' },
+    } as unknown as ApiComponent);
+    state.setVisibility('a');
+    expect(state.select('b')!.show).toBe(false);
+    expect(state.select('c')!.show).toBe(false);
   });
 });
 
@@ -329,6 +394,7 @@ describe('handleNodeChange: remove', () => {
       id: 'a',
       source: 'github',
       edges: [],
+      inComponent: { id: null },
     } as unknown as ApiComponent);
     handleNodeChange(state, { type: 'remove', id: 'a' });
 
@@ -392,13 +458,21 @@ describe('handleNodeChange: rename', () => {
 describe('handleNodeChange: visibility', () => {
   it('should change visibility of a node (false)', () => {
     const state = store.getState();
-    state.create({ id: 'a', edges: [] } as unknown as ApiComponent);
+    state.create({
+      id: 'a',
+      edges: [],
+      inComponent: { id: null },
+    } as unknown as ApiComponent);
     handleNodeChange(state, { type: 'visibility', id: 'a' });
     expect(state.select('a')!.show).toBe(false);
   });
   it('should change visibility of a node (true)', () => {
     const state = store.getState();
-    state.create({ id: 'a', edges: [] } as unknown as ApiComponent);
+    state.create({
+      id: 'a',
+      edges: [],
+      inComponent: { id: null },
+    } as unknown as ApiComponent);
     handleNodeChange(state, { type: 'visibility', id: 'a' });
     handleNodeChange(state, { type: 'visibility', id: 'a' });
     expect(state.select('a')!.show).toBe(true);

@@ -98,7 +98,7 @@ export const ProjectOverview: React.FC<{
 
           {components && components.length > 0 && (
             <div className={cls.block}>
-              <h2>Technical Aspect</h2>
+              <h2>Technical Stack</h2>
               <TechnicalAspects params={params} />
             </div>
           )}
