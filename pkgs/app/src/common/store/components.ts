@@ -123,15 +123,26 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
           }
         }
 
+        // Hide all children
+        const children = listAllChildren(components, src.id);
+
         for (const copy of components) {
           if (copy.id === id) {
             continue;
           }
 
+          if (children.includes(copy.id)) {
+            copy.show = visible;
+          }
+
           // Hide any incoming edges
           const edges: ApiComponent['edges'] = [];
           for (const edge of copy.edges) {
-            if (edge.target === id) {
+            if (
+              edge.target === id ||
+              children.includes(copy.id) ||
+              children.includes(edge.target)
+            ) {
               edge.show = visible;
             }
 
@@ -468,4 +479,17 @@ export function handleEdgeChange(
       break;
     }
   }
+}
+
+function listAllChildren(components: ApiComponent[], parent: string): string[] {
+  const list: string[] = [];
+  for (const comp of components) {
+    if (comp.inComponent.id === parent) {
+      list.push(comp.id);
+      if (comp.type === 'hosting') {
+        list.push(...listAllChildren(components, comp.id));
+      }
+    }
+  }
+  return list;
 }

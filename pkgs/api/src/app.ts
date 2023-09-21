@@ -63,6 +63,7 @@ export default async (f: FastifyInstance, opts: FastifyPluginOptions) => {
     } else if (error instanceof TransactionError) {
       return res.status(400).send(error.err);
     } else {
+      l.error(error instanceof Error ? error.message : error);
       sentry.captureException(error);
       // fastify will use parent error handler to handle this
       return serverError(res);
