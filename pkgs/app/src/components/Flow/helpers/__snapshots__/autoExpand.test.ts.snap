@@ -1,0 +1,87 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`autoExpand > should push bot 1`] = `
+[
+  {
+    "id": "a",
+    "position": {
+      "x": 0,
+      "y": 0,
+    },
+    "size": {
+      "height": 140,
+      "width": 130,
+    },
+  },
+]
+`;
+
+exports[`autoExpand > should push left 1`] = `
+[
+  {
+    "id": "a",
+    "position": {
+      "x": -20,
+      "y": 0,
+    },
+    "size": {
+      "height": 40,
+      "width": 150,
+    },
+  },
+  {
+    "id": "b",
+    "position": {
+      "x": 21,
+      "y": 0,
+    },
+    "size": {
+      "height": 40,
+      "width": 130,
+    },
+  },
+]
+`;
+
+exports[`autoExpand > should push right 1`] = `
+[
+  {
+    "id": "a",
+    "position": {
+      "x": 0,
+      "y": 0,
+    },
+    "size": {
+      "height": 40,
+      "width": 230,
+    },
+  },
+]
+`;
+
+exports[`autoExpand > should push top 1`] = `
+[
+  {
+    "id": "a",
+    "position": {
+      "x": 0,
+      "y": -20,
+    },
+    "size": {
+      "height": 60,
+      "width": 130,
+    },
+  },
+  {
+    "id": "b",
+    "position": {
+      "x": 0,
+      "y": 21,
+    },
+    "size": {
+      "height": 40,
+      "width": 130,
+    },
+  },
+]
+`;

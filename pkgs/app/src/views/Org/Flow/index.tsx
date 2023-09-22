@@ -26,7 +26,7 @@ import { Feedback } from '@/components/Feedback';
 import type {
   OnEdgesChangeSuper,
   OnNodesChangeSuper,
-} from '@/components/Flow/helpers';
+} from '@/components/Flow/types';
 
 export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   org,

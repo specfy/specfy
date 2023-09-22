@@ -5,7 +5,7 @@ import { ComponentIcon } from '../../Component/Icon';
 import * as Popover from '../../Popover';
 import type { TechSearchItem } from '../../StackSearch/TechSearch';
 import { TechSearch } from '../../StackSearch/TechSearch';
-import type { OnNodesChangeSuper } from '../helpers';
+import type { OnNodesChangeSuper } from '../types';
 
 import cls from './index.module.scss';
 

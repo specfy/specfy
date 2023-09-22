@@ -23,10 +23,12 @@ import type {
 
 import 'reactflow/dist/style.css';
 import CustomNode from './CustomNode';
-import { onDragComputeNewHandle } from './floatingEdge';
-import type { OnEdgesChangeSuper, OnNodesChangeSuper } from './helpers';
-import { highlightNode } from './helpers';
+import { autoExpand } from './helpers/autoExpand';
+import { onDragComputeNewHandle } from './helpers/floatingEdge';
+import { getParentsToHighlight } from './helpers/getParentsToHighlight';
+import { highlightNode } from './helpers/highlightNode';
 import cls from './index.module.scss';
+import type { OnEdgesChangeSuper, OnNodesChangeSuper } from './types';
 
 const nodeTypes: NodeTypes = {
   custom: CustomNode,
@@ -34,6 +36,7 @@ const nodeTypes: NodeTypes = {
 
 let movingHandle: 'source' | 'target';
 let movingEdge: ComputedEdge | undefined;
+let dragging: boolean = false;
 
 export const Flow: React.FC<{
   flow: ComputedFlow;
@@ -129,7 +132,7 @@ export const Flow: React.FC<{
           return find;
         }
 
-        return {
+        const next = {
           ...find,
           deletable: isDeletable,
           draggable: !readonly,
@@ -141,18 +144,30 @@ export const Flow: React.FC<{
           position: node.position,
           data: node.data,
           hidden: node.hidden,
-          style: node.style,
         };
+        if (deletable) {
+          next.style = node.style;
+          next.width = node.style!.width as number;
+          next.height = node.style!.height as number;
+        }
+        return next;
       });
     });
   }, [readonly, flow]);
 
   // --- Updates changes
   const middlewareNodesChange: OnNodesChange = (changes) => {
+    if (dragging && changes[0].type === 'dimensions') {
+      // When dragging and pushing the host boundaries we receive this weird changes
+      // It's unwanted and creates flickering
+      return;
+    }
+
     if (changes[0].type !== 'remove') {
       // dimensions/position/select needs to be applied right away to avoid flickering
       handleNodesChange(changes);
     }
+
     if (onNodesChange) {
       onNodesChange(changes);
     }
@@ -253,154 +268,36 @@ export const Flow: React.FC<{
   // --- Grouping
   // We move the node around
   const onNodeDrag: ReactFlowProps['onNodeDrag'] = (evt, node) => {
-    const intersections = getIntersectingNodes(node).map((n) => n.id);
+    dragging = true;
 
+    // Expand hosts
+    // It's better to be the first thing for perf reason
     if (node.parentNode) {
-      const par = getNode(node.parentNode)!;
-      if (evt.movementX > 0) {
-        // Push right
-        const xR = node.position.x + node.width!;
-        const diff = xR > par.width! - 20;
-
-        if (diff) {
-          onNodesChange!([
-            {
-              type: 'dimensions',
-              id: node.parentNode,
-              dimensions: {
-                height: par.height!,
-                width:
-                  par.width! + Math.max(xR - (par.width! - 20), evt.movementX),
-              },
-            },
-          ]);
-        }
-      } else if (evt.movementX < 0) {
-        // Push bot
-        const diff = node.position.x < 20;
-        const incr = Math.round(
-          Math.max(5, Math.abs(evt.movementX), 10 - node.position.x)
-        );
-
-        if (diff) {
-          onNodesChange!([
-            {
-              type: 'size+pos',
-              id: node.parentNode,
-              dimensions: {
-                width: par.width! + incr,
-                height: par.height!,
-              },
-              position: {
-                x: par.position.x - incr,
-                y: par.position.y,
-              },
-            },
-          ]);
-        }
-      }
-      if (evt.movementY > 0) {
-        // Push bot
-        const yB = node.position.y + node.height!;
-        const diff = yB > par.height! - 20;
-
-        if (diff) {
-          onNodesChange!([
-            {
-              type: 'dimensions',
-              id: node.parentNode,
-              dimensions: {
-                width: par.width!,
-                height:
-                  par.height! +
-                  Math.max(yB - (par.height! - 20), evt.movementY),
-              },
-            },
-          ]);
-        }
-      } else if (evt.movementY < 0) {
-        // Push bot
-        const diff = node.position.y < 20;
-        const incr = Math.round(
-          Math.max(5, Math.abs(evt.movementY), 10 - node.position.y)
-        );
-
-        if (diff) {
-          onNodesChange!([
-            {
-              type: 'size+pos',
-              id: node.parentNode,
-              dimensions: {
-                width: par.width!,
-                height: par.height! + incr,
-              },
-              position: {
-                x: par.position.x,
-                y: par.position.y - incr,
-              },
-            },
-          ]);
-        }
+      const changes = autoExpand(flow, node, evt);
+      if (changes.length > 0) {
+        onNodesChange!([{ type: 'batch', changes }]);
       }
     }
 
-    const exclude: string[] = [node.id];
-
-    // Compute parents list so we don't highlight them
-    let parent = node.parentNode;
-    while (parent) {
-      exclude.push(parent);
-      parent = getNode(parent)?.parentNode;
-    }
-
-    // Compute childs too
-    for (const n of nodes) {
-      if (n.data.type !== 'hosting') continue;
-      if (exclude.includes(n.id)) continue;
-
-      const chains = [n.id];
-      let par = n.parentNode;
-      let i = 0;
-      while (par && i < 9999) {
-        i += 1;
-
-        // One of the parent of this node is the original node we are moving
-        if (par === node.id) {
-          exclude.push(...chains);
-          break;
-        }
-
-        chains.push(par);
-        par = getNode(par)?.parentNode;
-      }
-    }
-
+    // Change handles and edge position
     const edgeUpdates = onDragComputeNewHandle(node, edges, getNode);
     if (edgeUpdates.length > 0) {
       onEdgesChange!(edgeUpdates);
     }
 
-    setNodes((nds) => {
-      return nds.map((n) => {
-        if (n.data.type !== 'hosting') {
-          return n;
-        }
-
-        // handle deep parent/child host
-        if (exclude.includes(n.id)) {
-          return n;
-        }
-
-        return {
-          ...n,
-          className: intersections.includes(n.id) ? cls.highlightToGroup : '',
-        };
-      });
-    });
+    // Highlight hosts where you can drop the node
+    // /!\ Slowest interactions
+    const intersections = getIntersectingNodes(node).map((n) => n.id);
+    if (intersections.length <= 0) {
+      return;
+    }
+    const updatedNodes = getParentsToHighlight(flow, intersections, node);
+    setNodes(updatedNodes);
   };
 
   const onNodeDragStop: ReactFlowProps['onNodeDragStop'] = (_, node) => {
     let last: string | undefined;
+    dragging = false;
 
     // Find potential hosts
     nodes.forEach((nd) => {
@@ -424,13 +321,7 @@ export const Flow: React.FC<{
       });
     });
 
-    onNodesChange!([
-      {
-        type: 'group',
-        id: node.id,
-        parentId: last,
-      },
-    ]);
+    onNodesChange!([{ type: 'group', id: node.id, parentId: last }]);
   };
 
   // ---- Edges
@@ -488,15 +379,6 @@ export const Flow: React.FC<{
   };
 
   const isValidConnection: ReactFlowProps['isValidConnection'] = (conn) => {
-    // Project scenario, we are allowed to move source and target around
-    // TODO: reup this
-    // if (onEdgesChange) {
-    //   if (movingHandle === 'source') {
-    //     return conn.sourceHandle!.startsWith('s');
-    //   }
-    //   return conn.targetHandle!.startsWith('t');
-    // }
-
     // New connection
     if (!movingEdge) {
       return conn.source !== conn.target && conn.targetHandle!.startsWith('t');
@@ -542,12 +424,7 @@ export const Flow: React.FC<{
       return;
     }
 
-    onEdgesChange([
-      {
-        type: 'create',
-        conn,
-      },
-    ]);
+    onEdgesChange([{ type: 'create', conn }]);
   };
 
   return (
@@ -576,7 +453,7 @@ export const Flow: React.FC<{
         connectionRadius={50}
         autoPanOnConnect={true}
         snapToGrid={false}
-        // snapGrid={[2, 2]}
+        snapGrid={[2, 2]}
         proOptions={{ hideAttribution: true }}
         elevateEdgesOnSelect={true}
         elevateNodesOnSelect={true}

@@ -29,7 +29,7 @@ import { Flex } from '../../../components/Flex';
 import { Flow, FlowWrapper } from '../../../components/Flow';
 import { TechPopover } from '../../../components/Flow/TechPopover';
 import { Toolbar } from '../../../components/Flow/Toolbar';
-import type { OnNodesChangeSuper } from '../../../components/Flow/helpers';
+import type { OnNodesChangeSuper } from '../../../components/Flow/types';
 import { Button } from '../../../components/Form/Button';
 import { FakeInput } from '../../../components/Form/FakeInput';
 import { NotFound } from '../../../components/NotFound';

@@ -9,7 +9,7 @@ import { Toolbar } from '../../../components/Flow/Toolbar';
 import type {
   OnEdgesChangeSuper,
   OnNodesChangeSuper,
-} from '../../../components/Flow/helpers';
+} from '../../../components/Flow/types';
 import { Loading } from '../../../components/Loading';
 import { useEdit } from '../../../hooks/useEdit';
 import type { RouteProject } from '../../../types/routes';

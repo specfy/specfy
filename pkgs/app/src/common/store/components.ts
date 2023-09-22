@@ -10,11 +10,12 @@ import { create } from 'zustand';
 import { original } from './original';
 
 import type {
+  BatchNodeUpdate,
   EdgeChangeSuper,
   NodeChangeSuper,
   OnEdgesChangeSuper,
   OnNodesChangeSuper,
-} from '@/components/Flow/helpers';
+} from '@/components/Flow/types';
 
 export interface ComponentsState {
   current: string | null;
@@ -40,6 +41,7 @@ export interface ComponentsState {
     update: Partial<FlowEdge> | ((edge: FlowEdge) => FlowEdge)
   ) => void;
   removeEdge: (source: string, target: string) => void;
+  batchLayout: (changes: BatchNodeUpdate[]) => void;
 }
 
 export const useComponentsStore = create<ComponentsState>()((set, get) => ({
@@ -284,6 +286,25 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
       })
     );
   },
+  batchLayout: (changes) => {
+    set(
+      produce((state: ComponentsState) => {
+        const components = Object.values(state.components);
+        for (const change of changes) {
+          const node = components.find((n) => n.id === change.id);
+          if (!node) {
+            continue;
+          }
+
+          node.display = {
+            ...node.display,
+            size: change.size,
+            pos: change.position || node.display.pos,
+          };
+        }
+      })
+    );
+  },
 }));
 
 /**
@@ -426,19 +447,8 @@ export function handleNodeChange(
       });
       break;
     }
-    case 'size+pos': {
-      if (!change.dimensions) {
-        break;
-      }
-      const comp = store.select(change.id)!;
-      store.update({
-        ...comp,
-        display: {
-          ...comp.display,
-          size: change.dimensions,
-          pos: change.position,
-        },
-      });
+    case 'batch': {
+      store.batchLayout(change.changes);
       break;
     }
 

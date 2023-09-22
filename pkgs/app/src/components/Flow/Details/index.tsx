@@ -12,7 +12,7 @@ import { useEdges, useNodes, useOnSelectionChange } from 'reactflow';
 import { Button } from '../../Form/Button';
 import { Tag } from '../../Tag';
 import { PreviewNode } from '../CustomNode';
-import type { OnEdgesChangeSuper, OnNodesChangeSuper } from '../helpers';
+import type { OnEdgesChangeSuper, OnNodesChangeSuper } from '../types';
 
 import type { Relation } from './EdgeRelation';
 import { EdgeRelation } from './EdgeRelation';

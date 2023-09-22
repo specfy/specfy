@@ -7,7 +7,7 @@ import {
 } from '@specfy/models/src/flows/constants';
 import { getBestHandlePosition } from '@specfy/models/src/flows/helpers.edges';
 
-import type { EdgeChangeSuper } from './helpers';
+import type { EdgeChangeSuper } from '../types';
 
 export function onDragComputeNewHandle(
   node: ComputedNode,

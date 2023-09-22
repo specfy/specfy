@@ -17,7 +17,7 @@ import {
 import { ComponentIcon } from '../../Component/Icon';
 import { TooltipFull } from '../../Tooltip';
 import { TechPopover } from '../TechPopover';
-import type { OnNodesChangeSuper } from '../helpers';
+import type { OnNodesChangeSuper } from '../types';
 
 import cls from './index.module.scss';
 

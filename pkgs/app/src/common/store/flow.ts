@@ -5,7 +5,7 @@ import { create } from 'zustand';
 import type {
   OnEdgesChangeSuper,
   OnNodesChangeSuper,
-} from '@/components/Flow/helpers';
+} from '@/components/Flow/types';
 
 interface FlowState {
   flow: ComputedFlow | null;

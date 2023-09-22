@@ -44,8 +44,8 @@ export function createNode(
     },
     position: { ...component.display.pos },
     style: {
-      width: `${component.display.size.width}px`,
-      height: `${component.display.size.height}px`,
+      width: component.display.size.width,
+      height: component.display.size.height,
     },
     hidden: component.show === false,
   };
