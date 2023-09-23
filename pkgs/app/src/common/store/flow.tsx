@@ -13,7 +13,6 @@ import {
 import { getBestHandlePosition } from '@specfy/models/src/flows/helpers.edges';
 import classNames from 'classnames';
 import { produce } from 'immer';
-import { useStore } from 'reactflow';
 import type {
   NodeMouseHandler,
   OnSelectionChangeFunc,
@@ -21,6 +20,7 @@ import type {
 } from 'reactflow';
 import { create } from 'zustand';
 
+// eslint-disable-next-line import/extensions
 import cls from '@/components/Flow/index.module.scss';
 import type {
   OnEdgesChangeSuper,
@@ -72,6 +72,8 @@ export const useFlowStore = create<FlowState>()((set) => ({
     );
   },
   onNodesChange: (store) => {
+    // We need to access the internals to check absolute position
+    // But it's only available through the React provider
     return (changes) => {
       set(
         produce((state: FlowState) => {

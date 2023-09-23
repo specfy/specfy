@@ -267,7 +267,7 @@ export const Flow: React.FC<{
 
   // --- Grouping
   // We move the node around
-  const onNodeDrag: ReactFlowProps['onNodeDrag'] = (evt, node) => {
+  const onNodeDrag: ReactFlowProps['onNodeDrag'] = (_evt, node) => {
     dragging = true;
 
     // Expand hosts

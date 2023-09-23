@@ -6,7 +6,7 @@ export const shouldResize: (
   type: string,
   store: ReturnType<typeof useStoreApi>
 ) => ShouldResize = (id, type, store) => {
-  return (evt, params) => {
+  return (_evt, params) => {
     if (type !== 'hosting') {
       return true;
     }

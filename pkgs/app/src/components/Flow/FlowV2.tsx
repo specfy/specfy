@@ -1,36 +1,19 @@
-import type { ComputedEdge, ComputedFlow, ComputedNode } from '@specfy/models';
 import classNames from 'classnames';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import type {
-  NodeTypes,
-  OnEdgesChange,
-  OnNodesChange,
-  ReactFlowInstance,
-  ReactFlowProps,
-} from 'reactflow';
+import { useRef, useState } from 'react';
+import type { NodeTypes, ReactFlowInstance } from 'reactflow';
 import {
   Background,
   BackgroundVariant,
   ConnectionMode,
   ReactFlow,
   SelectionMode,
-  updateEdge,
-  useEdgesState,
-  useNodesState,
-  useReactFlow,
   useStoreApi,
 } from 'reactflow';
-import { useStore } from 'zustand';
-import { shallow } from 'zustand/shallow';
 
 import CustomNode from './CustomNode';
-import { onDragComputeNewHandle } from './helpers/floatingEdge';
-import { getParentsToHighlight } from './helpers/getParentsToHighlight';
-import { highlightNode } from './helpers/highlightNode';
 import cls from './index.module.scss';
 import type { OnEdgesChangeSuper, OnNodesChangeSuper } from './types';
 
-import type { FlowState } from '@/common/store';
 import { useFlowStore } from '@/common/store';
 
 export interface Props {
@@ -81,7 +64,6 @@ export const FlowV2: React.FC<Props> = ({ readonly }) => {
         cls.hasHighlight
       )}
     >
-      v2
       <ReactFlow
         nodes={nodes}
         edges={edges}

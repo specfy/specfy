@@ -6,17 +6,15 @@ import { describe, it, expect, afterEach } from 'vitest';
 import { useFlowStore as store } from './flow';
 
 afterEach(() => {
-  store.setState({ flow: null });
+  store.setState({ nodes: [], edges: [], nodeSelected: null });
 });
 
 describe('setCurrent', () => {
   it('should setCurrent flow', () => {
     const state = store.getState();
     state.setCurrent({ nodes: [], edges: [] });
-    expect(store.getState().flow).toStrictEqual({
-      nodes: [],
-      edges: [],
-    });
+    expect(store.getState().nodes).toStrictEqual([]);
+    expect(store.getState().nodes).toStrictEqual([]);
   });
 });
 
@@ -25,10 +23,12 @@ describe('updateNode', () => {
     const state = store.getState();
     const node = createNode(getBlobComponent({ id: 'project', orgId: 'acme' }));
     state.setCurrent({ nodes: [node], edges: [] });
-    state.updateNode([
-      { type: 'position', id: node.id, position: { x: 10, y: 11 } },
-    ]);
-    expect(store.getState().flow?.nodes[0].position).toStrictEqual({
+    state.onNodesChange({
+      getState() {
+        return { nodeInternals: new Map() };
+      },
+    } as any)([{ type: 'position', id: node.id, position: { x: 10, y: 11 } }]);
+    expect(store.getState().nodes[0].position).toStrictEqual({
       x: 10,
       y: 11,
     });
@@ -52,7 +52,7 @@ describe('updateEdge', () => {
       targetHandle: 'tr',
     };
     state.setCurrent({ nodes: [nodeA, nodeB], edges: [edge] });
-    state.updateEdge([
+    state.onEdgesChange([
       {
         type: 'changeTarget',
         id: edge.id,
@@ -63,7 +63,7 @@ describe('updateEdge', () => {
         newTarget: 'b',
       },
     ]);
-    expect(store.getState().flow?.edges[0]).toStrictEqual({
+    expect(store.getState().edges[0]).toStrictEqual({
       id: 'a->b',
       source: 'a',
       sourceHandle: 'sb',
