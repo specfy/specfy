@@ -1,4 +1,4 @@
-import type { ComputedFlow, ApiComponent, ApiProject } from '@specfy/models';
+import type { ApiComponent, ApiProject } from '@specfy/models';
 import { componentsToFlow } from '@specfy/models/src/flows/transform';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
@@ -8,7 +8,7 @@ import { ComponentIcon } from '../../../components/Component/Icon';
 import { ComponentLine } from '../../../components/Component/Line';
 import { Container } from '../../../components/Container';
 import { Flex } from '../../../components/Flex';
-import { Flow, FlowWrapper } from '../../../components/Flow';
+import { FlowWrapper } from '../../../components/Flow';
 import { Toolbar } from '../../../components/Flow/Toolbar';
 import { Loading } from '../../../components/Loading';
 import { NotFound } from '../../../components/NotFound';
@@ -17,10 +17,11 @@ import type { RouteProject, RouteTech } from '../../../types/routes';
 
 import cls from './index.module.scss';
 
-import { useComponentsStore } from '@/common/store';
+import { useComponentsStore, useFlowStore } from '@/common/store';
 import { titleSuffix } from '@/common/string';
 import { supportedIndexed } from '@/common/techs';
 import type { TechInfo } from '@/common/techs';
+import { FlowV2 } from '@/components/Flow/FlowV2';
 
 export const Tech: React.FC<{
   proj: ApiProject;
@@ -30,11 +31,11 @@ export const Tech: React.FC<{
   const storeComponents = useComponentsStore();
 
   const [components, setComponents] = useState<ApiComponent[]>();
-  const [flow, setFlow] = useState<ComputedFlow>();
   const [ready, setReady] = useState<boolean>(false);
   const [techname, setTechName] = useState<string>();
   const [usedBy, setUsedBy] = useState<ApiComponent[]>([]);
   const [info, setInfo] = useState<TechInfo>();
+  const storeFlow = useFlowStore();
 
   useEffect(() => {
     setComponents(Object.values(storeComponents.components));
@@ -84,7 +85,9 @@ export const Tech: React.FC<{
       return;
     }
 
-    setFlow(componentsToFlow(components));
+    storeFlow.setCurrent(componentsToFlow(components));
+    storeFlow.setReadonly(true);
+    storeFlow.setHighlight(null);
   }, [components]);
 
   if (!ready) {
@@ -114,15 +117,11 @@ export const Tech: React.FC<{
       </Container.Left2Third>
       <Container.Right1Third>
         <FlowWrapper columnMode>
-          {flow && (
-            <>
-              <Flow flow={flow} readonly />
-              <Toolbar bottom>
-                <Toolbar.Fullscreen to={`${proj.orgId}/${proj.slug}`} />
-                <Toolbar.Zoom />
-              </Toolbar>
-            </>
-          )}
+          <FlowV2 />
+          <Toolbar bottom>
+            <Toolbar.Fullscreen to={`${proj.orgId}/${proj.slug}`} />
+            <Toolbar.Zoom />
+          </Toolbar>
         </FlowWrapper>
       </Container.Right1Third>
     </Container>

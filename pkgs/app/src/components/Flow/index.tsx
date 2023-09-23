@@ -74,8 +74,8 @@ export const Flow: React.FC<{
     useState<ReactFlowInstance | null>(null);
   const [hasHighlight, setHasHighlight] = useState(!!highlight);
   const [hover, setHover] = useState<string | null>(null);
-  const [nodes, setNodes, handleNodesChange] = useNodesState(flow.nodes);
-  const [edges, setEdges, handleEdgesChange] = useEdgesState(flow.edges);
+  const [nodes, setNodes, handleNodesChange] = useNodesState([]);
+  const [edges, setEdges, handleEdgesChange] = useEdgesState([]);
   const [select, setSelect] = useState<string | null>(null);
 
   // Highlight change usually means we switched the parent page

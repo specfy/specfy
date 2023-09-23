@@ -1,10 +1,9 @@
-import type { ComputedFlow, ApiProject, ApiComponent } from '@specfy/models';
+import type { ApiProject, ApiComponent } from '@specfy/models';
 import { componentsToFlow } from '@specfy/models/src/flows/transform';
 import { useCallback, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
-import { Flow, FlowWrapper } from '../../../components/Flow';
-import { FlowDetails } from '../../../components/Flow/Details';
+import { FlowWrapper } from '../../../components/Flow';
 import { Toolbar } from '../../../components/Flow/Toolbar';
 import type {
   OnEdgesChangeSuper,
@@ -21,10 +20,12 @@ import {
   onEdgesChangeProject,
   onNodesChangeProject,
   useComponentsStore,
+  useFlowStore,
   useProjectStore,
 } from '@/common/store';
 import { titleSuffix } from '@/common/string';
 import { Feedback } from '@/components/Feedback';
+import { FlowProject } from '@/components/Flow/FlowProject';
 
 export const ProjectFlow: React.FC<{
   proj: ApiProject;
@@ -33,7 +34,7 @@ export const ProjectFlow: React.FC<{
   const { isEditing, enable } = useEdit();
   const storeComponents = useComponentsStore();
   const storeProjects = useProjectStore();
-  const [flow, setFlow] = useState<ComputedFlow>();
+  const storeFlow = useFlowStore();
 
   const [loading, setLoading] = useState<boolean>(true);
   const [components, setComponents] = useState<ApiComponent[]>();
@@ -47,9 +48,11 @@ export const ProjectFlow: React.FC<{
       return;
     }
 
-    setFlow(componentsToFlow(components));
-
     setLoading(false);
+
+    storeFlow.setCurrent(componentsToFlow(components));
+    storeFlow.setReadonly(true);
+    storeFlow.setHighlight(null);
   }, [components]);
 
   // ---- Event Handlers
@@ -80,7 +83,7 @@ export const ProjectFlow: React.FC<{
     return id;
   };
 
-  if (loading || !flow) {
+  if (loading) {
     return <Loading />;
   }
 
@@ -89,29 +92,27 @@ export const ProjectFlow: React.FC<{
       <Helmet title={`Flow - ${proj.name} ${titleSuffix}`} />
 
       <FlowWrapper>
-        <Flow
-          readonly={!isEditing}
-          flow={flow}
-          downlightOther={false}
-          keepHighlightOnSelect={true}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onCreateNode={onCreateNode}
-        />
+        <FlowProject />
 
-        <FlowDetails
-          flow={flow}
+        {/* <FlowDetails
           readonly={!isEditing}
           onNodesChange={onNodesChange}
           onEdgesChange={onEdgesChange}
-        />
+        /> */}
         {isEditing && (
           <Toolbar left center visible>
             <Toolbar.AddComponents />
           </Toolbar>
         )}
         <Toolbar left top visible>
-          {!isEditing && <Toolbar.Readonly onClick={() => enable(true)} />}
+          {!isEditing && (
+            <Toolbar.Readonly
+              onClick={() => {
+                enable(true);
+                storeFlow.setReadonly(false);
+              }}
+            />
+          )}
           <Toolbar.Help>
             <div>
               <p>

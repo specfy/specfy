@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import type {
   ComputedEdge,
   ComputedFlow,
@@ -20,7 +21,7 @@ import type {
 } from 'reactflow';
 import { create } from 'zustand';
 
-// eslint-disable-next-line import/extensions
+import { autoExpand } from '@/components/Flow/helpers/autoExpand';
 import cls from '@/components/Flow/index.module.scss';
 import type {
   OnEdgesChangeSuper,
@@ -33,7 +34,10 @@ export interface FlowState {
   deletable: boolean;
   connectable: boolean;
   nodeSelected: string | null;
+  highlightId: string | null;
+  readonly: boolean;
   setReadonly: (read: boolean) => void;
+  setHighlight: (id: string | null) => void;
   setCurrent: (flow: ComputedFlow) => void;
   onNodesChange: (store: ReturnType<typeof useStoreApi>) => OnNodesChangeSuper;
   onEdgesChange: OnEdgesChangeSuper;
@@ -52,12 +56,23 @@ export const useFlowStore = create<FlowState>()((set) => ({
   deletable: false,
   connectable: false,
   nodeSelected: null,
+  highlightId: null,
+  readonly: false,
   setCurrent: (flow) => {
     set({ nodes: flow.nodes, edges: flow.edges });
+  },
+  setHighlight: (id) => {
+    set(
+      produce((state: FlowState) => {
+        highlightNode(id || 'nope', state.nodes, state.edges);
+        state.highlightId = id;
+      })
+    );
   },
   setReadonly: (read) => {
     set(
       produce((state: FlowState) => {
+        state.readonly = read;
         const isDeletable = !read && state.deletable;
         const isConnectable = !read && state.connectable;
 
@@ -83,7 +98,15 @@ export const useFlowStore = create<FlowState>()((set) => ({
           for (const change of changes) {
             switch (change.type) {
               case 'add': {
-                nodes.push(change.item);
+                nodes.push({
+                  ...change.item,
+                  deletable: state.readonly && state.deletable,
+                  draggable: !state.readonly,
+                  connectable: state.readonly && state.connectable,
+                  focusable: true,
+                  selectable: true,
+                });
+                console.log(nodes);
                 break;
               }
 
@@ -117,11 +140,17 @@ export const useFlowStore = create<FlowState>()((set) => ({
                   item.dragging = change.dragging;
                 }
 
+                // We need absolute position
+                const internals = store.getState().nodeInternals;
                 recomputeHandles(
-                  item,
-                  Array.from(store.getState().nodeInternals.values()),
+                  internals.get(change.id)!,
+                  Array.from(internals.values()),
                   edges
                 );
+
+                if (item.parentNode) {
+                  autoExpand(item, nodes);
+                }
 
                 break;
               }
@@ -137,12 +166,33 @@ export const useFlowStore = create<FlowState>()((set) => ({
               }
 
               case 'remove': {
-                const index = nodes.findIndex((n) => n.id === change.id);
-                delete nodes[index];
+                const nodeIds = [
+                  ...listAllChildren(nodes, change.id),
+                  change.id,
+                ];
+                // Delete childs
+                for (let index = 0; index < nodes.length; index++) {
+                  if (nodeIds.includes(nodes[index].id)) {
+                    delete nodes[index];
+                  }
+                }
+                // Delete all related edges
+                for (let index = 0; index < edges.length; index++) {
+                  if (
+                    nodeIds.includes(edges[index].source) ||
+                    nodeIds.includes(edges[index].target)
+                  ) {
+                    delete edges[index];
+                  }
+                }
                 break;
               }
             }
           }
+
+          // Clear out delete because undefined
+          state.edges = state.edges.filter(Boolean);
+          state.nodes = state.nodes.filter(Boolean);
         })
       );
     };
@@ -167,7 +217,7 @@ export const useFlowStore = create<FlowState>()((set) => ({
       produce((state: FlowState) => {
         if (opts.nodes.length !== 1) {
           state.nodeSelected = null;
-          highlightNode('nope', state.nodes, state.edges);
+          highlightNode(state.highlightId || 'nope', state.nodes, state.edges);
           return;
         }
         if (state.nodeSelected === opts.nodes[0].id) {
@@ -189,7 +239,11 @@ export const useFlowStore = create<FlowState>()((set) => ({
   onNodeMouseLeave: () => {
     set(
       produce((state: FlowState) => {
-        highlightNode(state.nodeSelected || 'nope', state.nodes, state.edges);
+        highlightNode(
+          state.nodeSelected || state.highlightId || 'nope',
+          state.nodes,
+          state.edges
+        );
       })
     );
   },
@@ -273,4 +327,17 @@ export function recomputeHandles(
     edge.sourceHandle = mapSourceHandleReverse[c.newSource];
     edge.targetHandle = mapTargetHandleReverse[c.newTarget];
   }
+}
+
+function listAllChildren(nodes: ComputedNode[], parent: string): string[] {
+  const list: string[] = [];
+  for (const comp of nodes) {
+    if (comp.parentNode === parent) {
+      list.push(comp.id);
+      if (comp.type === 'hosting') {
+        list.push(...listAllChildren(nodes, comp.id));
+      }
+    }
+  }
+  return list;
 }

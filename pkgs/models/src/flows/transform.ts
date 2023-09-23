@@ -42,17 +42,20 @@ export function createNode(
       originalSize: component.display.size,
       source: component.source,
     },
-    position: { ...component.display.pos },
+    position: component.display.pos,
     style: {
       width: component.display.size.width,
       height: component.display.size.height,
     },
+    width: component.display.size.width,
+    height: component.display.size.height,
     hidden: component.show === false,
   };
 
   if (component.inComponent.id) {
-    node.extent = 'parent';
+    // node.extent = 'parent';
     node.parentNode = component.inComponent.id;
+    node.expandParent = true;
   }
 
   return node;

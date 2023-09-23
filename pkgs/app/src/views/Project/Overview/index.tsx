@@ -1,8 +1,4 @@
-import type {
-  ComputedFlow,
-  ApiComponent,
-  BlockLevelZero,
-} from '@specfy/models';
+import type { ApiComponent, BlockLevelZero } from '@specfy/models';
 import { componentsToFlow } from '@specfy/models/src/flows/transform';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -14,7 +10,7 @@ import {
   Presentation,
 } from '../../../components/Content';
 import { EditorMini } from '../../../components/Editor/Mini';
-import { Flow, FlowWrapper } from '../../../components/Flow';
+import { FlowWrapper } from '../../../components/Flow';
 import { Toolbar } from '../../../components/Flow/Toolbar';
 import { ListActivity } from '../../../components/ListActivity';
 import { ProjectLinks } from '../../../components/Project/Links';
@@ -26,19 +22,29 @@ import type { RouteProject } from '../../../types/routes';
 import { TechnicalAspects } from './TechnicalAspect';
 import cls from './index.module.scss';
 
-import { useComponentsStore, useProjectStore } from '@/common/store';
+import {
+  useComponentsStore,
+  useFlowStore,
+  useProjectStore,
+} from '@/common/store';
+import { FlowV2 } from '@/components/Flow/FlowV2';
 import { Editable } from '@/components/Form/Editable';
 
 export const ProjectOverview: React.FC<{
   params: RouteProject;
 }> = ({ params }) => {
   const edit = useEdit();
+  const storeFlow = useFlowStore();
   const storeComponents = useComponentsStore();
   const { update, project } = useProjectStore();
 
   const [components, setComponents] = useState<ApiComponent[]>();
-  const [flow, setFlow] = useState<ComputedFlow>();
   const isEditing = edit.isEditing;
+
+  useEffect(() => {
+    // Reset to make sure it doesn't display old data and zoom can work
+    storeFlow.setCurrent({ nodes: [], edges: [] });
+  }, []);
 
   useEffect(() => {
     setComponents(Object.values(storeComponents.components));
@@ -49,8 +55,9 @@ export const ProjectOverview: React.FC<{
       return;
     }
 
-    const tmp = componentsToFlow(components);
-    setFlow(tmp);
+    storeFlow.setCurrent(componentsToFlow(components));
+    storeFlow.setReadonly(true);
+    storeFlow.setHighlight(null);
   }, [components]);
 
   const onUpdate = useCallback(
@@ -111,15 +118,11 @@ export const ProjectOverview: React.FC<{
       </Container.Left2Third>
       <Container.Right1Third>
         <FlowWrapper key={project.id} columnMode>
-          {flow && (
-            <>
-              <Flow flow={flow} readonly />
-              <Toolbar bottom>
-                <Toolbar.Fullscreen to={`${project.orgId}/${project.slug}`} />
-                <Toolbar.Zoom />
-              </Toolbar>
-            </>
-          )}
+          <FlowV2 />
+          <Toolbar bottom>
+            <Toolbar.Fullscreen to={`${project.orgId}/${project.slug}`} />
+            <Toolbar.Zoom />
+          </Toolbar>
         </FlowWrapper>
 
         <Card padded seamless transparent>

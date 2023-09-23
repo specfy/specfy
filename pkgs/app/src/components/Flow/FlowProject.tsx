@@ -1,5 +1,8 @@
+import { nanoid } from '@specfy/core/src/id';
+import type { ComputedNode } from '@specfy/models';
+import { getComponentSize } from '@specfy/models/src/flows/helpers';
 import classNames from 'classnames';
-import { useRef, useState } from 'react';
+import { useCallback, useRef, useState } from 'react';
 import type { NodeTypes, ReactFlowInstance } from 'reactflow';
 import {
   Background,
@@ -39,7 +42,7 @@ const nodeTypes: NodeTypes = {
   custom: CustomNode,
 };
 
-export const FlowV2: React.FC<Props> = ({ readonly }) => {
+export const FlowProject: React.FC<Props> = ({ readonly }) => {
   const {
     nodes,
     edges,
@@ -53,7 +56,61 @@ export const FlowV2: React.FC<Props> = ({ readonly }) => {
   const store = useStoreApi();
 
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
-  const [, setReactFlowInstance] = useState<ReactFlowInstance | null>(null);
+  const [reactFlowInstance, setReactFlowInstance] =
+    useState<ReactFlowInstance | null>(null);
+
+  // --- Dragging
+  // Before dragging a new node is over
+  const onDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'move';
+  }, []);
+
+  // When we finishing dropping a new node
+  const onDrop: React.DragEventHandler<HTMLDivElement> = (
+    event: React.DragEvent<HTMLDivElement>
+  ) => {
+    event.preventDefault();
+
+    if (!reactFlowWrapper.current || !reactFlowInstance) {
+      return;
+    }
+
+    const reactFlowBounds = reactFlowWrapper.current.getBoundingClientRect();
+    const type = event.dataTransfer.getData('application/reactflow');
+
+    // check if the dropped element is valid
+    if (typeof type === 'undefined' || !type) {
+      return;
+    }
+
+    const position = reactFlowInstance.project({
+      x: event.clientX - reactFlowBounds.left,
+      y: event.clientY - reactFlowBounds.top,
+    });
+
+    const size = getComponentSize(type as any, 'untitled');
+    const node: ComputedNode = {
+      id: nanoid(),
+      type: 'custom',
+      data: {
+        name: 'untitled',
+        techId: null,
+        type: type as any,
+        typeId: null,
+        originalSize: size,
+      },
+      position: position,
+      style: {
+        width: size.width,
+        height: size.height,
+      },
+      width: size.width,
+      height: size.height,
+      hidden: false,
+    };
+    onNodesChange(store)([{ type: 'add', item: node }]);
+  };
 
   return (
     <div
@@ -83,8 +140,10 @@ export const FlowV2: React.FC<Props> = ({ readonly }) => {
         elevateEdgesOnSelect={true}
         elevateNodesOnSelect={true}
         selectionMode={SelectionMode.Partial}
-        // Drag
         onInit={setReactFlowInstance}
+        // Drag
+        onDragOver={onDragOver}
+        onDrop={onDrop}
         // Global
         onNodesChange={onNodesChange(store)}
         onEdgesChange={onEdgesChange}

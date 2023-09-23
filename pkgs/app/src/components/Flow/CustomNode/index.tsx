@@ -13,6 +13,7 @@ import {
   Position,
   NodeResizer,
   NodeToolbar,
+  useStoreApi,
 } from 'reactflow';
 
 import { ComponentIcon } from '../../Component/Icon';
@@ -22,7 +23,7 @@ import type { OnNodesChangeSuper } from '../types';
 
 import cls from './index.module.scss';
 
-import { handleNodeChange, useComponentsStore } from '@/common/store';
+import { useFlowStore } from '@/common/store';
 import { useEdit } from '@/hooks/useEdit';
 
 const connectionNodeIdSelector = (state: ReactFlowState) =>
@@ -34,6 +35,8 @@ const CustomNode: React.FC<NodeProps<NodeData>> = ({
   selected,
   isConnectable,
 }) => {
+  const storeFlow = useFlowStore();
+  const store = useStoreApi();
   const { isEditing } = useEdit();
   const parent = useStore((state: ReactFlowState) => {
     return state.nodeInternals.get(id)?.parentNode;
@@ -121,10 +124,12 @@ const CustomNode: React.FC<NodeProps<NodeData>> = ({
               <button
                 className={cls.button}
                 onClick={() =>
-                  handleNodeChange(useComponentsStore.getState(), {
-                    type: 'ungroup',
-                    id,
-                  })
+                  storeFlow.onNodesChange(store)([
+                    {
+                      type: 'ungroup',
+                      id,
+                    },
+                  ])
                 }
               >
                 <IconLayersDifference />
@@ -135,10 +140,12 @@ const CustomNode: React.FC<NodeProps<NodeData>> = ({
             <button
               className={cls.button}
               onClick={() =>
-                handleNodeChange(useComponentsStore.getState(), {
-                  type: 'visibility',
-                  id,
-                })
+                storeFlow.onNodesChange(store)([
+                  {
+                    type: 'visibility',
+                    id,
+                  },
+                ])
               }
             >
               <IconEye />
@@ -149,10 +156,12 @@ const CustomNode: React.FC<NodeProps<NodeData>> = ({
               <button
                 className={cls.button}
                 onClick={() =>
-                  handleNodeChange(useComponentsStore.getState(), {
-                    type: 'remove',
-                    id,
-                  })
+                  storeFlow.onNodesChange(store)([
+                    {
+                      type: 'remove',
+                      id,
+                    },
+                  ])
                 }
               >
                 <IconTrash />

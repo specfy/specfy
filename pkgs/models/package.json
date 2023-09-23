@@ -5,6 +5,7 @@
   "main": "build/index.js",
   "typings": "build/index.d.ts",
   "module": "build/index.js",
+  "source": "src/index.ts",
   "type": "module",
   "scripts": {
     "test": "vitest",
