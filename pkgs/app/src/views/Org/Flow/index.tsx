@@ -7,7 +7,7 @@ import { useReactFlow } from 'reactflow';
 
 import { updateFlow, useGetFlow } from '../../../api';
 import { isError } from '../../../api/helpers';
-import { Flow, FlowWrapper } from '../../../components/Flow';
+import { FlowWrapper } from '../../../components/Flow';
 import { FlowDetails } from '../../../components/Flow/Details';
 import { Toolbar } from '../../../components/Flow/Toolbar';
 import { Button } from '../../../components/Form/Button';
@@ -23,10 +23,7 @@ import { useFlowStore } from '@/common/store';
 import { titleSuffix } from '@/common/string';
 import { Banner } from '@/components/Banner';
 import { Feedback } from '@/components/Feedback';
-import type {
-  OnEdgesChangeSuper,
-  OnNodesChangeSuper,
-} from '@/components/Flow/types';
+import { FlowV2 } from '@/components/Flow/FlowV2';
 
 export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   org,
@@ -53,6 +50,7 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
     }
 
     store.setCurrent(resFlow.data.data.flow);
+    store.setReadonly(true);
     setReady(true);
   }, [resFlow.data]);
 
@@ -96,14 +94,7 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
 
   const onCancel = () => {
     setEditing(false);
-  };
-
-  const onNodesChange: OnNodesChangeSuper = (changes) => {
-    store.updateNode(changes);
-  };
-
-  const onEdgesChange: OnEdgesChangeSuper = (changes) => {
-    store.updateEdge(changes);
+    store.setReadonly(true);
   };
 
   if (!ready) {
@@ -113,81 +104,75 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   return (
     <div className={cls.flow}>
       <Helmet title={`Flow - ${org.name} ${titleSuffix}`} />
-      {store.flow && (
-        <>
-          <FlowWrapper>
-            {!introRead && (
-              <div className={cls.intro}>
-                <Banner
-                  type="primary"
-                  size="s"
-                  onClose={() => setIntroRead(true)}
-                >
+      <FlowWrapper>
+        {!introRead && (
+          <div className={cls.intro}>
+            <Banner type="primary" size="s" onClose={() => setIntroRead(true)}>
+              Your organization flow is automatically generated based on your
+              projects. <br />
+              You can only modify the projects position and edges placement.
+            </Banner>
+          </div>
+        )}
+        <FlowV2
+          downlightOther={false}
+          keepHighlightOnSelect={true}
+          readonly={!editing}
+          deletable={false}
+          connectable={false}
+        />
+
+        <FlowDetails readonly={true} flow={store} />
+        {canEdit && (
+          <Toolbar left top visible>
+            {!editing && (
+              <Toolbar.Readonly
+                onClick={() => {
+                  setEditing(true);
+                  store.setReadonly(false);
+                }}
+              />
+            )}
+
+            {editing && (
+              <Toolbar.Inner>
+                <>
+                  <Button
+                    onClick={() => onSave()}
+                    display="ghost"
+                    loading={publishing}
+                  >
+                    <IconCheck />
+                    Publish
+                  </Button>
+                  <Button onClick={() => onCancel()} display="ghost">
+                    <IconX />
+                  </Button>
+                </>
+              </Toolbar.Inner>
+            )}
+            <Toolbar.Help>
+              <div>
+                <p>
                   Your organization flow is automatically generated based on
-                  your projects. <br />
-                  You can only modify the projects position and edges placement.
-                </Banner>
+                  your projects. You can only modify the projects position and
+                  edges placement.
+                </p>
+                <p>
+                  Only contributors can modify this flow. History of
+                  modifications is not saved at this moment.
+                </p>
               </div>
-            )}
-            <Flow
-              flow={store.flow}
-              downlightOther={false}
-              keepHighlightOnSelect={true}
-              readonly={!editing}
-              deletable={false}
-              connectable={false}
-              onEdgesChange={onEdgesChange}
-              onNodesChange={onNodesChange}
-            />
-
-            <FlowDetails readonly={true} flow={store.flow} />
-            {canEdit && (
-              <Toolbar left top visible>
-                {!editing && (
-                  <Toolbar.Readonly onClick={() => setEditing(true)} />
-                )}
-
-                {editing && (
-                  <Toolbar.Inner>
-                    <>
-                      <Button
-                        onClick={() => onSave()}
-                        display="ghost"
-                        loading={publishing}
-                      >
-                        <IconCheck />
-                        Publish
-                      </Button>
-                      <Button onClick={() => onCancel()} display="ghost">
-                        <IconX />
-                      </Button>
-                    </>
-                  </Toolbar.Inner>
-                )}
-                <Toolbar.Help>
-                  <div>
-                    <p>
-                      Your organization flow is automatically generated based on
-                      your projects. You can only modify the projects position
-                      and edges placement.
-                    </p>
-                    <p>
-                      Only contributors can modify this flow. History of
-                      modifications is not saved at this moment.
-                    </p>
-                  </div>
-                  <br />
-                  <Feedback />
-                </Toolbar.Help>
-              </Toolbar>
-            )}
-            <Toolbar bottom visible>
-              <Toolbar.Zoom />
-              {/* <Toolbar.History /> */}
-            </Toolbar>
-          </FlowWrapper>
-        </>
-      )}
+              <br />
+              <Feedback />
+            </Toolbar.Help>
+          </Toolbar>
+        )}
+        <Toolbar bottom visible>
+          <Toolbar.Zoom />
+          {/* <Toolbar.History /> */}
+        </Toolbar>
+      </FlowWrapper>
     </div>
   );
 };

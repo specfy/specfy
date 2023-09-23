@@ -353,7 +353,7 @@ export function handleNodeChange(
         const comp = store.select(change.id)!;
         store.updateField(change.id, 'display', {
           ...comp.display,
-          pos: change.position,
+          pos: { ...change.position },
         });
       }
       break;
@@ -442,7 +442,7 @@ export function handleNodeChange(
         ...comp,
         display: {
           ...comp.display,
-          size: change.dimensions,
+          size: { ...change.dimensions },
         },
       });
       break;

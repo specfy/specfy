@@ -6,7 +6,7 @@ import cls from '../index.module.scss';
  * When dragging a node we highlight potential parents that could receive this node.
  */
 export function getParentsToHighlight(
-  flow: ComputedFlow,
+  nodes: ComputedNode[],
   intersections: string[],
   node: ComputedNode
 ) {
@@ -16,11 +16,11 @@ export function getParentsToHighlight(
   let parent = node.parentNode;
   while (parent) {
     exclude.push(parent);
-    parent = flow.nodes.find((n) => n.id === parent)?.parentNode;
+    parent = nodes.find((n) => n.id === parent)?.parentNode;
   }
 
   // Compute childs too
-  for (const el of flow.nodes) {
+  for (const el of nodes) {
     if (el.data.type !== 'hosting') continue;
     if (exclude.includes(el.id)) continue;
 
@@ -37,11 +37,11 @@ export function getParentsToHighlight(
       }
 
       chains.push(par);
-      par = flow.nodes.find((n) => n.id === parent)?.parentNode;
+      par = nodes.find((n) => n.id === parent)?.parentNode;
     }
   }
 
-  return flow.nodes.map((n) => {
+  return nodes.map((n) => {
     if (n.data.type !== 'hosting') {
       return n;
     }

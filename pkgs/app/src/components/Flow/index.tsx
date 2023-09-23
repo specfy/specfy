@@ -291,7 +291,7 @@ export const Flow: React.FC<{
     if (intersections.length <= 0) {
       return;
     }
-    const updatedNodes = getParentsToHighlight(flow, intersections, node);
+    const updatedNodes = getParentsToHighlight(nodes, intersections, node);
     setNodes(updatedNodes);
   };
 
@@ -450,7 +450,7 @@ export const Flow: React.FC<{
         fitView
         fitViewOptions={{ maxZoom: 1.3 }}
         connectionMode={ConnectionMode.Loose}
-        connectionRadius={50}
+        connectionRadius={200}
         autoPanOnConnect={true}
         snapToGrid={false}
         snapGrid={[2, 2]}

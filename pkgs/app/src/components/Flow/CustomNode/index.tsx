@@ -1,4 +1,5 @@
-import type { ComputedNode, NodeData } from '@specfy/models';
+import { type ComputedNode, type NodeData } from '@specfy/models';
+import { hMax, hMin, wMax, wMin } from '@specfy/models/src/flows/constants';
 import { IconEye, IconLayersDifference, IconTrash } from '@tabler/icons-react';
 import classNames from 'classnames';
 import type { ChangeEventHandler, KeyboardEventHandler } from 'react';
@@ -102,10 +103,10 @@ const CustomNode: React.FC<NodeProps<NodeData>> = ({
       <NodeResizer
         lineClassName={cls.resizerLine}
         isVisible={selected}
-        minWidth={100}
-        minHeight={30}
-        maxWidth={1000}
-        maxHeight={1000}
+        minHeight={hMin}
+        maxHeight={hMax}
+        minWidth={wMin}
+        maxWidth={wMax}
       />
       {isEditing && (
         <NodeToolbar
