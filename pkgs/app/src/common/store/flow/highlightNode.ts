@@ -20,7 +20,7 @@ export function highlightNode(
     } else if (isTarget) {
       related.add(edge.source);
     } else {
-      edge.className = undefined;
+      edge.className = '';
       continue;
     }
 
