@@ -55,7 +55,11 @@ export const FlowProject: React.FC = () => {
 
     // Find potential hosts
     nodes.forEach((nd) => {
-      if (nd.className?.includes(cls.highlightToGroup) && !nd.hidden) {
+      if (
+        nd.className?.includes(cls.highlightToGroup) &&
+        !nd.hidden &&
+        nd.id !== node.id
+      ) {
         last = nd.id;
       }
     });

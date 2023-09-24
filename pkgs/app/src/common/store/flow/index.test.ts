@@ -1,9 +1,12 @@
+/* eslint-disable import/extensions */
 import type { ComputedEdge } from '@specfy/models';
 import { getBlobComponent } from '@specfy/models/src/components/test.utils';
 import { createNode } from '@specfy/models/src/flows/transform';
 import { describe, it, expect, afterEach } from 'vitest';
 
-import { useFlowStore as store } from '.';
+import { useFlowStore as store } from './index';
+
+import cls from '@/components/Flow/index.module.scss';
 
 afterEach(() => {
   store.setState({ nodes: [], edges: [], nodeSelected: null });
@@ -77,6 +80,32 @@ describe('updateNode - delete', () => {
     } as any)([{ type: 'remove', id: node.id }]);
     expect(store.getState().nodes).toHaveLength(1);
     expect(store.getState().nodes[0].hidden).toBe(true);
+  });
+});
+
+describe('updateNode - group', () => {
+  it('should add a node to parent', () => {
+    const state = store.getState();
+    const host = createNode(getBlobComponent({ id: 'project', orgId: 'acme' }));
+    host.data.type = 'hosting';
+    const node = createNode(getBlobComponent({ id: 'project', orgId: 'acme' }));
+    state.setCurrent('', { nodes: [host, node], edges: [] });
+
+    state.highlightHoveredParents(node, [host.id]);
+    expect(store.getState().nodes[0].className).toBe(cls.highlightToGroup);
+
+    state.onNodesChange({
+      getState() {
+        return {
+          nodeInternals: new Map([
+            [node.id, { positionAbsolute: { x: 0, y: 0 } }],
+            [host.id, { positionAbsolute: { x: 0, y: 0 } }],
+          ]),
+        };
+      },
+    } as any)([{ type: 'group', id: node.id, parentId: host.id }]);
+    expect(store.getState().nodes[1].parentNode).toStrictEqual(host.id);
+    expect(store.getState().nodes[0].className).toBe('');
   });
 });
 

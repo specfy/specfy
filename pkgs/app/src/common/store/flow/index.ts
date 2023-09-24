@@ -284,6 +284,11 @@ export const useFlowStore = create<FlowState>()((set) => ({
               }
 
               case 'group': {
+                if (change.id === change.parentId) {
+                  console.error('Try to host inside itself', change);
+                  return;
+                }
+
                 const node = nodes.find((c) => c.id === change.id)!;
                 node.parentNode = change.parentId;
                 const internals = store.getState().nodeInternals;
@@ -292,7 +297,11 @@ export const useFlowStore = create<FlowState>()((set) => ({
                   internals.get(change.parentId)!
                 );
                 node.position = up.child;
+
+                // Adapt host size
                 autoExpand(node, state.nodes);
+                // Un-highlight host
+                setParentsToHighlight(node, state.nodes, []);
                 break;
               }
 
