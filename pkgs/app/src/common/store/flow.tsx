@@ -206,22 +206,20 @@ export const useFlowStore = create<FlowState>()((set) => ({
                   ...listAllChildren(state.nodes, change.id),
                   change.id,
                 ];
+                const item = state.nodes.find((n) => n.id === change.id)!;
+                const shouldHide = item.data.source;
+
                 // Delete childs
                 for (let index = 0; index < state.nodes.length; index++) {
                   if (nodeIds.includes(state.nodes[index].id)) {
-                    delete state.nodes[index];
+                    if (shouldHide) {
+                      state.nodes[index].hidden = true;
+                    } else {
+                      delete state.nodes[index];
+                    }
                   }
                 }
                 state.nodeSelected = null;
-                // // Delete all related edges
-                // for (let index = 0; index < edges.length; index++) {
-                //   if (
-                //     nodeIds.includes(edges[index].source) ||
-                //     nodeIds.includes(edges[index].target)
-                //   ) {
-                //     delete edges[index];
-                //   }
-                // }
                 break;
               }
 
@@ -250,6 +248,42 @@ export const useFlowStore = create<FlowState>()((set) => ({
                     edge.hidden = visible;
                   }
                 }
+
+                break;
+              }
+
+              case 'tech': {
+                const node = nodes.find((c) => c.id === change.id)!;
+                const tech = change.tech;
+                if (!tech) {
+                  node.data.techId = null;
+                  node.data.typeId = null;
+                  node.data.type = 'service';
+                } else if (tech.type === 'project') {
+                  node.data.techId = null;
+                  node.data.typeId = tech.project.id;
+                  node.data.type = 'project';
+                  node.data.name = tech.project.name;
+                } else if (tech.type === 'tech') {
+                  node.data.techId = tech.tech.key;
+                  node.data.typeId = null;
+                  node.data.type = tech.tech.type;
+                  node.data.name =
+                    node.data.name === 'untitled' || node.data.name === ''
+                      ? tech.tech.name
+                      : node.data.name;
+                } else if (tech.type === 'create') {
+                  node.data.techId = 'unknown';
+                  node.data.typeId = null;
+                  node.data.type = 'api';
+                  node.data.name = tech.label;
+                }
+                break;
+              }
+
+              case 'rename': {
+                const node = nodes.find((c) => c.id === change.id)!;
+                node.data.name = change.name;
               }
             }
 
@@ -267,7 +301,7 @@ export const useFlowStore = create<FlowState>()((set) => ({
         for (const change of changes) {
           switch (change.type) {
             case 'add': {
-              console.log('add', change);
+              console.error('add', change);
               break;
             }
 
@@ -275,6 +309,7 @@ export const useFlowStore = create<FlowState>()((set) => ({
               const edge = state.edges.find((e) => e.id === change.id)!;
               edge.targetHandle = change.newTargetHandle;
               edge.sourceHandle = change.newSourceHandle;
+              edge.hidden = false;
               break;
             }
 
@@ -282,13 +317,21 @@ export const useFlowStore = create<FlowState>()((set) => ({
               const index = state.edges.findIndex(
                 (e) => e && e.id === change.id
               )!;
+              const item = state.edges[index];
+              const source = state.nodes.find((n) => n.id === item.source)!;
+              // If edges is managed or source is managed (in that case we are hiding)
+              if (item.data?.source || source.data.source) {
+                item.hidden = true;
+                state.edgeSelected = null;
+                continue;
+              }
+
               delete state.edges[index];
               state.edgeSelected = null;
               break;
             }
 
             case 'create': {
-              console.log('create', change);
               const rel = change.conn;
               state.edges.push({
                 id: `${rel.source}->${rel.target}`,
@@ -469,6 +512,7 @@ function addMetaToNode(node: ComputedNode, state: FlowState) {
   node.focusable = true;
   node.selectable = true;
 }
+
 function addMetaToEdge(edge: ComputedEdge, state: FlowState) {
   edge.deletable = !state.readOnly && state.deletable;
   edge.updatable = !state.readOnly && state.connectable;

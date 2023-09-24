@@ -315,7 +315,6 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
     set(
       produce((state: ComponentsState) => {
         const updates: ApiComponent[] = [];
-        // console.log('received');
         for (const node of flow.nodes) {
           const origin = state.components[node.id];
           if (!origin) {
@@ -613,8 +612,8 @@ function flowEdgesToComponentEdges(
     if (edge.hidden) {
       tmp.show = false;
     }
-    if (prev && typeof tmp.source !== 'undefined') {
-      tmp.source = prev.source;
+    if ((prev && typeof prev.source !== 'undefined') || edge.data?.source) {
+      tmp.source = prev?.source || edge.data!.source;
     }
     copy.push(tmp);
   }

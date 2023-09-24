@@ -6,7 +6,6 @@ import {
   IconTrash,
 } from '@tabler/icons-react';
 import { useEffect, useMemo, useState } from 'react';
-import { useDebounce } from 'react-use';
 import { useStoreApi } from 'reactflow';
 
 import { Button } from '../../Form/Button';
@@ -110,70 +109,26 @@ export const FlowDetails: React.FC = () => {
   const [relation, setRelation] = useState<Relation | null>(null);
 
   useEffect(() => {
-    // Only one
-    setNode(
-      nodeSelected ? store.getState().nodeInternals.get(nodeSelected)! : null
-    );
+    if (nodeSelected) {
+      // Only one
+      setNode(store.getState().nodeInternals.get(nodeSelected)!);
+      setRelation(null);
+      return;
+    } else {
+      setNode(null);
+    }
 
     if (edgeSelected) {
       const edge = edges.find((e) => e.id === edgeSelected)!;
       const source = nodes.find((c) => c.id === edge.source);
       const target = nodes.find((c) => c.id === edge.target);
       setRelation({ edge, source, target });
+      setNode(null);
+      console.log(edge);
     } else {
       setRelation(null);
     }
   }, [nodeSelected, edgeSelected, edges, nodes]);
-  // Select Nodes / Edges
-  // useOnSelectionChange({
-  //   /**
-  //    * Be careful `nds` is stall.
-  //    * Maybe it's my fault I don't know, but sometimes the nodes are not up to date.
-  //    * So prefer selecting back again from `nodes`.
-  //    */
-  //   onChange: ({ nodes: nds, edges: eds }) => {
-  //     // Nodes
-  //     if (nds.length === 0 || nds.length > 1) {
-  //       // No selection or more than one
-  //       setNode(null);
-  //     } else {
-  //       // Only one
-  //       setNode(store.getState().nodeInternals.get(nds[0].id)!);
-  //     }
-
-  //     console.log(nds, eds);
-  //     // Edges
-  //     if (eds.length === 0 || eds.length > 1) {
-  //       // No selection or more than one
-  //       setRelation(null);
-  //     } else {
-  //       const edge = eds[0];
-  //       const source = nodes.find((c) => c.id === edge.source);
-  //       const target = nodes.find((c) => c.id === edge.target);
-
-  //       setRelation({ edge, source, target });
-  //     }
-  //   },
-  // });
-
-  // Update current node information
-  // Useful if we resize or delete it in the flow
-  useDebounce(
-    () => {
-      if (!currNode) {
-        return;
-      }
-
-      const find = store.getState().nodeInternals.get(currNode.id);
-      if (!find) {
-        return;
-      }
-
-      setNode(find);
-    },
-    16,
-    [nodes, currNode]
-  );
 
   // List relations of a node
   useEffect(() => {

@@ -27,6 +27,9 @@ export const ProjectFlow: React.FC<{
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
+    useFlowStore.getState().setHighlight(null);
+  }, []);
+  useEffect(() => {
     if (proj.id === idFlow) {
       setLoading(false);
       return;
@@ -39,7 +42,6 @@ export const ProjectFlow: React.FC<{
         proj.id,
         componentsToFlow(Object.values(storeComponents.components))
       );
-    useFlowStore.getState().setHighlight(null);
     setLoading(false);
   }, [idFlow, storeComponents.components]);
 
