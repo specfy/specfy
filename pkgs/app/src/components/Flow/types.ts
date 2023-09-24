@@ -31,10 +31,6 @@ export type NodeChangeSuper =
   | {
       id: string;
       type: 'visibility';
-    }
-  | {
-      type: 'batch';
-      changes: BatchNodeUpdate[];
     };
 
 export type OnNodesChangeSuper = (changes: NodeChangeSuper[]) => void;

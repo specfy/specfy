@@ -3,15 +3,14 @@ import { getBlobComponent } from '@specfy/models/src/components/test.utils';
 import { createNode } from '@specfy/models/src/flows/transform';
 import { describe, expect, it } from 'vitest';
 
-import { onDragComputeNewHandle } from './floatingEdge';
+import { recomputeHandles } from './recomputeHandles';
 
-describe('onDragComputeNewHandle', () => {
+describe('recomputeHandles', () => {
   it('should not create an update when no edge', () => {
     const node = createNode(getBlobComponent({ id: 'project', orgId: 'acme' }));
-    const res = onDragComputeNewHandle(node, [], () => {
-      return undefined;
-    });
-    expect(res).toStrictEqual([]);
+
+    const res = recomputeHandles(node, [], []);
+    expect(res).toBeUndefined();
   });
 
   it('should not create an update when nothing changed', () => {
@@ -28,10 +27,10 @@ describe('onDragComputeNewHandle', () => {
       sourceHandle: 'sl',
       targetHandle: 'tr',
     };
-    const res = onDragComputeNewHandle(nodeA, [edge], () => {
-      return nodeB;
-    });
-    expect(res).toStrictEqual([]);
+
+    recomputeHandles(nodeA, [nodeB], [edge]);
+    expect(edge.sourceHandle).toBe('sl');
+    expect(edge.targetHandle).toBe('tr');
   });
 
   it('should create an update when nodeA changed', () => {
@@ -48,21 +47,11 @@ describe('onDragComputeNewHandle', () => {
       sourceHandle: 'sl',
       targetHandle: 'tr',
     };
-    nodeA.positionAbsolute = { x: 100, y: 100 };
+    nodeA.positionAbsolute = { x: -100, y: -100 };
     nodeB.positionAbsolute = { x: 0, y: 0 };
-    const res = onDragComputeNewHandle(nodeA, [edge], () => {
-      return nodeB;
-    });
-    expect(res).toStrictEqual([
-      {
-        type: 'changeTarget',
-        id: `${nodeA.id}->${nodeB.id}`,
-        source: nodeA.id,
-        oldTarget: nodeB.id,
-        newTarget: nodeB.id,
-        newSourceHandle: 'sb',
-        newTargetHandle: 'tt',
-      },
-    ]);
+
+    recomputeHandles(nodeA, [nodeB], [edge]);
+    expect(edge.sourceHandle).toBe('sb');
+    expect(edge.targetHandle).toBe('tt');
   });
 });

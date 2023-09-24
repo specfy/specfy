@@ -3,8 +3,8 @@ import { componentsToFlow } from '@specfy/models/src/flows/transform';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
-import { FlowWrapper } from '../../../components/Flow';
 import { Toolbar } from '../../../components/Flow/Toolbar';
+import { FlowWrapper } from '../../../components/Flow/Wrapper';
 import { Loading } from '../../../components/Loading';
 import { useEdit } from '../../../hooks/useEdit';
 import type { RouteProject } from '../../../types/routes';

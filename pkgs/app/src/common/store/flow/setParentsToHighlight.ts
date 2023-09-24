@@ -1,16 +1,23 @@
-import type { ComputedFlow, ComputedNode } from '@specfy/models';
+/* eslint-disable import/extensions */
+import type { ComputedNode } from '@specfy/models';
 
-import cls from '../index.module.scss';
+import cls from '@/components/Flow/index.module.scss';
 
 /**
  * When dragging a node we highlight potential parents that could receive this node.
  */
-export function getParentsToHighlight(
+export function setParentsToHighlight(
+  node: ComputedNode,
   nodes: ComputedNode[],
-  intersections: string[],
-  node: ComputedNode
+  intersections: string[]
 ) {
   const exclude: string[] = [node.id];
+  if (intersections.length <= 0) {
+    for (const n of nodes) {
+      n.className = '';
+    }
+    return;
+  }
 
   // Compute parents list so we don't highlight them
   let parent = node.parentNode;
@@ -41,19 +48,18 @@ export function getParentsToHighlight(
     }
   }
 
-  return nodes.map((n) => {
+  for (const n of nodes) {
     if (n.data.type !== 'hosting') {
-      return n;
+      n.className = '';
+      continue;
     }
 
     // handle deep parent/child host
     if (exclude.includes(n.id)) {
-      return n;
+      n.className = '';
+      continue;
     }
 
-    return {
-      ...n,
-      className: intersections.includes(n.id) ? cls.highlightToGroup : '',
-    };
-  });
+    n.className = intersections.includes(n.id) ? cls.highlightToGroup : '';
+  }
 }

@@ -14,7 +14,6 @@ import type { FlowState } from './flow';
 import { original } from './original';
 
 import type {
-  BatchNodeUpdate,
   EdgeChangeSuper,
   NodeChangeSuper,
   OnEdgesChangeSuper,
@@ -45,7 +44,6 @@ export interface ComponentsState {
     update: Partial<FlowEdge> | ((edge: FlowEdge) => FlowEdge)
   ) => void;
   removeEdge: (source: string, target: string) => void;
-  batchLayout: (changes: BatchNodeUpdate[]) => void;
   syncFromFlow: (state: FlowState, proj: ApiProject) => void;
 }
 
@@ -291,25 +289,6 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
       })
     );
   },
-  batchLayout: (changes) => {
-    set(
-      produce((state: ComponentsState) => {
-        const components = Object.values(state.components);
-        for (const change of changes) {
-          const node = components.find((n) => n.id === change.id);
-          if (!node) {
-            continue;
-          }
-
-          node.display = {
-            ...node.display,
-            size: change.size,
-            pos: change.position || node.display.pos,
-          };
-        }
-      })
-    );
-  },
 
   syncFromFlow: (flow: FlowState, proj: ApiProject) => {
     set(
@@ -373,6 +352,22 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
     );
   },
 }));
+
+/**
+ * Yes, This is a similar code to store/flow/index.ts
+ *
+ * # Why?
+ * The Flow and Components are in two way sync.
+ * When we update the flow we replicate changes through syncFromFlow.
+ * But when we update the Components through the regular UI we reflect the changes here first.
+ *
+ * It's not ideal because the main logic needs to be replicated but it's always a bit different due to object shape difference.
+ *
+ * # Solution
+ * One solution would be to change everything to be one way and use flowStore as the main source of truth.
+ * Note: we still need some update to happen here, e.g: description
+ *
+ */
 
 /**
  * Central function to handle all node changes (in a project).
@@ -512,10 +507,6 @@ export function handleNodeChange(
           size: { ...change.dimensions },
         },
       });
-      break;
-    }
-    case 'batch': {
-      store.batchLayout(change.changes);
       break;
     }
 

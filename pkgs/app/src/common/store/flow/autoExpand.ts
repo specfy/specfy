@@ -34,6 +34,8 @@ export function autoExpand(node: ComputedNode, nodes: ComputedNode[]): void {
     node.position.y = pad;
   }
 
+  par.width = Math.round(par.width!);
+  par.height = Math.round(par.height!);
   par.style!.width = par.width!;
   par.style!.height = par.height!;
 }

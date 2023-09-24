@@ -124,7 +124,6 @@ export const FlowDetails: React.FC = () => {
       const target = nodes.find((c) => c.id === edge.target);
       setRelation({ edge, source, target });
       setNode(null);
-      console.log(edge);
     } else {
       setRelation(null);
     }

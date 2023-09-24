@@ -7,9 +7,9 @@ import { useReactFlow } from 'reactflow';
 
 import { updateFlow, useGetFlow } from '../../../api';
 import { isError } from '../../../api/helpers';
-import { FlowWrapper } from '../../../components/Flow';
 import { FlowDetails } from '../../../components/Flow/Details';
 import { Toolbar } from '../../../components/Flow/Toolbar';
+import { FlowWrapper } from '../../../components/Flow/Wrapper';
 import { Button } from '../../../components/Form/Button';
 import { Loading } from '../../../components/Loading';
 import { useAuth } from '../../../hooks/useAuth';
@@ -19,11 +19,11 @@ import type { RouteOrg } from '../../../types/routes';
 import cls from './index.module.scss';
 
 import { i18n } from '@/common/i18n';
-import { useFlowStore } from '@/common/store';
+import { useFlowStore } from '@/common/store/flow';
 import { titleSuffix } from '@/common/string';
 import { Banner } from '@/components/Banner';
 import { Feedback } from '@/components/Feedback';
-import { FlowV2 } from '@/components/Flow/FlowV2';
+import { FlowOrg } from '@/components/Flow/FlowOrg';
 
 export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   org,
@@ -114,13 +114,7 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
             </Banner>
           </div>
         )}
-        <FlowV2
-          downlightOther={false}
-          keepHighlightOnSelect={true}
-          readonly={!editing}
-          deletable={false}
-          connectable={false}
-        />
+        <FlowOrg />
 
         <FlowDetails />
         {canEdit && (

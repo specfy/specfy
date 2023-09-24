@@ -26,9 +26,9 @@ import {
 import * as Dropdown from '../../../components/Dropdown';
 import { EditorMini } from '../../../components/Editor/Mini';
 import { Flex } from '../../../components/Flex';
-import { FlowWrapper } from '../../../components/Flow';
 import { TechPopover } from '../../../components/Flow/TechPopover';
 import { Toolbar } from '../../../components/Flow/Toolbar';
+import { FlowWrapper } from '../../../components/Flow/Wrapper';
 import type { OnNodesChangeSuper } from '../../../components/Flow/types';
 import { Button } from '../../../components/Form/Button';
 import { FakeInput } from '../../../components/Form/FakeInput';
@@ -48,7 +48,7 @@ import {
   useFlowStore,
 } from '@/common/store';
 import { titleSuffix } from '@/common/string';
-import { FlowV2 } from '@/components/Flow/FlowV2';
+import { FlowOrg } from '@/components/Flow/FlowOrg';
 import { Editable } from '@/components/Form/Editable';
 import { Loading } from '@/components/Loading';
 
@@ -318,7 +318,7 @@ export const ComponentView: React.FC<{
       </Container.Left2Third>
       <Container.Right1Third>
         <FlowWrapper key={proj.id} columnMode>
-          <FlowV2 />
+          <FlowOrg />
           <Toolbar bottom>
             <Toolbar.Fullscreen to={`${proj.orgId}/${proj.slug}`} />
             <Toolbar.Zoom />

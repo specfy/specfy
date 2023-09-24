@@ -3,7 +3,7 @@ import { getBlobComponent } from '@specfy/models/src/components/test.utils';
 import { createNode } from '@specfy/models/src/flows/transform';
 import { describe, it, expect, afterEach } from 'vitest';
 
-import { useFlowStore as store } from './flow';
+import { useFlowStore as store } from '.';
 
 afterEach(() => {
   store.setState({ nodes: [], edges: [], nodeSelected: null });
@@ -69,6 +69,7 @@ describe('updateEdge', () => {
       sourceHandle: 'sb',
       target: 'b',
       targetHandle: 'tt',
+      hidden: false,
     });
   });
 });

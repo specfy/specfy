@@ -7,8 +7,8 @@ import { useLocalStorage } from 'react-use';
 import { useListProjects, useGetFlow } from '../../../api';
 import { Card } from '../../../components/Card';
 import { Container } from '../../../components/Container';
-import { FlowWrapper } from '../../../components/Flow';
 import { Toolbar } from '../../../components/Flow/Toolbar';
+import { FlowWrapper } from '../../../components/Flow/Wrapper';
 import { ListActivity } from '../../../components/ListActivity';
 import { ListProjects } from '../../../components/ListProjects';
 import { OrgOnboarding } from '../../../components/Org/Onboarding';
@@ -17,7 +17,7 @@ import type { RouteOrg } from '../../../types/routes';
 import { i18n } from '@/common/i18n';
 import { useFlowStore } from '@/common/store';
 import { titleSuffix } from '@/common/string';
-import { FlowV2 } from '@/components/Flow/FlowV2';
+import { FlowOrg } from '@/components/Flow/FlowOrg';
 
 export const OrgOverview: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   org,
@@ -63,7 +63,7 @@ export const OrgOverview: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
                 <Skeleton count={3} />
               </div>
             ) : (
-              <FlowV2 />
+              <FlowOrg />
             )}
             <Toolbar bottom>
               <Toolbar.Fullscreen to={`${org.id}/_`} />

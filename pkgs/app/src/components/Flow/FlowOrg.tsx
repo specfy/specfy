@@ -12,35 +12,16 @@ import {
 
 import CustomNode from './CustomNode';
 import cls from './index.module.scss';
-import type { OnEdgesChangeSuper, OnNodesChangeSuper } from './types';
 
 import { useFlowStore } from '@/common/store';
-
-export interface Props {
-  highlight?: string;
-  downlightOther?: boolean;
-  keepHighlightOnSelect?: boolean;
-
-  // Readonly
-  readonly?: boolean;
-  deletable?: boolean;
-  connectable?: boolean;
-
-  // Events
-  onNodesChange?: OnNodesChangeSuper;
-  onEdgesChange?: OnEdgesChangeSuper;
-  onCreateNode?: (
-    type: 'hosting' | 'service',
-    position: { x: number; y: number }
-  ) => string;
-}
 
 const nodeTypes: NodeTypes = {
   custom: CustomNode,
 };
 
-export const FlowV2: React.FC<Props> = ({ readonly }) => {
+export const FlowOrg: React.FC = () => {
   const {
+    readOnly,
     nodes,
     edges,
     highlightId,
@@ -61,7 +42,7 @@ export const FlowV2: React.FC<Props> = ({ readonly }) => {
       ref={reactFlowWrapper}
       className={classNames(
         cls.flow,
-        readonly && cls.readonly,
+        readOnly && cls.readonly,
         cls.hasHighlight,
         highlightId && cls.downlightOther
       )}

@@ -10,8 +10,8 @@ import {
   Presentation,
 } from '../../../components/Content';
 import { EditorMini } from '../../../components/Editor/Mini';
-import { FlowWrapper } from '../../../components/Flow';
 import { Toolbar } from '../../../components/Flow/Toolbar';
+import { FlowWrapper } from '../../../components/Flow/Wrapper';
 import { ListActivity } from '../../../components/ListActivity';
 import { ProjectLinks } from '../../../components/Project/Links';
 import { TeamSummary } from '../../../components/Team/Summary';
@@ -27,7 +27,7 @@ import {
   useFlowStore,
   useProjectStore,
 } from '@/common/store';
-import { FlowV2 } from '@/components/Flow/FlowV2';
+import { FlowOrg } from '@/components/Flow/FlowOrg';
 import { Editable } from '@/components/Form/Editable';
 
 export const ProjectOverview: React.FC<{
@@ -113,7 +113,7 @@ export const ProjectOverview: React.FC<{
       </Container.Left2Third>
       <Container.Right1Third>
         <FlowWrapper key={project.id} columnMode>
-          <FlowV2 />
+          <FlowOrg />
           <Toolbar bottom>
             <Toolbar.Fullscreen to={`${project.orgId}/${project.slug}`} />
             <Toolbar.Zoom />

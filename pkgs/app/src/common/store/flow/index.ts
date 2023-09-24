@@ -1,18 +1,4 @@
-/* eslint-disable import/extensions */
-import type {
-  ComputedEdge,
-  ComputedFlow,
-  ComputedNode,
-  FlowEdge,
-} from '@specfy/models';
-import {
-  mapSourceHandle,
-  mapSourceHandleReverse,
-  mapTargetHandle,
-  mapTargetHandleReverse,
-} from '@specfy/models/src/flows/constants';
-import { getBestHandlePosition } from '@specfy/models/src/flows/helpers.edges';
-import classNames from 'classnames';
+import type { ComputedEdge, ComputedFlow, ComputedNode } from '@specfy/models';
 import { produce } from 'immer';
 import type {
   NodeMouseHandler,
@@ -21,8 +7,11 @@ import type {
 } from 'reactflow';
 import { create } from 'zustand';
 
-import { autoExpand } from '@/components/Flow/helpers/autoExpand';
-import cls from '@/components/Flow/index.module.scss';
+import { autoExpand } from './autoExpand';
+import { highlightNode } from './highlightNode';
+import { recomputeHandles } from './recomputeHandles';
+import { setParentsToHighlight } from './setParentsToHighlight';
+
 import type {
   OnEdgesChangeSuper,
   OnNodesChangeSuper,
@@ -61,6 +50,10 @@ export interface FlowState {
   onSelectionChange: OnSelectionChangeFunc;
   onNodeMouseEnter: NodeMouseHandler;
   onNodeMouseLeave: NodeMouseHandler;
+  highlightHoveredParents: (
+    node: ComputedNode,
+    intersections: string[]
+  ) => void;
 }
 
 /**
@@ -284,6 +277,33 @@ export const useFlowStore = create<FlowState>()((set) => ({
               case 'rename': {
                 const node = nodes.find((c) => c.id === change.id)!;
                 node.data.name = change.name;
+
+                break;
+              }
+
+              case 'group': {
+                const node = nodes.find((c) => c.id === change.id)!;
+                node.parentNode = change.parentId;
+                const internals = store.getState().nodeInternals;
+                const up = getPositionInParent(
+                  internals.get(change.id)!,
+                  internals.get(change.parentId)!
+                );
+                node.position = up.child;
+                autoExpand(node, state.nodes);
+                break;
+              }
+
+              case 'ungroup': {
+                const node = nodes.find((c) => c.id === change.id)!;
+                node.parentNode = undefined;
+                const internal = store.getState().nodeInternals.get(change.id)!;
+                // Slight change to avoid sending the node flying away
+                // But enough change to make it clear something happened
+                node.position = {
+                  x: internal.positionAbsolute!.x - 10,
+                  y: internal.positionAbsolute!.y - 10,
+                };
               }
             }
 
@@ -410,87 +430,14 @@ export const useFlowStore = create<FlowState>()((set) => ({
       })
     );
   },
+  highlightHoveredParents: (node, intersections) => {
+    set(
+      produce((state: FlowState) => {
+        setParentsToHighlight(node, state.nodes, intersections);
+      })
+    );
+  },
 }));
-
-function highlightNode(
-  id: string,
-  nodes: ComputedNode[],
-  edges: ComputedEdge[]
-) {
-  const related = new Set<string>();
-
-  // Update edges and find related nodes
-  for (const edge of edges) {
-    const isSource = edge.source === id;
-    const isTarget = edge.target === id;
-    if (isSource) {
-      related.add(edge.target);
-    } else if (isTarget) {
-      related.add(edge.source);
-    } else {
-      edge.className = undefined;
-      continue;
-    }
-
-    let anim: string = cls.animateReadLine;
-    if (isSource && edge.data!.write) {
-      anim = cls.animateWriteLine;
-    } else if (isTarget && edge.data!.write) {
-      anim = cls.animateWriteLine;
-    }
-
-    edge.className = classNames(cls.show, anim);
-  }
-
-  // Update nodes
-  for (const node of nodes) {
-    if (node.id !== id && !related.has(node.id) && node.parentNode !== id) {
-      node.className = node.className
-        ? node.className.replace(cls.show, '')
-        : '';
-      continue;
-    }
-
-    node.className = node.className?.includes(cls.show)
-      ? node.className
-      : classNames(node.className, cls.show);
-  }
-}
-
-export function recomputeHandles(
-  node: ComputedNode,
-  nodes: ComputedNode[],
-  edges: ComputedEdge[]
-): void {
-  // Move edges source and target handles depending on the node position
-  for (const edge of edges) {
-    if (edge.source !== node.id && edge.target !== node.id) {
-      // Only check relevant edges
-      continue;
-    }
-
-    // Get new handles' position
-    let c: ReturnType<typeof getBestHandlePosition>;
-    if (edge.target === node.id) {
-      c = getBestHandlePosition(nodes.find((n) => n.id === edge.source)!, node);
-    } else {
-      c = getBestHandlePosition(node, nodes.find((n) => n.id === edge.target)!);
-    }
-
-    if (
-      mapSourceHandle[edge.sourceHandle as FlowEdge['portSource']] ===
-        c.newSource &&
-      mapTargetHandle[edge.targetHandle as FlowEdge['portTarget']] ===
-        c.newTarget
-    ) {
-      // no change we skip an useless update
-      continue;
-    }
-
-    edge.sourceHandle = mapSourceHandleReverse[c.newSource];
-    edge.targetHandle = mapTargetHandleReverse[c.newTarget];
-  }
-}
 
 function listAllChildren(nodes: ComputedNode[], parent: string): string[] {
   const list: string[] = [];
@@ -517,4 +464,14 @@ function addMetaToEdge(edge: ComputedEdge, state: FlowState) {
   edge.deletable = !state.readOnly && state.deletable;
   edge.updatable = !state.readOnly && state.connectable;
   edge.focusable = true;
+}
+
+function getPositionInParent(node: ComputedNode, parent: ComputedNode) {
+  const absChild = node.positionAbsolute!;
+  const absParent = parent.positionAbsolute!;
+
+  const x = Math.abs(absParent.x - absChild.x);
+  const y = Math.abs(absParent.y - absChild.y);
+
+  return { child: { x, y } };
 }

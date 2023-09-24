@@ -1,9 +1,12 @@
 import type { ComputedFlow } from '@specfy/models';
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 
+import { useFlowStore } from '@/common/store';
 import { titleSuffix } from '@/common/string';
-import { Flow, FlowWrapper } from '@/components/Flow';
+import { FlowProject } from '@/components/Flow/FlowProject';
 import { Toolbar } from '@/components/Flow/Toolbar';
+import { FlowWrapper } from '@/components/Flow/Wrapper';
 
 /**
  * This is a temporary page that preview the embedding of a Flow inside an iframe.
@@ -19,13 +22,6 @@ const metaEdge = {
   markerEnd,
   deletable: false,
   updatable: false,
-};
-const metaNode = {
-  deletable: false,
-  draggable: false,
-  connectable: false,
-  focusable: true,
-  selectable: true,
 };
 const flow: ComputedFlow = {
   edges: [
@@ -161,7 +157,6 @@ const flow: ComputedFlow = {
       },
       position: { x: -50.04072900158479, y: 20 },
       style: { width: '652px', height: '313px' },
-      ...metaNode,
     },
     {
       id: 'lDFYgwl8szpT',
@@ -178,7 +173,6 @@ const flow: ComputedFlow = {
       style: { width: '375px', height: '254px' },
       extent: 'parent',
       parentNode: 'qwmdjFTnWzOT',
-      ...metaNode,
     },
     {
       id: 'mgUaGlWJqKmb',
@@ -193,7 +187,6 @@ const flow: ComputedFlow = {
       },
       position: { x: 632.1633573349216, y: 136.69046283574573 },
       style: { width: '271px', height: '198px' },
-      ...metaNode,
     },
     {
       id: 'jVECILL3wP64',
@@ -210,7 +203,6 @@ const flow: ComputedFlow = {
       style: { width: '148px', height: '40px' },
       extent: 'parent',
       parentNode: 'lDFYgwl8szpT',
-      ...metaNode,
     },
     {
       id: '1ZlgfGsULlrH',
@@ -227,7 +219,6 @@ const flow: ComputedFlow = {
       style: { width: '148px', height: '40px' },
       extent: 'parent',
       parentNode: 'mgUaGlWJqKmb',
-      ...metaNode,
     },
     {
       id: 'dfVY1sMNPpxo',
@@ -244,7 +235,6 @@ const flow: ComputedFlow = {
       style: { width: '148px', height: '40px' },
       extent: 'parent',
       parentNode: 'qwmdjFTnWzOT',
-      ...metaNode,
     },
     {
       id: 'PXBo4J8GjOW6',
@@ -261,7 +251,6 @@ const flow: ComputedFlow = {
       style: { width: '172px', height: '40px' },
       extent: 'parent',
       parentNode: 'lDFYgwl8szpT',
-      ...metaNode,
     },
     {
       id: '0jgs1PGWe36g',
@@ -276,7 +265,6 @@ const flow: ComputedFlow = {
       },
       position: { x: 707.8235650119207, y: 47.83460690748211 },
       style: { width: '130px', height: '40px' },
-      ...metaNode,
     },
     {
       id: 'AWZLwLhP0QMH',
@@ -293,7 +281,6 @@ const flow: ComputedFlow = {
       style: { width: '206px', height: '40px' },
       extent: 'parent',
       parentNode: 'qwmdjFTnWzOT',
-      ...metaNode,
     },
     {
       id: 'fokqTPPqJS0R',
@@ -310,7 +297,6 @@ const flow: ComputedFlow = {
       style: { width: '140px', height: '40px' },
       extent: 'parent',
       parentNode: 'qwmdjFTnWzOT',
-      ...metaNode,
     },
     {
       id: 'onRm7AXWRm5x',
@@ -325,7 +311,6 @@ const flow: ComputedFlow = {
       },
       position: { x: 682.1292106007234, y: -48.69460685376636 },
       style: { width: '130px', height: '40px' },
-      ...metaNode,
     },
     {
       id: 'exVfSMUxXksc',
@@ -340,7 +325,6 @@ const flow: ComputedFlow = {
       },
       position: { x: 267.78737260937476, y: -72.31714532096493 },
       style: { width: '130px', height: '40px' },
-      ...metaNode,
     },
     {
       id: 'f9gyZLckxliy',
@@ -355,7 +339,6 @@ const flow: ComputedFlow = {
       },
       position: { x: 206.33632175541823, y: 364.29166132925076 },
       style: { width: '130px', height: '40px' },
-      ...metaNode,
     },
     {
       id: '4whPMUG6rgcX',
@@ -372,7 +355,6 @@ const flow: ComputedFlow = {
       style: { width: '172px', height: '40px' },
       extent: 'parent',
       parentNode: 'lDFYgwl8szpT',
-      ...metaNode,
     },
     {
       id: 'SXLFCrRPuivX',
@@ -387,7 +369,6 @@ const flow: ComputedFlow = {
       },
       position: { x: 479.5949286846276, y: -77.95832012678292 },
       style: { width: '130px', height: '40px' },
-      ...metaNode,
     },
     {
       id: 'DZOnIZnoaBoz',
@@ -404,23 +385,23 @@ const flow: ComputedFlow = {
       style: { width: '188px', height: '40px' },
       extent: 'parent',
       parentNode: 'mgUaGlWJqKmb',
-      ...metaNode,
     },
   ],
 };
 
 const Public: React.FC = () => {
+  const store = useFlowStore();
+  useEffect(() => {
+    store.setCurrent('public', flow);
+    store.setMeta({ readOnly: true, connectable: false, deletable: false });
+  }, []);
+
   return (
     <div style={{ width: '100vw', height: '100vh' }}>
       <Helmet title={`Demo Flow ${titleSuffix}`} />
 
       <FlowWrapper>
-        <Flow
-          readonly={true}
-          flow={flow}
-          downlightOther={false}
-          keepHighlightOnSelect={true}
-        />
+        <FlowProject />
 
         <Toolbar left top visible>
           <Toolbar.Help title="Curious about this?">

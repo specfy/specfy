@@ -7,15 +7,12 @@ import {
 } from '@specfy/models/src/flows/constants';
 import { getBestHandlePosition } from '@specfy/models/src/flows/helpers.edges';
 
-import type { EdgeChangeSuper } from '../types';
-
-export function onDragComputeNewHandle(
+export function recomputeHandles(
   node: ComputedNode,
-  edges: ComputedEdge[],
-  getNode: (id: string) => ComputedNode | undefined
-): EdgeChangeSuper[] {
+  nodes: ComputedNode[],
+  edges: ComputedEdge[]
+): void {
   // Move edges source and target handles depending on the node position
-  const edgeUpdates: EdgeChangeSuper[] = [];
   for (const edge of edges) {
     if (edge.source !== node.id && edge.target !== node.id) {
       // Only check relevant edges
@@ -25,9 +22,9 @@ export function onDragComputeNewHandle(
     // Get new handles' position
     let c: ReturnType<typeof getBestHandlePosition>;
     if (edge.target === node.id) {
-      c = getBestHandlePosition(getNode(edge.source)!, node);
+      c = getBestHandlePosition(nodes.find((n) => n.id === edge.source)!, node);
     } else {
-      c = getBestHandlePosition(node, getNode(edge.target)!);
+      c = getBestHandlePosition(node, nodes.find((n) => n.id === edge.target)!);
     }
 
     if (
@@ -40,15 +37,7 @@ export function onDragComputeNewHandle(
       continue;
     }
 
-    edgeUpdates.push({
-      type: 'changeTarget',
-      id: edge.id,
-      newSourceHandle: mapSourceHandleReverse[c.newSource],
-      newTarget: edge.target,
-      newTargetHandle: mapTargetHandleReverse[c.newTarget],
-      oldTarget: edge.target,
-      source: edge.source,
-    });
+    edge.sourceHandle = mapSourceHandleReverse[c.newSource];
+    edge.targetHandle = mapTargetHandleReverse[c.newTarget];
   }
-  return edgeUpdates;
 }

@@ -8,8 +8,8 @@ import { ComponentIcon } from '../../../components/Component/Icon';
 import { ComponentLine } from '../../../components/Component/Line';
 import { Container } from '../../../components/Container';
 import { Flex } from '../../../components/Flex';
-import { FlowWrapper } from '../../../components/Flow';
 import { Toolbar } from '../../../components/Flow/Toolbar';
+import { FlowWrapper } from '../../../components/Flow/Wrapper';
 import { Loading } from '../../../components/Loading';
 import { NotFound } from '../../../components/NotFound';
 import { Tag } from '../../../components/Tag';
@@ -21,7 +21,7 @@ import { useComponentsStore, useFlowStore } from '@/common/store';
 import { titleSuffix } from '@/common/string';
 import { supportedIndexed } from '@/common/techs';
 import type { TechInfo } from '@/common/techs';
-import { FlowV2 } from '@/components/Flow/FlowV2';
+import { FlowOrg } from '@/components/Flow/FlowOrg';
 
 export const Tech: React.FC<{
   proj: ApiProject;
@@ -117,7 +117,7 @@ export const Tech: React.FC<{
       </Container.Left2Third>
       <Container.Right1Third>
         <FlowWrapper columnMode>
-          <FlowV2 />
+          <FlowOrg />
           <Toolbar bottom>
             <Toolbar.Fullscreen to={`${proj.orgId}/${proj.slug}`} />
             <Toolbar.Zoom />

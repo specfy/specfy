@@ -10,40 +10,20 @@ import {
   ConnectionMode,
   ReactFlow,
   SelectionMode,
+  useReactFlow,
   useStoreApi,
 } from 'reactflow';
 
 import CustomNode from './CustomNode';
 import cls from './index.module.scss';
-import type { OnEdgesChangeSuper, OnNodesChangeSuper } from './types';
 
 import { useFlowStore } from '@/common/store';
 
-export interface Props {
-  highlight?: string;
-  downlightOther?: boolean;
-  keepHighlightOnSelect?: boolean;
+const nodeTypes: NodeTypes = { custom: CustomNode };
 
-  // Readonly
-  readonly?: boolean;
-  deletable?: boolean;
-  connectable?: boolean;
-
-  // Events
-  onNodesChange?: OnNodesChangeSuper;
-  onEdgesChange?: OnEdgesChangeSuper;
-  onCreateNode?: (
-    type: 'hosting' | 'service',
-    position: { x: number; y: number }
-  ) => string;
-}
-
-const nodeTypes: NodeTypes = {
-  custom: CustomNode,
-};
-
-export const FlowProject: React.FC<Props> = ({ readonly }) => {
+export const FlowProject: React.FC = () => {
   const {
+    readOnly,
     nodes,
     edges,
     highlightId,
@@ -52,18 +32,44 @@ export const FlowProject: React.FC<Props> = ({ readonly }) => {
     onSelectionChange,
     onNodeMouseEnter,
     onNodeMouseLeave,
+    highlightHoveredParents,
   } = useFlowStore();
   const store = useStoreApi();
+  const { getIntersectingNodes } = useReactFlow();
 
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
   const [reactFlowInstance, setReactFlowInstance] =
     useState<ReactFlowInstance | null>(null);
 
-  // ------------------ Node
+  // ------------------ Dragging Node
   //
+  const onNodeDrag: ReactFlowProps['onNodeDrag'] = (_evt, node) => {
+    // Highlight hosts where you can drop the node
+    // /!\ Slowest interactions
+    const intersections = getIntersectingNodes(node).map((n) => n.id);
+    highlightHoveredParents(node, intersections);
+  };
+
+  const onNodeDragStop: ReactFlowProps['onNodeDragStop'] = (_, node) => {
+    let last: string | undefined;
+
+    // Find potential hosts
+    nodes.forEach((nd) => {
+      if (nd.className?.includes(cls.highlightToGroup) && !nd.hidden) {
+        last = nd.id;
+      }
+    });
+
+    if (!last) {
+      // Drag also trigger on click so there is a good chance we didn't found anything
+      return;
+    }
+
+    onNodesChange(store)([{ type: 'group', id: node.id, parentId: last }]);
+  };
 
   //
-  // --------- Dragging
+  // --------- Dragging new Node
   // Before dragging a new node is over
   const onDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -148,7 +154,7 @@ export const FlowProject: React.FC<Props> = ({ readonly }) => {
       ref={reactFlowWrapper}
       className={classNames(
         cls.flow,
-        readonly && cls.readonly,
+        readOnly && cls.readonly,
         cls.hasHighlight,
         highlightId && cls.downlightOther
       )}
@@ -181,9 +187,11 @@ export const FlowProject: React.FC<Props> = ({ readonly }) => {
         onNodeMouseEnter={onNodeMouseEnter}
         onNodeMouseLeave={onNodeMouseLeave}
         // Edges
-        onEdgeUpdate={console.log}
+        // onEdgeUpdate not needed at this moment
         onConnect={onAddEdge}
         // Nodes
+        onNodeDrag={onNodeDrag}
+        onNodeDragStop={onNodeDragStop}
       >
         <Background id="1" gap={10} color="#c5c7ca" />
         <Background
