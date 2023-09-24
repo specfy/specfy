@@ -147,6 +147,15 @@ export const FlowProject: React.FC = () => {
 
     onEdgesChange([{ type: 'create', conn }]);
   };
+  const isValidConnection: ReactFlowProps['isValidConnection'] = (conn) => {
+    if (
+      conn.sourceHandle?.startsWith('t') ||
+      conn.targetHandle?.startsWith('s')
+    ) {
+      return false;
+    }
+    return true;
+  };
 
   return (
     <div
@@ -189,6 +198,7 @@ export const FlowProject: React.FC = () => {
         // Edges
         // onEdgeUpdate not needed at this moment
         onConnect={onAddEdge}
+        isValidConnection={isValidConnection}
         // Nodes
         onNodeDrag={onNodeDrag}
         onNodeDragStop={onNodeDragStop}
