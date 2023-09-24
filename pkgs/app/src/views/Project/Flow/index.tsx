@@ -1,30 +1,21 @@
-import type { ComputedFlow, ApiProject, ApiComponent } from '@specfy/models';
+import type { ApiProject } from '@specfy/models';
 import { componentsToFlow } from '@specfy/models/src/flows/transform';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
-import { Flow, FlowWrapper } from '../../../components/Flow';
-import { FlowDetails } from '../../../components/Flow/Details';
 import { Toolbar } from '../../../components/Flow/Toolbar';
-import type {
-  OnEdgesChangeSuper,
-  OnNodesChangeSuper,
-} from '../../../components/Flow/helpers';
+import { FlowWrapper } from '../../../components/Flow/Wrapper';
 import { Loading } from '../../../components/Loading';
 import { useEdit } from '../../../hooks/useEdit';
 import type { RouteProject } from '../../../types/routes';
 
 import cls from './index.module.scss';
 
-import { createLocal } from '@/common/components';
-import {
-  onEdgesChangeProject,
-  onNodesChangeProject,
-  useComponentsStore,
-  useProjectStore,
-} from '@/common/store';
+import { useComponentsStore, useFlowStore } from '@/common/store';
 import { titleSuffix } from '@/common/string';
 import { Feedback } from '@/components/Feedback';
+import { FlowDetails } from '@/components/Flow/Details';
+import { FlowProject } from '@/components/Flow/FlowProject';
 
 export const ProjectFlow: React.FC<{
   proj: ApiProject;
@@ -32,55 +23,82 @@ export const ProjectFlow: React.FC<{
 }> = ({ proj }) => {
   const { isEditing, enable } = useEdit();
   const storeComponents = useComponentsStore();
-  const storeProjects = useProjectStore();
-  const [flow, setFlow] = useState<ComputedFlow>();
-
+  const idFlow = useFlowStore((state) => state.id);
   const [loading, setLoading] = useState<boolean>(true);
-  const [components, setComponents] = useState<ApiComponent[]>();
 
   useEffect(() => {
-    setComponents(Object.values(storeComponents.components));
-  }, [storeComponents]);
-
+    useFlowStore.getState().setHighlight(null);
+  }, []);
   useEffect(() => {
-    if (!components) {
+    if (proj.id === idFlow) {
+      setLoading(false);
       return;
     }
 
-    setFlow(componentsToFlow(components));
-
+    // We don't use the hook to avoid rerendering the view on each update
+    useFlowStore
+      .getState()
+      .setCurrent(
+        proj.id,
+        componentsToFlow(Object.values(storeComponents.components))
+      );
     setLoading(false);
-  }, [components]);
+  }, [idFlow, storeComponents.components]);
+
+  useEffect(() => {
+    if (isEditing) {
+      useFlowStore.getState().setMeta({
+        readOnly: false,
+        connectable: true,
+        deletable: true,
+      });
+    } else {
+      useFlowStore.getState().setMeta({
+        readOnly: true,
+        connectable: false,
+        deletable: false,
+      });
+    }
+  }, [isEditing]);
+
+  useEffect(() => {
+    const unsub = useFlowStore.subscribe((state) => {
+      useComponentsStore.getState().syncFromFlow(state, proj);
+    });
+    return () => {
+      unsub();
+    };
+  }, []);
 
   // ---- Event Handlers
-  const onNodesChange = useCallback<OnNodesChangeSuper>(
-    (changes) => onNodesChangeProject(storeComponents)(changes),
-    [components]
-  );
-  const onEdgesChange = useCallback<OnEdgesChangeSuper>(
-    (changes) => onEdgesChangeProject(storeComponents)(changes),
-    [components]
-  );
+  // const onNodesChange = useCallback<OnNodesChangeSuper>(
+  //   (changes) => onNodesChangeProject(storeComponents)(changes),
+  //   [components]
+  // );
+  // const onEdgesChange = useCallback<OnEdgesChangeSuper>(
+  //   (changes) => onEdgesChangeProject(storeComponents)(changes),
+  //   [components]
+  // );
 
-  const onCreateNode: React.ComponentProps<typeof Flow>['onCreateNode'] = (
-    type,
-    position
-  ) => {
-    const { id } = createLocal(
-      {
-        name: 'untitled',
-        slug: 'untitled',
-        type,
-        position,
-      },
-      storeProjects,
-      storeComponents
-    );
+  // const onCreateNode: React.ComponentProps<typeof Flow>['onCreateNode'] = (
+  //   type,
+  //   position
+  // ) => {
+  //   const { id } = createLocal(
+  //     {
+  //       name: 'untitled',
+  //       slug: 'untitled',
+  //       type,
+  //       position,
+  //     },
+  //     storeProjects,
+  //     storeComponents
+  //   );
 
-    return id;
-  };
+  //   return id;
+  // };
 
-  if (loading || !flow) {
+  if (loading) {
     return <Loading />;
   }
 
@@ -89,29 +107,22 @@ export const ProjectFlow: React.FC<{
       <Helmet title={`Flow - ${proj.name} ${titleSuffix}`} />
 
       <FlowWrapper>
-        <Flow
-          readonly={!isEditing}
-          flow={flow}
-          downlightOther={false}
-          keepHighlightOnSelect={true}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-          onCreateNode={onCreateNode}
-        />
+        <FlowProject />
 
-        <FlowDetails
-          flow={flow}
-          readonly={!isEditing}
-          onNodesChange={onNodesChange}
-          onEdgesChange={onEdgesChange}
-        />
+        <FlowDetails />
         {isEditing && (
           <Toolbar left center visible>
             <Toolbar.AddComponents />
           </Toolbar>
         )}
         <Toolbar left top visible>
-          {!isEditing && <Toolbar.Readonly onClick={() => enable(true)} />}
+          {!isEditing && (
+            <Toolbar.Readonly
+              onClick={() => {
+                enable(true);
+              }}
+            />
+          )}
           <Toolbar.Help>
             <div>
               <p>

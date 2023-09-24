@@ -48,7 +48,7 @@ export const schemaEdges = z.array(
       ),
       portSource: schemaPortSource,
       portTarget: schemaPortTarget,
-      source: schemaSource,
+      source: schemaSource.nullable(),
       show: z.boolean(),
     })
     .strict()

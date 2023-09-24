@@ -1,4 +1,4 @@
-import type { ApiComponent, FlowEdge } from '@specfy/models';
+import type { ApiComponent, ApiProject, FlowEdge } from '@specfy/models';
 import {
   getAbsolutePosition,
   placeInsideHost,
@@ -7,6 +7,10 @@ import { produce } from 'immer';
 import type { Connection } from 'reactflow';
 import { create } from 'zustand';
 
+import { getEmptyDoc } from '../content';
+import { slugify } from '../string';
+
+import type { FlowState } from './flow';
 import { original } from './original';
 
 import type {
@@ -14,7 +18,7 @@ import type {
   NodeChangeSuper,
   OnEdgesChangeSuper,
   OnNodesChangeSuper,
-} from '@/components/Flow/helpers';
+} from '@/components/Flow/types';
 
 export interface ComponentsState {
   current: string | null;
@@ -40,6 +44,7 @@ export interface ComponentsState {
     update: Partial<FlowEdge> | ((edge: FlowEdge) => FlowEdge)
   ) => void;
   removeEdge: (source: string, target: string) => void;
+  syncFromFlow: (state: FlowState, proj: ApiProject) => void;
 }
 
 export const useComponentsStore = create<ComponentsState>()((set, get) => ({
@@ -284,7 +289,85 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
       })
     );
   },
+
+  syncFromFlow: (flow: FlowState, proj: ApiProject) => {
+    set(
+      produce((state: ComponentsState) => {
+        const updates: ApiComponent[] = [];
+        for (const node of flow.nodes) {
+          const origin = state.components[node.id];
+          if (!origin) {
+            // new components
+            updates.push({
+              id: node.id,
+              orgId: proj.orgId,
+              projectId: proj.id,
+              techId: node.data.techId || null,
+              type: node.data.type,
+              typeId: node.data.typeId || null,
+              name: node.data.name,
+              slug: slugify(node.data.name),
+              description: getEmptyDoc(),
+              techs: [],
+              display: {
+                zIndex: node.zIndex || 1,
+                pos: node.position,
+                size: node.style as any,
+              },
+              edges: flowEdgesToComponentEdges(flow, node.id), // Todo edges
+              blobId: null,
+              inComponent: { id: node.parentNode || null },
+              show: node.hidden ? false : true,
+              tags: [],
+              source: null,
+              sourceName: null,
+              sourcePath: [],
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString(),
+            });
+            continue;
+          }
+
+          const next = origin;
+          next.techId = node.data.techId || null;
+          next.type = node.data.type;
+          next.typeId = node.data.typeId;
+          next.name = node.data.name;
+          next.display = {
+            zIndex: node.zIndex || origin.display.zIndex || 1,
+            pos: node.position,
+            size: node.style as any,
+          };
+          origin.edges = flowEdgesToComponentEdges(flow, next.id, next); // Todo edges
+          next.inComponent = { id: node.parentNode || null };
+          next.show = node.hidden ? false : true;
+          updates.push(next);
+        }
+
+        state.components = updates.reduce((prev, curr) => {
+          prev[curr.id] = curr;
+          return prev;
+        }, {} as any);
+      })
+    );
+  },
 }));
+
+/**
+ * Yes, This is a similar code to store/flow/index.ts
+ *
+ * # Why?
+ * The Flow and Components are in two way sync.
+ * When we update the flow we replicate changes through syncFromFlow.
+ * But when we update the Components through the regular UI we reflect the changes here first.
+ *
+ * It's not ideal because the main logic needs to be replicated but it's always a bit different due to object shape difference.
+ *
+ * # Solution
+ * One solution would be to change everything to be one way and use flowStore as the main source of truth.
+ * Note: we still need some update to happen here, e.g: description
+ *
+ */
 
 /**
  * Central function to handle all node changes (in a project).
@@ -332,7 +415,7 @@ export function handleNodeChange(
         const comp = store.select(change.id)!;
         store.updateField(change.id, 'display', {
           ...comp.display,
-          pos: change.position,
+          pos: { ...change.position },
         });
       }
       break;
@@ -421,7 +504,7 @@ export function handleNodeChange(
         ...comp,
         display: {
           ...comp.display,
-          size: change.dimensions,
+          size: { ...change.dimensions },
         },
       });
       break;
@@ -492,4 +575,39 @@ function listAllChildren(components: ApiComponent[], parent: string): string[] {
     }
   }
   return list;
+}
+
+function flowEdgesToComponentEdges(
+  flow: FlowState,
+  source: string,
+  origin?: ApiComponent
+): ApiComponent['edges'] {
+  const copy: ApiComponent['edges'] = [];
+  for (const edge of flow.edges) {
+    if (edge.source !== source) {
+      continue;
+    }
+
+    const prev = origin?.edges.find((e) => e.target === edge.target);
+
+    const tmp: FlowEdge = {
+      target: edge.target,
+      vertices: prev ? prev.vertices : [],
+      read: edge.data!.read,
+      write: edge.data!.write,
+      portSource: edge.sourceHandle as any,
+      portTarget: edge.targetHandle as any,
+    };
+
+    // To avoid unnecessary diff on old values
+    if (edge.hidden) {
+      tmp.show = false;
+    }
+    if ((prev && typeof prev.source !== 'undefined') || edge.data?.source) {
+      tmp.source = prev?.source || edge.data!.source;
+    }
+    copy.push(tmp);
+  }
+
+  return copy;
 }

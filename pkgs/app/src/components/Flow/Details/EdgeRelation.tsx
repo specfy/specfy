@@ -13,7 +13,7 @@ import classNames from 'classnames';
 import * as Dropdown from '../../../components/Dropdown';
 import { Button } from '../../Form/Button';
 import { TooltipFull } from '../../Tooltip';
-import type { OnEdgesChangeSuper } from '../helpers';
+import type { OnEdgesChangeSuper } from '../types';
 
 import cls from './edge.module.scss';
 

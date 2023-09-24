@@ -12,6 +12,7 @@ import {
 import type { ComponentsState } from '../../common/store';
 import {
   useComponentsStore,
+  useFlowStore,
   useOrgStore,
   useProjectStore,
 } from '../../common/store';
@@ -68,6 +69,13 @@ const Project: React.FC = () => {
     org_id: params.org_id,
     project_id: proj?.id,
   });
+
+  useEffect(() => {
+    if (params.project_slug !== proj?.slug) {
+      // Reset to make sure it doesn't display old data and zoom can work
+      useFlowStore.getState().setCurrent('', { nodes: [], edges: [] });
+    }
+  }, [params.project_slug]);
 
   useEffect(() => {
     if (!getOrgs.data) {

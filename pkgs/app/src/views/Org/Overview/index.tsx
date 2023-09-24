@@ -1,5 +1,5 @@
-import type { ComputedFlow, ApiOrg } from '@specfy/models';
-import { useEffect, useState } from 'react';
+import type { ApiOrg } from '@specfy/models';
+import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Skeleton from 'react-loading-skeleton';
 import { useLocalStorage } from 'react-use';
@@ -7,23 +7,25 @@ import { useLocalStorage } from 'react-use';
 import { useListProjects, useGetFlow } from '../../../api';
 import { Card } from '../../../components/Card';
 import { Container } from '../../../components/Container';
-import { Flow, FlowWrapper } from '../../../components/Flow';
 import { Toolbar } from '../../../components/Flow/Toolbar';
+import { FlowWrapper } from '../../../components/Flow/Wrapper';
 import { ListActivity } from '../../../components/ListActivity';
 import { ListProjects } from '../../../components/ListProjects';
 import { OrgOnboarding } from '../../../components/Org/Onboarding';
 import type { RouteOrg } from '../../../types/routes';
 
 import { i18n } from '@/common/i18n';
+import { useFlowStore } from '@/common/store';
 import { titleSuffix } from '@/common/string';
+import { FlowOrg } from '@/components/Flow/FlowOrg';
 
 export const OrgOverview: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   org,
   params,
 }) => {
+  const store = useFlowStore();
   const res = useListProjects({ org_id: params.org_id });
   const resFlow = useGetFlow({ org_id: params.org_id, flow_id: org.flowId });
-  const [flow, setFlow] = useState<ComputedFlow>();
   const [done] = useLocalStorage(`org.onboarding[${org.id}]`, false);
 
   useEffect(() => {
@@ -31,8 +33,9 @@ export const OrgOverview: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
       return;
     }
 
-    setFlow(resFlow.data.data.flow);
-  }, [resFlow]);
+    store.setCurrent(org.flowId, resFlow.data.data.flow);
+    store.setMeta({ readOnly: true, connectable: false, deletable: false });
+  }, [resFlow.data]);
 
   if (res.error) {
     return <div>{i18n.criticalErrorOccurred}</div>;
@@ -55,12 +58,12 @@ export const OrgOverview: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
       <Container.Right1Third>
         <div>
           <FlowWrapper columnMode>
-            {!flow ? (
+            {!resFlow.data ? (
               <div style={{ margin: '20px' }}>
                 <Skeleton count={3} />
               </div>
             ) : (
-              <Flow flow={flow} readonly />
+              <FlowOrg />
             )}
             <Toolbar bottom>
               <Toolbar.Fullscreen to={`${org.id}/_`} />

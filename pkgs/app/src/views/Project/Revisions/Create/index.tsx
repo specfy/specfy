@@ -27,8 +27,8 @@ import { Card } from '../../../../components/Card';
 import { Container } from '../../../../components/Container';
 import { Empty } from '../../../../components/Empty';
 import { Flex } from '../../../../components/Flex';
-import { FlowWrapper } from '../../../../components/Flow';
 import { Toolbar } from '../../../../components/Flow/Toolbar';
+import { FlowWrapper } from '../../../../components/Flow/Wrapper';
 import { Button } from '../../../../components/Form/Button';
 import { Checkbox } from '../../../../components/Form/Checkbox';
 import { FieldCheckbox } from '../../../../components/Form/Field';
@@ -43,7 +43,12 @@ import cls from './index.module.scss';
 import { getEmptyDoc } from '@/common/content';
 import { proposeTitle } from '@/common/diff';
 import { i18n } from '@/common/i18n';
-import { original, useComponentsStore, useStagingStore } from '@/common/store';
+import {
+  original,
+  useComponentsStore,
+  useFlowStore,
+  useStagingStore,
+} from '@/common/store';
 import { titleSuffix } from '@/common/string';
 import { EditorMini } from '@/components/Editor/Mini';
 
@@ -120,6 +125,16 @@ export const ProjectRevisionCreate: React.FC<{
 
   const handleRevertAll = () => {
     original.revertAll(staging.diffs);
+    setTimeout(() => {
+      useFlowStore
+        .getState()
+        .setCurrent(
+          proj.id,
+          componentsToFlow(
+            Object.values(useComponentsStore.getState().components)
+          )
+        );
+    }, 100);
   };
 
   const onSubmit: React.FormEventHandler<HTMLFormElement> = async (e) => {

@@ -185,8 +185,8 @@ export function applyLayout(layout: Layout, flow: ComputedFlow) {
     const rel = layout.nodes.find((l) => l.id === node.id)!;
     node.position = rel.pos;
     node.style = {
-      width: `${rel.size.width}px`,
-      height: `${rel.size.height}px`,
+      width: rel.size.width,
+      height: rel.size.height,
     };
   }
 }

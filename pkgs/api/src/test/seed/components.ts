@@ -789,6 +789,7 @@ export async function seedComponents(
               vertices: [],
               portSource: 'sl',
               portTarget: 'tr',
+              source: 'github',
             },
           ],
           techs: [{ id: 'nodejs' }, { id: 'typescript' }],

@@ -1,4 +1,4 @@
-import type { ComputedFlow, ApiComponent, ApiProject } from '@specfy/models';
+import type { ApiComponent, ApiProject } from '@specfy/models';
 import { internalTypeToText } from '@specfy/models/src/components/constants';
 import { componentsToFlow } from '@specfy/models/src/flows/transform';
 import {
@@ -26,10 +26,10 @@ import {
 import * as Dropdown from '../../../components/Dropdown';
 import { EditorMini } from '../../../components/Editor/Mini';
 import { Flex } from '../../../components/Flex';
-import { Flow, FlowWrapper } from '../../../components/Flow';
 import { TechPopover } from '../../../components/Flow/TechPopover';
 import { Toolbar } from '../../../components/Flow/Toolbar';
-import type { OnNodesChangeSuper } from '../../../components/Flow/helpers';
+import { FlowWrapper } from '../../../components/Flow/Wrapper';
+import type { OnNodesChangeSuper } from '../../../components/Flow/types';
 import { Button } from '../../../components/Form/Button';
 import { FakeInput } from '../../../components/Form/FakeInput';
 import { NotFound } from '../../../components/NotFound';
@@ -42,8 +42,13 @@ import type { RouteComponent } from '../../../types/routes';
 
 import cls from './index.module.scss';
 
-import { onNodesChangeProject, useComponentsStore } from '@/common/store';
+import {
+  onNodesChangeProject,
+  useComponentsStore,
+  useFlowStore,
+} from '@/common/store';
 import { titleSuffix } from '@/common/string';
+import { FlowOrg } from '@/components/Flow/FlowOrg';
 import { Editable } from '@/components/Form/Editable';
 import { Loading } from '@/components/Loading';
 
@@ -153,12 +158,12 @@ export const ComponentView: React.FC<{
 
   // Components
   const [components, setComponents] = useState<ApiComponent[]>();
-  const [flow, setFlow] = useState<ComputedFlow>();
 
   // Edition
   const edit = useEdit();
   const isEditing = edit.isEditing;
   const storeComponents = useComponentsStore();
+  const storeFlow = useFlowStore();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -190,7 +195,9 @@ export const ComponentView: React.FC<{
       return;
     }
 
-    setFlow(componentsToFlow(components));
+    storeFlow.setCurrent(proj.id, componentsToFlow(components));
+    storeFlow.setMeta({ readOnly: true });
+    storeFlow.setHighlight(comp!.id);
   }, [components]);
 
   const onNodesChange: OnNodesChangeSuper = (changes) => {
@@ -311,15 +318,11 @@ export const ComponentView: React.FC<{
       </Container.Left2Third>
       <Container.Right1Third>
         <FlowWrapper key={proj.id} columnMode>
-          {flow && (
-            <>
-              <Flow flow={flow} highlight={comp.id} readonly />
-              <Toolbar bottom>
-                <Toolbar.Fullscreen to={`${proj.orgId}/${proj.slug}`} />
-                <Toolbar.Zoom />
-              </Toolbar>
-            </>
-          )}
+          <FlowOrg />
+          <Toolbar bottom>
+            <Toolbar.Fullscreen to={`${proj.orgId}/${proj.slug}`} />
+            <Toolbar.Zoom />
+          </Toolbar>
         </FlowWrapper>
       </Container.Right1Third>
     </Container>

@@ -1,4 +1,5 @@
-import type { ComputedNode, NodeData } from '@specfy/models';
+import { type ComputedNode, type NodeData } from '@specfy/models';
+import { hMax, hMin, wMax, wMin } from '@specfy/models/src/flows/constants';
 import { IconEye, IconLayersDifference, IconTrash } from '@tabler/icons-react';
 import classNames from 'classnames';
 import type { ChangeEventHandler, KeyboardEventHandler } from 'react';
@@ -12,16 +13,18 @@ import {
   Position,
   NodeResizer,
   NodeToolbar,
+  useStoreApi,
+  useReactFlow,
 } from 'reactflow';
 
 import { ComponentIcon } from '../../Component/Icon';
 import { TooltipFull } from '../../Tooltip';
 import { TechPopover } from '../TechPopover';
-import type { OnNodesChangeSuper } from '../helpers';
+import type { OnNodesChangeSuper } from '../types';
 
 import cls from './index.module.scss';
 
-import { handleNodeChange, useComponentsStore } from '@/common/store';
+import { useFlowStore } from '@/common/store';
 import { useEdit } from '@/hooks/useEdit';
 
 const connectionNodeIdSelector = (state: ReactFlowState) =>
@@ -33,6 +36,9 @@ const CustomNode: React.FC<NodeProps<NodeData>> = ({
   selected,
   isConnectable,
 }) => {
+  const { deleteElements } = useReactFlow();
+  const storeFlow = useFlowStore();
+  const store = useStoreApi();
   const { isEditing } = useEdit();
   const parent = useStore((state: ReactFlowState) => {
     return state.nodeInternals.get(id)?.parentNode;
@@ -102,10 +108,10 @@ const CustomNode: React.FC<NodeProps<NodeData>> = ({
       <NodeResizer
         lineClassName={cls.resizerLine}
         isVisible={selected}
-        minWidth={100}
-        minHeight={30}
-        maxWidth={1000}
-        maxHeight={1000}
+        minHeight={hMin}
+        maxHeight={hMax}
+        minWidth={wMin}
+        maxWidth={wMax}
       />
       {isEditing && (
         <NodeToolbar
@@ -120,10 +126,12 @@ const CustomNode: React.FC<NodeProps<NodeData>> = ({
               <button
                 className={cls.button}
                 onClick={() =>
-                  handleNodeChange(useComponentsStore.getState(), {
-                    type: 'ungroup',
-                    id,
-                  })
+                  storeFlow.onNodesChange(store)([
+                    {
+                      type: 'ungroup',
+                      id,
+                    },
+                  ])
                 }
               >
                 <IconLayersDifference />
@@ -134,10 +142,12 @@ const CustomNode: React.FC<NodeProps<NodeData>> = ({
             <button
               className={cls.button}
               onClick={() =>
-                handleNodeChange(useComponentsStore.getState(), {
-                  type: 'visibility',
-                  id,
-                })
+                storeFlow.onNodesChange(store)([
+                  {
+                    type: 'visibility',
+                    id,
+                  },
+                ])
               }
             >
               <IconEye />
@@ -147,12 +157,9 @@ const CustomNode: React.FC<NodeProps<NodeData>> = ({
             <TooltipFull msg="Delete" side="bottom">
               <button
                 className={cls.button}
-                onClick={() =>
-                  handleNodeChange(useComponentsStore.getState(), {
-                    type: 'remove',
-                    id,
-                  })
-                }
+                onClick={() => {
+                  deleteElements({ nodes: [{ id }] });
+                }}
               >
                 <IconTrash />
               </button>
