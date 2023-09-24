@@ -126,14 +126,11 @@ export const useFlowStore = create<FlowState>()((set) => ({
           for (const change of changes) {
             switch (change.type) {
               case 'add': {
-                nodes.push({
+                const node = {
                   ...change.item,
-                  deletable: state.readOnly && state.deletable,
-                  draggable: !state.readOnly,
-                  connectable: state.readOnly && state.connectable,
-                  focusable: true,
-                  selectable: true,
-                });
+                };
+                addMetaToNode(node, state);
+                state.nodes.push(node);
                 break;
               }
 

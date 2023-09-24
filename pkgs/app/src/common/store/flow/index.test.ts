@@ -18,7 +18,7 @@ describe('setCurrent', () => {
   });
 });
 
-describe('updateNode', () => {
+describe('updateNode - position', () => {
   it("should update one node's position", () => {
     const state = store.getState();
     const node = createNode(getBlobComponent({ id: 'project', orgId: 'acme' }));
@@ -32,6 +32,22 @@ describe('updateNode', () => {
       x: 10,
       y: 11,
     });
+  });
+});
+
+describe('updateNode - add', () => {
+  it.each([true, false])('should create a node with proper meta', (val) => {
+    const state = store.getState();
+    const node = createNode(getBlobComponent({ id: 'project', orgId: 'acme' }));
+    state.setCurrent('', { nodes: [], edges: [] });
+    state.setMeta({ readOnly: !val, connectable: val });
+
+    state.onNodesChange({
+      getState() {
+        return { nodeInternals: new Map() };
+      },
+    } as any)([{ type: 'add', item: node }]);
+    expect(store.getState().nodes[0].connectable).toBe(val);
   });
 });
 

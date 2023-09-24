@@ -111,10 +111,7 @@ export const FlowProject: React.FC = () => {
         originalSize: size,
       },
       position: position,
-      style: {
-        width: size.width,
-        height: size.height,
-      },
+      style: { width: size.width, height: size.height },
       width: size.width,
       height: size.height,
       hidden: false,
