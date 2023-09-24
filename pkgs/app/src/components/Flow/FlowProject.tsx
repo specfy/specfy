@@ -151,6 +151,9 @@ export const FlowProject: React.FC = () => {
     ) {
       return false;
     }
+    if (conn.source === conn.target) {
+      return false;
+    }
     return true;
   };
 
