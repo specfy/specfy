@@ -51,6 +51,35 @@ describe('updateNode - add', () => {
   });
 });
 
+describe('updateNode - delete', () => {
+  it('should remove a node', () => {
+    const state = store.getState();
+    const node = createNode(getBlobComponent({ id: 'project', orgId: 'acme' }));
+    state.setCurrent('', { nodes: [node], edges: [] });
+
+    state.onNodesChange({
+      getState() {
+        return { nodeInternals: new Map() };
+      },
+    } as any)([{ type: 'remove', id: node.id }]);
+    expect(store.getState().nodes).toStrictEqual([]);
+  });
+  it('should hide a managed node', () => {
+    const state = store.getState();
+    const node = createNode(getBlobComponent({ id: 'project', orgId: 'acme' }));
+    node.data.source = 'github';
+    state.setCurrent('', { nodes: [node], edges: [] });
+
+    state.onNodesChange({
+      getState() {
+        return { nodeInternals: new Map() };
+      },
+    } as any)([{ type: 'remove', id: node.id }]);
+    expect(store.getState().nodes).toHaveLength(1);
+    expect(store.getState().nodes[0].hidden).toBe(true);
+  });
+});
+
 describe('updateEdge', () => {
   it("should update one node's position", () => {
     const state = store.getState();

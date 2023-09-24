@@ -196,7 +196,12 @@ export const useFlowStore = create<FlowState>()((set) => ({
                   ...listAllChildren(state.nodes, change.id),
                   change.id,
                 ];
-                const item = state.nodes.find((n) => n.id === change.id)!;
+                const item = state.nodes.find((n) => n.id === change.id);
+                if (!item) {
+                  // We delete childs manually to have the chance to hide them
+                  // So might receive multiple "remove" update but only the first one is relevant
+                  continue;
+                }
                 const shouldHide = item.data.source;
 
                 // Delete childs
