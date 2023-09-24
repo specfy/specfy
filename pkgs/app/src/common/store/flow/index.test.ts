@@ -67,6 +67,7 @@ describe('updateNode - delete', () => {
     } as any)([{ type: 'remove', id: node.id }]);
     expect(store.getState().nodes).toStrictEqual([]);
   });
+
   it('should hide a managed node', () => {
     const state = store.getState();
     const node = createNode(getBlobComponent({ id: 'project', orgId: 'acme' }));
@@ -80,6 +81,26 @@ describe('updateNode - delete', () => {
     } as any)([{ type: 'remove', id: node.id }]);
     expect(store.getState().nodes).toHaveLength(1);
     expect(store.getState().nodes[0].hidden).toBe(true);
+  });
+
+  it('should hide a managed node inside a free host', () => {
+    const state = store.getState();
+    const host = createNode(getBlobComponent({ id: 'project', orgId: 'acme' }));
+    host.data.type = 'hosting';
+    const node = createNode(getBlobComponent({ id: 'project', orgId: 'acme' }));
+    node.data.source = 'github';
+    node.parentNode = host.id;
+    state.setCurrent('', { nodes: [host, node], edges: [] });
+
+    state.onNodesChange({
+      getState() {
+        return { nodeInternals: new Map() };
+      },
+    } as any)([{ type: 'remove', id: host.id }]);
+    const state2 = store.getState().nodes;
+    expect(state2).toHaveLength(1);
+    expect(state2[0].hidden).toBe(true);
+    expect(state2[0].parentNode).toBeUndefined();
   });
 });
 

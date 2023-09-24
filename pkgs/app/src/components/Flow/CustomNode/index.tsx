@@ -14,6 +14,7 @@ import {
   NodeResizer,
   NodeToolbar,
   useStoreApi,
+  useReactFlow,
 } from 'reactflow';
 
 import { ComponentIcon } from '../../Component/Icon';
@@ -35,6 +36,7 @@ const CustomNode: React.FC<NodeProps<NodeData>> = ({
   selected,
   isConnectable,
 }) => {
+  const { deleteElements } = useReactFlow();
   const storeFlow = useFlowStore();
   const store = useStoreApi();
   const { isEditing } = useEdit();
@@ -155,14 +157,9 @@ const CustomNode: React.FC<NodeProps<NodeData>> = ({
             <TooltipFull msg="Delete" side="bottom">
               <button
                 className={cls.button}
-                onClick={() =>
-                  storeFlow.onNodesChange(store)([
-                    {
-                      type: 'remove',
-                      id,
-                    },
-                  ])
-                }
+                onClick={() => {
+                  deleteElements({ nodes: [{ id }] });
+                }}
               >
                 <IconTrash />
               </button>

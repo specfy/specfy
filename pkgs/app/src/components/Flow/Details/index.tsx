@@ -6,7 +6,7 @@ import {
   IconTrash,
 } from '@tabler/icons-react';
 import { useEffect, useMemo, useState } from 'react';
-import { useStoreApi } from 'reactflow';
+import { useReactFlow, useStoreApi } from 'reactflow';
 
 import { Button } from '../../Form/Button';
 import { Tag } from '../../Tag';
@@ -102,6 +102,7 @@ export const FlowDetails: React.FC = () => {
     onEdgesChange,
   } = useFlowStore();
   const store = useStoreApi();
+  const { deleteElements } = useReactFlow();
 
   const [currNode, setNode] = useState<ComputedNode | null>(null);
   const [from, setFrom] = useState<Relation[]>([]);
@@ -168,7 +169,8 @@ export const FlowDetails: React.FC = () => {
   }, [currNode]);
 
   const deleteComponent = () => {
-    onNodesChange(store)([{ id: currNode!.id, type: 'remove' }]);
+    deleteElements({ nodes: [{ id: currNode!.id }] });
+    // onNodesChange(store)([{ id: currNode!.id, type: 'remove' }]);
   };
   const removeParent = () => {
     onNodesChange(store)([{ id: currNode!.id, type: 'ungroup' }]);

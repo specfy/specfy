@@ -126,9 +126,7 @@ export const useFlowStore = create<FlowState>()((set) => ({
           for (const change of changes) {
             switch (change.type) {
               case 'add': {
-                const node = {
-                  ...change.item,
-                };
+                const node: ComputedNode = { ...change.item };
                 addMetaToNode(node, state);
                 state.nodes.push(node);
                 break;
@@ -202,18 +200,33 @@ export const useFlowStore = create<FlowState>()((set) => ({
                   // So might receive multiple "remove" update but only the first one is relevant
                   continue;
                 }
-                const shouldHide = item.data.source;
 
                 // Delete childs
                 for (let index = 0; index < state.nodes.length; index++) {
-                  if (nodeIds.includes(state.nodes[index].id)) {
-                    if (shouldHide) {
-                      state.nodes[index].hidden = true;
-                    } else {
-                      delete state.nodes[index];
-                    }
+                  const node = state.nodes[index];
+                  if (!nodeIds.includes(node.id)) {
+                    continue;
+                  }
+
+                  if (node.data.source) {
+                    node.hidden = true;
+                  } else {
+                    delete state.nodes[index];
                   }
                 }
+
+                state.nodes = state.nodes.filter(Boolean);
+
+                // Because we can have hidden a node but delete its host, we need to double check after the facts
+                for (const node of state.nodes) {
+                  if (
+                    node.parentNode &&
+                    !state.nodes.find((n) => n.id === node.parentNode)
+                  ) {
+                    node.parentNode = undefined;
+                  }
+                }
+
                 state.nodeSelected = null;
                 break;
               }
@@ -221,7 +234,7 @@ export const useFlowStore = create<FlowState>()((set) => ({
               case 'visibility': {
                 const node = nodes.find((c) => c.id === change.id);
                 if (!node) {
-                  return;
+                  continue;
                 }
 
                 const visible = node.hidden === false;
@@ -286,7 +299,7 @@ export const useFlowStore = create<FlowState>()((set) => ({
               case 'group': {
                 if (change.id === change.parentId) {
                   console.error('Try to host inside itself', change);
-                  return;
+                  continue;
                 }
 
                 const node = nodes.find((c) => c.id === change.id)!;
