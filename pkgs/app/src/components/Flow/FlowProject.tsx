@@ -3,7 +3,7 @@ import type { ComputedNode } from '@specfy/models';
 import { getComponentSize } from '@specfy/models/src/flows/helpers';
 import classNames from 'classnames';
 import { useCallback, useRef, useState } from 'react';
-import type { NodeTypes, ReactFlowInstance } from 'reactflow';
+import type { NodeTypes, ReactFlowInstance, ReactFlowProps } from 'reactflow';
 import {
   Background,
   BackgroundVariant,
@@ -118,6 +118,29 @@ export const FlowProject: React.FC<Props> = ({ readonly }) => {
 
   // ------------------ Edge
   //
+  const onAddEdge: ReactFlowProps['onConnect'] = (conn) => {
+    const exists = edges.find(
+      (edge) => edge.target === conn.target && edge.source === conn.source
+    );
+    if (exists) {
+      // Adding an edge that already exists (e.g: same or different handle but same source / target)
+      onEdgesChange([
+        {
+          type: 'changeTarget',
+          id: `${conn.source}->${conn.target}`,
+          source: conn.source!,
+          newSourceHandle: conn.sourceHandle!,
+          newTarget: conn.target!,
+          newTargetHandle: conn.targetHandle!,
+          oldTarget: conn.target!,
+          show: true, // In might have been hidden and the person think it doesn't exists
+        },
+      ]);
+      return;
+    }
+
+    onEdgesChange([{ type: 'create', conn }]);
+  };
 
   return (
     <div
@@ -158,6 +181,8 @@ export const FlowProject: React.FC<Props> = ({ readonly }) => {
         onNodeMouseEnter={onNodeMouseEnter}
         onNodeMouseLeave={onNodeMouseLeave}
         // Edges
+        onEdgeUpdate={console.log}
+        onConnect={onAddEdge}
         // Nodes
       >
         <Background id="1" gap={10} color="#c5c7ca" />

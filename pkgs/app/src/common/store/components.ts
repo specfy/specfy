@@ -603,8 +603,8 @@ function flowEdgesToComponentEdges(
     const tmp: FlowEdge = {
       target: edge.target,
       vertices: prev ? prev.vertices : [],
-      read: prev ? prev.read : edge.data!.read,
-      write: prev ? prev.write : edge.data!.write,
+      read: edge.data!.read,
+      write: edge.data!.write,
       portSource: edge.sourceHandle as any,
       portTarget: edge.targetHandle as any,
     };

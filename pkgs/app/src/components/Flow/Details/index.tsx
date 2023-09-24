@@ -123,7 +123,7 @@ export const FlowDetails: React.FC = () => {
     } else {
       setRelation(null);
     }
-  }, [nodeSelected, edgeSelected]);
+  }, [nodeSelected, edgeSelected, edges, nodes]);
   // Select Nodes / Edges
   // useOnSelectionChange({
   //   /**

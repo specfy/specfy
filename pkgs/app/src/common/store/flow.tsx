@@ -289,11 +289,26 @@ export const useFlowStore = create<FlowState>()((set) => ({
 
             case 'create': {
               console.log('create', change);
+              const rel = change.conn;
+              state.edges.push({
+                id: `${rel.source}->${rel.target}`,
+                data: {
+                  read: true,
+                  write: true,
+                  source: null,
+                },
+                source: rel.source!,
+                sourceHandle: rel.sourceHandle!,
+                target: rel.target!,
+                targetHandle: rel.targetHandle,
+              });
               break;
             }
 
             case 'direction': {
-              console.log('direction', change);
+              const item = state.edges.find((e) => e.id === change.id)!;
+              item.data!.read = change.read;
+              item.data!.write = change.write;
               break;
             }
 
