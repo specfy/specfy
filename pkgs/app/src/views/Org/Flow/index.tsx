@@ -49,7 +49,7 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
       return;
     }
 
-    store.setCurrent(resFlow.data.data.flow);
+    store.setCurrent(org.flowId, resFlow.data.data.flow);
     store.setMeta({ readOnly: true, connectable: false, deletable: false });
     setReady(true);
   }, [resFlow.data]);

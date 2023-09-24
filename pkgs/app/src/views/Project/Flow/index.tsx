@@ -1,4 +1,4 @@
-import type { ApiProject, ApiComponent } from '@specfy/models';
+import type { ApiProject } from '@specfy/models';
 import { componentsToFlow } from '@specfy/models/src/flows/transform';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
@@ -23,37 +23,34 @@ export const ProjectFlow: React.FC<{
 }> = ({ proj }) => {
   const { isEditing, enable } = useEdit();
   const storeComponents = useComponentsStore();
-
+  const idFlow = useFlowStore((state) => state.id);
   const [loading, setLoading] = useState<boolean>(true);
-  const [components, setComponents] = useState<ApiComponent[]>();
 
   useEffect(() => {
-    setComponents(Object.values(storeComponents.components));
-  }, [storeComponents]);
-
-  useEffect(() => {
-    if (!components || !loading) {
+    if (proj.id === idFlow) {
+      setLoading(false);
       return;
     }
 
-    setLoading(false);
-
     // We don't use the hook to avoid rerendering the view on each update
-    useFlowStore.getState().setCurrent(componentsToFlow(components));
+    useFlowStore
+      .getState()
+      .setCurrent(
+        proj.id,
+        componentsToFlow(Object.values(storeComponents.components))
+      );
     useFlowStore.getState().setHighlight(null);
-  }, [components]);
+    setLoading(false);
+  }, [idFlow, storeComponents.components]);
 
   useEffect(() => {
     if (isEditing) {
-      console.log('erer');
       useFlowStore.getState().setMeta({
         readOnly: false,
         connectable: true,
         deletable: true,
       });
     } else {
-      console.log('a');
-
       useFlowStore.getState().setMeta({
         readOnly: true,
         connectable: false,
@@ -64,7 +61,7 @@ export const ProjectFlow: React.FC<{
 
   useEffect(() => {
     const unsub = useFlowStore.subscribe((state) => {
-      storeComponents.syncFromFlow(state, proj);
+      useComponentsStore.getState().syncFromFlow(state, proj);
     });
     return () => {
       unsub();

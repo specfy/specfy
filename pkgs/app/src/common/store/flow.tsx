@@ -29,12 +29,17 @@ import type {
 } from '@/components/Flow/types';
 
 export interface FlowState {
+  // id is used to control loading state
+  id: string;
+
+  // Flow
   nodes: ComputedNode[];
   edges: ComputedEdge[];
+  setCurrent: (id: string, flow: ComputedFlow) => void;
+
+  // Meta
   deletable: boolean;
   connectable: boolean;
-  nodeSelected: string | null;
-  highlightId: string | null;
   readOnly: boolean;
   setMeta: (
     opts: Partial<{
@@ -43,8 +48,14 @@ export interface FlowState {
       connectable: boolean;
     }>
   ) => void;
+
+  // Highlight state
+  highlightId: string | null;
   setHighlight: (id: string | null) => void;
-  setCurrent: (flow: ComputedFlow) => void;
+
+  // Everything else
+  nodeSelected: string | null;
+  edgeSelected: string | null;
   onNodesChange: (store: ReturnType<typeof useStoreApi>) => OnNodesChangeSuper;
   onEdgesChange: OnEdgesChangeSuper;
   onSelectionChange: OnSelectionChangeFunc;
@@ -57,23 +68,30 @@ export interface FlowState {
  * The components flow are controlled by the Components Store because it needs top -> bottom sync.
  */
 export const useFlowStore = create<FlowState>()((set) => ({
+  id: '',
   nodes: [],
   edges: [],
   deletable: false,
   connectable: false,
   nodeSelected: null,
+  edgeSelected: null,
   readOnly: true,
   highlightId: null,
-  setCurrent: (flow) => {
+  setCurrent: (id, flow) => {
     set(
       produce((state) => {
-        state.nodes = flow.nodes;
-        state.edges = flow.edges;
+        state.id = id;
+        state.nodes = flow.nodes.map((n) => {
+          return { ...n };
+        });
+        state.edges = flow.edges.map((e) => {
+          return { ...e };
+        });
 
-        for (const node of state.nodes) {
+        for (const node of flow.nodes) {
           addMetaToNode(node, state);
         }
-        for (const edge of state.edges) {
+        for (const edge of flow.edges) {
           addMetaToEdge(edge, state);
         }
       })
@@ -194,6 +212,7 @@ export const useFlowStore = create<FlowState>()((set) => ({
                     delete state.nodes[index];
                   }
                 }
+                state.nodeSelected = null;
                 // // Delete all related edges
                 // for (let index = 0; index < edges.length; index++) {
                 //   if (
@@ -248,6 +267,7 @@ export const useFlowStore = create<FlowState>()((set) => ({
         for (const change of changes) {
           switch (change.type) {
             case 'add': {
+              console.log('add', change);
               break;
             }
 
@@ -263,6 +283,30 @@ export const useFlowStore = create<FlowState>()((set) => ({
                 (e) => e && e.id === change.id
               )!;
               delete state.edges[index];
+              state.edgeSelected = null;
+              break;
+            }
+
+            case 'create': {
+              console.log('create', change);
+              break;
+            }
+
+            case 'direction': {
+              console.log('direction', change);
+              break;
+            }
+
+            case 'select': {
+              state.edgeSelected = change.selected ? change.id : null;
+              const item = state.edges.find((n) => n.id === change.id)!;
+              item.selected = change.selected;
+              break;
+            }
+
+            case 'visibility': {
+              const item = state.edges.find((n) => n.id === change.id)!;
+              item.hidden = item.hidden ? false : true;
               break;
             }
           }

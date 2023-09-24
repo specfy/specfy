@@ -7,7 +7,7 @@ import {
 } from '@tabler/icons-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'react-use';
-import { useOnSelectionChange, useStoreApi } from 'reactflow';
+import { useStoreApi } from 'reactflow';
 
 import { Button } from '../../Form/Button';
 import { Tag } from '../../Tag';
@@ -93,8 +93,15 @@ import { TooltipFull } from '@/components/Tooltip';
 // }
 
 export const FlowDetails: React.FC = () => {
-  const { nodes, edges, readOnly, onNodesChange, onEdgesChange } =
-    useFlowStore();
+  const {
+    nodes,
+    edges,
+    readOnly,
+    nodeSelected,
+    edgeSelected,
+    onNodesChange,
+    onEdgesChange,
+  } = useFlowStore();
   const store = useStoreApi();
 
   const [currNode, setNode] = useState<ComputedNode | null>(null);
@@ -102,36 +109,52 @@ export const FlowDetails: React.FC = () => {
   const [to, setTo] = useState<Relation[]>([]);
   const [relation, setRelation] = useState<Relation | null>(null);
 
+  useEffect(() => {
+    // Only one
+    setNode(
+      nodeSelected ? store.getState().nodeInternals.get(nodeSelected)! : null
+    );
+
+    if (edgeSelected) {
+      const edge = edges.find((e) => e.id === edgeSelected)!;
+      const source = nodes.find((c) => c.id === edge.source);
+      const target = nodes.find((c) => c.id === edge.target);
+      setRelation({ edge, source, target });
+    } else {
+      setRelation(null);
+    }
+  }, [nodeSelected, edgeSelected]);
   // Select Nodes / Edges
-  useOnSelectionChange({
-    /**
-     * Be careful `nds` is stall.
-     * Maybe it's my fault I don't know, but sometimes the nodes are not up to date.
-     * So prefer selecting back again from `nodes`.
-     */
-    onChange: ({ nodes: nds, edges: eds }) => {
-      // Nodes
-      if (nds.length === 0 || nds.length > 1) {
-        // No selection or more than one
-        setNode(null);
-      } else {
-        // Only one
-        setNode(store.getState().nodeInternals.get(nds[0].id)!);
-      }
+  // useOnSelectionChange({
+  //   /**
+  //    * Be careful `nds` is stall.
+  //    * Maybe it's my fault I don't know, but sometimes the nodes are not up to date.
+  //    * So prefer selecting back again from `nodes`.
+  //    */
+  //   onChange: ({ nodes: nds, edges: eds }) => {
+  //     // Nodes
+  //     if (nds.length === 0 || nds.length > 1) {
+  //       // No selection or more than one
+  //       setNode(null);
+  //     } else {
+  //       // Only one
+  //       setNode(store.getState().nodeInternals.get(nds[0].id)!);
+  //     }
 
-      // Edges
-      if (eds.length === 0 || eds.length > 1) {
-        // No selection or more than one
-        setRelation(null);
-      } else {
-        const edge = eds[0];
-        const source = nodes.find((c) => c.id === edge.source);
-        const target = nodes.find((c) => c.id === edge.target);
+  //     console.log(nds, eds);
+  //     // Edges
+  //     if (eds.length === 0 || eds.length > 1) {
+  //       // No selection or more than one
+  //       setRelation(null);
+  //     } else {
+  //       const edge = eds[0];
+  //       const source = nodes.find((c) => c.id === edge.source);
+  //       const target = nodes.find((c) => c.id === edge.target);
 
-        setRelation({ edge, source, target });
-      }
-    },
-  });
+  //       setRelation({ edge, source, target });
+  //     }
+  //   },
+  // });
 
   // Update current node information
   // Useful if we resize or delete it in the flow

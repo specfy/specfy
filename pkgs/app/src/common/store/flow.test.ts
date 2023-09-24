@@ -12,7 +12,7 @@ afterEach(() => {
 describe('setCurrent', () => {
   it('should setCurrent flow', () => {
     const state = store.getState();
-    state.setCurrent({ nodes: [], edges: [] });
+    state.setCurrent('', { nodes: [], edges: [] });
     expect(store.getState().nodes).toStrictEqual([]);
     expect(store.getState().nodes).toStrictEqual([]);
   });
@@ -22,7 +22,7 @@ describe('updateNode', () => {
   it("should update one node's position", () => {
     const state = store.getState();
     const node = createNode(getBlobComponent({ id: 'project', orgId: 'acme' }));
-    state.setCurrent({ nodes: [node], edges: [] });
+    state.setCurrent('', { nodes: [node], edges: [] });
     state.onNodesChange({
       getState() {
         return { nodeInternals: new Map() };
@@ -51,7 +51,7 @@ describe('updateEdge', () => {
       sourceHandle: 'sl',
       targetHandle: 'tr',
     };
-    state.setCurrent({ nodes: [nodeA, nodeB], edges: [edge] });
+    state.setCurrent('', { nodes: [nodeA, nodeB], edges: [edge] });
     state.onEdgesChange([
       {
         type: 'changeTarget',

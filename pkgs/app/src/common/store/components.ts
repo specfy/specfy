@@ -319,7 +319,6 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
         for (const node of flow.nodes) {
           const origin = state.components[node.id];
           if (!origin) {
-            console.log();
             // new components
             updates.push({
               id: node.id,
@@ -337,7 +336,7 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
                 pos: node.position,
                 size: node.style as any,
               },
-              edges: [], // Todo edges
+              edges: flowEdgesToComponentEdges(flow, node.id), // Todo edges
               blobId: null,
               inComponent: { id: node.parentNode || null },
               show: node.hidden ? false : true,
@@ -361,7 +360,7 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
             pos: node.position,
             size: node.style as any,
           };
-          // origin.edges = []; // Todo edges
+          origin.edges = flowEdgesToComponentEdges(flow, next.id, next); // Todo edges
           next.inComponent = { id: node.parentNode || null };
           next.show = node.hidden ? false : true;
           updates.push(next);
@@ -586,4 +585,39 @@ function listAllChildren(components: ApiComponent[], parent: string): string[] {
     }
   }
   return list;
+}
+
+function flowEdgesToComponentEdges(
+  flow: FlowState,
+  source: string,
+  origin?: ApiComponent
+): ApiComponent['edges'] {
+  const copy: ApiComponent['edges'] = [];
+  for (const edge of flow.edges) {
+    if (edge.source !== source) {
+      continue;
+    }
+
+    const prev = origin?.edges.find((e) => e.target === edge.target);
+
+    const tmp: FlowEdge = {
+      target: edge.target,
+      vertices: prev ? prev.vertices : [],
+      read: prev ? prev.read : edge.data!.read,
+      write: prev ? prev.write : edge.data!.write,
+      portSource: edge.sourceHandle as any,
+      portTarget: edge.targetHandle as any,
+    };
+
+    // To avoid unnecessary diff on old values
+    if (edge.hidden) {
+      tmp.show = false;
+    }
+    if (prev && typeof tmp.source !== 'undefined') {
+      tmp.source = prev.source;
+    }
+    copy.push(tmp);
+  }
+
+  return copy;
 }

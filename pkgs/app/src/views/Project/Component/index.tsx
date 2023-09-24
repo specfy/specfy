@@ -195,7 +195,7 @@ export const ComponentView: React.FC<{
       return;
     }
 
-    storeFlow.setCurrent(componentsToFlow(components));
+    storeFlow.setCurrent(proj.id, componentsToFlow(components));
     storeFlow.setMeta({ readOnly: true });
     storeFlow.setHighlight(comp!.id);
   }, [components]);
