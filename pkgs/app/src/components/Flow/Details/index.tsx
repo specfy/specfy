@@ -1,4 +1,4 @@
-import type { ComputedFlow, ComputedNode, EdgeData } from '@specfy/models';
+import type { ComputedNode } from '@specfy/models';
 import {
   IconEye,
   IconEyeOff,
@@ -7,17 +7,17 @@ import {
 } from '@tabler/icons-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'react-use';
-import { useEdges, useNodes, useOnSelectionChange } from 'reactflow';
+import { useOnSelectionChange, useStoreApi } from 'reactflow';
 
 import { Button } from '../../Form/Button';
 import { Tag } from '../../Tag';
 import { PreviewNode } from '../CustomNode';
-import type { OnEdgesChangeSuper, OnNodesChangeSuper } from '../types';
 
 import type { Relation } from './EdgeRelation';
 import { EdgeRelation } from './EdgeRelation';
 import cls from './index.module.scss';
 
+import { useFlowStore } from '@/common/store';
 import { Flex } from '@/components/Flex';
 import { TooltipFull } from '@/components/Tooltip';
 
@@ -92,15 +92,10 @@ import { TooltipFull } from '@/components/Tooltip';
 //   return 0;
 // }
 
-export const FlowDetails: React.FC<{
-  flow: ComputedFlow;
-  readonly: boolean;
-  // Events
-  onNodesChange?: OnNodesChangeSuper;
-  onEdgesChange?: OnEdgesChangeSuper;
-}> = ({ flow, readonly, onNodesChange, onEdgesChange }) => {
-  const nodes = useNodes();
-  const edges = useEdges<EdgeData>();
+export const FlowDetails: React.FC = () => {
+  const { nodes, edges, readOnly, onNodesChange, onEdgesChange } =
+    useFlowStore();
+  const store = useStoreApi();
 
   const [currNode, setNode] = useState<ComputedNode | null>(null);
   const [from, setFrom] = useState<Relation[]>([]);
@@ -121,7 +116,7 @@ export const FlowDetails: React.FC<{
         setNode(null);
       } else {
         // Only one
-        setNode((nodes as ComputedNode[]).find((n) => n.id === nds[0].id)!);
+        setNode(store.getState().nodeInternals.get(nds[0].id)!);
       }
 
       // Edges
@@ -130,8 +125,8 @@ export const FlowDetails: React.FC<{
         setRelation(null);
       } else {
         const edge = eds[0];
-        const source = flow.nodes.find((c) => c.id === edge.source);
-        const target = flow.nodes.find((c) => c.id === edge.target);
+        const source = nodes.find((c) => c.id === edge.source);
+        const target = nodes.find((c) => c.id === edge.target);
 
         setRelation({ edge, source, target });
       }
@@ -146,7 +141,7 @@ export const FlowDetails: React.FC<{
         return;
       }
 
-      const find = (nodes as ComputedNode[]).find((n) => n.id === currNode.id);
+      const find = store.getState().nodeInternals.get(currNode.id);
       if (!find) {
         return;
       }
@@ -172,12 +167,12 @@ export const FlowDetails: React.FC<{
         f.push({
           edge,
           source: currNode,
-          target: flow.nodes.find((c) => c.id === edge.target)!,
+          target: nodes.find((c) => c.id === edge.target)!,
         });
       } else if (edge.target === currNode.id) {
         t.push({
           edge,
-          source: flow.nodes.find((c) => c.id === edge.source)!,
+          source: nodes.find((c) => c.id === edge.source)!,
           target: currNode,
         });
       }
@@ -192,33 +187,23 @@ export const FlowDetails: React.FC<{
       return null;
     }
 
-    return flow.nodes.find((c) => c.id === currNode.parentNode);
+    return nodes.find((c) => c.id === currNode.parentNode);
   }, [currNode]);
 
   const deleteComponent = () => {
-    if (onNodesChange) {
-      onNodesChange([{ id: currNode!.id, type: 'remove' }]);
-    }
+    onNodesChange(store)([{ id: currNode!.id, type: 'remove' }]);
   };
   const removeParent = () => {
-    if (onNodesChange) {
-      onNodesChange([{ id: currNode!.id, type: 'ungroup' }]);
-    }
+    onNodesChange(store)([{ id: currNode!.id, type: 'ungroup' }]);
   };
   const visibilityComponent = () => {
-    if (onNodesChange) {
-      onNodesChange([{ id: currNode!.id, type: 'visibility' }]);
-    }
+    onNodesChange(store)([{ id: currNode!.id, type: 'visibility' }]);
   };
   const deleteEdge = () => {
-    if (onEdgesChange) {
-      onEdgesChange([{ id: relation!.edge.id, type: 'remove' }]);
-    }
+    onEdgesChange([{ id: relation!.edge.id, type: 'remove' }]);
   };
   const visibilityEdge = () => {
-    if (onEdgesChange) {
-      onEdgesChange([{ id: relation!.edge.id, type: 'visibility' }]);
-    }
+    onEdgesChange([{ id: relation!.edge.id, type: 'visibility' }]);
   };
 
   return (
@@ -239,7 +224,7 @@ export const FlowDetails: React.FC<{
                 )}
 
                 <Flex>
-                  {!readonly && (
+                  {!readOnly && (
                     <Button
                       size="s"
                       display="ghost"
@@ -256,7 +241,7 @@ export const FlowDetails: React.FC<{
                       )}
                     </Button>
                   )}
-                  {!readonly && !currNode.data.source && (
+                  {!readOnly && !currNode.data.source && (
                     <Button size="s" display="ghost" onClick={deleteComponent}>
                       <IconTrash />
                     </Button>
@@ -268,8 +253,8 @@ export const FlowDetails: React.FC<{
               <PreviewNode
                 key={currNode.id}
                 node={currNode}
-                editable={!readonly}
-                onNodesChange={onNodesChange}
+                editable={!readOnly}
+                onNodesChange={onNodesChange(store)}
               />
             </div>
           </div>
@@ -279,7 +264,7 @@ export const FlowDetails: React.FC<{
               <div className={cls.info}>
                 <div className={cls.caption}>Parent</div>
                 {parent ? (
-                  <Tag closable={!readonly} onClose={removeParent}>
+                  <Tag closable={!readOnly} onClose={removeParent}>
                     {parent.data.name}
                   </Tag>
                 ) : (
@@ -300,7 +285,7 @@ export const FlowDetails: React.FC<{
                         <EdgeRelation
                           key={rel.edge.id}
                           {...rel}
-                          readonly={readonly}
+                          readonly={readOnly}
                           onEdgesChange={onEdgesChange}
                         />
                       );
@@ -324,7 +309,7 @@ export const FlowDetails: React.FC<{
                         <EdgeRelation
                           key={rel.edge.id}
                           {...rel}
-                          readonly={readonly}
+                          readonly={readOnly}
                           onEdgesChange={onEdgesChange}
                         />
                       );
@@ -353,7 +338,7 @@ export const FlowDetails: React.FC<{
               )}
 
               <Flex>
-                {!readonly && (
+                {!readOnly && (
                   <Button size="s" display="ghost" onClick={visibilityEdge}>
                     {relation.edge.hidden ? (
                       <>
@@ -366,7 +351,7 @@ export const FlowDetails: React.FC<{
                     )}
                   </Button>
                 )}
-                {!readonly && !relation.edge.data!.source && (
+                {!readOnly && !relation.edge.data!.source && (
                   <Button size="s" display="ghost" onClick={deleteEdge}>
                     <IconTrash />
                   </Button>
@@ -378,7 +363,7 @@ export const FlowDetails: React.FC<{
             <tbody>
               <EdgeRelation
                 {...relation}
-                readonly={readonly}
+                readonly={readOnly}
                 onEdgesChange={onEdgesChange}
               />
             </tbody>

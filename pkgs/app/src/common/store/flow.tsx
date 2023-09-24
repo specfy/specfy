@@ -35,8 +35,14 @@ export interface FlowState {
   connectable: boolean;
   nodeSelected: string | null;
   highlightId: string | null;
-  readonly: boolean;
-  setReadonly: (read: boolean) => void;
+  readOnly: boolean;
+  setMeta: (
+    opts: Partial<{
+      readOnly: boolean;
+      deletable: boolean;
+      connectable: boolean;
+    }>
+  ) => void;
   setHighlight: (id: string | null) => void;
   setCurrent: (flow: ComputedFlow) => void;
   onNodesChange: (store: ReturnType<typeof useStoreApi>) => OnNodesChangeSuper;
@@ -56,10 +62,22 @@ export const useFlowStore = create<FlowState>()((set) => ({
   deletable: false,
   connectable: false,
   nodeSelected: null,
+  readOnly: true,
   highlightId: null,
-  readonly: false,
   setCurrent: (flow) => {
-    set({ nodes: flow.nodes, edges: flow.edges });
+    set(
+      produce((state) => {
+        state.nodes = flow.nodes;
+        state.edges = flow.edges;
+
+        for (const node of state.nodes) {
+          addMetaToNode(node, state);
+        }
+        for (const edge of state.edges) {
+          addMetaToEdge(edge, state);
+        }
+      })
+    );
   },
   setHighlight: (id) => {
     set(
@@ -69,19 +87,18 @@ export const useFlowStore = create<FlowState>()((set) => ({
       })
     );
   },
-  setReadonly: (read) => {
+  setMeta: ({ readOnly, connectable, deletable }) => {
     set(
       produce((state: FlowState) => {
-        state.readonly = read;
-        const isDeletable = !read && state.deletable;
-        const isConnectable = !read && state.connectable;
+        if (typeof readOnly === 'boolean') state.readOnly = readOnly;
+        if (typeof connectable === 'boolean') state.connectable = connectable;
+        if (typeof deletable === 'boolean') state.deletable = deletable;
 
         for (const node of state.nodes) {
-          node.deletable = isDeletable;
-          node.draggable = !read;
-          node.connectable = isConnectable;
-          node.focusable = true;
-          node.selectable = true;
+          addMetaToNode(node, state);
+        }
+        for (const edge of state.edges) {
+          addMetaToEdge(edge, state);
         }
       })
     );
@@ -100,13 +117,12 @@ export const useFlowStore = create<FlowState>()((set) => ({
               case 'add': {
                 nodes.push({
                   ...change.item,
-                  deletable: state.readonly && state.deletable,
-                  draggable: !state.readonly,
-                  connectable: state.readonly && state.connectable,
+                  deletable: state.readOnly && state.deletable,
+                  draggable: !state.readOnly,
+                  connectable: state.readOnly && state.connectable,
                   focusable: true,
                   selectable: true,
                 });
-                console.log(nodes);
                 break;
               }
 
@@ -166,33 +182,62 @@ export const useFlowStore = create<FlowState>()((set) => ({
               }
 
               case 'remove': {
+                // In case of KeyPress it will send all the childs
+                // But in case of manual delete we will only send the current el
                 const nodeIds = [
-                  ...listAllChildren(nodes, change.id),
+                  ...listAllChildren(state.nodes, change.id),
                   change.id,
                 ];
                 // Delete childs
-                for (let index = 0; index < nodes.length; index++) {
-                  if (nodeIds.includes(nodes[index].id)) {
-                    delete nodes[index];
+                for (let index = 0; index < state.nodes.length; index++) {
+                  if (nodeIds.includes(state.nodes[index].id)) {
+                    delete state.nodes[index];
                   }
                 }
-                // Delete all related edges
-                for (let index = 0; index < edges.length; index++) {
-                  if (
-                    nodeIds.includes(edges[index].source) ||
-                    nodeIds.includes(edges[index].target)
-                  ) {
-                    delete edges[index];
-                  }
-                }
+                // // Delete all related edges
+                // for (let index = 0; index < edges.length; index++) {
+                //   if (
+                //     nodeIds.includes(edges[index].source) ||
+                //     nodeIds.includes(edges[index].target)
+                //   ) {
+                //     delete edges[index];
+                //   }
+                // }
                 break;
               }
-            }
-          }
 
-          // Clear out delete because undefined
-          state.edges = state.edges.filter(Boolean);
-          state.nodes = state.nodes.filter(Boolean);
+              case 'visibility': {
+                const node = nodes.find((c) => c.id === change.id);
+                if (!node) {
+                  return;
+                }
+
+                const visible = node.hidden === false;
+                const nodeIds = [...listAllChildren(nodes, node.id), change.id];
+
+                // Hide all children and self
+                for (const copy of nodes) {
+                  if (nodeIds.includes(copy.id)) {
+                    copy.hidden = visible;
+                  }
+                }
+
+                // Hide any incoming edges
+                for (const edge of edges) {
+                  if (
+                    nodeIds.includes(edge.source) ||
+                    nodeIds.includes(edge.target)
+                  ) {
+                    edge.hidden = visible;
+                  }
+                }
+              }
+            }
+
+            // Clear out delete because undefined
+            state.edges = state.edges.filter(Boolean);
+            state.nodes = state.nodes.filter(Boolean);
+          }
         })
       );
     };
@@ -201,13 +246,29 @@ export const useFlowStore = create<FlowState>()((set) => ({
     set(
       produce((state: FlowState) => {
         for (const change of changes) {
-          if (change.type !== 'changeTarget') {
-            return;
+          switch (change.type) {
+            case 'add': {
+              break;
+            }
+
+            case 'changeTarget': {
+              const edge = state.edges.find((e) => e.id === change.id)!;
+              edge.targetHandle = change.newTargetHandle;
+              edge.sourceHandle = change.newSourceHandle;
+              break;
+            }
+
+            case 'remove': {
+              const index = state.edges.findIndex(
+                (e) => e && e.id === change.id
+              )!;
+              delete state.edges[index];
+              break;
+            }
           }
 
-          const edge = state.edges.find((e) => e.id === change.id)!;
-          edge.targetHandle = change.newTargetHandle;
-          edge.sourceHandle = change.newSourceHandle;
+          // Clear out delete because undefined
+          state.edges = state.edges.filter(Boolean);
         }
       })
     );
@@ -340,4 +401,17 @@ function listAllChildren(nodes: ComputedNode[], parent: string): string[] {
     }
   }
   return list;
+}
+
+function addMetaToNode(node: ComputedNode, state: FlowState) {
+  node.deletable = !state.readOnly && state.deletable;
+  node.draggable = !state.readOnly;
+  node.connectable = !state.readOnly && state.connectable;
+  node.focusable = true;
+  node.selectable = true;
+}
+function addMetaToEdge(edge: ComputedEdge, state: FlowState) {
+  edge.deletable = !state.readOnly && state.deletable;
+  edge.updatable = !state.readOnly && state.connectable;
+  edge.focusable = true;
 }

@@ -34,7 +34,7 @@ export const OrgOverview: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
     }
 
     store.setCurrent(resFlow.data.data.flow);
-    store.setReadonly(true);
+    store.setMeta({ readOnly: true });
   }, [resFlow.data]);
 
   if (res.error) {

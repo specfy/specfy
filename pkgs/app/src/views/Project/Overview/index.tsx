@@ -42,9 +42,11 @@ export const ProjectOverview: React.FC<{
   const isEditing = edit.isEditing;
 
   useEffect(() => {
-    // Reset to make sure it doesn't display old data and zoom can work
-    storeFlow.setCurrent({ nodes: [], edges: [] });
-  }, []);
+    if (params.project_slug !== project?.slug) {
+      // Reset to make sure it doesn't display old data and zoom can work
+      storeFlow.setCurrent({ nodes: [], edges: [] });
+    }
+  }, [params.project_slug]);
 
   useEffect(() => {
     setComponents(Object.values(storeComponents.components));
@@ -56,7 +58,7 @@ export const ProjectOverview: React.FC<{
     }
 
     storeFlow.setCurrent(componentsToFlow(components));
-    storeFlow.setReadonly(true);
+    storeFlow.setMeta({ readOnly: true });
     storeFlow.setHighlight(null);
   }, [components]);
 

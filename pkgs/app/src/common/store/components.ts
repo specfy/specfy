@@ -1,4 +1,4 @@
-import type { ApiComponent, FlowEdge } from '@specfy/models';
+import type { ApiComponent, ApiProject, FlowEdge } from '@specfy/models';
 import {
   getAbsolutePosition,
   placeInsideHost,
@@ -7,6 +7,10 @@ import { produce } from 'immer';
 import type { Connection } from 'reactflow';
 import { create } from 'zustand';
 
+import { getEmptyDoc } from '../content';
+import { slugify } from '../string';
+
+import type { FlowState } from './flow';
 import { original } from './original';
 
 import type {
@@ -42,6 +46,7 @@ export interface ComponentsState {
   ) => void;
   removeEdge: (source: string, target: string) => void;
   batchLayout: (changes: BatchNodeUpdate[]) => void;
+  syncFromFlow: (state: FlowState, proj: ApiProject) => void;
 }
 
 export const useComponentsStore = create<ComponentsState>()((set, get) => ({
@@ -302,6 +307,70 @@ export const useComponentsStore = create<ComponentsState>()((set, get) => ({
             pos: change.position || node.display.pos,
           };
         }
+      })
+    );
+  },
+
+  syncFromFlow: (flow: FlowState, proj: ApiProject) => {
+    set(
+      produce((state: ComponentsState) => {
+        const updates: ApiComponent[] = [];
+        // console.log('received');
+        for (const node of flow.nodes) {
+          const origin = state.components[node.id];
+          if (!origin) {
+            console.log();
+            // new components
+            updates.push({
+              id: node.id,
+              orgId: proj.orgId,
+              projectId: proj.id,
+              techId: node.data.techId || null,
+              type: node.data.type,
+              typeId: node.data.typeId || null,
+              name: node.data.name,
+              slug: slugify(node.data.name),
+              description: getEmptyDoc(),
+              techs: [],
+              display: {
+                zIndex: node.zIndex || 1,
+                pos: node.position,
+                size: node.style as any,
+              },
+              edges: [], // Todo edges
+              blobId: null,
+              inComponent: { id: node.parentNode || null },
+              show: node.hidden ? false : true,
+              tags: [],
+              source: null,
+              sourceName: null,
+              sourcePath: [],
+              createdAt: new Date().toISOString(),
+              updatedAt: new Date().toISOString(),
+            });
+            continue;
+          }
+
+          const next = origin;
+          next.techId = node.data.techId || null;
+          next.type = node.data.type;
+          next.typeId = node.data.typeId;
+          next.name = node.data.name;
+          next.display = {
+            zIndex: node.zIndex || origin.display.zIndex || 1,
+            pos: node.position,
+            size: node.style as any,
+          };
+          // origin.edges = []; // Todo edges
+          next.inComponent = { id: node.parentNode || null };
+          next.show = node.hidden ? false : true;
+          updates.push(next);
+        }
+
+        state.components = updates.reduce((prev, curr) => {
+          prev[curr.id] = curr;
+          return prev;
+        }, {} as any);
       })
     );
   },

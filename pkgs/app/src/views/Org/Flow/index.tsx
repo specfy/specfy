@@ -50,7 +50,7 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
     }
 
     store.setCurrent(resFlow.data.data.flow);
-    store.setReadonly(true);
+    store.setMeta({ readOnly: true, connectable: false, deletable: false });
     setReady(true);
   }, [resFlow.data]);
 
@@ -94,7 +94,7 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
 
   const onCancel = () => {
     setEditing(false);
-    store.setReadonly(true);
+    store.setMeta({ readOnly: true });
   };
 
   if (!ready) {
@@ -122,14 +122,14 @@ export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
           connectable={false}
         />
 
-        <FlowDetails readonly={true} flow={store} />
+        <FlowDetails />
         {canEdit && (
           <Toolbar left top visible>
             {!editing && (
               <Toolbar.Readonly
                 onClick={() => {
                   setEditing(true);
-                  store.setReadonly(false);
+                  store.setMeta({ readOnly: false });
                 }}
               />
             )}

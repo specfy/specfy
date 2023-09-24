@@ -86,7 +86,7 @@ export const Tech: React.FC<{
     }
 
     storeFlow.setCurrent(componentsToFlow(components));
-    storeFlow.setReadonly(true);
+    storeFlow.setMeta({ readOnly: true });
     storeFlow.setHighlight(null);
   }, [components]);
 

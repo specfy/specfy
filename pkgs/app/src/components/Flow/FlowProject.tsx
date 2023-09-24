@@ -59,7 +59,11 @@ export const FlowProject: React.FC<Props> = ({ readonly }) => {
   const [reactFlowInstance, setReactFlowInstance] =
     useState<ReactFlowInstance | null>(null);
 
-  // --- Dragging
+  // ------------------ Node
+  //
+
+  //
+  // --------- Dragging
   // Before dragging a new node is over
   const onDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
@@ -112,6 +116,9 @@ export const FlowProject: React.FC<Props> = ({ readonly }) => {
     onNodesChange(store)([{ type: 'add', item: node }]);
   };
 
+  // ------------------ Edge
+  //
+
   return (
     <div
       style={{ width: '100%', height: `100%` }}
@@ -150,6 +157,8 @@ export const FlowProject: React.FC<Props> = ({ readonly }) => {
         onSelectionChange={onSelectionChange}
         onNodeMouseEnter={onNodeMouseEnter}
         onNodeMouseLeave={onNodeMouseLeave}
+        // Edges
+        // Nodes
       >
         <Background id="1" gap={10} color="#c5c7ca" />
         <Background
