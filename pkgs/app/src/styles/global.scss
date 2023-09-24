@@ -80,7 +80,7 @@ body * {
   // Font
   --font-xs: 10px;
   --font-s: 12px;
-  --font: 14px;
+  --font: 13px;
   --font-m: 16px;
   --font-l: 20px;
   --font-xl: 24px;
@@ -111,11 +111,12 @@ body * {
   --colorLink: var(--indigo-9);
 
   // BG
-  --bg1: var(--mauve-1);
-  --bg2: #F9FAF9;
-  --bg3: var(--mauve-3);
+  --bg1: #fbfbfb;
+  --bg2: #f0f1f4;
+  --bg3: #f4f5f8;
   --bg5: var(--mauve-5);
   --bg10: hsl(217.5deg 25% 18.82%);
+  --bgHover: rgb(0 0 0 / 4%);
 
   // Border
   --border1: var(--mauve-2);
@@ -200,7 +201,7 @@ body {
   line-height: 20px;
   color: var(--text);
 
-  background-color: var(--bg2);
+  background-color: var(--bg1);
 
   -webkit-font-smoothing: antialiased;
 }

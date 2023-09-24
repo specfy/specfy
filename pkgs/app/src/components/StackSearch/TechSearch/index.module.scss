@@ -56,7 +56,7 @@
 
   &:hover {
     color: var(--text);
-    background-color: var(--bg2);
+    background-color: var(--bgHover);
 
     .icon {
       background-color: #fff;
@@ -65,7 +65,7 @@
 
   &.focused {
     color: var(--text);
-    background-color: var(--bg3);
+    background-color: var(--bgHover);
 
     .icon {
       background-color: #fff;
@@ -74,7 +74,7 @@
 
   &.selected {
     color: var(--accent2);
-    background-color: var(--bg3);
+    background-color: var(--bgHover);
 
     .icon {
       background-color: #fff;

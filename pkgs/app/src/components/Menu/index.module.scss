@@ -48,7 +48,7 @@
 
 .list {
   display: flex;
-  gap: var(--spc);
+  gap: 1px;
   justify-content: center;
 
   margin: 0;
@@ -97,8 +97,8 @@
   }
 
   svg {
-    width: 22px;
-    height: 22px;
+    width: 18px;
+    height: 18px;
     padding: 2px;
   }
 }

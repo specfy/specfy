@@ -27,9 +27,9 @@
     }
 
     .rc-tree-switcher {
-      width: 18px;
-      height: 18px;
-      margin: var(--spc) var(--spc-s) var(--spc) var(--spc);
+      width: 16px;
+      height: 16px;
+      margin: var(--spc-xs) var(--spc-s) var(--spc-s) var(--spc);
       border-radius: 100%;
 
       >svg {
@@ -48,7 +48,7 @@
       }
 
       &:hover {
-        background-color: var(--bg5);
+        background-color: var(--bg1);
       }
     }
 
@@ -56,10 +56,16 @@
       overflow: hidden;
       flex-grow: 1;
 
-      padding: var(--spc) 0 var(--spc) var(--spc);
+      padding: var(--spc-s) 0 var(--spc-s) var(--spc);
 
+      line-height: var(--lh-s);
+      color: var(--text-secondary);
       text-overflow: ellipsis;
       white-space: nowrap;
+
+      &.rc-tree-node-selected {
+        color: var(--primary);
+      }
     }
 
     .rc-tree-indent-unit {

@@ -38,7 +38,7 @@
 
   &.selected {
     color: var(--primary);
-    background-color: var(--bg3);
+    background-color: var(--bgHover);
   }
 
   &[aria-selected]:not(.focused, .selected) {

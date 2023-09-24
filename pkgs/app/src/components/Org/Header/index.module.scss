@@ -6,8 +6,8 @@
   width: 100%;
   padding: var(--spc) var(--spc-l) var(--spc) var(--spc);
 
-  font-size: var(--font-m);
-  font-weight: 600;
+  font-size: var(--font);
+  font-weight: 500;
 
   border: 1px solid transparent;
   border-radius: var(--radius2);
@@ -31,7 +31,8 @@
   min-width: 200px;
 
   &.current {
-    background-color: var(--bg2);
+    color: var(--text);
+    background-color: var(--bgHover)
   }
 }
 

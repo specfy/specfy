@@ -156,11 +156,11 @@ export const Staging: React.FC<{ showBadge: boolean }> = () => {
   return (
     <div className={cls.staging}>
       {isEditing ? (
-        <Button onClick={() => edit.enable(false)} size="l" display="ghost">
+        <Button onClick={() => edit.enable(false)} size="s" display="ghost">
           <IconEdit /> Editing
         </Button>
       ) : (
-        <Button onClick={() => edit.enable(true)} size="l" display="ghost">
+        <Button onClick={() => edit.enable(true)} size="s" display="ghost">
           <IconEye /> Viewing
         </Button>
       )}

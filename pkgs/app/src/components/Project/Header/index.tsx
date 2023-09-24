@@ -65,11 +65,12 @@ export const ProjectSwitcher: React.FC = () => {
                   <Link
                     to={`/${item.orgId}/${item.slug}${paths}`}
                     className={classNames(
-                      cls.org,
+                      cls.project,
                       project.id === item.id && cls.current
                     )}
                   >
-                    <AvatarAuto name={item.name} shape="square" /> {item.name}
+                    <AvatarAuto name={item.name} shape="square" size="s" />{' '}
+                    {item.name}
                   </Link>
                 </Dropdown.Item>
               );
@@ -78,7 +79,10 @@ export const ProjectSwitcher: React.FC = () => {
           <Dropdown.Separator />
           <Dropdown.Group>
             <Dropdown.Item asChild>
-              <Link to={`/${project.orgId}/_/project/new`} className={cls.org}>
+              <Link
+                to={`/${project.orgId}/_/project/new`}
+                className={cls.project}
+              >
                 <IconPlus size="1em" />
                 Create project
               </Link>

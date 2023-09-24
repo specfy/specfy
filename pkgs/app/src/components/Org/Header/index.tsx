@@ -80,7 +80,7 @@ export const OrgSwitcher: React.FC = () => {
                       current.id === org.id && cls.current
                     )}
                   >
-                    <AvatarAuto org={org} /> {org.name}
+                    <AvatarAuto org={org} size="s" /> {org.name}
                   </Link>
                 </Dropdown.Item>
               );

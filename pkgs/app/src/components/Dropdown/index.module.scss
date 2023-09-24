@@ -15,7 +15,7 @@
 
   &:hover {
     color: var(--primary);
-    background: var(--bg2);
+    background: var(--bgHover);
   }
 }
 
@@ -79,7 +79,7 @@
   height: 1px;
   margin: -1px 0 0;
   padding: 0;
-  background-color: var(--bg3)
+  background-color: var(--bgHover)
 }
 
 .item {
@@ -89,13 +89,13 @@
   gap: var(--spc-m);
   align-items: center;
 
-  padding: var(--spc-m) var(--spc-xl);
+  padding: var(--spc) var(--spc-l);
 
   color: var(--text4);
 
   &:hover {
     color: var(--text);
-    background-color: var(--bg2)
+    background-color: var(--bgHover)
   }
 }
 
