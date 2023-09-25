@@ -60,7 +60,7 @@ export const TeamInvite: React.FC<{
   return (
     <Card>
       <Card.Content>
-        <h3>Add team members</h3>
+        <h4>Add team members</h4>
         <Form.Root className={cls.form} onSubmit={onSubmit}>
           <Field name="email" error={errors.email?.message}>
             <Input

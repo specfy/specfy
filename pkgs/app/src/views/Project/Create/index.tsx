@@ -14,7 +14,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { createProject, linkToGitHubRepo } from '../../../api';
 import { handleErrors, isError } from '../../../api/helpers';
 import { Banner } from '../../../components/Banner';
-import { Container } from '../../../components/Container';
+import { Container, ContainerChild } from '../../../components/Container';
 import { Flex } from '../../../components/Flex';
 import { Button } from '../../../components/Form/Button';
 import { Field } from '../../../components/Form/Field';
@@ -28,6 +28,7 @@ import cls from './index.module.scss';
 import { i18n } from '@/common/i18n';
 import { socket } from '@/common/socket';
 import { titleSuffix } from '@/common/string';
+import { Card } from '@/components/Card';
 
 export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   org,
@@ -94,62 +95,74 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   return (
     <Container noPadding>
       <Helmet title={`Create Project ${titleSuffix}`} />
-      <Container.Left2Third>
-        <header className={cls.header}>
-          <h1>Create a Project</h1>
-          <p>
-            Contains your documentation and technical stack about a product in
-            your organization.
-          </p>
-        </header>
+      <ContainerChild centered>
+        <Form.Root onSubmit={onFinish}>
+          <div>
+            {!org.githubInstallationId && (
+              <>
+                <Banner type="warning" size="s">
+                  <Flex justify="space-between" grow>
+                    <div>
+                      Your organization is not linked to a GitHub organization.
+                    </div>
+                    <Link to={`/${org.id}/_/settings`}>
+                      <Button display="default">Settings</Button>
+                    </Link>
+                  </Flex>
+                </Banner>
+                <br />
+              </>
+            )}
+            <Card>
+              <header className={cls.header}>
+                <h1>Create a Project</h1>
+                <p>
+                  Contains your documentation and technical stack about a
+                  product in your organization.
+                </p>
+              </header>
 
-        <Form.Root onSubmit={onFinish} className={cls.form}>
-          <Flex align="flex-start" gap="l">
-            <Field name="name" error={errors.name?.message} key="fi">
-              <GitHubSearch
-                key="project"
-                installationId={org.githubInstallationId}
-                onPick={onPickRepo}
-              />
-            </Field>
+              <div className={cls.form}>
+                <Flex align="flex-start" gap="l">
+                  <Field name="name" error={errors.name?.message} key="fi">
+                    <GitHubSearch
+                      key="project"
+                      installationId={org.githubInstallationId}
+                      onPick={onPickRepo}
+                    />
+                  </Field>
 
-            <Form.Submit asChild>
-              <Button size="l" display="primary" type="submit" disabled={!repo}>
-                Create <IconCircleArrowRight />
-              </Button>
-            </Form.Submit>
-          </Flex>
+                  <Form.Submit asChild>
+                    <Button
+                      size="l"
+                      display="primary"
+                      type="submit"
+                      disabled={!repo}
+                    >
+                      Create <IconCircleArrowRight />
+                    </Button>
+                  </Form.Submit>
+                </Flex>
+              </div>
+            </Card>
+            <Collapsible.Root
+              className={cls.advanced}
+              open={open}
+              onOpenChange={setOpen}
+            >
+              <Collapsible.Trigger asChild>
+                <button>
+                  Advanced {open ? <IconChevronDown /> : <IconChevronRight />}
+                </button>
+              </Collapsible.Trigger>
 
-          {!org.githubInstallationId && (
-            <Banner type="warning">
-              <Flex justify="space-between" grow>
-                <div>
-                  Your organization is not linked to a GitHub organization.
-                </div>
-                <Link to={`/${org.id}/_/settings`}>
-                  <Button display="default">Settings</Button>
-                </Link>
-              </Flex>
-            </Banner>
-          )}
-
-          <Collapsible.Root
-            className={cls.advanced}
-            open={open}
-            onOpenChange={setOpen}
-          >
-            <Collapsible.Trigger asChild>
-              <button>
-                Advanced {open ? <IconChevronDown /> : <IconChevronRight />}
-              </button>
-            </Collapsible.Trigger>
-
-            <Collapsible.Content>
-              <SyncConfiguration errors={errors} onChange={setConfig} />
-            </Collapsible.Content>
-          </Collapsible.Root>
+              <Collapsible.Content>
+                <SyncConfiguration errors={errors} onChange={setConfig} />
+              </Collapsible.Content>
+            </Collapsible.Root>
+          </div>
         </Form.Root>
-      </Container.Left2Third>
+      </ContainerChild>
     </Container>
   );
 };

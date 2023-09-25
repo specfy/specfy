@@ -11,7 +11,6 @@ import { refreshProject } from '@/common/query';
 import { useProjectStore } from '@/common/store';
 import { Flex } from '@/components/Flex';
 import { Button } from '@/components/Form/Button';
-import { OnboardingRow } from '@/components/Onboarding/Row';
 import { useEventBus } from '@/hooks/useEventBus';
 
 export const ProjectWelcome: React.FC = () => {
@@ -81,32 +80,17 @@ export const ProjectWelcome: React.FC = () => {
           ) : (
             <Skeleton />
           )}
-        </div>
 
-        <h3>What to do next?</h3>
-        <OnboardingRow
-          title="Organize your Flow"
-          desc="Make it clean and nice, ready to be presented to other employees or in your RFCs"
-          done={false}
-        />
-        <OnboardingRow
-          title="Write small introductions"
-          desc="On your services explain why they exist and how they work, this will help with onboarding"
-          done={false}
-        />
-        <OnboardingRow
-          title="Link other Projects"
-          desc="Add your dependency to other Projects, the organization flow will be automatically updated"
-          done={false}
-        />
-
-        {job && job.status === 'success' && (
           <div className={cls.go}>
-            <Button display="primary" onClick={onGo}>
-              Go to your project
+            <Button
+              display="primary"
+              onClick={onGo}
+              disabled={!job || job.status !== 'success'}
+            >
+              Ready
             </Button>
           </div>
-        )}
+        </div>
       </div>
     </div>
   );

@@ -17,7 +17,7 @@ import {
   useProjectStore,
 } from '../../common/store';
 import { titleSuffix } from '../../common/string';
-import { Container } from '../../components/Container';
+import { Container, ContainerChild } from '../../components/Container';
 import { ContentSidebar } from '../../components/Content/Sidebar';
 import { Loading } from '../../components/Loading';
 import { NotFound } from '../../components/NotFound';
@@ -139,9 +139,9 @@ const Project: React.FC = () => {
           <div></div>
 
           <Container>
-            <Container.Left>
+            <ContainerChild left>
               <Loading />
-            </Container.Left>
+            </ContainerChild>
           </Container>
         </div>
       </div>

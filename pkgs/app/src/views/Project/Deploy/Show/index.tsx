@@ -8,7 +8,7 @@ import { useGetDeploy } from '../../../../api';
 import { AvatarAuto } from '../../../../components/AvatarAuto';
 import { Banner } from '../../../../components/Banner';
 import { CodeHighlighter } from '../../../../components/CodeHighlighter';
-import { Container } from '../../../../components/Container';
+import { Container, ContainerChild } from '../../../../components/Container';
 import { Flex } from '../../../../components/Flex';
 import { StatusTag } from '../../../../components/Job/StatusTag';
 import { NotFound } from '../../../../components/NotFound';
@@ -115,7 +115,7 @@ export const ProjectDeploysShow: React.FC<{
   if (res.isLoading && !deploy) {
     return (
       <Container noPadding>
-        <Container.Left2Third>
+        <ContainerChild leftLarge>
           <div className={cls.header}>
             <Skeleton width={150} height={40} />
           </div>
@@ -123,7 +123,7 @@ export const ProjectDeploysShow: React.FC<{
           <Flex gap="l" className={cls.states}>
             <Skeleton width={350} count={3} />
           </Flex>
-        </Container.Left2Third>
+        </ContainerChild>
       </Container>
     );
   }
@@ -134,7 +134,7 @@ export const ProjectDeploysShow: React.FC<{
 
   return (
     <Container noPadding>
-      <Container.Left2Third>
+      <ContainerChild leftLarge>
         <Helmet title={`${deploy.type} - ${proj.name} ${titleSuffix}`} />
         <div className={cls.header}>
           <h2>
@@ -169,7 +169,7 @@ export const ProjectDeploysShow: React.FC<{
         <div className={cls.logs}>
           <CodeHighlighter language="log" code={logs.join('\r\n')} />
         </div>
-      </Container.Left2Third>
+      </ContainerChild>
     </Container>
   );
 };

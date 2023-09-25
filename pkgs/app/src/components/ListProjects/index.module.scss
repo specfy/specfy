@@ -15,7 +15,7 @@
 }
 
 .title {
-  font-size: var(--font-m);
+  font-size: var(--font);
 }
 
 .item {
@@ -24,15 +24,14 @@
   display: flex;
   gap: var(--spc-l);
 
-  padding: var(--spc-xl) var(--spc) var(--spc-xl) var(--spc-xl) !important;
-
-  border: 1px solid var(--border2);
   border-radius: var(--radius2);
 
   transition: border 0.25s ease-in-out;
 
   &:hover {
-    border-color: var(--border3);
+    .title {
+      color: var(--accent2)
+    }
   }
 
   .content {
@@ -52,7 +51,7 @@
 
 .list {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(1, minmax(0, 1fr));
   gap: var(--spc-xl);
   margin-top: var(--spc-5xl);
 }

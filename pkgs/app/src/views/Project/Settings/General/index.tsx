@@ -130,7 +130,7 @@ export const SettingsGeneral: React.FC<{
       <Card>
         <Form.Root onSubmit={handleRename} className={cls.main}>
           <Card.Content>
-            <h3>Project Name</h3>
+            <h4>Project Name</h4>
             <Field name="name" label="Name" error={errors.name?.message}>
               <Input
                 value={name}
@@ -171,7 +171,7 @@ export const SettingsGeneral: React.FC<{
         <Card>
           <Form.Root onSubmit={(e) => e.preventDefault()} className={cls.main}>
             <Card.Content>
-              <h3>Keys</h3>
+              <h4>Keys</h4>
               <Flex gap="l" column align="flex-start">
                 <Field name="project" label="Project ID">
                   <Input

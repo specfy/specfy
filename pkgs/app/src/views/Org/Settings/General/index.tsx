@@ -121,7 +121,7 @@ export const SettingsGeneral: React.FC<{
       <Card>
         <Form.Root onSubmit={handleRename} className={cls.main}>
           <Card.Content>
-            <h3>Organization Name</h3>
+            <h4>Organization Name</h4>
             <Field name="name">
               <Input
                 value={name}
@@ -159,7 +159,7 @@ export const SettingsGeneral: React.FC<{
         <Card>
           <Form.Root onSubmit={(e) => e.preventDefault()} className={cls.main}>
             <Card.Content>
-              <h3>Link to GitHub</h3>
+              <h4>Link to GitHub</h4>
               <Field name="name">
                 <GitHubOrgSelect
                   key={org.githubInstallationId}

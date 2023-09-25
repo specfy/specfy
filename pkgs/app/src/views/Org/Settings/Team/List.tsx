@@ -90,14 +90,14 @@ export const SettingsTeamList: React.FC<{ params: RouteOrg }> = ({
           placeholder="Search..."
           className={cls.search}
           onChange={(e) => setSearch(e.target.value)}
-          size="l"
+          size="m"
         />
       </div>
       <Card>
         {!searchDebounced && (
           <div className={cls.lines}>
             <div>
-              <h5 className={cls.title}>Owners</h5>
+              <h4 className={cls.title}>Owners</h4>
               {owners.map((perm) => {
                 return (
                   <Row
@@ -118,7 +118,7 @@ export const SettingsTeamList: React.FC<{ params: RouteOrg }> = ({
 
             {false && (
               <div>
-                <h5 className={cls.title}>Reviewers</h5>
+                <h4 className={cls.title}>Reviewers</h4>
                 {reviewers.map((perm) => {
                   return (
                     <Row
@@ -139,7 +139,7 @@ export const SettingsTeamList: React.FC<{ params: RouteOrg }> = ({
             )}
 
             <div>
-              <h5 className={cls.title}>Contributors</h5>
+              <h4 className={cls.title}>Contributors</h4>
               {contributors.map((perm) => {
                 return (
                   <Row
@@ -159,7 +159,7 @@ export const SettingsTeamList: React.FC<{ params: RouteOrg }> = ({
             </div>
 
             <div>
-              <h5 className={cls.title}>Viewers</h5>
+              <h4 className={cls.title}>Viewers</h4>
               {viewers.map((perm) => {
                 return (
                   <Row

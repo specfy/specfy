@@ -7,7 +7,7 @@ import { Link, Route, Routes, useNavigate, useParams } from 'react-router-dom';
 
 import { useListDocuments } from '../../../api';
 import { Banner } from '../../../components/Banner';
-import { Container } from '../../../components/Container';
+import { Container, ContainerChild } from '../../../components/Container';
 import { Button } from '../../../components/Form/Button';
 import { Subdued } from '../../../components/Text';
 import { Time } from '../../../components/Time';
@@ -102,7 +102,7 @@ export const ProjectAssistant: React.FC = () => {
   return (
     <Container noPadding>
       <Helmet title={`Assistant - ${project.name} ${titleSuffix}`} />
-      <Container.Left2Third>
+      <ContainerChild leftLarge>
         <header className={cls.header}>
           <h1>
             <IconSparkles /> AI Assistant
@@ -132,10 +132,10 @@ export const ProjectAssistant: React.FC = () => {
             />
           </Routes>
         </div>
-      </Container.Left2Third>
-      <Container.Right1Third>
+      </ContainerChild>
+      <ContainerChild rightSmall>
         <History />
-      </Container.Right1Third>
+      </ContainerChild>
     </Container>
   );
 };

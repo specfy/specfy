@@ -1,6 +1,6 @@
 import { SiGithub } from '@icons-pack/react-simple-icons';
 import type { ApiGitHubRepo } from '@specfy/models';
-import { IconLock, IconSelector } from '@tabler/icons-react';
+import { IconSelector } from '@tabler/icons-react';
 import classNames from 'classnames';
 import { forwardRef, useEffect, useRef, useState } from 'react';
 
@@ -133,7 +133,7 @@ export const GitHubSearch = forwardRef<
             autoFocus
             placeholder={!installationId ? 'Type Project name' : 'Search...'}
           />
-          <div ref={refList}>
+          <div ref={refList} className={cls.list}>
             {list.map((repo, i) => {
               return (
                 <div
@@ -143,7 +143,12 @@ export const GitHubSearch = forwardRef<
                   onClick={() => onClick(repo)}
                   className={classNames(cls.row, focus === i && cls.focused)}
                 >
-                  {repo.name} {repo.private && <IconLock />}
+                  <div>{repo.name}</div>
+                  {repo.url && (
+                    <div className={cls.visibility}>
+                      {repo.private ? 'Private' : 'Public'} repo
+                    </div>
+                  )}
                 </div>
               );
             })}

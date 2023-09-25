@@ -95,7 +95,7 @@ export const SettingsSync: React.FC<{
       <Card>
         <Form.Root onSubmit={(e) => e.preventDefault()} className={cls.main}>
           <Card.Content>
-            <h3>Link to GitHub</h3>
+            <h4>Link to GitHub</h4>
 
             <Field name="github">
               {!org!.githubInstallationId ? (
@@ -157,7 +157,7 @@ export const SettingsSync: React.FC<{
       <Card>
         <Form.Root onSubmit={onSaveConfiguration} className={cls.main}>
           <Card.Content>
-            <h3>Configuration</h3>
+            <h4>Configuration</h4>
             <SyncConfiguration
               errors={errors}
               config={proj.config}

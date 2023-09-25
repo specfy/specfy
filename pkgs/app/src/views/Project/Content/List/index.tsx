@@ -9,7 +9,7 @@ import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
 import { useListDocuments } from '../../../../api';
-import { Container } from '../../../../components/Container';
+import { Container, ContainerChild } from '../../../../components/Container';
 import { Flex } from '../../../../components/Flex';
 import { UpdatedAt } from '../../../../components/UpdatedAt';
 import type { RouteProject } from '../../../../types/routes';
@@ -49,7 +49,7 @@ export const ProjectContentList: React.FC<{
 
   return (
     <Container noPadding>
-      <Container.Left2Third>
+      <ContainerChild leftLarge>
         <Helmet title={`Content - ${proj.name} ${titleSuffix}`} />
 
         <Flex gap="xl" className={cls.categories}>
@@ -91,7 +91,7 @@ export const ProjectContentList: React.FC<{
             );
           })}
         </div>
-      </Container.Left2Third>
+      </ContainerChild>
     </Container>
   );
 };

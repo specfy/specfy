@@ -19,7 +19,7 @@ export const Banner: React.FC<{
 }> = ({ children, type = 'info', size = 'm', onClose }) => {
   return (
     <div className={classnames(cls.banner, cls[type], cls[size])}>
-      <Flex gap="m">
+      <Flex gap="m" grow>
         <div className={cls.icon}>
           {type === 'success' && <IconCircleCheckFilled />}
           {type === 'warning' && <IconExclamationCircle />}

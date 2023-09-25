@@ -2,7 +2,7 @@ import classnames from 'classnames';
 
 import cls from './index.module.scss';
 
-const OriginContainer: React.FC<{
+export const Container: React.FC<{
   children: React.ReactNode;
   className?: string;
   noPadding?: boolean;
@@ -19,57 +19,42 @@ const OriginContainer: React.FC<{
     </div>
   );
 };
-const Left: React.FC<{
+
+export const ContainerChild: React.FC<{
   children: React.ReactNode;
   className?: string;
-}> = ({ children, className }) => {
-  return <div className={classnames(cls.left, className)}>{children}</div>;
-};
-const Right: React.FC<{
-  children: React.ReactNode;
-  className?: string;
-}> = ({ children, className }) => {
-  return <div className={classnames(cls.right, className)}>{children}</div>;
-};
-const Center: React.FC<{
-  children: React.ReactNode;
-  className?: string;
-}> = ({ children, className }) => {
-  return <div className={classnames(cls.center, className)}>{children}</div>;
-};
-const Left2Third: React.FC<{
-  children: React.ReactNode;
-  className?: string;
+  left?: boolean;
+  right?: boolean;
+  fullCenter?: boolean;
+  centered?: boolean;
+  leftLarge?: boolean;
+  rightSmall?: boolean;
   padded?: boolean;
-}> = ({ children, className, padded }) => {
+}> = ({
+  children,
+  className,
+  left,
+  right,
+  fullCenter,
+  centered,
+  leftLarge,
+  rightSmall,
+  padded,
+}) => {
   return (
     <div
-      className={classnames(cls.left2third, className, padded && cls.padded)}
+      className={classnames(
+        left && cls.left,
+        right && cls.right,
+        fullCenter && cls.center,
+        centered && cls.centered,
+        leftLarge && cls.leftLarge,
+        rightSmall && cls.rightSmall,
+        padded && cls.padded,
+        className
+      )}
     >
       {children}
     </div>
   );
 };
-const Right1Third: React.FC<{
-  children: React.ReactNode;
-  className?: string;
-}> = ({ children, className }) => {
-  return (
-    <div className={classnames(cls.right1third, className)}>{children}</div>
-  );
-};
-
-export type ContainerProps = typeof OriginContainer & {
-  Left: typeof Left;
-  Right: typeof Right;
-  Center: typeof Center;
-  Left2Third: typeof Left2Third;
-  Right1Third: typeof Right1Third;
-};
-
-export const Container = OriginContainer as ContainerProps;
-Container.Left = Left;
-Container.Right = Right;
-Container.Center = Center;
-Container.Left2Third = Left2Third;
-Container.Right1Third = Right1Third;

@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 import { createJob, useListDeploys } from '../../../../api';
 import { isError } from '../../../../api/helpers';
 import { AvatarAuto } from '../../../../components/AvatarAuto';
-import { Container } from '../../../../components/Container';
+import { Container, ContainerChild } from '../../../../components/Container';
 import { Empty } from '../../../../components/Empty';
 import { Flex } from '../../../../components/Flex';
 import { Button } from '../../../../components/Form/Button';
@@ -104,7 +104,7 @@ export const ProjectDeploysList: React.FC<{
 
   return (
     <Container noPadding>
-      <Container.Left2Third>
+      <ContainerChild leftLarge>
         <Helmet title={`Deploys - ${proj.name} ${titleSuffix}`} />
         <Flex className={cls.header} justify="space-between">
           <h2>Deploys</h2>
@@ -157,7 +157,7 @@ export const ProjectDeploysList: React.FC<{
         )}
 
         {list && list.data.length <= 0 && <Empty />}
-      </Container.Left2Third>
+      </ContainerChild>
     </Container>
   );
 };

@@ -17,7 +17,7 @@ import { useReactFlow } from 'reactflow';
 
 import { ComponentDetails } from '../../../components/Component/Details';
 import { ComponentIcon } from '../../../components/Component/Icon';
-import { Container } from '../../../components/Container';
+import { Container, ContainerChild } from '../../../components/Container';
 import {
   ContentDoc,
   Placeholder,
@@ -215,7 +215,7 @@ export const ComponentView: React.FC<{
     <Container noPadding>
       <Helmet title={`${comp.name} - ${proj.name} ${titleSuffix}`} />
 
-      <Container.Left2Third className={cls.main}>
+      <ContainerChild leftLarge className={cls.main}>
         <div className={cls.content}>
           <Flex align="center" justify="space-between" gap="l">
             <Flex align="center" gap="l" grow>
@@ -315,8 +315,8 @@ export const ComponentView: React.FC<{
         </div>
 
         <ComponentDetails proj={proj} component={comp} params={params} />
-      </Container.Left2Third>
-      <Container.Right1Third>
+      </ContainerChild>
+      <ContainerChild rightSmall>
         <FlowWrapper key={proj.id} columnMode>
           <FlowOrg />
           <Toolbar bottom>
@@ -324,7 +324,7 @@ export const ComponentView: React.FC<{
             <Toolbar.Zoom />
           </Toolbar>
         </FlowWrapper>
-      </Container.Right1Third>
+      </ContainerChild>
     </Container>
   );
 };

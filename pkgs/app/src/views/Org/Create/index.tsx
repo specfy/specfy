@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { createOrg } from '../../../api';
 import { handleErrors, isError } from '../../../api/helpers';
 import { Card } from '../../../components/Card';
-import { Container } from '../../../components/Container';
+import { ContainerChild } from '../../../components/Container';
 import { Button } from '../../../components/Form/Button';
 import { Field } from '../../../components/Form/Field';
 import { Input } from '../../../components/Form/Input';
@@ -61,7 +61,7 @@ const OrgCreate: React.FC = () => {
       <div style={{ width: '250px', position: 'absolute' }}>
         <Header />
       </div>
-      <Container.Center>
+      <ContainerChild fullCenter>
         <Card large padded>
           <Form.Root
             onSubmit={onFinish}
@@ -114,7 +114,7 @@ const OrgCreate: React.FC = () => {
             </Field>
           </Form.Root>
         </Card>
-      </Container.Center>
+      </ContainerChild>
     </div>
   );
 };

@@ -6,7 +6,7 @@ import { useLocalStorage } from 'react-use';
 
 import { useListProjects, useGetFlow } from '../../../api';
 import { Card } from '../../../components/Card';
-import { Container } from '../../../components/Container';
+import { ContainerChild } from '../../../components/Container';
 import { Toolbar } from '../../../components/Flow/Toolbar';
 import { FlowWrapper } from '../../../components/Flow/Wrapper';
 import { ListActivity } from '../../../components/ListActivity';
@@ -51,11 +51,11 @@ export const OrgOverview: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   return (
     <>
       <Helmet title={`${org.name} ${titleSuffix}`} />
-      <Container.Left2Third>
+      <ContainerChild leftLarge>
         {!done && <OrgOnboarding org={org} key={org.id} />}
         <ListProjects orgId={params.org_id}></ListProjects>
-      </Container.Left2Third>
-      <Container.Right1Third>
+      </ContainerChild>
+      <ContainerChild rightSmall>
         <div>
           <FlowWrapper columnMode>
             {!resFlow.data ? (
@@ -75,7 +75,7 @@ export const OrgOverview: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
         <Card large seamless transparent>
           <ListActivity orgId={params.org_id}></ListActivity>
         </Card>
-      </Container.Right1Third>
+      </ContainerChild>
     </>
   );
 };

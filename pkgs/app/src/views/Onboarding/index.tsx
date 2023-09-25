@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { titleSuffix } from '../../common/string';
 import { Card } from '../../components/Card';
-import { Container } from '../../components/Container';
+import { ContainerChild } from '../../components/Container';
 import { Flex } from '../../components/Flex';
 import { Button } from '../../components/Form/Button';
 import { Header } from '../../components/Sidebar/Header';
@@ -21,7 +21,7 @@ const Onboarding: React.FC = () => {
         <Header />
       </div>
 
-      <Container.Center>
+      <ContainerChild fullCenter>
         <div style={{ width: '320px' }}>
           <header>
             <h1>Welcome to Specfy</h1>
@@ -41,7 +41,7 @@ const Onboarding: React.FC = () => {
             </Flex>
           </Card>
         </div>
-      </Container.Center>
+      </ContainerChild>
     </div>
   );
 };

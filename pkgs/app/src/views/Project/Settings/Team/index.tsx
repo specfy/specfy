@@ -110,7 +110,7 @@ export const SettingsTeam: React.FC<{
         {!searchDebounced && (
           <div className={cls.lines}>
             <div>
-              <h5 className={cls.title}>Owners</h5>
+              <h4 className={cls.title}>Owners</h4>
               {owners.map((perm) => {
                 return (
                   <Row
@@ -131,7 +131,7 @@ export const SettingsTeam: React.FC<{
 
             {false && (
               <div>
-                <h5 className={cls.title}>Reviewers</h5>
+                <h4 className={cls.title}>Reviewers</h4>
                 {reviewers.map((perm) => {
                   return (
                     <Row
@@ -152,7 +152,7 @@ export const SettingsTeam: React.FC<{
             )}
 
             <div>
-              <h5 className={cls.title}>Contributors</h5>
+              <h4 className={cls.title}>Contributors</h4>
               {contributors.map((perm) => {
                 return (
                   <Row
@@ -172,7 +172,7 @@ export const SettingsTeam: React.FC<{
             </div>
 
             <div>
-              <h5 className={cls.title}>Viewers</h5>
+              <h4 className={cls.title}>Viewers</h4>
               {viewers.map((perm) => {
                 return (
                   <Row

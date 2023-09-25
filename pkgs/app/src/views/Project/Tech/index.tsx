@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 
 import { ComponentIcon } from '../../../components/Component/Icon';
 import { ComponentLine } from '../../../components/Component/Line';
-import { Container } from '../../../components/Container';
+import { Container, ContainerChild } from '../../../components/Container';
 import { Flex } from '../../../components/Flex';
 import { Toolbar } from '../../../components/Flow/Toolbar';
 import { FlowWrapper } from '../../../components/Flow/Wrapper';
@@ -100,7 +100,7 @@ export const Tech: React.FC<{
   return (
     <Container noPadding>
       <Helmet title={`${techname} - ${proj.name} ${titleSuffix}`} />
-      <Container.Left2Third className={cls.main}>
+      <ContainerChild leftLarge className={cls.main}>
         <Flex justify="space-between" className={cls.title}>
           <h2>
             <Flex gap="l">
@@ -114,8 +114,8 @@ export const Tech: React.FC<{
         <h3>Used in</h3>
 
         <ComponentLine title="Services" comps={usedBy} params={params} />
-      </Container.Left2Third>
-      <Container.Right1Third>
+      </ContainerChild>
+      <ContainerChild rightSmall>
         <FlowWrapper columnMode>
           <FlowOrg />
           <Toolbar bottom>
@@ -123,7 +123,7 @@ export const Tech: React.FC<{
             <Toolbar.Zoom />
           </Toolbar>
         </FlowWrapper>
-      </Container.Right1Third>
+      </ContainerChild>
     </Container>
   );
 };

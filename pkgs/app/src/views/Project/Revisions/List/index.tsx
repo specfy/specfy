@@ -12,7 +12,7 @@ import { useDebounce } from 'react-use';
 
 import { useListRevisions } from '../../../../api';
 import { AvatarAuto, AvatarGroup } from '../../../../components/AvatarAuto';
-import { Container } from '../../../../components/Container';
+import { Container, ContainerChild } from '../../../../components/Container';
 import { Empty } from '../../../../components/Empty';
 import { Flex } from '../../../../components/Flex';
 import { Button } from '../../../../components/Form/Button';
@@ -139,7 +139,7 @@ export const ProjectRevisionsList: React.FC<{
 
   return (
     <Container noPadding>
-      <Container.Left2Third>
+      <ContainerChild leftLarge>
         <Helmet title={`Revisions - ${proj.name} ${titleSuffix}`} />
         <div className={cls.searchWrapper}>
           <h2>Revisions</h2>
@@ -203,7 +203,7 @@ export const ProjectRevisionsList: React.FC<{
             }
           />
         )}
-      </Container.Left2Third>
+      </ContainerChild>
     </Container>
   );
 };

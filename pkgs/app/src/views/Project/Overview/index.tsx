@@ -3,7 +3,7 @@ import { componentsToFlow } from '@specfy/models/src/flows/transform';
 import { useCallback, useEffect, useState } from 'react';
 
 import { Card } from '../../../components/Card';
-import { Container } from '../../../components/Container';
+import { Container, ContainerChild } from '../../../components/Container';
 import {
   ContentDoc,
   Placeholder,
@@ -68,7 +68,7 @@ export const ProjectOverview: React.FC<{
 
   return (
     <Container noPadding>
-      <Container.Left2Third>
+      <ContainerChild leftLarge>
         <div className={cls.main}>
           <h1>{project.name}</h1>
           <UpdatedAt time={project.updatedAt} />
@@ -110,8 +110,8 @@ export const ProjectOverview: React.FC<{
             <TeamSummary org_id={params.org_id} project_id={project.id} />
           </div>
         </div>
-      </Container.Left2Third>
-      <Container.Right1Third>
+      </ContainerChild>
+      <ContainerChild rightSmall>
         <FlowWrapper key={project.id} columnMode>
           <FlowOrg />
           <Toolbar bottom>
@@ -123,7 +123,7 @@ export const ProjectOverview: React.FC<{
         <Card padded seamless transparent>
           <ListActivity orgId={params.org_id} projectId={project.id} />
         </Card>
-      </Container.Right1Third>
+      </ContainerChild>
     </Container>
   );
 };
