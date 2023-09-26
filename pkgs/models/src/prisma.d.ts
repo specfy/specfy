@@ -56,6 +56,7 @@ declare global {
     // Revisions
     type PrismaRevisionsBlobs = DBRevision['blobs'];
     type PrismaRevisionsStatus = DBRevision['status'];
+    type PrismaRevisionsStack = DBRevision['stack'];
 
     // TypeHasUsers
     type PrismaTypeHasUsersRole = DBTypeHasUser['role'];

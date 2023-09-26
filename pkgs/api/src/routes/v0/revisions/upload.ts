@@ -118,6 +118,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       }
 
       // TODO: validate all ids
+      // const data: PostUploadRevision['Body'] = val.data;
       const data = val.data;
 
       const project = await prisma.projects.findUnique({
@@ -215,6 +216,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
               status: 'approved',
               merged: false,
               blobs: blobsIds,
+              stack: (data.stack as AnalyserJson) || undefined,
             },
           });
 

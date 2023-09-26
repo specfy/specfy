@@ -1,4 +1,5 @@
 import type { Prisma } from '@specfy/db';
+import type { AnalyserJson } from '@specfy/stack-analyser';
 
 import type { BlockLevelZero } from '../documents';
 
@@ -11,6 +12,7 @@ export interface DBRevision {
   name: string;
   description: BlockLevelZero;
   blobs: string[];
+  stack: AnalyserJson | null;
   locked: boolean;
   status: 'approved' | 'closed' | 'draft' | 'waiting';
   merged: boolean;
