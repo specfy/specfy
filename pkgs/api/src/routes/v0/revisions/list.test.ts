@@ -92,7 +92,6 @@ describe('GET /revisions', () => {
       blobs: [],
       closedAt: null,
       createdAt: expect.toBeIsoDate(),
-      description: { content: [], type: 'doc' },
       id: revision.id,
       locked: false,
       merged: false,
