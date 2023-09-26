@@ -1,7 +1,7 @@
 import { toApiUser } from '../users/formatter.js';
 
 import type { ApiJob, ApiJobList } from './types.api.js';
-import type { JobWithUser } from './types.js';
+import type { JobWithUser, JobWithUserAndRevision } from './types.js';
 
 export function toApiJobList(job: JobWithUser): ApiJobList {
   return {
@@ -20,9 +20,10 @@ export function toApiJobList(job: JobWithUser): ApiJobList {
     user: toApiUser(job.User!),
   };
 }
-export function toApiJob(job: JobWithUser, logs: string): ApiJob {
+export function toApiJob(job: JobWithUserAndRevision, logs: string): ApiJob {
   return {
     ...toApiJobList(job),
+    revisionId: job.Revisions.length > 0 ? job.Revisions[0].id : null,
     logs,
   };
 }

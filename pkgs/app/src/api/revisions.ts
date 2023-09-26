@@ -96,6 +96,7 @@ export function useGetRevision({
   revision_id,
 }: GetRevision['QP']) {
   return useQuery({
+    enabled: Boolean(revision_id),
     queryKey: ['getRevision', org_id, project_id, revision_id],
     queryFn: async (): Promise<GetRevision['Success']> => {
       const { json, res } = await fetchApi<GetRevision>(

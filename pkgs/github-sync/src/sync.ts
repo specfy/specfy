@@ -43,6 +43,9 @@ export interface SyncOptions {
   autoLayout: boolean;
   hostname?: string;
   logger?: Logger;
+
+  // Internal
+  jobId?: string | undefined;
 }
 
 export class ErrorSync extends Error {
@@ -63,6 +66,7 @@ export async function sync({
   stackEnabled,
   stackPath,
   autoLayout,
+  jobId,
   hostname = 'https://api.specfy.io',
   logger = defaultLogger,
 }: SyncOptions) {
@@ -162,6 +166,7 @@ export async function sync({
     autoLayout,
     baseUrl,
     root,
+    jobId,
   });
 
   const resUp = await upload({ body, token, baseUrl, logger });

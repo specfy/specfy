@@ -10,7 +10,7 @@ import {
   type BlockText,
   type Blocks,
 } from '../documents/index.js';
-import type { PostUploadRevision } from '../revisions/types.api.js';
+import type { PostUploadRevision, UploadBlob } from '../revisions/types.api.js';
 
 import {
   attrName,
@@ -36,17 +36,14 @@ export class DocumentsParser {
   parse(): ParsedUpload[] {
     const blobs = this.blobs;
 
-    if (blobs.length <= 0) {
+    if (!blobs || blobs.length <= 0) {
       return [];
     }
 
     const copy = [...blobs];
 
     // Build folder hierarchy
-    const folders = new Map<
-      string,
-      PostUploadRevision['Body']['blobs'][0] | false
-    >();
+    const folders = new Map<string, UploadBlob | false>();
     for (const blob of blobs) {
       if (folders.has(blob.path)) {
         const defined = folders.get(blob.path);

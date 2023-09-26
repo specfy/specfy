@@ -1,4 +1,8 @@
-import type { ApiProject, ListRevisions } from '@specfy/models';
+import type {
+  ApiProject,
+  ApiRevisionList,
+  ListRevisions,
+} from '@specfy/models';
 import {
   IconChevronRight,
   IconCircleXFilled,
@@ -36,40 +40,39 @@ const options: SelectOption[] = [
   { value: 'all', label: 'All' },
 ];
 
-const Row: React.FC<{
-  item: ListRevisions['Success']['data'][0];
-  params: RouteProject;
-}> = ({ item, params }) => {
-  const link = `/${params.org_id}/${params.project_slug}/revisions/${item.id}`;
-
+export const Row: React.FC<{
+  item: ApiRevisionList;
+}> = ({ item }) => {
+  const authors = item.authors.length > 0 ? item.authors : null;
   return (
-    <Flex className={cls.row} justify="space-between" align="center">
+    <Flex justify="space-between" align="center">
       <div>
         <Flex align="center" gap="l">
           <div className={cls.title}>
-            <Link to={link} relative="path">
+            <Link to={item.url} relative="path">
               {item.name}
             </Link>
           </div>
         </Flex>
         <Flex className={cls.info} gap="m">
-          <Time time={item.updatedAt} />·{' '}
-          {item.authors.length > 1 && (
-            <AvatarGroup>
-              {item.authors.map((user) => {
-                return <AvatarAuto key={user.id} user={user} size="s" />;
-              })}
-            </AvatarGroup>
-          )}
-          {item.authors.length > 0 && item.authors.length < 1 && (
-            <Flex gap="m">
-              <AvatarAuto
-                key={item.authors[0].id}
-                user={item.authors[0]}
-                size="s"
-              />
-              {item.authors[0].name}
-            </Flex>
+          <Time time={item.updatedAt} />
+          {authors && (
+            <>
+              ·{' '}
+              {authors.length > 1 && (
+                <AvatarGroup>
+                  {authors.map((user) => {
+                    return <AvatarAuto key={user.id} user={user} size="s" />;
+                  })}
+                </AvatarGroup>
+              )}
+              {authors.length > 0 && authors.length < 1 && (
+                <Flex gap="m">
+                  <AvatarAuto key={authors[0].id} user={authors[0]} size="s" />
+                  {authors[0].name}
+                </Flex>
+              )}
+            </>
           )}
         </Flex>
       </div>
@@ -80,7 +83,7 @@ const Row: React.FC<{
           merged={item.merged}
         />
 
-        <Link to={link} relative="path">
+        <Link to={item.url} relative="path">
           <IconChevronRight />
         </Link>
       </Flex>
@@ -191,7 +194,11 @@ export const ProjectRevisionsList: React.FC<{
         {list && (
           <div className={cls.list}>
             {list.data.map((item) => {
-              return <Row item={item} params={params} key={item.id} />;
+              return (
+                <div className={cls.row} key={item.id}>
+                  <Row item={item} />
+                </div>
+              );
             })}
           </div>
         )}

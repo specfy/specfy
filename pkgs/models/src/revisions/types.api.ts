@@ -20,10 +20,11 @@ import type { ApiUser } from '../users/types.api.js';
 import type { DocsToBlobs } from './helpers.upload.js';
 import type { DBRevision } from './types.js';
 
-export type ApiRevision = Omit<DBRevision, 'stack'> & {
-  authors: ApiUser[];
-  url: string;
-};
+type ApiRevisionBase = { authors: ApiUser[]; url: string };
+export type ApiRevisionList = Omit<DBRevision, 'stack' | 'description'> &
+  ApiRevisionBase;
+export type ApiRevision = DBRevision & ApiRevisionBase;
+
 export interface ParamsRevision {
   revision_id: string;
 }
@@ -37,7 +38,7 @@ export type ListRevisions = Res<{
     search?: string;
   };
   Success: {
-    data: ApiRevision[];
+    data: ApiRevisionList[];
     pagination: Pagination;
   };
 }>;
@@ -67,12 +68,14 @@ export type CreateRevisionError = {
     reason: 'no_diff';
   };
 };
+export type UploadBlob = { path: string; content: string };
 export type PostUploadRevision = Res<{
   Body: Pick<ApiRevision, 'description' | 'name' | 'orgId' | 'projectId'> & {
     source: string;
-    blobs: Array<{ path: string; content: string }>;
+    blobs: UploadBlob[] | null;
     stack: AnalyserJson | null;
     autoLayout?: boolean;
+    jobId?: string | undefined;
   };
   Error: CreateRevisionError;
   Success: {

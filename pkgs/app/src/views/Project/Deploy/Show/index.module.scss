@@ -8,10 +8,11 @@
 }
 
 .states {
-  padding: 0 var(--spc-6xl) var(--spc-6xl) var(--spc-6xl);
+  padding: 0 var(--spc-6xl) var(--spc-3xl) var(--spc-6xl);
 }
 
 .block {
+  width: 100%;
   min-width: 200px;
 
   .label {

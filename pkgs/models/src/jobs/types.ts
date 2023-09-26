@@ -47,3 +47,10 @@ export type JobReason = JobMark;
 export type JobWithUser = Prisma.JobsGetPayload<{
   include: { User: true };
 }>;
+
+export type JobWithUserAndRevision = Prisma.JobsGetPayload<{
+  include: {
+    User: true;
+    Revisions: { select: { id: true } };
+  };
+}>;

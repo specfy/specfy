@@ -67,6 +67,7 @@ describe('GET /jobs/:job_id', () => {
       orgId: project.orgId,
       projectId: project.id,
       reason: null,
+      revisionId: null,
       status: 'pending',
       type: 'deploy',
       logs: '',

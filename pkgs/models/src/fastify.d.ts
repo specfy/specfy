@@ -9,7 +9,7 @@ import type {
 import type { RouteGenericInterface } from 'fastify/types/route';
 
 import type { InvitationsWithOrgAndUser } from './invitations';
-import type { JobWithUser } from './jobs';
+import type { JobWithUserAndRevision } from './jobs';
 import type { PermsWithOrg } from './perms';
 import type { RevisionWithProject } from './revisions';
 
@@ -35,7 +35,7 @@ declare module 'fastify' {
     org?: Orgs;
     invitation?: InvitationsWithOrgAndUser;
     flow?: Flows;
-    job?: JobWithUser;
+    job?: JobWithUserAndRevision;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-interface

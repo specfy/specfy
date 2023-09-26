@@ -1,17 +1,16 @@
 import { envs } from '@specfy/core';
 
-import type { ApiRevision } from '../revisions';
+import type { ApiRevision, ApiRevisionList } from '../revisions';
 import { toApiUser } from '../users/formatter.js';
 
 import type { RevisionWithProject } from './types.js';
 
-export function toApiRevision(rev: RevisionWithProject): ApiRevision {
+export function toApiRevisionList(rev: RevisionWithProject): ApiRevisionList {
   return {
     id: rev.id,
     orgId: rev.orgId,
     projectId: rev.projectId,
     name: rev.name,
-    description: rev.description,
     locked: rev.locked,
     merged: rev.merged,
     status: rev.status,
@@ -24,5 +23,13 @@ export function toApiRevision(rev: RevisionWithProject): ApiRevision {
     updatedAt: rev.updatedAt.toISOString(),
     mergedAt: rev.mergedAt ? rev.mergedAt.toISOString() : null,
     closedAt: rev.closedAt ? rev.closedAt.toISOString() : null,
+  };
+}
+
+export function toApiRevision(rev: RevisionWithProject): ApiRevision {
+  return {
+    ...toApiRevisionList(rev),
+    description: rev.description,
+    stack: rev.stack,
   };
 }
