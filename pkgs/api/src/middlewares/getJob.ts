@@ -40,6 +40,7 @@ export const getJob: PreHandler<{
     },
     include: {
       User: true,
+      Revisions: { select: { id: true } },
     },
   });
 

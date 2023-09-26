@@ -17,7 +17,10 @@ type ApiJobBase = Pick<
   user: ApiUser;
 };
 export type ApiJobList = ApiJobBase;
-export type ApiJob = ApiJobBase & { logs: string };
+export type ApiJob = ApiJobBase & {
+  logs: string;
+  revisionId: string | null;
+};
 
 // ------ GET /
 export type ListJobs = Res<{

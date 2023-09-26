@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet-async';
 import Skeleton from 'react-loading-skeleton';
 import { useParams } from 'react-router-dom';
 
-import { useGetDeploy } from '../../../../api';
+import { useGetDeploy, useGetRevision } from '../../../../api';
 import { AvatarAuto } from '../../../../components/AvatarAuto';
 import { Banner } from '../../../../components/Banner';
 import { CodeHighlighter } from '../../../../components/CodeHighlighter';
@@ -14,10 +14,12 @@ import { StatusTag } from '../../../../components/Job/StatusTag';
 import { NotFound } from '../../../../components/NotFound';
 import { Time } from '../../../../components/Time';
 import type { RouteJob, RouteProject } from '../../../../types/routes';
+import { Row } from '../../Revisions/List';
 
 import cls from './index.module.scss';
 
 import { titleSuffix } from '@/common/string';
+import { Subdued } from '@/components/Text';
 
 type LogLine = {
   level: 30;
@@ -43,6 +45,11 @@ export const ProjectDeploysShow: React.FC<{
     org_id: params.org_id,
     project_id: proj.id,
     job_id: more.job_id!,
+  });
+  const getRev = useGetRevision({
+    org_id: params.org_id,
+    project_id: proj.id,
+    revision_id: deploy?.revisionId as string,
   });
 
   useEffect(() => {
@@ -156,6 +163,17 @@ export const ProjectDeploysShow: React.FC<{
               <AvatarAuto user={deploy.user} size="s" />
               {deploy.user.name}
             </Flex>
+          </div>
+        </Flex>
+        <Flex gap="l" className={cls.states}>
+          <div className={cls.block}>
+            <div className={cls.label}>Revision</div>
+
+            {getRev.data ? (
+              <Row item={getRev.data.data} />
+            ) : (
+              <Subdued>No revision created</Subdued>
+            )}
           </div>
         </Flex>
         {deploy.status === 'failed' && deploy.reason && (

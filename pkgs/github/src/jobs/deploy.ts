@@ -147,6 +147,7 @@ export class JobDeploy extends Job {
       await sync({
         orgId: job.orgId,
         projectId: job.projectId!,
+        jobId: job.id,
         token: key.id,
         root: this.folderName,
         stackEnabled: projConfig.stack.enabled,

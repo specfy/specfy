@@ -2,7 +2,7 @@ import { schemaId, schemaOrgId } from '@specfy/core';
 import type { Pagination } from '@specfy/core';
 import type { Prisma } from '@specfy/db';
 import { prisma } from '@specfy/db';
-import { toApiRevision } from '@specfy/models';
+import { toApiRevisionList } from '@specfy/models';
 import type { ListRevisions } from '@specfy/models';
 import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
@@ -95,7 +95,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
 
     return res.status(200).send({
       data: list.map((rev) => {
-        return toApiRevision(rev);
+        return toApiRevisionList(rev);
       }),
       pagination,
     });

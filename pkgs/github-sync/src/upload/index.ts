@@ -22,17 +22,20 @@ export function prepBody({
   stack,
   autoLayout,
   root,
+  jobId,
 }: Omit<Params, 'token'> & {
   docs: TransformedFile[];
   root: string;
   stack?: Payload | null;
   autoLayout?: boolean | null;
+  jobId?: string | undefined;
 }): PostUploadRevision['Body'] {
   const now = new Date();
   const date = now.toISOString().split('T')[0];
   return {
     orgId,
     projectId,
+    jobId,
     name: `${title} ${date}`,
     description: { content: [], type: 'doc' },
     source: 'github',

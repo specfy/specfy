@@ -30,6 +30,7 @@ function BodyVal(req: FastifyRequest) {
     .object({
       orgId: schemaOrgId,
       projectId: schemaId,
+      jobId: schemaId,
       name: schemaRevision.shape.name,
       description: schemaRevision.shape.description,
       source: z.literal('github'),
@@ -78,10 +79,11 @@ function BodyVal(req: FastifyRequest) {
         }),
     })
     .strict()
-    .partial({ autoLayout: true })
+    .partial({ autoLayout: true, jobId: true })
     .superRefine(valPermissions(req, 'contributor'))
-    .superRefine((val, ctx) => {
+    .superRefine(async (val, ctx) => {
       const plan = getCurrentPlan(getOrgFromRequest(req, val.orgId)!);
+      // Usage
       if (val.blobs && val.blobs.length > 0) {
         if (val.blobs.length > plan.upload.maxDocuments) {
           ctx.addIssue({
@@ -104,6 +106,20 @@ function BodyVal(req: FastifyRequest) {
           }
         }
       }
+
+      // jobId
+      if (val.jobId) {
+        const count = await prisma.jobs.count({
+          where: { id: val.jobId, orgId: val.orgId, projectId: val.projectId },
+        });
+        if (count <= 0) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            params: { code: 'invalid' },
+            message: `Provided "jobId" does not exists`,
+          });
+        }
+      }
     });
 }
 
@@ -112,7 +128,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
     '/',
     { preHandler: noQuery },
     async function (req, res) {
-      const val = BodyVal(req).safeParse(req.body);
+      const val = await BodyVal(req).safeParseAsync(req.body);
       if (!val.success) {
         return validationError(res, val.error);
       }
@@ -217,6 +233,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
               merged: false,
               blobs: blobsIds,
               stack: (data.stack as AnalyserJson) || undefined,
+              jobId: data.jobId || null,
             },
           });
 

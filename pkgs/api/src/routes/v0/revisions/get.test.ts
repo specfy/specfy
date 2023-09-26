@@ -68,6 +68,7 @@ describe('GET /revisions/:revision_id', () => {
       orgId: org.id,
       projectId: project.id,
       reviewers: [],
+      stack: null,
       status: 'draft',
       createdAt: expect.toBeIsoDate(),
       updatedAt: expect.toBeIsoDate(),
