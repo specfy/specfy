@@ -411,6 +411,8 @@ model Revisions {
   description Json      @db.Json
   /// [PrismaRevisionsBlobs]
   blobs       Json      @db.Json
+  /// [PrismaRevisionsStack]
+  stack       Json?     @db.Json
   locked      Boolean   @default(false)
   /// [PrismaRevisionsStatus]
   status      String    @default("draft") @db.VarChar(25)

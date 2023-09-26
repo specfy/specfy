@@ -2,6 +2,7 @@ import { nanoid } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import { createComponent, type ApiBlobCreateDocument } from '@specfy/models';
 import { getBlobComponent } from '@specfy/models/src/components/test.utils.js';
+import type { AnalyserJson } from '@specfy/stack-analyser';
 import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
 import type { TestSetup } from '../../../test/each.js';
@@ -440,6 +441,50 @@ describe('POST /revisions/upload -- Stack', () => {
   it('should create one revision', async () => {
     const { token, org, project } = await seedWithProject();
     const name = `test ${nanoid()}`;
+    const stack: AnalyserJson = {
+      id: '10uaaV0QPN2D',
+      ...getDefaultStack(),
+      name: 'root',
+      path: ['/'],
+      childs: [
+        {
+          id: '90uaaV0QPN2D',
+          ...getDefaultStack(),
+          name: 'redis',
+          path: ['/analytics/docker-compose.yml'],
+          tech: 'redis',
+          dependencies: [['docker', 'redis', '8.0.0-alpine']],
+        },
+        {
+          id: 'rjiySzaZm26h',
+          name: '@specfy/test',
+          path: ['/src/package.json'],
+          tech: null,
+          edges: [
+            {
+              target: '90uaaV0QPN2D',
+              read: true,
+              write: true,
+            },
+          ],
+          inComponent: null,
+          childs: [],
+          techs: ['express', 'nodejs', 'typescript'],
+          languages: { JSON: 2, 'Jest Snapshot': 6, TypeScript: 56 },
+          dependencies: [
+            ['npm', '@sinonjs/fake-timers', '9.1.2'],
+            ['npm', '@types/node-fetch', '2.6.2'],
+            ['npm', '@types/uuid', '8.3.4'],
+            ['npm', 'express', '4.17.3'],
+            ['npm', 'nock', '13.2.9'],
+            ['npm', 'node-fetch', '2.6.7'],
+            ['npm', 'openapi-enforcer', 'latest'],
+            ['npm', 'uuid', '8.3.2'],
+          ],
+          reason: [],
+        },
+      ],
+    };
     const res = await t.fetch.post('/0/revisions/upload', {
       token,
       Body: {
@@ -449,50 +494,7 @@ describe('POST /revisions/upload -- Stack', () => {
         orgId: org.id,
         projectId: project.id,
         source: 'github',
-        stack: {
-          id: '10uaaV0QPN2D',
-          ...getDefaultStack(),
-          name: 'root',
-          path: ['/'],
-          childs: [
-            {
-              id: '90uaaV0QPN2D',
-              ...getDefaultStack(),
-              name: 'redis',
-              path: ['/analytics/docker-compose.yml'],
-              tech: 'redis',
-              dependencies: [['docker', 'redis', '8.0.0-alpine']],
-            },
-            {
-              id: 'rjiySzaZm26h',
-              name: '@specfy/test',
-              path: ['/src/package.json'],
-              tech: null,
-              edges: [
-                {
-                  target: '90uaaV0QPN2D',
-                  read: true,
-                  write: true,
-                },
-              ],
-              inComponent: null,
-              childs: [],
-              techs: ['express', 'nodejs', 'typescript'],
-              languages: { JSON: 2, 'Jest Snapshot': 6, TypeScript: 56 },
-              dependencies: [
-                ['npm', '@sinonjs/fake-timers', '9.1.2'],
-                ['npm', '@types/node-fetch', '2.6.2'],
-                ['npm', '@types/uuid', '8.3.4'],
-                ['npm', 'express', '4.17.3'],
-                ['npm', 'nock', '13.2.9'],
-                ['npm', 'node-fetch', '2.6.7'],
-                ['npm', 'openapi-enforcer', 'latest'],
-                ['npm', 'uuid', '8.3.2'],
-              ],
-              reason: [],
-            },
-          ],
-        },
+        stack,
       },
     });
 
@@ -517,6 +519,12 @@ describe('POST /revisions/upload -- Stack', () => {
         },
       },
     });
+
+    // Expect stack to have been saved in DB
+    const rev = await prisma.revisions.findUnique({
+      where: { id: res.json.data.id },
+    });
+    expect(rev?.stack).toStrictEqual(stack);
   });
 
   it('should refuse same component twice', async () => {

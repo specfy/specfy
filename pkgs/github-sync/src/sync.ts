@@ -141,9 +141,6 @@ export async function sync({
     // output to folder for debug / manual review
     const file = path.join(root, 'stack.json');
     await fs.writeFile(file, JSON.stringify(stack.toJson(root), undefined, 2));
-    // l.info(`${figures.arrowRight} Output`);
-    // It's too big to fit inside logs, TODO: find a solution to store this output somewhere
-    console.log('Stack', stack.toJson(root));
   } else {
     l.warn(`${figures.info} Stack Skipped`);
   }

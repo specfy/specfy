@@ -20,7 +20,7 @@ import type { ApiUser } from '../users/types.api.js';
 import type { DocsToBlobs } from './helpers.upload.js';
 import type { DBRevision } from './types.js';
 
-export type ApiRevision = DBRevision & {
+export type ApiRevision = Omit<DBRevision, 'stack'> & {
   authors: ApiUser[];
   url: string;
 };

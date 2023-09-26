@@ -3,6 +3,7 @@ import { prisma } from '@specfy/db';
 
 import { seedComponents } from './components.js';
 import { seedDocs, seedPlaybook, seedRFC } from './documents.js';
+import { seedE2E } from './e2e.js';
 import { seedInvitations } from './invitations.js';
 import { seedJobs } from './jobs.js';
 import { seedOrgs } from './orgs.js';
@@ -41,6 +42,9 @@ export async function seed() {
 
   console.log(' - Jobs');
   await seedJobs(users, orgs, projects);
+
+  console.log(' - E2E');
+  await seedE2E(orgs, users);
 
   const def = envs.GIVE_DEFAULT_PERMS_TO_EMAIL;
   if (def) {
