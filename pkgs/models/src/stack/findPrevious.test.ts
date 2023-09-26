@@ -142,14 +142,15 @@ describe('findPrevious', () => {
     expect(res).toBeNull();
   });
 
-  it('should not match same source but different name', () => {
+  it('should not match same source but different name (tech = null)', () => {
     const old = {
       ...getBlobComponent({ id: 'foo', orgId: 'bar' }),
+      techId: null,
       sourceName: 'a',
       source: 'github',
     } as unknown as Components;
     const res = findPrevious({
-      child: { ...getDefault(), name: 'b' },
+      child: { ...getDefault(), tech: null, name: 'b' },
       prevs: [old],
       source: 'github',
       prevIdUsed: [],
@@ -235,6 +236,26 @@ describe('findPrevious', () => {
     } as unknown as Components;
     const res = findPrevious({
       child: { ...getDefault(), name: 'b', path: ['/package.json'] },
+      prevs: [old],
+      source: 'github',
+      prevIdUsed: [],
+    });
+    expect(res!.name).toBe(old.name);
+  });
+
+  it('should match a rename with multiple path', () => {
+    const old = {
+      ...getBlobComponent({ id: 'foo', orgId: 'bar' }),
+      sourceName: 'a',
+      sourcePath: ['/package.json', '/docker-compose.json'],
+      source: 'github',
+    } as unknown as Components;
+    const res = findPrevious({
+      child: {
+        ...getDefault(),
+        name: 'b',
+        path: ['/package.json', '/docker-compose.json'],
+      },
       prevs: [old],
       source: 'github',
       prevIdUsed: [],

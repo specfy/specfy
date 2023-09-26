@@ -198,7 +198,7 @@ export async function sync({
     throw new ErrorSync('failed_to_upload');
   }
 
-  if (resUp.data.stats.stack && resUp.data.stats.stack?.deleted > 1) {
+  if (resUp.data.stats.stack && resUp.data.stats.stack?.deleted > 0) {
     l.error(resUp.data.stats, 'Fail Safe: too many deletion');
     throw new ErrorSync('fail_safe_too_many_deletion');
   }

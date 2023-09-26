@@ -12,7 +12,7 @@ export const config = envSchema({
     type: 'object',
   },
   dotenv: {
-    path: '../../.env',
+    path: path.join(dirname, '../../.env'),
   },
 });
 

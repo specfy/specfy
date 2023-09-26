@@ -118,6 +118,16 @@ function findRename({
       matches.push(prev);
     }
   }
+  if (matches.length <= 0) {
+    return null;
+  }
+
+  // We don't want "service A" renamed to "service B" to accidentally match "service C"
+  // we will rely on path refining for this use case
+  if (matches.length === 1 && child.tech !== null) {
+    return matches[0];
+  }
+
   const byPath = refineByPath({ child, prevs, source, prevIdUsed }, matches);
   if (byPath?.length === 1) {
     return byPath[0];
@@ -140,8 +150,11 @@ function refineByPath(
     for (const path of match.sourcePath) {
       if (child.path.includes(path)) {
         // We matched a path, there is 99.99% chance we found the right one
-        // There is still a chance multiple would have match
+        // But there is still a chance multiple item can match since they could be on the same file
         matches.push(match);
+
+        // One match is enough since more will not add any value
+        break;
       }
     }
   }
