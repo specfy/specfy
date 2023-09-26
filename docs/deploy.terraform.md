@@ -21,8 +21,7 @@ It would be interesting to rework this setup to use multiple state.
 Go to `env/prod.tfvars`
 
 1. Change the name of GCP project that will host the deploy (in: `project`)
-2. Disable the `dns` since it will fail until manual intervention (in: `dns.enabled`)
-3. Put your own billing account name  (in: `billingAccount`)
+2. Put your own billing account name  (in: `billingAccount`)
 
 ## 1st execution
 
@@ -42,14 +41,9 @@ Note:
 > [!NOTE]<br>
 > The alernative is to skip this part by commenting `module "cloudbuild" {` in `main.tf`. You will need to provide your own docker image
 
-1. Go to https://console.cloud.google.com/cloud-build/repositories/1st-gen
+1. Go to <https://console.cloud.google.com/cloud-build/repositories/1st-gen>
 2. Connect to 1st gen repository
 3. DO NOT create a trigger (press "Done")
-
-### DNS
-
-The DNS configuration will fail since it's configured to run on `specfy.io`
-You can change the value manually in `network/dns.tf`. If you don't have a domain or you are temporarly setuping thing, it's recommended to disable DNS Configuration.
 
 ## 2nd execution
 

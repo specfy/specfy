@@ -4,9 +4,6 @@ variable "envs" {
     project        = string
     region         = string
     billingAccount = string
-    dns = object({
-      enabled = bool
-    })
     sql = object({
       machine = string
     })
