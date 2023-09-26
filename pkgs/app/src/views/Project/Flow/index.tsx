@@ -1,21 +1,21 @@
-import type { ApiProject } from '@specfy/models';
 import { componentsToFlow } from '@specfy/models/src/flows/transform';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
-import { Toolbar } from '../../../components/Flow/Toolbar';
-import { FlowWrapper } from '../../../components/Flow/Wrapper';
-import { Loading } from '../../../components/Loading';
-import { useEdit } from '../../../hooks/useEdit';
-import type { RouteProject } from '../../../types/routes';
-
-import cls from './index.module.scss';
+import type { ApiProject } from '@specfy/models';
 
 import { useComponentsStore, useFlowStore } from '@/common/store';
 import { titleSuffix } from '@/common/string';
 import { Feedback } from '@/components/Feedback';
 import { FlowDetails } from '@/components/Flow/Details';
 import { FlowProject } from '@/components/Flow/FlowProject';
+import { Toolbar } from '@/components/Flow/Toolbar';
+import { FlowWrapper } from '@/components/Flow/Wrapper';
+import { Loading } from '@/components/Loading';
+import { useEdit } from '@/hooks/useEdit';
+import type { RouteProject } from '@/types/routes';
+
+import cls from './index.module.scss';
 
 export const ProjectFlow: React.FC<{
   proj: ApiProject;

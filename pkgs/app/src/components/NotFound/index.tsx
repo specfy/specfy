@@ -1,9 +1,9 @@
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
-import { useProjectStore } from '../../common/store';
-import { titleSuffix } from '../../common/string';
 import { Button } from '../Form/Button';
+import { useProjectStore } from '@/common/store';
+import { titleSuffix } from '@/common/string';
 
 import cls from './index.module.scss';
 

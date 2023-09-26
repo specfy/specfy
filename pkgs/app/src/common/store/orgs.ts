@@ -1,6 +1,7 @@
-import type { ApiOrg } from '@specfy/models';
 import { produce } from 'immer';
 import { create } from 'zustand';
+
+import type { ApiOrg } from '@specfy/models';
 
 export interface OrgState {
   current: ApiOrg | null;

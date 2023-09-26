@@ -1,25 +1,25 @@
 import * as Form from '@radix-ui/react-form';
-import type { FieldsErrors } from '@specfy/core';
 import { IconCircleArrowRight } from '@tabler/icons-react';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 
-import { createOrg } from '../../../api';
-import { handleErrors, isError } from '../../../api/helpers';
-import { Card } from '../../../components/Card';
-import { ContainerChild } from '../../../components/Container';
-import { Button } from '../../../components/Form/Button';
-import { Field } from '../../../components/Form/Field';
-import { Input } from '../../../components/Form/Input';
-import { Header } from '../../../components/Sidebar/Header';
-import { useAuth } from '../../../hooks/useAuth';
-import { useToast } from '../../../hooks/useToast';
+import type { FieldsErrors } from '@specfy/core';
 
-import cls from './index.module.scss';
-
+import { createOrg } from '@/api';
+import { handleErrors, isError } from '@/api/helpers';
 import { qcli } from '@/common/query';
 import { slugify, titleSuffix } from '@/common/string';
+import { Card } from '@/components/Card';
+import { ContainerChild } from '@/components/Container';
+import { Button } from '@/components/Form/Button';
+import { Field } from '@/components/Form/Field';
+import { Input } from '@/components/Form/Input';
+import { Header } from '@/components/Sidebar/Header';
+import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/useToast';
+
+import cls from './index.module.scss';
 
 const OrgCreate: React.FC = () => {
   const toast = useToast();

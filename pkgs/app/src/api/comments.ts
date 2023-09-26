@@ -1,6 +1,6 @@
 import type { CommentRevision } from '@specfy/models';
 
-import { qcli } from '../common/query';
+import { qcli } from '@/common/query';
 
 import { fetchApi } from './fetch';
 

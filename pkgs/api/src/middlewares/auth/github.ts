@@ -1,15 +1,17 @@
-import type { Authenticator } from '@fastify/passport';
 import { nanoid, l, envs, logEvent } from '@specfy/core';
-import type { Users } from '@specfy/db';
 import { prisma } from '@specfy/db';
 import { sendWelcome } from '@specfy/emails';
 import { createUserActivity } from '@specfy/models';
 import { Strategy as GitHubStrategy } from 'passport-github2';
 
+import type { Users } from '@specfy/db';
+
 import { resend } from '../../common/emails.js';
-import type { GitHubAuth } from '../../types/github.js';
 
 import { AuthError } from './errors.js';
+
+import type { GitHubAuth } from '../../types/github.js';
+import type { Authenticator } from '@fastify/passport';
 
 const GITHUB_SCOPES = ['user:email', 'repo'];
 

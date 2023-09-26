@@ -1,32 +1,33 @@
-import type { ApiOrg, ApiProject } from '@specfy/models';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Route, Routes, useParams } from 'react-router-dom';
+
+import type { ApiOrg, ApiProject } from '@specfy/models';
 
 import {
   useListComponents,
   useListProjects,
   useListOrgs,
   useGetProjectBySlug,
-} from '../../api';
-import type { ComponentsState } from '../../common/store';
+} from '@/api';
 import {
   useComponentsStore,
   useFlowStore,
   useOrgStore,
   useProjectStore,
-} from '../../common/store';
-import { titleSuffix } from '../../common/string';
-import { Container, ContainerChild } from '../../components/Container';
-import { ContentSidebar } from '../../components/Content/Sidebar';
-import { Loading } from '../../components/Loading';
-import { NotFound } from '../../components/NotFound';
-import { OrgMenu, OrgSwitcher } from '../../components/Org/Header';
-import { ProjectMenu, ProjectSwitcher } from '../../components/Project/Header';
-import { Staging } from '../../components/Project/Header/Staging';
-import * as Sidebar from '../../components/Sidebar';
-import { useAuth } from '../../hooks/useAuth';
-import type { RouteProject } from '../../types/routes';
+} from '@/common/store';
+import type { ComponentsState } from '@/common/store';
+import { titleSuffix } from '@/common/string';
+import { Container, ContainerChild } from '@/components/Container';
+import { ContentSidebar } from '@/components/Content/Sidebar';
+import { Loading } from '@/components/Loading';
+import { NotFound } from '@/components/NotFound';
+import { OrgMenu, OrgSwitcher } from '@/components/Org/Header';
+import { ProjectMenu, ProjectSwitcher } from '@/components/Project/Header';
+import { Staging } from '@/components/Project/Header/Staging';
+import * as Sidebar from '@/components/Sidebar';
+import { useAuth } from '@/hooks/useAuth';
+import type { RouteProject } from '@/types/routes';
 
 import { ProjectActivity } from './Activity';
 import { ProjectAssistant } from './Assistant';

@@ -1,8 +1,10 @@
 import { nanoid, acronymize, stringToColor } from '@specfy/core';
+
 import type { Activities, Orgs, Prisma, Users } from '@specfy/db';
 
-import type { ActionOrg } from '../activities/types.js';
 import { createKey } from '../keys/model.js';
+
+import type { ActionOrg } from '../activities/types.js';
 
 export type { Orgs } from '@specfy/db';
 

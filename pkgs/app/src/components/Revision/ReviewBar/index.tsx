@@ -1,20 +1,20 @@
-import type { ApiRevision, BlockLevelZero, GetRevision } from '@specfy/models';
 import { IconCircleCheck } from '@tabler/icons-react';
 import classnames from 'classnames';
 import { useState, useEffect, useRef } from 'react';
 import { useClickAway } from 'react-use';
 
-import { createComment } from '../../../api';
-import { isError } from '../../../api/helpers';
-import { useToast } from '../../../hooks/useToast';
+import type { ApiRevision, BlockLevelZero, GetRevision } from '@specfy/models';
+
 import { Editor } from '../../Editor';
-import { Flex } from '../../Flex';
-import { Button } from '../../Form/Button';
-
-import cls from './index.module.scss';
-
+import { createComment } from '@/api';
+import { isError } from '@/api/helpers';
 import { getEmptyDoc } from '@/common/content';
 import { i18n } from '@/common/i18n';
+import { Flex } from '@/components/Flex';
+import { Button } from '@/components/Form/Button';
+import { useToast } from '@/hooks/useToast';
+
+import cls from './index.module.scss';
 
 export const ReviewBar: React.FC<{
   rev: ApiRevision;

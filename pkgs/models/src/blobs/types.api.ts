@@ -1,16 +1,15 @@
 import type { QuerystringOrgProject, Res } from '@specfy/core';
 
-import type { DBComponent } from '../components/types.js';
-import type { DBDocument } from '../documents/types.js';
-import type { DBProject } from '../projects/types.js';
-import type { ParamsRevision } from '../revisions/types.api.js';
-
 import type {
   DBBlob,
   DBBlobComponent,
   DBBlobDocument,
   DBBlobProject,
 } from './types.js';
+import type { DBComponent } from '../components/types.js';
+import type { DBDocument } from '../documents/types.js';
+import type { DBProject } from '../projects/types.js';
+import type { ParamsRevision } from '../revisions/types.api.js';
 
 export type ApiBlob = DBBlob;
 export type ApiBlobPrevious<T = DBBlob['current']> = {

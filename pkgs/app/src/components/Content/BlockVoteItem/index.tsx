@@ -1,15 +1,15 @@
-import type { BlockVoteItem } from '@specfy/models';
 import { IconHeartFilled, IconThumbDown } from '@tabler/icons-react';
 import classnames from 'classnames';
 import { useState } from 'react';
 
+import type { BlockVoteItem } from '@specfy/models';
+
 import { Presentation } from '..';
-import { AvatarAuto, AvatarGroup } from '../../AvatarAuto';
-
-import cls from './index.module.scss';
-
 import type { Payload } from '@/common/content';
 import { map } from '@/common/content';
+import { AvatarAuto, AvatarGroup } from '@/components/AvatarAuto';
+
+import cls from './index.module.scss';
 
 export const ContentBlockVoteItem: React.FC<{
   block: BlockVoteItem;

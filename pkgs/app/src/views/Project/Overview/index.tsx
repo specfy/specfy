@@ -1,34 +1,30 @@
-import type { ApiComponent, BlockLevelZero } from '@specfy/models';
 import { componentsToFlow } from '@specfy/models/src/flows/transform';
 import { useCallback, useEffect, useState } from 'react';
 
-import { Card } from '../../../components/Card';
-import { Container, ContainerChild } from '../../../components/Container';
-import {
-  ContentDoc,
-  Placeholder,
-  Presentation,
-} from '../../../components/Content';
-import { EditorMini } from '../../../components/Editor/Mini';
-import { Toolbar } from '../../../components/Flow/Toolbar';
-import { FlowWrapper } from '../../../components/Flow/Wrapper';
-import { ListActivity } from '../../../components/ListActivity';
-import { ProjectLinks } from '../../../components/Project/Links';
-import { TeamSummary } from '../../../components/Team/Summary';
-import { UpdatedAt } from '../../../components/UpdatedAt';
-import { useEdit } from '../../../hooks/useEdit';
-import type { RouteProject } from '../../../types/routes';
-
-import { TechnicalAspects } from './TechnicalAspect';
-import cls from './index.module.scss';
+import type { ApiComponent, BlockLevelZero } from '@specfy/models';
 
 import {
   useComponentsStore,
   useFlowStore,
   useProjectStore,
 } from '@/common/store';
+import { Card } from '@/components/Card';
+import { Container, ContainerChild } from '@/components/Container';
+import { ContentDoc, Placeholder, Presentation } from '@/components/Content';
+import { EditorMini } from '@/components/Editor/Mini';
 import { FlowOrg } from '@/components/Flow/FlowOrg';
+import { Toolbar } from '@/components/Flow/Toolbar';
+import { FlowWrapper } from '@/components/Flow/Wrapper';
 import { Editable } from '@/components/Form/Editable';
+import { ListActivity } from '@/components/ListActivity';
+import { ProjectLinks } from '@/components/Project/Links';
+import { TeamSummary } from '@/components/Team/Summary';
+import { UpdatedAt } from '@/components/UpdatedAt';
+import { useEdit } from '@/hooks/useEdit';
+import type { RouteProject } from '@/types/routes';
+
+import { TechnicalAspects } from './TechnicalAspect';
+import cls from './index.module.scss';
 
 export const ProjectOverview: React.FC<{
   params: RouteProject;

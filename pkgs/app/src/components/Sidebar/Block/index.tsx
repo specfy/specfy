@@ -1,6 +1,6 @@
-import type React from 'react';
-
 import cls from './index.module.scss';
+
+import type React from 'react';
 
 export const SidebarBlock: React.FC<{
   title: string;

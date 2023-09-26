@@ -1,11 +1,12 @@
-import type { FieldsErrors } from '@specfy/core';
-import type { ApiProject } from '@specfy/models';
 import { useEffect, useState } from 'react';
 
-import { Flex } from '../../Flex';
-import { Checkbox } from '../../Form/Checkbox';
-import { Field, FieldCheckbox } from '../../Form/Field';
-import { Input } from '../../Form/Input';
+import type { FieldsErrors } from '@specfy/core';
+import type { ApiProject } from '@specfy/models';
+
+import { Flex } from '@/components/Flex';
+import { Checkbox } from '@/components/Form/Checkbox';
+import { Field, FieldCheckbox } from '@/components/Form/Field';
+import { Input } from '@/components/Form/Input';
 
 import cls from './index.module.scss';
 

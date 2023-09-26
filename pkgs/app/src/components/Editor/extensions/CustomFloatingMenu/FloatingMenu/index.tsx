@@ -9,14 +9,15 @@ import {
   // IconTable,
   IconCode,
 } from '@tabler/icons-react';
-import type { Editor } from '@tiptap/core';
-import type { Plugin } from '@tiptap/pm/state';
 import classnames from 'classnames';
 import { useCallback, useEffect, useState } from 'react';
 
 import { FloatingMenuPlugin } from '../plugin';
 
 import cls from './index.module.scss';
+
+import type { Editor } from '@tiptap/core';
+import type { Plugin } from '@tiptap/pm/state';
 
 const HEADING_LEVEL = [1, 2, 3, 4] as const;
 

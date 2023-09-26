@@ -1,15 +1,15 @@
 import type { Prisma, Projects } from '@specfy/db';
 
-import type { DBComponent } from '../components/types.js';
-
 import { computeNewProjectPosition, getComponentSize } from './helpers.js';
 import { createNodeFromProject, getEdgeMarkers } from './transform.js';
+
 import type {
   ComputedFlow,
   OrgFlowUpdates,
   ProjectRelation,
   ProjectRelations,
 } from './types.js';
+import type { DBComponent } from '../components/types.js';
 
 /**
  * Completely recompute the organization graph's edges.

@@ -1,4 +1,3 @@
-import type { ApiBlobWithPrevious } from '@specfy/models';
 import {
   IconChevronDown,
   IconChevronRight,
@@ -8,16 +7,18 @@ import classnames from 'classnames';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 
+import type { ApiBlobWithPrevious } from '@specfy/models';
+
+import { Card } from '../../Card';
+import { Button } from '@/components/Form/Button';
+import { Tag } from '@/components/Tag';
 import type {
   Allowed,
   BlobAndDiffs,
   ComponentBlobWithDiff,
   DocumentBlobWithDiff,
   ProjectBlobWithDiff,
-} from '../../../types/blobs';
-import { Card } from '../../Card';
-import { Button } from '../../Form/Button';
-import { Tag } from '../../Tag';
+} from '@/types/blobs';
 
 import { DiffCardComponent } from './CardComponent';
 import { DiffCardDocument } from './CardDocument';

@@ -1,20 +1,21 @@
-import type { FlowEdge, ApiComponent, ApiProject } from '@specfy/models';
-import type React from 'react';
 import { useEffect, useMemo, useState } from 'react';
 
-import { useEdit } from '../../../hooks/useEdit';
-import type { RouteComponent } from '../../../types/routes';
+import type { FlowEdge, ApiComponent, ApiProject } from '@specfy/models';
+
 import {
   ComponentSelect,
   LanguageSelect,
   defaultFilterSelect,
 } from '../../StackSearch';
 import { ComponentLine, ComponentLineTech } from '../Line';
+import { getAllChilds, positionEdge } from '@/common/components';
+import { useComponentsStore } from '@/common/store';
+import { useEdit } from '@/hooks/useEdit';
+import type { RouteComponent } from '@/types/routes';
 
 import cls from './index.module.scss';
 
-import { getAllChilds, positionEdge } from '@/common/components';
-import { useComponentsStore } from '@/common/store';
+import type React from 'react';
 
 interface IsType {
   hosting: boolean;

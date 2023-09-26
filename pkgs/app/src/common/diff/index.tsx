@@ -1,8 +1,9 @@
-import type { ApiBlobWithPrevious } from '@specfy/models';
 import { Editor } from '@tiptap/react';
 
-import { createEditorSchema } from '../../components/Editor/extensions';
-import type { BlobAndDiffs } from '../../types/blobs';
+import type { ApiBlobWithPrevious } from '@specfy/models';
+
+import { createEditorSchema } from '@/components/Editor/extensions';
+import type { BlobAndDiffs } from '@/types/blobs';
 
 import { diffComponent } from './diffComponent';
 import { diffDocument } from './diffDocument';

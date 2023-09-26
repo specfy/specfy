@@ -1,6 +1,6 @@
 import type { PostAiOperation } from '@specfy/models';
 
-import { API_HOSTNAME } from '../common/envs';
+import { API_HOSTNAME } from '@/common/envs';
 
 export async function aiOperation(
   body: PostAiOperation['Body']

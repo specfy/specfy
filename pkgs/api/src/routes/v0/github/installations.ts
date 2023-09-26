@@ -1,9 +1,11 @@
 import { prisma } from '@specfy/db';
-import type { ListGitHubInstallations } from '@specfy/models';
-import type { FastifyPluginCallback } from 'fastify';
 import { Octokit } from 'octokit';
 
+import type { ListGitHubInstallations } from '@specfy/models';
+
 import { noQuery } from '../../../middlewares/noQuery.js';
+
+import type { FastifyPluginCallback } from 'fastify';
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.get<ListGitHubInstallations>(

@@ -1,10 +1,11 @@
 import classNames from 'classnames';
-import type React from 'react';
-
-import cls from './index.module.scss';
 
 import { useAuth } from '@/hooks/useAuth';
 import { useEdit } from '@/hooks/useEdit';
+
+import cls from './index.module.scss';
+
+import type React from 'react';
 
 export const Editable: React.FC<{
   inline?: true;

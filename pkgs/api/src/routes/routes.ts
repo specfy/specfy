@@ -1,5 +1,3 @@
-import type { FastifyPluginAsync } from 'fastify';
-
 import activities from './v0/activities/index.js';
 import ai from './v0/ai/index.js';
 import auth from './v0/auth/index.js';
@@ -21,6 +19,8 @@ import revisions from './v0/revisions/index.js';
 import root from './v0/root/index.js';
 import stripe from './v0/stripe/index.js';
 import users from './v0/users/index.js';
+
+import type { FastifyPluginAsync } from 'fastify';
 
 export const routes: FastifyPluginAsync = async (f) => {
   await f.register(activities, { prefix: '/0' });

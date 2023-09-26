@@ -1,17 +1,17 @@
+import { IconRepeat } from '@tabler/icons-react';
+import { useMemo } from 'react';
+
 import type {
   BlockLevelZero,
   ApiDocument,
   BlockDocument,
 } from '@specfy/models';
-import { IconRepeat } from '@tabler/icons-react';
-import { useMemo } from 'react';
 
 import { ContentDoc, Presentation } from '..';
-import { useGetDocument } from '../../../api';
-import { Loading } from '../../Loading';
-
+import { useGetDocument } from '@/api';
 import type { Payload } from '@/common/content';
 import { useDocumentsStore, useProjectStore } from '@/common/store';
+import { Loading } from '@/components/Loading';
 
 export const ContentBlockDocument: React.FC<{
   block: BlockDocument;

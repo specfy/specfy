@@ -1,13 +1,15 @@
+import { webhookService } from '@specfy/github';
+
+import type { PostGitHubWebhook } from '@specfy/models';
+
+import { forbidden } from '../../../common/errors.js';
+import { noQuery } from '../../../middlewares/noQuery.js';
+
 import type {
   WebhookEventMap,
   WebhookEventName,
 } from '@octokit/webhooks-types';
-import { webhookService } from '@specfy/github';
-import type { PostGitHubWebhook } from '@specfy/models';
 import type { FastifyPluginCallback } from 'fastify';
-
-import { forbidden } from '../../../common/errors.js';
-import { noQuery } from '../../../middlewares/noQuery.js';
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.post<PostGitHubWebhook>(

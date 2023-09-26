@@ -3,17 +3,6 @@ import { useCallback } from 'react';
 import { Link, useBeforeUnload } from 'react-router-dom';
 import { useDebounce } from 'react-use';
 
-import { useAuth } from '../../../../hooks/useAuth';
-import { useEdit } from '../../../../hooks/useEdit';
-import type {
-  Allowed,
-  BlobAndDiffs,
-  ComponentBlobWithDiff,
-} from '../../../../types/blobs';
-import { Button } from '../../../Form/Button';
-
-import cls from './index.module.scss';
-
 import { diffTwoBlob } from '@/common/diff';
 import {
   original,
@@ -22,6 +11,16 @@ import {
   useComponentsStore,
   useProjectStore,
 } from '@/common/store';
+import { Button } from '@/components/Form/Button';
+import { useAuth } from '@/hooks/useAuth';
+import { useEdit } from '@/hooks/useEdit';
+import type {
+  Allowed,
+  BlobAndDiffs,
+  ComponentBlobWithDiff,
+} from '@/types/blobs';
+
+import cls from './index.module.scss';
 
 export const Staging: React.FC<{ showBadge: boolean }> = () => {
   const edit = useEdit();

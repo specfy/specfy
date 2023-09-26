@@ -1,5 +1,6 @@
-import type { Projects } from '@specfy/db';
 import { describe, expect, it } from 'vitest';
+
+import type { Projects } from '@specfy/db';
 
 import { DocumentsParser } from './markdownParser.js';
 

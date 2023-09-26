@@ -1,7 +1,6 @@
 import { prisma } from '@specfy/db';
 import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
-import type { TestSetup } from '../../../test/each.js';
 import { setupBeforeAll, setupAfterAll } from '../../../test/each.js';
 import { isSuccess, isValidationError } from '../../../test/fetch.js';
 import {
@@ -11,6 +10,8 @@ import {
 } from '../../../test/helpers.js';
 import { createOrgId } from '../../../test/seed/orgs.js';
 import { seedSimpleUser } from '../../../test/seed/seed.js';
+
+import type { TestSetup } from '../../../test/each.js';
 
 let t: TestSetup;
 beforeAll(async () => {

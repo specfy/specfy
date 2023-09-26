@@ -4,9 +4,10 @@ import path from 'node:path';
 import { envs, isProd, nanoid, sentry } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import { sync, ErrorSync } from '@specfy/github-sync';
-import type { JobWithOrgProject } from '@specfy/models';
 import { $ } from 'execa';
 import { Octokit } from 'octokit';
+
+import type { JobWithOrgProject } from '@specfy/models';
 
 import { Job } from '../Job.js';
 import { github } from '../app.js';

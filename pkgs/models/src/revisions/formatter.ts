@@ -1,9 +1,9 @@
 import { envs } from '@specfy/core';
 
-import type { ApiRevision, ApiRevisionList } from '../revisions';
 import { toApiUser } from '../users/formatter.js';
 
 import type { RevisionWithProject } from './types.js';
+import type { ApiRevision, ApiRevisionList } from '../revisions';
 
 export function toApiRevisionList(rev: RevisionWithProject): ApiRevisionList {
   return {

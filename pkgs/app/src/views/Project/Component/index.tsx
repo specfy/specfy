@@ -1,4 +1,3 @@
-import type { ApiComponent, ApiProject } from '@specfy/models';
 import { internalTypeToText } from '@specfy/models/src/components/constants';
 import { componentsToFlow } from '@specfy/models/src/flows/transform';
 import {
@@ -9,38 +8,12 @@ import {
   IconEye,
 } from '@tabler/icons-react';
 import classnames from 'classnames';
-import type React from 'react';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useReactFlow } from 'reactflow';
 
-import { ComponentDetails } from '../../../components/Component/Details';
-import { ComponentIcon } from '../../../components/Component/Icon';
-import { Container, ContainerChild } from '../../../components/Container';
-import {
-  ContentDoc,
-  Placeholder,
-  Presentation,
-} from '../../../components/Content';
-import * as Dropdown from '../../../components/Dropdown';
-import { EditorMini } from '../../../components/Editor/Mini';
-import { Flex } from '../../../components/Flex';
-import { TechPopover } from '../../../components/Flow/TechPopover';
-import { Toolbar } from '../../../components/Flow/Toolbar';
-import { FlowWrapper } from '../../../components/Flow/Wrapper';
-import type { OnNodesChangeSuper } from '../../../components/Flow/types';
-import { Button } from '../../../components/Form/Button';
-import { FakeInput } from '../../../components/Form/FakeInput';
-import { NotFound } from '../../../components/NotFound';
-import { TooltipFull } from '../../../components/Tooltip';
-import { UpdatedAt } from '../../../components/UpdatedAt';
-import { useAuth } from '../../../hooks/useAuth';
-import { useEdit } from '../../../hooks/useEdit';
-import { useToast } from '../../../hooks/useToast';
-import type { RouteComponent } from '../../../types/routes';
-
-import cls from './index.module.scss';
+import type { ApiComponent, ApiProject } from '@specfy/models';
 
 import {
   onNodesChangeProject,
@@ -48,9 +21,33 @@ import {
   useFlowStore,
 } from '@/common/store';
 import { titleSuffix } from '@/common/string';
+import { ComponentDetails } from '@/components/Component/Details';
+import { ComponentIcon } from '@/components/Component/Icon';
+import { Container, ContainerChild } from '@/components/Container';
+import { ContentDoc, Placeholder, Presentation } from '@/components/Content';
+import * as Dropdown from '@/components/Dropdown';
+import { EditorMini } from '@/components/Editor/Mini';
+import { Flex } from '@/components/Flex';
 import { FlowOrg } from '@/components/Flow/FlowOrg';
+import { TechPopover } from '@/components/Flow/TechPopover';
+import { Toolbar } from '@/components/Flow/Toolbar';
+import { FlowWrapper } from '@/components/Flow/Wrapper';
+import type { OnNodesChangeSuper } from '@/components/Flow/types';
+import { Button } from '@/components/Form/Button';
 import { Editable } from '@/components/Form/Editable';
+import { FakeInput } from '@/components/Form/FakeInput';
 import { Loading } from '@/components/Loading';
+import { NotFound } from '@/components/NotFound';
+import { TooltipFull } from '@/components/Tooltip';
+import { UpdatedAt } from '@/components/UpdatedAt';
+import { useAuth } from '@/hooks/useAuth';
+import { useEdit } from '@/hooks/useEdit';
+import { useToast } from '@/hooks/useToast';
+import type { RouteComponent } from '@/types/routes';
+
+import cls from './index.module.scss';
+
+import type React from 'react';
 
 const Header: React.FC<{
   comp: ApiComponent;

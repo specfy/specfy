@@ -1,10 +1,10 @@
-import type { Authenticator } from '@fastify/passport';
 import { envs } from '@specfy/core';
 import { prisma } from '@specfy/db';
-import type { FastifyInstance } from 'fastify';
 import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 
 import type { JWT } from '../../types/auth.js';
+import type { Authenticator } from '@fastify/passport';
+import type { FastifyInstance } from 'fastify';
 
 // JSON WEB TOKEN
 export function registerJwt(fastify: FastifyInstance, passport: Authenticator) {

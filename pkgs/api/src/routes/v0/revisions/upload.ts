@@ -12,18 +12,20 @@ import {
   getOrgFromRequest,
   getCurrentPlan,
 } from '@specfy/models';
+import { z } from 'zod';
+
 import type {
   DocsToBlobs,
   PostUploadRevision,
   StackToBlobs,
 } from '@specfy/models';
 import type { AnalyserJson } from '@specfy/stack-analyser';
-import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
-import { z } from 'zod';
 
 import { TransactionError, validationError } from '../../../common/errors.js';
 import { valPermissions } from '../../../common/zod.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
+
+import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 
 function BodyVal(req: FastifyRequest) {
   return z

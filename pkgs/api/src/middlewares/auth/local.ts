@@ -1,12 +1,13 @@
 import crypto from 'crypto';
 
-import type { Authenticator } from '@fastify/passport';
 import { envs } from '@specfy/core';
 import { prisma } from '@specfy/db';
-import type { FastifyInstance } from 'fastify';
 import { Strategy as LocalStrategy } from 'passport-local';
 
 import { AuthError } from './errors.js';
+
+import type { Authenticator } from '@fastify/passport';
+import type { FastifyInstance } from 'fastify';
 
 // TODO: once per user
 export const SALT = envs.PASSWORD_SALT;

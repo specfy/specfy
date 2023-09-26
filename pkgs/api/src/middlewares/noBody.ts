@@ -1,5 +1,6 @@
-import type { PreHandler } from '@specfy/models/src/fastify';
 import { z } from 'zod';
+
+import type { PreHandler } from '@specfy/models/src/fastify';
 
 import { validationError } from '../common/errors.js';
 

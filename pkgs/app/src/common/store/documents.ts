@@ -1,7 +1,8 @@
 import { nanoid } from '@specfy/core/src/id';
-import type { ApiDocument } from '@specfy/models';
 import { produce } from 'immer';
 import { create } from 'zustand';
+
+import type { ApiDocument } from '@specfy/models';
 
 import { getEmptyDoc } from '../content';
 import { slugify } from '../string';

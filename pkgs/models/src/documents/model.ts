@@ -1,6 +1,7 @@
 import { createHash } from 'node:crypto';
 
 import { nanoid, slugify } from '@specfy/core';
+
 import type { Prisma, Activities, Documents, Users } from '@specfy/db';
 
 import type { ActionDocument } from '../activities/types.js';

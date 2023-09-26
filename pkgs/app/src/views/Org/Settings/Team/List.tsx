@@ -1,16 +1,17 @@
-import type { ApiPerm, ApiUser } from '@specfy/models';
 import { IconSearch } from '@tabler/icons-react';
 import { useEffect, useMemo, useState } from 'react';
 import { useDebounce } from 'react-use';
 
-import { useListPerms, useListUser } from '../../../../api';
-import { Card } from '../../../../components/Card';
-import { Empty } from '../../../../components/Empty';
-import { Input } from '../../../../components/Form/Input';
-import { Row } from '../../../../components/Team/Row';
-import { Subdued } from '../../../../components/Text';
-import { useAuth } from '../../../../hooks/useAuth';
-import type { RouteOrg } from '../../../../types/routes';
+import type { ApiPerm, ApiUser } from '@specfy/models';
+
+import { useListPerms, useListUser } from '@/api';
+import { Card } from '@/components/Card';
+import { Empty } from '@/components/Empty';
+import { Input } from '@/components/Form/Input';
+import { Row } from '@/components/Team/Row';
+import { Subdued } from '@/components/Text';
+import { useAuth } from '@/hooks/useAuth';
+import type { RouteOrg } from '@/types/routes';
 
 import cls from './list.module.scss';
 

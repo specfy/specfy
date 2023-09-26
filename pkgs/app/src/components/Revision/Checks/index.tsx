@@ -1,4 +1,3 @@
-import type { ApiRevision, ListRevisionChecks } from '@specfy/models';
 import { flagRevisionApprovalEnabled } from '@specfy/models/src/revisions/constants';
 import {
   IconCircleCheckFilled,
@@ -12,15 +11,16 @@ import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useMount, useSearchParam } from 'react-use';
 
-import { mergeRevision, rebaseRevision } from '../../../api';
-import { isError } from '../../../api/helpers';
-import { useToast } from '../../../hooks/useToast';
-import { Button } from '../../Form/Button';
-import { Time } from '../../Time';
+import type { ApiRevision, ListRevisionChecks } from '@specfy/models';
+
+import { mergeRevision, rebaseRevision } from '@/api';
+import { isError } from '@/api/helpers';
+import { i18n } from '@/common/i18n';
+import { Button } from '@/components/Form/Button';
+import { Time } from '@/components/Time';
+import { useToast } from '@/hooks/useToast';
 
 import cls from './index.module.scss';
-
-import { i18n } from '@/common/i18n';
 
 export const Checks: React.FC<{
   rev: ApiRevision;

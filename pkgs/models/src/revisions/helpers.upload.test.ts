@@ -1,9 +1,11 @@
-import type { Documents, Projects } from '@specfy/db';
 import { describe, expect, it } from 'vitest';
+
+import type { Documents, Projects } from '@specfy/db';
 
 import { DocumentsParser } from '../prosemirror/index.js';
 
 import { uploadedDocumentsToDB } from './helpers.upload.js';
+
 import type { PostUploadRevision } from './types.api.js';
 
 describe('uploadedDocumentsToDB', () => {

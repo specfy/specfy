@@ -1,8 +1,9 @@
 import { nanoid } from '@specfy/core';
-import type { Orgs, Users } from '@specfy/db';
 import { prisma } from '@specfy/db';
 import { createFreeSubscription, createOrg } from '@specfy/models';
 import { customAlphabet } from 'nanoid/non-secure';
+
+import type { Orgs, Users } from '@specfy/db';
 
 export const createOrgId = customAlphabet('abcdefghijklmnopqrstuvwxyz', 20);
 

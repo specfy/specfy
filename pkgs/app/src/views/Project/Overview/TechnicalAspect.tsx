@@ -1,14 +1,11 @@
-import type { ApiComponent, ComponentType } from '@specfy/models';
 import { useEffect, useState } from 'react';
 
-import {
-  ComponentLine,
-  ComponentLineTech,
-} from '../../../components/Component/Line';
-import { Subdued } from '../../../components/Text';
-import type { RouteProject } from '../../../types/routes';
+import type { ApiComponent, ComponentType } from '@specfy/models';
 
 import { useComponentsStore } from '@/common/store';
+import { ComponentLine, ComponentLineTech } from '@/components/Component/Line';
+import { Subdued } from '@/components/Text';
+import type { RouteProject } from '@/types/routes';
 
 const groupTech: ComponentType[] = ['tool', 'language'];
 const groupData: ComponentType[] = [

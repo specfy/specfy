@@ -1,8 +1,10 @@
 import { toApiProject } from '@specfy/models';
+
 import type { GetProject } from '@specfy/models';
-import type { FastifyPluginCallback } from 'fastify';
 
 import { getProject } from '../../../middlewares/getProject.js';
+
+import type { FastifyPluginCallback } from 'fastify';
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.get<GetProject>(

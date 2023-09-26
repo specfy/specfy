@@ -1,12 +1,13 @@
 /* eslint-disable import/extensions */
-import type { ComputedEdge } from '@specfy/models';
 import { getBlobComponent } from '@specfy/models/src/components/test.utils';
 import { createNode } from '@specfy/models/src/flows/transform';
 import { describe, expect, it } from 'vitest';
 
-import { highlightNode } from './highlightNode';
+import type { ComputedEdge } from '@specfy/models';
 
 import cls from '@/components/Flow/index.module.scss';
+
+import { highlightNode } from './highlightNode';
 
 describe('highlightNode', () => {
   it('should highlight B', () => {

@@ -1,11 +1,10 @@
 import { Analytics } from '@vercel/analytics/react';
 import ReactDOM from 'react-dom/client';
+import 'react-loading-skeleton/dist/skeleton.css';
 import { BrowserRouter } from 'react-router-dom';
 
-import App from './views/App';
-
 import './styles/index.scss';
-import 'react-loading-skeleton/dist/skeleton.css';
+import App from './views/App';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   // <React.StrictMode>

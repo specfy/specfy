@@ -1,10 +1,4 @@
 import * as Form from '@radix-ui/react-form';
-import type {
-  ApiOrg,
-  GetSubscription,
-  UsageMetric,
-  Plan,
-} from '@specfy/models';
 import { v1 } from '@specfy/models/src/billing/plans';
 import { IconCircleCheckFilled, IconInfinity } from '@tabler/icons-react';
 import classNames from 'classnames';
@@ -12,31 +6,37 @@ import { DateTime } from 'luxon';
 import { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
-import { isError } from '../../../../api/helpers';
+import type {
+  ApiOrg,
+  GetSubscription,
+  UsageMetric,
+  Plan,
+} from '@specfy/models';
+
+import { isError } from '@/api/helpers';
 import {
   cancelSubscription,
   createSubscription,
   useGetSubscription,
   useGetUsage,
-} from '../../../../api/stripe';
-import { Card } from '../../../../components/Card';
-import * as Dialog from '../../../../components/Dialog';
-import { Flex } from '../../../../components/Flex';
-import { Button } from '../../../../components/Form/Button';
-import { Field } from '../../../../components/Form/Field';
-import { SelectFull } from '../../../../components/Form/Select';
-import { Textarea } from '../../../../components/Form/TextArea';
-import { Loading } from '../../../../components/Loading';
-import { Progress } from '../../../../components/Progress';
-import { Tag } from '../../../../components/Tag';
-import { Subdued } from '../../../../components/Text';
-import { useToast } from '../../../../hooks/useToast';
-import type { RouteOrg } from '../../../../types/routes';
-
-import cls from './index.module.scss';
-
+} from '@/api/stripe';
 import { i18n } from '@/common/i18n';
 import { titleSuffix } from '@/common/string';
+import { Card } from '@/components/Card';
+import * as Dialog from '@/components/Dialog';
+import { Flex } from '@/components/Flex';
+import { Button } from '@/components/Form/Button';
+import { Field } from '@/components/Form/Field';
+import { SelectFull } from '@/components/Form/Select';
+import { Textarea } from '@/components/Form/TextArea';
+import { Loading } from '@/components/Loading';
+import { Progress } from '@/components/Progress';
+import { Tag } from '@/components/Tag';
+import { Subdued } from '@/components/Text';
+import { useToast } from '@/hooks/useToast';
+import type { RouteOrg } from '@/types/routes';
+
+import cls from './index.module.scss';
 
 const plans = Object.values(v1);
 

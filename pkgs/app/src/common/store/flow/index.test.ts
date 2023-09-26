@@ -1,12 +1,13 @@
 /* eslint-disable import/extensions */
-import type { ComputedEdge } from '@specfy/models';
 import { getBlobComponent } from '@specfy/models/src/components/test.utils';
 import { createNode } from '@specfy/models/src/flows/transform';
 import { describe, it, expect, afterEach } from 'vitest';
 
-import { useFlowStore as store } from './index';
+import type { ComputedEdge } from '@specfy/models';
 
 import cls from '@/components/Flow/index.module.scss';
+
+import { useFlowStore as store } from './index';
 
 afterEach(() => {
   store.setState({ nodes: [], edges: [], nodeSelected: null });

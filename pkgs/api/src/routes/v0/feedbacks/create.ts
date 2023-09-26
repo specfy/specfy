@@ -1,12 +1,14 @@
 import { nanoid, schemaOrgId } from '@specfy/core';
 import { prisma } from '@specfy/db';
-import type { PostFeedback } from '@specfy/models';
-import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import z from 'zod';
+
+import type { PostFeedback } from '@specfy/models';
 
 import { validationError } from '../../../common/errors.js';
 import { valPermissions } from '../../../common/zod.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
+
+import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 
 function FeedbackVal(req: FastifyRequest) {
   return z

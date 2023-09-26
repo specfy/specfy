@@ -1,6 +1,5 @@
 import { beforeAll, afterAll, describe, it, expect } from 'vitest';
 
-import type { TestSetup } from '../../../test/each.js';
 import { setupBeforeAll, setupAfterAll } from '../../../test/each.js';
 import { isSuccess, isValidationError } from '../../../test/fetch.js';
 import {
@@ -14,6 +13,8 @@ import {
   seedWithOrgViewer,
   seedWithProject,
 } from '../../../test/seed/seed.js';
+
+import type { TestSetup } from '../../../test/each.js';
 
 let t: TestSetup;
 beforeAll(async () => {

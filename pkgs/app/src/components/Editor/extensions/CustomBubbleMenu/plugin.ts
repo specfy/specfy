@@ -1,7 +1,8 @@
 import { Extension } from '@tiptap/core';
 
-import type { BubbleMenuPluginProps } from './view';
 import { BubbleMenuPlugin } from './view';
+
+import type { BubbleMenuPluginProps } from './view';
 
 export type BubbleMenuOptions = Omit<
   BubbleMenuPluginProps,

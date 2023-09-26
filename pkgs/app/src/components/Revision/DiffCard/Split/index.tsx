@@ -1,11 +1,12 @@
 import classnames from 'classnames';
-import type { Change } from 'diff';
 import { useMemo } from 'react';
 
-import type { ComputedForDiff } from '../../../../types/blobs';
-import { Subdued } from '../../../Text';
+import { Subdued } from '@/components/Text';
+import type { ComputedForDiff } from '@/types/blobs';
 
 import cls from './index.module.scss';
+
+import type { Change } from 'diff';
 
 const LABEL_MAP: Record<string, string> = {
   content: 'Content',

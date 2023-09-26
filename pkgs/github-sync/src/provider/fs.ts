@@ -1,12 +1,13 @@
 import fs from 'fs/promises';
 import path from 'node:path';
 
-import type { BaseProvider, ProviderFile } from './base.js';
 import {
   IGNORED_DIVE_REGEX,
   IGNORED_FILENAME_REGEX,
   IGNORED_DIVE_PATHS,
 } from './base.js';
+
+import type { BaseProvider, ProviderFile } from './base.js';
 
 export interface FSProviderOptions {
   path: string;

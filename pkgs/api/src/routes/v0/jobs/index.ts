@@ -1,8 +1,8 @@
-import type { FastifyPluginAsync } from 'fastify';
-
 import create from './create.js';
 import get from './get.js';
 import list from './list.js';
+
+import type { FastifyPluginAsync } from 'fastify';
 
 const fn: FastifyPluginAsync = async (f) => {
   await await f.register(list, { prefix: '/jobs' });

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
-import type { ComputedEdge, ApiComponent } from '@specfy/models';
 import { describe, it, expect, afterEach } from 'vitest';
+
+import type { ComputedEdge, ApiComponent } from '@specfy/models';
 
 import {
   handleEdgeChange,

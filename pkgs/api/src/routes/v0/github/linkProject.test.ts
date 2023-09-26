@@ -1,6 +1,5 @@
 import { beforeAll, afterAll, describe, it, expect } from 'vitest';
 
-import type { TestSetup } from '../../../test/each.js';
 import { setupAfterAll, setupBeforeAll } from '../../../test/each.js';
 import {
   shouldBeProtected,
@@ -8,6 +7,8 @@ import {
 } from '../../../test/helpers.js';
 import { seedProject } from '../../../test/seed/projects.js';
 import { seedSimpleUser, seedWithOrgViewer } from '../../../test/seed/seed.js';
+
+import type { TestSetup } from '../../../test/each.js';
 
 let t: TestSetup;
 beforeAll(async () => {

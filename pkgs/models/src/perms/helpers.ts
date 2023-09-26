@@ -1,7 +1,7 @@
 import type { Orgs, Perms } from '@specfy/db';
-import type { FastifyRequest } from 'fastify';
 
 import type { DBPerm, PermsWithOrg } from './types.js';
+import type { FastifyRequest } from 'fastify';
 
 export function getOrgFromRequest(
   req: FastifyRequest,

@@ -1,5 +1,6 @@
-import type { ApiBlobWithPrevious, ApiRevision } from '@specfy/models';
 import { create } from 'zustand';
+
+import type { ApiBlobWithPrevious, ApiRevision } from '@specfy/models';
 
 interface RevisionState {
   current: ApiRevision | null;

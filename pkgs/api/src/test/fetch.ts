@@ -1,15 +1,16 @@
 import util from 'node:util';
 
+import { Client } from 'undici';
+
 import type {
   FilterObjObjWithKey,
   ResErrors,
   ResValidationError,
 } from '@specfy/core';
-import type { Dispatcher } from 'undici';
-import { Client } from 'undici';
-import type { OmitByValue } from 'utility-types';
 
 import type { API, APIPaths } from '../types/api/endpoints.js';
+import type { Dispatcher } from 'undici';
+import type { OmitByValue } from 'utility-types';
 
 type HasGet = { GET: Record<string, unknown> };
 type HasPost = { POST: Record<string, unknown> };

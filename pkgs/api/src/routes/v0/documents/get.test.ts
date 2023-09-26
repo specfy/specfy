@@ -2,7 +2,6 @@ import { nanoid } from '@specfy/core';
 import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
 import { setupAfterAll, setupBeforeAll } from '../../../test/each.js';
-import type { TestSetup } from '../../../test/each.js';
 import { isError, isSuccess } from '../../../test/fetch.js';
 import {
   shouldBeNotFound,
@@ -11,6 +10,8 @@ import {
 } from '../../../test/helpers.js';
 import { seedDocument } from '../../../test/seed/documents.js';
 import { seedWithProject } from '../../../test/seed/seed.js';
+
+import type { TestSetup } from '../../../test/each.js';
 
 let t: TestSetup;
 beforeAll(async () => {

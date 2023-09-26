@@ -1,20 +1,15 @@
-import type { NodeViewProps } from '@tiptap/core';
 import { NodeViewContent, NodeViewWrapper } from '@tiptap/react';
 import classnames from 'classnames';
 import { highlight, languages } from 'prismjs';
 import { useMemo, useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
-import 'prismjs/components/prism-clike';
-import 'prismjs/components/prism-javascript';
-import 'prismjs/components/prism-typescript';
-import 'prismjs/components/prism-css';
-import 'prismjs/components/prism-bash';
-import 'prismjs/themes/prism.css';
 
-import { SelectFull } from '../../../Form/Select';
 import { EditorMenu } from '../../Menu';
+import { SelectFull } from '@/components/Form/Select';
 
 import cls from './index.module.scss';
+
+import type { NodeViewProps } from '@tiptap/core';
 
 export const displayMap = {
   javascript: 'Javascript',

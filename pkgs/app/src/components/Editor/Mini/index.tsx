@@ -1,19 +1,20 @@
-import type { BlockLevelZero } from '@specfy/models';
 import { CharacterCount } from '@tiptap/extension-character-count';
 import { Placeholder } from '@tiptap/extension-placeholder';
 import { useEditor, EditorContent } from '@tiptap/react';
 import classNames from 'classnames';
-import type React from 'react';
 import { useMemo, useEffect, useState, useCallback } from 'react';
 
-import type { AIToolbarProps } from '../AiToolbar';
+import type { BlockLevelZero } from '@specfy/models';
+
 import { AIToolbar } from '../AiToolbar';
 import { createMiniEditorSchema } from '../extensions';
 import { BubbleMenu } from '../extensions/CustomBubbleMenu/BubbleMenu';
+import { removeEmptyContent } from '@/common/content';
 
 import cls from './index.module.scss';
 
-import { removeEmptyContent } from '@/common/content';
+import type { AIToolbarProps } from '../AiToolbar';
+import type React from 'react';
 
 const schema = createMiniEditorSchema();
 

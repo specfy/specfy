@@ -1,13 +1,5 @@
 import * as Form from '@radix-ui/react-form';
 import { omit } from '@specfy/core/src/object';
-import type {
-  ApiBlobCreate,
-  ApiComponent,
-  ApiProject,
-  BlockLevelZero,
-  PostRevision,
-  ComputedFlow,
-} from '@specfy/models';
 import { componentsToFlow } from '@specfy/models/src/flows/transform';
 import {
   flagRevisionApprovalEnabled,
@@ -21,25 +13,17 @@ import { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { createRevision } from '../../../../api';
-import { isError } from '../../../../api/helpers';
-import { Card } from '../../../../components/Card';
-import { Container } from '../../../../components/Container';
-import { Empty } from '../../../../components/Empty';
-import { Flex } from '../../../../components/Flex';
-import { Toolbar } from '../../../../components/Flow/Toolbar';
-import { FlowWrapper } from '../../../../components/Flow/Wrapper';
-import { Button } from '../../../../components/Form/Button';
-import { Checkbox } from '../../../../components/Form/Checkbox';
-import { FieldCheckbox } from '../../../../components/Form/Field';
-import { Input } from '../../../../components/Form/Input';
-import { DiffCard } from '../../../../components/Revision/DiffCard';
-import { DiffFlow } from '../../../../components/Revision/DiffCard/Flow';
-import { useToast } from '../../../../hooks/useToast';
-import type { RouteProject } from '../../../../types/routes';
+import type {
+  ApiBlobCreate,
+  ApiComponent,
+  ApiProject,
+  BlockLevelZero,
+  PostRevision,
+  ComputedFlow,
+} from '@specfy/models';
 
-import cls from './index.module.scss';
-
+import { createRevision } from '@/api';
+import { isError } from '@/api/helpers';
 import { getEmptyDoc } from '@/common/content';
 import { proposeTitle } from '@/common/diff';
 import { i18n } from '@/common/i18n';
@@ -50,7 +34,23 @@ import {
   useStagingStore,
 } from '@/common/store';
 import { titleSuffix } from '@/common/string';
+import { Card } from '@/components/Card';
+import { Container } from '@/components/Container';
 import { EditorMini } from '@/components/Editor/Mini';
+import { Empty } from '@/components/Empty';
+import { Flex } from '@/components/Flex';
+import { Toolbar } from '@/components/Flow/Toolbar';
+import { FlowWrapper } from '@/components/Flow/Wrapper';
+import { Button } from '@/components/Form/Button';
+import { Checkbox } from '@/components/Form/Checkbox';
+import { FieldCheckbox } from '@/components/Form/Field';
+import { Input } from '@/components/Form/Input';
+import { DiffCard } from '@/components/Revision/DiffCard';
+import { DiffFlow } from '@/components/Revision/DiffCard/Flow';
+import { useToast } from '@/hooks/useToast';
+import type { RouteProject } from '@/types/routes';
+
+import cls from './index.module.scss';
 
 export const ProjectRevisionCreate: React.FC<{
   proj: ApiProject;

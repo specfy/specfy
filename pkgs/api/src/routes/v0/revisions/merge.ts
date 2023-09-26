@@ -1,5 +1,4 @@
 import { l, nanoid, omit } from '@specfy/core';
-import type { Prisma } from '@specfy/db';
 import { prisma } from '@specfy/db';
 import {
   findAllBlobsWithParent,
@@ -15,11 +14,14 @@ import {
   IGNORED_COMPONENT_KEYS_MERGE,
   IGNORED_DOCUMENT_KEYS_MERGE,
 } from '@specfy/models';
+
+import type { Prisma } from '@specfy/db';
 import type { DBBlob, MergeRevision, MergeRevisionError } from '@specfy/models';
-import type { FastifyPluginCallback } from 'fastify';
 
 import { getRevision } from '../../../middlewares/getRevision.js';
 import { noBody } from '../../../middlewares/noBody.js';
+
+import type { FastifyPluginCallback } from 'fastify';
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.post<MergeRevision>(

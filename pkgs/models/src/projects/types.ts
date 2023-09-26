@@ -1,7 +1,6 @@
-import type { RequiredDeep } from 'type-fest';
-
 import type { BlockLevelZero } from '../documents';
 import type { SyncConfig } from '../sync.js';
+import type { RequiredDeep } from 'type-fest';
 
 export interface DBProject {
   id: string;

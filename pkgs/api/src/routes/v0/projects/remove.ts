@@ -1,11 +1,13 @@
 import { logEvent } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import { recomputeOrgGraph } from '@specfy/models';
+
 import type { DeleteProject } from '@specfy/models';
-import type { FastifyPluginCallback } from 'fastify';
 
 import { getProject } from '../../../middlewares/getProject.js';
 import { noBody } from '../../../middlewares/noBody.js';
+
+import type { FastifyPluginCallback } from 'fastify';
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.delete<DeleteProject>(

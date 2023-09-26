@@ -1,28 +1,29 @@
-import type { ApiProject, ListJobs } from '@specfy/models';
 import { IconChevronRight, IconCloudUpload } from '@tabler/icons-react';
-import type React from 'react';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Skeleton from 'react-loading-skeleton';
 import { Link } from 'react-router-dom';
 
-import { createJob, useListDeploys } from '../../../../api';
-import { isError } from '../../../../api/helpers';
-import { AvatarAuto } from '../../../../components/AvatarAuto';
-import { Container, ContainerChild } from '../../../../components/Container';
-import { Empty } from '../../../../components/Empty';
-import { Flex } from '../../../../components/Flex';
-import { Button } from '../../../../components/Form/Button';
-import { StatusTag } from '../../../../components/Job/StatusTag';
-import { Time } from '../../../../components/Time';
-import { TooltipFull } from '../../../../components/Tooltip';
-import { useToast } from '../../../../hooks/useToast';
-import type { RouteProject } from '../../../../types/routes';
+import type { ApiProject, ListJobs } from '@specfy/models';
+
+import { createJob, useListDeploys } from '@/api';
+import { isError } from '@/api/helpers';
+import { i18n } from '@/common/i18n';
+import { titleSuffix } from '@/common/string';
+import { AvatarAuto } from '@/components/AvatarAuto';
+import { Container, ContainerChild } from '@/components/Container';
+import { Empty } from '@/components/Empty';
+import { Flex } from '@/components/Flex';
+import { Button } from '@/components/Form/Button';
+import { StatusTag } from '@/components/Job/StatusTag';
+import { Time } from '@/components/Time';
+import { TooltipFull } from '@/components/Tooltip';
+import { useToast } from '@/hooks/useToast';
+import type { RouteProject } from '@/types/routes';
 
 import cls from './index.module.scss';
 
-import { i18n } from '@/common/i18n';
-import { titleSuffix } from '@/common/string';
+import type React from 'react';
 
 export const Row: React.FC<{
   deploy: ListJobs['Success']['data'][0];

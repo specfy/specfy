@@ -1,8 +1,7 @@
 import type { Pagination, Res } from '@specfy/core';
 
-import type { SyncConfigDocumentation, SyncConfigStack } from '../sync.js';
-
 import type { DBProject } from './types.js';
+import type { SyncConfigDocumentation, SyncConfigStack } from '../sync.js';
 
 export type ApiProject = DBProject;
 export type ApiProjectList = Omit<

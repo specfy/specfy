@@ -1,22 +1,21 @@
 import { isDiffSimple } from '@specfy/core/src/diff';
+import { IGNORED_COMPONENT_KEYS } from '@specfy/models/src/revisions/constants';
+import { diffJson, diffWordsWithSpace } from 'diff';
+
 import type {
   ApiBlobComponent,
   ApiComponent,
   FlowEdge,
   InComponent,
 } from '@specfy/models';
-import { IGNORED_COMPONENT_KEYS } from '@specfy/models/src/revisions/constants';
-import type { Editor } from '@tiptap/react';
-import { diffJson, diffWordsWithSpace } from 'diff';
 
-import type {
-  ComponentBlobWithDiff,
-  ComponentDiffKeys,
-} from '../../types/blobs';
 import { getEmptyDoc } from '../content';
+import type { ComponentBlobWithDiff, ComponentDiffKeys } from '@/types/blobs';
 
 import { diffObjectsArray, diffStringArray } from './array';
 import { diffEditor } from './prosemirror';
+
+import type { Editor } from '@tiptap/react';
 
 export function diffComponent(
   editor: Editor,

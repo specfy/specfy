@@ -1,7 +1,8 @@
-import type { ApiProject } from '@specfy/models';
 import { Route, Routes } from 'react-router-dom';
 
-import type { RouteProject } from '../../../types/routes';
+import type { ApiProject } from '@specfy/models';
+
+import type { RouteProject } from '@/types/routes';
 
 import { ProjectContentList } from './List';
 import { DocumentShow } from './Show';

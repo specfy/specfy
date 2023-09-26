@@ -1,7 +1,7 @@
-import type { Orgs, Projects, Users } from '@specfy/db';
 import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
-import type { TestSetup } from '../../../test/each.js';
+import type { Orgs, Projects, Users } from '@specfy/db';
+
 import { setupBeforeAll, setupAfterAll } from '../../../test/each.js';
 import { isSuccess } from '../../../test/fetch.js';
 import {
@@ -10,6 +10,8 @@ import {
 } from '../../../test/helpers.js';
 import { seedRevision } from '../../../test/seed/revisions.js';
 import { seedSimpleUser, seedWithProject } from '../../../test/seed/seed.js';
+
+import type { TestSetup } from '../../../test/each.js';
 
 let t: TestSetup;
 beforeAll(async () => {

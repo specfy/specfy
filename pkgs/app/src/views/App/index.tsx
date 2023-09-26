@@ -7,14 +7,14 @@ import { HelmetProvider } from 'react-helmet-async';
 import { Route, Routes } from 'react-router-dom';
 import { ReactFlowProvider } from 'reactflow';
 
-import { qcli } from '../../common/query';
-import { AuthLayout } from '../../components/AuthLayout';
-import { ErrorFallback } from '../../components/ErrorFallback';
-import { NotFound } from '../../components/NotFound';
-import { ToastProvider } from '../../components/Toast';
-import { AuthProvider } from '../../hooks/useAuth';
-import { EditProvider } from '../../hooks/useEdit';
 import { Login } from '../Login';
+import { qcli } from '@/common/query';
+import { AuthLayout } from '@/components/AuthLayout';
+import { ErrorFallback } from '@/components/ErrorFallback';
+import { NotFound } from '@/components/NotFound';
+import { ToastProvider } from '@/components/Toast';
+import { AuthProvider } from '@/hooks/useAuth';
+import { EditProvider } from '@/hooks/useEdit';
 
 const Account = loadable(() => import('../Account'));
 const Homepage = loadable(() => import('../Homepage'));

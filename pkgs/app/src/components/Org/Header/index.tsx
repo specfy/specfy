@@ -1,4 +1,3 @@
-import type { ApiOrg } from '@specfy/models';
 import {
   IconApps,
   IconChartLine,
@@ -11,17 +10,18 @@ import classNames from 'classnames';
 import { useState, useMemo, useEffect } from 'react';
 import { useLocation, Link, useParams } from 'react-router-dom';
 
-import { useListOrgs } from '../../../api';
-import { isError } from '../../../api/helpers';
-import * as Menu from '../../../components/Menu';
-import type { RouteOrg } from '../../../types/routes';
-import { AvatarAuto } from '../../AvatarAuto';
-import * as Dropdown from '../../Dropdown';
-import { Flex } from '../../Flex';
+import type { ApiOrg } from '@specfy/models';
+
+import { useListOrgs } from '@/api';
+import { isError } from '@/api/helpers';
+import { useOrgStore } from '@/common/store';
+import { AvatarAuto } from '@/components/AvatarAuto';
+import * as Dropdown from '@/components/Dropdown';
+import { Flex } from '@/components/Flex';
+import * as Menu from '@/components/Menu';
+import type { RouteOrg } from '@/types/routes';
 
 import cls from './index.module.scss';
-
-import { useOrgStore } from '@/common/store';
 
 export const OrgSwitcher: React.FC = () => {
   const storeOrg = useOrgStore();

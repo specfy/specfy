@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { Navigate } from 'react-router-dom';
 import { useLocalStorage } from 'react-use';
 
-import { useListOrgs } from '../../api';
+import { useListOrgs } from '@/api';
 
 const Homepage: React.FC = () => {
   const orgsQuery = useListOrgs();

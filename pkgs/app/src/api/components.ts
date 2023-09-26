@@ -1,7 +1,8 @@
-import type { ApiComponent, ListComponents } from '@specfy/models';
 import { useQuery } from '@tanstack/react-query';
 
-import { original } from '../common/store';
+import type { ApiComponent, ListComponents } from '@specfy/models';
+
+import { original } from '@/common/store';
 
 import { fetchApi } from './fetch';
 import { APIError, isError } from './helpers';

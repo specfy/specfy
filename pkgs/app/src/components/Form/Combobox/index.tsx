@@ -8,6 +8,7 @@ import { IconCheck, IconSelector } from '@tabler/icons-react';
 import cn from 'classnames';
 import { useMemo, useState } from 'react';
 
+import { Button } from '../Button';
 import {
   Command,
   CommandEmpty,
@@ -15,9 +16,8 @@ import {
   CommandInput,
   CommandItem,
   CommandSeparator,
-} from '../../Command';
-import { Flex } from '../../Flex';
-import { Button } from '../Button';
+} from '@/components/Command';
+import { Flex } from '@/components/Flex';
 
 import cls from './index.module.scss';
 

@@ -1,8 +1,9 @@
 import { l as logger, metrics } from '@specfy/core';
 import { prisma } from '@specfy/db';
 
-import type { Job } from './Job.js';
 import { JobDeploy } from './jobs/deploy.js';
+
+import type { Job } from './Job.js';
 
 let interval: NodeJS.Timeout;
 const running: Job[] = [];

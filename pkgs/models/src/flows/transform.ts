@@ -1,7 +1,5 @@
 import type { Projects } from '@specfy/db';
 
-import type { DBComponent } from '../components/types.js';
-
 import type {
   FlowItemDisplay,
   ComponentForFlow,
@@ -10,6 +8,7 @@ import type {
   ComputedNode,
   EdgeData,
 } from './types.js';
+import type { DBComponent } from '../components/types.js';
 
 export function createNodeFromProject(
   project: Pick<Projects, 'id' | 'name'>,

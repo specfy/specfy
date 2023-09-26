@@ -1,11 +1,12 @@
-import type { ComputedEdge, ComputedFlow, ComputedNode } from '@specfy/models';
 import { produce } from 'immer';
-import type {
-  NodeMouseHandler,
-  OnSelectionChangeFunc,
-  useStoreApi,
-} from 'reactflow';
 import { create } from 'zustand';
+
+import type { ComputedEdge, ComputedFlow, ComputedNode } from '@specfy/models';
+
+import type {
+  OnEdgesChangeSuper,
+  OnNodesChangeSuper,
+} from '@/components/Flow/types';
 
 import { autoExpand } from './autoExpand';
 import { highlightNode } from './highlightNode';
@@ -13,9 +14,10 @@ import { recomputeHandles } from './recomputeHandles';
 import { setParentsToHighlight } from './setParentsToHighlight';
 
 import type {
-  OnEdgesChangeSuper,
-  OnNodesChangeSuper,
-} from '@/components/Flow/types';
+  NodeMouseHandler,
+  OnSelectionChangeFunc,
+  useStoreApi,
+} from 'reactflow';
 
 export interface FlowState {
   // id is used to control loading state

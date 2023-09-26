@@ -1,7 +1,8 @@
-import type { ComputedEdge } from '@specfy/models';
 import { getBlobComponent } from '@specfy/models/src/components/test.utils';
 import { createNode } from '@specfy/models/src/flows/transform';
 import { describe, expect, it } from 'vitest';
+
+import type { ComputedEdge } from '@specfy/models';
 
 import { recomputeHandles } from './recomputeHandles';
 

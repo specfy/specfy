@@ -1,11 +1,11 @@
-import type { FastifyPluginAsync } from 'fastify';
-
 import bySlug from './bySlug.js';
 import create from './create.js';
 import get from './get.js';
 import list from './list.js';
 import remove from './remove.js';
 import update from './update.js';
+
+import type { FastifyPluginAsync } from 'fastify';
 
 const fn: FastifyPluginAsync = async (f) => {
   await f.register(list, { prefix: '/projects' });

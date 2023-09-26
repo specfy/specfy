@@ -3,15 +3,14 @@ import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 
-import { Button } from '../../../../components/Form/Button';
-import { Input } from '../../../../components/Form/Input';
-import type { RouteProject } from '../../../../types/routes';
-
-import cls from './index.module.scss';
-
 import { createLocal } from '@/common/components';
 import { useComponentsStore, useProjectStore } from '@/common/store';
 import { slugify, titleSuffix } from '@/common/string';
+import { Button } from '@/components/Form/Button';
+import { Input } from '@/components/Form/Input';
+import type { RouteProject } from '@/types/routes';
+
+import cls from './index.module.scss';
 
 export const ProjectComponentCreate: React.FC<{ params: RouteProject }> = ({
   params,

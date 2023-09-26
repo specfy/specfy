@@ -1,6 +1,7 @@
+import cls from './index.module.scss';
+
 import type { ReactNode } from 'react';
 
-import cls from './index.module.scss';
 export const ActivityCard: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {

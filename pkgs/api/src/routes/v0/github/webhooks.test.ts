@@ -1,9 +1,10 @@
 import { beforeAll, afterAll, describe, it, expect } from 'vitest';
 
-import type { TestSetup } from '../../../test/each.js';
 import { setupAfterAll, setupBeforeAll } from '../../../test/each.js';
 import { shouldNotAllowQueryParams } from '../../../test/helpers.js';
 import { seedSimpleUser } from '../../../test/seed/seed.js';
+
+import type { TestSetup } from '../../../test/each.js';
 
 let t: TestSetup;
 beforeAll(async () => {

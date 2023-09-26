@@ -1,13 +1,15 @@
 import { schemaId, schemaOrgId } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import { checkInheritedPermissions } from '@specfy/models';
+import { z } from 'zod';
+
 import type { GetFlow } from '@specfy/models';
 import type { PreHandler } from '@specfy/models/src/fastify';
-import type { FastifyRequest } from 'fastify';
-import { z } from 'zod';
 
 import { forbidden, notFound, validationError } from '../common/errors.js';
 import { valPermissions } from '../common/zod.js';
+
+import type { FastifyRequest } from 'fastify';
 
 export function QueryVal(req: FastifyRequest) {
   return z

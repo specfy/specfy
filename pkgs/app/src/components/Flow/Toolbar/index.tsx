@@ -8,20 +8,20 @@ import {
   IconZoomOut,
 } from '@tabler/icons-react';
 import classnames from 'classnames';
-import type React from 'react';
 import { useMemo, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { useReactFlow, useViewport } from 'reactflow';
 
-import { useAuth } from '../../../hooks/useAuth';
-import { Flex } from '../../Flex';
-import { Button } from '../../Form/Button';
-import { TooltipFull } from '../../Tooltip';
 import { PreviewNode } from '../CustomNode';
+import { Flex } from '@/components/Flex';
+import { Button } from '@/components/Form/Button';
+import * as Popover from '@/components/Popover';
+import { TooltipFull } from '@/components/Tooltip';
+import { useAuth } from '@/hooks/useAuth';
 
 import cls from './index.module.scss';
 
-import * as Popover from '@/components/Popover';
+import type React from 'react';
 
 const Container: React.FC<{
   top?: true;

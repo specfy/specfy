@@ -1,14 +1,16 @@
 import { nanoid } from '@specfy/core';
-import type { Components, Projects } from '@specfy/db';
-import type { AnalyserJson } from '@specfy/stack-analyser';
 import { Payload } from '@specfy/stack-analyser';
 import { describe, expect, it } from 'vitest';
 
+import type { Components, Projects } from '@specfy/db';
+import type { AnalyserJson } from '@specfy/stack-analyser';
+
 import { getBlobComponent } from '../components/test.utils.js';
-import type { PostUploadRevision } from '../revisions/index.js';
 
 import { stackToBlobs } from './stackToBlobs.js';
+
 import type { StackToBlobs } from './types.js';
+import type { PostUploadRevision } from '../revisions/index.js';
 
 function getDefault(): AnalyserJson {
   return new Payload({ name: 'default', folderPath: '/' }).toJson();

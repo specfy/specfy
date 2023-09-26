@@ -1,11 +1,11 @@
-import type { FastifyPluginAsync } from 'fastify';
-
 import installations from './installations.js';
 import linkOrg from './linkOrg.js';
 import linkProject from './linkProject.js';
 import members from './members.js';
 import repos from './repos.js';
 import webhooks from './webhooks.js';
+
+import type { FastifyPluginAsync } from 'fastify';
 
 const fn: FastifyPluginAsync = async (f) => {
   await f.register(repos, { prefix: '/github/repos' });

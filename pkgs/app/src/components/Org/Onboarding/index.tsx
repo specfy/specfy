@@ -1,17 +1,17 @@
-import type { ApiOrg } from '@specfy/models';
 import { IconArrowNarrowRight } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLocalStorage } from 'react-use';
 
-import { useListPerms, useListProjects } from '../../../api';
-import { Flex } from '../../Flex';
-import { Button } from '../../Form/Button';
+import type { ApiOrg } from '@specfy/models';
 
-import cls from './index.module.scss';
-
+import { useListPerms, useListProjects } from '@/api';
+import { Flex } from '@/components/Flex';
+import { Button } from '@/components/Form/Button';
 import { OnboardingRow } from '@/components/Onboarding/Row';
 import { Subdued } from '@/components/Text';
+
+import cls from './index.module.scss';
 
 export const OrgOnboarding: React.FC<{ org: ApiOrg }> = ({ org }) => {
   const projects = useListProjects({ org_id: org.id });

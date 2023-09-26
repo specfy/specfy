@@ -1,8 +1,8 @@
 import { IconCheck, IconCopy } from '@tabler/icons-react';
 import { useCallback, useState } from 'react';
 
-import type { ButtonProps } from '../../Form/Button';
-import { Button } from '../../Form/Button';
+import type { ButtonProps } from '@/components/Form/Button';
+import { Button } from '@/components/Form/Button';
 
 export const CopyButton: React.FC<{ value: string } & ButtonProps> = ({
   value,

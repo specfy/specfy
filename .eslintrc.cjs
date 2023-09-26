@@ -213,15 +213,30 @@ module.exports = {
         groups: [
           'builtin',
           'external',
+          'unknown',
           'internal',
           'parent',
           'sibling',
+          'type',
           'index',
+          'object',
         ],
         'newlines-between': 'always',
         alphabetize: {
           order: 'asc',
         },
+        warnOnUnassignedImports: true,
+        pathGroups: [
+          {
+            pattern: '@/**',
+            group: 'parent',
+          },
+          {
+            pattern: '@specfy/**',
+            group: 'internal',
+            position: 'after',
+          },
+        ],
       },
     ],
 

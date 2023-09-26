@@ -1,9 +1,9 @@
 import { nanoid } from '@specfy/core';
+
 import type { Prisma, Users, Activities, Revisions } from '@specfy/db';
 
-import type { ActionRevision } from '../activities/types.js';
-
 import type { ApiBlobCreate } from './types.api.js';
+import type { ActionRevision } from '../activities/types.js';
 
 export async function createRevisionActivity({
   user,

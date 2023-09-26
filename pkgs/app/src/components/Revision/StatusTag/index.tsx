@@ -1,8 +1,9 @@
-import type { ApiRevision } from '@specfy/models';
 import { flagRevisionApprovalEnabled } from '@specfy/models/src/revisions/constants';
 import { IconLock } from '@tabler/icons-react';
 
-import { Tag } from '../../Tag';
+import type { ApiRevision } from '@specfy/models';
+
+import { Tag } from '@/components/Tag';
 
 import cls from './index.module.scss';
 

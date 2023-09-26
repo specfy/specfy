@@ -1,14 +1,15 @@
-import type { ApiProject } from '@specfy/models';
 import { IconBrandGithub, IconSettings, IconUsers } from '@tabler/icons-react';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 
-import { useCountPerms } from '../../../api';
-import { Badge } from '../../../components/Badge';
-import { Container } from '../../../components/Container';
-import { Flex } from '../../../components/Flex';
-import * as Menu from '../../../components/Menu';
-import type { RouteProject } from '../../../types/routes';
+import type { ApiProject } from '@specfy/models';
+
+import { useCountPerms } from '@/api';
+import { Badge } from '@/components/Badge';
+import { Container } from '@/components/Container';
+import { Flex } from '@/components/Flex';
+import * as Menu from '@/components/Menu';
+import type { RouteProject } from '@/types/routes';
 
 import { SettingsGeneral } from './General';
 import { SettingsSync } from './Sync';

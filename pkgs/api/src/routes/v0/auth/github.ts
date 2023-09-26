@@ -1,8 +1,9 @@
 import { envs } from '@specfy/core';
-import type { FastifyPluginCallback } from 'fastify';
 
 import { fastifyPassport } from '../../../middlewares/auth/index.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
+
+import type { FastifyPluginCallback } from 'fastify';
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.get(

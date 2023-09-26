@@ -2,9 +2,7 @@ import { type ComputedNode, type NodeData } from '@specfy/models';
 import { hMax, hMin, wMax, wMin } from '@specfy/models/src/flows/constants';
 import { IconEye, IconLayersDifference, IconTrash } from '@tabler/icons-react';
 import classNames from 'classnames';
-import type { ChangeEventHandler, KeyboardEventHandler } from 'react';
 import { useMemo, useEffect, memo, useRef, useState } from 'react';
-import type { NodeProps, ReactFlowState } from 'reactflow';
 import {
   useUpdateNodeInternals,
   useEdges,
@@ -17,15 +15,17 @@ import {
   useReactFlow,
 } from 'reactflow';
 
-import { ComponentIcon } from '../../Component/Icon';
-import { TooltipFull } from '../../Tooltip';
 import { TechPopover } from '../TechPopover';
-import type { OnNodesChangeSuper } from '../types';
+import { useFlowStore } from '@/common/store';
+import { ComponentIcon } from '@/components/Component/Icon';
+import { TooltipFull } from '@/components/Tooltip';
+import { useEdit } from '@/hooks/useEdit';
 
 import cls from './index.module.scss';
 
-import { useFlowStore } from '@/common/store';
-import { useEdit } from '@/hooks/useEdit';
+import type { OnNodesChangeSuper } from '../types';
+import type { ChangeEventHandler, KeyboardEventHandler } from 'react';
+import type { NodeProps, ReactFlowState } from 'reactflow';
 
 const connectionNodeIdSelector = (state: ReactFlowState) =>
   state.connectionNodeId;

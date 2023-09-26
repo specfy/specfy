@@ -5,10 +5,12 @@ import {
   checkReviews,
   flagRevisionApprovalEnabled,
 } from '@specfy/models';
+
 import type { ListRevisionChecks } from '@specfy/models';
-import type { FastifyPluginCallback } from 'fastify';
 
 import { getRevision } from '../../../middlewares/getRevision.js';
+
+import type { FastifyPluginCallback } from 'fastify';
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.get<ListRevisionChecks>(

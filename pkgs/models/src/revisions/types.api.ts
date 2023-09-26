@@ -6,6 +6,8 @@ import type {
 } from '@specfy/core';
 import type { AnalyserJson } from '@specfy/stack-analyser';
 
+import type { DocsToBlobs } from './helpers.upload.js';
+import type { DBRevision } from './types.js';
 import type {
   DBBlobBase,
   DBBlobComponentBase,
@@ -16,9 +18,6 @@ import type { BlockLevelZero } from '../documents/types.prosemirror.js';
 import type { ApiReview } from '../reviews/types.api.js';
 import type { StackToBlobs } from '../stack/types.js';
 import type { ApiUser } from '../users/types.api.js';
-
-import type { DocsToBlobs } from './helpers.upload.js';
-import type { DBRevision } from './types.js';
 
 type ApiRevisionBase = { authors: ApiUser[]; url: string };
 export type ApiRevisionList = Omit<DBRevision, 'stack' | 'description'> &

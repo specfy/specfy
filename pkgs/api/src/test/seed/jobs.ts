@@ -2,9 +2,10 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 
 import { dirname, nanoid } from '@specfy/core';
-import type { Orgs, Projects, Users } from '@specfy/db';
 import { prisma } from '@specfy/db';
 import { createJobDeploy, jobReason } from '@specfy/models';
+
+import type { Orgs, Projects, Users } from '@specfy/db';
 
 export async function seedJobs(
   users: Users[],

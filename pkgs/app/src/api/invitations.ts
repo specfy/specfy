@@ -1,3 +1,5 @@
+import { useQuery } from '@tanstack/react-query';
+
 import type {
   AcceptInvitation,
   DeclineInvitation,
@@ -5,9 +7,8 @@ import type {
   ListInvitations,
   PostInvitation,
 } from '@specfy/models';
-import { useQuery } from '@tanstack/react-query';
 
-import { qcli } from '../common/query';
+import { qcli } from '@/common/query';
 
 import { fetchApi } from './fetch';
 import { APIError, isError } from './helpers';

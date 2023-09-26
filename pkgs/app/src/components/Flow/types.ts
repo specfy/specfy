@@ -1,6 +1,5 @@
-import type { Connection, EdgeChange, NodeChange } from 'reactflow';
-
 import type { TechSearchItem } from '../StackSearch/TechSearch';
+import type { Connection, EdgeChange, NodeChange } from 'reactflow';
 
 export type BatchNodeUpdate = {
   id: string;

@@ -1,12 +1,13 @@
 import { SiGithub } from '@icons-pack/react-simple-icons';
-import type { ApiGitHubRepo } from '@specfy/models';
 import { IconSelector } from '@tabler/icons-react';
 import classNames from 'classnames';
 import { forwardRef, useEffect, useRef, useState } from 'react';
 
-import { useGetGitHubRepos } from '../../../api';
-import { Input } from '../../Form/Input';
+import type { ApiGitHubRepo } from '@specfy/models';
+
 import * as Popover from '../../Popover';
+import { useGetGitHubRepos } from '@/api';
+import { Input } from '@/components/Form/Input';
 
 import cls from './index.module.scss';
 

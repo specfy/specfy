@@ -1,4 +1,3 @@
-import type { ApiProject } from '@specfy/models';
 import {
   IconApps,
   IconBolt,
@@ -14,17 +13,18 @@ import classNames from 'classnames';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-import { useListRevisions } from '../../../api';
-import * as Menu from '../../../components/Menu';
-import type { RouteProject } from '../../../types/routes';
-import { AvatarAuto } from '../../AvatarAuto';
+import type { ApiProject } from '@specfy/models';
+
 import { Badge } from '../../Badge';
-import * as Dropdown from '../../Dropdown';
-import { Flex } from '../../Flex';
+import { useListRevisions } from '@/api';
+import { useOrgStore, useProjectStore } from '@/common/store';
+import { AvatarAuto } from '@/components/AvatarAuto';
+import * as Dropdown from '@/components/Dropdown';
+import { Flex } from '@/components/Flex';
+import * as Menu from '@/components/Menu';
+import type { RouteProject } from '@/types/routes';
 
 import cls from './index.module.scss';
-
-import { useOrgStore, useProjectStore } from '@/common/store';
 
 export const ProjectSwitcher: React.FC = () => {
   const { project, projects } = useProjectStore();

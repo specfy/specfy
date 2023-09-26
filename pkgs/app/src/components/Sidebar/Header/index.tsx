@@ -1,18 +1,17 @@
 import { IconLogout, IconSettings } from '@tabler/icons-react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { isError } from '../../../api/helpers';
-import { useAuth } from '../../../hooks/useAuth';
-import { useToast } from '../../../hooks/useToast';
-import { AvatarAuto } from '../../AvatarAuto';
-import * as Dropdown from '../../Dropdown';
-import { Flex } from '../../Flex';
 import { Logo } from '../../Logo';
-import { Subdued } from '../../Text';
+import { isError } from '@/api/helpers';
+import { i18n } from '@/common/i18n';
+import { AvatarAuto } from '@/components/AvatarAuto';
+import * as Dropdown from '@/components/Dropdown';
+import { Flex } from '@/components/Flex';
+import { Subdued } from '@/components/Text';
+import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/useToast';
 
 import cls from './index.module.scss';
-
-import { i18n } from '@/common/i18n';
 
 const User: React.FC = () => {
   const { user, logout } = useAuth();

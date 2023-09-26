@@ -1,10 +1,11 @@
-import type { BlockLevelZero } from '@specfy/models';
 import { CharacterCount } from '@tiptap/extension-character-count';
 import { useEditor, EditorContent } from '@tiptap/react';
 import { useEffect, useMemo } from 'react';
 
-import { removeEmptyContent } from '../../common/content';
+import type { BlockLevelZero } from '@specfy/models';
+
 import { Presentation } from '../Content';
+import { removeEmptyContent } from '@/common/content';
 
 import { createEditorSchema } from './extensions';
 import { BubbleMenu } from './extensions/CustomBubbleMenu/BubbleMenu';

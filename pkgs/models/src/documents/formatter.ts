@@ -1,9 +1,9 @@
 import type { Documents } from '@specfy/db';
 
-import type { TypeHasUsersWithUser } from '../typesHasUsers';
 import { toApiUser } from '../users/index.js';
 
 import type { ApiDocument } from './types.api.js';
+import type { TypeHasUsersWithUser } from '../typesHasUsers';
 
 export function toApiDocument(
   p: Documents,

@@ -1,20 +1,20 @@
 import * as Form from '@radix-ui/react-form';
-import type { FieldsErrors } from '@specfy/core';
-import type { ApiOrg, ApiPerm } from '@specfy/models';
 import { useState } from 'react';
 
-import { createInvitation } from '../../../api';
-import { handleErrors, isError } from '../../../api/helpers';
-import { Card } from '../../../components/Card';
-import { useToast } from '../../../hooks/useToast';
-import { Button } from '../../Form/Button';
-import { Field } from '../../Form/Field';
-import { Input } from '../../Form/Input';
-import { SelectFull } from '../../Form/Select';
+import type { FieldsErrors } from '@specfy/core';
+import type { ApiOrg, ApiPerm } from '@specfy/models';
+
+import { createInvitation } from '@/api';
+import { handleErrors, isError } from '@/api/helpers';
+import { selectPerms } from '@/common/perms';
+import { Card } from '@/components/Card';
+import { Button } from '@/components/Form/Button';
+import { Field } from '@/components/Form/Field';
+import { Input } from '@/components/Form/Input';
+import { SelectFull } from '@/components/Form/Select';
+import { useToast } from '@/hooks/useToast';
 
 import cls from './index.module.scss';
-
-import { selectPerms } from '@/common/perms';
 
 export const TeamInvite: React.FC<{
   org: ApiOrg;

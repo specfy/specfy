@@ -1,20 +1,21 @@
 import * as Form from '@radix-ui/react-form';
-import type { FieldsErrors } from '@specfy/core';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { authLocal } from '../../api/auth';
-import { handleErrors, isError } from '../../api/helpers';
-import { API_HOSTNAME, IS_PROD } from '../../common/envs';
-import { titleSuffix } from '../../common/string';
-import { Card } from '../../components/Card';
-import { Flex } from '../../components/Flex';
-import { Button } from '../../components/Form/Button';
-import { Field } from '../../components/Form/Field';
-import { Input } from '../../components/Form/Input';
-import { Logo } from '../../components/Logo';
-import { useToast } from '../../hooks/useToast';
+import type { FieldsErrors } from '@specfy/core';
+
+import { authLocal } from '@/api/auth';
+import { handleErrors, isError } from '@/api/helpers';
+import { API_HOSTNAME, IS_PROD } from '@/common/envs';
+import { titleSuffix } from '@/common/string';
+import { Card } from '@/components/Card';
+import { Flex } from '@/components/Flex';
+import { Button } from '@/components/Form/Button';
+import { Field } from '@/components/Form/Field';
+import { Input } from '@/components/Form/Input';
+import { Logo } from '@/components/Logo';
+import { useToast } from '@/hooks/useToast';
 
 import cls from './index.module.scss';
 

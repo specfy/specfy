@@ -1,4 +1,5 @@
 import { nanoid, slugify } from '@specfy/core';
+
 import type { Prisma, Activities, Components, Users } from '@specfy/db';
 
 import type { ActionComponent } from '../activities/types.js';

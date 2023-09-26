@@ -1,10 +1,11 @@
 import { IconBold, IconCode, IconItalic, IconLink } from '@tabler/icons-react';
-import type { Editor } from '@tiptap/core';
 import { useCallback, useEffect, useState } from 'react';
 
 import { BubbleMenuPlugin } from '..';
 
 import cls from './index.module.scss';
+
+import type { Editor } from '@tiptap/core';
 
 export const BubbleMenu: React.FC<{ editor: Editor }> = ({ editor }) => {
   const [element, setElement] = useState<HTMLDivElement | null>(null);

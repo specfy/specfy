@@ -1,23 +1,23 @@
-import type { ApiOrg } from '@specfy/models';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Skeleton from 'react-loading-skeleton';
 import { useLocalStorage } from 'react-use';
 
-import { useListProjects, useGetFlow } from '../../../api';
-import { Card } from '../../../components/Card';
-import { ContainerChild } from '../../../components/Container';
-import { Toolbar } from '../../../components/Flow/Toolbar';
-import { FlowWrapper } from '../../../components/Flow/Wrapper';
-import { ListActivity } from '../../../components/ListActivity';
-import { ListProjects } from '../../../components/ListProjects';
-import { OrgOnboarding } from '../../../components/Org/Onboarding';
-import type { RouteOrg } from '../../../types/routes';
+import type { ApiOrg } from '@specfy/models';
 
+import { useListProjects, useGetFlow } from '@/api';
 import { i18n } from '@/common/i18n';
 import { useFlowStore } from '@/common/store';
 import { titleSuffix } from '@/common/string';
+import { Card } from '@/components/Card';
+import { ContainerChild } from '@/components/Container';
 import { FlowOrg } from '@/components/Flow/FlowOrg';
+import { Toolbar } from '@/components/Flow/Toolbar';
+import { FlowWrapper } from '@/components/Flow/Wrapper';
+import { ListActivity } from '@/components/ListActivity';
+import { ListProjects } from '@/components/ListProjects';
+import { OrgOnboarding } from '@/components/Org/Onboarding';
+import type { RouteOrg } from '@/types/routes';
 
 export const OrgOverview: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   org,

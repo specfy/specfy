@@ -1,33 +1,33 @@
-import type {
-  ApiProject,
-  ApiUser,
-  GetRevision,
-  ListRevisionBlobs,
-} from '@specfy/models';
 import { flagRevisionApprovalEnabled } from '@specfy/models/src/revisions/constants';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Skeleton from 'react-loading-skeleton';
 import { useParams } from 'react-router-dom';
 
-import { useListRevisionBlobs, useGetRevision } from '../../../../api';
-import { Card } from '../../../../components/Card';
-import { Empty } from '../../../../components/Empty';
-import { ListActivity } from '../../../../components/ListActivity';
-import { NotFound } from '../../../../components/NotFound';
-import { DiffCard } from '../../../../components/Revision/DiffCard';
-import { RevisionMainCard } from '../../../../components/Revision/MainCard';
-import { ReviewBar } from '../../../../components/Revision/ReviewBar';
-import { SidebarBlock } from '../../../../components/Sidebar/Block';
-import { UserList } from '../../../../components/UserList';
-import type { BlobAndDiffs } from '../../../../types/blobs';
-import type { RouteProject, RouteRevision } from '../../../../types/routes';
+import type {
+  ApiProject,
+  ApiUser,
+  GetRevision,
+  ListRevisionBlobs,
+} from '@specfy/models';
 
-import cls from './index.module.scss';
-
+import { useListRevisionBlobs, useGetRevision } from '@/api';
 import { diffTwoBlob } from '@/common/diff';
 import { useRevisionStore } from '@/common/store';
 import { titleSuffix } from '@/common/string';
+import { Card } from '@/components/Card';
+import { Empty } from '@/components/Empty';
+import { ListActivity } from '@/components/ListActivity';
+import { NotFound } from '@/components/NotFound';
+import { DiffCard } from '@/components/Revision/DiffCard';
+import { RevisionMainCard } from '@/components/Revision/MainCard';
+import { ReviewBar } from '@/components/Revision/ReviewBar';
+import { SidebarBlock } from '@/components/Sidebar/Block';
+import { UserList } from '@/components/UserList';
+import type { BlobAndDiffs } from '@/types/blobs';
+import type { RouteProject, RouteRevision } from '@/types/routes';
+
+import cls from './index.module.scss';
 
 export const ProjectRevisionsShow: React.FC<{
   proj: ApiProject;

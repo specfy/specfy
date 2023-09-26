@@ -1,9 +1,10 @@
 import { IconCaretDown } from '@tabler/icons-react';
-import type { NodeViewProps } from '@tiptap/react';
 import { NodeViewContent, NodeViewWrapper } from '@tiptap/react';
 import classnames from 'classnames';
 
 import cls from '../../../Content/BlockStep/index.module.scss';
+
+import type { NodeViewProps } from '@tiptap/react';
 
 export const StepView: React.FC<NodeViewProps> = () => {
   return (

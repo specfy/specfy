@@ -1,4 +1,3 @@
-import type { Orgs, Projects, Users } from '@specfy/db';
 import { prisma } from '@specfy/db';
 import {
   createComponentBlob,
@@ -7,7 +6,8 @@ import {
 import { getBlobComponent } from '@specfy/models/src/components/test.utils.js';
 import { beforeAll, afterAll, describe, it, expect } from 'vitest';
 
-import type { TestSetup } from '../../../test/each.js';
+import type { Orgs, Projects, Users } from '@specfy/db';
+
 import { setupBeforeAll, setupAfterAll } from '../../../test/each.js';
 import { isError, isSuccess } from '../../../test/fetch.js';
 import {
@@ -23,6 +23,8 @@ import {
   seedWithOrgViewer,
   seedWithProject,
 } from '../../../test/seed/seed.js';
+
+import type { TestSetup } from '../../../test/each.js';
 
 let t: TestSetup;
 beforeAll(async () => {

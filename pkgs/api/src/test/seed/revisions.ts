@@ -1,5 +1,4 @@
 import { nanoid } from '@specfy/core';
-import type { Documents, Orgs, Projects, Users } from '@specfy/db';
 import { prisma } from '@specfy/db';
 import {
   createComponentBlob,
@@ -9,6 +8,8 @@ import {
   createRevisionActivity,
   getDocumentTypeId,
 } from '@specfy/models';
+
+import type { Documents, Orgs, Projects, Users } from '@specfy/db';
 import type {
   ApiBlobCreate,
   ApiRevision,

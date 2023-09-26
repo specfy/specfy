@@ -1,6 +1,6 @@
-import type { FastifyPluginAsync } from 'fastify';
-
 import create from './create.js';
+
+import type { FastifyPluginAsync } from 'fastify';
 
 const fn: FastifyPluginAsync = async (f) => {
   await f.register(create, { prefix: '/demo' });

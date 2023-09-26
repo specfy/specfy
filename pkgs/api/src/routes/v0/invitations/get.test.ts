@@ -1,7 +1,6 @@
 import { nanoid } from '@specfy/core';
 import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
-import type { TestSetup } from '../../../test/each.js';
 import { setupBeforeAll, setupAfterAll } from '../../../test/each.js';
 import { isError, isSuccess } from '../../../test/fetch.js';
 import {
@@ -9,6 +8,8 @@ import {
   shouldNotAllowQueryParams,
 } from '../../../test/helpers.js';
 import { seedSimpleUser, seedWithOrg } from '../../../test/seed/seed.js';
+
+import type { TestSetup } from '../../../test/each.js';
 
 let t: TestSetup;
 beforeAll(async () => {

@@ -1,11 +1,13 @@
 import { l } from '@specfy/core';
-import type { Users, Orgs } from '@specfy/db';
 import { Prisma, prisma } from '@specfy/db';
 
+import type { Users, Orgs } from '@specfy/db';
+
 import { BILLING_ENABLED } from './constants.js';
-import type { Plan } from './plans.js';
 import { v1 } from './plans.js';
 import { stripe } from './stripe.js';
+
+import type { Plan } from './plans.js';
 import type { GetBillingUsage } from './types.api.js';
 
 export function getCurrentPlan(org: Orgs): Plan {

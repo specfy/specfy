@@ -9,13 +9,15 @@ import {
   forbiddenProjectSlug,
   schemaProject,
 } from '@specfy/models';
-import type { DBProject, PostProject } from '@specfy/models';
-import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import z from 'zod';
+
+import type { DBProject, PostProject } from '@specfy/models';
 
 import { validationError } from '../../../common/errors.js';
 import { valPermissions } from '../../../common/zod.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
+
+import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 
 function ProjectVal(req: FastifyRequest) {
   return z

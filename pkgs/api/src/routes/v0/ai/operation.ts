@@ -1,6 +1,5 @@
 import { envs, schemaId, schemaOrgId } from '@specfy/core';
 import { prisma } from '@specfy/db';
-import type { PostAiOperation } from '@specfy/models';
 import {
   aiCompletion,
   aiPromptProjectDescription,
@@ -8,8 +7,9 @@ import {
   aiPromptRewrite,
   aiStream,
 } from '@specfy/models';
-import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
+
+import type { PostAiOperation } from '@specfy/models';
 
 import {
   notFound,
@@ -18,6 +18,8 @@ import {
 } from '../../../common/errors.js';
 import { valPermissions } from '../../../common/zod.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
+
+import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 
 function BodyVal(req: FastifyRequest) {
   return z

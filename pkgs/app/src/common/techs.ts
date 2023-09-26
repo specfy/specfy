@@ -1,8 +1,10 @@
-import type { IconType } from '@icons-pack/react-simple-icons/types';
-import type { AllowedKeys, TechItem } from '@specfy/stack-analyser';
 import { listTech } from '@specfy/stack-analyser/dist/common/techs.generated';
 
+import type { AllowedKeys, TechItem } from '@specfy/stack-analyser';
+
 import * as icons from './icons';
+
+import type { IconType } from '@icons-pack/react-simple-icons/types';
 
 type Extending = {
   // Icon?: React.LazyExoticComponent<any>;

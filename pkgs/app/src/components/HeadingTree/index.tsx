@@ -1,8 +1,9 @@
-import type { BlockLevelOne } from '@specfy/models';
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 
-import { slugify } from '../../common/string';
+import type { BlockLevelOne } from '@specfy/models';
+
+import { slugify } from '@/common/string';
 
 import cls from './index.module.scss';
 

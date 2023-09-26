@@ -1,13 +1,15 @@
 import { sentry } from '@specfy/core';
-import type { Prisma, TypeHasUsers } from '@specfy/db';
 import { prisma } from '@specfy/db';
 import { createRevisionActivity, schemaRevision } from '@specfy/models';
-import type { PatchRevision } from '@specfy/models';
-import type { FastifyPluginCallback } from 'fastify';
 import { z } from 'zod';
+
+import type { Prisma, TypeHasUsers } from '@specfy/db';
+import type { PatchRevision } from '@specfy/models';
 
 import { validationError } from '../../../common/errors.js';
 import { getRevision } from '../../../middlewares/getRevision.js';
+
+import type { FastifyPluginCallback } from 'fastify';
 
 function diffUsers(
   origin: TypeHasUsers[],

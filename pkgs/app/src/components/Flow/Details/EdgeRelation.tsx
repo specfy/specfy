@@ -1,4 +1,3 @@
-import type { ComputedEdge, ComputedNode } from '@specfy/models';
 import {
   IconArrowNarrowLeft,
   IconArrowNarrowRight,
@@ -10,14 +9,16 @@ import {
 } from '@tabler/icons-react';
 import classNames from 'classnames';
 
-import * as Dropdown from '../../../components/Dropdown';
-import { Button } from '../../Form/Button';
-import { TooltipFull } from '../../Tooltip';
-import type { OnEdgesChangeSuper } from '../types';
+import type { ComputedEdge, ComputedNode } from '@specfy/models';
+
+import * as Dropdown from '@/components/Dropdown';
+import { Button } from '@/components/Form/Button';
+import { TooltipFull } from '@/components/Tooltip';
+import { useEdit } from '@/hooks/useEdit';
 
 import cls from './edge.module.scss';
 
-import { useEdit } from '@/hooks/useEdit';
+import type { OnEdgesChangeSuper } from '../types';
 
 export interface Relation {
   edge: ComputedEdge;

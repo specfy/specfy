@@ -1,13 +1,15 @@
 import { acronymize, stringToColor } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import { createOrgActivity, toApiOrgPublic, schemaOrg } from '@specfy/models';
-import type { PutOrg } from '@specfy/models';
-import type { FastifyPluginCallback } from 'fastify';
 import { z } from 'zod';
+
+import type { PutOrg } from '@specfy/models';
 
 import { validationError } from '../../../common/errors.js';
 import { getOrg } from '../../../middlewares/getOrg.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
+
+import type { FastifyPluginCallback } from 'fastify';
 
 function BodyVal() {
   return z

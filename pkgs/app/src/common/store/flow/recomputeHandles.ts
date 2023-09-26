@@ -1,4 +1,3 @@
-import type { ComputedEdge, ComputedNode, FlowEdge } from '@specfy/models';
 import {
   mapSourceHandle,
   mapSourceHandleReverse,
@@ -6,6 +5,8 @@ import {
   mapTargetHandleReverse,
 } from '@specfy/models/src/flows/constants';
 import { getBestHandlePosition } from '@specfy/models/src/flows/helpers.edges';
+
+import type { ComputedEdge, ComputedNode, FlowEdge } from '@specfy/models';
 
 export function recomputeHandles(
   node: ComputedNode,

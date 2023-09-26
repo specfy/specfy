@@ -1,8 +1,9 @@
-import type { BlockLevelZero } from '@specfy/models';
 import { useMemo } from 'react';
 
-import type { DocumentBlobWithDiff } from '../../../types/blobs';
+import type { BlockLevelZero } from '@specfy/models';
+
 import { ContentDoc, Presentation } from '../../Content';
+import type { DocumentBlobWithDiff } from '@/types/blobs';
 
 import { Split } from './Split';
 import { UnifiedDiff } from './Unified';

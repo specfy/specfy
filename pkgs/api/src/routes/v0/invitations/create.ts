@@ -2,14 +2,16 @@ import { nanoid, l, envs, schemaOrgId, logEvent } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import { sendInvitation } from '@specfy/emails';
 import { getUsage, EXPIRES, getOrgFromRequest, PermType } from '@specfy/models';
-import type { PostInvitation } from '@specfy/models';
-import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
+
+import type { PostInvitation } from '@specfy/models';
 
 import { resend } from '../../../common/emails.js';
 import { validationError } from '../../../common/errors.js';
 import { valPermissions } from '../../../common/zod.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
+
+import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 
 function QueryVal(req: FastifyRequest) {
   return z

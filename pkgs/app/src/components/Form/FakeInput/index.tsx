@@ -1,9 +1,10 @@
 import classnames from 'classnames';
 
-import type { InputProps } from '../Input';
 import { Input } from '../Input';
 
 import cls from './index.module.scss';
+
+import type { InputProps } from '../Input';
 
 const H1: React.FC<InputProps> = (args) => {
   return (

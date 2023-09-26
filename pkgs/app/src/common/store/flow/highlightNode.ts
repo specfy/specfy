@@ -1,6 +1,7 @@
 /* eslint-disable import/extensions */
-import type { ComputedEdge, ComputedNode } from '@specfy/models';
 import classNames from 'classnames';
+
+import type { ComputedEdge, ComputedNode } from '@specfy/models';
 
 import cls from '@/components/Flow/index.module.scss';
 

@@ -1,5 +1,6 @@
-import type { ApiUser } from '@specfy/models';
 import classnames from 'classnames';
+
+import type { ApiUser } from '@specfy/models';
 
 import { AvatarAuto } from '../AvatarAuto';
 import { Flex } from '../Flex';

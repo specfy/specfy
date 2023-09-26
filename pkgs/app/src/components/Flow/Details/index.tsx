@@ -1,4 +1,3 @@
-import type { ComputedNode } from '@specfy/models';
 import {
   IconEye,
   IconEyeOff,
@@ -8,17 +7,19 @@ import {
 import { useEffect, useMemo, useState } from 'react';
 import { useReactFlow, useStoreApi } from 'reactflow';
 
-import { Button } from '../../Form/Button';
-import { Tag } from '../../Tag';
-import { PreviewNode } from '../CustomNode';
+import type { ComputedNode } from '@specfy/models';
 
-import type { Relation } from './EdgeRelation';
+import { PreviewNode } from '../CustomNode';
+import { useFlowStore } from '@/common/store';
+import { Flex } from '@/components/Flex';
+import { Button } from '@/components/Form/Button';
+import { Tag } from '@/components/Tag';
+import { TooltipFull } from '@/components/Tooltip';
+
 import { EdgeRelation } from './EdgeRelation';
 import cls from './index.module.scss';
 
-import { useFlowStore } from '@/common/store';
-import { Flex } from '@/components/Flex';
-import { TooltipFull } from '@/components/Tooltip';
+import type { Relation } from './EdgeRelation';
 
 /**
  * TODO: hamburger menu

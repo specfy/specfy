@@ -1,7 +1,6 @@
 import path from 'node:path';
 
 import { dirname, nanoid } from '@specfy/core';
-import type { Orgs, Prisma, Users } from '@specfy/db';
 import { syncFolder } from '@specfy/github-sync';
 import {
   createComponent,
@@ -9,6 +8,8 @@ import {
   createProject,
   getDefaultConfig,
 } from '@specfy/models';
+
+import type { Orgs, Prisma, Users } from '@specfy/db';
 
 export async function createDemo(
   tx: Prisma.TransactionClient,

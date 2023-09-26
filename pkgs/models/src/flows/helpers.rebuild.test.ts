@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/consistent-type-assertions */
-import type { Projects } from '@specfy/db';
 import { describe, expect, it } from 'vitest';
+
+import type { Projects } from '@specfy/db';
 
 import { getBlobComponent } from '../components/test.utils.js';
 

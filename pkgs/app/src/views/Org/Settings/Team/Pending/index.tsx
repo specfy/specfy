@@ -1,25 +1,21 @@
-import type { ApiInvitation } from '@specfy/models';
 import { IconDotsVertical, IconTrash } from '@tabler/icons-react';
 import Skeleton from 'react-loading-skeleton';
 
-import {
-  roleReadable,
-  deleteInvitations,
-  useListInvitations,
-} from '../../../../../api';
-import { isError } from '../../../../../api/helpers';
-import { AvatarAuto } from '../../../../../components/AvatarAuto';
-import { Card } from '../../../../../components/Card';
-import * as Dropdown from '../../../../../components/Dropdown';
-import { Empty } from '../../../../../components/Empty';
-import { Flex } from '../../../../../components/Flex';
-import { Button } from '../../../../../components/Form/Button';
-import { useToast } from '../../../../../hooks/useToast';
-import type { RouteOrg } from '../../../../../types/routes';
+import type { ApiInvitation } from '@specfy/models';
+
+import { roleReadable, deleteInvitations, useListInvitations } from '@/api/';
+import { isError } from '@/api//helpers';
+import { i18n } from '@/common/i18n';
+import { AvatarAuto } from '@/components/AvatarAuto';
+import { Card } from '@/components/Card';
+import * as Dropdown from '@/components/Dropdown';
+import { Empty } from '@/components/Empty';
+import { Flex } from '@/components/Flex';
+import { Button } from '@/components/Form/Button';
+import { useToast } from '@/hooks/useToast';
+import type { RouteOrg } from '@/types/routes';
 
 import cls from './index.module.scss';
-
-import { i18n } from '@/common/i18n';
 
 const Row: React.FC<{
   item: ApiInvitation;

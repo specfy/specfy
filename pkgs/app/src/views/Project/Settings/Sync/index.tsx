@@ -1,29 +1,29 @@
 import * as Form from '@radix-ui/react-form';
-import type { FieldsErrors } from '@specfy/core';
-import type { ApiProject } from '@specfy/models';
 import { IconCirclesRelation } from '@tabler/icons-react';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
-import { linkToGitHubRepo, updateProject } from '../../../../api';
-import { handleErrors, isError } from '../../../../api/helpers';
-import { Banner } from '../../../../components/Banner';
-import { Card } from '../../../../components/Card';
-import { Flex } from '../../../../components/Flex';
-import { Button } from '../../../../components/Form/Button';
-import { Field } from '../../../../components/Form/Field';
-import { GitHubOrgSelect } from '../../../../components/GitHub/OrgSelect';
-import { GitHubRepoSelect } from '../../../../components/GitHub/RepoSelect';
-import { SyncConfiguration } from '../../../../components/Project/SyncConfiguration';
-import { Subdued } from '../../../../components/Text';
-import { useToast } from '../../../../hooks/useToast';
+import type { FieldsErrors } from '@specfy/core';
+import type { ApiProject } from '@specfy/models';
 
-import cls from './index.module.scss';
-
+import { linkToGitHubRepo, updateProject } from '@/api';
+import { handleErrors, isError } from '@/api/helpers';
 import { i18n } from '@/common/i18n';
 import { useOrgStore } from '@/common/store';
 import { titleSuffix } from '@/common/string';
+import { Banner } from '@/components/Banner';
+import { Card } from '@/components/Card';
+import { Flex } from '@/components/Flex';
+import { Button } from '@/components/Form/Button';
+import { Field } from '@/components/Form/Field';
+import { GitHubOrgSelect } from '@/components/GitHub/OrgSelect';
+import { GitHubRepoSelect } from '@/components/GitHub/RepoSelect';
+import { SyncConfiguration } from '@/components/Project/SyncConfiguration';
+import { Subdued } from '@/components/Text';
+import { useToast } from '@/hooks/useToast';
+
+import cls from './index.module.scss';
 
 export const SettingsSync: React.FC<{
   proj: ApiProject;

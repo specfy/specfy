@@ -1,9 +1,9 @@
 import { Authenticator } from '@fastify/passport';
 import fastifySession from '@fastify/secure-session';
 import { envs } from '@specfy/core';
-import type { Users } from '@specfy/db';
 import { prisma } from '@specfy/db';
-import type { FastifyInstance } from 'fastify';
+
+import type { Users } from '@specfy/db';
 
 import { unauthorized } from '../../common/errors.js';
 
@@ -11,6 +11,8 @@ import { registerGitHub } from './github.js';
 import { registerJwt } from './jwt.js';
 import { registerKey } from './key.js';
 import { registerLocal } from './local.js';
+
+import type { FastifyInstance } from 'fastify';
 
 const ALLOW_GUEST = [
   '/*',

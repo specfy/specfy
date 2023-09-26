@@ -1,4 +1,3 @@
-import type { DialogProps } from '@radix-ui/react-dialog';
 import { IconSearch } from '@tabler/icons-react';
 import cn from 'classnames';
 import { Command as CommandPrimitive } from 'cmdk';
@@ -7,6 +6,8 @@ import { forwardRef } from 'react';
 import * as Dialog from '../Dialog';
 
 import cls from './index.module.scss';
+
+import type { DialogProps } from '@radix-ui/react-dialog';
 
 const Command = forwardRef<
   React.ElementRef<typeof CommandPrimitive>,

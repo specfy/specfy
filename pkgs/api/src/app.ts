@@ -11,19 +11,19 @@ import {
   sentry,
 } from '@specfy/core';
 import { initSocket } from '@specfy/socket';
-import type {
-  FastifyInstance,
-  FastifyPluginOptions,
-  FastifyServerOptions,
-} from 'fastify';
 import rawBody from 'fastify-raw-body';
 
 import { TransactionError, notFound, serverError } from './common/errors.js';
 import { AuthError } from './middlewares/auth/errors.js';
 import { registerAuth } from './middlewares/auth/index.js';
 import { routes } from './routes/routes.js';
-
 import './types/auth.js';
+
+import type {
+  FastifyInstance,
+  FastifyPluginOptions,
+  FastifyServerOptions,
+} from 'fastify';
 
 function urlToTag(str: string) {
   return new URL(str, envs.API_HOSTNAME).pathname.replaceAll(':', '_');

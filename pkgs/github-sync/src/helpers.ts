@@ -1,14 +1,16 @@
-import type { Prisma, Projects, Users } from '@specfy/db';
 import {
   createDocument,
   DocumentsParser,
   uploadedDocumentsToDB,
 } from '@specfy/models';
 
+import type { Prisma, Projects, Users } from '@specfy/db';
+
 import { listing } from './listing/index.js';
-import type { ProviderFile } from './provider/base.js';
 import { FSProvider } from './provider/fs.js';
 import { transform } from './transform/index.js';
+
+import type { ProviderFile } from './provider/base.js';
 
 export async function syncFolder(
   folder: string,

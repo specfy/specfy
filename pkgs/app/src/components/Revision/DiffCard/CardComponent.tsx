@@ -1,27 +1,24 @@
-import type { ApiComponent, BlockLevelZero } from '@specfy/models';
 import { IconArrowRight, IconEye, IconEyeOff } from '@tabler/icons-react';
 import classnames from 'classnames';
 import { useMemo } from 'react';
 import { useParams } from 'react-router-dom';
 
-import type {
-  ComponentBlobWithDiff,
-  DiffObjectsArray,
-} from '../../../types/blobs';
-import type { RouteProject } from '../../../types/routes';
-import { ComponentIcon } from '../../Component/Icon';
-import { ComponentItem, TechItem } from '../../Component/Line';
+import type { ApiComponent, BlockLevelZero } from '@specfy/models';
+
 import { ContentDoc, Presentation } from '../../Content';
-import { Flex } from '../../Flex';
 import { PreviewNode } from '../../Flow/CustomNode';
+import { original, useRevisionStore, useComponentsStore } from '@/common/store';
+import { supportedIndexed } from '@/common/techs';
+import { ComponentIcon } from '@/components/Component/Icon';
+import { ComponentItem, TechItem } from '@/components/Component/Line';
+import { Flex } from '@/components/Flex';
+import type { ComponentBlobWithDiff, DiffObjectsArray } from '@/types/blobs';
+import type { RouteProject } from '@/types/routes';
 
 import { Split } from './Split';
 import { UnifiedDiff } from './Unified';
 import { UnifiedContent } from './Unified/Content';
 import cls from './index.module.scss';
-
-import { original, useRevisionStore, useComponentsStore } from '@/common/store';
-import { supportedIndexed } from '@/common/techs';
 
 export const DiffCardComponent: React.FC<{
   diff: ComponentBlobWithDiff;

@@ -1,12 +1,12 @@
-import type { BlockLevelZero, Blocks } from '@specfy/models';
 import classnames from 'classnames';
 import { useMemo, useState } from 'react';
 
-import { ContentBlock, Presentation } from '../../../Content';
-
-import cls from './content.module.scss';
+import type { BlockLevelZero, Blocks } from '@specfy/models';
 
 import type { Payload } from '@/common/content';
+import { ContentBlock, Presentation } from '@/components/Content';
+
+import cls from './content.module.scss';
 
 const Unchanged: React.FC<{ children: React.ReactElement[] }> = ({
   children,

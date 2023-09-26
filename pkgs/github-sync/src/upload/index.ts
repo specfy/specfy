@@ -1,5 +1,6 @@
-import type { Logger } from '@specfy/core';
 import { l as defaultLogger } from '@specfy/core';
+
+import type { Logger } from '@specfy/core';
 import type { PostUploadRevision } from '@specfy/models';
 import type { Payload } from '@specfy/stack-analyser';
 

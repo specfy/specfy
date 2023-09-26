@@ -1,14 +1,14 @@
-import type { ApiDocument, BlockDocument, BlockStep } from '@specfy/models';
 import { IconCaretDown, IconCaretRight } from '@tabler/icons-react';
 import classnames from 'classnames';
 import { useEffect, useRef, useState } from 'react';
 
+import type { ApiDocument, BlockDocument, BlockStep } from '@specfy/models';
+
 import { ContentBlockDocument } from '../BlockDocument';
-
-import cls from './index.module.scss';
-
 import type { Payload } from '@/common/content';
 import { map } from '@/common/content';
+
+import cls from './index.module.scss';
 
 export const ContentBlockStep: React.FC<{ block: BlockStep; pl: Payload }> = ({
   block,

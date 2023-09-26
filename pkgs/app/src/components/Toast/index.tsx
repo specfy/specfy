@@ -18,13 +18,14 @@ import {
   useState,
 } from 'react';
 import { Link } from 'react-router-dom';
-import type { RequireAtLeastOne } from 'type-fest';
 
 import { Flex } from '../Flex';
 import { Button } from '../Form/Button';
 import { Loading } from '../Loading';
 
 import cls from './index.module.scss';
+
+import type { RequireAtLeastOne } from 'type-fest';
 
 export type ToastProps = {
   message?: string;

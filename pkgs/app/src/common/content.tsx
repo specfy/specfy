@@ -1,7 +1,8 @@
 import { nanoid } from '@specfy/core/src/id';
+
 import type { BlocksWithContent, BlockLevelZero } from '@specfy/models';
 
-import { ContentBlock } from '../components/Content';
+import { ContentBlock } from '@/components/Content';
 
 export interface Payload {
   displayed: string[];

@@ -1,14 +1,15 @@
 import fs from 'node:fs/promises';
 import { setTimeout } from 'node:timers/promises';
 
-import type { Logger } from '@specfy/core';
 import { createFileLogger, metrics, nanoid, sentry } from '@specfy/core';
 import { prisma } from '@specfy/db';
+import { toApiProject, jobReason, toApiJobList } from '@specfy/models';
+import { io } from '@specfy/socket';
+
+import type { Logger } from '@specfy/core';
 import type { Jobs } from '@specfy/db';
 import type { JobMark, JobWithOrgProject } from '@specfy/models';
-import { toApiProject, jobReason, toApiJobList } from '@specfy/models';
 import type { EventJob } from '@specfy/socket';
-import { io } from '@specfy/socket';
 
 export abstract class Job {
   l: Logger;

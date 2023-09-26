@@ -3,25 +3,20 @@ import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import { useSearchParam } from 'react-use';
 
-import {
-  acceptInvitations,
-  declineInvitations,
-  useGetInvitation,
-} from '../../api';
-import { isError } from '../../api/helpers';
-import { i18n } from '../../common/i18n';
-import { titleSuffix } from '../../common/string';
-import { AvatarAuto } from '../../components/AvatarAuto';
-import { Card } from '../../components/Card';
-import { Flex } from '../../components/Flex';
-import { Button } from '../../components/Form/Button';
-import { NotFound } from '../../components/NotFound';
-import { useAuth } from '../../hooks/useAuth';
-import { useToast } from '../../hooks/useToast';
+import { acceptInvitations, declineInvitations, useGetInvitation } from '@/api';
+import { isError } from '@/api/helpers';
+import { i18n } from '@/common/i18n';
+import { titleSuffix } from '@/common/string';
+import { AvatarAuto } from '@/components/AvatarAuto';
+import { Card } from '@/components/Card';
+import { Flex } from '@/components/Flex';
+import { Button } from '@/components/Form/Button';
+import { NotFound } from '@/components/NotFound';
+import { Header } from '@/components/Sidebar/Header';
+import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/useToast';
 
 import cls from './index.module.scss';
-
-import { Header } from '@/components/Sidebar/Header';
 
 const Invite: React.FC = () => {
   const toast = useToast();

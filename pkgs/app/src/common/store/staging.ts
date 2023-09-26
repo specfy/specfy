@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 
-import type { BlobAndDiffs } from '../../types/blobs';
+import type { BlobAndDiffs } from '@/types/blobs';
 
 interface StagingState {
   count: number;

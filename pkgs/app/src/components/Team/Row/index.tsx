@@ -1,19 +1,19 @@
-import type { ApiPerm, ApiUser } from '@specfy/models';
 import { IconCheck, IconPlus, IconTrash } from '@tabler/icons-react';
 import { useState } from 'react';
 
-import { removePerm, updatePerm } from '../../../api';
-import { isError } from '../../../api/helpers';
-import { AvatarAuto } from '../../../components/AvatarAuto';
-import { useToast } from '../../../hooks/useToast';
-import { Button } from '../../Form/Button';
-import { SelectFull } from '../../Form/Select';
-import { Loading } from '../../Loading';
+import type { ApiPerm, ApiUser } from '@specfy/models';
 
-import cls from './index.module.scss';
-
+import { removePerm, updatePerm } from '@/api';
+import { isError } from '@/api/helpers';
 import { i18n } from '@/common/i18n';
 import { selectPerms } from '@/common/perms';
+import { AvatarAuto } from '@/components/AvatarAuto';
+import { Button } from '@/components/Form/Button';
+import { SelectFull } from '@/components/Form/Select';
+import { Loading } from '@/components/Loading';
+import { useToast } from '@/hooks/useToast';
+
+import cls from './index.module.scss';
 
 interface RowProps {
   params: { org_id: string; project_id?: string };

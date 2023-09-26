@@ -1,16 +1,16 @@
-import type { ApiDocument, ApiProject } from '@specfy/models';
 import { useEffect, useMemo, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { useParams } from 'react-router-dom';
 
-import { useGetDocument } from '../../../../api';
-import { Flex } from '../../../../components/Flex';
-import { NotFound } from '../../../../components/NotFound';
-import type { RouteDocument } from '../../../../types/routes';
+import type { ApiDocument, ApiProject } from '@specfy/models';
+
+import { useGetDocument } from '@/api';
+import { useDocumentsStore } from '@/common/store';
+import { Flex } from '@/components/Flex';
+import { NotFound } from '@/components/NotFound';
+import type { RouteDocument } from '@/types/routes';
 
 import cls from './index.module.scss';
-
-import { useDocumentsStore } from '@/common/store';
 
 export const DocumentShow: React.FC<{
   proj: ApiProject;

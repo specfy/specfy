@@ -1,11 +1,12 @@
 import path from 'node:path';
 
 import { dirname, envs, l } from '@specfy/core';
-import type { Orgs, Users } from '@specfy/db';
 import { prisma } from '@specfy/db';
 import { sync } from '@specfy/github-sync';
 import { createProject } from '@specfy/models';
 import { getBlobProject } from '@specfy/models/src/projects/test.utils.js';
+
+import type { Orgs, Users } from '@specfy/db';
 
 export async function seedE2E({ o1 }: { o1: Orgs }, users: Users[]) {
   const pE2E = await createProject({

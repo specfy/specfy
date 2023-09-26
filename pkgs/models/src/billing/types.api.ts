@@ -1,4 +1,5 @@
 import type { ApiError, Res } from '@specfy/core';
+
 import type Stripe from 'stripe';
 
 export type ErrorNoCustomerId = ApiError<'missing_customer_id'>;

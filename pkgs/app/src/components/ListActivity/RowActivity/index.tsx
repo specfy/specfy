@@ -1,14 +1,14 @@
-import type { ApiActivityGrouped, ApiMe } from '@specfy/models';
 import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 
-import { AvatarAuto } from '../../AvatarAuto';
-import { Time } from '../../Time';
-
-import cls from './index.module.scss';
+import type { ApiActivityGrouped, ApiMe } from '@specfy/models';
 
 import { mapActivites } from '@/common/activity';
 import type { ActivityContext } from '@/common/activity';
+import { AvatarAuto } from '@/components/AvatarAuto';
+import { Time } from '@/components/Time';
+
+import cls from './index.module.scss';
 
 export const RowActivity: React.FC<{
   me: ApiMe['id'];

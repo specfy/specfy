@@ -1,7 +1,8 @@
 import * as Avatar from '@radix-ui/react-avatar';
 import { acronymize, stringToColor } from '@specfy/core/src/avatar';
-import type { ApiOrgPublic, ApiUser } from '@specfy/models';
 import classNames from 'classnames';
+
+import type { ApiOrgPublic, ApiUser } from '@specfy/models';
 
 import cls from './index.module.scss';
 

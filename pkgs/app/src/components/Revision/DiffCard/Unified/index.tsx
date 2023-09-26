@@ -1,9 +1,10 @@
 import classnames from 'classnames';
-import type { Change } from 'diff';
 import { useMemo } from 'react';
 
-import type { ComputedForDiff } from '../../../../types/blobs';
 import cls from '../index.module.scss';
+import type { ComputedForDiff } from '@/types/blobs';
+
+import type { Change } from 'diff';
 
 export const UnifiedDiff: React.FC<{
   diff: ComputedForDiff;

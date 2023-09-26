@@ -3,6 +3,7 @@ import path from 'node:path';
 import { describe, expect, it } from 'vitest';
 
 import { FSProvider, listing } from '../index.js';
+
 import type { ProviderFile } from '../provider/base.js';
 
 describe('listing', () => {

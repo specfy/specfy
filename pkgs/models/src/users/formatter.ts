@@ -1,6 +1,7 @@
 import type { Perms, Users } from '@specfy/db';
 
 import { getJwtToken } from './model.js';
+
 import type { ApiUser, ApiUserPublic } from './types.api.js';
 import type { ApiMe } from './types.api.me.js';
 

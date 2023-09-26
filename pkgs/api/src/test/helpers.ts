@@ -1,11 +1,11 @@
-import type { Dispatcher } from 'undici';
 import { expect } from 'vitest';
 
-import type { API, APIPaths } from '../types/api/endpoints.js';
-
 import { isError, isValidationError } from './fetch.js';
-import type { ApiClient } from './fetch.js';
 import { seedSimpleUser } from './seed/seed.js';
+
+import type { ApiClient } from './fetch.js';
+import type { API, APIPaths } from '../types/api/endpoints.js';
+import type { Dispatcher } from 'undici';
 
 export async function shouldBeProtected(
   res: Dispatcher.ResponseData & { json: any }

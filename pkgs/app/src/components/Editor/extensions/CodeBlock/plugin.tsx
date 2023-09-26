@@ -2,8 +2,9 @@ import { mergeAttributes, Node, textblockTypeInputRule } from '@tiptap/core';
 import { Plugin, PluginKey, TextSelection } from '@tiptap/pm/state';
 import { ReactNodeViewRenderer } from '@tiptap/react';
 
-import type { displayMap } from './View';
 import { CodeBlockView } from './View';
+
+import type { displayMap } from './View';
 
 export interface CodeBlockOptions {
   /**

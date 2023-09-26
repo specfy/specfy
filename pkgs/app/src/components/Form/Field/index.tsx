@@ -1,7 +1,7 @@
 import * as Form from '@radix-ui/react-form';
 import classNames from 'classnames';
 
-import { Flex } from '../../Flex';
+import { Flex } from '@/components/Flex';
 
 import cls from './index.module.scss';
 

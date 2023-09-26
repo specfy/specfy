@@ -3,8 +3,9 @@ import path from 'node:path';
 import { dirname, type Logger } from '@specfy/core';
 import { describe, expect, it } from 'vitest';
 
-import type { SyncOptions } from './sync.js';
 import { ErrorSync, sync } from './sync.js';
+
+import type { SyncOptions } from './sync.js';
 
 function getLogger() {
   const msgs: Array<Array<string | object>> = [];

@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 
-import cls from './index.module.scss';
-
 import { useGlobal } from '@/common/store/global';
+
+import cls from './index.module.scss';
 
 export const Group: React.FC<{
   children: React.ReactNode;

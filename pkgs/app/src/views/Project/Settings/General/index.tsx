@@ -1,29 +1,29 @@
 import * as Form from '@radix-ui/react-form';
-import type { FieldsErrors } from '@specfy/core';
-import type { ApiProject } from '@specfy/models';
 import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 
-import { deleteProject, updateProject } from '../../../../api';
-import { handleErrors, isError } from '../../../../api/helpers';
-import { useListKeys } from '../../../../api/keys';
-import { CopyButton } from '../../../../components/Button/Copy';
-import { Card } from '../../../../components/Card';
-import * as Dialog from '../../../../components/Dialog';
-import { Flex } from '../../../../components/Flex';
-import { Button } from '../../../../components/Form/Button';
-import { Field } from '../../../../components/Form/Field';
-import { Input } from '../../../../components/Form/Input';
-import { Subdued } from '../../../../components/Text';
-import { useAuth } from '../../../../hooks/useAuth';
-import { useToast } from '../../../../hooks/useToast';
-import type { RouteProject } from '../../../../types/routes';
+import type { FieldsErrors } from '@specfy/core';
+import type { ApiProject } from '@specfy/models';
 
-import cls from './index.module.scss';
-
+import { deleteProject, updateProject } from '@/api';
+import { handleErrors, isError } from '@/api/helpers';
+import { useListKeys } from '@/api/keys';
 import { API_HOSTNAME, IS_PROD } from '@/common/envs';
 import { slugify, titleSuffix } from '@/common/string';
+import { CopyButton } from '@/components/Button/Copy';
+import { Card } from '@/components/Card';
+import * as Dialog from '@/components/Dialog';
+import { Flex } from '@/components/Flex';
+import { Button } from '@/components/Form/Button';
+import { Field } from '@/components/Form/Field';
+import { Input } from '@/components/Form/Input';
+import { Subdued } from '@/components/Text';
+import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/useToast';
+import type { RouteProject } from '@/types/routes';
+
+import cls from './index.module.scss';
 
 export const SettingsGeneral: React.FC<{
   proj: ApiProject;

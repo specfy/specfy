@@ -1,11 +1,13 @@
 import { envs } from '@specfy/core';
+
 import type { Documents, Projects } from '@specfy/db';
-import type OpenAI from 'openai';
 
 import { prosemirrorToText } from '../prosemirror/prosemirrorToText.js';
 
 import { componentsToPrompt, documentsToPrompt } from './helpers.js';
+
 import type { ComponentForPrompt } from './types.js';
+import type OpenAI from 'openai';
 
 /**
  * Rewrite the given content

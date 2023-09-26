@@ -1,7 +1,8 @@
 import type { GetFlow } from '@specfy/models';
-import type { FastifyPluginCallback } from 'fastify';
 
 import { getFlow } from '../../../middlewares/getFlow.js';
+
+import type { FastifyPluginCallback } from 'fastify';
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.get<GetFlow>(

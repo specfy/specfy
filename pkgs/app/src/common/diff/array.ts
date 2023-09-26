@@ -1,6 +1,6 @@
 import { diffJson } from 'diff';
 
-import type { DiffObjectsArray } from '../../types/blobs';
+import type { DiffObjectsArray } from '@/types/blobs';
 
 export function diffObjectsArray<T>(
   arrayA: T[],

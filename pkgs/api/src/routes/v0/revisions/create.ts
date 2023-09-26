@@ -6,13 +6,15 @@ import {
   createRevisionActivity,
   schemaRevision,
 } from '@specfy/models';
-import type { PostRevision } from '@specfy/models';
-import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
+
+import type { PostRevision } from '@specfy/models';
 
 import { validationError } from '../../../common/errors.js';
 import { valPermissions } from '../../../common/zod.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
+
+import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 
 function BodyVal(req: FastifyRequest) {
   return z

@@ -1,10 +1,8 @@
+/* eslint-disable import/extensions */
 import fs from 'node:fs/promises';
 import path from 'node:path';
 
-import type { Logger } from '@specfy/core';
 import { l as defaultLogger } from '@specfy/core';
-import type { JobMark } from '@specfy/models';
-import type { Payload } from '@specfy/stack-analyser';
 import {
   flatten,
   analyser,
@@ -13,11 +11,13 @@ import {
 } from '@specfy/stack-analyser';
 import figures from 'figures';
 
+import type { Logger } from '@specfy/core';
+import type { JobMark } from '@specfy/models';
+import type { Payload } from '@specfy/stack-analyser';
+
 import { checkNothingMsg, checkPaths } from './common/helper.js';
 import { listing } from './listing/index.js';
-import type { ProviderFile } from './provider/base.js';
 import { FSProvider } from './provider/fs.js';
-import type { TransformedFile } from './transform/index.js';
 import { transform } from './transform/index.js';
 import {
   closeOldRevisions,
@@ -27,7 +27,10 @@ import {
   upload,
 } from './upload/index.js';
 
-// eslint-disable-next-line import/extensions
+import type { ProviderFile } from './provider/base.js';
+import type { TransformedFile } from './transform/index.js';
+
+// eslint-disable-next-line import/order
 import '@specfy/stack-analyser/dist/rules/index.js';
 rules.loadAll();
 

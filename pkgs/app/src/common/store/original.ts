@@ -1,6 +1,6 @@
 import type { ApiBlobWithPrevious, ApiProject } from '@specfy/models';
 
-import type { Allowed, BlobAndDiffs } from '../../types/blobs';
+import type { Allowed, BlobAndDiffs } from '@/types/blobs';
 
 import { useComponentsStore } from './components';
 import { useDocumentsStore } from './documents';

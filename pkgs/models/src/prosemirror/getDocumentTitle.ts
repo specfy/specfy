@@ -3,6 +3,7 @@ import path from 'node:path';
 import type { Documents } from '@specfy/db';
 
 import { allowListFilename } from './constants.js';
+
 import type { ParsedUpload } from './types.js';
 
 /**

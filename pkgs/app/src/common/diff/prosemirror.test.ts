@@ -1,13 +1,14 @@
+import { Editor } from '@tiptap/react';
+import { describe, expect, it } from 'vitest';
+
 import type {
   BlockLevelOne,
   BlockLevelZero,
   BlockParagraph,
 } from '@specfy/models';
-import { Editor } from '@tiptap/react';
-import { describe, expect, it } from 'vitest';
 
-import { createEditorSchema } from '../../components/Editor/extensions';
 import { getEmptyDoc } from '../content';
+import { createEditorSchema } from '@/components/Editor/extensions';
 
 import { diffEditor, findTextNodes } from './prosemirror';
 

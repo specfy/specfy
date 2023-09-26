@@ -1,18 +1,19 @@
-import type { LoadableComponent } from '@loadable/component';
-import type { DBProjectLink } from '@specfy/models';
 import { IconLink, IconPlus, IconTrash } from '@tabler/icons-react';
 import classnames from 'classnames';
 import { useMemo, useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
 
-import { useEdit } from '../../../hooks/useEdit';
-import { Button } from '../../Form/Button';
-import { Input } from '../../Form/Input';
-
-import cls from './index.module.scss';
+import type { DBProjectLink } from '@specfy/models';
 
 import { useProjectStore } from '@/common/store';
 import { supportedHostname } from '@/common/techs';
+import { Button } from '@/components/Form/Button';
+import { Input } from '@/components/Form/Input';
+import { useEdit } from '@/hooks/useEdit';
+
+import cls from './index.module.scss';
+
+import type { LoadableComponent } from '@loadable/component';
 
 const useIcon = (link: DBProjectLink) => {
   const icon = useMemo<LoadableComponent<any> | undefined>(() => {

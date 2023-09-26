@@ -1,9 +1,10 @@
 import { sep } from 'node:path';
 
-import type { Level, LoggerOptions } from 'pino';
 import { pino } from 'pino';
 
 import { isProd } from './env.js';
+
+import type { Level, LoggerOptions } from 'pino';
 
 // https://cloud.google.com/logging/docs/reference/v2/rest/v2/LogEntry#LogSeverity
 const levelToSeverity: Record<string, string> = {

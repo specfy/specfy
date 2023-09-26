@@ -3,7 +3,6 @@ import { getBlobComponent } from '@specfy/models/src/components/test.utils';
 import { getBlobProject } from '@specfy/models/src/projects/test.utils';
 import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
-import type { TestSetup } from '../../../test/each.js';
 import { setupBeforeAll, setupAfterAll } from '../../../test/each.js';
 import { isSuccess, isValidationError } from '../../../test/fetch.js';
 import {
@@ -15,6 +14,8 @@ import { seedComponent } from '../../../test/seed/components.js';
 import { getBlobDocument } from '../../../test/seed/documents.js';
 import { seedProject } from '../../../test/seed/projects.js';
 import { seedWithOrgViewer, seedWithProject } from '../../../test/seed/seed.js';
+
+import type { TestSetup } from '../../../test/each.js';
 
 let t: TestSetup;
 beforeAll(async () => {

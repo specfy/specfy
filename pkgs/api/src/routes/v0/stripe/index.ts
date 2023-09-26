@@ -1,10 +1,10 @@
-import type { FastifyPluginAsync } from 'fastify';
-
 import cancel from './cancelSubscription.js';
 import createSubscription from './createSubscription.js';
 import getSubscription from './getSubscription.js';
 import usage from './usage.js';
 import webhooks from './webhooks.js';
+
+import type { FastifyPluginAsync } from 'fastify';
 
 const fn: FastifyPluginAsync = async (f) => {
   await f.register(getSubscription, {

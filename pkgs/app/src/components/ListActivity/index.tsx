@@ -1,15 +1,17 @@
-import type { ApiActivity, ApiActivityGrouped } from '@specfy/models';
-import type { Duration } from 'luxon';
 import { DateTime } from 'luxon';
 import { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-import { useListActivities } from '../../api';
-import { useAuth } from '../../hooks/useAuth';
+import type { ApiActivity, ApiActivityGrouped } from '@specfy/models';
+
 import { Flex } from '../Flex';
+import { useListActivities } from '@/api';
+import { useAuth } from '@/hooks/useAuth';
 
 import { RowActivity } from './RowActivity';
 import cls from './index.module.scss';
+
+import type { Duration } from 'luxon';
 
 function diffToGroup(diff: Duration): string {
   const days = diff.as('days');

@@ -1,8 +1,7 @@
 import type { Res } from '@specfy/core';
 
-import type { ApiUser } from '../users/types.api.js';
-
 import type { DBPerm } from './types.js';
+import type { ApiUser } from '../users/types.api.js';
 
 export type ApiPerm = Omit<DBPerm, 'userId'> & { user: ApiUser };
 

@@ -1,7 +1,8 @@
-import type { ApiJob } from '@specfy/models';
 import classNames from 'classnames';
 
-import { Loading } from '../../Loading';
+import type { ApiJob } from '@specfy/models';
+
+import { Loading } from '@/components/Loading';
 
 import cls from './index.module.scss';
 

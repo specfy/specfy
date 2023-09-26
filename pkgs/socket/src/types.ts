@@ -1,5 +1,6 @@
 import type { Users } from '@specfy/db';
 import type { PermsWithOrg, ApiProject, ApiJobList } from '@specfy/models';
+
 import type { Server } from 'socket.io';
 
 export interface PayloadAuth {

@@ -1,3 +1,6 @@
+import { IconGitMerge, IconThumbUp } from '@tabler/icons-react';
+import { Link } from 'react-router-dom';
+
 import type {
   ActionAll,
   ActionComponent,
@@ -11,13 +14,11 @@ import type {
   ActionUser,
   ApiActivity,
 } from '@specfy/models';
-import { IconGitMerge, IconThumbUp } from '@tabler/icons-react';
-import { Link } from 'react-router-dom';
 
-import { AvatarAuto } from '../components/AvatarAuto';
-import { Flex } from '../components/Flex';
-import { ActivityCard } from '../components/ListActivity/Details';
-import { StatusTag } from '../components/Revision/StatusTag';
+import { AvatarAuto } from '@/components/AvatarAuto';
+import { Flex } from '@/components/Flex';
+import { ActivityCard } from '@/components/ListActivity/Details';
+import { StatusTag } from '@/components/Revision/StatusTag';
 
 export type ActivityContext = {
   orgId: string;

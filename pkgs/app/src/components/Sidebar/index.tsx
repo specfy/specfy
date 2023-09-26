@@ -5,11 +5,10 @@ import { Feedback } from '../Feedback';
 import { Flex } from '../Flex';
 import { Button } from '../Form/Button';
 import { Help } from '../Help';
+import { useGlobal } from '@/common/store/global';
 
 import { Header } from './Header';
 import cls from './index.module.scss';
-
-import { useGlobal } from '@/common/store/global';
 
 export * from './Block';
 export * from './Group';

@@ -1,6 +1,7 @@
 import { envs, nanoid } from '@specfy/core';
-import type { Activities, Prisma, Users } from '@specfy/db';
 import JWT from 'jsonwebtoken';
+
+import type { Activities, Prisma, Users } from '@specfy/db';
 
 import type { ActionUser } from '../activities/types.js';
 

@@ -2,10 +2,10 @@ import { nanoid } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import { createComponent, type ApiBlobCreateDocument } from '@specfy/models';
 import { getBlobComponent } from '@specfy/models/src/components/test.utils.js';
-import type { AnalyserJson } from '@specfy/stack-analyser';
 import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
-import type { TestSetup } from '../../../test/each.js';
+import type { AnalyserJson } from '@specfy/stack-analyser';
+
 import { setupBeforeAll, setupAfterAll } from '../../../test/each.js';
 import { isError, isSuccess, isValidationError } from '../../../test/fetch.js';
 import {
@@ -19,6 +19,8 @@ import {
   seedWithOrgViewer,
   seedWithProject,
 } from '../../../test/seed/seed.js';
+
+import type { TestSetup } from '../../../test/each.js';
 
 function getDefaultStack() {
   return {

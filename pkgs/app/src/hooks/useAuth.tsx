@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import type { ApiMe } from '@specfy/models';
 import { useMemo, useState, createContext, useContext } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-import { getMe } from '../api/me';
+import type { ApiMe } from '@specfy/models';
+
+import { getMe } from '@/api/me';
 
 interface CTX {
   orgId?: string;

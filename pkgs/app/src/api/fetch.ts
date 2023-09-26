@@ -1,4 +1,4 @@
-import { API_HOSTNAME } from '../common/envs';
+import { API_HOSTNAME } from '@/common/envs';
 
 export async function fetchApi<
   T extends {

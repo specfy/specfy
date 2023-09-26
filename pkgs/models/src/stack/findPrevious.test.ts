@@ -1,7 +1,8 @@
-import type { Components } from '@specfy/db';
-import type { AnalyserJson } from '@specfy/stack-analyser';
 import { Payload } from '@specfy/stack-analyser';
 import { describe, expect, it } from 'vitest';
+
+import type { Components } from '@specfy/db';
+import type { AnalyserJson } from '@specfy/stack-analyser';
 
 import { getBlobComponent } from '../components/test.utils.js';
 

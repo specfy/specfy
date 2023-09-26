@@ -1,12 +1,13 @@
+import { useQuery } from '@tanstack/react-query';
+
 import type {
   ListGitHubInstallations,
   ListGitHubRepos,
   PostLinkToGitHubOrg,
   PostLinkToGitHubProject,
 } from '@specfy/models';
-import { useQuery } from '@tanstack/react-query';
 
-import { qcli } from '../common/query';
+import { qcli } from '@/common/query';
 
 import { fetchApi } from './fetch';
 import { APIError, isError } from './helpers';

@@ -1,19 +1,20 @@
 /* eslint-disable @typescript-eslint/no-use-before-define */
-import type { ApiProject, DocumentSimple } from '@specfy/models';
 import { IconChevronRight } from '@tabler/icons-react';
-import type { TreeProps } from 'rc-tree';
 import Tree from 'rc-tree';
 import { useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
-import { useListDocuments } from '../../../api';
-import type { RouteProject } from '../../../types/routes';
-import { Loading } from '../../Loading';
-import { Subdued } from '../../Text';
+import type { ApiProject, DocumentSimple } from '@specfy/models';
+
+import { useListDocuments } from '@/api';
+import { useDocumentsStore } from '@/common/store';
+import { Loading } from '@/components/Loading';
+import { Subdued } from '@/components/Text';
+import type { RouteProject } from '@/types/routes';
 
 import cls from './index.module.scss';
 
-import { useDocumentsStore } from '@/common/store';
+import type { TreeProps } from 'rc-tree';
 
 interface Item {
   key: string;

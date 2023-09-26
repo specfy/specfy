@@ -1,6 +1,8 @@
-import type { AiOperationType } from '@specfy/models';
-import type { Table } from 'dexie';
 import Dexie from 'dexie';
+
+import type { AiOperationType } from '@specfy/models';
+
+import type { Table } from 'dexie';
 
 export interface AICompletion {
   id?: number;

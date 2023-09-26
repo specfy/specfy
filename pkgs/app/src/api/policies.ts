@@ -1,5 +1,6 @@
-import type { ListPolicies } from '@specfy/models';
 import { useQuery } from '@tanstack/react-query';
+
+import type { ListPolicies } from '@specfy/models';
 
 import { fetchApi } from './fetch';
 import { APIError, isError } from './helpers';

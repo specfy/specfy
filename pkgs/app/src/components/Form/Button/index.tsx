@@ -2,7 +2,7 @@ import { Slot } from '@radix-ui/react-slot';
 import cn from 'classnames';
 import { forwardRef } from 'react';
 
-import { Loading } from '../../Loading';
+import { Loading } from '@/components/Loading';
 
 import cls from './index.module.scss';
 

@@ -4,9 +4,9 @@ import {
   schemaProject,
   toApiProject,
 } from '@specfy/models';
-import type { GetProjectBySlug } from '@specfy/models';
-import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
+
+import type { GetProjectBySlug } from '@specfy/models';
 
 import {
   forbidden,
@@ -14,6 +14,8 @@ import {
   validationError,
 } from '../../../common/errors.js';
 import { valPermissions } from '../../../common/zod.js';
+
+import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 
 function QueryVal(req: FastifyRequest) {
   return z

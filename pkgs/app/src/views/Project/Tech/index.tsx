@@ -1,27 +1,27 @@
-import type { ApiComponent, ApiProject } from '@specfy/models';
 import { componentsToFlow } from '@specfy/models/src/flows/transform';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useParams } from 'react-router-dom';
 
-import { ComponentIcon } from '../../../components/Component/Icon';
-import { ComponentLine } from '../../../components/Component/Line';
-import { Container, ContainerChild } from '../../../components/Container';
-import { Flex } from '../../../components/Flex';
-import { Toolbar } from '../../../components/Flow/Toolbar';
-import { FlowWrapper } from '../../../components/Flow/Wrapper';
-import { Loading } from '../../../components/Loading';
-import { NotFound } from '../../../components/NotFound';
-import { Tag } from '../../../components/Tag';
-import type { RouteProject, RouteTech } from '../../../types/routes';
-
-import cls from './index.module.scss';
+import type { ApiComponent, ApiProject } from '@specfy/models';
 
 import { useComponentsStore, useFlowStore } from '@/common/store';
 import { titleSuffix } from '@/common/string';
 import { supportedIndexed } from '@/common/techs';
 import type { TechInfo } from '@/common/techs';
+import { ComponentIcon } from '@/components/Component/Icon';
+import { ComponentLine } from '@/components/Component/Line';
+import { Container, ContainerChild } from '@/components/Container';
+import { Flex } from '@/components/Flex';
 import { FlowOrg } from '@/components/Flow/FlowOrg';
+import { Toolbar } from '@/components/Flow/Toolbar';
+import { FlowWrapper } from '@/components/Flow/Wrapper';
+import { Loading } from '@/components/Loading';
+import { NotFound } from '@/components/NotFound';
+import { Tag } from '@/components/Tag';
+import type { RouteProject, RouteTech } from '@/types/routes';
+
+import cls from './index.module.scss';
 
 export const Tech: React.FC<{
   proj: ApiProject;

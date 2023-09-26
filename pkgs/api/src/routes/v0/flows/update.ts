@@ -4,12 +4,14 @@ import {
   schemaFlowUpdate,
   checkInheritedPermissions,
 } from '@specfy/models';
-import type { PatchFlow } from '@specfy/models';
-import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
+
+import type { PatchFlow } from '@specfy/models';
 
 import { forbidden, validationError } from '../../../common/errors.js';
 import { getFlow } from '../../../middlewares/getFlow.js';
+
+import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 
 function BodyVal(req: FastifyRequest) {
   const flow = req.flow!;

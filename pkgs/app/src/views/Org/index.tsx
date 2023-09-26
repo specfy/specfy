@@ -1,20 +1,21 @@
-import type { ApiOrg } from '@specfy/models';
 import { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Skeleton from 'react-loading-skeleton';
 import { Route, Routes, useParams } from 'react-router-dom';
 import { useLocalStorage } from 'react-use';
 
-import { useListOrgs } from '../../api';
-import { useOrgStore } from '../../common/store';
-import { titleSuffix } from '../../common/string';
-import { Container } from '../../components/Container';
-import { NotFound } from '../../components/NotFound';
-import { OrgMenu, OrgSwitcher } from '../../components/Org/Header';
-import * as Sidebar from '../../components/Sidebar';
-import { useAuth } from '../../hooks/useAuth';
-import type { RouteOrg } from '../../types/routes';
+import type { ApiOrg } from '@specfy/models';
+
 import { ProjectCreate } from '../Project/Create';
+import { useListOrgs } from '@/api';
+import { useOrgStore } from '@/common/store';
+import { titleSuffix } from '@/common/string';
+import { Container } from '@/components/Container';
+import { NotFound } from '@/components/NotFound';
+import { OrgMenu, OrgSwitcher } from '@/components/Org/Header';
+import * as Sidebar from '@/components/Sidebar';
+import { useAuth } from '@/hooks/useAuth';
+import type { RouteOrg } from '@/types/routes';
 
 import { OrgActivity } from './Activity';
 import { OrgContent } from './Content';

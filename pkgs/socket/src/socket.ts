@@ -1,5 +1,3 @@
-import type http from 'node:http';
-
 import { nanoid, envs } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import { checkInheritedPermissions } from '@specfy/models';
@@ -7,6 +5,7 @@ import JWT from 'jsonwebtoken';
 import { Server } from 'socket.io';
 
 import type { PayloadAuth, SocketServer } from './types.js';
+import type http from 'node:http';
 
 export let io: SocketServer;
 

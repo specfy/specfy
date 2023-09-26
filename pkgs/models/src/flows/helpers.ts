@@ -1,7 +1,7 @@
-import type { ApiComponent } from '../components';
-
 import { hDef, hDefHost, wDef, wDefHost, wMax } from './constants.js';
+
 import type { ComputedFlow } from './types.js';
+import type { ApiComponent } from '../components';
 
 // Compute global bounding box
 // Do not cache unless you don't plan to add things to the Flow

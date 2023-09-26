@@ -1,18 +1,18 @@
 import { IconWand, IconRefresh, IconSparkles } from '@tabler/icons-react';
-import type { Editor } from '@tiptap/react';
 import { generateJSON } from '@tiptap/react';
 import classNames from 'classnames';
-import type React from 'react';
 import { useState, useCallback, useEffect } from 'react';
 
-import { aiOperation, aiStream } from '../../../api/ai';
-import { useAuth } from '../../../hooks/useAuth';
-import { useToast } from '../../../hooks/useToast';
-import * as Dropdown from '../../Dropdown';
-import { Button } from '../../Form/Button';
-import { TooltipFull } from '../../Tooltip';
-
+import { aiOperation, aiStream } from '@/api/ai';
 import { i18n } from '@/common/i18n';
+import * as Dropdown from '@/components/Dropdown';
+import { Button } from '@/components/Form/Button';
+import { TooltipFull } from '@/components/Tooltip';
+import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/useToast';
+
+import type { Editor } from '@tiptap/react';
+import type React from 'react';
 
 // import cls from './index.module.scss';
 

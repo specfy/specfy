@@ -1,9 +1,7 @@
 import { nanoid } from '@specfy/core/src/id';
-import type { ComputedNode } from '@specfy/models';
 import { getComponentSize } from '@specfy/models/src/flows/helpers';
 import classNames from 'classnames';
 import { useCallback, useRef, useState } from 'react';
-import type { NodeTypes, ReactFlowInstance, ReactFlowProps } from 'reactflow';
 import {
   Background,
   BackgroundVariant,
@@ -14,10 +12,14 @@ import {
   useStoreApi,
 } from 'reactflow';
 
+import type { ComputedNode } from '@specfy/models';
+
+import { useFlowStore } from '@/common/store';
+
 import CustomNode from './CustomNode';
 import cls from './index.module.scss';
 
-import { useFlowStore } from '@/common/store';
+import type { NodeTypes, ReactFlowInstance, ReactFlowProps } from 'reactflow';
 
 const nodeTypes: NodeTypes = { custom: CustomNode };
 

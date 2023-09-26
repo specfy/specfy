@@ -1,5 +1,6 @@
-import type { ServerEvents } from '@specfy/socket';
 import { useEffect } from 'react';
+
+import type { ServerEvents } from '@specfy/socket';
 
 export type Names = keyof Events;
 export type Events = {

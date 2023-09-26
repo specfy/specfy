@@ -1,8 +1,9 @@
-import type { NodeViewProps } from '@tiptap/react';
 import { NodeViewContent, NodeViewWrapper } from '@tiptap/react';
 import classnames from 'classnames';
 
 import cls from '../../../Content/BlockVoteItem/index.module.scss';
+
+import type { NodeViewProps } from '@tiptap/react';
 
 export const VoteItemView: React.FC<NodeViewProps> = ({ node }) => {
   return (

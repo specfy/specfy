@@ -1,4 +1,5 @@
 import { nanoid } from '@specfy/core';
+
 import type { Policies, Users, Prisma, Activities } from '@specfy/db';
 
 import type { ActionPolicy } from '../activities/types.js';

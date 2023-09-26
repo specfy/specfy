@@ -14,6 +14,7 @@ import {
   Tailwind,
   Text,
 } from '@react-email/components';
+
 import type { Orgs, Users } from '@specfy/db';
 
 import { APP_HOSTNAME } from '../env.js';

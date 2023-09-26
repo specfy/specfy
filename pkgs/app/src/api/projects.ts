@@ -1,3 +1,5 @@
+import { useQuery } from '@tanstack/react-query';
+
 import type {
   DeleteProject,
   GetProject,
@@ -6,10 +8,9 @@ import type {
   PostProject,
   PutProject,
 } from '@specfy/models';
-import { useQuery } from '@tanstack/react-query';
 
-import { qcli } from '../common/query';
-import { original } from '../common/store';
+import { qcli } from '@/common/query';
+import { original } from '@/common/store';
 
 import { fetchApi } from './fetch';
 import { APIError, isError } from './helpers';

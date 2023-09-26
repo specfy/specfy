@@ -11,6 +11,7 @@ import type {
   IGNORED_DOCUMENT_KEYS_CONST,
   IGNORED_PROJECT_KEYS_CONST,
 } from '@specfy/models';
+
 import type { Change } from 'diff';
 
 export type Allowed = ApiComponent | ApiDocument | ApiProject;

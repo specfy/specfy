@@ -1,7 +1,8 @@
-import type { ApiMe } from '@specfy/models';
 import { createContext, useEffect, useMemo } from 'react';
 
-import { socket } from '../common/socket';
+import type { ApiMe } from '@specfy/models';
+
+import { socket } from '@/common/socket';
 
 import { publish } from './useEventBus';
 

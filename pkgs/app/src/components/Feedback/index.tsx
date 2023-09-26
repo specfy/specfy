@@ -2,14 +2,14 @@ import { Form } from '@radix-ui/react-form';
 import { IconMessageReport } from '@tabler/icons-react';
 import { useState } from 'react';
 
-import { createFeedback } from '../../api';
-import { useAuth } from '../../hooks/useAuth';
-import { useToast } from '../../hooks/useToast';
 import { Flex } from '../Flex';
 import { Button } from '../Form/Button';
 import { Field } from '../Form/Field';
 import { Textarea } from '../Form/TextArea';
 import * as Popover from '../Popover';
+import { createFeedback } from '@/api';
+import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/useToast';
 
 import cls from './index.module.scss';
 

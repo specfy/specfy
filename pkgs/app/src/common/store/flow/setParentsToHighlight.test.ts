@@ -3,9 +3,9 @@ import { getBlobComponent } from '@specfy/models/src/components/test.utils';
 import { createNode } from '@specfy/models/src/flows/transform';
 import { describe, expect, it } from 'vitest';
 
-import { setParentsToHighlight } from './setParentsToHighlight';
-
 import cls from '@/components/Flow/index.module.scss';
+
+import { setParentsToHighlight } from './setParentsToHighlight';
 
 describe('setParentsToHighlight', () => {
   it('should highlight host', () => {

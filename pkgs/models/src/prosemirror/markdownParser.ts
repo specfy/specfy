@@ -1,8 +1,9 @@
 import path from 'node:path';
 
 import { nanoid, titleCase } from '@specfy/core';
-import type { Projects } from '@specfy/db';
 import { defaultMarkdownParser } from 'prosemirror-markdown';
+
+import type { Projects } from '@specfy/db';
 
 import {
   hashDocument,
@@ -10,7 +11,6 @@ import {
   type BlockText,
   type Blocks,
 } from '../documents/index.js';
-import type { PostUploadRevision, UploadBlob } from '../revisions/types.api.js';
 
 import {
   attrName,
@@ -18,7 +18,9 @@ import {
   mapMarkType,
   mdExtension,
 } from './constants.js';
+
 import type { ParsedUpload } from './types.js';
+import type { PostUploadRevision, UploadBlob } from '../revisions/types.api.js';
 
 export class DocumentsParser {
   blobs;

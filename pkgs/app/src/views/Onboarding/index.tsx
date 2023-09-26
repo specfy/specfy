@@ -2,16 +2,15 @@ import { IconSquareRoundedPlus } from '@tabler/icons-react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
-import { titleSuffix } from '../../common/string';
-import { Card } from '../../components/Card';
-import { ContainerChild } from '../../components/Container';
-import { Flex } from '../../components/Flex';
-import { Button } from '../../components/Form/Button';
-import { Header } from '../../components/Sidebar/Header';
+import { titleSuffix } from '@/common/string';
+import { Card } from '@/components/Card';
+import { ContainerChild } from '@/components/Container';
+import { Flex } from '@/components/Flex';
+import { Button } from '@/components/Form/Button';
+import { TryDemo } from '@/components/Onboarding/TryDemo';
+import { Header } from '@/components/Sidebar/Header';
 
 import cls from './index.module.scss';
-
-import { TryDemo } from '@/components/Onboarding/TryDemo';
 
 const Onboarding: React.FC = () => {
   return (

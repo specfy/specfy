@@ -1,29 +1,29 @@
-import type { ApiOrg, PatchFlow } from '@specfy/models';
 import { IconCheck, IconX } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useLocalStorage } from 'react-use';
 import { useReactFlow } from 'reactflow';
 
-import { updateFlow, useGetFlow } from '../../../api';
-import { isError } from '../../../api/helpers';
-import { FlowDetails } from '../../../components/Flow/Details';
-import { Toolbar } from '../../../components/Flow/Toolbar';
-import { FlowWrapper } from '../../../components/Flow/Wrapper';
-import { Button } from '../../../components/Form/Button';
-import { Loading } from '../../../components/Loading';
-import { useAuth } from '../../../hooks/useAuth';
-import { useToast } from '../../../hooks/useToast';
-import type { RouteOrg } from '../../../types/routes';
+import type { ApiOrg, PatchFlow } from '@specfy/models';
 
-import cls from './index.module.scss';
-
+import { updateFlow, useGetFlow } from '@/api';
+import { isError } from '@/api/helpers';
 import { i18n } from '@/common/i18n';
 import { useFlowStore } from '@/common/store/flow';
 import { titleSuffix } from '@/common/string';
 import { Banner } from '@/components/Banner';
 import { Feedback } from '@/components/Feedback';
+import { FlowDetails } from '@/components/Flow/Details';
 import { FlowOrg } from '@/components/Flow/FlowOrg';
+import { Toolbar } from '@/components/Flow/Toolbar';
+import { FlowWrapper } from '@/components/Flow/Wrapper';
+import { Button } from '@/components/Form/Button';
+import { Loading } from '@/components/Loading';
+import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/useToast';
+import type { RouteOrg } from '@/types/routes';
+
+import cls from './index.module.scss';
 
 export const OrgFlow: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   org,

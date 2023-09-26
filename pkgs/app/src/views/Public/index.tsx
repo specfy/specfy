@@ -1,6 +1,7 @@
-import type { ComputedFlow } from '@specfy/models';
 import { useEffect } from 'react';
 import { Helmet } from 'react-helmet-async';
+
+import type { ComputedFlow } from '@specfy/models';
 
 import { useFlowStore } from '@/common/store';
 import { titleSuffix } from '@/common/string';

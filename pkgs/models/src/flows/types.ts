@@ -1,6 +1,5 @@
-import type { Edge, Node } from 'reactflow';
-
 import type { ApiComponent } from '../components';
+import type { Edge, Node } from 'reactflow';
 
 export interface LayoutNode {
   id: string;

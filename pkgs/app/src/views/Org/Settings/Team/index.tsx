@@ -1,21 +1,21 @@
 import * as Tabs from '@radix-ui/react-tabs';
-import type { ApiOrg } from '@specfy/models';
 import { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
-import { Banner } from '../../../../components/Banner';
-import { Container } from '../../../../components/Container';
-import { Flex } from '../../../../components/Flex';
-import { TeamInvite } from '../../../../components/Team/Invite';
-import { Subdued } from '../../../../components/Text';
-import { useAuth } from '../../../../hooks/useAuth';
-import type { RouteOrg } from '../../../../types/routes';
+import type { ApiOrg } from '@specfy/models';
+
+import { titleSuffix } from '@/common/string';
+import { Banner } from '@/components/Banner';
+import { Container } from '@/components/Container';
+import { Flex } from '@/components/Flex';
+import { TeamInvite } from '@/components/Team/Invite';
+import { Subdued } from '@/components/Text';
+import { useAuth } from '@/hooks/useAuth';
+import type { RouteOrg } from '@/types/routes';
 
 import { SettingsTeamList } from './List';
 import { SettingsTeamPending } from './Pending';
 import cls from './index.module.scss';
-
-import { titleSuffix } from '@/common/string';
 
 export const SettingsTeam: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   org,

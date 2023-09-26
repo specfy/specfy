@@ -1,3 +1,8 @@
+import { createPatch, diffChars } from 'diff';
+import { diff_match_patch } from 'diff-match-patch';
+import jsonDiff from 'json-diff';
+import { parseDiff } from 'react-diff-view';
+
 import type {
   BlockHardBreak,
   BlockLevelZero,
@@ -9,14 +14,11 @@ import type {
   MarkDiff,
   Marks,
 } from '@specfy/models';
-import type { Mark } from '@tiptap/pm/model';
-import { createPatch, diffChars } from 'diff';
-import { diff_match_patch } from 'diff-match-patch';
-import jsonDiff from 'json-diff';
-import type { Schema } from 'prosemirror-model';
-import { parseDiff } from 'react-diff-view';
 
 import { getEmptyDoc } from '../content';
+
+import type { Mark } from '@tiptap/pm/model';
+import type { Schema } from 'prosemirror-model';
 
 // Inspired from
 // https://github.com/hamflx/prosemirror-diff/blob/master/src/DiffType.js

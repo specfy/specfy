@@ -3,21 +3,20 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { ReactMarkdown } from 'react-markdown/lib/react-markdown';
 import { Link, useParams } from 'react-router-dom';
 
-import { aiOperation, aiStream } from '../../../../api/ai';
-import { CopyButton } from '../../../../components/Button/Copy';
-import { Presentation } from '../../../../components/Content';
-import { Flex } from '../../../../components/Flex';
-import { Button } from '../../../../components/Form/Button';
-import { Loading } from '../../../../components/Loading';
-import { Subdued } from '../../../../components/Text';
-import { useToast } from '../../../../hooks/useToast';
-
-import cls from './index.module.scss';
-
+import { aiOperation, aiStream } from '@/api/ai';
 import { db } from '@/common/db';
 import type { AICompletion } from '@/common/db';
 import { i18n } from '@/common/i18n';
 import { useProjectStore } from '@/common/store';
+import { CopyButton } from '@/components/Button/Copy';
+import { Presentation } from '@/components/Content';
+import { Flex } from '@/components/Flex';
+import { Button } from '@/components/Form/Button';
+import { Loading } from '@/components/Loading';
+import { Subdued } from '@/components/Text';
+import { useToast } from '@/hooks/useToast';
+
+import cls from './index.module.scss';
 
 export const ProjectAssistantShow: React.FC = () => {
   const toast = useToast();

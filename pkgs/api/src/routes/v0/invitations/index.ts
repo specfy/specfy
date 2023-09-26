@@ -1,11 +1,11 @@
-import type { FastifyPluginAsync } from 'fastify';
-
 import accept from './accept.js';
 import create from './create.js';
 import decline from './decline.js';
 import get from './get.js';
 import list from './list.js';
 import remove from './remove.js';
+
+import type { FastifyPluginAsync } from 'fastify';
 
 const fn: FastifyPluginAsync = async (f) => {
   await f.register(create, { prefix: '/invitations' });

@@ -3,21 +3,20 @@ import { useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 
-import { deleteMe, updateMe } from '../../../api';
-import { isError } from '../../../api/helpers';
-import { Card } from '../../../components/Card';
-import * as Dialog from '../../../components/Dialog';
-import { Button } from '../../../components/Form/Button';
-import { Field } from '../../../components/Form/Field';
-import { Input } from '../../../components/Form/Input';
-import { Subdued } from '../../../components/Text';
-import { useAuth } from '../../../hooks/useAuth';
-import { useToast } from '../../../hooks/useToast';
-
-import cls from './index.module.scss';
-
+import { deleteMe, updateMe } from '@/api';
+import { isError } from '@/api/helpers';
 import { i18n } from '@/common/i18n';
 import { titleSuffix } from '@/common/string';
+import { Card } from '@/components/Card';
+import * as Dialog from '@/components/Dialog';
+import { Button } from '@/components/Form/Button';
+import { Field } from '@/components/Form/Field';
+import { Input } from '@/components/Form/Input';
+import { Subdued } from '@/components/Text';
+import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/useToast';
+
+import cls from './index.module.scss';
 
 export const SettingsGeneral: React.FC = () => {
   const toast = useToast();

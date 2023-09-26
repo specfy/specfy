@@ -1,3 +1,5 @@
+import { useQuery } from '@tanstack/react-query';
+
 import type {
   GetRevision,
   ListRevisionChecks,
@@ -7,9 +9,8 @@ import type {
   PostRevision,
   RebaseRevision,
 } from '@specfy/models';
-import { useQuery } from '@tanstack/react-query';
 
-import { qcli, refreshProject } from '../common/query';
+import { qcli, refreshProject } from '@/common/query';
 
 import { fetchApi } from './fetch';
 import { APIError, isError } from './helpers';

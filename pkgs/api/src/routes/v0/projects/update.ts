@@ -5,12 +5,14 @@ import {
   toApiProject,
   schemaProject,
 } from '@specfy/models';
-import type { PutProject } from '@specfy/models';
-import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
+
+import type { PutProject } from '@specfy/models';
 
 import { validationError } from '../../../common/errors.js';
 import { getProject } from '../../../middlewares/getProject.js';
+
+import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 
 function BodyVal(req: FastifyRequest) {
   return z

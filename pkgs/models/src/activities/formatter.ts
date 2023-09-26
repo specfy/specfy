@@ -1,11 +1,11 @@
 import { pick } from '@specfy/core';
 
-import type { ApiActivity } from '../activities';
-import type { DBComponent } from '../components/types.js';
-import type { DBDocument } from '../documents/types.js';
 import { toApiUser } from '../users/formatter.js';
 
 import type { ActivitiesList } from './types.js';
+import type { ApiActivity } from '../activities';
+import type { DBComponent } from '../components/types.js';
+import type { DBDocument } from '../documents/types.js';
 
 export function toApiActivity(act: ActivitiesList): ApiActivity {
   return {

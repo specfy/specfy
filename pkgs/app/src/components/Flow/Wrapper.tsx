@@ -1,9 +1,9 @@
 import classNames from 'classnames';
-import type { CSSProperties } from 'react';
+import 'reactflow/dist/style.css';
 
 import cls from './index.module.scss';
 
-import 'reactflow/dist/style.css';
+import type { CSSProperties } from 'react';
 
 export const FlowWrapper: React.FC<{
   children: React.ReactNode;

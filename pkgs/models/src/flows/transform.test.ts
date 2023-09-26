@@ -1,9 +1,10 @@
 import { describe, expect, it } from 'vitest';
 
-import type { DBComponent } from '../components/index.js';
 import { getBlobComponent } from '../components/test.utils.js';
 
 import { getAbsolutePosition, placeInsideHost } from './transform.js';
+
+import type { DBComponent } from '../components/index.js';
 
 describe('getAbsolutePosition', () => {
   it('should output same position when at the root', () => {

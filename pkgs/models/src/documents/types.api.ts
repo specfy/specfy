@@ -1,8 +1,7 @@
 import type { Pagination, QuerystringOrgProject, Res } from '@specfy/core';
 
-import type { ApiUser } from '../users/types.api.js';
-
 import type { DBDocument } from './types.js';
+import type { ApiUser } from '../users/types.api.js';
 
 export type ApiDocument = DBDocument & {
   authors: ApiUser[];

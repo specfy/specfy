@@ -22,7 +22,6 @@ import { TableRow } from '@tiptap/extension-table-row';
 import { TaskItem } from '@tiptap/extension-task-item';
 import { TaskList } from '@tiptap/extension-task-list';
 import { Text } from '@tiptap/extension-text';
-import type { AnyExtension } from '@tiptap/react';
 
 import { Banner } from './Banner';
 import { BlockDocument } from './BlockDocument';
@@ -34,6 +33,8 @@ import { DiffMarkExtension } from './DiffMark';
 import { Step } from './Step';
 import { Vote } from './Vote';
 import { VoteItem } from './VoteItem';
+
+import type { AnyExtension } from '@tiptap/react';
 
 /**
  * We wrap extensions to get all the names without listing a second time manually.

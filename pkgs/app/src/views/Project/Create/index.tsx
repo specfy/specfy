@@ -1,7 +1,5 @@
 import * as Collapsible from '@radix-ui/react-collapsible';
 import * as Form from '@radix-ui/react-form';
-import type { FieldsErrors } from '@specfy/core';
-import type { ApiProject, ApiGitHubRepo, ApiOrg } from '@specfy/models';
 import {
   IconChevronDown,
   IconChevronRight,
@@ -11,24 +9,26 @@ import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { createProject, linkToGitHubRepo } from '../../../api';
-import { handleErrors, isError } from '../../../api/helpers';
-import { Banner } from '../../../components/Banner';
-import { Container, ContainerChild } from '../../../components/Container';
-import { Flex } from '../../../components/Flex';
-import { Button } from '../../../components/Form/Button';
-import { Field } from '../../../components/Form/Field';
-import { SyncConfiguration } from '../../../components/Project/SyncConfiguration';
-import { GitHubSearch } from '../../../components/StackSearch/GitHubSearch';
-import { useToast } from '../../../hooks/useToast';
-import type { RouteOrg } from '../../../types/routes';
+import type { FieldsErrors } from '@specfy/core';
+import type { ApiProject, ApiGitHubRepo, ApiOrg } from '@specfy/models';
 
-import cls from './index.module.scss';
-
+import { createProject, linkToGitHubRepo } from '@/api';
+import { handleErrors, isError } from '@/api/helpers';
 import { i18n } from '@/common/i18n';
 import { socket } from '@/common/socket';
 import { titleSuffix } from '@/common/string';
+import { Banner } from '@/components/Banner';
 import { Card } from '@/components/Card';
+import { Container, ContainerChild } from '@/components/Container';
+import { Flex } from '@/components/Flex';
+import { Button } from '@/components/Form/Button';
+import { Field } from '@/components/Form/Field';
+import { SyncConfiguration } from '@/components/Project/SyncConfiguration';
+import { GitHubSearch } from '@/components/StackSearch/GitHubSearch';
+import { useToast } from '@/hooks/useToast';
+import type { RouteOrg } from '@/types/routes';
+
+import cls from './index.module.scss';
 
 export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   org,

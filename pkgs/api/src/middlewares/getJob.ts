@@ -1,12 +1,14 @@
 import { schemaId, schemaOrgId } from '@specfy/core';
 import { prisma } from '@specfy/db';
+import { z } from 'zod';
+
 import type { GetJob } from '@specfy/models';
 import type { PreHandler } from '@specfy/models/src/fastify';
-import type { FastifyRequest } from 'fastify';
-import { z } from 'zod';
 
 import { notFound, validationError } from '../common/errors.js';
 import { valPermissions } from '../common/zod.js';
+
+import type { FastifyRequest } from 'fastify';
 
 export function QueryVal(req: FastifyRequest) {
   return z

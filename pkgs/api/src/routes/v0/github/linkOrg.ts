@@ -1,13 +1,13 @@
 import { RequestError } from '@octokit/request-error';
 import { logEvent, schemaOrgId, sentry } from '@specfy/core';
-import type { Prisma } from '@specfy/db';
 import { prisma } from '@specfy/db';
 import { github } from '@specfy/github';
 import { createGitHubActivity, getOrgFromRequest } from '@specfy/models';
-import type { PostLinkToGitHubOrg } from '@specfy/models';
-import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { Octokit } from 'octokit';
 import { z } from 'zod';
+
+import type { Prisma } from '@specfy/db';
+import type { PostLinkToGitHubOrg } from '@specfy/models';
 
 import {
   notFound,
@@ -16,6 +16,8 @@ import {
 } from '../../../common/errors.js';
 import { valPermissions } from '../../../common/zod.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
+
+import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 
 function QueryVal(req: FastifyRequest) {
   return z

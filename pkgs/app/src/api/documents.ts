@@ -1,11 +1,12 @@
+import { useQuery } from '@tanstack/react-query';
+
 import type {
   GetDocument,
   GetDocumentBySlug,
   ListDocuments,
 } from '@specfy/models';
-import { useQuery } from '@tanstack/react-query';
 
-import { original } from '../common/store';
+import { original } from '@/common/store';
 
 import { fetchApi } from './fetch';
 import { APIError, isError } from './helpers';

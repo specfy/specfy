@@ -1,7 +1,8 @@
 import fs from 'node:fs/promises';
 
-import type { Logger } from '@specfy/core';
 import figures from 'figures';
+
+import type { Logger } from '@specfy/core';
 
 export async function checkPaths({
   docEnabled,

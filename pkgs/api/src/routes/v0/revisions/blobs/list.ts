@@ -1,9 +1,11 @@
 import { prisma } from '@specfy/db';
 import { sortBlobsByInsertion } from '@specfy/models';
+
 import type { ApiBlobWithPrevious, ListRevisionBlobs } from '@specfy/models';
-import type { FastifyPluginCallback } from 'fastify';
 
 import { getRevision } from '../../../../middlewares/getRevision.js';
+
+import type { FastifyPluginCallback } from 'fastify';
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.get<ListRevisionBlobs>(

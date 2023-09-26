@@ -1,4 +1,3 @@
-import type { ApiOrg } from '@specfy/models';
 import {
   IconDatabaseDollar,
   IconSettings,
@@ -7,11 +6,13 @@ import {
 import { useEffect, useMemo, useState } from 'react';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 
-import { Container } from '../../../components/Container';
-import { Flex } from '../../../components/Flex';
-import * as Menu from '../../../components/Menu';
-import { useAuth } from '../../../hooks/useAuth';
-import type { RouteOrg } from '../../../types/routes';
+import type { ApiOrg } from '@specfy/models';
+
+import { Container } from '@/components/Container';
+import { Flex } from '@/components/Flex';
+import * as Menu from '@/components/Menu';
+import { useAuth } from '@/hooks/useAuth';
+import type { RouteOrg } from '@/types/routes';
 
 import { SettingsBilling } from './Billing';
 import { SettingsGeneral } from './General';

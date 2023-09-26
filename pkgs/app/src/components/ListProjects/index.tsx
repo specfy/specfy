@@ -1,10 +1,9 @@
-import type { ApiProjectList } from '@specfy/models';
 import { IconPlus, IconSearch, IconUsers } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { useListProjects } from '../../api';
-import { useProjectStore } from '../../common/store';
+import type { ApiProjectList } from '@specfy/models';
+
 import { AvatarAuto } from '../AvatarAuto';
 import { Empty } from '../Empty';
 import { Flex } from '../Flex';
@@ -13,6 +12,8 @@ import { Input } from '../Form/Input';
 import { Loading } from '../Loading';
 import { TryDemo } from '../Onboarding/TryDemo';
 import { Time } from '../Time';
+import { useListProjects } from '@/api';
+import { useProjectStore } from '@/common/store';
 
 import cls from './index.module.scss';
 

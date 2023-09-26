@@ -1,9 +1,7 @@
 import { isDiffSimple } from '@specfy/core/src/diff';
 import { pick } from '@specfy/core/src/object';
-import type { ComputedEdge, ComputedFlow, ComputedNode } from '@specfy/models';
 import classNames from 'classnames';
 import { useEffect, useRef } from 'react';
-import type { NodeTypes } from 'reactflow';
 import {
   Background,
   BackgroundVariant,
@@ -13,9 +11,13 @@ import {
   useNodesState,
 } from 'reactflow';
 
-import CustomNode from '../../../Flow/CustomNode';
+import type { ComputedEdge, ComputedFlow, ComputedNode } from '@specfy/models';
+
+import CustomNode from '@/components/Flow/CustomNode';
 
 import cls from './index.module.scss';
+
+import type { NodeTypes } from 'reactflow';
 
 const nodeTypes: NodeTypes = {
   custom: CustomNode,

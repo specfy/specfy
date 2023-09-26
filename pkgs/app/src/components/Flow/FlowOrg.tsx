@@ -1,6 +1,5 @@
 import classNames from 'classnames';
 import { useRef, useState } from 'react';
-import type { NodeTypes, ReactFlowInstance } from 'reactflow';
 import {
   Background,
   BackgroundVariant,
@@ -10,10 +9,12 @@ import {
   useStoreApi,
 } from 'reactflow';
 
+import { useFlowStore } from '@/common/store';
+
 import CustomNode from './CustomNode';
 import cls from './index.module.scss';
 
-import { useFlowStore } from '@/common/store';
+import type { NodeTypes, ReactFlowInstance } from 'reactflow';
 
 const nodeTypes: NodeTypes = {
   custom: CustomNode,

@@ -1,8 +1,7 @@
 import type { Blobs, Prisma } from '@specfy/db';
 
-import type { DBComponent } from '../components/index.js';
-
 import type { ApiBlobCreate } from './types.api.js';
+import type { DBComponent } from '../components/index.js';
 
 /**
  * Determine if we the revision has modified a project<>project edge.

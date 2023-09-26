@@ -2,10 +2,10 @@ import { IconSettings } from '@tabler/icons-react';
 import { useEffect, useMemo, useState } from 'react';
 import { Link, Route, Routes, useLocation } from 'react-router-dom';
 
-import { Container } from '../../components/Container';
-import { Flex } from '../../components/Flex';
-import * as Menu from '../../components/Menu';
-import { Sidebar } from '../../components/Sidebar';
+import { Container } from '@/components/Container';
+import { Flex } from '@/components/Flex';
+import * as Menu from '@/components/Menu';
+import { Sidebar } from '@/components/Sidebar';
 
 import { SettingsGeneral } from './General';
 import cls from './index.module.scss';

@@ -5,19 +5,18 @@ import { useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link, Route, Routes, useNavigate, useParams } from 'react-router-dom';
 
-import { useListDocuments } from '../../../api';
-import { Banner } from '../../../components/Banner';
-import { Container, ContainerChild } from '../../../components/Container';
-import { Button } from '../../../components/Form/Button';
-import { Subdued } from '../../../components/Text';
-import { Time } from '../../../components/Time';
-
-import { ProjectAssistantShow } from './Show';
-import cls from './index.module.scss';
-
+import { useListDocuments } from '@/api';
 import { db } from '@/common/db';
 import { useComponentsStore, useProjectStore } from '@/common/store';
 import { titleSuffix } from '@/common/string';
+import { Banner } from '@/components/Banner';
+import { Container, ContainerChild } from '@/components/Container';
+import { Button } from '@/components/Form/Button';
+import { Subdued } from '@/components/Text';
+import { Time } from '@/components/Time';
+
+import { ProjectAssistantShow } from './Show';
+import cls from './index.module.scss';
 
 const History: React.FC = () => {
   const { project } = useProjectStore();

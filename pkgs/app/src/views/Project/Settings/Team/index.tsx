@@ -1,21 +1,21 @@
-import type { ApiProject, ApiPerm, ApiUser } from '@specfy/models';
 import { IconSearch } from '@tabler/icons-react';
 import { useState, useEffect, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useDebounce } from 'react-use';
 
-import { useListPermsProject, useListUser } from '../../../../api';
-import { Banner } from '../../../../components/Banner';
-import { Card } from '../../../../components/Card';
-import { Empty } from '../../../../components/Empty';
-import { Input } from '../../../../components/Form/Input';
-import { Row } from '../../../../components/Team/Row';
-import { Subdued } from '../../../../components/Text';
-import { useAuth } from '../../../../hooks/useAuth';
+import type { ApiProject, ApiPerm, ApiUser } from '@specfy/models';
+
+import { useListPermsProject, useListUser } from '@/api';
+import { titleSuffix } from '@/common/string';
+import { Banner } from '@/components/Banner';
+import { Card } from '@/components/Card';
+import { Empty } from '@/components/Empty';
+import { Input } from '@/components/Form/Input';
+import { Row } from '@/components/Team/Row';
+import { Subdued } from '@/components/Text';
+import { useAuth } from '@/hooks/useAuth';
 
 import cls from './index.module.scss';
-
-import { titleSuffix } from '@/common/string';
 
 export const SettingsTeam: React.FC<{
   proj: ApiProject;

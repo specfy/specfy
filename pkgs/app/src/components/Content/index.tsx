@@ -1,23 +1,23 @@
-import type { BlockLevelZero, Blocks, MarkDiff } from '@specfy/models';
 import { IconArrowBack } from '@tabler/icons-react';
 import classnames from 'classnames';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import type { Payload } from '../../common/content';
-import { map } from '../../common/content';
-import { slugify } from '../../common/string';
+import type { BlockLevelZero, Blocks, MarkDiff } from '@specfy/models';
+
 import { Banner } from '../Banner';
 import { Checkbox } from '../Form/Checkbox';
 import clsDiff from '../Revision/DiffCard/index.module.scss';
+import { map } from '@/common/content';
+import type { Payload } from '@/common/content';
+import { slugify } from '@/common/string';
+import { useAuth } from '@/hooks/useAuth';
 
 import { BlockCode } from './BlockCode';
 import { ContentBlockDocument } from './BlockDocument';
 import { ContentBlockStep } from './BlockStep';
 import { ContentBlockVoteItem } from './BlockVoteItem';
 import cls from './index.module.scss';
-
-import { useAuth } from '@/hooks/useAuth';
 
 function styleDiff(block: Blocks): string {
   if (!block.marks || block.marks.length <= 0) {

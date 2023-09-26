@@ -1,17 +1,17 @@
-import type { ApiComponent } from '@specfy/models';
 import { IconEyeOff, IconPlus } from '@tabler/icons-react';
 import classnames from 'classnames';
 import { useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useClickAway } from 'react-use';
 
-import type { RouteProject } from '../../../types/routes';
+import type { ApiComponent } from '@specfy/models';
+
 import { ComponentIcon } from '../Icon';
-
-import cls from './index.module.scss';
-
 import { supportedIndexed } from '@/common/techs';
 import { Button } from '@/components/Form/Button';
+import type { RouteProject } from '@/types/routes';
+
+import cls from './index.module.scss';
 
 export interface Line {
   title: string;

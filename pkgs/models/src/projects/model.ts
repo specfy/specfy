@@ -1,10 +1,11 @@
 import { nanoid, slugify } from '@specfy/core';
+
 import type { Projects, Prisma, Activities, Users } from '@specfy/db';
 
-import type { ActionProject } from '../activities/types.js';
 import { createKey } from '../keys/model.js';
 
 import type { DBProject } from './types.js';
+import type { ActionProject } from '../activities/types.js';
 
 export async function createProjectBlob({
   data,

@@ -1,10 +1,11 @@
-import type { ApiPerm, ListPerms } from '@specfy/models';
 import { useEffect, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-import { useListPermsProject } from '../../../api';
-import { AvatarAuto, AvatarGroup } from '../../../components/AvatarAuto';
-import { Flex } from '../../../components/Flex';
+import type { ApiPerm, ListPerms } from '@specfy/models';
+
+import { useListPermsProject } from '@/api';
+import { AvatarAuto, AvatarGroup } from '@/components/AvatarAuto';
+import { Flex } from '@/components/Flex';
 
 import cls from './index.module.scss';
 

@@ -1,9 +1,9 @@
 import { nanoid, slugify } from '@specfy/core';
+
 import type { Projects } from '@specfy/db';
 
-import type { ApiBlobDocument } from '../blobs/types.api.js';
-
 import type { DBDocument } from './types.js';
+import type { ApiBlobDocument } from '../blobs/types.api.js';
 
 export function getBlobDocument(
   project: Pick<Projects, 'id' | 'orgId'>

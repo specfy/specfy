@@ -2,14 +2,14 @@ import { IconColorSwatch } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import cls from './index.module.scss';
-
 import { createDemo } from '@/api';
 import { isError } from '@/api/helpers';
 import { i18n } from '@/common/i18n';
 import { Flex } from '@/components/Flex';
 import { Button } from '@/components/Form/Button';
 import { useToast } from '@/hooks/useToast';
+
+import cls from './index.module.scss';
 
 export const TryDemo: React.FC = () => {
   const navigate = useNavigate();

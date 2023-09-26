@@ -1,27 +1,27 @@
 import * as Form from '@radix-ui/react-form';
-import type { ApiOrg } from '@specfy/models';
 import { IconLink, IconLinkOff } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 
-import { deleteOrg, updateOrg, linkToGitHubOrg } from '../../../../api';
-import { isError } from '../../../../api/helpers';
-import { CopyButton } from '../../../../components/Button/Copy';
-import { Card } from '../../../../components/Card';
-import * as Dialog from '../../../../components/Dialog';
-import { Button } from '../../../../components/Form/Button';
-import { Field } from '../../../../components/Form/Field';
-import { Input } from '../../../../components/Form/Input';
-import { GitHubOrgSelect } from '../../../../components/GitHub/OrgSelect';
-import { Subdued } from '../../../../components/Text';
-import { useAuth } from '../../../../hooks/useAuth';
-import { useToast } from '../../../../hooks/useToast';
-import type { RouteOrg } from '../../../../types/routes';
+import type { ApiOrg } from '@specfy/models';
 
-import cls from './index.module.scss';
-
+import { deleteOrg, updateOrg, linkToGitHubOrg } from '@/api';
+import { isError } from '@/api/helpers';
 import { i18n } from '@/common/i18n';
 import { titleSuffix } from '@/common/string';
+import { CopyButton } from '@/components/Button/Copy';
+import { Card } from '@/components/Card';
+import * as Dialog from '@/components/Dialog';
+import { Button } from '@/components/Form/Button';
+import { Field } from '@/components/Form/Field';
+import { Input } from '@/components/Form/Input';
+import { GitHubOrgSelect } from '@/components/GitHub/OrgSelect';
+import { Subdued } from '@/components/Text';
+import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/useToast';
+import type { RouteOrg } from '@/types/routes';
+
+import cls from './index.module.scss';
 
 export const SettingsGeneral: React.FC<{
   org: ApiOrg;

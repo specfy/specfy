@@ -1,8 +1,9 @@
 import { schemaId } from '@specfy/core';
 import { prisma } from '@specfy/db';
+import { z } from 'zod';
+
 import type { GetUser } from '@specfy/models';
 import type { PreHandler } from '@specfy/models/src/fastify';
-import { z } from 'zod';
 
 import { notFound, validationError } from '../common/errors.js';
 

@@ -1,10 +1,11 @@
-import type { Editor } from '@tiptap/core';
 import { posToDOMRect } from '@tiptap/core';
-import type { EditorState } from '@tiptap/pm/state';
 import { Plugin, PluginKey } from '@tiptap/pm/state';
+import tippy from 'tippy.js';
+
+import type { Editor } from '@tiptap/core';
+import type { EditorState } from '@tiptap/pm/state';
 import type { EditorView } from '@tiptap/pm/view';
 import type { Instance, Props } from 'tippy.js';
-import tippy from 'tippy.js';
 
 export interface FloatingMenuPluginProps {
   pluginKey: PluginKey | string;

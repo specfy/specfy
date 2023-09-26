@@ -5,8 +5,8 @@ import type {
   ResValidationError,
 } from '@specfy/core';
 
-import { i18n } from '../common/i18n';
-import type { useToast } from '../hooks/useToast';
+import { i18n } from '@/common/i18n';
+import type { useToast } from '@/hooks/useToast';
 
 export function isError<TType extends Res<{ Success: any }>['Reply']>(
   json: TType

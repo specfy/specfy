@@ -1,11 +1,12 @@
-import type { NodeViewProps } from '@tiptap/core';
 import { NodeViewContent, NodeViewWrapper } from '@tiptap/react';
 import { useMemo, useRef, useState } from 'react';
 import { useClickAway } from 'react-use';
 
-import { Banner } from '../../../Banner';
-import { SelectFull } from '../../../Form/Select';
-import { EditorMenu } from '../../Menu';
+import { Banner } from '@/components/Banner';
+import { EditorMenu } from '@/components/Editor/Menu';
+import { SelectFull } from '@/components/Form/Select';
+
+import type { NodeViewProps } from '@tiptap/core';
 
 export const BannerView: React.FC<NodeViewProps> = ({
   node,

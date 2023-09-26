@@ -1,10 +1,11 @@
 import { nanoid, slugify } from '@specfy/core';
+
 import type { Orgs } from '@specfy/db';
 
-import type { ApiBlobProject } from '../blobs/types.api.js';
-
 import { getDefaultConfig } from './model.js';
+
 import type { DBProject } from './types.js';
+import type { ApiBlobProject } from '../blobs/types.api.js';
 
 export function getBlobProject(org: Pick<Orgs, 'id'>): DBProject {
   const id = nanoid();

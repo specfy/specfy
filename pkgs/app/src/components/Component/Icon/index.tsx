@@ -1,12 +1,12 @@
-import type { NodeData } from '@specfy/models';
 import { IconBox, IconCode } from '@tabler/icons-react';
 import classNames from 'classnames';
 
-import { AvatarAuto } from '../../AvatarAuto';
-
-import cls from './index.module.scss';
+import type { NodeData } from '@specfy/models';
 
 import { supportedIndexed } from '@/common/techs';
+import { AvatarAuto } from '@/components/AvatarAuto';
+
+import cls from './index.module.scss';
 
 export const ComponentIcon: React.FC<{
   data: Partial<Pick<NodeData, 'name' | 'techId' | 'type'>>;

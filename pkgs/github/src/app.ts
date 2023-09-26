@@ -1,6 +1,7 @@
-import type { Webhooks } from '@octokit/webhooks';
 import { envs } from '@specfy/core';
 import { App } from 'octokit';
+
+import type { Webhooks } from '@octokit/webhooks';
 
 const secret = envs.GITHUB_WEBHOOKS_SECRET;
 const app = new App({

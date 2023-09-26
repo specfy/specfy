@@ -2,17 +2,16 @@ import { IconPlus } from '@tabler/icons-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-import { useGetGitHubRepos } from '../../../api';
-import { useToast } from '../../../hooks/useToast';
-import { CommandItem } from '../../Command';
-import { Button } from '../../Form/Button';
-import type { ComboboxOption } from '../../Form/Combobox';
-import { Combobox } from '../../Form/Combobox';
-
-import cls from './index.module.scss';
-
+import { useGetGitHubRepos } from '@/api';
 import { GITHUB_APP } from '@/common/envs';
 import { Popup } from '@/common/popup';
+import { CommandItem } from '@/components/Command';
+import { Button } from '@/components/Form/Button';
+import { Combobox } from '@/components/Form/Combobox';
+import type { ComboboxOption } from '@/components/Form/Combobox';
+import { useToast } from '@/hooks/useToast';
+
+import cls from './index.module.scss';
 
 export const GitHubRepoSelect: React.FC<{
   installationId: number;

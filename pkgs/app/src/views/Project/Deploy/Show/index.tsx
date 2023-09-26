@@ -1,25 +1,25 @@
-import type { ApiJob, ApiProject } from '@specfy/models';
 import { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Skeleton from 'react-loading-skeleton';
 import { useParams } from 'react-router-dom';
 
-import { useGetDeploy, useGetRevision } from '../../../../api';
-import { AvatarAuto } from '../../../../components/AvatarAuto';
-import { Banner } from '../../../../components/Banner';
-import { CodeHighlighter } from '../../../../components/CodeHighlighter';
-import { Container, ContainerChild } from '../../../../components/Container';
-import { Flex } from '../../../../components/Flex';
-import { StatusTag } from '../../../../components/Job/StatusTag';
-import { NotFound } from '../../../../components/NotFound';
-import { Time } from '../../../../components/Time';
-import type { RouteJob, RouteProject } from '../../../../types/routes';
+import type { ApiJob, ApiProject } from '@specfy/models';
+
 import { Row } from '../../Revisions/List';
+import { useGetDeploy, useGetRevision } from '@/api';
+import { titleSuffix } from '@/common/string';
+import { AvatarAuto } from '@/components/AvatarAuto';
+import { Banner } from '@/components/Banner';
+import { CodeHighlighter } from '@/components/CodeHighlighter';
+import { Container, ContainerChild } from '@/components/Container';
+import { Flex } from '@/components/Flex';
+import { StatusTag } from '@/components/Job/StatusTag';
+import { NotFound } from '@/components/NotFound';
+import { Subdued } from '@/components/Text';
+import { Time } from '@/components/Time';
+import type { RouteJob, RouteProject } from '@/types/routes';
 
 import cls from './index.module.scss';
-
-import { titleSuffix } from '@/common/string';
-import { Subdued } from '@/components/Text';
 
 type LogLine = {
   level: 30;

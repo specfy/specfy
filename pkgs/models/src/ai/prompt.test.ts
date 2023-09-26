@@ -5,6 +5,7 @@ import {
   aiPromptRewrite,
   aiPromptProjectOnboarding,
 } from './prompt.js';
+
 import type { ComponentForPrompt } from './types.js';
 
 const components: ComponentForPrompt[] = [

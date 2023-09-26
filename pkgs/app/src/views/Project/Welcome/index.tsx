@@ -1,17 +1,17 @@
-import type { ApiJobList } from '@specfy/models';
 import { useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { useNavigate } from 'react-router-dom';
 
+import type { ApiJobList } from '@specfy/models';
+
 import { Row } from '../Deploy/List';
-
-import cls from './index.module.scss';
-
 import { refreshProject } from '@/common/query';
 import { useProjectStore } from '@/common/store';
 import { Flex } from '@/components/Flex';
 import { Button } from '@/components/Form/Button';
 import { useEventBus } from '@/hooks/useEventBus';
+
+import cls from './index.module.scss';
 
 export const ProjectWelcome: React.FC = () => {
   const { project } = useProjectStore();

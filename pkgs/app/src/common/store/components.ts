@@ -1,24 +1,25 @@
-import type { ApiComponent, ApiProject, FlowEdge } from '@specfy/models';
 import {
   getAbsolutePosition,
   placeInsideHost,
 } from '@specfy/models/src/flows/transform';
 import { produce } from 'immer';
-import type { Connection } from 'reactflow';
 import { create } from 'zustand';
+
+import type { ApiComponent, ApiProject, FlowEdge } from '@specfy/models';
 
 import { getEmptyDoc } from '../content';
 import { slugify } from '../string';
-
-import type { FlowState } from './flow';
-import { original } from './original';
-
 import type {
   EdgeChangeSuper,
   NodeChangeSuper,
   OnEdgesChangeSuper,
   OnNodesChangeSuper,
 } from '@/components/Flow/types';
+
+import { original } from './original';
+
+import type { FlowState } from './flow';
+import type { Connection } from 'reactflow';
 
 export interface ComponentsState {
   current: string | null;

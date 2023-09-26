@@ -1,7 +1,8 @@
 import { nanoid } from '@specfy/core';
-import type { Orgs, Users } from '@specfy/db';
 import { prisma } from '@specfy/db';
 import { createPoliciesActivity } from '@specfy/models';
+
+import type { Orgs, Users } from '@specfy/db';
 
 /**
  * Seed playbook

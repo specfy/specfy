@@ -2,9 +2,9 @@ import { getApiBlobComponent } from '@specfy/models/src/components/test.utils';
 import { Editor } from '@tiptap/react';
 import { describe, expect, it } from 'vitest';
 
-import { diffComponent } from './diffComponent';
-
 import { createEditorSchema } from '@/components/Editor/extensions';
+
+import { diffComponent } from './diffComponent';
 
 const editor = new Editor(createEditorSchema());
 

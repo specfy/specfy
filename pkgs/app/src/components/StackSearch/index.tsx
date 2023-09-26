@@ -1,13 +1,15 @@
-import type { ComponentType, ApiComponent } from '@specfy/models';
 import { supportedTypeToText } from '@specfy/models/src/components/constants';
 import { useCallback, useEffect, useMemo } from 'react';
 
-import { createLocal } from '../../common/components';
-import { useComponentsStore, useProjectStore } from '../../common/store';
-import { slugify } from '../../common/string';
-import { supportedArray, supportedIndexed } from '../../common/techs';
-import type { OptionGroup, OptionValue } from '../Form/MultiSelect';
+import type { ComponentType, ApiComponent } from '@specfy/models';
+
 import { MultiSelect } from '../Form/MultiSelect';
+import { createLocal } from '@/common/components';
+import { useComponentsStore, useProjectStore } from '@/common/store';
+import { slugify } from '@/common/string';
+import { supportedArray, supportedIndexed } from '@/common/techs';
+
+import type { OptionGroup, OptionValue } from '../Form/MultiSelect';
 
 export const LanguageSelect: React.FC<{
   values: ApiComponent['techs'];

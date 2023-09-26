@@ -1,20 +1,22 @@
 import { slugify, pick, isDiffObjSimple } from '@specfy/core';
-import type { Components } from '@specfy/db';
-import type { AnalyserJson } from '@specfy/stack-analyser';
 import { tech as techList } from '@specfy/stack-analyser';
 
-import type { ComponentType, DBComponent } from '../components/types.js';
+import type { Components } from '@specfy/db';
+import type { AnalyserJson } from '@specfy/stack-analyser';
+
 import { getComponentSize } from '../flows/helpers.js';
+import { findPerfectMatch, findPrevious } from '../stack/index.js';
+
+import { getTitle } from './helpers.js';
+
+import type { StackToBlobs } from './types.js';
+import type { ComponentType, DBComponent } from '../components/types.js';
 import type { FlowEdge } from '../flows/types.js';
 import type {
   ApiBlobCreate,
   ApiBlobCreateComponent,
   PostUploadRevision,
 } from '../revisions';
-import { findPerfectMatch, findPrevious } from '../stack/index.js';
-
-import { getTitle } from './helpers.js';
-import type { StackToBlobs } from './types.js';
 
 const changing: Array<keyof Components> = [
   'edges',

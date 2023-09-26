@@ -6,12 +6,14 @@ import {
   forbiddenOrgName,
   toApiOrgPublic,
 } from '@specfy/models';
-import type { PostOrg } from '@specfy/models';
-import type { FastifyPluginCallback } from 'fastify';
 import z from 'zod';
+
+import type { PostOrg } from '@specfy/models';
 
 import { validationError } from '../../../common/errors.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
+
+import type { FastifyPluginCallback } from 'fastify';
 
 const OrgVal = z
   .object({

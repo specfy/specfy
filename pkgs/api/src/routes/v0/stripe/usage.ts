@@ -1,9 +1,11 @@
 import { getUsage } from '@specfy/models';
+
 import type { GetBillingUsage } from '@specfy/models';
-import type { FastifyPluginCallback } from 'fastify';
 
 import { getOrg } from '../../../middlewares/getOrg.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
+
+import type { FastifyPluginCallback } from 'fastify';
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
   fastify.get<GetBillingUsage>(

@@ -2,18 +2,17 @@ import { IconPlus } from '@tabler/icons-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 
-import { useGetGitHubInstallations } from '../../../api';
-import { useToast } from '../../../hooks/useToast';
-import { AvatarAuto } from '../../AvatarAuto';
-import { CommandItem } from '../../Command';
-import { Button } from '../../Form/Button';
-import type { ComboboxOption } from '../../Form/Combobox';
-import { Combobox } from '../../Form/Combobox';
-
-import cls from './index.module.scss';
-
+import { useGetGitHubInstallations } from '@/api';
 import { GITHUB_APP } from '@/common/envs';
 import { Popup } from '@/common/popup';
+import { AvatarAuto } from '@/components/AvatarAuto';
+import { CommandItem } from '@/components/Command';
+import { Button } from '@/components/Form/Button';
+import { Combobox } from '@/components/Form/Combobox';
+import type { ComboboxOption } from '@/components/Form/Combobox';
+import { useToast } from '@/hooks/useToast';
+
+import cls from './index.module.scss';
 
 export const GitHubOrgSelect: React.FC<{
   defaultSelected?: string;

@@ -1,7 +1,8 @@
 import { nanoid } from '@specfy/core';
-import type { Orgs, Projects, Users } from '@specfy/db';
 import { prisma } from '@specfy/db';
 import { getJwtToken } from '@specfy/models';
+
+import type { Orgs, Projects, Users } from '@specfy/db';
 import type { DBPerm } from '@specfy/models';
 
 import { seedOrg } from './orgs.js';

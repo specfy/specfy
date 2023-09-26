@@ -1,8 +1,3 @@
-import type {
-  ApiProject,
-  ApiRevisionList,
-  ListRevisions,
-} from '@specfy/models';
 import {
   IconChevronRight,
   IconCircleXFilled,
@@ -14,23 +9,28 @@ import Skeleton from 'react-loading-skeleton';
 import { Link } from 'react-router-dom';
 import { useDebounce } from 'react-use';
 
-import { useListRevisions } from '../../../../api';
-import { AvatarAuto, AvatarGroup } from '../../../../components/AvatarAuto';
-import { Container, ContainerChild } from '../../../../components/Container';
-import { Empty } from '../../../../components/Empty';
-import { Flex } from '../../../../components/Flex';
-import { Button } from '../../../../components/Form/Button';
-import { Input } from '../../../../components/Form/Input';
-import type { SelectOption } from '../../../../components/Form/Select';
-import { SelectFull } from '../../../../components/Form/Select';
-import { Loading } from '../../../../components/Loading';
-import { StatusTag } from '../../../../components/Revision/StatusTag';
-import { Time } from '../../../../components/Time';
-import type { RouteProject } from '../../../../types/routes';
+import type {
+  ApiProject,
+  ApiRevisionList,
+  ListRevisions,
+} from '@specfy/models';
+
+import { useListRevisions } from '@/api';
+import { titleSuffix } from '@/common/string';
+import { AvatarAuto, AvatarGroup } from '@/components/AvatarAuto';
+import { Container, ContainerChild } from '@/components/Container';
+import { Empty } from '@/components/Empty';
+import { Flex } from '@/components/Flex';
+import { Button } from '@/components/Form/Button';
+import { Input } from '@/components/Form/Input';
+import type { SelectOption } from '@/components/Form/Select';
+import { SelectFull } from '@/components/Form/Select';
+import { Loading } from '@/components/Loading';
+import { StatusTag } from '@/components/Revision/StatusTag';
+import { Time } from '@/components/Time';
+import type { RouteProject } from '@/types/routes';
 
 import cls from './index.module.scss';
-
-import { titleSuffix } from '@/common/string';
 
 const options: SelectOption[] = [
   { value: 'opened', label: 'Opened' },

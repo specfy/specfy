@@ -6,10 +6,10 @@ import {
   createJobDeploy,
   getOrgFromRequest,
 } from '@specfy/models';
-import type { PostLinkToGitHubProject } from '@specfy/models';
-import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { Octokit } from 'octokit';
 import { z } from 'zod';
+
+import type { PostLinkToGitHubProject } from '@specfy/models';
 
 import {
   notFound,
@@ -18,6 +18,8 @@ import {
 } from '../../../common/errors.js';
 import { valPermissions } from '../../../common/zod.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
+
+import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 
 const repoRegex = /^[a-zA-Z0-9_.-]+\/[a-zA-Z0-9_.-]+$/;
 function QueryVal(req: FastifyRequest) {

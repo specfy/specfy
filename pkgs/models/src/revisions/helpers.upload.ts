@@ -1,9 +1,9 @@
 import path from 'node:path';
 
 import { isDiffObjSimple, nanoid, pick, titleCase } from '@specfy/core';
+
 import type { Documents } from '@specfy/db';
 
-import type { DBDocument } from '../documents/types.js';
 import {
   getDocumentTitle,
   mdExtension,
@@ -15,6 +15,7 @@ import type {
   ApiBlobCreateDocument,
   PostUploadRevision,
 } from './types.api.js';
+import type { DBDocument } from '../documents/types.js';
 
 const changing: Array<keyof Documents> = [
   'slug',

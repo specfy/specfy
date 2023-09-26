@@ -1,6 +1,7 @@
 import { envs, l as logger } from '@specfy/core';
-import type { FastifyReply } from 'fastify';
 import OpenAI from 'openai';
+
+import type { FastifyReply } from 'fastify';
 import type { Stream } from 'openai/streaming';
 
 export const openai = new OpenAI({

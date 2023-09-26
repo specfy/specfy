@@ -1,12 +1,14 @@
 import { schemaId, schemaOrgId } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import { toApiDocument } from '@specfy/models';
-import type { GetDocumentBySlug } from '@specfy/models';
-import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 import { z } from 'zod';
+
+import type { GetDocumentBySlug } from '@specfy/models';
 
 import { notFound, validationError } from '../../../common/errors.js';
 import { valPermissions } from '../../../common/zod.js';
+
+import type { FastifyPluginCallback, FastifyRequest } from 'fastify';
 
 function QueryVal(req: FastifyRequest) {
   return z

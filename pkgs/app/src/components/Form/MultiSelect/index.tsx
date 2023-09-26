@@ -3,9 +3,14 @@ import { IconCheck, IconX } from '@tabler/icons-react';
 import classNames from 'classnames';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { Command, CommandGroup, CommandItem, CommandList } from '../../Command';
-import { Tag } from '../../Tag';
 import { Input } from '../Input';
+import {
+  Command,
+  CommandGroup,
+  CommandItem,
+  CommandList,
+} from '@/components/Command';
+import { Tag } from '@/components/Tag';
 
 import cls from './index.module.scss';
 
