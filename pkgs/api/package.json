@@ -9,7 +9,6 @@
     "__dev": "fastify start -o -w -P build/app.js",
     "dev": "NODE_OPTIONS='--loader ts-node/esm' nodemon src/index.ts",
     "build": "tsc -p tsconfig.json",
-    "build:watch": "tsc -p tsconfig.json -w --preserveWatchOutput",
     "prod:build": "prisma generate && tsc -p tsconfig.prod.json",
     "test:build": "tsc -p tsconfig.json",
     "db:seed": "ts-node ./src/test/seed/index.ts",

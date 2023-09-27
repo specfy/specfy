@@ -1,0 +1,30 @@
+{
+  "files": [],
+  "include": [],
+  "references": [
+    {
+      "path": "./pkgs/api"
+    },
+    {
+      "path": "./pkgs/core"
+    },
+    {
+      "path": "./pkgs/db"
+    },
+    {
+      "path": "./pkgs/emails"
+    },
+    {
+      "path": "./pkgs/github"
+    },
+    {
+      "path": "./pkgs/github-sync"
+    },
+    {
+      "path": "./pkgs/models"
+    },
+    {
+      "path": "./pkgs/socket"
+    }
+  ],
+}
