@@ -1,7 +1,5 @@
 import type { Res } from '@specfy/core';
 
-import type { SyncConfigDocumentation, SyncConfigStack } from '../sync.js';
-
 // GET /github/repos
 export interface ApiGitHubRepo {
   id: number;
@@ -43,9 +41,7 @@ export type GetGitHubMembers = Res<{
   Querystring: {
     org: string;
   };
-  Success: {
-    data: ApiGitHubMember[];
-  };
+  Success: { data: ApiGitHubMember[] };
 }>;
 
 // POST /github/link_org
@@ -54,34 +50,11 @@ export type PostLinkToGitHubOrg = Res<{
     orgId: string;
     installationId: number | null;
   };
-  Success: {
-    done: true;
-  };
-}>;
-
-// POST /github/link_project
-export type PostLinkToGitHubProject = Res<{
-  Body: {
-    orgId: string;
-    projectId: string;
-    repository: string | null;
-    settings?:
-      | {
-          branch?: string | undefined;
-          documentation?: SyncConfigDocumentation | undefined;
-          stack?: SyncConfigStack | undefined;
-        }
-      | undefined;
-  };
-  Success: {
-    done: true;
-  };
+  Success: { done: true };
 }>;
 
 // POST /github/webhooks
 export type PostGitHubWebhook = Res<{
   Body: any;
-  Success: {
-    done: true;
-  };
+  Success: { done: true };
 }>;

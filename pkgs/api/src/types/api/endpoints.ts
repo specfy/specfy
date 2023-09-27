@@ -17,7 +17,6 @@ import type {
   ListGitHubRepos,
   PostGitHubWebhook,
   PostLinkToGitHubOrg,
-  PostLinkToGitHubProject,
   AcceptInvitation,
   DeclineInvitation,
   DeleteInvitation,
@@ -177,7 +176,6 @@ export interface API {
 
   '/0/github/installations': { GET: ListGitHubInstallations };
   '/0/github/link_org': { POST: PostLinkToGitHubOrg };
-  '/0/github/link_project': { POST: PostLinkToGitHubProject };
   '/0/github/members': { GET: GetGitHubMembers };
   '/0/github/repos': { GET: ListGitHubRepos };
   '/0/github/webhooks': { POST: PostGitHubWebhook };
