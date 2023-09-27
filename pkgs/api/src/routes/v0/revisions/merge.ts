@@ -244,9 +244,12 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
             reason,
           },
         });
-        return;
       }
 
+      await prisma.projects.update({
+        data: { updatedAt: new Date() },
+        where: { id: rev.projectId },
+      });
       return res.status(200).send({
         data: {
           done: true,
