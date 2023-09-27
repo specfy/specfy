@@ -61,6 +61,10 @@ import type {
   PostAiOperation,
   GetProjectBySlug,
   PostJob,
+  ListSources,
+  PostSource,
+  PutSource,
+  DeleteSource,
 } from '@specfy/models';
 
 import type { PostAuthLocal, PostLogout } from './auth.js';
@@ -163,6 +167,10 @@ export interface API {
     PATCH: PatchRevision;
     DELETE: DeleteInvitation;
   };
+
+  // Sources
+  '/0/sources': { GET: ListSources; POST: PostSource };
+  [key: `/0/sources/${string}`]: { PUT: PutSource; DELETE: DeleteSource };
 
   '/0/users': { GET: ListUsers };
   [key: `/0/users/${string}`]: { GET: GetUser };

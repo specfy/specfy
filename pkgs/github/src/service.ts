@@ -26,12 +26,8 @@ export function listen() {
     metrics.increment('jobs.loop');
     await prisma.$transaction(async (tx) => {
       const next = await tx.jobs.findFirst({
-        where: {
-          status: 'pending',
-        },
-        orderBy: {
-          createdAt: 'asc',
-        },
+        where: { status: 'pending' },
+        orderBy: { createdAt: 'asc' },
       });
       if (!next) {
         return;
@@ -43,12 +39,14 @@ export function listen() {
           startedAt: new Date(),
           updatedAt: new Date(),
         },
-        where: {
-          id: next.id,
-        },
+        where: { id: next.id },
         include: {
           Org: true,
-          Project: true,
+          Project: {
+            include: {
+              Sources: { select: { id: true }, where: { type: 'github' } },
+            },
+          },
           User: true,
         },
       });

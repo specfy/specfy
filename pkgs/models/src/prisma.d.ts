@@ -13,6 +13,7 @@ import type {
   DBActivity,
   DocumentType,
 } from './index.js';
+import type { SourceSettingsGithub } from './sources/types.js';
 
 declare global {
   namespace PrismaJson {
@@ -57,6 +58,9 @@ declare global {
     type PrismaRevisionsBlobs = DBRevision['blobs'];
     type PrismaRevisionsStatus = DBRevision['status'];
     type PrismaRevisionsStack = DBRevision['stack'];
+
+    // Sources
+    type PrismaSourcesSettings = SourceSettingsGithub;
 
     // TypeHasUsers
     type PrismaTypeHasUsersRole = DBTypeHasUser['role'];

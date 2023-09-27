@@ -21,13 +21,22 @@ export function listen() {
     const prev = payload.changes.repository.name.from;
     const next = payload.repository.name;
     const owner = payload.repository.owner;
+    const full = payload.repository.full_name;
 
-    const updated = await prisma.projects.updateMany({
+    // Double write until deprecation
+    const updatedProjects = await prisma.projects.updateMany({
       where: { githubRepository: `${owner}/${prev}`, name: prev },
-      data: { name: next, githubRepository: payload.repository.full_name },
+      data: { name: next, githubRepository: full },
+    });
+    const updatedSources = await prisma.sources.updateMany({
+      where: { type: 'github', identifier: `${owner}/${prev}` },
+      data: { name: `GitHub ${full}`, identifier: full },
     });
 
-    l.info(`renamed ${updated.count} projects`, { id });
+    l.info(
+      `renamed ${updatedProjects.count} projects, ${updatedSources.count} sources`,
+      { id }
+    );
   });
 
   ws.on('installation.created', async ({ id, payload }) => {
@@ -92,16 +101,24 @@ export function listen() {
     await prisma.$transaction(async (tx) => {
       const p = fullNames.map(async (fullName) => {
         const list = await tx.projects.findMany({
-          where: { githubRepository: fullName },
+          where: {
+            Sources: { some: { type: 'github', identifier: fullName } },
+          },
           include: { Org: true },
         });
         l.info(`found ${list.length} projects`, { id });
 
+        // Double write until deprecation
         const updated = await tx.projects.updateMany({
           where: { githubRepository: fullName },
           data: { githubRepository: null },
         });
-        l.info(`updated ${updated.count} projects`, { id });
+        const sources = await prisma.sources.deleteMany({
+          where: { type: 'github', identifier: fullName },
+        });
+        l.info(`updated ${updated.count} projects, ${sources.count} sources`, {
+          id,
+        });
 
         const activityGroupId = nanoid();
         await Promise.all(
@@ -133,26 +150,30 @@ export function listen() {
     });
 
     await prisma.$transaction(async (tx) => {
-      const list = await tx.projects.findMany({
-        where: { githubRepository: payload.repository.full_name },
+      const list = await tx.sources.findMany({
+        where: {
+          type: 'github',
+          identifier: payload.repository.full_name,
+          enable: true,
+        },
       });
+
       await Promise.all(
-        list.map((project) => {
-          if (project.config.branch !== branch) {
+        list.map((source) => {
+          // TODO: Filter this at query time
+          if (source.settings.branch !== branch) {
             return null;
           }
 
           return createJobDeploy({
-            orgId: project.orgId,
-            projectId: project.id,
+            orgId: source.orgId,
+            projectId: source.projectId,
             userId: userGitHubApp.id,
             config: {
-              url: project.githubRepository!,
-              hook: {
-                id,
-                ref: payload.ref,
-              },
-              project: project.config,
+              sourceId: source.id,
+              url: source.identifier,
+              hook: { id, ref: payload.ref },
+              settings: source.settings,
             },
             tx,
           });

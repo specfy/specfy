@@ -1,12 +1,12 @@
 import { IconChevronRight, IconCloudUpload } from '@tabler/icons-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Skeleton from 'react-loading-skeleton';
 import { Link } from 'react-router-dom';
 
 import type { ApiProject, ListJobs } from '@specfy/models';
 
-import { createJob, useListDeploys } from '@/api';
+import { createJob, useListDeploys, useListSources } from '@/api';
 import { isError } from '@/api/helpers';
 import { i18n } from '@/common/i18n';
 import { titleSuffix } from '@/common/string';
@@ -70,6 +70,7 @@ export const ProjectDeploysList: React.FC<{
   params: RouteProject;
 }> = ({ proj, params }) => {
   const toast = useToast();
+  const sources = useListSources({ org_id: proj.orgId, project_id: proj.id });
 
   const [list, setList] = useState<ListJobs['Success']>();
   const [loadingNew, setLoadingNew] = useState<boolean>(false);
@@ -86,6 +87,13 @@ export const ProjectDeploysList: React.FC<{
 
     setList(res.data);
   }, [res.dataUpdatedAt]);
+
+  const source = useMemo(() => {
+    if (!sources.data) {
+      return null;
+    }
+    return sources.data.data.length > 0 ? sources.data.data[0] : null;
+  }, [sources.data]);
 
   const onNewDeploy = async () => {
     setLoadingNew(true);
@@ -112,9 +120,7 @@ export const ProjectDeploysList: React.FC<{
           <div>
             <TooltipFull
               msg={
-                !proj.githubRepository
-                  ? 'Project is not linked to any Github repository'
-                  : ''
+                !source ? 'Project is not linked to any Github repository' : ''
               }
               side="bottom"
               size="s"
@@ -124,7 +130,7 @@ export const ProjectDeploysList: React.FC<{
                 display="primary"
                 loading={loadingNew}
                 size="s"
-                disabled={!proj.githubRepository}
+                disabled={!source}
               >
                 <IconCloudUpload /> Trigger deploy
               </Button>

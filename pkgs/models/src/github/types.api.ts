@@ -1,5 +1,7 @@
 import type { Res } from '@specfy/core';
 
+import type { SyncConfigDocumentation, SyncConfigStack } from '../sync.js';
+
 // GET /github/repos
 export interface ApiGitHubRepo {
   id: number;
@@ -63,6 +65,13 @@ export type PostLinkToGitHubProject = Res<{
     orgId: string;
     projectId: string;
     repository: string | null;
+    settings?:
+      | {
+          branch?: string | undefined;
+          documentation?: SyncConfigDocumentation | undefined;
+          stack?: SyncConfigStack | undefined;
+        }
+      | undefined;
   };
   Success: {
     done: true;

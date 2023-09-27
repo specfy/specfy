@@ -31,19 +31,26 @@ export class JobDeploy extends Job {
       return;
     }
 
-    if (!job.Project.githubRepository) {
+    // Just make sure the project wasn't uninstalled in the meantime
+    if (job.Project.Sources.length <= 0) {
       this.mark('failed', 'project_not_installed');
       return;
     }
 
-    const projConfig = config.project || job.Project.config;
-    const ref = config.hook?.ref || projConfig.branch;
-    const [owner, repo] = job.Project.githubRepository.split('/');
+    const source = job.Project.Sources.find(
+      (src) => src.id === config.sourceId
+    );
+    if (!source) {
+      this.mark('failed', 'project_not_installed');
+      return;
+    }
 
-    this.l.info('Configuration', {
-      ref,
-      job: job.config,
-    });
+    const settings = config.settings;
+    const ref = config.hook?.ref || settings.branch;
+    const identifier = config.url;
+    const [owner, repo] = identifier.split('/');
+
+    this.l.info('Configuration', { ref, job: job.config });
 
     // Acquire a special short lived token that allow us to clone the repository
     try {
@@ -117,7 +124,7 @@ export class JobDeploy extends Job {
     try {
       l.info('Cloning repository...');
       const res =
-        await $`git clone --branch ${projConfig.branch} https://x-access-token:${this.token}@github.com/${config.url}.git --depth 1 ${this.folderName}`;
+        await $`git clone --branch ${settings.branch} https://x-access-token:${this.token}@github.com/${config.url}.git --depth 1 ${this.folderName}`;
 
       if (res.exitCode !== 0) {
         this.mark('failed', 'unknown');
@@ -151,10 +158,10 @@ export class JobDeploy extends Job {
         jobId: job.id,
         token: key.id,
         root: this.folderName,
-        stackEnabled: projConfig.stack.enabled,
-        stackPath: path.join(this.folderName, projConfig.stack.path),
-        docEnabled: projConfig.documentation.enabled,
-        docPath: path.join(this.folderName, projConfig.documentation.path),
+        stackEnabled: settings.stack.enabled,
+        stackPath: path.join(this.folderName, settings.stack.path),
+        docEnabled: settings.documentation.enabled,
+        docPath: path.join(this.folderName, settings.documentation.path),
         autoLayout: config.autoLayout === true,
         hostname: !isProd
           ? envs.API_HOSTNAME?.replace('localhost', '127.0.0.1')
@@ -206,7 +213,7 @@ export class JobDeploy extends Job {
 
         l.info('Updating GitHub deployment status');
         const mark = this.getMark();
-        const [owner, repo] = job.Project!.githubRepository!.split('/');
+        const [owner, repo] = job.config.url.split('/');
         const projUrl = `${envs.APP_HOSTNAME}/${job.orgId}/${
           job.Project!.slug
         }`;

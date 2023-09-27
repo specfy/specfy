@@ -3,6 +3,8 @@ import { App } from 'octokit';
 
 import type { Webhooks } from '@octokit/webhooks';
 
+export { Octokit } from 'octokit';
+
 const secret = envs.GITHUB_WEBHOOKS_SECRET;
 const app = new App({
   appId: envs.GITHUB_CLIENT_APPID,
