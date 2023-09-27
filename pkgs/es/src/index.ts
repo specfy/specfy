@@ -33,13 +33,16 @@ export async function init() {
   }
 }
 
-export async function insertDependencies(
-  project: Projects,
-  analyser: AnalyserJson
-) {
+export async function insertDependencies({
+  project,
+  stack,
+}: {
+  project: Projects;
+  stack: AnalyserJson;
+}) {
   // Missing file provenance
   const dedup = new Map<string, AnalyserJson['dependencies'][0]>();
-  for (const child of analyser.childs) {
+  for (const child of stack.childs) {
     for (const dep of child.dependencies) {
       const key = dep.join('|');
       dedup.set(key, dep);

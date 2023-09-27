@@ -47,5 +47,9 @@ it('should fail to get an user', async () => {
 ## Database
 
 ```sh
+# Run migration
 npm run db:migrate
+
+# Create migration
+npm run db:migrate:create
 ```

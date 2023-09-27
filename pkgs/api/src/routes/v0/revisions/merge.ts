@@ -1,4 +1,4 @@
-import { l, nanoid, omit } from '@specfy/core';
+import { l, nanoid, omit, sentry } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import { insertDependencies } from '@specfy/es';
 import {
@@ -253,11 +253,15 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       });
 
       if (rev.stack) {
-        // TODO: do that async
-        const project = await prisma.projects.findUnique({
-          where: { id: rev.projectId },
-        });
-        insertDependencies(project!, rev.stack);
+        try {
+          // TODO: do that async
+          const project = await prisma.projects.findUnique({
+            where: { id: rev.projectId },
+          });
+          await insertDependencies({ project: project!, stack: rev.stack });
+        } catch (err) {
+          sentry.captureException(err);
+        }
       }
 
       return res.status(200).send({
