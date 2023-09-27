@@ -1,5 +1,6 @@
 import { l, nanoid, omit } from '@specfy/core';
 import { prisma } from '@specfy/db';
+import { insertDependencies } from '@specfy/es';
 import {
   findAllBlobsWithParent,
   recomputeOrgGraph,
@@ -250,6 +251,15 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         data: { updatedAt: new Date() },
         where: { id: rev.projectId },
       });
+
+      if (rev.stack) {
+        // TODO: do that async
+        const project = await prisma.projects.findUnique({
+          where: { id: rev.projectId },
+        });
+        insertDependencies(project!, rev.stack);
+      }
+
       return res.status(200).send({
         data: {
           done: true,

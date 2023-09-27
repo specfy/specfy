@@ -37,6 +37,7 @@
     "@specfy/core": "file:../core",
     "@specfy/db": "file:../db",
     "@specfy/emails": "file:../emails",
+    "@specfy/es": "file:../es",
     "@specfy/github": "file:../github",
     "@specfy/github-sync": "file:../github-sync",
     "@specfy/models": "file:../models",
