@@ -9,7 +9,7 @@
   ],
   "scripts": {
     "build": "tsc -p tsconfig.json && tsup",
-    "build:watch": "tsc -p tsconfig.json; (tsc -p tsconfig.json -w --preserveWatchOutput & tsup --watch)",
+    "build:watch": "tsup --watch",
     "__dev": "dotenv -e ../../.env npx email dev -p 3001 -d src/emails",
     "export": "email export"
   },

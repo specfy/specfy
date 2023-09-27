@@ -7,6 +7,7 @@
   "scripts": {
     "test": "turbo run test",
     "build": "turbo run build",
+    "build:watch": "turbo build --filter='@specfy/emails' && tsc -b -w --preserveWatchOutput",
     "dev": "turbo run dev",
     "test:ci": "turbo run test:ci",
     "db:migrate": "turbo run db:migrate",
