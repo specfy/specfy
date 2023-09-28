@@ -1,7 +1,6 @@
 import type { Pagination, Res } from '@specfy/core';
 
 import type { DBProject } from './types.js';
-import type { SyncConfigDocumentation, SyncConfigStack } from '../sync.js';
 
 export type ApiProject = DBProject;
 export type ApiProjectList = Omit<
@@ -28,15 +27,7 @@ export type ListProjects = Res<{
 
 // POST /
 export type PostProject = Res<{
-  Body: Pick<ApiProject, 'name' | 'orgId'> & {
-    config?:
-      | {
-          branch?: string | undefined;
-          documentation?: SyncConfigDocumentation | undefined;
-          stack?: SyncConfigStack | undefined;
-        }
-      | undefined;
-  };
+  Body: Pick<ApiProject, 'name' | 'orgId'>;
   Success: { data: Pick<ApiProject, 'id' | 'slug'> };
 }>;
 

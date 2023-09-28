@@ -10,7 +10,6 @@ import {
   metrics,
   sentry,
 } from '@specfy/core';
-import { initSocket } from '@specfy/socket';
 import rawBody from 'fastify-raw-body';
 
 import { TransactionError, notFound, serverError } from './common/errors.js';
@@ -136,8 +135,6 @@ export default async (f: FastifyInstance, opts: FastifyPluginOptions) => {
   });
 
   await routes(f, opts);
-
-  initSocket(f.server);
 };
 
 export const options: FastifyServerOptions = {

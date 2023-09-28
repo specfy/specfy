@@ -16,4 +16,6 @@ export * from './perms';
 export * from './policies';
 export * from './projects';
 export * from './revisions';
+export * from './sources';
 export * from './users';
+export * from './helpers';

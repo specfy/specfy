@@ -38,6 +38,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       const job = await prisma.$transaction(async (tx) => {
         const proj = await tx.projects.findUnique({
           where: { id: data.projectId },
+          include: { Sources: true },
         });
 
         if (!proj) {
@@ -45,7 +46,9 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         }
 
         if (data.type === 'deploy') {
-          if (!proj.githubRepository) {
+          // TODO: handle multiple sources
+          const source = proj.Sources.length > 0 ? proj.Sources[0] : null;
+          if (!source) {
             return 'no_project_repository';
           }
 
@@ -54,8 +57,9 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
             projectId: data.projectId,
             userId: me.id,
             config: {
-              url: proj.githubRepository,
-              project: proj.config,
+              sourceId: source.id,
+              url: source.identifier,
+              settings: source.settings,
             },
             tx,
           });

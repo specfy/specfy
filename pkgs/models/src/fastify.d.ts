@@ -4,6 +4,7 @@ import type { InvitationsWithOrgAndUser } from './invitations';
 import type { JobWithUserAndRevision } from './jobs';
 import type { PermsWithOrg } from './perms';
 import type { RevisionWithProject } from './revisions';
+import type { SourceWithProject } from './sources';
 import type {
   preHandlerAsyncHookHandler,
   preHandlerHookHandler,
@@ -35,6 +36,7 @@ declare module 'fastify' {
     invitation?: InvitationsWithOrgAndUser;
     flow?: Flows;
     job?: JobWithUserAndRevision;
+    source?: SourceWithProject;
   }
 
   // eslint-disable-next-line @typescript-eslint/no-empty-interface

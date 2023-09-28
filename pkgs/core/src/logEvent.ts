@@ -1,6 +1,6 @@
 import { LogSnag } from 'logsnag';
 
-import { envs } from './env.js';
+import { envs, isTest } from './env.js';
 import { l } from './logger.js';
 import { metrics } from './metric.js';
 
@@ -61,7 +61,7 @@ export async function logEvent<TKey extends keyof LogEvents>(
   name: TKey,
   obj: LogEvents[TKey]
 ) {
-  if (process.env.VITEST) {
+  if (isTest) {
     return;
   }
 

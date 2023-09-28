@@ -10,10 +10,15 @@ import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 
 import type { FieldsErrors } from '@specfy/core';
-import type { ApiProject, ApiGitHubRepo, ApiOrg } from '@specfy/models';
+import type { ApiGitHubRepo, ApiOrg, ApiSource } from '@specfy/models';
 
-import { createProject, linkToGitHubRepo } from '@/api';
-import { handleErrors, isError } from '@/api/helpers';
+import {
+  createProject,
+  createSource,
+  getDefaultSettings,
+  handleErrors,
+  isError,
+} from '@/api';
 import { i18n } from '@/common/i18n';
 import { socket } from '@/common/socket';
 import { titleSuffix } from '@/common/string';
@@ -41,7 +46,9 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   const [repo, setRepo] = useState<ApiGitHubRepo>();
   const [errors, setErrors] = useState<FieldsErrors>({});
   const [open, setOpen] = useState(false);
-  const [config, setConfig] = useState<ApiProject['config']>();
+  const [settings, setSettings] = useState<ApiSource['settings']>(() => {
+    return getDefaultSettings();
+  });
 
   const onFinish: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
@@ -49,7 +56,6 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
     const res = await createProject({
       name,
       orgId: params.org_id,
-      config,
     });
     if (isError(res)) {
       return handleErrors(res, toast, setErrors);
@@ -62,10 +68,12 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
 
     const hasGitHub = repo && repo.id !== -1;
     if (hasGitHub) {
-      const link = await linkToGitHubRepo({
+      const link = await createSource({
         orgId: org.id,
         projectId: res.data.id,
-        repository: repo.fullName,
+        type: 'github',
+        settings: settings!,
+        identifier: repo.fullName,
       });
       if (isError(link)) {
         toast.add({ title: i18n.errorOccurred, status: 'error' });
@@ -157,7 +165,11 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
               </Collapsible.Trigger>
 
               <Collapsible.Content>
-                <SyncConfiguration errors={errors} onChange={setConfig} />
+                <SyncConfiguration
+                  errors={errors}
+                  onChange={setSettings}
+                  settings={settings}
+                />
               </Collapsible.Content>
             </Collapsible.Root>
           </div>

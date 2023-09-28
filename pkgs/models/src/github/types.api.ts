@@ -41,9 +41,7 @@ export type GetGitHubMembers = Res<{
   Querystring: {
     org: string;
   };
-  Success: {
-    data: ApiGitHubMember[];
-  };
+  Success: { data: ApiGitHubMember[] };
 }>;
 
 // POST /github/link_org
@@ -52,27 +50,11 @@ export type PostLinkToGitHubOrg = Res<{
     orgId: string;
     installationId: number | null;
   };
-  Success: {
-    done: true;
-  };
-}>;
-
-// POST /github/link_project
-export type PostLinkToGitHubProject = Res<{
-  Body: {
-    orgId: string;
-    projectId: string;
-    repository: string | null;
-  };
-  Success: {
-    done: true;
-  };
+  Success: { done: true };
 }>;
 
 // POST /github/webhooks
 export type PostGitHubWebhook = Res<{
   Body: any;
-  Success: {
-    done: true;
-  };
+  Success: { done: true };
 }>;

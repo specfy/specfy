@@ -17,6 +17,7 @@ import policies from './v0/policies/index.js';
 import projects from './v0/projects/index.js';
 import revisions from './v0/revisions/index.js';
 import root from './v0/root/index.js';
+import sources from './v0/sources/index.js';
 import stripe from './v0/stripe/index.js';
 import users from './v0/users/index.js';
 
@@ -41,6 +42,7 @@ export const routes: FastifyPluginAsync = async (f) => {
   await f.register(policies, { prefix: '/0' });
   await f.register(projects, { prefix: '/0' });
   await f.register(revisions, { prefix: '/0' });
+  await f.register(sources, { prefix: '/0' });
   await f.register(stripe, { prefix: '/0' });
   await f.register(users, { prefix: '/0' });
 

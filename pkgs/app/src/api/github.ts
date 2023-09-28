@@ -4,7 +4,6 @@ import type {
   ListGitHubInstallations,
   ListGitHubRepos,
   PostLinkToGitHubOrg,
-  PostLinkToGitHubProject,
 } from '@specfy/models';
 
 import { qcli } from '@/common/query';
@@ -24,22 +23,6 @@ export async function linkToGitHubOrg(
   if (res.status === 200) {
     void qcli.invalidateQueries(['listOrgs']);
     void qcli.invalidateQueries(['getGithubRepos', data.installationId]);
-  }
-
-  return json;
-}
-
-export async function linkToGitHubRepo(
-  data: PostLinkToGitHubProject['Body']
-): Promise<PostLinkToGitHubProject['Reply']> {
-  const { res, json } = await fetchApi<PostLinkToGitHubProject>(
-    '/github/link_project',
-    { body: data },
-    'POST'
-  );
-
-  if (res.status === 200) {
-    void qcli.invalidateQueries(['getProject']);
   }
 
   return json;
