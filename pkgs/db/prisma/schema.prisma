@@ -358,20 +358,18 @@ model Policies {
 }
 
 model Projects {
-  id               String   @id @db.VarChar(15)
-  orgId            String   @db.VarChar(36)
-  blobId           String?  @db.VarChar(15)
-  name             String   @db.VarChar(36)
-  slug             String   @db.VarChar(100)
+  id          String  @id @db.VarChar(15)
+  orgId       String  @db.VarChar(36)
+  blobId      String? @db.VarChar(15)
+  name        String  @db.VarChar(36)
+  slug        String  @db.VarChar(100)
   /// [PrismaProseMirror]
-  description      Json     @db.Json
+  description Json    @db.Json
   /// [PrismaProjectsLinks]
-  links            Json     @db.Json
-  githubRepository String?
-  /// [PrismaProjectsConfig]
-  config           Json     @db.Json
-  createdAt        DateTime @default(now()) @db.Timestamp(3)
-  updatedAt        DateTime @updatedAt
+  links       Json    @db.Json
+
+  createdAt DateTime @default(now()) @db.Timestamp(3)
+  updatedAt DateTime @updatedAt
 
   Org  Orgs   @relation(fields: [orgId], references: [id], onDelete: Cascade, onUpdate: NoAction)
   Blob Blobs? @relation(fields: [blobId], references: [id], name: "blob", onDelete: Cascade, onUpdate: NoAction)

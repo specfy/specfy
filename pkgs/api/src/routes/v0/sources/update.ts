@@ -1,5 +1,5 @@
 import { prisma } from '@specfy/db';
-import { schemaProject } from '@specfy/models';
+import { schemaGitHubSettings } from '@specfy/models';
 import { z } from 'zod';
 
 import type { PutSource } from '@specfy/models';
@@ -13,7 +13,7 @@ function QueryVal() {
   return z
     .object({
       name: z.string().max(50),
-      settings: schemaProject.shape.config,
+      settings: schemaGitHubSettings,
     })
     .strict();
 }
@@ -30,12 +30,6 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
 
       const source = req.source!;
       const data: PutSource['Body'] = val.data;
-
-      // Double write until deprecation
-      await prisma.projects.update({
-        data: { config: data.settings },
-        where: { id: source.projectId },
-      });
 
       const up = await prisma.sources.update({
         data: {

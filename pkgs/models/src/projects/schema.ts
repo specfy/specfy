@@ -17,29 +17,11 @@ export const schemaProject = z
     links: z.array(
       z
         .object({
-          title: z.string().max(20),
+          title: z.string().max(30),
           url: z.string().url(),
         })
         .strict()
     ),
-    githubRepository: z.string().nullable(),
-    config: z
-      .object({
-        branch: z.string().max(255),
-        documentation: z
-          .object({
-            enabled: z.boolean(),
-            path: z.string().max(255),
-          })
-          .strict(),
-        stack: z
-          .object({
-            enabled: z.boolean(),
-            path: z.string().max(255),
-          })
-          .strict(),
-      })
-      .strict(),
     createdAt: z.string().datetime(),
     updatedAt: z.string().datetime(),
   })

@@ -36,10 +36,9 @@ function BodyVal(req: FastifyRequest) {
           message: `This slug is already used`,
         });
       }),
-      config: schemaProject.shape.config,
     })
     .strict()
-    .partial({ name: true, slug: true, config: true });
+    .partial({ name: true, slug: true });
 }
 
 const fn: FastifyPluginCallback = (fastify, _, done) => {
@@ -69,15 +68,6 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
           });
 
           await recomputeOrgGraph({ orgId: tmp.orgId, tx });
-
-          return tmp;
-        });
-      } else if (data.config) {
-        project = await prisma.$transaction(async (tx) => {
-          const tmp = await tx.projects.update({
-            data: { config: data.config! },
-            where: { id: project.id },
-          });
 
           return tmp;
         });

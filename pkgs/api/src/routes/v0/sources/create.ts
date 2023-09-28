@@ -13,7 +13,7 @@ import {
   createGitHubActivity,
   createJobDeploy,
   getOrgFromRequest,
-  schemaProject,
+  schemaGitHubSettings,
 } from '@specfy/models';
 import { z } from 'zod';
 
@@ -38,7 +38,7 @@ function QueryVal(req: FastifyRequest) {
       type: z.literal('github'),
       name: z.string().max(50),
       identifier: z.string().max(500).regex(repoRegex),
-      settings: schemaProject.shape.config,
+      settings: schemaGitHubSettings,
     })
     .strict()
     .partial({ name: true })
@@ -100,13 +100,8 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
           );
         }
 
-        // Double write until deprecation
         await tx.projects.update({
-          data: {
-            links,
-            githubRepository: body.identifier,
-            config: body.settings,
-          },
+          data: { links },
           where: { id: body.projectId },
         });
 

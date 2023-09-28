@@ -4,7 +4,6 @@ import type { Projects, Prisma, Activities, Users } from '@specfy/db';
 
 import { createKey } from '../keys/model.js';
 
-import type { DBProject } from './types.js';
 import type { ActionProject } from '../activities/types.js';
 
 export async function createProjectBlob({
@@ -114,18 +113,4 @@ export async function createProjectActivity({
       createdAt: new Date(),
     },
   });
-}
-
-export function getDefaultConfig(): DBProject['config'] {
-  return {
-    branch: 'main',
-    documentation: {
-      enabled: true,
-      path: '/',
-    },
-    stack: {
-      enabled: true,
-      path: '/',
-    },
-  };
 }
