@@ -26,6 +26,9 @@ export const ProjectEvents: React.FC = () => {
     if (window.location.pathname.endsWith('/welcome')) {
       return;
     }
+    if (data.job.type !== 'deploy') {
+      return;
+    }
 
     setTimeout(() => {
       const job = data.job;

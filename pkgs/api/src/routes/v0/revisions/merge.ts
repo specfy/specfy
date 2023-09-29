@@ -252,7 +252,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         where: { id: rev.projectId },
       });
 
-      createJobProjectIndex({
+      await createJobProjectIndex({
         orgId: rev.orgId,
         projectId: rev.projectId,
         userId: me.id,

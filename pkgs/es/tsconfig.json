@@ -14,9 +14,6 @@
       "path": "../core"
     },
     {
-      "path": "../db"
-    },
-    {
       "path": "../models"
     },
   ]

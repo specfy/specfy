@@ -15,6 +15,7 @@ import type {
   ApiRevision,
   BlockBanner,
   BlockLevelOne,
+  ComponentTech,
 } from '@specfy/models';
 
 import type { ResSeedComponents } from './components.js';
@@ -135,7 +136,7 @@ export async function seedRevisions(
       portTarget: 'tl',
     });
     edges[0].write = false;
-    const techs = [{ id: 'golang' }, ...components.api.techs];
+    const techs: ComponentTech[] = [{ id: 'golang' }, ...components.api.techs];
     techs.pop();
 
     const blob3 = await createComponentBlob({

@@ -17,12 +17,9 @@
   "license": "MIT",
   "dependencies": {
     "@elastic/elasticsearch": "8.9.0",
-    "@specfy/models": "file:../models",
-    "@specfy/db": "file:../db",
     "@specfy/core": "file:../core"
   },
   "devDependencies": {
-    "@specfy/stack-analyser": "1.5.5",
     "typescript": "5.1.6"
   }
 }

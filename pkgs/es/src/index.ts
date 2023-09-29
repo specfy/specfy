@@ -4,7 +4,6 @@ import { client } from './client.js';
 
 import type { estypes } from '@elastic/elasticsearch';
 
-export * from './mergeStack.js';
 export { client };
 
 const indices: estypes.IndicesCreateRequest[] = [
@@ -27,7 +26,7 @@ const indices: estypes.IndicesCreateRequest[] = [
       properties: {
         orgId: { type: 'text' },
         projectId: { type: 'text' },
-        sourceId: { type: 'text' },
+        jobId: { type: 'text' },
         type: { type: 'text' },
         name: { type: 'text' },
       },
@@ -35,7 +34,7 @@ const indices: estypes.IndicesCreateRequest[] = [
   },
 ];
 
-export async function initElasticsearch() {
+export async function start() {
   try {
     await Promise.all(
       indices.map((index) => {
