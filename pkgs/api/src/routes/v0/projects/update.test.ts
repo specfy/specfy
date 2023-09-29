@@ -130,27 +130,4 @@ describe('PUT /projects/:project_id', () => {
     isValidationError(res.json);
     expect(res.statusCode).toBe(400);
   });
-
-  it('should update config', async () => {
-    const { token, org, project } = await seedWithProject();
-
-    const config = {
-      branch: 'top',
-      stack: { enabled: false, path: '/tip/top' },
-      documentation: { enabled: false, path: '/foobar' },
-    };
-    const res = await t.fetch.put(`/0/projects/${project.id}`, {
-      token,
-      Querystring: { org_id: org.id },
-      Body: {
-        config,
-      },
-    });
-
-    isSuccess(res.json);
-    expect(res.statusCode).toBe(200);
-    expect(res.json.data.config).toStrictEqual({
-      ...config,
-    });
-  });
 });

@@ -14,8 +14,8 @@ export async function createGitHubActivity({
 }: {
   user: Users;
   action: ActionGitHub;
-  org: Orgs;
-  project?: Projects;
+  org: Pick<Orgs, 'id'>;
+  project?: Pick<Projects, 'id'>;
   tx: Prisma.TransactionClient;
   activityGroupId?: string | null;
 }): Promise<Activities> {

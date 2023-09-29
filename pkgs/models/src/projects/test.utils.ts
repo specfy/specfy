@@ -2,8 +2,6 @@ import { nanoid, slugify } from '@specfy/core';
 
 import type { Orgs } from '@specfy/db';
 
-import { getDefaultConfig } from './model.js';
-
 import type { DBProject } from './types.js';
 import type { ApiBlobProject } from '../blobs/types.api.js';
 
@@ -16,9 +14,7 @@ export function getBlobProject(org: Pick<Orgs, 'id'>): DBProject {
     name,
     slug: slugify(name),
     blobId: null,
-    config: getDefaultConfig(),
     description: { type: 'doc', content: [] },
-    githubRepository: null,
     links: [],
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),

@@ -54,18 +54,6 @@ describe('GET /projects/:project_id', () => {
       createdAt: expect.toBeIsoDate(),
       updatedAt: expect.toBeIsoDate(),
       links: [],
-      githubRepository: null,
-      config: {
-        branch: 'main',
-        documentation: {
-          enabled: true,
-          path: '/',
-        },
-        stack: {
-          enabled: true,
-          path: '/',
-        },
-      },
     });
   });
 
