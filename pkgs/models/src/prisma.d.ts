@@ -12,6 +12,7 @@ import type {
   BlockLevelZero,
   DBActivity,
   DocumentType,
+  JobProjectIndexConfig,
 } from './index.js';
 import type { SourceSettingsGithub } from './sources/types.js';
 
@@ -41,7 +42,7 @@ declare global {
     type PrismaFlowsFlow = ComputedFlow;
 
     // Jobs
-    type PrismaJobsConfig = JobDeployConfig;
+    type PrismaJobsConfig = JobDeployConfig | JobProjectIndexConfig;
     type PrismaJobsReason = JobReason;
 
     // Perms

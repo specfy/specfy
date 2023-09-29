@@ -21,7 +21,12 @@ type LogEvents = {
   'github.unlink_project': { userId: string; orgId: string; projectId: string };
   'invitation.accepted': { userId: string; orgId: string };
   'invitation.created': { userId: string; orgId: string };
-  'jobs.created': { userId: string; orgId: string; projectId: string };
+  'jobs.created': {
+    userId: string;
+    orgId: string;
+    projectId: string;
+    type: 'deploy' | 'projectIndex';
+  };
   'orgs.created': { userId: string; orgId: string };
   'orgs.deleted': { userId: string; orgId: string };
   'projects.created': { userId: string; orgId: string; projectId: string };

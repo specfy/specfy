@@ -1,73 +1,49 @@
-import { Client } from '@elastic/elasticsearch';
-import { envs, l, nanoid } from '@specfy/core';
+import { l } from '@specfy/core';
 
-import type { Projects } from '@specfy/db';
-import type { AnalyserJson } from '@specfy/stack-analyser';
+import { client } from './client.js';
 
-export const client = new Client({
-  nodes: envs.ELASTICSEARCH_HOST,
-  requestTimeout: 5000,
-  maxRetries: 1,
-});
+import type { estypes } from '@elastic/elasticsearch';
+
+export * from './mergeStack.js';
+export { client };
+
+const indices: estypes.IndicesCreateRequest[] = [
+  {
+    index: 'dependencies',
+    mappings: {
+      properties: {
+        orgId: { type: 'text' },
+        projectId: { type: 'text' },
+        sourceId: { type: 'text' },
+        type: { type: 'text' },
+        name: { type: 'text' },
+        version: { type: 'text' },
+      },
+    },
+  },
+  {
+    index: 'tech',
+    mappings: {
+      properties: {
+        orgId: { type: 'text' },
+        projectId: { type: 'text' },
+        sourceId: { type: 'text' },
+        type: { type: 'text' },
+        name: { type: 'text' },
+      },
+    },
+  },
+];
 
 export async function initElasticsearch() {
   try {
-    await client.indices.create(
-      {
-        index: 'dependencies',
-        mappings: {
-          properties: {
-            orgId: { type: 'text' },
-            projectId: { type: 'text' },
-            type: { type: 'text' },
-            name: { type: 'text' },
-            version: { type: 'text' },
-          },
-        },
-      },
-      { ignore: [400] }
+    await Promise.all(
+      indices.map((index) => {
+        return client.indices.create(index, { ignore: [400] });
+      })
     );
   } catch (err) {
     l.error(err);
     throw new Error('Error in es init()');
-  }
-}
-
-export async function insertDependencies({
-  project,
-  stack,
-}: {
-  project: Projects;
-  stack: AnalyserJson;
-}) {
-  // Missing file provenance
-  const dedup = new Map<string, AnalyserJson['dependencies'][0]>();
-  for (const child of stack.childs) {
-    for (const dep of child.dependencies) {
-      const key = dep.join('|');
-      dedup.set(key, dep);
-    }
-  }
-  l.info({ size: dedup.size }, 'Preparing dependencies to ES');
-
-  const deps = Array.from(dedup.values());
-  const operations = deps.flatMap((doc) => [
-    { index: { _index: 'dependencies', _id: nanoid(20) } },
-    {
-      orgId: project.orgId,
-      projectId: project.id,
-      type: doc[0],
-      name: doc[1],
-      version: doc[2],
-    },
-  ]);
-  const bulkResponse = await client.bulk({ refresh: true, operations });
-
-  l.info({ size: operations.length }, 'Sending dependencies to ES');
-
-  if (bulkResponse.errors) {
-    bulkResponse.items.forEach((action) => {
-      l.error(action);
-    });
   }
 }

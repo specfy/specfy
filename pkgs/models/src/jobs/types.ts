@@ -9,6 +9,7 @@ export interface JobDeployConfig {
   hook?: { id: string; ref: string };
   settings: ApiSource['settings'];
 }
+export type JobProjectIndexConfig = Record<string, never>;
 
 export type JobWithOrgProject = Prisma.JobsGetPayload<{
   include: {

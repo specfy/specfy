@@ -22,7 +22,7 @@
     "@specfy/core": "file:../core"
   },
   "devDependencies": {
-    "@specfy/stack-analyser": "1.5.4",
+    "@specfy/stack-analyser": "1.5.5",
     "typescript": "5.1.6"
   }
 }
