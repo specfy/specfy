@@ -13,11 +13,7 @@ export interface JobDeployConfig {
 export type JobWithOrgProject = Prisma.JobsGetPayload<{
   include: {
     Org: true;
-    Project: {
-      include: {
-        Sources: { select: { id: true } };
-      };
-    };
+    Project: true;
     User: true;
   };
 }>;

@@ -18,6 +18,9 @@
       "path": "./pkgs/github"
     },
     {
+      "path": "./pkgs/jobs"
+    },
+    {
       "path": "./pkgs/sync"
     },
     {

@@ -7,7 +7,7 @@
   },
   "include": [
     "src",
-    "../models/src/prisma.d.ts"
+    "../models/src/prisma.d.ts",
   ],
   "references": [
     {
@@ -17,10 +17,7 @@
       "path": "../db"
     },
     {
-      "path": "../sync"
-    },
-    {
-      "path": "../socket"
+      "path": "../models"
     },
   ]
 }

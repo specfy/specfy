@@ -8,13 +8,7 @@
   "include": [
     "src",
     "../models/src/prisma.d.ts",
-    "../models/src/fastify.d.ts",
-    "src/test/vitest.d.ts"
   ],
-  "ts-node": {
-    "esm": true,
-    "files": true
-  },
   "references": [
     {
       "path": "../core"
@@ -26,19 +20,10 @@
       "path": "../github"
     },
     {
-      "path": "../jobs"
-    },
-    {
-      "path": "../models"
-    },
-    {
       "path": "../sync"
     },
     {
       "path": "../socket"
     },
-    {
-      "path": "../emails"
-    }
-  ],
+  ]
 }

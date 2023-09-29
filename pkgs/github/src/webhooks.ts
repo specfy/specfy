@@ -8,9 +8,15 @@ import {
 
 import { webhookService as ws } from './app.js';
 
-const l = logger.child({ svc: 'github-webhook' });
+const l = logger.child({ svc: 'github' });
 
-export function listen() {
+export function stop() {
+  // nothing
+}
+
+export function start() {
+  l.info('GitHub Service Starting');
+
   ws.onAny(({ id, payload, name }) => {
     if ('action' in payload) {
       l.info(`received "${name}.${payload.action}"`, { id });

@@ -37,6 +37,7 @@
     "@specfy/db": "file:../db",
     "@specfy/emails": "file:../emails",
     "@specfy/github": "file:../github",
+    "@specfy/jobs": "file:../jobs",
     "@specfy/sync": "file:../sync",
     "@specfy/models": "file:../models",
     "@specfy/socket": "file:../socket",

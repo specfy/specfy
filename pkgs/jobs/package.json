@@ -1,5 +1,5 @@
 {
-  "name": "@specfy/github",
+  "name": "@specfy/jobs",
   "version": "0.0.1",
   "description": "",
   "main": "build/index.js",
@@ -17,9 +17,10 @@
   "dependencies": {
     "@specfy/core": "file:../core",
     "@specfy/db": "file:../db",
-    "@specfy/models": "file:../models",
-    "@octokit/core": "5.0.0",
-    "@octokit/webhooks": "12.0.3"
+    "@specfy/github": "file:../github",
+    "@specfy/socket": "file:../socket",
+    "@specfy/sync": "file:../sync",
+    "execa": "7.2.0"
   },
   "devDependencies": {
     "typescript": "5.1.6"
