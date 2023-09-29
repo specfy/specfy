@@ -3,14 +3,14 @@ import path from 'node:path';
 
 import { envs, isProd, nanoid, sentry } from '@specfy/core';
 import { prisma } from '@specfy/db';
-import { sync, ErrorSync } from '@specfy/github-sync';
+import { github } from '@specfy/github';
+import { sync, ErrorSync } from '@specfy/sync';
 import { $ } from 'execa';
 import { Octokit } from 'octokit';
 
 import type { JobWithOrgProject } from '@specfy/models';
 
 import { Job } from '../Job.js';
-import { github } from '../app.js';
 
 export class JobDeploy extends Job {
   folderName?: string;
@@ -31,15 +31,11 @@ export class JobDeploy extends Job {
       return;
     }
 
-    // Just make sure the project wasn't uninstalled in the meantime
-    if (job.Project.Sources.length <= 0) {
-      this.mark('failed', 'project_not_installed');
-      return;
-    }
+    const source = await prisma.sources.findFirst({
+      where: { id: config.sourceId },
+    });
 
-    const source = job.Project.Sources.find(
-      (src) => src.id === config.sourceId
-    );
+    // Just make sure the project wasn't uninstalled in the meantime
     if (!source) {
       this.mark('failed', 'project_not_installed');
       return;

@@ -1,4 +1,4 @@
-import { nanoid, envs } from '@specfy/core';
+import { nanoid, envs, l as logger } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import { checkInheritedPermissions } from '@specfy/models';
 import JWT from 'jsonwebtoken';
@@ -7,10 +7,21 @@ import { Server } from 'socket.io';
 import type { PayloadAuth, SocketServer } from './types.js';
 import type http from 'node:http';
 
+const l = logger.child({ svc: 'github' });
+
 export let io: SocketServer;
 
-export function initSocket(server: http.Server) {
-  // const httpServer = http.createServer();
+export function stop() {
+  if (!io) {
+    return;
+  }
+
+  io.close();
+}
+
+export function start(server: http.Server) {
+  l.info('Socket Service Starting');
+
   io = new Server(server, {
     path: '/ws',
     serveClient: false,
@@ -108,9 +119,7 @@ export function initSocket(server: http.Server) {
 
 async function getSocketPerms(userId: string) {
   return await prisma.perms.findMany({
-    where: {
-      userId: userId,
-    },
+    where: { userId: userId },
     include: { Org: { include: { Projects: { select: { id: true } } } } },
   });
 }

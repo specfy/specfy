@@ -1,7 +1,8 @@
 import { envs, isTest } from '@specfy/core';
-import { initElasticsearch } from '@specfy/es';
-import { start, stop } from '@specfy/github';
-import { initSocket } from '@specfy/socket';
+import * as es from '@specfy/es';
+import * as github from '@specfy/github';
+import * as jobs from '@specfy/jobs';
+import * as socket from '@specfy/socket';
 import closeWithGrace from 'close-with-grace';
 import Fastify from 'fastify';
 
@@ -28,8 +29,14 @@ const closeListeners = closeWithGrace(
 );
 
 app.addHook('onClose', async (_, done) => {
-  closeListeners.uninstall();
-  await stop();
+  try {
+    closeListeners.uninstall();
+    github.stop();
+    await jobs.stop();
+    socket.stop();
+  } catch (err) {
+    console.error(err);
+  }
   done();
 });
 
@@ -42,10 +49,11 @@ app.listen({ host: '0.0.0.0', port: parseInt(envs.PORT, 10) }, (err) => {
 });
 
 void (async () => {
-  await start();
+  github.start();
+  jobs.start();
 
   if (!isTest) {
-    initSocket(app.server);
-    await initElasticsearch();
+    socket.start(app.server);
+    await es.start();
   }
 })();

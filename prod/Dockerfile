@@ -14,8 +14,10 @@ COPY pkgs/api/package.json ./pkgs/api/package.json
 COPY pkgs/core/package.json ./pkgs/core/package.json
 COPY pkgs/db/package.json ./pkgs/db/package.json
 COPY pkgs/emails/package.json ./pkgs/emails/package.json
+COPY pkgs/es/package.json ./pkgs/es/package.json
 COPY pkgs/github/package.json ./pkgs/github/package.json
-COPY pkgs/github-sync/package.json ./pkgs/github-sync/package.json
+COPY pkgs/jobs/package.json ./pkgs/jobs/package.json
+COPY pkgs/sync/package.json ./pkgs/sync/package.json
 COPY pkgs/models/package.json ./pkgs/models/package.json
 COPY pkgs/socket/package.json ./pkgs/socket/package.json
 

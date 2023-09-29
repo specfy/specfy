@@ -1,7 +1,9 @@
 import { l as logger, metrics } from '@specfy/core';
 import { prisma } from '@specfy/db';
+import { io } from '@specfy/socket';
 
 import { JobDeploy } from './jobs/deploy.js';
+import { JobProjectIndex } from './jobs/projectIndex.js';
 
 import type { Job } from './Job.js';
 
@@ -9,7 +11,7 @@ let interval: NodeJS.Timeout;
 const running: Job[] = [];
 const l = logger.child({ svc: 'jobs' });
 
-export async function off() {
+export async function stop() {
   l.info('Exiting');
   if (interval) {
     clearInterval(interval);
@@ -18,17 +20,20 @@ export async function off() {
   await Promise.all(running);
 }
 
-export function listen() {
-  l.info('Service Starting');
+export function start() {
+  l.info('Job Service Starting');
 
   // TODO: replace this with a queue and/or Listen/notify
   interval = setInterval(async () => {
     metrics.increment('jobs.loop');
+
     await prisma.$transaction(async (tx) => {
       const next = await tx.jobs.findFirst({
         where: { status: 'pending' },
         orderBy: { createdAt: 'asc' },
       });
+
+      io.to(`project-b03tMzwd5A`).emit('job.finish', {} as any);
       if (!next) {
         return;
       }
@@ -42,17 +47,25 @@ export function listen() {
         where: { id: next.id },
         include: {
           Org: true,
-          Project: {
-            include: {
-              Sources: { select: { id: true }, where: { type: 'github' } },
-            },
-          },
+          Project: true,
           User: true,
         },
       });
 
       try {
-        const job = new JobDeploy(full);
+        let job: Job;
+        switch (full.type) {
+          case 'deploy': {
+            job = new JobDeploy(full);
+            break;
+          }
+
+          case 'projectIndex': {
+            job = new JobProjectIndex(full);
+            break;
+          }
+        }
+
         running.push(job);
         (() => job.start())();
       } catch (e) {

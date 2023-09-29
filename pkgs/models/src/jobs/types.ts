@@ -14,11 +14,7 @@ export type JobProjectIndexConfig = Record<string, never>;
 export type JobWithOrgProject = Prisma.JobsGetPayload<{
   include: {
     Org: true;
-    Project: {
-      include: {
-        Sources: { select: { id: true } };
-      };
-    };
+    Project: true;
     User: true;
   };
 }>;

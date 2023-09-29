@@ -2,9 +2,9 @@ import path from 'node:path';
 
 import { dirname, envs, l } from '@specfy/core';
 import { prisma } from '@specfy/db';
-import { sync } from '@specfy/github-sync';
 import { createProject, getDefaultConfig } from '@specfy/models';
 import { getBlobProject } from '@specfy/models/src/projects/test.utils.js';
+import { sync } from '@specfy/sync';
 
 import type { Orgs, Users } from '@specfy/db';
 
