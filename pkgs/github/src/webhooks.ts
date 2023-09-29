@@ -19,24 +19,15 @@ export function listen() {
 
   ws.on('repository.renamed', async ({ id, payload }) => {
     const prev = payload.changes.repository.name.from;
-    const next = payload.repository.name;
     const owner = payload.repository.owner;
     const full = payload.repository.full_name;
 
-    // Double write until deprecation
-    const updatedProjects = await prisma.projects.updateMany({
-      where: { githubRepository: `${owner}/${prev}`, name: prev },
-      data: { name: next, githubRepository: full },
-    });
     const updatedSources = await prisma.sources.updateMany({
       where: { type: 'github', identifier: `${owner}/${prev}` },
       data: { name: `GitHub ${full}`, identifier: full },
     });
 
-    l.info(
-      `renamed ${updatedProjects.count} projects, ${updatedSources.count} sources`,
-      { id }
-    );
+    l.info(`renamed ${updatedSources.count} sources`, { id });
   });
 
   ws.on('installation.created', async ({ id, payload }) => {
@@ -100,33 +91,25 @@ export function listen() {
 
     await prisma.$transaction(async (tx) => {
       const p = fullNames.map(async (fullName) => {
-        const list = await tx.projects.findMany({
-          where: {
-            Sources: { some: { type: 'github', identifier: fullName } },
-          },
-          include: { Org: true },
+        const list = await tx.sources.findMany({
+          where: { type: 'github', identifier: fullName },
         });
         l.info(`found ${list.length} projects`, { id });
 
-        // Double write until deprecation
-        const updated = await tx.projects.updateMany({
-          where: { githubRepository: fullName },
-          data: { githubRepository: null },
-        });
         const sources = await prisma.sources.deleteMany({
           where: { type: 'github', identifier: fullName },
         });
-        l.info(`updated ${updated.count} projects, ${sources.count} sources`, {
+        l.info(`updated ${sources.count} sources`, {
           id,
         });
 
         const activityGroupId = nanoid();
         await Promise.all(
-          list.map((project) => {
+          list.map((source) => {
             return createGitHubActivity({
               action: 'Github.unlinked',
-              org: project.Org,
-              project,
+              org: { id: source.orgId },
+              project: { id: source.projectId },
               tx,
               user: userGitHubApp,
               activityGroupId,

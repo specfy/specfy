@@ -23,12 +23,7 @@ const IGNORED_KEYS_MERGE = [
   'orgId',
 ] as const;
 
-export const IGNORED_PROJECT_KEYS_CONST = [
-  ...IGNORED_KEYS,
-  'name',
-  'githubRepository',
-  'config',
-] as const;
+export const IGNORED_PROJECT_KEYS_CONST = [...IGNORED_KEYS, 'name'] as const;
 export const IGNORED_PROJECT_KEYS: ReadonlyArray<
   keyof NonNullable<ApiBlobProject['current']>
 > = IGNORED_PROJECT_KEYS_CONST;

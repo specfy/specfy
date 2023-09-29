@@ -11,8 +11,6 @@ export function toApiProject(proj: Projects): ApiProject {
     name: proj.name,
     slug: proj.slug,
     links: proj.links,
-    config: proj.config,
-    githubRepository: proj.githubRepository,
     createdAt: proj.createdAt.toISOString(),
     updatedAt: proj.updatedAt.toISOString(),
   };
@@ -26,7 +24,6 @@ export function toApiProjectList(
     orgId: proj.orgId,
     name: proj.name,
     slug: proj.slug,
-    githubRepository: proj.githubRepository,
     createdAt: proj.createdAt.toISOString(),
     updatedAt: proj.updatedAt.toISOString(),
     users: proj._count.Perms,

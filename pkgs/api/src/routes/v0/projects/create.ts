@@ -7,7 +7,6 @@ import {
   getOrgFromRequest,
   forbiddenProjectSlug,
   schemaProject,
-  getDefaultConfig,
 } from '@specfy/models';
 import z from 'zod';
 
@@ -75,12 +74,8 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
             orgId: data.orgId,
             name: data.name,
             slug,
-            description: {
-              type: 'doc',
-              content: [],
-            },
+            description: { type: 'doc', content: [] },
             links: [],
-            config: getDefaultConfig(),
           },
           user: req.me!,
           tx,

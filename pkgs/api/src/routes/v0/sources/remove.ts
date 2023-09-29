@@ -25,9 +25,8 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
           (link) => link.title === 'GitHub' && link.url === url
         );
 
-        // Double write until deprecation
         await tx.projects.update({
-          data: { links, githubRepository: null },
+          data: { links },
           where: { id: source.projectId },
         });
 

@@ -52,8 +52,6 @@ declare global {
 
     // Projects
     type PrismaProjectsLinks = DBProject['links'];
-    type PrismaProjectsConfig = DBProject['config'];
-
     // Revisions
     type PrismaRevisionsBlobs = DBRevision['blobs'];
     type PrismaRevisionsStatus = DBRevision['status'];

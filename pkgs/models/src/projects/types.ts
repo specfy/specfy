@@ -1,6 +1,4 @@
 import type { BlockLevelZero } from '../documents';
-import type { SyncConfig } from '../sync.js';
-import type { RequiredDeep } from 'type-fest';
 
 export interface DBProject {
   id: string;
@@ -10,10 +8,6 @@ export interface DBProject {
   name: string;
   description: BlockLevelZero;
   links: DBProjectLink[];
-
-  githubRepository: string | null;
-  config: RequiredDeep<Omit<SyncConfig, 'orgId' | 'projectId'>>;
-
   createdAt: string;
   updatedAt: string;
 }

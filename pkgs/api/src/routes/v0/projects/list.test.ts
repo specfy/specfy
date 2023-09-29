@@ -53,7 +53,6 @@ describe('GET /projects', () => {
         name: project.name,
         orgId: project.orgId,
         slug: project.slug,
-        githubRepository: null,
         users: 1,
         createdAt: expect.toBeIsoDate(),
         updatedAt: expect.toBeIsoDate(),

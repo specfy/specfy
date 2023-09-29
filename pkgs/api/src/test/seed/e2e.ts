@@ -3,7 +3,7 @@ import path from 'node:path';
 import { dirname, envs, l } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import { sync } from '@specfy/github-sync';
-import { createProject } from '@specfy/models';
+import { createProject, getDefaultConfig } from '@specfy/models';
 import { getBlobProject } from '@specfy/models/src/projects/test.utils.js';
 
 import type { Orgs, Users } from '@specfy/db';
@@ -19,7 +19,7 @@ export async function seedE2E({ o1 }: { o1: Orgs }, users: Users[]) {
     where: { projectId: pE2E.id },
   });
 
-  const projConfig = pE2E.config;
+  const projConfig = getDefaultConfig();
   const folderName = path.join(dirname, '../../');
   await sync({
     orgId: o1.id,

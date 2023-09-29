@@ -50,7 +50,6 @@ export type PutProject = Res<{
   Body: {
     name?: string | undefined;
     slug?: string | undefined;
-    config?: ApiProject['config'] | undefined;
   };
   Success: { data: ApiProject };
 }>;
