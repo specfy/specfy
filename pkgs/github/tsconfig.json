@@ -17,7 +17,7 @@
       "path": "../db"
     },
     {
-      "path": "../github-sync"
+      "path": "../sync"
     },
     {
       "path": "../socket"

@@ -18,7 +18,7 @@
       "path": "./pkgs/github"
     },
     {
-      "path": "./pkgs/github-sync"
+      "path": "./pkgs/sync"
     },
     {
       "path": "./pkgs/models"

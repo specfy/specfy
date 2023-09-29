@@ -3,8 +3,8 @@ import path from 'node:path';
 
 import { nanoid, slugify, dirname } from '@specfy/core';
 import { prisma } from '@specfy/db';
-import { syncFolder } from '@specfy/github-sync';
 import { createDocument, getDocumentTypeId } from '@specfy/models';
+import { syncFolder } from '@specfy/sync';
 
 import type { Documents, Orgs, Projects, Users } from '@specfy/db';
 import type { DBDocument, ApiDocument } from '@specfy/models';

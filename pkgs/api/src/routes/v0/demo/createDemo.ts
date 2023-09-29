@@ -1,12 +1,12 @@
 import path from 'node:path';
 
 import { dirname, nanoid } from '@specfy/core';
-import { syncFolder } from '@specfy/github-sync';
 import {
   createComponent,
   recomputeOrgGraph,
   createProject,
 } from '@specfy/models';
+import { syncFolder } from '@specfy/sync';
 
 import type { Orgs, Prisma, Users } from '@specfy/db';
 

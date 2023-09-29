@@ -3,7 +3,7 @@ import path from 'node:path';
 
 import { envs, isProd, nanoid, sentry } from '@specfy/core';
 import { prisma } from '@specfy/db';
-import { sync, ErrorSync } from '@specfy/github-sync';
+import { sync, ErrorSync } from '@specfy/sync';
 import { $ } from 'execa';
 import { Octokit } from 'octokit';
 

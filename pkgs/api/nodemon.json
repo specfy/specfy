@@ -3,7 +3,7 @@
     "build/",
     "../core/build",
     "../db/build",
-    "../github-sync/build",
+    "../sync/build",
     "../github/build",
     "../models/build",
     "../socket/build",
