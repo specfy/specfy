@@ -1,19 +1,25 @@
 import type { Jobs, Prisma } from '@specfy/db';
 
-import type { DBProject } from '../projects';
+import type { ApiSource } from '../sources';
 
 export interface JobDeployConfig {
+  sourceId: string;
   url: string;
   autoLayout?: boolean;
-  hook?: {
-    id: string;
-    ref: string;
-  };
-  project: DBProject['config'];
+  hook?: { id: string; ref: string };
+  settings: ApiSource['settings'];
 }
 
 export type JobWithOrgProject = Prisma.JobsGetPayload<{
-  include: { Org: true; Project: true; User: true };
+  include: {
+    Org: true;
+    Project: {
+      include: {
+        Sources: { select: { id: true } };
+      };
+    };
+    User: true;
+  };
 }>;
 
 export type JobCode =

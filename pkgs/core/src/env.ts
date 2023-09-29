@@ -47,3 +47,4 @@ const schema = z.object({
 export const envs = schema.parse(process.env);
 
 export const isProd = envs.NODE_ENV === 'production';
+export const isTest = Boolean(process.env.VITEST);

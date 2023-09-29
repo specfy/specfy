@@ -1,4 +1,4 @@
-import { nanoid, l, envs, logEvent } from '@specfy/core';
+import { nanoid, l, envs, logEvent, isTest } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import { sendWelcome } from '@specfy/emails';
 import { createUserActivity } from '@specfy/models';
@@ -110,7 +110,7 @@ export function registerGitHub(passport: Authenticator) {
 
       logEvent('account.register', { userId: user!.id });
 
-      if (!process.env.VITEST) {
+      if (!isTest) {
         l.info('Sending email', { to: email, type: 'welcome' });
         await sendWelcome(
           resend,

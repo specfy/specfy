@@ -1,13 +1,19 @@
 import * as Form from '@radix-ui/react-form';
 import { IconCirclesRelation } from '@tabler/icons-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router-dom';
 
 import type { FieldsErrors } from '@specfy/core';
-import type { ApiProject } from '@specfy/models';
+import type { ApiProject, ApiSource } from '@specfy/models';
 
-import { linkToGitHubRepo, updateProject } from '@/api';
+import {
+  createSource,
+  deleteSource,
+  getDefaultSettings,
+  updateSource,
+  useListSources,
+} from '@/api';
 import { handleErrors, isError } from '@/api/helpers';
 import { i18n } from '@/common/i18n';
 import { useOrgStore } from '@/common/store';
@@ -19,6 +25,7 @@ import { Button } from '@/components/Form/Button';
 import { Field } from '@/components/Form/Field';
 import { GitHubOrgSelect } from '@/components/GitHub/OrgSelect';
 import { GitHubRepoSelect } from '@/components/GitHub/RepoSelect';
+import { Loading } from '@/components/Loading';
 import { SyncConfiguration } from '@/components/Project/SyncConfiguration';
 import { Subdued } from '@/components/Text';
 import { useToast } from '@/hooks/useToast';
@@ -31,18 +38,35 @@ export const SettingsSync: React.FC<{
   const toast = useToast();
   const { current: org } = useOrgStore();
   const [errors, setErrors] = useState<FieldsErrors>({});
-  const [config, setConfig] = useState<ApiProject['config']>();
+  const [settings, setSettings] = useState<ApiSource['settings']>(() => {
+    return getDefaultSettings();
+  });
+  const list = useListSources({ org_id: proj.orgId, project_id: proj.id });
+  const [source, setSource] = useState<ApiSource | undefined>();
+  const [repoId, setRepoId] = useState<string | undefined>();
+  const [loading, setLoading] = useState(false);
 
-  const [repoId, setRepoId] = useState<string | undefined>(
-    proj.githubRepository ?? undefined
-  );
+  useEffect(() => {
+    if (!list.data) {
+      return;
+    }
+
+    if (list.data.data.length > 0) {
+      setSource(list.data.data[0]);
+      setSettings(list.data.data[0].settings);
+    }
+  }, [list.data]);
 
   const onLink = async () => {
-    const res = await linkToGitHubRepo({
+    setLoading(true);
+    const res = await createSource({
       orgId: proj.orgId,
       projectId: proj.id,
-      repository: repoId || null,
+      type: 'github',
+      identifier: repoId!,
+      settings: settings!,
     });
+    setLoading(false);
     if (isError(res)) {
       toast.add({ title: i18n.errorOccurred, status: 'error' });
       return;
@@ -52,34 +76,42 @@ export const SettingsSync: React.FC<{
   };
 
   const onUnlink = async () => {
-    const res = await linkToGitHubRepo({
-      orgId: proj.orgId,
-      projectId: proj.id,
-      repository: null,
+    setLoading(true);
+    const res = await deleteSource({
+      org_id: proj.orgId,
+      project_id: proj.id,
+      source_id: source!.id,
     });
+    setLoading(false);
     if (isError(res)) {
       toast.add({ title: i18n.errorOccurred, status: 'error' });
       return;
     }
 
     toast.add({ title: 'Successfully unlinked', status: 'success' });
+    setSource(undefined);
+    setSettings(getDefaultSettings());
   };
 
-  const onSaveConfiguration: React.FormEventHandler<HTMLFormElement> = async (
-    e
-  ) => {
+  const onSaveSettings: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
-    const res = await updateProject(
-      { org_id: proj.orgId, project_id: proj.id },
-      { config }
+    setLoading(true);
+    const res = await updateSource(
+      { org_id: proj.orgId, project_id: proj.id, source_id: source!.id },
+      { name: `GitHub ${repoId}`, settings: settings! }
     );
+    setLoading(false);
     if (isError(res)) {
       return handleErrors(res, toast, setErrors);
     }
 
     setErrors({});
-    toast.add({ title: 'Configuration updated', status: 'success' });
+    toast.add({ title: 'Settings updated', status: 'success' });
   };
+
+  if (!list.data) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -92,23 +124,30 @@ export const SettingsSync: React.FC<{
         </div>
       </div>
 
+      {!org!.githubInstallationId && (
+        <Banner type="info">
+          <Flex justify="space-between">
+            To use this link your Specfy organization to a GitHub organization.
+            <Link to={`/${org!.id}/_/settings`}>
+              <Button>Settings</Button>
+            </Link>
+          </Flex>
+        </Banner>
+      )}
+
       <Card>
         <Form.Root onSubmit={(e) => e.preventDefault()} className={cls.main}>
           <Card.Content>
-            <h4>Link to GitHub</h4>
+            <h4>Connect to GitHub</h4>
+            <p>
+              Connecting a GitHub repository to your project enables automatic
+              deployment when you push to your repository, keeping your stack
+              always up-to-date.
+            </p>
+            <br />
 
             <Field name="github">
-              {!org!.githubInstallationId ? (
-                <Banner type="info">
-                  <Flex justify="space-between">
-                    First, link your Specfy organization to a GitHub
-                    organization.
-                    <Link to={`/${org!.id}/_/settings`}>
-                      <Button>Settings</Button>
-                    </Link>
-                  </Flex>
-                </Banner>
-              ) : (
+              {org!.githubInstallationId && (
                 <Flex gap="l">
                   <GitHubOrgSelect
                     onChange={() => null}
@@ -121,54 +160,68 @@ export const SettingsSync: React.FC<{
                   />
                   <GitHubRepoSelect
                     value={
-                      proj.githubRepository
-                        ? String(proj.githubRepository)
+                      source?.identifier
+                        ? String(source?.identifier)
                         : undefined
                     }
+                    disabled={Boolean(source)}
                     installationId={org!.githubInstallationId}
                     onChange={setRepoId}
                   />
+                  {source && source.identifier === repoId && (
+                    <Button
+                      display="default"
+                      onClick={onUnlink}
+                      danger
+                      loading={loading}
+                    >
+                      Unlink
+                    </Button>
+                  )}
                 </Flex>
               )}
             </Field>
-            <p>
-              Linking to a GitHub repository enables automatic deployment when
-              you push to your repository.
-            </p>
           </Card.Content>
-          <Card.Actions>
-            {proj.githubRepository === repoId && repoId !== null ? (
-              <Button display="default" onClick={onUnlink} danger>
-                Unlink
-              </Button>
-            ) : (
-              <Button
-                display="primary"
-                disabled={proj.githubRepository === repoId}
-                onClick={onLink}
-              >
-                <IconCirclesRelation /> Link
-              </Button>
-            )}
-          </Card.Actions>
         </Form.Root>
       </Card>
 
-      <Card>
-        <Form.Root onSubmit={onSaveConfiguration} className={cls.main}>
-          <Card.Content>
-            <h4>Configuration</h4>
-            <SyncConfiguration
-              errors={errors}
-              config={proj.config}
-              onChange={setConfig}
-            />
-          </Card.Content>
-          <Card.Actions>
-            <Button display="primary">Save</Button>
-          </Card.Actions>
-        </Form.Root>
-      </Card>
+      <Form.Root onSubmit={onSaveSettings} className={cls.main}>
+        <Flex gap="2xl" column grow>
+          {(source || repoId) && (
+            <Card>
+              <Card.Content>
+                <h4>Settings</h4>
+                <SyncConfiguration
+                  errors={errors}
+                  settings={settings!}
+                  onChange={setSettings}
+                />
+              </Card.Content>
+            </Card>
+          )}
+
+          <Card>
+            {org!.githubInstallationId && (
+              <Card.Actions>
+                {!source || source.identifier !== repoId ? (
+                  <Button
+                    display="primary"
+                    onClick={onLink}
+                    disabled={!repoId}
+                    loading={loading}
+                  >
+                    <IconCirclesRelation /> Link
+                  </Button>
+                ) : (
+                  <Button display="primary" loading={loading}>
+                    Save
+                  </Button>
+                )}
+              </Card.Actions>
+            )}
+          </Card>
+        </Flex>
+      </Form.Root>
     </>
   );
 };

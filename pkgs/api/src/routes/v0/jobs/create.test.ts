@@ -1,4 +1,6 @@
+import { nanoid } from '@specfy/core';
 import { prisma } from '@specfy/db';
+import { getDefaultConfig } from '@specfy/models';
 import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
 import { setupBeforeAll, setupAfterAll } from '../../../test/each.js';
@@ -89,9 +91,16 @@ describe('POST /jobs', () => {
 
   it('should create one job', async () => {
     const { token, project, user } = await seedWithProject();
-    await prisma.projects.update({
-      data: { githubRepository: 'test' },
-      where: { id: project.id },
+    const source = await prisma.sources.create({
+      data: {
+        id: nanoid(),
+        orgId: project.orgId,
+        projectId: project.id,
+        name: 'test',
+        type: 'github',
+        identifier: 'test',
+        settings: getDefaultConfig(),
+      },
     });
     const res = await t.fetch.post('/0/jobs', {
       token,
@@ -106,8 +115,9 @@ describe('POST /jobs', () => {
     expect(res.statusCode).toBe(200);
     expect(res.json.data).toStrictEqual({
       config: {
+        sourceId: source.id,
         url: 'test',
-        project: {
+        settings: {
           branch: 'main',
           documentation: {
             enabled: true,

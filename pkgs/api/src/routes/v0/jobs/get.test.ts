@@ -51,8 +51,9 @@ describe('GET /jobs/:job_id', () => {
     expect(res.statusCode).toBe(200);
     expect(res.json.data).toStrictEqual({
       config: {
+        sourceId: 'foo',
         url: 'hello',
-        project: {
+        settings: {
           branch: 'main',
           documentation: {
             enabled: true,

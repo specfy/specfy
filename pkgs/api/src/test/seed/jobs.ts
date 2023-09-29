@@ -3,7 +3,7 @@ import path from 'node:path';
 
 import { dirname, nanoid } from '@specfy/core';
 import { prisma } from '@specfy/db';
-import { createJobDeploy, jobReason } from '@specfy/models';
+import { createJobDeploy, getDefaultConfig, jobReason } from '@specfy/models';
 
 import type { Orgs, Projects, Users } from '@specfy/db';
 
@@ -13,7 +13,11 @@ export async function seedJobs(
   { pAnalytics }: { pAnalytics: Projects }
 ) {
   await prisma.$transaction(async (tx) => {
-    const config = { url: 'specfy/sync', project: pAnalytics.config };
+    const config = {
+      sourceId: 'foo',
+      url: 'specfy/sync',
+      settings: getDefaultConfig(),
+    };
     await Promise.all([
       createJobDeploy({
         id: '53QoA4sTeI01',
@@ -114,7 +118,7 @@ export async function seedJob(user: Users, org: Orgs, project: Projects) {
   return createJobDeploy({
     orgId: org.id,
     projectId: project.id,
-    config: { url: 'hello', project: project.config },
+    config: { sourceId: 'foo', url: 'hello', settings: getDefaultConfig() },
     userId: user.id,
     tx: prisma,
   });

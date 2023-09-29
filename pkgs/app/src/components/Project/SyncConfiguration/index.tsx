@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import type { FieldsErrors } from '@specfy/core';
-import type { ApiProject } from '@specfy/models';
+import type { ApiSource } from '@specfy/models';
 
 import { Flex } from '@/components/Flex';
 import { Checkbox } from '@/components/Form/Checkbox';
@@ -12,20 +12,18 @@ import cls from './index.module.scss';
 
 export const SyncConfiguration: React.FC<{
   errors: FieldsErrors;
-  config?: ApiProject['config'];
-  onChange: (config: ApiProject['config']) => void;
-}> = ({ errors, config, onChange }) => {
-  const [branch, setBranch] = useState(config?.branch || 'main');
+  settings: ApiSource['settings'];
+  onChange: (config: ApiSource['settings']) => void;
+}> = ({ errors, settings, onChange }) => {
+  const [branch, setBranch] = useState(settings.branch);
   const [stackEnabled, setStackEnabled] = useState<boolean>(
-    typeof config?.stack?.enabled === 'boolean' ? config!.stack.enabled : true
+    settings.stack.enabled
   );
-  const [stackPath, setStackpath] = useState(config?.stack?.path || '/');
+  const [stackPath, setStackpath] = useState(settings.stack.path);
   const [docEnabled, setDocEnabled] = useState<boolean>(
-    typeof config?.documentation?.enabled === 'boolean'
-      ? config!.documentation.enabled
-      : true
+    settings.documentation.enabled
   );
-  const [docPath, setDocPath] = useState(config?.documentation?.path || '/');
+  const [docPath, setDocPath] = useState(settings.documentation.path);
 
   useEffect(() => {
     onChange({
@@ -39,7 +37,7 @@ export const SyncConfiguration: React.FC<{
         path: stackPath,
       },
     });
-  }, [branch, stackEnabled, stackPath, docEnabled, docPath]);
+  }, [branch, stackEnabled, stackPath, docEnabled, docPath, settings]);
 
   return (
     <Flex className={cls.inner} column gap="2xl" align="flex-start" grow>

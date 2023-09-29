@@ -4,14 +4,14 @@ import {
   getUsage,
   recomputeOrgGraph,
   createProject,
-  getDefaultConfig,
   getOrgFromRequest,
   forbiddenProjectSlug,
   schemaProject,
+  getDefaultConfig,
 } from '@specfy/models';
 import z from 'zod';
 
-import type { DBProject, PostProject } from '@specfy/models';
+import type { PostProject } from '@specfy/models';
 
 import { validationError } from '../../../common/errors.js';
 import { valPermissions } from '../../../common/zod.js';
@@ -24,14 +24,8 @@ function ProjectVal(req: FastifyRequest) {
     .object({
       name: schemaProject.shape.name,
       orgId: schemaOrgId,
-      config: schemaProject.shape.config.partial({
-        branch: true,
-        documentation: true,
-        stack: true,
-      }),
     })
     .strict()
-    .partial({ config: true })
     .superRefine(valPermissions(req, 'contributor'))
     .superRefine(async (val, ctx) => {
       const org = getOrgFromRequest(req, val.orgId);
@@ -68,19 +62,6 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       const data: PostProject['Body'] = val.data;
       let slug = slugify(data.name);
 
-      const def = getDefaultConfig();
-      const config: DBProject['config'] = {
-        branch: data.config?.branch || def.branch,
-        documentation: {
-          ...def.documentation,
-          ...data.config?.documentation,
-        },
-        stack: {
-          ...def.stack,
-          ...data.config?.stack,
-        },
-      };
-
       const project = await prisma.$transaction(async (tx) => {
         const count = await tx.projects.count({
           where: { slug, orgId: data.orgId },
@@ -99,7 +80,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
               content: [],
             },
             links: [],
-            config,
+            config: getDefaultConfig(),
           },
           user: req.me!,
           tx,

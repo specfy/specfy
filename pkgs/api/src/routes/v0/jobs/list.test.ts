@@ -1,5 +1,5 @@
 import { prisma } from '@specfy/db';
-import { createJobDeploy, jobReason } from '@specfy/models';
+import { createJobDeploy, getDefaultConfig, jobReason } from '@specfy/models';
 import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
 import type { Orgs, Projects, Users } from '@specfy/db';
@@ -25,7 +25,11 @@ afterAll(async () => {
 
 async function seedAllStates(org: Orgs, proj: Projects, user: Users) {
   await prisma.$transaction(async (tx) => {
-    const config = { url: 'specfy/sync', project: proj.config };
+    const config = {
+      sourceId: 'foo',
+      url: 'specfy/sync',
+      settings: getDefaultConfig(),
+    };
     await Promise.all([
       createJobDeploy({
         orgId: org.id,
@@ -125,17 +129,12 @@ describe('GET /jobs', () => {
     expect(res.json.data).toHaveLength(6);
     expect(res.json.data[1]).toStrictEqual({
       config: {
+        sourceId: 'foo',
         url: 'specfy/sync',
-        project: {
+        settings: {
           branch: 'main',
-          documentation: {
-            enabled: true,
-            path: '/',
-          },
-          stack: {
-            enabled: true,
-            path: '/',
-          },
+          documentation: { enabled: true, path: '/' },
+          stack: { enabled: true, path: '/' },
         },
       },
       id: expect.any(String),

@@ -1,3 +1,4 @@
+import { SiGithub } from '@icons-pack/react-simple-icons';
 import { IconPlus } from '@tabler/icons-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
@@ -16,8 +17,9 @@ import cls from './index.module.scss';
 export const GitHubRepoSelect: React.FC<{
   installationId: number;
   value: string | undefined;
+  disabled?: boolean;
   onChange: (selected: string | undefined) => void;
-}> = ({ value, installationId, onChange }) => {
+}> = ({ value, installationId, disabled, onChange }) => {
   const toast = useToast();
   const ref = useRef<Popup | null>(null);
   const [selected, setSelected] = useState<string | undefined>();
@@ -32,8 +34,13 @@ export const GitHubRepoSelect: React.FC<{
     if (!res.data!) {
       return [];
     }
+
     return res.data.map((repo) => {
-      return { label: repo.name, value: String(repo.id) };
+      return {
+        label: repo.name,
+        value: String(repo.id),
+        icon: <SiGithub size={'1.2em'} />,
+      };
     });
   }, [res.data]);
 
@@ -86,6 +93,7 @@ export const GitHubRepoSelect: React.FC<{
       value={selected}
       onChange={setSelected}
       className={cls.select}
+      disabled={disabled}
       after={
         <CommandItem onSelect={triggerInstall}>
           <Button size="s" display="ghost" onClick={triggerInstall}>

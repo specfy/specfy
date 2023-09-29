@@ -125,9 +125,10 @@ model Components {
   createdAt DateTime @default(now()) @db.Timestamp(3)
   updatedAt DateTime @updatedAt
 
-  Org     Orgs     @relation(fields: [orgId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  Project Projects @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  Blob    Blobs?   @relation(fields: [blobId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  Org           Orgs            @relation(fields: [orgId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  Project       Projects        @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  Blob          Blobs?          @relation(fields: [blobId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  SourceEntries SourceEntries[]
 }
 
 enum DocumentFormat {
@@ -316,7 +317,8 @@ model Orgs {
   Jobs        Jobs[]
   Flows       Flows[]
 
-  Flow Flows? @relation(fields: [flowId], references: [id], onDelete: SetNull, onUpdate: NoAction, name: "orgFlow")
+  Flow    Flows?    @relation(fields: [flowId], references: [id], onDelete: SetNull, onUpdate: NoAction, name: "orgFlow")
+  Sources Sources[]
 }
 
 model Perms {
@@ -383,6 +385,7 @@ model Projects {
   Revisions  Revisions[]
   Keys       Keys[]
   Jobs       Jobs[]
+  Sources    Sources[]
 
   @@unique([orgId, slug], map: "idx_projects_orgid_slug")
 }
@@ -433,6 +436,45 @@ model Revisions {
   Reviews      Reviews[]
   Comments     Comments[]
   Activities   Activities[]
+}
+
+enum SourcesType {
+  github
+}
+
+model Sources {
+  id        String @id @db.VarChar(15)
+  orgId     String @db.VarChar(36)
+  projectId String @db.VarChar(15)
+
+  type       SourcesType
+  name       String      @db.VarChar(50)
+  identifier String      @db.VarChar(500)
+
+  /// [PrismaSourcesSettings]
+  settings Json @db.Json
+
+  enable    Boolean  @default(true)
+  createdAt DateTime @default(now()) @db.Timestamp(3)
+  updatedAt DateTime @updatedAt
+
+  Org     Orgs     @relation(fields: [orgId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  Project Projects @relation(fields: [projectId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  SourceEntries SourceEntries[]
+
+  @@unique([projectId, type, identifier], map: "idx_sources_project")
+}
+
+model SourceEntries {
+  id           String @id @db.VarChar(15)
+  componentId  String @db.VarChar(15)
+  dataSourceId String @db.VarChar(15)
+  name         String @db.VarChar(100)
+  path         Json   @default("[]") @db.Json
+
+  DataSources Sources    @relation(fields: [dataSourceId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  Component   Components @relation(fields: [componentId], references: [id], onDelete: Cascade, onUpdate: NoAction)
 }
 
 model TypeHasUsers {

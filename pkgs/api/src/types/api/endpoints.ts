@@ -17,7 +17,6 @@ import type {
   ListGitHubRepos,
   PostGitHubWebhook,
   PostLinkToGitHubOrg,
-  PostLinkToGitHubProject,
   AcceptInvitation,
   DeclineInvitation,
   DeleteInvitation,
@@ -61,6 +60,10 @@ import type {
   PostAiOperation,
   GetProjectBySlug,
   PostJob,
+  ListSources,
+  PostSource,
+  PutSource,
+  DeleteSource,
 } from '@specfy/models';
 
 import type { PostAuthLocal, PostLogout } from './auth.js';
@@ -164,12 +167,15 @@ export interface API {
     DELETE: DeleteInvitation;
   };
 
+  // Sources
+  '/0/sources': { GET: ListSources; POST: PostSource };
+  [key: `/0/sources/${string}`]: { PUT: PutSource; DELETE: DeleteSource };
+
   '/0/users': { GET: ListUsers };
   [key: `/0/users/${string}`]: { GET: GetUser };
 
   '/0/github/installations': { GET: ListGitHubInstallations };
   '/0/github/link_org': { POST: PostLinkToGitHubOrg };
-  '/0/github/link_project': { POST: PostLinkToGitHubProject };
   '/0/github/members': { GET: GetGitHubMembers };
   '/0/github/repos': { GET: ListGitHubRepos };
   '/0/github/webhooks': { POST: PostGitHubWebhook };

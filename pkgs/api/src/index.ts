@@ -1,5 +1,7 @@
-import { envs } from '@specfy/core';
+import { envs, isTest } from '@specfy/core';
+import { initElasticsearch } from '@specfy/es';
 import { start, stop } from '@specfy/github';
+import { initSocket } from '@specfy/socket';
 import closeWithGrace from 'close-with-grace';
 import Fastify from 'fastify';
 
@@ -41,4 +43,9 @@ app.listen({ host: '0.0.0.0', port: parseInt(envs.PORT, 10) }, (err) => {
 
 void (async () => {
   await start();
+
+  if (!isTest) {
+    initSocket(app.server);
+    await initElasticsearch();
+  }
 })();

@@ -10,7 +10,7 @@ export const client = new Client({
   maxRetries: 1,
 });
 
-export async function init() {
+export async function initElasticsearch() {
   try {
     await client.indices.create(
       {
