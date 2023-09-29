@@ -33,7 +33,6 @@ export function start() {
         orderBy: { createdAt: 'asc' },
       });
 
-      io.to(`project-b03tMzwd5A`).emit('job.finish', {} as any);
       if (!next) {
         return;
       }
