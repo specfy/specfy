@@ -1,6 +1,5 @@
 import { l as logger, metrics } from '@specfy/core';
 import { prisma } from '@specfy/db';
-import { io } from '@specfy/socket';
 
 import { JobDeploy } from './jobs/deploy.js';
 import { JobProjectIndex } from './jobs/projectIndex.js';
