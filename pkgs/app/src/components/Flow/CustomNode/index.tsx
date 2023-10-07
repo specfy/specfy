@@ -1,4 +1,5 @@
 import { type ComputedNode, type NodeData } from '@specfy/models';
+import { isHosting } from '@specfy/models/src/components/isHosting';
 import { hMax, hMin, wMax, wMin } from '@specfy/models/src/flows/constants';
 import { IconEye, IconLayersDifference, IconTrash } from '@tabler/icons-react';
 import classNames from 'classnames';
@@ -101,7 +102,7 @@ const CustomNode: React.FC<NodeProps<NodeData>> = ({
       className={classNames(
         cls.node,
         selected && cls.selected,
-        data.type === 'hosting' && cls.hosting,
+        isHosting(data.type) && cls.hosting,
         disableHandle && cls.disableHandle
       )}
     >

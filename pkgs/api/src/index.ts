@@ -1,4 +1,4 @@
-import { envs, isTest } from '@specfy/core';
+import { envs, isTest, l } from '@specfy/core';
 import * as github from '@specfy/github';
 import * as jobs from '@specfy/jobs';
 import * as socket from '@specfy/socket';
@@ -48,6 +48,8 @@ app.listen({ host: '0.0.0.0', port: parseInt(envs.PORT, 10) }, (err) => {
 });
 
 void (async () => {
+  l.info('Starting...');
+
   github.start();
   jobs.start();
 

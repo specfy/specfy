@@ -150,7 +150,7 @@ const flow: ComputedFlow = {
       type: 'custom',
       data: {
         name: 'Google Cloud Platform',
-        type: 'hosting',
+        type: 'cloud',
         techId: 'gcp',
         typeId: null,
         originalSize: { width: 652, height: 313 },
@@ -180,7 +180,7 @@ const flow: ComputedFlow = {
       type: 'custom',
       data: {
         name: 'Vercel',
-        type: 'hosting',
+        type: 'cloud',
         techId: 'vercel',
         typeId: null,
         originalSize: { width: 271, height: 198 },

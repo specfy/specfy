@@ -1,7 +1,9 @@
+import { type ApiComponent } from '../components/index.js';
+import { isHosting } from '../components/isHosting.js';
+
 import { hDef, hDefHost, wDef, wDefHost, wMax } from './constants.js';
 
 import type { ComputedFlow } from './types.js';
-import type { ApiComponent } from '../components';
 
 // Compute global bounding box
 // Do not cache unless you don't plan to add things to the Flow
@@ -44,7 +46,7 @@ export function getComponentSize(
   type: ApiComponent['type'],
   name: ApiComponent['name']
 ): ApiComponent['display']['size'] {
-  if (type === 'hosting') {
+  if (isHosting(type)) {
     return {
       height: hDefHost,
       width: computeWidth(name, wDefHost, wMax) * 1.2,

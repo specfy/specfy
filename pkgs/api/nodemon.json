@@ -15,5 +15,5 @@
   "ignore": [
     "src/"
   ],
-  "delay": 2500
+  "delay": 1500
 }

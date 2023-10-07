@@ -45,7 +45,7 @@ export async function createDemo(
     data: {
       id: nanoid(),
       name: 'AWS',
-      type: 'hosting',
+      type: 'cloud',
       orgId: org.id,
       projectId: pDash.id,
       techId: 'aws',
@@ -230,7 +230,7 @@ export async function createDemo(
     data: {
       id: nanoid(),
       name: 'GCP',
-      type: 'hosting',
+      type: 'cloud',
       orgId: org.id,
       projectId: pAnalytics.id,
       techId: 'gcp',
@@ -310,7 +310,7 @@ export async function createDemo(
     data: {
       id: nanoid(),
       name: 'Vercel',
-      type: 'hosting',
+      type: 'cloud',
       orgId: org.id,
       projectId: pAnalytics.id,
       techId: 'vercel',

@@ -15,7 +15,8 @@ Use the list of technologies to describe how it works. Choose only the most rele
     "content": "Project name is Analytics
 
 Technologies:
-Hosting: GCP, GCE
+Cloud: GCP
+Hosting: GCE
 Service: Aggregator
 Saas: Algolia
 Database: Postgres
@@ -93,7 +94,8 @@ The project also employs machine learning and statistical methods to analyze dat
 
 
 Technologies:
-Hosting: GCP http://localhost:5173/acme/analytics/c/1-gcp, GCE http://localhost:5173/acme/analytics/c/2-gce
+Cloud: GCP http://localhost:5173/acme/analytics/c/1-gcp
+Hosting: GCE http://localhost:5173/acme/analytics/c/2-gce
 Service: Aggregator http://localhost:5173/acme/analytics/c/3-aggr
 Saas: Algolia http://localhost:5173/acme/analytics/c/4-algolia
 Database: Postgres http://localhost:5173/acme/analytics/c/5-postgres
