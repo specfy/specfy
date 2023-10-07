@@ -7,8 +7,8 @@ export const Tag: React.FC<{
   children: React.ReactNode;
   className?: string;
   closable?: boolean;
-  variant?: 'border' | 'default' | 'light';
-  size?: 's' | 'm';
+  variant?: 'border' | 'default' | 'light' | 'reverse';
+  size?: 'xs' | 's' | 'm';
   onClose?: () => void;
 }> = ({
   children,

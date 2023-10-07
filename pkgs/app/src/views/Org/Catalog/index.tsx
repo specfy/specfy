@@ -261,21 +261,23 @@ export const OrgCatalog: React.FC<{
             return (
               <Button
                 key={cat.value}
-                size="s"
-                display={sel ? 'default' : 'item'}
+                size="xs"
+                display={sel ? 'primary' : 'default'}
                 onClick={() => setRawFilter(cat.value as any)}
               >
                 {cat.label}
-                <Tag variant={sel ? 'light' : 'border'} size="s">
-                  {cat.count}
-                </Tag>
+                {cat.count > 0 && (
+                  <Tag variant={sel ? 'reverse' : 'border'} size="xs">
+                    {cat.count}
+                  </Tag>
+                )}
               </Button>
             );
           })}
         </Flex>
         {res.data && <List data={data} totalProjects={totalProjects} />}
       </ContainerChild>
-      <ContainerChild rightSmall>
+      <ContainerChild rightSmall className={cls.sidebar}>
         <div className={cls.block}>
           <Flex gap="m">
             <div>
@@ -286,7 +288,7 @@ export const OrgCatalog: React.FC<{
                   dataKey={'count'}
                   innerRadius={20}
                   outerRadius={30}
-                  fill="#8884d8"
+                  fill="#3e63dd"
                   startAngle={-90}
                   animationDuration={250}
                   animationBegin={0}
