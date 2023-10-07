@@ -260,18 +260,6 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         tx: prisma,
       });
 
-      // if (rev.stack) {
-      //   try {
-      //     // TODO: do that async
-      //     const project = await prisma.projects.findUnique({
-      //       where: { id: rev.projectId },
-      //     });
-      //     await mergeStack({ project: project!, stack: rev.stack });
-      //   } catch (err) {
-      //     sentry.captureException(err);
-      //   }
-      // }
-
       return res.status(200).send({
         data: {
           done: true,

@@ -1,11 +1,15 @@
+/* stylelint-disable selector-class-pattern */
 .tag {
+  --tag-font: var(--font-s);
+  --tag-padding: 0 var(--spc-l);
+
   display: inline-flex;
   gap: var(--spc-m);
   align-items: center;
 
-  padding: 0 var(--spc-l);
+  padding: var(--tag-padding);
 
-  font-size: var(--font-s);
+  font-size: var(--tag-font);
 
   border: 1px solid transparent;
   border-radius: var(--radius3);
@@ -26,5 +30,15 @@
 
   &.border {
     border-color: var(--accent1);
+  }
+
+  &.s {
+    --tag-font: var(--font-xs);
+    --tag-padding: 0 var(--spc);
+  }
+
+  &.m {
+    --tag-font: var(--font-s);
+    --tag-padding: 0 var(--spc-l);
   }
 }

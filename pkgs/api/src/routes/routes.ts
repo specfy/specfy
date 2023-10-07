@@ -1,6 +1,7 @@
 import activities from './v0/activities/index.js';
 import ai from './v0/ai/index.js';
 import auth from './v0/auth/index.js';
+import catalog from './v0/catalog/index.js';
 import components from './v0/components/index.js';
 import demo from './v0/demo/index.js';
 import documents from './v0/documents/index.js';
@@ -27,6 +28,7 @@ export const routes: FastifyPluginAsync = async (f) => {
   await f.register(activities, { prefix: '/0' });
   await f.register(ai, { prefix: '/0' });
   await f.register(auth, { prefix: '/0' });
+  await f.register(catalog, { prefix: '/0' });
   await f.register(components, { prefix: '/0' });
   await f.register(demo, { prefix: '/0' });
   await f.register(documents, { prefix: '/0' });

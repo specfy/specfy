@@ -62,7 +62,7 @@ const OrgCreate: React.FC = () => {
         <Header />
       </div>
       <ContainerChild fullCenter>
-        <Card large padded>
+        <Card large padded auto>
           <Form.Root
             onSubmit={onFinish}
             className={cls.form}

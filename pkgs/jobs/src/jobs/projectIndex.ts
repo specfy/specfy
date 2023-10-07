@@ -3,12 +3,10 @@ import { prisma } from '@specfy/db';
 import { client } from '@specfy/es';
 import { tech as techDb } from '@specfy/stack-analyser';
 
-import type { ComponentType, JobWithOrgProject } from '@specfy/models';
+import type { CatalogTech, JobWithOrgProject } from '@specfy/models';
 import type { AllowedKeys } from '@specfy/stack-analyser';
 
 import { Job } from '../Job.js';
-
-type Tech = { type: ComponentType; key: string; name: string };
 
 export class JobProjectIndex extends Job {
   async process(job: JobWithOrgProject): Promise<void> {
@@ -32,7 +30,8 @@ export class JobProjectIndex extends Job {
     // TODO: delete previous
 
     // const dependencies = new Map<string, Dependency>();
-    const techs = new Map<string, Tech>();
+    const techs = new Map<string, CatalogTech>();
+    const base = { orgId: job.orgId, projectId: job.projectId!, jobId: job.id };
 
     for (const child of components) {
       // // Deduplicate dependencies
@@ -48,6 +47,7 @@ export class JobProjectIndex extends Job {
         }
         if (tech.id === 'unknown' || !(tech.id in techDb.indexed)) {
           techs.set(tech.id, {
+            ...base,
             key: tech.id,
             name: child.name,
             type: child.type,
@@ -56,22 +56,19 @@ export class JobProjectIndex extends Job {
         }
 
         const def = techDb.indexed[tech.id as AllowedKeys];
-        techs.set(def.key, def);
+        techs.set(def.key, { ...base, ...def });
       }
 
       if (child.techId && !techs.has(child.techId)) {
         const def = techDb.indexed[child.techId as AllowedKeys];
-        techs.set(def.key, def);
+        techs.set(def.key, { ...base, ...def });
       }
     }
     // l.info({ size: dependencies.size }, 'Preparing stack for ES');
     l.info({ size: techs.size }, 'Preparing stack for ES');
 
     await Promise.all([
-      this.indexTech({
-        job,
-        techs: Array.from(techs.values()),
-      }),
+      this.indexTech({ techs: Array.from(techs.values()) }),
       // indexDependencies({
       //   project,
       //   dependencies: Array.from(dependencies.values()),
@@ -81,7 +78,6 @@ export class JobProjectIndex extends Job {
     l.info('Cleaning old data');
     await client.deleteByQuery({
       index: 'techs',
-
       // In production we do not care that ES is cleaned synchronously
       wait_for_completion: false,
       // It will ignore all conflicts on document
@@ -92,19 +88,10 @@ export class JobProjectIndex extends Job {
         // @ts-expect-error
         bool: {
           must: [
-            {
-              term: {
-                projectId: job.projectId,
-              },
-            },
+            { term: { projectId: job.projectId } },
+            { term: { orgId: job.orgId } },
           ],
-          must_not: [
-            {
-              term: {
-                jobId: job.id,
-              },
-            },
-          ],
+          must_not: [{ term: { jobId: job.id } }],
         },
       },
     });
@@ -120,23 +107,11 @@ export class JobProjectIndex extends Job {
     // nothing
   }
 
-  private async indexTech({
-    job,
-    techs,
-  }: {
-    job: JobWithOrgProject;
-    techs: Tech[];
-  }) {
+  private async indexTech({ techs }: { techs: CatalogTech[] }) {
     const l = this.l;
-    const operations = techs.flatMap((tech) => [
-      { index: { _index: 'techs', _id: nanoid(20) } },
-      {
-        orgId: job.orgId,
-        projectId: job.projectId,
-        jobId: job.id,
-        ...tech,
-      },
-    ]);
+    const operations = techs.flatMap((tech) => {
+      return [{ index: { _index: 'techs', _id: nanoid(20) } }, tech];
+    });
     const bulkResponse = await client.bulk({ refresh: true, operations });
 
     l.info({ size: operations.length }, 'Indexing techs to ES');

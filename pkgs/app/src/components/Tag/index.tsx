@@ -8,13 +8,22 @@ export const Tag: React.FC<{
   className?: string;
   closable?: boolean;
   variant?: 'border' | 'default' | 'light';
+  size?: 's' | 'm';
   onClose?: () => void;
-}> = ({ children, className, closable, variant = 'default', onClose }) => {
+}> = ({
+  children,
+  className,
+  closable,
+  size = 'm',
+  variant = 'default',
+  onClose,
+}) => {
   return (
     <div
       className={classNames(
         cls.tag,
         cls[variant],
+        cls[size],
         closable && cls.closable,
         className
       )}

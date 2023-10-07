@@ -8,7 +8,8 @@ const OriginCard: React.FC<{
   seamless?: boolean;
   transparent?: boolean;
   large?: boolean;
-}> = ({ children, padded, seamless, transparent, large }) => {
+  auto?: boolean;
+}> = ({ children, padded, seamless, transparent, large, auto }) => {
   return (
     <div
       className={classnames(
@@ -16,7 +17,8 @@ const OriginCard: React.FC<{
         padded && cls.padded,
         seamless && cls.seamless,
         transparent && cls.transparent,
-        large && cls.large
+        large && cls.large,
+        auto && cls.auto
       )}
     >
       {children}

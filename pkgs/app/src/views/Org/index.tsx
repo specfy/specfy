@@ -17,8 +17,7 @@ import * as Sidebar from '@/components/Sidebar';
 import { useAuth } from '@/hooks/useAuth';
 import type { RouteOrg } from '@/types/routes';
 
-import { OrgActivity } from './Activity';
-import { OrgContent } from './Content';
+import { OrgCatalog } from './Catalog';
 import { OrgFlow } from './Flow';
 import { OrgOverview } from './Overview';
 import { OrgSettings } from './Settings';
@@ -110,16 +109,12 @@ const Org: React.FC = () => {
               element={<OrgOverview org={org} params={params} />}
             />
             <Route
-              path="/content"
-              element={<OrgContent org={org} params={params} />}
+              path="/catalog"
+              element={<OrgCatalog org={org} params={params} />}
             />
             <Route
               path="/flow"
               element={<OrgFlow org={org} params={params} />}
-            />
-            <Route
-              path="/activity"
-              element={<OrgActivity org={org} params={params} />}
             />
             <Route
               path="/settings/*"

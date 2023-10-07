@@ -30,9 +30,9 @@ import { Field } from '@/components/Form/Field';
 import { SelectFull } from '@/components/Form/Select';
 import { Textarea } from '@/components/Form/TextArea';
 import { Loading } from '@/components/Loading';
-import { Progress } from '@/components/Progress';
 import { Tag } from '@/components/Tag';
 import { Subdued } from '@/components/Text';
+import { Progress } from '@/components/ui/Progress';
 import { useToast } from '@/hooks/useToast';
 import type { RouteOrg } from '@/types/routes';
 

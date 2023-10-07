@@ -1,4 +1,4 @@
-import { l } from '@specfy/core';
+import { l as logger } from '@specfy/core';
 
 import { client } from './client.js';
 
@@ -6,35 +6,40 @@ import type { estypes } from '@elastic/elasticsearch';
 
 export { client };
 
+const l = logger.child({ svc: 'es' });
+
 const indices: estypes.IndicesCreateRequest[] = [
   {
     index: 'dependencies',
     mappings: {
       properties: {
-        orgId: { type: 'text' },
-        projectId: { type: 'text' },
-        sourceId: { type: 'text' },
-        type: { type: 'text' },
-        name: { type: 'text' },
-        version: { type: 'text' },
+        orgId: { type: 'keyword' },
+        projectId: { type: 'keyword' },
+        sourceId: { type: 'keyword' },
+        type: { type: 'keyword' },
+        name: { type: 'keyword' },
+        version: { type: 'keyword' },
       },
     },
   },
   {
-    index: 'tech',
+    index: 'techs',
     mappings: {
       properties: {
-        orgId: { type: 'text' },
-        projectId: { type: 'text' },
-        jobId: { type: 'text' },
-        type: { type: 'text' },
-        name: { type: 'text' },
+        orgId: { type: 'keyword' },
+        projectId: { type: 'keyword' },
+        jobId: { type: 'keyword' },
+        type: { type: 'keyword' },
+        key: { type: 'keyword' },
+        name: { type: 'keyword' },
       },
     },
   },
 ];
 
 export async function start() {
+  l.info('ES Service Starting');
+
   try {
     await Promise.all(
       indices.map((index) => {
