@@ -12,6 +12,10 @@ export const ProjectEvents: React.FC = () => {
     }
 
     const job = data.job;
+    if (job.type === 'projectIndex') {
+      return;
+    }
+
     qcli.invalidateQueries(['listJobs', job.orgId, job.projectId]);
     qcli.invalidateQueries(['getJob', job.orgId, job.projectId, job.id]);
     toast.add({
