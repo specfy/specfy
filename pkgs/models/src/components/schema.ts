@@ -25,6 +25,7 @@ export const schemaComponent = z
       'api',
       'app',
       'ci',
+      'cloud',
       'db',
       'etl',
       'hosting',

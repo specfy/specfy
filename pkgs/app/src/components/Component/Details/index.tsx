@@ -1,3 +1,4 @@
+import { isHosting } from '@specfy/models/src/components/isHosting';
 import { useEffect, useMemo, useState } from 'react';
 
 import type { FlowEdge, ApiComponent, ApiProject } from '@specfy/models';
@@ -38,9 +39,10 @@ export const ComponentDetails: React.FC<{
   const [answer, setAnswer] = useState<ApiComponent[]>([]);
   const [receiveAnswer, setReceiveAnswer] = useState<ApiComponent[]>([]);
   const is = useMemo<IsType>(() => {
+    const host = isHosting(component.type);
     return {
-      component: component.type !== 'hosting' && component.type !== 'project',
-      hosting: component.type === 'hosting',
+      component: !host && component.type !== 'project',
+      hosting: host,
       project: component.type === 'project',
     };
   }, [component]);
@@ -73,7 +75,7 @@ export const ComponentDetails: React.FC<{
       let l = _in;
       // eslint-disable-next-line no-constant-condition
       while (true) {
-        if (l.type === 'hosting') {
+        if (isHosting(l.type)) {
           _hosts.push(l);
         }
         if (!l.inComponent.id) {
@@ -326,7 +328,7 @@ export const ComponentDetails: React.FC<{
                 <ComponentSelect
                   current={component}
                   values={hosts.length > 0 ? [hosts[0]] : []}
-                  filter={['hosting']}
+                  filter={['hosting', 'cloud']}
                   createdAs="hosting"
                   multiple={false}
                   onChange={(res) => handleHost(res)}
@@ -346,7 +348,7 @@ export const ComponentDetails: React.FC<{
                   values={contains}
                   filter={
                     is.hosting
-                      ? [...defaultFilterSelect, 'hosting']
+                      ? [...defaultFilterSelect, 'hosting', 'cloud']
                       : defaultFilterSelect
                   }
                   createdAs="service"

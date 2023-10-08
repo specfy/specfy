@@ -1,3 +1,4 @@
+import { isHosting } from '@specfy/models/src/components/isHosting';
 import { produce } from 'immer';
 import { create } from 'zustand';
 
@@ -468,11 +469,13 @@ export const useFlowStore = create<FlowState>()((set) => ({
 function listAllChildren(nodes: ComputedNode[], parent: string): string[] {
   const list: string[] = [];
   for (const comp of nodes) {
-    if (comp.parentNode === parent) {
-      list.push(comp.id);
-      if (comp.type === 'hosting') {
-        list.push(...listAllChildren(nodes, comp.id));
-      }
+    if (comp.parentNode !== parent) {
+      continue;
+    }
+
+    list.push(comp.id);
+    if (isHosting(comp.data.type)) {
+      list.push(...listAllChildren(nodes, comp.id));
     }
   }
   return list;

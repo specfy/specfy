@@ -1,3 +1,4 @@
+import { isHosting } from '@specfy/models/src/components/isHosting';
 import { useEffect, useState } from 'react';
 
 import type { ApiComponent, ComponentType } from '@specfy/models';
@@ -9,13 +10,11 @@ import type { RouteProject } from '@/types/routes';
 
 const groupTech: ComponentType[] = ['tool', 'language'];
 const groupData: ComponentType[] = [
-  'analytics',
   'api',
   'app',
   'db',
   'etl',
   'messaging',
-  'monitoring',
   'network',
   'storage',
 ];
@@ -28,7 +27,7 @@ export const TechnicalAspects: React.FC<{
   const [techs, setTechs] = useState<ApiComponent['techs']>([]);
   const [empty, setEmtpy] = useState<boolean>(false);
   const [groups, setGroups] = useState<Record<
-    'saas' | 'hosting' | 'data' | 'project' | 'service',
+    'saas' | 'hosting' | 'data' | 'project' | 'service' | 'monitoring',
     ApiComponent[]
   > | null>(null);
 
@@ -46,6 +45,7 @@ export const TechnicalAspects: React.FC<{
       data: [],
       hosting: [],
       project: [],
+      monitoring: [],
       saas: [],
       service: [],
     };
@@ -64,14 +64,14 @@ export const TechnicalAspects: React.FC<{
 
       if (groupData.includes(comp.type)) {
         _groups.data.push(comp);
-      } else if (
-        comp.type === 'hosting' ||
-        comp.type === 'project' ||
-        comp.type === 'service'
-      ) {
+      } else if (isHosting(comp.type)) {
+        _groups.hosting.push(comp);
+      } else if (comp.type === 'project' || comp.type === 'service') {
         _groups[comp.type].push(comp);
       } else if (comp.type === 'saas' || comp.type === 'ci') {
         _groups.saas.push(comp);
+      } else if (comp.type === 'monitoring' || comp.type === 'analytics') {
+        _groups.monitoring.push(comp);
       } else {
         throw new Error('unknown tech type');
       }
@@ -109,7 +109,7 @@ export const TechnicalAspects: React.FC<{
           count={true}
         />
       )}
-      {groups.data && groups.data.length > 0 && (
+      {groups.data.length > 0 && (
         <ComponentLine
           title="Data store"
           titlePlural="Data stores"
@@ -118,7 +118,7 @@ export const TechnicalAspects: React.FC<{
           count={true}
         />
       )}
-      {groups.hosting && groups.hosting.length > 0 && (
+      {groups.hosting.length > 0 && (
         <ComponentLine
           title="Host"
           titlePlural="Hosts"
@@ -127,7 +127,7 @@ export const TechnicalAspects: React.FC<{
           count={true}
         />
       )}
-      {groups.saas && groups.saas!.length > 0 && (
+      {groups.saas.length > 0 && (
         <ComponentLine
           title="Third-Party"
           titlePlural="Third-Parties"
@@ -136,7 +136,16 @@ export const TechnicalAspects: React.FC<{
           count={true}
         />
       )}
-      {groups.project && groups.project.length > 0 && (
+      {groups.monitoring.length > 0 && (
+        <ComponentLine
+          title="Monitoring"
+          titlePlural="Monitoring & Analytics"
+          comps={groups.monitoring}
+          params={params}
+          count={true}
+        />
+      )}
+      {groups.project.length > 0 && (
         <ComponentLine
           title="Project"
           titlePlural="Projects"

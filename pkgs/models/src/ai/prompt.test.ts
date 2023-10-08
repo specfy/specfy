@@ -9,7 +9,7 @@ import {
 import type { ComponentForPrompt } from './types.js';
 
 const components: ComponentForPrompt[] = [
-  { id: '1', name: 'GCP', type: 'hosting', techId: 'gcp', slug: 'gcp' },
+  { id: '1', name: 'GCP', type: 'cloud', techId: 'gcp', slug: 'gcp' },
   { id: '2', name: 'GCE', type: 'hosting', techId: 'gcp.gce', slug: 'gce' },
   { id: '3', name: 'Aggregator', type: 'service', techId: null, slug: 'aggr' },
   {

@@ -1,4 +1,5 @@
 import { nanoid } from '@specfy/core/src/id';
+import { isHosting } from '@specfy/models/src/components/isHosting';
 import {
   hDef,
   hDefHost,
@@ -39,10 +40,9 @@ export function createLocal(
 ) {
   const id = nanoid();
 
-  const size =
-    data.type === 'hosting'
-      ? { width: wDefHost, height: hDefHost }
-      : { width: wDef, height: hDef };
+  const size = isHosting(data.type)
+    ? { width: wDefHost, height: hDefHost }
+    : { width: wDef, height: hDef };
 
   let pos = { x: 0, y: 0 };
 

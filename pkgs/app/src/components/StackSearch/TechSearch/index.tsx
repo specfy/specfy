@@ -45,6 +45,7 @@ export const TechSearch: React.FC<{
       api: [],
       app: [],
       ci: [],
+      cloud: [],
       db: [],
       etl: [],
       hosting: [],

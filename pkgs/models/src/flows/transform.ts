@@ -1,5 +1,7 @@
 import type { Projects } from '@specfy/db';
 
+import { isHosting } from '../components/isHosting.js';
+
 import type {
   FlowItemDisplay,
   ComponentForFlow,
@@ -85,7 +87,7 @@ export function componentsToFlow(components: ComponentForFlow[]): ComputedFlow {
 
   // Create all hosting nodes
   // We need to add them first because React Flow is not reordering
-  const hosts = components.filter((comp) => comp.type === 'hosting');
+  const hosts = components.filter((comp) => isHosting(comp.type));
   const done: string[] = [];
 
   let i = 0;
@@ -109,7 +111,7 @@ export function componentsToFlow(components: ComponentForFlow[]): ComputedFlow {
 
   // Create all other nodes
   for (const comp of components) {
-    if (comp.type === 'hosting') {
+    if (isHosting(comp.type)) {
       continue;
     }
 

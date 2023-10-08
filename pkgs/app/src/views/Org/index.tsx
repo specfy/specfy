@@ -17,7 +17,10 @@ import * as Sidebar from '@/components/Sidebar';
 import { useAuth } from '@/hooks/useAuth';
 import type { RouteOrg } from '@/types/routes';
 
+<<<<<<< HEAD
 import { OrgCatalog } from './Catalog';
+=======
+>>>>>>> main
 import { OrgFlow } from './Flow';
 import { OrgOverview } from './Overview';
 import { OrgSettings } from './Settings';

@@ -1,3 +1,5 @@
+import { isHosting } from '../components/isHosting.js';
+
 import { hDefHost, wDefHost } from './constants.js';
 import { getBestHandlePosition } from './helpers.edges.js';
 
@@ -30,7 +32,7 @@ export function computeTree(
       id: node.id,
       parentId,
       childs: computeTree(nodes, node.id),
-      isHost: node.data.type === 'hosting',
+      isHost: isHosting(node.data.type),
     });
   }
 

@@ -186,13 +186,24 @@ export const FlowDetails: React.FC = () => {
     onEdgesChange([{ id: relation!.edge.id, type: 'visibility' }]);
   };
 
+  const type = useMemo(() => {
+    switch (currNode?.data.type) {
+      case 'hosting':
+        return 'Hosting';
+      case 'cloud':
+        return 'Cloud';
+      default:
+        return 'Component';
+    }
+  }, [currNode]);
+
   return (
     <div className={cls.composition}>
       {currNode && (
         <>
           <div className={cls.block}>
             <div className={cls.title}>
-              {currNode.data.type === 'hosting' ? 'Hosting' : 'Component'}
+              {type}
               <Flex gap="m">
                 {currNode.data.source && (
                   <TooltipFull

@@ -1,3 +1,4 @@
+import { isHosting } from '@specfy/models/src/components/isHosting';
 import {
   getAbsolutePosition,
   placeInsideHost,
@@ -570,7 +571,7 @@ function listAllChildren(components: ApiComponent[], parent: string): string[] {
   for (const comp of components) {
     if (comp.inComponent.id === parent) {
       list.push(comp.id);
-      if (comp.type === 'hosting') {
+      if (isHosting(comp.type)) {
         list.push(...listAllChildren(components, comp.id));
       }
     }

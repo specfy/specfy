@@ -41,7 +41,7 @@ export async function seedComponents(
         data: {
           id: 'jZDC3Lsc01',
           name: 'GCP',
-          type: 'hosting',
+          type: 'cloud',
           orgId: o1.id,
           projectId: pAnalytics.id,
           techId: 'gcp',
@@ -121,7 +121,7 @@ export async function seedComponents(
         data: {
           id: 'jZDC3Ls103',
           name: 'Vercel',
-          type: 'hosting',
+          type: 'cloud',
           orgId: o1.id,
           projectId: pAnalytics.id,
           techId: 'vercel',

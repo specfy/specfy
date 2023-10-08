@@ -1,4 +1,6 @@
 /* eslint-disable import/extensions */
+import { isHosting } from '@specfy/models/src/components/isHosting';
+
 import type { ComputedNode } from '@specfy/models';
 
 import cls from '@/components/Flow/index.module.scss';
@@ -28,7 +30,7 @@ export function setParentsToHighlight(
 
   // Compute childs too
   for (const el of nodes) {
-    if (el.data.type !== 'hosting') continue;
+    if (!isHosting(el.data.type)) continue;
     if (exclude.includes(el.id)) continue;
 
     const chains = [el.id];
@@ -49,7 +51,7 @@ export function setParentsToHighlight(
   }
 
   for (const n of nodes) {
-    if (n.data.type !== 'hosting') {
+    if (!isHosting(n.data.type)) {
       n.className = '';
       continue;
     }
