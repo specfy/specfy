@@ -20,6 +20,21 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+      elasticsearch:
+        image: elasticsearch:8.10.2
+        env:
+          discovery.type: single-node
+        options: >-
+          --health-cmd "curl http://localhost:9200/_cluster/health"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
+        ports:
+        # <port on host>:<port on container>
+        - 9200:9200
+      redis:
+        image: redis
+        options: --entrypoint redis-server
 
     env:
       DATABASE_URL: "postgres://postgres:postgres@postgres:5432/postgres?sslmode=disable"
@@ -40,6 +55,9 @@ jobs:
       JWT_SECRET: "aa"
       DD_API_KEY: ""
       OPENAI_KEY: ""
+      ELASTICSEARCH_HOST: "http://localhost:9200"
+      ELASTICSEARCH_USER: ""
+      ELASTICSEARCH_PWD: ""
 
 
     steps:

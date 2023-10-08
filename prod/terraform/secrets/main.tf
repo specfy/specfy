@@ -15,7 +15,9 @@ locals {
     "DD_API_KEY",
     "OPENAI_KEY",
     "LOGSNAG_KEY",
-    "SENTRY_DSN"
+    "SENTRY_DSN",
+    "ELASTICSEARCH_HOST",
+    "ELASTICSEARCH_PWD"
   ])
 }
 

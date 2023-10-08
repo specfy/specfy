@@ -24,6 +24,8 @@ const schema = z.object({
   DD_API_KEY: z.string().optional(),
   DEFAULT_ACCOUNT: z.string().optional(),
   ELASTICSEARCH_HOST: z.string(),
+  ELASTICSEARCH_USER: z.string(),
+  ELASTICSEARCH_PWD: z.string(),
   GITHUB_CLIENT_APPID: z.string().nonempty(),
   GITHUB_CLIENT_ID: z.string().nonempty(),
   GITHUB_CLIENT_PKEY: z.string().nonempty(),
