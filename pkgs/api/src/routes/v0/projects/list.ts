@@ -36,9 +36,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
     };
 
     const projects = await prisma.projects.findMany({
-      where: {
-        orgId: query.org_id,
-      },
+      where: { orgId: query.org_id },
       orderBy: { name: 'asc' },
       include: {
         _count: {
@@ -48,6 +46,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       take: 50,
       skip: 0,
     });
+    pagination.totalItems = projects.length;
 
     return res.status(200).send({
       data: projects.map(toApiProjectList),

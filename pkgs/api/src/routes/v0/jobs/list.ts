@@ -38,6 +38,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
     const filter: Prisma.JobsWhereInput = {
       orgId: query.org_id,
       projectId: query.project_id,
+      type: 'deploy',
     };
 
     const list = await prisma.$transaction(async (tx) => {

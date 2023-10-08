@@ -7,7 +7,7 @@ import { Server } from 'socket.io';
 import type { PayloadAuth, SocketServer } from './types.js';
 import type http from 'node:http';
 
-const l = logger.child({ svc: 'github' });
+const l = logger.child({ svc: 'socket' });
 
 export let io: SocketServer;
 

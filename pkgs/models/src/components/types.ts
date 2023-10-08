@@ -1,4 +1,4 @@
-import type { TechType } from '@specfy/stack-analyser';
+import type { AllowedKeys, TechType } from '@specfy/stack-analyser';
 
 import type { BlockLevelZero } from '../documents';
 import type { FlowEdge, FlowItemDisplay } from '../flows/types.js';
@@ -6,7 +6,10 @@ import type { FlowEdge, FlowItemDisplay } from '../flows/types.js';
 export type ComponentType = TechType | 'project' | 'service';
 
 export type InComponent = { id: string | null; source?: string | undefined };
-export type ComponentTech = { id: string; source?: string | undefined };
+export type ComponentTech = {
+  id: AllowedKeys | 'unknown' | string;
+  source?: string | undefined;
+};
 export interface DBComponent {
   id: string;
   orgId: string;

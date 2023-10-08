@@ -30,7 +30,7 @@ TooltipContent.displayName = TooltipPrimitive.Content.displayName;
 const TooltipFull: React.FC<
   React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content> & {
     children: React.ReactNode;
-    msg: boolean | string;
+    msg: React.ReactNode | boolean | string;
   } & Props
 > = ({ children, msg, ...props }) => {
   return (
