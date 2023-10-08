@@ -24,6 +24,10 @@
   &.transparent {
     background-color: transparent;
   }
+
+  &.auto {
+    width: auto;
+  }
 }
 
 .actions {
