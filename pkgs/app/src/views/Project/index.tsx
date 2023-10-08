@@ -140,7 +140,7 @@ const Project: React.FC = () => {
           <div></div>
 
           <Container>
-            <ContainerChild left>
+            <ContainerChild leftLarge>
               <Loading />
             </ContainerChild>
           </Container>

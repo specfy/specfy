@@ -25,6 +25,7 @@
 
 .left {
   min-width: var(--w-col);
+  background-color: #fff;
 }
 
 .right {
@@ -58,16 +59,16 @@
   max-width: var(--w-col);
 
   background-color: #fff;
-
-  &.padded {
-    padding: var(--spc-2xl) var(--spc-5xl);
-  }
 }
 
 .rightSmall {
   width: calc(100% - 57%);
   background-color: var(--bg1);
   border-left: 1px solid var(--border2);
+}
+
+.padded {
+  padding: var(--spc-2xl) var(--spc-5xl);
 }
 
 
