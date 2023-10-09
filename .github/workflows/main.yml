@@ -12,14 +12,36 @@ jobs:
     timeout-minutes: 15
     services:
       postgres:
+        image: postgres:15.4-alpine
         env:
           POSTGRES_PASSWORD: postgres
-        image: postgres:15.4-alpine
         options: >-
           --health-cmd pg_isready
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+
+      elasticsearch:
+        image: elasticsearch:8.10.2
+        env:
+          http.publish_host: 127.0.0.1
+          transport.host: 127.0.0.1
+          xpack.security.enabled: false
+          indices.id_field_data.enabled: true
+          bootstrap.memory_lock: true
+          discovery.type: single-node
+        options: >-
+          --health-cmd "curl http://127.0.0.1:9200/_cluster/health"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+        # <port on host>:<port on container>
+        - 9200:9200
+
+      redis:
+        image: redis
+        options: --entrypoint redis-server
 
     env:
       DATABASE_URL: "postgres://postgres:postgres@postgres:5432/postgres?sslmode=disable"
@@ -40,6 +62,9 @@ jobs:
       JWT_SECRET: "aa"
       DD_API_KEY: ""
       OPENAI_KEY: ""
+      ELASTICSEARCH_HOST: "http://127.0.0.1:9200"
+      ELASTICSEARCH_USER: ""
+      ELASTICSEARCH_PWD: ""
 
 
     steps:
