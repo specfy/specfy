@@ -39,7 +39,9 @@ const indices: estypes.IndicesCreateRequest[] = [
 
 export async function start() {
   l.info('ES Service Starting');
+}
 
+export async function mapping() {
   try {
     await Promise.all(
       indices.map((index) => {

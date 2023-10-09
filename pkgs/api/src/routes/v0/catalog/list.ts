@@ -21,6 +21,7 @@ function QueryVal(req: FastifyRequest) {
         'api',
         'app',
         'ci',
+        'cloud',
         'db',
         'etl',
         'hosting',
