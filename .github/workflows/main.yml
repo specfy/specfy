@@ -60,7 +60,7 @@ jobs:
       JWT_SECRET: "aa"
       DD_API_KEY: ""
       OPENAI_KEY: ""
-      ELASTICSEARCH_HOST: "http://localhost:9200"
+      ELASTICSEARCH_HOST: "http://elasticsearch:9200"
       ELASTICSEARCH_USER: ""
       ELASTICSEARCH_PWD: ""
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
