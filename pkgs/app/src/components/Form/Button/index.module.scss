@@ -94,6 +94,12 @@
   }
 
   // Sizing
+  &.xs {
+    height: var(--h-xs);
+    padding: var(--spc-xs) var(--spc);
+    font-size: var(--font-xs);
+  }
+
   &.s {
     height: var(--h-s);
     padding: var(--spc-xs) var(--spc-m);

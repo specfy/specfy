@@ -9,7 +9,7 @@ import cls from './index.module.scss';
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   asChild?: boolean;
-  size?: 'xl' | 'l' | 'm' | 's';
+  size?: 'xl' | 'l' | 'm' | 's' | 'xs';
   display?: 'default' | 'ghost' | 'item' | 'primary';
   danger?: boolean;
   loading?: boolean;
