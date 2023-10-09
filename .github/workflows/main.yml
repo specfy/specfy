@@ -23,16 +23,19 @@ jobs:
 
       elasticsearch:
         image: elasticsearch:8.10.2
-        env:
-          xpack.security.enabled: false
-          discovery.type: single-node
-        options: -e "discovery.type=single-node" -e "xpack.security.enabled=false"
-          -e "cluster.routing.allocation.disk.threshold_enabled=false" --health-cmd
-          "curl --fail http://localhost:9200" --health-interval 5s --health-retries
-          20
-
         ports:
-        - 9200:9200
+          - "9200:9200"
+          - "9300:9300"
+        env:
+          discovery.type: "single-node"
+          discovery.seed_hosts: "[]"
+          xpack.security.enabled: "false"
+          ES_JAVA_OPTS: "-Xms400m -Xmx400m"
+        options: >-
+          --health-cmd "curl -s --fail http://localhost:9200/_cat/health || exit 1"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 10
 
       redis:
         image: redis
@@ -60,6 +63,8 @@ jobs:
       ELASTICSEARCH_HOST: "http://localhost:9200"
       ELASTICSEARCH_USER: ""
       ELASTICSEARCH_PWD: ""
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ vars.TURBO_TEAM }}
 
 
     steps:
