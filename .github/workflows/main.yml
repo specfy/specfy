@@ -26,13 +26,12 @@ jobs:
         env:
           xpack.security.enabled: false
           discovery.type: single-node
-        options: >-
-          --health-cmd "curl http://localhost:9200/_cluster/health"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+        options: -e "discovery.type=single-node" -e "xpack.security.enabled=false"
+          -e "cluster.routing.allocation.disk.threshold_enabled=false" --health-cmd
+          "curl --fail http://localhost:9200" --health-interval 5s --health-retries
+          20
+
         ports:
-        # <port on host>:<port on container>
         - 9200:9200
 
       redis:
