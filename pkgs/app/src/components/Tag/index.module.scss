@@ -1,11 +1,16 @@
+/* stylelint-disable selector-class-pattern */
 .tag {
+  --tag-font: var(--font-s);
+  --tag-padding: 0 var(--spc-l);
+  --tag-lh: var(--lh);
+
   display: inline-flex;
-  gap: var(--spc-m);
   align-items: center;
 
-  padding: 0 var(--spc-l);
+  padding: var(--tag-padding);
 
-  font-size: var(--font-s);
+  font-size: var(--tag-font);
+  line-height: var(--tag-lh);
 
   border: 1px solid transparent;
   border-radius: var(--radius3);
@@ -24,7 +29,32 @@
     background-color: var(--bg2)
   }
 
+  &.reverse {
+    color: var(--primaryText);
+    border-color: var(--border2);
+  }
+
   &.border {
     border-color: var(--accent1);
+  }
+
+
+  // Sizing
+
+  &.xs {
+    --tag-font: var(--font-xs);
+    --tag-padding: 0 var(--spc);
+    --tag-lh: var(--lh-xs);
+  }
+
+  &.s {
+    --tag-font: var(--font-xs);
+    --tag-padding: 0 var(--spc);
+    --tag-lh: var(--lh-s);
+  }
+
+  &.m {
+    --tag-font: var(--font-s);
+    --tag-padding: 0 var(--spc-l);
   }
 }
