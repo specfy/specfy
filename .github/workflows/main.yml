@@ -24,11 +24,7 @@ jobs:
       elasticsearch:
         image: elasticsearch:8.10.2
         env:
-          http.publish_host: localhost
-          transport.host: localhost
           xpack.security.enabled: false
-          indices.id_field_data.enabled: true
-          bootstrap.memory_lock: true
           discovery.type: single-node
         options: >-
           --health-cmd "curl http://localhost:9200/_cluster/health"
