@@ -23,22 +23,25 @@
       "path": "../db"
     },
     {
+      "path": "../emails"
+    },
+    {
+      "path": "../es"
+    },
+    {
       "path": "../github"
     },
     {
       "path": "../jobs"
     },
     {
-      "path": "../models"
-    },
-    {
       "path": "../sync"
     },
     {
-      "path": "../socket"
+      "path": "../models"
     },
     {
-      "path": "../emails"
+      "path": "../socket"
     }
   ],
 }

@@ -1,4 +1,5 @@
 import { envs, isTest, l } from '@specfy/core';
+import * as es from '@specfy/es';
 import * as github from '@specfy/github';
 import * as jobs from '@specfy/jobs';
 import * as socket from '@specfy/socket';
@@ -55,5 +56,6 @@ void (async () => {
 
   if (!isTest) {
     socket.start(app.server);
+    await es.start();
   }
 })();

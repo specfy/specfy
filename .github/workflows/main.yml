@@ -23,21 +23,19 @@ jobs:
 
       elasticsearch:
         image: elasticsearch:8.10.2
+        ports:
+          - "9200:9200"
+          - "9300:9300"
         env:
-          http.publish_host: 127.0.0.1
-          transport.host: 127.0.0.1
-          xpack.security.enabled: false
-          indices.id_field_data.enabled: true
-          bootstrap.memory_lock: true
-          discovery.type: single-node
+          discovery.type: "single-node"
+          discovery.seed_hosts: "[]"
+          xpack.security.enabled: "false"
+          ES_JAVA_OPTS: "-Xms400m -Xmx400m"
         options: >-
-          --health-cmd "curl http://127.0.0.1:9200/_cluster/health"
+          --health-cmd "curl -s --fail http://localhost:9200/_cat/health || exit 1"
           --health-interval 10s
           --health-timeout 5s
-          --health-retries 5
-        ports:
-        # <port on host>:<port on container>
-        - 9200:9200
+          --health-retries 10
 
       redis:
         image: redis
@@ -62,9 +60,11 @@ jobs:
       JWT_SECRET: "aa"
       DD_API_KEY: ""
       OPENAI_KEY: ""
-      ELASTICSEARCH_HOST: "http://127.0.0.1:9200"
+      ELASTICSEARCH_HOST: "http://elasticsearch:9200"
       ELASTICSEARCH_USER: ""
       ELASTICSEARCH_PWD: ""
+      TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
+      TURBO_TEAM: ${{ vars.TURBO_TEAM }}
 
 
     steps:

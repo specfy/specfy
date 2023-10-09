@@ -1,5 +1,6 @@
 import { nanoid } from '@specfy/core';
 import { prisma } from '@specfy/db';
+import { client, mapping } from '@specfy/es';
 import { getJwtToken } from '@specfy/models';
 
 import type { Orgs, Projects, Users } from '@specfy/db';
@@ -96,4 +97,11 @@ export async function truncate() {
   await prisma.$executeRawUnsafe(`TRUNCATE TABLE "Keys" CASCADE`);
   await prisma.$executeRawUnsafe(`TRUNCATE TABLE "Flows" CASCADE`);
   await prisma.$executeRawUnsafe(`TRUNCATE TABLE "Jobs" CASCADE`);
+
+  await client.indices.delete({
+    index: 'techs',
+    allow_no_indices: true,
+    ignore_unavailable: true,
+  });
+  await mapping();
 }

@@ -43,6 +43,12 @@ data "google_secret_manager_secret_version" "LOGSNAG_KEY" {
 data "google_secret_manager_secret_version" "SENTRY_DSN" {
   secret = "SENTRY_DSN"
 }
+data "google_secret_manager_secret_version" "ELASTICSEARCH_HOST" {
+  secret = "ELASTICSEARCH_HOST"
+}
+data "google_secret_manager_secret_version" "ELASTICSEARCH_PWD" {
+  secret = "ELASTICSEARCH_PWD"
+}
 
 
 resource "google_cloud_run_v2_service" "main" {
@@ -133,6 +139,18 @@ resource "google_cloud_run_v2_service" "main" {
       env {
         name = "SENTRY_DSN"
         value = data.google_secret_manager_secret_version.SENTRY_DSN.secret_data
+      }
+      env {
+        name = "ELASTICSEARCH_HOST"
+        value = data.google_secret_manager_secret_version.ELASTICSEARCH_HOST.secret_data
+      }
+      env {
+        name = "ELASTICSEARCH_USER"
+        value = "elastic"
+      }
+      env {
+        name = "ELASTICSEARCH_PWD"
+        value = data.google_secret_manager_secret_version.ELASTICSEARCH_PWD.secret_data
       }
 
 
