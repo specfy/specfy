@@ -1,5 +1,5 @@
 import { internalTypeToText } from '@specfy/models/src/components/constants';
-import { IconBox } from '@tabler/icons-react';
+import { IconBox, IconPlus } from '@tabler/icons-react';
 import {
   useReactTable,
   type ColumnDef,
@@ -9,6 +9,7 @@ import {
 import { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Skeleton from 'react-loading-skeleton';
+import { Link } from 'react-router-dom';
 import { PieChart, Pie, Tooltip } from 'recharts';
 
 import type {
@@ -23,6 +24,7 @@ import { useListProjects, useListCatalog } from '@/api';
 import { titleSuffix } from '@/common/string';
 import { supportedIndexed } from '@/common/techs';
 import { ContainerChild } from '@/components/Container';
+import { Empty } from '@/components/Empty';
 import { Flex } from '@/components/Flex';
 import { Button } from '@/components/Form/Button';
 import { Loading } from '@/components/Loading';
@@ -171,6 +173,7 @@ export const OrgCatalog: React.FC<{
   const [categories, setCategories] = useState<CatalogItem[]>([]);
   const [data, setData] = useState<CatalogItem[]>([]);
   const [total, setTotal] = useState<number>(0);
+  const [ready, setReady] = useState<boolean>(false);
 
   useEffect(() => {
     setTotalProjects(getProjects.data?.pagination.totalItems || 0);
@@ -190,6 +193,7 @@ export const OrgCatalog: React.FC<{
       setTotal(res.data.data.byName.length);
     }
     setData(res.data.data.byName);
+    setReady(true);
   }, [res.data]);
 
   const filters = useMemo(() => {
@@ -237,7 +241,7 @@ export const OrgCatalog: React.FC<{
     };
   }, [rawFilter, data]);
 
-  if (!data || !chart || !categories || !filters) {
+  if (!ready) {
     return (
       <>
         <Helmet title={`Catalog - ${org.name} ${titleSuffix}`} />
@@ -245,6 +249,29 @@ export const OrgCatalog: React.FC<{
           <h2>Catalog</h2>
           <Skeleton count={2} />
           <List data={[]} totalProjects={0} />
+        </ContainerChild>
+      </>
+    );
+  }
+  if (ready && data.length <= 0 && !filters) {
+    return (
+      <>
+        <Helmet title={`Catalog - ${org.name} ${titleSuffix}`} />
+        <ContainerChild left padded>
+          <h2>Catalog</h2>
+          <Empty
+            title="Catalog is empty"
+            desc="Create a project manually or from GitHub."
+            action={
+              <Flex column gap="xl">
+                <Link to={`/${org.id}/_/project/new`}>
+                  <Button display="primary">
+                    <IconPlus /> Create a new Project
+                  </Button>
+                </Link>
+              </Flex>
+            }
+          />
         </ContainerChild>
       </>
     );
@@ -257,24 +284,25 @@ export const OrgCatalog: React.FC<{
         <h2>Catalog {res.isLoading && <Loading />}</h2>
 
         <Flex gap="m" align="flex-start" wrap="wrap">
-          {filters.map((cat) => {
-            const sel = rawFilter === cat.value;
-            return (
-              <Button
-                key={cat.value}
-                size="xs"
-                display={sel ? 'primary' : 'default'}
-                onClick={() => setRawFilter(cat.value as any)}
-              >
-                {cat.label}
-                {cat.count > 0 && (
-                  <Tag variant={sel ? 'reverse' : 'border'} size="xs">
-                    {cat.count}
-                  </Tag>
-                )}
-              </Button>
-            );
-          })}
+          {filters &&
+            filters.map((cat) => {
+              const sel = rawFilter === cat.value;
+              return (
+                <Button
+                  key={cat.value}
+                  size="xs"
+                  display={sel ? 'primary' : 'default'}
+                  onClick={() => setRawFilter(cat.value as any)}
+                >
+                  {cat.label}
+                  {cat.count > 0 && (
+                    <Tag variant={sel ? 'reverse' : 'border'} size="xs">
+                      {cat.count}
+                    </Tag>
+                  )}
+                </Button>
+              );
+            })}
         </Flex>
         {res.data && <List data={data} totalProjects={totalProjects} />}
       </ContainerChild>

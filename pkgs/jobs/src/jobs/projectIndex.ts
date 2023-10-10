@@ -1,10 +1,9 @@
-import { isTest } from '@specfy/core';
 import { prisma } from '@specfy/db';
-import { client } from '@specfy/es';
 import {
   indexTech,
   type CatalogTech,
   type JobWithOrgProject,
+  removeTechByJob,
 } from '@specfy/models';
 import { tech as techDb } from '@specfy/stack-analyser';
 
@@ -73,25 +72,7 @@ export class JobProjectIndex extends Job {
     ]);
 
     l.info('Cleaning old data');
-    await client.deleteByQuery({
-      index: 'techs',
-      // In production we do not care that ES is cleaned synchronously
-      wait_for_completion: false,
-      // It will ignore all conflicts on document
-      conflicts: 'proceed',
-      // Make sure shards refresh after the delete
-      refresh: isTest === true,
-      query: {
-        // @ts-expect-error
-        bool: {
-          must: [
-            { term: { projectId: job.projectId } },
-            { term: { orgId: job.orgId } },
-          ],
-          must_not: [{ term: { jobId: job.id } }],
-        },
-      },
-    });
+    await removeTechByJob({ job });
     l.info('Cleaned');
 
     this.mark('success', 'success');

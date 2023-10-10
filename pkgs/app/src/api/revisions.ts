@@ -131,6 +131,7 @@ export async function mergeRevision({
 
   if (res.status === 200) {
     await refreshProject(org_id, project_id);
+    void qcli.invalidateQueries(['listCatalog', org_id]);
   } else {
     void qcli.invalidateQueries([
       'getRevisionChecks',

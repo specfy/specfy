@@ -1,7 +1,8 @@
-import { nanoid } from '@specfy/core';
+import { isTest, nanoid } from '@specfy/core';
 import { client } from '@specfy/es';
 
 import type { Logger } from '@specfy/core';
+import type { Jobs, Orgs, Projects } from '@specfy/db';
 import type { TechType } from '@specfy/stack-analyser';
 
 import type { CatalogTech } from './types.js';
@@ -79,4 +80,56 @@ export async function indexTech({
       l.error(action);
     });
   }
+}
+
+const baseDelete = {
+  // In production we do not care that ES is cleaned synchronously
+  wait_for_completion: false,
+  // It will ignore all conflicts on document
+  conflicts: 'proceed',
+  // Make sure shards refresh after the delete
+  refresh: isTest === true,
+};
+export async function removeTechByJob({ job }: { job: Jobs }) {
+  await client.deleteByQuery({
+    index: 'techs',
+    ...baseDelete,
+    query: {
+      // @ts-expect-error
+      bool: {
+        must: [
+          { term: { projectId: job.projectId } },
+          { term: { orgId: job.orgId } },
+        ],
+        must_not: [{ term: { jobId: job.id } }],
+      },
+    },
+  });
+}
+
+export async function removeTechByProject({ project }: { project: Projects }) {
+  await client.deleteByQuery({
+    index: 'techs',
+    ...baseDelete,
+    query: {
+      // @ts-expect-error
+      bool: {
+        must: [
+          { term: { projectId: project.id } },
+          { term: { orgId: project.orgId } },
+        ],
+      },
+    },
+  });
+}
+
+export async function removeTechByOrg({ org }: { org: Orgs }) {
+  await client.deleteByQuery({
+    index: 'techs',
+    ...baseDelete,
+    query: {
+      // @ts-expect-error
+      bool: { must: [{ term: { orgId: org.id } }] },
+    },
+  });
 }

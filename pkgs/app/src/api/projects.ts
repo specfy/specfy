@@ -27,6 +27,7 @@ export async function createProject(
   if (res.status === 200) {
     qcli.refetchQueries(['listProjects', data.orgId]);
     qcli.refetchQueries(['getFlow', data.orgId]);
+    qcli.invalidateQueries(['listCatalog', data.orgId]);
   }
 
   return json;
@@ -45,6 +46,7 @@ export async function updateProject(
   if (res.status === 200) {
     void qcli.invalidateQueries(['listProjects', opts.org_id]);
     void qcli.invalidateQueries(['getProject', opts.org_id]);
+    void qcli.invalidateQueries(['listCatalog', opts.org_id]);
   }
 
   return json;
@@ -63,6 +65,7 @@ export async function deleteProject(
     void qcli.invalidateQueries(['listProjects', opts.org_id]);
     void qcli.invalidateQueries(['getProject', opts.org_id]);
     void qcli.invalidateQueries(['getFlow', opts.org_id]);
+    void qcli.invalidateQueries(['listCatalog', opts.org_id]);
   }
 
   return json;

@@ -17,7 +17,6 @@
   "dependencies": {
     "@specfy/core": "file:../core",
     "@specfy/db": "file:../db",
-    "@specfy/es": "file:../es",
     "@specfy/github": "file:../github",
     "@specfy/socket": "file:../socket",
     "@specfy/sync": "file:../sync",
