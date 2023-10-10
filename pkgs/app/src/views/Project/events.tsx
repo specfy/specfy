@@ -12,6 +12,10 @@ export const ProjectEvents: React.FC = () => {
     }
 
     const job = data.job;
+    if (job.type === 'projectIndex') {
+      return;
+    }
+
     qcli.invalidateQueries(['listJobs', job.orgId, job.projectId]);
     qcli.invalidateQueries(['getJob', job.orgId, job.projectId, job.id]);
     toast.add({
@@ -24,6 +28,9 @@ export const ProjectEvents: React.FC = () => {
 
   useEventBus('job.finish', (data) => {
     if (window.location.pathname.endsWith('/welcome')) {
+      return;
+    }
+    if (data.job.type !== 'deploy') {
       return;
     }
 

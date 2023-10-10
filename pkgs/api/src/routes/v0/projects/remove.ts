@@ -1,6 +1,6 @@
 import { logEvent } from '@specfy/core';
 import { prisma } from '@specfy/db';
-import { recomputeOrgGraph } from '@specfy/models';
+import { recomputeOrgGraph, removeTechByProject } from '@specfy/models';
 
 import type { DeleteProject } from '@specfy/models';
 
@@ -34,6 +34,8 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
 
         await recomputeOrgGraph({ orgId: project.orgId, tx });
       });
+
+      await removeTechByProject({ project });
 
       logEvent('projects.deleted', {
         userId: me.id,

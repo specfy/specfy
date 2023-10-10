@@ -1,8 +1,8 @@
 import {
   IconApps,
-  IconChartLine,
   IconChevronDown,
   IconHome,
+  IconListSearch,
   IconPlus,
   IconSettings,
 } from '@tabler/icons-react';
@@ -117,20 +117,14 @@ export const OrgMenu: React.FC = () => {
       return;
     }
 
-    if (path[3] === 'content') {
-      setOpen('content');
-    } else if (path[3] === 'flow') {
+    if (path[3] === 'flow') {
       setOpen('flow');
-    } else if (path[3] === 'activity') {
-      setOpen('activity');
+    } else if (path[3] === 'catalog') {
+      setOpen('catalog');
     } else if (path[3] === 'settings') {
       setOpen('settings');
     } else if (path[3] === 'team') {
       setOpen('team');
-    } else if (path[3] === 'policies') {
-      setOpen('policies');
-    } else if (path[3] === 'report') {
-      setOpen('report');
     } else {
       setOpen('home');
     }
@@ -161,15 +155,14 @@ export const OrgMenu: React.FC = () => {
         ),
       },
       {
-        key: 'report',
+        key: 'catalog',
         label: (
-          <Flex justify="space-between" grow={1}>
+          <Link to={`${linkSelf}/_/catalog`}>
             <Flex gap="l">
-              <IconChartLine />
-              Report
+              <IconListSearch />
+              Catalog
             </Flex>
-            <div className={cls.coming}>coming soon</div>
-          </Flex>
+          </Link>
         ),
       },
       {

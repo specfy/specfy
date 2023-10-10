@@ -1,6 +1,7 @@
 export * from './activities';
 export * from './auth';
 export * from './blobs';
+export * from './catalog';
 export * from './comments';
 export * from './components';
 export * from './demo';

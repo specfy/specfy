@@ -13,6 +13,7 @@ import {
   hasProjectComponentChanges,
   IGNORED_COMPONENT_KEYS_MERGE,
   IGNORED_DOCUMENT_KEYS_MERGE,
+  createJobProjectIndex,
 } from '@specfy/models';
 
 import type { Prisma } from '@specfy/db';
@@ -30,7 +31,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
     async function (req, res) {
       const rev = req.revision!;
       let reason: MergeRevisionError['error']['reason'] | false = false;
-      const user = req.me!;
+      const me = req.me!;
 
       await prisma.$transaction(async (tx) => {
         // Check if we have reviews
@@ -62,7 +63,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
           where: { id: rev.id },
         });
         await createRevisionActivity({
-          user,
+          user: me,
           action: 'Revision.merged',
           target: updated,
           activityGroupId,
@@ -88,7 +89,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
                 where: { id: blob.typeId },
               });
               await createProjectActivity({
-                user,
+                user: me,
                 action: 'Project.deleted',
                 target: del,
                 activityGroupId,
@@ -104,7 +105,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
                 where: { id: blob.typeId },
               });
               await createProjectActivity({
-                user,
+                user: me,
                 action: 'Project.updated',
                 target: up,
                 activityGroupId,
@@ -126,7 +127,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
                 where: { id: blob.typeId },
               });
               await createComponentActivity({
-                user,
+                user: me,
                 action: 'Component.deleted',
                 target: del,
                 activityGroupId,
@@ -144,7 +145,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
                 where: { id: blob.typeId },
               });
               await createComponentActivity({
-                user,
+                user: me,
                 action: 'Component.updated',
                 target: up,
                 activityGroupId,
@@ -161,7 +162,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
             });
 
             await createComponentActivity({
-              user,
+              user: me,
               action: 'Component.created',
               target: created,
               activityGroupId,
@@ -177,7 +178,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
                 where: { id: blob.typeId },
               });
               await createDocumentActivity({
-                user,
+                user: me,
                 action: 'Document.deleted',
                 target: del,
                 activityGroupId,
@@ -196,7 +197,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
                 where: { id: blob.typeId },
               });
               await createDocumentActivity({
-                user,
+                user: me,
                 action: 'Document.updated',
                 target: up,
                 activityGroupId,
@@ -212,7 +213,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
               },
             });
             await createDocumentActivity({
-              user,
+              user: me,
               action: 'Document.created',
               target: created,
               activityGroupId,
@@ -250,6 +251,15 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         data: { updatedAt: new Date() },
         where: { id: rev.projectId },
       });
+
+      await createJobProjectIndex({
+        orgId: rev.orgId,
+        projectId: rev.projectId,
+        userId: me.id,
+        config: {},
+        tx: prisma,
+      });
+
       return res.status(200).send({
         data: {
           done: true,

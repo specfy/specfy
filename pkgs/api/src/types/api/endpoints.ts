@@ -64,6 +64,7 @@ import type {
   PostSource,
   PutSource,
   DeleteSource,
+  ListCatalog,
 } from '@specfy/models';
 
 import type { PostAuthLocal, PostLogout } from './auth.js';
@@ -85,6 +86,8 @@ export interface API {
     POST: PostSubscription;
   };
   [key: `/0/stripe/${string}/usage`]: { GET: GetBillingUsage };
+
+  '/0/catalog': { GET: ListCatalog };
 
   '/0/components': { GET: ListComponents };
 

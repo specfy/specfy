@@ -2,6 +2,7 @@ import { l as logger, metrics } from '@specfy/core';
 import { prisma } from '@specfy/db';
 
 import { JobDeploy } from './jobs/deploy.js';
+import { JobProjectIndex } from './jobs/projectIndex.js';
 
 import type { Job } from './Job.js';
 
@@ -54,6 +55,11 @@ export function start() {
         switch (full.type) {
           case 'deploy': {
             job = new JobDeploy(full);
+            break;
+          }
+
+          case 'projectIndex': {
+            job = new JobProjectIndex(full);
             break;
           }
         }

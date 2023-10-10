@@ -3,7 +3,16 @@ import { Prisma } from '@specfy/db';
 
 import type { Jobs } from '@specfy/db';
 
+import type { JobDeployConfig, JobProjectIndexConfig } from './types.js';
 import type { SetNonNullable } from 'type-fest';
+
+type Props = Omit<Partial<Jobs>, 'logs' | 'config'> &
+  SetNonNullable<
+    Pick<Jobs, 'orgId' | 'projectId' | 'userId'>,
+    'projectId' | 'userId'
+  > & {
+    tx: Prisma.TransactionClient;
+  };
 
 export async function createJobDeploy({
   tx,
@@ -12,13 +21,7 @@ export async function createJobDeploy({
   config,
   userId,
   ...rest
-}: Omit<Partial<Jobs>, 'logs'> &
-  SetNonNullable<
-    Pick<Jobs, 'config' | 'orgId' | 'projectId' | 'userId'>,
-    'projectId' | 'userId'
-  > & {
-    tx: Prisma.TransactionClient;
-  }) {
+}: Props & { config: JobDeployConfig }) {
   l.info('Creating deploy job', { orgId, projectId, config });
   const job = await tx.jobs.create({
     data: {
@@ -35,7 +38,36 @@ export async function createJobDeploy({
     },
   });
 
-  logEvent('jobs.created', { orgId, projectId, userId });
+  logEvent('jobs.created', { orgId, projectId, userId, type: 'deploy' });
+
+  return job;
+}
+
+export async function createJobProjectIndex({
+  tx,
+  orgId,
+  projectId,
+  config,
+  userId,
+  ...rest
+}: Props & { config: JobProjectIndexConfig }) {
+  l.info('Creating index job', { orgId, projectId, config });
+  const job = await tx.jobs.create({
+    data: {
+      id: nanoid(),
+      ...rest,
+      status: rest.status || 'pending',
+      reason: rest.reason || Prisma.DbNull,
+      config,
+      orgId,
+      projectId,
+      userId,
+      type: 'projectIndex',
+      typeId: rest.typeId || (await getJobTypeId({ orgId, projectId, tx })),
+    },
+  });
+
+  logEvent('jobs.created', { orgId, projectId, userId, type: 'projectIndex' });
 
   return job;
 }
