@@ -32,6 +32,7 @@ function QueryVal(req: FastifyRequest) {
         'saas',
         'storage',
         'tool',
+        'unknown',
       ]),
     })
     .strict()

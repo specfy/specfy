@@ -36,7 +36,7 @@ export const supportedTypeToText: Record<ComponentType, string> = {
   tool: 'tool',
 };
 
-export const internalTypeToText: Record<ComponentType, string> = {
+export const internalTypeToText: Record<ComponentType | 'unknown', string> = {
   analytics: 'Analytics',
   api: 'API',
   app: 'Application',
@@ -54,4 +54,5 @@ export const internalTypeToText: Record<ComponentType, string> = {
   service: 'Service',
   storage: 'Storage',
   tool: 'Tool',
+  unknown: 'Other',
 };

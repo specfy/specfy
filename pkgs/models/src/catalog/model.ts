@@ -3,14 +3,14 @@ import { client } from '@specfy/es';
 
 import type { Logger } from '@specfy/core';
 import type { Jobs, Orgs, Projects } from '@specfy/db';
-import type { TechType } from '@specfy/stack-analyser';
 
+import type { ListCatalog } from './types.api.js';
 import type { CatalogTech } from './types.js';
 import type { estypes } from '@elastic/elasticsearch';
 
 interface ListProps {
   orgId: string;
-  type: 'all' | TechType;
+  type: ListCatalog['Querystring']['type'];
 }
 
 export async function catalogList(params: ListProps) {

@@ -4,7 +4,7 @@ export interface CatalogTech {
   orgId: string;
   projectId: string;
   jobId: string;
-  type: ComponentType;
+  type: ComponentType | 'unknown';
   key: string;
   name: string;
 }

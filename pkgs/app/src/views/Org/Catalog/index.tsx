@@ -91,10 +91,11 @@ const filtersBase: Array<{ label: string; value: string; count: 0 }> = [
   { label: 'ETL', value: 'etl', count: 0 },
   { label: 'Language', value: 'language', count: 0 },
   { label: 'Monitoring', value: 'monitoring', count: 0 },
-  { label: 'Other', value: 'tool', count: 0 },
+  { label: 'Tool', value: 'tool', count: 0 },
   { label: 'Queue', value: 'messaging', count: 0 },
   { label: 'SaaS', value: 'saas', count: 0 },
   { label: 'Storage', value: 'storage', count: 0 },
+  { label: 'Other', value: 'unknown', count: 0 },
 ];
 
 const List: React.FC<{ data: CatalogItem[]; totalProjects: number }> = ({
@@ -236,6 +237,13 @@ export const OrgCatalog: React.FC<{
     return {
       unique: data.length,
       dataset: data.map((cat) => {
+        if (!(cat.key in supportedIndexed)) {
+          return {
+            ...cat,
+            label: cat.key,
+          };
+        }
+
         return {
           ...cat,
           label: supportedIndexed[cat.key].name,
