@@ -121,7 +121,7 @@ export const GitHubOrgSelect: React.FC<{
         <CommandItem onSelect={triggerInstall}>
           <Button size="s" display="ghost" onClick={triggerInstall}>
             <IconPlus />
-            Add GitHub Organization
+            Add or modify GitHub Organization
           </Button>
         </CommandItem>
       }

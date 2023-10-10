@@ -8,6 +8,8 @@ import type { ApiGitHubRepo } from '@specfy/models';
 import * as Popover from '../../Popover';
 import { useGetGitHubRepos } from '@/api';
 import { Input } from '@/components/Form/Input';
+import { Loading } from '@/components/Loading';
+import { Subdued } from '@/components/Text';
 
 import cls from './index.module.scss';
 
@@ -132,8 +134,22 @@ export const GitHubSearch = forwardRef<
             onKeyDown={handleKeyPress}
             className={cls.input}
             autoFocus
-            placeholder={!installationId ? 'Type Project name' : 'Search...'}
+            placeholder={
+              !installationId ? 'Type project name to create' : 'Search...'
+            }
           />
+          {installationId && !res.data && (
+            <div className={classNames(cls.row)}>
+              <Loading />
+            </div>
+          )}
+          {installationId && res.data && list.length <= 0 && (
+            <div className={classNames(cls.row)}>
+              <Subdued>
+                No repository found, type to create a custom project
+              </Subdued>
+            </div>
+          )}
           <div ref={refList} className={cls.list}>
             {list.map((repo, i) => {
               return (

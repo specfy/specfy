@@ -48,7 +48,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       });
 
       const list = await octokit.rest.repos.listForAuthenticatedUser({
-        per_page: 100,
+        per_page: 200,
         type: 'owner',
         sort: 'updated',
       });
@@ -59,10 +59,11 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       });
 
       try {
+        // TODO: paginate
         const list =
           await octokit.rest.apps.listInstallationReposForAuthenticatedUser({
             installation_id: query.installation_id,
-            per_page: 100,
+            per_page: 500,
           });
         repos = list.data.repositories;
       } catch (e: unknown) {

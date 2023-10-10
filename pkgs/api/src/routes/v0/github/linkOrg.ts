@@ -84,9 +84,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       await prisma.$transaction(async (tx) => {
         await prisma.orgs.update({
           data,
-          where: {
-            id: body.orgId,
-          },
+          where: { id: body.orgId },
         });
         if (body.installationId !== org.githubInstallationId) {
           await createGitHubActivity({
