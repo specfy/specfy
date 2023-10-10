@@ -33,7 +33,7 @@ export const ProjectWelcome: React.FC = () => {
   useEventBus(
     'job.start',
     (data) => {
-      if (data.project.id !== project?.id) {
+      if (data.project.id !== project?.id || data.job.type !== 'deploy') {
         return;
       }
       setJob(data.job);
