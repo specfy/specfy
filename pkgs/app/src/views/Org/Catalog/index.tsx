@@ -21,6 +21,7 @@ import type {
 import type { AllowedKeys } from '@specfy/stack-analyser';
 
 import { useListProjects, useListCatalog } from '@/api';
+import { qcli } from '@/common/query';
 import { titleSuffix } from '@/common/string';
 import { supportedIndexed } from '@/common/techs';
 import { ContainerChild } from '@/components/Container';
@@ -32,6 +33,7 @@ import { Tag } from '@/components/Tag';
 import { TooltipFull } from '@/components/Tooltip';
 import * as Table from '@/components/ui/DataTable';
 import { Progress } from '@/components/ui/Progress';
+import { useEventBus } from '@/hooks/useEventBus';
 import type { RouteOrg } from '@/types/routes';
 
 import cls from './index.module.scss';
@@ -174,6 +176,7 @@ export const OrgCatalog: React.FC<{
   const [data, setData] = useState<CatalogItem[]>([]);
   const [total, setTotal] = useState<number>(0);
   const [ready, setReady] = useState<boolean>(false);
+  const [indexing, setIndexing] = useState<boolean>(false);
 
   useEffect(() => {
     setTotalProjects(getProjects.data?.pagination.totalItems || 0);
@@ -241,6 +244,30 @@ export const OrgCatalog: React.FC<{
     };
   }, [rawFilter, data]);
 
+  useEventBus(
+    'job.start',
+    (evt) => {
+      if (evt.job.orgId !== org.id || evt.job.type !== 'projectIndex') {
+        return;
+      }
+      setIndexing(true);
+    },
+    [org]
+  );
+  useEventBus(
+    'job.finish',
+    (evt) => {
+      console.log('coucou', evt);
+      if (evt.job.orgId !== org.id || evt.job.type !== 'projectIndex') {
+        return;
+      }
+      console.log('cata');
+      setIndexing(false);
+      void qcli.refetchQueries(['listCatalog', org.id]);
+    },
+    [org]
+  );
+
   if (!ready) {
     return (
       <>
@@ -281,7 +308,16 @@ export const OrgCatalog: React.FC<{
     <>
       <Helmet title={`Catalog - ${org.name} ${titleSuffix}`} />
       <ContainerChild left padded>
-        <h2>Catalog {res.isLoading && <Loading />}</h2>
+        <Flex justify="space-between">
+          <h2>Catalog {res.isLoading && <Loading />}</h2>
+          <div>
+            {indexing && (
+              <Flex gap="m">
+                <Loading /> indexing
+              </Flex>
+            )}
+          </div>
+        </Flex>
 
         <Flex gap="m" align="flex-start" wrap="wrap">
           {filters &&
