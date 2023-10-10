@@ -5,13 +5,16 @@ import { useNavigate } from 'react-router-dom';
 import { createDemo } from '@/api';
 import { isError } from '@/api/helpers';
 import { i18n } from '@/common/i18n';
+import { socket } from '@/common/socket';
 import { Flex } from '@/components/Flex';
 import { Button } from '@/components/Form/Button';
+import { useAuth } from '@/hooks/useAuth';
 import { useToast } from '@/hooks/useToast';
 
 import cls from './index.module.scss';
 
 export const TryDemo: React.FC = () => {
+  const { tryLogin } = useAuth();
   const navigate = useNavigate();
   const toast = useToast();
 
@@ -27,6 +30,12 @@ export const TryDemo: React.FC = () => {
     }
 
     toast.add({ title: 'Your demo is ready', status: 'success' });
+    setTimeout(() => {
+      // Refresh permissions
+      tryLogin();
+
+      socket.emit('join', { orgId: res.data.id });
+    }, 1);
     navigate(`/${res.data.id}`);
   };
 

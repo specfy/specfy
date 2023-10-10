@@ -1,7 +1,7 @@
 import type { Users } from '@specfy/db';
 import type { PermsWithOrg, ApiProject, ApiJobList } from '@specfy/models';
 
-import type { Server } from 'socket.io';
+import type { Server, Socket } from 'socket.io';
 
 export interface PayloadAuth {
   userId: string;
@@ -19,11 +19,22 @@ export interface ServerEvents {
 }
 
 export interface ListenEvents {
-  join: (data: { orgId: string; projectId: string }) => void;
+  join: (data: { orgId: string; projectId?: string }) => void;
 }
 type InterEvents = Record<string, unknown>;
 
 export type SocketServer = Server<
+  ListenEvents,
+  ServerEvents,
+  InterEvents,
+  {
+    sessionID?: string;
+    user?: Users;
+    perms?: PermsWithOrg[];
+  }
+>;
+
+export type SocketUser = Socket<
   ListenEvents,
   ServerEvents,
   InterEvents,

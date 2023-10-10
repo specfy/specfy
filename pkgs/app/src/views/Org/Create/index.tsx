@@ -9,6 +9,7 @@ import type { FieldsErrors } from '@specfy/core';
 import { createOrg } from '@/api';
 import { handleErrors, isError } from '@/api/helpers';
 import { qcli } from '@/common/query';
+import { socket } from '@/common/socket';
 import { slugify, titleSuffix } from '@/common/string';
 import { Card } from '@/components/Card';
 import { ContainerChild } from '@/components/Container';
@@ -50,6 +51,7 @@ const OrgCreate: React.FC = () => {
     setTimeout(() => {
       // Refresh permissions
       tryLogin();
+      socket.emit('join', { orgId: res.data.id });
     }, 1);
     navigate(`/${res.data.id}`);
   };

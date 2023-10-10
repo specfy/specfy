@@ -1,10 +1,9 @@
 import { nanoid, envs, l as logger } from '@specfy/core';
 import { prisma } from '@specfy/db';
-import { checkInheritedPermissions } from '@specfy/models';
 import JWT from 'jsonwebtoken';
 import { Server } from 'socket.io';
 
-import type { PayloadAuth, SocketServer } from './types.js';
+import type { PayloadAuth, SocketServer, SocketUser } from './types.js';
 import type http from 'node:http';
 
 const l = logger.child({ svc: 'socket' });
@@ -74,21 +73,8 @@ export function start(server: http.Server) {
       return;
     }
 
-    const list = new Set<string>([socket.data.user.id]);
-    for (const perm of socket.data.perms!) {
-      if (!perm.projectId) {
-        list.add(`org-${perm.orgId}`);
-
-        for (const project of perm.Org.Projects) {
-          list.add(`project-${project.id}`);
-        }
-        continue;
-      }
-
-      list.add(`project-${perm.projectId}`);
-    }
-
-    void socket.join(Array.from(list.values()));
+    joinChannels(socket);
+    socket.data;
 
     // allow the client to request to join rooms
     socket.on('join', async (event) => {
@@ -98,20 +84,18 @@ export function start(server: http.Server) {
       }
       // TODO: rate limit this somehow
 
+      // User created a new Org
+      if (event.orgId && !event.projectId) {
+        const perms = await getSocketPerms(socket.data.user.id);
+        console.log('try joining org', JSON.stringify(perms));
+        socket.data.perms = perms;
+        joinChannels(socket);
+      }
       // User created a new Project
-      if (event.orgId && event.projectId) {
+      else if (event.orgId && event.projectId) {
         const perms = await getSocketPerms(socket.data.user.id);
         socket.data.perms = perms;
-        if (
-          checkInheritedPermissions(
-            perms,
-            'viewer',
-            event.orgId,
-            event.projectId
-          )
-        ) {
-          void socket.join(`project-${event.projectId}`);
-        }
+        joinChannels(socket);
       }
     });
   });
@@ -122,4 +106,21 @@ async function getSocketPerms(userId: string) {
     where: { userId: userId },
     include: { Org: { include: { Projects: { select: { id: true } } } } },
   });
+}
+
+function joinChannels(socket: SocketUser) {
+  const list = new Set<string>([socket.data.user!.id]);
+  for (const perm of socket.data.perms!) {
+    if (!perm.projectId) {
+      list.add(`org-${perm.orgId}`);
+
+      for (const project of perm.Org.Projects) {
+        list.add(`project-${project.id}`);
+      }
+      continue;
+    }
+
+    list.add(`project-${perm.projectId}`);
+  }
+  void socket.join(Array.from(list.values()));
 }
