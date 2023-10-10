@@ -42,7 +42,7 @@
     "@specfy/sync": "file:../sync",
     "@specfy/models": "file:../models",
     "@specfy/socket": "file:../socket",
-    "@specfy/stack-analyser": "1.6.0",
+    "@specfy/stack-analyser": "1.6.1",
     "close-with-grace": "1.2.0",
     "fastify": "4.21.0",
     "fastify-plugin": "4.5.1",

@@ -257,11 +257,9 @@ export const OrgCatalog: React.FC<{
   useEventBus(
     'job.finish',
     (evt) => {
-      console.log('coucou', evt);
       if (evt.job.orgId !== org.id || evt.job.type !== 'projectIndex') {
         return;
       }
-      console.log('cata');
       setIndexing(false);
       void qcli.refetchQueries(['listCatalog', org.id]);
     },

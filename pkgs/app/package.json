@@ -44,7 +44,7 @@
     "@specfy/core": "file:../core",
     "@specfy/models": "file:../models",
     "@specfy/socket": "file:../socket",
-    "@specfy/stack-analyser": "1.6.0",
+    "@specfy/stack-analyser": "1.6.1",
     "@swc/core": "^1.3.68",
     "@tabler/icons": "2.31.0",
     "@tabler/icons-react": "2.31.0",

@@ -87,7 +87,6 @@ export function start(server: http.Server) {
       // User created a new Org
       if (event.orgId && !event.projectId) {
         const perms = await getSocketPerms(socket.data.user.id);
-        console.log('try joining org', JSON.stringify(perms));
         socket.data.perms = perms;
         joinChannels(socket);
       }
