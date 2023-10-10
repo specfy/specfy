@@ -1,5 +1,7 @@
+import { nanoid } from '@specfy/core';
 import { client } from '@specfy/es';
 
+import type { Logger } from '@specfy/core';
 import type { TechType } from '@specfy/stack-analyser';
 
 import type { CatalogTech } from './types.js';
@@ -56,4 +58,25 @@ export async function catalogList(params: ListProps) {
   >(q);
 
   return res;
+}
+
+export async function indexTech({
+  techs,
+  l,
+}: {
+  techs: CatalogTech[];
+  l: Logger;
+}) {
+  const operations = techs.flatMap((tech) => {
+    return [{ index: { _index: 'techs', _id: nanoid(20) } }, tech];
+  });
+  const bulkResponse = await client.bulk({ refresh: true, operations });
+
+  l.info({ size: operations.length }, 'Indexing techs to ES');
+
+  if (bulkResponse.errors) {
+    bulkResponse.items.forEach((action) => {
+      l.error(action);
+    });
+  }
 }

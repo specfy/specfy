@@ -1,9 +1,13 @@
-import { isTest, nanoid } from '@specfy/core';
+import { isTest } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import { client } from '@specfy/es';
+import {
+  indexTech,
+  type CatalogTech,
+  type JobWithOrgProject,
+} from '@specfy/models';
 import { tech as techDb } from '@specfy/stack-analyser';
 
-import type { CatalogTech, JobWithOrgProject } from '@specfy/models';
 import type { AllowedKeys } from '@specfy/stack-analyser';
 
 import { Job } from '../Job.js';
@@ -19,15 +23,8 @@ export class JobProjectIndex extends Job {
 
     const components = await prisma.components.findMany({
       where: { orgId: job.orgId, projectId: job.projectId! },
-      select: {
-        name: true,
-        type: true,
-        techs: true,
-        techId: true,
-      },
+      select: { name: true, type: true, techs: true, techId: true },
     });
-
-    // TODO: delete previous
 
     // const dependencies = new Map<string, Dependency>();
     const techs = new Map<string, CatalogTech>();
@@ -68,7 +65,7 @@ export class JobProjectIndex extends Job {
     l.info({ size: techs.size }, 'Preparing stack for ES');
 
     await Promise.all([
-      this.indexTech({ techs: Array.from(techs.values()) }),
+      indexTech({ l: this.l, techs: Array.from(techs.values()) }),
       // indexDependencies({
       //   project,
       //   dependencies: Array.from(dependencies.values()),
@@ -106,24 +103,7 @@ export class JobProjectIndex extends Job {
   async teardown(): Promise<void> {
     // nothing
   }
-
-  private async indexTech({ techs }: { techs: CatalogTech[] }) {
-    const l = this.l;
-    const operations = techs.flatMap((tech) => {
-      return [{ index: { _index: 'techs', _id: nanoid(20) } }, tech];
-    });
-    const bulkResponse = await client.bulk({ refresh: true, operations });
-
-    l.info({ size: operations.length }, 'Indexing techs to ES');
-
-    if (bulkResponse.errors) {
-      bulkResponse.items.forEach((action) => {
-        l.error(action);
-      });
-    }
-  }
 }
-
 // async function indexDependencies({
 //   project,
 //   dependencies,
