@@ -5,6 +5,7 @@ import {
   createComponent,
   recomputeOrgGraph,
   createProject,
+  createJobProjectIndex,
 } from '@specfy/models';
 import { syncFolder } from '@specfy/sync';
 
@@ -1024,4 +1025,17 @@ export async function createDemo(
   // --- Upload fixtures with sync to emulate an actual upload
   const fixturePath = path.join(dirname, '../../', '_demo_content');
   await syncFolder(fixturePath, pAnalytics as any, user, tx);
+
+  // --- Index catalog
+  await Promise.all(
+    [pAnalytics, pBilling, pDash].map((project) => {
+      return createJobProjectIndex({
+        orgId: project.orgId,
+        projectId: project.id,
+        userId: user.id,
+        config: {},
+        tx,
+      });
+    })
+  );
 }
