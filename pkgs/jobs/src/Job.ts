@@ -66,7 +66,13 @@ export abstract class Job {
     l.flush();
     await setTimeout(200);
 
-    const logs = await fs.readFile(this.#logs);
+    let logs: string | undefined;
+    try {
+      const tmp = await fs.readFile(this.#logs);
+      logs = tmp.toString();
+    } catch (err) {
+      sentry.captureException(err);
+    }
     const jobUpdated = await prisma.jobs.update({
       data: {
         status: this.#mark?.status || 'failed',
@@ -78,7 +84,7 @@ export abstract class Job {
         Log: {
           create: {
             id: nanoid(),
-            content: logs.toString(),
+            content: logs || '',
           },
         },
       },
