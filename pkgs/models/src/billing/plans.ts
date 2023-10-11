@@ -39,7 +39,7 @@ export const v1: Record<PlanName, Plan> = {
       max: 10,
     },
     upload: {
-      maxDocuments: 50,
+      maxDocuments: 100,
       maxDocumentSize: 1_999_999,
     },
     deploy: {
@@ -59,7 +59,7 @@ export const v1: Record<PlanName, Plan> = {
       max: 25,
     },
     upload: {
-      maxDocuments: 100,
+      maxDocuments: 200,
       maxDocumentSize: 9_999_999,
     },
     price: {
@@ -83,7 +83,7 @@ export const v1: Record<PlanName, Plan> = {
       max: 100,
     },
     upload: {
-      maxDocuments: 300,
+      maxDocuments: 400,
       maxDocumentSize: 9_999_999,
     },
     price: {
