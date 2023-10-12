@@ -28,16 +28,10 @@ export const SyncConfiguration: React.FC<{
   useEffect(() => {
     onChange({
       branch,
-      documentation: {
-        enabled: docEnabled,
-        path: docPath,
-      },
-      stack: {
-        enabled: stackEnabled,
-        path: stackPath,
-      },
+      documentation: { enabled: docEnabled, path: docPath },
+      stack: { enabled: stackEnabled, path: stackPath },
     });
-  }, [branch, stackEnabled, stackPath, docEnabled, docPath, settings]);
+  }, [branch, stackEnabled, stackPath, docEnabled, docPath]);
 
   return (
     <Flex className={cls.inner} column gap="2xl" align="flex-start" grow>

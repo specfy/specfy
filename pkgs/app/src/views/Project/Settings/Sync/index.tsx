@@ -38,9 +38,7 @@ export const SettingsSync: React.FC<{
   const toast = useToast();
   const { current: org } = useOrgStore();
   const [errors, setErrors] = useState<FieldsErrors>({});
-  const [settings, setSettings] = useState<ApiSource['settings']>(() => {
-    return getDefaultSettings();
-  });
+  const [settings, setSettings] = useState<ApiSource['settings'] | undefined>();
   const list = useListSources({ org_id: proj.orgId, project_id: proj.id });
   const [source, setSource] = useState<ApiSource | undefined>();
   const [repoId, setRepoId] = useState<string | undefined>();
@@ -54,6 +52,8 @@ export const SettingsSync: React.FC<{
     if (list.data.data.length > 0) {
       setSource(list.data.data[0]);
       setSettings(list.data.data[0].settings);
+    } else {
+      setSettings(getDefaultSettings());
     }
   }, [list.data]);
 
@@ -168,7 +168,7 @@ export const SettingsSync: React.FC<{
                     installationId={org!.githubInstallationId}
                     onChange={setRepoId}
                   />
-                  {source && source.identifier === repoId && (
+                  {source && source.identifier === repoId ? (
                     <Button
                       display="default"
                       onClick={onUnlink}
@@ -176,6 +176,15 @@ export const SettingsSync: React.FC<{
                       loading={loading}
                     >
                       Unlink
+                    </Button>
+                  ) : (
+                    <Button
+                      display="primary"
+                      onClick={onLink}
+                      disabled={!repoId}
+                      loading={loading}
+                    >
+                      <IconCirclesRelation /> Link
                     </Button>
                   )}
                 </Flex>
@@ -187,38 +196,24 @@ export const SettingsSync: React.FC<{
 
       <Form.Root onSubmit={onSaveSettings} className={cls.main}>
         <Flex gap="2xl" column grow>
-          {(source || repoId) && (
-            <Card>
-              <Card.Content>
-                <h4>Settings</h4>
+          <Card>
+            <Card.Content>
+              <h4>Settings</h4>
+              {settings && (
                 <SyncConfiguration
                   errors={errors}
-                  settings={settings!}
+                  settings={settings}
                   onChange={setSettings}
                 />
-              </Card.Content>
-            </Card>
-          )}
-
-          <Card>
-            {org!.githubInstallationId && (
-              <Card.Actions>
-                {!source || source.identifier !== repoId ? (
-                  <Button
-                    display="primary"
-                    onClick={onLink}
-                    disabled={!repoId}
-                    loading={loading}
-                  >
-                    <IconCirclesRelation /> Link
-                  </Button>
-                ) : (
-                  <Button display="primary" loading={loading}>
-                    Save
-                  </Button>
-                )}
-              </Card.Actions>
-            )}
+              )}
+            </Card.Content>
+            <Card.Actions>
+              {source && (
+                <Button display="primary" loading={loading}>
+                  Save
+                </Button>
+              )}
+            </Card.Actions>
           </Card>
         </Flex>
       </Form.Root>
