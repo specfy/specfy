@@ -70,7 +70,7 @@
     "ts-node": "10.9.1",
     "type-fest": "4.2.0",
     "typescript": "5.2.2",
-    "undici": "5.23.0",
+    "undici": "5.26.2",
     "utility-types": "3.10.0"
   }
 }
