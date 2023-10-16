@@ -24,6 +24,7 @@ export const supportedTypeToText: Record<ComponentType, string> = {
   cloud: 'cloud',
   db: 'database',
   etl: 'etl',
+  framework: 'framework',
   hosting: 'hosting',
   language: 'language',
   messaging: 'queue',
@@ -34,6 +35,7 @@ export const supportedTypeToText: Record<ComponentType, string> = {
   service: 'service',
   storage: 'storage',
   tool: 'tool',
+  unknown: 'other',
 };
 
 export const internalTypeToText: Record<ComponentType | 'unknown', string> = {
@@ -44,6 +46,7 @@ export const internalTypeToText: Record<ComponentType | 'unknown', string> = {
   cloud: 'Cloud',
   db: 'Database',
   etl: 'ETL',
+  framework: 'Framework',
   hosting: 'Hosting',
   language: 'Language',
   messaging: 'Messaging',

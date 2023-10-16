@@ -1,0 +1,36 @@
+/* stylelint-disable selector-class-pattern */
+.table {
+  &.s {
+    font-size: var(--font-s);
+
+    td {
+      height: 2.3rem;
+    }
+
+    .stat {
+      display: flex;
+      flex-direction: row-reverse;
+      gap: var(--spc-m);
+      align-items: center;
+
+      width: 70px;
+    }
+  }
+
+  &.m {
+    font-size: var(--font);
+  }
+
+
+}
+
+.stat {
+  width: 100px;
+}
+
+.tag {
+  display: flex;
+  justify-content: end;
+  margin-bottom: var(--spc-s);
+  font-size: var(--font-xs);
+}

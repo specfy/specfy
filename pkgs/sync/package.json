@@ -35,7 +35,7 @@
     "dotenv": "16.3.1"
   },
   "dependencies": {
-    "@specfy/stack-analyser": "1.6.1",
+    "@specfy/stack-analyser": "1.7.0",
     "@specfy/core": "file:../core",
     "@specfy/models": "file:../models",
     "consola": "3.2.3",

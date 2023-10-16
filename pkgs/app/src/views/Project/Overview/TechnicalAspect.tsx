@@ -8,7 +8,7 @@ import { ComponentLine, ComponentLineTech } from '@/components/Component/Line';
 import { Subdued } from '@/components/Text';
 import type { RouteProject } from '@/types/routes';
 
-const groupTech: ComponentType[] = ['tool', 'language'];
+const groupTech: ComponentType[] = ['tool', 'language', 'framework'];
 const groupData: ComponentType[] = [
   'api',
   'app',

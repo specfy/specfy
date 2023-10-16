@@ -149,7 +149,7 @@ body * {
   // OTHER
   --accent1: var(--indigo-4);
   --accent2: var(--indigo-9);
-  --primary: hsl(217.5deg 25% 18.82%);
+  --primary: hsl(217.5deg 25% 18.82%); // #242d3c
   --primaryHover: #303a48;
   --primaryText: #fff;
 
@@ -255,6 +255,12 @@ h4 {
   font-size: var(--font-m);
   line-height: var(--lh-l);
 }
+
+h5 {
+  font-size: var(--font);
+  line-height: var(--lh-m);
+}
+
 
 p {
   display: block;

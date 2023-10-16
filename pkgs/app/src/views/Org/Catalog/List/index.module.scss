@@ -7,17 +7,6 @@
   border-bottom: 1px solid var(--border2);
 }
 
-.stat {
-  width: 100px;
-}
-
-.tag {
-  display: flex;
-  justify-content: end;
-  margin-bottom: var(--spc-s);
-  font-size: var(--font-xs);
-}
-
 .tooltip {
   padding: 0 var(--spc-l) !important;
   background-color: transparent !important;
