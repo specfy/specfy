@@ -48,6 +48,7 @@ export const TechSearch: React.FC<{
       cloud: [],
       db: [],
       etl: [],
+      framework: [],
       hosting: [],
       language: [],
       messaging: [],
@@ -58,10 +59,15 @@ export const TechSearch: React.FC<{
       service: [],
       storage: [],
       tool: [],
+      unknown: [],
     };
 
     for (const tech of supportedArray) {
-      if (tech.type === 'language' || tech.type === 'tool') {
+      if (
+        tech.type === 'language' ||
+        tech.type === 'tool' ||
+        tech.type === 'framework'
+      ) {
         continue;
       }
       _groups[tech.type].push({

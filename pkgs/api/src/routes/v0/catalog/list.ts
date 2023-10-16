@@ -24,6 +24,7 @@ function QueryVal(req: FastifyRequest) {
         'cloud',
         'db',
         'etl',
+        'framework',
         'hosting',
         'language',
         'messaging',

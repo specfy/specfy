@@ -28,7 +28,7 @@ export async function catalogList(params: ListProps) {
     _source: ['key', 'name', 'type'],
     aggs: {
       byName: {
-        terms: { field: 'key', order: { _key: 'asc' }, size: 100 },
+        terms: { field: 'key', order: { _key: 'asc' }, size: 1000 },
       },
     },
   };
@@ -39,7 +39,7 @@ export async function catalogList(params: ListProps) {
     });
   } else {
     q.aggs!.byType = {
-      terms: { field: 'type', order: { _key: 'asc' }, size: 100 },
+      terms: { field: 'type', order: { _key: 'asc' }, size: 1000 },
       aggs: {
         distinct: {
           cardinality: {
@@ -55,6 +55,42 @@ export async function catalogList(params: ListProps) {
     {
       byName: estypes.AggregationsTermsAggregateBase<{ key: string }>;
       byType?: estypes.AggregationsTermsAggregateBase<{ key: string }>;
+    }
+  >(q);
+
+  return res;
+}
+
+interface GetProps {
+  orgId: string;
+  techId: string;
+}
+export async function catalogGet(params: GetProps) {
+  const q: estypes.SearchRequest = {
+    index: 'techs',
+    size: 1,
+    track_total_hits: true,
+    query: {
+      // @ts-expect-error
+      bool: {
+        must: [
+          { term: { orgId: params.orgId } },
+          { term: { key: params.techId } },
+        ],
+      },
+    },
+    _source: ['key', 'name', 'type'],
+    aggs: {
+      byProject: {
+        terms: { field: 'projectId', order: { _key: 'asc' }, size: 1000 },
+      },
+    },
+  };
+
+  const res = await client.search<
+    CatalogTech,
+    {
+      byProject: estypes.AggregationsTermsAggregateBase<{ key: string }>;
     }
   >(q);
 

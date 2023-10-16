@@ -28,6 +28,7 @@ export const schemaComponent = z
       'cloud',
       'db',
       'etl',
+      'framework',
       'hosting',
       'language',
       'messaging',

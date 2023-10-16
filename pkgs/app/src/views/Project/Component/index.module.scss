@@ -5,24 +5,3 @@
 .content {
   padding-bottom: var(--spc-6xl);
 }
-
-.tagType {
-  font-size: var(--font-s);
-  color: var(--text3);
-
-  &.service {
-    color: var(--service);
-  }
-
-  &.saas {
-    color: var(--plum-9);
-  }
-
-  &.project {
-    color: var(--amber-10);
-  }
-
-  &.hosting {
-    color: var(--indigo-9);
-  }
-}
