@@ -19,6 +19,7 @@ import { AvatarAuto } from '@/components/AvatarAuto';
 import * as Dropdown from '@/components/Dropdown';
 import { Flex } from '@/components/Flex';
 import * as Menu from '@/components/Menu';
+import { Tag } from '@/components/Tag';
 import type { RouteOrg } from '@/types/routes';
 
 import cls from './index.module.scss';
@@ -158,9 +159,14 @@ export const OrgMenu: React.FC = () => {
         key: 'catalog',
         label: (
           <Link to={`${linkSelf}/_/catalog`}>
-            <Flex gap="l">
-              <IconListSearch />
-              Catalog
+            <Flex justify="space-between" grow={1}>
+              <Flex gap="l">
+                <IconListSearch />
+                Catalog
+              </Flex>
+              <Tag size="s" variant="light">
+                new
+              </Tag>
             </Flex>
           </Link>
         ),
