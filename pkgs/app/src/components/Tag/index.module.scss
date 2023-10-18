@@ -5,6 +5,7 @@
   --tag-lh: var(--lh);
 
   display: inline-flex;
+  gap: var(--spc);
   align-items: center;
 
   padding: var(--tag-padding);

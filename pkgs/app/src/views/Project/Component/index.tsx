@@ -1,4 +1,3 @@
-import { internalTypeToText } from '@specfy/models/src/components/constants';
 import { componentsToFlow } from '@specfy/models/src/flows/transform';
 import {
   IconDotsVertical,
@@ -7,7 +6,6 @@ import {
   IconEyeOff,
   IconEye,
 } from '@tabler/icons-react';
-import classnames from 'classnames';
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -23,6 +21,7 @@ import {
 import { titleSuffix } from '@/common/string';
 import { ComponentDetails } from '@/components/Component/Details';
 import { ComponentIcon } from '@/components/Component/Icon';
+import { ComponentTag } from '@/components/Component/Tag';
 import { Container, ContainerChild } from '@/components/Container';
 import { ContentDoc, Placeholder, Presentation } from '@/components/Content';
 import * as Dropdown from '@/components/Dropdown';
@@ -275,14 +274,7 @@ export const ComponentView: React.FC<{
             <Header comp={comp} proj={proj} />
           </Flex>
           <Flex gap="m" align="flex-start">
-            <div
-              className={classnames(
-                cls.tagType,
-                comp.type in cls && cls[comp.type as keyof typeof cls]
-              )}
-            >
-              {internalTypeToText[comp.type]}
-            </div>
+            <ComponentTag type={comp.type} />
             ·
             <UpdatedAt time={comp.updatedAt} />
           </Flex>

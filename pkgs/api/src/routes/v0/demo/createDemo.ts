@@ -108,7 +108,7 @@ export async function createDemo(
           portTarget: 'tr',
         },
       ],
-      techs: [{ id: 'golang' }],
+      techs: [{ id: 'golang' }, { id: 'nodejs' }, { id: 'typescript' }],
     },
     user,
     tx,
@@ -196,6 +196,27 @@ export async function createDemo(
     user,
     tx,
   });
+  const dd2 = await createComponent({
+    data: {
+      id: nanoid(),
+      name: 'Datadog',
+      type: 'saas',
+      orgId: org.id,
+      projectId: pBilling.id,
+      techId: 'datadog',
+      description: { type: 'doc', content: [] },
+      display: {
+        zIndex: 3,
+        pos: { x: 123, y: -39 },
+        size: { width: 130, height: 40 },
+      },
+      inComponent: { id: null },
+      edges: [],
+      techs: [],
+    },
+    user,
+    tx,
+  });
   await createComponent({
     data: {
       id: nanoid(),
@@ -219,8 +240,16 @@ export async function createDemo(
           portSource: 'st',
           portTarget: 'tb',
         },
+        {
+          target: dd2.id,
+          read: false,
+          write: true,
+          vertices: [],
+          portSource: 'st',
+          portTarget: 'tb',
+        },
       ],
-      techs: [{ id: 'rust' }],
+      techs: [{ id: 'rust' }, { id: 'golang' }],
     },
     user,
     tx,
@@ -979,7 +1008,7 @@ export async function createDemo(
           portTarget: 'tr',
         },
       ],
-      techs: [{ id: 'nodejs' }, { id: 'typescript' }],
+      techs: [{ id: 'golang' }, { id: 'nodejs' }, { id: 'typescript' }],
     },
     user,
     tx,

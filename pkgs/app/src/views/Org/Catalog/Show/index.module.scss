@@ -1,0 +1,38 @@
+.project {
+  display: flex;
+  gap: var(--spc-m);
+  align-items: center;
+
+  width: 125px;
+  padding: var(--spc);
+
+  font-size: var(--font-s);
+
+  border: 1px solid transparent;
+  border-radius: var(--radius2);
+
+  transition: border-color 0.25s ease-in-out;
+
+  &:hover {
+    filter: grayscale(0);
+    border-color: var(--border2);
+  }
+}
+
+.block {
+  margin-bottom: var(--spc-2xl);
+
+  &.chart {
+    margin: var(--spc-2xl) 0 var(--spc-5xl);
+  }
+}
+
+.number {
+  font-size: var(--font-l);
+  font-weight: 500;
+}
+
+.heading {
+  margin-bottom: var(--spc-l);
+  font-size: var(--font);
+}

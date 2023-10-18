@@ -108,10 +108,7 @@ const Org: React.FC = () => {
               path="/"
               element={<OrgOverview org={org} params={params} />}
             />
-            <Route
-              path="/catalog"
-              element={<OrgCatalog org={org} params={params} />}
-            />
+            <Route path="/catalog/*" element={<OrgCatalog org={org} />} />
             <Route
               path="/flow"
               element={<OrgFlow org={org} params={params} />}

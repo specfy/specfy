@@ -1,10 +1,10 @@
-import type { ComponentType } from '../components/index.js';
+import type { TechType } from '@specfy/stack-analyser';
 
 export interface CatalogTech {
   orgId: string;
   projectId: string;
   jobId: string;
-  type: ComponentType | 'unknown';
+  type: TechType | 'unknown';
   key: string;
   name: string;
 }
