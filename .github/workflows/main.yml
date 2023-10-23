@@ -1,7 +1,6 @@
 name: Main
 on:
   push:
-    branches: [ main ]
   pull_request:
     types: [opened, synchronize]
 
@@ -93,12 +92,14 @@ jobs:
 
       - name: Coverage
         uses: codecov/codecov-action@v3
+        if: (github.ref == 'refs/heads/main' || github.base_ref)
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
       # Send bundle stats and build information to RelativeCI
       - name: Send bundle stats to RelativeCI
         uses: relative-ci/agent-action@v2
+        if: (github.ref == 'refs/heads/main' || github.base_ref)
         with:
           webpackStatsFile: ./pkgs/app/dist/webpack-stats.json
           key: ${{ secrets.RELATIVE_CI_KEY }}
