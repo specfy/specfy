@@ -16,6 +16,7 @@ import type { Authenticator } from '@fastify/passport';
 const GITHUB_SCOPES = ['user:email', 'repo'];
 
 export function registerGitHub(passport: Authenticator) {
+  // @ts-expect-error
   const reg = new GitHubStrategy(
     {
       clientID: envs.GITHUB_CLIENT_ID!,
@@ -23,6 +24,7 @@ export function registerGitHub(passport: Authenticator) {
       callbackURL: `${envs.API_HOSTNAME}/0/auth/github/cb`,
       scope: GITHUB_SCOPES,
       passReqToCallback: true,
+      allRawEmails: true,
     },
     async function (
       _req: unknown,
@@ -37,35 +39,37 @@ export function registerGitHub(passport: Authenticator) {
         return;
       }
 
-      const email = emails[0].value;
+      const email = emails.find((e) => {
+        return e.primary === true && e.verified;
+      });
+      if (!email) {
+        done(new AuthError('email', 'no_email', 'Account has no valid email'));
+        return;
+      }
+
+      const primary = email.value;
+      const secondaries = emails.filter((e) => e.verified).map((e) => e.value);
       const avatarUrl = profile.photos?.[0].value || null;
 
+      console.log(emails, secondaries);
+
       let user = await prisma.users.findUnique({
-        where: { email },
+        where: { email: primary },
       });
 
       const displayName = profile.displayName || profile.username;
       // We found the user
       if (user) {
-        if (
-          user.avatarUrl !== avatarUrl ||
-          user.githubLogin !== profile.username ||
-          displayName !== profile.displayName
-        ) {
-          await prisma.users.update({
-            data: {
-              avatarUrl,
-              githubLogin: profile.username,
-              name: displayName,
-            },
-            where: { id: user.id },
-          });
-        }
+        await prisma.users.update({
+          data: { avatarUrl, githubLogin: profile.username, name: displayName },
+          where: { id: user.id },
+        });
         await prisma.accounts.updateMany({
           data: {
             accessToken,
             providerAccountId: profile.id,
             scope: GITHUB_SCOPES.join(','),
+            emails: secondaries,
           },
           where: { userId: user.id, provider: 'github' },
         });
@@ -82,7 +86,7 @@ export function registerGitHub(passport: Authenticator) {
           data: {
             id: nanoid(),
             name: displayName,
-            email,
+            email: primary,
             emailVerifiedAt: new Date(),
             avatarUrl,
             githubLogin: profile.username,
@@ -94,6 +98,7 @@ export function registerGitHub(passport: Authenticator) {
                 providerAccountId: profile.id,
                 scope: GITHUB_SCOPES.join(','),
                 accessToken: accessToken,
+                emails: secondaries,
               },
             },
           },
@@ -115,9 +120,9 @@ export function registerGitHub(passport: Authenticator) {
         await sendWelcome(
           resend,
           {
-            to: email,
+            to: primary,
           },
-          { email, name: displayName }
+          { email: primary, name: displayName }
         );
       }
 
