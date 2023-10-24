@@ -1,5 +1,4 @@
 import fs from 'node:fs/promises';
-import path from 'node:path';
 
 import { envs, isProd, nanoid, sentry } from '@specfy/core';
 import { prisma } from '@specfy/db';
@@ -154,10 +153,7 @@ export class JobDeploy extends Job {
         jobId: job.id,
         token: key.id,
         root: this.folderName,
-        stackEnabled: settings.stack.enabled,
-        stackPath: path.join(this.folderName, settings.stack.path),
-        docEnabled: settings.documentation.enabled,
-        docPath: path.join(this.folderName, settings.documentation.path),
+        settings,
         autoLayout: config.autoLayout === true,
         hostname: !isProd
           ? envs.API_HOSTNAME?.replace('localhost', '127.0.0.1')

@@ -28,48 +28,45 @@ function syncDefault(folder?: string): Omit<SyncOptions, 'logger'> {
     projectId: 'dkjdkjf',
     token: '',
     autoLayout: true,
-    docEnabled: true,
-    docPath: `${root}/`,
-    stackEnabled: true,
-    stackPath: `${root}/`,
+    settings: {
+      documentation: { enabled: true, path: `/` },
+      stack: { enabled: true, path: `/` },
+    },
   };
 }
 describe('sync', () => {
   it('should stop if nothing is enabled', async () => {
     const { msgs, logger } = getLogger();
-    const res = await sync({
-      ...syncDefault(),
-      logger,
-      docEnabled: false,
-      stackEnabled: false,
-    });
+    const config = syncDefault();
+    config.settings.documentation.enabled = false;
+    config.settings.stack.enabled = false;
+
+    const res = await sync({ ...config, logger });
+
     expect(res).toBeUndefined();
     expect(msgs).toMatchSnapshot();
   });
 
   it('should break if path does not exists', async () => {
     const { msgs, logger } = getLogger();
-    await expect(() =>
-      sync({
-        ...syncDefault(),
-        logger,
-        docEnabled: true,
-        stackEnabled: false,
-      })
-    ).rejects.toThrowError(new Error('sync_invalid_path'));
+    const config = syncDefault();
+    config.settings.stack.enabled = false;
+
+    await expect(() => {
+      return sync({ ...config, logger });
+    }).rejects.toThrowError(new Error('sync_invalid_path'));
     expect(msgs).toMatchSnapshot();
   });
 
   it('should fail to upload', async () => {
     const { msgs, logger } = getLogger();
     const root = path.join(dirname, '../api/src/test/__fixtures__');
-    await expect(() =>
-      sync({
-        ...syncDefault(root),
-        logger,
-        stackEnabled: false,
-      })
-    ).rejects.toThrowError(new ErrorSync('failed_to_upload'));
+    const config = syncDefault(root);
+    config.settings.stack.enabled = false;
+
+    await expect(() => {
+      return sync({ ...config, logger });
+    }).rejects.toThrowError(new ErrorSync('failed_to_upload'));
 
     // Clean snapshot
     msgs.forEach((row) =>
