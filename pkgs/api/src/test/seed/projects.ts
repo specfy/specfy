@@ -1,6 +1,10 @@
 import { nanoid } from '@specfy/core';
 import { prisma } from '@specfy/db';
-import { recomputeOrgGraph, createProject } from '@specfy/models';
+import {
+  recomputeOrgGraph,
+  createProject,
+  getDefaultConfig,
+} from '@specfy/models';
 import { getBlobProject } from '@specfy/models/src/projects/test.utils.js';
 
 import type { Orgs, Projects, Users } from '@specfy/db';
@@ -181,4 +185,23 @@ export async function seedProject(user: Users, org: Orgs) {
   });
 
   return project;
+}
+
+export async function seedSource(project: Projects) {
+  const id = nanoid();
+  const source = await prisma.sources.create({
+    data: {
+      id,
+      orgId: project.orgId,
+      projectId: project.id,
+      name: `Seed ${id}`,
+      type: 'github',
+      identifier: `specfy/${id}`,
+      settings: getDefaultConfig(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+  });
+
+  return source;
 }

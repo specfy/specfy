@@ -13,6 +13,7 @@ describe('uploadedDocumentsToDB', () => {
     source: 'github',
     orgId: 'a',
     projectId: 'b',
+    sourceId: 'c',
     blobs: [],
     description: { type: 'doc', content: [] },
     name: 'Foobar',

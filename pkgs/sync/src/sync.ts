@@ -39,6 +39,7 @@ export type SyncOptions = {
   token: string;
   orgId: string;
   projectId: string;
+  sourceId: string;
   autoLayout: boolean;
   settings: SyncConfigFull;
   hostname?: string;
@@ -61,8 +62,9 @@ export async function sync({
   token,
   orgId,
   projectId,
-  autoLayout,
+  sourceId,
   jobId,
+  autoLayout,
   hostname = 'https://api.specfy.io',
   logger = defaultLogger,
   settings,
@@ -155,6 +157,7 @@ export async function sync({
   const body = prepBody({
     orgId,
     projectId,
+    sourceId,
     docs,
     stack,
     autoLayout,
