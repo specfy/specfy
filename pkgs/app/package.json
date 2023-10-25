@@ -46,7 +46,7 @@
     "@specfy/socket": "file:../socket",
     "@specfy/stack-analyser": "1.7.1",
     "@swc/core": "^1.3.68",
-    "@tabler/icons": "2.31.0",
+    "@tabler/icons": "2.39.0",
     "@tabler/icons-react": "2.31.0",
     "@tanstack/react-query": "4.32.6",
     "@tanstack/react-table": "8.10.7",
