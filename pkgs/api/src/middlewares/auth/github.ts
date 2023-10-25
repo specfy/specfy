@@ -51,8 +51,6 @@ export function registerGitHub(passport: Authenticator) {
       const secondaries = emails.filter((e) => e.verified).map((e) => e.value);
       const avatarUrl = profile.photos?.[0].value || null;
 
-      console.log(emails, secondaries);
-
       let user = await prisma.users.findUnique({
         where: { email: primary },
       });
