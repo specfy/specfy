@@ -3,6 +3,7 @@ import type {
   QuerystringOrgProject,
   Res,
   PartialUndefined,
+  ApiError,
 } from '@specfy/core';
 import type { AnalyserJson } from '@specfy/stack-analyser';
 
@@ -61,22 +62,19 @@ export type PostRevision = Res<{
 }>;
 
 // ------ POST /upload
-export type CreateRevisionError = {
-  error: {
-    code: 'cant_create';
-    reason: 'no_diff';
-  };
-};
+export type CreateRevisionError = ApiError<'cant_create'>;
+export type InvalidSourceError = ApiError<'invalid_source'>;
 export type UploadBlob = { path: string; content: string };
 export type PostUploadRevision = Res<{
   Body: Pick<ApiRevision, 'description' | 'name' | 'orgId' | 'projectId'> & {
     source: string;
+    sourceId: string;
     blobs: UploadBlob[] | null;
     stack: AnalyserJson | null;
     autoLayout?: boolean;
     jobId?: string | undefined;
   };
-  Error: CreateRevisionError;
+  Error: CreateRevisionError | InvalidSourceError;
   Success: {
     data: Pick<ApiRevision, 'id'> & {
       stats: {

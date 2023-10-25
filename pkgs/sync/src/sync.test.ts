@@ -26,6 +26,7 @@ function syncDefault(folder?: string): Omit<SyncOptions, 'logger'> {
     root,
     orgId: 'acme',
     projectId: 'dkjdkjf',
+    sourceId: 'c',
     token: '',
     autoLayout: true,
     settings: {

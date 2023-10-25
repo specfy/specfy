@@ -151,6 +151,7 @@ export class JobDeploy extends Job {
         orgId: job.orgId,
         projectId: job.projectId!,
         jobId: job.id,
+        sourceId: config.sourceId,
         token: key.id,
         root: this.folderName,
         settings,
