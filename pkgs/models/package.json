@@ -20,10 +20,11 @@
   "dependencies": {
     "@specfy/core": "file:../core",
     "@specfy/db": "file:../db",
-    "@specfy/stack-analyser": "1.7.1",
+    "@specfy/stack-analyser": "1.7.2",
     "openai": "4.2.0"
   },
   "devDependencies": {
-    "typescript": "5.1.6"
+    "typescript": "5.1.6",
+    "type-fest": "4.5.0"
   }
 }
