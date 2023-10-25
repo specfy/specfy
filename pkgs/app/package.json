@@ -79,7 +79,7 @@
     "@types/diff": "5.0.7",
     "@types/diff-match-patch": "1.0.33",
     "@types/json-diff": "1.0.1",
-    "@types/loadable__component": "5.13.5",
+    "@types/loadable__component": "5.13.6",
     "@types/lodash.debounce": "4.0.8",
     "@types/luxon": "3.3.2",
     "@types/prismjs": "1.26.0",
