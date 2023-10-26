@@ -77,7 +77,7 @@
     "@tiptap/react": "2.1.6",
     "@tiptap/starter-kit": "2.1.6",
     "@types/diff": "5.0.7",
-    "@types/diff-match-patch": "1.0.33",
+    "@types/diff-match-patch": "1.0.35",
     "@types/json-diff": "1.0.1",
     "@types/loadable__component": "5.13.6",
     "@types/lodash.debounce": "4.0.8",
