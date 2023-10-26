@@ -23,11 +23,14 @@ model Accounts {
   tokenType         String?   @db.VarChar(100)
   token             String?
   scope             String
+  emails            String[]  @default([])
   sessionState      String?
   expiresAt         DateTime? @db.Timestamp(3)
   updatedAt         DateTime  @updatedAt
 
   User Users @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([emails], type: Gin)
 }
 
 model Activities {

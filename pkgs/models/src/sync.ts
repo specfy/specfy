@@ -14,6 +14,10 @@ export interface SyncConfigStack {
   enabled: boolean;
   path?: string;
 }
+export type SyncConfigFull = {
+  documentation: Required<SyncConfigDocumentation>;
+  stack: Required<SyncConfigStack>;
+};
 
 export const def: SyncConfig = {
   orgId: '',

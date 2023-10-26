@@ -8,7 +8,12 @@ export interface GitHubAuth {
   provider: string;
   _raw: string;
   _json: GitHubAuthProfile;
-  emails?: Array<{ value: string }> | null;
+  emails?: Array<{
+    value: string;
+    primary: boolean;
+    verified: boolean;
+    visibility: null | 'private';
+  }> | null;
 }
 
 export interface GitHubAuthProfile {

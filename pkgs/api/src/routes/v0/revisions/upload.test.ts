@@ -13,7 +13,7 @@ import {
   shouldEnforceBody,
   shouldNotAllowQueryParams,
 } from '../../../test/helpers.js';
-import { seedProject } from '../../../test/seed/projects.js';
+import { seedProject, seedSource } from '../../../test/seed/projects.js';
 import {
   seedSimpleUser,
   seedWithOrgViewer,
@@ -68,20 +68,17 @@ describe('POST /revisions/upload -- General', () => {
   it('should not allow viewer', async () => {
     const { token, org, owner } = await seedWithOrgViewer();
     const project = await seedProject(owner, org);
+    const source = await seedSource(project);
     const name = `test ${nanoid()}`;
     const res = await t.fetch.post('/0/revisions/upload', {
       token,
       Body: {
-        blobs: [
-          {
-            path: '/Readme.md',
-            content: 'Hello world\n',
-          },
-        ],
+        blobs: [{ path: '/Readme.md', content: 'Hello world\n' }],
         description: { content: [], type: 'doc' },
         name: name,
         orgId: org.id,
         projectId: project.id,
+        sourceId: source.id,
         source: 'github',
         stack: null,
       } as any,
@@ -92,6 +89,7 @@ describe('POST /revisions/upload -- General', () => {
 
   it('should handle no change', async () => {
     const { token, org, project } = await seedWithProject();
+    const source = await seedSource(project);
     const name = `test ${nanoid()}`;
     const res = await t.fetch.post('/0/revisions/upload', {
       token,
@@ -102,6 +100,7 @@ describe('POST /revisions/upload -- General', () => {
         orgId: org.id,
         projectId: project.id,
         source: 'github',
+        sourceId: source.id,
         stack: null,
       },
     });
@@ -118,21 +117,18 @@ describe('POST /revisions/upload -- General', () => {
 describe('POST /revisions/upload -- Documents', () => {
   it('should create one revision', async () => {
     const { token, org, project } = await seedWithProject();
+    const source = await seedSource(project);
     const name = `test ${nanoid()}`;
     const res = await t.fetch.post('/0/revisions/upload', {
       token,
       Body: {
-        blobs: [
-          {
-            path: '/Readme.md',
-            content: 'Hello world\n',
-          },
-        ],
+        blobs: [{ path: '/Readme.md', content: 'Hello world\n' }],
         description: { content: [], type: 'doc' },
         name: name,
         orgId: org.id,
         projectId: project.id,
         source: 'github',
+        sourceId: source.id,
         stack: null,
       },
     });
@@ -201,21 +197,18 @@ describe('POST /revisions/upload -- Documents', () => {
 
   it('should forbid to create root level', async () => {
     const { token, org, project } = await seedWithProject();
+    const source = await seedSource(project);
     const name = `test ${nanoid()}`;
     const res = await t.fetch.post('/0/revisions/upload', {
       token,
       Body: {
-        blobs: [
-          {
-            path: '/',
-            content: 'Hello world\n',
-          },
-        ],
+        blobs: [{ path: '/', content: 'Hello world\n' }],
         description: { content: [], type: 'doc' },
         name: name,
         orgId: org.id,
         projectId: project.id,
         source: 'github',
+        sourceId: source.id,
         stack: null,
       },
     });
@@ -232,21 +225,18 @@ describe('POST /revisions/upload -- Documents', () => {
 
   it('should create one revision with intermediate folder', async () => {
     const { token, org, project } = await seedWithProject();
+    const source = await seedSource(project);
     const name = `test ${nanoid()}`;
     const res = await t.fetch.post('/0/revisions/upload', {
       token,
       Body: {
-        blobs: [
-          {
-            path: '/folder/foobar.md',
-            content: 'foobar\n',
-          },
-        ],
+        blobs: [{ path: '/folder/foobar.md', content: 'foobar\n' }],
         description: { content: [], type: 'doc' },
         name: name,
         orgId: org.id,
         projectId: project.id,
         source: 'github',
+        sourceId: source.id,
         stack: null,
       },
     });
@@ -290,25 +280,21 @@ describe('POST /revisions/upload -- Documents', () => {
 
   it('should not create folder even unordered', async () => {
     const { token, org, project } = await seedWithProject();
+    const source = await seedSource(project);
     const name = `test ${nanoid()}`;
     const res = await t.fetch.post('/0/revisions/upload', {
       token,
       Body: {
         blobs: [
-          {
-            path: '/folder/readme.md',
-            content: 'index\n',
-          },
-          {
-            path: '/folder',
-            content: 'folder1\n',
-          },
+          { path: '/folder/readme.md', content: 'index\n' },
+          { path: '/folder', content: 'folder1\n' },
         ],
         description: { content: [], type: 'doc' },
         name: name,
         orgId: org.id,
         projectId: project.id,
         source: 'github',
+        sourceId: source.id,
         stack: null,
       },
     });
@@ -352,25 +338,21 @@ describe('POST /revisions/upload -- Documents', () => {
 
   it('should not allow same path', async () => {
     const { token, org, project } = await seedWithProject();
+    const source = await seedSource(project);
     const name = `test ${nanoid()}`;
     const res = await t.fetch.post('/0/revisions/upload', {
       token,
       Body: {
         blobs: [
-          {
-            path: '/readme.md',
-            content: 'folder1\n',
-          },
-          {
-            path: '/readme.md',
-            content: 'index\n',
-          },
+          { path: '/readme.md', content: 'folder1\n' },
+          { path: '/readme.md', content: 'index\n' },
         ],
         description: { content: [], type: 'doc' },
         name: name,
         orgId: org.id,
         projectId: project.id,
         source: 'github',
+        sourceId: source.id,
         stack: null,
       },
     });
@@ -387,6 +369,7 @@ describe('POST /revisions/upload -- Documents', () => {
 
   it('should disallow binary', async () => {
     const { token, org, project } = await seedWithProject();
+    const source = await seedSource(project);
     const name = `test ${nanoid()}`;
     const res = await t.fetch.post('/0/revisions/upload', {
       token,
@@ -402,6 +385,7 @@ describe('POST /revisions/upload -- Documents', () => {
         orgId: org.id,
         projectId: project.id,
         source: 'github',
+        sourceId: source.id,
         stack: null,
       },
     });
@@ -420,6 +404,7 @@ describe('POST /revisions/upload -- Documents', () => {
 describe('POST /revisions/upload -- Stack', () => {
   it('should validate stack', async () => {
     const { token, org, project } = await seedWithProject();
+    const source = await seedSource(project);
     const name = `test ${nanoid()}`;
     const res = await t.fetch.post('/0/revisions/upload', {
       token,
@@ -430,6 +415,7 @@ describe('POST /revisions/upload -- Stack', () => {
         orgId: org.id,
         projectId: project.id,
         source: 'github',
+        sourceId: source.id,
         stack: {
           name: 'top',
         } as any,
@@ -442,6 +428,7 @@ describe('POST /revisions/upload -- Stack', () => {
 
   it('should create one revision', async () => {
     const { token, org, project } = await seedWithProject();
+    const source = await seedSource(project);
     const name = `test ${nanoid()}`;
     const stack: AnalyserJson = {
       id: '10uaaV0QPN2D',
@@ -462,13 +449,7 @@ describe('POST /revisions/upload -- Stack', () => {
           name: '@specfy/test',
           path: ['/src/package.json'],
           tech: null,
-          edges: [
-            {
-              target: '90uaaV0QPN2D',
-              read: true,
-              write: true,
-            },
-          ],
+          edges: [{ target: '90uaaV0QPN2D', read: true, write: true }],
           inComponent: null,
           childs: [],
           techs: ['express', 'nodejs', 'typescript'],
@@ -496,6 +477,7 @@ describe('POST /revisions/upload -- Stack', () => {
         orgId: org.id,
         projectId: project.id,
         source: 'github',
+        sourceId: source.id,
         stack,
       },
     });
@@ -531,6 +513,7 @@ describe('POST /revisions/upload -- Stack', () => {
 
   it('should refuse same component twice', async () => {
     const { token, org, project } = await seedWithProject();
+    const source = await seedSource(project);
     const name = `test ${nanoid()}`;
     const res = await t.fetch.post('/0/revisions/upload', {
       token,
@@ -541,6 +524,7 @@ describe('POST /revisions/upload -- Stack', () => {
         orgId: org.id,
         projectId: project.id,
         source: 'github',
+        sourceId: source.id,
         stack: {
           id: '10uaaV0QPN2D',
           ...getDefaultStack(),
@@ -580,6 +564,7 @@ describe('POST /revisions/upload -- Stack', () => {
 
   it('should handle component with the same name but different', async () => {
     const { token, org, project } = await seedWithProject();
+    const source = await seedSource(project);
     const name = `test ${nanoid()}`;
     const res = await t.fetch.post('/0/revisions/upload', {
       token,
@@ -590,6 +575,7 @@ describe('POST /revisions/upload -- Stack', () => {
         orgId: org.id,
         projectId: project.id,
         source: 'github',
+        sourceId: source.id,
         stack: {
           id: '10uaaV0QPN2D',
           ...getDefaultStack(),
@@ -619,6 +605,7 @@ describe('POST /revisions/upload -- Stack', () => {
 
   it('should not recreate unmodified blob', async () => {
     const { token, org, project, user } = await seedWithProject();
+    const source = await seedSource(project);
     const name = `test ${nanoid()}`;
     const comp = getBlobComponent(project);
     await createComponent({
@@ -644,6 +631,7 @@ describe('POST /revisions/upload -- Stack', () => {
         orgId: org.id,
         projectId: project.id,
         source: 'github',
+        sourceId: source.id,
         stack: {
           id: nanoid(),
           name: 'root',

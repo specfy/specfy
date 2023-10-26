@@ -36,6 +36,7 @@ function BodyVal(req: FastifyRequest) {
       name: schemaRevision.shape.name,
       description: schemaRevision.shape.description,
       source: z.literal('github'),
+      sourceId: schemaId,
       autoLayout: z.boolean().nullable(),
       stack: schemaStack.nullable(),
       blobs: z
@@ -138,6 +139,18 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       // TODO: validate all ids
       // const data: PostUploadRevision['Body'] = val.data;
       const data = val.data;
+
+      const source = await prisma.sources.findUnique({
+        where: { id: data.sourceId },
+      });
+      if (!source) {
+        return res.status(400).send({
+          error: {
+            code: 'invalid_source',
+            reason: 'Source was not found',
+          },
+        });
+      }
 
       const project = await prisma.projects.findUnique({
         where: { id: data.projectId },

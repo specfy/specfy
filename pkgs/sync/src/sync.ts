@@ -12,7 +12,7 @@ import {
 import figures from 'figures';
 
 import type { Logger } from '@specfy/core';
-import type { JobMark } from '@specfy/models';
+import type { JobMark, SyncConfigFull } from '@specfy/models';
 import type { Payload } from '@specfy/stack-analyser';
 
 import { checkNothingMsg, checkPaths } from './common/helper.js';
@@ -34,22 +34,20 @@ import type { TransformedFile } from './transform/index.js';
 import '@specfy/stack-analyser/dist/rules/index.js';
 rules.loadAll();
 
-export interface SyncOptions {
+export type SyncOptions = {
   root: string;
   token: string;
   orgId: string;
   projectId: string;
-  docEnabled: boolean;
-  docPath: string;
-  stackEnabled: boolean;
-  stackPath: string;
+  sourceId: string;
   autoLayout: boolean;
+  settings: SyncConfigFull;
   hostname?: string;
   logger?: Logger;
 
   // Internal
   jobId?: string | undefined;
-}
+};
 
 export class ErrorSync extends Error {
   code: JobMark['code'];
@@ -64,22 +62,17 @@ export async function sync({
   token,
   orgId,
   projectId,
-  docEnabled,
-  docPath,
-  stackEnabled,
-  stackPath,
-  autoLayout,
+  sourceId,
   jobId,
+  autoLayout,
   hostname = 'https://api.specfy.io',
   logger = defaultLogger,
+  settings,
 }: SyncOptions) {
-  const paths = await checkPaths({
-    docEnabled,
-    docPath,
-    stackEnabled,
-    stackPath,
-    logger,
-  });
+  settings.documentation.path = path.join(root, settings.documentation.path);
+  settings.stack.path = path.join(root, settings.stack.path);
+
+  const paths = await checkPaths({ settings, logger });
   if (!paths) {
     throw new ErrorSync('sync_invalid_path');
   }
@@ -91,15 +84,15 @@ export async function sync({
 
   // ------- Documentation
   let docs: TransformedFile[] = [];
-  if (docEnabled) {
+  if (settings.documentation.enabled) {
     l.info('-- Documentation');
-    l.info(`${figures.triangleRight} Syncing ${docPath}`);
+    l.info(`${figures.triangleRight} Syncing ${settings.documentation.path}`);
 
     l.info('Listing...');
     // --- List
     const list: ProviderFile[] = [];
     const provider = new FSProvider({
-      path: docPath,
+      path: settings.documentation.path,
       ignorePaths: [],
     });
 
@@ -128,17 +121,17 @@ export async function sync({
 
   // ------- Stack
   let stack: Payload | null = null;
-  if (stackEnabled) {
+  if (settings.stack.enabled) {
     l.info('');
     l.info('-- Stack');
 
-    l.info(`${figures.triangleRight} Syncing: ${stackPath}`);
+    l.info(`${figures.triangleRight} Syncing: ${settings.stack.path}`);
 
     l.info(`Analyzing...`);
     stack = flatten(
       await analyser({
         provider: new StackProvider({
-          path: stackPath,
+          path: settings.stack.path,
           ignorePaths: [],
         }),
       })
@@ -152,7 +145,7 @@ export async function sync({
     l.warn(`${figures.info} Stack Skipped`);
   }
 
-  if (!docEnabled && !stackEnabled) {
+  if (!settings.documentation.enabled && !settings.stack.enabled) {
     checkNothingMsg(logger);
     return;
   }
@@ -164,6 +157,7 @@ export async function sync({
   const body = prepBody({
     orgId,
     projectId,
+    sourceId,
     docs,
     stack,
     autoLayout,

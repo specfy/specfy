@@ -19,12 +19,14 @@ interface Params {
 export function prepBody({
   orgId,
   projectId,
+  sourceId,
   docs,
   stack,
   autoLayout,
   root,
   jobId,
 }: Omit<Params, 'token'> & {
+  sourceId: string;
   docs: TransformedFile[];
   root: string;
   stack?: Payload | null;
@@ -36,6 +38,7 @@ export function prepBody({
   return {
     orgId,
     projectId,
+    sourceId,
     jobId,
     name: `${title} ${date}`,
     description: { content: [], type: 'doc' },
