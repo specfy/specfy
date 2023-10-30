@@ -62,7 +62,7 @@
     "@types/passport-github2": "1.2.5",
     "@types/passport-http-bearer": "1.0.39",
     "@types/passport-jwt": "3.0.9",
-    "@types/passport-local": "1.0.35",
+    "@types/passport-local": "1.0.37",
     "fastify-cli": "5.8.0",
     "nodemon": "3.0.1",
     "react-diff-view": "3.0.3",
