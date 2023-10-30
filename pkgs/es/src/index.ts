@@ -1,4 +1,4 @@
-import { l as logger } from '@specfy/core';
+import { isTest, l as logger } from '@specfy/core';
 
 import { client } from './client.js';
 
@@ -51,6 +51,15 @@ const indices: estypes.IndicesCreateRequest[] = [
     },
   },
 ];
+
+export const baseDelete = {
+  // In production we do not care that ES is cleaned synchronously
+  wait_for_completion: false,
+  // It will ignore all conflicts on document
+  conflicts: 'proceed',
+  // Make sure shards refresh after the delete
+  refresh: isTest === true,
+};
 
 export async function start() {
   l.info('ES Service Starting');

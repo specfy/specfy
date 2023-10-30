@@ -1,5 +1,5 @@
 import { isTest, nanoid } from '@specfy/core';
-import { client } from '@specfy/es';
+import { baseDelete, client } from '@specfy/es';
 
 import type { Logger } from '@specfy/core';
 import type { Jobs, Orgs, Projects } from '@specfy/db';
@@ -117,14 +117,6 @@ export async function indexTech({
   }
 }
 
-const baseDelete = {
-  // In production we do not care that ES is cleaned synchronously
-  wait_for_completion: false,
-  // It will ignore all conflicts on document
-  conflicts: 'proceed',
-  // Make sure shards refresh after the delete
-  refresh: isTest === true,
-};
 export async function removeTechByJob({ job }: { job: Jobs }) {
   await client.deleteByQuery({
     index: 'techs',

@@ -1,5 +1,7 @@
 import { isTest, l as logger } from '@specfy/core';
-import { client } from '@specfy/es';
+import { baseDelete, client } from '@specfy/es';
+
+import type { Orgs, Projects } from '@specfy/db';
 
 import type { GetCatalogUser } from './types.api.js';
 import type { CommitIndex } from './types.js';
@@ -111,6 +113,39 @@ export async function getUserActivities({
   >(q);
 
   return res;
+}
+
+export async function removeUserActivitiesByProject({
+  project,
+}: {
+  project: Projects;
+}) {
+  await client.deleteByQuery({
+    index: 'tech_usage',
+    ...baseDelete,
+    query: {
+      // @ts-expect-error
+      bool: {
+        must: [
+          { term: { projectId: project.id } },
+          { term: { orgId: project.orgId } },
+        ],
+      },
+    },
+  });
+}
+
+export async function removeUserActivitiesByOrg({ org }: { org: Orgs }) {
+  await client.deleteByQuery({
+    index: 'tech_usage',
+    ...baseDelete,
+    query: {
+      // @ts-expect-error
+      bool: {
+        must: [{ term: { orgId: org.id } }],
+      },
+    },
+  });
 }
 
 export function scoreUser(
