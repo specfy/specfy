@@ -18,6 +18,7 @@ describe('uploadedDocumentsToDB', () => {
     description: { type: 'doc', content: [] },
     name: 'Foobar',
     stack: null,
+    commit: null,
   };
 
   it('should output nothing', () => {

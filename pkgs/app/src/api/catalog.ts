@@ -1,6 +1,10 @@
 import { useQuery } from '@tanstack/react-query';
 
-import type { GetCatalog, ListCatalog } from '@specfy/models';
+import type {
+  GetCatalog,
+  GetCatalogUserActivities,
+  ListCatalog,
+} from '@specfy/models';
 
 import { fetchApi } from './fetch';
 import { APIError, isError } from './helpers';
@@ -28,6 +32,28 @@ export function useGetCatalog(opts: GetCatalog['QP']) {
     queryFn: async (): Promise<GetCatalog['Success']> => {
       const { json, res } = await fetchApi<GetCatalog>(
         `/catalog/${opts.tech_id}`,
+        {
+          qp: { org_id: opts.org_id },
+        }
+      );
+
+      if (res.status !== 200 || isError(json)) {
+        throw new APIError({ res, json });
+      }
+
+      return json;
+    },
+  });
+}
+
+export function useGetCatalogUserActivities(
+  opts: GetCatalogUserActivities['QP']
+) {
+  return useQuery({
+    queryKey: ['getUserActivities', opts.org_id, opts.tech_id],
+    queryFn: async (): Promise<GetCatalogUserActivities['Success']> => {
+      const { json, res } = await fetchApi<GetCatalogUserActivities>(
+        `/catalog/${opts.tech_id}/user_activities`,
         {
           qp: { org_id: opts.org_id },
         }

@@ -77,18 +77,8 @@ describe('GET /catalog', () => {
     isSuccess(res.json);
     expect(res.statusCode).toBe(200);
     expect(res.json.data).toStrictEqual({
-      byName: [
-        {
-          count: 1,
-          key: 'algolia',
-        },
-      ],
-      byType: [
-        {
-          count: 1,
-          key: 'saas',
-        },
-      ],
+      byName: [{ count: 1, key: 'algolia' }],
+      byType: [{ count: 1, key: 'saas' }],
     });
   });
 });

@@ -1,11 +1,9 @@
 import type { Prisma } from '@specfy/db';
 
-import type { SyncConfig } from '../sync.js';
-import type { RequiredDeep } from 'type-fest';
+import type { SyncConfigFull } from '../sync.js';
+import type { SetOptional } from 'type-fest';
 
-export type SourceSettingsGithub = RequiredDeep<
-  Omit<SyncConfig, 'orgId' | 'projectId'>
->;
+export type SourceSettingsGithub = SetOptional<SyncConfigFull, 'git'>;
 
 export type SourceWithProject = Prisma.SourcesGetPayload<{
   include: { Project: true };

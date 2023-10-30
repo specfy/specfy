@@ -81,7 +81,8 @@ describe('POST /revisions/upload -- General', () => {
         sourceId: source.id,
         source: 'github',
         stack: null,
-      } as any,
+        commit: null,
+      },
     });
 
     expect(res.statusCode).toBe(403);
@@ -102,6 +103,7 @@ describe('POST /revisions/upload -- General', () => {
         source: 'github',
         sourceId: source.id,
         stack: null,
+        commit: null,
       },
     });
 
@@ -130,6 +132,7 @@ describe('POST /revisions/upload -- Documents', () => {
         source: 'github',
         sourceId: source.id,
         stack: null,
+        commit: null,
       },
     });
 
@@ -210,6 +213,7 @@ describe('POST /revisions/upload -- Documents', () => {
         source: 'github',
         sourceId: source.id,
         stack: null,
+        commit: null,
       },
     });
 
@@ -238,6 +242,7 @@ describe('POST /revisions/upload -- Documents', () => {
         source: 'github',
         sourceId: source.id,
         stack: null,
+        commit: null,
       },
     });
 
@@ -296,6 +301,7 @@ describe('POST /revisions/upload -- Documents', () => {
         source: 'github',
         sourceId: source.id,
         stack: null,
+        commit: null,
       },
     });
 
@@ -354,6 +360,7 @@ describe('POST /revisions/upload -- Documents', () => {
         source: 'github',
         sourceId: source.id,
         stack: null,
+        commit: null,
       },
     });
 
@@ -387,6 +394,7 @@ describe('POST /revisions/upload -- Documents', () => {
         source: 'github',
         sourceId: source.id,
         stack: null,
+        commit: null,
       },
     });
 
@@ -419,6 +427,7 @@ describe('POST /revisions/upload -- Stack', () => {
         stack: {
           name: 'top',
         } as any,
+        commit: null,
       },
     });
 
@@ -479,6 +488,7 @@ describe('POST /revisions/upload -- Stack', () => {
         source: 'github',
         sourceId: source.id,
         stack,
+        commit: null,
       },
     });
 
@@ -525,6 +535,7 @@ describe('POST /revisions/upload -- Stack', () => {
         projectId: project.id,
         source: 'github',
         sourceId: source.id,
+        commit: null,
         stack: {
           id: '10uaaV0QPN2D',
           ...getDefaultStack(),
@@ -576,6 +587,7 @@ describe('POST /revisions/upload -- Stack', () => {
         projectId: project.id,
         source: 'github',
         sourceId: source.id,
+        commit: null,
         stack: {
           id: '10uaaV0QPN2D',
           ...getDefaultStack(),
@@ -632,6 +644,7 @@ describe('POST /revisions/upload -- Stack', () => {
         projectId: project.id,
         source: 'github',
         sourceId: source.id,
+        commit: null,
         stack: {
           id: nanoid(),
           name: 'root',

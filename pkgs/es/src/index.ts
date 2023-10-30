@@ -35,6 +35,21 @@ const indices: estypes.IndicesCreateRequest[] = [
       },
     },
   },
+  {
+    index: 'tech_usage',
+    mappings: {
+      properties: {
+        orgId: { type: 'keyword' },
+        projectId: { type: 'keyword' },
+        sourceId: { type: 'keyword' },
+        userId: { type: 'keyword' },
+        hash: { type: 'keyword' },
+        username: { type: 'keyword' },
+        techs: { type: 'keyword' },
+        date: { type: 'date' },
+      },
+    },
+  },
 ];
 
 export async function start() {

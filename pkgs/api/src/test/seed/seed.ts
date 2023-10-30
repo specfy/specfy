@@ -98,10 +98,14 @@ export async function truncate() {
   await prisma.$executeRawUnsafe(`TRUNCATE TABLE "Flows" CASCADE`);
   await prisma.$executeRawUnsafe(`TRUNCATE TABLE "Jobs" CASCADE`);
 
-  await client.indices.delete({
-    index: 'techs',
-    allow_no_indices: true,
-    ignore_unavailable: true,
-  });
+  await Promise.all(
+    ['techs', 'tech_usage'].map(async (index) => {
+      return await client.indices.delete({
+        index,
+        allow_no_indices: true,
+        ignore_unavailable: true,
+      });
+    })
+  );
   await mapping();
 }
