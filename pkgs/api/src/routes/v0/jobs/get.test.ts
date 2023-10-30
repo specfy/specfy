@@ -55,14 +55,9 @@ describe('GET /jobs/:job_id', () => {
         url: 'hello',
         settings: {
           branch: 'main',
-          documentation: {
-            enabled: true,
-            path: '/',
-          },
-          stack: {
-            enabled: true,
-            path: '/',
-          },
+          documentation: { enabled: true, path: '/' },
+          stack: { enabled: true, path: '/' },
+          git: { enabled: true },
         },
       },
       id: expect.any(String),

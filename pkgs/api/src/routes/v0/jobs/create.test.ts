@@ -119,14 +119,9 @@ describe('POST /jobs', () => {
         url: 'test',
         settings: {
           branch: 'main',
-          documentation: {
-            enabled: true,
-            path: '/',
-          },
-          stack: {
-            enabled: true,
-            path: '/',
-          },
+          documentation: { enabled: true, path: '/' },
+          stack: { enabled: true, path: '/' },
+          git: { enabled: true },
         },
       },
       createdAt: expect.toBeIsoDate(),
