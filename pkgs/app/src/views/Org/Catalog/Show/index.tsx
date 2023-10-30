@@ -25,6 +25,7 @@ import { ContainerChild } from '@/components/Container';
 import { Flex } from '@/components/Flex';
 import { NotFound } from '@/components/NotFound';
 import { Tag } from '@/components/Tag';
+import { Subdued } from '@/components/Text';
 
 import cls from './index.module.scss';
 
@@ -131,6 +132,8 @@ const UserActivities: React.FC<{
                 stroke="#3e63dd"
                 fill="#ccd8ff"
                 strokeWidth={2}
+                animationDuration={250}
+                animationBegin={0}
               />
             </AreaChart>
           </Flex>
@@ -194,31 +197,45 @@ const UserActivities: React.FC<{
 };
 
 const Projects: React.FC<{
-  chart: Chart | null;
   projects?: ApiProjectList[];
   data: GetCatalog['Success']['data'];
-}> = ({ chart, projects, data }) => {
+}> = ({ projects, data }) => {
+  const [using, notusing] = useMemo<
+    [ApiProjectList[], ApiProjectList[]]
+  >(() => {
+    const a: ApiProjectList[] = [];
+    const b: ApiProjectList[] = [];
+
+    if (projects) {
+      for (const project of projects) {
+        if (data.byProject.includes(project.id)) {
+          a.push(project);
+        } else {
+          b.push(project);
+        }
+      }
+    }
+
+    return [a, b];
+  }, [data, projects]);
+
   return (
     <div className={cls.section}>
       <h3 className={cls.heading}>Projects</h3>
       <div className={cls.grid}>
         <div className={cls.block}>
           <div className={cls.metric}>
-            {chart && <div className={cls.number}>{chart.usedBy}</div>}
+            <div className={cls.number}>{using.length}</div>
             <div className={cls.label}>using</div>
           </div>
           {!projects ? (
             <Skeleton />
           ) : (
             <Flex wrap="wrap" gap="m">
-              {data.byProject.map((id) => {
-                const proj = projects.find((p) => p.id === id);
-                if (!proj) {
-                  return null;
-                }
+              {using.map((proj) => {
                 return (
                   <Link
-                    key={id}
+                    key={proj.id}
                     to={`/${proj.orgId}/${proj.slug}`}
                     className={cls.project}
                   >
@@ -227,13 +244,14 @@ const Projects: React.FC<{
                   </Link>
                 );
               })}
+              {using.length <= 0 && <Subdued>Nothing to show.</Subdued>}
             </Flex>
           )}
         </div>
 
         <div className={cls.block}>
           <div className={cls.metric}>
-            {chart && <div className={cls.number}>{chart.notUsedBy}</div>}
+            <div className={cls.number}>{notusing.length}</div>
             <div className={cls.label}>not using</div>
           </div>
 
@@ -241,10 +259,7 @@ const Projects: React.FC<{
             <Skeleton />
           ) : (
             <Flex wrap="wrap" gap="m">
-              {projects.map((proj) => {
-                if (data.byProject.includes(proj.id)) {
-                  return null;
-                }
+              {notusing.map((proj) => {
                 return (
                   <Link
                     key={proj.id}
@@ -256,6 +271,7 @@ const Projects: React.FC<{
                   </Link>
                 );
               })}
+              {notusing.length <= 0 && <Subdued>Nothing to show.</Subdued>}
             </Flex>
           )}
         </div>
@@ -375,7 +391,7 @@ export const OrgCatalogShow: React.FC<{ org: ApiOrg }> = ({ org }) => {
           )}
         </div>
 
-        <Projects chart={chart} projects={projects} data={data} />
+        <Projects projects={projects} data={data} />
 
         <UserActivities org={org} tech={data.tech}></UserActivities>
       </ContainerChild>

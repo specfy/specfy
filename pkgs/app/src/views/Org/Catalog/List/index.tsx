@@ -31,6 +31,7 @@ import cls from './index.module.scss';
 const filtersBase: Array<{ label: string; value: string; count: 0 }> = [
   { label: 'All', value: 'all', count: 0 },
   { label: 'Analytics', value: 'analytics', count: 0 },
+  { label: 'API', value: 'api', count: 0 },
   { label: 'Application', value: 'app', count: 0 },
   { label: 'CI', value: 'ci', count: 0 },
   { label: 'Cloud', value: 'cloud', count: 0 },
