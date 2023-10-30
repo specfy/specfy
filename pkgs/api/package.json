@@ -60,7 +60,7 @@
   "devDependencies": {
     "@types/node": "18.17.6",
     "@types/passport-github2": "1.2.5",
-    "@types/passport-http-bearer": "1.0.37",
+    "@types/passport-http-bearer": "1.0.39",
     "@types/passport-jwt": "3.0.9",
     "@types/passport-local": "1.0.35",
     "fastify-cli": "5.8.0",
