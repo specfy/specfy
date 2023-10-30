@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/extensions
+import '@specfy/stack-analyser/dist/autoload.js';
 import { describe, expect, it } from 'vitest';
 
 import { getTechFromFileList } from '.';
@@ -10,7 +12,7 @@ describe('getTechFromFileList', () => {
 
   it('should find react, nodejs', () => {
     const res = getTechFromFileList(['package.json', 'src/index.tsx']);
-    expect(res).toStrictEqual(new Set(['nodejs', 'react']));
+    expect(res).toStrictEqual(new Set(['nodejs', 'react', 'typescript']));
   });
 
   it('should find typescript, golang', () => {

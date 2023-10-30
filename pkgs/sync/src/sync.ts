@@ -7,7 +7,6 @@ import {
   flatten,
   analyser,
   FSProvider as StackProvider,
-  rules,
 } from '@specfy/stack-analyser';
 import figures from 'figures';
 
@@ -32,8 +31,7 @@ import type { ProviderFile } from './provider/base.js';
 import type { TransformedFile } from './transform/index.js';
 
 // eslint-disable-next-line import/order
-import '@specfy/stack-analyser/dist/rules/index.js';
-rules.loadAll();
+import '@specfy/stack-analyser/dist/autoload.js';
 
 export type SyncOptions = {
   root: string;

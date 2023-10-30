@@ -79,6 +79,8 @@ export async function seedWithProject(): Promise<{
 }
 
 export async function truncate() {
+  console.log('truncating db...');
+
   // Split because those table are referenced everywhere and it deadlocks
   await prisma.$executeRawUnsafe(`TRUNCATE TABLE "Accounts" CASCADE`);
   await prisma.$executeRawUnsafe(`TRUNCATE TABLE "Activities" CASCADE`);

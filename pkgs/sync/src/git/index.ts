@@ -35,14 +35,14 @@ export async function getCommitInfo(root: string): Promise<Commit | null> {
 }
 
 export function getTechFromFileList(files: string[]): Set<string> {
-  const mp = tech.detectInFileList(
+  const tmp = tech.detectInFileList(
     files.map((file) => {
       return { fp: file, name: path.basename(file), type: 'file' };
     }),
     '/'
   );
 
-  return new Set(mp.keys());
+  return new Set(tmp.keys());
 }
 
 export async function analyzeCommit({
