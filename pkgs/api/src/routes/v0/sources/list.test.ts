@@ -87,14 +87,9 @@ describe('GET /sources', () => {
         enable: true,
         settings: {
           branch: 'main',
-          documentation: {
-            enabled: true,
-            path: '/',
-          },
-          stack: {
-            enabled: true,
-            path: '/',
-          },
+          documentation: { enabled: true, path: '/' },
+          stack: { enabled: true, path: '/' },
+          git: { enabled: true },
         },
         type: 'github',
         updatedAt: expect.toBeIsoDate(),

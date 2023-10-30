@@ -3,11 +3,12 @@ import fs from 'node:fs/promises';
 import { envs, isProd, nanoid, sentry } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import { github } from '@specfy/github';
+import { getDefaultConfig } from '@specfy/models';
 import { sync, ErrorSync } from '@specfy/sync';
 import { $ } from 'execa';
 import { Octokit } from 'octokit';
 
-import type { JobWithOrgProject } from '@specfy/models';
+import type { SyncConfigFull, JobWithOrgProject } from '@specfy/models';
 
 import { Job } from '../Job.js';
 
@@ -40,7 +41,10 @@ export class JobDeploy extends Job {
       return;
     }
 
-    const settings = config.settings;
+    const settings: SyncConfigFull = {
+      ...getDefaultConfig(),
+      ...config.settings,
+    };
     const ref = config.hook?.ref || settings.branch;
     const identifier = config.url;
     const [owner, repo] = identifier.split('/');
@@ -118,8 +122,9 @@ export class JobDeploy extends Job {
     this.folderName = `/tmp/specfy_clone_${job.id}_${nanoid()}`;
     try {
       l.info('Cloning repository...');
+      // We get 2 last commits to be able to get a diff, but no overhead
       const res =
-        await $`git clone --branch ${settings.branch} https://x-access-token:${this.token}@github.com/${config.url}.git --depth 1 ${this.folderName}`;
+        await $`git clone --branch ${settings.branch} https://x-access-token:${this.token}@github.com/${config.url}.git --depth 2 ${this.folderName}`;
 
       if (res.exitCode !== 0) {
         this.mark('failed', 'unknown');

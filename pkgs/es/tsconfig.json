@@ -7,14 +7,10 @@
   },
   "include": [
     "src",
-    "../models/src/prisma.d.ts",
   ],
   "references": [
     {
       "path": "../core"
-    },
-    {
-      "path": "../models"
     },
   ]
 }

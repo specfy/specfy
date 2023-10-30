@@ -66,6 +66,7 @@ import type {
   DeleteSource,
   ListCatalog,
   GetCatalog,
+  GetCatalogUserActivities,
 } from '@specfy/models';
 
 import type { PostAuthLocal, PostLogout } from './auth.js';
@@ -90,6 +91,10 @@ export interface API {
 
   '/0/catalog': { GET: ListCatalog };
   [key: `/0/catalog/${string}`]: { GET: GetCatalog };
+  // @ts-expect-error
+  [key: `/0/catalog/${string}/user_activities`]: {
+    GET: GetCatalogUserActivities;
+  };
 
   '/0/components': { GET: ListComponents };
 

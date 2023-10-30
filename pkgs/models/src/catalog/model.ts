@@ -5,7 +5,7 @@ import type { Logger } from '@specfy/core';
 import type { Jobs, Orgs, Projects } from '@specfy/db';
 
 import type { ListCatalog } from './types.api.js';
-import type { CatalogTech } from './types.js';
+import type { CatalogTechIndex } from './types.js';
 import type { estypes } from '@elastic/elasticsearch';
 
 interface ListProps {
@@ -51,7 +51,7 @@ export async function catalogList(params: ListProps) {
   }
 
   const res = await client.search<
-    CatalogTech,
+    CatalogTechIndex,
     {
       byName: estypes.AggregationsTermsAggregateBase<{ key: string }>;
       byType?: estypes.AggregationsTermsAggregateBase<{ key: string }>;
@@ -88,7 +88,7 @@ export async function catalogGet(params: GetProps) {
   };
 
   const res = await client.search<
-    CatalogTech,
+    CatalogTechIndex,
     {
       byProject: estypes.AggregationsTermsAggregateBase<{ key: string }>;
     }
@@ -101,15 +101,14 @@ export async function indexTech({
   techs,
   l,
 }: {
-  techs: CatalogTech[];
+  techs: CatalogTechIndex[];
   l: Logger;
 }) {
   const operations = techs.flatMap((tech) => {
     return [{ index: { _index: 'techs', _id: nanoid(20) } }, tech];
   });
-  const bulkResponse = await client.bulk({ refresh: true, operations });
-
   l.info({ size: operations.length }, 'Indexing techs to ES');
+  const bulkResponse = await client.bulk({ refresh: isTest, operations });
 
   if (bulkResponse.errors) {
     bulkResponse.items.forEach((action) => {

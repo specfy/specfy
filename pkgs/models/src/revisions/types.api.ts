@@ -18,6 +18,7 @@ import type {
 import type { BlockLevelZero } from '../documents/types.prosemirror.js';
 import type { ApiReview } from '../reviews/types.api.js';
 import type { StackToBlobs } from '../stack/types.js';
+import type { CommitAnalysis } from '../sync.js';
 import type { ApiUser } from '../users/types.api.js';
 
 type ApiRevisionBase = { authors: ApiUser[]; url: string };
@@ -71,6 +72,7 @@ export type PostUploadRevision = Res<{
     sourceId: string;
     blobs: UploadBlob[] | null;
     stack: AnalyserJson | null;
+    commit: CommitAnalysis | null;
     autoLayout?: boolean;
     jobId?: string | undefined;
   };

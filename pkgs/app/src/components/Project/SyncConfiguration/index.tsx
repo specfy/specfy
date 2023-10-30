@@ -30,6 +30,7 @@ export const SyncConfiguration: React.FC<{
       branch,
       documentation: { enabled: docEnabled, path: docPath },
       stack: { enabled: stackEnabled, path: stackPath },
+      git: { enabled: true },
     });
   }, [branch, stackEnabled, stackPath, docEnabled, docPath]);
 

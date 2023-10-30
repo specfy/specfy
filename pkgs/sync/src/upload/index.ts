@@ -1,7 +1,7 @@
 import { l as defaultLogger } from '@specfy/core';
 
 import type { Logger } from '@specfy/core';
-import type { PostUploadRevision } from '@specfy/models';
+import type { CommitAnalysis, PostUploadRevision } from '@specfy/models';
 import type { Payload } from '@specfy/stack-analyser';
 
 import type { TransformedFile } from '../transform/index.js';
@@ -22,6 +22,7 @@ export function prepBody({
   sourceId,
   docs,
   stack,
+  commit,
   autoLayout,
   root,
   jobId,
@@ -31,6 +32,7 @@ export function prepBody({
   root: string;
   stack?: Payload | null;
   autoLayout?: boolean | null;
+  commit?: CommitAnalysis | null;
   jobId?: string | undefined;
 }): PostUploadRevision['Body'] {
   const now = new Date();
@@ -50,6 +52,7 @@ export function prepBody({
       };
     }),
     stack: stack?.toJson(root) || null,
+    commit: commit || null,
     autoLayout: autoLayout === true,
   };
 }
