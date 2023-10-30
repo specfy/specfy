@@ -53,7 +53,7 @@ describe('GET /catalog/:tech_id/user_activities', () => {
     expect(res.statusCode).toBe(404);
   });
 
-  it.only('should return a catalog', async () => {
+  it('should return a catalog', async () => {
     const { org, token, project, user } = await seedWithProject();
     await indexCommit({
       orgId: org.id,
