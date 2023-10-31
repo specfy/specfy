@@ -669,7 +669,7 @@ describe('POST /revisions/upload -- Stack', () => {
 });
 
 describe('POST /revisions/upload -- Git', () => {
-  it.only('should index a commit', async () => {
+  it('should index a commit', async () => {
     const { token, org, project, user } = await seedWithProject();
     const source = await seedSource(project);
     const name = `test ${nanoid()}`;
