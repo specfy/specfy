@@ -1,4 +1,9 @@
 import { internalTypeToText } from '@specfy/models/src/components/constants';
+import {
+  IconArrowDownRight,
+  IconArrowRight,
+  IconArrowUpRight,
+} from '@tabler/icons-react';
 import classNames from 'classnames';
 import { DateTime } from 'luxon';
 import { useEffect, useMemo, useState } from 'react';
@@ -26,6 +31,7 @@ import { Flex } from '@/components/Flex';
 import { NotFound } from '@/components/NotFound';
 import { Tag } from '@/components/Tag';
 import { Subdued } from '@/components/Text';
+import { TooltipFull } from '@/components/Tooltip';
 
 import cls from './index.module.scss';
 
@@ -143,6 +149,9 @@ const UserActivities: React.FC<{
           <table className={cls.table}>
             <tbody>
               {data.users.map((user) => {
+                const lastUpdate = DateTime.fromMillis(
+                  user.lastUpdate
+                ).diffNow().days;
                 return (
                   <tr
                     key={
@@ -172,18 +181,66 @@ const UserActivities: React.FC<{
                     </td>
                     <td className={cls.tdCount}>{user.count} activities</td>
                     <td className={cls.tdScore}>
-                      <div
-                        className={classNames(cls.scoreCard, cls[user.trend])}
+                      <TooltipFull
+                        side="right"
+                        align="start"
+                        msg={
+                          <ul>
+                            Score details:
+                            <li>
+                              -{' '}
+                              {lastUpdate > 10 ? (
+                                <IconArrowDownRight />
+                              ) : (
+                                <IconArrowUpRight />
+                              )}{' '}
+                              Last activity:{' '}
+                              {lastUpdate > 1
+                                ? `${lastUpdate} days ago`
+                                : lastUpdate > 0
+                                ? 'yesterday'
+                                : 'today'}
+                            </li>
+                            {user.trend === 'bad' && (
+                              <li>
+                                - <IconArrowDownRight /> Low volume of
+                                activities
+                              </li>
+                            )}
+                            {user.trend === 'warn' && (
+                              <li>
+                                - <IconArrowRight /> Medium volume of recent
+                                activities
+                              </li>
+                            )}
+                            {user.trend === 'good' && (
+                              <li>
+                                - <IconArrowUpRight /> High volume of recent
+                                activities
+                              </li>
+                            )}
+                            {user.type === 'guest' && (
+                              <li>
+                                - <IconArrowDownRight /> Not registered to
+                                Specfy (may be bot or automation)
+                              </li>
+                            )}
+                          </ul>
+                        }
                       >
-                        <div className={cls.score}>{user.score}</div>
-                        <div className={cls.scoreLabel}>
-                          {user.trend === 'bad'
-                            ? 'Involved'
-                            : user.trend === 'warn'
-                            ? 'Active'
-                            : 'Engaged'}
+                        <div
+                          className={classNames(cls.scoreCard, cls[user.trend])}
+                        >
+                          <div className={cls.score}>{user.score}</div>
+                          <div className={cls.scoreLabel}>
+                            {user.trend === 'bad'
+                              ? 'Involved'
+                              : user.trend === 'warn'
+                              ? 'Active'
+                              : 'Engaged'}
+                          </div>
                         </div>
-                      </div>
+                      </TooltipFull>
                     </td>
                   </tr>
                 );
