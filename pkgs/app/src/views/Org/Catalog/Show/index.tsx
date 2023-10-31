@@ -178,10 +178,10 @@ const UserActivities: React.FC<{
                         <div className={cls.score}>{user.score}</div>
                         <div className={cls.scoreLabel}>
                           {user.trend === 'bad'
-                            ? 'Not active'
+                            ? 'Involved'
                             : user.trend === 'warn'
-                            ? 'Engaged'
-                            : 'Active'}
+                            ? 'Active'
+                            : 'Engaged'}
                         </div>
                       </div>
                     </td>

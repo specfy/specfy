@@ -3,7 +3,11 @@ import { Prisma } from '@specfy/db';
 
 import type { Jobs } from '@specfy/db';
 
-import type { JobDeployConfig, JobProjectIndexConfig } from './types.js';
+import type {
+  JobBackfillGithubConfig,
+  JobDeployConfig,
+  JobProjectIndexConfig,
+} from './types.js';
 import type { SetNonNullable } from 'type-fest';
 
 type Props = Omit<Partial<Jobs>, 'logs' | 'config'> &
@@ -63,6 +67,35 @@ export async function createJobProjectIndex({
       projectId,
       userId,
       type: 'projectIndex',
+      typeId: rest.typeId || (await getJobTypeId({ orgId, projectId, tx })),
+    },
+  });
+
+  logEvent('jobs.created', { orgId, projectId, userId, type: 'projectIndex' });
+
+  return job;
+}
+
+export async function createJobBackfillGithub({
+  tx,
+  orgId,
+  projectId,
+  config,
+  userId,
+  ...rest
+}: Props & { config: JobBackfillGithubConfig }) {
+  l.info('Creating backfill github job', { orgId, projectId, config });
+  const job = await tx.jobs.create({
+    data: {
+      id: nanoid(),
+      ...rest,
+      status: rest.status || 'pending',
+      reason: rest.reason || Prisma.DbNull,
+      config,
+      orgId,
+      projectId,
+      userId,
+      type: 'backfillGithub',
       typeId: rest.typeId || (await getJobTypeId({ orgId, projectId, tx })),
     },
   });

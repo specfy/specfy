@@ -11,7 +11,7 @@ import {
   stackToBlobs,
   getOrgFromRequest,
   getCurrentPlan,
-  indexCommit,
+  indexCommits,
 } from '@specfy/models';
 import { z } from 'zod';
 
@@ -248,14 +248,22 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
           // ---- Handle git analysis
           if (data.commit) {
             const acc = await tx.accounts.findFirst({
+              select: { userId: true },
               where: { emails: { has: data.commit.info.email } },
             });
-            await indexCommit({
-              orgId: data.orgId,
-              projectId: data.projectId,
-              sourceId: source.id,
-              userId: acc ? acc.userId : null,
-              commit: data.commit,
+            await indexCommits({
+              commits: [
+                {
+                  orgId: data.orgId,
+                  projectId: data.projectId,
+                  sourceId: source.id,
+                  userId: acc ? acc.userId : null,
+                  username: data.commit.info.author,
+                  hash: data.commit.info.hash,
+                  techs: data.commit.techs,
+                  date: data.commit.info.date.toISOString(),
+                },
+              ],
             });
           }
 

@@ -1,46 +1,38 @@
 import { isTest, l as logger } from '@specfy/core';
 import { baseDelete, client } from '@specfy/es';
 
+import type { Logger } from '@specfy/core';
 import type { Orgs, Projects } from '@specfy/db';
 
 import type { GetCatalogUser } from './types.api.js';
 import type { CommitIndex } from './types.js';
-import type { CommitAnalysis } from '../sync.js';
 import type { estypes } from '@elastic/elasticsearch';
 
-export async function indexCommit({
-  orgId,
-  projectId,
-  sourceId,
-  userId,
-  commit,
+export async function indexCommits({
+  commits,
+  l = logger,
 }: {
-  orgId: string;
-  projectId: string;
-  sourceId: string;
-  userId: string | null;
-  commit: CommitAnalysis;
+  commits: CommitIndex[];
+  l?: Logger;
 }) {
-  const hash = commit.info.hash;
-  try {
-    logger.info({ sourceId, hash }, 'Indexing commit to ES');
-    await client.index({
-      index: 'tech_usage',
-      id: `${sourceId}:${hash}`,
-      refresh: isTest,
-      document: {
-        orgId,
-        projectId,
-        sourceId,
-        userId,
-        hash,
-        username: commit.info.author,
-        techs: commit.techs,
-        date: commit.info.date,
+  const operations = commits.flatMap((commit) => {
+    return [
+      {
+        index: {
+          _index: 'tech_usage',
+          _id: `${commit.sourceId}:${commit.hash}`,
+        },
       },
+      commit,
+    ];
+  });
+  l.info({ size: operations.length }, 'Indexing commits to ES');
+  const bulkResponse = await client.bulk({ refresh: isTest, operations });
+
+  if (bulkResponse.errors) {
+    bulkResponse.items.forEach((action) => {
+      l.error(action);
     });
-  } catch (err) {
-    logger.error({ err }, 'error during commit indexing to es');
   }
 }
 

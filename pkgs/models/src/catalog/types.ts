@@ -12,8 +12,10 @@ export interface CatalogTechIndex {
 export interface CommitIndex {
   orgId: string;
   projectId: string;
-  jobId: string;
-  type: TechType | 'unknown';
-  key: string;
-  name: string;
+  sourceId: string;
+  userId: string | null;
+  username: string;
+  hash: string;
+  techs: string[];
+  date: string;
 }

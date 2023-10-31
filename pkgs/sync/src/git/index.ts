@@ -5,20 +5,39 @@ import { execa } from 'execa';
 
 import type { Commit, CommitAnalysis } from '@specfy/models';
 
-export async function getCommitFileList(root: string): Promise<string[]> {
+export async function listHashes(
+  root: string,
+  count: number
+): Promise<string[]> {
   const res = await execa(
     'git',
-    ['diff-tree', '--no-commit-id', '--name-only', '-r', 'HEAD'],
+    ['log', '--pretty=format:%H', '--no-patch', `-n${count}`],
     { cwd: root }
   );
 
   return res.stdout.split('\n');
 }
 
-export async function getCommitInfo(root: string): Promise<Commit | null> {
+export async function getCommitFileList(
+  root: string,
+  commit: string
+): Promise<string[]> {
   const res = await execa(
     'git',
-    ['log', '--pretty=format:%H%n%aN%n%aE%n%cd', '--date=iso', '-n1'],
+    ['diff-tree', '--no-commit-id', '--name-only', '-r', commit],
+    { cwd: root }
+  );
+
+  return res.stdout.split('\n');
+}
+
+export async function getCommitInfo(
+  root: string,
+  commit: string
+): Promise<Commit | null> {
+  const res = await execa(
+    'git',
+    ['log', '--pretty=format:%H%n%aN%n%aE%n%cd', '--date=iso', '-n1', commit],
     { cwd: root }
   );
   const lines = res.stdout.split('\n');
@@ -47,11 +66,13 @@ export function getTechFromFileList(files: string[]): Set<string> {
 
 export async function analyzeCommit({
   root,
+  commit = 'HEAD',
 }: {
   root: string;
+  commit?: string;
 }): Promise<CommitAnalysis | null> {
-  const files = await getCommitFileList(root);
-  const info = await getCommitInfo(root);
+  const info = await getCommitInfo(root, commit);
+  const files = await getCommitFileList(root, commit);
 
   if (!files || !info) {
     return null;
