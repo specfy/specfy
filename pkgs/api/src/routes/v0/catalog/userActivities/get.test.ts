@@ -1,7 +1,7 @@
 import { setTimeout } from 'timers/promises';
 
 import { nanoid } from '@specfy/core';
-import { indexCommit } from '@specfy/models';
+import { indexCommits } from '@specfy/models';
 import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
 import { setupAfterAll, setupBeforeAll } from '../../../../test/each.js';
@@ -55,20 +55,19 @@ describe('GET /catalog/:tech_id/user_activities', () => {
 
   it('should return a catalog', async () => {
     const { org, token, project, user } = await seedWithProject();
-    await indexCommit({
-      orgId: org.id,
-      projectId: project.id,
-      sourceId: nanoid(),
-      userId: user.id,
-      commit: {
-        info: {
-          author: user.name,
-          date: new Date(),
-          email: user.email,
+    await indexCommits({
+      commits: [
+        {
+          orgId: org.id,
+          projectId: project.id,
+          sourceId: nanoid(),
+          userId: user.id,
+          username: user.name,
           hash: nanoid(),
+          techs: ['algolia'],
+          date: new Date().toISOString(),
         },
-        techs: ['algolia'],
-      },
+      ],
     });
 
     // Oh lord its the first one

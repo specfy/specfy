@@ -1,4 +1,3 @@
-import { l } from '@specfy/core';
 import { indexTech } from '@specfy/models';
 import { describe, beforeAll, it, afterAll, expect } from 'vitest';
 
@@ -64,7 +63,6 @@ describe('GET /catalog/:tech_id', () => {
           type: 'saas',
         },
       ],
-      l,
     });
 
     const res = await t.fetch.get('/0/catalog/algolia', {

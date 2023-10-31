@@ -1,4 +1,4 @@
-import { isTest, nanoid } from '@specfy/core';
+import { isTest, nanoid, l as logger } from '@specfy/core';
 import { baseDelete, client } from '@specfy/es';
 
 import type { Logger } from '@specfy/core';
@@ -99,10 +99,10 @@ export async function catalogGet(params: GetProps) {
 
 export async function indexTech({
   techs,
-  l,
+  l = logger,
 }: {
   techs: CatalogTechIndex[];
-  l: Logger;
+  l?: Logger;
 }) {
   const operations = techs.flatMap((tech) => {
     return [{ index: { _index: 'techs', _id: nanoid(20) } }, tech];

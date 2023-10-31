@@ -6,15 +6,14 @@ import type { Orgs, Projects } from '@specfy/db';
 
 import type { GetCatalogUser } from './types.api.js';
 import type { CommitIndex } from './types.js';
-import type { CommitAnalysis } from '../sync.js';
 import type { estypes } from '@elastic/elasticsearch';
 
 export async function indexCommits({
   commits,
-  l,
+  l = logger,
 }: {
   commits: CommitIndex[];
-  l: Logger;
+  l?: Logger;
 }) {
   const operations = commits.flatMap((commit) => {
     return [
@@ -34,42 +33,6 @@ export async function indexCommits({
     bulkResponse.items.forEach((action) => {
       l.error(action);
     });
-  }
-}
-
-export async function indexCommit({
-  orgId,
-  projectId,
-  sourceId,
-  userId,
-  commit,
-}: {
-  orgId: string;
-  projectId: string;
-  sourceId: string;
-  userId: string | null;
-  commit: CommitAnalysis;
-}) {
-  const hash = commit.info.hash;
-  try {
-    logger.info({ sourceId, hash }, 'Indexing commit to ES');
-    await client.index({
-      index: 'tech_usage',
-      id: `${sourceId}:${hash}`,
-      refresh: isTest,
-      document: {
-        orgId,
-        projectId,
-        sourceId,
-        userId,
-        hash,
-        username: commit.info.author,
-        techs: commit.techs,
-        date: commit.info.date,
-      },
-    });
-  } catch (err) {
-    logger.error({ err }, 'error during commit indexing to es');
   }
 }
 

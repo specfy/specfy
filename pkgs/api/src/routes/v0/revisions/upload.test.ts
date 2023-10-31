@@ -1,3 +1,5 @@
+import { setTimeout } from 'timers/promises';
+
 import { nanoid } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import { createComponent, type ApiBlobCreateDocument } from '@specfy/models';
@@ -664,6 +666,62 @@ describe('POST /revisions/upload -- Stack', () => {
 
     expect(res2.json).toStrictEqual({
       error: { code: 'cant_create', reason: 'no_diff' },
+    });
+  });
+});
+
+describe('POST /revisions/upload -- Git', () => {
+  it.only('should index a commit', async () => {
+    const { token, org, project, user } = await seedWithProject();
+    const source = await seedSource(project);
+    const name = `test ${nanoid()}`;
+    const res = await t.fetch.post('/0/revisions/upload', {
+      token,
+      Body: {
+        blobs: [],
+        description: { content: [], type: 'doc' },
+        name: name,
+        orgId: org.id,
+        projectId: project.id,
+        source: 'github',
+        sourceId: source.id,
+        stack: null,
+        commit: {
+          info: {
+            author: 'John Doe',
+            date: new Date(),
+            email: user.email,
+            hash: nanoid(),
+          },
+          techs: ['foobar'],
+        },
+      },
+    });
+
+    // We have no diff but we still index the commit
+    // Definitely not ideal DX
+    isError(res.json);
+    expect(res.json).toStrictEqual({
+      error: { code: 'cant_create', reason: 'no_diff' },
+    });
+
+    // make sure it was indexed
+    const resCatalog = await t.fetch.get('/0/catalog/foobar/user_activities', {
+      token,
+      Querystring: { org_id: org.id },
+    });
+    isSuccess(resCatalog.json);
+    expect(resCatalog.statusCode).toBe(200);
+    expect(resCatalog.json.data).toMatchObject({
+      histogram: [{ count: 1, date: expect.any(Number) }],
+      total: 1,
+      totalForTech: 1,
+      users: [
+        {
+          count: 1,
+          type: 'guest',
+        },
+      ],
     });
   });
 });
