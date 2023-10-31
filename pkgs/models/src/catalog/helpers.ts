@@ -3,13 +3,13 @@ import { tech as techDb } from '@specfy/stack-analyser';
 import type { Components, Jobs } from '@specfy/db';
 import type { AllowedKeys } from '@specfy/stack-analyser';
 
-import type { CatalogTech } from './types.js';
+import type { CatalogTechIndex } from './types.js';
 
 export function componentsToCatalog(
   job: Pick<Jobs, 'orgId' | 'id' | 'projectId'>,
   components: Array<Pick<Components, 'name' | 'techId' | 'techs' | 'type'>>
 ) {
-  const techs = new Map<string, CatalogTech>();
+  const techs = new Map<string, CatalogTechIndex>();
   const base = { orgId: job.orgId, projectId: job.projectId!, jobId: job.id };
 
   for (const component of components) {

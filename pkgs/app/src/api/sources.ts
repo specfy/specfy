@@ -81,13 +81,8 @@ export function useListSources(opts: ListSources['Querystring']) {
 export function getDefaultSettings(): ApiSource['settings'] {
   return {
     branch: 'main',
-    documentation: {
-      enabled: true,
-      path: '/',
-    },
-    stack: {
-      enabled: true,
-      path: '/',
-    },
+    documentation: { enabled: true, path: '/' },
+    stack: { enabled: true, path: '/' },
+    git: { enabled: true },
   };
 }

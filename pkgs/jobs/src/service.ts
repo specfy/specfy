@@ -1,6 +1,7 @@
 import { l as logger, metrics } from '@specfy/core';
 import { prisma } from '@specfy/db';
 
+import { JobBackfillGithub } from './jobs/backfillGithub.js';
 import { JobDeploy } from './jobs/deploy.js';
 import { JobProjectIndex } from './jobs/projectIndex.js';
 
@@ -60,6 +61,11 @@ export function start() {
 
           case 'projectIndex': {
             job = new JobProjectIndex(full);
+            break;
+          }
+
+          case 'backfillGithub': {
+            job = new JobBackfillGithub(full);
             break;
           }
         }

@@ -11,6 +11,7 @@ import {
   stackToBlobs,
   getOrgFromRequest,
   getCurrentPlan,
+  indexCommits,
 } from '@specfy/models';
 import { z } from 'zod';
 
@@ -39,6 +40,20 @@ function BodyVal(req: FastifyRequest) {
       sourceId: schemaId,
       autoLayout: z.boolean().nullable(),
       stack: schemaStack.nullable(),
+      commit: z
+        .object({
+          info: z
+            .object({
+              hash: z.string().max(64),
+              author: z.string().max(250),
+              email: z.string().max(500),
+              date: z.coerce.date(),
+            })
+            .strict(),
+          techs: z.array(z.string().min(1).max(50)),
+        })
+        .strict()
+        .nullable(),
       blobs: z
         .array(
           z
@@ -228,6 +243,28 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
             );
             blobsIds.push(...idsBlobsComponents);
             statsStack = components.stats;
+          }
+
+          // ---- Handle git analysis
+          if (data.commit) {
+            const acc = await tx.accounts.findFirst({
+              select: { userId: true },
+              where: { emails: { has: data.commit.info.email } },
+            });
+            await indexCommits({
+              commits: [
+                {
+                  orgId: data.orgId,
+                  projectId: data.projectId,
+                  sourceId: source.id,
+                  userId: acc ? acc.userId : null,
+                  username: data.commit.info.author,
+                  hash: data.commit.info.hash,
+                  techs: data.commit.techs,
+                  date: data.commit.info.date.toISOString(),
+                },
+              ],
+            });
           }
 
           if (blobsIds.length <= 0) {

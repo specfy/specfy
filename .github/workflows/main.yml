@@ -9,7 +9,7 @@ jobs:
   ci:
     container: node:20.9.0
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 17
     services:
       postgres:
         image: postgres:15.4-alpine

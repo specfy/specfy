@@ -1,6 +1,10 @@
 import { logEvent } from '@specfy/core';
 import { prisma } from '@specfy/db';
-import { removeTechByOrg, type DeleteOrg } from '@specfy/models';
+import {
+  removeTechByOrg,
+  type DeleteOrg,
+  removeUserActivitiesByOrg,
+} from '@specfy/models';
 
 import { getOrg } from '../../../middlewares/getOrg.js';
 import { noBody } from '../../../middlewares/noBody.js';
@@ -28,7 +32,10 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         await tx.orgs.delete({ where: { id: org.id } });
       });
 
-      await removeTechByOrg({ org });
+      await Promise.all([
+        removeUserActivitiesByOrg({ org }),
+        removeTechByOrg({ org }),
+      ]);
 
       logEvent('orgs.deleted', { userId: me.id, orgId: org.id });
 

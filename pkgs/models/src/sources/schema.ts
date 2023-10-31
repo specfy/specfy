@@ -15,5 +15,10 @@ export const schemaGitHubSettings = z
         path: z.string().max(255),
       })
       .strict(),
+    git: z
+      .object({
+        enabled: z.boolean(),
+      })
+      .strict(),
   })
   .strict();

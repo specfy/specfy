@@ -1,4 +1,4 @@
-import { l as logger } from '@specfy/core';
+import { isTest, l as logger } from '@specfy/core';
 
 import { client } from './client.js';
 
@@ -35,7 +35,31 @@ const indices: estypes.IndicesCreateRequest[] = [
       },
     },
   },
+  {
+    index: 'tech_usage',
+    mappings: {
+      properties: {
+        orgId: { type: 'keyword' },
+        projectId: { type: 'keyword' },
+        sourceId: { type: 'keyword' },
+        userId: { type: 'keyword' },
+        hash: { type: 'keyword' },
+        username: { type: 'keyword' },
+        techs: { type: 'keyword' },
+        date: { type: 'date' },
+      },
+    },
+  },
 ];
+
+export const baseDelete = {
+  // In production we do not care that ES is cleaned synchronously
+  wait_for_completion: false,
+  // It will ignore all conflicts on document
+  conflicts: 'proceed',
+  // Make sure shards refresh after the delete
+  refresh: isTest === true,
+};
 
 export async function start() {
   l.info('ES Service Starting');

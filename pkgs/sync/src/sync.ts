@@ -7,15 +7,15 @@ import {
   flatten,
   analyser,
   FSProvider as StackProvider,
-  rules,
 } from '@specfy/stack-analyser';
 import figures from 'figures';
 
 import type { Logger } from '@specfy/core';
-import type { JobMark, SyncConfigFull } from '@specfy/models';
+import type { CommitAnalysis, JobMark, SyncConfigFull } from '@specfy/models';
 import type { Payload } from '@specfy/stack-analyser';
 
 import { checkNothingMsg, checkPaths } from './common/helper.js';
+import { analyzeCommit } from './git/index.js';
 import { listing } from './listing/index.js';
 import { FSProvider } from './provider/fs.js';
 import { transform } from './transform/index.js';
@@ -31,8 +31,7 @@ import type { ProviderFile } from './provider/base.js';
 import type { TransformedFile } from './transform/index.js';
 
 // eslint-disable-next-line import/order
-import '@specfy/stack-analyser/dist/rules/index.js';
-rules.loadAll();
+import '@specfy/stack-analyser/dist/autoload.js';
 
 export type SyncOptions = {
   root: string;
@@ -145,6 +144,19 @@ export async function sync({
     l.warn(`${figures.info} Stack Skipped`);
   }
 
+  // ------- Git commit
+  let commit: CommitAnalysis | null = null;
+  if (settings.git.enabled) {
+    l.info('');
+    l.info('-- Git Commit Analysis');
+
+    l.info(`Analyzing...`);
+    commit = await analyzeCommit({ root });
+    l.info(`Analyzed ${figures.tick}`);
+  } else {
+    l.warn(`${figures.info} Git Commit Skipped`);
+  }
+
   if (!settings.documentation.enabled && !settings.stack.enabled) {
     checkNothingMsg(logger);
     return;
@@ -160,6 +172,7 @@ export async function sync({
     sourceId,
     docs,
     stack,
+    commit,
     autoLayout,
     baseUrl,
     root,

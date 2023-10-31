@@ -30,8 +30,10 @@ function syncDefault(folder?: string): Omit<SyncOptions, 'logger'> {
     token: '',
     autoLayout: true,
     settings: {
+      branch: 'main',
       documentation: { enabled: true, path: `/` },
       stack: { enabled: true, path: `/` },
+      git: { enabled: false },
     },
   };
 }

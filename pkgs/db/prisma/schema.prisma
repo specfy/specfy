@@ -216,6 +216,7 @@ model Invitations {
 enum JobsType {
   deploy
   projectIndex
+  backfillGithub
 }
 
 enum JobsStatus {

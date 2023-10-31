@@ -2,12 +2,17 @@ import fs from 'node:fs/promises';
 
 import { envs, isProd, nanoid, sentry } from '@specfy/core';
 import { prisma } from '@specfy/db';
-import { github } from '@specfy/github';
+import { getTemporaryToken } from '@specfy/github';
+import { getDefaultConfig } from '@specfy/models';
 import { sync, ErrorSync } from '@specfy/sync';
 import { $ } from 'execa';
 import { Octokit } from 'octokit';
 
-import type { JobWithOrgProject } from '@specfy/models';
+import type {
+  SyncConfigFull,
+  JobWithOrgProject,
+  JobDeployConfig,
+} from '@specfy/models';
 
 import { Job } from '../Job.js';
 
@@ -17,7 +22,7 @@ export class JobDeploy extends Job {
   token?: string;
 
   async process(job: JobWithOrgProject): Promise<void> {
-    const config = job.config;
+    const config = job.config as JobDeployConfig;
     const l = this.l;
 
     if (!job.Org || !job.Project) {
@@ -40,7 +45,10 @@ export class JobDeploy extends Job {
       return;
     }
 
-    const settings = config.settings;
+    const settings: SyncConfigFull = {
+      ...getDefaultConfig(),
+      ...config.settings,
+    };
     const ref = config.hook?.ref || settings.branch;
     const identifier = config.url;
     const [owner, repo] = identifier.split('/');
@@ -50,19 +58,10 @@ export class JobDeploy extends Job {
     // Acquire a special short lived token that allow us to clone the repository
     try {
       l.info('Getting temporary token from GitHub');
-      const auth = await github.octokit.rest.apps.createInstallationAccessToken(
-        {
-          installation_id: job.Org.githubInstallationId,
-          repositories: [repo],
-          permissions: {
-            environments: 'write',
-            statuses: 'write',
-            deployments: 'write',
-            contents: 'read',
-          },
-        }
-      );
-      this.token = auth.data.token;
+      this.token = await getTemporaryToken({
+        installationId: job.Org.githubInstallationId,
+        repo,
+      });
     } catch (err: unknown) {
       this.mark('failed', 'cant_auth_github', err);
       sentry.captureException(err);
@@ -118,8 +117,9 @@ export class JobDeploy extends Job {
     this.folderName = `/tmp/specfy_clone_${job.id}_${nanoid()}`;
     try {
       l.info('Cloning repository...');
+      // We get 2 last commits to be able to get a diff, but no overhead
       const res =
-        await $`git clone --branch ${settings.branch} https://x-access-token:${this.token}@github.com/${config.url}.git --depth 1 ${this.folderName}`;
+        await $`git clone --branch ${settings.branch} https://x-access-token:${this.token}@github.com/${config.url}.git --depth 2 ${this.folderName}`;
 
       if (res.exitCode !== 0) {
         this.mark('failed', 'unknown');
@@ -134,10 +134,7 @@ export class JobDeploy extends Job {
     }
 
     const key = await prisma.keys.findFirst({
-      where: {
-        orgId: job.orgId,
-        projectId: job.projectId,
-      },
+      where: { orgId: job.orgId, projectId: job.projectId },
     });
 
     if (!key) {

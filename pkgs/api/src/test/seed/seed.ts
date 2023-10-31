@@ -79,6 +79,8 @@ export async function seedWithProject(): Promise<{
 }
 
 export async function truncate() {
+  console.log('truncating db...');
+
   // Split because those table are referenced everywhere and it deadlocks
   await prisma.$executeRawUnsafe(`TRUNCATE TABLE "Accounts" CASCADE`);
   await prisma.$executeRawUnsafe(`TRUNCATE TABLE "Activities" CASCADE`);
@@ -98,10 +100,14 @@ export async function truncate() {
   await prisma.$executeRawUnsafe(`TRUNCATE TABLE "Flows" CASCADE`);
   await prisma.$executeRawUnsafe(`TRUNCATE TABLE "Jobs" CASCADE`);
 
-  await client.indices.delete({
-    index: 'techs',
-    allow_no_indices: true,
-    ignore_unavailable: true,
-  });
+  await Promise.all(
+    ['techs', 'tech_usage'].map(async (index) => {
+      return await client.indices.delete({
+        index,
+        allow_no_indices: true,
+        ignore_unavailable: true,
+      });
+    })
+  );
   await mapping();
 }

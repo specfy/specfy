@@ -1,14 +1,16 @@
 .project {
+  overflow: hidden;
   display: flex;
   gap: var(--spc-m);
   align-items: center;
 
-  width: 125px;
   padding: var(--spc);
 
   font-size: var(--font-s);
+  text-overflow: ellipsis;
+  white-space: nowrap;
 
-  border: 1px solid transparent;
+  border: 1px solid var(--border1);
   border-radius: var(--radius2);
 
   transition: border-color 0.25s ease-in-out;
@@ -17,22 +19,136 @@
     filter: grayscale(0);
     border-color: var(--border2);
   }
-}
 
-.block {
-  margin-bottom: var(--spc-2xl);
-
-  &.chart {
-    margin: var(--spc-2xl) 0 var(--spc-5xl);
+  &.subdued {
+    text-decoration: line-through;
+    filter: grayscale(2);
   }
 }
 
+.section {
+  margin: 0 calc(var(--spc-5xl) * -1);
+  padding: var(--spc-4xl) var(--spc-5xl);
+  border-top: 1px solid var(--border2);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
+
+.block {
+  &.chart {
+    margin: var(--spc-2xl) 0 var(--spc-2xl);
+  }
+}
+
+
+.metric {
+  display: flex;
+  gap: var(--spc);
+  align-items: baseline;
+  margin-bottom: var(--spc-2xl)
+}
+
+.label {
+  margin-bottom: var(--spc-l);
+  color: var(--text-secondary);
+}
+
 .number {
-  font-size: var(--font-l);
+  font-size: var(--font-4xl);
   font-weight: 500;
+  line-height: var(--lh-4xl);
+  color: var(--text-number);
 }
 
 .heading {
-  margin-bottom: var(--spc-l);
-  font-size: var(--font);
+  display: flex;
+  gap: var(--spc-m);
+  align-items: center;
+  margin-bottom: var(--spc-l)
+}
+
+.user {
+  overflow: hidden;
+  display: flex;
+  gap: var(--spc-m);
+  align-items: center;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: var(--spc-l);
+
+  tr {
+    transition: background-color 0.25s ease-in-out;
+
+    &:hover {
+      background-color: var(--bg1);
+    }
+
+    td {
+      padding: var(--spc-m) var(--spc);
+
+      &.tdCount {
+        width: 125px;
+        font-size: var(--font-s);
+        color: var(--text-secondary);
+        text-align: right;
+      }
+
+      &.tdScore {
+        width: 125px;
+        text-align: right;
+      }
+    }
+  }
+}
+
+.scoreCard {
+  --bg: #fff;
+
+  display: inline-flex;
+  gap: var(--spc);
+  align-items: center;
+  justify-content: center;
+
+  font-size: var(--font-s);
+
+  // background-color: rgba(var(--bg) 40%);
+  background-color: color-mix(in srgb, var(--bg) 60%, transparent);
+  border-radius: var(--radius3);
+
+  &.good {
+    --bg: var(--jade-4);
+
+    color: var(--jade-8);
+  }
+
+  &.warn {
+    --bg: var(--amber-4);
+
+    color: var(--amber-8);
+  }
+
+  &.bad {
+    --bg: var(--gray-4);
+
+    color: var(--gray-8);
+  }
+
+  .score {
+    padding: var(--spc-xs) var(--spc-m);
+    background-color: var(--bg);
+    border-radius: inherit;
+  }
+
+  .scoreLabel {
+    padding-right: var(--spc);
+  }
 }

@@ -1,5 +1,11 @@
+/* stylelint-disable selector-class-pattern */
 @import "./global";
 
 @import "./codeDiff";
 
 @import "./radix";
+
+.recharts-text.recharts-cartesian-axis-tick-value {
+  font-size: 10px;
+  fill: var(--text1);
+}

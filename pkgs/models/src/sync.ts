@@ -5,6 +5,7 @@ export interface SyncConfig {
   branch: string;
   documentation?: SyncConfigDocumentation;
   stack?: SyncConfigStack;
+  git?: SyncConfigGit;
 }
 export interface SyncConfigDocumentation {
   enabled: boolean;
@@ -14,21 +15,24 @@ export interface SyncConfigStack {
   enabled: boolean;
   path?: string;
 }
+export interface SyncConfigGit {
+  enabled: boolean;
+}
+
 export type SyncConfigFull = {
+  branch: string;
   documentation: Required<SyncConfigDocumentation>;
   stack: Required<SyncConfigStack>;
+  git: Required<SyncConfigGit>;
 };
 
-export const def: SyncConfig = {
-  orgId: '',
-  projectId: '',
-  branch: 'main',
-  documentation: {
-    enabled: true,
-    path: 'docs/',
-  },
-  stack: {
-    enabled: true,
-    path: '/',
-  },
-};
+export interface Commit {
+  hash: string;
+  author: string;
+  email: string;
+  date: Date;
+}
+export interface CommitAnalysis {
+  info: Commit;
+  techs: string[];
+}

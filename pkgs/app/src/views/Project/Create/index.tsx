@@ -46,18 +46,21 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   const [repo, setRepo] = useState<ApiGitHubRepo>();
   const [errors, setErrors] = useState<FieldsErrors>({});
   const [open, setOpen] = useState(false);
+  const [creating, setCreating] = useState(false);
   const [settings, setSettings] = useState<ApiSource['settings']>(() => {
     return getDefaultSettings();
   });
 
   const onFinish: React.FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault();
+    setCreating(true);
 
     const res = await createProject({
       name,
       orgId: params.org_id,
     });
     if (isError(res)) {
+      setCreating(false);
       return handleErrors(res, toast, setErrors);
     }
 
@@ -76,11 +79,14 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
         identifier: repo.fullName,
       });
       if (isError(link)) {
+        setCreating(false);
+
         toast.add({ title: i18n.errorOccurred, status: 'error' });
         return;
       }
     }
 
+    setCreating(false);
     navigate(
       `/${params.org_id}/${res.data.slug}${hasGitHub ? '/welcome' : ''}`
     );
@@ -146,6 +152,7 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
                       display="primary"
                       type="submit"
                       disabled={!repo}
+                      loading={creating}
                     >
                       Create <IconCircleArrowRight />
                     </Button>

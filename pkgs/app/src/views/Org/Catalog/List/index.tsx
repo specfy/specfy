@@ -31,6 +31,7 @@ import cls from './index.module.scss';
 const filtersBase: Array<{ label: string; value: string; count: 0 }> = [
   { label: 'All', value: 'all', count: 0 },
   { label: 'Analytics', value: 'analytics', count: 0 },
+  { label: 'API', value: 'api', count: 0 },
   { label: 'Application', value: 'app', count: 0 },
   { label: 'CI', value: 'ci', count: 0 },
   { label: 'Cloud', value: 'cloud', count: 0 },
@@ -135,21 +136,27 @@ export const OrgCatalogList: React.FC<{ org: ApiOrg }> = ({ org }) => {
   useEventBus(
     'job.start',
     (evt) => {
-      if (evt.job.orgId !== org.id || evt.job.type !== 'projectIndex') {
-        return;
+      if (
+        evt.job.orgId === org.id &&
+        (evt.job.type === 'projectIndex' || evt.job.type === 'backfillGithub')
+      ) {
+        setIndexing(true);
       }
-      setIndexing(true);
     },
     [org]
   );
   useEventBus(
     'job.finish',
     (evt) => {
-      if (evt.job.orgId !== org.id || evt.job.type !== 'projectIndex') {
-        return;
+      if (
+        evt.job.orgId === org.id &&
+        (evt.job.type === 'projectIndex' || evt.job.type === 'backfillGithub')
+      ) {
+        void qcli.refetchQueries(['listCatalog', org.id]);
+        void qcli.refetchQueries(['getCatalog', org.id]);
+        void qcli.refetchQueries(['getUserActivities', org.id]);
+        setIndexing(false);
       }
-      setIndexing(false);
-      void qcli.refetchQueries(['listCatalog', org.id]);
     },
     [org]
   );
