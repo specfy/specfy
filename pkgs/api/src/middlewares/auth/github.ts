@@ -16,7 +16,6 @@ import type { Authenticator } from '@fastify/passport';
 const GITHUB_SCOPES = ['user:email', 'repo'];
 
 export function registerGitHub(passport: Authenticator) {
-  // @ts-expect-error
   const reg = new GitHubStrategy(
     {
       clientID: envs.GITHUB_CLIENT_ID!,
