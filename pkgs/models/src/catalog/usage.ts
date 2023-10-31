@@ -1,12 +1,41 @@
 import { isTest, l as logger } from '@specfy/core';
 import { baseDelete, client } from '@specfy/es';
 
+import type { Logger } from '@specfy/core';
 import type { Orgs, Projects } from '@specfy/db';
 
 import type { GetCatalogUser } from './types.api.js';
 import type { CommitIndex } from './types.js';
 import type { CommitAnalysis } from '../sync.js';
 import type { estypes } from '@elastic/elasticsearch';
+
+export async function indexCommits({
+  commits,
+  l,
+}: {
+  commits: CommitIndex[];
+  l: Logger;
+}) {
+  const operations = commits.flatMap((commit) => {
+    return [
+      {
+        index: {
+          _index: 'tech_usage',
+          _id: `${commit.sourceId}:${commit.hash}`,
+        },
+      },
+      commit,
+    ];
+  });
+  l.info({ size: operations.length }, 'Indexing commits to ES');
+  const bulkResponse = await client.bulk({ refresh: isTest, operations });
+
+  if (bulkResponse.errors) {
+    bulkResponse.items.forEach((action) => {
+      l.error(action);
+    });
+  }
+}
 
 export async function indexCommit({
   orgId,

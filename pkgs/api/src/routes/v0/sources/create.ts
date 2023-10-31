@@ -11,6 +11,7 @@ import { prisma } from '@specfy/db';
 import { Octokit } from '@specfy/github';
 import {
   createGitHubActivity,
+  createJobBackfillGithub,
   createJobDeploy,
   getOrgFromRequest,
   schemaGitHubSettings,
@@ -119,7 +120,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
           },
         });
 
-        await createJobDeploy({
+        const jobConfig = {
           orgId: body.orgId,
           projectId: body.projectId,
           userId: me.id,
@@ -129,15 +130,18 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
             autoLayout: true,
             settings: body.settings,
           },
-          tx,
-        });
-        await createGitHubActivity({
-          action: 'Github.linked',
-          org,
-          project: proj,
-          tx,
-          user: me,
-        });
+        };
+        await Promise.all([
+          createJobDeploy({ ...jobConfig, tx }),
+          createJobBackfillGithub({ ...jobConfig, tx }),
+          createGitHubActivity({
+            action: 'Github.linked',
+            org,
+            project: proj,
+            tx,
+            user: me,
+          }),
+        ]);
 
         return tmp;
       });

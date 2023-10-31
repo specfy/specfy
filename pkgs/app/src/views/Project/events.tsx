@@ -12,7 +12,7 @@ export const ProjectEvents: React.FC = () => {
     }
 
     const job = data.job;
-    if (job.type === 'projectIndex') {
+    if (job.type !== 'deploy') {
       return;
     }
 

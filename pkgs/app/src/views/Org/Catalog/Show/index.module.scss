@@ -96,8 +96,10 @@
       padding: var(--spc-m) var(--spc);
 
       &.tdCount {
+        width: 125px;
         font-size: var(--font-s);
         color: var(--text-secondary);
+        text-align: right;
       }
 
       &.tdScore {

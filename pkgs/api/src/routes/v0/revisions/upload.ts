@@ -248,6 +248,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
           // ---- Handle git analysis
           if (data.commit) {
             const acc = await tx.accounts.findFirst({
+              select: { userId: true },
               where: { emails: { has: data.commit.info.email } },
             });
             await indexCommit({
