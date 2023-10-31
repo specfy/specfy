@@ -59,7 +59,7 @@
   },
   "devDependencies": {
     "@types/node": "20.8.10",
-    "@types/passport-github2": "1.2.5",
+    "@types/passport-github2": "1.2.8",
     "@types/passport-http-bearer": "1.0.39",
     "@types/passport-jwt": "3.0.9",
     "@types/passport-local": "1.0.37",
