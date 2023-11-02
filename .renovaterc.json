@@ -5,8 +5,8 @@
   "baseBranches": [
     "chore/renovateBaseBranch"
   ],
-  "prHourlyLimit": 10,
-  "prConcurrentLimit": 10,
+  "prHourlyLimit": 20,
+  "prConcurrentLimit": 20,
   "schedule": [
     "after 4pm every weekday"
   ]

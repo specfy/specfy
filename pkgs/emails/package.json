@@ -16,11 +16,11 @@
   "dependencies": {
     "@react-email/components": "0.0.7",
     "react": "18.2.0",
-    "resend": "1.0.0"
+    "resend": "1.1.0"
   },
   "devDependencies": {
     "@specfy/db": "file:../db",
-    "@types/react": "18.2.21",
+    "@types/react": "18.2.33",
     "react-email": "1.9.4",
     "tsup": "7.2.0"
   },
