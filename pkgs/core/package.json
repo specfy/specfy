@@ -23,7 +23,7 @@
     "logsnag": "1.0.0",
     "nanoid": "4.0.2",
     "pino": "8.16.1",
-    "pino-pretty": "10.2.0",
+    "pino-pretty": "10.2.3",
     "slugify": "1.6.5",
     "zod": "3.22.3"
   },
