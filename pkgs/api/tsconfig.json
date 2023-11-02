@@ -11,10 +11,6 @@
     "../models/src/fastify.d.ts",
     "src/test/vitest.d.ts"
   ],
-  "ts-node": {
-    "esm": true,
-    "files": true
-  },
   "references": [
     {
       "path": "../core"

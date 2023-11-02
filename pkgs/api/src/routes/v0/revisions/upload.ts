@@ -12,6 +12,7 @@ import {
   getOrgFromRequest,
   getCurrentPlan,
   indexCommits,
+  formatCommitsToIndex,
 } from '@specfy/models';
 import { z } from 'zod';
 
@@ -45,9 +46,17 @@ function BodyVal(req: FastifyRequest) {
           info: z
             .object({
               hash: z.string().max(64),
-              author: z.string().max(250),
-              email: z.string().max(500),
               date: z.coerce.date(),
+              authors: z
+                .array(
+                  z
+                    .object({
+                      name: z.string().max(250),
+                      email: z.string().max(500),
+                    })
+                    .strict()
+                )
+                .max(100),
             })
             .strict(),
           techs: z.array(z.string().min(1).max(50)),
@@ -247,23 +256,17 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
 
           // ---- Handle git analysis
           if (data.commit) {
-            const acc = await tx.accounts.findFirst({
-              select: { userId: true },
-              where: { emails: { has: data.commit.info.email } },
-            });
+            const emails = data.commit.info.authors.map(
+              (author) => author.email
+            );
             await indexCommits({
-              commits: [
-                {
-                  orgId: data.orgId,
-                  projectId: data.projectId,
-                  sourceId: source.id,
-                  userId: acc ? acc.userId : null,
-                  username: data.commit.info.author,
-                  hash: data.commit.info.hash,
-                  techs: data.commit.techs,
-                  date: data.commit.info.date.toISOString(),
-                },
-              ],
+              commits: await formatCommitsToIndex({
+                emails,
+                commits: [data.commit],
+                orgId: data.orgId,
+                projectId: data.projectId,
+                sourceId: source.id,
+              }),
             });
           }
 

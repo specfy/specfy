@@ -686,10 +686,9 @@ describe('POST /revisions/upload -- Git', () => {
         stack: null,
         commit: {
           info: {
-            author: 'John Doe',
             date: new Date(),
-            email: user.email,
             hash: nanoid(),
+            authors: [{ name: 'John Doe', email: user.email }],
           },
           techs: ['foobar'],
         },

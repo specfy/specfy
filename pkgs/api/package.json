@@ -7,11 +7,11 @@
   "scripts": {
     "--dev": "fastify start --logging-module='build/logger.js' -o -w -P build/app.js",
     "__dev": "fastify start -o -w -P build/app.js",
-    "dev": "NODE_OPTIONS='--loader ts-node/esm' nodemon src/index.ts",
+    "dev": "NODE_OPTIONS='--loader tsx' nodemon src/index.ts",
     "build": "tsc -p tsconfig.json",
     "prod:build": "prisma generate && tsc -p tsconfig.prod.json",
     "test:build": "tsc -p tsconfig.json",
-    "db:seed": "ts-node ./src/test/seed/index.ts",
+    "db:seed": "tsx ./src/test/seed/index.ts",
     "test": "vitest",
     "test:ci": "vitest run"
   },
@@ -67,7 +67,7 @@
     "nodemon": "3.0.1",
     "react-diff-view": "3.0.3",
     "reactflow": "11.8.3",
-    "ts-node": "10.9.1",
+    "tsx": "3.14.0",
     "type-fest": "4.5.0",
     "typescript": "5.1.6",
     "undici": "5.23.0",
