@@ -61,11 +61,10 @@ describe('GET /catalog/:tech_id/user_activities', () => {
           orgId: org.id,
           projectId: project.id,
           sourceId: nanoid(),
-          userId: user.id,
-          username: user.name,
           hash: nanoid(),
           techs: ['algolia'],
           date: new Date().toISOString(),
+          authors: [{ id: user.id, name: user.name, email: user.email }],
         },
       ],
     });

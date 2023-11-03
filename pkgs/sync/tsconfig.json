@@ -9,9 +9,6 @@
     "src",
     "../models/src/prisma.d.ts"
   ],
-  "ts-node": {
-    "esm": true
-  },
   "references": [
     {
       "path": "../core"

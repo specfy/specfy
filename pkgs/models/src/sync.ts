@@ -28,9 +28,8 @@ export type SyncConfigFull = {
 
 export interface Commit {
   hash: string;
-  author: string;
-  email: string;
   date: Date;
+  authors: Array<{ name: string; email: string }>;
 }
 export interface CommitAnalysis {
   info: Commit;
