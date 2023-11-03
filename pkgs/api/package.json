@@ -55,7 +55,7 @@
     "passport-local": "1.0.0",
     "prosemirror-markdown": "1.11.2",
     "stripe": "12.18.0",
-    "zod": "3.22.3"
+    "zod": "3.22.4"
   },
   "devDependencies": {
     "@types/node": "20.8.10",
