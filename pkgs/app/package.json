@@ -24,7 +24,7 @@
     "test:ci": "vitest run"
   },
   "devDependencies": {
-    "@icons-pack/react-simple-icons": "9.0.0",
+    "@icons-pack/react-simple-icons": "9.1.0",
     "@loadable/component": "5.15.3",
     "@radix-ui/colors": "2.1.0",
     "@radix-ui/react-avatar": "1.0.3",
