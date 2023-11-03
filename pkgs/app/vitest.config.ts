@@ -11,6 +11,7 @@ export default defineConfig({
       reporter: ['cobertura'],
       provider: 'v8',
     },
+    setupFiles: path.resolve(__dirname, './src/vitest.setup.ts'),
   },
   resolve: {
     alias: {

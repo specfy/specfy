@@ -55,22 +55,22 @@
     "passport-local": "1.0.0",
     "prosemirror-markdown": "1.11.2",
     "stripe": "12.18.0",
-    "zod": "3.22.2"
+    "zod": "3.22.3"
   },
   "devDependencies": {
-    "@types/node": "18.17.6",
-    "@types/passport-github2": "1.2.5",
-    "@types/passport-http-bearer": "1.0.37",
+    "@types/node": "20.8.10",
+    "@types/passport-github2": "1.2.8",
+    "@types/passport-http-bearer": "1.0.39",
     "@types/passport-jwt": "3.0.9",
-    "@types/passport-local": "1.0.35",
+    "@types/passport-local": "1.0.37",
     "fastify-cli": "5.8.0",
     "nodemon": "3.0.1",
     "react-diff-view": "3.0.3",
     "reactflow": "11.8.3",
     "tsx": "3.14.0",
     "type-fest": "4.5.0",
-    "typescript": "5.1.6",
-    "undici": "5.23.0",
+    "typescript": "5.2.2",
+    "undici": "5.26.2",
     "utility-types": "3.10.0"
   }
 }
