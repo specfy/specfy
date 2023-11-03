@@ -20,7 +20,7 @@
   },
   "devDependencies": {
     "@specfy/db": "file:../db",
-    "@types/react": "18.2.33",
+    "@types/react": "18.2.34",
     "react-email": "1.9.4",
     "tsup": "7.2.0"
   },
