@@ -92,7 +92,7 @@
     "dexie": "3.2.4",
     "dexie-react-hooks": "1.1.6",
     "diff": "5.1.0",
-    "immer": "10.0.2",
+    "immer": "10.0.3",
     "jsdom": "^22.0.0",
     "json-diff": "1.0.6",
     "lodash.debounce": "4.0.8",
