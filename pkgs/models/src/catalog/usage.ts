@@ -1,11 +1,12 @@
 import { isTest, l as logger } from '@specfy/core';
+import { prisma, type Accounts, type Orgs, type Projects } from '@specfy/db';
 import { baseDelete, client } from '@specfy/es';
 
 import type { Logger } from '@specfy/core';
-import type { Orgs, Projects } from '@specfy/db';
 
 import type { GetCatalogUser } from './types.api.js';
 import type { CommitIndex } from './types.js';
+import type { CommitAnalysis } from '../sync.js';
 import type { estypes } from '@elastic/elasticsearch';
 
 export async function indexCommits({
@@ -46,7 +47,6 @@ export async function getUserActivities({
   const q: estypes.SearchRequest = {
     index: 'tech_usage',
     size: 0,
-    sort: [{ username: 'asc' }, '_score'],
     track_total_hits: true,
     query: {
       // @ts-expect-error
@@ -60,7 +60,7 @@ export async function getUserActivities({
     },
     aggs: {
       byUserId: {
-        terms: { field: 'userId', order: { _key: 'asc' }, size: 1000 },
+        terms: { field: 'authors.id', size: 1000 },
         aggregations: {
           min_date: { min: { field: 'date', format: 'yyyy-MM-dd' } },
           max_date: { max: { field: 'date', format: 'yyyy-MM-dd' } },
@@ -70,16 +70,16 @@ export async function getUserActivities({
         filter: {
           // @ts-expect-error
           bool: {
-            must_not: {
-              exists: {
-                field: 'userId',
-              },
-            },
+            must_not: { exists: { field: 'authors.id' } },
           },
         },
         aggregations: {
           agg: {
-            terms: { field: 'username', order: { _key: 'asc' }, size: 1000 },
+            terms: {
+              field: 'authors.name',
+              order: { _key: 'asc' },
+              size: 1000,
+            },
             aggregations: {
               min_date: { min: { field: 'date', format: 'yyyy-MM-dd' } },
               max_date: { max: { field: 'date', format: 'yyyy-MM-dd' } },
@@ -162,4 +162,52 @@ export function scoreUser(
     Math.abs(Math.log(update.count / totalTech));
 
   return Math.round(Math.max(0, Math.min(10, score)));
+}
+
+export async function formatCommitsToIndex({
+  orgId,
+  projectId,
+  sourceId,
+  commits,
+  emails,
+}: {
+  orgId: string;
+  projectId: string;
+  sourceId: string;
+  commits: CommitAnalysis[];
+  emails: string[];
+}): Promise<CommitIndex[]> {
+  // Fetch emails matching user accounts
+  const accounts: Array<Pick<Accounts, 'userId' | 'emails'>> =
+    emails.length > 0
+      ? await prisma.accounts.findMany({
+          select: { userId: true, emails: true },
+          where: { emails: { hasSome: emails } },
+        })
+      : [];
+
+  // Format for indexing
+  const formatted: CommitIndex[] = [];
+  for (const an of commits) {
+    const authors: CommitIndex['authors'] = [];
+    for (const author of an.info.authors) {
+      const acc = accounts.find((a) => a.emails.includes(author.email));
+      authors.push({
+        id: acc?.userId || null,
+        ...author,
+      });
+    }
+
+    formatted.push({
+      orgId,
+      projectId,
+      sourceId,
+      hash: an.info.hash,
+      techs: an.techs,
+      date: an.info.date.toISOString(),
+      authors,
+    });
+  }
+
+  return formatted;
 }

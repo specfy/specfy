@@ -122,7 +122,9 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       data: {
         total,
         totalForTech: totalTech,
-        users,
+        users: users.sort((a, b) => {
+          return a.score > b.score ? -1 : 1;
+        }),
         histogram,
       },
     });

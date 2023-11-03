@@ -1,16 +1,17 @@
 import fs from 'node:fs/promises';
 
 import { nanoid, sentry } from '@specfy/core';
-import { prisma } from '@specfy/db';
 import { getTemporaryToken } from '@specfy/github';
-import { getDefaultConfig, indexCommits } from '@specfy/models';
+import {
+  formatCommitsToIndex,
+  getDefaultConfig,
+  indexCommits,
+} from '@specfy/models';
 import { analyzeCommit, listHashes } from '@specfy/sync';
 import { $ } from 'execa';
 
-import type { Accounts } from '@specfy/db';
 import type {
   CommitAnalysis,
-  CommitIndex,
   JobBackfillGithubConfig,
   JobWithOrgProject,
   SyncConfigFull,
@@ -76,6 +77,7 @@ export class JobBackfillGithub extends Job {
       return;
     }
 
+    l.info('Listing hash...');
     const hashes = await listHashes(this.folderName, COMMITS);
     l.info({ count: hashes.length }, 'Listed hashes');
 
@@ -86,12 +88,13 @@ export class JobBackfillGithub extends Job {
     }
 
     // Analyze every commits
+    l.info('Analyzing...');
     const history: CommitAnalysis[] = [];
     const emails: string[] = [];
     for (const hash of hashes) {
       const an = await analyzeCommit({ root: this.folderName, commit: hash });
       if (an) {
-        emails.push(an.info.email);
+        emails.push(...an.info.authors.map((author) => author.email));
         history.push(an);
       }
     }
@@ -102,30 +105,14 @@ export class JobBackfillGithub extends Job {
       return;
     }
 
-    // Fetch emails matching user accounts
-    let accounts: Array<Pick<Accounts, 'userId' | 'emails'>> = [];
-    if (emails.length > 0) {
-      accounts = await prisma.accounts.findMany({
-        select: { userId: true, emails: true },
-        where: { emails: { hasSome: emails } },
-      });
-    }
-
-    // Format for indexing
-    const formatted: CommitIndex[] = [];
-    for (const an of history) {
-      const acc = accounts.find((a) => a.emails.includes(an.info.email));
-      formatted.push({
-        orgId: job.orgId,
-        projectId: job.projectId!,
-        sourceId: config.sourceId,
-        userId: acc?.userId || null,
-        hash: an.info.hash,
-        username: an.info.author,
-        techs: an.techs,
-        date: an.info.date.toISOString(),
-      });
-    }
+    l.info('Formatting...');
+    const formatted = await formatCommitsToIndex({
+      emails,
+      commits: history,
+      orgId: job.orgId,
+      projectId: job.projectId!,
+      sourceId: config.sourceId,
+    });
 
     await indexCommits({ commits: formatted, l });
 

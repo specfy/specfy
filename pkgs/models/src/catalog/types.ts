@@ -13,9 +13,8 @@ export interface CommitIndex {
   orgId: string;
   projectId: string;
   sourceId: string;
-  userId: string | null;
-  username: string;
   hash: string;
   techs: string[];
   date: string;
+  authors: Array<{ id: string | null; name: string; email: string }>;
 }
