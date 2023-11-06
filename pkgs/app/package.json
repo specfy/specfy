@@ -90,7 +90,7 @@
     "classnames": "2.3.2",
     "cmdk": "0.2.0",
     "dexie": "3.2.4",
-    "dexie-react-hooks": "1.1.6",
+    "dexie-react-hooks": "1.1.7",
     "diff": "5.1.0",
     "immer": "10.0.3",
     "jsdom": "^22.0.0",
