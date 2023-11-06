@@ -149,9 +149,12 @@ const UserActivities: React.FC<{
           <table className={cls.table}>
             <tbody>
               {data.users.map((user) => {
-                const lastUpdate = DateTime.fromMillis(
-                  user.lastUpdate
-                ).diffNow().days;
+                const lastUpdate = Math.abs(
+                  Number(
+                    DateTime.fromMillis(user.lastUpdate).diffNow().toFormat('d')
+                  )
+                );
+
                 return (
                   <tr
                     key={
