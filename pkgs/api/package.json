@@ -63,7 +63,7 @@
     "@types/passport-http-bearer": "1.0.39",
     "@types/passport-jwt": "3.0.12",
     "@types/passport-local": "1.0.37",
-    "fastify-cli": "5.8.0",
+    "fastify-cli": "5.9.0",
     "nodemon": "3.0.1",
     "react-diff-view": "3.0.3",
     "reactflow": "11.8.3",
