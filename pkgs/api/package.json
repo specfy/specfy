@@ -66,7 +66,7 @@
     "fastify-cli": "5.9.0",
     "nodemon": "3.0.1",
     "react-diff-view": "3.0.3",
-    "reactflow": "11.8.3",
+    "reactflow": "11.9.4",
     "tsx": "3.14.0",
     "type-fest": "4.5.0",
     "typescript": "5.2.2",
