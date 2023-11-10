@@ -76,7 +76,7 @@
     "@tiptap/pm": "2.1.12",
     "@tiptap/react": "2.1.12",
     "@tiptap/starter-kit": "2.1.12",
-    "@types/diff": "5.0.7",
+    "@types/diff": "5.0.8",
     "@types/diff-match-patch": "1.0.35",
     "@types/json-diff": "1.0.1",
     "@types/loadable__component": "5.13.6",
