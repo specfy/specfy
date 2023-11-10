@@ -21,7 +21,7 @@
     "@specfy/core": "file:../core",
     "@specfy/db": "file:../db",
     "@specfy/es": "file:../es",
-    "@specfy/stack-analyser": "1.8.0",
+    "@specfy/stack-analyser": "1.8.5",
     "openai": "4.2.0"
   },
   "devDependencies": {
