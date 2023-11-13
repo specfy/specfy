@@ -7,7 +7,7 @@
   "scripts": {
     "--dev": "fastify start --logging-module='build/logger.js' -o -w -P build/app.js",
     "__dev": "fastify start -o -w -P build/app.js",
-    "dev": "NODE_OPTIONS='--loader tsx' nodemon src/index.ts",
+    "dev": "NODE_OPTIONS='--import tsx' nodemon src/index.ts",
     "build": "tsc -p tsconfig.json",
     "prod:build": "prisma generate && tsc -p tsconfig.prod.json",
     "test:build": "tsc -p tsconfig.json",
@@ -65,7 +65,7 @@
     "@types/passport-local": "1.0.38",
     "fastify-cli": "5.9.0",
     "nodemon": "3.0.1",
-    "react-diff-view": "3.0.3",
+    "react-diff-view": "3.2.0",
     "reactflow": "11.9.4",
     "tsx": "3.14.0",
     "type-fest": "4.7.1",
