@@ -68,7 +68,7 @@
     "react-diff-view": "3.0.3",
     "reactflow": "11.9.4",
     "tsx": "3.14.0",
-    "type-fest": "4.5.0",
+    "type-fest": "4.7.1",
     "typescript": "5.2.2",
     "undici": "5.26.2",
     "utility-types": "3.10.0"

@@ -26,6 +26,6 @@
   },
   "devDependencies": {
     "typescript": "5.1.6",
-    "type-fest": "4.5.0"
+    "type-fest": "4.7.1"
   }
 }
