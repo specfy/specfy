@@ -12,8 +12,8 @@ export const BlockCode: React.FC<{ block: BlockCodeBlock }> = ({ block }) => {
         language={'diff'}
         code={block.codeDiff.hunks[0].changes
           .map((line) => {
-            if (line.isDelete) return `-${line.content}`;
-            if (line.isInsert) return `+${line.content}`;
+            if (line.type === 'delete') return `-${line.content}`;
+            if (line.type === 'insert') return `+${line.content}`;
             return line.content;
           })
           .join('\n')}

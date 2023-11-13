@@ -827,7 +827,6 @@ describe('diff codeBlock', () => {
             hunks: [
               {
                 content: '@@ -1,3 +1,3 @@',
-                isPlain: false,
                 newLines: 3,
                 newStart: 1,
                 oldLines: 3,
