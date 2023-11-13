@@ -14,14 +14,14 @@
     "export": "email export"
   },
   "dependencies": {
-    "@react-email/components": "0.0.7",
+    "@react-email/components": "0.0.11",
     "react": "18.2.0",
     "resend": "1.1.0"
   },
   "devDependencies": {
     "@specfy/db": "file:../db",
-    "@types/react": "18.2.33",
-    "react-email": "1.9.4",
+    "@types/react": "18.2.37",
+    "react-email": "1.9.5",
     "tsup": "7.2.0"
   },
   "license": "MIT"
