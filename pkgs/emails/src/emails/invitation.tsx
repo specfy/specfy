@@ -136,8 +136,6 @@ export const Invitation = ({
               </Section>
               <Section className="text-center mt-[32px] mb-[32px]">
                 <Button
-                  pX={20}
-                  pY={12}
                   className="bg-[#242d3c] rounded text-white text-[12px] font-semibold no-underline text-center"
                   href={inviteLink}
                 >
