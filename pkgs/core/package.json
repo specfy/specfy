@@ -22,7 +22,7 @@
     "env-schema": "5.2.1",
     "logsnag": "1.0.0",
     "nanoid": "4.0.2",
-    "pino": "8.16.1",
+    "pino": "8.16.2",
     "pino-pretty": "10.2.3",
     "slugify": "1.6.5",
     "zod": "3.22.4"
