@@ -96,7 +96,7 @@
     "jsdom": "^22.0.0",
     "json-diff": "1.0.6",
     "lodash.debounce": "4.0.8",
-    "luxon": "3.4.3",
+    "luxon": "3.4.4",
     "prismjs": "1.29.0",
     "properties-order": "1.0.0",
     "rc-tree": "5.8.2",
