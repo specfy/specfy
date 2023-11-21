@@ -11,7 +11,7 @@ services:
 
   es:
     container_name: es
-    image: elasticsearch:8.10.4
+    image: elasticsearch:8.11.1
     ulimits:
       memlock:
         soft: -1
