@@ -12,7 +12,7 @@ jobs:
     timeout-minutes: 17
     services:
       postgres:
-        image: postgres:15.4-alpine
+        image: postgres:15.5-alpine
         env:
           POSTGRES_PASSWORD: postgres
         options: >-
@@ -22,7 +22,7 @@ jobs:
           --health-retries 5
 
       elasticsearch:
-        image: elasticsearch:8.10.4
+        image: elasticsearch:8.11.1
         ports:
           - "9200:9200"
           - "9300:9300"

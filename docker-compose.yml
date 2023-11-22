@@ -3,7 +3,7 @@ version: '3'
 services:
   db:
     container_name: db
-    image: postgres:15.4-alpine
+    image: postgres:15.5-alpine
     ports:
       - '5432:5432'
     environment:
@@ -11,7 +11,7 @@ services:
 
   es:
     container_name: es
-    image: elasticsearch:8.10.4
+    image: elasticsearch:8.11.1
     ulimits:
       memlock:
         soft: -1
