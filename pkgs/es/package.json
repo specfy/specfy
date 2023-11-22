@@ -16,7 +16,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@elastic/elasticsearch": "8.9.0",
+    "@elastic/elasticsearch": "8.10.0",
     "@specfy/core": "file:../core"
   },
   "devDependencies": {
