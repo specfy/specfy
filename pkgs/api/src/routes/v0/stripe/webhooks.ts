@@ -33,7 +33,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         event = stripe.webhooks.constructEvent(
           req.rawBody!,
           sig,
-          envs.STRIPE_WEBHOOKS_SECRET
+          envs.STRIPE_WEBHOOKS_SECRET || ''
         );
       } catch (err) {
         console.error('[stripe-hook] Signature does not match');

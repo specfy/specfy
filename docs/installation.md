@@ -82,6 +82,9 @@ Optional:
 
 11. Optional: Seed the Database
 
+   > [!CAUTION]
+   > You need the API to be running to seed
+
    ```sh
    turbo run db:seed
    ```
