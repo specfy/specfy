@@ -38,6 +38,16 @@ export async function createCRMContact({
   return await hubspot.crm.contacts.basicApi.create(contact);
 }
 
+export async function deleteCRMContact(email: string) {
+  const contactId = await getContactId(email);
+
+  if (contactId !== undefined) {
+    await hubspot.crm.contacts.gdprApi.purge({
+      objectId: contactId,
+    });
+  }
+}
+
 export async function subscribeToEmails(email: string) {
   try {
     await hubspot.communicationPreferences.statusApi.subscribe({
@@ -61,4 +71,26 @@ export async function subscribeToEmails(email: string) {
   } catch (error) {
     l.warn(error);
   }
+}
+
+async function getContactId(email: string): Promise<string | undefined> {
+  const response = await hubspot.crm.contacts.searchApi.doSearch({
+    filterGroups: [
+      {
+        filters: [
+          {
+            propertyName: 'email',
+            operator: 'EQ',
+            value: email,
+          },
+        ],
+      },
+    ],
+    properties: [],
+    sorts: [],
+    limit: 1,
+    after: 0,
+  });
+
+  return response.results.at(0)?.id;
 }
