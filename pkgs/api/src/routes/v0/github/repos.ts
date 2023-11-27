@@ -89,6 +89,8 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         fullName: repo.full_name,
         url: repo.html_url,
         private: repo.private,
+        defaultBranch: repo.default_branch,
+        archived: repo.archived,
       });
     }
     return res.status(200).send({
