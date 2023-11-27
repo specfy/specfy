@@ -1,0 +1,10 @@
+.content {
+  padding: var(--spc-6xl) var(--spc-6xl) 0;
+}
+
+.metric {
+  flex-grow: 1;
+  padding: var(--spc-m) var(--spc-xl);
+  border: 1px solid var(--border1);
+  border-radius: var(--radius1);
+}

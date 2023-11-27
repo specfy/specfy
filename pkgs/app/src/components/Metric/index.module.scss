@@ -1,0 +1,21 @@
+.metric {
+  display: flex;
+  gap: var(--spc);
+  align-items: baseline;
+
+  &.column {
+    flex-direction: column;
+    gap: var(--spc-xs);
+  }
+}
+
+.label {
+  color: var(--text-secondary);
+}
+
+.number {
+  font-size: var(--font-4xl);
+  font-weight: 500;
+  line-height: var(--lh-4xl);
+  color: var(--text-number);
+}

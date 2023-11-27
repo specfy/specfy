@@ -2,12 +2,33 @@ import { useQuery } from '@tanstack/react-query';
 
 import type {
   GetCatalog,
+  GetCatalogSummary,
   GetCatalogUserActivities,
   ListCatalog,
 } from '@specfy/models';
 
 import { fetchApi } from './fetch';
 import { APIError, isError } from './helpers';
+
+export function useCatalogSummary(opts: GetCatalogSummary['Querystring']) {
+  return useQuery({
+    queryKey: ['getCatalogSummary', opts.org_id],
+    queryFn: async (): Promise<GetCatalogSummary['Success']> => {
+      const { json, res } = await fetchApi<GetCatalogSummary>(
+        '/catalog/summary',
+        {
+          qp: opts,
+        }
+      );
+
+      if (res.status !== 200 || isError(json)) {
+        throw new APIError({ res, json });
+      }
+
+      return json;
+    },
+  });
+}
 
 export function useListCatalog(opts: ListCatalog['Querystring']) {
   return useQuery({

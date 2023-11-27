@@ -2,17 +2,6 @@
   padding: var(--spc-6xl) var(--spc-6xl) var(--spc-4xl);
 }
 
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: var(--spc-l);
-}
-
-.actions {
-  display: flex;
-  gap: var(--spc-m);
-}
 
 .title {
   font-size: var(--font);
@@ -49,5 +38,4 @@
 .list {
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
-  margin-top: var(--spc-5xl);
 }

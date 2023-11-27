@@ -56,3 +56,11 @@ export type GetCatalogUserActivities = Res<{
     };
   };
 }>;
+
+// GET /summary
+export type GetCatalogSummary = Res<{
+  Querystring: { org_id: string };
+  Success: {
+    data: { count: number };
+  };
+}>;
