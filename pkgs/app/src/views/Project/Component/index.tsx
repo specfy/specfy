@@ -9,6 +9,7 @@ import {
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useUnmount } from 'react-use';
 import { useReactFlow } from 'reactflow';
 
 import type { ApiComponent, ApiProject } from '@specfy/models';
@@ -195,6 +196,10 @@ export const ComponentView: React.FC<{
     storeFlow.setMeta({ readOnly: true });
     storeFlow.setHighlight(comp!.id);
   }, [components]);
+
+  useUnmount(() => {
+    useFlowStore.getState().setHighlight(null);
+  });
 
   const onNodesChange: OnNodesChangeSuper = (changes) => {
     onNodesChangeProject(storeComponents)(changes);
