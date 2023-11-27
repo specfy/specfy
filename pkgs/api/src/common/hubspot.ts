@@ -54,18 +54,6 @@ export async function subscribeToEmails(email: string) {
   try {
     await hubspot.communicationPreferences.statusApi.subscribe({
       emailAddress: email,
-      legalBasis: 'PROCESS_AND_STORE',
-      subscriptionId: envs.HUBSPOT_SUBSCRIPTION_TRANSACTIONAL_ID!,
-      legalBasisExplanation:
-        'Agree to receive transactional emails after account creation',
-    });
-  } catch (error) {
-    l.warn(error);
-  }
-
-  try {
-    await hubspot.communicationPreferences.statusApi.subscribe({
-      emailAddress: email,
       legalBasis: 'LEGITIMATE_INTEREST_OTHER',
       subscriptionId: envs.HUBSPOT_SUBSCRIPTION_SALES_ID!,
       legalBasisExplanation: 'Agree to get in touch with Specfy team',
