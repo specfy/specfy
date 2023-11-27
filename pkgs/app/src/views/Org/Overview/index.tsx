@@ -18,7 +18,6 @@ import {
   getDefaultSettings,
 } from '@/api';
 import { i18n } from '@/common/i18n';
-import { qcli } from '@/common/query';
 import { socket } from '@/common/socket';
 import { useFlowStore } from '@/common/store';
 import { titleSuffix } from '@/common/string';
