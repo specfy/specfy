@@ -13,6 +13,30 @@ interface ListProps {
   type: ListCatalog['Querystring']['type'];
 }
 
+export async function catalogSummary(params: Pick<ListProps, 'orgId'>) {
+  const q: estypes.SearchRequest = {
+    index: 'techs',
+    size: 0,
+    track_total_hits: true,
+    query: {
+      // @ts-expect-error
+      bool: { must: [{ term: { orgId: params.orgId } }] },
+    },
+    aggs: {
+      count: {
+        cardinality: { field: 'key' },
+      },
+    },
+  };
+
+  const res = await client.search<
+    CatalogTechIndex,
+    { count: estypes.AggregationsCardinalityAggregate }
+  >(q);
+
+  return res;
+}
+
 export async function catalogList(params: ListProps) {
   const q: estypes.SearchRequest = {
     index: 'techs',

@@ -38,29 +38,13 @@
 }
 
 .block {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spc-2xl);
+
   &.chart {
     margin: var(--spc-2xl) 0 var(--spc-2xl);
   }
-}
-
-
-.metric {
-  display: flex;
-  gap: var(--spc);
-  align-items: baseline;
-  margin-bottom: var(--spc-2xl)
-}
-
-.label {
-  margin-bottom: var(--spc-l);
-  color: var(--text-secondary);
-}
-
-.number {
-  font-size: var(--font-4xl);
-  font-weight: 500;
-  line-height: var(--lh-4xl);
-  color: var(--text-number);
 }
 
 .heading {

@@ -47,21 +47,15 @@ export const ProjectList: React.FC<{ orgId: string }> = ({ orgId }) => {
 
   return (
     <div className={cls.main}>
-      <div className={cls.header}>
-        <h2>Projects</h2>
+      <div>
         {!brandNew && (
-          <div className={cls.actions}>
-            <Link to={`/${orgId}/_/project/new`}>
-              <Button display="primary">
-                <IconPlus /> New
-              </Button>
-            </Link>
+          <Flex grow>
             <Input
               before={<IconSearch />}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search..."
             />
-          </div>
+          </Flex>
         )}
       </div>
 

@@ -28,6 +28,7 @@ import { ComponentIcon } from '@/components/Component/Icon';
 import { ComponentTag } from '@/components/Component/Tag';
 import { ContainerChild } from '@/components/Container';
 import { Flex } from '@/components/Flex';
+import { Metric } from '@/components/Metric';
 import { NotFound } from '@/components/NotFound';
 import { Tag } from '@/components/Tag';
 import { Subdued } from '@/components/Text';
@@ -118,10 +119,7 @@ const UserActivities: React.FC<{
               User Activities <Tag variant="light">90d</Tag>
             </h3>
 
-            <div className={cls.metric}>
-              <div className={cls.number}>{data.users.length}</div>
-              <div className={cls.label}>users pushed code</div>
-            </div>
+            <Metric number={data.users.length} label="users pushed code" />
           </div>
           <Flex style={{ width: '100%', height: '100%' }} justify="flex-end">
             <AreaChart height={80} width={250} data={histogram}>
@@ -284,10 +282,7 @@ const Projects: React.FC<{
       <h3 className={cls.heading}>Projects</h3>
       <div className={cls.grid}>
         <div className={cls.block}>
-          <div className={cls.metric}>
-            <div className={cls.number}>{using.length}</div>
-            <div className={cls.label}>using</div>
-          </div>
+          <Metric number={using.length} label="using" />
           {!projects ? (
             <Skeleton />
           ) : (
@@ -310,10 +305,7 @@ const Projects: React.FC<{
         </div>
 
         <div className={cls.block}>
-          <div className={cls.metric}>
-            <div className={cls.number}>{notusing.length}</div>
-            <div className={cls.label}>not using</div>
-          </div>
+          <Metric number={notusing.length} label="not using" />
 
           {!projects ? (
             <Skeleton />
@@ -442,10 +434,12 @@ export const OrgCatalogShow: React.FC<{ org: ApiOrg }> = ({ org }) => {
                     ))}
                   </Pie>
                 </PieChart>
-                <div>
-                  <div className={cls.number}>{chart.pct}%</div>
-                  <div className={cls.label}>Usage across {org.name}</div>
-                </div>
+                <Metric
+                  number={chart.pct}
+                  unit="%"
+                  label={<>Usage across {org.name}</>}
+                  labelPos="down"
+                />
               </Flex>
             </div>
           )}
