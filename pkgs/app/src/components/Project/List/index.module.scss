@@ -24,7 +24,9 @@
   display: flex;
   gap: var(--spc-l);
 
-  border-radius: var(--radius2);
+  padding: var(--spc-l);
+
+  border-bottom: 1px solid var(--border1);
 
   transition: border 0.25s ease-in-out;
 
@@ -32,11 +34,6 @@
     .title {
       color: var(--accent2)
     }
-  }
-
-  .content {
-    overflow: hidden;
-    text-overflow: ellipsis;
   }
 }
 
@@ -52,6 +49,5 @@
 .list {
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
-  gap: var(--spc-xl);
   margin-top: var(--spc-5xl);
 }

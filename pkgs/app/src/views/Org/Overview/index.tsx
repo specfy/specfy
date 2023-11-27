@@ -15,8 +15,8 @@ import { FlowOrg } from '@/components/Flow/FlowOrg';
 import { Toolbar } from '@/components/Flow/Toolbar';
 import { FlowWrapper } from '@/components/Flow/Wrapper';
 import { ListActivity } from '@/components/ListActivity';
-import { ListProjects } from '@/components/ListProjects';
 import { OrgOnboarding } from '@/components/Org/Onboarding';
+import { ProjectList } from '@/components/Project/List';
 import type { RouteOrg } from '@/types/routes';
 
 export const OrgOverview: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
@@ -53,7 +53,7 @@ export const OrgOverview: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
       <Helmet title={`${org.name} ${titleSuffix}`} />
       <ContainerChild leftLarge>
         {!done && <OrgOnboarding org={org} key={org.id} />}
-        <ListProjects orgId={params.org_id}></ListProjects>
+        <ProjectList orgId={params.org_id}></ProjectList>
       </ContainerChild>
       <ContainerChild rightSmall>
         <div>
