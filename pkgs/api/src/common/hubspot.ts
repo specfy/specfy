@@ -41,7 +41,7 @@ export async function createCRMContact({
 export async function deleteCRMContact(email: string) {
   const contactId = await getContactId(email);
 
-  if (contactId !== undefined) {
+  if (contactId) {
     await hubspot.crm.contacts.gdprApi.purge({
       objectId: contactId,
     });
