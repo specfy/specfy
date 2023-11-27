@@ -113,8 +113,8 @@ export function registerGitHub(passport: Authenticator) {
 
       logEvent('account.register', { userId: user!.id });
 
-      try {
-        if (envs.HUBSPOT_ACCESS_TOKEN) {
+      if (envs.HUBSPOT_ACCESS_TOKEN) {
+        try {
           l.info('Creating contact in CRM');
           await createCRMContact({
             firstname: displayName,
@@ -123,10 +123,10 @@ export function registerGitHub(passport: Authenticator) {
           });
           await subscribeToEmails(primary);
           l.info('CRM contact created');
+        } catch (error) {
+          l.error(error instanceof Error ? error.message : error);
+          sentry.captureException(error);
         }
-      } catch (error) {
-        l.error(error instanceof Error ? error.message : error);
-        sentry.captureException(error);
       }
 
       if (!isTest) {
