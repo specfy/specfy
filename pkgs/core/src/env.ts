@@ -32,6 +32,10 @@ const schema = z.object({
   GITHUB_CLIENT_SECRET: z.string().min(1),
   GITHUB_WEBHOOKS_SECRET: z.string().min(1),
   GIVE_DEFAULT_PERMS_TO_EMAIL: z.string().optional(),
+  HUBSPOT_ACCESS_TOKEN: z.string().optional(),
+  HUBSPOT_SUBSCRIPTION_MARKETING_ID: z.string().optional(),
+  HUBSPOT_SUBSCRIPTION_TRANSACTIONAL_ID: z.string().optional(),
+  HUBSPOT_SUBSCRIPTION_SALES_ID: z.string().optional(),
   JWT_SECRET: z.string().min(1),
   NODE_ENV: z
     .enum(['production', 'development', 'test'])

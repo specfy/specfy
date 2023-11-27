@@ -105,7 +105,7 @@ To run this project, locally or in production, you will need a few secrets.
 
 ### Creating the GitHub App
 
-You will need a [GitHub](https://github.com) app to allow oauth.
+You will need a [GitHub](https://github.com/settings/apps/new) app to allow oauth.
 
 Configuration:
 
@@ -115,13 +115,13 @@ Configuration:
 - [x] Webhook > Active
   - Callback: <https://api.specfy.io/0/github/webhooks>
 
-Permissions:
+Permissions (read-only):
 
 - Repository: Commit Statuses, Contents, Deployments, Environments, Metadata
 - Org: Members
 - Account: Email addresses
 
-Webhooks:
+Subscribe to events:
 
 - Meta, Member, Membership, Organization, Public, Push, Repository, Team, Team add
 
