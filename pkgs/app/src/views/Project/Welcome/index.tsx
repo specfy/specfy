@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import Skeleton from 'react-loading-skeleton';
 import { useNavigate } from 'react-router-dom';
+import { useUnmount } from 'react-use';
 
 import type { ApiJobList } from '@specfy/models';
 
@@ -52,11 +53,14 @@ export const ProjectWelcome: React.FC = () => {
   );
 
   const onGo = async () => {
+    navigate(`/${project!.orgId}/${project!.slug}`);
+  };
+
+  useUnmount(async () => {
     if (job) {
       await refreshProject(job.orgId, job.projectId!, true);
     }
-    navigate(`/${project!.orgId}/${project!.slug}`);
-  };
+  });
 
   if (!project) {
     return null;
