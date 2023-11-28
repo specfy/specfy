@@ -1,0 +1,27 @@
+{
+  "name": "@specfy/events",
+  "version": "0.0.1",
+  "description": "",
+  "main": "build/index.js",
+  "typings": "build/index.d.ts",
+  "module": "build/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "files": [
+    "build"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@hubspot/api-client": "^10.1.0",
+    "@specfy/core": "file:../core",
+    "@specfy/db": "file:../db",
+    "eventemitter2": "6.4.9",
+    "logsnag": "1.0.0"
+  },
+  "devDependencies": {
+    "typescript": "5.1.6"
+  }
+}
