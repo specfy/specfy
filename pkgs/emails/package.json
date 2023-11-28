@@ -16,7 +16,7 @@
   "dependencies": {
     "@react-email/components": "0.0.11",
     "react": "18.2.0",
-    "resend": "1.1.0"
+    "resend": "2.0.0"
   },
   "devDependencies": {
     "@specfy/db": "file:../db",

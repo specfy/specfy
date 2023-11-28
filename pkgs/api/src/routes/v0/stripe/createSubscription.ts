@@ -1,4 +1,5 @@
-import { envs, logEvent } from '@specfy/core';
+import { envs } from '@specfy/core';
+import { logEvent } from '@specfy/events';
 import { v1, stripe, betaTrialEnd } from '@specfy/models';
 import { z } from 'zod';
 

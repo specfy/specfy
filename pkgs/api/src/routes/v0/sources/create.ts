@@ -1,13 +1,7 @@
 import { RequestError } from '@octokit/request-error';
-import {
-  isTest,
-  logEvent,
-  nanoid,
-  schemaId,
-  schemaOrgId,
-  sentry,
-} from '@specfy/core';
+import { isTest, nanoid, schemaId, schemaOrgId, sentry } from '@specfy/core';
 import { prisma } from '@specfy/db';
+import { logEvent } from '@specfy/events';
 import { Octokit } from '@specfy/github';
 import {
   createGitHubActivity,

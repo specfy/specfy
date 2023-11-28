@@ -1,5 +1,6 @@
 import { envs, isTest, l } from '@specfy/core';
 import * as es from '@specfy/es';
+import * as events from '@specfy/events';
 import * as github from '@specfy/github';
 import * as jobs from '@specfy/jobs';
 import * as socket from '@specfy/socket';
@@ -34,6 +35,7 @@ app.addHook('onClose', async (_, done) => {
     github.stop();
     await jobs.stop();
     socket.stop();
+    events.stop();
   } catch (err) {
     console.error(err);
   }
@@ -51,6 +53,7 @@ app.listen({ host: '0.0.0.0', port: parseInt(envs.PORT, 10) }, (err) => {
 void (async () => {
   l.info('Starting...');
 
+  events.start();
   github.start();
   jobs.start();
 

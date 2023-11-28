@@ -1,12 +1,11 @@
-import { nanoid, l, envs, schemaOrgId, logEvent, isTest } from '@specfy/core';
+import { nanoid, schemaOrgId } from '@specfy/core';
 import { prisma } from '@specfy/db';
-import { sendInvitation } from '@specfy/emails';
+import { logEvent } from '@specfy/events';
 import { getUsage, EXPIRES, getOrgFromRequest, PermType } from '@specfy/models';
 import { z } from 'zod';
 
 import type { PostInvitation } from '@specfy/models';
 
-import { resend } from '../../../common/emails.js';
 import { validationError } from '../../../common/errors.js';
 import { valPermissions } from '../../../common/zod.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
@@ -72,10 +71,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
 
       // Dedup and invalidate old invites
       await prisma.invitations.deleteMany({
-        where: {
-          email: body.email,
-          orgId: body.orgId,
-        },
+        where: { email: body.email, orgId: body.orgId },
       });
 
       const created = await prisma.invitations.create({
@@ -90,25 +86,13 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         },
       });
 
-      if (!isTest) {
-        const link = `${envs.APP_HOSTNAME}/invite?invitation_id=${created.id}&token=${created.token}`;
-        const org = getOrgFromRequest(req, body.orgId)!;
-        l.info('Sending email', { to: body.email, type: 'invitation' });
-        await sendInvitation(
-          resend,
-          {
-            to: body.email,
-          },
-          {
-            email: body.email,
-            invitedBy: me,
-            inviteLink: link,
-            org,
-          }
-        );
-      }
-
-      logEvent('invitation.created', { userId: me.id, orgId: body.orgId });
+      logEvent('invitation.created', {
+        userId: me.id,
+        orgId: body.orgId,
+        org: getOrgFromRequest(req, body.orgId)!,
+        from: me,
+        invite: created,
+      });
 
       return res.status(200).send({
         data: { token: created.token, id: created.id },

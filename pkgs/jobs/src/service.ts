@@ -12,7 +12,7 @@ const running: Job[] = [];
 const l = logger.child({ svc: 'jobs' });
 
 export async function stop() {
-  l.info('Exiting');
+  l.info('Jobs service stopping');
   if (interval) {
     clearInterval(interval);
   }
@@ -21,7 +21,7 @@ export async function stop() {
 }
 
 export function start() {
-  l.info('Job Service Starting');
+  l.info('Job service starting');
 
   // TODO: replace this with a queue and/or Listen/notify
   interval = setInterval(async () => {

@@ -1,5 +1,6 @@
-import { l, logEvent, nanoid } from '@specfy/core';
+import { l, nanoid } from '@specfy/core';
 import { Prisma } from '@specfy/db';
+import { logEvent } from '@specfy/events';
 
 import type { Jobs } from '@specfy/db';
 
