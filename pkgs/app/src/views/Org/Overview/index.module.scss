@@ -1,5 +1,5 @@
 .content {
-  padding: var(--spc-6xl) var(--spc-6xl) 0;
+  padding: var(--spc-3xl) var(--spc-5xl) 0;
 }
 
 .metric {
@@ -7,4 +7,9 @@
   padding: var(--spc-m) var(--spc-xl);
   border: 1px solid var(--border1);
   border-radius: var(--radius1);
+}
+
+.suggestion {
+  padding: var(--spc-m) 0;
+  border-bottom: 1px solid var(--border1);
 }

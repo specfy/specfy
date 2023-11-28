@@ -39,9 +39,8 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       where: { orgId: query.org_id },
       orderBy: { name: 'asc' },
       include: {
-        _count: {
-          select: { Perms: true },
-        },
+        _count: { select: { Perms: true } },
+        Sources: { select: { type: true, identifier: true } },
       },
       take: 50,
       skip: 0,
