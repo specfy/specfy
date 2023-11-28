@@ -7,6 +7,8 @@ export interface ApiGitHubRepo {
   fullName: string;
   url: string;
   private: boolean;
+  defaultBranch: string;
+  archived: boolean;
 }
 export type ListGitHubRepos = Res<{
   Querystring: {

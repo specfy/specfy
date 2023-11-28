@@ -1,6 +1,6 @@
 import type { Projects } from '@specfy/db';
 
-import type { ApiProject, ListProjects } from '../projects';
+import type { ApiProject, ListProjects, ProjectList } from '../projects';
 
 export function toApiProject(proj: Projects): ApiProject {
   return {
@@ -17,7 +17,7 @@ export function toApiProject(proj: Projects): ApiProject {
 }
 
 export function toApiProjectList(
-  proj: Projects & { _count: { Perms: number } }
+  proj: ProjectList
 ): ListProjects['Success']['data'][0] {
   return {
     id: proj.id,
@@ -27,5 +27,6 @@ export function toApiProjectList(
     createdAt: proj.createdAt.toISOString(),
     updatedAt: proj.updatedAt.toISOString(),
     users: proj._count.Perms,
+    sources: proj.Sources,
   };
 }

@@ -54,6 +54,7 @@ describe('GET /projects', () => {
         orgId: project.orgId,
         slug: project.slug,
         users: 1,
+        sources: [],
         createdAt: expect.toBeIsoDate(),
         updatedAt: expect.toBeIsoDate(),
       },

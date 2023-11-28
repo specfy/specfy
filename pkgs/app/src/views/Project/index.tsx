@@ -30,7 +30,6 @@ import { useAuth } from '@/hooks/useAuth';
 import type { RouteProject } from '@/types/routes';
 
 import { ProjectActivity } from './Activity';
-import { ProjectAssistant } from './Assistant';
 import { ComponentView } from './Component';
 import { ProjectComponentCreate } from './Component/Create';
 import { ProjectDeploysList } from './Deploy/List';
@@ -230,7 +229,6 @@ const Project: React.FC = () => {
               path="/doc/*"
               element={<ProjectDocumentation proj={proj} />}
             />
-            <Route path="/assistant/*" element={<ProjectAssistant />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>

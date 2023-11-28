@@ -1,9 +1,10 @@
-import { logEvent, nanoid } from '@specfy/core';
+import { envs, l, logEvent, nanoid, sentry } from '@specfy/core';
 import { prisma } from '@specfy/db';
 import { createUserActivity } from '@specfy/models';
 
 import type { DeleteMe } from '@specfy/models';
 
+import { deleteCRMContact } from '../../../common/hubspot.js';
 import { noBody } from '../../../middlewares/noBody.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 
@@ -44,6 +45,17 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
       logEvent('account.deleted', { userId: me.id });
 
       await req.logOut();
+
+      if (envs.HUBSPOT_ACCESS_TOKEN) {
+        try {
+          l.info('Deleting contact in CRM');
+          await deleteCRMContact(me.email);
+          l.info('CRM contact deleted');
+        } catch (error) {
+          l.error(error instanceof Error ? error.message : error);
+          sentry.captureException(error);
+        }
+      }
 
       return res.status(204).send();
     }

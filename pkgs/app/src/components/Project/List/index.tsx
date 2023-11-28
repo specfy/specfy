@@ -4,20 +4,20 @@ import { Link, useNavigate } from 'react-router-dom';
 
 import type { ApiProjectList } from '@specfy/models';
 
-import { AvatarAuto } from '../AvatarAuto';
-import { Empty } from '../Empty';
-import { Flex } from '../Flex';
-import { Button } from '../Form/Button';
-import { Input } from '../Form/Input';
-import { Loading } from '../Loading';
-import { TryDemo } from '../Onboarding/TryDemo';
-import { Time } from '../Time';
+import { AvatarAuto } from '../../AvatarAuto';
+import { Empty } from '../../Empty';
+import { Flex } from '../../Flex';
+import { Button } from '../../Form/Button';
+import { Input } from '../../Form/Input';
+import { Loading } from '../../Loading';
+import { TryDemo } from '../../Onboarding/TryDemo';
+import { Time } from '../../Time';
 import { useListProjects } from '@/api';
 import { useProjectStore } from '@/common/store';
 
 import cls from './index.module.scss';
 
-export const ListProjects: React.FC<{ orgId: string }> = ({ orgId }) => {
+export const ProjectList: React.FC<{ orgId: string }> = ({ orgId }) => {
   const getProjects = useListProjects({ org_id: orgId });
   const storeProjects = useProjectStore();
   const [list, setList] = useState<ApiProjectList[]>();
@@ -47,21 +47,15 @@ export const ListProjects: React.FC<{ orgId: string }> = ({ orgId }) => {
 
   return (
     <div className={cls.main}>
-      <div className={cls.header}>
-        <h2>Projects</h2>
+      <div>
         {!brandNew && (
-          <div className={cls.actions}>
-            <Link to={`/${orgId}/_/project/new`}>
-              <Button display="primary">
-                <IconPlus /> New
-              </Button>
-            </Link>
+          <Flex grow>
             <Input
               before={<IconSearch />}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search..."
             />
-          </div>
+          </Flex>
         )}
       </div>
 
@@ -102,9 +96,9 @@ export const ListProjects: React.FC<{ orgId: string }> = ({ orgId }) => {
                     tabIndex={0}
                   >
                     <Link to={link} relative="path">
-                      <AvatarAuto name={item.name} size="m" shape="square" />
+                      <AvatarAuto name={item.name} size="s" shape="square" />
                     </Link>
-                    <div className={cls.content}>
+                    <Flex justify="space-between" grow>
                       <Link to={link} relative="path" className={cls.title}>
                         {item.name}
                       </Link>
@@ -118,7 +112,7 @@ export const ListProjects: React.FC<{ orgId: string }> = ({ orgId }) => {
                           <Time time={item.updatedAt} />
                         </div>
                       </div>
-                    </div>
+                    </Flex>
                   </div>
                 );
               })}

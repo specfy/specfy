@@ -2,3 +2,19 @@
   justify-content: space-between;
   width: 250px;
 }
+
+.listItem {
+  width: 100%;
+  padding: var(--spc-m);
+  border: 1px solid transparent;
+
+  &:hover {
+    cursor: pointer;
+    border-color: var(--border2);
+  }
+
+  &.selected {
+    background-color: var(--bg1);
+    border-color: var(--border2);
+  }
+}

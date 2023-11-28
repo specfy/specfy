@@ -13,13 +13,15 @@ import { Subdued } from '@/components/Text';
 
 import cls from './index.module.scss';
 
-function getDefault(search: string) {
+function getDefault(search: string): ApiGitHubRepo {
   return {
     id: -1,
     name: `Create "${search}"`,
     fullName: search,
     url: '',
     private: false,
+    archived: false,
+    defaultBranch: 'main',
   };
 }
 export const GitHubSearch = forwardRef<
