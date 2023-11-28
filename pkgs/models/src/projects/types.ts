@@ -1,3 +1,5 @@
+import type { Prisma } from '@specfy/db';
+
 import type { BlockLevelZero } from '../documents';
 
 export interface DBProject {
@@ -16,3 +18,10 @@ export interface DBProjectLink {
   title: string;
   url: string;
 }
+
+export type ProjectList = Prisma.ProjectsGetPayload<{
+  include: {
+    _count: { select: { Perms: true } };
+    Sources: { select: { type: true; identifier: true } };
+  };
+}>;

@@ -6,7 +6,7 @@ export type ApiProject = DBProject;
 export type ApiProjectList = Omit<
   ApiProject,
   'blobId' | 'config' | 'description' | 'links'
-> & { users: number };
+> & { users: number; sources: Array<{ type: string; identifier: string }> };
 export interface ReqProjectParams {
   project_id: string;
 }
