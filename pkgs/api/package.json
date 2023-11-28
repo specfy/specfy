@@ -28,7 +28,7 @@
     "@fastify/passport": "2.4.0",
     "@fastify/rate-limit": "8.1.1",
     "@fastify/secure-session": "6.2.0",
-    "@fastify/session": "10.5.0",
+    "@fastify/session": "10.6.1",
     "@fastify/static": "6.10.2",
     "@hubspot/api-client": "^10.1.0",
     "@octokit/auth-app": "6.0.1",
