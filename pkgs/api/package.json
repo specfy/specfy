@@ -47,7 +47,7 @@
     "close-with-grace": "1.2.0",
     "fastify": "4.21.0",
     "fastify-plugin": "4.5.1",
-    "fastify-raw-body": "4.2.2",
+    "fastify-raw-body": "4.3.0",
     "jsonwebtoken": "9.0.2",
     "octokit": "3.1.1",
     "passport-github2": "0.1.12",
