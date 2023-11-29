@@ -1,4 +1,4 @@
-import { envs, isTest, l } from '@specfy/core';
+import { envs, isTest, l, sentry } from '@specfy/core';
 import * as es from '@specfy/es';
 import * as events from '@specfy/events';
 import * as github from '@specfy/github';
@@ -16,6 +16,17 @@ const app = Fastify(options);
 
 // Register your application as a normal plugin.
 void app.register(appService);
+
+process
+  .on('unhandledRejection', (reason) => {
+    sentry.captureException(reason);
+    console.error('Unhandled Rejection at Promise', reason);
+  })
+  .on('uncaughtException', (err) => {
+    sentry.captureException(err);
+    console.error('Uncaught Exception thrown', err);
+    process.exit(1);
+  });
 
 // delay is the number of milliseconds for the graceful close to finish
 const closeListeners = closeWithGrace(

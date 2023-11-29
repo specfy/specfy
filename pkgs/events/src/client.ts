@@ -1,4 +1,4 @@
-import { isTest, l, metrics } from '@specfy/core';
+import { isTest, l, metrics, sentry } from '@specfy/core';
 import EventEmitter from 'eventemitter2';
 
 import type { Invitations, Orgs, Users } from '@specfy/db';
@@ -44,10 +44,19 @@ export type LogEvents = {
 export const eventLogger = l.child({ svc: 'event' });
 
 class Dispatcher {
-  emitter = new EventEmitter({ wildcard: true });
+  emitter;
 
-  emit<TKey extends keyof LogEvents>(name: TKey, obj: LogEvents[TKey]) {
-    this.emitter.emit(name, obj);
+  constructor() {
+    this.emitter = new EventEmitter({ wildcard: true });
+  }
+
+  async emit<TKey extends keyof LogEvents>(name: TKey, obj: LogEvents[TKey]) {
+    try {
+      await this.emitter.emitAsync(name, obj);
+    } catch (err) {
+      console.error('Error during event processing', err);
+      sentry.captureException(err);
+    }
   }
 
   onAny(
@@ -60,7 +69,7 @@ class Dispatcher {
     name: TKey,
     cb: (obj: LogEvents[TKey]) => void
   ) {
-    this.emitter.on(name, cb);
+    this.emitter.on(name, cb, { async: true, promisify: true });
   }
 }
 
@@ -78,6 +87,8 @@ export async function logEvent<TKey extends keyof LogEvents>(
   }
 
   try {
+    // Remove object from the log to avoid leaking secrets or logging useless info
+    // Ideally it could be better to have an allowlist or denylist
     const clean: Record<string, any> = {};
     for (const [k, v] of Object.entries(obj)) {
       if (typeof v === 'object') {
@@ -86,8 +97,11 @@ export async function logEvent<TKey extends keyof LogEvents>(
       clean[k] = v;
     }
     eventLogger.info(clean, name);
+
+    // Log to datadog
     metrics.increment(name);
 
+    // Dispatch the event for further consumption
     dispatcher.emit(name, obj);
   } catch (e) {
     console.log('Error during logEvent', e);

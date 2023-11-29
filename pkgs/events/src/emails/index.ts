@@ -6,11 +6,12 @@ import { dispatcher } from '../client.js';
 export const resend = getResend(envs.RESEND_KEY || 'please_change_that_resend');
 
 export function consume() {
-  dispatcher.on('account.register', async ({ user }) => {
-    if (isTest) {
-      return;
-    }
+  if (isTest || !envs.RESEND_KEY) {
+    // we don't want to send emails during test suites
+    return;
+  }
 
+  dispatcher.on('account.register', async ({ user }) => {
     l.info('Sending email', { to: user.email, type: 'welcome' });
     await sendWelcome(
       resend,
@@ -22,10 +23,6 @@ export function consume() {
   });
 
   dispatcher.on('invitation.created', async (obj) => {
-    if (isTest) {
-      return;
-    }
-
     const invite = obj.invite;
 
     const link = `${envs.APP_HOSTNAME}/invite?invitation_id=${invite.id}&token=${invite.token}`;

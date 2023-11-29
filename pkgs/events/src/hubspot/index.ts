@@ -9,11 +9,11 @@ import {
 } from './helpers.js';
 
 export function consume() {
-  dispatcher.on('account.register', async ({ user, github }) => {
-    if (!envs.HUBSPOT_ACCESS_TOKEN) {
-      return;
-    }
+  if (!envs.HUBSPOT_ACCESS_TOKEN) {
+    return;
+  }
 
+  dispatcher.on('account.register', async ({ user, github }) => {
     try {
       l.info('Creating contact in CRM');
 
@@ -32,10 +32,6 @@ export function consume() {
   });
 
   dispatcher.on('account.deleted', async (obj) => {
-    if (!envs.HUBSPOT_ACCESS_TOKEN) {
-      return;
-    }
-
     try {
       l.info('Deleting contact in CRM');
       await deleteCRMContact(obj.email);

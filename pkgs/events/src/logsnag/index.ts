@@ -31,11 +31,11 @@ export const logsnag = new LogSnag({
 });
 
 export function consume() {
-  dispatcher.onAny(async (name, obj) => {
-    if (!envs.LOGSNAG_KEY) {
-      return;
-    }
+  if (!envs.LOGSNAG_KEY) {
+    return;
+  }
 
+  dispatcher.onAny(async (name, obj) => {
     const userId = 'userId' in obj ? obj.userId : '';
     const tags: Record<string, string> = {};
     for (const [key, string] of Object.entries(obj)) {
