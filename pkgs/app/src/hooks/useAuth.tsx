@@ -4,6 +4,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 import type { ApiMe } from '@specfy/models';
 
+import { logout } from '@/api';
 import { getMe } from '@/api/me';
 
 interface CTX {
@@ -16,7 +17,7 @@ interface AuthContextInterface {
   currentPerm: ApiMe['perms'][0] | null;
   tryLogin: () => Promise<boolean>;
   login: () => void;
-  logout: () => void;
+  logout: () => Promise<void>;
   setCtx: (ctx: CTX) => void;
 }
 
@@ -51,8 +52,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     navigate(origin);
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     setUser(null);
+    await logout();
     navigate('/login', { replace: true });
   };
   const currentPerm = useMemo(() => {
