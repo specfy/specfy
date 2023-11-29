@@ -20,6 +20,9 @@
       "path": "../github"
     },
     {
+      "path": "../models"
+    },
+    {
       "path": "../sync"
     },
     {

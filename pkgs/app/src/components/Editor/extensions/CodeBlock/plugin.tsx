@@ -34,11 +34,11 @@ declare module '@tiptap/core' {
   }
 }
 
-export const backtickInputRegex = /^```([a-z]+)?[\s\n]$/;
-export const tildeInputRegex = /^~~~([a-z]+)?[\s\n]$/;
+const backtickInputRegex = /^```([a-z]+)?[\s\n]$/;
+const tildeInputRegex = /^~~~([a-z]+)?[\s\n]$/;
 
 type LangKey = keyof typeof displayMap;
-export const languages: Record<LangKey, LangKey> & Record<string, LangKey> = {
+const languages: Record<LangKey, LangKey> & Record<string, LangKey> = {
   js: 'javascript',
   javascript: 'javascript',
   ts: 'typescript',

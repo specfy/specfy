@@ -11,7 +11,7 @@ import { valPermissions } from '../common/zod.js';
 
 import type { FastifyRequest } from 'fastify';
 
-export function QueryVal(req: FastifyRequest) {
+function QueryVal(req: FastifyRequest) {
   return z
     .object({
       org_id: schemaOrgId,

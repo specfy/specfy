@@ -7,7 +7,7 @@ import type { PreHandler } from '@specfy/models/src/fastify';
 
 import { notFound, validationError } from '../common/errors.js';
 
-export function QueryVal() {
+function QueryVal() {
   return z
     .object({
       invitation_id: schemaId,
