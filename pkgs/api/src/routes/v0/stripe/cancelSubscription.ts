@@ -1,4 +1,4 @@
-import { logEvent } from '@specfy/core';
+import { logEvent } from '@specfy/events';
 import { stripe } from '@specfy/models';
 import { z } from 'zod';
 

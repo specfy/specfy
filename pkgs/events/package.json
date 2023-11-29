@@ -1,5 +1,5 @@
 {
-  "name": "@specfy/core",
+  "name": "@specfy/events",
   "version": "0.0.1",
   "description": "",
   "main": "build/index.js",
@@ -7,8 +7,6 @@
   "module": "build/index.js",
   "type": "module",
   "scripts": {
-    "test": "vitest",
-    "test:ci": "vitest run",
     "build": "tsc -p tsconfig.json"
   },
   "files": [
@@ -17,14 +15,12 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@sentry/node": "7.66.0",
-    "datadog-metrics": "0.11.1",
-    "env-schema": "5.2.1",
-    "nanoid": "4.0.2",
-    "pino": "8.16.2",
-    "pino-pretty": "10.2.3",
-    "slugify": "1.6.5",
-    "zod": "3.22.4"
+    "@hubspot/api-client": "^10.1.0",
+    "@specfy/core": "file:../core",
+    "@specfy/db": "file:../db",
+    "@specfy/emails": "file:../emails",
+    "eventemitter2": "6.4.9",
+    "logsnag": "1.0.0"
   },
   "devDependencies": {
     "typescript": "5.1.6"

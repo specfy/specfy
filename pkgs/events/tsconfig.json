@@ -6,9 +6,8 @@
     "declaration": true
   },
   "include": [
-    "src"
+    "src",
   ],
-  "exclude": [],
   "references": [
     {
       "path": "../core"
@@ -17,10 +16,7 @@
       "path": "../db"
     },
     {
-      "path": "../es"
+      "path": "../emails"
     },
-    {
-      "path": "../events"
-    }
   ]
 }

@@ -1,7 +1,9 @@
 import { Client } from '@hubspot/api-client';
 import { envs, l } from '@specfy/core';
 
-import type { GitHubAuthProfile } from '../types/github.js';
+import type { GitHubAuthProfile } from '@specfy/core';
+
+// eslint-disable-next-line import/extensions
 import type { SimplePublicObjectInputForCreate } from '@hubspot/api-client/lib/codegen/crm/companies';
 import type { SimplePublicObject } from '@hubspot/api-client/lib/codegen/crm/contacts';
 
@@ -77,13 +79,7 @@ async function getContactId(email: string): Promise<string | undefined> {
   const response = await hubspot.crm.contacts.searchApi.doSearch({
     filterGroups: [
       {
-        filters: [
-          {
-            propertyName: 'email',
-            operator: 'EQ',
-            value: email,
-          },
-        ],
+        filters: [{ propertyName: 'email', operator: 'EQ', value: email }],
       },
     ],
     properties: [],

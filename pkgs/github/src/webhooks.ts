@@ -12,10 +12,11 @@ const l = logger.child({ svc: 'github' });
 
 export function stop() {
   // nothing
+  l.info('Github service stopping');
 }
 
 export function start() {
-  l.info('GitHub Service Starting');
+  l.info('GitHub service starting');
 
   ws.onAny(({ id, payload, name }) => {
     if ('action' in payload) {

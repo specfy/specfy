@@ -1,5 +1,6 @@
-import { logEvent, schemaOrgId } from '@specfy/core';
+import { schemaOrgId } from '@specfy/core';
 import { prisma } from '@specfy/db';
+import { logEvent } from '@specfy/events';
 import {
   createFreeSubscription,
   createOrg,

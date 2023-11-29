@@ -1,17 +1,14 @@
-import { nanoid, l, envs, logEvent, isTest, sentry } from '@specfy/core';
+import { nanoid, envs } from '@specfy/core';
 import { prisma } from '@specfy/db';
-import { sendWelcome } from '@specfy/emails';
+import { logEvent } from '@specfy/events';
 import { createUserActivity } from '@specfy/models';
 import { Strategy as GitHubStrategy } from 'passport-github2';
 
+import type { GitHubAuth } from '@specfy/core';
 import type { Users } from '@specfy/db';
-
-import { resend } from '../../common/emails.js';
-import { createCRMContact, subscribeToEmails } from '../../common/hubspot.js';
 
 import { AuthError } from './errors.js';
 
-import type { GitHubAuth } from '../../types/github.js';
 import type { Authenticator } from '@fastify/passport';
 
 const GITHUB_SCOPES = ['user:email', 'repo'];
@@ -111,34 +108,7 @@ export function registerGitHub(passport: Authenticator) {
         });
       });
 
-      logEvent('account.register', { userId: user!.id });
-
-      if (envs.HUBSPOT_ACCESS_TOKEN) {
-        try {
-          l.info('Creating contact in CRM');
-          await createCRMContact({
-            firstname: displayName,
-            email: primary,
-            githubProfile: profile._json,
-          });
-          await subscribeToEmails(primary);
-          l.info('CRM contact created');
-        } catch (error) {
-          l.error(error instanceof Error ? error.message : error);
-          sentry.captureException(error);
-        }
-      }
-
-      if (!isTest) {
-        l.info('Sending email', { to: email, type: 'welcome' });
-        await sendWelcome(
-          resend,
-          {
-            to: primary,
-          },
-          { email: primary, name: displayName }
-        );
-      }
+      logEvent('account.register', { user: user!, github: profile._json });
 
       done(null, user);
     }
