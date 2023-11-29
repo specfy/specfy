@@ -24,11 +24,12 @@ export class JobProjectIndex extends Job {
 
     const techs = componentsToCatalog(job, components);
 
-    l.info({ size: techs.size }, 'Preparing stack for ES');
-
-    await Promise.all([
-      indexTech({ l: this.l, techs: Array.from(techs.values()) }),
-    ]);
+    if (techs.size > 0) {
+      l.info({ size: techs.size }, 'Preparing stack for ES');
+      await Promise.all([
+        indexTech({ l: this.l, techs: Array.from(techs.values()) }),
+      ]);
+    }
 
     l.info('Cleaning old data');
     await removeTechByJob({ job });
