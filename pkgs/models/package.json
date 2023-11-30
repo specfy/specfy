@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "typescript": "5.1.6",
-    "type-fest": "4.7.1",
+    "type-fest": "4.8.2",
     "reactflow": "11.10.1"
   }
 }
