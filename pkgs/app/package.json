@@ -113,7 +113,7 @@
     "sass": "1.69.5",
     "slugify": "1.6.6",
     "socket.io-client": "4.7.2",
-    "type-fest": "4.7.1",
+    "type-fest": "4.8.2",
     "typescript": "5.2.2",
     "vite": "4.5.0",
     "vite-plugin-checker": "0.6.2",
