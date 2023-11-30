@@ -1,10 +1,10 @@
-import { envs, l, logEvent, nanoid, sentry } from '@specfy/core';
+import { nanoid } from '@specfy/core';
 import { prisma } from '@specfy/db';
+import { logEvent } from '@specfy/events';
 import { createUserActivity } from '@specfy/models';
 
 import type { DeleteMe } from '@specfy/models';
 
-import { deleteCRMContact } from '../../../common/hubspot.js';
 import { noBody } from '../../../middlewares/noBody.js';
 import { noQuery } from '../../../middlewares/noQuery.js';
 
@@ -27,9 +27,7 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
             emailVerifiedAt: null,
             githubLogin: null,
           },
-          where: {
-            id: me.id,
-          },
+          where: { id: me.id },
         });
         await createUserActivity({
           user: me,
@@ -42,20 +40,9 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
         // TODO: maybe delete permissions too?
       });
 
-      logEvent('account.deleted', { userId: me.id });
+      logEvent('account.deleted', { userId: me.id, email: me.email });
 
       await req.logOut();
-
-      if (envs.HUBSPOT_ACCESS_TOKEN) {
-        try {
-          l.info('Deleting contact in CRM');
-          await deleteCRMContact(me.email);
-          l.info('CRM contact deleted');
-        } catch (error) {
-          l.error(error instanceof Error ? error.message : error);
-          sentry.captureException(error);
-        }
-      }
 
       return res.status(204).send();
     }

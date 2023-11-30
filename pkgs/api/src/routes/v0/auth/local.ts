@@ -16,7 +16,7 @@ const obj = z
   })
   .strict();
 
-export const validation: PreHandler = async (req, res) => {
+const validation: PreHandler = async (req, res) => {
   const val = obj.safeParse(req.body);
   if (!val.success) {
     return validationError(res, val.error);

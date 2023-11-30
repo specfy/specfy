@@ -1,6 +1,7 @@
 import { RequestError } from '@octokit/request-error';
-import { logEvent, schemaOrgId, sentry } from '@specfy/core';
+import { schemaOrgId, sentry } from '@specfy/core';
 import { prisma } from '@specfy/db';
+import { logEvent } from '@specfy/events';
 import { github } from '@specfy/github';
 import { createGitHubActivity, getOrgFromRequest } from '@specfy/models';
 import { Octokit } from 'octokit';

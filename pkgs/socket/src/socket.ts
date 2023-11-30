@@ -15,11 +15,13 @@ export function stop() {
     return;
   }
 
+  l.info('Socket service stopping');
+
   io.close();
 }
 
 export function start(server: http.Server) {
-  l.info('Socket Service Starting');
+  l.info('Socket service starting');
 
   io = new Server(server, {
     path: '/ws',

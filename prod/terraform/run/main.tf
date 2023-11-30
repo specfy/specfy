@@ -49,6 +49,15 @@ data "google_secret_manager_secret_version" "ELASTICSEARCH_HOST" {
 data "google_secret_manager_secret_version" "ELASTICSEARCH_PWD" {
   secret = "ELASTICSEARCH_PWD"
 }
+data "google_secret_manager_secret_version" "HUBSPOT_ACCESS_TOKEN" {
+  secret = "HUBSPOT_ACCESS_TOKEN"
+}
+data "google_secret_manager_secret_version" "HUBSPOT_SUBSCRIPTION_MARKETING_ID" {
+  secret = "HUBSPOT_SUBSCRIPTION_MARKETING_ID"
+}
+data "google_secret_manager_secret_version" "HUBSPOT_SUBSCRIPTION_SALES_ID" {
+  secret = "HUBSPOT_SUBSCRIPTION_SALES_ID"
+}
 
 
 resource "google_cloud_run_v2_service" "main" {
@@ -151,6 +160,18 @@ resource "google_cloud_run_v2_service" "main" {
       env {
         name = "ELASTICSEARCH_PWD"
         value = data.google_secret_manager_secret_version.ELASTICSEARCH_PWD.secret_data
+      }
+      env {
+        name = "HUBSPOT_ACCESS_TOKEN"
+        value = data.google_secret_manager_secret_version.HUBSPOT_ACCESS_TOKEN.secret_data
+      }
+      env {
+        name = "HUBSPOT_SUBSCRIPTION_MARKETING_ID"
+        value = data.google_secret_manager_secret_version.HUBSPOT_SUBSCRIPTION_MARKETING_ID.secret_data
+      }
+      env {
+        name = "HUBSPOT_SUBSCRIPTION_SALES_ID"
+        value = data.google_secret_manager_secret_version.HUBSPOT_SUBSCRIPTION_SALES_ID.secret_data
       }
 
 

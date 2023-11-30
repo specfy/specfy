@@ -5,6 +5,7 @@
     "../db/build",
     "../emails/build",
     "../es/build",
+    "../events/build",
     "../github/build",
     "../jobs/build",
     "../models/build",

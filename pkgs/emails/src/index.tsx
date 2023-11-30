@@ -16,7 +16,7 @@ export async function sendWelcome(
   data: Omit<CreateEmailOptions, 'text' | 'from' | 'subject'>,
   props: WelcomeProps
 ) {
-  await resend.sendEmail({
+  await resend.emails.send({
     ...data,
     from: 'Specfy <support@specfy.io>',
     subject: 'Welcome to Specfy',
@@ -29,7 +29,7 @@ export async function sendInvitation(
   data: Omit<CreateEmailOptions, 'text' | 'from' | 'subject'>,
   props: InvitationProps
 ) {
-  await resend.sendEmail({
+  await resend.emails.send({
     ...data,
     from: 'Specfy <support@specfy.io>',
     subject: `Join ${props.org.name} on Specfy`,

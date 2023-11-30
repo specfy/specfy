@@ -26,7 +26,6 @@ const fn: FastifyPluginCallback = (fastify, _, done) => {
     const query: GetCatalogSummary['Querystring'] = val.data;
 
     const catalog = await catalogSummary({ orgId: query.org_id });
-    console.log(catalog);
 
     return res.status(200).send({
       data: {

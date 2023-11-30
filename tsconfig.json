@@ -18,6 +18,9 @@
       "path": "./pkgs/es"
     },
     {
+      "path": "./pkgs/events"
+    },
+    {
       "path": "./pkgs/github"
     },
     {

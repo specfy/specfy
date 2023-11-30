@@ -1,5 +1,6 @@
-import { nanoid, slugify, schemaOrgId, logEvent } from '@specfy/core';
+import { nanoid, slugify, schemaOrgId } from '@specfy/core';
 import { prisma } from '@specfy/db';
+import { logEvent } from '@specfy/events';
 import {
   getUsage,
   recomputeOrgGraph,

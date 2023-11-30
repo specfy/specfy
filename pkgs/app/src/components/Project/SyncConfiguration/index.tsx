@@ -34,6 +34,12 @@ export const SyncConfiguration: React.FC<{
     });
   }, [branch, stackEnabled, stackPath, docEnabled, docPath]);
 
+  useEffect(() => {
+    if (branch !== settings.branch) {
+      setBranch(settings.branch);
+    }
+  }, [settings.branch]);
+
   return (
     <Flex className={cls.inner} column gap="2xl" align="flex-start" grow>
       <Flex align="flex-start" gap="xl" grow>

@@ -10,10 +10,10 @@ import type { Authenticator } from '@fastify/passport';
 import type { FastifyInstance } from 'fastify';
 
 // TODO: once per user
-export const SALT = envs.PASSWORD_SALT;
-export const LEN = 32;
-export const ITER = 310000;
-export const DIG = 'sha256';
+const SALT = envs.PASSWORD_SALT;
+const LEN = 32;
+const ITER = 310000;
+const DIG = 'sha256';
 
 export function pbkdf2(pwd: string) {
   return crypto.pbkdf2Sync(pwd, SALT, ITER, LEN, DIG);

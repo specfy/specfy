@@ -97,6 +97,10 @@ export const ProjectCreate: React.FC<{ org: ApiOrg; params: RouteOrg }> = ({
   ) => {
     setName(res.id !== -1 ? res.name : res.fullName);
     setRepo(res);
+    setSettings({
+      ...settings,
+      branch: res.defaultBranch,
+    });
   };
 
   useEffect(() => {

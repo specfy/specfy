@@ -1,5 +1,6 @@
-import { logEvent, nanoid } from '@specfy/core';
+import { nanoid } from '@specfy/core';
 import { prisma } from '@specfy/db';
+import { logEvent } from '@specfy/events';
 import { createUserActivity } from '@specfy/models';
 
 import type { AcceptInvitation } from '@specfy/models';

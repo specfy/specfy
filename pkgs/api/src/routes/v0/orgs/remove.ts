@@ -1,5 +1,5 @@
-import { logEvent } from '@specfy/core';
 import { prisma } from '@specfy/db';
+import { logEvent } from '@specfy/events';
 import {
   removeTechByOrg,
   type DeleteOrg,

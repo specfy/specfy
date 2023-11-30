@@ -1,5 +1,6 @@
-import { envs, l, logEvent, sentry } from '@specfy/core';
+import { envs, l, sentry } from '@specfy/core';
 import { prisma } from '@specfy/db';
+import { logEvent } from '@specfy/events';
 import { v1, stripe } from '@specfy/models';
 
 import type { PostStripeWebhook } from '@specfy/models';
