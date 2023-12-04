@@ -30,16 +30,18 @@ export const logsnag = new LogSnag({
   project: 'specfy',
 });
 
+const allowedKeys = ['projectId', 'orgId', 'type'];
+
 export function consume() {
   if (!envs.LOGSNAG_KEY) {
     return;
   }
 
   dispatcher.onAny(async (name, obj) => {
-    const userId = 'userId' in obj ? obj.userId : '';
+    const userId = 'userId' in obj ? obj.userId : 'UNDEFINED';
     const tags: Record<string, string> = {};
     for (const [key, string] of Object.entries(obj)) {
-      if (key === 'userId') {
+      if (!allowedKeys.includes('key')) {
         continue;
       }
       tags[key.toLocaleLowerCase()] = string;

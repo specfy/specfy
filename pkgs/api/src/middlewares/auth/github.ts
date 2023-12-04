@@ -108,7 +108,11 @@ export function registerGitHub(passport: Authenticator) {
         });
       });
 
-      logEvent('account.register', { user: user!, github: profile._json });
+      logEvent('account.register', {
+        userId: user!.id,
+        user: user!,
+        github: profile._json,
+      });
 
       done(null, user);
     }

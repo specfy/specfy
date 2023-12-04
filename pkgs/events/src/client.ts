@@ -6,7 +6,7 @@ import type { Invitations, Orgs, Users } from '@specfy/db';
 export type LogEvents = {
   'account.deleted': { userId: string; email: string };
   'account.login': { userId: string };
-  'account.register': { user: Users; github: any };
+  'account.register': { userId: string; user: Users; github: any };
 
   'github.link_org': { userId: string; orgId: string };
   'github.unlink_org': { userId: string; orgId: string };
