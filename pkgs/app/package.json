@@ -78,7 +78,7 @@
     "@tiptap/starter-kit": "2.1.12",
     "@types/diff": "5.0.9",
     "@types/diff-match-patch": "1.0.36",
-    "@types/json-diff": "1.0.2",
+    "@types/json-diff": "1.0.3",
     "@types/loadable__component": "5.13.7",
     "@types/lodash.debounce": "4.0.9",
     "@types/luxon": "3.3.5",
