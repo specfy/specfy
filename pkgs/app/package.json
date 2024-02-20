@@ -107,7 +107,7 @@
     "react-markdown": "8.0.7",
     "react-router-dom": "6.20.0",
     "react-use": "17.4.3",
-    "reactflow": "11.10.1",
+    "reactflow": "11.10.4",
     "recharts": "2.9.3",
     "rollup-plugin-webpack-stats": "0.2.2",
     "sass": "1.69.5",
