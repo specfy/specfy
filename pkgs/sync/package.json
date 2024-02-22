@@ -29,7 +29,7 @@
   },
   "devDependencies": {
     "typescript": "5.3.2",
-    "execa": "7.2.0"
+    "execa": "8.0.1"
   },
   "dependencies": {
     "@specfy/stack-analyser": "1.8.5",
