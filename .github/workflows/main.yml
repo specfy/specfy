@@ -7,7 +7,7 @@ on:
 
 jobs:
   ci:
-    container: node:20.9.0
+    container: node:20.11.1
     runs-on: ubuntu-latest
     timeout-minutes: 17
     services:
@@ -22,7 +22,7 @@ jobs:
           --health-retries 5
 
       elasticsearch:
-        image: elasticsearch:8.11.0
+        image: elasticsearch:8.12.1
         ports:
           - "9200:9200"
           - "9300:9300"
