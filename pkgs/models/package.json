@@ -23,7 +23,7 @@
     "@specfy/es": "file:../es",
     "@specfy/events": "file:../events",
     "@specfy/stack-analyser": "1.8.5",
-    "openai": "4.2.0",
+    "openai": "4.29.2",
     "zod": "3.22.4"
   },
   "devDependencies": {
