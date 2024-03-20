@@ -28,6 +28,6 @@
     "dotenv": "16.3.1",
     "dotenv-cli": "7.3.0",
     "prisma-json-types-generator": "2.5.0",
-    "typescript": "5.3.2"
+    "typescript": "5.4.3"
   }
 }
