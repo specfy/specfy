@@ -15,12 +15,12 @@
   },
   "dependencies": {
     "@react-email/components": "0.0.15",
-    "react": "18.2.0",
+    "react": "18.3.1",
     "resend": "2.0.0"
   },
   "devDependencies": {
     "@specfy/db": "file:../db",
-    "@types/react": "18.2.39",
+    "@types/react": "18.3.1",
     "react-email": "1.9.5",
     "tsup": "7.2.0"
   },
